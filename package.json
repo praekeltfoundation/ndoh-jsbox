@@ -1,0 +1,43 @@
+{
+  "name": "mama-ng-jsbox",
+  "version": "0.0.1",
+  "description": "MAMA Nigeria Registration & State Changes",
+  "main": "src/app1.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/praekelt/mama-ng-jsbox"
+  },
+  "keywords": [
+    "vumi",
+    "sandbox",
+    "mama",
+    "nigeria",
+    "voice"
+  ],
+  "author": "Praekelt Foundation",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/praekelt/mama-ng-jsbox/issues"
+  },
+  "homepage": "https://github.com/praekelt/mama-ng-jsbox",
+  "dependencies": {
+    "vumigo_v02": "~0.2.18",
+    "q": "~0.9",
+    "lodash": "~2.4.1",
+    "moment": "~2.6.0",
+    "go-jsbox-metrics-helper": "~0.1.1"
+  },
+  "devDependencies": {
+    "mocha": "~1.18",
+    "jshint": "~2.4.4",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-watch": "~0.6.0",
+    "grunt": "~0.4.4",
+    "grunt-mocha-test": "~0.10.0",
+    "grunt-contrib-jshint": "~0.12.0",
+    "grunt-cli": "~0.1.13"
+  }
+}
