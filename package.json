@@ -1,0 +1,41 @@
+{
+  "name": "ndoh-jsbox",
+  "version": "0.0.1",
+  "description": "NDOH pregnancy register application",
+  "main": "lib/app.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/praekeltfoundation/ndoh-jsbox"
+  },
+  "keywords": [
+    "vumi",
+    "sandbox"
+  ],
+  "author": "Praekelt Foundation",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/praekeltfoundation/ndoh-jsbox/issues"
+  },
+  "homepage": "https://github.com/praekeltfoundation/ndoh-jsbox",
+  "dependencies": {
+    "vumigo_v02": "~0.2",
+    "q": "~0.9.7",
+    "lodash": "~2.4.1",
+    "moment": "~2.6",
+    "go-jsbox-metrics-helper": "^0.1.0"
+  },
+  "devDependencies": {
+    "mocha-as-promised": "~2.0.0",
+    "mocha": "~1.18",
+    "jshint": "~2.4.4",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-watch": "~0.6.0",
+    "grunt": "~0.4.4",
+    "grunt-mocha-test": "~0.10.0",
+    "grunt-contrib-jshint": "~0.12.0",
+    "grunt-cli": "~0.1.13"
+  }
+}
