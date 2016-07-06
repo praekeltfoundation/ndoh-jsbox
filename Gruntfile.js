@@ -8,14 +8,14 @@ module.exports = function (grunt) {
         paths: {
             src: {
                 app: {
-                    clinic: 'src/clinic.js',
-                    chw: 'src/chw.js',
-                    public: 'src/public.js',
-                    optout: 'src/optout.js',
-                    smsinbound: 'src/smsinbound.js',
-                    servicerating: 'src/servicerating.js',
-                    nurse_ussd: 'src/nurse_ussd.js',
-                    nurse_sms: 'src/nurse_sms.js'
+                    clinic: 'src/ussd_clinic.js',
+                    chw: 'src/ussd_chw.js',
+                    public: 'src/ussd_public.js',
+                    optout: 'src/ussd_optout.js',
+                    smsinbound: 'src/sms_smsinbound.js',
+                    servicerating: 'src/ussd_servicerating.js',
+                    ussd_nurse: 'src/ussd_nurse.js',
+                    sms_nurse: 'src/sms_nurse.js'
                 },
                 clinic: [
                     'src/index.js',
@@ -47,14 +47,14 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.servicerating %>',
                     'src/init.js'
                 ],
-                nurse_ussd: [
+                ussd_nurse: [
                     'src/index.js',
-                    '<%= paths.src.app.nurse_ussd %>',
+                    '<%= paths.src.app.ussd_nurse %>',
                     'src/init.js'
                 ],
-                nurse_sms: [
+                sms_nurse: [
                     'src/index.js',
-                    '<%= paths.src.app.nurse_sms %>',
+                    '<%= paths.src.app.sms_nurse %>',
                     'src/init.js'
                 ],
                 all: [
@@ -62,14 +62,14 @@ module.exports = function (grunt) {
                 ]
             },
             dest: {
-                clinic: 'go-app-clinic.js',
-                chw: 'go-app-chw.js',
-                public: 'go-app-public.js',
-                optout: 'go-app-optout.js',
-                smsinbound: 'go-app-smsinbound.js',
-                servicerating: 'go-app-servicerating.js',
-                nurse_ussd: 'go-app-nurse_ussd.js',
-                nurse_sms: 'go-app-nurse_sms.js'
+                clinic: 'go-app-ussd_clinic.js',
+                chw: 'go-app-ussd_chw.js',
+                public: 'go-app-ussd_public.js',
+                optout: 'go-app-ussd_optout.js',
+                smsinbound: 'go-app-sms_smsinbound.js',
+                servicerating: 'go-app-ussd_servicerating.js',
+                ussd_nurse: 'go-app-ussd_nurse.js',
+                sms_nurse: 'go-app-sms_nurse.js'
             },
             test: {
                 clinic: [
@@ -102,15 +102,15 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.servicerating %>',
                     'test/servicerating.test.js'
                 ],
-                nurse_ussd: [
+                ussd_nurse: [
                     'test/setup.js',
-                    '<%= paths.src.app.nurse_ussd %>',
-                    'test/nurse_ussd.test.js'
+                    '<%= paths.src.app.ussd_nurse %>',
+                    'test/ussd_nurse.test.js'
                 ],
-                nurse_sms: [
+                sms_nurse: [
                     'test/setup.js',
-                    '<%= paths.src.app.nurse_sms %>',
-                    'test/nurse_sms.test.js'
+                    '<%= paths.src.app.sms_nurse %>',
+                    'test/sms_nurse.test.js'
                 ]
             }
         },
@@ -155,13 +155,13 @@ module.exports = function (grunt) {
                 src: ['<%= paths.src.servicerating %>'],
                 dest: '<%= paths.dest.servicerating %>'
             },
-            nurse_ussd: {
-                src: ['<%= paths.src.nurse_ussd %>'],
-                dest: '<%= paths.dest.nurse_ussd %>'
+            ussd_nurse: {
+                src: ['<%= paths.src.ussd_nurse %>'],
+                dest: '<%= paths.dest.ussd_nurse %>'
             },
-            nurse_sms: {
-                src: ['<%= paths.src.nurse_sms %>'],
-                dest: '<%= paths.dest.nurse_sms %>'
+            sms_nurse: {
+                src: ['<%= paths.src.sms_nurse %>'],
+                dest: '<%= paths.dest.sms_nurse %>'
             }
         },
 
@@ -187,11 +187,11 @@ module.exports = function (grunt) {
             test_servicerating: {
                 src: ['<%= paths.test.servicerating %>']
             },
-            test_nurse_ussd: {
-                src: ['<%= paths.test.nurse_ussd %>']
+            test_ussd_nurse: {
+                src: ['<%= paths.test.ussd_nurse %>']
             },
-            test_nurse_sms: {
-                src: ['<%= paths.test.nurse_sms %>']
+            test_sms_nurse: {
+                src: ['<%= paths.test.sms_nurse %>']
             }
         }
     });
