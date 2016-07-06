@@ -21,11 +21,7 @@
   },
   "homepage": "https://github.com/praekeltfoundation/ndoh-jsbox",
   "dependencies": {
-    "vumigo_v02": "~0.2",
-    "q": "~0.9.7",
-    "lodash": "~2.4.1",
-    "moment": "~2.6",
-    "go-jsbox-metrics-helper": "^0.1.0"
+    "vumigo_v02": "~0.2"
   },
   "devDependencies": {
     "mocha-as-promised": "~2.0.0",
