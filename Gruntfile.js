@@ -15,8 +15,7 @@ module.exports = function (grunt) {
                     smsinbound: 'src/smsinbound.js',
                     servicerating: 'src/servicerating.js',
                     nurse_ussd: 'src/nurse_ussd.js',
-                    nurse_sms: 'src/nurse_sms.js',
-                    ussd_pmtct: 'src/ussd_pmtct.js'
+                    nurse_sms: 'src/nurse_sms.js'
                 },
                 clinic: [
                     'src/index.js',
@@ -74,13 +73,6 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.nurse_sms %>',
                     'src/init.js'
                 ],
-                ussd_pmtct: [
-                    'src/index.js',
-                    'src/utils.js',
-                    'src/session_length_helper.js',
-                    '<%= paths.src.app.ussd_pmtct %>',
-                    'src/init.js'
-                ],
                 all: [
                     'src/**/*.js'
                 ]
@@ -93,8 +85,7 @@ module.exports = function (grunt) {
                 smsinbound: 'go-app-smsinbound.js',
                 servicerating: 'go-app-servicerating.js',
                 nurse_ussd: 'go-app-nurse_ussd.js',
-                nurse_sms: 'go-app-nurse_sms.js',
-                ussd_pmtct: 'go-app-ussd_pmtct.js'
+                nurse_sms: 'go-app-nurse_sms.js'
             },
             test: {
                 clinic: [
@@ -153,13 +144,6 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.nurse_sms %>',
                     'test/nurse_sms.test.js'
                 ],
-                ussd_pmtct: [
-                    'test/setup.js',
-                    'src/utils.js',
-                    'src/session_length_helper.js',
-                    '<%= paths.src.app.ussd_pmtct %>',
-                    'test/ussd_pmtct.test.js'
-                ],
                 session_length_helper: [
                     'src/session_length_helper.js',
                     'test/session_length_helper.test.js'
@@ -214,10 +198,6 @@ module.exports = function (grunt) {
             nurse_sms: {
                 src: ['<%= paths.src.nurse_sms %>'],
                 dest: '<%= paths.dest.nurse_sms %>'
-            },
-            ussd_pmtct: {
-                src: ['<%= paths.src.ussd_pmtct %>'],
-                dest: '<%= paths.dest.ussd_pmtct %>'
             }
         },
 
@@ -248,9 +228,6 @@ module.exports = function (grunt) {
             },
             test_nurse_sms: {
                 src: ['<%= paths.test.nurse_sms %>']
-            },
-            test_ussd_pmtct: {
-                src: ['<%= paths.test.ussd_pmtct %>']
             },
             test_session_length_helper: {
                 src: ['<%= paths.test.session_length_helper %>']
