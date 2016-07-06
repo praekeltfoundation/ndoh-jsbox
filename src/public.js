@@ -4,15 +4,14 @@ go.app = function() {
     var EndState = vumigo.states.EndState;
 
     var GoNDOH = App.extend(function(self) {
-        App.call(self, 'states_start');
+        App.call(self, 'state_start');
         var $ = self.$;
-        var interrupt = true;
 
         self.init = function() {
 
-        });
+        };
 
-        self.add('state_start', function(name) {
+        self.states.add('state_start', function(name) {
             return new EndState(name, {
                 text: $('Welcome to The Department of Health\'s public.js'),
                 next: function(choice) {

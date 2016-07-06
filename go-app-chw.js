@@ -1,3 +1,6 @@
+var go = {};
+go;
+
 go.app = function() {
     var vumigo = require('vumigo_v02');
     var App = vumigo.App;
@@ -24,5 +27,16 @@ go.app = function() {
 
     return {
         GoNDOH: GoNDOH
+    };
+}();
+
+go.init = function() {
+    var vumigo = require('vumigo_v02');
+    var InteractionMachine = vumigo.InteractionMachine;
+    var GoNDOH = go.app.GoNDOH;
+
+
+    return {
+        im: new InteractionMachine(api, new GoNDOH())
     };
 }();

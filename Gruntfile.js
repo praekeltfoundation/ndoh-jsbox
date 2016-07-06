@@ -19,57 +19,41 @@ module.exports = function (grunt) {
                 },
                 clinic: [
                     'src/index.js',
-                    'src/utils.js',
-                    'src/session_length_helper.js',
                     '<%= paths.src.app.clinic %>',
                     'src/init.js'
                 ],
                 chw: [
                     'src/index.js',
-                    'src/utils.js',
-                    'src/session_length_helper.js',
                     '<%= paths.src.app.chw %>',
                     'src/init.js'
                 ],
                 public: [
                     'src/index.js',
-                    'src/utils.js',
-                    'src/session_length_helper.js',
                     '<%= paths.src.app.public %>',
                     'src/init.js'
                 ],
                 optout: [
                     'src/index.js',
-                    'src/utils.js',
-                    'src/session_length_helper.js',
                     '<%= paths.src.app.optout %>',
                     'src/init.js'
                 ],
                 smsinbound: [
                     'src/index.js',
-                    'src/utils.js',
-                    'src/session_length_helper.js',
                     '<%= paths.src.app.smsinbound %>',
                     'src/init.js'
                 ],
                 servicerating: [
                     'src/index.js',
-                    'src/utils.js',
-                    'src/session_length_helper.js',
                     '<%= paths.src.app.servicerating %>',
                     'src/init.js'
                 ],
                 nurse_ussd: [
                     'src/index.js',
-                    'src/utils.js',
-                    'src/session_length_helper.js',
                     '<%= paths.src.app.nurse_ussd %>',
                     'src/init.js'
                 ],
                 nurse_sms: [
                     'src/index.js',
-                    'src/utils.js',
-                    'src/session_length_helper.js',
                     '<%= paths.src.app.nurse_sms %>',
                     'src/init.js'
                 ],
@@ -90,63 +74,43 @@ module.exports = function (grunt) {
             test: {
                 clinic: [
                     'test/setup.js',
-                    'src/utils.js',
-                    'src/session_length_helper.js',
                     '<%= paths.src.app.clinic %>',
                     'test/clinic.test.js'
                 ],
                 chw: [
                     'test/setup.js',
-                    'src/utils.js',
-                    'src/session_length_helper.js',
                     '<%= paths.src.app.chw %>',
                     'test/chw.test.js'
                 ],
                 public: [
                     'test/setup.js',
-                    'src/utils.js',
-                    'src/session_length_helper.js',
                     '<%= paths.src.app.public %>',
                     'test/public.test.js'
                 ],
                 optout: [
                     'test/setup.js',
-                    'src/utils.js',
-                    'src/session_length_helper.js',
                     '<%= paths.src.app.optout %>',
                     'test/optout.test.js'
                 ],
                 smsinbound: [
                     'test/setup.js',
-                    'src/utils.js',
-                    'src/session_length_helper.js',
                     '<%= paths.src.app.smsinbound %>',
                     'test/smsinbound.test.js'
                 ],
                 servicerating: [
                     'test/setup.js',
-                    'src/utils.js',
-                    'src/session_length_helper.js',
                     '<%= paths.src.app.servicerating %>',
                     'test/servicerating.test.js'
                 ],
                 nurse_ussd: [
                     'test/setup.js',
-                    'src/utils.js',
-                    'src/session_length_helper.js',
                     '<%= paths.src.app.nurse_ussd %>',
                     'test/nurse_ussd.test.js'
                 ],
                 nurse_sms: [
                     'test/setup.js',
-                    'src/utils.js',
-                    'src/session_length_helper.js',
                     '<%= paths.src.app.nurse_sms %>',
                     'test/nurse_sms.test.js'
-                ],
-                session_length_helper: [
-                    'src/session_length_helper.js',
-                    'test/session_length_helper.test.js'
                 ]
             }
         },
@@ -228,10 +192,7 @@ module.exports = function (grunt) {
             },
             test_nurse_sms: {
                 src: ['<%= paths.test.nurse_sms %>']
-            },
-            test_session_length_helper: {
-                src: ['<%= paths.test.session_length_helper %>']
-            },
+            }
         }
     });
 

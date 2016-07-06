@@ -3,7 +3,7 @@ var AppTester = vumigo.AppTester;
 var assert = require('assert');
 
 describe("app", function() {
-    describe("for chw use", function() {
+    describe("for nurse_ussd use", function() {
         var app;
         var tester;
 
@@ -14,7 +14,7 @@ describe("app", function() {
 
             tester
                 .setup.config.app({
-                    name: 'chw',
+                    name: 'nurse_ussd',
                     env: 'test',
                     testing: 'true',
                     testing_today: 'June 30, 2017 09:07:07'
