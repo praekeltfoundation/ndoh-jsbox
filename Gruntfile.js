@@ -10,7 +10,7 @@ module.exports = function (grunt) {
                 app: {
                     clinic: 'src/clinic.js',
                     chw: 'src/chw.js',
-                    personal: 'src/personal.js',
+                    public: 'src/public.js',
                     optout: 'src/optout.js',
                     smsinbound: 'src/smsinbound.js',
                     servicerating: 'src/servicerating.js',
@@ -31,11 +31,11 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.chw %>',
                     'src/init.js'
                 ],
-                personal: [
+                public: [
                     'src/index.js',
                     'src/utils.js',
                     'src/session_length_helper.js',
-                    '<%= paths.src.app.personal %>',
+                    '<%= paths.src.app.public %>',
                     'src/init.js'
                 ],
                 optout: [
@@ -80,7 +80,7 @@ module.exports = function (grunt) {
             dest: {
                 clinic: 'go-app-clinic.js',
                 chw: 'go-app-chw.js',
-                personal: 'go-app-personal.js',
+                public: 'go-app-public.js',
                 optout: 'go-app-optout.js',
                 smsinbound: 'go-app-smsinbound.js',
                 servicerating: 'go-app-servicerating.js',
@@ -102,12 +102,12 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.chw %>',
                     'test/chw.test.js'
                 ],
-                personal: [
+                public: [
                     'test/setup.js',
                     'src/utils.js',
                     'src/session_length_helper.js',
-                    '<%= paths.src.app.personal %>',
-                    'test/personal.test.js'
+                    '<%= paths.src.app.public %>',
+                    'test/public.test.js'
                 ],
                 optout: [
                     'test/setup.js',
@@ -175,9 +175,9 @@ module.exports = function (grunt) {
                 src: ['<%= paths.src.chw %>'],
                 dest: '<%= paths.dest.chw %>'
             },
-            personal: {
-                src: ['<%= paths.src.personal %>'],
-                dest: '<%= paths.dest.personal %>'
+            public: {
+                src: ['<%= paths.src.public %>'],
+                dest: '<%= paths.dest.public %>'
             },
             optout: {
                 src: ['<%= paths.src.optout %>'],
@@ -211,8 +211,8 @@ module.exports = function (grunt) {
             test_chw: {
                 src: ['<%= paths.test.chw %>']
             },
-            test_personal: {
-                src: ['<%= paths.test.personal %>']
+            test_public: {
+                src: ['<%= paths.test.public %>']
             },
             test_optout: {
                 src: ['<%= paths.test.optout %>']
