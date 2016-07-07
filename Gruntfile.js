@@ -15,7 +15,8 @@ module.exports = function (grunt) {
                     sms_inbound: 'src/sms_inbound.js',
                     ussd_servicerating: 'src/ussd_servicerating.js',
                     ussd_nurse: 'src/ussd_nurse.js',
-                    sms_nurse: 'src/sms_nurse.js'
+                    sms_nurse: 'src/sms_nurse.js',
+                    ussd_pmtct_optout: 'src/ussd_pmtct_optout.js'
                 },
                 ussd_clinic: [
                     'src/index.js',
@@ -57,6 +58,11 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.sms_nurse %>',
                     'src/init.js'
                 ],
+                ussd_pmtct_optout: [
+                    'src/index.js',
+                    '<%= paths.src.app.ussd_pmtct_optout %>',
+                    'src/init.js'
+                ],
                 all: [
                     'src/**/*.js'
                 ]
@@ -69,7 +75,8 @@ module.exports = function (grunt) {
                 sms_inbound: 'go-app-sms_inbound.js',
                 ussd_servicerating: 'go-app-ussd_servicerating.js',
                 ussd_nurse: 'go-app-ussd_nurse.js',
-                sms_nurse: 'go-app-sms_nurse.js'
+                sms_nurse: 'go-app-sms_nurse.js',
+                ussd_pmtct_optout: 'go-app-ussd_pmtct_optout.js'
             },
             test: {
                 ussd_clinic: [
@@ -111,6 +118,11 @@ module.exports = function (grunt) {
                     'test/setup.js',
                     '<%= paths.src.app.sms_nurse %>',
                     'test/sms_nurse.test.js'
+                ],
+                ussd_pmtct_optout: [
+                    'test/setup.js',
+                    '<%= paths.src.app.ussd_pmtct_optout %>',
+                    'test/ussd_pmtct_optout.test.js'
                 ]
             }
         },
@@ -162,6 +174,10 @@ module.exports = function (grunt) {
             sms_nurse: {
                 src: ['<%= paths.src.sms_nurse %>'],
                 dest: '<%= paths.dest.sms_nurse %>'
+            },
+            ussd_pmtct_optout: {
+                src: ['<%= paths.src.ussd_pmtct_optout %>'],
+                dest: '<%= paths.dest.ussd_pmtct_optout %>'
             }
         },
 
@@ -192,6 +208,9 @@ module.exports = function (grunt) {
             },
             test_sms_nurse: {
                 src: ['<%= paths.test.sms_nurse %>']
+            },
+            test_ussd_pmtct_optout: {
+                src: ['<%= paths.test.ussd_pmtct_optout %>']
             }
         }
     });
