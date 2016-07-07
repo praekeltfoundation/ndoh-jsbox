@@ -1,9 +1,9 @@
-var vumigo = require('vumigo_v02');
+var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
-var assert = require('assert');
+var assert = require("assert");
 
 describe("app", function() {
-    describe("for chw use", function() {
+    describe("for ussd_chw use", function() {
         var app;
         var tester;
 
@@ -14,21 +14,19 @@ describe("app", function() {
 
             tester
                 .setup.config.app({
-                    name: 'chw',
-                    env: 'test',
-                    testing: 'true',
-                    testing_today: 'June 30, 2017 09:07:07'
+                    name: "ussd_chw",
+                    env: "test"
                 })
         });
 
-        describe('Start', function () {
-            it('should display welcome message', function () {
+        describe("Start", function () {
+            it("should display welcome message", function () {
                 return tester
-                    .setup.user.addr('27821234444')
+                    .setup.user.addr("27821234444")
                     .start()
                     .check.interaction({
-                        state: 'state_start',
-                        reply: 'Welcome to The Department of Health\'s chw.js'
+                        state: "state_start",
+                        reply: "Welcome to The Department of Health's ussd_chw.js"
                     })
                     .run();
             });

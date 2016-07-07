@@ -3,7 +3,7 @@ var AppTester = vumigo.AppTester;
 var assert = require("assert");
 
 describe("app", function() {
-    describe("for ussd_servicerating use", function() {
+    describe("for sms_inbound use", function() {
         var app;
         var tester;
 
@@ -14,8 +14,10 @@ describe("app", function() {
 
             tester
                 .setup.config.app({
-                    name: "ussd_servicerating",
-                    env: "test"
+                    name: "smsinbound",
+                    env: "test",
+                    testing: "true",
+                    testing_today: "June 30, 2017 09:07:07"
                 })
         });
 
@@ -26,7 +28,7 @@ describe("app", function() {
                     .start()
                     .check.interaction({
                         state: "state_start",
-                        reply: "Welcome to The Department of Health's ussd_servicerating.js"
+                        reply: "Welcome to The Department of Health's sms_inbound.js"
                     })
                     .run();
             });

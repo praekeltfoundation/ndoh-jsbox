@@ -12,7 +12,7 @@ module.exports = function (grunt) {
                     ussd_chw: 'src/ussd_chw.js',
                     ussd_public: 'src/ussd_public.js',
                     ussd_optout: 'src/ussd_optout.js',
-                    sms_smsinbound: 'src/sms_smsinbound.js',
+                    sms_inbound: 'src/sms_inbound.js',
                     ussd_servicerating: 'src/ussd_servicerating.js',
                     ussd_nurse: 'src/ussd_nurse.js',
                     sms_nurse: 'src/sms_nurse.js'
@@ -37,9 +37,9 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.ussd_optout %>',
                     'src/init.js'
                 ],
-                sms_smsinbound: [
+                sms_inbound: [
                     'src/index.js',
-                    '<%= paths.src.app.sms_smsinbound %>',
+                    '<%= paths.src.app.sms_inbound %>',
                     'src/init.js'
                 ],
                 ussd_servicerating: [
@@ -66,7 +66,7 @@ module.exports = function (grunt) {
                 ussd_chw: 'go-app-ussd_chw.js',
                 ussd_public: 'go-app-ussd_public.js',
                 ussd_optout: 'go-app-ussd_optout.js',
-                sms_smsinbound: 'go-app-sms_smsinbound.js',
+                sms_inbound: 'go-app-sms_inbound.js',
                 ussd_servicerating: 'go-app-ussd_servicerating.js',
                 ussd_nurse: 'go-app-ussd_nurse.js',
                 sms_nurse: 'go-app-sms_nurse.js'
@@ -75,32 +75,32 @@ module.exports = function (grunt) {
                 ussd_clinic: [
                     'test/setup.js',
                     '<%= paths.src.app.ussd_clinic %>',
-                    'test/clinic.test.js'
+                    'test/ussd_clinic.test.js'
                 ],
                 ussd_chw: [
                     'test/setup.js',
                     '<%= paths.src.app.ussd_chw %>',
-                    'test/chw.test.js'
+                    'test/ussd_chw.test.js'
                 ],
                 ussd_public: [
                     'test/setup.js',
                     '<%= paths.src.app.ussd_public %>',
-                    'test/public.test.js'
+                    'test/ussd_public.test.js'
                 ],
                 ussd_optout: [
                     'test/setup.js',
                     '<%= paths.src.app.ussd_optout %>',
-                    'test/optout.test.js'
+                    'test/ussd_optout.test.js'
                 ],
-                sms_smsinbound: [
+                sms_inbound: [
                     'test/setup.js',
-                    '<%= paths.src.app.sms_smsinbound %>',
-                    'test/smsinbound.test.js'
+                    '<%= paths.src.app.sms_inbound %>',
+                    'test/sms_inbound.test.js'
                 ],
                 ussd_servicerating: [
                     'test/setup.js',
                     '<%= paths.src.app.ussd_servicerating %>',
-                    'test/servicerating.test.js'
+                    'test/ussd_servicerating.test.js'
                 ],
                 ussd_nurse: [
                     'test/setup.js',
@@ -147,9 +147,9 @@ module.exports = function (grunt) {
                 src: ['<%= paths.src.ussd_optout %>'],
                 dest: '<%= paths.dest.ussd_optout %>'
             },
-            sms_smsinbound: {
-                src: ['<%= paths.src.sms_smsinbound %>'],
-                dest: '<%= paths.dest.sms_smsinbound %>'
+            sms_inbound: {
+                src: ['<%= paths.src.sms_inbound %>'],
+                dest: '<%= paths.dest.sms_inbound %>'
             },
             ussd_servicerating: {
                 src: ['<%= paths.src.ussd_servicerating %>'],
@@ -181,8 +181,8 @@ module.exports = function (grunt) {
             test_ussd_optout: {
                 src: ['<%= paths.test.ussd_optout %>']
             },
-            test_sms_smsinbound: {
-                src: ['<%= paths.test.sms_smsinbound %>']
+            test_sms_inbound: {
+                src: ['<%= paths.test.sms_inbound %>']
             },
             test_ussd_servicerating: {
                 src: ['<%= paths.test.ussd_servicerating %>']
