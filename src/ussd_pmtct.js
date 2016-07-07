@@ -87,7 +87,7 @@ go.app = function() {
         // interstitial - checks details already saved in db
         self.add("state_check_details", function(name) {
             return self.states.create("state_consent");
-
+            // msisdn should be registered and active(?) on MomConnect...
             /*.search_by_address({"msisdn": self.im.user.addr}, self.im, null)
                 .then(function(search) {
                     // check whether user is already registered
@@ -113,6 +113,7 @@ go.app = function() {
                         return self.states.create("state_hiv_messages");
 
                     } else {
+                        // if not registered or inactive(?)
                         return self.states.create("state_end_not_registered");
                     }
                 });*/
