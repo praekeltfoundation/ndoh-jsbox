@@ -14,7 +14,7 @@ describe("app", function() {
 
             tester
                 .setup.config.app({
-                    name: "smsinbound",
+                    name: "sms_inbound",
                     env: "test",
                     testing: "true",
                     testing_today: "June 30, 2017 09:07:07"
