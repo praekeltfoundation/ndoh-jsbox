@@ -87,7 +87,7 @@ go.app = function() {
                 back: $('Back'),
                 // error: ,
                 choices: [
-                    new Choice("not_hiv-pos", $("I am not HIV-postive")),
+                    new Choice("not_hiv_pos", $("I am not HIV-postive")),
                     new Choice("miscarriage", $("I had a miscarriage")),
                     new Choice("stillborn", $("My baby was stillborn")),
                     new Choice("passed_away", $("My baby passed away")),
@@ -95,7 +95,7 @@ go.app = function() {
                     new Choice("other", $("Other"))
                 ],
                 next: function(choice) {
-                    if (["not_hiv-pos", "not_useful", "other"].indexOf(choice.value) !== -1) {
+                    if (["not_hiv_pos", "not_useful", "other"].indexOf(choice.value) !== -1) {
                         return "state_end_optout";
                     } else {
                         return "state_loss_messages";
