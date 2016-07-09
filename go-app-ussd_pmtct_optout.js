@@ -23,7 +23,7 @@ go.app = function() {
             "state_timed_out":
                 $("You have an incomplete registration. Would you like to continue with this registration?"),
             "state_optout_reason_menu":
-                $("Why do you no longer want to receive messages related to keeping your baby HIV-negative:"),
+                $("Why do you no longer want to receive messages related to keeping your baby HIV-negative?"),
             "state_end_optout":
                 $("Thank you. You will no longer receive PMTCT messages. You will still receive the MomConnect messages. To stop receiving these messages as well, please dial into *134*550*1#."),
             "state_loss_messages":

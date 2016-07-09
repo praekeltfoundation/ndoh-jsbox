@@ -97,7 +97,7 @@ describe("MomConnect app", function() {
                     .check.interaction({
                         state: "state_optout_reason_menu",
                         reply: [
-                            "Why do you no longer want to receive messages related to keeping your baby HIV-negative:",
+                            "Why do you no longer want to receive messages related to keeping your baby HIV-negative?",
                             "1. I am not HIV-postive",
                             "2. I had a miscarriage",
                             "3. My baby was stillborn",
@@ -119,7 +119,7 @@ describe("MomConnect app", function() {
                     .check.interaction({
                         state: "state_optout_reason_menu",
                         reply: [
-                            "Why do you no longer want to receive messages related to keeping your baby HIV-negative:",
+                            "Why do you no longer want to receive messages related to keeping your baby HIV-negative?",
                             "1. My baby passed away",
                             "2. The messages are not useful",
                             "3. Other",
@@ -142,7 +142,7 @@ describe("MomConnect app", function() {
                     .check.interaction({
                         state: "state_optout_reason_menu",
                         reply: [
-                            "Why do you no longer want to receive messages related to keeping your baby HIV-negative:",
+                            "Why do you no longer want to receive messages related to keeping your baby HIV-negative?",
                             "1. I am not HIV-postive",
                             "2. I had a miscarriage",
                             "3. My baby was stillborn",
