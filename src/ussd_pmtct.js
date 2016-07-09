@@ -222,10 +222,10 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (choice.value === "yes") {
-                        self.im.user.set_answer("hiv_opt-in", "true");
+                        self.im.user.set_answer("hiv_opt_in", "true");
                         return "state_end_hiv_messages_confirm";
                     } else {
-                        self.im.user.set_answer("hiv_opt-in", "false");
+                        self.im.user.set_answer("hiv_opt_in", "false");
                         return "state_end_hiv_messages_declined";
                     }
                 }
