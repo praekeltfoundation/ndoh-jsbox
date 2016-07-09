@@ -16,30 +16,6 @@ go.app = function() {
             // init services
         };
 
-    // TEXT CONTENT
-        var questions = {
-            "state_timed_out":
-                $("You have an incomplete registration. Would you like to continue with this registration?"),
-            "state_end_not_registered":
-                $("You need to be registered to MomConnect to receive these messages. Please visit the nearest clinic to register."),
-            "state_consent":
-                $("To register we need to collect, store & use your info. You may also get messages on public holidays & weekends. Do you consent?"),
-            "state_end_consent_refused":
-                $("Unfortunately without your consent, you cannot register to MomConnect. Thank you for using the MomConnect service. Goodbye."),
-            "state_birth_year":
-                $("Please enter the year you were born (For example 1981)"),
-            "state_birth_month":
-                $("In which month were you born?"),
-            "state_birth_day":
-                $("Please enter the date of the month you were born (For example 21)"),
-            "state_hiv_messages":
-                $("Would you like to receive messages about keeping your child HIV-negative?"),
-            "state_end_hiv_messages_declined":
-                $("You have chosen to not receive messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."),
-            "state_end_hiv_messages_confirm":
-                $("You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye.")
-        };
-
         // TIMEOUT HANDLING
 
         // override normal state adding
@@ -58,7 +34,7 @@ go.app = function() {
         // timeout 01
         self.states.add("state_timed_out", function(name, creator_opts) {
             return new ChoiceState(name, {
-                question: "timeout",
+                question: $("You have an incomplete registration. Would you like to continue with this registration?"),
                 choices: [
                     new Choice("continue", $("Yes")),
                     new Choice("restart", $("No, start a new registration"))
@@ -121,14 +97,14 @@ go.app = function() {
 
         self.add("state_end_not_registered", function(name) {
             return new EndState(name, {
-                text: questions[name],
+                text: $("You need to be registered to MomConnect to receive these messages. Please visit the nearest clinic to register."),
                 next: "state_start"
             });
         });
 
         self.add("state_consent", function(name) {
             return new ChoiceState(name, {
-                question: questions[name],
+                question: $("To register we need to collect, store & use your info. You may also get messages on public holidays & weekends. Do you consent?"),
                 // error: ,
                 choices: [
                     new Choice("yes", $("Yes")),
@@ -153,14 +129,14 @@ go.app = function() {
 
         self.add("state_end_consent_refused", function(name) {
             return new EndState(name, {
-                text: questions[name],
+                text: $("Unfortunately without your consent, you cannot register to MomConnect. Thank you for using the MomConnect service. Goodbye."),
                 next: "state_start"
             });
         });
 
         self.add("state_birth_year", function(name) {
             return new FreeText(name, {
-                question: questions[name],
+                question: $("Please enter the year you were born (For example 1981)"),
                 /*check: function(content) {
                     return (utils.check_valid_number(content)
                         & utils.check_number_in_range(content, "1900", utils.get_today().year)
@@ -174,7 +150,7 @@ go.app = function() {
 
         self.add("state_birth_month", function(name) {
             return new ChoiceState(name, {
-                question: questions[name],
+                question: $("In which month were you born?"),
                 choices: [
                     new Choice("jan", $("Jan")),
                     new Choice("feb", $("Feb")),
@@ -198,7 +174,7 @@ go.app = function() {
 
         self.add("state_birth_day", function(name) {
             return new FreeText(name, {
-                question: questions[name],
+                question: $("Please enter the date of the month you were born (For example 21)"),
                 /*check: function(content) {
                     utils.is_valid_date(dob)  // check here or in "next"
                 },*/
@@ -214,7 +190,7 @@ go.app = function() {
 
         self.add("state_hiv_messages", function(name) {
             return new ChoiceState(name, {
-                question: questions[name],
+                question: $("Would you like to receive messages about keeping your child HIV-negative?"),
                 // error: ,
                 choices: [
                     new Choice("yes", $("Yes")),
@@ -234,14 +210,14 @@ go.app = function() {
 
         self.add("state_end_hiv_messages_confirm", function(name) {
             return new EndState(name, {
-                text: questions[name],
+                text: $("You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."),
                 next: "state_start"
             });
         });
 
         self.add("state_end_hiv_messages_declined", function(name) {
             return new EndState(name, {
-                text: questions[name],
+                text: $("You have chosen to not receive messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."),
                 next: "state_start"
             });
         });
