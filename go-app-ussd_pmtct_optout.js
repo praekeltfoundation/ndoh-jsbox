@@ -18,22 +18,6 @@ go.app = function() {
             // init services
         };
 
-    // TEXT CONTENT
-        var questions = {
-            "state_timed_out":
-                $("You have an incomplete registration. Would you like to continue with this registration?"),
-            "state_optout_reason_menu":
-                $("Why do you no longer want to receive messages related to keeping your baby HIV-negative?"),
-            "state_end_optout":
-                $("Thank you. You will no longer receive PMTCT messages. You will still receive the MomConnect messages. To stop receiving these messages as well, please dial into *134*550*1#."),
-            "state_loss_messages":
-                $("We are sorry for your loss. Would you like to receive a small set of free messages from MomConnect that could help you in this difficult time?"),
-            "state_end_loss_optout":
-                $("Thank you. You will no longer receive any messages from MomConnect. If you have any medical concerns, please visit your nearest clinic."),
-            "state_end_loss_optin":
-                $("Thank you. You will receive support messages from MomConnect in the coming weeks.")
-        };
-
         // TIMEOUT HANDLING
 
         // override normal state adding
@@ -52,7 +36,7 @@ go.app = function() {
         // timeout 01
         self.states.add("state_timed_out", function(name, creator_opts) {
             return new ChoiceState(name, {
-                question: "timeout",
+                question: $("You have an incomplete registration. Would you like to continue with this registration?"),
                 choices: [
                     new Choice("continue", $("Yes")),
                     new Choice("restart", $("No, start a new registration"))
@@ -80,7 +64,7 @@ go.app = function() {
 
         self.add("state_optout_reason_menu", function(name) {
             return new PaginatedChoiceState(name, {
-                question: questions[name],
+                question: $("Why do you no longer want to receive messages related to keeping your baby HIV-negative?"),
                 characters_per_page: 182,
                 options_per_page: null,
                 more: $('More'),
@@ -106,7 +90,7 @@ go.app = function() {
 
         self.add("state_end_optout", function(name) {
             return new EndState(name, {
-                text: questions[name],
+                text: $("Thank you. You will no longer receive PMTCT messages. You will still receive the MomConnect messages. To stop receiving these messages as well, please dial into *134*550*1#."),
                 next: "state_start"
                 // only opt user out of the PMTCT message set NOT MomConnect
             });
@@ -114,7 +98,7 @@ go.app = function() {
 
         self.add("state_loss_messages", function(name) {
             return new ChoiceState(name, {
-                question: questions[name],
+                question: $("We are sorry for your loss. Would you like to receive a small set of free messages from MomConnect that could help you in this difficult time?"),
                 // error: ,
                 choices: [
                     new Choice("yes", $("Yes")),
@@ -132,7 +116,7 @@ go.app = function() {
 
         self.add("state_end_loss_optout", function(name) {
             return new EndState(name, {
-                text: questions[name],
+                text: $("Thank you. You will no longer receive any messages from MomConnect. If you have any medical concerns, please visit your nearest clinic."),
                 next: "state_start"
                 // opt user out of the PMTCT & MomConnect message sets
             });
@@ -140,7 +124,7 @@ go.app = function() {
 
         self.add("state_end_loss_optin", function(name) {
             return new EndState(name, {
-                text: questions[name],
+                text: $("Thank you. You will receive support messages from MomConnect in the coming weeks."),
                 next: "state_start"
                 // opt user out of PMTCT & main MomConnect messages sets
                 // opt user in to MomConnect loss support message set
