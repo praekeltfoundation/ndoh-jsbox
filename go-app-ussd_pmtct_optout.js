@@ -73,8 +73,8 @@ go.app = function() {
                 choices: [
                     new Choice("not_hiv_pos", $("I am not HIV-postive")),
                     new Choice("miscarriage", $("I had a miscarriage")),
-                    new Choice("stillborn", $("My baby was stillborn")),
-                    new Choice("passed_away", $("My baby passed away")),
+                    new Choice("stillbirth", $("My baby was stillborn")),
+                    new Choice("babyloss", $("My baby passed away")),
                     new Choice("not_useful", $("The messages are not useful")),
                     new Choice("other", $("Other"))
                 ],
