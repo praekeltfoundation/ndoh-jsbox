@@ -6,6 +6,7 @@ go.app = function() {
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
+    var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
 
@@ -233,6 +234,7 @@ go.app = function() {
             });
         });
 
+        // start of OPT-OUT flow
         self.add("state_optout_reason_menu", function(name) {
             return new PaginatedChoiceState(name, {
                 question: $("Why do you no longer want to receive messages related to keeping your baby HIV-negative?"),
