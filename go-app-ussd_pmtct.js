@@ -60,11 +60,19 @@ go.app = function() {
 
         self.add("state_start", function(name) {
             self.im.user.answers = {};  // reset answers
-            return self.states.create("state_check_details");
+            return self.states.create("state_check_PMTCT_registration");
+        });
+
+        // interstitial
+        self.add("state_check_PMTCT_registration", function(name) {
+            // if active PMTCT subscription, route to optout Flow
+            // return self.states.create("state_optout_reason_menu")
+            // else route to registration flow
+            return self.states.create("state_check_MomConnect_registration");
         });
 
         // interstitial - checks details already saved in db
-        self.add("state_check_details", function(name) {
+        self.add("state_check_MomConnect_registration", function(name) {
             return self.states.create("state_consent");
             // msisdn should be registered and active(?) on MomConnect...
             /*.search_by_address({"msisdn": self.im.user.addr}, self.im, null)
@@ -222,6 +230,75 @@ go.app = function() {
             return new EndState(name, {
                 text: $("You have chosen to not receive messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."),
                 next: "state_start"
+            });
+        });
+
+        self.add("state_optout_reason_menu", function(name) {
+            return new PaginatedChoiceState(name, {
+                question: $("Why do you no longer want to receive messages related to keeping your baby HIV-negative?"),
+                characters_per_page: 182,
+                options_per_page: null,
+                more: $('More'),
+                back: $('Back'),
+                // error: ,
+                choices: [
+                    new Choice("not_hiv_pos", $("I am not HIV-positive")),
+                    new Choice("miscarriage", $("I had a miscarriage")),
+                    new Choice("stillbirth", $("My baby was stillborn")),
+                    new Choice("babyloss", $("My baby passed away")),
+                    new Choice("not_useful", $("The messages are not useful")),
+                    new Choice("other", $("Other"))
+                ],
+                next: function(choice) {
+                    if (["not_hiv_pos", "not_useful", "other"].indexOf(choice.value) !== -1) {
+                        return "state_end_optout";
+                    } else {
+                        return "state_loss_messages";
+                    }
+                }
+            });
+        });
+
+        self.add("state_end_optout", function(name) {
+            return new EndState(name, {
+                text: $("Thank you. You will no longer receive PMTCT messages. You will still receive the MomConnect messages. To stop receiving these messages as well, please dial into *134*550*1#."),
+                next: "state_start"
+                // only opt user out of the PMTCT message set NOT MomConnect
+            });
+        });
+
+        self.add("state_loss_messages", function(name) {
+            return new ChoiceState(name, {
+                question: $("We are sorry for your loss. Would you like to receive a small set of free messages from MomConnect that could help you in this difficult time?"),
+                // error: ,
+                choices: [
+                    new Choice("yes", $("Yes")),
+                    new Choice("no", $("No"))
+                ],
+                next: function(choice) {
+                    if (choice.value === "yes") {
+                        return "state_end_loss_optin";
+                    } else {
+                        return "state_end_loss_optout";
+                    }
+                }
+            });
+        });
+
+        self.add("state_end_loss_optout", function(name) {
+            return new EndState(name, {
+                text: $("Thank you. You will no longer receive any messages from MomConnect. If you have any medical concerns, please visit your nearest clinic."),
+                next: "state_start"
+                // opt user out of the PMTCT & MomConnect message sets
+            });
+        });
+
+        self.add("state_end_loss_optin", function(name) {
+            return new EndState(name, {
+                text: $("Thank you. You will receive support messages from MomConnect in the coming weeks."),
+                next: "state_start"
+                // opt user out of PMTCT & main MomConnect messages sets
+                // opt user in to MomConnect loss support message set
             });
         });
 
