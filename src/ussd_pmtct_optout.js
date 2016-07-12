@@ -68,7 +68,7 @@ go.app = function() {
                 back: $('Back'),
                 // error: ,
                 choices: [
-                    new Choice("not_hiv_pos", $("I am not HIV-postive")),
+                    new Choice("not_hiv_pos", $("I am not HIV-positive")),
                     new Choice("miscarriage", $("I had a miscarriage")),
                     new Choice("stillbirth", $("My baby was stillborn")),
                     new Choice("babyloss", $("My baby passed away")),
