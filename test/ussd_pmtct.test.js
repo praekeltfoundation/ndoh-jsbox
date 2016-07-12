@@ -20,10 +20,15 @@ describe("familyconnect health worker app", function() {
                     testing_today: "2016-07-06",
                     no_timeout_redirects: [
                         "state_start",
+                        // sign-up end states
                         "state_end_not_registered",
                         "state_end_consent_refused",
                         "state_end_hiv_messages_confirm",
-                        "state_end_hiv_messages_declined"
+                        "state_end_hiv_messages_declined",
+                        // opt-out end states
+                        "state_end_optout",
+                        "state_end_loss_optout",
+                        "state_end_loss_optin"
                     ],
                 })
                 .setup(function(api) {
