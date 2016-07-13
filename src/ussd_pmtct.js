@@ -58,13 +58,16 @@ go.app = function() {
 
         self.add("state_start", function(name) {
             self.im.user.answers = {};  // reset answers
-            return self.states.create("state_check_PMTCT_registration");
+            return self.states.create("state_check_PMTCT_subscription");
         });
 
         // interstitial
-        self.add("state_check_PMTCT_registration", function(name) {
+        self.add("state_check_PMTCT_subscription", function(name) {
+            // functionality pseudo-logic:
             // if active PMTCT subscription, route to optout Flow
-            // return self.states.create("state_optout_reason_menu")
+                // check identity  (get_identity)
+                // check subscription (..? )
+                // return self.states.create("state_optout_reason_menu")
             // else route to registration flow
             return self.states.create("state_check_MomConnect_registration");
         });
@@ -72,7 +75,21 @@ go.app = function() {
         // interstitial - checks details already saved in db
         self.add("state_check_MomConnect_registration", function(name) {
             return self.states.create("state_consent");
-            // msisdn should be registered and active(?) on MomConnect...
+            // functionality pseudo-logic:
+            // (msisdn should be registered and active(?) on MomConnect...)
+            // get_identity_by_address / list_by_address
+            // if registered/active
+                // check/set lang, consent, dob
+                // if consent not already given
+                    // return state_consent
+                // if dob not already captured
+                    // return state_birth_year
+
+                // return state_hiv_messages
+            // else
+                // return state_end_not_registered
+
+
             /*.search_by_address({"msisdn": self.im.user.addr}, self.im, null)
                 .then(function(search) {
                     // check whether user is already registered
@@ -123,6 +140,7 @@ go.app = function() {
                     if (choice.value === "yes") {
                         // set consent
                         self.im.user.set_answer("consent", "true");
+                        // functionality pseudo-logic:
                         /*if (self.im.user.dob) {
                             return "state_hiv_messages";
                         } else {
