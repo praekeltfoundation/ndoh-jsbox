@@ -214,7 +214,7 @@ module.exports = function() {
             }
         },
 
-        // 3: has_active_subscription (no consent, no dob)
+        // 5: has_active_subscription (no consent, no dob)
         {
             'request': {
                 'method': 'GET',
@@ -257,7 +257,7 @@ module.exports = function() {
             }
         },
 
-        // 4: has_active_subscription (consent, no dob)
+        // 6: has_active_subscription (consent, no dob)
         {
             'request': {
                 'method': 'GET',
@@ -300,7 +300,7 @@ module.exports = function() {
             }
         },
 
-        // 4: has_active_subscription (no consent, dob)
+        // 7: has_active_subscription (no consent, dob)
         {
             'request': {
                 'method': 'GET',
@@ -343,7 +343,7 @@ module.exports = function() {
             }
         },
 
-        // 5: has_active_subscription (consent, dob)
+        // 8: has_active_subscription (consent, dob)
         {
             'request': {
                 'method': 'GET',
@@ -386,7 +386,7 @@ module.exports = function() {
             }
         },
 
-        // 5: has_active_subscription (no active subscription)
+        // 9: has_active_subscription (no active subscription)
         {
             'request': {
                 'method': 'GET',
@@ -411,7 +411,7 @@ module.exports = function() {
             }
         },
 
-        // 5: get vumi contact by msisdn +27820000556
+        // 10: get vumi contact by msisdn +27820000556
         {
             'request': {
                 'method': 'GET',
@@ -471,7 +471,7 @@ module.exports = function() {
             }
         },
 
-        // 5: get vumi contact by msisdn +27820000555
+        // 11: get vumi contact by msisdn +27820000555
         {
             'request': {
                 'method': 'GET',
@@ -490,7 +490,7 @@ module.exports = function() {
             }
         },
 
-        // 5: get vumi contact subscription msisdn +27820000555
+        // 12: get vumi contact subscription msisdn +27820000555
         {
             'request': {
                 'method': 'GET',
