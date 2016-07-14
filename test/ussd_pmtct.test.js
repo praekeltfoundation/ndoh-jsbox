@@ -3,7 +3,7 @@ var fixtures = require("./fixtures");
 var assert = require("assert");
 var AppTester = vumigo.AppTester;
 
-describe("familyconnect health worker app", function() {
+describe("PMTCT app", function() {
     describe("for ussd use - auth on", function() {
         var app;
         var tester;
@@ -18,6 +18,7 @@ describe("familyconnect health worker app", function() {
                     name: "ussd-pmtct-test",
                     channel: "*134*550*10#",
                     testing_today: "2016-07-06",
+                    logging: "off",
                     no_timeout_redirects: [
                         "state_start",
                         // sign-up end states
@@ -30,6 +31,16 @@ describe("familyconnect health worker app", function() {
                         "state_end_loss_optout",
                         "state_end_loss_optin"
                     ],
+                    services: {
+                        identity_store: {
+                            prefix: 'http://is.localhost:8001/api/v1/',
+                            token: 'test IdentityStore'
+                        },
+                        stage_based_messaging: {
+                            prefix: 'http://sbm.localhost:8001/api/v1/',
+                            token: 'test StageBasedMessaging'
+                        }
+                    }
                 })
                 .setup(function(api) {
                     fixtures().forEach(api.http.fixtures.add);

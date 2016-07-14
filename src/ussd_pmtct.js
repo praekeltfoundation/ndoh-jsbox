@@ -6,15 +6,82 @@ go.app = function() {
     var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
+    var JsonApi = vumigo.http.api.JsonApi;
 
+    var IdentityStore = require('seed_jsbox_utils').IdentityStore;
+    var StageBasedMessaging = require('seed_jsbox_utils').StageBasedMessaging;
+    var utils = require('seed_jsbox_utils').utils;
 
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_start");
         var $ = self.$;
-        // var interrupt = true;
+        // var interrupt = true
+
+        // variables for services
+        var is;
+        var sbm;
 
         self.init = function() {
-            // init services
+            // initialising services
+            var base_url = self.im.config.services.identity_store.prefix;
+            var auth_token = self.im.config.services.identity_store.token;
+            is = new IdentityStore(new JsonApi(self.im, null), auth_token, base_url);
+
+            base_url = self.im.config.services.stage_based_messaging.prefix;
+            auth_token = self.im.config.services.stage_based_messaging.token;
+            sbm = new StageBasedMessaging(new JsonApi(self.im, null), auth_token, base_url);
+        };
+
+
+        // get/load contact from vumigo
+        self.getVumiContactByMsisdn = function(im, msisdn) {
+            var token = "abcde";  // config
+
+            var vumigo_base_url = "https://go.vumi.org/api/v1/go/";
+            var endpoint = "contacts/";
+
+            var http = new JsonApi(im, {
+                headers: {
+                    'Authorization': ['Bearer ' + token]
+                }
+            });
+
+            return http.get(vumigo_base_url + endpoint, {
+                params: {
+                    "msisdn": msisdn
+                }
+            });
+        };
+
+        self.getVumiActiveSubscriptionCount = function(im, msisdn) {
+            var username = "superman";
+            var api_key = "";
+
+            var subscription_base_url = "https://foo/";
+            var endpoint = "subscription/";
+
+            var http = new HttpApi(im, {
+                headers: {
+                    'Content-Type': ['application/json'],
+                    'Authorization': ['ApiKey ' + username + ':' + api_key]
+                }
+            });
+
+            return http.get(subscription_base_url + endpoint, {
+                    params: {
+                        "msisdn": msisdn
+                    }
+                })
+                .then(function(json_result) {
+                    var subs = JSON.parse(json_result.data);
+                    var active = 0;
+                    for (i = 0; i < subs.objects.length; i++) {
+                        if (subs.objects[i].active === true) {
+                            active++;
+                        }
+                    }
+                    return active;
+                });
         };
 
         // TIMEOUT HANDLING
@@ -58,67 +125,77 @@ go.app = function() {
 
         self.add("state_start", function(name) {
             self.im.user.answers = {};  // reset answers
+
             return self.states.create("state_check_PMTCT_subscription");
         });
 
         // interstitial
         self.add("state_check_PMTCT_subscription", function(name) {
-            // functionality pseudo-logic:
-            // if active PMTCT subscription, route to optout Flow
-                // check identity  (get_identity)
-                // check subscription (..? )
-                // return self.states.create("state_optout_reason_menu")
-            // else route to registration flow
-            return self.states.create("state_check_MomConnect_registration");
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
+            self.im.user.set_answer("msisdn", msisdn);
+
+            return is.get_or_create_identity({"msisdn": msisdn})
+                .then(function(identity) {
+                    if (identity.details.pmtct) {  // on new system and PMTCT?
+                        // optout
+                        return self.states.create("state_optout_reason_menu");
+                    } else {  // register
+                        return sbm.has_active_subscription(identity.id)
+                            .then(function(active_subscription) {
+                                if (active_subscription) {
+                                    // get details (lang, consent, dob)
+                                    // & set answers
+                                    self.im.user.set_lang(identity);
+                                    self.im.user.set_answer("consent", identity.consent);
+                                    self.im.user.set_answer("dob", identity.dob);
+                                    return self.states.create("state_route");
+                                } else {
+                                    return self.states.create("state_get_vumi_contact");
+                                }
+                            });
+                    }
+                });
+
         });
 
-        // interstitial - checks details already saved in db
-        self.add("state_check_MomConnect_registration", function(name) {
-            return self.states.create("state_consent");
-            // functionality pseudo-logic:
-            // (msisdn should be registered and active(?) on MomConnect...)
-            // get_identity_by_address / list_by_address
-            // if registered/active
-                // check/set lang, consent, dob
-                // if consent not already given
-                    // return state_consent
-                // if dob not already captured
-                    // return state_birth_year
+        // interstitial
+        self.add("state_get_vumi_contact", function(name, contact) {
 
-                // return state_hiv_messages
-            // else
-                // return state_end_not_registered
+            return self.getVumiContactByMsisdn(self.im, msisdn)
+                .then(function(contact) {
+                    // check if registered on MomConnect
+                    if (contact.data.results[0].extra.is_registered) {
 
+                        // get subscription to see if active
+                        return self.getVumiActiveSubscriptionCount(self.im, msisdn)
+                            .then(function(active_subscription_count) {
+                                if (active_subscription_count > 0) {
+                                    // save contact data (set_answer's) - lang, consent, dob
+                                    self.im.user.set_lang(contact.data.results[0].extra.language_choice);
+                                    self.im.user.set_answer("consent", "false");  // assume false temporarily
+                                    self.im.user.set_answer("dob", contact.data.results[0].dob);
 
-            /*.search_by_address({"msisdn": self.im.user.addr}, self.im, null)
-                .then(function(search) {
-                    // check whether user is already registered
-                    if (search.results.length > 0) {  // add necessary conditions to check
-                        var identity = search.results[0];
-                        console.log(identity);
+                                    return self.states.create("state_route");
+                                }
 
-                        // check if lang, consent and dob already stored and set
-                        self.im.set_lang(identity.extra.language_choice);
-                        self.im.user.set_answer("consent", identity.extra.consent);
-                        self.im.user.set_answer("dob", identity.extra.dob;
-
-                        // !consent_already_given
-                        if (self.im.user.consent) {
-                            return self.states.create("state_consent", dob_already_stored);
-                        }
-
-                        // !dob_already_stored
-                        if (self.im.user.dob) {
-                            return self.states.create("state_birth_year");
-                        }
-
-                        return self.states.create("state_hiv_messages");
-
-                    } else {
-                        // if not registered or inactive(?)
-                        return self.states.create("state_end_not_registered");
+                                return self.states.create("state_end_not_registered");
+                            });
                     }
-                });*/
+                });
+
+        });
+
+        // interstitial - route registration flow according to consent & dob
+        self.add("state_route", function(name) {
+            if (!self.im.user.answers.consent) {
+                return self.states.create("state_consent");
+            }
+
+            if (!self.im.user.answers.dob) {
+                return self.states.create("state_birth_year");
+            }
+
+            return self.states.create("state_hiv_messages");
         });
 
         self.add("state_end_not_registered", function(name) {
@@ -140,7 +217,6 @@ go.app = function() {
                     if (choice.value === "yes") {
                         // set consent
                         self.im.user.set_answer("consent", "true");
-                        // functionality pseudo-logic:
                         /*if (self.im.user.dob) {
                             return "state_hiv_messages";
                         } else {
