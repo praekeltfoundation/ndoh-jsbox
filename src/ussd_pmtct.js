@@ -7,6 +7,7 @@ go.app = function() {
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
     var JsonApi = vumigo.http.api.JsonApi;
+    var HttpApi = vumigo.http.api.HttpApi;
 
     var IdentityStore = require('seed_jsbox_utils').IdentityStore;
     var StageBasedMessaging = require('seed_jsbox_utils').StageBasedMessaging;
@@ -145,12 +146,13 @@ go.app = function() {
                                 if (active_subscription) {
                                     // get details (lang, consent, dob)
                                     // & set answers
-                                    self.im.user.set_lang(identity);
-                                    self.im.user.set_answer("consent", identity.consent);
-                                    self.im.user.set_answer("dob", identity.dob);
+                                    self.im.user.set_lang(identity.details.lang); //?
+                                    self.im.user.set_answer("consent", identity.details.consent !== undefined ? identity.details.consent : false);
+                                    self.im.user.set_answer("dob", identity.details.dob !== undefined ? identity.details.dob : null);
+
                                     return self.states.create("state_route");
                                 } else {
-                                    return self.states.create("state_get_vumi_contact");
+                                    return self.states.create("state_get_vumi_contact", msisdn);
                                 }
                             });
                     }
@@ -159,30 +161,32 @@ go.app = function() {
         });
 
         // interstitial
-        self.add("state_get_vumi_contact", function(name, contact) {
-
+        self.add("state_get_vumi_contact", function(name, msisdn) {
             return self.getVumiContactByMsisdn(self.im, msisdn)
                 .then(function(contact) {
-                    // check if registered on MomConnect
-                    if (contact.data.results[0].extra.is_registered) {
+                    if (contact.data.length > 0) {
+                        // check if registered on MomConnect
+                        if (contact.data[0].extra.is_registered) {
 
-                        // get subscription to see if active
-                        return self.getVumiActiveSubscriptionCount(self.im, msisdn)
-                            .then(function(active_subscription_count) {
-                                if (active_subscription_count > 0) {
-                                    // save contact data (set_answer's) - lang, consent, dob
-                                    self.im.user.set_lang(contact.data.results[0].extra.language_choice);
-                                    self.im.user.set_answer("consent", "false");  // assume false temporarily
-                                    self.im.user.set_answer("dob", contact.data.results[0].dob);
+                            // get subscription to see if active
+                            return self.getVumiActiveSubscriptionCount(self.im, msisdn)
+                                .then(function(active_subscription_count) {
+                                    if (active_subscription_count > 0) {
+                                        // save contact data (set_answer's) - lang, consent, dob
+                                        self.im.user.set_lang(contact.data[0].extra.language_choice);
+                                        self.im.user.set_answer("consent", contact.data[0].consent !== undefined ? contact.data[0].consent : false);
+                                        self.im.user.set_answer("dob", contact.data[0].dob !== undefined ? contact.data[0].dob : null);
 
-                                    return self.states.create("state_route");
-                                }
+                                        return self.states.create("state_route");
+                                    }
 
-                                return self.states.create("state_end_not_registered");
-                            });
+                                    return self.states.create("state_end_not_registered");
+                                });
+                        }
+                    } else {
+                        return self.states.create("state_end_not_registered");
                     }
                 });
-
         });
 
         // interstitial - route registration flow according to consent & dob
@@ -190,7 +194,6 @@ go.app = function() {
             if (!self.im.user.answers.consent) {
                 return self.states.create("state_consent");
             }
-
             if (!self.im.user.answers.dob) {
                 return self.states.create("state_birth_year");
             }
@@ -217,12 +220,11 @@ go.app = function() {
                     if (choice.value === "yes") {
                         // set consent
                         self.im.user.set_answer("consent", "true");
-                        /*if (self.im.user.dob) {
+                        if (self.im.user.answers.dob) {
                             return "state_hiv_messages";
                         } else {
                             return "state_birth_year";
-                        }*/
-                        return "state_birth_year";
+                        }
                     } else {
                         return "state_end_consent_refused";
                     }
