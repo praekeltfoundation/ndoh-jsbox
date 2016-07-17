@@ -150,7 +150,7 @@ go.app = function() {
                             .then(function(active_subscription) {
                                 if (active_subscription) {
                                     // get details (lang, consent, dob) & set answers
-                                    self.im.user.set_lang(identity.details.lang !== undefined ? identity.details.lang : "en" ); // if undefined default to english
+                                    self.im.user.set_lang(identity.details.lang || "en"); // if undefined default to english
                                     self.im.user.set_answer("consent", identity.details.consent !== undefined ? identity.details.consent : false);
                                     self.im.user.set_answer("dob", identity.details.dob !== undefined ? identity.details.dob : null);
 
@@ -177,7 +177,7 @@ go.app = function() {
                                 .then(function(active_subscription_count) {
                                     if (active_subscription_count > 0) {
                                         // save contact data (set_answer's) - lang, consent, dob
-                                        self.im.user.set_lang(contact.data[0].extra.language_choice !== undefined ? contact.data[0].extra.language_choice : "en");
+                                        self.im.user.set_lang(contact.data[0].extra.language_choice || "en");
                                         self.im.user.set_answer("consent", contact.data[0].consent !== undefined ? contact.data[0].consent : false);
                                         self.im.user.set_answer("dob", contact.data[0].dob !== undefined ? contact.data[0].dob : null);
 
