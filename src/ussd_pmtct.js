@@ -33,6 +33,8 @@ go.app = function() {
             sbm = new StageBasedMessaging(new JsonApi(self.im, {}), auth_token, base_url);
         };
 
+        // the next two functions, getVumiContactByMsisdn & getVumiActiveSubscriptionCount
+        // are temporary and used to loading data from old system
 
         // get/load contact from vumigo
         self.getVumiContactByMsisdn = function(im, msisdn) {
