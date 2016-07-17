@@ -7,7 +7,6 @@ go.app = function() {
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
     var JsonApi = vumigo.http.api.JsonApi;
-    var HttpApi = vumigo.http.api.HttpApi;
 
     var IdentityStore = require('@praekelt/seed_jsbox_utils').IdentityStore;
     var StageBasedMessaging = require('@praekelt/seed_jsbox_utils').StageBasedMessaging;
@@ -63,7 +62,7 @@ go.app = function() {
             var subscription_base_url = "https://foo/";
             var endpoint = "subscription/";
 
-            var http = new HttpApi(im, {
+            var http = new JsonApi(im, {
                 headers: {
                     'Content-Type': ['application/json'],
                     'Authorization': ['ApiKey ' + username + ':' + api_key]
