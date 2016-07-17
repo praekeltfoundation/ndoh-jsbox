@@ -143,6 +143,7 @@ go.app = function() {
                         // optout
                         return self.states.create("state_optout_reason_menu");
                     } else {  // register
+                        // TODO #9 shouldn't check for any active sub, but PMTCT specifically
                         return sbm.has_active_subscription(identity.id)
                             .then(function(has_active_subscription) {
                                 if (has_active_subscription) {
