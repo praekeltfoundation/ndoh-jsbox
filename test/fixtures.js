@@ -422,7 +422,7 @@ module.exports = function() {
                     'Authorization': ['Bearer abcde'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'https://go.vumi.org/api/v1/go/contacts/',
+                'url': 'https://contacts/api/v1/go/contacts/',
             },
             'response': {
                 "cursor": null,
@@ -482,7 +482,7 @@ module.exports = function() {
                     'Authorization': ['Bearer abcde'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'https://go.vumi.org/api/v1/go/contacts/',
+                'url': 'https://contacts/api/v1/go/contacts/',
             },
             'response': {
                 "cursor": null,
@@ -497,7 +497,7 @@ module.exports = function() {
                 'params': {
                     'msisdn': '+27820000555'
                 },
-                'url': 'https://foo/subscription/',
+                'url': 'https://subscriptions/api/v1/go/',
             },
             'response': {
                     "meta": {

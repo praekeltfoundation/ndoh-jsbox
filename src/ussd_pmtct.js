@@ -37,9 +37,9 @@ go.app = function() {
 
         // get/load contact from vumigo
         self.getVumiContactByMsisdn = function(im, msisdn) {
-            var token = "abcde";  // config
+            var token = self.im.config.vumi.token;
 
-            var vumigo_base_url = "https://go.vumi.org/api/v1/go/";
+            var vumigo_base_url = self.im.config.vumi.contact_url;
             var endpoint = "contacts/";
 
             var http = new JsonApi(im, {
@@ -56,10 +56,10 @@ go.app = function() {
         };
 
         self.getVumiActiveSubscriptionCount = function(im, msisdn) {
-            var username = "superman";
-            var api_key = "";
+            var username = self.im.config.vumi.username;
+            var api_key = self.im.config.vumi.api_key;
 
-            var subscription_base_url = "https://foo/";
+            var subscription_base_url = self.im.config.vumi.subscription_url;
             var endpoint = "subscription/";
 
             var http = new JsonApi(im, {

@@ -42,6 +42,13 @@ describe("PMTCT app", function() {
                             prefix: 'http://sbm.localhost:8001/api/v1/',
                             token: 'test StageBasedMessaging'
                         }
+                    },
+                    vumi: {
+                        token: "abcde",
+                        contact_url: "https://contacts/api/v1/go/",
+                        username: "superman",
+                        api_key: "",
+                        subscription_url: "https://subscriptions/api/v1/go/"
                     }
                 })
                 .setup(function(api) {
