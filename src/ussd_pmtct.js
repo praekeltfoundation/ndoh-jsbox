@@ -26,11 +26,11 @@ go.app = function() {
             // initialising services
             var base_url = self.im.config.services.identity_store.prefix;
             var auth_token = self.im.config.services.identity_store.token;
-            is = new IdentityStore(new JsonApi(self.im, null), auth_token, base_url);
+            is = new IdentityStore(new JsonApi(self.im, {}), auth_token, base_url);
 
             base_url = self.im.config.services.stage_based_messaging.prefix;
             auth_token = self.im.config.services.stage_based_messaging.token;
-            sbm = new StageBasedMessaging(new JsonApi(self.im, null), auth_token, base_url);
+            sbm = new StageBasedMessaging(new JsonApi(self.im, {}), auth_token, base_url);
         };
 
 
