@@ -147,8 +147,8 @@ go.app = function() {
                         return self.states.create("state_optout_reason_menu");
                     } else {  // register
                         return sbm.has_active_subscription(identity.id)
-                            .then(function(active_subscription) {
-                                if (active_subscription) {
+                            .then(function(has_active_subscription) {
+                                if (has_active_subscription) {
                                     // get details (lang, consent, dob) & set answers
                                     self.im.user.set_lang(identity.details.lang || "en"); // if undefined default to english
                                     self.im.user.set_answer("consent", identity.details.consent !== undefined ? identity.details.consent : false);
