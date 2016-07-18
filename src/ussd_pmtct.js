@@ -160,7 +160,6 @@ go.app = function() {
                             });
                     }
                 });
-
         });
 
         // interstitial
