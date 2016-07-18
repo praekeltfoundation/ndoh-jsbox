@@ -248,10 +248,12 @@ go.app = function() {
         self.add("state_birth_year", function(name) {
             return new FreeText(name, {
                 question: $("Please enter the year you were born (For example 1981)"),
-                /*check: function(content) {
-                    return (utils.check_valid_number(content)
-                        & utils.check_number_in_range(content, "1900", utils.get_today().year)
-                },*/
+                check: function(content) {
+                    if (utils.check_valid_number(content)
+                        && utils.check_number_in_range(content, "1900", utils.get_today().year())) {
+                            return null;
+                        }
+                },
                 next: function(content) {
                     self.im.user.set_answer("dob_year", content);
                     return "state_birth_month";
@@ -287,14 +289,14 @@ go.app = function() {
             return new FreeText(name, {
                 question: $("Please enter the date of the month you were born (For example 21)"),
                 check: function(content) {
-                    if (utils.is_valid_date(self.im.user.dob_year + '-' + self.im.user.dob_month + '-' + content, "YYYY-MM-DD")) {
+                    if (utils.is_valid_date(self.im.user.answers.dob_year + '-' + self.im.user.answers.dob_month + '-' + content, "YYYY-MM-DD")) {
                         return null;
                     }
                 },
                 next: function(content) {
                     self.im.user.set_answer("dob_day", content);
                     self.im.user.set_answer("dob",
-                        utils.get_entered_birth_date(self.im.user.dob_year, self.im.user.dob_month, content));
+                        utils.get_entered_birth_date(self.im.user.answers.dob_year, self.im.user.answers.dob_month, content));
 
                     return "state_hiv_messages";
                 }
