@@ -286,13 +286,15 @@ go.app = function() {
         self.add("state_birth_day", function(name) {
             return new FreeText(name, {
                 question: $("Please enter the date of the month you were born (For example 21)"),
-                /*check: function(content) {
-                    utils.is_valid_date(dob)  // check here or in "next"
-                },*/
+                check: function(content) {
+                    if (utils.is_valid_date(self.im.user.dob_year + '-' + self.im.user.dob_month + '-' + content, "YYYY-MM-DD")) {
+                        return null;
+                    }
+                },
                 next: function(content) {
                     self.im.user.set_answer("dob_day", content);
-                    /*self.im.user.set_answer("dob",
-                        utils.get_entered_birth_date(self.im.user.dob_year, self.im.user.dob_month, content));*/
+                    self.im.user.set_answer("dob",
+                        utils.get_entered_birth_date(self.im.user.dob_year, self.im.user.dob_month, content));
 
                     return "state_hiv_messages";
                 }
