@@ -1025,9 +1025,6 @@ describe("PMTCT app", function() {
                         state: "state_end_optout",
                         reply: "Thank you. You will no longer receive PMTCT messages. You will still receive the MomConnect messages. To stop receiving these messages as well, please dial into *134*550*1#."
                     })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, []);
-                    })
                     .check.reply.ends_session()
                     .run();
             });
@@ -1046,9 +1043,6 @@ describe("PMTCT app", function() {
                             "2. No"
                         ].join('\n')
                     })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, []);
-                    })
                     .run();
             });
             it("to state_end_loss_optout", function() {
@@ -1061,9 +1055,6 @@ describe("PMTCT app", function() {
                     .check.interaction({
                         state: "state_end_loss_optout",
                         reply: "Thank you. You will no longer receive any messages from MomConnect. If you have any medical concerns, please visit your nearest clinic."
-                    })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, []);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -1078,9 +1069,6 @@ describe("PMTCT app", function() {
                     .check.interaction({
                         state: "state_end_loss_optin",
                         reply: "Thank you. You will receive support messages from MomConnect in the coming weeks."
-                    })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, []);
                     })
                     .check.reply.ends_session()
                     .run();
