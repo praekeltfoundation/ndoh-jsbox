@@ -10,7 +10,6 @@ go.app = function() {
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
     var JsonApi = vumigo.http.api.JsonApi;
-    var HttpApi = vumigo.http.api.HttpApi;
 
     var IdentityStore = require('@praekelt/seed_jsbox_utils').IdentityStore;
     var StageBasedMessaging = require('@praekelt/seed_jsbox_utils').StageBasedMessaging;
@@ -71,9 +70,8 @@ go.app = function() {
             var subscription_base_url = self.im.config.vumi.subscription_url;
             var endpoint = "subscription/";
 
-            var http = new HttpApi(im, {
+            var http = new JsonApi(im, {
                 headers: {
-                    'Content-Type': ['application/json'],
                     'Authorization': ['ApiKey ' + username + ':' + api_key]
                 }
             });
@@ -84,7 +82,7 @@ go.app = function() {
                     }
                 })
                 .then(function(json_result) {
-                    var subs = JSON.parse(json_result.data);
+                    var subs = json_result.data;
                     var active = 0;
                     for (i = 0; i < subs.objects.length; i++) {
                         if (subs.objects[i].active === true) {
@@ -157,11 +155,14 @@ go.app = function() {
                                 if (has_active_subscription) {
                                     // get details (lang, consent, dob) & set answers
                                     self.im.user.set_answer("language_choice", identity.details.lang || "en");  // if undefined default to english
-                                    self.im.user.set_lang(self.im.user.answers.language_choice);
-                                    self.im.user.set_answer("consent", identity.details.consent !== undefined ? identity.details.consent : false);
-                                    self.im.user.set_answer("dob", identity.details.dob !== undefined ? identity.details.dob : null);
+                                    self.im.user.set_answer("consent", identity.details.consent || false);
+                                    self.im.user.set_answer("dob", identity.details.dob || null);
 
-                                    return self.states.create("state_route");
+                                    return self.im.user
+                                        .set_lang(self.im.user.answers.language_choice)
+                                        .then(function(lang_set_response) {
+                                            return self.states.create("state_route");
+                                        });
                                 } else {
                                     return self.states.create("state_get_vumi_contact", msisdn);
                                 }
@@ -184,14 +185,17 @@ go.app = function() {
                                     if (active_subscription_count > 0) {
                                         // save contact data (set_answer's) - lang, consent, dob
                                         self.im.user.set_answer("langauge_choice", contact.data[0].extra.language_choice || "en");
-                                        self.im.user.set_lang(self.im.user.answers.language_choice);
                                         self.im.user.set_answer("consent", contact.data[0].consent !== undefined ? contact.data[0].consent : false);
                                         self.im.user.set_answer("dob", contact.data[0].dob !== undefined ? contact.data[0].dob : null);
 
-                                        return self.states.create("state_route");
+                                        return self.im.user
+                                            .set_lang(self.im.user.answers.language_choice)
+                                            .then(function(set_lang_response) {
+                                                return self.states.create("state_route");
+                                            });
+                                    } else {
+                                        return self.states.create("state_end_not_registered");
                                     }
-
-                                    return self.states.create("state_end_not_registered");
                                 });
                         }
                     } else {
@@ -253,10 +257,14 @@ go.app = function() {
         self.add("state_birth_year", function(name) {
             return new FreeText(name, {
                 question: $("Please enter the year you were born (For example 1981)"),
-                /*check: function(content) {
-                    return (utils.check_valid_number(content)
-                        & utils.check_number_in_range(content, "1900", utils.get_today().year)
-                },*/
+                check: function(content) {
+                    if (utils.check_valid_number(content)
+                        && utils.check_number_in_range(content, "1900", utils.get_today().year())) {
+                            return null;  // vumi expects null or undefined if check passes
+                    } else {
+                        return $("Invalid date. Please enter the year you were born (For example 1981)");
+                    }
+                },
                 next: function(content) {
                     self.im.user.set_answer("dob_year", content);
                     return "state_birth_month";
@@ -281,8 +289,8 @@ go.app = function() {
                     new Choice("nov", $("Nov")),
                     new Choice("dec", $("Dec"))
                 ],
-                next: function(content) {
-                    self.im.user.set_answer("dob_month", content);
+                next: function(choice) {
+                    self.im.user.set_answer("dob_month", choice.value);
                     return "state_birth_day";
                 }
             });
@@ -291,13 +299,17 @@ go.app = function() {
         self.add("state_birth_day", function(name) {
             return new FreeText(name, {
                 question: $("Please enter the date of the month you were born (For example 21)"),
-                /*check: function(content) {
-                    utils.is_valid_date(dob)  // check here or in "next"
-                },*/
+                check: function(content) {
+                    if (utils.is_valid_date(self.im.user.answers.dob_year + '-' + self.im.user.answers.dob_month + '-' + content, "YYYY-MMM-DD")) {
+                        return null;  // vumi expects null or undefined if check passes
+                    } else {
+                        return $("Invalid date. Please enter the date of the month you were born (For example 21)");
+                    }
+                },
                 next: function(content) {
                     self.im.user.set_answer("dob_day", content);
-                    /*self.im.user.set_answer("dob",
-                        utils.get_entered_birth_date(self.im.user.dob_year, self.im.user.dob_month, content));*/
+                    self.im.user.set_answer("dob",
+                        utils.get_entered_birth_date(self.im.user.answers.dob_year, self.im.user.answers.dob_month, content));
 
                     return "state_hiv_messages";
                 }
