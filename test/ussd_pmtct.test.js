@@ -130,6 +130,7 @@ describe("PMTCT app", function() {
                     .check.reply.ends_session()
                     .run();
             });
+
             describe("0820000111 exists on new system; has active subscription; no consent, no dob", function() {
                 it("to state_consent", function() {
                     return tester
@@ -252,21 +253,7 @@ describe("PMTCT app", function() {
                         .check.reply.ends_session()
                         .run();
                 });
-                it("to state_end_hiv_messages_confirm", function() {
-                    return tester
-                        .setup.user.addr("0820000111")
-                        .setup.user.state("state_hiv_messages")
-                        .input(
-                            "1"  // state_hiv_messages - yes
-                        )
-                        .check.interaction({
-                            state: "state_end_hiv_messages_confirm",
-                            reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
-                        })
-                        .check.reply.ends_session()
-                        .run();
-                });
-                it("ENTIRE flow", function() {
+                it("to state_end_hiv_messages_confirm (entire flow)", function() {
                     return tester
                         .setup.user.addr("0820000111")
                         .inputs(
@@ -280,6 +267,9 @@ describe("PMTCT app", function() {
                         .check.interaction({
                             state: "state_end_hiv_messages_confirm",
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [0, 11, 42]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -372,16 +362,22 @@ describe("PMTCT app", function() {
                         .check.reply.ends_session()
                         .run();
                 });
-                it("to state_end_hiv_messages_confirm", function() {
+                it("to state_end_hiv_messages_confirm (entire flow)", function() {
                     return tester
                         .setup.user.addr("0820000222")
-                        .setup.user.state("state_hiv_messages")
-                        .input(
-                            "1"  // state_hiv_messages - yes
+                        .inputs(
+                            {session_event: "new"}  // dial in
+                            , "1981"  // state_birth_year
+                            , "4"  // state_birth_month - apr
+                            , "26"  // state_birth_day
+                            , "1"  // state_hiv_messages - yes
                         )
                         .check.interaction({
                             state: "state_end_hiv_messages_confirm",
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [1, 12, 43]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -402,9 +398,6 @@ describe("PMTCT app", function() {
                                 "1. Yes",
                                 "2. No"
                             ].join("\n")
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [2, 13]);
                         })
                         // .check.user.answer('consent', 'true')
                         // .check.user.answer('dob', '1970-04-05')
@@ -431,8 +424,8 @@ describe("PMTCT app", function() {
                     return tester
                         .setup.user.addr("0820000333")
                         .inputs(
-                            {session_event: "new"},  // dial in
-                            '1'  // state_consent - yes
+                            {session_event: "new"}  // dial in
+                            , '1'  // state_consent - yes
                         )
                         .check.interaction({
                             state: "state_hiv_messages",
@@ -464,19 +457,20 @@ describe("PMTCT app", function() {
                         .check.reply.ends_session()
                         .run();
                 });
-                it("to state_end_hiv_messages_confirm", function() {
+                it("to state_end_hiv_messages_confirm (entire flow)", function() {
                     return tester
                         .setup.user.addr("0820000333")
-                        .setup.user.state("state_hiv_messages")
-                        .input(
-                            "1"  // state_hiv_messages - yes
+                        .inputs(
+                            {session_event: "new"}  // dial in
+                            , "1"  // state_consent - yes
+                            , "1"  // state_hiv_messages - yes
                         )
                         .check.interaction({
                             state: "state_end_hiv_messages_confirm",
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, []);
+                            utils.check_fixtures_used(api, [2, 13, 44]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -487,7 +481,7 @@ describe("PMTCT app", function() {
                 it("to state_hiv_messages", function() {
                     return tester
                         .setup.user.addr("0820000444")
-                        .inputs(
+                        .input(
                             {session_event: "new"}  // dial in
                         )
                         .check.interaction({
@@ -497,9 +491,6 @@ describe("PMTCT app", function() {
                                 "1. Yes",
                                 "2. No"
                             ].join("\n")
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [3, 14]);
                         })
                         .run();
                 });
@@ -520,19 +511,19 @@ describe("PMTCT app", function() {
                         .check.reply.ends_session()
                         .run();
                 });
-                it("to state_end_hiv_messages_confirm", function() {
+                it("to state_end_hiv_messages_confirm (entire flow)", function() {
                     return tester
                         .setup.user.addr("0820000444")
-                        .setup.user.state("state_hiv_messages")
-                        .input(
-                            "1"  // state_hiv_messages - yes
+                        .inputs(
+                            {session_event: "new"}  // dial in
+                            , "1"  // state_hiv_messages - yes
                         )
                         .check.interaction({
                             state: "state_end_hiv_messages_confirm",
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, []);
+                            utils.check_fixtures_used(api, [3, 14, 45]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -589,16 +580,19 @@ describe("PMTCT app", function() {
                         .check.reply.ends_session()
                         .run();
                 });
-                it("to state_end_hiv_messages_confirm", function() {
+                it("to state_end_hiv_messages_confirm (entire flow)", function() {
                     return tester
                         .setup.user.addr("0820000666")
-                        .setup.user.state("state_hiv_messages")
-                        .input(
-                            "1"  // state_hiv_messages - yes
+                        .inputs(
+                            {session_event: "new"}
+                            , "1"  // state_hiv_messages - yes
                         )
                         .check.interaction({
                             state: "state_end_hiv_messages_confirm",
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [5, 16, 24, 31, 36, 46]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -691,16 +685,22 @@ describe("PMTCT app", function() {
                         .check.reply.ends_session()
                         .run();
                 });
-                it("to state_end_hiv_messages_confirm", function() {
+                it("to state_end_hiv_messages_confirm (entire flow)", function() {
                     return tester
                         .setup.user.addr("0820000777")
-                        .setup.user.state("state_hiv_messages")
-                        .input(
-                            "1"  // state_hiv_messages - yes
+                        .inputs(
+                            {session_event: "new"}  // dial in
+                            , "1954"  // state_birth_year
+                            , "5"  // state_birth_month - may
+                            , "29"  // state_birth_day
+                            , "1"  // state_hiv_messages - yes
                         )
                         .check.interaction({
                             state: "state_end_hiv_messages_confirm",
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [6, 17, 25, 32, 37, 47]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -783,19 +783,20 @@ describe("PMTCT app", function() {
                         .check.reply.ends_session()
                         .run();
                 });
-                it("to state_end_hiv_messages_confirm", function() {
+                it("to state_end_hiv_messages_confirm (entire flow)", function() {
                     return tester
                         .setup.user.addr("0820000888")
-                        .setup.user.state("state_hiv_messages")
-                        .input(
-                            "1"  // state_hiv_messages - yes
+                        .inputs(
+                            {session_event: "new"}  // dial in
+                            , "1"  // state_consent - yes
+                            , "1"  // state_hiv_messages - yes
                         )
                         .check.interaction({
                             state: "state_end_hiv_messages_confirm",
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, []);
+                            utils.check_fixtures_used(api, [7,18,26,33,38,48]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -816,9 +817,6 @@ describe("PMTCT app", function() {
                                 "1. Yes",
                                 "2. No"
                             ].join("\n")
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [8, 19, 27, 34, 39]);
                         })
                         /*.check.user.answer('consent', 'true')
                         .check.user.answer('dob', null)*/
@@ -924,16 +922,23 @@ describe("PMTCT app", function() {
                         .check.reply.ends_session()
                         .run();
                 });
-                it("to state_end_hiv_messages_confirm", function() {
+                it("to state_end_hiv_messages_confirm (entire flow)", function() {
                     return tester
                         .setup.user.addr("0820000999")
-                        .setup.user.state("state_hiv_messages")
-                        .input(
-                            "1"  // state_hiv_messages - yes
+                        .inputs(
+                            {session_event: "new"}  // dial in
+                            , "1"  // state_consent - yes
+                            , "1981"  // state_birth_year
+                            , "4"  // state_birth_month - apr
+                            , "26"  // state_birth_day
+                            , "1"  // state_hiv_messages - yes
                         )
                         .check.interaction({
                             state: "state_end_hiv_messages_confirm",
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [8, 19, 27, 34, 39, 49]);
                         })
                         .check.reply.ends_session()
                         .run();
