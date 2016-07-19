@@ -41,6 +41,10 @@ describe("PMTCT app", function() {
                         stage_based_messaging: {
                             prefix: 'http://sbm.localhost:8001/api/v1/',
                             token: 'test StageBasedMessaging'
+                        },
+                        hub: {
+                            prefix: 'http://hub.localhost:8001/api/v1/',
+                            token: 'test Hub'
                         }
                     },
                     vumi: {
@@ -1024,6 +1028,9 @@ describe("PMTCT app", function() {
                         state: "state_end_optout",
                         reply: "Thank you. You will no longer receive PMTCT messages. You will still receive the MomConnect messages. To stop receiving these messages as well, please dial into *134*550*1#."
                     })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [42, 43]);
+                    })
                     .check.reply.ends_session()
                     .run();
             });
@@ -1049,12 +1056,15 @@ describe("PMTCT app", function() {
                     .setup.user.addr("0720000111")
                     .inputs(
                         {session_event: "new"}  // dial in
-                        ,"2"  // state_optout_reason_menu - miscarriage
-                        ,"2"  // state_loss_messages - no
+                        , "2"  // state_optout_reason_menu - miscarriage
+                        , "2"  // state_loss_messages - no
                     )
                     .check.interaction({
                         state: "state_end_loss_optout",
                         reply: "Thank you. You will no longer receive any messages from MomConnect. If you have any medical concerns, please visit your nearest clinic."
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [42, 44]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -1062,13 +1072,17 @@ describe("PMTCT app", function() {
             it("to state_end_loss_optin", function() {
                 return tester
                     .setup.user.addr("0720000111")
-                    .setup.user.state("state_loss_messages")
-                    .input(
-                        "1"  // state_loss_messages - yes
+                    .inputs(
+                        {session_event: "new"}  // dial in
+                        , "2"  // state_optout_reason_menu - miscarriage
+                        , "1"  // state_loss_messages - yes
                     )
                     .check.interaction({
                         state: "state_end_loss_optin",
                         reply: "Thank you. You will receive support messages from MomConnect in the coming weeks."
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [42, 44, 45]);
                     })
                     .check.reply.ends_session()
                     .run();

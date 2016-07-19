@@ -14,6 +14,7 @@ go.app = function() {
 
     var IdentityStore = require('@praekelt/seed_jsbox_utils').IdentityStore;
     var StageBasedMessaging = require('@praekelt/seed_jsbox_utils').StageBasedMessaging;
+    var Hub = require('@praekelt/seed_jsbox_utils').Hub;
     var utils = require('@praekelt/seed_jsbox_utils').utils;
 
     var GoNDOH = App.extend(function(self) {
@@ -34,6 +35,10 @@ go.app = function() {
             base_url = self.im.config.services.stage_based_messaging.prefix;
             auth_token = self.im.config.services.stage_based_messaging.token;
             sbm = new StageBasedMessaging(new JsonApi(self.im, {}), auth_token, base_url);
+
+            base_url = self.im.config.services.hub.prefix;
+            auth_token = self.im.config.services.hub.token;
+            hub = new Hub(new JsonApi(self.im, {}), auth_token, base_url);
         };
 
         // the next two functions, getVumiContactByMsisdn & getVumiActiveSubscriptionCount
@@ -393,7 +398,19 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (choice.value === "yes") {
-                        return "state_end_loss_optin";
+                        var reg_info = {
+                            "identity": optout_info.identity
+                            // what else?
+                            // messageset = loss..??
+                        };
+                        // optin for loss messages, optout for PMTCT
+                        return hub.create_registration(reg_info)
+                            .then(function() {
+                                return is.optout(optout_info)
+                                    .then(function() {
+                                        return "state_end_loss_optin";
+                                    });
+                            });
                     } else {
                         return is.optout(optout_info)
                             .then(function() {

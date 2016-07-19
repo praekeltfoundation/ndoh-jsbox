@@ -1750,7 +1750,28 @@ module.exports = function() {
                     "id": 1
                 }
             }
+        },
+
+        // 44: register cb245673-aa41-4302-ac47-10000000001 for loss messages
+        {
+            "request": {
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-10000000001"
+                },
+                "url": 'http://hub.localhost:8001/api/v1/registration/'
+            },
+            'response': {
+                "code": 201,
+                "data": {
+                    "id": "reg_for_cb245673-aa41-4302-ac47-10000000001",
+                    "identity": "cb245673-aa41-4302-ac47-10000000001",
+                    "created_at": "2016-07-19T06:13:29.693272Z",
+                    "updated_at": "2016-07-19T06:13:29.693298Z"
+                }
+            }
         }
+
 
     ]
 };
