@@ -152,11 +152,14 @@ go.app = function() {
                                 if (has_active_subscription) {
                                     // get details (lang, consent, dob) & set answers
                                     self.im.user.set_answer("language_choice", identity.details.lang || "en");  // if undefined default to english
-                                    self.im.user.set_lang(self.im.user.answers.language_choice);
-                                    self.im.user.set_answer("consent", identity.details.consent !== undefined ? identity.details.consent : false);
-                                    self.im.user.set_answer("dob", identity.details.dob !== undefined ? identity.details.dob : null);
+                                    self.im.user.set_answer("consent", identity.details.consent || false);
+                                    self.im.user.set_answer("dob", identity.details.dob || null);
 
-                                    return self.states.create("state_route");
+                                    return self.im.user
+                                        .set_lang(self.im.user.answers.language_choice)
+                                        .then(function(lang_set_response) {
+                                            return self.states.create("state_route");
+                                        });
                                 } else {
                                     return self.states.create("state_get_vumi_contact", msisdn);
                                 }
@@ -179,14 +182,17 @@ go.app = function() {
                                     if (active_subscription_count > 0) {
                                         // save contact data (set_answer's) - lang, consent, dob
                                         self.im.user.set_answer("langauge_choice", contact.data[0].extra.language_choice || "en");
-                                        self.im.user.set_lang(self.im.user.answers.language_choice);
                                         self.im.user.set_answer("consent", contact.data[0].consent !== undefined ? contact.data[0].consent : false);
                                         self.im.user.set_answer("dob", contact.data[0].dob !== undefined ? contact.data[0].dob : null);
 
-                                        return self.states.create("state_route");
+                                        return self.im.user
+                                            .set_lang(self.im.user.answers.language_choice)
+                                            .then(function(set_lang_response) {
+                                                return self.states.create("state_route");
+                                            });
+                                    } else {
+                                        return self.states.create("state_end_not_registered");
                                     }
-
-                                    return self.states.create("state_end_not_registered");
                                 });
                         }
                     } else {
