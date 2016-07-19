@@ -10,7 +10,6 @@ go.app = function() {
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
     var JsonApi = vumigo.http.api.JsonApi;
-    var HttpApi = vumigo.http.api.HttpApi;
 
     var IdentityStore = require('@praekelt/seed_jsbox_utils').IdentityStore;
     var StageBasedMessaging = require('@praekelt/seed_jsbox_utils').StageBasedMessaging;
@@ -66,9 +65,8 @@ go.app = function() {
             var subscription_base_url = self.im.config.vumi.subscription_url;
             var endpoint = "subscription/";
 
-            var http = new HttpApi(im, {
+            var http = new JsonApi(im, {
                 headers: {
-                    'Content-Type': ['application/json'],
                     'Authorization': ['ApiKey ' + username + ':' + api_key]
                 }
             });
@@ -79,7 +77,7 @@ go.app = function() {
                     }
                 })
                 .then(function(json_result) {
-                    var subs = JSON.parse(json_result.data);
+                    var subs = json_result.data;
                     var active = 0;
                     for (i = 0; i < subs.objects.length; i++) {
                         if (subs.objects[i].active === true) {
