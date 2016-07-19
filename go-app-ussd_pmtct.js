@@ -251,8 +251,10 @@ go.app = function() {
                 check: function(content) {
                     if (utils.check_valid_number(content)
                         && utils.check_number_in_range(content, "1900", utils.get_today().year())) {
-                            return null;
-                        }
+                            return null;  // vumi expects null or undefined if check passes
+                    } else {
+                        return $("Invalid date. Please enter the year you were born (For example 1981)");
+                    }
                 },
                 next: function(content) {
                     self.im.user.set_answer("dob_year", content);
@@ -278,8 +280,8 @@ go.app = function() {
                     new Choice("nov", $("Nov")),
                     new Choice("dec", $("Dec"))
                 ],
-                next: function(content) {
-                    self.im.user.set_answer("dob_month", content);
+                next: function(choice) {
+                    self.im.user.set_answer("dob_month", choice.value);
                     return "state_birth_day";
                 }
             });
@@ -289,8 +291,10 @@ go.app = function() {
             return new FreeText(name, {
                 question: $("Please enter the date of the month you were born (For example 21)"),
                 check: function(content) {
-                    if (utils.is_valid_date(self.im.user.answers.dob_year + '-' + self.im.user.answers.dob_month + '-' + content, "YYYY-MM-DD")) {
-                        return null;
+                    if (utils.is_valid_date(self.im.user.answers.dob_year + '-' + self.im.user.answers.dob_month + '-' + content, "YYYY-MMM-DD")) {
+                        return null;  // vumi expects null or undefined if check passes
+                    } else {
+                        return $("Invalid date. Please enter the date of the month you were born (For example 21)");
                     }
                 },
                 next: function(content) {

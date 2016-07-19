@@ -223,6 +223,8 @@ describe("PMTCT app", function() {
                     return tester
                         .setup.user.addr("0820000111")
                         .setup.user.state("state_birth_day")
+                        .setup.user.answer("dob_year", "1981")
+                        .setup.user.answer("dob_month", "apr")
                         .input(
                             "26"  // state_birth_day
                         )
@@ -256,6 +258,24 @@ describe("PMTCT app", function() {
                         .setup.user.state("state_hiv_messages")
                         .input(
                             "1"  // state_hiv_messages - yes
+                        )
+                        .check.interaction({
+                            state: "state_end_hiv_messages_confirm",
+                            reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
+                        })
+                        .check.reply.ends_session()
+                        .run();
+                });
+                it("ENTIRE flow", function() {
+                    return tester
+                        .setup.user.addr("0820000111")
+                        .inputs(
+                            {session_event: "new"}  // dial in
+                            , "1"  // state_consent - yes
+                            , "1981"  // state_birth_year
+                            , "4"  // state_birth_month
+                            , "26"  // state_birth_day
+                            , "1"  // state_hiv_messages - yes
                         )
                         .check.interaction({
                             state: "state_end_hiv_messages_confirm",
@@ -323,6 +343,8 @@ describe("PMTCT app", function() {
                     return tester
                         .setup.user.addr("0820000222")
                         .setup.user.state("state_birth_day")
+                        .setup.user.answer("dob_year", "1981")
+                        .setup.user.answer("dob_month", "apr")
                         .input(
                             "26"  // state_birth_day
                         )
@@ -640,6 +662,8 @@ describe("PMTCT app", function() {
                     return tester
                         .setup.user.addr("0820000777")
                         .setup.user.state("state_birth_day")
+                        .setup.user.answer("dob_year", "1954")
+                        .setup.user.answer("dob_month", "may")
                         .input(
                             "29"  // state_birth_day
                         )
@@ -871,6 +895,8 @@ describe("PMTCT app", function() {
                     return tester
                         .setup.user.addr("0820000999")
                         .setup.user.state("state_birth_day")
+                        .setup.user.answer("dob_year", "1981")
+                        .setup.user.answer("dob_month", "apr")
                         .input(
                             "26"  // state_birth_day
                         )
