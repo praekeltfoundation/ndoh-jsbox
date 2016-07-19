@@ -1727,6 +1727,29 @@ module.exports = function() {
                     "id": 1
                 }
             }
+        },
+
+        // 43: optout identity cb245673-aa41-4302-ac47-10000000001
+        {
+            "request": {
+                "method": 'POST',
+                "data": {
+                    "optout_type": "stop",
+                    "identity": "cb245673-aa41-4302-ac47-10000000001",
+                    "reason": "miscarriage",
+                    "address_type": "msisdn",
+                    "address": "+27720000111",
+                    "request_source": "PMTCT",
+                    "requestor_source_id": "???"
+                },
+                "url": 'http://is.localhost:8001/api/v1/optout/'
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "id": 1
+                }
+            }
         }
 
     ]

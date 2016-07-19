@@ -1047,9 +1047,10 @@ describe("PMTCT app", function() {
             it("to state_end_loss_optout", function() {
                 return tester
                     .setup.user.addr("0720000111")
-                    .setup.user.state("state_loss_messages")
-                    .input(
-                        "2"  // state_loss_messages - no
+                    .inputs(
+                        {session_event: "new"}  // dial in
+                        ,"2"  // state_optout_reason_menu - miscarriage
+                        ,"2"  // state_loss_messages - no
                     )
                     .check.interaction({
                         state: "state_end_loss_optout",

@@ -144,7 +144,7 @@ go.app = function() {
                 .then(function(identity) {
                     if (identity.details.pmtct) {  // on new system and PMTCT?
                         // optout
-                        return self.states.create("state_optout_reason_menu", {"id": identity.id, "msisdn": msisdn});
+                        return self.states.create("state_optout_reason_menu", { "id": identity.id, "msisdn": msisdn });
                     } else {  // register
                         // TODO #9 shouldn't check for any active sub, but PMTCT specifically
                         return sbm.has_active_subscription(identity.id)
@@ -351,22 +351,25 @@ go.app = function() {
                     new Choice("other", $("Other"))
                 ],
                 next: function(choice) {
+                    var optout_info = {
+                        "optout_type": "stop",
+                        "identity": identity.id,
+                        "reason": choice.value,
+                        "address_type": "msisdn",
+                        "address": identity.msisdn,
+                        "request_source": "PMTCT",
+                        "requestor_source_id": "???"
+                    };
                     if (["not_hiv_pos", "not_useful", "other"].indexOf(choice.value) !== -1) {
-                        var optout_info = {
-                            optout_type: "stop",
-                            identity: identity.id,
-                            reason: choice.value,
-                            address_type: "msisdn",
-                            address: identity.msisdn,
-                            request_source: "PMTCT",
-                            requestor_source_id: "???"
-                        };
                         return is.optout(optout_info)
                             .then(function() {
                                 return "state_end_optout";
                             });
                     } else {
-                        return "state_loss_messages";
+                        return {
+                            "name": "state_loss_messages",
+                            "creator_opts": optout_info
+                        };
                     }
                 }
             });
@@ -380,7 +383,7 @@ go.app = function() {
             });
         });
 
-        self.add("state_loss_messages", function(name) {
+        self.add("state_loss_messages", function(name, optout_info) {
             return new ChoiceState(name, {
                 question: $("We are sorry for your loss. Would you like to receive a small set of free messages from MomConnect that could help you in this difficult time?"),
                 // error: ,
@@ -392,7 +395,10 @@ go.app = function() {
                     if (choice.value === "yes") {
                         return "state_end_loss_optin";
                     } else {
-                        return "state_end_loss_optout";
+                        return is.optout(optout_info)
+                            .then(function() {
+                                return "state_end_loss_optout";
+                            });
                     }
                 }
             });
