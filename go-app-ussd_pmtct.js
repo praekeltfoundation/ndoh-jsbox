@@ -35,7 +35,7 @@ go.app = function() {
             sbm = new StageBasedMessaging(new JsonApi(self.im, {}), auth_token, base_url);
         };
 
-        // the next two functions, getVumiContactByMsisdn & getVumiActiveSubscriptionCount
+        // the next two functions, getVumiContactByMsisdn & getVumiActiveSubscriptions
         // are temporary and used to loading data from old system
 
         // get/load contact from vumigo
@@ -58,7 +58,7 @@ go.app = function() {
             });
         };
 
-        self.getVumiActiveSubscriptionCount = function(im, msisdn) {
+        self.getVumiActiveSubscriptions = function(im, msisdn) {
             var username = self.im.config.vumi.username;
             var api_key = self.im.config.vumi.api_key;
 
@@ -78,13 +78,13 @@ go.app = function() {
                 })
                 .then(function(json_result) {
                     var subs = json_result.data;
-                    var active = 0;
+                    var active_subs = [];
                     for (i = 0; i < subs.objects.length; i++) {
                         if (subs.objects[i].active === true) {
-                            active++;
+                            active_subs.push(subs.objects[i]);
                         }
                     }
-                    return active;
+                    return active_subs;
                 });
         };
 
@@ -140,6 +140,7 @@ go.app = function() {
 
             return is.get_or_create_identity({"msisdn": msisdn})
                 .then(function(identity) {
+                    self.im.user.set_answer("contact_identity", identity);
                     if (identity.details.pmtct) {  // on new system and PMTCT?
                         // optout
                         return self.states.create("state_optout_reason_menu");
@@ -152,6 +153,7 @@ go.app = function() {
                                     self.im.user.set_answer("language_choice", identity.details.lang || "en");  // if undefined default to english
                                     self.im.user.set_answer("consent", identity.details.consent || false);
                                     self.im.user.set_answer("dob", identity.details.dob || null);
+                                    self.im.user.set_answer("edd", identity.details.edd || null);
 
                                     return self.im.user
                                         .set_lang(self.im.user.answers.language_choice)
@@ -175,13 +177,14 @@ go.app = function() {
                         if (contact.data[0].extra.is_registered) {
 
                             // get subscription to see if active
-                            return self.getVumiActiveSubscriptionCount(self.im, msisdn)
-                                .then(function(active_subscription_count) {
-                                    if (active_subscription_count > 0) {
-                                        // save contact data (set_answer's) - lang, consent, dob
-                                        self.im.user.set_answer("langauge_choice", contact.data[0].extra.language_choice || "en");
-                                        self.im.user.set_answer("consent", contact.data[0].consent !== undefined ? contact.data[0].consent : false);
-                                        self.im.user.set_answer("dob", contact.data[0].dob !== undefined ? contact.data[0].dob : null);
+                            return self.getVumiActiveSubscriptions(self.im, msisdn)
+                                .then(function(active_subscriptions) {
+                                    if (active_subscriptions.length > 0) {
+                                        // save contact data (set_answer's) - lang, consent, dob, edd
+                                        self.im.user.set_answer("language_choice", contact.data[0].extra.language_choice || "en");
+                                        self.im.user.set_answer("consent", contact.data[0].consent || false);
+                                        self.im.user.set_answer("dob", contact.data[0].dob || null);
+                                        self.im.user.set_answer("edd", contact.data[0].edd || null);
 
                                         return self.im.user
                                             .set_lang(self.im.user.answers.language_choice)
@@ -322,13 +325,25 @@ go.app = function() {
                 next: function(choice) {
                     if (choice.value === "yes") {
                         self.im.user.set_answer("hiv_opt_in", "true");
-                        return "state_end_hiv_messages_confirm";
+                        return "state_register_pmtct";
                     } else {
                         self.im.user.set_answer("hiv_opt_in", "false");
                         return "state_end_hiv_messages_declined";
                     }
                 }
             });
+        });
+
+        self.add("state_register_pmtct", function(name) {
+            self.im.user.answers.contact_identity.details.pmtct = {
+                registered: "true"
+            };
+            return is
+                .update_identity(self.im.user.answers.contact_identity.id,
+                                 self.im.user.answers.contact_identity)
+                .then(function() {
+                    return self.states.create('state_end_hiv_messages_confirm');
+                });
         });
 
         self.add("state_end_hiv_messages_confirm", function(name) {
