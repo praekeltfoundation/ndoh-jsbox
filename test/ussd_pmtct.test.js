@@ -46,8 +46,8 @@ describe("PMTCT app", function() {
                     vumi: {
                         token: "abcde",
                         contact_url: "https://contacts/api/v1/go/",
-                        username: "superman",
-                        api_key: "",
+                        username: "test_username",
+                        api_key: "test_api_key",
                         subscription_url: "https://subscriptions/api/v1/go/"
                     }
                 })
