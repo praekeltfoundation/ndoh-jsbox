@@ -9,15 +9,83 @@ go.app = function() {
     var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
+    var JsonApi = vumigo.http.api.JsonApi;
 
+    var IdentityStore = require('@praekelt/seed_jsbox_utils').IdentityStore;
+    var StageBasedMessaging = require('@praekelt/seed_jsbox_utils').StageBasedMessaging;
+    var utils = require('@praekelt/seed_jsbox_utils').utils;
 
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_start");
         var $ = self.$;
-        // var interrupt = true;
+        // var interrupt = true
+
+        // variables for services
+        var is;
+        var sbm;
 
         self.init = function() {
-            // init services
+            // initialising services
+            var base_url = self.im.config.services.identity_store.prefix;
+            var auth_token = self.im.config.services.identity_store.token;
+            is = new IdentityStore(new JsonApi(self.im, {}), auth_token, base_url);
+
+            base_url = self.im.config.services.stage_based_messaging.prefix;
+            auth_token = self.im.config.services.stage_based_messaging.token;
+            sbm = new StageBasedMessaging(new JsonApi(self.im, {}), auth_token, base_url);
+        };
+
+        // the next two functions, getVumiContactByMsisdn & getVumiActiveSubscriptionCount
+        // are temporary and used to loading data from old system
+
+        // get/load contact from vumigo
+        self.getVumiContactByMsisdn = function(im, msisdn) {
+            var token = self.im.config.vumi.token;
+
+            var vumigo_base_url = self.im.config.vumi.contact_url;
+            var endpoint = "contacts/";
+
+            var http = new JsonApi(im, {
+                headers: {
+                    'Authorization': ['Bearer ' + token]
+                }
+            });
+
+            return http.get(vumigo_base_url + endpoint, {
+                params: {
+                    "msisdn": msisdn
+                }
+            });
+        };
+
+        self.getVumiActiveSubscriptionCount = function(im, msisdn) {
+            var username = self.im.config.vumi.username;
+            var api_key = self.im.config.vumi.api_key;
+
+            var subscription_base_url = self.im.config.vumi.subscription_url;
+            var endpoint = "subscription/";
+
+            var http = new JsonApi(im, {
+                headers: {
+                    'Authorization': ['ApiKey ' + username + ':' + api_key]
+                }
+            });
+
+            return http.get(subscription_base_url + endpoint, {
+                    params: {
+                        "msisdn": msisdn
+                    }
+                })
+                .then(function(json_result) {
+                    var subs = json_result.data;
+                    var active = 0;
+                    for (i = 0; i < subs.objects.length; i++) {
+                        if (subs.objects[i].active === true) {
+                            active++;
+                        }
+                    }
+                    return active;
+                });
         };
 
         // TIMEOUT HANDLING
@@ -61,50 +129,86 @@ go.app = function() {
 
         self.add("state_start", function(name) {
             self.im.user.answers = {};  // reset answers
-            return self.states.create("state_check_PMTCT_registration");
+
+            return self.states.create("state_check_PMTCT_subscription");
         });
 
         // interstitial
-        self.add("state_check_PMTCT_registration", function(name) {
-            // if active PMTCT subscription, route to optout Flow
-            // return self.states.create("state_optout_reason_menu")
-            // else route to registration flow
-            return self.states.create("state_check_MomConnect_registration");
+        self.add("state_check_PMTCT_subscription", function(name) {
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
+            self.im.user.set_answer("msisdn", msisdn);
+
+            return is.get_or_create_identity({"msisdn": msisdn})
+                .then(function(identity) {
+                    if (identity.details.pmtct) {  // on new system and PMTCT?
+                        // optout
+                        return self.states.create("state_optout_reason_menu");
+                    } else {  // register
+                        // TODO #9 shouldn't check for any active sub, but PMTCT specifically
+                        return sbm.has_active_subscription(identity.id)
+                            .then(function(has_active_subscription) {
+                                if (has_active_subscription) {
+                                    // get details (lang, consent, dob) & set answers
+                                    self.im.user.set_answer("language_choice", identity.details.lang || "en");  // if undefined default to english
+                                    self.im.user.set_answer("consent", identity.details.consent || false);
+                                    self.im.user.set_answer("dob", identity.details.dob || null);
+
+                                    return self.im.user
+                                        .set_lang(self.im.user.answers.language_choice)
+                                        .then(function(lang_set_response) {
+                                            return self.states.create("state_route");
+                                        });
+                                } else {
+                                    return self.states.create("state_get_vumi_contact", msisdn);
+                                }
+                            });
+                    }
+                });
         });
 
-        // interstitial - checks details already saved in db
-        self.add("state_check_MomConnect_registration", function(name) {
-            return self.states.create("state_consent");
-            // msisdn should be registered and active(?) on MomConnect...
-            /*.search_by_address({"msisdn": self.im.user.addr}, self.im, null)
-                .then(function(search) {
-                    // check whether user is already registered
-                    if (search.results.length > 0) {  // add necessary conditions to check
-                        var identity = search.results[0];
-                        console.log(identity);
+        // interstitial
+        self.add("state_get_vumi_contact", function(name, msisdn) {
+            return self.getVumiContactByMsisdn(self.im, msisdn)
+                .then(function(contact) {
+                    if (contact.data.length > 0) {
+                        // check if registered on MomConnect
+                        if (contact.data[0].extra.is_registered) {
 
-                        // check if lang, consent and dob already stored and set
-                        self.im.set_lang(identity.extra.language_choice);
-                        self.im.user.set_answer("consent", identity.extra.consent);
-                        self.im.user.set_answer("dob", identity.extra.dob;
+                            // get subscription to see if active
+                            return self.getVumiActiveSubscriptionCount(self.im, msisdn)
+                                .then(function(active_subscription_count) {
+                                    if (active_subscription_count > 0) {
+                                        // save contact data (set_answer's) - lang, consent, dob
+                                        self.im.user.set_answer("langauge_choice", contact.data[0].extra.language_choice || "en");
+                                        self.im.user.set_answer("consent", contact.data[0].consent !== undefined ? contact.data[0].consent : false);
+                                        self.im.user.set_answer("dob", contact.data[0].dob !== undefined ? contact.data[0].dob : null);
 
-                        // !consent_already_given
-                        if (self.im.user.consent) {
-                            return self.states.create("state_consent", dob_already_stored);
+                                        return self.im.user
+                                            .set_lang(self.im.user.answers.language_choice)
+                                            .then(function(set_lang_response) {
+                                                return self.states.create("state_route");
+                                            });
+                                    } else {
+                                        return self.states.create("state_end_not_registered");
+                                    }
+                                });
                         }
-
-                        // !dob_already_stored
-                        if (self.im.user.dob) {
-                            return self.states.create("state_birth_year");
-                        }
-
-                        return self.states.create("state_hiv_messages");
-
                     } else {
-                        // if not registered or inactive(?)
                         return self.states.create("state_end_not_registered");
                     }
-                });*/
+                });
+        });
+
+        // interstitial - route registration flow according to consent & dob
+        self.add("state_route", function(name) {
+            if (!self.im.user.answers.consent) {
+                return self.states.create("state_consent");
+            }
+            if (!self.im.user.answers.dob) {
+                return self.states.create("state_birth_year");
+            }
+
+            return self.states.create("state_hiv_messages");
         });
 
         self.add("state_end_not_registered", function(name) {
@@ -126,12 +230,11 @@ go.app = function() {
                     if (choice.value === "yes") {
                         // set consent
                         self.im.user.set_answer("consent", "true");
-                        /*if (self.im.user.dob) {
+                        if (self.im.user.answers.dob) {
                             return "state_hiv_messages";
                         } else {
                             return "state_birth_year";
-                        }*/
-                        return "state_birth_year";
+                        }
                     } else {
                         return "state_end_consent_refused";
                     }
