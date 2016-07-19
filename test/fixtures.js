@@ -1,6 +1,6 @@
 // Identity Personas
-// ...add (new system and PMTCT) --> optout
 
+// REGISTRATION
 // (+27820000111) on new sys; active sub; no consent, no dob
 // (+27820000222) on new sys; active sub; consent, no dob
 // (+27820000333) on new sys; active sub; no consent, dob
@@ -14,6 +14,9 @@
 // (+27820101010) on old sys; no active sub
 
 // (+27820111111) on neither old/new system
+
+// OPTOUT
+// (+27720000111) already registered to PMTCT
 
 module.exports = function() {
     return [
@@ -1660,6 +1663,71 @@ module.exports = function() {
                 }
             }
         },
+
+        // 41: get identity by msisdn +27720000111 (optout)
+        {
+            'repeatable': true,
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'details__addresses__msisdn': '+27720000111'
+                },
+                'headers': {
+                    'Authorization': ['Token test IdentityStore'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://is.localhost:8001/api/v1/identities/search/',
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [{
+                        "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-10000000001/",
+                        "id": "cb245673-aa41-4302-ac47-10000000001",
+                        "version": 1,
+                        "details": {
+                            "default_addr_type": "msisdn",
+                            "addresses": {
+                                "msisdn": {
+                                    "+27720000111": {}
+                                }
+                            },
+                            "pmtct": {
+                                "registered": "true"
+                            }
+                        },
+                        "created_at": "2016-06-21T06:13:29.693272Z",
+                        "updated_at": "2016-06-21T06:13:29.693298Z"
+                    }]
+                }
+            }
+        },
+
+        // 42: optout identity cb245673-aa41-4302-ac47-10000000001
+        {
+            "request": {
+                "method": 'POST',
+                "data": {
+                    "optout_type": "stop",
+                    "identity": "cb245673-aa41-4302-ac47-10000000001",
+                    "reason": "not_hiv_pos",
+                    "address_type": "msisdn",
+                    "address": "+27720000111",
+                    "request_source": "PMTCT",
+                    "requestor_source_id": "???"
+                },
+                "url": 'http://is.localhost:8001/api/v1/optout/'
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "id": 1
+                }
+            }
+        }
 
     ]
 };

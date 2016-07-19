@@ -144,7 +144,7 @@ go.app = function() {
                 .then(function(identity) {
                     if (identity.details.pmtct) {  // on new system and PMTCT?
                         // optout
-                        return self.states.create("state_optout_reason_menu");
+                        return self.states.create("state_optout_reason_menu", {"id": identity.id, "msisdn": msisdn});
                     } else {  // register
                         // TODO #9 shouldn't check for any active sub, but PMTCT specifically
                         return sbm.has_active_subscription(identity.id)
@@ -334,7 +334,7 @@ go.app = function() {
         });
 
         // start of OPT-OUT flow
-        self.add("state_optout_reason_menu", function(name) {
+        self.add("state_optout_reason_menu", function(name, identity) {
             return new PaginatedChoiceState(name, {
                 question: $("Why do you no longer want to receive messages related to keeping your baby HIV-negative?"),
                 characters_per_page: 182,
@@ -352,7 +352,19 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (["not_hiv_pos", "not_useful", "other"].indexOf(choice.value) !== -1) {
-                        return "state_end_optout";
+                        var optout_info = {
+                            optout_type: "stop",
+                            identity: identity.id,
+                            reason: choice.value,
+                            address_type: "msisdn",
+                            address: identity.msisdn,
+                            request_source: "PMTCT",
+                            requestor_source_id: "???"
+                        };
+                        return is.optout(optout_info)
+                            .then(function() {
+                                return "state_end_optout";
+                            });
                     } else {
                         return "state_loss_messages";
                     }

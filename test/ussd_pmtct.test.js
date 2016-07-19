@@ -958,11 +958,10 @@ describe("PMTCT app", function() {
         describe("Opt-out flow testing", function() {
             it("to state_optout_reason_menu", function() {
                 return tester
-                    .setup.user.addr("0820000222")
-                    .setup.user.state("state_optout_reason_menu")
-                    /*.inputs(
+                    .setup.user.addr("0720000111")
+                    .input(
                         {session_event: "new"}  // dial in
-                    )*/
+                    )
                     .check.interaction({
                         state: "state_optout_reason_menu",
                         reply: [
@@ -977,7 +976,7 @@ describe("PMTCT app", function() {
             });
             it("to state_optout_reason_menu (after having selected 'More')", function() {
                 return tester
-                    .setup.user.addr("0820000222")
+                    .setup.user.addr("0720000111")
                     .setup.user.state("state_optout_reason_menu")
                     .input(
                         "4"  // state_optout_reason_menu - more
@@ -996,7 +995,7 @@ describe("PMTCT app", function() {
             });
             it("to state_optout_reason_menu (after having selected 'More' and 'Back')", function() {
                 return tester
-                    .setup.user.addr("0820000222")
+                    .setup.user.addr("0720000111")
                     .setup.user.state("state_optout_reason_menu")
                     .inputs(
                         "4"  // state_optout_reason_menu - more
@@ -1016,10 +1015,10 @@ describe("PMTCT app", function() {
             });
             it("to state_end_optout", function() {
                 return tester
-                    .setup.user.addr("0820000111")
-                    .setup.user.state("state_optout_reason_menu")
-                    .input(
-                        "1"  // state_optout_reason_menu - not HIV+
+                    .setup.user.addr("0720000111")
+                    .inputs(
+                        {session_event: "new"}  // dial in
+                        ,"1"  // state_optout_reason_menu - not HIV+
                     )
                     .check.interaction({
                         state: "state_end_optout",
@@ -1030,7 +1029,7 @@ describe("PMTCT app", function() {
             });
             it("to state_loss_messages", function() {
                 return tester
-                    .setup.user.addr("0820000111")
+                    .setup.user.addr("0720000111")
                     .setup.user.state("state_optout_reason_menu")
                     .input(
                         "2"  // state_optout_reason_menu - miscarriage
@@ -1047,7 +1046,7 @@ describe("PMTCT app", function() {
             });
             it("to state_end_loss_optout", function() {
                 return tester
-                    .setup.user.addr("0820000111")
+                    .setup.user.addr("0720000111")
                     .setup.user.state("state_loss_messages")
                     .input(
                         "2"  // state_loss_messages - no
@@ -1061,7 +1060,7 @@ describe("PMTCT app", function() {
             });
             it("to state_end_loss_optin", function() {
                 return tester
-                    .setup.user.addr("0820000111")
+                    .setup.user.addr("0720000111")
                     .setup.user.state("state_loss_messages")
                     .input(
                         "1"  // state_loss_messages - yes
