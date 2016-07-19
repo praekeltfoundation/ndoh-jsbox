@@ -177,7 +177,7 @@ module.exports = function() {
             }
         },
 
-        // 4: get identity by msisdn +27820000555 (consent, dob)
+        // 4: get identity by msisdn +27820000555 (no active sub, no consent, no dob)
         {
             'repeatable': true,
             'request': {
@@ -266,7 +266,7 @@ module.exports = function() {
             }
         },
 
-        // 6: get identity by msisdn +27820000888 (does not exist)
+        // 7: get identity by msisdn +27820000888 (does not exist)
         {
             'repeatable': true,
             'request': {
@@ -291,7 +291,7 @@ module.exports = function() {
             }
         },
 
-        // 7: get identity by msisdn +27820000999 (does not exist)
+        // 8: get identity by msisdn +27820000999 (does not exist)
         {
             'repeatable': true,
             'request': {
@@ -316,7 +316,7 @@ module.exports = function() {
             }
         },
 
-        // 8: get identity by msisdn +27820101010 (does not exist)
+        // 9: get identity by msisdn +27820101010 (does not exist)
         {
             'repeatable': true,
             'request': {
@@ -341,7 +341,7 @@ module.exports = function() {
             }
         },
 
-        // 9: get identity by msisdn +27820111111 (does not exist)
+        // 10: get identity by msisdn +27820111111 (does not exist)
         {
             'repeatable': true,
             'request': {
@@ -366,7 +366,7 @@ module.exports = function() {
             }
         },
 
-        // 10: has_active_subscription - cb245673-aa41-4302-ac47-00000000001 (no consent, no dob)
+        // 11: has_active_subscription - cb245673-aa41-4302-ac47-00000000001 (no consent, no dob)
         {
             'request': {
                 'method': 'GET',
@@ -409,7 +409,7 @@ module.exports = function() {
             }
         },
 
-        // 11: has_active_subscription - cb245673-aa41-4302-ac47-00000000002 (consent, no dob)
+        // 12: has_active_subscription - cb245673-aa41-4302-ac47-00000000002 (consent, no dob)
         {
             'request': {
                 'method': 'GET',
@@ -452,7 +452,7 @@ module.exports = function() {
             }
         },
 
-        // 12: has_active_subscription - cb245673-aa41-4302-ac47-00000000003 (no consent, dob)
+        // 13: has_active_subscription - cb245673-aa41-4302-ac47-00000000003 (no consent, dob)
         {
             'request': {
                 'method': 'GET',
@@ -495,7 +495,7 @@ module.exports = function() {
             }
         },
 
-        // 13: has_active_subscription - cb245673-aa41-4302-ac47-00000000004 (consent, dob)
+        // 14: has_active_subscription - cb245673-aa41-4302-ac47-00000000004 (consent, dob)
         {
             'request': {
                 'method': 'GET',
@@ -590,6 +590,7 @@ module.exports = function() {
 
         // 16: has_active_subscription - cb245673-aa41-4302-ac47-00000000007 (no active subscription on new system)
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -856,6 +857,7 @@ module.exports = function() {
 
         // 24: get vumi contact by msisdn +27820000777
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -1261,6 +1263,7 @@ module.exports = function() {
 
         // 31: get vumi contact subscription msisdn +27820000777
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -1528,6 +1531,7 @@ module.exports = function() {
 
         // 36: create identity cb245673-aa41-4302-ac47-00000000007
         {
+            "repeatable": true,
             "request": {
                 "method": 'POST',
                 "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000777":{}}}}}',
@@ -1661,5 +1665,77 @@ module.exports = function() {
             }
         },
 
-    ]
+        // 42: update identity cb245673-aa41-4302-ac47-00000000001
+        {
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/',
+                "body": '{"url":"http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/","id":"cb245673-aa41-4302-ac47-00000000001","version":1,"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000111":{}}},"pmtct":{"registered":"true"}},"created_at":"2016-06-21T06:13:29.693272Z","updated_at":"2016-06-21T06:13:29.693298Z"}'
+            },
+        },
+
+        // 43: update identity cb245673-aa41-4302-ac47-00000000002
+        {
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/',
+                "body": '{"url":"http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/","id":"cb245673-aa41-4302-ac47-00000000002","version":1,"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000222":{}}},"consent":"true","pmtct":{"registered":"true"}},"created_at":"2016-06-21T06:13:29.693272Z","updated_at":"2016-06-21T06:13:29.693298Z"}'
+            },
+        },
+
+        // 44: update identity cb245673-aa41-4302-ac47-00000000003
+        {
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000003/',
+                "body": '{"url":"http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000003/","id":"cb245673-aa41-4302-ac47-00000000003","version":1,"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000333":{}}},"dob":"1981-04-26","pmtct":{"registered":"true"}},"created_at":"2016-06-21T06:13:29.693272Z","updated_at":"2016-06-21T06:13:29.693298Z"}'
+            },
+        },
+
+        // 45: update identity cb245673-aa41-4302-ac47-00000000004
+        {
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000004/',
+                "body": '{"url":"http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000004/","id":"cb245673-aa41-4302-ac47-00000000004","version":1,"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000444":{}}},"consent":"true","dob":"1981-04-26","pmtct":{"registered":"true"}},"created_at":"2016-06-21T06:13:29.693272Z","updated_at":"2016-06-21T06:13:29.693298Z"}'
+            },
+        },
+
+        // 46: update identity cb245673-aa41-4302-ac47-00000000006
+        {
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000006/',
+                "body": '{"url":"http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000006/","id":"cb245673-aa41-4302-ac47-00000000006","version":1,"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000666":{}}},"pmtct":{"registered":"true"}},"created_at":"2016-07-17T06:13:29.693272Z","updated_at":"2016-07-17T06:13:29.693298Z"}'
+            },
+        },
+
+        // 47: update identity cb245673-aa41-4302-ac47-00000000007
+        {
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000007/',
+                "body": '{"url":"http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000007/","id":"cb245673-aa41-4302-ac47-00000000007","version":1,"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000777":{}}},"pmtct":{"registered":"true"}},"created_at":"2016-07-17T06:13:29.693272Z","updated_at":"2016-07-17T06:13:29.693298Z"}'
+            },
+        },
+
+        // 48: update identity cb245673-aa41-4302-ac47-00000000008
+        {
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000008/',
+                "body": '{"url":"http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000008/","id":"cb245673-aa41-4302-ac47-00000000008","version":1,"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000888":{}}},"pmtct":{"registered":"true"}},"created_at":"2016-07-17T06:13:29.693272Z","updated_at":"2016-07-17T06:13:29.693298Z"}'
+            },
+        },
+
+        // 49: update identity cb245673-aa41-4302-ac47-00000000009
+        {
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/',
+                "body": '{"url":"http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/","id":"cb245673-aa41-4302-ac47-00000000009","version":1,"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000999":{}}},"pmtct":{"registered":"true"}},"created_at":"2016-07-17T06:13:29.693272Z","updated_at":"2016-07-17T06:13:29.693298Z"}'
+            },
+        },
+
+    ];
 };
