@@ -322,13 +322,25 @@ go.app = function() {
                 next: function(choice) {
                     if (choice.value === "yes") {
                         self.im.user.set_answer("hiv_opt_in", "true");
-                        return "state_end_hiv_messages_confirm";
+                        return "state_register_pmtct";
                     } else {
                         self.im.user.set_answer("hiv_opt_in", "false");
                         return "state_end_hiv_messages_declined";
                     }
                 }
             });
+        });
+
+        self.add("state_register_pmtct", function(name) {
+            self.im.user.answers.contact_identity.details.pmtct = {
+                registered: "true"
+            };
+            return is
+                .update_identity(self.im.user.answers.contact_identity.id,
+                                 self.im.user.answers.contact_identity)
+                .then(function() {
+                    return self.states.create('state_end_hiv_messages_confirm');
+                });
         });
 
         self.add("state_end_hiv_messages_confirm", function(name) {
