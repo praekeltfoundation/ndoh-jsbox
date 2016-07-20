@@ -1752,5 +1752,73 @@ module.exports = function() {
             },
         },
 
+        // 50: create registration for vumi contact 1aa0dea2f82945a48cc258c61d756f16
+        {
+            "request": {
+                "method": 'POST',
+                "data": {
+                    "mom_dob": "1982-02-01",
+                    "edd": null,
+                    "vumi_contact_id": "1aa0dea2f82945a48cc258c61d756f16",
+                    "sub_type": "standard"
+                },
+                "url": 'http://hub.localhost:8001/api/v1/registration/'
+            },
+            "response": {
+
+            }
+        },
+
+        // 51: create registration for vumi contact 1aa0dea2f82945a48cc258c61d756f16
+        {
+            "request": {
+                "method": 'POST',
+                "data": {
+                    "mom_dob": "1975-09-23",
+                    "edd": null,
+                    "vumi_contact_id": "1aa0dea2f82945a48cc258c61d756f16",
+                    "sub_type": "standard"
+                },
+                "url": 'http://hub.localhost:8001/api/v1/registration/'
+            },
+            "response": {
+
+            }
+        },
+
+        // 52: create registration for vumi contact 1aa0dea2f82945a48cc258c61d756f16
+        {
+            "request": {
+                "method": 'POST',
+                "data": {
+                    "mom_dob": "1981-apr-26",
+                    "edd": null,
+                    "vumi_contact_id": "1aa0dea2f82945a48cc258c61d756f16",
+                    "sub_type": "standard"
+                },
+                "url": 'http://hub.localhost:8001/api/v1/registration/'
+            },
+            "response": {
+
+            }
+        },
+
+        // 53: create registration for vumi contact 1aa0dea2f82945a48cc258c61d756f16
+        {
+            "request": {
+                "method": 'POST',
+                "data": {
+                    "mom_dob": "1954-may-29",
+                    "edd": null,
+                    "vumi_contact_id": "1aa0dea2f82945a48cc258c61d756f16",
+                    "sub_type": "standard"
+                },
+                "url": 'http://hub.localhost:8001/api/v1/registration/'
+            },
+            "response": {
+
+            }
+        },
+
     ];
 };

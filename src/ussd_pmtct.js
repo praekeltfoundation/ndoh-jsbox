@@ -10,6 +10,7 @@ go.app = function() {
 
     var IdentityStore = require('@praekelt/seed_jsbox_utils').IdentityStore;
     var StageBasedMessaging = require('@praekelt/seed_jsbox_utils').StageBasedMessaging;
+    var Hub = require('@praekelt/seed_jsbox_utils').Hub;
     var utils = require('@praekelt/seed_jsbox_utils').utils;
 
     var GoNDOH = App.extend(function(self) {
@@ -20,6 +21,7 @@ go.app = function() {
         // variables for services
         var is;
         var sbm;
+        var hub;
 
         self.init = function() {
             // initialising services
@@ -30,6 +32,10 @@ go.app = function() {
             base_url = self.im.config.services.stage_based_messaging.prefix;
             auth_token = self.im.config.services.stage_based_messaging.token;
             sbm = new StageBasedMessaging(new JsonApi(self.im, {}), auth_token, base_url);
+
+            base_url = self.im.config.services.hub.prefix;
+            auth_token = self.im.config.services.hub.token;
+            hub = new Hub(new JsonApi(self.im, {}), auth_token, base_url);
         };
 
         // the next two functions, getVumiContactByMsisdn & getVumiActiveSubscriptions
@@ -83,6 +89,23 @@ go.app = function() {
                     }
                     return active_subs;
                 });
+        };
+
+        self.getSubscriptionType = function(subscription_id) {
+            var subscriptionTypeMapping = {
+                "1": "standard",
+                "2": "later",
+                "3": "accelerated",
+                "4": "baby1",
+                "5": "baby2",
+                "6": "miscarriage",
+                "7": "stillbirth",
+                "8": "babyloss",
+                "9": "subscription",
+                "10": "chw"
+            };
+
+            return subscriptionTypeMapping[subscription_id];
         };
 
         // TIMEOUT HANDLING
@@ -168,6 +191,7 @@ go.app = function() {
             return self.getVumiContactByMsisdn(self.im, msisdn)
                 .then(function(contact) {
                     if (contact.data.length > 0) {
+                        self.im.user.set_answer("vumi_contact_id", contact.data[0].user_account);
                         // check if registered on MomConnect
                         if (contact.data[0].extra.is_registered) {
                             // get subscription to see if active
@@ -179,6 +203,7 @@ go.app = function() {
                                         self.im.user.set_answer("consent", contact.data[0].consent || false);
                                         self.im.user.set_answer("dob", contact.data[0].dob || null);
                                         self.im.user.set_answer("edd", contact.data[0].edd || null);
+                                        self.im.user.set_answer("sub_type_id", active_subscriptions[0].message_set.match(/\d+/)[0]); // regex extract of number
 
                                         return self.im.user
                                             .set_lang(self.im.user.answers.language_choice)
@@ -336,7 +361,17 @@ go.app = function() {
                 .update_identity(self.im.user.answers.contact_identity.id,
                                  self.im.user.answers.contact_identity)
                 .then(function() {
-                    return self.states.create('state_end_hiv_messages_confirm');
+                    var reg_info = {
+                        "mom_dob": self.im.user.answers.dob,
+                        "edd": self.im.user.answers.edd,
+                        "vumi_contact_id": self.im.user.answers.vumi_contact_id,
+                        "sub_type": self.getSubscriptionType(self.im.user.answers.sub_type_id)
+                    };
+                    return hub
+                        .create_registration(reg_info)
+                        .then(function() {
+                            return self.states.create('state_end_hiv_messages_confirm');
+                        });
                 });
         });
 
