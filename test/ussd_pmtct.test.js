@@ -1055,7 +1055,7 @@ describe("PMTCT app", function() {
                         reply: "Thank you. You will no longer receive PMTCT messages. You will still receive the MomConnect messages. To stop receiving these messages as well, please dial into *134*550*1#."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [42, 43]);
+                        utils.check_fixtures_used(api, [42, 43, 48]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -1108,7 +1108,7 @@ describe("PMTCT app", function() {
                         reply: "Thank you. You will receive support messages from MomConnect in the coming weeks."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [42, 44, 45]);
+                        utils.check_fixtures_used(api, [42, 44, 49]);
                     })
                     .check.reply.ends_session()
                     .run();

@@ -184,7 +184,7 @@ go.app = function() {
                                 .then(function(active_subscription_count) {
                                     if (active_subscription_count > 0) {
                                         // save contact data (set_answer's) - lang, consent, dob
-                                        self.im.user.set_answer("langauge_choice", contact.data[0].extra.language_choice || "en");
+                                        self.im.user.set_answer("language_choice", contact.data[0].extra.language_choice || "en");
                                         self.im.user.set_answer("consent", contact.data[0].consent !== undefined ? contact.data[0].consent : false);
                                         self.im.user.set_answer("dob", contact.data[0].dob !== undefined ? contact.data[0].dob : null);
 
@@ -377,10 +377,20 @@ go.app = function() {
                         "request_source": "PMTCT",
                         "requestor_source_id": "???"
                     };
+                    var reg_info = {
+                        "identity": identity.id,
+                        "action": "unsubscribe_PMTCT",
+                        "data": {
+                            "reason": optout_info.reason
+                        }
+                    };
                     if (["not_hiv_pos", "not_useful", "other"].indexOf(choice.value) !== -1) {
                         return is.optout(optout_info)
                             .then(function() {
-                                return "state_end_optout";
+                                return hub.update_registration(reg_info)
+                                    .then(function() {
+                                        return "state_end_optout";
+                                    });
                             });
                     } else {
                         return {
@@ -411,12 +421,14 @@ go.app = function() {
                 next: function(choice) {
                     if (choice.value === "yes") {
                         var reg_info = {
-                            "identity": optout_info.identity
-                            // what else?
-                            // messageset = loss..??
+                            "identity": optout_info.identity,
+                            "action": "change_loss",
+                            "data": {
+                                "reason": optout_info.reason
+                            }
                         };
                         // optin for loss messages, optout for PMTCT
-                        return hub.create_registration(reg_info)
+                        return hub.update_registration(reg_info)
                             .then(function() {
                                 return is.optout(optout_info)
                                     .then(function() {
