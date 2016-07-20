@@ -1815,7 +1815,7 @@ module.exports = function() {
         // 48: change registration for cb245673-aa41-4302-ac47-10000000001; reason miscarriage
         {
             "request": {
-                "method": 'PATCH',  // POST
+                "method": 'POST',
                 "data": {
                     "identity": "cb245673-aa41-4302-ac47-10000000001",
                     "action": "unsubscribe_PMTCT",
@@ -1839,7 +1839,7 @@ module.exports = function() {
         {
             "request": {
                 "url": 'http://hub.localhost:8001/api/v1/change/',
-                "method": 'PATCH',  // POST
+                "method": 'POST',
                 "data": {
                     "identity": "cb245673-aa41-4302-ac47-10000000001",
                     "action": "change_loss",
