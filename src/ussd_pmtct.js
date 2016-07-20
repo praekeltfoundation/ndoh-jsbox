@@ -13,6 +13,7 @@ go.app = function() {
     var IdentityStore = SeedJsboxUtils.IdentityStore;
     var StageBasedMessaging = SeedJsboxUtils.StageBasedMessaging;
     var utils = SeedJsboxUtils.utils;
+    var Hub = SeedJsboxUtils.Hub;
 
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_start");
@@ -22,6 +23,7 @@ go.app = function() {
         // variables for services
         var is;
         var sbm;
+        var hub;
 
         self.init = function() {
             // initialising services
@@ -33,6 +35,10 @@ go.app = function() {
             base_url = self.im.config.services.stage_based_messaging.url;
             auth_token = self.im.config.services.stage_based_messaging.token;
             sbm = new StageBasedMessaging(new JsonApi(self.im, {}), auth_token, base_url);
+
+            base_url = self.im.config.services.hub.prefix;
+            auth_token = self.im.config.services.hub.token;
+            hub = new Hub(new JsonApi(self.im, {}), auth_token, base_url);
         };
 
         // the next two functions, getVumiContactByMsisdn & getVumiActiveSubscriptions
@@ -128,6 +134,23 @@ go.app = function() {
                     "nr": "nbl_ZA"
                 }[lang];
             }
+        };
+
+        self.getSubscriptionType = function(subscription_id) {
+            var subscriptionTypeMapping = {
+                "1": "standard",
+                "2": "later",
+                "3": "accelerated",
+                "4": "baby1",
+                "5": "baby2",
+                "6": "miscarriage",
+                "7": "stillbirth",
+                "8": "babyloss",
+                "9": "subscription",
+                "10": "chw"
+            };
+
+            return subscriptionTypeMapping[subscription_id];
         };
 
         // TIMEOUT HANDLING
@@ -403,7 +426,17 @@ go.app = function() {
             .update_identity(self.im.user.answers.contact_identity.id,
                              self.im.user.answers.contact_identity)
             .then(function() {
-                return self.states.create('state_end_hiv_messages_confirm');
+                var reg_info = {
+                    "mom_dob": self.im.user.answers.dob,
+                    "edd": self.im.user.answers.edd,
+                    "vumi_contact_id": self.im.user.answers.vumi_contact_id,
+                    "sub_type": self.getSubscriptionType(self.im.user.answers.sub_type_id)
+                };
+                return hub
+                .create_registration(reg_info)
+                .then(function() {
+                    return self.states.create('state_end_hiv_messages_confirm');
+                });
             });
         });
 
