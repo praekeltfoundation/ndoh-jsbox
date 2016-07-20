@@ -3,7 +3,7 @@ var fixtures = require("./fixtures");
 var assert = require("assert");
 var AppTester = vumigo.AppTester;
 
-var utils = require('@praekelt/seed_jsbox_utils').utils;
+var utils = require('seed_jsbox_utils').utils;
 
 describe("PMTCT app", function() {
     describe("for ussd use - auth on", function() {
