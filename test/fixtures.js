@@ -47,6 +47,9 @@ module.exports = function() {
                                 "msisdn": {
                                     "+27820000111": {}
                                 }
+                            },
+                            "pmtct": {  // temp
+
                             }
                         },
                         "created_at": "2016-06-21T06:13:29.693272Z",
@@ -86,6 +89,9 @@ module.exports = function() {
                                 "msisdn": {
                                     "+27820000222": {}
                                 }
+                            },
+                            "pmtct": {  // temp
+
                             },
                             "consent": "true"
                         },
@@ -127,6 +133,9 @@ module.exports = function() {
                                     "+27820000333": {}
                                 }
                             },
+                            "pmtct": {  // temp
+
+                            },
                             "dob": "1981-04-26"
                         },
                         "created_at": "2016-06-21T06:13:29.693272Z",
@@ -166,6 +175,9 @@ module.exports = function() {
                                 "msisdn": {
                                     "+27820000444": {}
                                 }
+                            },
+                            "pmtct": {  // temp
+
                             },
                             "consent": "true",
                             "dob": "1981-04-26"
@@ -208,6 +220,9 @@ module.exports = function() {
                                     "+27820000555": {}
                                 }
                             },
+                            "pmtct": {  // temp
+
+                            }
                         },
                         "created_at": "2016-06-21T06:13:29.693272Z",
                         "updated_at": "2016-06-21T06:13:29.693298Z"

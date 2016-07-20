@@ -139,28 +139,26 @@ go.app = function() {
                 .then(function(identity) {
                     self.im.user.set_answer("contact_identity", identity);
                     if (identity.details.pmtct) {  // on new system and PMTCT?
-                        // optout
-                        return self.states.create("state_optout_reason_menu");
-                    } else {  // register
                         // TODO #9 shouldn't check for any active sub, but PMTCT specifically
                         return sbm.has_active_subscription(identity.id)
                             .then(function(has_active_subscription) {
                                 if (has_active_subscription) {
                                     // get details (lang, consent, dob) & set answers
                                     self.im.user.set_answer("language_choice", identity.details.lang || "en");  // if undefined default to english
-                                    self.im.user.set_answer("consent", identity.details.consent || false);
-                                    self.im.user.set_answer("dob", identity.details.dob || null);
-                                    self.im.user.set_answer("edd", identity.details.edd || null);
-
                                     return self.im.user
                                         .set_lang(self.im.user.answers.language_choice)
                                         .then(function(lang_set_response) {
-                                            return self.states.create("state_route");
+                                            return self.states.create("state_optout_reason_menu");
                                         });
+                                    // self.im.user.set_answer("consent", identity.details.consent || false);
+                                    // self.im.user.set_answer("dob", identity.details.dob || null);
+                                    // self.im.user.set_answer("edd", identity.details.edd || null);
                                 } else {
                                     return self.states.create("state_get_vumi_contact", msisdn);
                                 }
                             });
+                    } else {
+                        return self.states.create("state_get_vumi_contact", msisdn);
                     }
                 });
         });
@@ -172,7 +170,6 @@ go.app = function() {
                     if (contact.data.length > 0) {
                         // check if registered on MomConnect
                         if (contact.data[0].extra.is_registered) {
-
                             // get subscription to see if active
                             return self.getVumiActiveSubscriptions(self.im, msisdn)
                                 .then(function(active_subscriptions) {
