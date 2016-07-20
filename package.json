@@ -22,7 +22,7 @@
   "homepage": "https://github.com/praekeltfoundation/ndoh-jsbox",
   "dependencies": {
     "vumigo_v02": "~0.2",
-    "@praekelt/seed_jsbox_utils": "~0.1.2"
+    "seed-jsbox-utils": "~0.1.3"
   },
   "devDependencies": {
     "mocha-as-promised": "~2.0.0",

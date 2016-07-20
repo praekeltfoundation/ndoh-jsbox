@@ -11,10 +11,10 @@ go.app = function() {
     var FreeText = vumigo.states.FreeText;
     var JsonApi = vumigo.http.api.JsonApi;
 
-    var IdentityStore = require('@praekelt/seed_jsbox_utils').IdentityStore;
-    var StageBasedMessaging = require('@praekelt/seed_jsbox_utils').StageBasedMessaging;
-    var Hub = require('@praekelt/seed_jsbox_utils').Hub;
-    var utils = require('@praekelt/seed_jsbox_utils').utils;
+    var IdentityStore = require('seed_jsbox_utils').IdentityStore;
+    var StageBasedMessaging = require('seed_jsbox_utils').StageBasedMessaging;
+    var Hub = require('seed_jsbox_utils').Hub;
+    var utils = require('seed_jsbox_utils').utils;
 
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_start");
