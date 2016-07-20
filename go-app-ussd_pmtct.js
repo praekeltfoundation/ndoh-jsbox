@@ -3,6 +3,7 @@ go;
 
 go.app = function() {
     var vumigo = require("vumigo_v02");
+    var Q = require('q');
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
@@ -94,7 +95,23 @@ go.app = function() {
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
             /*if (!interrupt || !go.utils.timed_out(self.im))*/
+              log_mode = self.im.config.logging;
+              if (log_mode === 'prod') {
+                return self.im.log("Running: " + name)
+                  .then(function() {
+                      return creator(name, opts);
+                  });
+              } else if (log_mode === 'test') {
+                return Q().then(function() {
+                    console.log("Running: " + name);
                     return creator(name, opts);
+                });
+              }
+              else if (log_mode === 'off' || null) {
+                return Q().then(function() {
+                    return creator(name, opts);
+                });
+              }
 
                 /*interrupt = false;
                 opts = opts || {};
