@@ -24,17 +24,23 @@ go.app = function() {
 
         self.init = function() {
             // initialising services
-            var base_url = self.im.config.services.identity_store.prefix;
-            var auth_token = self.im.config.services.identity_store.token;
-            is = new IdentityStore(new JsonApi(self.im, {}), auth_token, base_url);
+            is = new IdentityStore(
+                new JsonApi(self.im, {}),
+                self.im.config.services.identity_store.token,  // auth token
+                self.im.config.services.identity_store.prefix  // base_url
+            );
 
-            base_url = self.im.config.services.stage_based_messaging.prefix;
-            auth_token = self.im.config.services.stage_based_messaging.token;
-            sbm = new StageBasedMessaging(new JsonApi(self.im, {}), auth_token, base_url);
+            sbm = new StageBasedMessaging(
+                new JsonApi(self.im, {}),
+                self.im.config.services.stage_based_messaging.token,
+                self.im.config.services.stage_based_messaging.prefix
+            );
 
-            base_url = self.im.config.services.hub.prefix;
-            auth_token = self.im.config.services.hub.token;
-            hub = new Hub(new JsonApi(self.im, {}), auth_token, base_url);
+            hub = new Hub(
+                new JsonApi(self.im, {}),
+                self.im.config.services.hub.token,
+                self.im.config.services.hub.prefix
+            );
         };
 
         // the next two functions, getVumiContactByMsisdn & getVumiActiveSubscriptions
