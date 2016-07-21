@@ -204,6 +204,8 @@ go.app = function() {
                 .then(function(contact) {
                     if (contact.data.length > 0) {
                         // check if registered on MomConnect
+                        self.im.log("Contact:");
+                        self.im.log(JSON.stringify(contact.data[0]));
                         if (contact.data[0].extra.is_registered) {
 
                             // get subscription to see if active
