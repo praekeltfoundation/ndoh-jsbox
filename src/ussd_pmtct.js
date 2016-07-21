@@ -53,7 +53,7 @@ go.app = function() {
 
             return http.get(vumigo_base_url + endpoint, {
                 params: {
-                    "msisdn": msisdn
+                    "query": "msisdn:" + msisdn
                 }
             });
         };
