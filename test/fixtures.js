@@ -1122,7 +1122,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'msisdn': '+27820000555'
+                    'to_addr': '+27820000555'
                 },
                 'url': 'https://subscriptions/api/v1/go/',
             },
@@ -1194,7 +1194,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'msisdn': '+27820000666'
+                    'to_addr': '+27820000666'
                 },
                 'url': 'https://subscriptions/api/v1/go/subscription/',
             },
@@ -1267,7 +1267,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'msisdn': '+27820000777'
+                    'to_addr': '+27820000777'
                 },
                 'url': 'https://subscriptions/api/v1/go/subscription/',
             },
@@ -1339,7 +1339,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'msisdn': '+27820000888'
+                    'to_addr': '+27820000888'
                 },
                 'url': 'https://subscriptions/api/v1/go/subscription/',
             },
@@ -1395,7 +1395,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'msisdn': '+27820000999'
+                    'to_addr': '+27820000999'
                 },
                 'url': 'https://subscriptions/api/v1/go/subscription/',
             },
@@ -1451,7 +1451,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'msisdn': '+27820101010'
+                    'to_addr': '+27820101010'
                 },
                 'url': 'https://subscriptions/api/v1/go/subscription/',
             },
