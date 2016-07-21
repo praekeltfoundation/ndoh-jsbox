@@ -207,7 +207,6 @@ go.app = function() {
                         if (contact.data[0].extra.is_registered) {
 
                             // get subscription to see if active
-
                             return self.getVumiActiveSubscriptions(self.im, msisdn)
                                 .then(function(active_subscriptions) {
                                     if (active_subscriptions.length > 0) {
@@ -226,6 +225,8 @@ go.app = function() {
                                         return self.states.create("state_end_not_registered");
                                     }
                                 });
+                        } else {
+                            return self.states.create("state_end_not_registered");
                         }
                     } else {
                         return self.states.create("state_end_not_registered");
