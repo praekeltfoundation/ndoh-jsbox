@@ -1812,7 +1812,7 @@ module.exports = function() {
             }
         },
 
-        // 48: change registration for cb245673-aa41-4302-ac47-10000000001; reason miscarriage
+        // 48: change registration for cb245673-aa41-4302-ac47-10000000001; reason not hiv positive
         {
             "request": {
                 "method": 'POST',
@@ -1842,7 +1842,7 @@ module.exports = function() {
                 "method": 'POST',
                 "data": {
                     "identity": "cb245673-aa41-4302-ac47-10000000001",
-                    "action": "change_loss",
+                    "action": "pmtct_loss_switch",
                     "data": {
                         "reason": "miscarriage"
                     }

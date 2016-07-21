@@ -1095,7 +1095,7 @@ describe("PMTCT app", function() {
                         reply: "Thank you. You will no longer receive any messages from MomConnect. If you have any medical concerns, please visit your nearest clinic."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [42, 44]);
+                        utils.check_fixtures_used(api, [42]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -1113,7 +1113,7 @@ describe("PMTCT app", function() {
                         reply: "Thank you. You will receive support messages from MomConnect in the coming weeks."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [42, 44, 49]);
+                        utils.check_fixtures_used(api, [42, 49]);
                     })
                     .check.reply.ends_session()
                     .run();

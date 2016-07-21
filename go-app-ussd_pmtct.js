@@ -410,15 +410,6 @@ go.app = function() {
                     new Choice("other", $("Other"))
                 ],
                 next: function(choice) {
-                    var optout_info = {
-                        "optout_type": "stop",
-                        "identity": identity.id,
-                        "reason": choice.value,
-                        "address_type": "msisdn",
-                        "address": identity.msisdn,
-                        "request_source": "PMTCT",
-                        "requestor_source_id": "???"
-                    };
                     var pmtct_nonloss_optout = {
                         "identity": identity.id,
                         "action": "pmtct_nonloss_optout",
@@ -434,7 +425,7 @@ go.app = function() {
                     } else {
                         return {
                             "name": "state_loss_messages",
-                            "creator_opts": optout_info
+                            "creator_opts": identity.id
                         };
                     }
                 }
@@ -450,7 +441,7 @@ go.app = function() {
         });
 
 
-        self.states.add("state_loss_messages", function(name, optout_info) {
+        self.states.add("state_loss_messages", function(name, identity_id) {
             return new ChoiceState(name, {
                 question: $("We are sorry for your loss. Would you like to receive a small set of free messages from MomConnect that could help you in this difficult time?"),
                 // error: ,
@@ -460,26 +451,23 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (choice.value === "yes") {
-                        var reg_info = {
-                            "identity": optout_info.identity,
-                            "action": "change_loss",
+                        var pmtct_loss_switch = {
+                            "identity": identity_id,
+                            "action": "pmtct_loss_switch",
                             "data": {
-                                "reason": optout_info.reason
+                                "reason": self.im.user.answers.state_optout_reason_menu
                             }
                         };
-                        // optin for loss messages, optout for PMTCT
-                        return hub.update_registration(reg_info)
+                        return hub.update_registration(pmtct_loss_switch)
                             .then(function() {
-                                return is.optout(optout_info)
-                                    .then(function() {
-                                        return "state_end_loss_optin";
-                                    });
+                                // deactivate active vumi subscriptions - unsub all
+                                
+                                // subscribe to loss messages (utils.loss_message_opt_in)
+
+                                return "state_end_loss_optin";
                             });
                     } else {
-                        return is.optout(optout_info)
-                            .then(function() {
-                                return "state_end_loss_optout";
-                            });
+                        return "state_end_loss_optout";
                     }
                 }
             });
