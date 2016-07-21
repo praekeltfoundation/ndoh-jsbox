@@ -719,7 +719,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'query': 'msisdn:+27820000556'
+                    'query': 'msisdn=+27820000556'
                 },
                 'headers': {
                     'Authorization': ['Bearer abcde'],
@@ -779,7 +779,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'query': 'msisdn:+27820000555'
+                    'query': 'msisdn=+27820000555'
                 },
                 'headers': {
                     'Authorization': ['Bearer abcde'],
@@ -798,7 +798,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'query': 'msisdn:+27820000666'
+                    'query': 'msisdn=+27820000666'
                 },
                 'headers': {
                     'Authorization': ['Bearer abcde'],
@@ -861,7 +861,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'query': 'msisdn:+27820000777'
+                    'query': 'msisdn=+27820000777'
                 },
                 'headers': {
                     'Authorization': ['Bearer abcde'],
@@ -922,7 +922,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'query': 'msisdn:+27820000888'
+                    'query': 'msisdn=+27820000888'
                 },
                 'headers': {
                     'Authorization': ['Bearer abcde'],
@@ -983,7 +983,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'query': 'msisdn:+27820000999'
+                    'query': 'msisdn=+27820000999'
                 },
                 'headers': {
                     'Authorization': ['Bearer abcde'],
@@ -1043,7 +1043,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'query': 'msisdn:+27820101010'
+                    'query': 'msisdn=+27820101010'
                 },
                 'headers': {
                     'Authorization': ['Bearer abcde'],
@@ -1103,7 +1103,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'query': 'msisdn:+27820111111'
+                    'query': 'msisdn=+27820111111'
                 },
                 'headers': {
                     'Authorization': ['Bearer abcde'],
