@@ -100,6 +100,62 @@ go.app = function() {
                 });
         };
 
+        self.getSubscriptionsByMsisdn = function(im, msisdn) {
+            var username = self.im.config.vumi.username;
+            var api_key = self.im.config.vumi.api_key;
+
+            var subscription_base_url = self.im.config.vumi.subscription_url;
+            var endpoint = "subscription/";
+
+            var http = new JsonApi(im, {
+                headers: {
+                    'Authorization': ['ApiKey ' + username + ':' + api_key]
+                }
+            });
+
+            return http.get(subscription_base_url + endpoint, {
+                    params: {
+                        "to_addr": msisdn
+                    }
+                })
+                .then(function(result) {
+                    return result.data;
+                });
+        };
+
+        self.deactivateVumiSubscriptions = function(im, contact) {
+            var username = self.im.config.vumi.username;
+            var api_key = self.im.config.vumi.api_key;
+
+            var subscription_base_url = self.im.config.vumi.subscription_url;
+            var endpoint = "subscription/";
+
+            var http = new JsonApi(im, {
+                headers: {
+                    'Authorization': ['ApiKey ' + username + ':' + api_key]
+                }
+            });
+
+            return self
+                .getSubscriptionsByMsisdn(im, contact.msisdn)
+                .then(function(update) {
+                    var clean = true;  // clean tracks if api call is unnecessary
+                    for (i=0;i<update.objects.length;i++) {
+                        if (update.objects[i].active === true){
+                            update.objects[i].active = false;
+                            clean = false;
+                        }
+                    }
+                    if (!clean) {
+                        return http.patch(subscription_base_url + endpoint, {
+                                data: update
+                            });
+                    } else {
+                        return Q();
+                    }
+                });
+        };
+
         // TIMEOUT HANDLING
 
         // override normal state adding
@@ -425,7 +481,7 @@ go.app = function() {
                     } else {
                         return {
                             "name": "state_loss_messages",
-                            "creator_opts": identity.id
+                            "creator_opts": identity
                         };
                     }
                 }
@@ -441,7 +497,7 @@ go.app = function() {
         });
 
 
-        self.states.add("state_loss_messages", function(name, identity_id) {
+        self.states.add("state_loss_messages", function(name, identity) {
             return new ChoiceState(name, {
                 question: $("We are sorry for your loss. Would you like to receive a small set of free messages from MomConnect that could help you in this difficult time?"),
                 // error: ,
@@ -452,7 +508,7 @@ go.app = function() {
                 next: function(choice) {
                     if (choice.value === "yes") {
                         var pmtct_loss_switch = {
-                            "identity": identity_id,
+                            "identity": identity.id,
                             "action": "pmtct_loss_switch",
                             "data": {
                                 "reason": self.im.user.answers.state_optout_reason_menu
@@ -461,10 +517,15 @@ go.app = function() {
                         return hub.update_registration(pmtct_loss_switch)
                             .then(function() {
                                 // deactivate active vumi subscriptions - unsub all
-                                
+                                return self
+                                    .deactivateVumiSubscriptions(self.im, identity)
+                                    .then(function(response) {
+                                        console.log(response);
+                                        return "state_end_loss_optin";
+                                    });
                                 // subscribe to loss messages (utils.loss_message_opt_in)
 
-                                return "state_end_loss_optin";
+                                // return "state_end_loss_optin";
                             });
                     } else {
                         return "state_end_loss_optout";
