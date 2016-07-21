@@ -9,9 +9,10 @@ go.app = function() {
     var FreeText = vumigo.states.FreeText;
     var JsonApi = vumigo.http.api.JsonApi;
 
-    var IdentityStore = require('seed-jsbox-utils').IdentityStore;
-    var StageBasedMessaging = require('seed-jsbox-utils').StageBasedMessaging;
-    var utils = require('seed-jsbox-utils').utils;
+    var SeedJsboxUtils = require('seed-jsbox-utils');
+    var IdentityStore = SeedJsboxUtils.IdentityStore;
+    var StageBasedMessaging = SeedJsboxUtils.StageBasedMessaging;
+    var utils = SeedJsboxUtils.utils;
 
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_start");

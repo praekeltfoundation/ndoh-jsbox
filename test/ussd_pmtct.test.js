@@ -132,7 +132,7 @@ describe("PMTCT app", function() {
             });
 
             describe("0820000111 exists on new system; has active subscription; no consent, no dob", function() {
-                it.only("to state_consent", function() {
+                it("to state_consent", function() {
                     return tester
                         .setup.user.addr("0820000111")
                         .input(
