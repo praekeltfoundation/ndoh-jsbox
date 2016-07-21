@@ -77,14 +77,23 @@ go.app = function() {
                     }
                 })
                 .then(function(json_result) {
-                    var subs = json_result.data;
-                    var active_subs = [];
-                    for (i = 0; i < subs.objects.length; i++) {
-                        if (subs.objects[i].active === true) {
-                            active_subs.push(subs.objects[i]);
-                        }
-                    }
-                    return active_subs;
+                  return self.im.log([
+                        'Request: GET ' + subscription_base_url + endpoint,
+                        'Payload: ' + JSON.stringify({}),
+                        'Params: ' + JSON.stringify({"to_addr": msisdn}),
+                        'Response: ' + JSON.stringify(json_result),
+                    ].join('\n'))
+                    .then(function() {
+                      var subs = json_result.data;
+                      var active_subs = [];
+                      for (i = 0; i < subs.objects.length; i++) {
+                          if (subs.objects[i].active === true) {
+                              active_subs.push(subs.objects[i]);
+                          }
+                      }
+                      return active_subs;
+                    });
+
                 });
         };
 
