@@ -24,6 +24,7 @@ go.app = function() {
 
         self.init = function() {
             // initialising services
+            self.im.log("INIT!");
             var base_url = self.im.config.services.identity_store.prefix;
             var auth_token = self.im.config.services.identity_store.token;
             is = new IdentityStore(new JsonApi(self.im, {}), auth_token, base_url);
@@ -143,8 +144,11 @@ go.app = function() {
 
         self.states.add("state_start", function(name) {
             self.im.user.answers = {};  // reset answers
+            return self.im.log("HELO state_start")
+              .then(function(){
+                return self.states.create("state_check_PMTCT_subscription");
+              });
 
-            return self.states.create("state_check_PMTCT_subscription");
         });
 
         // interstitial
