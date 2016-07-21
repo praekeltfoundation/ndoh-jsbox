@@ -137,8 +137,9 @@ go.app = function() {
                 .getSubscriptionsByMsisdn(im, contact.msisdn)
                 .then(function(update) {
                     var clean = true;  // clean tracks if api call is unnecessary
+
                     for (i=0;i<update.objects.length;i++) {
-                        if (update.objects[i].active === true){
+                        if (update.objects[i].active === true) {
                             update.objects[i].active = false;
                             clean = false;
                         }
@@ -517,7 +518,6 @@ go.app = function() {
                                 return self
                                     .deactivateVumiSubscriptions(self.im, identity)
                                     .then(function(response) {
-                                        console.log(response);
                                         return "state_end_loss_optin";
                                     });
                                 // subscribe to loss messages (utils.loss_message_opt_in)

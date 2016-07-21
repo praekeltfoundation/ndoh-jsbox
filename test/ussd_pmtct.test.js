@@ -1113,7 +1113,7 @@ describe("PMTCT app", function() {
                         reply: "Thank you. You will receive support messages from MomConnect in the coming weeks."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [42, 49]);
+                        utils.check_fixtures_used(api, [42, 49, 58, 59]);
                     })
                     .check.reply.ends_session()
                     .run();
