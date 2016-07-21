@@ -1818,7 +1818,7 @@ module.exports = function() {
                 "method": 'POST',
                 "data": {
                     "identity": "cb245673-aa41-4302-ac47-10000000001",
-                    "action": "unsubscribe_PMTCT",
+                    "action": "pmtct_nonloss_optout",
                     "data": {
                         "reason": "not_hiv_pos"
                     }

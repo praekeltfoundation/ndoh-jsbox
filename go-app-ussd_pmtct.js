@@ -419,20 +419,17 @@ go.app = function() {
                         "request_source": "PMTCT",
                         "requestor_source_id": "???"
                     };
-                    var reg_info = {
+                    var pmtct_nonloss_optout = {
                         "identity": identity.id,
-                        "action": "unsubscribe_PMTCT",
+                        "action": "pmtct_nonloss_optout",
                         "data": {
-                            "reason": optout_info.reason
+                            "reason": choice.value
                         }
                     };
                     if (["not_hiv_pos", "not_useful", "other"].indexOf(choice.value) !== -1) {
-                        return is.optout(optout_info)
+                        return hub.update_registration(pmtct_nonloss_optout)
                             .then(function() {
-                                return hub.update_registration(reg_info)
-                                    .then(function() {
-                                        return "state_end_optout";
-                                    });
+                                return "state_end_optout";
                             });
                     } else {
                         return {
