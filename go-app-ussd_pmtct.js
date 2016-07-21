@@ -207,30 +207,30 @@ go.app = function() {
                 .then(function(contact) {
                     if (contact.data.length > 0) {
                         // check if registered on MomConnect
-                        self.im.log("Contact:");
-                        self.im.log(JSON.stringify(contact.data[0]));
-                        if (contact.data[0].extra.is_registered) {
+                        return self.im.log("Contact:" + JSON.stringify(contact.data[0])).then(function(){
+                          if (contact.data[0].extra.is_registered) {
 
-                            // get subscription to see if active
-                            return self.getVumiActiveSubscriptions(self.im, msisdn)
-                                .then(function(active_subscriptions) {
-                                    if (active_subscriptions.length > 0) {
-                                        // save contact data (set_answer's) - lang, consent, dob, edd
-                                        self.im.user.set_answer("language_choice", contact.data[0].extra.language_choice || "en");
-                                        self.im.user.set_answer("consent", contact.data[0].consent || false);
-                                        self.im.user.set_answer("dob", contact.data[0].dob || null);
-                                        self.im.user.set_answer("edd", contact.data[0].edd || null);
+                              // get subscription to see if active
+                              return self.getVumiActiveSubscriptions(self.im, msisdn)
+                                  .then(function(active_subscriptions) {
+                                      if (active_subscriptions.length > 0) {
+                                          // save contact data (set_answer's) - lang, consent, dob, edd
+                                          self.im.user.set_answer("language_choice", contact.data[0].extra.language_choice || "en");
+                                          self.im.user.set_answer("consent", contact.data[0].consent || false);
+                                          self.im.user.set_answer("dob", contact.data[0].dob || null);
+                                          self.im.user.set_answer("edd", contact.data[0].edd || null);
 
-                                        return self.im.user
-                                            .set_lang(self.im.user.answers.language_choice)
-                                            .then(function(set_lang_response) {
-                                                return self.states.create("state_route");
-                                            });
-                                    } else {
-                                        return self.states.create("state_end_not_registered");
-                                    }
-                                });
-                        }
+                                          return self.im.user
+                                              .set_lang(self.im.user.answers.language_choice)
+                                              .then(function(set_lang_response) {
+                                                  return self.states.create("state_route");
+                                              });
+                                      } else {
+                                          return self.states.create("state_end_not_registered");
+                                      }
+                                  });
+                          }
+                        });
                     } else {
                         return self.states.create("state_end_not_registered");
                     }
