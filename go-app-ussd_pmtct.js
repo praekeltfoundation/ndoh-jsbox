@@ -30,8 +30,8 @@ go.app = function() {
             // initialising services
             is = new IdentityStore(
                 new JsonApi(self.im, {}),
-                self.im.config.services.identity_store.token,
-                self.im.config.services.identity_store.prefix
+                self.im.config.services.identity_store.token,  // auth token
+                self.im.config.services.identity_store.prefix  // base_url
             );
 
             sbm = new StageBasedMessaging(
