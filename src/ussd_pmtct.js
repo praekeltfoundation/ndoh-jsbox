@@ -202,7 +202,7 @@ go.app = function() {
         self.add("state_get_vumi_contact", function(name, msisdn) {
             return self.getVumiContactByMsisdn(self.im, msisdn)
                 .then(function(results) {
-                    var contacts = results.data;
+                    var contacts = results.data.data;
                     if (contacts.length > 0) {
                         // check if registered on MomConnect
                         return self.im.log("Contacts:" + JSON.stringify(contacts)).then(function(){
