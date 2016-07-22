@@ -204,7 +204,7 @@ go.app = function() {
                 .then(function(contact) {
                     if (contact.data.length > 0) {
                         // check if registered on MomConnect
-                        return self.im.log("Contact:" + JSON.stringify(contact.data[0])).then(function(){
+                        return self.im.log("Contact:" + JSON.stringify(contact)).then(function(){
                           if (contact.data[0].extra.is_registered) {
 
                               // get subscription to see if active
@@ -229,7 +229,10 @@ go.app = function() {
                           }
                         });
                     } else {
-                        return self.states.create("state_end_not_registered");
+                        return self.im.log("Contact results:" + JSON.stringify(contact)).then(function(){
+                          return self.states.create("state_end_not_registered");
+                        });
+
                     }
                 });
         });
