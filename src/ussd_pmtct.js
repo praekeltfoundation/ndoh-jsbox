@@ -84,7 +84,7 @@ go.app = function() {
                         'Response: ' + JSON.stringify(json_result),
                     ].join('\n'))
                     .then(function() {
-                      var subs = json_result.data;
+                      var subs = json_result.data.data;
                       var active_subs = [];
                       for (i = 0; i < subs.objects.length; i++) {
                           if (subs.objects[i].active === true) {
