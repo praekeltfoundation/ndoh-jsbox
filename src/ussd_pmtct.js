@@ -77,24 +77,15 @@ go.app = function() {
                     }
                 })
                 .then(function(json_result) {
-                  return self.im.log([
-                        'Request: GET ' + subscription_base_url + endpoint,
-                        'Payload: ' + JSON.stringify({}),
-                        'Params: ' + JSON.stringify({"to_addr": msisdn}),
-                        'Response: ' + JSON.stringify(json_result),
-                    ].join('\n'))
-                    .then(function() {
-                      var subs = json_result.data.data;
-                      var active_subs = [];
-                      for (i = 0; i < subs.objects.length; i++) {
-                          if (subs.objects[i].active === true) {
-                              active_subs.push(subs.objects[i]);
-                          }
-                      }
-                      return active_subs;
-                    });
-
-                });
+                    var subs = json_result.data.data;
+                    var active_subs = [];
+                    for (i = 0; i < subs.objects.length; i++) {
+                        if (subs.objects[i].active === true) {
+                            active_subs.push(subs.objects[i]);
+                        }
+                    }
+                    return active_subs;
+                  });
         };
 
         // TIMEOUT HANDLING
@@ -154,19 +145,13 @@ go.app = function() {
 
         self.add("state_start", function(name) {
             self.im.user.answers = {};  // reset answers
-            return self.im.log("HELO state_start")
-              .then(function(){
-                return self.states.create("state_check_PMTCT_subscription");
-              });
-
+            return self.states.create("state_check_PMTCT_subscription");
         });
 
         // interstitial
         self.add("state_check_PMTCT_subscription", function(name) {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
             self.im.user.set_answer("msisdn", msisdn);
-            return self.im.log("in state_check_PMTCT_subscription")
-              .then(function() {
             return is.get_or_create_identity({"msisdn": msisdn})
                 .then(function(identity) {
                     self.im.user.set_answer("contact_identity", identity);
@@ -195,7 +180,6 @@ go.app = function() {
                             });
                     }
                 });
-              });
         });
 
         // interstitial
@@ -205,35 +189,29 @@ go.app = function() {
                     var contacts = results.data.data;
                     if (contacts.length > 0) {
                         // check if registered on MomConnect
-                        return self.im.log("Contacts:" + JSON.stringify(contacts)).then(function(){
-                          if (contacts[0].extra.is_registered) {
+                        if (contacts[0].extra.is_registered) {
+                            // get subscription to see if active
+                            return self.getVumiActiveSubscriptions(self.im, msisdn)
+                                .then(function(active_subscriptions) {
+                                    if (active_subscriptions.length > 0) {
+                                        // save contact data (set_answer's) - lang, consent, dob, edd
+                                        self.im.user.set_answer("language_choice", contacts[0].extra.language_choice || "en");
+                                        self.im.user.set_answer("consent", contacts[0].consent || false);
+                                        self.im.user.set_answer("dob", contacts[0].dob || null);
+                                        self.im.user.set_answer("edd", contacts[0].edd || null);
 
-                              // get subscription to see if active
-                              return self.getVumiActiveSubscriptions(self.im, msisdn)
-                                  .then(function(active_subscriptions) {
-                                      if (active_subscriptions.length > 0) {
-                                          // save contact data (set_answer's) - lang, consent, dob, edd
-                                          self.im.user.set_answer("language_choice", contacts[0].extra.language_choice || "en");
-                                          self.im.user.set_answer("consent", contacts[0].consent || false);
-                                          self.im.user.set_answer("dob", contacts[0].dob || null);
-                                          self.im.user.set_answer("edd", contacts[0].edd || null);
-
-                                          return self.im.user
-                                              .set_lang(self.im.user.answers.language_choice)
-                                              .then(function(set_lang_response) {
-                                                  return self.states.create("state_route");
-                                              });
-                                      } else {
-                                          return self.states.create("state_end_not_registered");
-                                      }
-                                  });
-                          }
-                        });
+                                        return self.im.user
+                                            .set_lang(self.im.user.answers.language_choice)
+                                            .then(function(set_lang_response) {
+                                                return self.states.create("state_route");
+                                            });
+                                    } else {
+                                        return self.states.create("state_end_not_registered");
+                                    }
+                                });
+                        }
                     } else {
-                        return self.im.log("Contact results:" + JSON.stringify(contacts)).then(function(){
-                          return self.states.create("state_end_not_registered");
-                        });
-
+                        return self.states.create("state_end_not_registered");
                     }
                 });
         });
