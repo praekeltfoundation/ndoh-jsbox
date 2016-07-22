@@ -201,21 +201,22 @@ go.app = function() {
         // interstitial
         self.add("state_get_vumi_contact", function(name, msisdn) {
             return self.getVumiContactByMsisdn(self.im, msisdn)
-                .then(function(contact) {
-                    if (contact.data.length > 0) {
+                .then(function(results) {
+                    var contacts = results.data;
+                    if (contacts.length > 0) {
                         // check if registered on MomConnect
-                        return self.im.log("Contact:" + JSON.stringify(contact)).then(function(){
-                          if (contact.data[0].extra.is_registered) {
+                        return self.im.log("Contacts:" + JSON.stringify(contacts)).then(function(){
+                          if (contacts[0].extra.is_registered) {
 
                               // get subscription to see if active
                               return self.getVumiActiveSubscriptions(self.im, msisdn)
                                   .then(function(active_subscriptions) {
                                       if (active_subscriptions.length > 0) {
                                           // save contact data (set_answer's) - lang, consent, dob, edd
-                                          self.im.user.set_answer("language_choice", contact.data[0].extra.language_choice || "en");
-                                          self.im.user.set_answer("consent", contact.data[0].consent || false);
-                                          self.im.user.set_answer("dob", contact.data[0].dob || null);
-                                          self.im.user.set_answer("edd", contact.data[0].edd || null);
+                                          self.im.user.set_answer("language_choice", contacts[0].extra.language_choice || "en");
+                                          self.im.user.set_answer("consent", contacts[0].consent || false);
+                                          self.im.user.set_answer("dob", contacts[0].dob || null);
+                                          self.im.user.set_answer("edd", contacts[0].edd || null);
 
                                           return self.im.user
                                               .set_lang(self.im.user.answers.language_choice)
@@ -229,7 +230,7 @@ go.app = function() {
                           }
                         });
                     } else {
-                        return self.im.log("Contact results:" + JSON.stringify(contact)).then(function(){
+                        return self.im.log("Contact results:" + JSON.stringify(contacts)).then(function(){
                           return self.states.create("state_end_not_registered");
                         });
 
