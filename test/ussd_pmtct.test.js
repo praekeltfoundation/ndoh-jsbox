@@ -596,7 +596,7 @@ describe("PMTCT app", function() {
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [5, 24, 31, 36, 46, 54]);
+                            utils.check_fixtures_used(api, [5, 24, 31, 36, 46, 55]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -689,7 +689,7 @@ describe("PMTCT app", function() {
                         .check.reply.ends_session()
                         .run();
                 });
-                it("to state_end_hiv_messages_confirm (entire flow)", function() {
+                it.only("to state_end_hiv_messages_confirm (entire flow)", function() {
                     return tester
                         .setup.user.addr("0820000777")
                         .inputs(

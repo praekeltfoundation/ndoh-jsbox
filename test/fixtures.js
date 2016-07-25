@@ -554,7 +554,7 @@ module.exports = function() {
             }
         },
 
-        // 14: has_active_subscription - cb245673-aa41-4302-ac47-00000000005 (no active subscription on new system)
+        // 15: has_active_subscription - cb245673-aa41-4302-ac47-00000000005 (no active subscription on new system)
         {
             'request': {
                 'method': 'GET',
@@ -579,7 +579,7 @@ module.exports = function() {
             }
         },
 
-        // 15: has_active_subscription - cb245673-aa41-4302-ac47-00000000006 (no active subscription on new system)
+        // 16: has_active_subscription - cb245673-aa41-4302-ac47-00000000006 (no active subscription on new system)
         {
             'request': {
                 'method': 'GET',
@@ -604,7 +604,7 @@ module.exports = function() {
             }
         },
 
-        // 16: has_active_subscription - cb245673-aa41-4302-ac47-00000000007 (no active subscription on new system)
+        // 17: has_active_subscription - cb245673-aa41-4302-ac47-00000000007 (no active subscription on new system)
         {
             'repeatable': true,
             'request': {
@@ -630,7 +630,7 @@ module.exports = function() {
             }
         },
 
-        // 17: has_active_subscription - cb245673-aa41-4302-ac47-00000000008 (no active subscription on new system)
+        // 18: has_active_subscription - cb245673-aa41-4302-ac47-00000000008 (no active subscription on new system)
         {
             'request': {
                 'method': 'GET',
@@ -655,7 +655,7 @@ module.exports = function() {
             }
         },
 
-        // 18: has_active_subscription - cb245673-aa41-4302-ac47-00000000009 (no active subscription on new system)
+        // 19: has_active_subscription - cb245673-aa41-4302-ac47-00000000009 (no active subscription on new system)
         {
             'request': {
                 'method': 'GET',
@@ -680,7 +680,7 @@ module.exports = function() {
             }
         },
 
-        // 19: has_active_subscription - cb245673-aa41-4302-ac47-00000000010 (no active subscription on new system)
+        // 20: has_active_subscription - cb245673-aa41-4302-ac47-00000000010 (no active subscription on new system)
         {
             'request': {
                 'method': 'GET',
@@ -705,7 +705,7 @@ module.exports = function() {
             }
         },
 
-        // 20: has_active_subscription - cb245673-aa41-4302-ac47-00000000011 (no active subscription on new system)
+        // 21: has_active_subscription - cb245673-aa41-4302-ac47-00000000011 (no active subscription on new system)
         {
             'request': {
                 'method': 'GET',
@@ -730,7 +730,7 @@ module.exports = function() {
             }
         },
 
-        // 21: get vumi contact by msisdn +27820000556
+        // 22: get vumi contact by msisdn +27820000556
         {
             'request': {
                 'method': 'GET',
@@ -793,7 +793,7 @@ module.exports = function() {
             }
         },
 
-        // 22: get vumi contact by msisdn +27820000555
+        // 23: get vumi contact by msisdn +27820000555
         {
             'request': {
                 'method': 'GET',
@@ -815,7 +815,7 @@ module.exports = function() {
             }
         },
 
-        // 23: get vumi contact by msisdn +27820000666
+        // 24: get vumi contact by msisdn +27820000666
         {
             'request': {
                 'method': 'GET',
@@ -857,7 +857,8 @@ module.exports = function() {
                                 "nc_registered_by": "+27727372369",
                                 "language_choice": "en",
                                 "nc_source_name": "Vumi Go",
-                                "ussd_sessions": "3"
+                                "ussd_sessions": "3",
+                                "edd": "2016-09-09"
                             },
                             "msisdn": "+27820000666",
                             "created_at": "2016-04-29 09:43:29.256573",
@@ -879,7 +880,7 @@ module.exports = function() {
             }
         },
 
-        // 24: get vumi contact by msisdn +27820000777
+        // 25: get vumi contact by msisdn +27820000777
         {
             'repeatable': true,
             'request': {
@@ -944,7 +945,7 @@ module.exports = function() {
            }
         },
 
-        // 25: get vumi contact by msisdn +27820000888
+        // 26: get vumi contact by msisdn +27820000888
         {
             'request': {
                 'method': 'GET',
@@ -1007,7 +1008,7 @@ module.exports = function() {
             }
         },
 
-        // 26: get vumi contact by msisdn +27820000999
+        // 27: get vumi contact by msisdn +27820000999
         {
             'request': {
                 'method': 'GET',
@@ -1070,7 +1071,7 @@ module.exports = function() {
            }
         },
 
-        // 27: get vumi contact by msisdn +27820101010
+        // 28: get vumi contact by msisdn +27820101010
         {
             'request': {
                 'method': 'GET',
@@ -1133,7 +1134,7 @@ module.exports = function() {
            }
         },
 
-        // 28: get vumi contact by msisdn +27820111111
+        // 29: get vumi contact by msisdn +27820111111
         {
             'request': {
                 'method': 'GET',
@@ -1155,7 +1156,7 @@ module.exports = function() {
             }
         },
 
-        // 29: get vumi contact subscription msisdn +27820000555
+        // 30: get vumi contact subscription msisdn +27820000555
         {
             'request': {
                 'method': 'GET',
@@ -1230,7 +1231,7 @@ module.exports = function() {
             }
         },
 
-        // 30: get vumi contact subscription msisdn +27820000666
+        // 31: get vumi contact subscription msisdn +27820000666
         {
             'request': {
                 'method': 'GET',
@@ -1305,7 +1306,7 @@ module.exports = function() {
             }
         },
 
-        // 31: get vumi contact subscription msisdn +27820000777
+        // 32: get vumi contact subscription msisdn +27820000777
         {
             'repeatable': true,
             'request': {
@@ -1381,7 +1382,7 @@ module.exports = function() {
             }
         },
 
-        // 32: get vumi contact subscription msisdn +27820000888
+        // 33: get vumi contact subscription msisdn +27820000888
         {
             'request': {
                 'method': 'GET',
@@ -1440,7 +1441,7 @@ module.exports = function() {
             }
         },
 
-        // 33: get vumi contact subscription msisdn +27820000999
+        // 34: get vumi contact subscription msisdn +27820000999
         {
             'request': {
                 'method': 'GET',
@@ -1499,7 +1500,7 @@ module.exports = function() {
             }
         },
 
-        // 34: get vumi contact subscription msisdn +27820101010
+        // 35: get vumi contact subscription msisdn +27820101010
         {
             'request': {
                 'method': 'GET',
@@ -1558,7 +1559,7 @@ module.exports = function() {
             }
         },
 
-        // 35: create identity cb245673-aa41-4302-ac47-00000000006
+        // 36: create identity cb245673-aa41-4302-ac47-00000000006
         {
             "request": {
                 "method": 'POST',
@@ -1585,7 +1586,7 @@ module.exports = function() {
             }
         },
 
-        // 36: create identity cb245673-aa41-4302-ac47-00000000007
+        // 37: create identity cb245673-aa41-4302-ac47-00000000007
         {
             "repeatable": true,
             "request": {
@@ -1613,7 +1614,7 @@ module.exports = function() {
             }
         },
 
-        // 37: create identity cb245673-aa41-4302-ac47-00000000008
+        // 38: create identity cb245673-aa41-4302-ac47-00000000008
         {
             "request": {
                 "method": 'POST',
@@ -1640,7 +1641,7 @@ module.exports = function() {
             }
         },
 
-        // 38: create identity cb245673-aa41-4302-ac47-00000000009
+        // 39: create identity cb245673-aa41-4302-ac47-00000000009
         {
             "request": {
                 "method": 'POST',
@@ -1667,7 +1668,7 @@ module.exports = function() {
             }
         },
 
-        // 39: create identity cb245673-aa41-4302-ac47-00000000010
+        // 40: create identity cb245673-aa41-4302-ac47-00000000010
         {
             "request": {
                 "method": 'POST',
@@ -1694,7 +1695,7 @@ module.exports = function() {
             }
         },
 
-        // 40: create identity cb245673-aa41-4302-ac47-00000000011
+        // 41: create identity cb245673-aa41-4302-ac47-00000000011
         {
             "request": {
                 "method": 'POST',
@@ -1880,6 +1881,25 @@ module.exports = function() {
                     "updated_at": '2016-06-22T06:13:29.693272Z'
                 }
             }
+        },
+
+        // 55: post registration 1 for 0666
+        {
+            "request": {
+                "method": 'POST',
+                "url": "http://hub.localhost:8001/api/v1/registration/",
+                "data": {
+                    "reg_type": "prebirth_pmtct",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000000006",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000006",
+                        "language": "eng_ZA",
+                        "mom_dob": "1982-02-01",
+                        "edd": null
+                    }
+                }
+            },
+            "response": {}
         },
 
     ];

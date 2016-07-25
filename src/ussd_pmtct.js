@@ -267,7 +267,7 @@ go.app = function() {
                                 self.im.user.set_answer("lang_code",
                                     self.get_6_lang_code(contacts[0].extra.language_choice) || "eng_ZA");
                                 self.im.user.set_answer("consent", contacts[0].consent || false);
-                                self.im.user.set_answer("dob", contacts[0].dob || null);
+                                self.im.user.set_answer("mom_dob", contacts[0].dob || null);
                                 self.im.user.set_answer("edd", contacts[0].edd || null);
                                 // extract messageset number
                                 self.im.user.set_answer("messageset_id", active_subscriptions[0].message_set.match(/\d+/)[0]);
@@ -293,7 +293,7 @@ go.app = function() {
             if (!self.im.user.answers.consent) {
                 return self.states.create("state_consent");
             }
-            if (!self.im.user.answers.dob) {
+            if (!self.im.user.answers.mom_dob) {
                 return self.states.create("state_birth_year");
             }
 
@@ -319,7 +319,7 @@ go.app = function() {
                     if (choice.value === "yes") {
                         // set consent
                         self.im.user.set_answer("consent", "true");
-                        if (self.im.user.answers.dob) {
+                        if (self.im.user.answers.mom_dob) {
                             return "state_hiv_messages";
                         } else {
                             return "state_birth_year";
@@ -431,26 +431,27 @@ go.app = function() {
                                 // "sub_type":
             .then(function() {
                 var reg_info;
-                var sub_type = self.getSubscriptionType(self.im.user.answers.messageset_id);
-                if (sub_type === 'baby1' || sub_type === 'baby2') {
+                var subscription_type = self.getSubscriptionType(self.im.user.answers.messageset_id);
+                if (subscription_type === 'baby1' || subscription_type === 'baby2') {
                     reg_info = {
                         "reg_type": "prebirth_pmtct",
                         "registrant_id": self.im.user.answers.contact_identity.id,
                         "data": {
                             "operator_id": self.im.user.answers.contact_identity.id,
-                            "language": self.im.user.answers.language_choice,
-                            "mom_dob": self.im.user.answers.dob,
+                            "language": self.im.user.answers.lang_code,
+                            "mom_dob": self.im.user.answers.mom_dob,
                             "edd": self.im.user.answers.edd,
                         }
                     };
-                } else if (sub_type === 'standard' || sub_type === 'later' || sub_type == 'accelerated') {
+                } else if (subscription_type === 'standard' || subscription_type === 'later'
+                           || subscription_type == 'accelerated') {
                     reg_info = {
                         "reg_type": "prebirth_pmtct",
                         "registrant_id": self.im.user.answers.contact_identity.id,
                         "data": {
                             "operator_id": self.im.user.answers.contact_identity.id,
-                            "language": self.im.user.answers.language_choice,
-                            "mom_dob": self.im.user.answers.dob,
+                            "language": self.im.user.answers.lang_code,
+                            "mom_dob": self.im.user.answers.mom_dob,
                             "edd": self.im.user.answers.edd
                         }
                     };
