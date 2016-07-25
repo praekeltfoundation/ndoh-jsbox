@@ -272,7 +272,9 @@ go.app = function() {
                                 self.im.user.set_answer("consent", contacts[0].consent || false);
                                 self.im.user.set_answer("dob", contacts[0].dob || null);
                                 self.im.user.set_answer("edd", contacts[0].edd || null);
-
+                                // extract messageset number
+                                self.im.user.set_answer("messageset_id", active_subscriptions[0].message_set.match(/\d+/)[0]);
+                                self.im.user.set_answer("vumi_contact_id", contacts[0].user_account);
                                 return self.im.user
                                 .set_lang(self.im.user.answers.lang_code)
                                 .then(function(set_lang_response) {
@@ -432,7 +434,7 @@ go.app = function() {
                                 // "sub_type":
             .then(function() {
                 var reg_info;
-                var sub_type = self.getSubscriptionType(self.im.user.answers.sub_type_id);
+                var sub_type = self.getSubscriptionType(self.im.user.answers.messageset_id);
                 if (sub_type === 'baby1' || sub_type === 'baby2') {
                     reg_info = {
                         "reg_type": "prebirth_pmtct",
