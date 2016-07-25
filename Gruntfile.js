@@ -61,6 +61,7 @@ module.exports = function (grunt) {
                 ussd_pmtct: [
                     'src/index.js',
                     '<%= paths.src.app.ussd_pmtct %>',
+                    'src/init.js'
                 ],
                 all: [
                     'src/**/*.js'

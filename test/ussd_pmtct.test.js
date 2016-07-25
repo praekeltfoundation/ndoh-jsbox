@@ -35,11 +35,11 @@ describe("PMTCT app", function() {
                     ],
                     services: {
                         identity_store: {
-                            prefix: 'http://is.localhost:8001/api/v1/',
+                            url: 'http://is.localhost:8001/api/v1/',
                             token: 'test IdentityStore'
                         },
                         stage_based_messaging: {
-                            prefix: 'http://sbm.localhost:8001/api/v1/',
+                            url: 'http://sbm.localhost:8001/api/v1/',
                             token: 'test StageBasedMessaging'
                         }
                     },

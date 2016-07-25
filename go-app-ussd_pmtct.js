@@ -12,9 +12,10 @@ go.app = function() {
     var FreeText = vumigo.states.FreeText;
     var JsonApi = vumigo.http.api.JsonApi;
 
-    var IdentityStore = require('seed-jsbox-utils').IdentityStore;
-    var StageBasedMessaging = require('seed-jsbox-utils').StageBasedMessaging;
-    var utils = require('seed-jsbox-utils').utils;
+    var SeedJsboxUtils = require('seed-jsbox-utils');
+    var IdentityStore = SeedJsboxUtils.IdentityStore;
+    var StageBasedMessaging = SeedJsboxUtils.StageBasedMessaging;
+    var utils = SeedJsboxUtils.utils;
 
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_start");
@@ -27,11 +28,12 @@ go.app = function() {
 
         self.init = function() {
             // initialising services
-            var base_url = self.im.config.services.identity_store.prefix;
+            self.im.log("INIT!");
+            var base_url = self.im.config.services.identity_store.url;
             var auth_token = self.im.config.services.identity_store.token;
             is = new IdentityStore(new JsonApi(self.im, {}), auth_token, base_url);
 
-            base_url = self.im.config.services.stage_based_messaging.prefix;
+            base_url = self.im.config.services.stage_based_messaging.url;
             auth_token = self.im.config.services.stage_based_messaging.token;
             sbm = new StageBasedMessaging(new JsonApi(self.im, {}), auth_token, base_url);
         };
@@ -54,7 +56,7 @@ go.app = function() {
 
             return http.get(vumigo_base_url + endpoint, {
                 params: {
-                    "msisdn": msisdn
+                    "query": "msisdn=" + msisdn
                 }
             });
         };
@@ -74,11 +76,11 @@ go.app = function() {
 
             return http.get(subscription_base_url + endpoint, {
                     params: {
-                        "msisdn": msisdn
+                        "to_addr": msisdn
                     }
                 })
                 .then(function(json_result) {
-                    var subs = json_result.data;
+                    var subs = json_result.data.data;
                     var active_subs = [];
                     for (i = 0; i < subs.objects.length; i++) {
                         if (subs.objects[i].active === true) {
@@ -86,7 +88,7 @@ go.app = function() {
                         }
                     }
                     return active_subs;
-                });
+                  });
         };
 
         // TIMEOUT HANDLING
@@ -144,18 +146,15 @@ go.app = function() {
 
         // START STATE
 
-        self.states.add("state_start", function(name) {
+        self.add("state_start", function(name) {
             self.im.user.answers = {};  // reset answers
-
             return self.states.create("state_check_PMTCT_subscription");
         });
 
         // interstitial
-        self.states.add("state_check_PMTCT_subscription", function(name) {
+        self.add("state_check_PMTCT_subscription", function(name) {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
             self.im.user.set_answer("msisdn", msisdn);
-            return self.im.log("in state_check_PMTCT_subscription")
-              .then(function() {
             return is.get_or_create_identity({"msisdn": msisdn})
                 .then(function(identity) {
                     self.im.user.set_answer("contact_identity", identity);
@@ -182,25 +181,29 @@ go.app = function() {
                         return self.states.create("state_get_vumi_contact", msisdn);
                     }
                 });
-              });
         });
 
         // interstitial
-        self.states.add("state_get_vumi_contact", function(name, msisdn) {
+        self.add("state_get_vumi_contact", function(name, msisdn) {
             return self.getVumiContactByMsisdn(self.im, msisdn)
-                .then(function(contact) {
-                    if (contact.data.length > 0) {
+                .then(function(results) {
+                    var contacts = results.data.data;
+                    if (contacts.length > 0) {
                         // check if registered on MomConnect
+<<<<<<< HEAD
                         if (contact.data[0].extra.is_registered) {
+=======
+                        if (contacts[0].extra.is_registered) {
+>>>>>>> develop
                             // get subscription to see if active
                             return self.getVumiActiveSubscriptions(self.im, msisdn)
                                 .then(function(active_subscriptions) {
                                     if (active_subscriptions.length > 0) {
                                         // save contact data (set_answer's) - lang, consent, dob, edd
-                                        self.im.user.set_answer("language_choice", contact.data[0].extra.language_choice || "en");
-                                        self.im.user.set_answer("consent", contact.data[0].consent || false);
-                                        self.im.user.set_answer("dob", contact.data[0].dob || null);
-                                        self.im.user.set_answer("edd", contact.data[0].edd || null);
+                                        self.im.user.set_answer("language_choice", contacts[0].extra.language_choice || "en");
+                                        self.im.user.set_answer("consent", contacts[0].consent || false);
+                                        self.im.user.set_answer("dob", contacts[0].dob || null);
+                                        self.im.user.set_answer("edd", contacts[0].edd || null);
 
                                         return self.im.user
                                             .set_lang(self.im.user.answers.language_choice)
@@ -219,7 +222,7 @@ go.app = function() {
         });
 
         // interstitial - route registration flow according to consent & dob
-        self.states.add("state_route", function(name) {
+        self.add("state_route", function(name) {
             if (!self.im.user.answers.consent) {
                 return self.states.create("state_consent");
             }
@@ -230,14 +233,14 @@ go.app = function() {
             return self.states.create("state_hiv_messages");
         });
 
-        self.states.add("state_end_not_registered", function(name) {
+        self.add("state_end_not_registered", function(name) {
             return new EndState(name, {
                 text: $("You need to be registered to MomConnect to receive these messages. Please visit the nearest clinic to register."),
                 next: "state_start"
             });
         });
 
-        self.states.add("state_consent", function(name) {
+        self.add("state_consent", function(name) {
             return new ChoiceState(name, {
                 question: $("To register we need to collect, store & use your info. You may also get messages on public holidays & weekends. Do you consent?"),
                 // error: ,
@@ -261,14 +264,14 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_end_consent_refused", function(name) {
+        self.add("state_end_consent_refused", function(name) {
             return new EndState(name, {
                 text: $("Unfortunately without your consent, you cannot register to MomConnect. Thank you for using the MomConnect service. Goodbye."),
                 next: "state_start"
             });
         });
 
-        self.states.add("state_birth_year", function(name) {
+        self.add("state_birth_year", function(name) {
             return new FreeText(name, {
                 question: $("Please enter the year you were born (For example 1981)"),
                 check: function(content) {
@@ -286,7 +289,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_birth_month", function(name) {
+        self.add("state_birth_month", function(name) {
             return new ChoiceState(name, {
                 question: $("In which month were you born?"),
                 choices: [
@@ -310,7 +313,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_birth_day", function(name) {
+        self.add("state_birth_day", function(name) {
             return new FreeText(name, {
                 question: $("Please enter the date of the month you were born (For example 21)"),
                 check: function(content) {
@@ -330,7 +333,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_hiv_messages", function(name) {
+        self.add("state_hiv_messages", function(name) {
             return new ChoiceState(name, {
                 question: $("Would you like to receive messages about keeping your child HIV-negative?"),
                 // error: ,
@@ -350,7 +353,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_register_pmtct", function(name) {
+        self.add("state_register_pmtct", function(name) {
             self.im.user.answers.contact_identity.details.pmtct = {
                 registered: "true"
             };
@@ -362,14 +365,14 @@ go.app = function() {
                 });
         });
 
-        self.states.add("state_end_hiv_messages_confirm", function(name) {
+        self.add("state_end_hiv_messages_confirm", function(name) {
             return new EndState(name, {
                 text: $("You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."),
                 next: "state_start"
             });
         });
 
-        self.states.add("state_end_hiv_messages_declined", function(name) {
+        self.add("state_end_hiv_messages_declined", function(name) {
             return new EndState(name, {
                 text: $("You have chosen to not receive messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."),
                 next: "state_start"
@@ -377,7 +380,7 @@ go.app = function() {
         });
 
         // start of OPT-OUT flow
-        self.states.add("state_optout_reason_menu", function(name) {
+        self.add("state_optout_reason_menu", function(name) {
             return new PaginatedChoiceState(name, {
                 question: $("Why do you no longer want to receive messages related to keeping your baby HIV-negative?"),
                 characters_per_page: 182,
@@ -403,7 +406,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_end_optout", function(name) {
+        self.add("state_end_optout", function(name) {
             return new EndState(name, {
                 text: $("Thank you. You will no longer receive PMTCT messages. You will still receive the MomConnect messages. To stop receiving these messages as well, please dial into *134*550*1#."),
                 next: "state_start"
@@ -411,7 +414,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_loss_messages", function(name) {
+        self.add("state_loss_messages", function(name) {
             return new ChoiceState(name, {
                 question: $("We are sorry for your loss. Would you like to receive a small set of free messages from MomConnect that could help you in this difficult time?"),
                 // error: ,
@@ -429,7 +432,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_end_loss_optout", function(name) {
+        self.add("state_end_loss_optout", function(name) {
             return new EndState(name, {
                 text: $("Thank you. You will no longer receive any messages from MomConnect. If you have any medical concerns, please visit your nearest clinic."),
                 next: "state_start"
@@ -437,7 +440,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_end_loss_optin", function(name) {
+        self.add("state_end_loss_optin", function(name) {
             return new EndState(name, {
                 text: $("Thank you. You will receive support messages from MomConnect in the coming weeks."),
                 next: "state_start"
@@ -450,5 +453,16 @@ go.app = function() {
 
     return {
         GoNDOH: GoNDOH
+    };
+}();
+
+go.init = function() {
+    var vumigo = require('vumigo_v02');
+    var InteractionMachine = vumigo.InteractionMachine;
+    var GoNDOH = go.app.GoNDOH;
+
+
+    return {
+        im: new InteractionMachine(api, new GoNDOH())
     };
 }();
