@@ -164,15 +164,16 @@ go.app = function() {
                             .then(function(has_active_subscription) {
                                 if (has_active_subscription) {
                                     // get details (lang, consent, dob) & set answers
-                                    self.im.user.set_answer("language_choice", identity.details.lang || "en");  // if undefined default to english
+                                    // if language is undefined default to eng_ZA
+                                    self.im.user.set_answer("lang_code", identity.details.lang_code || "eng_ZA");
+                                    self.im.user.set_answer("consent", identity.details.consent || false);
+                                    self.im.user.set_answer("dob", identity.details.dob || null);
+                                    self.im.user.set_answer("edd", identity.details.edd || null);
                                     return self.im.user
-                                        .set_lang(self.im.user.answers.language_choice)
+                                        .set_lang(self.im.user.answers.lang_code)
                                         .then(function(lang_set_response) {
                                             return self.states.create("state_optout_reason_menu");
                                         });
-                                    // self.im.user.set_answer("consent", identity.details.consent || false);
-                                    // self.im.user.set_answer("dob", identity.details.dob || null);
-                                    // self.im.user.set_answer("edd", identity.details.edd || null);
                                 } else {
                                     return self.states.create("state_get_vumi_contact", msisdn);
                                 }
@@ -190,11 +191,7 @@ go.app = function() {
                     var contacts = results.data.data;
                     if (contacts.length > 0) {
                         // check if registered on MomConnect
-<<<<<<< HEAD
-                        if (contact.data[0].extra.is_registered) {
-=======
                         if (contacts[0].extra.is_registered) {
->>>>>>> develop
                             // get subscription to see if active
                             return self.getVumiActiveSubscriptions(self.im, msisdn)
                                 .then(function(active_subscriptions) {
