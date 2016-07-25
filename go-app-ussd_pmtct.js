@@ -426,60 +426,40 @@ go.app = function() {
                 registered: "true"
             };
             return is
-<<<<<<< HEAD
             .update_identity(self.im.user.answers.contact_identity.id,
                              self.im.user.answers.contact_identity)
+                                // "vumi_contact_id": self.im.user.answers.vumi_contact_id,
+                                // "sub_type":
             .then(function() {
-                var reg_info = {
-                    "mom_dob": self.im.user.answers.dob,
-                    "edd": self.im.user.answers.edd,
-                    "vumi_contact_id": self.im.user.answers.vumi_contact_id,
-                    "sub_type": self.getSubscriptionType(self.im.user.answers.sub_type_id)
-                };
+                var reg_info;
+                var sub_type = self.getSubscriptionType(self.im.user.answers.sub_type_id);
+                if (sub_type === 'baby1' || sub_type === 'baby2') {
+                    reg_info = {
+                        "reg_type": "prebirth_pmtct",
+                        "registrant_id": self.im.user.answers.contact_identity.id,
+                        "data": {
+                            "operator_id": self.im.user.answers.contact_identity.id,
+                            "language": self.im.user.answers.language_choice,
+                            "mom_dob": self.im.user.answers.dob,
+                            "edd": self.im.user.answers.edd,
+                        }
+                    };
+                } else if (sub_type === 'standard' || sub_type === 'later' || sub_type == 'accelerated') {
+                    reg_info = {
+                        "reg_type": "prebirth_pmtct",
+                        "registrant_id": self.im.user.answers.contact_identity.id,
+                        "data": {
+                            "operator_id": self.im.user.answers.contact_identity.id,
+                            "language": self.im.user.answers.language_choice,
+                            "mom_dob": self.im.user.answers.dob,
+                            "edd": self.im.user.answers.edd
+                        }
+                    };
+                }
                 return hub
                 .create_registration(reg_info)
                 .then(function() {
                     return self.states.create('state_end_hiv_messages_confirm');
-=======
-                .update_identity(self.im.user.answers.contact_identity.id,
-                                 self.im.user.answers.contact_identity)
-                                // "vumi_contact_id": self.im.user.answers.vumi_contact_id,
-                                // "sub_type":
-
-                .then(function() {
-                    var reg_info;
-                    var sub_type = self.getSubscriptionType(self.im.user.answers.sub_type_id);
-                    if (sub_type === 'baby1' || sub_type === 'baby2') {
-                        reg_info = {
-                            "reg_type": "prebirth_pmtct",
-                            "registrant_id": self.im.user.answers.contact_identity.id,
-                            "data": {
-                                "operator_id": self.im.user.answers.contact_identity.id,
-                                "language": self.im.user.answers.language_choice,
-                                "mom_dob": self.im.user.answers.dob,
-                                "edd": self.im.user.answers.edd,
-
-
-                            }
-                        };
-                    } else if (sub_type === 'standard' || sub_type === 'later' || sub_type == 'accelerated') {
-                        reg_info = {
-                            "reg_type": "prebirth_pmtct",
-                            "registrant_id": self.im.user.answers.contact_identity.id,
-                            "data": {
-                                "operator_id": self.im.user.answers.contact_identity.id,
-                                "language": self.im.user.answers.language_choice,
-                                "mom_dob": self.im.user.answers.dob,
-                                "edd": self.im.user.answers.edd
-                            }
-                        };
-                    }
-                    return hub
-                        .create_registration(reg_info)
-                        .then(function() {
-                            return self.states.create('state_end_hiv_messages_confirm');
-                        });
->>>>>>> start work on submitting registration
                 });
             });
         });
