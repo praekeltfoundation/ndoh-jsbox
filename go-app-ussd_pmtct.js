@@ -91,6 +91,25 @@ go.app = function() {
                   });
         };
 
+        self.has_active_pmtct_subscription = function(id) {
+            return sbm
+                .list_active_subscriptions(id)
+                .then(function(active_subs_response) {
+                    var active_subs = active_subs_response.results;
+                    for (var i=0; i < active_subs.length; i++) {
+                        // get the subscription messageset
+                        return sbm
+                            .get_messageset(active_subs[i].messageset)
+                            .then(function(messageset) {
+                                if (messageset.short_name.indexOf('pmtct') > -1) {
+                                    return true;
+                                }
+                            });
+                    }
+                    return false;
+                });
+        };
+
         // TIMEOUT HANDLING
 
         // override normal state adding
@@ -162,10 +181,9 @@ go.app = function() {
                         // optout
                         return self.states.create("state_optout_reason_menu");
                     } else {  // register
-                        // TODO #9 shouldn't check for any active sub, but PMTCT specifically
-                        return sbm.has_active_subscription(identity.id)
-                            .then(function(has_active_subscription) {
-                                if (has_active_subscription) {
+                        return self.has_active_pmtct_subscription(identity.id)
+                            .then(function(has_active_pmtct_subscription) {
+                                if (has_active_pmtct_subscription) {
                                     // get details (lang, consent, dob) & set answers
                                     self.im.user.set_answer("language_choice", identity.details.lang || "en");  // if undefined default to english
                                     self.im.user.set_answer("consent", identity.details.consent || false);

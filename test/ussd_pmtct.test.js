@@ -131,7 +131,8 @@ describe("PMTCT app", function() {
                     .run();
             });
 
-            describe("0820000111 exists on new system; has active subscription; no consent, no dob", function() {
+            describe.only("0820000111 exists on new system; has active " +
+              "non-pmtct subscription; no consent, no dob", function() {
                 it("to state_consent", function() {
                     return tester
                         .setup.user.addr("0820000111")
@@ -145,9 +146,6 @@ describe("PMTCT app", function() {
                                 "1. Yes",
                                 "2. No"
                             ].join("\n")
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [0, 11]);
                         })
                         /*.check.user.answer('consent', 'true')
                         .check.user.answer('dob', null)*/
@@ -269,7 +267,7 @@ describe("PMTCT app", function() {
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [0, 11, 42]);
+                            utils.check_fixtures_used(api, [0, 11, 42, 50]);
                         })
                         .check.reply.ends_session()
                         .run();
