@@ -4,8 +4,8 @@
 // (+27820000111) on new sys; active sub non-pmtct; no consent, no dob
 // (+27820000222) on new sys; active sub non-pmtct; consent, no dob
 // (+27820000333) on new sys; active sub non-pmtct; no consent, dob
+// (+27820000444) on new sys; active sub non-pmtct; consent, dob
 
-// (+27820000444) on new sys; active sub pmtct; consent, dob
 // (+27820000555) on new sys; no active sub
 
 // (+27820000666) on old sys; active sub; consent = true, dob given
