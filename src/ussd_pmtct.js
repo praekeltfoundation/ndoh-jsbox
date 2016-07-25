@@ -71,21 +71,63 @@ go.app = function() {
                 }
             });
 
-            return http.get(subscription_base_url + endpoint, {
-                    params: {
-                        "to_addr": msisdn
+            return http
+            .get(subscription_base_url + endpoint, {
+                params: {
+                    "to_addr": msisdn
+                }
+            })
+            .then(function(json_result) {
+                var subs = json_result.data.data;
+                var active_subs = [];
+                for (i = 0; i < subs.objects.length; i++) {
+                    if (subs.objects[i].active === true) {
+                        active_subs.push(subs.objects[i]);
                     }
-                })
-                .then(function(json_result) {
-                    var subs = json_result.data.data;
-                    var active_subs = [];
-                    for (i = 0; i < subs.objects.length; i++) {
-                        if (subs.objects[i].active === true) {
-                            active_subs.push(subs.objects[i]);
+                }
+                return active_subs;
+            });
+        };
+
+        self.has_active_pmtct_subscription = function(id) {
+            return sbm
+            .list_active_subscriptions(id)
+            .then(function(active_subs_response) {
+                var active_subs = active_subs_response.results;
+                for (var i=0; i < active_subs.length; i++) {
+                    // get the subscription messageset
+                    return sbm
+                    .get_messageset(active_subs[i].messageset)
+                    .then(function(messageset) {
+                        if (messageset.short_name.indexOf('pmtct') > -1) {
+                            return true;
                         }
-                    }
-                    return active_subs;
-                  });
+                    });
+                }
+                return false;
+            });
+        };
+
+        self.get_6_lang_code = function(lang) {
+            // Return the six-char code for a two or six letter language code
+            if (lang.length == 6) {
+                // assume it is correct code
+                return lang;
+            } else {
+                return {
+                    "zu": "zul_ZA",
+                    "xh": "xho_ZA",
+                    "af": "afr_ZA",
+                    "en": "eng_ZA",
+                    "nso": "nso_ZA",
+                    "tn": "tsn_ZA",
+                    "st": "sot_ZA",
+                    "ts": "tso_ZA",
+                    "ss": "ssw_ZA",
+                    "ve": "ven_ZA",
+                    "nr": "nbl_ZA"
+                }[lang];
+            }
         };
 
         // TIMEOUT HANDLING
@@ -94,23 +136,25 @@ go.app = function() {
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
             /*if (!interrupt || !go.utils.timed_out(self.im))*/
-              log_mode = self.im.config.logging;
-              if (log_mode === 'prod') {
-                return self.im.log("Running: " + name)
-                  .then(function() {
-                      return creator(name, opts);
-                  });
-              } else if (log_mode === 'test') {
-                return Q().then(function() {
-                    console.log("Running: " + name);
-                    return creator(name, opts);
-                });
-              }
-              else if (log_mode === 'off' || null) {
-                return Q().then(function() {
-                    return creator(name, opts);
-                });
-              }
+                log_mode = self.im.config.logging;
+                if (log_mode === 'prod') {
+                    return self.im
+                    .log("Running: " + name)
+                    .then(function() {
+                        return creator(name, opts);
+                      });
+                } else if (log_mode === 'test') {
+                    return Q()
+                    .then(function() {
+                        console.log("Running: " + name);
+                        return creator(name, opts);
+                    });
+                } else if (log_mode === 'off' || null) {
+                    return Q()
+                    .then(function() {
+                        return creator(name, opts);
+                    });
+                }
 
                 /*interrupt = false;
                 opts = opts || {};
@@ -152,68 +196,71 @@ go.app = function() {
         self.add("state_check_PMTCT_subscription", function(name) {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
             self.im.user.set_answer("msisdn", msisdn);
-            return is.get_or_create_identity({"msisdn": msisdn})
-                .then(function(identity) {
-                    self.im.user.set_answer("contact_identity", identity);
-                    if (identity.details.pmtct) {  // on new system and PMTCT?
-                        // optout
-                        return self.states.create("state_optout_reason_menu");
-                    } else {  // register
-                        // TODO #9 shouldn't check for any active sub, but PMTCT specifically
-                        return sbm.has_active_subscription(identity.id)
-                            .then(function(has_active_subscription) {
-                                if (has_active_subscription) {
-                                    // get details (lang, consent, dob) & set answers
-                                    self.im.user.set_answer("language_choice", identity.details.lang || "en");  // if undefined default to english
-                                    self.im.user.set_answer("consent", identity.details.consent || false);
-                                    self.im.user.set_answer("dob", identity.details.dob || null);
-                                    self.im.user.set_answer("edd", identity.details.edd || null);
 
-                                    return self.im.user
-                                        .set_lang(self.im.user.answers.language_choice)
-                                        .then(function(lang_set_response) {
-                                            return self.states.create("state_route");
-                                        });
-                                } else {
-                                    return self.states.create("state_get_vumi_contact", msisdn);
-                                }
+            return is
+            .get_or_create_identity({"msisdn": msisdn})
+            .then(function(identity) {
+                self.im.user.set_answer("contact_identity", identity);
+                if (identity.details.pmtct) {  // optimization to eliminate api calls for newly created identities
+                    return self
+                    .has_active_pmtct_subscription(identity.id)
+                    .then(function(has_active_pmtct_subscription) {
+                        if (has_active_pmtct_subscription) {
+                            return self.im.user
+                            .set_lang(self.im.user.answers.contact_identity.details.lang_code || "eng_ZA")
+                            .then(function(lang_set_response) {
+                                return self.states.create("state_optout_reason_menu");
                             });
-                    }
-                });
+                        } else {
+                            // Note 1: that what we are doing here is a temporary solution before
+                            // full migration to the new system. We are not looking up the data
+                            // on the identity, but falling back to the vumi contact. This is
+                            // also why users 0820000111 to 0820000444 have been ignored in
+                            // testing for now
+                            return self.states.create("state_get_vumi_contact", msisdn);
+                        }
+                    });
+                } else {
+                    return self.states.create("state_get_vumi_contact", msisdn);
+                }
+            });
         });
 
         // interstitial
         self.add("state_get_vumi_contact", function(name, msisdn) {
-            return self.getVumiContactByMsisdn(self.im, msisdn)
-                .then(function(results) {
-                    var contacts = results.data.data;
-                    if (contacts.length > 0) {
-                        // check if registered on MomConnect
-                        if (contacts[0].extra.is_registered) {
-                            // get subscription to see if active
-                            return self.getVumiActiveSubscriptions(self.im, msisdn)
-                                .then(function(active_subscriptions) {
-                                    if (active_subscriptions.length > 0) {
-                                        // save contact data (set_answer's) - lang, consent, dob, edd
-                                        self.im.user.set_answer("language_choice", contacts[0].extra.language_choice || "en");
-                                        self.im.user.set_answer("consent", contacts[0].consent || false);
-                                        self.im.user.set_answer("dob", contacts[0].dob || null);
-                                        self.im.user.set_answer("edd", contacts[0].edd || null);
+            return self
+            .getVumiContactByMsisdn(self.im, msisdn)
+            .then(function(results) {
+                var contacts = results.data.data;
+                if (contacts.length > 0) {
+                    // check if registered on MomConnect
+                    if (contacts[0].extra.is_registered) {  // TODO: string "false" will be true
+                        // get subscription to see if active
+                        return self
+                        .getVumiActiveSubscriptions(self.im, msisdn)
+                        .then(function(active_subscriptions) {
+                            if (active_subscriptions.length > 0) {
+                                // save contact data (set_answer's) - lang, consent, dob, edd
+                                self.im.user.set_answer("lang_code",
+                                    self.get_6_lang_code(contacts[0].extra.language_choice) || "eng_ZA");
+                                self.im.user.set_answer("consent", contacts[0].consent || false);
+                                self.im.user.set_answer("dob", contacts[0].dob || null);
+                                self.im.user.set_answer("edd", contacts[0].edd || null);
 
-                                        return self.im.user
-                                            .set_lang(self.im.user.answers.language_choice)
-                                            .then(function(set_lang_response) {
-                                                return self.states.create("state_route");
-                                            });
-                                    } else {
-                                        return self.states.create("state_end_not_registered");
-                                    }
+                                return self.im.user
+                                .set_lang(self.im.user.answers.lang_code)
+                                .then(function(set_lang_response) {
+                                    return self.states.create("state_route");
                                 });
-                        }
-                    } else {
-                        return self.states.create("state_end_not_registered");
+                            } else {
+                                return self.states.create("state_end_not_registered");
+                            }
+                        });
                     }
-                });
+                } else {
+                    return self.states.create("state_end_not_registered");
+                }
+            });
         });
 
         // interstitial - route registration flow according to consent & dob
@@ -353,11 +400,11 @@ go.app = function() {
                 registered: "true"
             };
             return is
-                .update_identity(self.im.user.answers.contact_identity.id,
-                                 self.im.user.answers.contact_identity)
-                .then(function() {
-                    return self.states.create('state_end_hiv_messages_confirm');
-                });
+            .update_identity(self.im.user.answers.contact_identity.id,
+                             self.im.user.answers.contact_identity)
+            .then(function() {
+                return self.states.create('state_end_hiv_messages_confirm');
+            });
         });
 
         self.add("state_end_hiv_messages_confirm", function(name) {

@@ -1,10 +1,11 @@
 // Identity Personas
 // ...add (new system and PMTCT) --> optout
 
-// (+27820000111) on new sys; active sub; no consent, no dob
-// (+27820000222) on new sys; active sub; consent, no dob
-// (+27820000333) on new sys; active sub; no consent, dob
-// (+27820000444) on new sys; active sub; consent, dob
+// (+27820000111) on new sys; active sub non-pmtct; no consent, no dob
+// (+27820000222) on new sys; active sub non-pmtct; consent, no dob
+// (+27820000333) on new sys; active sub non-pmtct; no consent, dob
+// (+27820000444) on new sys; active sub non-pmtct; consent, dob
+
 // (+27820000555) on new sys; no active sub
 
 // (+27820000666) on old sys; active sub; consent = true, dob given
@@ -47,6 +48,9 @@ module.exports = function() {
                                 "msisdn": {
                                     "+27820000111": {}
                                 }
+                            },
+                            "pmtct": {  // temp
+
                             }
                         },
                         "created_at": "2016-06-21T06:13:29.693272Z",
@@ -86,6 +90,9 @@ module.exports = function() {
                                 "msisdn": {
                                     "+27820000222": {}
                                 }
+                            },
+                            "pmtct": {  // temp
+
                             },
                             "consent": "true"
                         },
@@ -127,6 +134,9 @@ module.exports = function() {
                                     "+27820000333": {}
                                 }
                             },
+                            "pmtct": {  // temp
+
+                            },
                             "dob": "1981-04-26"
                         },
                         "created_at": "2016-06-21T06:13:29.693272Z",
@@ -166,6 +176,9 @@ module.exports = function() {
                                 "msisdn": {
                                     "+27820000444": {}
                                 }
+                            },
+                            "pmtct": {  // temp
+
                             },
                             "consent": "true",
                             "dob": "1981-04-26"
@@ -208,6 +221,9 @@ module.exports = function() {
                                     "+27820000555": {}
                                 }
                             },
+                            "pmtct": {  // temp
+
+                            }
                         },
                         "created_at": "2016-06-21T06:13:29.693272Z",
                         "updated_at": "2016-06-21T06:13:29.693298Z"
@@ -1777,6 +1793,27 @@ module.exports = function() {
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/',
                 "body": '{"url":"http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/","id":"cb245673-aa41-4302-ac47-00000000009","version":1,"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000999":{}}},"pmtct":{"registered":"true"}},"created_at":"2016-07-17T06:13:29.693272Z","updated_at":"2016-07-17T06:13:29.693298Z"}'
             },
+        },
+
+        // 50: get messageset 1
+        {
+            "request": {
+                "method": 'GET',
+                "url": "http://sbm.localhost:8001/api/v1/messageset/1/"
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "id": 1,
+                    "short_name": 'not.a.hiv.messageset',
+                    "notes": null,
+                    "next_set": 2,
+                    "default_schedule": 1,
+                    "content_type": 'text',
+                    "created_at": '2016-06-22T06:13:29.693272Z',
+                    "updated_at": '2016-06-22T06:13:29.693272Z'
+                }
+            }
         },
 
     ];
