@@ -94,7 +94,6 @@ go.app = function() {
             .list_active_subscriptions(id)
             .then(function(active_subs_response) {
                 var active_subs = active_subs_response.results;
-                console.log(active_subs);
                 for (var i=0; i < active_subs.length; i++) {
                     // get the subscription messageset
                     return sbm
@@ -206,21 +205,18 @@ go.app = function() {
                     return self
                     .has_active_pmtct_subscription(identity.id)
                     .then(function(has_active_pmtct_subscription) {
-                        console.log(has_active_pmtct_subscription);
                         if (has_active_pmtct_subscription) {
-                            // get details (lang, consent, dob) & set answers
-                            // if language is undefined default to eng_ZA
-                            self.im.user.set_answer("lang_code",
-                                self.im.user.answers.contact_identity.details.lang_code || "eng_ZA");
-                            // self.im.user.set_answer("consent", identity.details.consent || false);
-                            // self.im.user.set_answer("dob", identity.details.dob || null);
-                            // self.im.user.set_answer("edd", identity.details.edd || null);
                             return self.im.user
-                            .set_lang(self.im.user.answers.lang_code)
+                            .set_lang(self.im.user.answers.contact_identity.details.lang_code || "eng_ZA")
                             .then(function(lang_set_response) {
                                 return self.states.create("state_optout_reason_menu");
                             });
                         } else {
+                            // Note 1: that what we are doing here is a temporary solution before
+                            // full migration to the new system. We are not looking up the data
+                            // on the identity, but falling back to the vumi contact. This is
+                            // also why users 0820000111 to 0820000444 have been ignored in
+                            // testing for now
                             return self.states.create("state_get_vumi_contact", msisdn);
                         }
                     });

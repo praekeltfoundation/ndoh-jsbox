@@ -114,6 +114,7 @@ describe("PMTCT app", function() {
         // TEST PMTCT SIGN-UP FLOWS
 
         describe("Sign-up flow testing", function() {
+            // Remove this test?
             it.skip("to state_end_not_registered", function() {
                 return tester
                 .setup.user.addr("0820000222")
@@ -131,9 +132,10 @@ describe("PMTCT app", function() {
                 .run();
             });
 
-            describe("0820000111 exists on new system; has active " +
+            // See Note 1 in src/ussd_pmtct for why these four next users' tests are skipped
+            describe.skip("0820000111 exists on new system; has active " +
             "non-pmtct subscription; no consent, no dob", function() {
-                it.only("to state_consent", function() {
+                it("to state_consent", function() {
                     return tester
                         .setup.user.addr("0820000111")
                         .input(
@@ -274,7 +276,7 @@ describe("PMTCT app", function() {
                 });
             });
 
-            describe("0820000222 exists on new system; has active " +
+            describe.skip("0820000222 exists on new system; has active " +
             "non-pmtct subscription; consent, no dob", function() {
                 it("to state_birth_year", function() {
                     return tester
@@ -383,7 +385,7 @@ describe("PMTCT app", function() {
                 });
             });
 
-            describe("0820000333 exists on new system; has active " +
+            describe.skip("0820000333 exists on new system; has active " +
             "non-pmtct subscription; no consent, dob", function() {
                 it("to state_consent", function() {
                     return tester
@@ -474,7 +476,7 @@ describe("PMTCT app", function() {
                 });
             });
 
-            describe("0820000444 exists on new system; has active " +
+            describe.skip("0820000444 exists on new system; has active " +
             "non-pmtct subscription; consent, dob", function() {
                 it("to state_hiv_messages", function() {
                     return tester
@@ -528,7 +530,7 @@ describe("PMTCT app", function() {
                 });
             });
 
-            describe.skip("0820000555 exists on new system; has no active sub", function() {
+            describe("0820000555 exists on new system; has no active sub", function() {
                 it("to state_end_not_registered", function() {
                     return tester
                         .setup.user.addr("0820000555")
