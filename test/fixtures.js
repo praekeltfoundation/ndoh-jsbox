@@ -730,7 +730,7 @@ module.exports = function() {
             }
         },
 
-        // 22: get vumi contact by msisdn +27820000555
+        // 22: unused
         {
             'request': {
                 'method': 'GET',
@@ -1210,12 +1210,12 @@ module.exports = function() {
                         "objects": [
                             {
                                 "active": true,
-                                "completed": true,
+                                "completed": false,
                                 "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
                                 "created_at": "2015-11-11T07:49:21.172038",
                                 "id": 1467333,
                                 "lang": "en",
-                                "message_set": "/api/v1/message_set/4/",
+                                "message_set": "/api/v1/message_set/4/",  // baby1
                                 "next_sequence_number": 30,
                                 "process_status": 2,
                                 "resource_uri": "/api/v1/subscription/1467333/",
@@ -1286,12 +1286,12 @@ module.exports = function() {
                         "objects": [
                             {
                                 "active": true,
-                                "completed": true,
+                                "completed": false,
                                 "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
                                 "created_at": "2015-11-11T07:49:21.172038",
                                 "id": 1467333,
                                 "lang": "en",
-                                "message_set": "/api/v1/message_set/4/",
+                                "message_set": "/api/v1/message_set/1/",  // standard
                                 "next_sequence_number": 30,
                                 "process_status": 2,
                                 "resource_uri": "/api/v1/subscription/1467333/",
@@ -1361,12 +1361,12 @@ module.exports = function() {
                         "objects": [
                             {
                                 "active": true,
-                                "completed": true,
+                                "completed": false,
                                 "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
                                 "created_at": "2015-11-11T07:49:21.172038",
                                 "id": 1467333,
                                 "lang": "en",
-                                "message_set": "/api/v1/message_set/4/",
+                                "message_set": "/api/v1/message_set/2/",
                                 "next_sequence_number": 30,
                                 "process_status": 2,
                                 "resource_uri": "/api/v1/subscription/1467333/",
@@ -1420,12 +1420,12 @@ module.exports = function() {
                         "objects": [
                             {
                                 "active": true,
-                                "completed": true,
+                                "completed": false,
                                 "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
                                 "created_at": "2015-11-11T07:49:21.172038",
                                 "id": 1467333,
                                 "lang": "en",
-                                "message_set": "/api/v1/message_set/4/",
+                                "message_set": "/api/v1/message_set/3/",
                                 "next_sequence_number": 30,
                                 "process_status": 2,
                                 "resource_uri": "/api/v1/subscription/1467333/",
@@ -1836,13 +1836,12 @@ module.exports = function() {
                 "method": 'POST',
                 "url": "http://hub.localhost:8001/api/v1/registration/",
                 "data": {
-                    "reg_type": "prebirth_pmtct",
+                    "reg_type": "postbirth_pmtct",
                     "registrant_id": "cb245673-aa41-4302-ac47-00000000006",
                     "data": {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000006",
                         "language": "eng_ZA",
-                        "mom_dob": "1982-02-01",
-                        "edd": "2016-09-06"
+                        "mom_dob": "1982-02-01"
                     }
                 }
             },

@@ -28,17 +28,17 @@ go.app = function() {
         self.init = function() {
             // initialising services
             self.im.log("INIT!");
-            var base_url = self.im.config.services.identity_store.url;
-            var auth_token = self.im.config.services.identity_store.token;
-            is = new IdentityStore(new JsonApi(self.im, {}), auth_token, base_url);
+            var is_base_url = self.im.config.services.identity_store.url;
+            var is_auth_token = self.im.config.services.identity_store.token;
+            is = new IdentityStore(new JsonApi(self.im, {}), is_auth_token, is_base_url);
 
-            base_url = self.im.config.services.stage_based_messaging.url;
-            auth_token = self.im.config.services.stage_based_messaging.token;
-            sbm = new StageBasedMessaging(new JsonApi(self.im, {}), auth_token, base_url);
+            var sbm_base_url = self.im.config.services.stage_based_messaging.url;
+            var sbm_auth_token = self.im.config.services.stage_based_messaging.token;
+            sbm = new StageBasedMessaging(new JsonApi(self.im, {}), sbm_auth_token, sbm_base_url);
 
-            base_url = self.im.config.services.hub.prefix;
-            auth_token = self.im.config.services.hub.token;
-            hub = new Hub(new JsonApi(self.im, {}), auth_token, base_url);
+            var hub_base_url = self.im.config.services.hub.prefix;
+            var hub_auth_token = self.im.config.services.hub.token;
+            hub = new Hub(new JsonApi(self.im, {}), hub_auth_token, hub_base_url);
         };
 
         // the next two functions, getVumiContactByMsisdn & getVumiActiveSubscriptions
@@ -136,7 +136,7 @@ go.app = function() {
             }
         };
 
-        self.getSubscriptionType = function(subscription_id) {
+        self.getSubscriptionType = function(messageset_id) {
             var subscriptionTypeMapping = {
                 "1": "standard",
                 "2": "later",
@@ -150,7 +150,7 @@ go.app = function() {
                 "10": "chw"
             };
 
-            return subscriptionTypeMapping[subscription_id];
+            return subscriptionTypeMapping[messageset_id];
         };
 
         // TIMEOUT HANDLING
@@ -212,11 +212,11 @@ go.app = function() {
 
         self.add("state_start", function(name) {
             self.im.user.answers = {};  // reset answers
-            return self.states.create("state_check_PMTCT_subscription");
+            return self.states.create("state_check_pmtct_subscription");
         });
 
         // interstitial
-        self.add("state_check_PMTCT_subscription", function(name) {
+        self.add("state_check_pmtct_subscription", function(name) {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
             self.im.user.set_answer("msisdn", msisdn);
 
@@ -256,31 +256,43 @@ go.app = function() {
             .then(function(results) {
                 var contacts = results.data.data;
                 if (contacts.length > 0) {
-                    // check if registered on MomConnect
-                    if (contacts[0].extra.is_registered) {  // TODO: string "false" will be true
+                    // check if registered on MomConnect (could be "false" if midway through a new
+                    // registration, but this will also evaluate to true since it's a string)
+                    if (contacts[0].extra.is_registered) {
                         // get subscription to see if active
                         return self
                         .getVumiActiveSubscriptions(self.im, msisdn)
                         .then(function(active_subscriptions) {
                             if (active_subscriptions.length > 0) {
-                                // save contact data (set_answer's) - lang, consent, dob, edd
-                                self.im.user.set_answer("lang_code",
-                                    self.get_6_lang_code(contacts[0].extra.language_choice) || "eng_ZA");
-                                self.im.user.set_answer("consent", contacts[0].extra.consent || false);
-                                self.im.user.set_answer("mom_dob", contacts[0].extra.dob || null);
-                                self.im.user.set_answer("edd", contacts[0].extra.edd || null);
+                                // TODO: add tests for the regex below
                                 // extract messageset number
-                                self.im.user.set_answer("messageset_id", active_subscriptions[0].message_set.match(/\d+/)[0]);
-                                self.im.user.set_answer("vumi_contact_id", contacts[0].user_account);
-                                return self.im.user
-                                .set_lang(self.im.user.answers.lang_code)
-                                .then(function(set_lang_response) {
-                                    return self.states.create("state_route");
-                                });
+                                var messageset_id = active_subscriptions[0].message_set.match(/\d+\/$/)[0].replace('/', '');
+                                var subscription_type = self.getSubscriptionType(messageset_id);
+                                // check that current active subscription is to momconnect
+                                if (['baby1', 'baby2', 'standard', 'later', 'accelerated'].indexOf(subscription_type) > -1) {
+                                    // save contact data (set_answer's) - lang, consent, dob, edd
+                                    self.im.user.set_answer("lang_code",
+                                        self.get_6_lang_code(contacts[0].extra.language_choice) || "eng_ZA");
+                                    self.im.user.set_answer("consent", contacts[0].extra.consent || false);
+                                    self.im.user.set_answer("mom_dob", contacts[0].extra.dob || null);
+                                    self.im.user.set_answer("edd", contacts[0].extra.edd || null);
+                                    self.im.user.set_answer("subscription_type", subscription_type);
+                                    self.im.user.set_answer("vumi_contact_id", contacts[0].user_account);
+
+                                    return self.im.user
+                                    .set_lang(self.im.user.answers.lang_code)
+                                    .then(function(set_lang_response) {
+                                        return self.states.create("state_route");
+                                    });
+                                } else {
+                                    return self.states.create("state_end_not_registered");
+                                }
                             } else {
                                 return self.states.create("state_end_not_registered");
                             }
                         });
+                    } else {
+                        return self.states.create("state_end_not_registered");
                     }
                 } else {
                     return self.states.create("state_end_not_registered");
@@ -420,7 +432,7 @@ go.app = function() {
                                 // "sub_type":
             .then(function() {
                 var reg_info;
-                var subscription_type = self.getSubscriptionType(self.im.user.answers.messageset_id);
+                var subscription_type = self.im.user.answers.subscription_type;
                 if (subscription_type === 'baby1' || subscription_type === 'baby2') {
                     reg_info = {
                         "reg_type": "postbirth_pmtct",

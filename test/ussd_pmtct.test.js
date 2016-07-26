@@ -553,7 +553,7 @@ describe("PMTCT app", function() {
                 });
             });
 
-            describe("0820000666 exists on old system; has active subscription; consent, dob", function() {
+            describe("0820000666 exists on old system; has active baby1 subscription; consent, dob", function() {
                 it("to state_hiv_messages", function() {
                     return tester
                         .setup.user.addr("0820000666")
@@ -603,7 +603,7 @@ describe("PMTCT app", function() {
                 });
             });
 
-            describe("0820000777 exists on old system; has active subscription; consent, no dob", function() {
+            describe("0820000777 exists on old system; has active standardsubscription; consent, no dob", function() {
                 it("to state_birth_year", function() {
                     return tester
                         .setup.user.addr("0820000777")
@@ -711,7 +711,7 @@ describe("PMTCT app", function() {
                 });
             });
 
-            describe("0820000888 exists on old system; has active subscription; no consent, dob", function() {
+            describe("0820000888 exists on old system; has active later subscription; no consent, dob", function() {
                 it("to state_consent", function() {
                     return tester
                         .setup.user.addr("0820000888")
@@ -807,7 +807,7 @@ describe("PMTCT app", function() {
                 });
             });
 
-            describe("0820000999 exists on old system; has active subscription; no consent, no dob", function() {
+            describe("0820000999 exists on old system; has active accelerated subscription; no consent, no dob", function() {
                 it("to state_consent", function() {
                     return tester
                         .setup.user.addr("0820000999")
