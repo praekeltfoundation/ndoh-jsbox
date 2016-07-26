@@ -660,7 +660,7 @@ go.app = function() {
                                     // deactivate active vumi subscriptions - unsub all
                                     .deactivateVumiSubscriptions(self.im, identity)
                                     .then(function() {
-                                        // subscribe to loss messages on old system
+                                        // subscribe to loss messages on old system (pre-migration)
                                         return self
                                         .subscribeToLossMessages(self.im, identity)
                                         .then(function() {

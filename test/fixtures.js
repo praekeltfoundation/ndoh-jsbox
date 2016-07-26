@@ -2527,7 +2527,7 @@ module.exports = function() {
             "response": {}
         },
 
-        // 73:
+        // 73: post to old system, subscribing for loss messages
         {
             "request": {
                 "url": 'https://subscriptions/api/v1/go/subscription/',
