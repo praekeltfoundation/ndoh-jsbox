@@ -711,7 +711,7 @@ describe("PMTCT app", function() {
                 });
             });
 
-            describe("0820000888 exists on old system; has active subscription; no consent, dob", function() {
+            describe.only("0820000888 exists on old system; has active subscription; no consent, dob", function() {
                 it("to state_consent", function() {
                     return tester
                         .setup.user.addr("0820000888")
@@ -800,7 +800,7 @@ describe("PMTCT app", function() {
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [7, 26, 33, 38, 48, 51]);
+                            utils.check_fixtures_used(api, [7, 26, 33, 38, 48, 57]);
                         })
                         .check.reply.ends_session()
                         .run();

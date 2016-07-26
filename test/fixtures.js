@@ -986,10 +986,11 @@ module.exports = function() {
                                 "is_registered": "false",
                                 "nc_faccode": "640301",
                                 "nc_registered_by": "+27727372369",
-                                "language_choice": "en",
+                                "language_choice": "zu",
                                 "nc_source_name": "Vumi Go",
                                 "ussd_sessions": "3",
-                                "dob": "1975-09-23"
+                                "dob": "1975-09-23",
+                                "edd": "2016-09-08"
                             },
                             "msisdn": "+27820000888",
                             "created_at": "2016-04-29 09:43:29.256573",
@@ -1812,17 +1813,14 @@ module.exports = function() {
             }
         },
 
-        // 51: create registration for vumi contact 1aa0dea2f82945a48cc258c61d756f16
+        // 51: unused
         {
             "request": {
                 "method": 'POST',
                 "data": {
-                    "mom_dob": "1975-09-23",
-                    "edd": null,
-                    "vumi_contact_id": "1aa0dea2f82945a48cc258c61d756f16",
-                    "sub_type": "standard"
+                    "deprecated": "fixture"
                 },
-                "url": 'http://hub.localhost:8001/api/v1/registration/'
+                "url": 'http://'
             },
             "response": {
 
@@ -1853,7 +1851,7 @@ module.exports = function() {
                 "data": {
                     "deprecated": "fixture"
                 },
-                "url": 'http://hub.localhost:8001/api/v1/registration/'
+                "url": 'http://'
             },
             "response": {
 
@@ -1881,7 +1879,7 @@ module.exports = function() {
             }
         },
 
-        // 55: post registration 1 for 0666
+        // 55: post registration for 0666
         {
             "request": {
                 "method": 'POST',
@@ -1900,7 +1898,7 @@ module.exports = function() {
             "response": {}
         },
 
-        // 56: post registration 1 for 0777
+        // 56: post registration for 0777
         {
             "request": {
                 "method": 'POST',
@@ -1913,6 +1911,25 @@ module.exports = function() {
                         "language": "eng_ZA",
                         "mom_dob": "1954-05-29",
                         "edd": "2016-09-07"
+                    }
+                }
+            },
+            "response": {}
+        },
+
+        // 57: post registration for 0888
+        {
+            "request": {
+                "method": 'POST',
+                "url": "http://hub.localhost:8001/api/v1/registration/",
+                "data": {
+                    "reg_type": "prebirth_pmtct",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000000008",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000008",
+                        "language": "zul_ZA",
+                        "mom_dob": "1975-09-23",
+                        "edd": "2016-09-08"
                     }
                 }
             },
