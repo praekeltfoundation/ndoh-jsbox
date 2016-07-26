@@ -177,7 +177,7 @@ go.app = function() {
 
             return http.get(subscription_base_url + endpoint, {
                     params: {
-                        "toaddr": msisdn
+                        "query": "toaddr=" + msisdn
                     }
                 })
                 .then(function(result) {
@@ -197,15 +197,15 @@ go.app = function() {
                     'Authorization': ['ApiKey ' + username + ':' + api_key]
                 }
             });
-
+            var msisdn = Object.keys(contact.details.addresses.msisdn)[0];
             return self
-                .getSubscriptionsByMsisdn(im, contact.msisdn)
+                .getSubscriptionsByMsisdn(im, msisdn)
                 .then(function(update) {
                     var clean = true;  // clean tracks if api call is unnecessary
 
-                    for (i=0;i<update.objects.length;i++) {
-                        if (update.objects[i].active === true) {
-                            update.objects[i].active = false;
+                    for (i=0;i<update.data.objects.length;i++) {
+                        if (update.data.objects[i].active === true) {
+                            update.data.objects[i].active = false;
                             clean = false;
                         }
                     }
@@ -618,16 +618,16 @@ go.app = function() {
                         };
                         return hub.update_registration(pmtct_loss_switch)
                             .then(function() {
-                                // return self
+                                return self
                                     // deactivate active vumi subscriptions - unsub all
-                                    // .deactivateVumiSubscriptions(self.im, identity)
+                                    .deactivateVumiSubscriptions(self.im, identity)
                                     /*.then(function() {
                                         // subscribe to loss messages
                                         .subscribeToLossMessages(self.im, identity);
                                     })*/
-                                    // .then(function() {
+                                    .then(function() {
                                         return "state_end_loss_optin";
-                                    // });
+                                    });
                             });
                     } else {
                         return "state_end_loss_optout";

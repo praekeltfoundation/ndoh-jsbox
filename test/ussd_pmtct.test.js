@@ -1073,7 +1073,7 @@ describe("PMTCT app", function() {
                         reply: "Thank you. You will receive support messages from MomConnect in the coming weeks."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [42, 49, 62, 69]);
+                        utils.check_fixtures_used(api, [42, 49, 62, 69, 71, 72]);
                     })
                     .check.reply.ends_session()
                     .run();
