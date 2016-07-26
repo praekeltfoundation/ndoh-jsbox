@@ -1,6 +1,5 @@
 var vumigo = require("vumigo_v02");
 var fixtures = require("./fixtures");
-// var assert = require("assert");
 var AppTester = vumigo.AppTester;
 
 var utils = require('seed-jsbox-utils').utils;
@@ -118,24 +117,6 @@ describe("PMTCT app", function() {
         // TEST PMTCT SIGN-UP FLOWS
 
         describe("Sign-up flow testing", function() {
-            // Remove this test?
-            it.skip("to state_end_not_registered", function() {
-                return tester
-                .setup.user.addr("0820000222")
-                .inputs(
-                    {session_event: "new"}  // dial in
-                )
-                .check.interaction({
-                    state: "state_end_not_registered",
-                    reply: ""
-                })
-                .check(function(api) {
-                    utils.check_fixtures_used(api, [3,4]);
-                })
-                .check.reply.ends_session()
-                .run();
-            });
-
             // See Note 1 in src/ussd_pmtct for why these four next users' tests are skipped
             describe.skip("0820000111 exists on new system; has active " +
             "non-pmtct subscription; no consent, no dob", function() {
