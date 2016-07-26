@@ -154,6 +154,16 @@ go.app = function() {
                 });
         };
 
+        // the following function might need to be moved into utils_project...
+        /*self.subscribeToLossMessages = function(im, identity) {
+            return Q.all([
+                // ensure user is not opted out
+                self.opt_in(im, contact),
+                // activate new subscription
+                // ...? post or patch (reg creates subs...)
+            ]);
+        };*/
+
         // TIMEOUT HANDLING
 
         // override normal state adding
@@ -514,15 +524,16 @@ go.app = function() {
                         };
                         return hub.update_registration(pmtct_loss_switch)
                             .then(function() {
-                                // deactivate active vumi subscriptions - unsub all
                                 return self
+                                    // deactivate active vumi subscriptions - unsub all
                                     .deactivateVumiSubscriptions(self.im, identity)
-                                    .then(function(response) {
+                                    /*.then(function() {
+                                        // subscribe to loss messages
+                                        .subscribeToLossMessages(self.im, identity);
+                                    })*/
+                                    .then(function() {
                                         return "state_end_loss_optin";
                                     });
-                                // subscribe to loss messages (utils.loss_message_opt_in)
-
-                                // return "state_end_loss_optin";
                             });
                     } else {
                         return "state_end_loss_optout";
