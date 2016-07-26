@@ -1,10 +1,11 @@
 // Identity Personas
 // ...add (new system and PMTCT) --> optout
 
-// (+27820000111) on new sys; active sub; no consent, no dob
-// (+27820000222) on new sys; active sub; consent, no dob
-// (+27820000333) on new sys; active sub; no consent, dob
-// (+27820000444) on new sys; active sub; consent, dob
+// (+27820000111) on new sys; active sub non-pmtct; no consent, no dob
+// (+27820000222) on new sys; active sub non-pmtct; consent, no dob
+// (+27820000333) on new sys; active sub non-pmtct; no consent, dob
+// (+27820000444) on new sys; active sub non-pmtct; consent, dob
+
 // (+27820000555) on new sys; no active sub
 
 // (+27820000666) on old sys; active sub; consent = true, dob given
@@ -47,7 +48,7 @@ module.exports = function() {
                                 "msisdn": {
                                     "+27820000111": {}
                                 }
-                            }
+                            },
                         },
                         "created_at": "2016-06-21T06:13:29.693272Z",
                         "updated_at": "2016-06-21T06:13:29.693298Z"
@@ -538,7 +539,7 @@ module.exports = function() {
             }
         },
 
-        // 14: has_active_subscription - cb245673-aa41-4302-ac47-00000000005 (no active subscription on new system)
+        // 15: has_active_subscription - cb245673-aa41-4302-ac47-00000000005 (no active subscription on new system)
         {
             'request': {
                 'method': 'GET',
@@ -563,7 +564,7 @@ module.exports = function() {
             }
         },
 
-        // 15: has_active_subscription - cb245673-aa41-4302-ac47-00000000006 (no active subscription on new system)
+        // 16: has_active_subscription - cb245673-aa41-4302-ac47-00000000006 (no active subscription on new system)
         {
             'request': {
                 'method': 'GET',
@@ -588,7 +589,7 @@ module.exports = function() {
             }
         },
 
-        // 16: has_active_subscription - cb245673-aa41-4302-ac47-00000000007 (no active subscription on new system)
+        // 17: has_active_subscription - cb245673-aa41-4302-ac47-00000000007 (no active subscription on new system)
         {
             'repeatable': true,
             'request': {
@@ -614,7 +615,7 @@ module.exports = function() {
             }
         },
 
-        // 17: has_active_subscription - cb245673-aa41-4302-ac47-00000000008 (no active subscription on new system)
+        // 18: has_active_subscription - cb245673-aa41-4302-ac47-00000000008 (no active subscription on new system)
         {
             'request': {
                 'method': 'GET',
@@ -639,7 +640,7 @@ module.exports = function() {
             }
         },
 
-        // 18: has_active_subscription - cb245673-aa41-4302-ac47-00000000009 (no active subscription on new system)
+        // 19: has_active_subscription - cb245673-aa41-4302-ac47-00000000009 (no active subscription on new system)
         {
             'request': {
                 'method': 'GET',
@@ -664,7 +665,7 @@ module.exports = function() {
             }
         },
 
-        // 19: has_active_subscription - cb245673-aa41-4302-ac47-00000000010 (no active subscription on new system)
+        // 20: has_active_subscription - cb245673-aa41-4302-ac47-00000000010 (no active subscription on new system)
         {
             'request': {
                 'method': 'GET',
@@ -689,7 +690,7 @@ module.exports = function() {
             }
         },
 
-        // 20: has_active_subscription - cb245673-aa41-4302-ac47-00000000011 (no active subscription on new system)
+        // 21: has_active_subscription - cb245673-aa41-4302-ac47-00000000011 (no active subscription on new system)
         {
             'request': {
                 'method': 'GET',
@@ -714,70 +715,23 @@ module.exports = function() {
             }
         },
 
-        // 21: get vumi contact by msisdn +27820000556
+        // 22: unused
         {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'query': 'msisdn=+27820000556'
+                    "deprecated": "fixture"
                 },
                 'headers': {
                     'Authorization': ['Bearer abcde'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'https://contacts/api/v1/go/contacts/',
+                'url': 'http://',
             },
-            'response': {
-                "code": 200,
-                "data": {
-                  "cursor": null,
-                  "data": [
-                      {
-                          "groups": [],
-                          "twitter_handle": null,
-                          "user_account": "1aa0dea2f82945a48cc258c61d756f16",
-                          "bbm_pin": null,
-                          "extra": {
-                              "nc_registrees": "+27712388248",
-                              "nc_facname": "za South Africa (National Government)",
-                              "nc_subscription_seq_start": "1",
-                              "suspect_pregnancy": "no",
-                              "nc_working_on": "+27712388248",
-                              "metric_sum_sessions": "3",
-                              "last_stage": "states_language",
-                              "nc_subscription_type": "11",
-                              "nc_is_registered": "true",
-                              "nc_subscription_rate": "4",
-                              "nc_opt_out_reason": "",
-                              "nc_last_reg_id": "277",
-                              "id_type": "none",
-                              "is_registered": "false",
-                              "nc_faccode": "640301",
-                              "nc_registered_by": "+27727372369",
-                              "language_choice": "en",
-                              "nc_source_name": "Vumi Go",
-                              "ussd_sessions": "3"
-                          },
-                          "msisdn": "+27845091190",
-                          "created_at": "2016-04-29 09:43:29.256573",
-                          "facebook_id": null,
-                          "name": null,
-                          "dob": null,
-                          "key": "3e99804c1f1c4c9790517923bb8b318b",
-                          "mxit_id": null,
-                          "$VERSION": 2,
-                          "surname": null,
-                          "wechat_id": null,
-                          "email_address": null,
-                          "gtalk_id": null,
-                          "subscription": {}
-                      }
-                  ]
-               }
-            }
+            'response': {}
         },
 
-        // 22: get vumi contact by msisdn +27820000555
+        // 23: get vumi contact by msisdn +27820000555
         {
             'request': {
                 'method': 'GET',
@@ -799,7 +753,7 @@ module.exports = function() {
             }
         },
 
-        // 23: get vumi contact by msisdn +27820000666
+        // 24: get vumi contact by msisdn +27820000666
         {
             'request': {
                 'method': 'GET',
@@ -815,56 +769,56 @@ module.exports = function() {
             'response': {
                 "code": 200,
                 "data": {
-                  "cursor": null,
-                  "data": [
-                      {
-                          "groups": [],
-                          "twitter_handle": null,
-                          "user_account": "1aa0dea2f82945a48cc258c61d756f16",
-                          "bbm_pin": null,
-                          "extra": {
-                              "nc_registrees": "+27712388248",
-                              "nc_facname": "za South Africa (National Government)",
-                              "nc_subscription_seq_start": "1",
-                              "suspect_pregnancy": "no",
-                              "nc_working_on": "+27712388248",
-                              "metric_sum_sessions": "3",
-                              "last_stage": "states_language",
-                              "nc_subscription_type": "11",
-                              "nc_is_registered": "true",
-                              "nc_subscription_rate": "4",
-                              "nc_opt_out_reason": "",
-                              "nc_last_reg_id": "277",
-                              "id_type": "none",
-                              "is_registered": "false",
-                              "nc_faccode": "640301",
-                              "nc_registered_by": "+27727372369",
-                              "language_choice": "en",
-                              "nc_source_name": "Vumi Go",
-                              "ussd_sessions": "3"
-                          },
-                          "msisdn": "+27820000666",
-                          "created_at": "2016-04-29 09:43:29.256573",
-                          "facebook_id": null,
-                          "name": null,
-                          "dob": null,
-                          "key": "3e99804c1f1c4c9790517923bb8b318b",
-                          "mxit_id": null,
-                          "$VERSION": 2,
-                          "surname": null,
-                          "wechat_id": null,
-                          "email_address": null,
-                          "gtalk_id": null,
-                          "subscription": {},
-                          "consent": "true",
-                          "dob": "1982-02-01"
-                      }
-                  ]
-              }
-           }
+                    "cursor": null,
+                    "data": [
+                        {
+                            "groups": [],
+                            "twitter_handle": null,
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16",
+                            "bbm_pin": null,
+                            "extra": {
+                                "nc_registrees": "+27712388248",
+                                "nc_facname": "za South Africa (National Government)",
+                                "nc_subscription_seq_start": "1",
+                                "suspect_pregnancy": "no",
+                                "nc_working_on": "+27712388248",
+                                "metric_sum_sessions": "3",
+                                "last_stage": "states_language",
+                                "nc_subscription_type": "11",
+                                "nc_is_registered": "true",
+                                "nc_subscription_rate": "4",
+                                "nc_opt_out_reason": "",
+                                "nc_last_reg_id": "277",
+                                "id_type": "none",
+                                "is_registered": "false",
+                                "nc_faccode": "640301",
+                                "nc_registered_by": "+27727372369",
+                                "language_choice": "en",
+                                "nc_source_name": "Vumi Go",
+                                "ussd_sessions": "3",
+                                "consent": "true",
+                                "dob": "1982-02-01",
+                                "edd": "2016-09-06",
+                            },
+                            "msisdn": "+27820000666",
+                            "created_at": "2016-04-29 09:43:29.256573",
+                            "facebook_id": null,
+                            "name": null,
+                            "key": "3e99804c1f1c4c9790517923bb8b318b",
+                            "mxit_id": null,
+                            "$VERSION": 2,
+                            "surname": null,
+                            "wechat_id": null,
+                            "email_address": null,
+                            "gtalk_id": null,
+                            "subscription": {},
+                        }
+                    ]
+                }
+            }
         },
 
-        // 24: get vumi contact by msisdn +27820000777
+        // 25: get vumi contact by msisdn +27820000777
         {
             'repeatable': true,
             'request': {
@@ -881,55 +835,56 @@ module.exports = function() {
             'response': {
                 "code": 200,
                 "data": {
-                  "cursor": null,
-                  "data": [
-                      {
-                          "groups": [],
-                          "twitter_handle": null,
-                          "user_account": "1aa0dea2f82945a48cc258c61d756f16",
-                          "bbm_pin": null,
-                          "extra": {
-                              "nc_registrees": "+27712388248",
-                              "nc_facname": "za South Africa (National Government)",
-                              "nc_subscription_seq_start": "1",
-                              "suspect_pregnancy": "no",
-                              "nc_working_on": "+27712388248",
-                              "metric_sum_sessions": "3",
-                              "last_stage": "states_language",
-                              "nc_subscription_type": "11",
-                              "nc_is_registered": "true",
-                              "nc_subscription_rate": "4",
-                              "nc_opt_out_reason": "",
-                              "nc_last_reg_id": "277",
-                              "id_type": "none",
-                              "is_registered": "false",
-                              "nc_faccode": "640301",
-                              "nc_registered_by": "+27727372369",
-                              "language_choice": "en",
-                              "nc_source_name": "Vumi Go",
-                              "ussd_sessions": "3"
-                          },
-                          "msisdn": "+27820000777",
-                          "created_at": "2016-04-29 09:43:29.256573",
-                          "facebook_id": null,
-                          "name": null,
-                          "dob": null,
-                          "key": "3e99804c1f1c4c9790517923bb8b318b",
-                          "mxit_id": null,
-                          "$VERSION": 2,
-                          "surname": null,
-                          "wechat_id": null,
-                          "email_address": null,
-                          "gtalk_id": null,
-                          "subscription": {},
-                          "consent": "true"
-                      }
-                  ]
-              }
-           }
+                    "cursor": null,
+                    "data": [
+                        {
+                            "groups": [],
+                            "twitter_handle": null,
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16",
+                            "bbm_pin": null,
+                            "extra": {
+                                "nc_registrees": "+27712388248",
+                                "nc_facname": "za South Africa (National Government)",
+                                "nc_subscription_seq_start": "1",
+                                "suspect_pregnancy": "no",
+                                "nc_working_on": "+27712388248",
+                                "metric_sum_sessions": "3",
+                                "last_stage": "states_language",
+                                "nc_subscription_type": "11",
+                                "nc_is_registered": "true",
+                                "nc_subscription_rate": "4",
+                                "nc_opt_out_reason": "",
+                                "nc_last_reg_id": "277",
+                                "id_type": "none",
+                                "is_registered": "false",
+                                "nc_faccode": "640301",
+                                "nc_registered_by": "+27727372369",
+                                "language_choice": "en",
+                                "nc_source_name": "Vumi Go",
+                                "ussd_sessions": "3",
+                                "consent": "true",
+                                "edd": "2016-09-07"
+                            },
+                            "msisdn": "+27820000777",
+                            "created_at": "2016-04-29 09:43:29.256573",
+                            "facebook_id": null,
+                            "name": null,
+                            "dob": null,
+                            "key": "3e99804c1f1c4c9790517923bb8b318b",
+                            "mxit_id": null,
+                            "$VERSION": 2,
+                            "surname": null,
+                            "wechat_id": null,
+                            "email_address": null,
+                            "gtalk_id": null,
+                            "subscription": {},
+                        }
+                    ]
+                }
+            }
         },
 
-        // 25: get vumi contact by msisdn +27820000888
+        // 26: get vumi contact by msisdn +27820000888
         {
             'request': {
                 'method': 'GET',
@@ -945,55 +900,55 @@ module.exports = function() {
             'response': {
                 "code": 200,
                 "data": {
-                  "cursor": null,
-                  "data": [
-                      {
-                          "groups": [],
-                          "twitter_handle": null,
-                          "user_account": "1aa0dea2f82945a48cc258c61d756f16",
-                          "bbm_pin": null,
-                          "extra": {
-                              "nc_registrees": "+27712388248",
-                              "nc_facname": "za South Africa (National Government)",
-                              "nc_subscription_seq_start": "1",
-                              "suspect_pregnancy": "no",
-                              "nc_working_on": "+27712388248",
-                              "metric_sum_sessions": "3",
-                              "last_stage": "states_language",
-                              "nc_subscription_type": "11",
-                              "nc_is_registered": "true",
-                              "nc_subscription_rate": "4",
-                              "nc_opt_out_reason": "",
-                              "nc_last_reg_id": "277",
-                              "id_type": "none",
-                              "is_registered": "false",
-                              "nc_faccode": "640301",
-                              "nc_registered_by": "+27727372369",
-                              "language_choice": "en",
-                              "nc_source_name": "Vumi Go",
-                              "ussd_sessions": "3"
-                          },
-                          "msisdn": "+27820000888",
-                          "created_at": "2016-04-29 09:43:29.256573",
-                          "facebook_id": null,
-                          "name": null,
-                          "dob": null,
-                          "key": "3e99804c1f1c4c9790517923bb8b318b",
-                          "mxit_id": null,
-                          "$VERSION": 2,
-                          "surname": null,
-                          "wechat_id": null,
-                          "email_address": null,
-                          "gtalk_id": null,
-                          "subscription": {},
-                          "dob": "1975-09-23"
-                      }
-                  ]
-              }
-           }
+                    "cursor": null,
+                    "data": [
+                        {
+                            "groups": [],
+                            "twitter_handle": null,
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16",
+                            "bbm_pin": null,
+                            "extra": {
+                                "nc_registrees": "+27712388248",
+                                "nc_facname": "za South Africa (National Government)",
+                                "nc_subscription_seq_start": "1",
+                                "suspect_pregnancy": "no",
+                                "nc_working_on": "+27712388248",
+                                "metric_sum_sessions": "3",
+                                "last_stage": "states_language",
+                                "nc_subscription_type": "11",
+                                "nc_is_registered": "true",
+                                "nc_subscription_rate": "4",
+                                "nc_opt_out_reason": "",
+                                "nc_last_reg_id": "277",
+                                "id_type": "none",
+                                "is_registered": "false",
+                                "nc_faccode": "640301",
+                                "nc_registered_by": "+27727372369",
+                                "language_choice": "zu",
+                                "nc_source_name": "Vumi Go",
+                                "ussd_sessions": "3",
+                                "dob": "1975-09-23",
+                                "edd": "2016-09-08"
+                            },
+                            "msisdn": "+27820000888",
+                            "created_at": "2016-04-29 09:43:29.256573",
+                            "facebook_id": null,
+                            "name": null,
+                            "key": "3e99804c1f1c4c9790517923bb8b318b",
+                            "mxit_id": null,
+                            "$VERSION": 2,
+                            "surname": null,
+                            "wechat_id": null,
+                            "email_address": null,
+                            "gtalk_id": null,
+                            "subscription": {},
+                        }
+                    ]
+                }
+            }
         },
 
-        // 26: get vumi contact by msisdn +27820000999
+        // 27: get vumi contact by msisdn +27820000999
         {
             'request': {
                 'method': 'GET',
@@ -1035,13 +990,14 @@ module.exports = function() {
                               "nc_registered_by": "+27727372369",
                               "language_choice": "en",
                               "nc_source_name": "Vumi Go",
-                              "ussd_sessions": "3"
+                              "ussd_sessions": "3",
+                              "dob": null,
+                              "edd": "2016-09-09"
                           },
                           "msisdn": "+27820000999",
                           "created_at": "2016-04-29 09:43:29.256573",
                           "facebook_id": null,
                           "name": null,
-                          "dob": null,
                           "key": "3e99804c1f1c4c9790517923bb8b318b",
                           "mxit_id": null,
                           "$VERSION": 2,
@@ -1056,7 +1012,7 @@ module.exports = function() {
            }
         },
 
-        // 27: get vumi contact by msisdn +27820101010
+        // 28: get vumi contact by msisdn +27820101010
         {
             'request': {
                 'method': 'GET',
@@ -1072,54 +1028,54 @@ module.exports = function() {
             'response': {
                 "code": 200,
                 "data": {
-                  "cursor": null,
-                  "data": [
-                      {
-                          "groups": [],
-                          "twitter_handle": null,
-                          "user_account": "1aa0dea2f82945a48cc258c61d756f16",
-                          "bbm_pin": null,
-                          "extra": {
-                              "nc_registrees": "+27712388248",
-                              "nc_facname": "za South Africa (National Government)",
-                              "nc_subscription_seq_start": "1",
-                              "suspect_pregnancy": "no",
-                              "nc_working_on": "+27712388248",
-                              "metric_sum_sessions": "3",
-                              "last_stage": "states_language",
-                              "nc_subscription_type": "11",
-                              "nc_is_registered": "true",
-                              "nc_subscription_rate": "4",
-                              "nc_opt_out_reason": "",
-                              "nc_last_reg_id": "277",
-                              "id_type": "none",
-                              "is_registered": "false",
-                              "nc_faccode": "640301",
-                              "nc_registered_by": "+27727372369",
-                              "language_choice": "en",
-                              "nc_source_name": "Vumi Go",
-                              "ussd_sessions": "3"
-                          },
-                          "msisdn": "+27820101010",
-                          "created_at": "2016-04-29 09:43:29.256573",
-                          "facebook_id": null,
-                          "name": null,
-                          "dob": null,
-                          "key": "3e99804c1f1c4c9790517923bb8b318b",
-                          "mxit_id": null,
-                          "$VERSION": 2,
-                          "surname": null,
-                          "wechat_id": null,
-                          "email_address": null,
-                          "gtalk_id": null,
-                          "subscription": {}
-                      }
-                  ]
-              }
-           }
+                    "cursor": null,
+                    "data": [
+                        {
+                            "groups": [],
+                            "twitter_handle": null,
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16",
+                            "bbm_pin": null,
+                            "extra": {
+                                "nc_registrees": "+27712388248",
+                                "nc_facname": "za South Africa (National Government)",
+                                "nc_subscription_seq_start": "1",
+                                "suspect_pregnancy": "no",
+                                "nc_working_on": "+27712388248",
+                                "metric_sum_sessions": "3",
+                                "last_stage": "states_language",
+                                "nc_subscription_type": "11",
+                                "nc_is_registered": "true",
+                                "nc_subscription_rate": "4",
+                                "nc_opt_out_reason": "",
+                                "nc_last_reg_id": "277",
+                                "id_type": "none",
+                                "is_registered": "false",
+                                "nc_faccode": "640301",
+                                "nc_registered_by": "+27727372369",
+                                "language_choice": "en",
+                                "nc_source_name": "Vumi Go",
+                                "ussd_sessions": "3"
+                            },
+                            "msisdn": "+27820101010",
+                            "created_at": "2016-04-29 09:43:29.256573",
+                            "facebook_id": null,
+                            "name": null,
+                            "dob": null,
+                            "key": "3e99804c1f1c4c9790517923bb8b318b",
+                            "mxit_id": null,
+                            "$VERSION": 2,
+                            "surname": null,
+                            "wechat_id": null,
+                            "email_address": null,
+                            "gtalk_id": null,
+                            "subscription": {}
+                        }
+                    ]
+                }
+            }
         },
 
-        // 28: get vumi contact by msisdn +27820111111
+        // 29: get vumi contact by msisdn +27820111111
         {
             'request': {
                 'method': 'GET',
@@ -1135,18 +1091,18 @@ module.exports = function() {
             'response': {
                 "code": 200,
                 "data": {
-                  "cursor": null,
-                  "data": []
+                    "cursor": null,
+                    "data": []
                 }
             }
         },
 
-        // 29: get vumi contact subscription msisdn +27820000555
+        // 30: get vumi contact subscriptions msisdn +27820000555
         {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'to_addr': '+27820000555'
+                    'query': 'toaddr=+27820000555'
                 },
                 'url': 'https://subscriptions/api/v1/go/',
             },
@@ -1216,12 +1172,12 @@ module.exports = function() {
             }
         },
 
-        // 30: get vumi contact subscription msisdn +27820000666
+        // 31: get vumi contact subscriptions msisdn +27820000666
         {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'to_addr': '+27820000666'
+                    'query': 'toaddr=+27820000666'
                 },
                 'url': 'https://subscriptions/api/v1/go/subscription/',
             },
@@ -1239,12 +1195,12 @@ module.exports = function() {
                         "objects": [
                             {
                                 "active": true,
-                                "completed": true,
+                                "completed": false,
                                 "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
                                 "created_at": "2015-11-11T07:49:21.172038",
                                 "id": 1467333,
                                 "lang": "en",
-                                "message_set": "/api/v1/message_set/4/",
+                                "message_set": "/api/v1/message_set/4/",  // baby1
                                 "next_sequence_number": 30,
                                 "process_status": 2,
                                 "resource_uri": "/api/v1/subscription/1467333/",
@@ -1291,13 +1247,13 @@ module.exports = function() {
             }
         },
 
-        // 31: get vumi contact subscription msisdn +27820000777
+        // 32: get vumi contact subscriptions msisdn +27820000777
         {
             'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
-                    'to_addr': '+27820000777'
+                    'query': 'toaddr=+27820000777'
                 },
                 'url': 'https://subscriptions/api/v1/go/subscription/',
             },
@@ -1315,12 +1271,12 @@ module.exports = function() {
                         "objects": [
                             {
                                 "active": true,
-                                "completed": true,
+                                "completed": false,
                                 "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
                                 "created_at": "2015-11-11T07:49:21.172038",
                                 "id": 1467333,
                                 "lang": "en",
-                                "message_set": "/api/v1/message_set/4/",
+                                "message_set": "/api/v1/message_set/1/",  // standard
                                 "next_sequence_number": 30,
                                 "process_status": 2,
                                 "resource_uri": "/api/v1/subscription/1467333/",
@@ -1367,12 +1323,12 @@ module.exports = function() {
             }
         },
 
-        // 32: get vumi contact subscription msisdn +27820000888
+        // 33: get vumi contact subscriptions msisdn +27820000888
         {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'to_addr': '+27820000888'
+                    'query': 'toaddr=+27820000888'
                 },
                 'url': 'https://subscriptions/api/v1/go/subscription/',
             },
@@ -1390,12 +1346,12 @@ module.exports = function() {
                         "objects": [
                             {
                                 "active": true,
-                                "completed": true,
+                                "completed": false,
                                 "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
                                 "created_at": "2015-11-11T07:49:21.172038",
                                 "id": 1467333,
                                 "lang": "en",
-                                "message_set": "/api/v1/message_set/4/",
+                                "message_set": "/api/v1/message_set/2/",
                                 "next_sequence_number": 30,
                                 "process_status": 2,
                                 "resource_uri": "/api/v1/subscription/1467333/",
@@ -1426,12 +1382,12 @@ module.exports = function() {
             }
         },
 
-        // 33: get vumi contact subscription msisdn +27820000999
+        // 34: get vumi contact subscriptions msisdn +27820000999
         {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'to_addr': '+27820000999'
+                    'query': 'toaddr=+27820000999'
                 },
                 'url': 'https://subscriptions/api/v1/go/subscription/',
             },
@@ -1449,12 +1405,12 @@ module.exports = function() {
                         "objects": [
                             {
                                 "active": true,
-                                "completed": true,
+                                "completed": false,
                                 "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
                                 "created_at": "2015-11-11T07:49:21.172038",
                                 "id": 1467333,
                                 "lang": "en",
-                                "message_set": "/api/v1/message_set/4/",
+                                "message_set": "/api/v1/message_set/3/",
                                 "next_sequence_number": 30,
                                 "process_status": 2,
                                 "resource_uri": "/api/v1/subscription/1467333/",
@@ -1485,12 +1441,12 @@ module.exports = function() {
             }
         },
 
-        // 34: get vumi contact subscription msisdn +27820101010
+        // 35: get vumi contact subscriptions msisdn +27820101010
         {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'to_addr': '+27820101010'
+                    'query': 'toaddr=+27820101010'
                 },
                 'url': 'https://subscriptions/api/v1/go/subscription/',
             },
@@ -1544,7 +1500,7 @@ module.exports = function() {
             }
         },
 
-        // 35: create identity cb245673-aa41-4302-ac47-00000000006
+        // 36: create identity cb245673-aa41-4302-ac47-00000000006
         {
             "request": {
                 "method": 'POST',
@@ -1571,7 +1527,7 @@ module.exports = function() {
             }
         },
 
-        // 36: create identity cb245673-aa41-4302-ac47-00000000007
+        // 37: create identity cb245673-aa41-4302-ac47-00000000007
         {
             "repeatable": true,
             "request": {
@@ -1599,7 +1555,7 @@ module.exports = function() {
             }
         },
 
-        // 37: create identity cb245673-aa41-4302-ac47-00000000008
+        // 38: create identity cb245673-aa41-4302-ac47-00000000008
         {
             "request": {
                 "method": 'POST',
@@ -1626,7 +1582,7 @@ module.exports = function() {
             }
         },
 
-        // 38: create identity cb245673-aa41-4302-ac47-00000000009
+        // 39: create identity cb245673-aa41-4302-ac47-00000000009
         {
             "request": {
                 "method": 'POST',
@@ -1653,7 +1609,7 @@ module.exports = function() {
             }
         },
 
-        // 39: create identity cb245673-aa41-4302-ac47-00000000010
+        // 40: create identity cb245673-aa41-4302-ac47-00000000010
         {
             "request": {
                 "method": 'POST',
@@ -1680,7 +1636,7 @@ module.exports = function() {
             }
         },
 
-        // 40: create identity cb245673-aa41-4302-ac47-00000000011
+        // 41: create identity cb245673-aa41-4302-ac47-00000000011
         {
             "request": {
                 "method": 'POST',
@@ -1748,8 +1704,26 @@ module.exports = function() {
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000006/',
-                "body": '{"url":"http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000006/","id":"cb245673-aa41-4302-ac47-00000000006","version":1,"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000666":{}}},"pmtct":{"registered":"true"}},"created_at":"2016-07-17T06:13:29.693272Z","updated_at":"2016-07-17T06:13:29.693298Z"}'
+                "data": {
+                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000006/",
+                    "id": "cb245673-aa41-4302-ac47-00000000006",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820000666": {}
+                            }
+                        },
+                        "mom_dob": "1982-02-01",
+                        "lang_code": "eng_ZA",
+                        "vumi_user_account": "1aa0dea2f82945a48cc258c61d756f16",
+                        "source": "pmtct"
+                    },
+                    "created_at": "2016-07-17T06:13:29.693272Z",
+                    "updated_at": "2016-07-17T06:13:29.693298Z"}
             },
+            "response": {}
         },
 
         // 47: update identity cb245673-aa41-4302-ac47-00000000007
@@ -1757,8 +1731,27 @@ module.exports = function() {
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000007/',
-                "body": '{"url":"http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000007/","id":"cb245673-aa41-4302-ac47-00000000007","version":1,"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000777":{}}},"pmtct":{"registered":"true"}},"created_at":"2016-07-17T06:13:29.693272Z","updated_at":"2016-07-17T06:13:29.693298Z"}'
+                "data": {
+                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000007/",
+                    "id": "cb245673-aa41-4302-ac47-00000000007",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820000777": {}
+                            }
+                        },
+                        "mom_dob": "1954-05-29",
+                        "lang_code": "eng_ZA",
+                        "vumi_user_account": "1aa0dea2f82945a48cc258c61d756f16",
+                        "source": "pmtct"
+                    },
+                    "created_at": "2016-07-17T06:13:29.693272Z",
+                    "updated_at": "2016-07-17T06:13:29.693298Z"
+                }
             },
+            "response": {}
         },
 
         // 48: update identity cb245673-aa41-4302-ac47-00000000008
@@ -1766,8 +1759,27 @@ module.exports = function() {
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000008/',
-                "body": '{"url":"http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000008/","id":"cb245673-aa41-4302-ac47-00000000008","version":1,"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000888":{}}},"pmtct":{"registered":"true"}},"created_at":"2016-07-17T06:13:29.693272Z","updated_at":"2016-07-17T06:13:29.693298Z"}'
+                "data": {
+                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000008/",
+                    "id": "cb245673-aa41-4302-ac47-00000000008",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820000888": {}
+                            }
+                        },
+                        "mom_dob": "1975-09-23",
+                        "lang_code": "zul_ZA",
+                        "vumi_user_account": "1aa0dea2f82945a48cc258c61d756f16",
+                        "source": "pmtct"
+                    },
+                    "created_at": "2016-07-17T06:13:29.693272Z",
+                    "updated_at": "2016-07-17T06:13:29.693298Z"
+                }
             },
+            "response": {}
         },
 
         // 49: update identity cb245673-aa41-4302-ac47-00000000009
@@ -1775,8 +1787,179 @@ module.exports = function() {
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/',
-                "body": '{"url":"http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/","id":"cb245673-aa41-4302-ac47-00000000009","version":1,"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000999":{}}},"pmtct":{"registered":"true"}},"created_at":"2016-07-17T06:13:29.693272Z","updated_at":"2016-07-17T06:13:29.693298Z"}'
+                "data": {
+                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/",
+                    "id": "cb245673-aa41-4302-ac47-00000000009",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820000999": {}
+                            }
+                        },
+                        "mom_dob": "1981-04-26",
+                        "lang_code": "eng_ZA",
+                        "vumi_user_account": "1aa0dea2f82945a48cc258c61d756f16",
+                        "source": "pmtct"
+                    },
+                    "created_at": "2016-07-17T06:13:29.693272Z",
+                    "updated_at": "2016-07-17T06:13:29.693298Z"
+                }
             },
+            "response": {}
+        },
+
+        // 50: unused
+        {
+            "request": {
+                "method": 'POST',
+                "data": {
+                    "deprecated": "fixture"
+                },
+                "url": 'http://'
+            },
+            "response": {
+
+            }
+        },
+
+        // 51: unused
+        {
+            "request": {
+                "method": 'POST',
+                "data": {
+                    "deprecated": "fixture"
+                },
+                "url": 'http://'
+            },
+            "response": {
+
+            }
+        },
+
+        // 52: unused
+        {
+            "request": {
+                "method": 'POST',
+                "data": {
+                    "deprecated": "fixture"
+                },
+                "url": 'http://'
+            },
+            "response": {
+
+            }
+        },
+
+        // 53: unused
+        {
+            "request": {
+                "method": 'POST',
+                "data": {
+                    "deprecated": "fixture"
+                },
+                "url": 'http://'
+            },
+            "response": {
+
+            }
+        },
+
+        // 54: get messageset 1
+        {
+            "request": {
+                "method": 'GET',
+                "url": "http://sbm.localhost:8001/api/v1/messageset/1/"
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "id": 1,
+                    "short_name": 'not.a.hiv.messageset',
+                    "notes": null,
+                    "next_set": 2,
+                    "default_schedule": 1,
+                    "content_type": 'text',
+                    "created_at": '2016-06-22T06:13:29.693272Z',
+                    "updated_at": '2016-06-22T06:13:29.693272Z'
+                }
+            }
+        },
+
+        // 55: post registration for 0666
+        {
+            "request": {
+                "method": 'POST',
+                "url": "http://hub.localhost:8001/api/v1/registration/",
+                "data": {
+                    "reg_type": "postbirth_pmtct",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000000006",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000006",
+                        "language": "eng_ZA",
+                        "mom_dob": "1982-02-01"
+                    }
+                }
+            },
+            "response": {}
+        },
+
+        // 56: post registration for 0777
+        {
+            "request": {
+                "method": 'POST',
+                "url": "http://hub.localhost:8001/api/v1/registration/",
+                "data": {
+                    "reg_type": "prebirth_pmtct",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000000007",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
+                        "language": "eng_ZA",
+                        "mom_dob": "1954-05-29",
+                        "edd": "2016-09-07"
+                    }
+                }
+            },
+            "response": {}
+        },
+
+        // 57: post registration for 0888
+        {
+            "request": {
+                "method": 'POST',
+                "url": "http://hub.localhost:8001/api/v1/registration/",
+                "data": {
+                    "reg_type": "prebirth_pmtct",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000000008",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000008",
+                        "language": "zul_ZA",
+                        "mom_dob": "1975-09-23",
+                        "edd": "2016-09-08"
+                    }
+                }
+            },
+            "response": {}
+        },
+
+        // 58: post registration for 0999
+        {
+            "request": {
+                "method": 'POST',
+                "url": "http://hub.localhost:8001/api/v1/registration/",
+                "data": {
+                    "reg_type": "prebirth_pmtct",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000000009",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000009",
+                        "language": "eng_ZA",
+                        "mom_dob": "1981-04-26",
+                        "edd": "2016-09-09"
+                    }
+                }
+            },
+            "response": {}
         },
 
     ];
