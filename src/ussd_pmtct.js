@@ -216,15 +216,36 @@ go.app = function() {
                 });
         };
 
-        // the following function might need to be moved into utils_project...
-        /*self.subscribeToLossMessages = function(im, identity) {
-            return Q.all([
-                // ensure user is not opted out
-                self.opt_in(im, contact),
-                // activate new subscription
-                // ...? post or patch (reg creates subs...)
-            ]);
-        };*/
+        // the following function might still need to be moved into a utils_project...
+        self.subscribeToLossMessages = function(im, identity) {
+            // ensure user is not opted out
+            //self.opt_in(im, contact),
+            im.user.answers.optout_reason = "";
+
+            // activate new subscription...? sbm-post or hub-patch (reg creates subs...)
+            // do subscription post to stage-based messaging
+            var sub_info = {
+                // contact_key: contact.key,
+                lang: im.user.lang,
+                // message_set: "/api/v1/message_set/" + opts.sub_type + "/",
+                next_sequence_number: 2, //..?
+                // schedule: "/api/v1/periodic_task/" + opts.sub_rate + "/",
+                to_addr: Object.keys(identity.details.addresses.msisdn)[0],
+                // user_account: im.user.answers.vumi_user_account
+            };
+
+            var http = new JsonApi(im, {
+                headers: {
+                    "Authorization": ['Token ' + im.config.services.stage_based_messaging.token]
+                }
+            });
+
+            return http
+                .post(im.config.services.stage_based_messaging.base_url, {data: sub_info})
+                .then(function(response) {
+                    // console.log("post performed: "+response);
+                });
+        };
 
         // TIMEOUT HANDLING
 
@@ -618,12 +639,13 @@ go.app = function() {
                                 return self
                                     // deactivate active vumi subscriptions - unsub all
                                     .deactivateVumiSubscriptions(self.im, identity)
-                                    /*.then(function() {
-                                        // subscribe to loss messages
-                                        .subscribeToLossMessages(self.im, identity);
-                                    })*/
                                     .then(function() {
-                                        return "state_end_loss_optin";
+                                        // subscribe to loss messages
+                                        return self
+                                        .subscribeToLossMessages(self.im, identity)
+                                        .then(function() {
+                                            return "state_end_loss_optin";
+                                        });
                                     });
                             });
                     } else {

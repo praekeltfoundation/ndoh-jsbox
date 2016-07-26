@@ -2520,10 +2520,26 @@ module.exports = function() {
                                 "updated_at": "2015-10-26T11:38:59.099219",
                                 "user_account": "1aa0dea2f82945a48cc258c61d756f16"
                             }
-                        ]}
+                        ]
                     }
                 }
             },
+            "response": {}
+        },
+
+        // 73:
+        {
+            "request": {
+                "url": 'http://sbm.localhost:8001/api/v1/',
+                "method": 'POST',
+                "data": {
+                    "lang": "eng_ZA",
+                    "next_sequence_number": 2,
+                    "to_addr": "+27720000111"
+                }
+            },
+            "response": {}
+        }
 
     ];
 };
