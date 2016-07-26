@@ -174,7 +174,7 @@ go.app = function() {
 
             return http.get(subscription_base_url + endpoint, {
                     params: {
-                        "to_addr": msisdn
+                        "toaddr": msisdn
                     }
                 })
                 .then(function(result) {
@@ -304,7 +304,7 @@ go.app = function() {
                         return self.im.user
                         .set_lang(self.im.user.answers.contact_identity.details.lang_code || "eng_ZA")
                         .then(function(lang_set_response) {
-                            return self.states.create("state_optout_reason_menu");
+                            return self.states.create("state_optout_reason_menu", identity);
                         });
                     } else {
                         // Note 1: that what we are doing here is a temporary solution before
@@ -549,7 +549,7 @@ go.app = function() {
         });
 
         // start of OPT-OUT flow
-        self.add("state_optout_reason_menu", function(name) {
+        self.add("state_optout_reason_menu", function(name, identity) {
             return new PaginatedChoiceState(name, {
                 question: $("Why do you no longer want to receive messages related to keeping your baby HIV-negative?"),
                 characters_per_page: 182,
@@ -596,7 +596,7 @@ go.app = function() {
             });
         });
 
-        self.add("state_loss_messages", function(name) {
+        self.add("state_loss_messages", function(name, identity) {
             return new ChoiceState(name, {
                 question: $("We are sorry for your loss. Would you like to receive a small set of free messages from MomConnect that could help you in this difficult time?"),
                 // error: ,
@@ -615,16 +615,16 @@ go.app = function() {
                         };
                         return hub.update_registration(pmtct_loss_switch)
                             .then(function() {
-                                return self
+                                // return self
                                     // deactivate active vumi subscriptions - unsub all
-                                    .deactivateVumiSubscriptions(self.im, identity)
+                                    // .deactivateVumiSubscriptions(self.im, identity)
                                     /*.then(function() {
                                         // subscribe to loss messages
                                         .subscribeToLossMessages(self.im, identity);
                                     })*/
-                                    .then(function() {
+                                    // .then(function() {
                                         return "state_end_loss_optin";
-                                    });
+                                    // });
                             });
                     } else {
                         return "state_end_loss_optout";
