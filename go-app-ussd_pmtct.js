@@ -269,9 +269,9 @@ go.app = function() {
                                 // save contact data (set_answer's) - lang, consent, dob, edd
                                 self.im.user.set_answer("lang_code",
                                     self.get_6_lang_code(contacts[0].extra.language_choice) || "eng_ZA");
-                                self.im.user.set_answer("consent", contacts[0].consent || false);
-                                self.im.user.set_answer("mom_dob", contacts[0].dob || null);
-                                self.im.user.set_answer("edd", contacts[0].edd || null);
+                                self.im.user.set_answer("consent", contacts[0].extra.consent || false);
+                                self.im.user.set_answer("mom_dob", contacts[0].extra.dob || null);
+                                self.im.user.set_answer("edd", contacts[0].extra.edd || null);
                                 // extract messageset number
                                 self.im.user.set_answer("messageset_id", active_subscriptions[0].message_set.match(/\d+/)[0]);
                                 self.im.user.set_answer("vumi_contact_id", contacts[0].user_account);
@@ -362,20 +362,8 @@ go.app = function() {
         self.add("state_birth_month", function(name) {
             return new ChoiceState(name, {
                 question: $("In which month were you born?"),
-                choices: [
-                    new Choice("jan", $("Jan")),
-                    new Choice("feb", $("Feb")),
-                    new Choice("mar", $("March")),
-                    new Choice("apr", $("April")),
-                    new Choice("may", $("May")),
-                    new Choice("jun", $("June")),
-                    new Choice("jul", $("July")),
-                    new Choice("aug", $("August")),
-                    new Choice("sep", $("Sep")),
-                    new Choice("oct", $("Oct")),
-                    new Choice("nov", $("Nov")),
-                    new Choice("dec", $("Dec"))
-                ],
+                choices: utils.make_month_choices(
+                    $, get_january(self.im.config), 12, 1, "MM", "MMM"),
                 next: function(choice) {
                     self.im.user.set_answer("dob_month", choice.value);
                     return "state_birth_day";
@@ -387,7 +375,8 @@ go.app = function() {
             return new FreeText(name, {
                 question: $("Please enter the date of the month you were born (For example 21)"),
                 check: function(content) {
-                    if (utils.is_valid_date(self.im.user.answers.dob_year + '-' + self.im.user.answers.dob_month + '-' + content, "YYYY-MMM-DD")) {
+                    if (utils.is_valid_date(self.im.user.answers.dob_year + '-' +
+                        self.im.user.answers.dob_month + '-' + content, "YYYY-MM-DD")) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return $("Invalid date. Please enter the date of the month you were born (For example 21)");
@@ -395,8 +384,8 @@ go.app = function() {
                 },
                 next: function(content) {
                     self.im.user.set_answer("dob_day", content);
-                    self.im.user.set_answer("dob",
-                        utils.get_entered_birth_date(self.im.user.answers.dob_year, self.im.user.answers.dob_month, content));
+                    self.im.user.set_answer("mom_dob",utils.get_entered_birth_date(
+                        self.im.user.answers.dob_year, self.im.user.answers.dob_month, content));
 
                     return "state_hiv_messages";
                 }
@@ -437,13 +426,13 @@ go.app = function() {
                 var subscription_type = self.getSubscriptionType(self.im.user.answers.messageset_id);
                 if (subscription_type === 'baby1' || subscription_type === 'baby2') {
                     reg_info = {
-                        "reg_type": "prebirth_pmtct",
+                        "reg_type": "postbirth_pmtct",
                         "registrant_id": self.im.user.answers.contact_identity.id,
                         "data": {
                             "operator_id": self.im.user.answers.contact_identity.id,
                             "language": self.im.user.answers.lang_code,
                             "mom_dob": self.im.user.answers.mom_dob,
-                            "edd": self.im.user.answers.edd,
+                            // "edd": self.im.user.answers.edd,
                         }
                     };
                 } else if (subscription_type === 'standard' || subscription_type === 'later'

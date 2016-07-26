@@ -197,12 +197,12 @@ describe("PMTCT app", function() {
                                 "In which month were you born?",
                                 "1. Jan",
                                 "2. Feb",
-                                "3. March",
-                                "4. April",
+                                "3. Mar",
+                                "4. Apr",
                                 "5. May",
-                                "6. June",
-                                "7. July",
-                                "8. August",
+                                "6. Jun",
+                                "7. Jul",
+                                "8. Aug",
                                 "9. Sep",
                                 "10. Oct",
                                 "11. Nov",
@@ -229,7 +229,7 @@ describe("PMTCT app", function() {
                         .setup.user.addr("0820000111")
                         .setup.user.state("state_birth_day")
                         .setup.user.answer("dob_year", "1981")
-                        .setup.user.answer("dob_month", "apr")
+                        .setup.user.answer("dob_month", "04")
                         .input(
                             "26"  // state_birth_day
                         )
@@ -307,12 +307,12 @@ describe("PMTCT app", function() {
                                 "In which month were you born?",
                                 "1. Jan",
                                 "2. Feb",
-                                "3. March",
-                                "4. April",
+                                "3. Mar",
+                                "4. Apr",
                                 "5. May",
-                                "6. June",
-                                "7. July",
-                                "8. August",
+                                "6. Jun",
+                                "7. Jul",
+                                "8. Aug",
                                 "9. Sep",
                                 "10. Oct",
                                 "11. Nov",
@@ -339,7 +339,7 @@ describe("PMTCT app", function() {
                         .setup.user.addr("0820000222")
                         .setup.user.state("state_birth_day")
                         .setup.user.answer("dob_year", "1981")
-                        .setup.user.answer("dob_month", "apr")
+                        .setup.user.answer("dob_month", "04")
                         .input(
                             "26"  // state_birth_day
                         )
@@ -629,12 +629,12 @@ describe("PMTCT app", function() {
                                 "In which month were you born?",
                                 "1. Jan",
                                 "2. Feb",
-                                "3. March",
-                                "4. April",
+                                "3. Mar",
+                                "4. Apr",
                                 "5. May",
-                                "6. June",
-                                "7. July",
-                                "8. August",
+                                "6. Jun",
+                                "7. Jul",
+                                "8. Aug",
                                 "9. Sep",
                                 "10. Oct",
                                 "11. Nov",
@@ -661,7 +661,7 @@ describe("PMTCT app", function() {
                         .setup.user.addr("0820000777")
                         .setup.user.state("state_birth_day")
                         .setup.user.answer("dob_year", "1954")
-                        .setup.user.answer("dob_month", "may")
+                        .setup.user.answer("dob_month", "05")
                         .input(
                             "29"  // state_birth_day
                         )
@@ -689,7 +689,7 @@ describe("PMTCT app", function() {
                         .check.reply.ends_session()
                         .run();
                 });
-                it.only("to state_end_hiv_messages_confirm (entire flow)", function() {
+                it("to state_end_hiv_messages_confirm (entire flow)", function() {
                     return tester
                         .setup.user.addr("0820000777")
                         .inputs(
@@ -704,7 +704,7 @@ describe("PMTCT app", function() {
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [6, 25, 32, 37, 47, 53]);
+                            utils.check_fixtures_used(api, [6, 25, 32, 37, 47, 56]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -866,12 +866,12 @@ describe("PMTCT app", function() {
                                 "In which month were you born?",
                                 "1. Jan",
                                 "2. Feb",
-                                "3. March",
-                                "4. April",
+                                "3. Mar",
+                                "4. Apr",
                                 "5. May",
-                                "6. June",
-                                "7. July",
-                                "8. August",
+                                "6. Jun",
+                                "7. Jul",
+                                "8. Aug",
                                 "9. Sep",
                                 "10. Oct",
                                 "11. Nov",
@@ -898,7 +898,7 @@ describe("PMTCT app", function() {
                         .setup.user.addr("0820000999")
                         .setup.user.state("state_birth_day")
                         .setup.user.answer("dob_year", "1981")
-                        .setup.user.answer("dob_month", "apr")
+                        .setup.user.answer("dob_month", "04")
                         .input(
                             "26"  // state_birth_day
                         )
