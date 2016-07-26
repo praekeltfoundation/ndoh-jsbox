@@ -2530,11 +2530,13 @@ module.exports = function() {
         // 73:
         {
             "request": {
-                "url": 'http://sbm.localhost:8001/api/v1/',
+                "url": 'https://subscriptions/api/v1/go/subscription/',
                 "method": 'POST',
                 "data": {
                     "lang": "eng_ZA",
+                    "message_set": "/api/v1/message_set/11/",
                     "next_sequence_number": 2,
+                    "schedule": "/api/v1/periodic_task/2/",
                     "to_addr": "+27720000111"
                 }
             },

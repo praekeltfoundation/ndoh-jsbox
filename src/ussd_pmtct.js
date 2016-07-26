@@ -218,33 +218,53 @@ go.app = function() {
 
         // the following function might still need to be moved into a utils_project...
         self.subscribeToLossMessages = function(im, identity) {
-            // ensure user is not opted out
-            //self.opt_in(im, contact),
-            im.user.answers.optout_reason = "";
+            return Q.all([
+                // ensure user is not opted out
+                self.opt_in(im, identity),
+                // activate new subscription
+                self.post_subscription(identity, im)
+            ]);
+        };
 
-            // activate new subscription...? sbm-post or hub-patch (reg creates subs...)
-            // do subscription post to stage-based messaging
+        self.opt_in = function(im, contact) {
+            // contact.extra.opt_out_reason = '';
+
+            return Q();
+            /*return Q.all([
+                im.api_request('optout.cancel_optout', {
+                    address_type: "msisdn",
+                    address_value: contact.msisdn
+                }),
+                im.contacts.save(contact)
+            ]);*/
+        };
+
+        self.post_subscription = function(contact, im) {
+            var username = self.im.config.vumi.username;
+            var api_key = self.im.config.vumi.api_key;
+
+            var subscription_base_url = self.im.config.vumi.subscription_url;
+            var endpoint = "subscription/";
+
             var sub_info = {
                 // contact_key: contact.key,
                 lang: im.user.lang,
-                // message_set: "/api/v1/message_set/" + opts.sub_type + "/",
-                next_sequence_number: 2, //..?
-                // schedule: "/api/v1/periodic_task/" + opts.sub_rate + "/",
-                to_addr: Object.keys(identity.details.addresses.msisdn)[0],
-                // user_account: im.user.answers.vumi_user_account
+                message_set: "/api/v1/message_set/11/",  // assuming 11 for pmtct
+                next_sequence_number: 2, //???
+                schedule: "/api/v1/periodic_task/2/",  // assuming one per week (1 = daily, 2 = once per week, 3 = twice per week, etc)
+                to_addr: Object.keys(contact.details.addresses.msisdn)[0],
+                // user_account: contact.user_account
             };
 
             var http = new JsonApi(im, {
-                headers: {
-                    "Authorization": ['Token ' + im.config.services.stage_based_messaging.token]
-                }
+              headers: {
+                'Authorization': ['ApiKey ' + username + ':' + api_key]
+              }
             });
 
-            return http
-                .post(im.config.services.stage_based_messaging.base_url, {data: sub_info})
-                .then(function(response) {
-                    // console.log("post performed: "+response);
-                });
+            return http.post(subscription_base_url + endpoint, {
+                data: sub_info
+                  });
         };
 
         // TIMEOUT HANDLING
@@ -640,7 +660,7 @@ go.app = function() {
                                     // deactivate active vumi subscriptions - unsub all
                                     .deactivateVumiSubscriptions(self.im, identity)
                                     .then(function() {
-                                        // subscribe to loss messages
+                                        // subscribe to loss messages on old system
                                         return self
                                         .subscribeToLossMessages(self.im, identity)
                                         .then(function() {
