@@ -83,7 +83,7 @@ go.app = function() {
             return http
             .get(subscription_base_url + endpoint, {
                 params: {
-                    "to_addr": msisdn
+                    "query": "toaddr=" + msisdn
                 }
             })
             .then(function(json_result) {
@@ -168,7 +168,7 @@ go.app = function() {
                     .log("Running: " + name)
                     .then(function() {
                         return creator(name, opts);
-                      });
+                    });
                 } else if (log_mode === 'test') {
                     return Q()
                     .then(function() {
@@ -227,28 +227,24 @@ go.app = function() {
             .get_or_create_identity({"msisdn": msisdn})
             .then(function(identity) {
                 self.im.user.set_answer("contact_identity", identity);
-                if (identity.details.pmtct) {  // optimization to eliminate api calls for newly created identities
-                    return self
-                    .has_active_pmtct_subscription(identity.id)
-                    .then(function(has_active_pmtct_subscription) {
-                        if (has_active_pmtct_subscription) {
-                            return self.im.user
-                            .set_lang(self.im.user.answers.contact_identity.details.lang_code || "eng_ZA")
-                            .then(function(lang_set_response) {
-                                return self.states.create("state_optout_reason_menu");
-                            });
-                        } else {
-                            // Note 1: that what we are doing here is a temporary solution before
-                            // full migration to the new system. We are not looking up the data
-                            // on the identity, but falling back to the vumi contact. This is
-                            // also why users 0820000111 to 0820000444 have been ignored in
-                            // testing for now
-                            return self.states.create("state_get_vumi_contact", msisdn);
-                        }
-                    });
-                } else {
-                    return self.states.create("state_get_vumi_contact", msisdn);
-                }
+                return self
+                .has_active_pmtct_subscription(identity.id)
+                .then(function(has_active_pmtct_subscription) {
+                    if (has_active_pmtct_subscription) {
+                        return self.im.user
+                        .set_lang(self.im.user.answers.contact_identity.details.lang_code || "eng_ZA")
+                        .then(function(lang_set_response) {
+                            return self.states.create("state_optout_reason_menu");
+                        });
+                    } else {
+                        // Note 1: that what we are doing here is a temporary solution before
+                        // full migration to the new system. We are not looking up the data
+                        // on the identity, but falling back to the vumi contact. This is
+                        // also why users 0820000111 to 0820000444 have been ignored in
+                        // testing for now
+                        return self.states.create("state_get_vumi_contact", msisdn);
+                    }
+                });
             });
         });
 
@@ -280,7 +276,7 @@ go.app = function() {
                                     self.im.user.set_answer("mom_dob", contacts[0].extra.dob || null);
                                     self.im.user.set_answer("edd", contacts[0].extra.edd || null);
                                     self.im.user.set_answer("subscription_type", subscription_type);
-                                    self.im.user.set_answer("vumi_contact_id", contacts[0].user_account);
+                                    self.im.user.set_answer("vumi_user_account", contacts[0].user_account);
 
                                     return self.im.user
                                     .set_lang(self.im.user.answers.lang_code)
@@ -425,14 +421,14 @@ go.app = function() {
         });
 
         self.add("state_register_pmtct", function(name) {
-            self.im.user.answers.contact_identity.details.pmtct = {
-                registered: "true"
-            };
+            var identity_info = self.im.user.answers.contact_identity;
+            identity_info.details.mom_dob = self.im.user.answers.mom_dob;
+            identity_info.details.lang_code = self.im.user.answers.lang_code;
+            identity_info.details.vumi_user_account = self.im.user.answers.vumi_user_account;
+            identity_info.details.source = "pmtct";
+
             return is
-            .update_identity(self.im.user.answers.contact_identity.id,
-                             self.im.user.answers.contact_identity)
-                                // "vumi_contact_id": self.im.user.answers.vumi_contact_id,
-                                // "sub_type":
+            .update_identity(self.im.user.answers.contact_identity.id, identity_info)
             .then(function() {
                 var reg_info;
                 var subscription_type = self.im.user.answers.subscription_type;

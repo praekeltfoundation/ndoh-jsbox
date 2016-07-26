@@ -577,7 +577,7 @@ describe("PMTCT app", function() {
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [5, 24, 31, 36, 46, 55]);
+                            utils.check_fixtures_used(api, [5, 16, 24, 31, 36, 46, 55]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -685,7 +685,7 @@ describe("PMTCT app", function() {
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [6, 25, 32, 37, 47, 56]);
+                            utils.check_fixtures_used(api, [6, 17, 25, 32, 37, 47, 56]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -706,9 +706,6 @@ describe("PMTCT app", function() {
                                 "1. Yes",
                                 "2. No"
                             ].join("\n")
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [7, 26, 33, 38]);
                         })
                         // .check.user.answer('consent', 'true')
                         // .check.user.answer('dob', '1970-04-05')
@@ -746,9 +743,6 @@ describe("PMTCT app", function() {
                                 "2. No"
                             ].join("\n")
                         })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [7, 26, 33, 38]);
-                        })
                         .run();
                 });
                 it("to state_end_hiv_messages_declined", function() {
@@ -781,7 +775,7 @@ describe("PMTCT app", function() {
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [7, 26, 33, 38, 48, 57]);
+                            utils.check_fixtures_used(api, [7, 18, 26, 33, 38, 48, 57]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -923,7 +917,7 @@ describe("PMTCT app", function() {
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [8, 27, 34, 39, 49, 58]);
+                            utils.check_fixtures_used(api, [8, 19, 27, 34, 39, 49, 58]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -942,7 +936,7 @@ describe("PMTCT app", function() {
                             reply: "You need to be registered to MomConnect to receive these messages. Please visit the nearest clinic to register."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [9, 28, 35, 40]);
+                            utils.check_fixtures_used(api, [9, 20, 28, 35, 40]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -961,7 +955,7 @@ describe("PMTCT app", function() {
                             reply: "You need to be registered to MomConnect to receive these messages. Please visit the nearest clinic to register."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [10, 29, 41]);
+                            utils.check_fixtures_used(api, [10, 21, 29, 41]);
                         })
                         .check.reply.ends_session()
                         .run();
