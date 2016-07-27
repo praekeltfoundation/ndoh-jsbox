@@ -2457,7 +2457,7 @@ module.exports = function() {
             }
         },
 
-        // 72: patch subscription
+        // 72: patch subscription for +27720000111
         {
             "request": {
                 "url": 'https://subscriptions/api/v1/go/subscription/',
@@ -2534,10 +2534,11 @@ module.exports = function() {
                 "method": 'POST',
                 "data": {
                     "lang": "eng_ZA",
-                    "message_set": "/api/v1/message_set/11/",
-                    "next_sequence_number": 2,
-                    "schedule": "/api/v1/periodic_task/2/",
-                    "to_addr": "+27720000111"
+                    "message_set": "/api/v1/message_set/6/",
+                    "next_sequence_number": 1,
+                    "schedule": "/api/v1/periodic_task/3/",
+                    "to_addr": "+27720000111",
+                    "user_account":"1aa0dea2f82945a48cc258c61d756f16"
                 }
             },
             "response": {}

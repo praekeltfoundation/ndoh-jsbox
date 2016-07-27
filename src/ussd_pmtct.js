@@ -198,6 +198,8 @@ go.app = function() {
             return self
                 .getSubscriptionsByMsisdn(im, msisdn)
                 .then(function(update) {
+                    im.user.set_answer("vumi_user_account", update.data.objects[0].user_account);
+                    // im.user.set_answer("vumi_contact_key", update.data.objects[0].contact_key);
                     var clean = true;  // clean tracks if api call is unnecessary
 
                     for (i=0;i<update.data.objects.length;i++) {
@@ -218,28 +220,20 @@ go.app = function() {
 
         // the following function might still need to be moved into a utils_project...
         self.subscribeToLossMessages = function(im, identity) {
-            return Q.all([
-                // ensure user is not opted out
-                self.opt_in(im, identity),
-                // activate new subscription
-                self.post_subscription(identity, im)
-            ]);
+            // activate new loss subscription
+            return self
+                .post_loss_subscription(identity, im)
+                .then(function() {
+
+                });
         };
 
-        self.opt_in = function(im, contact) {
-            // contact.extra.opt_out_reason = '';
-
-            return Q();
-            /*return Q.all([
-                im.api_request('optout.cancel_optout', {
-                    address_type: "msisdn",
-                    address_value: contact.msisdn
-                }),
-                im.contacts.save(contact)
-            ]);*/
-        };
-
-        self.post_subscription = function(contact, im) {
+        self.post_loss_subscription = function(contact, im) {
+            var optoutReasonToSubTypeMapping = {
+                "miscarriage": "6",
+                "stillbirth": "7",
+                "babyloss": "8"
+            };
             var username = self.im.config.vumi.username;
             var api_key = self.im.config.vumi.api_key;
 
@@ -247,13 +241,13 @@ go.app = function() {
             var endpoint = "subscription/";
 
             var sub_info = {
-                // contact_key: contact.key,
+                // contact_key: contact.key, ???
                 lang: im.user.lang,
-                message_set: "/api/v1/message_set/11/",  // assuming 11 for pmtct
-                next_sequence_number: 2, //???
-                schedule: "/api/v1/periodic_task/2/",  // assuming one per week (1 = daily, 2 = once per week, 3 = twice per week, etc)
+                message_set: "/api/v1/message_set/" + optoutReasonToSubTypeMapping[im.user.answers.optout_reason] + "/",
+                next_sequence_number: 1,
+                schedule: "/api/v1/periodic_task/3/",  // 3 = twice per week
                 to_addr: Object.keys(contact.details.addresses.msisdn)[0],
-                // user_account: contact.user_account
+                user_account: im.user.answers.vumi_user_account
             };
 
             var http = new JsonApi(im, {
@@ -614,6 +608,7 @@ go.app = function() {
                             "reason": choice.value
                         }
                     };
+                    self.im.user.set_answer("optout_reason", choice.value);
                     if (["not_hiv_pos", "not_useful", "other"].indexOf(choice.value) !== -1) {
                         return hub.update_registration(pmtct_nonloss_optout)
                             .then(function() {
