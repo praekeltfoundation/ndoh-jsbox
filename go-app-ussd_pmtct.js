@@ -55,9 +55,9 @@ go.app = function() {
 
         // get/load contact from vumigo
         self.getVumiContactByMsisdn = function(im, msisdn) {
-            var token = self.im.config.vumi.token;
+            var token = im.config.vumi.token;
 
-            var vumigo_base_url = self.im.config.vumi.contact_url;
+            var vumigo_base_url = im.config.vumi.contact_url;
             var endpoint = "contacts/";
 
             var http = new JsonApi(im, {
@@ -74,10 +74,10 @@ go.app = function() {
         };
 
         self.getVumiActiveSubscriptions = function(im, msisdn) {
-            var username = self.im.config.vumi.username;
-            var api_key = self.im.config.vumi.api_key;
+            var username = im.config.vumi.username;
+            var api_key = im.config.vumi.api_key;
 
-            var subscription_base_url = self.im.config.vumi.subscription_url;
+            var subscription_base_url = im.config.vumi.subscription_url;
             var endpoint = "subscription/";
 
             var http = new JsonApi(im, {
@@ -163,10 +163,10 @@ go.app = function() {
         };
 
         self.getSubscriptionsByMsisdn = function(im, msisdn) {
-            var username = self.im.config.vumi.username;
-            var api_key = self.im.config.vumi.api_key;
+            var username = im.config.vumi.username;
+            var api_key = im.config.vumi.api_key;
 
-            var subscription_base_url = self.im.config.vumi.subscription_url;
+            var subscription_base_url = im.config.vumi.subscription_url;
             var endpoint = "subscription/";
 
             var http = new JsonApi(im, {
@@ -186,10 +186,10 @@ go.app = function() {
         };
 
         self.deactivateVumiSubscriptions = function(im, contact) {
-            var username = self.im.config.vumi.username;
-            var api_key = self.im.config.vumi.api_key;
+            var username = im.config.vumi.username;
+            var api_key = im.config.vumi.api_key;
 
-            var subscription_base_url = self.im.config.vumi.subscription_url;
+            var subscription_base_url = im.config.vumi.subscription_url;
             var endpoint = "subscription/";
 
             var http = new JsonApi(im, {
@@ -221,26 +221,25 @@ go.app = function() {
                 });
         };
 
-        // the following function might still need to be moved into a utils_project...
-        self.subscribeToLossMessages = function(im, identity) {
+        self.subscribeVumiContactToLossMessages = function(im, identity) {
             // activate new loss subscription
             return self
-                .post_loss_subscription(identity, im)
+                .postVumiLossSubscription(identity, im)
                 .then(function() {
 
                 });
         };
 
-        self.post_loss_subscription = function(contact, im) {
+        self.postVumiLossSubscription = function(contact, im) {
             var optoutReasonToSubTypeMapping = {
                 "miscarriage": "6",
                 "stillbirth": "7",
                 "babyloss": "8"
             };
-            var username = self.im.config.vumi.username;
-            var api_key = self.im.config.vumi.api_key;
+            var username = im.config.vumi.username;
+            var api_key = im.config.vumi.api_key;
 
-            var subscription_base_url = self.im.config.vumi.subscription_url;
+            var subscription_base_url = im.config.vumi.subscription_url;
             var endpoint = "subscription/";
 
             var sub_info = {
@@ -262,6 +261,21 @@ go.app = function() {
             return http.post(subscription_base_url + endpoint, {
                 data: sub_info
                   });
+        };
+
+        self.optoutVumiAddress = function(im, msisdn) {
+            var token = im.config.vumi.token;
+
+            var vumigo_base_url = im.config.vumi.contact_url;
+            var endpoint = "optouts/msisdn/" + msisdn;
+
+            var http = new JsonApi(im, {
+                headers: {
+                    'Authorization': ['Bearer ' + token]
+                }
+            });
+
+            return http.put(vumigo_base_url + endpoint);
         };
 
         // TIMEOUT HANDLING
@@ -660,7 +674,7 @@ go.app = function() {
                                     .then(function() {
                                         // subscribe to loss messages on old system (pre-migration)
                                         return self
-                                        .subscribeToLossMessages(self.im, identity)
+                                        .subscribeVumiContactToLossMessages(self.im, identity)
                                         .then(function() {
                                             return "state_end_loss_optin";
                                         });
@@ -693,8 +707,12 @@ go.app = function() {
                                             // deactivate active vumi subscriptions - unsub all
                                             .deactivateVumiSubscriptions(self.im, identity)
                                             .then(function() {
-                                                // optout on vumi usingn http_api/optouts...
-                                                return "state_end_loss_optout";
+                                                // optout on vumi
+                                                return self
+                                                    .optoutVumiAddress(self.im, self.im.user.answers.msisdn)
+                                                    .then(function() {
+                                                        return "state_end_loss_optout";
+                                                    });
                                             });
                                     });
                             });

@@ -2560,5 +2560,14 @@ module.exports = function() {
             "response": {}
         },
 
+        // 75: optout +27720000111 on vumi
+        {
+            "request": { 
+                "url": 'https://contacts/api/v1/go/optouts/msisdn/+27720000111',
+                "method": 'PUT'
+            },
+            "response": {}
+        },
+
     ];
 };
