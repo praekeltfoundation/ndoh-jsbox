@@ -667,7 +667,37 @@ go.app = function() {
                                     });
                             });
                     } else {
-                        return "state_end_loss_optout";
+                        var pmtct_loss_optout = {
+                            "identity": identity.id,
+                            "action": "pmtct_loss_optout",
+                            "data": {
+                                "reason": self.im.user.answers.state_optout_reason_menu
+                            }
+                        };
+                        return hub.update_registration(pmtct_loss_optout)
+                            .then(function() {
+                                var optout_info = {
+                                    optout_type: "stop",  // default to "stop"
+                                    identity: identity.id,
+                                    reason: self.im.user.answers.state_optout_reason_menu,  // default to "unknown"
+                                    address_type: "msisdn",  // default to 'msisdn'
+                                    address: self.im.user.answers.msisdn,
+                                    request_source: "PMTCT",
+                                    requestor_source_id: "???"
+                                };
+                                return is
+                                    // optout on 'new system'
+                                    .optout(optout_info)
+                                    .then(function() {
+                                        return self
+                                            // deactivate active vumi subscriptions - unsub all
+                                            .deactivateVumiSubscriptions(self.im, identity)
+                                            .then(function() {
+                                                // optout on vumi usingn http_api/optouts...
+                                                return "state_end_loss_optout";
+                                            });
+                                    });
+                            });
                     }
                 }
             });
