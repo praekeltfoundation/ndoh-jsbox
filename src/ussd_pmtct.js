@@ -199,7 +199,7 @@ go.app = function() {
                 .getVumiSubscriptionsByMsisdn(im, msisdn)
                 .then(function(subscriptions) {
                     im.user.set_answer("vumi_user_account", subscriptions.data.objects[0].user_account);
-                    // im.user.set_answer("vumi_contact_key", subscriptions.data.objects[0].contact_key);
+                    im.user.set_answer("vumi_contact_key", subscriptions.data.objects[0].contact_key);
                     var clean = true;  // clean tracks if api call is unnecessary
 
                     for (i=0;i<subscriptions.data.objects.length;i++) {
@@ -231,12 +231,12 @@ go.app = function() {
             var endpoint = "subscription/";
 
             var sub_info = {
-                // contact_key: contact.key, ???
+                contact_key: im.user.answers.vumi_contact_key,
                 lang: im.user.lang,
                 message_set: "/api/v1/message_set/" + optoutReasonToSubTypeMapping[im.user.answers.optout_reason] + "/",
                 next_sequence_number: 1,
                 schedule: "/api/v1/periodic_task/3/",  // 3 = twice per week
-                to_addr: Object.keys(contact.details.addresses.msisdn)[0],
+                to_addr: im.user.answers.msisdn,
                 user_account: im.user.answers.vumi_user_account
             };
 
@@ -387,6 +387,7 @@ go.app = function() {
                                     self.im.user.set_answer("edd", contacts[0].extra.edd || null);
                                     self.im.user.set_answer("subscription_type", subscription_type);
                                     self.im.user.set_answer("vumi_user_account", contacts[0].user_account);
+                                    self.im.user.set_answer("vumi_contact_key", contacts[0].contact_key);
 
                                     return self.im.user
                                     .set_lang(self.im.user.answers.lang_code)
@@ -535,6 +536,7 @@ go.app = function() {
             identity_info.details.mom_dob = self.im.user.answers.mom_dob;
             identity_info.details.lang_code = self.im.user.answers.lang_code;
             identity_info.details.vumi_user_account = self.im.user.answers.vumi_user_account;
+            identity_info.details.vumi_contact_key = self.im.user.answers.vumi_contact_key;
             identity_info.details.source = "pmtct";
 
             return is

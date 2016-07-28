@@ -2594,6 +2594,7 @@ module.exports = function() {
                 "url": 'https://subscriptions/api/v1/go/subscription/',
                 "method": 'POST',
                 "data": {
+                    "contact_key":"1082752d5fcb482b8e744ad4d6356eb2",
                     "lang": "eng_ZA",
                     "message_set": "/api/v1/message_set/6/",
                     "next_sequence_number": 1,
