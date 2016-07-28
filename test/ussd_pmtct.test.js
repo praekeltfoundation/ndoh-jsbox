@@ -1029,6 +1029,14 @@ describe("PMTCT app", function() {
                 return tester
                     .setup.user.addr("0720000111")
                     .setup.user.state("state_optout_reason_menu")
+                    .setup.user.answer("identity", {
+                        url: 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-10000000001/',
+                        id: 'cb245673-aa41-4302-ac47-10000000001',
+                        version: 1,
+                        details: { default_addr_type: 'msisdn', addresses: { msisdn: { "+720000111": {}} } },
+                        created_at: '2016-06-21T06:13:29.693272Z',
+                        updated_at: '2016-06-21T06:13:29.693298Z'
+                    })
                     .input(
                         "2"  // state_optout_reason_menu - miscarriage
                     )

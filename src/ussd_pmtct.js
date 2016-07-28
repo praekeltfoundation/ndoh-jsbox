@@ -336,15 +336,15 @@ go.app = function() {
             return is
             .get_or_create_identity({"msisdn": msisdn})
             .then(function(identity) {
-                self.im.user.set_answer("contact_identity", identity);
+                self.im.user.set_answer("identity", identity);
                 return self
                 .has_active_pmtct_subscription(identity.id)
                 .then(function(has_active_pmtct_subscription) {
                     if (has_active_pmtct_subscription) {
                         return self.im.user
-                        .set_lang(self.im.user.answers.contact_identity.details.lang_code || "eng_ZA")
+                        .set_lang(self.im.user.answers.identity.details.lang_code || "eng_ZA")
                         .then(function(lang_set_response) {
-                            return self.states.create("state_optout_reason_menu", identity);
+                            return self.states.create("state_optout_reason_menu");
                         });
                     } else {
                         // Note 1: that what we are doing here is a temporary solution before
@@ -532,7 +532,7 @@ go.app = function() {
         });
 
         self.add("state_register_pmtct", function(name) {
-            var identity_info = self.im.user.answers.contact_identity;
+            var identity_info = self.im.user.answers.identity;
             identity_info.details.mom_dob = self.im.user.answers.mom_dob;
             identity_info.details.lang_code = self.im.user.answers.lang_code;
             identity_info.details.vumi_user_account = self.im.user.answers.vumi_user_account;
@@ -540,16 +540,16 @@ go.app = function() {
             identity_info.details.source = "pmtct";
 
             return is
-            .update_identity(self.im.user.answers.contact_identity.id, identity_info)
+            .update_identity(self.im.user.answers.identity.id, identity_info)
             .then(function() {
                 var reg_info;
                 var subscription_type = self.im.user.answers.subscription_type;
                 if (subscription_type === 'baby1' || subscription_type === 'baby2') {
                     reg_info = {
                         "reg_type": "postbirth_pmtct",
-                        "registrant_id": self.im.user.answers.contact_identity.id,
+                        "registrant_id": self.im.user.answers.identity.id,
                         "data": {
-                            "operator_id": self.im.user.answers.contact_identity.id,
+                            "operator_id": self.im.user.answers.identity.id,
                             "language": self.im.user.answers.lang_code,
                             "mom_dob": self.im.user.answers.mom_dob,
                             // "edd": self.im.user.answers.edd,
@@ -559,9 +559,9 @@ go.app = function() {
                            || subscription_type == 'accelerated') {
                     reg_info = {
                         "reg_type": "prebirth_pmtct",
-                        "registrant_id": self.im.user.answers.contact_identity.id,
+                        "registrant_id": self.im.user.answers.identity.id,
                         "data": {
-                            "operator_id": self.im.user.answers.contact_identity.id,
+                            "operator_id": self.im.user.answers.identity.id,
                             "language": self.im.user.answers.lang_code,
                             "mom_dob": self.im.user.answers.mom_dob,
                             "edd": self.im.user.answers.edd
@@ -591,7 +591,7 @@ go.app = function() {
         });
 
         // start of OPT-OUT flow
-        self.add("state_optout_reason_menu", function(name, identity) {
+        self.add("state_optout_reason_menu", function(name) {
             return new PaginatedChoiceState(name, {
                 question: $("Why do you no longer want to receive messages related to keeping your baby HIV-negative?"),
                 characters_per_page: 182,
@@ -609,7 +609,7 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     var pmtct_nonloss_optout = {
-                        "identity": identity.id,
+                        "identity": self.im.user.answers.identity.id,
                         "action": "pmtct_nonloss_optout",
                         "data": {
                             "reason": choice.value
@@ -622,10 +622,7 @@ go.app = function() {
                                 return "state_end_optout";
                             });
                     } else {
-                        return {
-                            "name": "state_loss_messages",
-                            "creator_opts": identity
-                        };
+                        return "state_loss_messages";
                     }
                 }
             });
@@ -639,7 +636,7 @@ go.app = function() {
             });
         });
 
-        self.add("state_loss_messages", function(name, identity) {
+        self.add("state_loss_messages", function(name) {
             return new ChoiceState(name, {
                 question: $("We are sorry for your loss. Would you like to receive a small set of free messages from MomConnect that could help you in this difficult time?"),
                 // error: ,
@@ -650,7 +647,7 @@ go.app = function() {
                 next: function(choice) {
                     if (choice.value === "yes") {
                         var pmtct_loss_switch = {
-                            "identity": identity.id,
+                            "identity": self.im.user.answers.identity.id,
                             "action": "pmtct_loss_switch",
                             "data": {
                                 "reason": self.im.user.answers.state_optout_reason_menu
@@ -664,7 +661,7 @@ go.app = function() {
                                     .then(function() {
                                         // subscribe to loss messages on old system (pre-migration)
                                         return self
-                                        .postVumiLossSubscription(self.im, identity)
+                                        .postVumiLossSubscription(self.im, self.im.user.answers.identity)
                                         .then(function() {
                                             return "state_end_loss_optin";
                                         });
@@ -672,7 +669,7 @@ go.app = function() {
                             });
                     } else {
                         var pmtct_loss_optout = {
-                            "identity": identity.id,
+                            "identity": self.im.user.answers.identity.id,
                             "action": "pmtct_loss_optout",
                             "data": {
                                 "reason": self.im.user.answers.state_optout_reason_menu
@@ -682,7 +679,7 @@ go.app = function() {
                             .then(function() {
                                 var optout_info = {
                                     optout_type: "stop",  // default to "stop"
-                                    identity: identity.id,
+                                    identity: self.im.user.answers.identity.id,
                                     reason: self.im.user.answers.state_optout_reason_menu,  // default to "unknown"
                                     address_type: "msisdn",  // default to 'msisdn'
                                     address: self.im.user.answers.msisdn,
