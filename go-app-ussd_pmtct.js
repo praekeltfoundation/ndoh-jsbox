@@ -162,7 +162,7 @@ go.app = function() {
             return subscriptionTypeMapping[messageset_id];
         };
 
-        self.getSubscriptionsByMsisdn = function(im, msisdn) {
+        self.getVumiSubscriptionsByMsisdn = function(im, msisdn) {
             var username = im.config.vumi.username;
             var api_key = im.config.vumi.api_key;
 
@@ -199,7 +199,7 @@ go.app = function() {
             });
             var msisdn = Object.keys(contact.details.addresses.msisdn)[0];
             return self
-                .getSubscriptionsByMsisdn(im, msisdn)
+                .getVumiSubscriptionsByMsisdn(im, msisdn)
                 .then(function(update) {
                     im.user.set_answer("vumi_user_account", update.data.objects[0].user_account);
                     // im.user.set_answer("vumi_contact_key", update.data.objects[0].contact_key);
