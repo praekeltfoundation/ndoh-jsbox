@@ -1695,9 +1695,6 @@ module.exports = function() {
                                 "msisdn": {
                                     "+27720000111": {}
                                 }
-                            },
-                            "pmtct": {
-                                "registered": "true"
                             }
                         },
                         "created_at": "2016-06-21T06:13:29.693272Z",
@@ -1860,8 +1857,23 @@ module.exports = function() {
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/',
-                "body": '{"url":"http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/","id":"cb245673-aa41-4302-ac47-00000000001","version":1,"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000111":{}}},"pmtct":{"registered":"true"}},"created_at":"2016-06-21T06:13:29.693272Z","updated_at":"2016-06-21T06:13:29.693298Z"}'
+                "body": {
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/",
+                    "id": "cb245673-aa41-4302-ac47-00000000001",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820000111": {}
+                            }
+                        },
+                        "created_at":"2016-06-21T06:13:29.693272Z",
+                        "updated_at":"2016-06-21T06:13:29.693298Z"
+                    }
+                }
             },
+            "response": {}
         },
 
         // 51: update identity cb245673-aa41-4302-ac47-00000000002
@@ -1869,8 +1881,24 @@ module.exports = function() {
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/',
-                "body": '{"url":"http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/","id":"cb245673-aa41-4302-ac47-00000000002","version":1,"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000222":{}}},"consent":"true","pmtct":{"registered":"true"}},"created_at":"2016-06-21T06:13:29.693272Z","updated_at":"2016-06-21T06:13:29.693298Z"}'
+                "body": {
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/",
+                    "id": "cb245673-aa41-4302-ac47-00000000002",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820000222": {}
+                            }
+                        },
+                        "consent":"true",
+                        "created_at":"2016-06-21T06:13:29.693272Z",
+                        "updated_at":"2016-06-21T06:13:29.693298Z"
+                    }
+                }
             },
+            "response": {}
         },
 
         // 52: update identity cb245673-aa41-4302-ac47-00000000003
@@ -1878,8 +1906,24 @@ module.exports = function() {
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000003/',
-                "body": '{"url":"http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000003/","id":"cb245673-aa41-4302-ac47-00000000003","version":1,"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000333":{}}},"dob":"1981-04-26","pmtct":{"registered":"true"}},"created_at":"2016-06-21T06:13:29.693272Z","updated_at":"2016-06-21T06:13:29.693298Z"}'
+                "body": {
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000003/",
+                    "id": "cb245673-aa41-4302-ac47-00000000003",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820000333": {}
+                            }
+                        },
+                        "dob": "1981-04-26",
+                        "created_at": "2016-06-21T06:13:29.693272Z",
+                        "updated_at": "2016-06-21T06:13:29.693298Z"
+                    }
+                }
             },
+            "response": {}
         },
 
         // 53: update identity cb245673-aa41-4302-ac47-00000000004
@@ -1887,8 +1931,25 @@ module.exports = function() {
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000004/',
-                "body": '{"url":"http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000004/","id":"cb245673-aa41-4302-ac47-00000000004","version":1,"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000444":{}}},"consent":"true","dob":"1981-04-26","pmtct":{"registered":"true"}},"created_at":"2016-06-21T06:13:29.693272Z","updated_at":"2016-06-21T06:13:29.693298Z"}'
+                "body": {
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000004/",
+                    "id": "cb245673-aa41-4302-ac47-00000000004",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820000444": {}
+                            }
+                        },
+                        "consent": "true",
+                        "dob": "1981-04-26",
+                        "created_at": "2016-06-21T06:13:29.693272Z",
+                        "updated_at": "2016-06-21T06:13:29.693298Z"
+                    }
+                }
             },
+            "response": {}
         },
 
         // 54: update identity cb245673-aa41-4302-ac47-00000000006
@@ -2061,7 +2122,7 @@ module.exports = function() {
                 "code": 200,
                 "data": {
                     "id": 1,
-                    "short_name": 'pmtct',
+                    "short_name": 'a.pmtct.messageset',
                     "notes": null,
                     "next_set": 2,
                     "default_schedule": 1,
@@ -2562,12 +2623,12 @@ module.exports = function() {
 
         // 75: optout +27720000111 on vumi
         {
-            "request": { 
+            "request": {
                 "url": 'https://contacts/api/v1/go/optouts/msisdn/+27720000111',
                 "method": 'PUT'
             },
             "response": {}
-        },
+        }
 
     ];
 };
