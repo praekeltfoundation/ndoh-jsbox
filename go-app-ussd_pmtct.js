@@ -185,7 +185,7 @@ go.app = function() {
                 });
         };
 
-        self.deactivateVumiSubscriptions = function(im, contact) {
+        self.deactivateVumiSubscriptions = function(im, msisdn) {
             var username = im.config.vumi.username;
             var api_key = im.config.vumi.api_key;
 
@@ -197,7 +197,7 @@ go.app = function() {
                     'Authorization': ['ApiKey ' + username + ':' + api_key]
                 }
             });
-            var msisdn = Object.keys(contact.details.addresses.msisdn)[0];
+
             return self
                 .getVumiSubscriptionsByMsisdn(im, msisdn)
                 .then(function(update) {
@@ -670,7 +670,7 @@ go.app = function() {
                             .then(function() {
                                 return self
                                     // deactivate active vumi subscriptions - unsub all
-                                    .deactivateVumiSubscriptions(self.im, identity)
+                                    .deactivateVumiSubscriptions(self.im, self.im.user.answers.msisdn)
                                     .then(function() {
                                         // subscribe to loss messages on old system (pre-migration)
                                         return self
@@ -705,7 +705,7 @@ go.app = function() {
                                     .then(function() {
                                         return self
                                             // deactivate active vumi subscriptions - unsub all
-                                            .deactivateVumiSubscriptions(self.im, identity)
+                                            .deactivateVumiSubscriptions(self.im, self.im.user.answers.msisdn)
                                             .then(function() {
                                                 // optout on vumi
                                                 return self
