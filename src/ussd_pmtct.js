@@ -197,20 +197,20 @@ go.app = function() {
 
             return self
                 .getVumiSubscriptionsByMsisdn(im, msisdn)
-                .then(function(update) {
-                    im.user.set_answer("vumi_user_account", update.data.objects[0].user_account);
-                    // im.user.set_answer("vumi_contact_key", update.data.objects[0].contact_key);
+                .then(function(subscriptions) {
+                    im.user.set_answer("vumi_user_account", subscriptions.data.objects[0].user_account);
+                    // im.user.set_answer("vumi_contact_key", subscriptions.data.objects[0].contact_key);
                     var clean = true;  // clean tracks if api call is unnecessary
 
-                    for (i=0;i<update.data.objects.length;i++) {
-                        if (update.data.objects[i].active === true) {
-                            update.data.objects[i].active = false;
+                    for (i=0;i<subscriptions.data.objects.length;i++) {
+                        if (subscriptions.data.objects[i].active === true) {
+                            subscriptions.data.objects[i].active = false;
                             clean = false;
                         }
                     }
                     if (!clean) {
                         return http.patch(subscription_base_url + endpoint, {
-                                data: update
+                                data: subscriptions
                             });
                     } else {
                         return Q();
