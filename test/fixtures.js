@@ -2122,7 +2122,7 @@ module.exports = function() {
                 "code": 200,
                 "data": {
                     "id": 1,
-                    "short_name": 'a.pmtct.messageset',
+                    "short_name": 'momconnect_prebirth.hw_full.1',
                     "notes": null,
                     "next_set": 2,
                     "default_schedule": 1,
@@ -2361,7 +2361,7 @@ module.exports = function() {
                             'id': '51fcca25-2e85-4c44-subscription-1111',
                             'version': 1,
                             'identity': 'cb245673-aa41-4302-ac47-10000000001',
-                            'messageset': 1,
+                            'messageset': 100,
                             'next_sequence_number': 1,
                             'lang': "en",
                             'active': true,
@@ -2628,7 +2628,29 @@ module.exports = function() {
                 "method": 'PUT'
             },
             "response": {}
-        }
+        },
+
+        // 76: get messageset 101 (pmtct - +27720000111)
+        {
+            "repeatable": true,
+            "request": {
+                "method": 'GET',
+                "url": "http://sbm.localhost:8001/api/v1/messageset/100/"
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "id": 100,
+                    "short_name": 'pmtct_prebirth.patient.1',
+                    "notes": null,
+                    "next_set": 2,
+                    "default_schedule": 1,
+                    "content_type": 'text',
+                    "created_at": '2016-06-22T06:13:29.693272Z',
+                    "updated_at": '2016-06-22T06:13:29.693272Z'
+                }
+            }
+        },
 
     ];
 };
