@@ -221,16 +221,7 @@ go.app = function() {
                 });
         };
 
-        self.subscribeVumiContactToLossMessages = function(im, identity) {
-            // activate new loss subscription
-            return self
-                .postVumiLossSubscription(identity, im)
-                .then(function() {
-
-                });
-        };
-
-        self.postVumiLossSubscription = function(contact, im) {
+        self.postVumiLossSubscription = function(im, contact) {
             var optoutReasonToSubTypeMapping = {
                 "miscarriage": "6",
                 "stillbirth": "7",
@@ -674,7 +665,7 @@ go.app = function() {
                                     .then(function() {
                                         // subscribe to loss messages on old system (pre-migration)
                                         return self
-                                        .subscribeVumiContactToLossMessages(self.im, identity)
+                                        .postVumiLossSubscription(self.im, identity)
                                         .then(function() {
                                             return "state_end_loss_optin";
                                         });
