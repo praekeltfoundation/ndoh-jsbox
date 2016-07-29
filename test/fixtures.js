@@ -2144,7 +2144,8 @@ module.exports = function() {
                     "data": {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000006",
                         "language": "eng_ZA",
-                        "mom_dob": "1982-02-01"
+                        "mom_dob": "1982-02-01",
+                        "baby_dob": "2015-11-11"
                     }
                 }
             },

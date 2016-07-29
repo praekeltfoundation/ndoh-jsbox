@@ -95,9 +95,17 @@ go.app = function() {
             .then(function(json_result) {
                 var subs = json_result.data.data;
                 var active_subs = [];
-                for (i = 0; i < subs.objects.length; i++) {
+                for (var i = 0; i < subs.objects.length; i++) {
+                    // active_sub handling
                     if (subs.objects[i].active === true) {
                         active_subs.push(subs.objects[i]);
+                    }
+                    // save baby birth date while we're here
+                    // This currently assumes that the only way to get a baby2 subscription is to have
+                    // had a baby1 subscription at some point. This could be made less fragile by doing
+                    // a fallback calculation for the baby_dob if the baby1 subscription is not found
+                    if (subs.objects[i].message_set.match(/\d+\/$/)[0].replace('/', '') === '4') {
+                        im.user.set_answer("baby_dob", subs.objects[i].created_at.substr(0,10));
                     }
                 }
                 return active_subs;
@@ -555,9 +563,10 @@ go.app = function() {
                             "operator_id": self.im.user.answers.identity.id,
                             "language": self.im.user.answers.lang_code,
                             "mom_dob": self.im.user.answers.mom_dob,
-                            // "edd": self.im.user.answers.edd,
+                            "baby_dob": self.im.user.answers.baby_dob,
                         }
                     };
+
                 } else if (subscription_type === 'standard' || subscription_type === 'later'
                            || subscription_type == 'accelerated') {
                     reg_info = {
