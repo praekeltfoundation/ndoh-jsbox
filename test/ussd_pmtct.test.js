@@ -5,6 +5,18 @@ var assert = require('assert');
 
 var utils = require('seed-jsbox-utils').utils;
 
+describe("Test messageset regex using in state_get_vumi_contact", function() {
+    it("should get the messageset id from the url", function() {
+        // valid url strings
+        assert.equal("www.foo.com/v1/go/messageset/1/".match(/\d+\/$/)[0].replace('/', ''), "1");
+        assert.equal("www.foo.com/v1/go/messageset/12/".match(/\d+\/$/)[0].replace('/', ''), "12");
+        assert.equal("www.foo.com/v1/go/messageset/12345/".match(/\d+\/$/)[0].replace('/', ''), "12345");
+        // invalid url strings
+        assert.equal("www.foo.com/v1/go/messageset/1two3/".match(/\d+\/$/)[0].replace('/', ''), "3");
+        assert.equal("www.foo.com/v1/go/messageset/one/".match(/\d+\/$/), null);
+    });
+});
+
 describe("PMTCT app", function() {
     describe("for ussd use - auth on", function() {
         var app;
@@ -1084,18 +1096,6 @@ describe("PMTCT app", function() {
                     .check.reply.ends_session()
                     .run();
             });
-
-        });
-
-        describe("Test messageset regex using in state_get_vumi_contact", function() {
-            // valids
-            assert.equal("www.foo.com/v1/go/messageset/1/".match(/\d+\/$/)[0].replace('/', ''), "1");
-            assert.equal("www.foo.com/v1/go/messageset/12/".match(/\d+\/$/)[0].replace('/', ''), "12");
-            assert.equal("www.foo.com/v1/go/messageset/12345/".match(/\d+\/$/)[0].replace('/', ''), "12345");
-            // invalids
-            assert.equal("www.foo.com/v1/go/messageset/one/".match(/\d+\/$/), null);
-            assert.equal("www.foo.com/v1/go/messageset/1two3/".match(/\d+\/$/)[0], "3/");
-                // match array: [ '3/', index: 33, input: 'www.foo.com/v1/go/messageset/1two3/' ]
         });
     });
 
