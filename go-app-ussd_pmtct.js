@@ -631,7 +631,7 @@ go.app = function() {
 
                         // only opt user out of the PMTCT message set NOT MomConnect
                         return hub
-                        .update_registration(pmtct_nonloss_optout)
+                        .create_change(pmtct_nonloss_optout)
                         // TODO: We are currently not opting the identity out - should we?
                         .then(function() {
                             return "state_end_optout";
@@ -672,7 +672,7 @@ go.app = function() {
                             }
                         };
                         return Q.all([
-                            hub.update_registration(pmtct_loss_switch),
+                            hub.create_change(pmtct_loss_switch),
                             self.deactivateVumiSubscriptions(self.im, self.im.user.answers.msisdn)
                         ])
                         .then(function() {
@@ -703,7 +703,7 @@ go.app = function() {
 
                         return Q
                         .all([
-                            hub.update_registration(pmtct_loss_optout),
+                            hub.create_change(pmtct_loss_optout),
                             is.optout(optout_info),
                             self.deactivateVumiSubscriptions(self.im, self.im.user.answers.msisdn),
                             self.optoutVumiAddress(self.im, self.im.user.answers.msisdn)
