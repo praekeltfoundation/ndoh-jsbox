@@ -207,26 +207,26 @@ go.app = function() {
             });
 
             return self
-                .getVumiSubscriptionsByMsisdn(im, msisdn)
-                .then(function(subscriptions) {
-                    im.user.set_answer("vumi_user_account", subscriptions.data.objects[0].user_account);
-                    im.user.set_answer("vumi_contact_key", subscriptions.data.objects[0].contact_key);
-                    var clean = true;  // clean tracks if api call is unnecessary
+            .getVumiSubscriptionsByMsisdn(im, msisdn)
+            .then(function(subscriptions) {
+                im.user.set_answer("vumi_user_account", subscriptions.data.objects[0].user_account);
+                im.user.set_answer("vumi_contact_key", subscriptions.data.objects[0].contact_key);
+                var clean = true;  // clean tracks if api call is unnecessary
 
-                    for (i=0;i<subscriptions.data.objects.length;i++) {
-                        if (subscriptions.data.objects[i].active === true) {
-                            subscriptions.data.objects[i].active = false;
-                            clean = false;
-                        }
+                for (var i=0; i<subscriptions.data.objects.length; i++) {
+                    if (subscriptions.data.objects[i].active === true) {
+                        subscriptions.data.objects[i].active = false;
+                        clean = false;
                     }
-                    if (!clean) {
-                        return http.patch(subscription_base_url + endpoint, {
-                                data: subscriptions
-                            });
-                    } else {
-                        return Q();
-                    }
-                });
+                }
+                if (!clean) {
+                    return http.patch(subscription_base_url + endpoint, {
+                            data: subscriptions
+                        });
+                } else {
+                    return Q();
+                }
+            });
         };
 
         self.postVumiLossSubscription = function(im, contact) {
@@ -244,7 +244,7 @@ go.app = function() {
             var sub_info = {
                 contact_key: im.user.answers.vumi_contact_key,
                 lang: im.user.lang,
-                message_set: "/api/v1/message_set/" + optoutReasonToSubTypeMapping[im.user.answers.optout_reason] + "/",
+                message_set: "/api/v1/message_set/" + optoutReasonToSubTypeMapping[im.user.answers.state_optout_reason_menu] + "/",
                 next_sequence_number: 1,
                 schedule: "/api/v1/periodic_task/3/",  // 3 = twice per week
                 to_addr: im.user.answers.msisdn,
@@ -620,19 +620,23 @@ go.app = function() {
                     new Choice("other", $("Other"))
                 ],
                 next: function(choice) {
-                    var pmtct_nonloss_optout = {
-                        "identity": self.im.user.answers.identity.id,
-                        "action": "pmtct_nonloss_optout",
-                        "data": {
-                            "reason": choice.value
-                        }
-                    };
-                    self.im.user.set_answer("optout_reason", choice.value);
                     if (["not_hiv_pos", "not_useful", "other"].indexOf(choice.value) !== -1) {
-                        return hub.update_registration(pmtct_nonloss_optout)
-                            .then(function() {
-                                return "state_end_optout";
-                            });
+                        var pmtct_nonloss_optout = {
+                            "registrant_id": self.im.user.answers.identity.id,
+                            "action": "pmtct_nonloss_optout",
+                            "data": {
+                                "reason": choice.value
+                            }
+                        };
+
+                        // only opt user out of the PMTCT message set NOT MomConnect
+                        return hub
+                        .create_change(pmtct_nonloss_optout)
+                        // TODO: We are currently not opting the identity out - should we?
+                        .then(function() {
+                            return "state_end_optout";
+                        });
+
                     } else {
                         return "state_loss_messages";
                     }
@@ -642,9 +646,11 @@ go.app = function() {
 
         self.add("state_end_optout", function(name) {
             return new EndState(name, {
-                text: $("Thank you. You will no longer receive PMTCT messages. You will still receive the MomConnect messages. To stop receiving these messages as well, please dial into *134*550*1#."),
+                text: $(
+                    "Thank you. You will no longer receive PMTCT messages. You will still receive the " +
+                    "MomConnect messages. To stop receiving these messages as well, please dial into " +
+                    "{{ mc_optout_number }}.").context({mc_optout_number: self.im.config.mc_optout_channel}),
                 next: "state_start"
-                // only opt user out of the PMTCT message set NOT MomConnect
             });
         });
 
@@ -665,56 +671,48 @@ go.app = function() {
                                 "reason": self.im.user.answers.state_optout_reason_menu
                             }
                         };
-                        return hub.update_registration(pmtct_loss_switch)
+                        return Q.all([
+                            hub.create_change(pmtct_loss_switch),
+                            self.deactivateVumiSubscriptions(self.im, self.im.user.answers.msisdn)
+                        ])
+                        .then(function() {
+                            // subscribe to loss messages on old system (pre-migration)
+                            // this needs to be done after deactivation since we're storing the user_account
+                            // and contact_key in deactivateVumiSubscriptions first
+                            return self
+                            .postVumiLossSubscription(self.im, self.im.user.answers.identity)
                             .then(function() {
-                                return self
-                                    // deactivate active vumi subscriptions - unsub all
-                                    .deactivateVumiSubscriptions(self.im, self.im.user.answers.msisdn)
-                                    .then(function() {
-                                        // subscribe to loss messages on old system (pre-migration)
-                                        return self
-                                        .postVumiLossSubscription(self.im, self.im.user.answers.identity)
-                                        .then(function() {
-                                            return "state_end_loss_optin";
-                                        });
-                                    });
+                                return "state_end_loss_optin";
                             });
+                        });
                     } else {
                         var pmtct_loss_optout = {
-                            "identity": self.im.user.answers.identity.id,
+                            "registrant_id": self.im.user.answers.identity.id,
                             "action": "pmtct_loss_optout",
                             "data": {
                                 "reason": self.im.user.answers.state_optout_reason_menu
                             }
                         };
-                        return hub.update_registration(pmtct_loss_optout)
-                            .then(function() {
-                                var optout_info = {
-                                    optout_type: "stop",  // default to "stop"
-                                    identity: self.im.user.answers.identity.id,
-                                    reason: self.im.user.answers.state_optout_reason_menu,  // default to "unknown"
-                                    address_type: "msisdn",  // default to 'msisdn'
-                                    address: self.im.user.answers.msisdn,
-                                    request_source: "PMTCT",
-                                    requestor_source_id: "???"
-                                };
-                                return is
-                                    // optout on 'new system'
-                                    .optout(optout_info)
-                                    .then(function() {
-                                        return self
-                                            // deactivate active vumi subscriptions - unsub all
-                                            .deactivateVumiSubscriptions(self.im, self.im.user.answers.msisdn)
-                                            .then(function() {
-                                                // optout on vumi
-                                                return self
-                                                    .optoutVumiAddress(self.im, self.im.user.answers.msisdn)
-                                                    .then(function() {
-                                                        return "state_end_loss_optout";
-                                                    });
-                                            });
-                                    });
-                            });
+                        var optout_info = {
+                            optout_type: "stop",  // default to "stop"
+                            identity: self.im.user.answers.identity.id,
+                            reason: self.im.user.answers.state_optout_reason_menu,  // default to "unknown"
+                            address_type: "msisdn",  // default to 'msisdn'
+                            address: self.im.user.answers.msisdn,
+                            request_source: "ussd_pmtct",
+                            requestor_source_id: self.im.config.testing_message_id || self.im.msg.message_id,
+                        };
+
+                        return Q
+                        .all([
+                            hub.create_change(pmtct_loss_optout),
+                            is.optout(optout_info),
+                            self.deactivateVumiSubscriptions(self.im, self.im.user.answers.msisdn),
+                            self.optoutVumiAddress(self.im, self.im.user.answers.msisdn)
+                        ])
+                        .then(function() {
+                            return "state_end_loss_optout";
+                        });
                     }
                 }
             });

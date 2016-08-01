@@ -1714,8 +1714,8 @@ module.exports = function() {
                     "reason": "not_hiv_pos",
                     "address_type": "msisdn",
                     "address": "+27720000111",
-                    "request_source": "PMTCT",
-                    "requestor_source_id": "???"
+                    "request_source": "ussd_pmtct",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 },
                 "url": 'http://is.localhost:8001/api/v1/optout/'
             },
@@ -1737,8 +1737,8 @@ module.exports = function() {
                     "reason": "miscarriage",
                     "address_type": "msisdn",
                     "address": "+27720000111",
-                    "request_source": "PMTCT",
-                    "requestor_source_id": "???"
+                    "request_source": "ussd_pmtct",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 },
                 "url": 'http://is.localhost:8001/api/v1/optout/'
             },
@@ -1806,12 +1806,12 @@ module.exports = function() {
             }
         },
 
-        // 48: change registration for cb245673-aa41-4302-ac47-10000000001; reason not hiv positive
+        // 48: create change for cb245673-aa41-4302-ac47-10000000001; reason not hiv positive
         {
             "request": {
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-10000000001",
+                    "registrant_id": "cb245673-aa41-4302-ac47-10000000001",
                     "action": "pmtct_nonloss_optout",
                     "data": {
                         "reason": "not_hiv_pos"
@@ -2607,13 +2607,13 @@ module.exports = function() {
             "response": {}
         },
 
-        // 74:  change registration for cb245673-aa41-4302-ac47-10000000001; reason miscarriage
+        // 74:  create change for cb245673-aa41-4302-ac47-10000000001; reason miscarriage
         {
             "request": {
                 "url": 'http://hub.localhost:8001/api/v1/change/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-10000000001",
+                    "registrant_id": "cb245673-aa41-4302-ac47-10000000001",
                     "action": "pmtct_loss_optout",
                     "data": {
                         "reason": "miscarriage"

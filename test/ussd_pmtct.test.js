@@ -18,7 +18,9 @@ describe("PMTCT app", function() {
                 .setup.config.app({
                     name: "ussd-pmtct-test",
                     channel: "*134*550*10#",
+                    mc_optout_channel: "*134*550*1#",
                     testing_today: "2016-07-06",
+                    testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',
                     logging: "off",
                     no_timeout_redirects: [
                         "state_start",
@@ -950,7 +952,7 @@ describe("PMTCT app", function() {
 
         // TEST PMTCT OPT-OUT FLOWS
 
-        describe("Opt-out flow testing", function() {
+        describe.only("Opt-out flow testing", function() {
             it("to state_optout_reason_menu", function() {
                 return tester
                     .setup.user.addr("0720000111")
