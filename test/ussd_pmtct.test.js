@@ -952,7 +952,7 @@ describe("PMTCT app", function() {
 
         // TEST PMTCT OPT-OUT FLOWS
 
-        describe.only("Opt-out flow testing", function() {
+        describe("Opt-out flow testing", function() {
             it("to state_optout_reason_menu", function() {
                 return tester
                     .setup.user.addr("0720000111")

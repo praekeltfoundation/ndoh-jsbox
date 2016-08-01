@@ -628,7 +628,7 @@ go.app = function() {
 
                         // only opt user out of the PMTCT message set NOT MomConnect
                         return hub
-                        .create_change(pmtct_nonloss_optout)
+                        .update_registration(pmtct_nonloss_optout)
                         // TODO: We are currently not opting the identity out - should we?
                         .then(function() {
                             return "state_end_optout";
@@ -662,20 +662,18 @@ go.app = function() {
                 next: function(choice) {
                     if (choice.value === "yes") {
                         var pmtct_loss_switch = {
-                            "identity": self.im.user.answers.identity.id,
+                            "registrant_id": self.im.user.answers.identity.id,
                             "action": "pmtct_loss_switch",
                             "data": {
                                 "reason": self.im.user.answers.state_optout_reason_menu
                             }
                         };
                         return Q.all([
-                            hub.create_change(pmtct_loss_switch),
+                            hub.update_registration(pmtct_loss_switch),
                             self.deactivateVumiSubscriptions(self.im, self.im.user.answers.msisdn)
                         ])
                         .then(function() {
                             // subscribe to loss messages on old system (pre-migration)
-                            // this needs to be done after deactivation since we're storing the user_account
-                            // and contact_key in deactivateVumiSubscriptions first
                             return self
                             .postVumiLossSubscription(self.im, self.im.user.answers.identity)
                             .then(function() {
@@ -702,7 +700,7 @@ go.app = function() {
 
                         return Q
                         .all([
-                            hub.create_change(pmtct_loss_optout),
+                            hub.update_registration(pmtct_loss_optout),
                             is.optout(optout_info),
                             self.deactivateVumiSubscriptions(self.im, self.im.user.answers.msisdn),
                             self.optoutVumiAddress(self.im, self.im.user.answers.msisdn)
