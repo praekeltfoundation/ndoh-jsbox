@@ -1,5 +1,4 @@
 // Identity Personas
-// ...add (new system and PMTCT) --> optout
 
 // (+27820000111) on new sys; active sub non-pmtct; no consent, no dob
 // (+27820000222) on new sys; active sub non-pmtct; consent, no dob
@@ -15,6 +14,9 @@
 // (+27820101010) on old sys; no active sub
 
 // (+27820111111) on neither old/new system
+
+// OPTOUT
+// (+27720000111) already registered to PMTCT
 
 module.exports = function() {
     return [
@@ -1663,43 +1665,294 @@ module.exports = function() {
             }
         },
 
-        // 42: update identity cb245673-aa41-4302-ac47-00000000001
+        // 42: get identity by msisdn +27720000111 (optout)
+        {
+            'repeatable': true,
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'details__addresses__msisdn': '+27720000111'
+                },
+                'headers': {
+                    'Authorization': ['Token test IdentityStore'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://is.localhost:8001/api/v1/identities/search/',
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [{
+                        "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-10000000001/",
+                        "id": "cb245673-aa41-4302-ac47-10000000001",
+                        "version": 1,
+                        "details": {
+                            "default_addr_type": "msisdn",
+                            "addresses": {
+                                "msisdn": {
+                                    "+27720000111": {}
+                                }
+                            }
+                        },
+                        "created_at": "2016-06-21T06:13:29.693272Z",
+                        "updated_at": "2016-06-21T06:13:29.693298Z"
+                    }]
+                }
+            }
+        },
+
+        // 43: optout identity cb245673-aa41-4302-ac47-10000000001
+        {
+            "request": {
+                "method": 'POST',
+                "data": {
+                    "optout_type": "stop",
+                    "identity": "cb245673-aa41-4302-ac47-10000000001",
+                    "reason": "not_hiv_pos",
+                    "address_type": "msisdn",
+                    "address": "+27720000111",
+                    "request_source": "ussd_pmtct",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                },
+                "url": 'http://is.localhost:8001/api/v1/optout/'
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "id": 1
+                }
+            }
+        },
+
+        // 44: optout identity cb245673-aa41-4302-ac47-10000000001
+        {
+            "request": {
+                "method": 'POST',
+                "data": {
+                    "optout_type": "stop",
+                    "identity": "cb245673-aa41-4302-ac47-10000000001",
+                    "reason": "miscarriage",
+                    "address_type": "msisdn",
+                    "address": "+27720000111",
+                    "request_source": "ussd_pmtct",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                },
+                "url": 'http://is.localhost:8001/api/v1/optout/'
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "id": 1
+                }
+            }
+        },
+
+        // 45: register cb245673-aa41-4302-ac47-10000000001 for loss messages
+        {
+            "request": {
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-10000000001"
+                },
+                "url": 'http://hub.localhost:8001/api/v1/registration/'
+            },
+            'response': {
+                "code": 201,
+                "data": {
+                    "id": "reg_for_cb245673-aa41-4302-ac47-10000000001",
+                    "identity": "cb245673-aa41-4302-ac47-10000000001",
+                    "created_at": "2016-07-19T06:13:29.693272Z",
+                    "updated_at": "2016-07-19T06:13:29.693298Z"
+                }
+            }
+        },
+
+        // 46: unsubscribe cb245673-aa41-4302-ac47-10000000001 from PMTCT
+        {
+            "request": {
+                "method": 'POST',
+                "body": {
+                    "identity": "cb245673-aa41-4302-ac47-10000000001",
+                    "action": "unsubscribe_PMTCT"
+                },
+                "url": 'http://hub.localhost:8001/api/v1/change/'
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "id": 1
+                }
+            }
+        },
+
+        // 47: subscribe cb245673-aa41-4302-ac47-10000000001 to loss messages
+        {
+            "request": {
+                "method": 'POST',
+                "body": {
+                    "identity": "cb245673-aa41-4302-ac47-10000000001",
+                    "action": "subscribe_loss"
+                },
+                "url": 'http://hub.localhost:8001/api/v1/change/'
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "id": 1
+                }
+            }
+        },
+
+        // 48: create change for cb245673-aa41-4302-ac47-10000000001; reason not hiv positive
+        {
+            "request": {
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-10000000001",
+                    "action": "pmtct_nonloss_optout",
+                    "data": {
+                        "reason": "not_hiv_pos"
+                    }
+                },
+                "url": 'http://hub.localhost:8001/api/v1/change/',
+            },
+            "response": {
+                "response": {
+                    "code": 201,
+                    "data": {
+                        "id": 1
+                    }
+                }
+            }
+        },
+
+        // 49: create change for cb245673-aa41-4302-ac47-10000000001; reason miscarriage
+        {
+            "request": {
+                "url": 'http://hub.localhost:8001/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-10000000001",
+                    "action": "pmtct_loss_switch",
+                    "data": {
+                        "reason": "miscarriage"
+                    }
+                }
+            },
+            "response": {
+                "response": {
+                    "code": 201,
+                    "data": {
+                        "id": 1
+                    }
+                }
+            }
+        },
+
+        // 50: update identity cb245673-aa41-4302-ac47-00000000001
         {
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/',
-                "body": '{"url":"http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/","id":"cb245673-aa41-4302-ac47-00000000001","version":1,"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000111":{}}},"pmtct":{"registered":"true"}},"created_at":"2016-06-21T06:13:29.693272Z","updated_at":"2016-06-21T06:13:29.693298Z"}'
+                "body": {
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/",
+                    "id": "cb245673-aa41-4302-ac47-00000000001",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820000111": {}
+                            }
+                        },
+                        "created_at":"2016-06-21T06:13:29.693272Z",
+                        "updated_at":"2016-06-21T06:13:29.693298Z"
+                    }
+                }
             },
+            "response": {}
         },
 
-        // 43: update identity cb245673-aa41-4302-ac47-00000000002
+        // 51: update identity cb245673-aa41-4302-ac47-00000000002
         {
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/',
-                "body": '{"url":"http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/","id":"cb245673-aa41-4302-ac47-00000000002","version":1,"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000222":{}}},"consent":"true","pmtct":{"registered":"true"}},"created_at":"2016-06-21T06:13:29.693272Z","updated_at":"2016-06-21T06:13:29.693298Z"}'
+                "body": {
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/",
+                    "id": "cb245673-aa41-4302-ac47-00000000002",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820000222": {}
+                            }
+                        },
+                        "consent":"true",
+                        "created_at":"2016-06-21T06:13:29.693272Z",
+                        "updated_at":"2016-06-21T06:13:29.693298Z"
+                    }
+                }
             },
+            "response": {}
         },
 
-        // 44: update identity cb245673-aa41-4302-ac47-00000000003
+        // 52: update identity cb245673-aa41-4302-ac47-00000000003
         {
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000003/',
-                "body": '{"url":"http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000003/","id":"cb245673-aa41-4302-ac47-00000000003","version":1,"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000333":{}}},"dob":"1981-04-26","pmtct":{"registered":"true"}},"created_at":"2016-06-21T06:13:29.693272Z","updated_at":"2016-06-21T06:13:29.693298Z"}'
+                "body": {
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000003/",
+                    "id": "cb245673-aa41-4302-ac47-00000000003",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820000333": {}
+                            }
+                        },
+                        "dob": "1981-04-26",
+                        "created_at": "2016-06-21T06:13:29.693272Z",
+                        "updated_at": "2016-06-21T06:13:29.693298Z"
+                    }
+                }
             },
+            "response": {}
         },
 
-        // 45: update identity cb245673-aa41-4302-ac47-00000000004
+        // 53: update identity cb245673-aa41-4302-ac47-00000000004
         {
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000004/',
-                "body": '{"url":"http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000004/","id":"cb245673-aa41-4302-ac47-00000000004","version":1,"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000444":{}}},"consent":"true","dob":"1981-04-26","pmtct":{"registered":"true"}},"created_at":"2016-06-21T06:13:29.693272Z","updated_at":"2016-06-21T06:13:29.693298Z"}'
+                "body": {
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000004/",
+                    "id": "cb245673-aa41-4302-ac47-00000000004",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820000444": {}
+                            }
+                        },
+                        "consent": "true",
+                        "dob": "1981-04-26",
+                        "created_at": "2016-06-21T06:13:29.693272Z",
+                        "updated_at": "2016-06-21T06:13:29.693298Z"
+                    }
+                }
             },
+            "response": {}
         },
 
-        // 46: update identity cb245673-aa41-4302-ac47-00000000006
+        // 54: update identity cb245673-aa41-4302-ac47-00000000006
         {
             "request": {
                 "method": 'PATCH',
@@ -1726,7 +1979,7 @@ module.exports = function() {
             "response": {}
         },
 
-        // 47: update identity cb245673-aa41-4302-ac47-00000000007
+        // 55: update identity cb245673-aa41-4302-ac47-00000000007
         {
             "request": {
                 "method": 'PATCH',
@@ -1754,7 +2007,7 @@ module.exports = function() {
             "response": {}
         },
 
-        // 48: update identity cb245673-aa41-4302-ac47-00000000008
+        // 56: update identity cb245673-aa41-4302-ac47-00000000008
         {
             "request": {
                 "method": 'PATCH',
@@ -1782,7 +2035,7 @@ module.exports = function() {
             "response": {}
         },
 
-        // 49: update identity cb245673-aa41-4302-ac47-00000000009
+        // 57: update identity cb245673-aa41-4302-ac47-00000000009
         {
             "request": {
                 "method": 'PATCH',
@@ -1810,7 +2063,7 @@ module.exports = function() {
             "response": {}
         },
 
-        // 50: unused
+        // 58: unused
         {
             "request": {
                 "method": 'POST',
@@ -1819,12 +2072,10 @@ module.exports = function() {
                 },
                 "url": 'http://'
             },
-            "response": {
-
-            }
+            "response": {}
         },
 
-        // 51: unused
+        // 59: unused
         {
             "request": {
                 "method": 'POST',
@@ -1833,12 +2084,10 @@ module.exports = function() {
                 },
                 "url": 'http://'
             },
-            "response": {
-
-            }
+            "response": {}
         },
 
-        // 52: unused
+        // 60: unused
         {
             "request": {
                 "method": 'POST',
@@ -1847,12 +2096,10 @@ module.exports = function() {
                 },
                 "url": 'http://'
             },
-            "response": {
-
-            }
+            "response": {}
         },
 
-        // 53: unused
+        // 61: unused
         {
             "request": {
                 "method": 'POST',
@@ -1861,13 +2108,12 @@ module.exports = function() {
                 },
                 "url": 'http://'
             },
-            "response": {
-
-            }
+            "response": {}
         },
 
-        // 54: get messageset 1
+        // 62: get messageset 1
         {
+            "repeatable": true,
             "request": {
                 "method": 'GET',
                 "url": "http://sbm.localhost:8001/api/v1/messageset/1/"
@@ -1876,7 +2122,7 @@ module.exports = function() {
                 "code": 200,
                 "data": {
                     "id": 1,
-                    "short_name": 'not.a.hiv.messageset',
+                    "short_name": 'momconnect_prebirth.hw_full.1',
                     "notes": null,
                     "next_set": 2,
                     "default_schedule": 1,
@@ -1887,7 +2133,7 @@ module.exports = function() {
             }
         },
 
-        // 55: post registration for 0666
+        // 63: post registration for 0666
         {
             "request": {
                 "method": 'POST',
@@ -1906,7 +2152,7 @@ module.exports = function() {
             "response": {}
         },
 
-        // 56: post registration for 0777
+        // 64: post registration for 0777
         {
             "request": {
                 "method": 'POST',
@@ -1925,7 +2171,7 @@ module.exports = function() {
             "response": {}
         },
 
-        // 57: post registration for 0888
+        // 65: post registration for 0888
         {
             "request": {
                 "method": 'POST',
@@ -1944,7 +2190,7 @@ module.exports = function() {
             "response": {}
         },
 
-        // 58: post registration for 0999
+        // 66: post registration for 0999
         {
             "request": {
                 "method": 'POST',
@@ -1961,6 +2207,451 @@ module.exports = function() {
                 }
             },
             "response": {}
+        },
+
+        // 67: get vumi subscriptions by msisdn +27720000111
+        {
+            "request": {
+                "url": 'https://subscriptions/api/v1/go/subscription/',
+                "method": 'GET',
+                "params": {
+                    "to_addr": '+27720000111'
+                }
+            },
+            "response": {
+                "data": {
+                    "objects": [
+                        {
+                            "active": true,
+                            "completed": true,
+                            "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
+                            "created_at": "2015-11-11T07:49:21.172038",
+                            "id": 1467333,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/4/",
+                            "next_sequence_number": 30,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/1467333/",
+                            "schedule": "/api/v1/periodic_task/3/",
+                            "to_addr": "+27822911223",
+                            "updated_at": "2016-02-22T10:20:20.563675",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        },
+                        {
+                            "active": false,
+                            "completed": true,
+                            "contact_key": "a368fbce5a274ff6b3b28dfdfbf8dfbe",
+                            "created_at": "2015-07-09T12:47:03.727247",
+                            "id": 962818,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/5/",
+                            "next_sequence_number": 38,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/962818/",
+                            "schedule": "/api/v1/periodic_task/2/",
+                            "to_addr": "+27728394085",
+                            "updated_at": "2016-03-28T10:40:50.939858",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        },
+                        {
+                            "active": false,
+                            "completed": true,
+                            "contact_key": "234ba28edb314b4da369158f6adf769a",
+                            "created_at": "2015-02-05T11:23:25.689583",
+                            "id": 425407,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/5/",
+                            "next_sequence_number": 38,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/425407/",
+                            "schedule": "/api/v1/periodic_task/2/",
+                            "to_addr": "+27764536488",
+                            "updated_at": "2015-10-26T11:38:59.099219",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        }
+                    ]
+                }
+            }
+        },
+
+        // 68: deactivate vumi subscriptions
+        {
+            "request": {
+                "url": 'https://subscriptions/api/v1/go/subscription/',
+                "method": 'PATCH',
+                "data": {
+                    "objects": [
+                        {
+                            "active": false,
+                            "completed": true,
+                            "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
+                            "created_at": "2015-11-11T07:49:21.172038",
+                            "id": 1467333,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/4/",
+                            "next_sequence_number": 30,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/1467333/",
+                            "schedule": "/api/v1/periodic_task/3/",
+                            "to_addr": "+27822911223",
+                            "updated_at": "2016-02-22T10:20:20.563675",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        },
+                        {
+                            "active": false,
+                            "completed": true,
+                            "contact_key": "a368fbce5a274ff6b3b28dfdfbf8dfbe",
+                            "created_at": "2015-07-09T12:47:03.727247",
+                            "id": 962818,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/5/",
+                            "next_sequence_number": 38,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/962818/",
+                            "schedule": "/api/v1/periodic_task/2/",
+                            "to_addr": "+27728394085",
+                            "updated_at": "2016-03-28T10:40:50.939858",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        },
+                        {
+                            "active": false,
+                            "completed": true,
+                            "contact_key": "234ba28edb314b4da369158f6adf769a",
+                            "created_at": "2015-02-05T11:23:25.689583",
+                            "id": 425407,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/5/",
+                            "next_sequence_number": 38,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/425407/",
+                            "schedule": "/api/v1/periodic_task/2/",
+                            "to_addr": "+27764536488",
+                            "updated_at": "2015-10-26T11:38:59.099219",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        }
+                    ]
+                }
+            },
+            "response": {}
+        },
+
+        // 69: get active subscriptions for cb245673-aa41-4302-ac47-10000000001
+        {
+            'repeatable': true,
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'identity': 'cb245673-aa41-4302-ac47-10000000001',
+                    'active': 'true'
+                },
+                'headers': {
+                    'Authorization': ['Token test StageBasedMessaging'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://sbm.localhost:8001/api/v1/subscriptions/',
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            'url': 'http://sbm.localhost:8001/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-1111',
+                            'id': '51fcca25-2e85-4c44-subscription-1111',
+                            'version': 1,
+                            'identity': 'cb245673-aa41-4302-ac47-10000000001',
+                            'messageset': 100,
+                            'next_sequence_number': 1,
+                            'lang': "en",
+                            'active': true,
+                            'completed': false,
+                            'schedule': 1,
+                            'process_status': 0,
+                            'metadata': {},
+                            'created_at': "2015-07-10T06:13:29.693272Z",
+                            'updated_at': "2015-07-10T06:13:29.693272Z"
+                        }
+                    ]
+                }
+            }
+        },
+
+        // 70: get vumi contact by msisdn +27720000111
+        {
+            'repeatable': true,
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'query': 'msisdn=+27720000111'
+                },
+                'headers': {
+                    'Authorization': ['Bearer abcde'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'https://contacts/api/v1/go/contacts/',
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "cursor": null,
+                    "data": [
+                        {
+                            "groups": [],
+                            "twitter_handle": null,
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16",
+                            "bbm_pin": null,
+                            "extra": {
+                                "nc_registrees": "+27712388248",
+                                "nc_facname": "za South Africa (National Government)",
+                                "nc_subscription_seq_start": "1",
+                                "suspect_pregnancy": "no",
+                                "nc_working_on": "+27712388248",
+                                "metric_sum_sessions": "3",
+                                "last_stage": "states_language",
+                                "nc_subscription_type": "11",
+                                "nc_is_registered": "true",
+                                "nc_subscription_rate": "4",
+                                "nc_opt_out_reason": "",
+                                "nc_last_reg_id": "277",
+                                "id_type": "none",
+                                "is_registered": "false",
+                                "nc_faccode": "640301",
+                                "nc_registered_by": "+27727372369",
+                                "language_choice": "en",
+                                "nc_source_name": "Vumi Go",
+                                "ussd_sessions": "3",
+                                "consent": "true",
+                                "dob": "1982-02-01",
+                                "edd": "2016-09-06",
+                            },
+                            "msisdn": "+27720000111",
+                            "created_at": "2016-04-29 09:43:29.256573",
+                            "facebook_id": null,
+                            "name": null,
+                            "key": "3e99804c1f1c4c9790517923bb8b318b",
+                            "mxit_id": null,
+                            "$VERSION": 2,
+                            "surname": null,
+                            "wechat_id": null,
+                            "email_address": null,
+                            "gtalk_id": null,
+                            "subscription": {},
+                        }
+                    ]
+                }
+            }
+        },
+
+        // 71: get vumi subscription by msidn +27720000111
+        {
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'query': 'toaddr=+27720000111'
+                },
+                'url': 'https://subscriptions/api/v1/go/subscription/',
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "meta": {
+                        "limit": 20,
+                        "next": "/api/v1/subscription/?query=toaddr%3D%2B27720000111&limit=20&offset=20",
+                        "offset": 0,
+                        "previous": null,
+                        "total_count": 2497070
+                    },
+                    "data": {
+                        "objects": [
+                            {
+                                "active": true,
+                                "completed": true,
+                                "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
+                                "created_at": "2015-11-11T07:49:21.172038",
+                                "id": 1467333,
+                                "lang": "en",
+                                "message_set": "/api/v1/message_set/4/",
+                                "next_sequence_number": 30,
+                                "process_status": 2,
+                                "resource_uri": "/api/v1/subscription/1467333/",
+                                "schedule": "/api/v1/periodic_task/3/",
+                                "to_addr": "+27822911223",
+                                "updated_at": "2016-02-22T10:20:20.563675",
+                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                            },
+                            {
+                                "active": false,
+                                "completed": true,
+                                "contact_key": "a368fbce5a274ff6b3b28dfdfbf8dfbe",
+                                "created_at": "2015-07-09T12:47:03.727247",
+                                "id": 962818,
+                                "lang": "en",
+                                "message_set": "/api/v1/message_set/5/",
+                                "next_sequence_number": 38,
+                                "process_status": 2,
+                                "resource_uri": "/api/v1/subscription/962818/",
+                                "schedule": "/api/v1/periodic_task/2/",
+                                "to_addr": "+27728394085",
+                                "updated_at": "2016-03-28T10:40:50.939858",
+                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                            },
+                            {
+                                "active": false,
+                                "completed": true,
+                                "contact_key": "234ba28edb314b4da369158f6adf769a",
+                                "created_at": "2015-02-05T11:23:25.689583",
+                                "id": 425407,
+                                "lang": "en",
+                                "message_set": "/api/v1/message_set/5/",
+                                "next_sequence_number": 38,
+                                "process_status": 2,
+                                "resource_uri": "/api/v1/subscription/425407/",
+                                "schedule": "/api/v1/periodic_task/2/",
+                                "to_addr": "+27764536488",
+                                "updated_at": "2015-10-26T11:38:59.099219",
+                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+
+        // 72: patch subscription for +27720000111
+        {
+            "request": {
+                "url": 'https://subscriptions/api/v1/go/subscription/',
+                "method": 'PATCH',
+                "data": {
+                    "meta": {
+                        "limit": 20,
+                        "next": "/api/v1/subscription/?query=toaddr%3D%2B27720000111&limit=20&offset=20",
+                        "offset":0,
+                        "previous":null,
+                        "total_count":2497070
+                    },
+                    "data": {
+                        "objects": [
+                            {
+                                "active": false,
+                                "completed": true,
+                                "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
+                                "created_at": "2015-11-11T07:49:21.172038",
+                                "id": 1467333,
+                                "lang": "en",
+                                "message_set": "/api/v1/message_set/4/",
+                                "next_sequence_number": 30,
+                                "process_status": 2,
+                                "resource_uri": "/api/v1/subscription/1467333/",
+                                "schedule": "/api/v1/periodic_task/3/",
+                                "to_addr": "+27822911223",
+                                "updated_at": "2016-02-22T10:20:20.563675",
+                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                            },
+                            {
+                                "active": false,
+                                "completed": true,
+                                "contact_key": "a368fbce5a274ff6b3b28dfdfbf8dfbe",
+                                "created_at": "2015-07-09T12:47:03.727247",
+                                "id": 962818,
+                                "lang": "en",
+                                "message_set": "/api/v1/message_set/5/",
+                                "next_sequence_number": 38,
+                                "process_status": 2,
+                                "resource_uri": "/api/v1/subscription/962818/",
+                                "schedule": "/api/v1/periodic_task/2/",
+                                "to_addr": "+27728394085",
+                                "updated_at": "2016-03-28T10:40:50.939858",
+                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                            },
+                            {
+                                "active": false,
+                                "completed": true,
+                                "contact_key": "234ba28edb314b4da369158f6adf769a",
+                                "created_at": "2015-02-05T11:23:25.689583",
+                                "id": 425407,
+                                "lang": "en",
+                                "message_set": "/api/v1/message_set/5/",
+                                "next_sequence_number": 38,
+                                "process_status": 2,
+                                "resource_uri": "/api/v1/subscription/425407/",
+                                "schedule": "/api/v1/periodic_task/2/",
+                                "to_addr": "+27764536488",
+                                "updated_at": "2015-10-26T11:38:59.099219",
+                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                            }
+                        ]
+                    }
+                }
+            },
+            "response": {}
+        },
+
+        // 73: post to old system, subscribing for loss messages
+        {
+            "request": {
+                "url": 'https://subscriptions/api/v1/go/subscription/',
+                "method": 'POST',
+                "data": {
+                    "contact_key":"1082752d5fcb482b8e744ad4d6356eb2",
+                    "lang": "eng_ZA",
+                    "message_set": "/api/v1/message_set/6/",
+                    "next_sequence_number": 1,
+                    "schedule": "/api/v1/periodic_task/3/",
+                    "to_addr": "+27720000111",
+                    "user_account":"1aa0dea2f82945a48cc258c61d756f16"
+                }
+            },
+            "response": {}
+        },
+
+        // 74:  create change for cb245673-aa41-4302-ac47-10000000001; reason miscarriage
+        {
+            "request": {
+                "url": 'http://hub.localhost:8001/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-10000000001",
+                    "action": "pmtct_loss_optout",
+                    "data": {
+                        "reason": "miscarriage"
+                    }
+                }
+            },
+            "response": {}
+        },
+
+        // 75: optout +27720000111 on vumi
+        {
+            "request": {
+                "url": 'https://contacts/api/v1/go/optouts/msisdn/+27720000111',
+                "method": 'PUT'
+            },
+            "response": {}
+        },
+
+        // 76: get messageset 101 (pmtct - +27720000111)
+        {
+            "repeatable": true,
+            "request": {
+                "method": 'GET',
+                "url": "http://sbm.localhost:8001/api/v1/messageset/100/"
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "id": 100,
+                    "short_name": 'pmtct_prebirth.patient.1',
+                    "notes": null,
+                    "next_set": 2,
+                    "default_schedule": 1,
+                    "content_type": 'text',
+                    "created_at": '2016-06-22T06:13:29.693272Z',
+                    "updated_at": '2016-06-22T06:13:29.693272Z'
+                }
+            }
         },
 
     ];

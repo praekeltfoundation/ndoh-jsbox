@@ -31,17 +31,23 @@ go.app = function() {
         self.init = function() {
             // initialising services
             self.im.log("INIT!");
-            var is_base_url = self.im.config.services.identity_store.url;
-            var is_auth_token = self.im.config.services.identity_store.token;
-            is = new IdentityStore(new JsonApi(self.im, {}), is_auth_token, is_base_url);
+            is = new IdentityStore(
+                new JsonApi(self.im, {}),
+                self.im.config.services.identity_store.token,
+                self.im.config.services.identity_store.url
+            );
 
-            var sbm_base_url = self.im.config.services.stage_based_messaging.url;
-            var sbm_auth_token = self.im.config.services.stage_based_messaging.token;
-            sbm = new StageBasedMessaging(new JsonApi(self.im, {}), sbm_auth_token, sbm_base_url);
+            sbm = new StageBasedMessaging(
+                new JsonApi(self.im, {}),
+                self.im.config.services.stage_based_messaging.token,
+                self.im.config.services.stage_based_messaging.url
+            );
 
-            var hub_base_url = self.im.config.services.hub.prefix;
-            var hub_auth_token = self.im.config.services.hub.token;
-            hub = new Hub(new JsonApi(self.im, {}), hub_auth_token, hub_base_url);
+            hub = new Hub(
+                new JsonApi(self.im, {}),
+                self.im.config.services.hub.token,
+                self.im.config.services.hub.url
+            );
         };
 
         // the next two functions, getVumiContactByMsisdn & getVumiActiveSubscriptions
@@ -49,9 +55,9 @@ go.app = function() {
 
         // get/load contact from vumigo
         self.getVumiContactByMsisdn = function(im, msisdn) {
-            var token = self.im.config.vumi.token;
+            var token = im.config.vumi.token;
 
-            var vumigo_base_url = self.im.config.vumi.contact_url;
+            var vumigo_base_url = im.config.vumi.contact_url;
             var endpoint = "contacts/";
 
             var http = new JsonApi(im, {
@@ -68,10 +74,10 @@ go.app = function() {
         };
 
         self.getVumiActiveSubscriptions = function(im, msisdn) {
-            var username = self.im.config.vumi.username;
-            var api_key = self.im.config.vumi.api_key;
+            var username = im.config.vumi.username;
+            var api_key = im.config.vumi.api_key;
 
-            var subscription_base_url = self.im.config.vumi.subscription_url;
+            var subscription_base_url = im.config.vumi.subscription_url;
             var endpoint = "subscription/";
 
             var http = new JsonApi(im, {
@@ -164,6 +170,113 @@ go.app = function() {
             return subscriptionTypeMapping[messageset_id];
         };
 
+        self.getVumiSubscriptionsByMsisdn = function(im, msisdn) {
+            var username = im.config.vumi.username;
+            var api_key = im.config.vumi.api_key;
+
+            var subscription_base_url = im.config.vumi.subscription_url;
+            var endpoint = "subscription/";
+
+            var http = new JsonApi(im, {
+                headers: {
+                    'Authorization': ['ApiKey ' + username + ':' + api_key]
+                }
+            });
+
+            return http.get(subscription_base_url + endpoint, {
+                    params: {
+                        "query": "toaddr=" + msisdn
+                    }
+                })
+                .then(function(result) {
+                    return result.data;
+                });
+        };
+
+        self.deactivateVumiSubscriptions = function(im, msisdn) {
+            var username = im.config.vumi.username;
+            var api_key = im.config.vumi.api_key;
+
+            var subscription_base_url = im.config.vumi.subscription_url;
+            var endpoint = "subscription/";
+
+            var http = new JsonApi(im, {
+                headers: {
+                    'Authorization': ['ApiKey ' + username + ':' + api_key]
+                }
+            });
+
+            return self
+            .getVumiSubscriptionsByMsisdn(im, msisdn)
+            .then(function(subscriptions) {
+                im.user.set_answer("vumi_user_account", subscriptions.data.objects[0].user_account);
+                im.user.set_answer("vumi_contact_key", subscriptions.data.objects[0].contact_key);
+                var clean = true;  // clean tracks if api call is unnecessary
+
+                for (var i=0; i<subscriptions.data.objects.length; i++) {
+                    if (subscriptions.data.objects[i].active === true) {
+                        subscriptions.data.objects[i].active = false;
+                        clean = false;
+                    }
+                }
+                if (!clean) {
+                    return http.patch(subscription_base_url + endpoint, {
+                            data: subscriptions
+                        });
+                } else {
+                    return Q();
+                }
+            });
+        };
+
+        self.postVumiLossSubscription = function(im, contact) {
+            var optoutReasonToSubTypeMapping = {
+                "miscarriage": "6",
+                "stillbirth": "7",
+                "babyloss": "8"
+            };
+            var username = im.config.vumi.username;
+            var api_key = im.config.vumi.api_key;
+
+            var subscription_base_url = im.config.vumi.subscription_url;
+            var endpoint = "subscription/";
+
+            var sub_info = {
+                contact_key: im.user.answers.vumi_contact_key,
+                lang: im.user.lang,
+                message_set: "/api/v1/message_set/" + optoutReasonToSubTypeMapping[im.user.answers.state_optout_reason_menu] + "/",
+                next_sequence_number: 1,
+                schedule: "/api/v1/periodic_task/3/",  // 3 = twice per week
+                to_addr: im.user.answers.msisdn,
+                user_account: im.user.answers.vumi_user_account
+            };
+
+            var http = new JsonApi(im, {
+              headers: {
+                'Authorization': ['ApiKey ' + username + ':' + api_key]
+              }
+            });
+
+            return http.post(subscription_base_url + endpoint, {
+                data: sub_info
+                  });
+        };
+
+        self.optoutVumiAddress = function(im, msisdn) {
+            var token = im.config.vumi.token;
+
+            var vumigo_base_url = im.config.vumi.contact_url;
+            var endpoint = "optouts/msisdn/" + msisdn;
+
+            var http = new JsonApi(im, {
+                headers: {
+                    'Authorization': ['Bearer ' + token]
+                }
+            });
+
+            return http.put(vumigo_base_url + endpoint);
+        };
+
         // TIMEOUT HANDLING
 
         // override normal state adding
@@ -234,13 +347,13 @@ go.app = function() {
             return is
             .get_or_create_identity({"msisdn": msisdn})
             .then(function(identity) {
-                self.im.user.set_answer("contact_identity", identity);
+                self.im.user.set_answer("identity", identity);
                 return self
                 .has_active_pmtct_subscription(identity.id)
                 .then(function(has_active_pmtct_subscription) {
                     if (has_active_pmtct_subscription) {
                         return self.im.user
-                        .set_lang(self.im.user.answers.contact_identity.details.lang_code || "eng_ZA")
+                        .set_lang(self.im.user.answers.identity.details.lang_code || "eng_ZA")
                         .then(function(lang_set_response) {
                             return self.states.create("state_optout_reason_menu");
                         });
@@ -284,6 +397,7 @@ go.app = function() {
                                     self.im.user.set_answer("edd", contacts[0].extra.edd || null);
                                     self.im.user.set_answer("subscription_type", subscription_type);
                                     self.im.user.set_answer("vumi_user_account", contacts[0].user_account);
+                                    self.im.user.set_answer("vumi_contact_key", contacts[0].contact_key);
 
                                     return self.im.user
                                     .set_lang(self.im.user.answers.lang_code)
@@ -428,23 +542,24 @@ go.app = function() {
         });
 
         self.add("state_register_pmtct", function(name) {
-            var identity_info = self.im.user.answers.contact_identity;
+            var identity_info = self.im.user.answers.identity;
             identity_info.details.mom_dob = self.im.user.answers.mom_dob;
             identity_info.details.lang_code = self.im.user.answers.lang_code;
             identity_info.details.vumi_user_account = self.im.user.answers.vumi_user_account;
+            identity_info.details.vumi_contact_key = self.im.user.answers.vumi_contact_key;
             identity_info.details.source = "pmtct";
 
             return is
-            .update_identity(self.im.user.answers.contact_identity.id, identity_info)
+            .update_identity(self.im.user.answers.identity.id, identity_info)
             .then(function() {
                 var reg_info;
                 var subscription_type = self.im.user.answers.subscription_type;
                 if (subscription_type === 'baby1' || subscription_type === 'baby2') {
                     reg_info = {
                         "reg_type": "postbirth_pmtct",
-                        "registrant_id": self.im.user.answers.contact_identity.id,
+                        "registrant_id": self.im.user.answers.identity.id,
                         "data": {
-                            "operator_id": self.im.user.answers.contact_identity.id,
+                            "operator_id": self.im.user.answers.identity.id,
                             "language": self.im.user.answers.lang_code,
                             "mom_dob": self.im.user.answers.mom_dob,
                             "baby_dob": self.im.user.answers.baby_dob,
@@ -455,9 +570,9 @@ go.app = function() {
                            || subscription_type == 'accelerated') {
                     reg_info = {
                         "reg_type": "prebirth_pmtct",
-                        "registrant_id": self.im.user.answers.contact_identity.id,
+                        "registrant_id": self.im.user.answers.identity.id,
                         "data": {
-                            "operator_id": self.im.user.answers.contact_identity.id,
+                            "operator_id": self.im.user.answers.identity.id,
                             "language": self.im.user.answers.lang_code,
                             "mom_dob": self.im.user.answers.mom_dob,
                             "edd": self.im.user.answers.edd
@@ -505,7 +620,22 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (["not_hiv_pos", "not_useful", "other"].indexOf(choice.value) !== -1) {
-                        return "state_end_optout";
+                        var pmtct_nonloss_optout = {
+                            "registrant_id": self.im.user.answers.identity.id,
+                            "action": "pmtct_nonloss_optout",
+                            "data": {
+                                "reason": choice.value
+                            }
+                        };
+
+                        // only opt user out of the PMTCT message set NOT MomConnect
+                        return hub
+                        .create_change(pmtct_nonloss_optout)
+                        // TODO: We are currently not opting the identity out - should we?
+                        .then(function() {
+                            return "state_end_optout";
+                        });
+
                     } else {
                         return "state_loss_messages";
                     }
@@ -515,9 +645,11 @@ go.app = function() {
 
         self.add("state_end_optout", function(name) {
             return new EndState(name, {
-                text: $("Thank you. You will no longer receive PMTCT messages. You will still receive the MomConnect messages. To stop receiving these messages as well, please dial into *134*550*1#."),
+                text: $(
+                    "Thank you. You will no longer receive PMTCT messages. You will still receive the " +
+                    "MomConnect messages. To stop receiving these messages as well, please dial into " +
+                    "{{ mc_optout_number }}.").context({mc_optout_number: self.im.config.mc_optout_channel}),
                 next: "state_start"
-                // only opt user out of the PMTCT message set NOT MomConnect
             });
         });
 
@@ -531,9 +663,53 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (choice.value === "yes") {
-                        return "state_end_loss_optin";
+                        var pmtct_loss_switch = {
+                            "registrant_id": self.im.user.answers.identity.id,
+                            "action": "pmtct_loss_switch",
+                            "data": {
+                                "reason": self.im.user.answers.state_optout_reason_menu
+                            }
+                        };
+                        return Q.all([
+                            hub.create_change(pmtct_loss_switch),
+                            self.deactivateVumiSubscriptions(self.im, self.im.user.answers.msisdn)
+                        ])
+                        .then(function() {
+                            // subscribe to loss messages on old system (pre-migration)
+                            return self
+                            .postVumiLossSubscription(self.im, self.im.user.answers.identity)
+                            .then(function() {
+                                return "state_end_loss_optin";
+                            });
+                        });
                     } else {
-                        return "state_end_loss_optout";
+                        var pmtct_loss_optout = {
+                            "registrant_id": self.im.user.answers.identity.id,
+                            "action": "pmtct_loss_optout",
+                            "data": {
+                                "reason": self.im.user.answers.state_optout_reason_menu
+                            }
+                        };
+                        var optout_info = {
+                            optout_type: "stop",  // default to "stop"
+                            identity: self.im.user.answers.identity.id,
+                            reason: self.im.user.answers.state_optout_reason_menu,  // default to "unknown"
+                            address_type: "msisdn",  // default to 'msisdn'
+                            address: self.im.user.answers.msisdn,
+                            request_source: "ussd_pmtct",
+                            requestor_source_id: self.im.config.testing_message_id || self.im.msg.message_id,
+                        };
+
+                        return Q
+                        .all([
+                            hub.create_change(pmtct_loss_optout),
+                            is.optout(optout_info),
+                            self.deactivateVumiSubscriptions(self.im, self.im.user.answers.msisdn),
+                            self.optoutVumiAddress(self.im, self.im.user.answers.msisdn)
+                        ])
+                        .then(function() {
+                            return "state_end_loss_optout";
+                        });
                     }
                 }
             });
