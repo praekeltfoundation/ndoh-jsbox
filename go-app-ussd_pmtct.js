@@ -384,7 +384,6 @@ go.app = function() {
                         .getVumiActiveSubscriptions(self.im, msisdn)
                         .then(function(active_subscriptions) {
                             if (active_subscriptions.length > 0) {
-                                // TODO: add tests for the regex below
                                 // extract messageset number
                                 var messageset_id = active_subscriptions[0].message_set.match(/\d+\/$/)[0].replace('/', '');
                                 var subscription_type = self.getSubscriptionType(messageset_id);
