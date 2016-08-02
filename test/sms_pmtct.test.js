@@ -2,7 +2,6 @@ var vumigo = require('vumigo_v02');
 var fixtures = require('./fixtures');
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
-var _ = require('lodash');
 
 var SeedJsboxUtils = require('seed-jsbox-utils');
 var utils = SeedJsboxUtils.utils;
