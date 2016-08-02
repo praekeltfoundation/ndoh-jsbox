@@ -34,19 +34,19 @@ go.app = function() {
             is = new IdentityStore(
                 new JsonApi(self.im, {}),
                 self.im.config.services.identity_store.token,
-                self.im.config.services.identity_store.base_url
+                self.im.config.services.identity_store.url
             );
 
             sbm = new StageBasedMessaging(
                 new JsonApi(self.im, {}),
                 self.im.config.services.stage_based_messaging.token,
-                self.im.config.services.stage_based_messaging.base_url
+                self.im.config.services.stage_based_messaging.url
             );
 
             hub = new Hub(
                 new JsonApi(self.im, {}),
                 self.im.config.services.hub.token,
-                self.im.config.services.hub.base_url
+                self.im.config.services.hub.url
             );
         };
 

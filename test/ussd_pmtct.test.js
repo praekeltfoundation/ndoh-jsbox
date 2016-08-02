@@ -49,15 +49,15 @@ describe("PMTCT app", function() {
                     ],
                     services: {
                         identity_store: {
-                            base_url: 'http://is.localhost:8001/api/v1/',
+                            url: 'http://is.localhost:8001/api/v1/',
                             token: 'test IdentityStore'
                         },
                         stage_based_messaging: {
-                            base_url: 'http://sbm.localhost:8001/api/v1/',
+                            url: 'http://sbm.localhost:8001/api/v1/',
                             token: 'test StageBasedMessaging'
                         },
                         hub: {
-                            base_url: 'http://hub.localhost:8001/api/v1/',
+                            url: 'http://hub.localhost:8001/api/v1/',
                             token: 'test Hub'
                         }
                     },
