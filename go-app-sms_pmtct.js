@@ -5,6 +5,7 @@ go.app = function() {
     var vumigo = require('vumigo_v02');
     var App = vumigo.App;
     var EndState = vumigo.states.EndState;
+    var JsonApi = vumigo.http.api.JsonApi;
 
     var SeedJsboxUtils = require('seed-jsbox-utils');
     var IdentityStore = SeedJsboxUtils.IdentityStore;
@@ -13,6 +14,8 @@ go.app = function() {
     var GoNDOH = App.extend(function(self) {
         App.call(self, 'state_start');
         var $ = self.$;
+
+        var is;
 
         self.init = function() {
             // initialising services
@@ -32,8 +35,7 @@ go.app = function() {
             } else {
                 // get the first word, remove non-alphanumerics, capitalise
                 switch (utils.get_clean_first_word(self.im.msg.content)) {
-                    case "STOP": case "END": case "CANCEL": case "UNSUBSCRIBE":
-                    case "QUIT": case "BLOCK":
+                    case "STOP":
                         return self.states.create("state_check_identity");
                     default:
                         return self.states.create("state_default");
@@ -45,8 +47,8 @@ go.app = function() {
             return is
                 .list_by_address({'msisdn': self.im.user.answers.msisdn})
                 .then(function(identities) {
-                    if (identities.length > 0) {
-                        self.im.user.set_answer('identity_id', identities[0].id);
+                    if (identities.results.length > 0) {
+                        self.im.user.set_answer('identity_id', identities.results[0].id);
                         return self.states.create('state_opt_out_enter');
                     } else {
                         return self.states.create('state_end_unrecognised');
@@ -73,7 +75,7 @@ go.app = function() {
                 requestor_source_id: self.im.config.testing_message_id || self.im.msg.message_id,
             };
             return is
-                .opt_out(optout_info)
+                .optout(optout_info)
                 .then(function() {
                     return self.states.create('state_opt_out');
                 });
@@ -96,7 +98,7 @@ go.app = function() {
 
         self.states.add('state_default', function(name) {
             return new EndState(name, {
-                text: text,
+                text: "default",
                 next: 'state_start'
             });
         });
