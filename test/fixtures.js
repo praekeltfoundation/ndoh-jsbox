@@ -2670,6 +2670,22 @@ module.exports = function() {
                 }
             },
             "response": {}
+        },
+
+        // 78:
+        {
+            "request": {
+                "url": 'http://hub.localhost:8001/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000000001",
+                    "action": "optout",
+                    "data": {
+                        "reason": "unknown"
+                    }
+                }
+            },
+            "response": {}
         }
 
     ];

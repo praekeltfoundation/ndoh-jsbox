@@ -31,6 +31,10 @@ describe("app", function() {
                         identity_store: {
                             url: 'http://is.localhost:8001/api/v1/',
                             token: 'test IdentityStore'
+                        },
+                        hub: {
+                            url: 'http://hub.localhost:8001/api/v1/',
+                            token: 'test Hub'
                         }
                     }
                 })
@@ -81,7 +85,7 @@ describe("app", function() {
                             'If you have any medical concerns please visit your nearest clinic'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [0, 77]);
+                        utils.check_fixtures_used(api, [0, 77, 78]);
                     })
                     .run();
             });

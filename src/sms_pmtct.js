@@ -3,9 +3,11 @@ go.app = function() {
     var App = vumigo.App;
     var EndState = vumigo.states.EndState;
     var JsonApi = vumigo.http.api.JsonApi;
+    var Q = require('q');
 
     var SeedJsboxUtils = require('seed-jsbox-utils');
     var IdentityStore = SeedJsboxUtils.IdentityStore;
+    var Hub = SeedJsboxUtils.Hub;
     var utils = SeedJsboxUtils.utils;
 
     var GoNDOH = App.extend(function(self) {
@@ -13,6 +15,7 @@ go.app = function() {
         var $ = self.$;
 
         var is;
+        var hub;
 
         self.init = function() {
             // initialising services
@@ -20,6 +23,12 @@ go.app = function() {
                 new JsonApi(self.im, {}),
                 self.im.config.services.identity_store.token,
                 self.im.config.services.identity_store.url
+            );
+
+            hub = new Hub(
+                new JsonApi(self.im, {}),
+                self.im.config.services.hub.token,
+                self.im.config.services.hub.url
             );
         };
 
@@ -62,6 +71,13 @@ go.app = function() {
         });
 
         self.states.add('state_opt_out_enter', function(name) {
+            var optout_change = {
+                "registrant_id": self.im.user.answers.identity_id,
+                "action": "optout",
+                "data": {
+                    "reason": "unknown"
+                }
+            };
             var optout_info = {
                 optout_type: "stop",  // default to "stop"
                 identity: self.im.user.answers.identity_id,
@@ -71,8 +87,11 @@ go.app = function() {
                 request_source: "sms_pmtct",
                 requestor_source_id: self.im.config.testing_message_id || self.im.msg.message_id,
             };
-            return is
-                .optout(optout_info)
+            return Q
+                .all([
+                    hub.create_change(optout_change),
+                    is.optout(optout_info)
+                ])
                 .then(function() {
                     return self.states.create('state_opt_out');
                 });
