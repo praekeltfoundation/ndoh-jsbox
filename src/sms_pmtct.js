@@ -99,8 +99,9 @@ go.app = function() {
 
         self.states.add('state_opt_out', function(name) {
             return new EndState(name, {
-                text: $('Thank you. You will no longer receive messages from us. ' +
-                        'If you have any medical concerns please visit your nearest clinic'),
+                text: $("If you only wanted to stop the messages about HIV, " +
+                    "please reply MOM to this message and you will still receive " +
+                    "MomConnect messages."),
                 next: 'state_start'
             });
         });
