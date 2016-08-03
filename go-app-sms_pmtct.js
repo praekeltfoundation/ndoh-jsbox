@@ -98,7 +98,10 @@ go.app = function() {
 
         self.states.add('state_default', function(name) {
             return new EndState(name, {
-                text: "default",
+                text: $("We do not recognise the message you sent us. Reply STOP to unsubscribe or dial {{channel}} for more options.")
+                    .context({
+                        channel: self.im.config.channel
+                    }),
                 next: 'state_start'
             });
         });

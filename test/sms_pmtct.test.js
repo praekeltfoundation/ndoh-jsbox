@@ -22,6 +22,7 @@ describe("app", function() {
                     testing: 'true',
                     testing_today: 'August 2, 2016 13:30:07',
                     testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',
+                    channel: "*134*550*10#",
                     logging: "off",
                     endpoints: {
                         "sms": {"delivery_class": "sms"}
@@ -39,14 +40,25 @@ describe("app", function() {
         });
 
         describe("when the user sends a non standard keyword message", function() {
-
+            it("should tell message is not recognised and give instructions", function() {
+                return tester
+                    .setup.user.addr('+27820000111')
+                    .input('HELP me')
+                    .check.interaction({
+                        state: 'state_default',
+                        reply:
+                            "We do not recognise the message you sent us. Reply " +
+                            "STOP to unsubscribe or dial *134*550*10# for more options."
+                    })
+                    .run();
+            });
         });
 
         describe("when the user sends a message containing a USSD code", function() {
             it("should tell them to dial the number, not sms it", function() {
                 return tester
                     .setup.user.addr('+27820000111')
-                    .inputs('*134*12345# rate')
+                    .input('*134*12345# rate')
                     .check.interaction({
                         state: 'state_dial_not_sms',
                         reply:
@@ -61,7 +73,7 @@ describe("app", function() {
             it("STOP - should set their opt out status", function() {
                 return tester
                     .setup.user.addr('+27820000111')
-                    .inputs('"stop" in the name of love')
+                    .input('"stop" in the name of love')
                     .check.interaction({
                         state: 'state_opt_out',
                         reply:
