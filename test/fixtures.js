@@ -1970,7 +1970,7 @@ module.exports = function() {
                         },
                         "mom_dob": "1982-02-01",
                         "lang_code": "eng_ZA",
-                        "vumi_user_account": "1aa0dea2f82945a48cc258c61d756f16",
+                        "vumi_contact_key":"3e99804c1f1c4c9790517923bb8b318b",
                         "source": "pmtct"
                     },
                     "created_at": "2016-07-17T06:13:29.693272Z",
@@ -1997,7 +1997,7 @@ module.exports = function() {
                         },
                         "mom_dob": "1954-05-29",
                         "lang_code": "eng_ZA",
-                        "vumi_user_account": "1aa0dea2f82945a48cc258c61d756f16",
+                        "vumi_contact_key":"3e99804c1f1c4c9790517923bb8b318b",
                         "source": "pmtct"
                     },
                     "created_at": "2016-07-17T06:13:29.693272Z",
@@ -2025,7 +2025,7 @@ module.exports = function() {
                         },
                         "mom_dob": "1975-09-23",
                         "lang_code": "zul_ZA",
-                        "vumi_user_account": "1aa0dea2f82945a48cc258c61d756f16",
+                        "vumi_contact_key":"3e99804c1f1c4c9790517923bb8b318b",
                         "source": "pmtct"
                     },
                     "created_at": "2016-07-17T06:13:29.693272Z",
@@ -2053,7 +2053,7 @@ module.exports = function() {
                         },
                         "mom_dob": "1981-04-26",
                         "lang_code": "eng_ZA",
-                        "vumi_user_account": "1aa0dea2f82945a48cc258c61d756f16",
+                        "vumi_contact_key":"3e99804c1f1c4c9790517923bb8b318b",
                         "source": "pmtct"
                     },
                     "created_at": "2016-07-17T06:13:29.693272Z",

@@ -397,7 +397,7 @@ go.app = function() {
                                     self.im.user.set_answer("edd", contacts[0].extra.edd || null);
                                     self.im.user.set_answer("subscription_type", subscription_type);
                                     self.im.user.set_answer("vumi_user_account", contacts[0].user_account);
-                                    self.im.user.set_answer("vumi_contact_key", contacts[0].contact_key);
+                                    self.im.user.set_answer("vumi_contact_key", contacts[0].key);
 
                                     return self.im.user
                                     .set_lang(self.im.user.answers.lang_code)
@@ -545,7 +545,6 @@ go.app = function() {
             var identity_info = self.im.user.answers.identity;
             identity_info.details.mom_dob = self.im.user.answers.mom_dob;
             identity_info.details.lang_code = self.im.user.answers.lang_code;
-            identity_info.details.vumi_user_account = self.im.user.answers.vumi_user_account;
             identity_info.details.vumi_contact_key = self.im.user.answers.vumi_contact_key;
             identity_info.details.source = "pmtct";
 
