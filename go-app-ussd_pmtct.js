@@ -434,14 +434,14 @@ go.app = function() {
 
         self.add("state_end_not_registered", function(name) {
             return new EndState(name, {
-                text: $("You need to be registered to MomConnect to receive these messages. Please visit the nearest clinic to register."),
+                text: $("You need to be registered on MomConnect to receive these messages. Please visit the nearest clinic to register."),
                 next: "state_start"
             });
         });
 
         self.add("state_consent", function(name) {
             return new ChoiceState(name, {
-                question: $("To register we need to collect, store & use your info. You may also get messages on public holidays & weekends. Do you consent?"),
+                question: $("To sign up, we need to collect, store and use your info. You may also get messages on public holidays and weekends. Do you consent?"),
                 // error: ,
                 choices: [
                     new Choice("yes", $("Yes")),
@@ -604,18 +604,18 @@ go.app = function() {
         // start of OPT-OUT flow
         self.add("state_optout_reason_menu", function(name) {
             return new PaginatedChoiceState(name, {
-                question: $("Why do you no longer want to receive messages related to keeping your baby HIV-negative?"),
+                question: $("Please tell us why you do not want to receive messages:"),
                 characters_per_page: 182,
                 options_per_page: null,
                 more: $('More'),
                 back: $('Back'),
                 // error: ,
                 choices: [
-                    new Choice("not_hiv_pos", $("I am not HIV-positive")),
-                    new Choice("miscarriage", $("I had a miscarriage")),
-                    new Choice("stillbirth", $("My baby was stillborn")),
-                    new Choice("babyloss", $("My baby passed away")),
-                    new Choice("not_useful", $("The messages are not useful")),
+                    new Choice("not_hiv_pos", $("Not HIV-positive")),
+                    new Choice("miscarriage", $("Miscarriage")),
+                    new Choice("stillbirth", $("Baby was stillborn")),
+                    new Choice("babyloss", $("Baby died")),
+                    new Choice("not_useful", $("Messages not useful")),
                     new Choice("other", $("Other"))
                 ],
                 next: function(choice) {
@@ -646,9 +646,10 @@ go.app = function() {
         self.add("state_end_optout", function(name) {
             return new EndState(name, {
                 text: $(
-                    "Thank you. You will no longer receive PMTCT messages. You will still receive the " +
-                    "MomConnect messages. To stop receiving these messages as well, please dial into " +
-                    "{{ mc_optout_number }}.").context({mc_optout_number: self.im.config.mc_optout_channel}),
+                    "You will not receive SMSs about keeping your baby HIV " +
+                    "negative. You will still receive MomConnect SMSs. To stop " +
+                    "receiving these SMSs, dial {{ mc_optout_number }}")
+                    .context({ mc_optout_number: self.im.config.mc_optout_channel }),
                 next: "state_start"
             });
         });
