@@ -203,13 +203,13 @@ module.exports = function (grunt) {
             },
             test_ussd_servicerating: {
                 src: ['<%= paths.test.ussd_servicerating %>']
-            },
+            },*/
             test_ussd_nurse: {
                 src: ['<%= paths.test.ussd_nurse %>']
             },
-            test_sms_nurse: {
+            /*test_sms_nurse: {
                 src: ['<%= paths.test.sms_nurse %>']
-            }, */
+            },*/
             test_ussd_pmtct: {
                 src: ['<%= paths.test.ussd_pmtct %>']
             }
