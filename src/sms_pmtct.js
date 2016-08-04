@@ -73,7 +73,7 @@ go.app = function() {
         self.states.add('state_opt_out_enter', function(name) {
             var optout_change = {
                 "registrant_id": self.im.user.answers.identity_id,
-                "action": "optout",
+                "action": "pmtct_nonloss_optout",
                 "data": {
                     "reason": "unknown"
                 }
@@ -115,9 +115,9 @@ go.app = function() {
 
         self.states.add('state_default', function(name) {
             return new EndState(name, {
-                text: $("We do not recognise the message you sent us. Reply STOP to unsubscribe or dial {{channel}} for more options.")
+                text: $("We do not recognise the message you sent us. Reply STOP to unsubscribe or dial {{pmtct_ussd_channel}} for more options.")
                     .context({
-                        channel: self.im.config.channel
+                        pmtct_ussd_channel: self.im.config.pmtct_ussd_channel
                     }),
                 next: 'state_start'
             });

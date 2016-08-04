@@ -22,7 +22,7 @@ describe("app", function() {
                     testing: 'true',
                     testing_today: 'August 2, 2016 13:30:07',
                     testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',
-                    channel: "*134*550*10#",
+                    pmtct_ussd_channel: "*134*550*10#",
                     logging: "off",
                     endpoints: {
                         "sms": {"delivery_class": "sms"}

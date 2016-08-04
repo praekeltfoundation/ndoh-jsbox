@@ -2679,7 +2679,7 @@ module.exports = function() {
                 "method": 'POST',
                 "data": {
                     "registrant_id": "cb245673-aa41-4302-ac47-00000000001",
-                    "action": "optout",
+                    "action": "pmtct_nonloss_optout",
                     "data": {
                         "reason": "unknown"
                     }
