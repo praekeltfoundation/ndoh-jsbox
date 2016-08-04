@@ -144,7 +144,7 @@ describe("PMTCT app", function() {
                         .check.interaction({
                             state: "state_consent",
                             reply: [
-                                "To register we need to collect, store & use your info. You may also get messages on public holidays & weekends. Do you consent?",
+                                "To sign up, we need to collect, store and use your info. You may also get messages on public holidays and weekends. Do you consent?",
                                 "1. Yes",
                                 "2. No"
                             ].join("\n")
@@ -396,7 +396,7 @@ describe("PMTCT app", function() {
                         .check.interaction({
                             state: "state_consent",
                             reply: [
-                                "To register we need to collect, store & use your info. You may also get messages on public holidays & weekends. Do you consent?",
+                                "To sign up, we need to collect, store and use your info. You may also get messages on public holidays and weekends. Do you consent?",
                                 "1. Yes",
                                 "2. No"
                             ].join("\n")
@@ -530,7 +530,7 @@ describe("PMTCT app", function() {
                         )
                         .check.interaction({
                             state: "state_end_not_registered",
-                            reply: "You need to be registered to MomConnect to receive these messages. Please visit the nearest clinic to register."
+                            reply: "You need to be registered on MomConnect to receive these messages. Please visit the nearest clinic to register."
                         })
                         .check(function(api) {
                             utils.check_fixtures_used(api, [4, 15, 23]);
@@ -708,7 +708,7 @@ describe("PMTCT app", function() {
                         .check.interaction({
                             state: "state_consent",
                             reply: [
-                                "To register we need to collect, store & use your info. You may also get messages on public holidays & weekends. Do you consent?",
+                                "To sign up, we need to collect, store and use your info. You may also get messages on public holidays and weekends. Do you consent?",
                                 "1. Yes",
                                 "2. No"
                             ].join("\n")
@@ -792,7 +792,7 @@ describe("PMTCT app", function() {
                         .check.interaction({
                             state: "state_consent",
                             reply: [
-                                "To register we need to collect, store & use your info. You may also get messages on public holidays & weekends. Do you consent?",
+                                "To sign up, we need to collect, store and use your info. You may also get messages on public holidays and weekends. Do you consent?",
                                 "1. Yes",
                                 "2. No"
                             ].join("\n")
@@ -933,7 +933,7 @@ describe("PMTCT app", function() {
                         )
                         .check.interaction({
                             state: "state_end_not_registered",
-                            reply: "You need to be registered to MomConnect to receive these messages. Please visit the nearest clinic to register."
+                            reply: "You need to be registered on MomConnect to receive these messages. Please visit the nearest clinic to register."
                         })
                         .check(function(api) {
                             utils.check_fixtures_used(api, [9, 20, 28, 35, 40]);
@@ -952,7 +952,7 @@ describe("PMTCT app", function() {
                         )
                         .check.interaction({
                             state: "state_end_not_registered",
-                            reply: "You need to be registered to MomConnect to receive these messages. Please visit the nearest clinic to register."
+                            reply: "You need to be registered on MomConnect to receive these messages. Please visit the nearest clinic to register."
                         })
                         .check(function(api) {
                             utils.check_fixtures_used(api, [10, 21, 29, 41]);
@@ -975,50 +975,13 @@ describe("PMTCT app", function() {
                     .check.interaction({
                         state: "state_optout_reason_menu",
                         reply: [
-                            "Why do you no longer want to receive messages related to keeping your baby HIV-negative?",
-                            "1. I am not HIV-positive",
-                            "2. I had a miscarriage",
-                            "3. My baby was stillborn",
-                            "4. More"
-                        ].join('\n')
-                    })
-                    .run();
-            });
-            it("to state_optout_reason_menu (after having selected 'More')", function() {
-                return tester
-                    .setup.user.addr("0720000111")
-                    .setup.user.state("state_optout_reason_menu")
-                    .input(
-                        "4"  // state_optout_reason_menu - more
-                    )
-                    .check.interaction({
-                        state: "state_optout_reason_menu",
-                        reply: [
-                            "Why do you no longer want to receive messages related to keeping your baby HIV-negative?",
-                            "1. My baby passed away",
-                            "2. The messages are not useful",
-                            "3. Other",
-                            "4. Back"
-                        ].join('\n')
-                    })
-                    .run();
-            });
-            it("to state_optout_reason_menu (after having selected 'More' and 'Back')", function() {
-                return tester
-                    .setup.user.addr("0720000111")
-                    .setup.user.state("state_optout_reason_menu")
-                    .inputs(
-                        "4"  // state_optout_reason_menu - more
-                        ,"4"  // state_optout_reason_menu - back
-                    )
-                    .check.interaction({
-                        state: "state_optout_reason_menu",
-                        reply: [
-                            "Why do you no longer want to receive messages related to keeping your baby HIV-negative?",
-                            "1. I am not HIV-positive",
-                            "2. I had a miscarriage",
-                            "3. My baby was stillborn",
-                            "4. More"
+                            "Please tell us why you do not want to receive messages:",
+                            "1. Not HIV-positive",
+                            "2. Miscarriage",
+                            "3. Baby was stillborn",
+                            "4. Baby died",
+                            "5. Messages not useful",
+                            "6. Other"
                         ].join('\n')
                     })
                     .run();
@@ -1032,7 +995,7 @@ describe("PMTCT app", function() {
                     )
                     .check.interaction({
                         state: "state_end_optout",
-                        reply: "Thank you. You will no longer receive PMTCT messages. You will still receive the MomConnect messages. To stop receiving these messages as well, please dial into *134*550*1#."
+                        reply: "You will not receive SMSs about keeping your baby HIV negative. You will still receive MomConnect SMSs. To stop receiving these SMSs, dial *134*550*1#"
                     })
                     .check(function(api) {
                         utils.check_fixtures_used(api, [42, 48, 69, 76]);
