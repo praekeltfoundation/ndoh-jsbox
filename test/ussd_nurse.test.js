@@ -29,20 +29,20 @@ describe("app", function() {
             tester = new AppTester(app);
 
             tester
-                .setup(function(api) {
+                // .setup(function(api) {
                     // api.resources.add(new DummyMessageStoreResource());
                     // api.resources.add(new DummyOptoutResource());
-                    api.resources.attach(api);
-                    api.groups.add( {
-                        key: 'en_key',
-                        name: 'en',
-                    });
-                })
+                    // api.resources.attach(api);
+                    // api.groups.add( {
+                    //     key: 'en_key',
+                    //     name: 'en',
+                    // });
+                // })
                 .setup.char_limit(182)
                 .setup.config.app({
                     name: 'ussd_nurse',
                     env: 'test',
-                    metric_store: 'test_metric_store',
+                    // metric_store: 'test_metric_store',
                     testing_today: 'April 4, 2014 07:07:07',
                     endpoints: {
                         "sms": {"delivery_class": "sms"}
@@ -64,9 +64,9 @@ describe("app", function() {
                         api_token: 'test_token'
                     }
                 })
-                .setup(function(api) {
-                    api.metrics.stores = {'test_metric_store': {}};
-                })
+                // .setup(function(api) {
+                    // api.metrics.stores = {'test_metric_store': {}};
+                // })
                 .setup(function(api) {
                     fixtures().forEach(api.http.fixtures.add);
                 })
