@@ -2128,7 +2128,7 @@ module.exports = function() {
                 "method": 'POST',
                 "url": "http://hub.localhost:8001/api/v1/registration/",
                 "data": {
-                    "reg_type": "postbirth_pmtct",
+                    "reg_type": "pmtct_postbirth",
                     "registrant_id": "cb245673-aa41-4302-ac47-00000000006",
                     "data": {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000006",
@@ -2147,7 +2147,7 @@ module.exports = function() {
                 "method": 'POST',
                 "url": "http://hub.localhost:8001/api/v1/registration/",
                 "data": {
-                    "reg_type": "prebirth_pmtct",
+                    "reg_type": "pmtct_prebirth",
                     "registrant_id": "cb245673-aa41-4302-ac47-00000000007",
                     "data": {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
@@ -2166,7 +2166,7 @@ module.exports = function() {
                 "method": 'POST',
                 "url": "http://hub.localhost:8001/api/v1/registration/",
                 "data": {
-                    "reg_type": "prebirth_pmtct",
+                    "reg_type": "pmtct_prebirth",
                     "registrant_id": "cb245673-aa41-4302-ac47-00000000008",
                     "data": {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000008",
@@ -2185,7 +2185,7 @@ module.exports = function() {
                 "method": 'POST',
                 "url": "http://hub.localhost:8001/api/v1/registration/",
                 "data": {
-                    "reg_type": "prebirth_pmtct",
+                    "reg_type": "pmtct_prebirth",
                     "registrant_id": "cb245673-aa41-4302-ac47-00000000009",
                     "data": {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000009",

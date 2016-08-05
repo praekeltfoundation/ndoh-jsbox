@@ -556,7 +556,7 @@ go.app = function() {
                 var subscription_type = self.im.user.answers.subscription_type;
                 if (subscription_type === 'baby1' || subscription_type === 'baby2') {
                     reg_info = {
-                        "reg_type": "postbirth_pmtct",
+                        "reg_type": "pmtct_postbirth",
                         "registrant_id": self.im.user.answers.identity.id,
                         "data": {
                             "operator_id": self.im.user.answers.identity.id,
@@ -569,7 +569,7 @@ go.app = function() {
                 } else if (subscription_type === 'standard' || subscription_type === 'later'
                            || subscription_type == 'accelerated') {
                     reg_info = {
-                        "reg_type": "prebirth_pmtct",
+                        "reg_type": "pmtct_prebirth",
                         "registrant_id": self.im.user.answers.identity.id,
                         "data": {
                             "operator_id": self.im.user.answers.identity.id,
