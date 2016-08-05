@@ -95,7 +95,7 @@ go.app = function() {
             .then(function(json_result) {
                 return im.log(json_result.data)
                 .then(function(){
-                  var subs = json_result.data.data;
+                  var subs = json_result.data;
 
                   var active_subs = [];
                   for (var i = 0; i < subs.objects.length; i++) {
@@ -213,13 +213,13 @@ go.app = function() {
             return self
             .getVumiSubscriptionsByMsisdn(im, msisdn)
             .then(function(subscriptions) {
-                im.user.set_answer("vumi_user_account", subscriptions.data.objects[0].user_account);
-                im.user.set_answer("vumi_contact_key", subscriptions.data.objects[0].contact_key);
+                im.user.set_answer("vumi_user_account", subscriptions.objects[0].user_account);
+                im.user.set_answer("vumi_contact_key", subscriptions.objects[0].contact_key);
                 var clean = true;  // clean tracks if api call is unnecessary
 
-                for (var i=0; i<subscriptions.data.objects.length; i++) {
-                    if (subscriptions.data.objects[i].active === true) {
-                        subscriptions.data.objects[i].active = false;
+                for (var i=0; i<subscriptions.objects.length; i++) {
+                    if (subscriptions.objects[i].active === true) {
+                        subscriptions.objects[i].active = false;
                         clean = false;
                     }
                 }
