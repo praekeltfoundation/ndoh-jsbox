@@ -1104,7 +1104,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'query': 'toaddr=+27820000555'
+                    'query': 'to_addr=+27820000555'
                 },
                 'url': 'https://subscriptions/api/v1/go/',
             },
@@ -1113,7 +1113,7 @@ module.exports = function() {
                 "data": {
                     "meta": {
                         "limit": 20,
-                        "next": "/api/v1/subscription/?query=toaddr%3D%2B27820000555&limit=20&offset=20",
+                        "next": "/api/v1/subscription/?query=to_addr%3D%2B27820000555&limit=20&offset=20",
                         "offset": 0,
                         "previous": null,
                         "total_count": 2497070
@@ -1179,7 +1179,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'query': 'toaddr=+27820000666'
+                    'query': 'to_addr=+27820000666'
                 },
                 'url': 'https://subscriptions/api/v1/go/subscription/',
             },
@@ -1188,7 +1188,7 @@ module.exports = function() {
                 "data": {
                     "meta": {
                         "limit": 20,
-                        "next": "/api/v1/subscription/?query=toaddr%3D%2B27820000666&limit=20&offset=20",
+                        "next": "/api/v1/subscription/?query=to_addr%3D%2B27820000666&limit=20&offset=20",
                         "offset": 0,
                         "previous": null,
                         "total_count": 2497070
@@ -1255,7 +1255,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'query': 'toaddr=+27820000777'
+                    'query': 'to_addr=+27820000777'
                 },
                 'url': 'https://subscriptions/api/v1/go/subscription/',
             },
@@ -1264,7 +1264,7 @@ module.exports = function() {
                 "data": {
                     "meta": {
                         "limit": 20,
-                        "next": "/api/v1/subscription/?query=toaddr%3D%2B27820000777&limit=20&offset=20",
+                        "next": "/api/v1/subscription/?query=to_addr%3D%2B27820000777&limit=20&offset=20",
                         "offset": 0,
                         "previous": null,
                         "total_count": 2497070
@@ -1330,7 +1330,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'query': 'toaddr=+27820000888'
+                    'query': 'to_addr=+27820000888'
                 },
                 'url': 'https://subscriptions/api/v1/go/subscription/',
             },
@@ -1339,7 +1339,7 @@ module.exports = function() {
                 "data": {
                     "meta": {
                         "limit": 20,
-                        "next": "/api/v1/subscription/?query=toaddr%3D%2B27820000888&limit=20&offset=20",
+                        "next": "/api/v1/subscription/?query=to_addr%3D%2B27820000888&limit=20&offset=20",
                         "offset": 0,
                         "previous": null,
                         "total_count": 2497070
@@ -1389,7 +1389,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'query': 'toaddr=+27820000999'
+                    'query': 'to_addr=+27820000999'
                 },
                 'url': 'https://subscriptions/api/v1/go/subscription/',
             },
@@ -1398,7 +1398,7 @@ module.exports = function() {
                 "data": {
                     "meta": {
                         "limit": 20,
-                        "next": "/api/v1/subscription/?query=toaddr%3D%2B27820000999&limit=20&offset=20",
+                        "next": "/api/v1/subscription/?query=to_addr%3D%2B27820000999&limit=20&offset=20",
                         "offset": 0,
                         "previous": null,
                         "total_count": 2497070
@@ -1448,7 +1448,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'query': 'toaddr=+27820101010'
+                    'query': 'to_addr=+27820101010'
                 },
                 'url': 'https://subscriptions/api/v1/go/subscription/',
             },
@@ -1457,7 +1457,7 @@ module.exports = function() {
                 "data": {
                     "meta": {
                         "limit": 20,
-                        "next": "/api/v1/subscription/?query=toaddr%3D%2B27820101010&limit=20&offset=20",
+                        "next": "/api/v1/subscription/?query=to_addr%3D%2B27820101010&limit=20&offset=20",
                         "offset": 0,
                         "previous": null,
                         "total_count": 2497070
@@ -2449,7 +2449,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'query': 'toaddr=+27720000111'
+                    'query': 'to_addr=+27720000111'
                 },
                 'url': 'https://subscriptions/api/v1/go/subscription/',
             },
@@ -2458,7 +2458,7 @@ module.exports = function() {
                 "data": {
                     "meta": {
                         "limit": 20,
-                        "next": "/api/v1/subscription/?query=toaddr%3D%2B27720000111&limit=20&offset=20",
+                        "next": "/api/v1/subscription/?query=to_addr%3D%2B27720000111&limit=20&offset=20",
                         "offset": 0,
                         "previous": null,
                         "total_count": 2497070
@@ -2527,7 +2527,7 @@ module.exports = function() {
                 "data": {
                     "meta": {
                         "limit": 20,
-                        "next": "/api/v1/subscription/?query=toaddr%3D%2B27720000111&limit=20&offset=20",
+                        "next": "/api/v1/subscription/?query=to_addr%3D%2B27720000111&limit=20&offset=20",
                         "offset":0,
                         "previous":null,
                         "total_count":2497070

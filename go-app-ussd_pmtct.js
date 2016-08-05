@@ -89,26 +89,30 @@ go.app = function() {
             return http
             .get(subscription_base_url + endpoint, {
                 params: {
-                    "query": "toaddr=" + msisdn
+                    "query": "to_addr=" + msisdn
                 }
             })
             .then(function(json_result) {
-                var subs = json_result.data.data;
-                var active_subs = [];
-                for (var i = 0; i < subs.objects.length; i++) {
-                    // active_sub handling
-                    if (subs.objects[i].active === true) {
-                        active_subs.push(subs.objects[i]);
-                    }
-                    // save baby birth date while we're here
-                    // This currently assumes that the only way to get a baby2 subscription is to have
-                    // had a baby1 subscription at some point. This could be made less fragile by doing
-                    // a fallback calculation for the baby_dob if the baby1 subscription is not found
-                    if (subs.objects[i].message_set.match(/\d+\/$/)[0].replace('/', '') === '4') {
-                        im.user.set_answer("baby_dob", subs.objects[i].created_at.substr(0,10));
-                    }
-                }
-                return active_subs;
+                return im.log(json_result.data)
+                .then(function(){
+                  var subs = json_result.data.data;
+
+                  var active_subs = [];
+                  for (var i = 0; i < subs.objects.length; i++) {
+                      // active_sub handling
+                      if (subs.objects[i].active === true) {
+                          active_subs.push(subs.objects[i]);
+                      }
+                      // save baby birth date while we're here
+                      // This currently assumes that the only way to get a baby2 subscription is to have
+                      // had a baby1 subscription at some point. This could be made less fragile by doing
+                      // a fallback calculation for the baby_dob if the baby1 subscription is not found
+                      if (subs.objects[i].message_set.match(/\d+\/$/)[0].replace('/', '') === '4') {
+                          im.user.set_answer("baby_dob", subs.objects[i].created_at.substr(0,10));
+                      }
+                  }
+                  return active_subs;
+                });
             });
         };
 
@@ -185,7 +189,7 @@ go.app = function() {
 
             return http.get(subscription_base_url + endpoint, {
                     params: {
-                        "query": "toaddr=" + msisdn
+                        "query": "to_addr=" + msisdn
                     }
                 })
                 .then(function(result) {
