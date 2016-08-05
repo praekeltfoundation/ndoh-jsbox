@@ -1,22 +1,29 @@
 // Identity Personas
 
-// (+27820000111) on new sys; active sub non-pmtct; no consent, no dob
-// (+27820000222) on new sys; active sub non-pmtct; consent, no dob
-// (+27820000333) on new sys; active sub non-pmtct; no consent, dob
-// (+27820000444) on new sys; active sub non-pmtct; consent, dob
+// PMTCT REGISTRATION
+    // (+27820000111) on new sys; active sub non-pmtct; no consent, no dob
+    // (+27820000222) on new sys; active sub non-pmtct; consent, no dob
+    // (+27820000333) on new sys; active sub non-pmtct; no consent, dob
+    // (+27820000444) on new sys; active sub non-pmtct; consent, dob
 
-// (+27820000555) on new sys; no active sub
+    // (+27820000555) on new sys; no active sub
 
-// (+27820000666) on old sys; active sub; consent = true, dob given
-// (+27820000777) on old sys; active sub; consent = true, dob null
-// (+27820000888) on old sys; active sub; consent = false, dob given
-// (+27820000999) on old sys; active sub; consent = false, dob null
-// (+27820101010) on old sys; no active sub
+    // (+27820000666) on old sys; active sub; consent = true, dob given
+    // (+27820000777) on old sys; active sub; consent = true, dob null
+    // (+27820000888) on old sys; active sub; consent = false, dob given
+    // (+27820000999) on old sys; active sub; consent = false, dob null
+    // (+27820101010) on old sys; no active sub
 
-// (+27820111111) on neither old/new system
+    // (+27820111111) on neither old/new system
 
-// OPTOUT
-// (+27720000111) already registered to PMTCT
+// PMTCT OPTOUT
+    // (+27720000111) already registered to PMTCT
+
+// NURSECONNECT
+    // (+27821234444)
+    // (+27821231111)
+    // (+27821232222)
+    // (+27821237777)
 
 module.exports = function() {
     return [
@@ -2652,6 +2659,157 @@ module.exports = function() {
                     "updated_at": '2016-06-22T06:13:29.693272Z'
                 }
             }
+        },
+
+        // 77: get identity by msisdn +27821234444 (no nc_working_on)
+        {
+            "request": {
+                "url": 'http://is.localhost:8001/api/v1/identities/search/',
+                "method": 'GET',
+                "params": {
+                    "details__addresses__msisdn": '+27821234444'
+                }
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [{
+                        "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000034444/",
+                        "id": "cb245673-aa41-4302-ac47-00000034444",
+                        "version": 1,
+                        "details": {
+                            "default_addr_type": "msisdn",
+                            "addresses": {
+                                "msisdn": {
+                                    "+27821234444": {}
+                                }
+                            },
+                        },
+                        "created_at": "2016-08-05T06:13:29.693272Z",
+                        "updated_at": "2016-08-05T06:13:29.693298Z"
+                    }]
+                }
+            }
+        },
+
+        // 78: get identity by msisdn +27821231111 (user with working_on extra)
+        {
+            "request": {
+                "url": 'http://is.localhost:8001/api/v1/identities/search/',
+                "method": 'GET',
+                "params": {
+                    "details__addresses__msisdn": '+27821231111'
+                }
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [{
+                        "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000031111/",
+                        "id": "cb245673-aa41-4302-ac47-00000031111",
+                        "version": 1,
+                        "details": {
+                            "default_addr_type": "msisdn",
+                            "addresses": {
+                                "msisdn": {
+                                    "+27821231111": {}
+                                }
+                            },
+                        },
+                        "nc_working_on": "+27821232222",
+                        "created_at": "2016-08-05T06:13:29.693272Z",
+                        "updated_at": "2016-08-05T06:13:29.693298Z"
+                    }]
+                }
+            }
+        },
+
+        // 79: get identity by msisdn +27821232222 (user with working_on extra)
+        {
+            "request": {
+                "url": 'http://is.localhost:8001/api/v1/identities/search/',
+                "method": 'GET',
+                "params": {
+                    "details__addresses__msisdn": '+27821232222'
+                }
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": []
+                }
+            }
+        },
+
+        // 80: get identity by msisdn +27821237777 (registered user)
+        {
+            "repeatable": true,
+            "request": {
+                "url": 'http://is.localhost:8001/api/v1/identities/search/',
+                "method": 'GET',
+                "params": {
+                    "details__addresses__msisdn": '+27821237777'
+                }
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [{
+                        "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000037777/",
+                        "id": "cb245673-aa41-4302-ac47-00000037777",
+                        "version": 1,
+                        "details": {
+                            "default_addr_type": "msisdn",
+                            "addresses": {
+                                "msisdn": {
+                                    "+27821237777": {}
+                                }
+                            },
+                        },
+                        "nc_last_reg_id": "7",
+                        "nc_is_registered": 'true',
+                        "nc_faccode": '123456',
+                        "nc_facname": 'WCL clinic',
+                        "nc_working_on": "",
+                        "nc_id_type": "sa_id",
+                        "nc_sa_id_no": "5101025009086",
+                        "nc_dob": "1951-01-02",
+                        "created_at": "2016-08-05T06:13:29.693272Z",
+                        "updated_at": "2016-08-05T06:13:29.693298Z"
+                    }]
+                }
+            }
+        },
+
+        // 81: create identity with msisdn +27821232222
+        {
+            "request": {
+                "url": 'http://is.localhost:8001/api/v1/identities/',
+                "method": 'POST',
+                "data": {
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27821232222":{}
+                            }
+                        }
+                    }
+                }
+            },
+            "response": {}
         },
 
     ];
