@@ -89,7 +89,7 @@ go.app = function() {
             return http
             .get(subscription_base_url + endpoint, {
                 params: {
-                    "query": "to_addr=" + msisdn
+                    "to_addr": msisdn
                 }
             })
             .then(function(json_result) {
@@ -189,7 +189,7 @@ go.app = function() {
 
             return http.get(subscription_base_url + endpoint, {
                     params: {
-                        "query": "to_addr=" + msisdn
+                        "to_addr": msisdn
                     }
                 })
                 .then(function(result) {
