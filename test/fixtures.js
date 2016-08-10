@@ -1104,7 +1104,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'query': 'toaddr=+27820000555'
+                    'to_addr': '+27820000555'
                 },
                 'url': 'https://subscriptions/api/v1/go/',
             },
@@ -1113,63 +1113,61 @@ module.exports = function() {
                 "data": {
                     "meta": {
                         "limit": 20,
-                        "next": "/api/v1/subscription/?query=toaddr%3D%2B27820000555&limit=20&offset=20",
+                        "next": "/api/v1/subscription/?to_addr=%2B27820000555&limit=20&offset=20",
                         "offset": 0,
                         "previous": null,
                         "total_count": 2497070
                     },
-                    "data": {
-                        "objects": [
-                            {
-                                "active": false,
-                                "completed": true,
-                                "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
-                                "created_at": "2015-11-11T07:49:21.172038",
-                                "id": 1467333,
-                                "lang": "en",
-                                "message_set": "/api/v1/message_set/4/",
-                                "next_sequence_number": 30,
-                                "process_status": 2,
-                                "resource_uri": "/api/v1/subscription/1467333/",
-                                "schedule": "/api/v1/periodic_task/3/",
-                                "to_addr": "+27822911223",
-                                "updated_at": "2016-02-22T10:20:20.563675",
-                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
-                            },
-                            {
-                                "active": false,
-                                "completed": true,
-                                "contact_key": "a368fbce5a274ff6b3b28dfdfbf8dfbe",
-                                "created_at": "2015-07-09T12:47:03.727247",
-                                "id": 962818,
-                                "lang": "en",
-                                "message_set": "/api/v1/message_set/5/",
-                                "next_sequence_number": 38,
-                                "process_status": 2,
-                                "resource_uri": "/api/v1/subscription/962818/",
-                                "schedule": "/api/v1/periodic_task/2/",
-                                "to_addr": "+27728394085",
-                                "updated_at": "2016-03-28T10:40:50.939858",
-                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
-                            },
-                            {
-                                "active": false,
-                                "completed": true,
-                                "contact_key": "234ba28edb314b4da369158f6adf769a",
-                                "created_at": "2015-02-05T11:23:25.689583",
-                                "id": 425407,
-                                "lang": "en",
-                                "message_set": "/api/v1/message_set/5/",
-                                "next_sequence_number": 38,
-                                "process_status": 2,
-                                "resource_uri": "/api/v1/subscription/425407/",
-                                "schedule": "/api/v1/periodic_task/2/",
-                                "to_addr": "+27764536488",
-                                "updated_at": "2015-10-26T11:38:59.099219",
-                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
-                            }
-                        ]
-                    }
+                    "objects": [
+                        {
+                            "active": false,
+                            "completed": true,
+                            "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
+                            "created_at": "2015-11-11T07:49:21.172038",
+                            "id": 1467333,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/4/",
+                            "next_sequence_number": 30,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/1467333/",
+                            "schedule": "/api/v1/periodic_task/3/",
+                            "to_addr": "+27822911223",
+                            "updated_at": "2016-02-22T10:20:20.563675",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        },
+                        {
+                            "active": false,
+                            "completed": true,
+                            "contact_key": "a368fbce5a274ff6b3b28dfdfbf8dfbe",
+                            "created_at": "2015-07-09T12:47:03.727247",
+                            "id": 962818,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/5/",
+                            "next_sequence_number": 38,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/962818/",
+                            "schedule": "/api/v1/periodic_task/2/",
+                            "to_addr": "+27728394085",
+                            "updated_at": "2016-03-28T10:40:50.939858",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        },
+                        {
+                            "active": false,
+                            "completed": true,
+                            "contact_key": "234ba28edb314b4da369158f6adf769a",
+                            "created_at": "2015-02-05T11:23:25.689583",
+                            "id": 425407,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/5/",
+                            "next_sequence_number": 38,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/425407/",
+                            "schedule": "/api/v1/periodic_task/2/",
+                            "to_addr": "+27764536488",
+                            "updated_at": "2015-10-26T11:38:59.099219",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        }
+                    ]
                 }
             }
         },
@@ -1179,7 +1177,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'query': 'toaddr=+27820000666'
+                    'to_addr': '+27820000666'
                 },
                 'url': 'https://subscriptions/api/v1/go/subscription/',
             },
@@ -1188,63 +1186,61 @@ module.exports = function() {
                 "data": {
                     "meta": {
                         "limit": 20,
-                        "next": "/api/v1/subscription/?query=toaddr%3D%2B27820000666&limit=20&offset=20",
+                        "next": "/api/v1/subscription/?to_addr=%2B27820000666&limit=20&offset=20",
                         "offset": 0,
                         "previous": null,
                         "total_count": 2497070
                     },
-                    "data": {
-                        "objects": [
-                            {
-                                "active": true,
-                                "completed": false,
-                                "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
-                                "created_at": "2015-11-11T07:49:21.172038",
-                                "id": 1467333,
-                                "lang": "en",
-                                "message_set": "/api/v1/message_set/4/",  // baby1
-                                "next_sequence_number": 30,
-                                "process_status": 2,
-                                "resource_uri": "/api/v1/subscription/1467333/",
-                                "schedule": "/api/v1/periodic_task/3/",
-                                "to_addr": "+27822911223",
-                                "updated_at": "2016-02-22T10:20:20.563675",
-                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
-                            },
-                            {
-                                "active": false,
-                                "completed": true,
-                                "contact_key": "a368fbce5a274ff6b3b28dfdfbf8dfbe",
-                                "created_at": "2015-07-09T12:47:03.727247",
-                                "id": 962818,
-                                "lang": "en",
-                                "message_set": "/api/v1/message_set/5/",
-                                "next_sequence_number": 38,
-                                "process_status": 2,
-                                "resource_uri": "/api/v1/subscription/962818/",
-                                "schedule": "/api/v1/periodic_task/2/",
-                                "to_addr": "+27728394085",
-                                "updated_at": "2016-03-28T10:40:50.939858",
-                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
-                            },
-                            {
-                                "active": false,
-                                "completed": true,
-                                "contact_key": "234ba28edb314b4da369158f6adf769a",
-                                "created_at": "2015-02-05T11:23:25.689583",
-                                "id": 425407,
-                                "lang": "en",
-                                "message_set": "/api/v1/message_set/5/",
-                                "next_sequence_number": 38,
-                                "process_status": 2,
-                                "resource_uri": "/api/v1/subscription/425407/",
-                                "schedule": "/api/v1/periodic_task/2/",
-                                "to_addr": "+27764536488",
-                                "updated_at": "2015-10-26T11:38:59.099219",
-                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
-                            }
-                        ]
-                    }
+                    "objects": [
+                        {
+                            "active": true,
+                            "completed": false,
+                            "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
+                            "created_at": "2015-11-11T07:49:21.172038",
+                            "id": 1467333,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/4/",  // baby1
+                            "next_sequence_number": 30,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/1467333/",
+                            "schedule": "/api/v1/periodic_task/3/",
+                            "to_addr": "+27822911223",
+                            "updated_at": "2016-02-22T10:20:20.563675",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        },
+                        {
+                            "active": false,
+                            "completed": true,
+                            "contact_key": "a368fbce5a274ff6b3b28dfdfbf8dfbe",
+                            "created_at": "2015-07-09T12:47:03.727247",
+                            "id": 962818,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/5/",
+                            "next_sequence_number": 38,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/962818/",
+                            "schedule": "/api/v1/periodic_task/2/",
+                            "to_addr": "+27728394085",
+                            "updated_at": "2016-03-28T10:40:50.939858",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        },
+                        {
+                            "active": false,
+                            "completed": true,
+                            "contact_key": "234ba28edb314b4da369158f6adf769a",
+                            "created_at": "2015-02-05T11:23:25.689583",
+                            "id": 425407,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/5/",
+                            "next_sequence_number": 38,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/425407/",
+                            "schedule": "/api/v1/periodic_task/2/",
+                            "to_addr": "+27764536488",
+                            "updated_at": "2015-10-26T11:38:59.099219",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        }
+                    ]
                 }
             }
         },
@@ -1255,7 +1251,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'query': 'toaddr=+27820000777'
+                    'to_addr': '+27820000777'
                 },
                 'url': 'https://subscriptions/api/v1/go/subscription/',
             },
@@ -1264,63 +1260,61 @@ module.exports = function() {
                 "data": {
                     "meta": {
                         "limit": 20,
-                        "next": "/api/v1/subscription/?query=toaddr%3D%2B27820000777&limit=20&offset=20",
+                        "next": "/api/v1/subscription/?to_addr=%2B27820000777&limit=20&offset=20",
                         "offset": 0,
                         "previous": null,
                         "total_count": 2497070
                     },
-                    "data": {
-                        "objects": [
-                            {
-                                "active": true,
-                                "completed": false,
-                                "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
-                                "created_at": "2015-11-11T07:49:21.172038",
-                                "id": 1467333,
-                                "lang": "en",
-                                "message_set": "/api/v1/message_set/1/",  // standard
-                                "next_sequence_number": 30,
-                                "process_status": 2,
-                                "resource_uri": "/api/v1/subscription/1467333/",
-                                "schedule": "/api/v1/periodic_task/3/",
-                                "to_addr": "+27822911223",
-                                "updated_at": "2016-02-22T10:20:20.563675",
-                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
-                            },
-                            {
-                                "active": false,
-                                "completed": true,
-                                "contact_key": "a368fbce5a274ff6b3b28dfdfbf8dfbe",
-                                "created_at": "2015-07-09T12:47:03.727247",
-                                "id": 962818,
-                                "lang": "en",
-                                "message_set": "/api/v1/message_set/5/",
-                                "next_sequence_number": 38,
-                                "process_status": 2,
-                                "resource_uri": "/api/v1/subscription/962818/",
-                                "schedule": "/api/v1/periodic_task/2/",
-                                "to_addr": "+27728394085",
-                                "updated_at": "2016-03-28T10:40:50.939858",
-                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
-                            },
-                            {
-                                "active": false,
-                                "completed": true,
-                                "contact_key": "234ba28edb314b4da369158f6adf769a",
-                                "created_at": "2015-02-05T11:23:25.689583",
-                                "id": 425407,
-                                "lang": "en",
-                                "message_set": "/api/v1/message_set/5/",
-                                "next_sequence_number": 38,
-                                "process_status": 2,
-                                "resource_uri": "/api/v1/subscription/425407/",
-                                "schedule": "/api/v1/periodic_task/2/",
-                                "to_addr": "+27764536488",
-                                "updated_at": "2015-10-26T11:38:59.099219",
-                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
-                            }
-                        ]
-                    }
+                    "objects": [
+                        {
+                            "active": true,
+                            "completed": false,
+                            "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
+                            "created_at": "2015-11-11T07:49:21.172038",
+                            "id": 1467333,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/1/",  // standard
+                            "next_sequence_number": 30,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/1467333/",
+                            "schedule": "/api/v1/periodic_task/3/",
+                            "to_addr": "+27822911223",
+                            "updated_at": "2016-02-22T10:20:20.563675",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        },
+                        {
+                            "active": false,
+                            "completed": true,
+                            "contact_key": "a368fbce5a274ff6b3b28dfdfbf8dfbe",
+                            "created_at": "2015-07-09T12:47:03.727247",
+                            "id": 962818,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/5/",
+                            "next_sequence_number": 38,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/962818/",
+                            "schedule": "/api/v1/periodic_task/2/",
+                            "to_addr": "+27728394085",
+                            "updated_at": "2016-03-28T10:40:50.939858",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        },
+                        {
+                            "active": false,
+                            "completed": true,
+                            "contact_key": "234ba28edb314b4da369158f6adf769a",
+                            "created_at": "2015-02-05T11:23:25.689583",
+                            "id": 425407,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/5/",
+                            "next_sequence_number": 38,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/425407/",
+                            "schedule": "/api/v1/periodic_task/2/",
+                            "to_addr": "+27764536488",
+                            "updated_at": "2015-10-26T11:38:59.099219",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        }
+                    ]
                 }
             }
         },
@@ -1330,7 +1324,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'query': 'toaddr=+27820000888'
+                    'to_addr': '+27820000888'
                 },
                 'url': 'https://subscriptions/api/v1/go/subscription/',
             },
@@ -1339,47 +1333,45 @@ module.exports = function() {
                 "data": {
                     "meta": {
                         "limit": 20,
-                        "next": "/api/v1/subscription/?query=toaddr%3D%2B27820000888&limit=20&offset=20",
+                        "next": "/api/v1/subscription/?to_addr=%2B27820000888&limit=20&offset=20",
                         "offset": 0,
                         "previous": null,
                         "total_count": 2497070
                     },
-                    "data": {
-                        "objects": [
-                            {
-                                "active": true,
-                                "completed": false,
-                                "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
-                                "created_at": "2015-11-11T07:49:21.172038",
-                                "id": 1467333,
-                                "lang": "en",
-                                "message_set": "/api/v1/message_set/2/",
-                                "next_sequence_number": 30,
-                                "process_status": 2,
-                                "resource_uri": "/api/v1/subscription/1467333/",
-                                "schedule": "/api/v1/periodic_task/3/",
-                                "to_addr": "+27822911223",
-                                "updated_at": "2016-02-22T10:20:20.563675",
-                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
-                            },
-                            {
-                                "active": false,
-                                "completed": true,
-                                "contact_key": "a368fbce5a274ff6b3b28dfdfbf8dfbe",
-                                "created_at": "2015-07-09T12:47:03.727247",
-                                "id": 962818,
-                                "lang": "en",
-                                "message_set": "/api/v1/message_set/5/",
-                                "next_sequence_number": 38,
-                                "process_status": 2,
-                                "resource_uri": "/api/v1/subscription/962818/",
-                                "schedule": "/api/v1/periodic_task/2/",
-                                "to_addr": "+27728394085",
-                                "updated_at": "2016-03-28T10:40:50.939858",
-                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
-                            }
-                        ]
-                    }
+                    "objects": [
+                        {
+                            "active": true,
+                            "completed": false,
+                            "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
+                            "created_at": "2015-11-11T07:49:21.172038",
+                            "id": 1467333,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/2/",
+                            "next_sequence_number": 30,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/1467333/",
+                            "schedule": "/api/v1/periodic_task/3/",
+                            "to_addr": "+27822911223",
+                            "updated_at": "2016-02-22T10:20:20.563675",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        },
+                        {
+                            "active": false,
+                            "completed": true,
+                            "contact_key": "a368fbce5a274ff6b3b28dfdfbf8dfbe",
+                            "created_at": "2015-07-09T12:47:03.727247",
+                            "id": 962818,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/5/",
+                            "next_sequence_number": 38,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/962818/",
+                            "schedule": "/api/v1/periodic_task/2/",
+                            "to_addr": "+27728394085",
+                            "updated_at": "2016-03-28T10:40:50.939858",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        }
+                    ]
                 }
             }
         },
@@ -1389,7 +1381,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'query': 'toaddr=+27820000999'
+                    'to_addr': '+27820000999'
                 },
                 'url': 'https://subscriptions/api/v1/go/subscription/',
             },
@@ -1398,47 +1390,46 @@ module.exports = function() {
                 "data": {
                     "meta": {
                         "limit": 20,
-                        "next": "/api/v1/subscription/?query=toaddr%3D%2B27820000999&limit=20&offset=20",
+                        "next": "/api/v1/subscription/?to_addr=%2B27820000999&limit=20&offset=20",
                         "offset": 0,
                         "previous": null,
                         "total_count": 2497070
                     },
-                    "data": {
-                        "objects": [
-                            {
-                                "active": true,
-                                "completed": false,
-                                "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
-                                "created_at": "2015-11-11T07:49:21.172038",
-                                "id": 1467333,
-                                "lang": "en",
-                                "message_set": "/api/v1/message_set/3/",
-                                "next_sequence_number": 30,
-                                "process_status": 2,
-                                "resource_uri": "/api/v1/subscription/1467333/",
-                                "schedule": "/api/v1/periodic_task/3/",
-                                "to_addr": "+27822911223",
-                                "updated_at": "2016-02-22T10:20:20.563675",
-                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
-                            },
-                            {
-                                "active": false,
-                                "completed": true,
-                                "contact_key": "a368fbce5a274ff6b3b28dfdfbf8dfbe",
-                                "created_at": "2015-07-09T12:47:03.727247",
-                                "id": 962818,
-                                "lang": "en",
-                                "message_set": "/api/v1/message_set/5/",
-                                "next_sequence_number": 38,
-                                "process_status": 2,
-                                "resource_uri": "/api/v1/subscription/962818/",
-                                "schedule": "/api/v1/periodic_task/2/",
-                                "to_addr": "+27728394085",
-                                "updated_at": "2016-03-28T10:40:50.939858",
-                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
-                            }
-                        ]
-                    }
+
+                    "objects": [
+                        {
+                            "active": true,
+                            "completed": false,
+                            "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
+                            "created_at": "2015-11-11T07:49:21.172038",
+                            "id": 1467333,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/3/",
+                            "next_sequence_number": 30,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/1467333/",
+                            "schedule": "/api/v1/periodic_task/3/",
+                            "to_addr": "+27822911223",
+                            "updated_at": "2016-02-22T10:20:20.563675",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        },
+                        {
+                            "active": false,
+                            "completed": true,
+                            "contact_key": "a368fbce5a274ff6b3b28dfdfbf8dfbe",
+                            "created_at": "2015-07-09T12:47:03.727247",
+                            "id": 962818,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/5/",
+                            "next_sequence_number": 38,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/962818/",
+                            "schedule": "/api/v1/periodic_task/2/",
+                            "to_addr": "+27728394085",
+                            "updated_at": "2016-03-28T10:40:50.939858",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        }
+                    ]
                 }
             }
         },
@@ -1448,7 +1439,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'query': 'toaddr=+27820101010'
+                    'to_addr': '+27820101010'
                 },
                 'url': 'https://subscriptions/api/v1/go/subscription/',
             },
@@ -1457,47 +1448,45 @@ module.exports = function() {
                 "data": {
                     "meta": {
                         "limit": 20,
-                        "next": "/api/v1/subscription/?query=toaddr%3D%2B27820101010&limit=20&offset=20",
+                        "next": "/api/v1/subscription/?to_addr=%2B27820101010&limit=20&offset=20",
                         "offset": 0,
                         "previous": null,
                         "total_count": 2497070
                     },
-                    "data": {
-                        "objects": [
-                            {
-                                "active": false,
-                                "completed": true,
-                                "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
-                                "created_at": "2015-11-11T07:49:21.172038",
-                                "id": 1467333,
-                                "lang": "en",
-                                "message_set": "/api/v1/message_set/4/",
-                                "next_sequence_number": 30,
-                                "process_status": 2,
-                                "resource_uri": "/api/v1/subscription/1467333/",
-                                "schedule": "/api/v1/periodic_task/3/",
-                                "to_addr": "+27822911223",
-                                "updated_at": "2016-02-22T10:20:20.563675",
-                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
-                            },
-                            {
-                                "active": false,
-                                "completed": true,
-                                "contact_key": "a368fbce5a274ff6b3b28dfdfbf8dfbe",
-                                "created_at": "2015-07-09T12:47:03.727247",
-                                "id": 962818,
-                                "lang": "en",
-                                "message_set": "/api/v1/message_set/5/",
-                                "next_sequence_number": 38,
-                                "process_status": 2,
-                                "resource_uri": "/api/v1/subscription/962818/",
-                                "schedule": "/api/v1/periodic_task/2/",
-                                "to_addr": "+27728394085",
-                                "updated_at": "2016-03-28T10:40:50.939858",
-                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
-                            }
-                        ]
-                    }
+                    "objects": [
+                        {
+                            "active": false,
+                            "completed": true,
+                            "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
+                            "created_at": "2015-11-11T07:49:21.172038",
+                            "id": 1467333,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/4/",
+                            "next_sequence_number": 30,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/1467333/",
+                            "schedule": "/api/v1/periodic_task/3/",
+                            "to_addr": "+27822911223",
+                            "updated_at": "2016-02-22T10:20:20.563675",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        },
+                        {
+                            "active": false,
+                            "completed": true,
+                            "contact_key": "a368fbce5a274ff6b3b28dfdfbf8dfbe",
+                            "created_at": "2015-07-09T12:47:03.727247",
+                            "id": 962818,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/5/",
+                            "next_sequence_number": 38,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/962818/",
+                            "schedule": "/api/v1/periodic_task/2/",
+                            "to_addr": "+27728394085",
+                            "updated_at": "2016-03-28T10:40:50.939858",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        }
+                    ]
                 }
             }
         },
@@ -1970,7 +1959,7 @@ module.exports = function() {
                         },
                         "mom_dob": "1982-02-01",
                         "lang_code": "eng_ZA",
-                        "vumi_user_account": "1aa0dea2f82945a48cc258c61d756f16",
+                        "vumi_contact_key":"3e99804c1f1c4c9790517923bb8b318b",
                         "source": "pmtct"
                     },
                     "created_at": "2016-07-17T06:13:29.693272Z",
@@ -1997,7 +1986,7 @@ module.exports = function() {
                         },
                         "mom_dob": "1954-05-29",
                         "lang_code": "eng_ZA",
-                        "vumi_user_account": "1aa0dea2f82945a48cc258c61d756f16",
+                        "vumi_contact_key":"3e99804c1f1c4c9790517923bb8b318b",
                         "source": "pmtct"
                     },
                     "created_at": "2016-07-17T06:13:29.693272Z",
@@ -2025,7 +2014,7 @@ module.exports = function() {
                         },
                         "mom_dob": "1975-09-23",
                         "lang_code": "zul_ZA",
-                        "vumi_user_account": "1aa0dea2f82945a48cc258c61d756f16",
+                        "vumi_contact_key":"3e99804c1f1c4c9790517923bb8b318b",
                         "source": "pmtct"
                     },
                     "created_at": "2016-07-17T06:13:29.693272Z",
@@ -2053,7 +2042,7 @@ module.exports = function() {
                         },
                         "mom_dob": "1981-04-26",
                         "lang_code": "eng_ZA",
-                        "vumi_user_account": "1aa0dea2f82945a48cc258c61d756f16",
+                        "vumi_contact_key":"3e99804c1f1c4c9790517923bb8b318b",
                         "source": "pmtct"
                     },
                     "created_at": "2016-07-17T06:13:29.693272Z",
@@ -2139,7 +2128,7 @@ module.exports = function() {
                 "method": 'POST',
                 "url": "http://hub.localhost:8001/api/v1/registration/",
                 "data": {
-                    "reg_type": "postbirth_pmtct",
+                    "reg_type": "pmtct_postbirth",
                     "registrant_id": "cb245673-aa41-4302-ac47-00000000006",
                     "data": {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000006",
@@ -2158,7 +2147,7 @@ module.exports = function() {
                 "method": 'POST',
                 "url": "http://hub.localhost:8001/api/v1/registration/",
                 "data": {
-                    "reg_type": "prebirth_pmtct",
+                    "reg_type": "pmtct_prebirth",
                     "registrant_id": "cb245673-aa41-4302-ac47-00000000007",
                     "data": {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
@@ -2177,7 +2166,7 @@ module.exports = function() {
                 "method": 'POST',
                 "url": "http://hub.localhost:8001/api/v1/registration/",
                 "data": {
-                    "reg_type": "prebirth_pmtct",
+                    "reg_type": "pmtct_prebirth",
                     "registrant_id": "cb245673-aa41-4302-ac47-00000000008",
                     "data": {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000008",
@@ -2196,7 +2185,7 @@ module.exports = function() {
                 "method": 'POST',
                 "url": "http://hub.localhost:8001/api/v1/registration/",
                 "data": {
-                    "reg_type": "prebirth_pmtct",
+                    "reg_type": "pmtct_prebirth",
                     "registrant_id": "cb245673-aa41-4302-ac47-00000000009",
                     "data": {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000009",
@@ -2444,78 +2433,19 @@ module.exports = function() {
             }
         },
 
-        // 71: get vumi subscription by msidn +27720000111
+        // 71: removed
+
         {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'query': 'toaddr=+27720000111'
+                    'to_addr': 'none'
                 },
                 'url': 'https://subscriptions/api/v1/go/subscription/',
             },
             'response': {
                 "code": 200,
-                "data": {
-                    "meta": {
-                        "limit": 20,
-                        "next": "/api/v1/subscription/?query=toaddr%3D%2B27720000111&limit=20&offset=20",
-                        "offset": 0,
-                        "previous": null,
-                        "total_count": 2497070
-                    },
-                    "data": {
-                        "objects": [
-                            {
-                                "active": true,
-                                "completed": true,
-                                "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
-                                "created_at": "2015-11-11T07:49:21.172038",
-                                "id": 1467333,
-                                "lang": "en",
-                                "message_set": "/api/v1/message_set/4/",
-                                "next_sequence_number": 30,
-                                "process_status": 2,
-                                "resource_uri": "/api/v1/subscription/1467333/",
-                                "schedule": "/api/v1/periodic_task/3/",
-                                "to_addr": "+27822911223",
-                                "updated_at": "2016-02-22T10:20:20.563675",
-                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
-                            },
-                            {
-                                "active": false,
-                                "completed": true,
-                                "contact_key": "a368fbce5a274ff6b3b28dfdfbf8dfbe",
-                                "created_at": "2015-07-09T12:47:03.727247",
-                                "id": 962818,
-                                "lang": "en",
-                                "message_set": "/api/v1/message_set/5/",
-                                "next_sequence_number": 38,
-                                "process_status": 2,
-                                "resource_uri": "/api/v1/subscription/962818/",
-                                "schedule": "/api/v1/periodic_task/2/",
-                                "to_addr": "+27728394085",
-                                "updated_at": "2016-03-28T10:40:50.939858",
-                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
-                            },
-                            {
-                                "active": false,
-                                "completed": true,
-                                "contact_key": "234ba28edb314b4da369158f6adf769a",
-                                "created_at": "2015-02-05T11:23:25.689583",
-                                "id": 425407,
-                                "lang": "en",
-                                "message_set": "/api/v1/message_set/5/",
-                                "next_sequence_number": 38,
-                                "process_status": 2,
-                                "resource_uri": "/api/v1/subscription/425407/",
-                                "schedule": "/api/v1/periodic_task/2/",
-                                "to_addr": "+27764536488",
-                                "updated_at": "2015-10-26T11:38:59.099219",
-                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
-                            }
-                        ]
-                    }
-                }
+                "data": {}
             }
         },
 
@@ -2527,63 +2457,61 @@ module.exports = function() {
                 "data": {
                     "meta": {
                         "limit": 20,
-                        "next": "/api/v1/subscription/?query=toaddr%3D%2B27720000111&limit=20&offset=20",
+                        "next": "/api/v1/subscription/?to_addr=%2B27720000111&limit=20&offset=20",
                         "offset":0,
                         "previous":null,
                         "total_count":2497070
                     },
-                    "data": {
-                        "objects": [
-                            {
-                                "active": false,
-                                "completed": true,
-                                "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
-                                "created_at": "2015-11-11T07:49:21.172038",
-                                "id": 1467333,
-                                "lang": "en",
-                                "message_set": "/api/v1/message_set/4/",
-                                "next_sequence_number": 30,
-                                "process_status": 2,
-                                "resource_uri": "/api/v1/subscription/1467333/",
-                                "schedule": "/api/v1/periodic_task/3/",
-                                "to_addr": "+27822911223",
-                                "updated_at": "2016-02-22T10:20:20.563675",
-                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
-                            },
-                            {
-                                "active": false,
-                                "completed": true,
-                                "contact_key": "a368fbce5a274ff6b3b28dfdfbf8dfbe",
-                                "created_at": "2015-07-09T12:47:03.727247",
-                                "id": 962818,
-                                "lang": "en",
-                                "message_set": "/api/v1/message_set/5/",
-                                "next_sequence_number": 38,
-                                "process_status": 2,
-                                "resource_uri": "/api/v1/subscription/962818/",
-                                "schedule": "/api/v1/periodic_task/2/",
-                                "to_addr": "+27728394085",
-                                "updated_at": "2016-03-28T10:40:50.939858",
-                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
-                            },
-                            {
-                                "active": false,
-                                "completed": true,
-                                "contact_key": "234ba28edb314b4da369158f6adf769a",
-                                "created_at": "2015-02-05T11:23:25.689583",
-                                "id": 425407,
-                                "lang": "en",
-                                "message_set": "/api/v1/message_set/5/",
-                                "next_sequence_number": 38,
-                                "process_status": 2,
-                                "resource_uri": "/api/v1/subscription/425407/",
-                                "schedule": "/api/v1/periodic_task/2/",
-                                "to_addr": "+27764536488",
-                                "updated_at": "2015-10-26T11:38:59.099219",
-                                "user_account": "1aa0dea2f82945a48cc258c61d756f16"
-                            }
-                        ]
-                    }
+                    "objects": [
+                        {
+                            "active": false,
+                            "completed": true,
+                            "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
+                            "created_at": "2015-11-11T07:49:21.172038",
+                            "id": 1467333,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/4/",
+                            "next_sequence_number": 30,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/1467333/",
+                            "schedule": "/api/v1/periodic_task/3/",
+                            "to_addr": "+27822911223",
+                            "updated_at": "2016-02-22T10:20:20.563675",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        },
+                        {
+                            "active": false,
+                            "completed": true,
+                            "contact_key": "a368fbce5a274ff6b3b28dfdfbf8dfbe",
+                            "created_at": "2015-07-09T12:47:03.727247",
+                            "id": 962818,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/5/",
+                            "next_sequence_number": 38,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/962818/",
+                            "schedule": "/api/v1/periodic_task/2/",
+                            "to_addr": "+27728394085",
+                            "updated_at": "2016-03-28T10:40:50.939858",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        },
+                        {
+                            "active": false,
+                            "completed": true,
+                            "contact_key": "234ba28edb314b4da369158f6adf769a",
+                            "created_at": "2015-02-05T11:23:25.689583",
+                            "id": 425407,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/5/",
+                            "next_sequence_number": 38,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/425407/",
+                            "schedule": "/api/v1/periodic_task/2/",
+                            "to_addr": "+27764536488",
+                            "updated_at": "2015-10-26T11:38:59.099219",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        }
+                    ]
                 }
             },
             "response": {}

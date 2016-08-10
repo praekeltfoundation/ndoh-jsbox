@@ -89,26 +89,30 @@ go.app = function() {
             return http
             .get(subscription_base_url + endpoint, {
                 params: {
-                    "query": "toaddr=" + msisdn
+                    "to_addr": msisdn
                 }
             })
             .then(function(json_result) {
-                var subs = json_result.data.data;
-                var active_subs = [];
-                for (var i = 0; i < subs.objects.length; i++) {
-                    // active_sub handling
-                    if (subs.objects[i].active === true) {
-                        active_subs.push(subs.objects[i]);
-                    }
-                    // save baby birth date while we're here
-                    // This currently assumes that the only way to get a baby2 subscription is to have
-                    // had a baby1 subscription at some point. This could be made less fragile by doing
-                    // a fallback calculation for the baby_dob if the baby1 subscription is not found
-                    if (subs.objects[i].message_set.match(/\d+\/$/)[0].replace('/', '') === '4') {
-                        im.user.set_answer("baby_dob", subs.objects[i].created_at.substr(0,10));
-                    }
-                }
-                return active_subs;
+                return im.log(json_result.data)
+                .then(function(){
+                  var subs = json_result.data;
+
+                  var active_subs = [];
+                  for (var i = 0; i < subs.objects.length; i++) {
+                      // active_sub handling
+                      if (subs.objects[i].active === true) {
+                          active_subs.push(subs.objects[i]);
+                      }
+                      // save baby birth date while we're here
+                      // This currently assumes that the only way to get a baby2 subscription is to have
+                      // had a baby1 subscription at some point. This could be made less fragile by doing
+                      // a fallback calculation for the baby_dob if the baby1 subscription is not found
+                      if (subs.objects[i].message_set.match(/\d+\/$/)[0].replace('/', '') === '4') {
+                          im.user.set_answer("baby_dob", subs.objects[i].created_at.substr(0,10));
+                      }
+                  }
+                  return active_subs;
+                });
             });
         };
 
@@ -185,7 +189,7 @@ go.app = function() {
 
             return http.get(subscription_base_url + endpoint, {
                     params: {
-                        "query": "toaddr=" + msisdn
+                        "to_addr": msisdn
                     }
                 })
                 .then(function(result) {
@@ -209,13 +213,13 @@ go.app = function() {
             return self
             .getVumiSubscriptionsByMsisdn(im, msisdn)
             .then(function(subscriptions) {
-                im.user.set_answer("vumi_user_account", subscriptions.data.objects[0].user_account);
-                im.user.set_answer("vumi_contact_key", subscriptions.data.objects[0].contact_key);
+                im.user.set_answer("vumi_user_account", subscriptions.objects[0].user_account);
+                im.user.set_answer("vumi_contact_key", subscriptions.objects[0].contact_key);
                 var clean = true;  // clean tracks if api call is unnecessary
 
-                for (var i=0; i<subscriptions.data.objects.length; i++) {
-                    if (subscriptions.data.objects[i].active === true) {
-                        subscriptions.data.objects[i].active = false;
+                for (var i=0; i<subscriptions.objects.length; i++) {
+                    if (subscriptions.objects[i].active === true) {
+                        subscriptions.objects[i].active = false;
                         clean = false;
                     }
                 }
@@ -397,7 +401,7 @@ go.app = function() {
                                     self.im.user.set_answer("edd", contacts[0].extra.edd || null);
                                     self.im.user.set_answer("subscription_type", subscription_type);
                                     self.im.user.set_answer("vumi_user_account", contacts[0].user_account);
-                                    self.im.user.set_answer("vumi_contact_key", contacts[0].contact_key);
+                                    self.im.user.set_answer("vumi_contact_key", contacts[0].key);
 
                                     return self.im.user
                                     .set_lang(self.im.user.answers.lang_code)
@@ -434,14 +438,14 @@ go.app = function() {
 
         self.add("state_end_not_registered", function(name) {
             return new EndState(name, {
-                text: $("You need to be registered to MomConnect to receive these messages. Please visit the nearest clinic to register."),
+                text: $("You need to be registered on MomConnect to receive these messages. Please visit the nearest clinic to register."),
                 next: "state_start"
             });
         });
 
         self.add("state_consent", function(name) {
             return new ChoiceState(name, {
-                question: $("To register we need to collect, store & use your info. You may also get messages on public holidays & weekends. Do you consent?"),
+                question: $("To sign up, we need to collect, store and use your info. You may also get messages on public holidays and weekends. Do you consent?"),
                 // error: ,
                 choices: [
                     new Choice("yes", $("Yes")),
@@ -545,7 +549,6 @@ go.app = function() {
             var identity_info = self.im.user.answers.identity;
             identity_info.details.mom_dob = self.im.user.answers.mom_dob;
             identity_info.details.lang_code = self.im.user.answers.lang_code;
-            identity_info.details.vumi_user_account = self.im.user.answers.vumi_user_account;
             identity_info.details.vumi_contact_key = self.im.user.answers.vumi_contact_key;
             identity_info.details.source = "pmtct";
 
@@ -556,7 +559,7 @@ go.app = function() {
                 var subscription_type = self.im.user.answers.subscription_type;
                 if (subscription_type === 'baby1' || subscription_type === 'baby2') {
                     reg_info = {
-                        "reg_type": "postbirth_pmtct",
+                        "reg_type": "pmtct_postbirth",
                         "registrant_id": self.im.user.answers.identity.id,
                         "data": {
                             "operator_id": self.im.user.answers.identity.id,
@@ -569,7 +572,7 @@ go.app = function() {
                 } else if (subscription_type === 'standard' || subscription_type === 'later'
                            || subscription_type == 'accelerated') {
                     reg_info = {
-                        "reg_type": "prebirth_pmtct",
+                        "reg_type": "pmtct_prebirth",
                         "registrant_id": self.im.user.answers.identity.id,
                         "data": {
                             "operator_id": self.im.user.answers.identity.id,
@@ -604,18 +607,18 @@ go.app = function() {
         // start of OPT-OUT flow
         self.add("state_optout_reason_menu", function(name) {
             return new PaginatedChoiceState(name, {
-                question: $("Why do you no longer want to receive messages related to keeping your baby HIV-negative?"),
+                question: $("Please tell us why you do not want to receive messages:"),
                 characters_per_page: 182,
                 options_per_page: null,
                 more: $('More'),
                 back: $('Back'),
                 // error: ,
                 choices: [
-                    new Choice("not_hiv_pos", $("I am not HIV-positive")),
-                    new Choice("miscarriage", $("I had a miscarriage")),
-                    new Choice("stillbirth", $("My baby was stillborn")),
-                    new Choice("babyloss", $("My baby passed away")),
-                    new Choice("not_useful", $("The messages are not useful")),
+                    new Choice("not_hiv_pos", $("Not HIV-positive")),
+                    new Choice("miscarriage", $("Miscarriage")),
+                    new Choice("stillbirth", $("Baby was stillborn")),
+                    new Choice("babyloss", $("Baby died")),
+                    new Choice("not_useful", $("Messages not useful")),
                     new Choice("other", $("Other"))
                 ],
                 next: function(choice) {
@@ -646,9 +649,10 @@ go.app = function() {
         self.add("state_end_optout", function(name) {
             return new EndState(name, {
                 text: $(
-                    "Thank you. You will no longer receive PMTCT messages. You will still receive the " +
-                    "MomConnect messages. To stop receiving these messages as well, please dial into " +
-                    "{{ mc_optout_number }}.").context({mc_optout_number: self.im.config.mc_optout_channel}),
+                    "You will not receive SMSs about keeping your baby HIV " +
+                    "negative. You will still receive MomConnect SMSs. To stop " +
+                    "receiving these SMSs, dial {{ mc_optout_number }}")
+                    .context({ mc_optout_number: self.im.config.mc_optout_channel }),
                 next: "state_start"
             });
         });
