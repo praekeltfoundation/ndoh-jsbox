@@ -2582,5 +2582,39 @@ module.exports = function() {
             }
         },
 
+        // 77: optout cb245673-aa41-4302-ac47-00000000001 (sms_pmtct)
+        {
+            "request": {
+                "url": "http://is.localhost:8001/api/v1/optout/",
+                "method": 'POST',
+                "data": {
+                    "optout_type": "stop",
+                    "identity": "cb245673-aa41-4302-ac47-00000000001",
+                    "reason": "unknown",
+                    "address_type": "msisdn",
+                    "address": "+27820000111",
+                    "request_source": "sms_pmtct",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            "response": {}
+        },
+
+        // 78:
+        {
+            "request": {
+                "url": 'http://hub.localhost:8001/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000000001",
+                    "action": "pmtct_nonloss_optout",
+                    "data": {
+                        "reason": "unknown"
+                    }
+                }
+            },
+            "response": {}
+        }
+
     ];
 };
