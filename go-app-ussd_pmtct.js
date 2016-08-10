@@ -89,26 +89,30 @@ go.app = function() {
             return http
             .get(subscription_base_url + endpoint, {
                 params: {
-                    "query": "toaddr=" + msisdn
+                    "to_addr": msisdn
                 }
             })
             .then(function(json_result) {
-                var subs = json_result.data.data;
-                var active_subs = [];
-                for (var i = 0; i < subs.objects.length; i++) {
-                    // active_sub handling
-                    if (subs.objects[i].active === true) {
-                        active_subs.push(subs.objects[i]);
-                    }
-                    // save baby birth date while we're here
-                    // This currently assumes that the only way to get a baby2 subscription is to have
-                    // had a baby1 subscription at some point. This could be made less fragile by doing
-                    // a fallback calculation for the baby_dob if the baby1 subscription is not found
-                    if (subs.objects[i].message_set.match(/\d+\/$/)[0].replace('/', '') === '4') {
-                        im.user.set_answer("baby_dob", subs.objects[i].created_at.substr(0,10));
-                    }
-                }
-                return active_subs;
+                return im.log(json_result.data)
+                .then(function(){
+                  var subs = json_result.data;
+
+                  var active_subs = [];
+                  for (var i = 0; i < subs.objects.length; i++) {
+                      // active_sub handling
+                      if (subs.objects[i].active === true) {
+                          active_subs.push(subs.objects[i]);
+                      }
+                      // save baby birth date while we're here
+                      // This currently assumes that the only way to get a baby2 subscription is to have
+                      // had a baby1 subscription at some point. This could be made less fragile by doing
+                      // a fallback calculation for the baby_dob if the baby1 subscription is not found
+                      if (subs.objects[i].message_set.match(/\d+\/$/)[0].replace('/', '') === '4') {
+                          im.user.set_answer("baby_dob", subs.objects[i].created_at.substr(0,10));
+                      }
+                  }
+                  return active_subs;
+                });
             });
         };
 
@@ -185,7 +189,7 @@ go.app = function() {
 
             return http.get(subscription_base_url + endpoint, {
                     params: {
-                        "query": "toaddr=" + msisdn
+                        "to_addr": msisdn
                     }
                 })
                 .then(function(result) {
@@ -209,13 +213,13 @@ go.app = function() {
             return self
             .getVumiSubscriptionsByMsisdn(im, msisdn)
             .then(function(subscriptions) {
-                im.user.set_answer("vumi_user_account", subscriptions.data.objects[0].user_account);
-                im.user.set_answer("vumi_contact_key", subscriptions.data.objects[0].contact_key);
+                im.user.set_answer("vumi_user_account", subscriptions.objects[0].user_account);
+                im.user.set_answer("vumi_contact_key", subscriptions.objects[0].contact_key);
                 var clean = true;  // clean tracks if api call is unnecessary
 
-                for (var i=0; i<subscriptions.data.objects.length; i++) {
-                    if (subscriptions.data.objects[i].active === true) {
-                        subscriptions.data.objects[i].active = false;
+                for (var i=0; i<subscriptions.objects.length; i++) {
+                    if (subscriptions.objects[i].active === true) {
+                        subscriptions.objects[i].active = false;
                         clean = false;
                     }
                 }
@@ -555,7 +559,7 @@ go.app = function() {
                 var subscription_type = self.im.user.answers.subscription_type;
                 if (subscription_type === 'baby1' || subscription_type === 'baby2') {
                     reg_info = {
-                        "reg_type": "postbirth_pmtct",
+                        "reg_type": "pmtct_postbirth",
                         "registrant_id": self.im.user.answers.identity.id,
                         "data": {
                             "operator_id": self.im.user.answers.identity.id,
@@ -568,7 +572,7 @@ go.app = function() {
                 } else if (subscription_type === 'standard' || subscription_type === 'later'
                            || subscription_type == 'accelerated') {
                     reg_info = {
-                        "reg_type": "prebirth_pmtct",
+                        "reg_type": "pmtct_prebirth",
                         "registrant_id": self.im.user.answers.identity.id,
                         "data": {
                             "operator_id": self.im.user.answers.identity.id,
