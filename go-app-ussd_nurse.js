@@ -33,21 +33,21 @@ go.app = function() {
 
             var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
             return is
-                .get_or_create_identity({"msisdn": msisdn})
-                .then(function(identity) {
-                    if ((!_.isUndefined(identity.nc_working_on))
-                        && (identity.nc_working_on !== "")) {
-                        self.im.user.set_answer("user", identity);
-                        return is
-                            .get_or_create_identity({"msisdn": identity.nc_working_on})
-                            .then(function(working_on_identity) {
-                                self.im.user.set_answer("contact", working_on_identity);
-                            });
-                    } else {
-                        self.im.user.set_answer("user", identity);
-                        self.im.user.set_answer("contact", identity);
-                    }
-                });
+            .get_or_create_identity({"msisdn": msisdn})
+            .then(function(identity) {
+                if ((!_.isUndefined(identity.nc_working_on))
+                    && (identity.nc_working_on !== "")) {
+                    self.im.user.set_answer("user", identity);
+                    return is
+                    .get_or_create_identity({"msisdn": identity.nc_working_on})
+                    .then(function(working_on_identity) {
+                        self.im.user.set_answer("contact", working_on_identity);
+                    });
+                } else {
+                    self.im.user.set_answer("user", identity);
+                    self.im.user.set_answer("contact", identity);
+                }
+            });
         };
 
         // override normal state adding
@@ -68,7 +68,7 @@ go.app = function() {
         self.add('state_route', function(name) {
             // reset working_on extra
             self.im.user.set_answer("nc_working_on", "");
-            
+
             var user = self.im.user.answers.user;
             if (user.nc_is_registered === 'true') {
                 return self.states.create('state_subscribed');
