@@ -2589,7 +2589,7 @@ module.exports = function() {
             }
         },
 
-        // 77: get identity by msisdn +27821234444 (no nc_working_on)
+        // 77: get identity by msisdn +27821234444 (no working_on)
         {
             "request": {
                 "url": 'http://is.localhost:8001/api/v1/identities/search/',
@@ -2649,8 +2649,10 @@ module.exports = function() {
                                     "+27821231111": {}
                                 }
                             },
+                            "nurseconnect": {
+                                "working_on": "+27821232222",
+                            }
                         },
-                        "nc_working_on": "+27821232222",
                         "created_at": "2016-08-05T06:13:29.693272Z",
                         "updated_at": "2016-08-05T06:13:29.693298Z"
                     }]
@@ -2705,15 +2707,17 @@ module.exports = function() {
                                     "+27821237777": {}
                                 }
                             },
+                            "nurseconnect": {
+                                "last_reg_id": "7",
+                                "is_registered": 'true',
+                                "faccode": '123456',
+                                "facname": 'WCL clinic',
+                                "working_on": "",
+                                "id_type": "sa_id",
+                                "sa_id_no": "5101025009086",
+                                "dob": "1951-01-02",
+                            }
                         },
-                        "nc_last_reg_id": "7",
-                        "nc_is_registered": 'true',
-                        "nc_faccode": '123456',
-                        "nc_facname": 'WCL clinic',
-                        "nc_working_on": "",
-                        "nc_id_type": "sa_id",
-                        "nc_sa_id_no": "5101025009086",
-                        "nc_dob": "1951-01-02",
                         "created_at": "2016-08-05T06:13:29.693272Z",
                         "updated_at": "2016-08-05T06:13:29.693298Z"
                     }]

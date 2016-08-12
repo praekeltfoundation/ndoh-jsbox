@@ -49,22 +49,26 @@ go.app = function() {
             return is
             .get_or_create_identity({"msisdn": msisdn})
             .then(function(identity) {
-                if ((!_.isUndefined(identity.nc_working_on))
-                    && (identity.nc_working_on !== "")) {
-                    self.im.user.set_answer("user", identity);
-                    return is
-                    .get_or_create_identity({"msisdn": identity.nc_working_on})
-                    .then(function(working_on_identity) {
-                        self.im.user.set_answer("contact", working_on_identity);
+                console.log(identity);
+                if (identity.details.nurseconnect) {
+                    if ((!_.isUndefined(identity.details.nurseconnect))
+                        && (identity.details.nurseconnect.working_on !== "")) {
+                        self.im.user.set_answer("user", identity);
+                        return is
+                        .get_or_create_identity({"msisdn": identity.details.nurseconnect.working_on})
+                        .then(function(working_on_identity) {
+                            self.im.user.set_answer("contact", working_on_identity);
 
-                        return self.states.create('state_route');
-                    });
+                            return self.states.create('state_route');
+                        });
+                    }
                 } else {
-                    self.im.user.set_answer("user", identity);
                     self.im.user.set_answer("contact", identity);
-
-                    return self.states.create('state_route');
                 }
+
+                self.im.user.set_answer("user", identity);
+
+                return self.states.create('state_route');
             });
         });
 
@@ -72,9 +76,10 @@ go.app = function() {
 
         self.add('state_route', function(name) {
             // reset working_on extra
-            self.im.user.set_answer("nc_working_on", "");
-
-            if (self.im.user.answers.user.nc_is_registered === 'true') {
+            self.im.user.set_answer("working_on", "");
+            
+            if (self.im.user.answers.user.details.nurseconnect
+                && self.im.user.answers.user.details.nurseconnect.is_registered === 'true') {
                 return self.states.create('state_subscribed');
             } else {
                 return self.states.create('state_not_subscribed');

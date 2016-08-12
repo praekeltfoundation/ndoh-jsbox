@@ -243,7 +243,7 @@ describe("app", function() {
                         .check(function(api) {
                             utils.check_fixtures_used(api, [78, 79, 81]);
                         })
-                        .check.user.answer("nc_working_on", "")
+                        .check.user.answer("working_on", "")
                         .run();
                 });
                 it("should save extras", function() {
@@ -255,7 +255,7 @@ describe("app", function() {
                         .check(function(api) {
                             utils.check_fixtures_used(api, [77]);
                         })
-                        .check.user.answer("nc_working_on", "")
+                        .check.user.answer("working_on", "")
                         .run();
                 });
                 it.skip("should record metrics", function() {
