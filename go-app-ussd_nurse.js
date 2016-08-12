@@ -52,7 +52,6 @@ go.app = function() {
             return is
             .get_or_create_identity({"msisdn": msisdn})
             .then(function(identity) {
-                console.log(identity);
                 if (identity.details.nurseconnect) {
                     if ((!_.isUndefined(identity.details.nurseconnect))
                         && (identity.details.nurseconnect.working_on !== "")) {
@@ -80,7 +79,7 @@ go.app = function() {
         self.add('state_route', function(name) {
             // reset working_on extra
             self.im.user.set_answer("working_on", "");
-            console.log(self.im.user.answers.user.details.nurseconnect);
+
             if (self.im.user.answers.user.details.nurseconnect
                 && self.im.user.answers.user.details.nurseconnect.is_registered === 'true') {
                 return self.states.create('state_subscribed');

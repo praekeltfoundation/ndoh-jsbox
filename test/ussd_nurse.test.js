@@ -86,85 +86,85 @@ describe("app", function() {
                 .setup(function(api) {
                     fixtures().forEach(api.http.fixtures.add);
                 })
-                .setup(function(api) {
-                    // user with working_on extra
-                    api.contacts.add({
-                        msisdn: '+27821231111',
-                        extra: {
-                            nc_working_on: '+27821232222'
-                        },
-                    });
-                })
-                .setup(function(api) {
-                    // registered user
-                    api.contacts.add({
-                        msisdn: '+27821237777',
-                        extra: {
-                            nc_last_reg_id: "7",
-                            nc_is_registered: 'true',
-                            nc_faccode: '123456',
-                            nc_facname: 'WCL clinic',
-                            nc_working_on: "",
-                            nc_id_type: "sa_id",
-                            nc_sa_id_no: "5101025009086",
-                            nc_dob: "1951-01-02"
-                        },
-                    });
-                })
-                .setup(function(api) {
-                    // opted_out user 1
-                    api.contacts.add({
-                        msisdn: '+27821239999',
-                        extra: {
-                            nc_opt_out_reason: 'job_change'
-                        },
-                    });
-                })
-                .setup(function(api) {
-                    // opted_out user 2
-                    api.contacts.add({
-                        msisdn: '+27821233333',
-                        extra: {
-                            nc_last_reg_id: '3',
-                            nc_opt_out_reason: 'other',
-                            nc_is_registered: 'true',
-                            nc_faccode: '123456',
-                            nc_facname: 'WCL clinic',
-                            nc_id_type: 'passport',
-                            nc_passport_country: 'bw',
-                            nc_passport_num: '33333',
-                            nc_dob: '1976-03-04'
-                        },
-                    });
-                })
-                .setup(function(api) {
-                    // opted_out user 3
-                    api.contacts.add({
-                        msisdn: '+27821230000',
-                        extra: {
-                            nc_last_reg_id: '0',
-                            nc_opt_out_reason: 'not_useful',
-                            nc_is_registered: 'true'
-                        },
-                    });
-                })
-                .setup(function(api) {
-                    // opted_out user 4
-                    api.contacts.add({
-                        msisdn: '+27821240000',
-                        extra: {
-                            nc_last_reg_id: '4',
-                            nc_opt_out_reason: 'unknown',
-                            nc_is_registered: 'true',
-                            nc_faccode: '123456',
-                            nc_facname: 'WCL clinic',
-                            nc_id_type: 'passport',
-                            nc_passport_country: 'bw',
-                            nc_passport_num: '44444',
-                            nc_dob: '1976-03-04'
-                        },
-                    });
-                })
+                // .setup(function(api) {
+                //     // user with working_on extra
+                //     api.contacts.add({
+                //         msisdn: '+27821231111',
+                //         extra: {
+                //             nc_working_on: '+27821232222'
+                //         },
+                //     });
+                // })
+                // .setup(function(api) {
+                //     // registered user
+                //     api.contacts.add({
+                //         msisdn: '+27821237777',
+                //         extra: {
+                //             nc_last_reg_id: "7",
+                //             nc_is_registered: 'true',
+                //             nc_faccode: '123456',
+                //             nc_facname: 'WCL clinic',
+                //             nc_working_on: "",
+                //             nc_id_type: "sa_id",
+                //             nc_sa_id_no: "5101025009086",
+                //             nc_dob: "1951-01-02"
+                //         },
+                //     });
+                // })
+                // .setup(function(api) {
+                //     // opted_out user 1
+                //     api.contacts.add({
+                //         msisdn: '+27821239999',
+                //         extra: {
+                //             nc_opt_out_reason: 'job_change'
+                //         },
+                //     });
+                // })
+                // .setup(function(api) {
+                //     // opted_out user 2
+                //     api.contacts.add({
+                //         msisdn: '+27821233333',
+                //         extra: {
+                //             nc_last_reg_id: '3',
+                //             nc_opt_out_reason: 'other',
+                //             nc_is_registered: 'true',
+                //             nc_faccode: '123456',
+                //             nc_facname: 'WCL clinic',
+                //             nc_id_type: 'passport',
+                //             nc_passport_country: 'bw',
+                //             nc_passport_num: '33333',
+                //             nc_dob: '1976-03-04'
+                //         },
+                //     });
+                // })
+                // .setup(function(api) {
+                //     // opted_out user 3
+                //     api.contacts.add({
+                //         msisdn: '+27821230000',
+                //         extra: {
+                //             nc_last_reg_id: '0',
+                //             nc_opt_out_reason: 'not_useful',
+                //             nc_is_registered: 'true'
+                //         },
+                //     });
+                // })
+                // .setup(function(api) {
+                //     // opted_out user 4
+                //     api.contacts.add({
+                //         msisdn: '+27821240000',
+                //         extra: {
+                //             nc_last_reg_id: '4',
+                //             nc_opt_out_reason: 'unknown',
+                //             nc_is_registered: 'true',
+                //             nc_faccode: '123456',
+                //             nc_facname: 'WCL clinic',
+                //             nc_id_type: 'passport',
+                //             nc_passport_country: 'bw',
+                //             nc_passport_num: '44444',
+                //             nc_dob: '1976-03-04'
+                //         },
+                //     });
+                // })
                 ;
         });
 
