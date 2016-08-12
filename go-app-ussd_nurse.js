@@ -13,6 +13,7 @@ go.app = function() {
 
     var SeedJsboxUtils = require('seed-jsbox-utils');
     var IdentityStore = SeedJsboxUtils.IdentityStore;
+    var StageBasedMessaging = SeedJsboxUtils.StageBasedMessaging;
 
     var utils = SeedJsboxUtils.utils;
 
@@ -22,6 +23,7 @@ go.app = function() {
 
         // variables for services
         var is;
+        var sbm;
 
         self.init = function() {
             // initialising services
@@ -29,6 +31,12 @@ go.app = function() {
                 new JsonApi(self.im, {}),
                 self.im.config.services.identity_store.token,
                 self.im.config.services.identity_store.url
+            );
+
+            sbm = new StageBasedMessaging(
+                new JsonApi(self.im, {}),
+                self.im.config.services.stage_based_messaging.token,
+                self.im.config.services.stage_based_messaging.url
             );
         };
 
@@ -42,6 +50,25 @@ go.app = function() {
                 // var timeout_opts = opts || {};
                 // timeout_opts.name = name;
                 // return self.states.create('st_timed_out', timeout_opts);
+            });
+        };
+
+        self.has_active_nurseconnect_subscription = function(id) {
+            return sbm
+            .list_active_subscriptions(id)
+            .then(function(active_subs_response) {
+                var active_subs = active_subs_response.results;
+                for (var i=0; i < active_subs.length; i++) {
+                    // get the subscription messageset
+                    return sbm
+                    .get_messageset(active_subs[i].messageset)
+                    .then(function(messageset) {
+                        if (messageset.short_name.indexOf('nurseconnect') > -1) {
+                            return true;
+                        }
+                    });
+                }
+                return false;
             });
         };
 
@@ -80,12 +107,15 @@ go.app = function() {
             // reset working_on extra
             self.im.user.set_answer("working_on", "");
 
-            if (self.im.user.answers.user.details.nurseconnect
-                && self.im.user.answers.user.details.nurseconnect.is_registered === 'true') {
-                return self.states.create('state_subscribed');
-            } else {
-                return self.states.create('state_not_subscribed');
-            }
+            return self
+            .has_active_nurseconnect_subscription(self.im.user.answers.user.id)
+            .then(function(has_active_nurseconnect_subscription) {
+                if (has_active_nurseconnect_subscription) {
+                    return self.states.create('state_subscribed');
+                } else {
+                    return self.states.create('state_not_subscribed');
+                }
+            });
         });
 
     // INITIAL STATES

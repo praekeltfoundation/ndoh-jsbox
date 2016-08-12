@@ -2567,7 +2567,7 @@ module.exports = function() {
             "response": {}
         },
 
-        // 76: get messageset 101 (pmtct - +27720000111)
+        // 76: get messageset 100 (pmtct - +27720000111)
         {
             "repeatable": true,
             "request": {
@@ -2776,7 +2776,143 @@ module.exports = function() {
                 }
             },
             "response": {}
-        }
+        },
+
+        // 84: get active nurseconnect subscriptions for cb245673-aa41-4302-ac47-00000031111
+        {
+            "request": {
+                "url": 'http://sbm.localhost:8001/api/v1/subscriptions/',
+                "method": 'GET',
+                "params": {
+                    "identity": 'cb245673-aa41-4302-ac47-00000031111',
+                    "active": 'true'
+                }
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            'url': 'http://sbm.localhost:8001/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-nc01',
+                            'id': '51fcca25-2e85-4c44-subscription-nc01',
+                            'version': 1,
+                            'identity': 'cb245673-aa41-4302-ac47-00000031111',
+                            'messageset': 200,
+                            'next_sequence_number': 1,
+                            'lang': "en",
+                            'active': true,
+                            'completed': false,
+                            'schedule': 1,
+                            'process_status': 0,
+                            'metadata': {},
+                            'created_at': "2016-08-12T06:13:29.693272Z",
+                            'updated_at': "2016-08-12T06:13:29.693272Z"
+                        }
+                    ]
+                }
+            }
+        },
+
+        // 85: get active nurseconnect subscriptions for cb245673-aa41-4302-ac47-00000034444
+        {
+            "request": {
+                "url": 'http://sbm.localhost:8001/api/v1/subscriptions/',
+                "method": 'GET',
+                "params": {
+                    "identity": 'cb245673-aa41-4302-ac47-00000034444',
+                    "active": 'true'
+                }
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            'url': 'http://sbm.localhost:8001/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-nc04',
+                            'id': '51fcca25-2e85-4c44-subscription-nc04',
+                            'version': 1,
+                            'identity': 'cb245673-aa41-4302-ac47-00000034444',
+                            'messageset': 1,
+                            'next_sequence_number': 1,
+                            'lang': "en",
+                            'active': true,
+                            'completed': false,
+                            'schedule': 1,
+                            'process_status': 0,
+                            'metadata': {},
+                            'created_at': "2016-08-12T06:13:29.693272Z",
+                            'updated_at': "2016-08-12T06:13:29.693272Z"
+                        }
+                    ]
+                }
+            }
+        },
+
+        // 86: get active nurseconnect subscriptions for cb245673-aa41-4302-ac47-00000037777
+        {
+            "request": {
+                "url": 'http://sbm.localhost:8001/api/v1/subscriptions/',
+                "method": 'GET',
+                "params": {
+                    "identity": 'cb245673-aa41-4302-ac47-00000037777',
+                    "active": 'true'
+                }
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            'url': 'http://sbm.localhost:8001/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-nc07',
+                            'id': '51fcca25-2e85-4c44-subscription-nc07',
+                            'version': 1,
+                            'identity': 'cb245673-aa41-4302-ac47-00000037777',
+                            'messageset': 200,
+                            'next_sequence_number': 1,
+                            'lang': "en",
+                            'active': true,
+                            'completed': false,
+                            'schedule': 1,
+                            'process_status': 0,
+                            'metadata': {},
+                            'created_at': "2016-08-12T06:13:29.693272Z",
+                            'updated_at': "2016-08-12T06:13:29.693272Z"
+                        }
+                    ]
+                }
+            }
+        },
+
+        // 87: get messageset 200 (nurseconnect - cb245673-aa41-4302-ac47-00000031111)
+        {
+            "repeatable": true,
+            "request": {
+                "method": 'GET',
+                "url": "http://sbm.localhost:8001/api/v1/messageset/200/"
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "id": 100,
+                    "short_name": 'nurseconnect_abc.123',
+                    "notes": null,
+                    "next_set": 2,
+                    "default_schedule": 1,
+                    "content_type": 'text',
+                    "created_at": '2016-08-12T06:13:29.693272Z',
+                    "updated_at": '2016-08-12T06:13:29.693272Z'
+                }
+            }
+        },
 
     ];
 };

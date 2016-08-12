@@ -11,7 +11,7 @@ var assert = require('assert');
 var utils = require('seed-jsbox-utils').utils;
 
 describe("app", function() {
-    describe("for nurse ussd use", function() {
+    describe("for ussd_nurse use", function() {
         var app;
         var tester;
 
@@ -70,10 +70,10 @@ describe("app", function() {
                             url: 'http://is.localhost:8001/api/v1/',
                             token: 'test IdentityStore'
                         },
-                        // stage_based_messaging: {
-                        //     url: 'http://sbm.localhost:8001/api/v1/',
-                        //     token: 'test StageBasedMessaging'
-                        // },
+                        stage_based_messaging: {
+                            url: 'http://sbm.localhost:8001/api/v1/',
+                            token: 'test StageBasedMessaging'
+                        },
                         // hub: {
                         //     url: 'http://hub.localhost:8001/api/v1/',
                         //     token: 'test Hub'
@@ -230,7 +230,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [77]);
+                            utils.check_fixtures_used(api, [62, 77, 85]);
                         })
                         .run();
                 });
@@ -241,7 +241,7 @@ describe("app", function() {
                             {session_event: 'new'}  // dial in
                         )
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [78, 79, 81]);
+                            utils.check_fixtures_used(api, [78, 79, 81, 84, 87]);
                         })
                         .check.user.answer("working_on", "")
                         .run();
@@ -253,7 +253,7 @@ describe("app", function() {
                             {session_event: 'new'}  // dial in
                         )
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [77]);
+                            utils.check_fixtures_used(api, [62, 77, 85]);
                         })
                         .check.user.answer("working_on", "")
                         .run();
@@ -293,7 +293,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [80]);
+                            utils.check_fixtures_used(api, [80, 86, 87]);
                         })
                         .run();
                 });
