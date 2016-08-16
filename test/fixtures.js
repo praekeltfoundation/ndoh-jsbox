@@ -2778,7 +2778,7 @@ module.exports = function() {
             "response": {}
         },
 
-        // 84: get active nurseconnect subscriptions for cb245673-aa41-4302-ac47-00000031111
+        // 84: get active subscriptions for cb245673-aa41-4302-ac47-00000031111
         {
             "request": {
                 "url": 'http://sbm.localhost:8001/api/v1/subscriptions/',
@@ -2816,7 +2816,7 @@ module.exports = function() {
             }
         },
 
-        // 85: get active nurseconnect subscriptions for cb245673-aa41-4302-ac47-00000034444
+        // 85: get active subscriptions for cb245673-aa41-4302-ac47-00000034444
         {
             "request": {
                 "url": 'http://sbm.localhost:8001/api/v1/subscriptions/',
@@ -2854,7 +2854,7 @@ module.exports = function() {
             }
         },
 
-        // 86: get active nurseconnect subscriptions for cb245673-aa41-4302-ac47-00000037777
+        // 86: get active subscriptions for cb245673-aa41-4302-ac47-00000037777
         {
             "request": {
                 "url": 'http://sbm.localhost:8001/api/v1/subscriptions/',
