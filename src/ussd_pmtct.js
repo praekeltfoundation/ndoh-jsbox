@@ -154,6 +154,29 @@ go.app = function() {
             }
         };
 
+        self.get_2_lang_code = function(lang) {
+            // Return the two-char code for a two or six letter language code
+            if (lang.length == 2 || lang.length == 3) {
+                // assume it is correct code
+                return lang;
+            } else {
+                return {
+                    "zul_ZA": "zu",
+                    "xho_ZA": "xh",
+                    "afr_ZA": "af",
+                    "eng_ZA": "en",
+                    "nso_ZA": "nso",
+                    "tsn_ZA": "tn",
+                    "sot_ZA": "st",
+                    "tso_ZA": "ts",
+                    "ssw_ZA": "ss",
+                    "ven_ZA": "ve",
+                    "nbl_ZA": "nr"
+                }[lang];
+            }
+        };
+
+
         self.getSubscriptionType = function(messageset_id) {
             var subscriptionTypeMapping = {
                 "1": "standard",
@@ -244,7 +267,7 @@ go.app = function() {
 
             var sub_info = {
                 contact_key: im.user.answers.vumi_contact_key,
-                lang: im.user.lang,
+                lang: self.get_2_lang_code(im.user.lang),
                 message_set: "/api/v1/message_set/" + optoutReasonToSubTypeMapping[im.user.answers.state_optout_reason_menu] + "/",
                 next_sequence_number: 1,
                 schedule: "/api/v1/periodic_task/3/",  // 3 = twice per week
