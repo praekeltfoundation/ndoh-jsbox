@@ -241,7 +241,7 @@ describe("app", function() {
                             {session_event: 'new'}  // dial in
                         )
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [78, 79, 81, 84, 87]);
+                            utils.check_fixtures_used(api, [78, 84, 87]);
                         })
                         .check.user.answer("working_on", "")
                         .run();

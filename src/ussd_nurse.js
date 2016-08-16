@@ -1,6 +1,6 @@
 go.app = function() {
     var vumigo = require("vumigo_v02");
-    var _ = require('lodash');
+    // var _ = require('lodash');
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
@@ -15,7 +15,7 @@ go.app = function() {
     var utils = SeedJsboxUtils.utils;
 
     var GoNDOH = App.extend(function(self) {
-        App.call(self, "state_start");
+        App.call(self, "state_route");
         var $ = self.$;
 
         // variables for services
@@ -69,49 +69,27 @@ go.app = function() {
             });
         };
 
-    // START STATE
-
-        self.add('state_start', function(name) {
-            var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
-            return is
-            .get_or_create_identity({"msisdn": msisdn})
-            .then(function(identity) {
-                if (identity.details.nurseconnect) {
-                    if ((!_.isUndefined(identity.details.nurseconnect))
-                        && (identity.details.nurseconnect.working_on !== "")) {
-                        self.im.user.set_answer("user", identity);
-                        return is
-                        .get_or_create_identity({"msisdn": identity.details.nurseconnect.working_on})
-                        .then(function(working_on_identity) {
-                            self.im.user.set_answer("contact", working_on_identity);
-
-                            return self.states.create('state_route');
-                        });
-                    }
-                } else {
-                    self.im.user.set_answer("contact", identity);
-                }
-
-                self.im.user.set_answer("user", identity);
-
-                return self.states.create('state_route');
-            });
-        });
-
     // DELEGATOR START STATE
 
         self.add('state_route', function(name) {
             // reset working_on extra
             self.im.user.set_answer("working_on", "");
 
-            return self
-            .has_active_nurseconnect_subscription(self.im.user.answers.user.id)
-            .then(function(has_active_nurseconnect_subscription) {
-                if (has_active_nurseconnect_subscription) {
-                    return self.states.create('state_subscribed');
-                } else {
-                    return self.states.create('state_not_subscribed');
-                }
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
+            return is
+            .get_or_create_identity({"msisdn": msisdn})
+            .then(function(identity) {
+                self.im.user.set_answer("user", identity);
+
+                return self
+                .has_active_nurseconnect_subscription(self.im.user.answers.user.id)
+                .then(function(has_active_nurseconnect_subscription) {
+                    if (has_active_nurseconnect_subscription) {
+                        return self.states.create('state_subscribed');
+                    } else {
+                        return self.states.create('state_not_subscribed');
+                    }
+                });
             });
         });
 
