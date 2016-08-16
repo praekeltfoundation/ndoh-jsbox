@@ -234,30 +234,6 @@ describe("app", function() {
                         })
                         .run();
                 });
-                it("should reset working_on extra", function() {
-                    return tester
-                        .setup.user.addr('27821231111')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                        )
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [78, 84, 87]);
-                        })
-                        .check.user.answer("working_on", "")
-                        .run();
-                });
-                it("should save extras", function() {
-                    return tester
-                        .setup.user.addr('27821234444')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                        )
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [62, 77, 85]);
-                        })
-                        .check.user.answer("working_on", "")
-                        .run();
-                });
                 it.skip("should record metrics", function() {
                     return tester
                         .setup.user.addr('27821234444')

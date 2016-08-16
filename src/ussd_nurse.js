@@ -72,8 +72,8 @@ go.app = function() {
     // DELEGATOR START STATE
 
         self.add('state_route', function(name) {
-            // reset working_on extra
-            self.im.user.set_answer("working_on", "");
+            // Reset user answers when restarting the app
+            self.im.user.answers = {};
 
             var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
             return is
