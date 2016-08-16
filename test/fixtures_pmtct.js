@@ -2560,7 +2560,7 @@ module.exports = function() {
             "response": {}
         },
 
-        // 76: get messageset 101 (pmtct - +27720000111)
+        // 76: get messageset 100 (pmtct - +27720000111)
         {
             "repeatable": true,
             "request": {

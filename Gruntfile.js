@@ -221,6 +221,7 @@ module.exports = function (grunt) {
             },*/
             test_ussd_nurse: {
                 src: ['<%= paths.test.ussd_nurse %>']
+
             },
             /*test_sms_nurse: {
                 src: ['<%= paths.test.sms_nurse %>']
