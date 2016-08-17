@@ -407,7 +407,7 @@ module.exports = function() {
                             'id': '51fcca25-2e85-4c44-subscription-1111',
                             'version': 1,
                             'identity': 'cb245673-aa41-4302-ac47-00000000001',
-                            'messageset': 1,
+                            'messageset': 21,
                             'next_sequence_number': 1,
                             'lang': "en",
                             'active': true,
@@ -451,7 +451,7 @@ module.exports = function() {
                             'id': '51fcca25-2e85-4c44-subscription-2222',
                             'version': 1,
                             'identity': 'cb245673-aa41-4302-ac47-00000000002',
-                            'messageset': 1,
+                            'messageset': 21,
                             'next_sequence_number': 1,
                             'lang': "en",
                             'active': true,
@@ -495,7 +495,7 @@ module.exports = function() {
                             'id': '51fcca25-2e85-4c44-subscription-3333',
                             'version': 1,
                             'identity': 'cb245673-aa41-4302-ac47-00000000003',
-                            'messageset': 1,
+                            'messageset': 21,
                             'next_sequence_number': 1,
                             'lang': "en",
                             'active': true,
@@ -539,7 +539,7 @@ module.exports = function() {
                             'id': '51fcca25-2e85-4c44-subscription-4444',
                             'version': 1,
                             'identity': 'cb245673-aa41-4302-ac47-00000000004',
-                            'messageset': 1,
+                            'messageset': 21,
                             'next_sequence_number': 1,
                             'lang': "en",
                             'active': true,
@@ -2144,22 +2144,22 @@ module.exports = function() {
             "response": {}
         },
 
-        // 62: get messageset 1
+        // 62: get messageset 21
         {
-            "key": "get.sbm.messageset.1",
+            "key": "get.sbm.messageset.21",
             "repeatable": true,
             "request": {
                 "method": 'GET',
-                "url": "http://sbm.localhost:8001/api/v1/messageset/1/"
+                "url": "http://sbm.localhost:8001/api/v1/messageset/21/"
             },
             "response": {
                 "code": 200,
                 "data": {
-                    "id": 1,
+                    "id": 21,
                     "short_name": 'momconnect_prebirth.hw_full.1',
                     "notes": null,
                     "next_set": 2,
-                    "default_schedule": 1,
+                    "default_schedule": 121,
                     "content_type": 'text',
                     "created_at": '2016-06-22T06:13:29.693272Z',
                     "updated_at": '2016-06-22T06:13:29.693272Z'
@@ -2401,7 +2401,7 @@ module.exports = function() {
                             'id': '51fcca25-2e85-4c44-subscription-1111',
                             'version': 1,
                             'identity': 'cb245673-aa41-4302-ac47-10000000001',
-                            'messageset': 100,
+                            'messageset': 11,
                             'next_sequence_number': 1,
                             'lang': "en",
                             'active': true,
@@ -2611,22 +2611,22 @@ module.exports = function() {
             "response": {}
         },
 
-        // 76: get messageset 100 (pmtct - +27720000111)
+        // 76: get messageset 11 (pmtct - +27720000111)
         {
-            "key": "get.sbm.messageset.100",
+            "key": "get.sbm.messageset.11",
             "repeatable": true,
             "request": {
                 "method": 'GET',
-                "url": "http://sbm.localhost:8001/api/v1/messageset/100/"
+                "url": "http://sbm.localhost:8001/api/v1/messageset/11/"
             },
             "response": {
                 "code": 200,
                 "data": {
-                    "id": 100,
+                    "id": 11,
                     "short_name": 'pmtct_prebirth.patient.1',
                     "notes": null,
                     "next_set": 2,
-                    "default_schedule": 1,
+                    "default_schedule": 111,
                     "content_type": 'text',
                     "created_at": '2016-06-22T06:13:29.693272Z',
                     "updated_at": '2016-06-22T06:13:29.693272Z'
