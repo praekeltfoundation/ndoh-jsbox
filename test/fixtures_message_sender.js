@@ -6,9 +6,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -18,9 +15,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -30,9 +24,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -42,9 +33,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -54,9 +42,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -66,9 +51,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -78,9 +60,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -90,9 +69,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -102,9 +78,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -114,9 +87,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -126,9 +96,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -138,9 +105,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -150,9 +114,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -162,9 +123,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -174,9 +132,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -186,9 +141,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -198,9 +150,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -210,9 +159,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -222,9 +168,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -234,9 +177,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -246,9 +186,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -258,9 +195,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -270,9 +204,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -282,9 +213,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -294,9 +222,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -306,9 +231,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -318,9 +240,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -330,9 +249,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -342,9 +258,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -354,9 +267,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -366,9 +276,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -378,9 +285,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -390,9 +294,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -402,9 +303,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -414,9 +312,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -426,9 +321,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -438,9 +330,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -450,9 +339,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -462,9 +348,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -474,9 +357,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -486,9 +366,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -498,9 +375,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -510,9 +384,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -522,9 +393,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -534,9 +402,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -546,9 +411,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -558,9 +420,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -570,9 +429,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -582,9 +438,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -594,9 +447,6 @@ module.exports = function() {
         {
             'request': {
                 'method': 'GET',
-                'params': {
-                    "deprecated": "fixture"
-                },
                 'url': 'http://',
             },
             'response': {}
