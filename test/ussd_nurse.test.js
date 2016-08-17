@@ -1,5 +1,7 @@
 var vumigo = require('vumigo_v02');
-var fixtures = require('./fixtures');
+var fixtures_IdentityStore = require('./fixtures_identity_store');
+var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
+var fixtures_Hub = require('./fixtures_hub');
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
 // var _ = require('lodash');
@@ -84,7 +86,10 @@ describe("app", function() {
                     // api.metrics.stores = {'test_metric_store': {}};
                 // })
                 .setup(function(api) {
-                    fixtures().forEach(api.http.fixtures.add);
+                    // add fixtures for services used
+                    fixtures_Hub().forEach(api.http.fixtures.add);
+                    fixtures_StageBasedMessaging().forEach(api.http.fixtures.add);
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add);
                 })
                 // .setup(function(api) {
                 //     // user with working_on extra
@@ -215,7 +220,7 @@ describe("app", function() {
             describe("new user", function() {
                 it("should give 3 options", function() {
                     return tester
-                        .setup.user.addr('27821234444')
+                        .setup.user.addr('27820001001')
                         .setup.char_limit(140)  // limit first state chars
                         .inputs(
                             {session_event: 'new'}  // dial in
@@ -230,7 +235,11 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [0, 8, 10]);
+                            // console.log(api.http.fixtures.fixtures[20].request.headers);
+                            // maybe create new function that list table of fixture keys/descriptions against number
+                            // utils.list_fixtures  (used vs unused)
+                            utils.check_fixtures_used(api, [50, 100, 103]);
+                            // check_fixtures_used(api, [sbm_2, sbm_4, is_1]);  // or adapt to something like this...?
                         })
                         .run();
                 });
@@ -248,10 +257,38 @@ describe("app", function() {
                         .run();
                 });
             });
-            describe("registered user", function() {
+            describe("registered user with no active subscription to NurseConnect", function() {
+                it("should give 3 options", function() {
+                    return tester
+                        .setup.user.addr('27820001002')
+                        .setup.char_limit(140)  // limit first state chars
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                        )
+                        .check.interaction({
+                            state: 'state_not_subscribed',
+                            reply: [
+                                "Welcome to NurseConnect. Do you want to:",
+                                '1. Subscribe for the first time',
+                                '2. Change your old number',
+                                '3. Subscribe somebody else'
+                            ].join('\n')
+                        })
+                        .check(function(api) {
+                            // console.log(api.http.fixtures.fixtures[20].request.headers);
+                            // maybe create new function that list table of fixture keys/descriptions against number
+                            // utils.list_fixtures  (used vs unused)
+                            utils.check_fixtures_used(api, [51, 53, 101]);
+                            // check_fixtures_used(api, [sbm_2, sbm_4, is_1]);  // or adapt to something like this...?
+                        })
+                        .run();
+                });
+            });
+
+            describe("registered user with active subscription to NurseConnect", function() {
                 it("should give 5 options", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .setup.char_limit(140)  // limit first state chars
                         .inputs(
                             {session_event: 'new'}  // dial in
@@ -269,13 +306,13 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [3, 9, 11]);
+                            utils.check_fixtures_used(api, [52, 54, 102]);
                         })
                         .run();
                 });
                 it("should give 2 options when user selects more", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .setup.char_limit(140)  // limit first state chars
                         .inputs(
                             {session_event: 'new'}  // dial in
@@ -294,7 +331,7 @@ describe("app", function() {
                 });
                 it("should give the first 5 options when user selects back", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .setup.char_limit(140)  // limit first state chars
                         .inputs(
                             {session_event: 'new'}  // dial in
