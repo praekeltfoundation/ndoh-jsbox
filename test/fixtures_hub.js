@@ -5,7 +5,7 @@ module.exports = function() {
         // 0:
         {
             "request": {
-                "url": 'http://hub.localhost:8001/api/v1/change/',
+                "url": 'http://hub/api/v1/change/',
                 "method": 'POST',
                 "data": {
                     "registrant_id": "cb245673-aa41-4302-ac47-00000000001",

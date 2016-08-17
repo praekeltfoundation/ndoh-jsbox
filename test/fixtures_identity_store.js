@@ -13,7 +13,7 @@ module.exports = function() {
         {
             "key": "get.is.msisdn.27820001001",
             "request": {
-                "url": 'http://is.localhost:8001/api/v1/identities/search/',
+                "url": 'http://is/api/v1/identities/search/',
                 "method": 'GET',
                 "params": {
                     "details__addresses__msisdn": '+27820001001'
@@ -34,7 +34,7 @@ module.exports = function() {
         {
             "key": "get.is.msisdn.27820001002",
             "request": {
-                "url": 'http://is.localhost:8001/api/v1/identities/search/',
+                "url": 'http://is/api/v1/identities/search/',
                 "method": 'GET',
                 "params": {
                     "details__addresses__msisdn": '+27820001002'
@@ -47,7 +47,7 @@ module.exports = function() {
                     "next": null,
                     "previous": null,
                     "results": [{
-                        "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000001002/",
+                        "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001002/",
                         "id": "cb245673-aa41-4302-ac47-00000001002",
                         "version": 1,
                         "details": {
@@ -70,7 +70,7 @@ module.exports = function() {
             "key": "get.is.msisdn.27820001003",
             "repeatable": true,
             "request": {
-                "url": 'http://is.localhost:8001/api/v1/identities/search/',
+                "url": 'http://is/api/v1/identities/search/',
                 "method": 'GET',
                 "params": {
                     "details__addresses__msisdn": '+27820001003'
@@ -83,7 +83,7 @@ module.exports = function() {
                     "next": null,
                     "previous": null,
                     "results": [{
-                        "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000001003/",
+                        "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001003/",
                         "id": "cb245673-aa41-4302-ac47-00000001003",
                         "version": 1,
                         "details": {
@@ -115,7 +115,7 @@ module.exports = function() {
         {
             "key": "post.is.msisdn.27820001001",
             "request": {
-                "url": 'http://is.localhost:8001/api/v1/identities/',
+                "url": 'http://is/api/v1/identities/',
                 "method": 'POST',
                 "data": {
                     "details": {
@@ -131,7 +131,7 @@ module.exports = function() {
             "response": {
                 "code": 201,
                 "data": {
-                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/",
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/",
                     "id": "cb245673-aa41-4302-ac47-00000001001",
                     "version": 1,
                     "details": {

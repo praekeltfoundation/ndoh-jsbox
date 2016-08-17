@@ -5,7 +5,7 @@ module.exports = function() {
         // 50: get active subscriptions for cb245673-aa41-4302-ac47-00000001001
         {
             "request": {
-                "url": 'http://sbm.localhost:8001/api/v1/subscriptions/',
+                "url": 'http://sbm/api/v1/subscriptions/',
                 "method": 'GET',
                 "params": {
                     "identity": 'cb245673-aa41-4302-ac47-00000001001',
@@ -26,7 +26,7 @@ module.exports = function() {
         // 51: get active subscriptions for cb245673-aa41-4302-ac47-00000001002
         {
             "request": {
-                "url": 'http://sbm.localhost:8001/api/v1/subscriptions/',
+                "url": 'http://sbm/api/v1/subscriptions/',
                 "method": 'GET',
                 "params": {
                     "identity": 'cb245673-aa41-4302-ac47-00000001002',
@@ -41,7 +41,7 @@ module.exports = function() {
                     "previous": null,
                     "results": [
                         {
-                            'url': 'http://sbm.localhost:8001/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-1002',
+                            'url': 'http://sbm/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-1002',
                             'id': '51fcca25-2e85-4c44-subscription-1002',
                             'version': 1,
                             'identity': 'cb245673-aa41-4302-ac47-00000001002',
@@ -64,7 +64,7 @@ module.exports = function() {
         // 52: get active subscriptions for cb245673-aa41-4302-ac47-00000001003
         {
             "request": {
-                "url": 'http://sbm.localhost:8001/api/v1/subscriptions/',
+                "url": 'http://sbm/api/v1/subscriptions/',
                 "method": 'GET',
                 "params": {
                     "identity": 'cb245673-aa41-4302-ac47-00000001003',
@@ -79,7 +79,7 @@ module.exports = function() {
                     "previous": null,
                     "results": [
                         {
-                            'url': 'http://sbm.localhost:8001/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-1003',
+                            'url': 'http://sbm/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-1003',
                             'id': '51fcca25-2e85-4c44-subscription-1003',
                             'version': 1,
                             'identity': 'cb245673-aa41-4302-ac47-00000001003',
@@ -104,7 +104,7 @@ module.exports = function() {
             "repeatable": true,
             "request": {
                 "method": 'GET',
-                "url": "http://sbm.localhost:8001/api/v1/messageset/1/"
+                "url": "http://sbm/api/v1/messageset/1/"
             },
             "response": {
                 "code": 200,
@@ -126,7 +126,7 @@ module.exports = function() {
             "repeatable": true,
             "request": {
                 "method": 'GET',
-                "url": "http://sbm.localhost:8001/api/v1/messageset/200/"
+                "url": "http://sbm/api/v1/messageset/200/"
             },
             "response": {
                 "code": 200,

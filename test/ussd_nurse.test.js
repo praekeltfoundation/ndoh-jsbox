@@ -70,16 +70,20 @@ describe("app", function() {
                     },
                     services: {
                         identity_store: {
-                            url: 'http://is.localhost:8001/api/v1/',
+                            url: 'http://is/api/v1/',
                             token: 'test IdentityStore'
                         },
                         stage_based_messaging: {
-                            url: 'http://sbm.localhost:8001/api/v1/',
+                            url: 'http://sbm/api/v1/',
                             token: 'test StageBasedMessaging'
                         },
                         // hub: {
-                        //     url: 'http://hub.localhost:8001/api/v1/',
+                        //     url: 'http://hub/api/v1/',
                         //     token: 'test Hub'
+                        // },
+                        // message_sender: {
+                        //     url: 'http://ms/api/v1/',
+                        //     token: 'test MessageSender'
                         // }
                     },
                 })
