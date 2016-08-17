@@ -16,6 +16,9 @@ module.exports = function() {
                 "method": 'GET',
                 "params": {
                     "details__addresses__msisdn": '+27820001001'
+                },
+                "headers": {
+                    "key": "get.identity.new.27820001001"
                 }
             },
             "response": {
@@ -36,6 +39,9 @@ module.exports = function() {
                 "method": 'GET',
                 "params": {
                     "details__addresses__msisdn": '+27820001002'
+                },
+                "headers": {
+                    "key": "get.identity.registered.27820001002"
                 }
             },
             "response": {
@@ -71,6 +77,9 @@ module.exports = function() {
                 "method": 'GET',
                 "params": {
                     "details__addresses__msisdn": '+27820001003'
+                },
+                "headers": {
+                    "key": "get.identity.registered.27820001003"
                 }
             },
             "response": {
@@ -122,6 +131,9 @@ module.exports = function() {
                             }
                         }
                     }
+                },
+                "headers": {
+                    "key": "create.identity.27820001001"
                 }
             },
             "response": {
@@ -157,6 +169,9 @@ module.exports = function() {
                     "address": "+27820000111",
                     "request_source": "sms_pmtct",
                     "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                },
+                "headers": {
+                    "key": "post.optout.27820000111"
                 }
             },
             "response": {}
