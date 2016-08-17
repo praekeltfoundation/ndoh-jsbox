@@ -11,14 +11,12 @@ module.exports = function() {
 
         // 0: get identity by msisdn +27820001001
         {
+            "key": "get.is.msisdn.27820001001",
             "request": {
                 "url": 'http://is.localhost:8001/api/v1/identities/search/',
                 "method": 'GET',
                 "params": {
                     "details__addresses__msisdn": '+27820001001'
-                },
-                "headers": {
-                    "key": "get.identity.new.27820001001"
                 }
             },
             "response": {
@@ -34,14 +32,12 @@ module.exports = function() {
 
         // 1: get identity by msisdn +27820001002
         {
+            "key": "get.is.msisdn.27820001002",
             "request": {
                 "url": 'http://is.localhost:8001/api/v1/identities/search/',
                 "method": 'GET',
                 "params": {
                     "details__addresses__msisdn": '+27820001002'
-                },
-                "headers": {
-                    "key": "get.identity.registered.27820001002"
                 }
             },
             "response": {
@@ -71,15 +67,13 @@ module.exports = function() {
 
         // 2: get identity by msisdn +27820001003
         {
+            "key": "get.is.msisdn.27820001003",
             "repeatable": true,
             "request": {
                 "url": 'http://is.localhost:8001/api/v1/identities/search/',
                 "method": 'GET',
                 "params": {
                     "details__addresses__msisdn": '+27820001003'
-                },
-                "headers": {
-                    "key": "get.identity.registered.27820001003"
                 }
             },
             "response": {
@@ -119,6 +113,7 @@ module.exports = function() {
 
         // 3: create identity with msisdn +27820001001
         {
+            "key": "post.is.msisdn.27820001001",
             "request": {
                 "url": 'http://is.localhost:8001/api/v1/identities/',
                 "method": 'POST',
@@ -131,9 +126,6 @@ module.exports = function() {
                             }
                         }
                     }
-                },
-                "headers": {
-                    "key": "create.identity.27820001001"
                 }
             },
             "response": {
