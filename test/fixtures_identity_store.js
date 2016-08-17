@@ -138,7 +138,7 @@ module.exports = function() {
                         "default_addr_type": "msisdn",
                         "addresses": {
                             "msisdn": {
-                                "+2782000101": {}
+                                "+27820001001": {}
                             }
                         }
                     },
