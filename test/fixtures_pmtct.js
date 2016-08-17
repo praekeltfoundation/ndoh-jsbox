@@ -22,6 +22,7 @@ module.exports = function() {
     return [
         // 0: get identity by msisdn +27820000111 (no consent, no dob)
         {
+            'key': "get.is.msisdn.27820000111",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -61,6 +62,7 @@ module.exports = function() {
 
         // 1: get identity by msisdn +27820000222 (consent, no dob)
         {
+            'key': "get.is.msisdn.27820000222",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -101,6 +103,7 @@ module.exports = function() {
 
         // 2: get identity by msisdn +27820000333 (no consent, dob)
         {
+            'key': "get.is.msisdn.27820000333",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -141,6 +144,7 @@ module.exports = function() {
 
         // 3: get identity by msisdn +27820000444 (consent, dob)
         {
+            'key': "get.is.msisdn.27820000444",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -182,6 +186,7 @@ module.exports = function() {
 
         // 4: get identity by msisdn +27820000555 (no active sub, no consent, no dob)
         {
+            'key': "get.is.msisdn.27820000555",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -221,6 +226,7 @@ module.exports = function() {
 
         // 5: get identity by msisdn +27820000666 (does not exist)
         {
+            'key': "get.is.msisdn.27820000666",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -246,6 +252,7 @@ module.exports = function() {
 
         // 6: get identity by msisdn +27820000777 (does not exist)
         {
+            'key': "get.is.msisdn.27820000777",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -271,6 +278,7 @@ module.exports = function() {
 
         // 7: get identity by msisdn +27820000888 (does not exist)
         {
+            'key': "get.is.msisdn.27820000888",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -296,6 +304,7 @@ module.exports = function() {
 
         // 8: get identity by msisdn +27820000999 (does not exist)
         {
+            'key': "get.is.msisdn.27820000999",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -321,6 +330,7 @@ module.exports = function() {
 
         // 9: get identity by msisdn +27820101010 (does not exist)
         {
+            'key': "get.is.msisdn.27820101010",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -346,6 +356,7 @@ module.exports = function() {
 
         // 10: get identity by msisdn +27820111111 (does not exist)
         {
+            'key': "get.is.msisdn.27820111111",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -371,6 +382,7 @@ module.exports = function() {
 
         // 11: has_active_subscription - cb245673-aa41-4302-ac47-00000000001 (no consent, no dob)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000001",
             'request': {
                 'method': 'GET',
                 'params': {
@@ -414,6 +426,7 @@ module.exports = function() {
 
         // 12: has_active_subscription - cb245673-aa41-4302-ac47-00000000002 (consent, no dob)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000002",
             'request': {
                 'method': 'GET',
                 'params': {
@@ -457,6 +470,7 @@ module.exports = function() {
 
         // 13: has_active_subscription - cb245673-aa41-4302-ac47-00000000003 (no consent, dob)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000003",
             'request': {
                 'method': 'GET',
                 'params': {
@@ -500,6 +514,7 @@ module.exports = function() {
 
         // 14: has_active_subscription - cb245673-aa41-4302-ac47-00000000004 (consent, dob)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000004",
             'request': {
                 'method': 'GET',
                 'params': {
@@ -543,6 +558,7 @@ module.exports = function() {
 
         // 15: has_active_subscription - cb245673-aa41-4302-ac47-00000000005 (no active subscription on new system)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000005",
             'request': {
                 'method': 'GET',
                 'params': {
@@ -568,6 +584,7 @@ module.exports = function() {
 
         // 16: has_active_subscription - cb245673-aa41-4302-ac47-00000000006 (no active subscription on new system)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000006",
             'request': {
                 'method': 'GET',
                 'params': {
@@ -593,6 +610,7 @@ module.exports = function() {
 
         // 17: has_active_subscription - cb245673-aa41-4302-ac47-00000000007 (no active subscription on new system)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000007",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -619,6 +637,7 @@ module.exports = function() {
 
         // 18: has_active_subscription - cb245673-aa41-4302-ac47-00000000008 (no active subscription on new system)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000008",
             'request': {
                 'method': 'GET',
                 'params': {
@@ -644,6 +663,7 @@ module.exports = function() {
 
         // 19: has_active_subscription - cb245673-aa41-4302-ac47-00000000009 (no active subscription on new system)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000009",
             'request': {
                 'method': 'GET',
                 'params': {
@@ -669,6 +689,7 @@ module.exports = function() {
 
         // 20: has_active_subscription - cb245673-aa41-4302-ac47-00000000010 (no active subscription on new system)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000010",
             'request': {
                 'method': 'GET',
                 'params': {
@@ -694,6 +715,7 @@ module.exports = function() {
 
         // 21: has_active_subscription - cb245673-aa41-4302-ac47-00000000011 (no active subscription on new system)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000011",
             'request': {
                 'method': 'GET',
                 'params': {
@@ -1493,6 +1515,7 @@ module.exports = function() {
 
         // 36: create identity cb245673-aa41-4302-ac47-00000000006
         {
+            "key": "post.is.msisdn.27820000666",
             "request": {
                 "method": 'POST',
                 "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000666":{}}}}}',
@@ -1501,7 +1524,7 @@ module.exports = function() {
             "response": {
                 "code": 201,
                 "data": {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000006/",
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000006/",
                     "id": "cb245673-aa41-4302-ac47-00000000006",
                     "version": 1,
                     "details": {
@@ -1520,6 +1543,7 @@ module.exports = function() {
 
         // 37: create identity cb245673-aa41-4302-ac47-00000000007
         {
+            "key": "post.is.msisdn.27820000777",
             "repeatable": true,
             "request": {
                 "method": 'POST',
@@ -1529,7 +1553,7 @@ module.exports = function() {
             "response": {
                 "code": 201,
                 "data": {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000007/",
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000007/",
                     "id": "cb245673-aa41-4302-ac47-00000000007",
                     "version": 1,
                     "details": {
@@ -1548,6 +1572,7 @@ module.exports = function() {
 
         // 38: create identity cb245673-aa41-4302-ac47-00000000008
         {
+            "key": "post.is.msisdn.27820000888",
             "request": {
                 "method": 'POST',
                 "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000888":{}}}}}',
@@ -1556,7 +1581,7 @@ module.exports = function() {
             "response": {
                 "code": 201,
                 "data": {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000008/",
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000008/",
                     "id": "cb245673-aa41-4302-ac47-00000000008",
                     "version": 1,
                     "details": {
@@ -1575,6 +1600,7 @@ module.exports = function() {
 
         // 39: create identity cb245673-aa41-4302-ac47-00000000009
         {
+            "key": "post.is.msisdn.27820000999",
             "request": {
                 "method": 'POST',
                 "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000999":{}}}}}',
@@ -1583,7 +1609,7 @@ module.exports = function() {
             "response": {
                 "code": 201,
                 "data": {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/",
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/",
                     "id": "cb245673-aa41-4302-ac47-00000000009",
                     "version": 1,
                     "details": {
@@ -1602,6 +1628,7 @@ module.exports = function() {
 
         // 40: create identity cb245673-aa41-4302-ac47-00000000010
         {
+            "key": "post.is.msisdn.27820101010",
             "request": {
                 "method": 'POST',
                 "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820101010":{}}}}}',
@@ -1610,7 +1637,7 @@ module.exports = function() {
             "response": {
                 "code": 201,
                 "data": {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000010/",
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000010/",
                     "id": "cb245673-aa41-4302-ac47-00000000010",
                     "version": 1,
                     "details": {
@@ -1629,6 +1656,7 @@ module.exports = function() {
 
         // 41: create identity cb245673-aa41-4302-ac47-00000000011
         {
+            "key": "post.is.msisdn.27820111111",
             "request": {
                 "method": 'POST',
                 "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820111111":{}}}}}',
@@ -1637,7 +1665,7 @@ module.exports = function() {
             "response": {
                 "code": 201,
                 "data": {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000011/",
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000011/",
                     "id": "cb245673-aa41-4302-ac47-00000000011",
                     "version": 1,
                     "details": {
@@ -1656,6 +1684,7 @@ module.exports = function() {
 
         // 42: get identity by msisdn +27720000111 (optout)
         {
+            'key': "get.is.msisdn.27720000111",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -1695,6 +1724,7 @@ module.exports = function() {
 
         // 43: optout identity cb245673-aa41-4302-ac47-10000000001
         {
+            "key": "post.is.optout_not_hiv_pos.identity.cb245673-aa41-4302-ac47-10000000001",
             "request": {
                 "method": 'POST',
                 "data": {
@@ -1718,6 +1748,7 @@ module.exports = function() {
 
         // 44: optout identity cb245673-aa41-4302-ac47-10000000001
         {
+            "key": "post.is.optout_miscarriage.identity.cb245673-aa41-4302-ac47-10000000001",
             "request": {
                 "method": 'POST',
                 "data": {
@@ -1741,6 +1772,7 @@ module.exports = function() {
 
         // 45: register cb245673-aa41-4302-ac47-10000000001 for loss messages
         {
+            "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-10000000001",
             "request": {
                 "method": 'POST',
                 "data": {
@@ -1761,6 +1793,7 @@ module.exports = function() {
 
         // 46: unsubscribe cb245673-aa41-4302-ac47-10000000001 from PMTCT
         {
+            "key": "post.hub.change.unsubscribe_PMTCT.identity.cb245673-aa41-4302-ac47-10000000001",
             "request": {
                 "method": 'POST',
                 "body": {
@@ -1779,6 +1812,7 @@ module.exports = function() {
 
         // 47: subscribe cb245673-aa41-4302-ac47-10000000001 to loss messages
         {
+            "key": "post.hub.change.subscribe_loss.identity.cb245673-aa41-4302-ac47-10000000001",
             "request": {
                 "method": 'POST',
                 "body": {
@@ -1797,6 +1831,7 @@ module.exports = function() {
 
         // 48: create change for cb245673-aa41-4302-ac47-10000000001; reason not hiv positive
         {
+            "key": "post.hub.change.pmtct_nonloss_optout.not_hiv_pos.identity.cb245673-aa41-4302-ac47-10000000001",
             "request": {
                 "method": 'POST',
                 "data": {
@@ -1820,6 +1855,7 @@ module.exports = function() {
 
         // 49: create change for cb245673-aa41-4302-ac47-10000000001; reason miscarriage
         {
+            "key": "post.hub.change.pmtct_loss_switch.identity.cb245673-aa41-4302-ac47-10000000001",
             "request": {
                 "url": 'http://hub.localhost:8001/api/v1/change/',
                 "method": 'POST',
@@ -1843,6 +1879,7 @@ module.exports = function() {
 
         // 50: update identity cb245673-aa41-4302-ac47-00000000001
         {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000001",
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/',
@@ -1867,6 +1904,7 @@ module.exports = function() {
 
         // 51: update identity cb245673-aa41-4302-ac47-00000000002
         {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000002",
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/',
@@ -1892,6 +1930,7 @@ module.exports = function() {
 
         // 52: update identity cb245673-aa41-4302-ac47-00000000003
         {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000003",
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000003/',
@@ -1917,6 +1956,7 @@ module.exports = function() {
 
         // 53: update identity cb245673-aa41-4302-ac47-00000000004
         {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000004",
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000004/',
@@ -1943,11 +1983,12 @@ module.exports = function() {
 
         // 54: update identity cb245673-aa41-4302-ac47-00000000006
         {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000006",
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000006/',
                 "data": {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000006/",
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000006/",
                     "id": "cb245673-aa41-4302-ac47-00000000006",
                     "version": 1,
                     "details": {
@@ -1970,11 +2011,12 @@ module.exports = function() {
 
         // 55: update identity cb245673-aa41-4302-ac47-00000000007
         {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000007",
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000007/',
                 "data": {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000007/",
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000007/",
                     "id": "cb245673-aa41-4302-ac47-00000000007",
                     "version": 1,
                     "details": {
@@ -1998,11 +2040,12 @@ module.exports = function() {
 
         // 56: update identity cb245673-aa41-4302-ac47-00000000008
         {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000008",
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000008/',
                 "data": {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000008/",
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000008/",
                     "id": "cb245673-aa41-4302-ac47-00000000008",
                     "version": 1,
                     "details": {
@@ -2026,11 +2069,12 @@ module.exports = function() {
 
         // 57: update identity cb245673-aa41-4302-ac47-00000000009
         {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000009",
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/',
                 "data": {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/",
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/",
                     "id": "cb245673-aa41-4302-ac47-00000000009",
                     "version": 1,
                     "details": {
@@ -2102,6 +2146,7 @@ module.exports = function() {
 
         // 62: get messageset 1
         {
+            "key": "get.sbm.messageset.1",
             "repeatable": true,
             "request": {
                 "method": 'GET',
@@ -2124,6 +2169,7 @@ module.exports = function() {
 
         // 63: post registration for 0666
         {
+            "key": "post.hub.register.pmtct_postbirth.identity.cb245673-aa41-4302-ac47-00000000006",
             "request": {
                 "method": 'POST',
                 "url": "http://hub.localhost:8001/api/v1/registration/",
@@ -2143,6 +2189,7 @@ module.exports = function() {
 
         // 64: post registration for 0777
         {
+            "key": "post.hub.register.pmtct_prebirth.identity.cb245673-aa41-4302-ac47-00000000007",
             "request": {
                 "method": 'POST',
                 "url": "http://hub.localhost:8001/api/v1/registration/",
@@ -2162,6 +2209,7 @@ module.exports = function() {
 
         // 65: post registration for 0888
         {
+            "key": "post.hub.register.pmtct_prebirth.identity.cb245673-aa41-4302-ac47-00000000008",
             "request": {
                 "method": 'POST',
                 "url": "http://hub.localhost:8001/api/v1/registration/",
@@ -2181,6 +2229,7 @@ module.exports = function() {
 
         // 66: post registration for 0999
         {
+            "key": "post.hub.register.pmtct_postbirth.identity.cb245673-aa41-4302-ac47-00000000009",
             "request": {
                 "method": 'POST',
                 "url": "http://hub.localhost:8001/api/v1/registration/",
@@ -2326,6 +2375,7 @@ module.exports = function() {
 
         // 69: get active subscriptions for cb245673-aa41-4302-ac47-10000000001
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-10000000001",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -2537,6 +2587,7 @@ module.exports = function() {
 
         // 74:  create change for cb245673-aa41-4302-ac47-10000000001; reason miscarriage
         {
+            "key": "post.hub.change.pmtct_loss_optout.miscarriage.identity.cb245673-aa41-4302-ac47-10000000001",
             "request": {
                 "url": 'http://hub.localhost:8001/api/v1/change/',
                 "method": 'POST',
@@ -2562,6 +2613,7 @@ module.exports = function() {
 
         // 76: get messageset 100 (pmtct - +27720000111)
         {
+            "key": "get.sbm.messageset.100",
             "repeatable": true,
             "request": {
                 "method": 'GET',
@@ -2584,6 +2636,7 @@ module.exports = function() {
 
         // 77: optout cb245673-aa41-4302-ac47-00000000001 (sms_pmtct)
         {
+            "key": "post.is.optout.stop.identity.cb245673-aa41-4302-ac47-00000000001",
             "request": {
                 "url": "http://is.localhost:8001/api/v1/optout/",
                 "method": 'POST',
@@ -2602,6 +2655,7 @@ module.exports = function() {
 
         // 78:
         {
+            "key": "post.hub.change.pmtct_nonloss_optout.unknown.identity.cb245673-aa41-4302-ac47-00000000001",
             "request": {
                 "url": 'http://hub.localhost:8001/api/v1/change/',
                 "method": 'POST',

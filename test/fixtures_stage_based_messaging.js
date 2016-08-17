@@ -4,6 +4,7 @@ module.exports = function() {
 
         // 50: get active subscriptions for cb245673-aa41-4302-ac47-00000001001
         {
+            "key": "get.sbm.identity.cb245673-aa41-4302-ac47-00000001001",
             "request": {
                 "url": 'http://sbm/api/v1/subscriptions/',
                 "method": 'GET',
@@ -25,6 +26,7 @@ module.exports = function() {
 
         // 51: get active subscriptions for cb245673-aa41-4302-ac47-00000001002
         {
+            "key": "get.sbm.identity.cb245673-aa41-4302-ac47-00000001002",
             "request": {
                 "url": 'http://sbm/api/v1/subscriptions/',
                 "method": 'GET',
@@ -63,6 +65,7 @@ module.exports = function() {
 
         // 52: get active subscriptions for cb245673-aa41-4302-ac47-00000001003
         {
+            "key": "get.sbm.identity.cb245673-aa41-4302-ac47-00000001003",
             "request": {
                 "url": 'http://sbm/api/v1/subscriptions/',
                 "method": 'GET',
@@ -101,6 +104,7 @@ module.exports = function() {
 
         // 53: get messageset 1
         {
+            "key": "get.sbm.messageset.1",
             "repeatable": true,
             "request": {
                 "method": 'GET',
@@ -123,6 +127,7 @@ module.exports = function() {
 
         // 54: get messageset 200 (nurseconnect - cb245673-aa41-4302-ac47-00000001003)
         {
+            "key": "get.sbm.messageset.100",
             "repeatable": true,
             "request": {
                 "method": 'GET',
