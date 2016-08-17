@@ -1,6 +1,7 @@
 var vumigo = require('vumigo_v02');
 var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
+var fixtures_MessageSender = require('./fixtures_message_sender');
 var fixtures_Hub = require('./fixtures_hub');
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
@@ -87,9 +88,10 @@ describe("app", function() {
                 // })
                 .setup(function(api) {
                     // add fixtures for services used
-                    fixtures_Hub().forEach(api.http.fixtures.add);
-                    fixtures_StageBasedMessaging().forEach(api.http.fixtures.add);
-                    fixtures_IdentityStore().forEach(api.http.fixtures.add);
+                    fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
+                    fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
+                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 150 ->
                 })
                 // .setup(function(api) {
                 //     // user with working_on extra
@@ -235,11 +237,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            // console.log(api.http.fixtures.fixtures[20].request.headers);
-                            // maybe create new function that list table of fixture keys/descriptions against number
-                            // utils.list_fixtures  (used vs unused)
-                            utils.check_fixtures_used(api, [50, 100, 103]);
-                            // check_fixtures_used(api, [sbm_2, sbm_4, is_1]);  // or adapt to something like this...?
+                            utils.check_fixtures_used(api, [50, 150, 153]);
                         })
                         .run();
                 });
@@ -275,11 +273,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            // console.log(api.http.fixtures.fixtures[20].request.headers);
-                            // maybe create new function that list table of fixture keys/descriptions against number
-                            // utils.list_fixtures  (used vs unused)
-                            utils.check_fixtures_used(api, [51, 53, 101]);
-                            // check_fixtures_used(api, [sbm_2, sbm_4, is_1]);  // or adapt to something like this...?
+                            utils.check_fixtures_used(api, [51, 53, 151]);
                         })
                         .run();
                 });
@@ -306,7 +300,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [52, 54, 102]);
+                            utils.check_fixtures_used(api, [52, 54, 152]);
                         })
                         .run();
                 });

@@ -9,7 +9,7 @@
 module.exports = function() {
     return [
 
-        // 0: get identity by msisdn +27820001001
+        // 150: get identity by msisdn +27820001001
         {
             "key": "get.is.msisdn.27820001001",
             "request": {
@@ -30,7 +30,7 @@ module.exports = function() {
             }
         },
 
-        // 1: get identity by msisdn +27820001002
+        // 151: get identity by msisdn +27820001002
         {
             "key": "get.is.msisdn.27820001002",
             "request": {
@@ -65,7 +65,7 @@ module.exports = function() {
             }
         },
 
-        // 2: get identity by msisdn +27820001003
+        // 152: get identity by msisdn +27820001003
         {
             "key": "get.is.msisdn.27820001003",
             "repeatable": true,
@@ -111,7 +111,7 @@ module.exports = function() {
             }
         },
 
-        // 3: create identity with msisdn +27820001001
+        // 153: create identity with msisdn +27820001001
         {
             "key": "post.is.msisdn.27820001001",
             "request": {
