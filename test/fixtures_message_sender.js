@@ -9,10 +9,6 @@ module.exports = function() {
                 'params': {
                     "deprecated": "fixture"
                 },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -24,10 +20,6 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "deprecated": "fixture"
-                },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
                 },
                 'url': 'http://',
             },
@@ -41,10 +33,6 @@ module.exports = function() {
                 'params': {
                     "deprecated": "fixture"
                 },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -56,10 +44,6 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "deprecated": "fixture"
-                },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
                 },
                 'url': 'http://',
             },
@@ -73,10 +57,6 @@ module.exports = function() {
                 'params': {
                     "deprecated": "fixture"
                 },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -88,10 +68,6 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "deprecated": "fixture"
-                },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
                 },
                 'url': 'http://',
             },
@@ -105,10 +81,6 @@ module.exports = function() {
                 'params': {
                     "deprecated": "fixture"
                 },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -120,10 +92,6 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "deprecated": "fixture"
-                },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
                 },
                 'url': 'http://',
             },
@@ -137,10 +105,6 @@ module.exports = function() {
                 'params': {
                     "deprecated": "fixture"
                 },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -152,10 +116,6 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "deprecated": "fixture"
-                },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
                 },
                 'url': 'http://',
             },
@@ -169,10 +129,6 @@ module.exports = function() {
                 'params': {
                     "deprecated": "fixture"
                 },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -184,10 +140,6 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "deprecated": "fixture"
-                },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
                 },
                 'url': 'http://',
             },
@@ -201,10 +153,6 @@ module.exports = function() {
                 'params': {
                     "deprecated": "fixture"
                 },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -216,10 +164,6 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "deprecated": "fixture"
-                },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
                 },
                 'url': 'http://',
             },
@@ -233,10 +177,6 @@ module.exports = function() {
                 'params': {
                     "deprecated": "fixture"
                 },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -248,10 +188,6 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "deprecated": "fixture"
-                },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
                 },
                 'url': 'http://',
             },
@@ -265,10 +201,6 @@ module.exports = function() {
                 'params': {
                     "deprecated": "fixture"
                 },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -280,10 +212,6 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "deprecated": "fixture"
-                },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
                 },
                 'url': 'http://',
             },
@@ -297,10 +225,6 @@ module.exports = function() {
                 'params': {
                     "deprecated": "fixture"
                 },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -312,10 +236,6 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "deprecated": "fixture"
-                },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
                 },
                 'url': 'http://',
             },
@@ -329,10 +249,6 @@ module.exports = function() {
                 'params': {
                     "deprecated": "fixture"
                 },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -344,10 +260,6 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "deprecated": "fixture"
-                },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
                 },
                 'url': 'http://',
             },
@@ -361,10 +273,6 @@ module.exports = function() {
                 'params': {
                     "deprecated": "fixture"
                 },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -376,10 +284,6 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "deprecated": "fixture"
-                },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
                 },
                 'url': 'http://',
             },
@@ -393,10 +297,6 @@ module.exports = function() {
                 'params': {
                     "deprecated": "fixture"
                 },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -408,10 +308,6 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "deprecated": "fixture"
-                },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
                 },
                 'url': 'http://',
             },
@@ -425,10 +321,6 @@ module.exports = function() {
                 'params': {
                     "deprecated": "fixture"
                 },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -440,10 +332,6 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "deprecated": "fixture"
-                },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
                 },
                 'url': 'http://',
             },
@@ -457,10 +345,6 @@ module.exports = function() {
                 'params': {
                     "deprecated": "fixture"
                 },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -472,10 +356,6 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "deprecated": "fixture"
-                },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
                 },
                 'url': 'http://',
             },
@@ -489,10 +369,6 @@ module.exports = function() {
                 'params': {
                     "deprecated": "fixture"
                 },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -504,10 +380,6 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "deprecated": "fixture"
-                },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
                 },
                 'url': 'http://',
             },
@@ -521,10 +393,6 @@ module.exports = function() {
                 'params': {
                     "deprecated": "fixture"
                 },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -536,10 +404,6 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "deprecated": "fixture"
-                },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
                 },
                 'url': 'http://',
             },
@@ -553,10 +417,6 @@ module.exports = function() {
                 'params': {
                     "deprecated": "fixture"
                 },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -568,10 +428,6 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "deprecated": "fixture"
-                },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
                 },
                 'url': 'http://',
             },
@@ -585,10 +441,6 @@ module.exports = function() {
                 'params': {
                     "deprecated": "fixture"
                 },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -600,10 +452,6 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "deprecated": "fixture"
-                },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
                 },
                 'url': 'http://',
             },
@@ -617,10 +465,6 @@ module.exports = function() {
                 'params': {
                     "deprecated": "fixture"
                 },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -632,10 +476,6 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "deprecated": "fixture"
-                },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
                 },
                 'url': 'http://',
             },
@@ -649,10 +489,6 @@ module.exports = function() {
                 'params': {
                     "deprecated": "fixture"
                 },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -664,10 +500,6 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "deprecated": "fixture"
-                },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
                 },
                 'url': 'http://',
             },
@@ -681,10 +513,6 @@ module.exports = function() {
                 'params': {
                     "deprecated": "fixture"
                 },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -696,10 +524,6 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "deprecated": "fixture"
-                },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
                 },
                 'url': 'http://',
             },
@@ -713,10 +537,6 @@ module.exports = function() {
                 'params': {
                     "deprecated": "fixture"
                 },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -728,10 +548,6 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "deprecated": "fixture"
-                },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
                 },
                 'url': 'http://',
             },
@@ -745,10 +561,6 @@ module.exports = function() {
                 'params': {
                     "deprecated": "fixture"
                 },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -760,10 +572,6 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "deprecated": "fixture"
-                },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
                 },
                 'url': 'http://',
             },
@@ -777,10 +585,6 @@ module.exports = function() {
                 'params': {
                     "deprecated": "fixture"
                 },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
-                },
                 'url': 'http://',
             },
             'response': {}
@@ -792,10 +596,6 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "deprecated": "fixture"
-                },
-                'headers': {
-                    'Authorization': ['Bearer abcde'],
-                    'Content-Type': ['application/json']
                 },
                 'url': 'http://',
             },
