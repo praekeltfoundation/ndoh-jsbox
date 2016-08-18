@@ -8,9 +8,10 @@ var assert = require('assert');
 // var DummyMessageStoreResource = messagestore.DummyMessageStoreResource;
 // var DummyOptoutResource = optoutstore.DummyOptoutResource;
 
+var utils = require('seed-jsbox-utils').utils;
 
 describe("app", function() {
-    describe("for nurse ussd use", function() {
+    describe("for ussd_nurse use", function() {
         var app;
         var tester;
 
@@ -44,6 +45,7 @@ describe("app", function() {
                     env: 'test',
                     // metric_store: 'test_metric_store',
                     testing_today: 'April 4, 2014 07:07:07',
+                    logging: "off",
                     endpoints: {
                         "sms": {"delivery_class": "sms"}
                     },
@@ -62,7 +64,21 @@ describe("app", function() {
                     control_v2: {
                         url: 'http://ndoh-control/api/v2/',
                         api_token: 'test_token'
-                    }
+                    },
+                    services: {
+                        identity_store: {
+                            url: 'http://is.localhost:8001/api/v1/',
+                            token: 'test IdentityStore'
+                        },
+                        stage_based_messaging: {
+                            url: 'http://sbm.localhost:8001/api/v1/',
+                            token: 'test StageBasedMessaging'
+                        },
+                        // hub: {
+                        //     url: 'http://hub.localhost:8001/api/v1/',
+                        //     token: 'test Hub'
+                        // }
+                    },
                 })
                 // .setup(function(api) {
                     // api.metrics.stores = {'test_metric_store': {}};
@@ -70,85 +86,85 @@ describe("app", function() {
                 .setup(function(api) {
                     fixtures().forEach(api.http.fixtures.add);
                 })
-                .setup(function(api) {
-                    // user with working_on extra
-                    api.contacts.add({
-                        msisdn: '+27821231111',
-                        extra: {
-                            nc_working_on: '+27821232222'
-                        },
-                    });
-                })
-                .setup(function(api) {
-                    // registered user
-                    api.contacts.add({
-                        msisdn: '+27821237777',
-                        extra: {
-                            nc_last_reg_id: "7",
-                            nc_is_registered: 'true',
-                            nc_faccode: '123456',
-                            nc_facname: 'WCL clinic',
-                            nc_working_on: "",
-                            nc_id_type: "sa_id",
-                            nc_sa_id_no: "5101025009086",
-                            nc_dob: "1951-01-02"
-                        },
-                    });
-                })
-                .setup(function(api) {
-                    // opted_out user 1
-                    api.contacts.add({
-                        msisdn: '+27821239999',
-                        extra: {
-                            nc_opt_out_reason: 'job_change'
-                        },
-                    });
-                })
-                .setup(function(api) {
-                    // opted_out user 2
-                    api.contacts.add({
-                        msisdn: '+27821233333',
-                        extra: {
-                            nc_last_reg_id: '3',
-                            nc_opt_out_reason: 'other',
-                            nc_is_registered: 'true',
-                            nc_faccode: '123456',
-                            nc_facname: 'WCL clinic',
-                            nc_id_type: 'passport',
-                            nc_passport_country: 'bw',
-                            nc_passport_num: '33333',
-                            nc_dob: '1976-03-04'
-                        },
-                    });
-                })
-                .setup(function(api) {
-                    // opted_out user 3
-                    api.contacts.add({
-                        msisdn: '+27821230000',
-                        extra: {
-                            nc_last_reg_id: '0',
-                            nc_opt_out_reason: 'not_useful',
-                            nc_is_registered: 'true'
-                        },
-                    });
-                })
-                .setup(function(api) {
-                    // opted_out user 4
-                    api.contacts.add({
-                        msisdn: '+27821240000',
-                        extra: {
-                            nc_last_reg_id: '4',
-                            nc_opt_out_reason: 'unknown',
-                            nc_is_registered: 'true',
-                            nc_faccode: '123456',
-                            nc_facname: 'WCL clinic',
-                            nc_id_type: 'passport',
-                            nc_passport_country: 'bw',
-                            nc_passport_num: '44444',
-                            nc_dob: '1976-03-04'
-                        },
-                    });
-                })
+                // .setup(function(api) {
+                //     // user with working_on extra
+                //     api.contacts.add({
+                //         msisdn: '+27821231111',
+                //         extra: {
+                //             nc_working_on: '+27821232222'
+                //         },
+                //     });
+                // })
+                // .setup(function(api) {
+                //     // registered user
+                //     api.contacts.add({
+                //         msisdn: '+27821237777',
+                //         extra: {
+                //             nc_last_reg_id: "7",
+                //             nc_is_registered: 'true',
+                //             nc_faccode: '123456',
+                //             nc_facname: 'WCL clinic',
+                //             nc_working_on: "",
+                //             nc_id_type: "sa_id",
+                //             nc_sa_id_no: "5101025009086",
+                //             nc_dob: "1951-01-02"
+                //         },
+                //     });
+                // })
+                // .setup(function(api) {
+                //     // opted_out user 1
+                //     api.contacts.add({
+                //         msisdn: '+27821239999',
+                //         extra: {
+                //             nc_opt_out_reason: 'job_change'
+                //         },
+                //     });
+                // })
+                // .setup(function(api) {
+                //     // opted_out user 2
+                //     api.contacts.add({
+                //         msisdn: '+27821233333',
+                //         extra: {
+                //             nc_last_reg_id: '3',
+                //             nc_opt_out_reason: 'other',
+                //             nc_is_registered: 'true',
+                //             nc_faccode: '123456',
+                //             nc_facname: 'WCL clinic',
+                //             nc_id_type: 'passport',
+                //             nc_passport_country: 'bw',
+                //             nc_passport_num: '33333',
+                //             nc_dob: '1976-03-04'
+                //         },
+                //     });
+                // })
+                // .setup(function(api) {
+                //     // opted_out user 3
+                //     api.contacts.add({
+                //         msisdn: '+27821230000',
+                //         extra: {
+                //             nc_last_reg_id: '0',
+                //             nc_opt_out_reason: 'not_useful',
+                //             nc_is_registered: 'true'
+                //         },
+                //     });
+                // })
+                // .setup(function(api) {
+                //     // opted_out user 4
+                //     api.contacts.add({
+                //         msisdn: '+27821240000',
+                //         extra: {
+                //             nc_last_reg_id: '4',
+                //             nc_opt_out_reason: 'unknown',
+                //             nc_is_registered: 'true',
+                //             nc_faccode: '123456',
+                //             nc_facname: 'WCL clinic',
+                //             nc_id_type: 'passport',
+                //             nc_passport_country: 'bw',
+                //             nc_passport_num: '44444',
+                //             nc_dob: '1976-03-04'
+                //         },
+                //     });
+                // })
                 ;
         });
 
@@ -194,22 +210,8 @@ describe("app", function() {
             });
         });
 
-        // temp test
-        describe("Start", function () {
-            it("should display welcome message", function () {
-                return tester
-                    .setup.user.addr("27821234444")
-                    .start()
-                    .check.interaction({
-                        state: "state_start",
-                        reply: "Welcome to The Department of Health's ussd_nurse.js"
-                    })
-                    .run();
-            });
-        });
-
         // Session Start Delegation
-        describe.skip("session start", function() {
+        describe("session start", function() {
             describe("new user", function() {
                 it("should give 3 options", function() {
                     return tester
@@ -219,7 +221,7 @@ describe("app", function() {
                             {session_event: 'new'}  // dial in
                         )
                         .check.interaction({
-                            state: 'st_not_subscribed',
+                            state: 'state_not_subscribed',
                             reply: [
                                 "Welcome to NurseConnect. Do you want to:",
                                 '1. Subscribe for the first time',
@@ -227,49 +229,22 @@ describe("app", function() {
                                 '3. Subscribe somebody else'
                             ].join('\n')
                         })
-                        .run();
-                });
-                it("should reset working_on extra", function() {
-                    return tester
-                        .setup.user.addr('27821231111')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                        )
                         .check(function(api) {
-                            var contact = _.find(api.contacts.store, {
-                              msisdn: '+27821231111'
-                            });
-                            assert.equal(Object.keys(contact.extra).length, 1);
-                            assert.equal(contact.extra.nc_working_on, "");
+                            utils.check_fixtures_used(api, [62, 77, 85]);
                         })
                         .run();
                 });
-                it("should save extras", function() {
+                it.skip("should record metrics", function() {
                     return tester
                         .setup.user.addr('27821234444')
                         .inputs(
                             {session_event: 'new'}  // dial in
                         )
-                        .check(function(api) {
-                            var contact = _.find(api.contacts.store, {
-                              msisdn: '+27821234444'
-                            });
-                            assert.equal(Object.keys(contact.extra).length, 1);
-                            assert.equal(contact.extra.nc_working_on, "");
-                        })
-                        .run();
-                });
-                it("should record metrics", function() {
-                    return tester
-                        .setup.user.addr('27821234444')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                        )
-                        .check(function(api) {
-                            var metrics = api.metrics.stores.test_metric_store;
-                            assert.equal(Object.keys(metrics).length, 0);
-                            assert.deepEqual(metrics['test.sum.sessions'], undefined);
-                        })
+                        // .check(function(api) {
+                        //     var metrics = api.metrics.stores.test_metric_store;
+                        //     assert.equal(Object.keys(metrics).length, 0);
+                        //     assert.deepEqual(metrics['test.sum.sessions'], undefined);
+                        // })
                         .run();
                 });
             });
@@ -282,7 +257,7 @@ describe("app", function() {
                             {session_event: 'new'}  // dial in
                         )
                         .check.interaction({
-                            state: 'st_subscribed',
+                            state: 'state_subscribed',
                             reply: [
                                 "Welcome to NurseConnect",
                                 '1. Subscribe a friend',
@@ -292,6 +267,9 @@ describe("app", function() {
                                 '5. Change SANC no.',
                                 '6. More'
                             ].join('\n')
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [80, 86, 87]);
                         })
                         .run();
                 });
@@ -304,7 +282,7 @@ describe("app", function() {
                             , '6'  // st_subscribed - more options
                         )
                         .check.interaction({
-                            state: 'st_subscribed',
+                            state: 'state_subscribed',
                             reply: [
                                 "Welcome to NurseConnect",
                                 "1. Change Persal no.",
@@ -324,7 +302,7 @@ describe("app", function() {
                             , '3'  // st_subscribed - back to first set of options
                         )
                         .check.interaction({
-                            state: 'st_subscribed',
+                            state: 'state_subscribed',
                             reply: [
                                 "Welcome to NurseConnect",
                                 '1. Subscribe a friend',
