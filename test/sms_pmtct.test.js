@@ -1,5 +1,5 @@
 var vumigo = require('vumigo_v02');
-var fixtures = require('./fixtures');
+var fixtures = require('./fixtures_pmtct');
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
 
@@ -86,7 +86,7 @@ describe("app", function() {
                             "receive MomConnect messages."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [0, 82, 83]);
+                        utils.check_fixtures_used(api, [0, 77, 78]);
                     })
                     .run();
             });

@@ -1,5 +1,8 @@
 var vumigo = require('vumigo_v02');
-var fixtures = require('./fixtures');
+var fixtures_IdentityStore = require('./fixtures_identity_store');
+var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
+var fixtures_MessageSender = require('./fixtures_message_sender');
+var fixtures_Hub = require('./fixtures_hub');
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
 // var _ = require('lodash');
@@ -67,16 +70,20 @@ describe("app", function() {
                     },
                     services: {
                         identity_store: {
-                            url: 'http://is.localhost:8001/api/v1/',
+                            url: 'http://is/api/v1/',
                             token: 'test IdentityStore'
                         },
                         stage_based_messaging: {
-                            url: 'http://sbm.localhost:8001/api/v1/',
+                            url: 'http://sbm/api/v1/',
                             token: 'test StageBasedMessaging'
                         },
                         // hub: {
-                        //     url: 'http://hub.localhost:8001/api/v1/',
+                        //     url: 'http://hub/api/v1/',
                         //     token: 'test Hub'
+                        // },
+                        // message_sender: {
+                        //     url: 'http://ms/api/v1/',
+                        //     token: 'test MessageSender'
                         // }
                     },
                 })
@@ -84,7 +91,11 @@ describe("app", function() {
                     // api.metrics.stores = {'test_metric_store': {}};
                 // })
                 .setup(function(api) {
-                    fixtures().forEach(api.http.fixtures.add);
+                    // add fixtures for services used
+                    fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
+                    fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
+                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 150 ->
                 })
                 // .setup(function(api) {
                 //     // user with working_on extra
@@ -215,7 +226,7 @@ describe("app", function() {
             describe("new user", function() {
                 it("should give 3 options", function() {
                     return tester
-                        .setup.user.addr('27821234444')
+                        .setup.user.addr('27820001001')
                         .setup.char_limit(140)  // limit first state chars
                         .inputs(
                             {session_event: 'new'}  // dial in
@@ -230,7 +241,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [62, 77, 85]);
+                            utils.check_fixtures_used(api, [50, 150, 153]);
                         })
                         .run();
                 });
@@ -248,10 +259,34 @@ describe("app", function() {
                         .run();
                 });
             });
-            describe("registered user", function() {
+            describe("registered user with no active subscription to NurseConnect", function() {
+                it("should give 3 options", function() {
+                    return tester
+                        .setup.user.addr('27820001002')
+                        .setup.char_limit(140)  // limit first state chars
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                        )
+                        .check.interaction({
+                            state: 'state_not_subscribed',
+                            reply: [
+                                "Welcome to NurseConnect. Do you want to:",
+                                '1. Subscribe for the first time',
+                                '2. Change your old number',
+                                '3. Subscribe somebody else'
+                            ].join('\n')
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [51, 53, 151]);
+                        })
+                        .run();
+                });
+            });
+
+            describe("registered user with active subscription to NurseConnect", function() {
                 it("should give 5 options", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .setup.char_limit(140)  // limit first state chars
                         .inputs(
                             {session_event: 'new'}  // dial in
@@ -269,13 +304,13 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [80, 86, 87]);
+                            utils.check_fixtures_used(api, [52, 54, 152]);
                         })
                         .run();
                 });
                 it("should give 2 options when user selects more", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .setup.char_limit(140)  // limit first state chars
                         .inputs(
                             {session_event: 'new'}  // dial in
@@ -294,7 +329,7 @@ describe("app", function() {
                 });
                 it("should give the first 5 options when user selects back", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .setup.char_limit(140)  // limit first state chars
                         .inputs(
                             {session_event: 'new'}  // dial in

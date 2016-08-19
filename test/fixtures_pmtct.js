@@ -1,34 +1,28 @@
 // Identity Personas
 
-// PMTCT REGISTRATION
-    // (+27820000111) on new sys; active sub non-pmtct; no consent, no dob
-    // (+27820000222) on new sys; active sub non-pmtct; consent, no dob
-    // (+27820000333) on new sys; active sub non-pmtct; no consent, dob
-    // (+27820000444) on new sys; active sub non-pmtct; consent, dob
+// (+27820000111) on new sys; active sub non-pmtct; no consent, no dob
+// (+27820000222) on new sys; active sub non-pmtct; consent, no dob
+// (+27820000333) on new sys; active sub non-pmtct; no consent, dob
+// (+27820000444) on new sys; active sub non-pmtct; consent, dob
 
-    // (+27820000555) on new sys; no active sub
+// (+27820000555) on new sys; no active sub
 
-    // (+27820000666) on old sys; active sub; consent = true, dob given
-    // (+27820000777) on old sys; active sub; consent = true, dob null
-    // (+27820000888) on old sys; active sub; consent = false, dob given
-    // (+27820000999) on old sys; active sub; consent = false, dob null
-    // (+27820101010) on old sys; no active sub
+// (+27820000666) on old sys; active sub; consent = true, dob given
+// (+27820000777) on old sys; active sub; consent = true, dob null
+// (+27820000888) on old sys; active sub; consent = false, dob given
+// (+27820000999) on old sys; active sub; consent = false, dob null
+// (+27820101010) on old sys; no active sub
 
-    // (+27820111111) on neither old/new system
+// (+27820111111) on neither old/new system
 
-// PMTCT OPTOUT
-    // (+27720000111) already registered to PMTCT
-
-// NURSECONNECT
-    // (+27821234444)
-    // (+27821231111)
-    // (+27821232222)
-    // (+27821237777)
+// OPTOUT
+// (+27720000111) already registered to PMTCT
 
 module.exports = function() {
     return [
         // 0: get identity by msisdn +27820000111 (no consent, no dob)
         {
+            'key': "get.is.msisdn.27820000111",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -68,6 +62,7 @@ module.exports = function() {
 
         // 1: get identity by msisdn +27820000222 (consent, no dob)
         {
+            'key': "get.is.msisdn.27820000222",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -108,6 +103,7 @@ module.exports = function() {
 
         // 2: get identity by msisdn +27820000333 (no consent, dob)
         {
+            'key': "get.is.msisdn.27820000333",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -148,6 +144,7 @@ module.exports = function() {
 
         // 3: get identity by msisdn +27820000444 (consent, dob)
         {
+            'key': "get.is.msisdn.27820000444",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -189,6 +186,7 @@ module.exports = function() {
 
         // 4: get identity by msisdn +27820000555 (no active sub, no consent, no dob)
         {
+            'key': "get.is.msisdn.27820000555",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -228,6 +226,7 @@ module.exports = function() {
 
         // 5: get identity by msisdn +27820000666 (does not exist)
         {
+            'key': "get.is.msisdn.27820000666",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -253,6 +252,7 @@ module.exports = function() {
 
         // 6: get identity by msisdn +27820000777 (does not exist)
         {
+            'key': "get.is.msisdn.27820000777",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -278,6 +278,7 @@ module.exports = function() {
 
         // 7: get identity by msisdn +27820000888 (does not exist)
         {
+            'key': "get.is.msisdn.27820000888",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -303,6 +304,7 @@ module.exports = function() {
 
         // 8: get identity by msisdn +27820000999 (does not exist)
         {
+            'key': "get.is.msisdn.27820000999",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -328,6 +330,7 @@ module.exports = function() {
 
         // 9: get identity by msisdn +27820101010 (does not exist)
         {
+            'key': "get.is.msisdn.27820101010",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -353,6 +356,7 @@ module.exports = function() {
 
         // 10: get identity by msisdn +27820111111 (does not exist)
         {
+            'key': "get.is.msisdn.27820111111",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -378,6 +382,7 @@ module.exports = function() {
 
         // 11: has_active_subscription - cb245673-aa41-4302-ac47-00000000001 (no consent, no dob)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000001",
             'request': {
                 'method': 'GET',
                 'params': {
@@ -402,7 +407,7 @@ module.exports = function() {
                             'id': '51fcca25-2e85-4c44-subscription-1111',
                             'version': 1,
                             'identity': 'cb245673-aa41-4302-ac47-00000000001',
-                            'messageset': 1,
+                            'messageset': 21,
                             'next_sequence_number': 1,
                             'lang': "en",
                             'active': true,
@@ -421,6 +426,7 @@ module.exports = function() {
 
         // 12: has_active_subscription - cb245673-aa41-4302-ac47-00000000002 (consent, no dob)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000002",
             'request': {
                 'method': 'GET',
                 'params': {
@@ -445,7 +451,7 @@ module.exports = function() {
                             'id': '51fcca25-2e85-4c44-subscription-2222',
                             'version': 1,
                             'identity': 'cb245673-aa41-4302-ac47-00000000002',
-                            'messageset': 1,
+                            'messageset': 21,
                             'next_sequence_number': 1,
                             'lang': "en",
                             'active': true,
@@ -464,6 +470,7 @@ module.exports = function() {
 
         // 13: has_active_subscription - cb245673-aa41-4302-ac47-00000000003 (no consent, dob)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000003",
             'request': {
                 'method': 'GET',
                 'params': {
@@ -488,7 +495,7 @@ module.exports = function() {
                             'id': '51fcca25-2e85-4c44-subscription-3333',
                             'version': 1,
                             'identity': 'cb245673-aa41-4302-ac47-00000000003',
-                            'messageset': 1,
+                            'messageset': 21,
                             'next_sequence_number': 1,
                             'lang': "en",
                             'active': true,
@@ -507,6 +514,7 @@ module.exports = function() {
 
         // 14: has_active_subscription - cb245673-aa41-4302-ac47-00000000004 (consent, dob)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000004",
             'request': {
                 'method': 'GET',
                 'params': {
@@ -531,7 +539,7 @@ module.exports = function() {
                             'id': '51fcca25-2e85-4c44-subscription-4444',
                             'version': 1,
                             'identity': 'cb245673-aa41-4302-ac47-00000000004',
-                            'messageset': 1,
+                            'messageset': 21,
                             'next_sequence_number': 1,
                             'lang': "en",
                             'active': true,
@@ -550,6 +558,7 @@ module.exports = function() {
 
         // 15: has_active_subscription - cb245673-aa41-4302-ac47-00000000005 (no active subscription on new system)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000005",
             'request': {
                 'method': 'GET',
                 'params': {
@@ -575,6 +584,7 @@ module.exports = function() {
 
         // 16: has_active_subscription - cb245673-aa41-4302-ac47-00000000006 (no active subscription on new system)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000006",
             'request': {
                 'method': 'GET',
                 'params': {
@@ -600,6 +610,7 @@ module.exports = function() {
 
         // 17: has_active_subscription - cb245673-aa41-4302-ac47-00000000007 (no active subscription on new system)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000007",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -626,6 +637,7 @@ module.exports = function() {
 
         // 18: has_active_subscription - cb245673-aa41-4302-ac47-00000000008 (no active subscription on new system)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000008",
             'request': {
                 'method': 'GET',
                 'params': {
@@ -651,6 +663,7 @@ module.exports = function() {
 
         // 19: has_active_subscription - cb245673-aa41-4302-ac47-00000000009 (no active subscription on new system)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000009",
             'request': {
                 'method': 'GET',
                 'params': {
@@ -676,6 +689,7 @@ module.exports = function() {
 
         // 20: has_active_subscription - cb245673-aa41-4302-ac47-00000000010 (no active subscription on new system)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000010",
             'request': {
                 'method': 'GET',
                 'params': {
@@ -701,6 +715,7 @@ module.exports = function() {
 
         // 21: has_active_subscription - cb245673-aa41-4302-ac47-00000000011 (no active subscription on new system)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000011",
             'request': {
                 'method': 'GET',
                 'params': {
@@ -1500,6 +1515,7 @@ module.exports = function() {
 
         // 36: create identity cb245673-aa41-4302-ac47-00000000006
         {
+            "key": "post.is.msisdn.27820000666",
             "request": {
                 "method": 'POST',
                 "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000666":{}}}}}',
@@ -1508,7 +1524,7 @@ module.exports = function() {
             "response": {
                 "code": 201,
                 "data": {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000006/",
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000006/",
                     "id": "cb245673-aa41-4302-ac47-00000000006",
                     "version": 1,
                     "details": {
@@ -1527,6 +1543,7 @@ module.exports = function() {
 
         // 37: create identity cb245673-aa41-4302-ac47-00000000007
         {
+            "key": "post.is.msisdn.27820000777",
             "repeatable": true,
             "request": {
                 "method": 'POST',
@@ -1536,7 +1553,7 @@ module.exports = function() {
             "response": {
                 "code": 201,
                 "data": {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000007/",
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000007/",
                     "id": "cb245673-aa41-4302-ac47-00000000007",
                     "version": 1,
                     "details": {
@@ -1555,6 +1572,7 @@ module.exports = function() {
 
         // 38: create identity cb245673-aa41-4302-ac47-00000000008
         {
+            "key": "post.is.msisdn.27820000888",
             "request": {
                 "method": 'POST',
                 "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000888":{}}}}}',
@@ -1563,7 +1581,7 @@ module.exports = function() {
             "response": {
                 "code": 201,
                 "data": {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000008/",
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000008/",
                     "id": "cb245673-aa41-4302-ac47-00000000008",
                     "version": 1,
                     "details": {
@@ -1582,6 +1600,7 @@ module.exports = function() {
 
         // 39: create identity cb245673-aa41-4302-ac47-00000000009
         {
+            "key": "post.is.msisdn.27820000999",
             "request": {
                 "method": 'POST',
                 "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000999":{}}}}}',
@@ -1590,7 +1609,7 @@ module.exports = function() {
             "response": {
                 "code": 201,
                 "data": {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/",
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/",
                     "id": "cb245673-aa41-4302-ac47-00000000009",
                     "version": 1,
                     "details": {
@@ -1609,6 +1628,7 @@ module.exports = function() {
 
         // 40: create identity cb245673-aa41-4302-ac47-00000000010
         {
+            "key": "post.is.msisdn.27820101010",
             "request": {
                 "method": 'POST',
                 "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820101010":{}}}}}',
@@ -1617,7 +1637,7 @@ module.exports = function() {
             "response": {
                 "code": 201,
                 "data": {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000010/",
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000010/",
                     "id": "cb245673-aa41-4302-ac47-00000000010",
                     "version": 1,
                     "details": {
@@ -1636,6 +1656,7 @@ module.exports = function() {
 
         // 41: create identity cb245673-aa41-4302-ac47-00000000011
         {
+            "key": "post.is.msisdn.27820111111",
             "request": {
                 "method": 'POST',
                 "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820111111":{}}}}}',
@@ -1644,7 +1665,7 @@ module.exports = function() {
             "response": {
                 "code": 201,
                 "data": {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000011/",
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000011/",
                     "id": "cb245673-aa41-4302-ac47-00000000011",
                     "version": 1,
                     "details": {
@@ -1663,6 +1684,7 @@ module.exports = function() {
 
         // 42: get identity by msisdn +27720000111 (optout)
         {
+            'key': "get.is.msisdn.27720000111",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -1702,6 +1724,7 @@ module.exports = function() {
 
         // 43: optout identity cb245673-aa41-4302-ac47-10000000001
         {
+            "key": "post.is.optout_not_hiv_pos.identity.cb245673-aa41-4302-ac47-10000000001",
             "request": {
                 "method": 'POST',
                 "data": {
@@ -1725,6 +1748,7 @@ module.exports = function() {
 
         // 44: optout identity cb245673-aa41-4302-ac47-10000000001
         {
+            "key": "post.is.optout_miscarriage.identity.cb245673-aa41-4302-ac47-10000000001",
             "request": {
                 "method": 'POST',
                 "data": {
@@ -1748,6 +1772,7 @@ module.exports = function() {
 
         // 45: register cb245673-aa41-4302-ac47-10000000001 for loss messages
         {
+            "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-10000000001",
             "request": {
                 "method": 'POST',
                 "data": {
@@ -1768,6 +1793,7 @@ module.exports = function() {
 
         // 46: unsubscribe cb245673-aa41-4302-ac47-10000000001 from PMTCT
         {
+            "key": "post.hub.change.unsubscribe_PMTCT.identity.cb245673-aa41-4302-ac47-10000000001",
             "request": {
                 "method": 'POST',
                 "body": {
@@ -1786,6 +1812,7 @@ module.exports = function() {
 
         // 47: subscribe cb245673-aa41-4302-ac47-10000000001 to loss messages
         {
+            "key": "post.hub.change.subscribe_loss.identity.cb245673-aa41-4302-ac47-10000000001",
             "request": {
                 "method": 'POST',
                 "body": {
@@ -1804,6 +1831,7 @@ module.exports = function() {
 
         // 48: create change for cb245673-aa41-4302-ac47-10000000001; reason not hiv positive
         {
+            "key": "post.hub.change.pmtct_nonloss_optout.not_hiv_pos.identity.cb245673-aa41-4302-ac47-10000000001",
             "request": {
                 "method": 'POST',
                 "data": {
@@ -1827,6 +1855,7 @@ module.exports = function() {
 
         // 49: create change for cb245673-aa41-4302-ac47-10000000001; reason miscarriage
         {
+            "key": "post.hub.change.pmtct_loss_switch.identity.cb245673-aa41-4302-ac47-10000000001",
             "request": {
                 "url": 'http://hub.localhost:8001/api/v1/change/',
                 "method": 'POST',
@@ -1850,6 +1879,7 @@ module.exports = function() {
 
         // 50: update identity cb245673-aa41-4302-ac47-00000000001
         {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000001",
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/',
@@ -1874,6 +1904,7 @@ module.exports = function() {
 
         // 51: update identity cb245673-aa41-4302-ac47-00000000002
         {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000002",
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/',
@@ -1899,6 +1930,7 @@ module.exports = function() {
 
         // 52: update identity cb245673-aa41-4302-ac47-00000000003
         {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000003",
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000003/',
@@ -1924,6 +1956,7 @@ module.exports = function() {
 
         // 53: update identity cb245673-aa41-4302-ac47-00000000004
         {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000004",
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000004/',
@@ -1950,11 +1983,12 @@ module.exports = function() {
 
         // 54: update identity cb245673-aa41-4302-ac47-00000000006
         {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000006",
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000006/',
                 "data": {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000006/",
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000006/",
                     "id": "cb245673-aa41-4302-ac47-00000000006",
                     "version": 1,
                     "details": {
@@ -1977,11 +2011,12 @@ module.exports = function() {
 
         // 55: update identity cb245673-aa41-4302-ac47-00000000007
         {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000007",
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000007/',
                 "data": {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000007/",
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000007/",
                     "id": "cb245673-aa41-4302-ac47-00000000007",
                     "version": 1,
                     "details": {
@@ -2005,11 +2040,12 @@ module.exports = function() {
 
         // 56: update identity cb245673-aa41-4302-ac47-00000000008
         {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000008",
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000008/',
                 "data": {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000008/",
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000008/",
                     "id": "cb245673-aa41-4302-ac47-00000000008",
                     "version": 1,
                     "details": {
@@ -2033,11 +2069,12 @@ module.exports = function() {
 
         // 57: update identity cb245673-aa41-4302-ac47-00000000009
         {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000009",
             "request": {
                 "method": 'PATCH',
                 "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/',
                 "data": {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/",
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/",
                     "id": "cb245673-aa41-4302-ac47-00000000009",
                     "version": 1,
                     "details": {
@@ -2107,21 +2144,22 @@ module.exports = function() {
             "response": {}
         },
 
-        // 62: get messageset 1
+        // 62: get messageset 21
         {
+            "key": "get.sbm.messageset.21",
             "repeatable": true,
             "request": {
                 "method": 'GET',
-                "url": "http://sbm.localhost:8001/api/v1/messageset/1/"
+                "url": "http://sbm.localhost:8001/api/v1/messageset/21/"
             },
             "response": {
                 "code": 200,
                 "data": {
-                    "id": 1,
+                    "id": 21,
                     "short_name": 'momconnect_prebirth.hw_full.1',
                     "notes": null,
                     "next_set": 2,
-                    "default_schedule": 1,
+                    "default_schedule": 121,
                     "content_type": 'text',
                     "created_at": '2016-06-22T06:13:29.693272Z',
                     "updated_at": '2016-06-22T06:13:29.693272Z'
@@ -2131,6 +2169,7 @@ module.exports = function() {
 
         // 63: post registration for 0666
         {
+            "key": "post.hub.register.pmtct_postbirth.identity.cb245673-aa41-4302-ac47-00000000006",
             "request": {
                 "method": 'POST',
                 "url": "http://hub.localhost:8001/api/v1/registration/",
@@ -2150,6 +2189,7 @@ module.exports = function() {
 
         // 64: post registration for 0777
         {
+            "key": "post.hub.register.pmtct_prebirth.identity.cb245673-aa41-4302-ac47-00000000007",
             "request": {
                 "method": 'POST',
                 "url": "http://hub.localhost:8001/api/v1/registration/",
@@ -2169,6 +2209,7 @@ module.exports = function() {
 
         // 65: post registration for 0888
         {
+            "key": "post.hub.register.pmtct_prebirth.identity.cb245673-aa41-4302-ac47-00000000008",
             "request": {
                 "method": 'POST',
                 "url": "http://hub.localhost:8001/api/v1/registration/",
@@ -2188,6 +2229,7 @@ module.exports = function() {
 
         // 66: post registration for 0999
         {
+            "key": "post.hub.register.pmtct_postbirth.identity.cb245673-aa41-4302-ac47-00000000009",
             "request": {
                 "method": 'POST',
                 "url": "http://hub.localhost:8001/api/v1/registration/",
@@ -2333,6 +2375,7 @@ module.exports = function() {
 
         // 69: get active subscriptions for cb245673-aa41-4302-ac47-10000000001
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-10000000001",
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -2358,7 +2401,7 @@ module.exports = function() {
                             'id': '51fcca25-2e85-4c44-subscription-1111',
                             'version': 1,
                             'identity': 'cb245673-aa41-4302-ac47-10000000001',
-                            'messageset': 100,
+                            'messageset': 11,
                             'next_sequence_number': 1,
                             'lang': "en",
                             'active': true,
@@ -2544,6 +2587,7 @@ module.exports = function() {
 
         // 74:  create change for cb245673-aa41-4302-ac47-10000000001; reason miscarriage
         {
+            "key": "post.hub.change.pmtct_loss_optout.miscarriage.identity.cb245673-aa41-4302-ac47-10000000001",
             "request": {
                 "url": 'http://hub.localhost:8001/api/v1/change/',
                 "method": 'POST',
@@ -2567,21 +2611,22 @@ module.exports = function() {
             "response": {}
         },
 
-        // 76: get messageset 100 (pmtct - +27720000111)
+        // 76: get messageset 11 (pmtct - +27720000111)
         {
+            "key": "get.sbm.messageset.11",
             "repeatable": true,
             "request": {
                 "method": 'GET',
-                "url": "http://sbm.localhost:8001/api/v1/messageset/100/"
+                "url": "http://sbm.localhost:8001/api/v1/messageset/11/"
             },
             "response": {
                 "code": 200,
                 "data": {
-                    "id": 100,
+                    "id": 11,
                     "short_name": 'pmtct_prebirth.patient.1',
                     "notes": null,
                     "next_set": 2,
-                    "default_schedule": 1,
+                    "default_schedule": 111,
                     "content_type": 'text',
                     "created_at": '2016-06-22T06:13:29.693272Z',
                     "updated_at": '2016-06-22T06:13:29.693272Z'
@@ -2589,163 +2634,9 @@ module.exports = function() {
             }
         },
 
-        // 77: get identity by msisdn +27821234444 (no working_on)
+        // 77: optout cb245673-aa41-4302-ac47-00000000001 (sms_pmtct)
         {
-            "request": {
-                "url": 'http://is.localhost:8001/api/v1/identities/search/',
-                "method": 'GET',
-                "params": {
-                    "details__addresses__msisdn": '+27821234444'
-                }
-            },
-            "response": {
-                "code": 200,
-                "data": {
-                    "count": 1,
-                    "next": null,
-                    "previous": null,
-                    "results": [{
-                        "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000034444/",
-                        "id": "cb245673-aa41-4302-ac47-00000034444",
-                        "version": 1,
-                        "details": {
-                            "default_addr_type": "msisdn",
-                            "addresses": {
-                                "msisdn": {
-                                    "+27821234444": {}
-                                }
-                            },
-                        },
-                        "created_at": "2016-08-05T06:13:29.693272Z",
-                        "updated_at": "2016-08-05T06:13:29.693298Z"
-                    }]
-                }
-            }
-        },
-
-        // 78: get identity by msisdn +27821231111 (user with working_on extra)
-        {
-            "request": {
-                "url": 'http://is.localhost:8001/api/v1/identities/search/',
-                "method": 'GET',
-                "params": {
-                    "details__addresses__msisdn": '+27821231111'
-                }
-            },
-            "response": {
-                "code": 200,
-                "data": {
-                    "count": 1,
-                    "next": null,
-                    "previous": null,
-                    "results": [{
-                        "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000031111/",
-                        "id": "cb245673-aa41-4302-ac47-00000031111",
-                        "version": 1,
-                        "details": {
-                            "default_addr_type": "msisdn",
-                            "addresses": {
-                                "msisdn": {
-                                    "+27821231111": {}
-                                }
-                            },
-                            "nurseconnect": {
-                                "working_on": "+27821232222",
-                            }
-                        },
-                        "created_at": "2016-08-05T06:13:29.693272Z",
-                        "updated_at": "2016-08-05T06:13:29.693298Z"
-                    }]
-                }
-            }
-        },
-
-        // 79: get identity by msisdn +27821232222 (user with working_on extra)
-        {
-            "request": {
-                "url": 'http://is.localhost:8001/api/v1/identities/search/',
-                "method": 'GET',
-                "params": {
-                    "details__addresses__msisdn": '+27821232222'
-                }
-            },
-            "response": {
-                "code": 200,
-                "data": {
-                    "count": 1,
-                    "next": null,
-                    "previous": null,
-                    "results": []
-                }
-            }
-        },
-
-        // 80: get identity by msisdn +27821237777 (registered user)
-        {
-            "repeatable": true,
-            "request": {
-                "url": 'http://is.localhost:8001/api/v1/identities/search/',
-                "method": 'GET',
-                "params": {
-                    "details__addresses__msisdn": '+27821237777'
-                }
-            },
-            "response": {
-                "code": 200,
-                "data": {
-                    "count": 1,
-                    "next": null,
-                    "previous": null,
-                    "results": [{
-                        "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000037777/",
-                        "id": "cb245673-aa41-4302-ac47-00000037777",
-                        "version": 1,
-                        "details": {
-                            "default_addr_type": "msisdn",
-                            "addresses": {
-                                "msisdn": {
-                                    "+27821237777": {}
-                                }
-                            },
-                            "nurseconnect": {
-                                "last_reg_id": "7",
-                                "is_registered": 'true',
-                                "faccode": '123456',
-                                "facname": 'WCL clinic',
-                                "working_on": "",
-                                "id_type": "sa_id",
-                                "sa_id_no": "5101025009086",
-                                "dob": "1951-01-02",
-                            }
-                        },
-                        "created_at": "2016-08-05T06:13:29.693272Z",
-                        "updated_at": "2016-08-05T06:13:29.693298Z"
-                    }]
-                }
-            }
-        },
-
-        // 81: create identity with msisdn +27821232222
-        {
-            "request": {
-                "url": 'http://is.localhost:8001/api/v1/identities/',
-                "method": 'POST',
-                "data": {
-                    "details": {
-                        "default_addr_type": "msisdn",
-                        "addresses": {
-                            "msisdn": {
-                                "+27821232222":{}
-                            }
-                        }
-                    }
-                }
-            },
-            "response": {}
-        },
-
-        // 82: optout cb245673-aa41-4302-ac47-00000000001 (sms_pmtct)
-        {
+            "key": "post.is.optout.stop.identity.cb245673-aa41-4302-ac47-00000000001",
             "request": {
                 "url": "http://is.localhost:8001/api/v1/optout/",
                 "method": 'POST',
@@ -2762,8 +2653,9 @@ module.exports = function() {
             "response": {}
         },
 
-        // 83:
+        // 78:
         {
+            "key": "post.hub.change.pmtct_nonloss_optout.unknown.identity.cb245673-aa41-4302-ac47-00000000001",
             "request": {
                 "url": 'http://hub.localhost:8001/api/v1/change/',
                 "method": 'POST',
@@ -2776,143 +2668,7 @@ module.exports = function() {
                 }
             },
             "response": {}
-        },
-
-        // 84: get active subscriptions for cb245673-aa41-4302-ac47-00000031111
-        {
-            "request": {
-                "url": 'http://sbm.localhost:8001/api/v1/subscriptions/',
-                "method": 'GET',
-                "params": {
-                    "identity": 'cb245673-aa41-4302-ac47-00000031111',
-                    "active": 'true'
-                }
-            },
-            "response": {
-                "code": 200,
-                "data": {
-                    "count": 1,
-                    "next": null,
-                    "previous": null,
-                    "results": [
-                        {
-                            'url': 'http://sbm.localhost:8001/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-nc01',
-                            'id': '51fcca25-2e85-4c44-subscription-nc01',
-                            'version': 1,
-                            'identity': 'cb245673-aa41-4302-ac47-00000031111',
-                            'messageset': 200,
-                            'next_sequence_number': 1,
-                            'lang': "en",
-                            'active': true,
-                            'completed': false,
-                            'schedule': 1,
-                            'process_status': 0,
-                            'metadata': {},
-                            'created_at': "2016-08-12T06:13:29.693272Z",
-                            'updated_at': "2016-08-12T06:13:29.693272Z"
-                        }
-                    ]
-                }
-            }
-        },
-
-        // 85: get active subscriptions for cb245673-aa41-4302-ac47-00000034444
-        {
-            "request": {
-                "url": 'http://sbm.localhost:8001/api/v1/subscriptions/',
-                "method": 'GET',
-                "params": {
-                    "identity": 'cb245673-aa41-4302-ac47-00000034444',
-                    "active": 'true'
-                }
-            },
-            "response": {
-                "code": 200,
-                "data": {
-                    "count": 1,
-                    "next": null,
-                    "previous": null,
-                    "results": [
-                        {
-                            'url': 'http://sbm.localhost:8001/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-nc04',
-                            'id': '51fcca25-2e85-4c44-subscription-nc04',
-                            'version': 1,
-                            'identity': 'cb245673-aa41-4302-ac47-00000034444',
-                            'messageset': 1,
-                            'next_sequence_number': 1,
-                            'lang': "en",
-                            'active': true,
-                            'completed': false,
-                            'schedule': 1,
-                            'process_status': 0,
-                            'metadata': {},
-                            'created_at': "2016-08-12T06:13:29.693272Z",
-                            'updated_at': "2016-08-12T06:13:29.693272Z"
-                        }
-                    ]
-                }
-            }
-        },
-
-        // 86: get active subscriptions for cb245673-aa41-4302-ac47-00000037777
-        {
-            "request": {
-                "url": 'http://sbm.localhost:8001/api/v1/subscriptions/',
-                "method": 'GET',
-                "params": {
-                    "identity": 'cb245673-aa41-4302-ac47-00000037777',
-                    "active": 'true'
-                }
-            },
-            "response": {
-                "code": 200,
-                "data": {
-                    "count": 1,
-                    "next": null,
-                    "previous": null,
-                    "results": [
-                        {
-                            'url': 'http://sbm.localhost:8001/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-nc07',
-                            'id': '51fcca25-2e85-4c44-subscription-nc07',
-                            'version': 1,
-                            'identity': 'cb245673-aa41-4302-ac47-00000037777',
-                            'messageset': 200,
-                            'next_sequence_number': 1,
-                            'lang': "en",
-                            'active': true,
-                            'completed': false,
-                            'schedule': 1,
-                            'process_status': 0,
-                            'metadata': {},
-                            'created_at': "2016-08-12T06:13:29.693272Z",
-                            'updated_at': "2016-08-12T06:13:29.693272Z"
-                        }
-                    ]
-                }
-            }
-        },
-
-        // 87: get messageset 200 (nurseconnect - cb245673-aa41-4302-ac47-00000031111)
-        {
-            "repeatable": true,
-            "request": {
-                "method": 'GET',
-                "url": "http://sbm.localhost:8001/api/v1/messageset/200/"
-            },
-            "response": {
-                "code": 200,
-                "data": {
-                    "id": 100,
-                    "short_name": 'nurseconnect_abc.123',
-                    "notes": null,
-                    "next_set": 2,
-                    "default_schedule": 1,
-                    "content_type": 'text',
-                    "created_at": '2016-08-12T06:13:29.693272Z',
-                    "updated_at": '2016-08-12T06:13:29.693272Z'
-                }
-            }
-        },
+        }
 
     ];
 };
