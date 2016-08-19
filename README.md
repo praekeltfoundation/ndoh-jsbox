@@ -140,7 +140,6 @@
         "registrant_id": "uuid",  // the new number's identity_id
         "action": "nurse_change_msisdn",
         "data": {
-            "registrant_old": "uuid",  // the old number's identity_id
             "msisdn_old": "0825551001",
             "msisdn_new": "0825551002",
             // number of device used - will be the same as either msisdn_old or msisdn_new,
