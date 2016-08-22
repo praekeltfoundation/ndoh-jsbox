@@ -3,13 +3,10 @@ var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
 var fixtures_MessageSender = require('./fixtures_message_sender');
 var fixtures_Hub = require('./fixtures_hub');
+var fixtures_Jembi = require('./fixtures_jembi');
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
 // var _ = require('lodash');
-// var messagestore = require('./messagestore');
-// var optoutstore = require('./optoutstore');
-// var DummyMessageStoreResource = messagestore.DummyMessageStoreResource;
-// var DummyOptoutResource = optoutstore.DummyOptoutResource;
 
 var utils = require('seed-jsbox-utils').utils;
 
@@ -59,15 +56,6 @@ describe("app", function() {
                         url: 'http://test/v2/',
                         url_json: 'http://test/v2/json/'
                     },
-                    control: {
-                        username: 'test_user',
-                        api_key: 'test_key',
-                        url: 'http://ndoh-control/api/v1/'
-                    },
-                    control_v2: {
-                        url: 'http://ndoh-control/api/v2/',
-                        api_token: 'test_token'
-                    },
                     services: {
                         identity_store: {
                             url: 'http://is/api/v1/',
@@ -77,10 +65,10 @@ describe("app", function() {
                             url: 'http://sbm/api/v1/',
                             token: 'test StageBasedMessaging'
                         },
-                        // hub: {
-                        //     url: 'http://hub/api/v1/',
-                        //     token: 'test Hub'
-                        // },
+                        hub: {
+                            url: 'http://hub/api/v1/',
+                            token: 'test Hub'
+                        },
                         // message_sender: {
                         //     url: 'http://ms/api/v1/',
                         //     token: 'test MessageSender'
@@ -96,6 +84,7 @@ describe("app", function() {
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
                     fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 150 ->
+                    fixtures_Jembi().forEach(api.http.fixtures.add);
                 })
                 // .setup(function(api) {
                 //     // user with working_on extra
@@ -533,37 +522,37 @@ describe("app", function() {
         });
 
         // Self Registration Flow
-        describe.skip("self registration completion", function() {
+        describe("self registration completion", function() {
             it("should reach end state", function() {
                 return tester
-                    .setup.user.addr('27821234444')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '1'  // st_not_subscribed - self registration
-                        , '1'  // st_permission_self - consent
-                        , '123456'  // st_faccode
-                        , '1'  // st_facname - confirm
+                        , '1'  // state_not_subscribed - self registration
+                        , '1'  // state_subscribe_self - consent
+                        , '123456'  // state_faccode
+                        , '1'  // state_facname - confirm
                     )
                     .check.interaction({
-                        state: 'st_end_reg',
+                        state: 'state_end_reg',
                         reply: "Thank you. Weekly NurseConnect messages will now be sent to this number."
                     })
                     .check.reply.ends_session()
                     .run();
             });
-            it("should save extras", function() {
+            it.skip("should save extras", function() {
                 return tester
-                    .setup.user.addr('27821234444')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '1'  // st_not_subscribed - self registration
-                        , '1'  // st_permission_self - consent
-                        , '123456'  // st_faccode
-                        , '1'  // st_facname - confirm
+                        , '1'  // state_not_subscribed - self registration
+                        , '1'  // state_permission_self - consent
+                        , '123456'  // state_faccode
+                        , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
                         var contact = _.find(api.contacts.store, {
-                          msisdn: '+27821234444'
+                          msisdn: '+27820001001'
                         });
                         assert.equal(Object.keys(contact.extra).length, 4);
                         assert.equal(contact.extra.nc_faccode, '123456');
@@ -573,15 +562,15 @@ describe("app", function() {
                     })
                     .run();
             });
-            it("should fire metrics", function() {
+            it.skip("should fire metrics", function() {
                 return tester
-                    .setup.user.addr('27821234444')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '1'  // st_not_subscribed - self registration
-                        , '1'  // st_permission_self - consent
-                        , '123456'  // st_faccode
-                        , '1'  // st_facname - confirm
+                        , '1'  // state_not_subscribed - self registration
+                        , '1'  // state_permission_self - consent
+                        , '123456'  // state_faccode
+                        , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
                         var metrics = api.metrics.stores.test_metric_store;
@@ -591,15 +580,15 @@ describe("app", function() {
                     })
                     .run();
             });
-            it("should send welcome sms", function() {
+            it.skip("should send welcome sms", function() {
                 return tester
-                    .setup.user.addr('27821234444')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '1'  // st_not_subscribed - self registration
-                        , '1'  // st_permission_self - consent
-                        , '123456'  // st_faccode
-                        , '1'  // st_facname - confirm
+                        , '1'  // state_not_subscribed - self registration
+                        , '1'  // state_permission_self - consent
+                        , '123456'  // state_faccode
+                        , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
                         var smses = _.where(api.outbound.store, {
@@ -611,7 +600,7 @@ describe("app", function() {
                             "Welcome to NurseConnect. For more options or to " +
                             "opt out, dial *120*550*5#."
                         );
-                        assert.equal(sms.to_addr, '+27821234444');
+                        assert.equal(sms.to_addr, '+27820001001');
                     })
                     .run();
                 });

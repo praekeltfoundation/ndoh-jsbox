@@ -19,13 +19,38 @@ module.exports = function() {
             "response": {}
         },
 
-        // 1:
+        // 1:  Nursereg post - sa_id (self reg)
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "request": {
+                "method": "POST",
+                'headers': {
+                    'Authorization': ['Token test_token']
+                },
+                "url": "http://hub/api/v1/nurseregs/",
+                "data": {
+                    "cmsisdn": "+27820001001",
+                    "dmsisdn": "+27820001001",
+                    "faccode": "123456",
+                    "id_type": null,
+                    "dob": null,
+                    "sanc_reg_no": null,
+                    "persal_no": null,
+                    "id_no": null
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    "cmsisdn": "+27820001001",
+                    "dmsisdn": "+27820001001",
+                    "faccode": "123456",
+                    "id_type": null,
+                    "dob": null,
+                    "sanc_reg_no": null,
+                    "persal_no": null,
+                    "id_no": null
+                }
+            }
         },
 
         // 2:
