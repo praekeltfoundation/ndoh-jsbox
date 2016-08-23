@@ -291,29 +291,13 @@ go.app = function() {
                 next: function(content) {
                     msisdn = utils.normalize_msisdn(content, '27');
                     self.im.user.set_answer("working_on", msisdn);
-                    // return self.im.contacts
-                    //     .save(self.user)
-                    //     .then(function() {
-                            return "state_load_contact";
-                        // });
+
+                    return "state_load_contact";
                 }
             });
         });
 
         self.add('state_load_contact', function(name) {
-            // return self.im.contacts
-            //     .for_user()
-            //     .then(function(user_contact) {
-            //         return self.im.contacts
-            //             .get(user_contact.extra.nc_working_on, {create: true})
-            //             .then(function(working_on){
-            //                 self.contact = working_on;
-            //             });
-            //     })
-            //     .then(function() {
-            //         return self.states.create('state_check_optout_reg');
-            //     });
-
             return is
             .get_or_create_identity({"msisdn": self.im.user.answers.working_on})
             .then(function(identity) {
@@ -325,14 +309,7 @@ go.app = function() {
         self.add('state_check_optout_reg', function(name) {
             // return go.utils
             //     .opted_out(self.im, self.contact)
-            //     .then(function(opted_out) {
-            //         if (opted_out === true) {
-            //             return self.states.create('state_opt_in_reg');
-            //         } else {
-            //             return self.states.create('state_faccode');
-            //         }
-            //     });
-            
+
             if (self.im.user.answers.contact.nurseconnect !== undefined
                 && self.im.user.answers.contact.nurseconnect.opt_out_reason.length > 0) {
                 return self.states.create('state_opt_in_reg');
@@ -352,9 +329,7 @@ go.app = function() {
                     if (choice.value === 'yes') {
                         // return go.utils
                         //     .nurse_opt_in(self.im, self.contact)
-                        //     .then(function() {
-                        //         return 'state_faccode';
-                        //     });
+
                         self.im.user.answers.contact.nurseconnect.opt_out_reason = "";  // cancel an optout..?
                         return 'state_faccode';
                     } else {
@@ -381,11 +356,8 @@ go.app = function() {
                                 self.im.user.answers.contact.nurseconnect = {};
                                 self.im.user.answers.contact.nurseconnect.facname = facname;
                                 self.im.user.answers.contact.nurseconnect.faccode = content;
-                                // return self.im.contacts
-                                //     .save(self.contact)
-                                //     .then(function() {
-                                        return null;  // vumi expects null or undefined if check passes
-                                    // });
+
+                                return null;  // vumi expects null or undefined if check passes
                             }
                         });
                 },
@@ -412,33 +384,6 @@ go.app = function() {
         });
 
         self.add('state_save_nursereg', function(name) {
-            // Save useful contact extras
-            // self.contact.extra.nc_is_registered = 'true';
-            //
-            // if (self.user.extra.nc_working_on !== "") {
-            //     self.contact.extra.nc_registered_by = self.user.msisdn;
-            //     if (self.user.extra.nc_registrees === undefined) {
-            //         self.user.extra.nc_registrees = self.contact.msisdn;
-            //     } else {
-            //         self.user.extra.nc_registrees += ', ' + self.contact.msisdn;
-            //     }
-            // }
-            //
-            // return Q
-            //     .all([
-            //         self.im.contacts.save(self.user),
-            //         self.im.contacts.save(self.contact),
-            //         self.send_registration_thanks(),
-            //         go.utils.post_nursereg(self.im, self.contact, self.user.msisdn, null),
-            //         self.im.metrics.fire.sum(
-            //             ([self.metric_prefix, "registrations", "sum"].join('.')), 1),
-            //         self.im.metrics.fire.inc(
-            //             ([self.metric_prefix, "registrations", "last"].join('.')), {amount: 1})
-            //     ])
-            //     .then(function() {
-            //         return self.states.create('state_end_reg');
-            //     });
-
             // Save useful contact info
             self.im.user.answers.contact.nurseconnect.is_registered = "true";
 
@@ -455,23 +400,23 @@ go.app = function() {
 
             // identity PATCH..?
 
-            return Q
-            .all([
-                self.send_registration_thanks(
-                    Object.keys(self.im.user.answers.contact.details.addresses.msisdn)[0],
-                    self.im.user.answers.contact.nurseconnect.language_choice
-                ),
-                // POST to 'nurseregs/'
-                self.post_nursereg(
-                    self.im.user.answers.contact,
-                    Object.keys(self.im.user.answers.user_identity.details.addresses.msisdn)[0],
-                    null
-                )
-                // metrics ???
-            ])
-            .then(function() {
+            // return Q
+            // .all([
+            //     self.send_registration_thanks(
+            //         Object.keys(self.im.user.answers.contact.details.addresses.msisdn)[0],
+            //         self.im.user.answers.contact.nurseconnect.language_choice
+            //     ),
+            //     // POST to 'nurseregs/'
+            //     self.post_nursereg(
+            //         self.im.user.answers.contact,
+            //         Object.keys(self.im.user.answers.user_identity.details.addresses.msisdn)[0],
+            //         null
+            //     )
+            //     // metrics ???
+            // ])
+            // .then(function() {
                 return self.states.create('state_end_reg');
-            });
+            // });
         });
 
         self.add('state_end_reg', function(name) {
