@@ -876,7 +876,7 @@ describe("app", function() {
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
                         , '1'  // state_permission_other - consent
-                        , '0820001003'  // state_msisdn
+                        , '0820001004'  // state_msisdn
                         , '2'  // state_opt_in_reg - deny
                     )
                     .check.interaction({
@@ -895,7 +895,7 @@ describe("app", function() {
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
                         , '1'  // state_permission_other - consent
-                        , '0820001003'  // state_msisdn
+                        , '0820001004'  // state_msisdn
                         , '2'  // state_opt_in_reg - deny
                         , '1'  // state_permission_denied - main menu
                     )
