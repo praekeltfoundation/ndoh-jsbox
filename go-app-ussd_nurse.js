@@ -153,10 +153,10 @@ go.app = function() {
             return is
             .get_or_create_identity({"msisdn": msisdn})
             .then(function(identity) {
-                self.im.user.set_answer("user_identity", identity);
+                self.im.user.set_answer("operator", identity);
 
                 return self
-                .has_active_nurseconnect_subscription(self.im.user.answers.user_identity.id)
+                .has_active_nurseconnect_subscription(self.im.user.answers.operator.id)
                 .then(function(has_active_nurseconnect_subscription) {
                     if (has_active_nurseconnect_subscription) {
                         return self.states.create('state_subscribed');
@@ -215,7 +215,7 @@ go.app = function() {
                     new Choice('state_permission_denied', $('No')),
                 ],
                 next: function(choice) {
-                    self.im.user.set_answer("contact", self.im.user.answers.user_identity);
+                    self.im.user.set_answer("contact", self.im.user.answers.operator);
                     return choice.value;
                 }
             });
@@ -352,16 +352,16 @@ go.app = function() {
 
             if (self.im.user.answers.working_on !== "") {
                 self.im.user.answers.contact.details.nurseconnect.registered_by
-                    = Object.keys(self.im.user.answers.user_identity.details.addresses.msisdn)[0];
+                    = Object.keys(self.im.user.answers.operator.details.addresses.msisdn)[0];
 
-                if (self.im.user.answers.user_identity.details.nurseconnect === undefined) {
-                    self.im.user.answers.user_identity.details.nurseconnect = {};
+                if (self.im.user.answers.operator.details.nurseconnect === undefined) {
+                    self.im.user.answers.operator.details.nurseconnect = {};
                 }
 
-                if (self.im.user.answers.user_identity.details.nurseconnect.registrees === undefined) {
-                    self.im.user.answers.user_identity.details.nurseconnect.registrees = self.im.user.answers.working_on;
+                if (self.im.user.answers.operator.details.nurseconnect.registrees === undefined) {
+                    self.im.user.answers.operator.details.nurseconnect.registrees = self.im.user.answers.working_on;
                 } else {
-                    self.im.user.answers.user_identity.details.nurseconnect.registrees += ', ' + self.im.user.answers.working_on;
+                    self.im.user.answers.operator.details.nurseconnect.registrees += ', ' + self.im.user.answers.working_on;
                 }
             }
 
@@ -376,7 +376,7 @@ go.app = function() {
                 // POST to 'nurseregs/'
                 // self.post_nursereg(
                 //     self.im.user.answers.contact,
-                //     Object.keys(self.im.user.answers.user_identity.details.addresses.msisdn)[0],
+                //     Object.keys(self.im.user.answers.operator.details.addresses.msisdn)[0],
                 //     null
                 // )
 
