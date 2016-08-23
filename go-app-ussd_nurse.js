@@ -132,11 +132,11 @@ go.app = function() {
 
     // REGISTRATION FINISHED SMS HANDLING
 
-        self.send_registration_thanks = function(msisdn, language_choice) {
+        self.send_registration_thanks = function(msisdn) {
             return self.im.outbound.send({
                 to: msisdn,
                 endpoint: 'sms',
-                lang: language_choice,
+                lang: 'en',  // current default is english
                 content: $("Welcome to NurseConnect. For more options or to " +
                            "opt out, dial {{channel}}.")
                     .context({channel: self.im.config.channel})
@@ -366,8 +366,7 @@ go.app = function() {
             return Q
             .all([
                 self.send_registration_thanks(
-                    Object.keys(self.im.user.answers.registrant.details.addresses.msisdn)[0],
-                    self.im.user.answers.registrant.details.nurseconnect.language_choice
+                    Object.keys(self.im.user.answers.registrant.details.addresses.msisdn)[0]
                 ),
                 // POST registration
                 // self.post_nursereg(
