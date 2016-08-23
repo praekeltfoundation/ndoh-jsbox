@@ -16,6 +16,7 @@ go.app = function() {
     var SeedJsboxUtils = require('seed-jsbox-utils');
     var IdentityStore = SeedJsboxUtils.IdentityStore;
     var StageBasedMessaging = SeedJsboxUtils.StageBasedMessaging;
+    // var Hub = SeedJsboxUtils.Hub;
 
     var utils = SeedJsboxUtils.utils;
 
@@ -26,6 +27,7 @@ go.app = function() {
         // variables for services
         var is;
         var sbm;
+        // var hub;
 
         self.init = function() {
             // initialising services
@@ -40,6 +42,12 @@ go.app = function() {
                 self.im.config.services.stage_based_messaging.token,
                 self.im.config.services.stage_based_messaging.url
             );
+
+            // hub = new Hub(
+            //     new JsonApi(self.im, {}),
+            //     self.im.config.services.hub.token,
+            //     self.im.config.services.hub.url
+            // );
         };
 
         // override normal state adding
@@ -121,46 +129,6 @@ go.app = function() {
                     });
             }
         },
-
-        self.post_nursereg = function(contact, dmsisdn, rmsisdn) {
-            var payload = {
-                cmsisdn: Object.keys(contact.details.addresses.msisdn)[0],
-                dmsisdn: dmsisdn,
-                faccode: contact.details.nurseconnect.faccode,
-                id_type: contact.details.nurseconnect.id_type,
-                dob: contact.details.nurseconnect.dob,
-                sanc_reg_no: contact.details.nurseconnect.sanc || null,
-                persal_no: contact.details.nurseconnect.persal || null
-            };
-
-            if (contact.details.nurseconnect.id_type === 'sa_id') {
-                payload.id_type = 'sa_id';
-                payload.id_no = contact.details.nurseconnect.sa_id_no;
-                payload.dob = contact.details.nurseconnect.dob;
-            } else if (contact.details.nurseconnect.id_type === 'passport') {
-                payload.id_type = 'passport';
-                payload.id_no = contact.details.nurseconnect.passport_num;
-                payload.passport_origin = contact.details.nurseconnect.passport_country;
-                payload.dob = contact.details.nurseconnect.dob;
-            } else {
-                payload.id_type = null;
-                payload.id_no = null;
-                payload.dob = null;
-            }
-
-            if (rmsisdn) {
-                payload.rmsisdn = rmsisdn;
-            }
-
-            var http = new JsonApi(self.im, {
-                headers: {
-                    'Authorization': ['Token ' + self.im.config.services.hub.token]
-                }
-            });
-            return http.post(self.im.config.services.hub.url + 'nurseregs/', {
-                data: payload
-            });
-        };
 
     // REGISTRATION FINISHED SMS HANDLING
 
@@ -309,8 +277,6 @@ go.app = function() {
         self.add('state_check_optout_reg', function(name) {
             var contact_msisdn = Object.keys(self.im.user.answers.contact.details.addresses.msisdn)[0];
             if (self.im.user.answers.contact.details.addresses.msisdn[contact_msisdn].optedout === "True") {
-            //if (self.im.user.answers.contact.details.nurseconnect !== undefined
-            //    && self.im.user.answers.contact.details.nurseconnect.opt_out_reason.length > 0) {
                 return self.states.create('state_opt_in_reg');
             } else {
                 return self.states.create('state_faccode');
