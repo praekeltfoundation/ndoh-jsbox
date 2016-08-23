@@ -343,20 +343,20 @@ go.app = function() {
             // Save useful identity info
             self.im.user.answers.registrant.details.nurseconnect.is_registered = "true";
 
-            if (self.im.user.answers.working_on !== "") {
-                self.im.user.answers.registrant.details.nurseconnect.registered_by
-                    = Object.keys(self.im.user.answers.operator.details.addresses.msisdn)[0];
-
-                if (self.im.user.answers.operator.details.nurseconnect === undefined) {
-                    self.im.user.answers.operator.details.nurseconnect = {};
-                }
-
-                if (self.im.user.answers.operator.details.nurseconnect.registrees === undefined) {
-                    self.im.user.answers.operator.details.nurseconnect.registrees = self.im.user.answers.working_on;
-                } else {
-                    self.im.user.answers.operator.details.nurseconnect.registrees += ', ' + self.im.user.answers.working_on;
-                }
-            }
+            // if (self.im.user.answers.working_on !== "") {
+            //     self.im.user.answers.registrant.details.nurseconnect.registered_by
+            //         = Object.keys(self.im.user.answers.operator.details.addresses.msisdn)[0];
+            //
+            //     if (self.im.user.answers.operator.details.nurseconnect === undefined) {
+            //         self.im.user.answers.operator.details.nurseconnect = {};
+            //     }
+            //
+            //     if (self.im.user.answers.operator.details.nurseconnect.registrees === undefined) {
+            //         self.im.user.answers.operator.details.nurseconnect.registrees = self.im.user.answers.working_on;
+            //     } else {
+            //         self.im.user.answers.operator.details.nurseconnect.registrees += ', ' + self.im.user.answers.working_on;
+            //     }
+            // }
 
             // identity PATCH..?
 
@@ -366,7 +366,7 @@ go.app = function() {
                     Object.keys(self.im.user.answers.registrant.details.addresses.msisdn)[0],
                     self.im.user.answers.registrant.details.nurseconnect.language_choice
                 ),
-                // POST to 'nurseregs/'
+                // POST registration
                 // self.post_nursereg(
                 //     self.im.user.answers.registrant,
                 //     Object.keys(self.im.user.answers.operator.details.addresses.msisdn)[0],
