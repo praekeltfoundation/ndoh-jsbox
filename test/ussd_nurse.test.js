@@ -314,7 +314,7 @@ describe("app", function() {
                         .setup.char_limit(140)  // limit first state chars
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '6'  // st_subscribed - more options
+                            , '6'  // state_subscribed - more options
                         )
                         .check.interaction({
                             state: 'state_subscribed',
@@ -333,8 +333,8 @@ describe("app", function() {
                         .setup.char_limit(140)  // limit first state chars
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '6'  // st_subscribed - more options
-                            , '3'  // st_subscribed - back to first set of options
+                            , '6'  // state_subscribed - more options
+                            , '3'  // state_subscribed - back to first set of options
                         )
                         .check.interaction({
                             state: 'state_subscribed',
@@ -361,9 +361,9 @@ describe("app", function() {
                         .setup.user.addr('27821234444')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '1'  // st_not_subscribed
-                            , '1'  // st_permission_self
-                            , '123456'  // st_faccode
+                            , '1'  // state_not_subscribed
+                            , '1'  // state_permission_self
+                            , '123456'  // state_faccode
                             , {session_event: 'close'}  // timeout
                             , {session_event: 'new'}  // redial
                         )
@@ -387,9 +387,9 @@ describe("app", function() {
                         .setup.user.addr('27821234444')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '1'  // st_not_subscribed
-                            , '1'  // st_permission_self
-                            , '123456'  // st_faccode
+                            , '1'  // state_not_subscribed
+                            , '1'  // state_permission_self
+                            , '123456'  // state_faccode
                             , {session_event: 'close'}  // timeout
                             , {session_event: 'new'}  // redial
                             , {session_event: 'close'}  // timeout
@@ -428,9 +428,9 @@ describe("app", function() {
                             .setup.user.addr('27821234444')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '1'  // st_not_subscribed
-                                , '1'  // st_permission_self
-                                , '123456'  // st_faccode
+                                , '1'  // state_not_subscribed
+                                , '1'  // state_permission_self
+                                , '123456'  // state_faccode
                                 , {session_event: 'close'}  // timeout
                                 , {session_event: 'new'}  // redial
                             )
@@ -451,10 +451,10 @@ describe("app", function() {
                             .setup.user.addr('27821234444')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '3'  // st_not_subscribed
-                                , '1'  // st_permission_other
-                                , '0821235555'  // st_msisdn
-                                , '123456'  // st_faccode
+                                , '3'  // state_not_subscribed
+                                , '1'  // state_permission_other
+                                , '0821235555'  // state_msisdn
+                                , '123456'  // state_faccode
                                 , {session_event: 'close'}  // timeout
                                 , {session_event: 'new'}  // redial
                             )
@@ -476,12 +476,12 @@ describe("app", function() {
                         .setup.user.addr('27821234444')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '1'  // st_not_subscribed
-                            , '1'  // st_permission_self
-                            , '123456'  // st_faccode
+                            , '1'  // state_not_subscribed
+                            , '1'  // state_permission_self
+                            , '123456'  // state_faccode
                             , {session_event: 'close'}  // timeout
                             , {session_event: 'new'}  // redial
-                            , '1'  // st_timed_out - continue registration
+                            , '1'  // state_timed_out - continue registration
                         )
                         .check.interaction({
                             state: 'st_facname',
@@ -500,12 +500,12 @@ describe("app", function() {
                         .setup.user.addr('27821234444')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '1'  // st_not_subscribed
-                            , '1'  // st_permission_self
-                            , '123456'  // st_faccode
+                            , '1'  // state_not_subscribed
+                            , '1'  // state_permission_self
+                            , '123456'  // state_faccode
                             , {session_event: 'close'}  // timeout
                             , {session_event: 'new'}  // redial
-                            , '2'  // st_timed_out - abort registration
+                            , '2'  // state_timed_out - abort registration
                         )
                         .check.interaction({
                             state: 'st_not_subscribed'
@@ -539,10 +539,10 @@ describe("app", function() {
                     .setup.user.addr('27821234444')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '1'  // st_not_subscribed - self registration
-                        , '1'  // st_permission_self - consent
-                        , '123456'  // st_faccode
-                        , '1'  // st_facname - confirm
+                        , '1'  // state_not_subscribed - self registration
+                        , '1'  // state_permission_self - consent
+                        , '123456'  // state_faccode
+                        , '1'  // state_facname - confirm
                     )
                     .check.interaction({
                         state: 'st_end_reg',
@@ -556,10 +556,10 @@ describe("app", function() {
                     .setup.user.addr('27821234444')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '1'  // st_not_subscribed - self registration
-                        , '1'  // st_permission_self - consent
-                        , '123456'  // st_faccode
-                        , '1'  // st_facname - confirm
+                        , '1'  // state_not_subscribed - self registration
+                        , '1'  // state_permission_self - consent
+                        , '123456'  // state_faccode
+                        , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
                         var contact = _.find(api.contacts.store, {
@@ -578,10 +578,10 @@ describe("app", function() {
                     .setup.user.addr('27821234444')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '1'  // st_not_subscribed - self registration
-                        , '1'  // st_permission_self - consent
-                        , '123456'  // st_faccode
-                        , '1'  // st_facname - confirm
+                        , '1'  // state_not_subscribed - self registration
+                        , '1'  // state_permission_self - consent
+                        , '123456'  // state_faccode
+                        , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
                         var metrics = api.metrics.stores.test_metric_store;
@@ -596,10 +596,10 @@ describe("app", function() {
                     .setup.user.addr('27821234444')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '1'  // st_not_subscribed - self registration
-                        , '1'  // st_permission_self - consent
-                        , '123456'  // st_faccode
-                        , '1'  // st_facname - confirm
+                        , '1'  // state_not_subscribed - self registration
+                        , '1'  // state_permission_self - consent
+                        , '123456'  // state_faccode
+                        , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
                         var smses = _.where(api.outbound.store, {
@@ -624,11 +624,11 @@ describe("app", function() {
                     .setup.user.addr('27821234444')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '3'  // st_not_subscribed - other registration
-                        , '1'  // st_permission_other - consent
-                        , '0821235555'  // st_msisdn
-                        , '123456'  // st_faccode
-                        , '1'  // st_facname - confirm
+                        , '3'  // state_not_subscribed - other registration
+                        , '1'  // state_permission_other - consent
+                        , '0821235555'  // state_msisdn
+                        , '123456'  // state_faccode
+                        , '1'  // state_facname - confirm
                     )
                     .check.interaction({
                         state: 'st_end_reg',
@@ -641,11 +641,11 @@ describe("app", function() {
                     .setup.user.addr('27821234444')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '3'  // st_not_subscribed - other registration
-                        , '1'  // st_permission_other - consent
-                        , '0821235555'  // st_msisdn
-                        , '123456'  // st_faccode
-                        , '1'  // st_facname - confirm
+                        , '3'  // state_not_subscribed - other registration
+                        , '1'  // state_permission_other - consent
+                        , '0821235555'  // state_msisdn
+                        , '123456'  // state_faccode
+                        , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
                         var user = _.find(api.contacts.store, {
@@ -672,11 +672,11 @@ describe("app", function() {
                     .setup.user.addr('27821234444')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '3'  // st_not_subscribed - other registration
-                        , '1'  // st_permission_other - consent
-                        , '0821235555'  // st_msisdn
-                        , '123456'  // st_faccode
-                        , '1'  // st_facname - confirm
+                        , '3'  // state_not_subscribed - other registration
+                        , '1'  // state_permission_other - consent
+                        , '0821235555'  // state_msisdn
+                        , '123456'  // state_faccode
+                        , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
                         var metrics = api.metrics.stores.test_metric_store;
@@ -691,11 +691,11 @@ describe("app", function() {
                     .setup.user.addr('27821234444')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '3'  // st_not_subscribed - other registration
-                        , '1'  // st_permission_other - consent
-                        , '0821235555'  // st_msisdn
-                        , '123456'  // st_faccode
-                        , '1'  // st_facname - confirm
+                        , '3'  // state_not_subscribed - other registration
+                        , '1'  // state_permission_other - consent
+                        , '0821235555'  // state_msisdn
+                        , '123456'  // state_faccode
+                        , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
                         var smses = _.where(api.outbound.store, {
@@ -720,8 +720,8 @@ describe("app", function() {
                     .setup.user.addr('27821239999')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '1'  // st_not_subscribed - self registration
-                        , '1'  // st_permission_self - consent
+                        , '1'  // state_not_subscribed - self registration
+                        , '1'  // state_permission_self - consent
                     )
                     .check.interaction({
                         state: 'st_opt_in_reg',
@@ -738,8 +738,8 @@ describe("app", function() {
                     .setup.user.addr('27821239999')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '1'  // st_not_subscribed - self registration
-                        , '1'  // st_permission_self - consent
+                        , '1'  // state_not_subscribed - self registration
+                        , '1'  // state_permission_self - consent
                     )
                     .check(function(api) {
                         var contact = _.find(api.contacts.store, {
@@ -756,9 +756,9 @@ describe("app", function() {
                     .setup.user.addr('27821239999')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '1'  // st_not_subscribed - self registration
-                        , '1'  // st_permission_self - consent
-                        , '1'  // st_opt_in_reg - confirm
+                        , '1'  // state_not_subscribed - self registration
+                        , '1'  // state_permission_self - consent
+                        , '1'  // state_opt_in_reg - confirm
                     )
                     .check.interaction({
                         state: 'st_faccode'
@@ -770,9 +770,9 @@ describe("app", function() {
                     .setup.user.addr('27821239999')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '1'  // st_not_subscribed - self registration
-                        , '1'  // st_permission_self - consent
-                        , '1'  // st_opt_in_reg - confirm
+                        , '1'  // state_not_subscribed - self registration
+                        , '1'  // state_permission_self - consent
+                        , '1'  // state_opt_in_reg - confirm
                     )
                     .check(function(api) {
                         var contact = _.find(api.contacts.store, {
@@ -793,9 +793,9 @@ describe("app", function() {
                     .setup.user.addr('27821234444')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '3'  // st_not_subscribed - other registration
-                        , '1'  // st_permission_other - consent
-                        , '0821239999'  // st_msisdn
+                        , '3'  // state_not_subscribed - other registration
+                        , '1'  // state_permission_other - consent
+                        , '0821239999'  // state_msisdn
                     )
                     .check.interaction({
                         state: 'st_opt_in_reg',
@@ -812,9 +812,9 @@ describe("app", function() {
                     .setup.user.addr('27821234444')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '3'  // st_not_subscribed - other registration
-                        , '1'  // st_permission_other - consent
-                        , '0821239999'  // st_msisdn
+                        , '3'  // state_not_subscribed - other registration
+                        , '1'  // state_permission_other - consent
+                        , '0821239999'  // state_msisdn
                     )
                     .check(function(api) {
                         var contact = _.find(api.contacts.store, {
@@ -838,10 +838,10 @@ describe("app", function() {
                     .setup.user.addr('27821234444')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '3'  // st_not_subscribed - other registration
-                        , '1'  // st_permission_other - consent
-                        , '0821239999'  // st_msisdn
-                        , '1'  // st_opt_in_reg - confirm
+                        , '3'  // state_not_subscribed - other registration
+                        , '1'  // state_permission_other - consent
+                        , '0821239999'  // state_msisdn
+                        , '1'  // state_opt_in_reg - confirm
                     )
                     .check.interaction({
                         state: 'st_faccode'
@@ -854,10 +854,10 @@ describe("app", function() {
                     .setup.user.addr('27821234444')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '3'  // st_not_subscribed - other registration
-                        , '1'  // st_permission_other - consent
-                        , '0821239999'  // st_msisdn
-                        , '1'  // st_opt_in_reg - confirm
+                        , '3'  // state_not_subscribed - other registration
+                        , '1'  // state_permission_other - consent
+                        , '0821239999'  // state_msisdn
+                        , '1'  // state_opt_in_reg - confirm
                     )
                     .check(function(api) {
                         var contact = _.find(api.contacts.store, {
@@ -885,10 +885,10 @@ describe("app", function() {
                     .setup.user.addr('27821234444')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '3'  // st_not_subscribed - other registration
-                        , '1'  // st_permission_other - consent
-                        , '0821239999'  // st_msisdn
-                        , '2'  // st_opt_in_reg - deny
+                        , '3'  // state_not_subscribed - other registration
+                        , '1'  // state_permission_other - consent
+                        , '0821239999'  // state_msisdn
+                        , '2'  // state_opt_in_reg - deny
                     )
                     .check.interaction({
                         state: 'st_permission_denied',
@@ -904,11 +904,11 @@ describe("app", function() {
                     .setup.user.addr('27821234444')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '3'  // st_not_subscribed - other registration
-                        , '1'  // st_permission_other - consent
-                        , '0821239999'  // st_msisdn
-                        , '2'  // st_opt_in_reg - deny
-                        , '1'  // st_permission_denied - main menu
+                        , '3'  // state_not_subscribed - other registration
+                        , '1'  // state_permission_other - consent
+                        , '0821239999'  // state_msisdn
+                        , '2'  // state_opt_in_reg - deny
+                        , '1'  // state_permission_denied - main menu
                     )
                     .check.interaction({
                         state: 'st_not_subscribed',
@@ -924,8 +924,8 @@ describe("app", function() {
                     .setup.user.addr('27821234444')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '3'  // st_not_subscribed - other registration
-                        , '2'  // st_permissionotherf - denied
+                        , '3'  // state_not_subscribed - other registration
+                        , '2'  // state_permissionotherf - denied
                     )
                     .check.interaction({
                         state: 'st_permission_denied',
@@ -941,9 +941,9 @@ describe("app", function() {
                     .setup.user.addr('27821234444')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '3'  // st_not_subscribed - other registration
-                        , '2'  // st_permissionotherf - denied
-                        , '1'  // st_permission_denied - main menu
+                        , '3'  // state_not_subscribed - other registration
+                        , '2'  // state_permissionotherf - denied
+                        , '1'  // state_permission_denied - main menu
                     )
                     .check.interaction({
                         state: 'st_not_subscribed',
@@ -959,11 +959,11 @@ describe("app", function() {
                     .setup.user.addr('27821234444')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '3'  // st_not_subscribed - other registration
-                        , '1'  // st_permission_other - consent
-                        , '0821235555'  // st_msisdn
-                        , '123456'  // st_faccode
-                        , '2'  // st_facname - facility wrong
+                        , '3'  // state_not_subscribed - other registration
+                        , '1'  // state_permission_other - consent
+                        , '0821235555'  // state_msisdn
+                        , '123456'  // state_faccode
+                        , '2'  // state_facname - facility wrong
                     )
                     .check.interaction({
                         state: 'st_faccode',
@@ -1037,7 +1037,7 @@ describe("app", function() {
                         .setup.user.addr('27821234444')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_not_subscribed
+                            , '2'  // state_not_subscribed
                         )
                         .check.interaction({
                             state: 'st_change_old_nr',
@@ -1052,8 +1052,8 @@ describe("app", function() {
                         .setup.user.addr('27821234444')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_not_subscribed
-                            , '12345'  // st_change_old_nr
+                            , '2'  // state_not_subscribed
+                            , '12345'  // state_change_old_nr
                         )
                         .check.interaction({
                             state: 'st_change_old_nr',
@@ -1068,8 +1068,8 @@ describe("app", function() {
                         .setup.user.addr('27821234444')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_not_subscribed
-                            , '0821236666'  // st_change_old_nr
+                            , '2'  // state_not_subscribed
+                            , '0821236666'  // state_change_old_nr
                         )
                         .check.interaction({
                             state: 'st_change_old_not_found',
@@ -1086,9 +1086,9 @@ describe("app", function() {
                         .setup.user.addr('27821234444')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_not_subscribed
-                            , '0821236666'  // st_change_old_nr
-                            , '1'  // st_change_old_not_found - yes
+                            , '2'  // state_not_subscribed
+                            , '0821236666'  // state_change_old_nr
+                            , '1'  // state_change_old_not_found - yes
                         )
                         .check.interaction({
                             state: 'st_change_old_nr',
@@ -1100,9 +1100,9 @@ describe("app", function() {
                         .setup.user.addr('27821234444')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_not_subscribed
-                            , '0821236666'  // st_change_old_nr
-                            , '2'  // st_change_old_not_found
+                            , '2'  // state_not_subscribed
+                            , '0821236666'  // state_change_old_nr
+                            , '2'  // state_change_old_not_found
                         )
                         .check.interaction({
                             state: 'st_permission_denied',
@@ -1116,8 +1116,8 @@ describe("app", function() {
                         .setup.user.addr('27821234444')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_not_subscribed
-                            , '0821237777'  // st_change_old_nr
+                            , '2'  // state_not_subscribed
+                            , '0821237777'  // state_change_old_nr
                         )
                         .check.interaction({
                             state: 'st_end_detail_changed',
@@ -1130,8 +1130,8 @@ describe("app", function() {
                         .setup.user.addr('27821234444')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_not_subscribed
-                            , '0821237777'  // st_change_old_nr
+                            , '2'  // state_not_subscribed
+                            , '0821237777'  // state_change_old_nr
                         )
                         .check(function(api) {
                             var new_contact = _.find(api.contacts.store, {
@@ -1159,31 +1159,31 @@ describe("app", function() {
         });
 
         // Change to New Number
-        describe.skip("switch to new number", function() {
+        describe("switch to new number", function() {
             describe("choosing to switch to new number", function() {
-                it("should go to st_change_num", function() {
+                it("should go to state_change_num", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_subscribed - change num
+                            , '2'  // state_subscribed - change num
                         )
                         .check.interaction({
-                            state: 'st_change_num',
+                            state: 'state_change_num',
                             reply: "Please enter the new number on which you want to receive messages, e.g. 0736252020:"
                         })
                         .run();
                 });
-                it("should have extras", function() {
+                it.skip("should have extras", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_subscribed - change num
+                            , '2'  // state_subscribed - change num
                         )
                         .check(function(api) {
                             var old_contact = _.find(api.contacts.store, {
-                              msisdn: '+27821237777'
+                              msisdn: '+27820001003'
                             });
                             assert.equal(Object.keys(old_contact.extra).length, 8);
                             assert.equal(old_contact.extra.nc_last_reg_id, '7');
@@ -1206,26 +1206,26 @@ describe("app", function() {
                 });
             });
             describe("entering new unused number", function() {
-                it("should go to st_end_detail_changed", function() {
+                it("should go to state_end_detail_changed", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_subscribed - change num
-                            , '0821238888'  // st_change_num
+                            , '2'  // state_subscribed - change num
+                            , '0820001001'  // state_change_num
                         )
                         .check.interaction({
-                            state: 'st_end_detail_changed',
+                            state: 'state_end_detail_changed',
                         })
                         .run();
                 });
-                it("should transfer extras", function() {
+                it.skip("should transfer extras", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_subscribed - change num
-                            , '0821238888'  // st_change_num
+                            , '2'  // state_subscribed - change num
+                            , '0820001002'  // state_change_num
                         )
                         .check(function(api) {
                             var new_contact = _.find(api.contacts.store, {
@@ -1243,7 +1243,7 @@ describe("app", function() {
                         })
                         .check(function(api) {
                             var old_contact = _.find(api.contacts.store, {
-                              msisdn: '+27821237777'
+                              msisdn: '+27820001003'
                             });
                             assert.equal(Object.keys(old_contact.extra).length, 0);
                         })
@@ -1253,14 +1253,14 @@ describe("app", function() {
             describe("entering opted out number", function() {
                 it("should go to st_opt_in_change", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_subscribed - change num
-                            , '0821239999'  // st_change_num
+                            , '2'  // state_subscribed - change num
+                            , '0820001004'  // state_change_num
                         )
                         .check.interaction({
-                            state: 'st_opt_in_change',
+                            state: 'state_opt_in_change',
                             reply: [
                                 "This number opted out of NurseConnect messages before. Please confirm that you want to receive messages again on this number?",
                                 "1. Yes",
@@ -1269,14 +1269,14 @@ describe("app", function() {
                         })
                         .run();
                 });
-                it("should transfer extras on opt-in", function() {
+                it.skip("should transfer extras on opt-in", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_subscribed - change num
-                            , '0821239999'  // st_change_num
-                            , '1'  // st_opt_in_change - yes
+                            , '2'  // state_subscribed - change num
+                            , '0821239999'  // state_change_num
+                            , '1'  // state_opt_in_change - yes
                         )
                         .check(function(api) {
                             var new_contact = _.find(api.contacts.store, {
@@ -1294,7 +1294,7 @@ describe("app", function() {
                         })
                         .check(function(api) {
                             var old_contact = _.find(api.contacts.store, {
-                              msisdn: '+27821237777'
+                              msisdn: '+27820001003'
                             });
                             assert.equal(Object.keys(old_contact.extra).length, 0);
                         })
@@ -1304,14 +1304,14 @@ describe("app", function() {
             describe("entering non-opted-out number with active subs", function() {
                 it("should block progress", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_subscribed - change num
-                            , '0821238889'  // st_change_num
+                            , '2'  // state_subscribed - change num
+                            , '0820001002'  // state_change_num
                         )
                         .check.interaction({
-                            state: 'st_block_active_subs',
+                            state: 'state_block_active_subs',
                             reply: "Sorry, the number you are trying to move to already has an active registration. To manage that registration, please redial from that number."
                         })
                         .check.reply.ends_session()
@@ -1412,7 +1412,7 @@ describe("app", function() {
                         .setup.user.addr('27821237777')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '3'  // st_subscribed - change faccode
+                            , '3'  // state_subscribed - change faccode
                         )
                         .check.interaction({
                             state: 'st_change_faccode',
@@ -1425,7 +1425,7 @@ describe("app", function() {
                         .setup.user.addr('27821237777')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '3'  // st_subscribed - change faccode
+                            , '3'  // state_subscribed - change faccode
                         )
                         .check(function(api) {
                             var contact = _.find(api.contacts.store, {
@@ -1442,8 +1442,8 @@ describe("app", function() {
                         .setup.user.addr('27821237777')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '3'  // st_subscribed - change faccode
-                            , '234567'  // st_change_faccode - olt clinic
+                            , '3'  // state_subscribed - change faccode
+                            , '234567'  // state_change_faccode - olt clinic
                         )
                         .check.interaction({
                             state: 'st_end_detail_changed',
@@ -1457,8 +1457,8 @@ describe("app", function() {
                         .setup.user.addr('27821237777')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '3'  // st_subscribed - change faccode
-                            , '234567'  // st_change_faccode - olt clinic
+                            , '3'  // state_subscribed - change faccode
+                            , '234567'  // state_change_faccode - olt clinic
                         )
                         .check(function(api) {
                             var contact = _.find(api.contacts.store, {
@@ -1478,7 +1478,7 @@ describe("app", function() {
                         .setup.user.addr('27821237777')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '5' // st_subscribed - change sanc
+                            , '5' // state_subscribed - change sanc
                         )
                         .check.interaction({
                             state: 'st_change_sanc',
@@ -1491,7 +1491,7 @@ describe("app", function() {
                         .setup.user.addr('27821237777')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '5' // st_subscribed - change sanc
+                            , '5' // state_subscribed - change sanc
                         )
                         .check(function(api) {
                             var contact = _.find(api.contacts.store, {
@@ -1507,8 +1507,8 @@ describe("app", function() {
                         .setup.user.addr('27821237777')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '5' // st_subscribed - change sanc
-                            , '3456789A'  // st_change_sanc
+                            , '5' // state_subscribed - change sanc
+                            , '3456789A'  // state_change_sanc
                         )
                         .check.interaction({
                             state: 'st_change_sanc',
@@ -1521,8 +1521,8 @@ describe("app", function() {
                         .setup.user.addr('27821237777')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '5' // st_subscribed - change sanc
-                            , '3456789'  // st_change_sanc
+                            , '5' // state_subscribed - change sanc
+                            , '3456789'  // state_change_sanc
                         )
                         .check.interaction({
                             state: 'st_change_sanc',
@@ -1535,8 +1535,8 @@ describe("app", function() {
                         .setup.user.addr('27821237777')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '5' // st_subscribed - change sanc
-                            , '34567890'  // st_change_sanc
+                            , '5' // state_subscribed - change sanc
+                            , '34567890'  // state_change_sanc
                         )
                         .check.interaction({
                             state: 'st_end_detail_changed',
@@ -1549,8 +1549,8 @@ describe("app", function() {
                         .setup.user.addr('27821237777')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '5' // st_subscribed - change sanc
-                            , '34567890'  // st_change_sanc
+                            , '5' // state_subscribed - change sanc
+                            , '34567890'  // state_change_sanc
                         )
                         .check(function(api) {
                             var contact = _.find(api.contacts.store, {
@@ -1569,8 +1569,8 @@ describe("app", function() {
                         .setup.user.addr('27821237777')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '6'  // st_subscribed - more options
-                            , '1'  // st_subscribed - change persal
+                            , '6'  // state_subscribed - more options
+                            , '1'  // state_subscribed - change persal
                         )
                         .check.interaction({
                             state: 'st_change_persal',
@@ -1583,8 +1583,8 @@ describe("app", function() {
                         .setup.user.addr('27821237777')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '6'  // st_subscribed - more options
-                            , '1'  // st_subscribed - change persal
+                            , '6'  // state_subscribed - more options
+                            , '1'  // state_subscribed - change persal
                         )
                         .check(function(api) {
                             var contact = _.find(api.contacts.store, {
@@ -1600,9 +1600,9 @@ describe("app", function() {
                         .setup.user.addr('27821237777')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '6'  // st_subscribed - more options
-                            , '1'  // st_subscribed - change persal
-                            , '3456789A'  // st_change_persal
+                            , '6'  // state_subscribed - more options
+                            , '1'  // state_subscribed - change persal
+                            , '3456789A'  // state_change_persal
                         )
                         .check.interaction({
                             state: 'st_change_persal',
@@ -1615,9 +1615,9 @@ describe("app", function() {
                         .setup.user.addr('27821237777')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '6'  // st_subscribed - more options
-                            , '1' // st_subscribed - change persal
-                            , '3456789'  // st_change_persal
+                            , '6'  // state_subscribed - more options
+                            , '1' // state_subscribed - change persal
+                            , '3456789'  // state_change_persal
                         )
                         .check.interaction({
                             state: 'st_change_persal',
@@ -1630,9 +1630,9 @@ describe("app", function() {
                         .setup.user.addr('27821237777')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '6'  // st_subscribed - more options
-                            , '1'  // st_subscribed - change persal
-                            , '11114444'  // st_change_persal
+                            , '6'  // state_subscribed - more options
+                            , '1'  // state_subscribed - change persal
+                            , '11114444'  // state_change_persal
                         )
                         .check.interaction({
                             state: 'st_end_detail_changed',
@@ -1645,9 +1645,9 @@ describe("app", function() {
                         .setup.user.addr('27821237777')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '6'  // st_subscribed - more options
-                            , '1'  // st_subscribed - change persal
-                            , '11114444'  // st_change_persal
+                            , '6'  // state_subscribed - more options
+                            , '1'  // state_subscribed - change persal
+                            , '11114444'  // state_change_persal
                         )
                         .check(function(api) {
                             var contact = _.find(api.contacts.store, {
@@ -1666,7 +1666,7 @@ describe("app", function() {
                         .setup.user.addr('27821237777')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'  // st_subscribed - change id
+                            , '4'  // state_subscribed - change id
                         )
                         .check.interaction({
                             state: 'st_change_id_no',
@@ -1683,7 +1683,7 @@ describe("app", function() {
                         .setup.user.addr('27821237777')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'  // st_subscribed - change id
+                            , '4'  // state_subscribed - change id
                         )
                         .check(function(api) {
                             var contact = _.find(api.contacts.store, {
@@ -1699,8 +1699,8 @@ describe("app", function() {
                             .setup.user.addr('27821237777')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '4'  // st_subscribed - change id
-                                , '1'  // st_change_id_no - RSA ID
+                                , '4'  // state_subscribed - change id
+                                , '1'  // state_change_id_no - RSA ID
                             )
                             .check.interaction({
                                 state: 'st_id_no',
@@ -1713,9 +1713,9 @@ describe("app", function() {
                             .setup.user.addr('27821237777')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '4'  // st_subscribed - change id
-                                , '1'  // st_change_id_no - RSA ID
-                                , '9001016265166 '  // st_id_no
+                                , '4'  // state_subscribed - change id
+                                , '1'  // state_change_id_no - RSA ID
+                                , '9001016265166 '  // state_id_no
                             )
                             .check.interaction({
                                 state: 'st_end_detail_changed',
@@ -1728,9 +1728,9 @@ describe("app", function() {
                             .setup.user.addr('27821237777')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '4'  // st_subscribed - change id
-                                , '1'  // st_change_id_no - RSA ID
-                                , '9001016265166 '  // st_id_no
+                                , '4'  // state_subscribed - change id
+                                , '1'  // state_change_id_no - RSA ID
+                                , '9001016265166 '  // state_id_no
                             )
                             .check(function(api) {
                                 var contact = _.find(api.contacts.store, {
@@ -1750,8 +1750,8 @@ describe("app", function() {
                             .setup.user.addr('27821237777')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '4'  // st_subscribed - change id
-                                , '2'  // st_change_id_no - passport
+                                , '4'  // state_subscribed - change id
+                                , '2'  // state_change_id_no - passport
                             )
                             .check.interaction({
                                 state: 'st_passport',
@@ -1773,9 +1773,9 @@ describe("app", function() {
                             .setup.user.addr('27821237777')
                             .inputs(
                                 {session_event: 'new'}
-                                , '4'  // st_subscribed - change id
-                                , '2'  // st_change_id_no - passport
-                                , '1'  // st_passport - namibia
+                                , '4'  // state_subscribed - change id
+                                , '2'  // state_change_id_no - passport
+                                , '1'  // state_passport - namibia
                             )
                             .check.interaction({
                                 state: 'st_passport_no',
@@ -1788,10 +1788,10 @@ describe("app", function() {
                             .setup.user.addr('27821237777')
                             .inputs(
                                 {session_event: 'new'}
-                                , '4'  // st_subscribed - change id
-                                , '2'  // st_change_id_no - passport
-                                , '1'  // st_passport - namibia
-                                , 'Nam1234'  // st_passport_no
+                                , '4'  // state_subscribed - change id
+                                , '2'  // state_change_id_no - passport
+                                , '1'  // state_passport - namibia
+                                , 'Nam1234'  // state_passport_no
                             )
                             .check.interaction({
                                 state: 'st_passport_dob',
@@ -1804,11 +1804,11 @@ describe("app", function() {
                             .setup.user.addr('27821237777')
                             .inputs(
                                 {session_event: 'new'}
-                                , '4'  // st_subscribed - change id
-                                , '2'  // st_change_id_no - passport
-                                , '1'  // st_passport - namibia
-                                , 'Nam1234'  // st_passport_no
-                                , '07031976'  // st_dob - 7 March 1976
+                                , '4'  // state_subscribed - change id
+                                , '2'  // state_change_id_no - passport
+                                , '1'  // state_passport - namibia
+                                , 'Nam1234'  // state_passport_no
+                                , '07031976'  // state_dob - 7 March 1976
                             )
                             .check.interaction({
                                 state: 'st_end_detail_changed',
@@ -1821,11 +1821,11 @@ describe("app", function() {
                             .setup.user.addr('27821237777')
                             .inputs(
                                 {session_event: 'new'}
-                                , '4'  // st_subscribed - change id
-                                , '2'  // st_change_id_no - passport
-                                , '1'  // st_passport - namibia
-                                , 'Nam1234'  // st_passport_no
-                                , '07031976'  // st_dob - 7 March 1976
+                                , '4'  // state_subscribed - change id
+                                , '2'  // state_change_id_no - passport
+                                , '1'  // state_passport - namibia
+                                , 'Nam1234'  // state_passport_no
+                                , '07031976'  // state_dob - 7 March 1976
                             )
                             .check(function(api) {
                                 var contact = _.find(api.contacts.store, {
@@ -1852,8 +1852,8 @@ describe("app", function() {
                             .setup.user.addr('27821237777')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
                             )
                             .check.interaction({
                                 state: 'st_optout',
@@ -1873,8 +1873,8 @@ describe("app", function() {
                             .setup.user.addr('27821237777')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
                             )
                             .check(function(api) {
                                 var contact = _.find(api.contacts.store, {
@@ -1893,9 +1893,9 @@ describe("app", function() {
                             .setup.user.addr('27821237777')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '1'  // st_optout - not a nurse
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '1'  // state_optout - not a nurse
                             )
                             .check.interaction({
                                 state: 'st_end_detail_changed',
@@ -1907,9 +1907,9 @@ describe("app", function() {
                             .setup.user.addr('27821237777')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '1'  // st_optout - not a nurse
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '1'  // state_optout - not a nurse
                             )
                             .check(function(api) {
                                 var contact = _.find(api.contacts.store, {
@@ -1925,9 +1925,9 @@ describe("app", function() {
                             .setup.user.addr('27821237777')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '1'  // st_optout - not a nurse
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '1'  // state_optout - not a nurse
                             )
                             .check(function(api) {
                                 var metrics = api.metrics.stores.test_metric_store;
@@ -1949,9 +1949,9 @@ describe("app", function() {
                             .setup.user.addr('27821237777')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '5'  // st_optout - main menu
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '5'  // state_optout - main menu
                             )
                             .check.interaction({
                                 state: 'st_subscribed',
@@ -1968,8 +1968,8 @@ describe("app", function() {
                             .setup.user.addr('27821233333')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
                             )
                             .check.interaction({
                                 state: 'st_optout',
@@ -1989,8 +1989,8 @@ describe("app", function() {
                             .setup.user.addr('27821233333')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
                             )
                             .check(function(api) {
                                 var contact = _.find(api.contacts.store, {
@@ -2010,9 +2010,9 @@ describe("app", function() {
                             .setup.user.addr('27821233333')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '4'  // st_optout - other
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '4'  // state_optout - other
                             )
                             .check.interaction({
                                 state: 'st_end_detail_changed'
@@ -2024,9 +2024,9 @@ describe("app", function() {
                             .setup.user.addr('27821233333')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '4'  // st_optout - other
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '4'  // state_optout - other
                             )
                             .check(function(api) {
                                 var contact = _.find(api.contacts.store, {
@@ -2043,9 +2043,9 @@ describe("app", function() {
                             .setup.user.addr('27821233333')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '4'  // st_optout - other
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '4'  // state_optout - other
                             )
                             .check(function(api) {
                                 var metrics = api.metrics.stores.test_metric_store;
@@ -2061,9 +2061,9 @@ describe("app", function() {
                             .setup.user.addr('27821233333')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '5'  // st_optout - main menu
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '5'  // state_optout - main menu
                             )
                             .check.interaction({
                                 state: 'st_subscribed',
@@ -2080,8 +2080,8 @@ describe("app", function() {
                             .setup.user.addr('27821230000')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
                             )
                             .check.interaction({
                                 state: 'st_optout',
@@ -2101,8 +2101,8 @@ describe("app", function() {
                             .setup.user.addr('27821230000')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
                             )
                             .check(function(api) {
                                 var contact = _.find(api.contacts.store, {
@@ -2123,9 +2123,9 @@ describe("app", function() {
                             .setup.user.addr('27821230000')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '4'  // st_optout - other
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '4'  // state_optout - other
                             )
                             .check.interaction({
                                 state: 'st_end_detail_changed'
@@ -2137,9 +2137,9 @@ describe("app", function() {
                             .setup.user.addr('27821230000')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '4'  // st_optout - other
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '4'  // state_optout - other
                             )
                             .check(function(api) {
                                 var contact = _.find(api.contacts.store, {
@@ -2161,8 +2161,8 @@ describe("app", function() {
                             .setup.user.addr('27821240000')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
                             )
                             .check.interaction({
                                 state: 'st_optout',
@@ -2182,8 +2182,8 @@ describe("app", function() {
                             .setup.user.addr('27821240000')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
                             )
                             .check(function(api) {
                                 var contact = _.find(api.contacts.store, {
@@ -2204,9 +2204,9 @@ describe("app", function() {
                             .setup.user.addr('27821240000')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '4'  // st_optout - other
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '4'  // state_optout - other
                             )
                             .check.interaction({
                                 state: 'st_end_detail_changed'
@@ -2218,9 +2218,9 @@ describe("app", function() {
                             .setup.user.addr('27821237777')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '1'  // st_optout - not a nurse
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '1'  // state_optout - not a nurse
                             )
                             .check(function(api) {
                                 var metrics = api.metrics.stores.test_metric_store;
@@ -2239,9 +2239,9 @@ describe("app", function() {
                             .setup.user.addr('27821240000')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '4'  // st_optout - other
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '4'  // state_optout - other
                             )
                             .check(function(api) {
                                 var contact = _.find(api.contacts.store, {
