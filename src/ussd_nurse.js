@@ -340,7 +340,7 @@ go.app = function() {
         });
 
         self.add('state_save_nursereg', function(name) {
-            // Save useful registrant info
+            // Save useful identity info
             self.im.user.answers.registrant.details.nurseconnect.is_registered = "true";
 
             if (self.im.user.answers.working_on !== "") {
