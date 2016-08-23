@@ -70,6 +70,54 @@ go.app = function() {
             });
         };
 
+        self.jembi_nc_clinic_validate = function (im, clinic_code) {
+            var params = {
+                'criteria': 'value:' + clinic_code
+            };
+            return self
+                .jembi_json_api_call('get', params, null, 'NCfacilityCheck', im);
+        };
+
+        self.validate_nc_clinic_code = function(im, clinic_code) {
+            if (!utils.check_valid_number(clinic_code) ||
+                clinic_code.length !== 6) {
+                return Q()
+                    .then(function() {
+                        return false;
+                    });
+            } else {
+                return self
+                    .jembi_nc_clinic_validate(im, clinic_code)
+                    .then(function(json_result) {
+                        var rows = json_result.data.rows;
+                        if (rows.length === 0) {
+                            return false;
+                        } else {
+                            return rows[0][2];
+                        }
+                    });
+            }
+        };
+
+        self.jembi_json_api_call = function(method, params, payload, endpoint, im) {
+            var http = new JsonApi(im, {
+                auth: {
+                    username: im.config.jembi.username,
+                    password: im.config.jembi.password
+                }
+            });
+            switch(method) {
+                case "post":
+                    return http.post(im.config.jembi.url_json + endpoint, {
+                        data: payload
+                    });
+                case "get":
+                    return http.get(im.config.jembi.url_json + endpoint, {
+                        params: params
+                    });
+            }
+        },
+
     // DELEGATOR START STATE
 
         self.add('state_route', function(name) {
@@ -80,10 +128,10 @@ go.app = function() {
             return is
             .get_or_create_identity({"msisdn": msisdn})
             .then(function(identity) {
-                self.im.user.set_answer("user", identity);
+                self.im.user.set_answer("operator", identity);
 
                 return self
-                .has_active_nurseconnect_subscription(self.im.user.answers.user.id)
+                .has_active_nurseconnect_subscription(self.im.user.answers.operator.id)
                 .then(function(has_active_nurseconnect_subscription) {
                     if (has_active_nurseconnect_subscription) {
                         return self.states.create('state_subscribed');
@@ -222,41 +270,30 @@ go.app = function() {
                 });*/
         });
 
-        self.add('state_end_detail_changed', function(name) {
-            return new EndState(name, {
-                text: $("Thank you. Your NurseConnect details have been changed. To change any other details, please dial {{channel}} again.")
-                    .context({channel: self.im.config.channel}),
-                next: 'isl_route',
-            });
-        });
-
-        /*self.add('state_change_faccode', function(name) {
+        self.add('state_change_faccode', function(name) {
             var question = $("Please enter the 6-digit facility code for your new facility, e.g. 456789:");
             var error = $("Sorry, that code is not recognized. Please enter the 6-digit facility code again, e. 535970:");
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
-                    return go.utils
+                    return self
                         .validate_nc_clinic_code(self.im, content)
                         .then(function(facname) {
                             if (!facname) {
                                 return error;
                             } else {
-                                self.contact.extra.nc_facname = facname;
-                                self.contact.extra.nc_faccode = content;
-                                return self.im.contacts
-                                    .save(self.contact)
-                                    .then(function() {
-                                        return null;  // vumi expects null or undefined if check passes
-                                    });
+                                self.im.user.answers.operator.details.nurseconnect.facname = facname;
+                                self.im.user.answers.operator.details.nurseconnect.faccode = content;
+
+                                return null;  // vumi expects null or undefined if check passes
                             }
                         });
                 },
-                next: 'isl_post_change_detail'
+                next: 'state_post_change_detail'
             });
         });
 
-        self.add('state_change_id_no', function(name) {
+        /*self.add('state_change_id_no', function(name) {
             var owner = self.user.extra.nc_working_on === "" ? 'your' : 'their';
             var question =$("Please select {{owner}} type of identification:")
                     .context({owner: owner});
@@ -346,6 +383,22 @@ go.app = function() {
                 }
             });
         });*/
+
+        self.add('state_post_change_detail', function() {
+            // return go.utils
+            //     .post_nursereg(self.im, self.contact, self.contact.msisdn, null)  // dmsisdn = cmsisdn for det changed
+            //     .then(function(response) {
+                    return self.states.create('state_end_detail_changed');
+                // });
+        });
+
+        self.add('state_end_detail_changed', function(name) {
+            return new EndState(name, {
+                text: $("Thank you. Your NurseConnect details have been changed. To change any other details, please dial {{channel}} again.")
+                    .context({channel: self.im.config.channel}),
+                next: 'state_route',
+            });
+        });
 
     });
 

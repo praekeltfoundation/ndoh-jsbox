@@ -3,6 +3,7 @@ var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
 var fixtures_MessageSender = require('./fixtures_message_sender');
 var fixtures_Hub = require('./fixtures_hub');
+var fixtures_Jembi = require('./fixtures_jembi');
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
 // var _ = require('lodash');
@@ -96,6 +97,7 @@ describe("app", function() {
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
                     fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 150 ->
+                    fixtures_Jembi().forEach(api.http.fixtures.add);
                 })
                 // .setup(function(api) {
                 //     // user with working_on extra
@@ -1405,31 +1407,31 @@ describe("app", function() {
         });
 
         // Change Details
-        describe.skip("changing details", function() {
+        describe("changing details", function() {
             describe("change faccode", function() {
                 it("should ask for new faccode", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '3'  // state_subscribed - change faccode
                         )
                         .check.interaction({
-                            state: 'st_change_faccode',
+                            state: 'state_change_faccode',
                             reply: "Please enter the 6-digit facility code for your new facility, e.g. 456789:"
                         })
                         .run();
                 });
-                it("should have extras", function() {
+                it.skip("should have extras", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '3'  // state_subscribed - change faccode
                         )
                         .check(function(api) {
                             var contact = _.find(api.contacts.store, {
-                              msisdn: '+27821237777'
+                              msisdn: '+27820001003'
                             });
                             assert.equal(Object.keys(contact.extra).length, 8);
                             assert.equal(contact.extra.nc_faccode, "123456");
@@ -1439,22 +1441,22 @@ describe("app", function() {
                 });
                 it("should reach details changed end state", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '3'  // state_subscribed - change faccode
                             , '234567'  // state_change_faccode - olt clinic
                         )
                         .check.interaction({
-                            state: 'st_end_detail_changed',
+                            state: 'state_end_detail_changed',
                             reply: "Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again."
                         })
                         .check.reply.ends_session()
                         .run();
                 });
-                it("should save extras", function() {
+                it.skip("should save extras", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '3'  // state_subscribed - change faccode
@@ -1462,7 +1464,7 @@ describe("app", function() {
                         )
                         .check(function(api) {
                             var contact = _.find(api.contacts.store, {
-                              msisdn: '+27821237777'
+                              msisdn: '+27820001003'
                             });
                             assert.equal(Object.keys(contact.extra).length, 8);
                             assert.equal(contact.extra.nc_faccode, "234567");
@@ -1472,7 +1474,7 @@ describe("app", function() {
                 });
             });
 
-            describe("change sanc", function() {
+            describe.skip("change sanc", function() {
                 it("should ask for sanc", function() {
                     return tester
                         .setup.user.addr('27821237777')
@@ -1563,7 +1565,7 @@ describe("app", function() {
                 });
             });
 
-            describe("change persal", function() {
+            describe.skip("change persal", function() {
                 it("should ask for persal", function() {
                     return tester
                         .setup.user.addr('27821237777')
@@ -1660,7 +1662,7 @@ describe("app", function() {
                 });
             });
 
-            describe("change identification", function() {
+            describe.skip("change identification", function() {
                 it("should display 2 options", function() {
                     return tester
                         .setup.user.addr('27821237777')
