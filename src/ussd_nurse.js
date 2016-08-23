@@ -123,22 +123,22 @@ go.app = function() {
             var payload = {
                 cmsisdn: Object.keys(contact.details.addresses.msisdn)[0],
                 dmsisdn: dmsisdn,
-                faccode: contact.nurseconnect.faccode,
-                id_type: contact.nurseconnect.id_type,
-                dob: contact.nurseconnect.dob,
-                sanc_reg_no: contact.nurseconnect.sanc || null,
-                persal_no: contact.nurseconnect.persal || null
+                faccode: contact.details.nurseconnect.faccode,
+                id_type: contact.details.nurseconnect.id_type,
+                dob: contact.details.nurseconnect.dob,
+                sanc_reg_no: contact.details.nurseconnect.sanc || null,
+                persal_no: contact.details.nurseconnect.persal || null
             };
 
-            if (contact.nurseconnect.id_type === 'sa_id') {
+            if (contact.details.nurseconnect.id_type === 'sa_id') {
                 payload.id_type = 'sa_id';
-                payload.id_no = contact.nurseconnect.sa_id_no;
-                payload.dob = contact.nurseconnect.dob;
-            } else if (contact.nurseconnect.id_type === 'passport') {
+                payload.id_no = contact.details.nurseconnect.sa_id_no;
+                payload.dob = contact.details.nurseconnect.dob;
+            } else if (contact.details.nurseconnect.id_type === 'passport') {
                 payload.id_type = 'passport';
-                payload.id_no = contact.nurseconnect.passport_num;
-                payload.passport_origin = contact.nurseconnect.passport_country;
-                payload.dob = contact.nurseconnect.dob;
+                payload.id_no = contact.details.nurseconnect.passport_num;
+                payload.passport_origin = contact.details.nurseconnect.passport_country;
+                payload.dob = contact.details.nurseconnect.dob;
             } else {
                 payload.id_type = null;
                 payload.id_no = null;
@@ -306,9 +306,8 @@ go.app = function() {
         self.add('state_check_optout_reg', function(name) {
             // return go.utils
             //     .opted_out(self.im, self.contact)
-
-            if (self.im.user.answers.contact.nurseconnect !== undefined
-                && self.im.user.answers.contact.nurseconnect.opt_out_reason.length > 0) {
+            if (self.im.user.answers.contact.details.nurseconnect !== undefined
+                && self.im.user.answers.contact.details.nurseconnect.opt_out_reason.length > 0) {
                 return self.states.create('state_opt_in_reg');
             } else {
                 return self.states.create('state_faccode');
@@ -327,7 +326,7 @@ go.app = function() {
                         // return go.utils
                         //     .nurse_opt_in(self.im, self.contact)
 
-                        self.im.user.answers.contact.nurseconnect.opt_out_reason = "";  // cancel an optout..?
+                        self.im.user.answers.contact.details.nurseconnect.opt_out_reason = "";  // cancel an optout..?
                         return 'state_faccode';
                     } else {
                         return 'state_permission_denied';
@@ -350,9 +349,9 @@ go.app = function() {
                             if (!facname) {
                                 return error;
                             } else {
-                                self.im.user.answers.contact.nurseconnect = {};
-                                self.im.user.answers.contact.nurseconnect.facname = facname;
-                                self.im.user.answers.contact.nurseconnect.faccode = content;
+                                self.im.user.answers.contact.details.nurseconnect = {};
+                                self.im.user.answers.contact.details.nurseconnect.facname = facname;
+                                self.im.user.answers.contact.details.nurseconnect.faccode = content;
 
                                 return null;  // vumi expects null or undefined if check passes
                             }
@@ -368,7 +367,7 @@ go.app = function() {
                 question: $("Please confirm {{owner}} facility: {{facname}}")
                     .context({
                         owner: owner,
-                        facname: self.im.user.answers.contact.nurseconnect.facname
+                        facname: self.im.user.answers.contact.details.nurseconnect.facname
                     }),
                 choices: [
                     new Choice('state_save_nursereg', $('Confirm')),
@@ -382,38 +381,43 @@ go.app = function() {
 
         self.add('state_save_nursereg', function(name) {
             // Save useful contact info
-            self.im.user.answers.contact.nurseconnect.is_registered = "true";
+            self.im.user.answers.contact.details.nurseconnect.is_registered = "true";
 
             if (self.im.user.answers.working_on !== "") {
-                self.im.user.answers.contact.nurseconnect.registered_by
+                self.im.user.answers.contact.details.nurseconnect.registered_by
                     = Object.keys(self.im.user.answers.user_identity.details.addresses.msisdn)[0];
 
-                if (self.im.user.answers.user_identity.nurseconnect.registrees === undefined) {
-                    self.im.user.answers.user_identity.nurseconnect.registrees = self.im.user.answers.working_on;
+                if (self.im.user.answers.user_identity.details.nurseconnect === undefined) {
+                    self.im.user.answers.user_identity.details.nurseconnect = {};
+                }
+                
+                if (self.im.user.answers.user_identity.details.nurseconnect.registrees === undefined) {
+                    self.im.user.answers.user_identity.details.nurseconnect.registrees = self.im.user.answers.working_on;
                 } else {
-                    self.im.user.answers.user_identity.nurseconnect.registrees += ', ' + self.im.user.answers.working_on;
+                    self.im.user.answers.user_identity.details.nurseconnect.registrees += ', ' + self.im.user.answers.working_on;
                 }
             }
 
             // identity PATCH..?
 
-            // return Q
-            // .all([
-            //     self.send_registration_thanks(
-            //         Object.keys(self.im.user.answers.contact.details.addresses.msisdn)[0],
-            //         self.im.user.answers.contact.nurseconnect.language_choice
-            //     ),
-            //     // POST to 'nurseregs/'
-            //     self.post_nursereg(
-            //         self.im.user.answers.contact,
-            //         Object.keys(self.im.user.answers.user_identity.details.addresses.msisdn)[0],
-            //         null
-            //     )
-            //     // metrics ???
-            // ])
-            // .then(function() {
+            return Q
+            .all([
+                self.send_registration_thanks(
+                    Object.keys(self.im.user.answers.contact.details.addresses.msisdn)[0],
+                    self.im.user.answers.contact.details.nurseconnect.language_choice
+                ),
+                // POST to 'nurseregs/'
+                // self.post_nursereg(
+                //     self.im.user.answers.contact,
+                //     Object.keys(self.im.user.answers.user_identity.details.addresses.msisdn)[0],
+                //     null
+                // )
+
+                // metrics ???
+            ])
+            .then(function() {
                 return self.states.create('state_end_reg');
-            // });
+            });
         });
 
         self.add('state_end_reg', function(name) {

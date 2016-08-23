@@ -12,6 +12,7 @@ module.exports = function() {
         // 150: get identity by msisdn +27820001001
         {
             "key": "get.is.msisdn.27820001001",
+            "repeatable": true,
             "request": {
                 "url": 'http://is/api/v1/identities/search/',
                 "method": 'GET',
@@ -105,6 +106,7 @@ module.exports = function() {
                                     "id_type": "sa_id",
                                     "sa_id_no": "5101025009086",
                                     "dob": "1951-01-02",
+                                    "opt_out_reason": "unknown"
                                 }
                             },
                             "created_at": "2016-08-05T06:13:29.693272Z",
@@ -118,6 +120,7 @@ module.exports = function() {
         // 153: create identity with msisdn +27820001001
         {
             "key": "post.is.msisdn.27820001001",
+            "repeatable": true,
             "request": {
                 "url": 'http://is/api/v1/identities/',
                 "method": 'POST',

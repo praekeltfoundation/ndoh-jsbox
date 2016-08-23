@@ -6,7 +6,7 @@ var fixtures_Hub = require('./fixtures_hub');
 var fixtures_Jembi = require('./fixtures_jembi');
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
-// var _ = require('lodash');
+var _ = require('lodash');
 
 var utils = require('seed-jsbox-utils').utils;
 
@@ -580,7 +580,7 @@ describe("app", function() {
                     })
                     .run();
             });
-            it.skip("should send welcome sms", function() {
+            it("should send welcome sms", function() {
                 return tester
                     .setup.user.addr('27820001001')
                     .inputs(
@@ -607,46 +607,46 @@ describe("app", function() {
         });
 
         // Other Registration Flow
-        describe.skip("other registration completion", function() {
+        describe("other registration completion", function() {
             it("should reach end state", function() {
                 return tester
-                    .setup.user.addr('27821234444')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '3'  // st_not_subscribed - other registration
-                        , '1'  // st_permission_other - consent
-                        , '0821235555'  // st_msisdn
-                        , '123456'  // st_faccode
-                        , '1'  // st_facname - confirm
+                        , '3'  // state_not_subscribed - other registration
+                        , '1'  // state_permission_other - consent
+                        , '0820001002'  // state_msisdn
+                        , '123456'  // state_faccode
+                        , '1'  // state_facname - confirm
                     )
                     .check.interaction({
-                        state: 'st_end_reg',
+                        state: 'state_end_reg',
                         reply: "Thank you. Weekly NurseConnect messages will now be sent to this number."
                     })
                     .run();
             });
-            it("should save extras", function() {
+            it.skip("should save extras", function() {
                 return tester
-                    .setup.user.addr('27821234444')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '3'  // st_not_subscribed - other registration
-                        , '1'  // st_permission_other - consent
-                        , '0821235555'  // st_msisdn
-                        , '123456'  // st_faccode
-                        , '1'  // st_facname - confirm
+                        , '3'  // state_not_subscribed - other registration
+                        , '1'  // state_permission_other - consent
+                        , '0820001002'  // state_msisdn
+                        , '123456'  // state_faccode
+                        , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
                         var user = _.find(api.contacts.store, {
-                          msisdn: '+27821234444'
+                          msisdn: '+27820001001'
                         });
                         assert.equal(Object.keys(user.extra).length, 2);
-                        assert.equal(user.extra.nc_working_on, '+27821235555');
-                        assert.equal(user.extra.nc_registrees, '+27821235555');
+                        assert.equal(user.extra.nc_working_on, '+27820001002');
+                        assert.equal(user.extra.nc_registrees, '+27820001002');
                     })
                     .check(function(api) {
                         var contact = _.find(api.contacts.store, {
-                          msisdn: '+27821235555'
+                          msisdn: '+27820001002'
                         });
                         assert.equal(Object.keys(contact.extra).length, 4);
                         assert.equal(contact.extra.nc_faccode, '123456');
@@ -656,16 +656,16 @@ describe("app", function() {
                     })
                     .run();
             });
-            it("should fire metrics", function() {
+            it.skip("should fire metrics", function() {
                 return tester
-                    .setup.user.addr('27821234444')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '3'  // st_not_subscribed - other registration
-                        , '1'  // st_permission_other - consent
-                        , '0821235555'  // st_msisdn
-                        , '123456'  // st_faccode
-                        , '1'  // st_facname - confirm
+                        , '3'  // state_not_subscribed - other registration
+                        , '1'  // state_permission_other - consent
+                        , '0820001002'  // state_msisdn
+                        , '123456'  // state_faccode
+                        , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
                         var metrics = api.metrics.stores.test_metric_store;
@@ -677,14 +677,14 @@ describe("app", function() {
             });
             it("should send welcome sms", function() {
                 return tester
-                    .setup.user.addr('27821234444')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '3'  // st_not_subscribed - other registration
-                        , '1'  // st_permission_other - consent
-                        , '0821235555'  // st_msisdn
-                        , '123456'  // st_faccode
-                        , '1'  // st_facname - confirm
+                        , '3'  // state_not_subscribed - other registration
+                        , '1'  // state_permission_other - consent
+                        , '0820001002'  // state_msisdn
+                        , '123456'  // state_faccode
+                        , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
                         var smses = _.where(api.outbound.store, {
@@ -696,7 +696,7 @@ describe("app", function() {
                             "Welcome to NurseConnect. For more options or to " +
                             "opt out, dial *120*550*5#."
                         );
-                        assert.equal(sms.to_addr, '+27821235555');
+                        assert.equal(sms.to_addr, '+27820001002');
                     })
                     .run();
             });
@@ -868,19 +868,19 @@ describe("app", function() {
         });
 
         // Deny Opt-in Permission
-        describe.skip("denying opt-in consent", function() {
+        describe("denying opt-in consent", function() {
             it("should present main menu option", function() {
                 return tester
-                    .setup.user.addr('27821234444')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '3'  // st_not_subscribed - other registration
-                        , '1'  // st_permission_other - consent
-                        , '0821239999'  // st_msisdn
-                        , '2'  // st_opt_in_reg - deny
+                        , '3'  // state_not_subscribed - other registration
+                        , '1'  // state_permission_other - consent
+                        , '0820001003'  // state_msisdn
+                        , '2'  // state_opt_in_reg - deny
                     )
                     .check.interaction({
-                        state: 'st_permission_denied',
+                        state: 'state_permission_denied',
                         reply: [
                             "You have chosen not to receive NurseConnect SMSs on this number and so cannot complete registration.",
                             '1. Main Menu'
@@ -890,34 +890,34 @@ describe("app", function() {
             });
             it("should present main menu option", function() {
                 return tester
-                    .setup.user.addr('27821234444')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '3'  // st_not_subscribed - other registration
-                        , '1'  // st_permission_other - consent
-                        , '0821239999'  // st_msisdn
-                        , '2'  // st_opt_in_reg - deny
-                        , '1'  // st_permission_denied - main menu
+                        , '3'  // state_not_subscribed - other registration
+                        , '1'  // state_permission_other - consent
+                        , '0820001003'  // state_msisdn
+                        , '2'  // state_opt_in_reg - deny
+                        , '1'  // state_permission_denied - main menu
                     )
                     .check.interaction({
-                        state: 'st_not_subscribed',
+                        state: 'state_not_subscribed',
                     })
                     .run();
             });
         });
 
         // Deny Registration Permission
-        describe.skip("denying registration consent", function() {
+        describe("denying registration consent", function() {
             it("should present main menu option", function() {
                 return tester
-                    .setup.user.addr('27821234444')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '3'  // st_not_subscribed - other registration
-                        , '2'  // st_permissionotherf - denied
+                        , '3'  // state_not_subscribed - other registration
+                        , '2'  // state_permission_other - denied
                     )
                     .check.interaction({
-                        state: 'st_permission_denied',
+                        state: 'state_permission_denied',
                         reply: [
                             "You have chosen not to receive NurseConnect SMSs on this number and so cannot complete registration.",
                             '1. Main Menu'
@@ -927,35 +927,35 @@ describe("app", function() {
             });
             it("should start over if main menu is selected", function() {
                 return tester
-                    .setup.user.addr('27821234444')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '3'  // st_not_subscribed - other registration
-                        , '2'  // st_permissionotherf - denied
-                        , '1'  // st_permission_denied - main menu
+                        , '3'  // state_not_subscribed - other registration
+                        , '2'  // state_permissionotherf - denied
+                        , '1'  // state_permission_denied - main menu
                     )
                     .check.interaction({
-                        state: 'st_not_subscribed',
+                        state: 'state_not_subscribed',
                     })
                     .run();
             });
         });
 
         // Incorrect Facility Name
-        describe.skip("user indicates wrong facility", function() {
+        describe("user indicates wrong facility", function() {
             it("should return to faccode state", function() {
                 return tester
-                    .setup.user.addr('27821234444')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '3'  // st_not_subscribed - other registration
-                        , '1'  // st_permission_other - consent
-                        , '0821235555'  // st_msisdn
-                        , '123456'  // st_faccode
-                        , '2'  // st_facname - facility wrong
+                        , '3'  // state_not_subscribed - other registration
+                        , '1'  // state_permission_other - consent
+                        , '0820001002'  // state_msisdn
+                        , '123456'  // state_faccode
+                        , '2'  // state_facname - facility wrong
                     )
                     .check.interaction({
-                        state: 'st_faccode',
+                        state: 'state_faccode',
                         reply: "Please enter their 6-digit facility code:"
                     })
                     .run();
@@ -963,14 +963,19 @@ describe("app", function() {
         });
 
         // Msisdn Validation
-        describe.skip("msisdn entry", function() {
+        describe("msisdn entry", function() {
             describe("poor input", function() {
                 it("should loop back", function() {
                     return tester
-                        .setup.user.state('st_msisdn')
-                        .input('07262520201')
+                        .setup.user.addr('27820001001')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '3'  // state_not_subscribed - other registration
+                            , '1'  // state_permission_other - consent
+                            , '07262520201'  // state_msisdn
+                        )
                         .check.interaction({
-                            state: 'st_msisdn',
+                            state: 'state_msisdn',
                             reply: "Sorry, the format of the mobile number is not correct. Please enter the mobile number again, e.g. 0726252020"
                         })
                         .run();
@@ -979,14 +984,20 @@ describe("app", function() {
         });
 
         // Faccode Validation
-        describe.skip("faccode entry", function() {
+        describe("faccode entry", function() {
             describe("contains letter", function() {
                 it("should loop back without api call", function() {
                     return tester
-                        .setup.user.state('st_faccode')
-                        .input('12345A')
+                        .setup.user.addr('27820001001')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '3'  // state_not_subscribed - other registration
+                            , '1'  // state_permission_other - consent
+                            , '0820001002'  // state_msisdn
+                            , '12345A'  // state_faccode
+                        )
                         .check.interaction({
-                            state: 'st_faccode',
+                            state: 'state_faccode',
                             reply: "Sorry, that code is not recognized. Please enter the 6-digit facility code again, e. 535970:"
                         })
                         .run();
@@ -995,10 +1006,16 @@ describe("app", function() {
             describe("is not 6-char number", function() {
                 it("should loop back without api call", function() {
                     return tester
-                        .setup.user.state('st_faccode')
-                        .input('12345')
+                        .setup.user.addr('27820001001')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '3'  // state_not_subscribed - other registration
+                            , '1'  // state_permission_other - consent
+                            , '0820001002'  // state_msisdn
+                            , '12345'  // state_faccode
+                        )
                         .check.interaction({
-                            state: 'st_faccode',
+                            state: 'state_faccode',
                             reply: "Sorry, that code is not recognized. Please enter the 6-digit facility code again, e. 535970:"
                         })
                         .run();
@@ -1007,10 +1024,16 @@ describe("app", function() {
             describe("is not on jembi system", function() {
                 it("should loop back", function() {
                     return tester
-                        .setup.user.state('st_faccode')
-                        .input('888888')
+                        .setup.user.addr('27820001001')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '3'  // state_not_subscribed - other registration
+                            , '1'  // state_permission_other - consent
+                            , '0820001002'  // state_msisdn
+                            , '888888'  // state_faccode
+                        )
                         .check.interaction({
-                            state: 'st_faccode',
+                            state: 'state_faccode',
                             reply: "Sorry, that code is not recognized. Please enter the 6-digit facility code again, e. 535970:"
                         })
                         .run();
