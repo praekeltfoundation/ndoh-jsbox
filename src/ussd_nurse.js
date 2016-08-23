@@ -255,7 +255,6 @@ go.app = function() {
                 },
                 next: function(content) {
                     msisdn = utils.normalize_msisdn(content, '27');
-                    self.im.user.set_answer("working_on", msisdn);
 
                     return is
                     .get_or_create_identity({"msisdn": msisdn})
@@ -296,7 +295,8 @@ go.app = function() {
         });
 
         self.add('state_faccode', function(name) {
-            var owner = self.im.user.answers.working_on === "" ? 'your' : 'their';
+            var owner = self.im.user.answers.operator.id === self.im.user.answers.registrant.id
+                ? 'your' : 'their';
             var error = $("Sorry, that code is not recognized. Please enter the 6-digit facility code again, e. 535970:");
             var question = $("Please enter {{owner}} 6-digit facility code:")
                 .context({owner: owner});
@@ -322,7 +322,8 @@ go.app = function() {
         });
 
         self.add('state_facname', function(name) {
-            var owner = self.im.user.answers.working_on === "" ? 'your' : 'their';
+            var owner = self.im.user.answers.operator.id === self.im.user.answers.registrant.id
+                ? 'your' : 'their';
             return new ChoiceState(name, {
                 question: $("Please confirm {{owner}} facility: {{facname}}")
                     .context({
@@ -343,7 +344,7 @@ go.app = function() {
             // Save useful identity info
             self.im.user.answers.registrant.details.nurseconnect.is_registered = "true";
 
-            // if (self.im.user.answers.working_on !== "") {
+            // if (self.im.user.answers.operator.id !== self.im.user.answers.registrant.id) {
             //     self.im.user.answers.registrant.details.nurseconnect.registered_by
             //         = Object.keys(self.im.user.answers.operator.details.addresses.msisdn)[0];
             //
@@ -352,9 +353,11 @@ go.app = function() {
             //     }
             //
             //     if (self.im.user.answers.operator.details.nurseconnect.registrees === undefined) {
-            //         self.im.user.answers.operator.details.nurseconnect.registrees = self.im.user.answers.working_on;
+            //         self.im.user.answers.operator.details.nurseconnect.registrees
+            //          = Object.keys(self.im.user.answers.registrant.details.addresses.msisdn)[0];
             //     } else {
-            //         self.im.user.answers.operator.details.nurseconnect.registrees += ', ' + self.im.user.answers.working_on;
+            //         self.im.user.answers.operator.details.nurseconnect.registrees += ', '
+            //          + Object.keys(self.im.user.answers.registrant.details.addresses.msisdn)[0];;
             //     }
             // }
 
