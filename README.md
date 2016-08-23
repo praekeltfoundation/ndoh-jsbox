@@ -38,7 +38,8 @@
             "operator_id": "cb245673-aa41-4302-ac47-00000000007",  // device owner id
             "msisdn_registrant": "+27821235555",  // msisdn of the registrant
             "msisdn_device": "+27821234444",  // device msisdn
-            "faccode": "123456"  // facility code
+            "faccode": "123456",  // facility code
+            "language": "eng_ZA",  // currently always eng_ZA for nurseconnect
         }
     }
 
