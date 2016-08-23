@@ -307,10 +307,10 @@ go.app = function() {
         });
 
         self.add('state_check_optout_reg', function(name) {
-            // return go.utils
-            //     .opted_out(self.im, self.contact)
-            if (self.im.user.answers.contact.details.nurseconnect !== undefined
-                && self.im.user.answers.contact.details.nurseconnect.opt_out_reason.length > 0) {
+            var contact_msisdn = Object.keys(self.im.user.answers.contact.details.addresses.msisdn)[0];
+            if (self.im.user.answers.contact.details.addresses.msisdn[contact_msisdn].optedout === "True") {
+            //if (self.im.user.answers.contact.details.nurseconnect !== undefined
+            //    && self.im.user.answers.contact.details.nurseconnect.opt_out_reason.length > 0) {
                 return self.states.create('state_opt_in_reg');
             } else {
                 return self.states.create('state_faccode');
@@ -326,9 +326,7 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (choice.value === 'yes') {
-                        // return go.utils
-                        //     .nurse_opt_in(self.im, self.contact)
-
+                        // TODO: Opt-in
                         self.im.user.answers.contact.details.nurseconnect.opt_out_reason = "";  // cancel an optout..?
                         return 'state_faccode';
                     } else {
@@ -393,7 +391,7 @@ go.app = function() {
                 if (self.im.user.answers.user_identity.details.nurseconnect === undefined) {
                     self.im.user.answers.user_identity.details.nurseconnect = {};
                 }
-                
+
                 if (self.im.user.answers.user_identity.details.nurseconnect.registrees === undefined) {
                     self.im.user.answers.user_identity.details.nurseconnect.registrees = self.im.user.answers.working_on;
                 } else {
