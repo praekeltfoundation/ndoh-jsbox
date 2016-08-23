@@ -215,7 +215,7 @@ go.app = function() {
                     new Choice('state_permission_denied', $('No')),
                 ],
                 next: function(choice) {
-                    self.im.user.set_answer("contact", self.im.user.answers.operator);
+                    self.im.user.set_answer("registrant", self.im.user.answers.operator);
                     return choice.value;
                 }
             });
@@ -260,23 +260,23 @@ go.app = function() {
                     msisdn = utils.normalize_msisdn(content, '27');
                     self.im.user.set_answer("working_on", msisdn);
 
-                    return "state_load_contact";
+                    return "state_load_identity";
                 }
             });
         });
 
-        self.add('state_load_contact', function(name) {
+        self.add('state_load_identity', function(name) {
             return is
             .get_or_create_identity({"msisdn": self.im.user.answers.working_on})
             .then(function(identity) {
-                self.im.user.set_answer("contact", identity);
+                self.im.user.set_answer("registrant", identity);
                 return self.states.create('state_check_optout_reg', identity);
             });
         });
 
         self.add('state_check_optout_reg', function(name) {
-            var contact_msisdn = Object.keys(self.im.user.answers.contact.details.addresses.msisdn)[0];
-            if (self.im.user.answers.contact.details.addresses.msisdn[contact_msisdn].optedout === "True") {
+            var registrant_msisdn = Object.keys(self.im.user.answers.registrant.details.addresses.msisdn)[0];
+            if (self.im.user.answers.registrant.details.addresses.msisdn[registrant_msisdn].optedout === "True") {
                 return self.states.create('state_opt_in_reg');
             } else {
                 return self.states.create('state_faccode');
@@ -293,7 +293,7 @@ go.app = function() {
                 next: function(choice) {
                     if (choice.value === 'yes') {
                         // TODO: Opt-in
-                        self.im.user.answers.contact.details.nurseconnect.opt_out_reason = "";  // cancel an optout..?
+                        self.im.user.answers.registrant.details.nurseconnect.opt_out_reason = "";  // cancel an optout..?
                         return 'state_faccode';
                     } else {
                         return 'state_permission_denied';
@@ -316,9 +316,9 @@ go.app = function() {
                             if (!facname) {
                                 return error;
                             } else {
-                                self.im.user.answers.contact.details.nurseconnect = {};
-                                self.im.user.answers.contact.details.nurseconnect.facname = facname;
-                                self.im.user.answers.contact.details.nurseconnect.faccode = content;
+                                self.im.user.answers.registrant.details.nurseconnect = {};
+                                self.im.user.answers.registrant.details.nurseconnect.facname = facname;
+                                self.im.user.answers.registrant.details.nurseconnect.faccode = content;
 
                                 return null;  // vumi expects null or undefined if check passes
                             }
@@ -334,7 +334,7 @@ go.app = function() {
                 question: $("Please confirm {{owner}} facility: {{facname}}")
                     .context({
                         owner: owner,
-                        facname: self.im.user.answers.contact.details.nurseconnect.facname
+                        facname: self.im.user.answers.registrant.details.nurseconnect.facname
                     }),
                 choices: [
                     new Choice('state_save_nursereg', $('Confirm')),
@@ -347,11 +347,11 @@ go.app = function() {
         });
 
         self.add('state_save_nursereg', function(name) {
-            // Save useful contact info
-            self.im.user.answers.contact.details.nurseconnect.is_registered = "true";
+            // Save useful registrant info
+            self.im.user.answers.registrant.details.nurseconnect.is_registered = "true";
 
             if (self.im.user.answers.working_on !== "") {
-                self.im.user.answers.contact.details.nurseconnect.registered_by
+                self.im.user.answers.registrant.details.nurseconnect.registered_by
                     = Object.keys(self.im.user.answers.operator.details.addresses.msisdn)[0];
 
                 if (self.im.user.answers.operator.details.nurseconnect === undefined) {
@@ -370,12 +370,12 @@ go.app = function() {
             return Q
             .all([
                 self.send_registration_thanks(
-                    Object.keys(self.im.user.answers.contact.details.addresses.msisdn)[0],
-                    self.im.user.answers.contact.details.nurseconnect.language_choice
+                    Object.keys(self.im.user.answers.registrant.details.addresses.msisdn)[0],
+                    self.im.user.answers.registrant.details.nurseconnect.language_choice
                 ),
                 // POST to 'nurseregs/'
                 // self.post_nursereg(
-                //     self.im.user.answers.contact,
+                //     self.im.user.answers.registrant,
                 //     Object.keys(self.im.user.answers.operator.details.addresses.msisdn)[0],
                 //     null
                 // )
