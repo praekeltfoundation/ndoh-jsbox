@@ -257,17 +257,13 @@ go.app = function() {
                     msisdn = utils.normalize_msisdn(content, '27');
                     self.im.user.set_answer("working_on", msisdn);
 
-                    return "state_load_identity";
+                    return is
+                    .get_or_create_identity({"msisdn": msisdn})
+                    .then(function(identity) {
+                        self.im.user.set_answer("registrant", identity);
+                        return self.states.create('state_check_optout_reg');
+                    });
                 }
-            });
-        });
-
-        self.add('state_load_identity', function(name) {
-            return is
-            .get_or_create_identity({"msisdn": self.im.user.answers.working_on})
-            .then(function(identity) {
-                self.im.user.set_answer("registrant", identity);
-                return self.states.create('state_check_optout_reg', identity);
             });
         });
 
