@@ -38,7 +38,8 @@
             "operator_id": "cb245673-aa41-4302-ac47-00000000007",  // device owner id
             "msisdn_registrant": "+27821235555",  // msisdn of the registrant
             "msisdn_device": "+27821234444",  // device msisdn
-            "faccode": "123456"  // facility code
+            "faccode": "123456",  // facility code
+            "language": "eng_ZA",  // currently always eng_ZA for nurseconnect
         }
     }
 
@@ -140,7 +141,6 @@
         "registrant_id": "uuid",  // the new number's identity_id
         "action": "nurse_change_msisdn",
         "data": {
-            "registrant_old": "uuid",  // the old number's identity_id
             "msisdn_old": "0825551001",
             "msisdn_new": "0825551002",
             // number of device used - will be the same as either msisdn_old or msisdn_new,
