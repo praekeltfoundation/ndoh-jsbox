@@ -1323,15 +1323,15 @@ describe("app", function() {
         });
 
         // ID Validation
-        describe.skip("id number entry", function() {
+        describe("id number entry", function() {
             describe("invalid id", function() {
                 it("should loop back", function() {
                     return tester
-                        .setup.user.state('st_id_no')
+                        .setup.user.state('state_id_no')
                         .input('12345A')
                         .check.interaction({
-                            state: 'st_id_no',
-                            reply: "Sorry, the format of the ID number is not correct. Please enter their RSA ID number again, e.g. 7602095060082"
+                            state: 'state_id_no',
+                            reply: "Sorry, the format of the ID number is not correct. Please enter your RSA ID number again, e.g. 7602095060082"
                         })
                         .run();
                 });
@@ -1339,14 +1339,14 @@ describe("app", function() {
         });
 
         // Passport Validation
-        describe.skip("passport number entry", function() {
+        describe("passport number entry", function() {
             describe("invalid passport number - non alphanumeric", function() {
                 it("should loop back", function() {
                     return tester
-                        .setup.user.state('st_passport_no')
+                        .setup.user.state('state_passport_no')
                         .input('AA-1234')
                         .check.interaction({
-                            state: 'st_passport_no',
+                            state: 'state_passport_no',
                             reply: "Sorry, the format of the passport number is not correct. Please enter the passport number again."
                         })
                         .run();
@@ -1355,10 +1355,10 @@ describe("app", function() {
             describe("invalid passport number - too short", function() {
                 it("should loop back", function() {
                     return tester
-                        .setup.user.state('st_passport_no')
+                        .setup.user.state('state_passport_no')
                         .input('1234')
                         .check.interaction({
-                            state: 'st_passport_no',
+                            state: 'state_passport_no',
                             reply: "Sorry, the format of the passport number is not correct. Please enter the passport number again."
                         })
                         .run();
@@ -1367,14 +1367,14 @@ describe("app", function() {
         });
 
         // DOB Validation
-        describe.skip("dob entry", function() {
+        describe("dob entry", function() {
             describe("invalid dob chars", function() {
                 it("should loop back", function() {
                     return tester
-                        .setup.user.state('st_passport_dob')
+                        .setup.user.state('state_passport_dob')
                         .input('01-01-1980')
                         .check.interaction({
-                            state: 'st_passport_dob',
+                            state: 'state_passport_dob',
                             reply: "Sorry, the format of the date of birth is not correct. Please enter it again, e.g. 27 May 1975 as 27051975:"
                         })
                         .run();
@@ -1383,10 +1383,10 @@ describe("app", function() {
             describe("not real date", function() {
                 it("should loop back", function() {
                     return tester
-                        .setup.user.state('st_passport_dob')
+                        .setup.user.state('state_passport_dob')
                         .input('29021981    ')
                         .check.interaction({
-                            state: 'st_passport_dob',
+                            state: 'state_passport_dob',
                             reply: "Sorry, the format of the date of birth is not correct. Please enter it again, e.g. 27 May 1975 as 27051975:"
                         })
                         .run();
@@ -1395,10 +1395,10 @@ describe("app", function() {
             describe("inverted date", function() {
                 it("should loop back", function() {
                     return tester
-                        .setup.user.state('st_passport_dob')
+                        .setup.user.state('state_passport_dob')
                         .input('19800101')
                         .check.interaction({
-                            state: 'st_passport_dob',
+                            state: 'state_passport_dob',
                             reply: "Sorry, the format of the date of birth is not correct. Please enter it again, e.g. 27 May 1975 as 27051975:"
                         })
                         .run();
@@ -1662,16 +1662,16 @@ describe("app", function() {
                 });
             });
 
-            describe.skip("change identification", function() {
+            describe("change identification", function() {
                 it("should display 2 options", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '4'  // state_subscribed - change id
                         )
                         .check.interaction({
-                            state: 'st_change_id_no',
+                            state: 'state_change_id_no',
                             reply: [
                                 'Please select your type of identification:',
                                 '1. RSA ID',
@@ -1680,9 +1680,9 @@ describe("app", function() {
                         })
                         .run();
                 });
-                it("should have extras", function() {
+                it.skip("should have extras", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '4'  // state_subscribed - change id
@@ -1698,21 +1698,21 @@ describe("app", function() {
                 describe("change ID no", function() {
                     it("should ask for their ID no", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '4'  // state_subscribed - change id
                                 , '1'  // state_change_id_no - RSA ID
                             )
                             .check.interaction({
-                                state: 'st_id_no',
+                                state: 'state_id_no',
                                 reply: 'Please enter your 13-digit RSA ID number:'
                             })
                             .run();
                     });
                     it("should tell them their details have been changed", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '4'  // state_subscribed - change id
@@ -1720,14 +1720,14 @@ describe("app", function() {
                                 , '9001016265166 '  // state_id_no
                             )
                             .check.interaction({
-                                state: 'st_end_detail_changed',
+                                state: 'state_end_detail_changed',
                                 reply: 'Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again.'
                             })
                             .run();
                     });
-                    it("should save extras", function() {
+                    it.skip("should save extras", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '4'  // state_subscribed - change id
@@ -1736,7 +1736,7 @@ describe("app", function() {
                             )
                             .check(function(api) {
                                 var contact = _.find(api.contacts.store, {
-                                  msisdn: '+27821237777'
+                                  msisdn: '+27820001003'
                                 });
                                 assert.equal(Object.keys(contact.extra).length, 8);
                                 assert.equal(contact.extra.nc_id_type, 'sa_id');
@@ -1749,14 +1749,14 @@ describe("app", function() {
                 describe("when a user wants to change their passport no", function() {
                     it("should ask for the origin of their passport", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '4'  // state_subscribed - change id
                                 , '2'  // state_change_id_no - passport
                             )
                             .check.interaction({
-                                state: 'st_passport',
+                                state: 'state_passport',
                                 reply: [
                                     'What is the country of origin of the passport?',
                                     '1. Namibia',
@@ -1772,7 +1772,7 @@ describe("app", function() {
                     });
                     it("should ask for their passport no", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}
                                 , '4'  // state_subscribed - change id
@@ -1780,14 +1780,14 @@ describe("app", function() {
                                 , '1'  // state_passport - namibia
                             )
                             .check.interaction({
-                                state: 'st_passport_no',
+                                state: 'state_passport_no',
                                 reply: 'Please enter the passport number:'
                             })
                             .run();
                     });
                     it("should ask for their date of birth", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}
                                 , '4'  // state_subscribed - change id
@@ -1796,14 +1796,14 @@ describe("app", function() {
                                 , 'Nam1234'  // state_passport_no
                             )
                             .check.interaction({
-                                state: 'st_passport_dob',
+                                state: 'state_passport_dob',
                                 reply: 'Please enter the date of birth, e.g. 27 May 1975 as 27051975:'
                             })
                             .run();
                     });
                     it("should tell them their details have been changed", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}
                                 , '4'  // state_subscribed - change id
@@ -1813,14 +1813,14 @@ describe("app", function() {
                                 , '07031976'  // state_dob - 7 March 1976
                             )
                             .check.interaction({
-                                state: 'st_end_detail_changed',
+                                state: 'state_end_detail_changed',
                                 reply: 'Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again.'
                             })
                             .run();
                     });
-                    it("should save extras", function() {
+                    it.skip("should save extras", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}
                                 , '4'  // state_subscribed - change id
@@ -1831,7 +1831,7 @@ describe("app", function() {
                             )
                             .check(function(api) {
                                 var contact = _.find(api.contacts.store, {
-                                  msisdn: '+27821237777'
+                                  msisdn: '+27820001003'
                                 });
                                 assert.equal(Object.keys(contact.extra).length, 10);
                                 assert.equal(contact.extra.nc_id_type, 'passport');

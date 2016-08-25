@@ -3,6 +3,7 @@ go;
 
 go.app = function() {
     var vumigo = require("vumigo_v02");
+    var moment = require('moment');
     // var _ = require('lodash');
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
@@ -119,6 +120,39 @@ go.app = function() {
                         params: params
                     });
             }
+        },
+
+        // temporary - TODO: put function below in seed-jsbox-utils (#16)
+        self.validate_id_sa = function(id) {
+            var i, c,
+                even = '',
+                sum = 0,
+                check = id.slice(-1);
+
+            if (id.length != 13 || id.match(/\D/)) {
+                return false;
+            }
+            if (!moment(id.slice(0,6), 'YYMMDD', true).isValid()) {
+                return false;
+            }
+            id = id.substr(0, id.length - 1);
+            for (i = 0; id.charAt(i); i += 2) {
+                c = id.charAt(i);
+                sum += +c;
+                even += id.charAt(i + 1);
+            }
+            even = '' + even * 2;
+            for (i = 0; even.charAt(i); i++) {
+                c = even.charAt(i);
+                sum += +c;
+            }
+            sum = 10 - ('' + sum).charAt(1);
+            return ('' + sum).slice(-1) == check;
+        },
+
+        // temporary - TODO: put function below in seed-jsbox-utils (#17)
+        self.extract_id_dob = function(id) {
+            return moment(id.slice(0,6), 'YYMMDD').format('YYYY-MM-DD');
         },
 
     // DELEGATOR START STATE
@@ -296,8 +330,8 @@ go.app = function() {
             });
         });
 
-        /*self.add('state_change_id_no', function(name) {
-            var owner = self.user.extra.nc_working_on === "" ? 'your' : 'their';
+        self.add('state_change_id_no', function(name) {
+            var owner = 'your';//self.user.extra.nc_working_on === "" ? 'your' : 'their';
             var question =$("Please select {{owner}} type of identification:")
                     .context({owner: owner});
             return new ChoiceState(name, {
@@ -312,6 +346,82 @@ go.app = function() {
             });
         });
 
+        self.add('state_id_no', function(name) {
+            var owner = 'your';//self.user.extra.nc_working_on === "" ? 'your' : 'their';
+            var error = $("Sorry, the format of the ID number is not correct. Please enter {{owner}} RSA ID number again, e.g. 7602095060082")
+                .context({owner: owner});
+            var question = $("Please enter {{owner}} 13-digit RSA ID number:")
+                .context({owner: owner});
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    if (!self.validate_id_sa(content)) {
+                        return error;
+                    }
+                },
+                next: function(content) {
+                    // self.im.user.answers.registrant.details.nurseconnect.id_type = 'sa_id';
+                    // self.im.user.answers.registrant.details.nurseconnect.sa_id_no = content;
+                    // self.im.user.answers.registrant.details.nurseconnect.dob = self.extract_id_dob(content);
+
+                    return 'state_post_change_detail';
+                }
+            });
+        });
+
+        self.add('state_passport', function(name) {
+            return new ChoiceState(name, {
+                question: $('What is the country of origin of the passport?'),
+                choices: [
+                    new Choice('na', $('Namibia')),
+                    new Choice('bw', $('Botswana')),
+                    new Choice('mz', $('Mozambique')),
+                    new Choice('sz', $('Swaziland')),
+                    new Choice('ls', $('Lesotho')),
+                    new Choice('cu', $('Cuba')),
+                    new Choice('other', $('Other')),
+                ],
+                next: 'state_passport_no'
+            });
+        });
+
+        self.add('state_passport_no', function(name) {
+            var error = $("Sorry, the format of the passport number is not correct. Please enter the passport number again.");
+            var question = $("Please enter the passport number:");
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    if (!utils.is_alpha_numeric_only(content) || content.length <= 4) {
+                        return error;
+                    }
+                },
+                next: 'state_passport_dob'
+            });
+        });
+
+        self.add('state_passport_dob', function(name) {
+            var error = $("Sorry, the format of the date of birth is not correct. Please enter it again, e.g. 27 May 1975 as 27051975:");
+            var question = $("Please enter the date of birth, e.g. 27 May 1975 as 27051975:");
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    if (!utils.is_valid_date(content, 'DDMMYYYY')) {
+                        return error;
+                    }
+                },
+                next: function(content) {
+                    // self.im.user.answers.registrant.details.nurseconnect.id_type = 'passport';
+                    // self.im.user.answers.registrant.details.nurseconnect.passport_country = self.im.user.answers.state_passport;
+                    // self.im.user.answers.registrant.details.nurseconnect.passport_num = self.im.user.answers.state_passport_no;
+                    // self.im.user.answers.registrant.details.nurseconnect.dob
+                    //     = moment(self.im.user.answers.state_passport_dob, 'DDMMYYYY').format('YYYY-MM-DD');
+
+                    return 'state_post_change_detail';
+                }
+            });
+        });
+
+        /*
         self.add('state_change_sanc', function(name) {
             var question = $("Please enter your 8-digit SANC registration number, e.g. 34567899:");
             var error = $("Sorry, the format of the SANC registration number is not correct. Please enter it again, e.g. 34567899:");
