@@ -256,7 +256,7 @@ go.app = function() {
                 self.im.user.answers.state_change_num, '27')})
             .then(function(identity) {
                 var new_msisdn = Object.keys(identity.details.addresses.msisdn)[0];
-                self.im.user.set_answer("change_identity", identity);
+                self.im.user.set_answer("registrant", identity);
                 if (identity.details.addresses.msisdn[new_msisdn].optedout === "True") {
                     return self.states.create('state_opt_in_change');
                 } else {
@@ -283,10 +283,10 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (choice.value === 'yes') {
-                        self.im.user.answers.change_identity.details.nurseconnect.opt_out_reason = "";  // reset
+                        self.im.user.answers.registrant.details.nurseconnect.opt_out_reason = "";  // reset
                         return self
                          // TODO: adapt IdentityStore class in seed-jsbox-utils (#15) to have optin function
-                         .optin_identity(self.im.user.answers.change_identity)
+                         .optin_identity(self.im.user.answers.registrant)
                          .then(function() {
                              return 'state_switch_new_nr';
                          });
@@ -339,8 +339,9 @@ go.app = function() {
                             if (!facname) {
                                 return error;
                             } else {
-                                self.im.user.answers.operator.details.nurseconnect.facname = facname;
-                                self.im.user.answers.operator.details.nurseconnect.faccode = content;
+                                self.im.user.set_answer("registrant", self.im.user.answers.operator);
+                                self.im.user.answers.registrant.details.nurseconnect.facname = facname;
+                                self.im.user.answers.registrant.details.nurseconnect.faccode = content;
 
                                 return null;  // vumi expects null or undefined if check passes
                             }
@@ -351,9 +352,7 @@ go.app = function() {
         });
 
         self.add('state_change_id_no', function(name) {
-            var owner = 'your';//self.user.extra.nc_working_on === "" ? 'your' : 'their';
-            var question =$("Please select {{owner}} type of identification:")
-                    .context({owner: owner});
+            var question = $("Please select your type of identification:");
             return new ChoiceState(name, {
                 question: question,
                 choices: [
@@ -367,11 +366,8 @@ go.app = function() {
         });
 
         self.add('state_id_no', function(name) {
-            var owner = 'your';//self.user.extra.nc_working_on === "" ? 'your' : 'their';
-            var error = $("Sorry, the format of the ID number is not correct. Please enter {{owner}} RSA ID number again, e.g. 7602095060082")
-                .context({owner: owner});
-            var question = $("Please enter {{owner}} 13-digit RSA ID number:")
-                .context({owner: owner});
+            var error = $("Sorry, the format of the ID number is not correct. Please enter your RSA ID number again, e.g. 7602095060082");
+            var question = $("Please enter your 13-digit RSA ID number:");
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
@@ -380,9 +376,10 @@ go.app = function() {
                     }
                 },
                 next: function(content) {
-                    // self.im.user.answers.registrant.details.nurseconnect.id_type = 'sa_id';
-                    // self.im.user.answers.registrant.details.nurseconnect.sa_id_no = content;
-                    // self.im.user.answers.registrant.details.nurseconnect.dob = self.extract_id_dob(content);
+                    self.im.user.set_answer("registrant", self.im.user.answers.operator);
+                    self.im.user.answers.registrant.details.nurseconnect.id_type = 'sa_id';
+                    self.im.user.answers.registrant.details.nurseconnect.sa_id_no = content;
+                    self.im.user.answers.registrant.details.nurseconnect.dob = self.extract_id_dob(content);
 
                     return 'state_post_change_detail';
                 }
@@ -430,11 +427,12 @@ go.app = function() {
                     }
                 },
                 next: function(content) {
-                    // self.im.user.answers.registrant.details.nurseconnect.id_type = 'passport';
-                    // self.im.user.answers.registrant.details.nurseconnect.passport_country = self.im.user.answers.state_passport;
-                    // self.im.user.answers.registrant.details.nurseconnect.passport_num = self.im.user.answers.state_passport_no;
-                    // self.im.user.answers.registrant.details.nurseconnect.dob
-                    //     = moment(self.im.user.answers.state_passport_dob, 'DDMMYYYY').format('YYYY-MM-DD');
+                    self.im.user.set_answer("registrant", self.im.user.answers.operator);
+                    self.im.user.answers.registrant.details.nurseconnect.id_type = 'passport';
+                    self.im.user.answers.registrant.details.nurseconnect.passport_country = self.im.user.answers.state_passport;
+                    self.im.user.answers.registrant.details.nurseconnect.passport_num = self.im.user.answers.state_passport_no;
+                    self.im.user.answers.registrant.details.nurseconnect.dob
+                        = moment(self.im.user.answers.state_passport_dob, 'DDMMYYYY').format('YYYY-MM-DD');
 
                     return 'state_post_change_detail';
                 }
@@ -456,7 +454,8 @@ go.app = function() {
                     }
                 },
                 next: function(content) {
-                    // self.im.user.answers.registrant.details.nurseconnect.sanc = content;
+                    self.im.user.set_answer("registrant", self.im.user.answers.operator);
+                    self.im.user.answers.registrant.details.nurseconnect.sanc = content;
 
                     return 'state_post_change_detail';
                 }
@@ -477,7 +476,8 @@ go.app = function() {
                     }
                 },
                 next: function(content) {
-                    // self.im.user.answers.registrant.details.nurseconnect.persal = content;
+                    self.im.user.set_answer("registrant", self.im.user.answers.operator);
+                    self.im.user.answers.registrant.details.nurseconnect.persal = content;
 
                     return 'state_post_change_detail';
                 }
