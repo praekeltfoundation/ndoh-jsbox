@@ -130,6 +130,21 @@ go.app = function() {
             }
         },
 
+        // temporary - TODO: adapt IdentityStore class in seed-jsbox-utils (#15) to have optin function
+        self.optin_identity = function(identity) {
+            var http = new JsonApi(self.im, {});
+            http.defaults.headers.Authorization = ['Token ' + self.im.config.services.identity_store.token];
+
+            var endpoint = 'optin/';
+            var url = self.im.config.services.identity_store.url + endpoint;
+
+            return http.post(url, {data: identity})
+                //.then(this.log_service_call('POST', url, identity, null))
+                .then(function(response) {
+                    return response.data;
+                });
+        },
+
     // REGISTRATION FINISHED SMS HANDLING
 
         self.send_registration_thanks = function(msisdn) {
@@ -287,9 +302,13 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (choice.value === 'yes') {
-                        // TODO: Opt-in
-                        self.im.user.answers.registrant.details.nurseconnect.opt_out_reason = "";  // cancel an optout..?
-                        return 'state_faccode';
+                        self.im.user.answers.registrant.details.nurseconnect.opt_out_reason = "";  // reset
+                        return self
+                        // TODO: adapt IdentityStore class in seed-jsbox-utils (#15) to have optin function
+                        .optin_identity(self.im.user.answers.registrant)
+                        .then(function() {
+                            return 'state_faccode';
+                        });
                     } else {
                         return 'state_permission_denied';
                     }
