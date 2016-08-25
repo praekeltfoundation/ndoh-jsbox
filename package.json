@@ -24,7 +24,8 @@
     "vumigo_v02": "~0.2",
     "seed-jsbox-utils": "~0.1.4",
     "lodash": "~2.4.1",
-    "q": "~0.9.7"
+    "q": "~0.9.7",
+    "moment": "~2.6"
   },
   "devDependencies": {
     "mocha-as-promised": "~2.0.0",
