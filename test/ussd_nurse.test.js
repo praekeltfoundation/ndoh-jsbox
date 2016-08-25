@@ -1846,19 +1846,19 @@ describe("app", function() {
         });
 
         // Optout
-        describe.skip("opting out", function() {
+        describe("opting out", function() {
             describe("registered user - not opted out", function() {
-                describe("should reach st_optout", function() {
+                describe("should reach state_optout", function() {
                     it("should ask optout reason", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '6'  // state_subscribed - more options
                                 , '2'  // state_subscribed - opt out
                             )
                             .check.interaction({
-                                state: 'st_optout',
+                                state: 'state_optout',
                                 reply: [
                                     "Please tell us why you no longer want messages:",
                                     "1. Not a nurse or midwife",
@@ -1870,9 +1870,9 @@ describe("app", function() {
                             })
                             .run();
                     });
-                    it("should have extras", function() {
+                    it.skip("should have extras", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '6'  // state_subscribed - more options
@@ -1880,7 +1880,7 @@ describe("app", function() {
                             )
                             .check(function(api) {
                                 var contact = _.find(api.contacts.store, {
-                                  msisdn: '+27821237777'
+                                  msisdn: '+27820001003'
                                 });
                                 assert.equal(Object.keys(contact.extra).length, 8);
                                 assert.equal(contact.extra.nc_opt_out_reason, undefined);
@@ -1892,7 +1892,7 @@ describe("app", function() {
                 describe("should reach st_end_detail_changed", function() {
                     it("should thank them", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '6'  // state_subscribed - more options
@@ -1900,13 +1900,13 @@ describe("app", function() {
                                 , '1'  // state_optout - not a nurse
                             )
                             .check.interaction({
-                                state: 'st_end_detail_changed',
+                                state: 'state_end_detail_changed',
                             })
                             .run();
                     });
-                    it("should save extras", function() {
+                    it.skip("should save extras", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '6'  // state_subscribed - more options
@@ -1915,16 +1915,16 @@ describe("app", function() {
                             )
                             .check(function(api) {
                                 var contact = _.find(api.contacts.store, {
-                                  msisdn: '+27821237777'
+                                  msisdn: '+27820001003'
                                 });
                                 assert.equal(Object.keys(contact.extra).length, 9);
                                 assert.equal(contact.extra.nc_opt_out_reason, 'job_change');
                             })
                             .run();
                     });
-                    it("should fire metrics", function() {
+                    it.skip("should fire metrics", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '6'  // state_subscribed - more options
@@ -1948,7 +1948,7 @@ describe("app", function() {
                 describe("choosing main menu", function() {
                     it("should bail", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '6'  // state_subscribed - more options
@@ -1956,14 +1956,14 @@ describe("app", function() {
                                 , '5'  // state_optout - main menu
                             )
                             .check.interaction({
-                                state: 'st_subscribed',
+                                state: 'state_subscribed',
                             })
                             .run();
                     });
                 });
             });
 
-            describe("registered user - opted out, reason other", function() {
+            describe.skip("registered user - opted out, reason other", function() {
                 describe("should reach st_optout", function() {
                     it("should ask prior optout reason", function() {
                         return tester
@@ -1974,7 +1974,7 @@ describe("app", function() {
                                 , '2'  // state_subscribed - opt out
                             )
                             .check.interaction({
-                                state: 'st_optout',
+                                state: 'state_optout',
                                 reply: [
                                     "You have opted out before. Please tell us why:",
                                     "1. Not a nurse or midwife",
@@ -2017,7 +2017,7 @@ describe("app", function() {
                                 , '4'  // state_optout - other
                             )
                             .check.interaction({
-                                state: 'st_end_detail_changed'
+                                state: 'state_end_detail_changed'
                             })
                             .run();
                     });
@@ -2068,14 +2068,14 @@ describe("app", function() {
                                 , '5'  // state_optout - main menu
                             )
                             .check.interaction({
-                                state: 'st_subscribed',
+                                state: 'state_subscribed',
                             })
                             .run();
                     });
                 });
             });
 
-            describe("registered user - opted out, reason not_useful", function() {
+            describe.skip("registered user - opted out, reason not_useful", function() {
                 describe("should reach st_optout", function() {
                     it("should ask prior optout reason", function() {
                         return tester
@@ -2086,7 +2086,7 @@ describe("app", function() {
                                 , '2'  // state_subscribed - opt out
                             )
                             .check.interaction({
-                                state: 'st_optout',
+                                state: 'state_optout',
                                 reply: [
                                     "You have opted out before. Please tell us why:",
                                     "1. Not a nurse or midwife",
@@ -2130,7 +2130,7 @@ describe("app", function() {
                                 , '4'  // state_optout - other
                             )
                             .check.interaction({
-                                state: 'st_end_detail_changed'
+                                state: 'state_end_detail_changed'
                             })
                             .run();
                     });
@@ -2156,7 +2156,7 @@ describe("app", function() {
                 });
             });
 
-            describe("registered user - opted out, reason unknown", function() {
+            describe.skip("registered user - opted out, reason unknown", function() {
                 describe("should reach st_optout", function() {
                     it("should ask prior optout reason", function() {
                         return tester
@@ -2167,7 +2167,7 @@ describe("app", function() {
                                 , '2'  // state_subscribed - opt out
                             )
                             .check.interaction({
-                                state: 'st_optout',
+                                state: 'state_optout',
                                 reply: [
                                     "You have opted out before. Please tell us why:",
                                     "1. Not a nurse or midwife",
@@ -2211,7 +2211,7 @@ describe("app", function() {
                                 , '4'  // state_optout - other
                             )
                             .check.interaction({
-                                state: 'st_end_detail_changed'
+                                state: 'state_end_detail_changed'
                             })
                             .run();
                     });

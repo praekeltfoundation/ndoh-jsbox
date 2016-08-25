@@ -542,6 +542,57 @@ go.app = function() {
             });
         });
 
+        self.add('state_check_optout_optout', function(name) {
+            var msisdn = Object.keys(self.im.user.answers.operator.details.addresses.msisdn)[0];
+            if (self.im.user.answers.operator.details.addresses.msisdn[msisdn].optedout === "True") {
+                return self.states.create(
+                    'state_optout', {opted_out: true}
+                );
+            } else {
+                return self.states.create(
+                    'state_optout', {opted_out: false}
+                );
+            }
+        });
+
+        self.add('state_optout', function(name, opts) {
+            var question = opts.opted_out === false
+                ? $("Please tell us why you no longer want messages:")
+                : $("You have opted out before. Please tell us why:");
+            return new ChoiceState(name, {
+                question: question,
+                choices: [
+                    new Choice('job_change', $('Not a nurse or midwife')),
+                    new Choice('number_owner_change', $('New user of number')),
+                    new Choice('not_useful', $("Messages not useful")),
+                    new Choice('other', $("Other")),
+                    new Choice('main_menu', $("Main menu"))
+                ],
+                next: function(choice) {
+                    if (choice.value === 'main_menu') {
+                        return 'state_route';
+                    } else {
+                        // return go.utils
+                        //     .nurse_optout(
+                        //         self.im, self.contact,
+                        //         optout_reason=choice.value,
+                        //         api_optout=true,
+                        //         unsub_all=true,
+                        //         jembi_optout=true,
+                        //         patch_last_reg=true,
+                        //         self.metric_prefix,
+                        //         self.env
+                        //     )
+                        //     .then(function() {
+                        //         return 'st_end_detail_changed';
+                        //     });
+                         return 'state_end_detail_changed';
+                    }
+                }
+            });
+        });
+
+
         self.add('state_post_change_old_nr', function(name, opts) {
             // transfer the old extras to the new contact
             // self.contact.extra = opts.contact.extra;
