@@ -1474,30 +1474,30 @@ describe("app", function() {
                 });
             });
 
-            describe.skip("change sanc", function() {
+            describe("change sanc", function() {
                 it("should ask for sanc", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '5' // state_subscribed - change sanc
                         )
                         .check.interaction({
-                            state: 'st_change_sanc',
+                            state: 'state_change_sanc',
                             reply: "Please enter your 8-digit SANC registration number, e.g. 34567899:"
                         })
                         .run();
                 });
-                it("should have extras", function() {
+                it.skip("should have extras", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '5' // state_subscribed - change sanc
                         )
                         .check(function(api) {
                             var contact = _.find(api.contacts.store, {
-                              msisdn: '+27821237777'
+                              msisdn: '+27820001003'
                             });
                             assert.equal(Object.keys(contact.extra).length, 8);
                             assert.equal(contact.extra.nc_sanc, undefined);
@@ -1506,49 +1506,49 @@ describe("app", function() {
                 });
                 it("should loop back if non-numeric char", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '5' // state_subscribed - change sanc
                             , '3456789A'  // state_change_sanc
                         )
                         .check.interaction({
-                            state: 'st_change_sanc',
+                            state: 'state_change_sanc',
                             reply: "Sorry, the format of the SANC registration number is not correct. Please enter it again, e.g. 34567899:"
                         })
                         .run();
                 });
                 it("should loop back if not 8 chars", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '5' // state_subscribed - change sanc
                             , '3456789'  // state_change_sanc
                         )
                         .check.interaction({
-                            state: 'st_change_sanc',
+                            state: 'state_change_sanc',
                             reply: "Sorry, the format of the SANC registration number is not correct. Please enter it again, e.g. 34567899:"
                         })
                         .run();
                 });
                 it("should reach details changed end state", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '5' // state_subscribed - change sanc
                             , '34567890'  // state_change_sanc
                         )
                         .check.interaction({
-                            state: 'st_end_detail_changed',
+                            state: 'state_end_detail_changed',
                             reply: "Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again."
                         })
                         .run();
                 });
-                it("should save extras", function() {
+                it.skip("should save extras", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '5' // state_subscribed - change sanc
@@ -1556,7 +1556,7 @@ describe("app", function() {
                         )
                         .check(function(api) {
                             var contact = _.find(api.contacts.store, {
-                              msisdn: '+27821237777'
+                              msisdn: '+27820001003'
                             });
                             assert.equal(Object.keys(contact.extra).length, 9);
                             assert.equal(contact.extra.nc_sanc, "34567890");

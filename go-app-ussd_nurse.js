@@ -421,14 +421,14 @@ go.app = function() {
             });
         });
 
-        /*
+
         self.add('state_change_sanc', function(name) {
             var question = $("Please enter your 8-digit SANC registration number, e.g. 34567899:");
             var error = $("Sorry, the format of the SANC registration number is not correct. Please enter it again, e.g. 34567899:");
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
-                    if (!go.utils.check_valid_number(content)
+                    if (!utils.check_valid_number(content)
                         || content.length !== 8) {
                         return error;
                     } else {
@@ -436,16 +436,14 @@ go.app = function() {
                     }
                 },
                 next: function(content) {
-                    self.contact.extra.nc_sanc = content;
-                    return self.im.contacts
-                        .save(self.contact)
-                        .then(function() {
-                            return 'isl_post_change_detail';
-                        });
+                    // self.im.user.answers.registrant.details.nurseconnect.sanc = content;
+
+                    return 'state_post_change_detail';
                 }
             });
         });
 
+        /*
         self.add('state_change_persal', function(name) {
             var question = $("Please enter your 8-digit Persal employee number, e.g. 11118888:");
             var error = $("Sorry, the format of the Persal employee number is not correct. Please enter it again, e.g. 11118888:");
