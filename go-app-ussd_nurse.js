@@ -87,7 +87,7 @@ go.app = function() {
                 'criteria': 'value:' + clinic_code
             };
             return self
-                .jembi_json_api_call('get', params, null, 'NCfacilityCheck', im);
+            .jembi_json_api_call('get', params, null, 'NCfacilityCheck', im);
         };
 
         self.validate_nc_clinic_code = function(im, clinic_code) {
@@ -99,15 +99,15 @@ go.app = function() {
                     });
             } else {
                 return self
-                    .jembi_nc_clinic_validate(im, clinic_code)
-                    .then(function(json_result) {
-                        var rows = json_result.data.rows;
-                        if (rows.length === 0) {
-                            return false;
-                        } else {
-                            return rows[0][2];
-                        }
-                    });
+                .jembi_nc_clinic_validate(im, clinic_code)
+                .then(function(json_result) {
+                    var rows = json_result.data.rows;
+                    if (rows.length === 0) {
+                        return false;
+                    } else {
+                        return rows[0][2];
+                    }
+                });
             }
         };
 
@@ -307,18 +307,18 @@ go.app = function() {
                 question: question,
                 check: function(content) {
                     return self
-                        .validate_nc_clinic_code(self.im, content)
-                        .then(function(facname) {
-                            if (!facname) {
-                                return error;
-                            } else {
-                                self.im.user.answers.registrant.details.nurseconnect = {};
-                                self.im.user.answers.registrant.details.nurseconnect.facname = facname;
-                                self.im.user.answers.registrant.details.nurseconnect.faccode = content;
+                    .validate_nc_clinic_code(self.im, content)
+                    .then(function(facname) {
+                        if (!facname) {
+                            return error;
+                        } else {
+                            self.im.user.answers.registrant.details.nurseconnect = {};
+                            self.im.user.answers.registrant.details.nurseconnect.facname = facname;
+                            self.im.user.answers.registrant.details.nurseconnect.faccode = content;
 
-                                return null;  // vumi expects null or undefined if check passes
-                            }
-                        });
+                            return null;  // vumi expects null or undefined if check passes
+                        }
+                    });
                 },
                 next: 'state_facname'
             });
