@@ -464,33 +464,82 @@ go.app = function() {
             });
         });
 
-        /*
         self.add('state_change_old_nr', function(name) {
             var question = $("Please enter the old number on which you used to receive messages, e.g. 0736436265:");
             var error = $("Sorry, the format of the mobile number is not correct. Please enter your old mobile number again, e.g. 0726252020");
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
-                    if (!go.utils.check_valid_phone_number(content)) {
+                    if (!utils.is_valid_msisdn(content, 0, 10)) {
                         return error;
                     }
                 },
                 next: function(content) {
-                    return self.im.contacts
-                        .get(go.utils.normalize_msisdn(content, '27'), {create: true})  // false raises exception
-                        .then(function(contact) {
-                            if (contact.extra.nc_is_registered === "true") {
-                                return {
-                                    name: 'isl_change_old_nr',
-                                    creator_opts: {contact: contact}
-                                };
-                            } else {
-                                return 'state_change_old_not_found';
-                            }
-                        });
+                    return is
+                    .list_by_address({msisdn: utils.normalize_msisdn(content, '27')})
+                    .then(function(identities_found) {
+                        if (identities_found.results.length > 0) {
+                            return self
+                            .has_active_nurseconnect_subscription(identities_found.results[0].id)
+                            .then(function(has_active_nurseconnect_subscription) {
+                                if (has_active_nurseconnect_subscription) {
+                                    return {
+                                        name: 'state_post_change_old_nr',
+                                        creator_opts: {identity: identities_found.results[0].id}
+                                    };
+                                } else {
+                                    return 'state_change_old_not_found';
+                                }
+                            });
+                        }
+
+                        return 'state_change_old_not_found';
+                    });
                 }
             });
-        });*/
+        });
+
+        self.add('state_change_old_not_found', function(name) {
+            return new ChoiceState(name, {
+                question: $("The number {{msisdn}} is not currently subscribed to receive NurseConnect messages. Try again?")
+                    .context({msisdn: self.im.user.answers.state_change_old_nr}),
+                choices: [
+                    new Choice('state_change_old_nr', $('Yes')),
+                    new Choice('state_permission_denied', $('No')),
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+        self.add('state_permission_denied', function(name) {
+            return new ChoiceState(name, {
+                question: $("You have chosen not to receive NurseConnect SMSs on this number and so cannot complete registration."),
+                choices: [
+                    new Choice('state_route', $('Main Menu'))
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+        self.add('state_post_change_old_nr', function(name, opts) {
+            // transfer the old extras to the new contact
+            // self.contact.extra = opts.contact.extra;
+            // clean up old contact
+            // opts.contact.extra = {};
+            // save the contacts and post nursereg
+            // return Q.all([
+            //     self.im.contacts.save(self.contact),
+            //     self.im.contacts.save(opts.contact),
+            //     go.utils.post_nursereg(self.im, self.contact, self.contact.msisdn, opts.contact.msisdn),
+            // ])
+            // .then(function() {
+                return self.states.create('state_end_detail_changed');
+            // });
+        });
 
         self.add('state_post_change_detail', function() {
             // return go.utils
