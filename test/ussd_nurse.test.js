@@ -1565,24 +1565,24 @@ describe("app", function() {
                 });
             });
 
-            describe.skip("change persal", function() {
+            describe("change persal", function() {
                 it("should ask for persal", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '6'  // state_subscribed - more options
                             , '1'  // state_subscribed - change persal
                         )
                         .check.interaction({
-                            state: 'st_change_persal',
+                            state: 'state_change_persal',
                             reply: "Please enter your 8-digit Persal employee number, e.g. 11118888:"
                         })
                         .run();
                 });
-                it("should have extras", function() {
+                it.skip("should have extras", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '6'  // state_subscribed - more options
@@ -1590,7 +1590,7 @@ describe("app", function() {
                         )
                         .check(function(api) {
                             var contact = _.find(api.contacts.store, {
-                              msisdn: '+27821237777'
+                              msisdn: '+27820001003'
                             });
                             assert.equal(Object.keys(contact.extra).length, 8);
                             assert.equal(contact.extra.nc_persal, undefined);
@@ -1599,7 +1599,7 @@ describe("app", function() {
                 });
                 it("should loop back if non-numeric char", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '6'  // state_subscribed - more options
@@ -1607,14 +1607,14 @@ describe("app", function() {
                             , '3456789A'  // state_change_persal
                         )
                         .check.interaction({
-                            state: 'st_change_persal',
+                            state: 'state_change_persal',
                             reply: "Sorry, the format of the Persal employee number is not correct. Please enter it again, e.g. 11118888:"
                         })
                         .run();
                 });
                 it("should loop back if not 8 chars", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '6'  // state_subscribed - more options
@@ -1622,14 +1622,14 @@ describe("app", function() {
                             , '3456789'  // state_change_persal
                         )
                         .check.interaction({
-                            state: 'st_change_persal',
+                            state: 'state_change_persal',
                             reply: "Sorry, the format of the Persal employee number is not correct. Please enter it again, e.g. 11118888:"
                         })
                         .run();
                 });
                 it("should reach details changed end state", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '6'  // state_subscribed - more options
@@ -1637,14 +1637,14 @@ describe("app", function() {
                             , '11114444'  // state_change_persal
                         )
                         .check.interaction({
-                            state: 'st_end_detail_changed',
+                            state: 'state_end_detail_changed',
                             reply: "Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again."
                         })
                         .run();
                 });
-                it("should save extras", function() {
+                it.skip("should save extras", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '6'  // state_subscribed - more options
@@ -1653,7 +1653,7 @@ describe("app", function() {
                         )
                         .check(function(api) {
                             var contact = _.find(api.contacts.store, {
-                              msisdn: '+27821237777'
+                              msisdn: '+27820001003'
                             });
                             assert.equal(Object.keys(contact.extra).length, 9);
                             assert.equal(contact.extra.nc_persal, "11114444");
