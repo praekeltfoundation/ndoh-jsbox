@@ -1,0 +1,126 @@
+{
+    "": {
+        "pot-creation-date": "2016-08-16 02:50:+0000",
+        "project-id-version": "USSD PMTCT",
+        "language-team": "TSONGA <LL@li.org>",
+        "mime-version": "1.0",
+        "content-type": "text/plain; charset=UTF-8",
+        "content-transfer-encoding": "8bit",
+        "po-revision-date": "2016-08-21 19:00+0200",
+        "last-translator": "",
+        "x-generator": "Poedit 1.6.7",
+        "language": "ts"
+    },
+    "You have an incomplete registration. Would you like to continue with this registration?": [
+        null,
+        ""
+    ],
+    "Yes": [
+        null,
+        "Ina"
+    ],
+    "No, start a new registration": [
+        null,
+        ""
+    ],
+    "You need to be registered on MomConnect to receive these messages. Please visit the nearest clinic to register.": [
+        null,
+        "U ta fanela ku va u tsarisil eka MomConnect ku amukel swihungwn lesw. U komberiwa ku endzela tlinik ya le kusuhi ku tsarisa."
+    ],
+    "To sign up, we need to collect, store and use your info. You may also get messages on public holidays and weekends. Do you consent?": [
+        null,
+        "K tsaris hi fanel h kolek,hlayis no tiris vxokxok bya wen.U tlhe u kum swhungwn hi tholdey na mahel ya vhik.Wa pfumel xan?1.Ina 2.Ee"
+    ],
+    "No": [
+        null,
+        "Ee"
+    ],
+    "Unfortunately without your consent, you cannot register to MomConnect. Thank you for using the MomConnect service. Goodbye.": [
+        null,
+        "Khombo ra kona a wu nga tsaris ka MomConnect handle ka mpfumelel wa wena. Inkom ku va u tirisil vukorhokeri bya MomConnect. I mahlanga."
+    ],
+    "Please enter the year you were born (For example 1981)": [
+        null,
+        "Hikuva a wu na ID kumbe phasipoto, nghenisa lembe leri u nga velekiwa hi rona (Xikombiso 1981)"
+    ],
+    "Invalid date. Please enter the year you were born (For example 1981)": [
+        null,
+        "Nomboro leyi u yi ngheniseke yi hoxekile. Nghenisa nakambe hi vukheta lembe leri u nga velekiwa hi rona (xikombiso: 2001)"
+    ],
+    "In which month were you born?": [
+        null,
+        "Nghenisa nhweti leyi u nga velekiwa hi yona"
+    ],
+    "Please enter the date of the month you were born (For example 21)": [
+        null,
+        "Nghenisa nhweti leyi u nga velekiwa hi yona "
+    ],
+    "Invalid date. Please enter the date of the month you were born (For example 21)": [
+        null,
+        "Nghenisa siku leri u nga velekiwa hi rona (Xikombiso 14) s"
+    ],
+    "Would you like to receive messages about keeping your child HIV-negative?": [
+        null,
+        "Wa sw lava ku amkel mahungu mayelana na ku hlayis nwan wa wen a ngav na HIV? Mahungu ma ta va na marito yo fana na HIV, murhi na ARV"
+    ],
+    "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye.": [
+        null,
+        "Swesw u ta sungula ku amukel swihungwn mayelana na ku hlayisa nwan a nga vi na HIV. Inkom ku va u tirisil vukorhokeri bya MomConnect. I mahlanga."
+    ],
+    "You have chosen to not receive messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye.": [
+        null,
+        "U hlawurile ku nga amukel swihungwn swa mayelana na ku hlayisa nwana a nga vi na HIV.Inkom ku va u tirisil vukorhokeri bya MomConnect. I mahlanga."
+    ],
+    "Please tell us why you do not want to receive messages:": [
+        null,
+        "Hikokwalaho ka yini u nga lavi mahungu ya MomConnect"
+    ],
+    "More": [
+        null,
+        ""
+    ],
+    "Back": [
+        null,
+        ""
+    ],
+    "Not HIV-positive": [
+        null,
+        "U hava HIV"
+    ],
+    "Miscarriage": [
+        null,
+        " U onhakeriwile"
+    ],
+    "Baby was stillborn": [
+        null,
+        " U kumekile a lovile"
+    ],
+    "Baby died": [
+        null,
+        "U lovile"
+    ],
+    "Messages not useful": [
+        null,
+        "A ma pfuni"
+    ],
+    "Other": [
+        null,
+        " Swinwana  "
+    ],
+    "You will not receive SMSs about keeping your baby HIV negative. You will still receive MomConnect SMSs. To stop receiving these SMSs, dial {{ mc_optout_number }}": [
+        null,
+        "A wu nga kum tiSMS ta mayelana na ku hlayisa nwana anga vi na HIV. Wa ha ta amukela tiSMS ta MomConnect. Ku yima ku amukela tiSMS leti, dayla *134*550*1#"
+    ],
+    "We are sorry for your loss. Would you like to receive a small set of free messages from MomConnect that could help you in this difficult time?": [
+        null,
+        "Hak chavelel eka k lahlekeriw ka wen. U nga tsakel ku amukel sete leytsong ya swihungwn swa mahal lesw ngak pfunak ka nkari low wo tika?"
+    ],
+    "Thank you. You will no longer receive any messages from MomConnect. If you have any medical concerns, please visit your nearest clinic.": [
+        null,
+        "Inkom. A wu nga ha kum swihungwn swih kumbe swih swo huma ka MomConnect. Loko ur na swvilelo mayelana na swa rihanyu endzela tlinik ya wena ya le kusuhi."
+    ],
+    "Thank you. You will receive support messages from MomConnect in the coming weeks.": [
+        null,
+        "Inkom. U ta amukela swihungwn swa nseketelo swo huma ka MomConnect ka mavhik lama taka.A"
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "": {
+        "pot-creation-date": "2016-08-16 02:52:+0000",
+        "project-id-version": "SMS PMTCT",
+        "language-team": "tsonga <LL@li.org>",
+        "mime-version": "1.0",
+        "content-type": "text/plain; charset=UTF-8",
+        "content-transfer-encoding": "8bit",
+        "po-revision-date": "2016-08-19 16:29+0200",
+        "last-translator": "",
+        "x-generator": "Poedit 1.6.7",
+        "plural-forms": "nplurals=2; plural=(n != 1);",
+        "language": "ts"
+    },
+    "Please use your handset's keypad to dial the number that you received, rather than sending it to us in an sms.": [
+        null,
+        ""
+    ],
+    "If you only wanted to stop the messages about HIV, please reply MOM to this message and you will still receive MomConnect messages.": [
+        null,
+        "Lok ku ri hi leswaku a wu la va ku yimisa mahungu ya mayelana na HIV, u komberiwa MOM eka mahungu lawa kutani wa ha ta amukela mahungu ya MomConnect."
+    ],
+    "We do not recognise your number and can therefore not opt you out.": [
+        null,
+        ""
+    ],
+    "We do not recognise the message you sent us. Reply STOP to unsubscribe or dial {{pmtct_ussd_channel}} for more options.": [
+        null,
+        ""
+    ]
+}

@@ -1,0 +1,37 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2016-08-16 02:52:+0000\n"
+"Project-Id-Version: SMS PMTCT\n"
+"Language-Team: xhosa <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2016-08-19 16:13+0200\n"
+"Last-Translator: \n"
+"X-Generator: Poedit 1.6.7\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: xh\n"
+
+#: go-app-sms_pmtct.js:70
+msgid ""
+"Please use your handset's keypad to dial the number that you received, "
+"rather than sending it to us in an sms."
+msgstr ""
+
+#: go-app-sms_pmtct.js:105
+msgid ""
+"If you only wanted to stop the messages about HIV, please reply MOM to this "
+"message and you will still receive MomConnect messages."
+msgstr ""
+"Ukuba ubufuna nukuyekisa imiyaleza enge-HIV, nceda uphendule kulo myaleza "
+"uthi MOM uzakuhlala uyifumana imiyaleza yeMomConnect."
+
+#: go-app-sms_pmtct.js:114
+msgid "We do not recognise your number and can therefore not opt you out."
+msgstr ""
+
+#: go-app-sms_pmtct.js:121
+msgid ""
+"We do not recognise the message you sent us. Reply STOP to unsubscribe or "
+"dial {{pmtct_ussd_channel}} for more options."
+msgstr ""

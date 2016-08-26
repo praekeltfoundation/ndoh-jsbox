@@ -1,0 +1,174 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2016-08-16 02:50:+0000\n"
+"Project-Id-Version: USSD PMTCT\n"
+"Language-Team: TSONGA <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2016-08-21 19:00+0200\n"
+"Last-Translator: \n"
+"X-Generator: Poedit 1.6.7\n"
+"Language: ts\n"
+
+#: go-app-ussd_pmtct.js:343
+msgid ""
+"You have an incomplete registration. Would you like to continue with this "
+"registration?"
+msgstr ""
+
+#: go-app-ussd_pmtct.js:345 go-app-ussd_pmtct.js:474 go-app-ussd_pmtct.js:556
+#: go-app-ussd_pmtct.js:688
+msgid "Yes"
+msgstr "Ina"
+
+#: go-app-ussd_pmtct.js:346
+msgid "No, start a new registration"
+msgstr ""
+
+#: go-app-ussd_pmtct.js:464
+msgid ""
+"You need to be registered on MomConnect to receive these messages. Please "
+"visit the nearest clinic to register."
+msgstr ""
+"U ta fanela ku va u tsarisil eka MomConnect ku amukel swihungwn lesw. U "
+"komberiwa ku endzela tlinik ya le kusuhi ku tsarisa."
+
+#: go-app-ussd_pmtct.js:471
+msgid ""
+"To sign up, we need to collect, store and use your info. You may also get "
+"messages on public holidays and weekends. Do you consent?"
+msgstr ""
+"K tsaris hi fanel h kolek,hlayis no tiris vxokxok bya wen.U tlhe u kum "
+"swhungwn hi tholdey na mahel ya vhik.Wa pfumel xan?1.Ina 2.Ee"
+
+#: go-app-ussd_pmtct.js:475 go-app-ussd_pmtct.js:557 go-app-ussd_pmtct.js:689
+msgid "No"
+msgstr "Ee"
+
+#: go-app-ussd_pmtct.js:495
+msgid ""
+"Unfortunately without your consent, you cannot register to MomConnect. Thank "
+"you for using the MomConnect service. Goodbye."
+msgstr ""
+"Khombo ra kona a wu nga tsaris ka MomConnect handle ka mpfumelel wa wena. "
+"Inkom ku va u tirisil vukorhokeri bya MomConnect. I mahlanga."
+
+#: go-app-ussd_pmtct.js:502
+msgid "Please enter the year you were born (For example 1981)"
+msgstr ""
+"Hikuva a wu na ID kumbe phasipoto, nghenisa lembe leri u nga velekiwa hi "
+"rona (Xikombiso 1981)"
+
+#: go-app-ussd_pmtct.js:508
+msgid "Invalid date. Please enter the year you were born (For example 1981)"
+msgstr ""
+"Nomboro leyi u yi ngheniseke yi hoxekile. Nghenisa nakambe hi vukheta lembe "
+"leri u nga velekiwa hi rona (xikombiso: 2001)"
+
+#: go-app-ussd_pmtct.js:520
+msgid "In which month were you born?"
+msgstr "Nghenisa nhweti leyi u nga velekiwa hi yona"
+
+#: go-app-ussd_pmtct.js:532
+msgid "Please enter the date of the month you were born (For example 21)"
+msgstr "Nghenisa nhweti leyi u nga velekiwa hi yona "
+
+#: go-app-ussd_pmtct.js:538
+msgid ""
+"Invalid date. Please enter the date of the month you were born (For example "
+"21)"
+msgstr "Nghenisa siku leri u nga velekiwa hi rona (Xikombiso 14) s"
+
+#: go-app-ussd_pmtct.js:553
+msgid ""
+"Would you like to receive messages about keeping your child HIV-negative?"
+msgstr ""
+"Wa sw lava ku amkel mahungu mayelana na ku hlayis nwan wa wen a ngav na HIV? "
+"Mahungu ma ta va na marito yo fana na HIV, murhi na ARV"
+
+#: go-app-ussd_pmtct.js:618
+msgid ""
+"You will now start receiving messages about keeping your child HIV-negative. "
+"Thank you for using the MomConnect service. Goodbye."
+msgstr ""
+"Swesw u ta sungula ku amukel swihungwn mayelana na ku hlayisa nwan a nga vi "
+"na HIV. Inkom ku va u tirisil vukorhokeri bya MomConnect. I mahlanga."
+
+#: go-app-ussd_pmtct.js:625
+msgid ""
+"You have chosen to not receive messages about keeping your child HIV-"
+"negative. Thank you for using the MomConnect service. Goodbye."
+msgstr ""
+"U hlawurile ku nga amukel swihungwn swa mayelana na ku hlayisa nwana a nga "
+"vi na HIV.Inkom ku va u tirisil vukorhokeri bya MomConnect. I mahlanga."
+
+#: go-app-ussd_pmtct.js:633
+msgid "Please tell us why you do not want to receive messages:"
+msgstr "Hikokwalaho ka yini u nga lavi mahungu ya MomConnect"
+
+#: go-app-ussd_pmtct.js:636
+msgid "More"
+msgstr ""
+
+#: go-app-ussd_pmtct.js:637
+msgid "Back"
+msgstr ""
+
+#: go-app-ussd_pmtct.js:640
+msgid "Not HIV-positive"
+msgstr "U hava HIV"
+
+#: go-app-ussd_pmtct.js:641
+msgid "Miscarriage"
+msgstr " U onhakeriwile"
+
+#: go-app-ussd_pmtct.js:642
+msgid "Baby was stillborn"
+msgstr " U kumekile a lovile"
+
+#: go-app-ussd_pmtct.js:643
+msgid "Baby died"
+msgstr "U lovile"
+
+#: go-app-ussd_pmtct.js:644
+msgid "Messages not useful"
+msgstr "A ma pfuni"
+
+#: go-app-ussd_pmtct.js:645
+msgid "Other"
+msgstr " Swinwana  "
+
+#: go-app-ussd_pmtct.js:674
+msgid ""
+"You will not receive SMSs about keeping your baby HIV negative. You will "
+"still receive MomConnect SMSs. To stop receiving these SMSs, dial "
+"{{ mc_optout_number }}"
+msgstr ""
+"A wu nga kum tiSMS ta mayelana na ku hlayisa nwana anga vi na HIV. Wa ha ta "
+"amukela tiSMS ta MomConnect. Ku yima ku amukela tiSMS leti, dayla *134*550*1#"
+
+#: go-app-ussd_pmtct.js:685
+msgid ""
+"We are sorry for your loss. Would you like to receive a small set of free "
+"messages from MomConnect that could help you in this difficult time?"
+msgstr ""
+"Hak chavelel eka k lahlekeriw ka wen. U nga tsakel ku amukel sete leytsong "
+"ya swihungwn swa mahal lesw ngak pfunak ka nkari low wo tika?"
+
+#: go-app-ussd_pmtct.js:747
+msgid ""
+"Thank you. You will no longer receive any messages from MomConnect. If you "
+"have any medical concerns, please visit your nearest clinic."
+msgstr ""
+"Inkom. A wu nga ha kum swihungwn swih kumbe swih swo huma ka MomConnect. "
+"Loko ur na swvilelo mayelana na swa rihanyu endzela tlinik ya wena ya le "
+"kusuhi."
+
+#: go-app-ussd_pmtct.js:755
+msgid ""
+"Thank you. You will receive support messages from MomConnect in the coming "
+"weeks."
+msgstr ""
+"Inkom. U ta amukela swihungwn swa nseketelo swo huma ka MomConnect ka mavhik "
+"lama taka.A"
