@@ -251,42 +251,65 @@ go.app = function() {
         });
 
         self.add('state_check_optout_change', function(name) {
+            var new_msisdn = utils.normalize_msisdn(self.im.user.answers.state_change_num, '27');
+
+            var optedout = 0;
+            var inactive = 0;
+            var msisdn_available = true;
+            // do existing identities use the 'new' number?
+            var eval_new_msisdn = function(identity) {
+                if (identity.details.addresses.msisdn[new_msisdn].optedout === "True") {
+                    optedout++;
+                } else if (identity.details.addresses.msisdn[new_msisdn].inactive === "True") {
+                    inactive++;
+                } else {
+                    msisdn_available = false;
+                }
+            };
+
+            var msisdn_on_operator = false;
+            var cleaned_identities = [];
+            var remove_operator_identity = function(identity) {
+                if (identity.id !== self.im.user.answers.operator.id) {
+                    cleaned_identities.push(identity);
+                } else {
+                    msisdn_on_operator = true;
+                }
+            };
+
             return is
-            .list_by_address({msisdn: utils.normalize_msisdn(
-                self.im.user.answers.state_change_num, '27')})
+            .list_by_address({msisdn: new_msisdn})
             .then(function(identities_found) {
-                // get the first identity in the list of identities
-                var identity = (identities_found.results.length > 0)
-                    ? identities_found.results[0]
+                // get existing identities with 'new' number
+                var identities = (identities_found.results.length > 0)
+                    ? identities_found.results
                     : null;
 
-                // check whether identity with the new number already exists
-                if (identity !== null) {  // identity with new number exists
-                    var new_msisdn = Object.keys(identity.details.addresses.msisdn)[0];
-                    // has the number been opted out?
-                    if (identity.details.addresses.msisdn[new_msisdn].optedout === "True") {
-                        self.im.user.set_answer("registrant", identity);
-                        // if opted out, opt number back in
+                if (identities !== null) {  // identities with new number exists
+                    // clean identities array of operator identity (if present)
+                    identities.forEach(remove_operator_identity);
+                    if (msisdn_on_operator) identities = cleaned_identities;
+                    // iterate through identities, checking whether msisdn is usable
+                    identities.forEach(eval_new_msisdn);
+                }
+
+                if (msisdn_on_operator && msisdn_available) {
+                    // more than one identity uses the number...
+                    return self.states.create('state_block_active_subs');
+                } else if (msisdn_on_operator) {
+                    // check whether number is opted out on operator
+                    if (self.im.user.answers.operator.details.addresses.msisdn[new_msisdn].optedout === "True") {
+                        // opt back in
                         return self.states.create('state_opt_in_change');
-                    } else {
-                        // does the existing identity have an active subscription?
-                        return sbm
-                        .has_active_subscription(identity.id)
-                        .then(function(has_active_subscription) {
-                            if (has_active_subscription) {
-                                // if active subs, block number change
-                                return self.states.create('state_block_active_subs');
-                            } else {
-                                // no active subs, go-ahead with number change
-                                self.im.user.set_answer("registrant", identity);
-                                return self.states.create('state_switch_new_nr');
-                            }
-                        });
-                    }
-                } else {  // no existing identity with new number was found
+                    } // else ....
+                } else if (msisdn_available) {  // number have been used but available to change to
                     self.im.user.set_answer("registrant", self.im.user.answers.operator);
                     return self.states.create('state_switch_new_nr');
                 }
+
+                self.im.user.set_answer("registrant", self.im.user.answers.operator);
+                return self.states.create('state_switch_new_nr');
+
             });
         });
 

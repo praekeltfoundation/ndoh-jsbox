@@ -1252,22 +1252,33 @@ describe("app", function() {
                         .run();
                 });
             });
-            describe("entering opted out number", function() {
-                it("should go to st_opt_in_change", function() {
+            describe("entering opted out number (opted out by current id, not used by another)", function() {
+                it("should go to state_end_detail_changed", function() {
                     return tester
-                        .setup.user.addr('27820001003')
+                        .setup.user.addr('27820001005')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '2'  // state_subscribed - change num
+                            , '0820001001'  // state_change_num
+                        )
+                        .check.interaction({
+                            state: 'state_end_detail_changed'
+                        })
+                        .run();
+                });
+            });
+
+            describe("entering opted out number (opted out by current id and used by another)", function() {
+                it("should go to state_block_active_subs", function() {
+                    return tester
+                        .setup.user.addr('27820001005')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '2'  // state_subscribed - change num
                             , '0820001004'  // state_change_num
                         )
                         .check.interaction({
-                            state: 'state_opt_in_change',
-                            reply: [
-                                "This number opted out of NurseConnect messages before. Please confirm that you want to receive messages again on this number?",
-                                "1. Yes",
-                                "2. No"
-                            ].join('\n')
+                            state: 'state_block_active_subs'
                         })
                         .run();
                 });
@@ -1302,8 +1313,24 @@ describe("app", function() {
                         })
                         .run();
                 });
+
+                describe("entering opted out number (opted out on another id)", function() {
+                    it("should go to state_end_detail_changed", function() {
+                        return tester
+                            .setup.user.addr('27820001003')
+                            .inputs(
+                                {session_event: 'new'}  // dial in
+                                , '2'  // state_subscribed - change num
+                                , '0820001004'  // state_change_num
+                            )
+                            .check.interaction({
+                                state: 'state_end_detail_changed'
+                            })
+                            .run();
+                    });
+                });
             });
-            describe("entering non-opted-out number with active subs", function() {
+            describe.skip("entering non-opted-out number with active subs", function() {
                 it("should block progress", function() {
                     return tester
                         .setup.user.addr('27820001003')
