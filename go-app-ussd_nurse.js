@@ -119,10 +119,6 @@ go.app = function() {
                 }
             });
             switch(method) {
-                case "post":
-                    return http.post(im.config.jembi.url_json + endpoint, {
-                        data: payload
-                    });
                 case "get":
                     return http.get(im.config.jembi.url_json + endpoint, {
                         params: params
