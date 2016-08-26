@@ -135,7 +135,6 @@ go.app = function() {
             var url = self.im.config.services.identity_store.url + endpoint;
 
             return http.post(url, {data: identity})
-                //.then(this.log_service_call('POST', url, identity, null))
                 .then(function(response) {
                     return response.data;
                 });
