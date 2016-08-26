@@ -139,6 +139,7 @@ go.app = function() {
 
     // REGISTRATION FINISHED SMS HANDLING
 
+        // temporary - TODO: adapt MessageSender in seed-jsbox-utils (#19), post to 'outbound/'
         self.send_registration_thanks = function(msisdn) {
             return self.im.outbound.send({
                 to: msisdn,
