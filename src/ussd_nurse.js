@@ -158,6 +158,8 @@ go.app = function() {
             self.im.user.answers = {};
 
             var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
+            self.im.user.set_answer("operator_msisdn", msisdn);
+
             return is
             .get_or_create_identity({"msisdn": msisdn})
             .then(function(identity) {
@@ -224,6 +226,7 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     self.im.user.set_answer("registrant", self.im.user.answers.operator);
+                    self.im.user.set_answer("registrant_msisdn", self.im.user.answers.operator_msisdn);
                     return choice.value;
                 }
             });
@@ -265,12 +268,13 @@ go.app = function() {
                     }
                 },
                 next: function(content) {
-                    msisdn = utils.normalize_msisdn(content, '27');
+                    var msisdn = utils.normalize_msisdn(content, '27');
 
                     return is
                     .get_or_create_identity({"msisdn": msisdn})
                     .then(function(identity) {
                         self.im.user.set_answer("registrant", identity);
+                        self.im.user.set_answer("registrant_msisdn", msisdn);
                         return self.states.create('state_check_optout_reg');
                     });
                 }
@@ -278,7 +282,7 @@ go.app = function() {
         });
 
         self.add('state_check_optout_reg', function(name) {
-            var registrant_msisdn = Object.keys(self.im.user.answers.registrant.details.addresses.msisdn)[0];
+            var registrant_msisdn = self.im.user.answers.registrant_msisdn;
             if (self.im.user.answers.registrant.details.addresses.msisdn[registrant_msisdn].optedout === "True") {
                 return self.states.create('state_opt_in_reg');
             } else {
@@ -380,9 +384,7 @@ go.app = function() {
 
             return Q
             .all([
-                self.send_registration_thanks(
-                    Object.keys(self.im.user.answers.registrant.details.addresses.msisdn)[0]
-                ),
+                self.send_registration_thanks(self.im.user.answers.registrant_msisdn),
                 // POST registration
                 // self.post_nursereg(
                 //     self.im.user.answers.registrant,
