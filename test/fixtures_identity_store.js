@@ -127,7 +127,7 @@ module.exports = function() {
                         "default_addr_type": "msisdn",
                         "addresses": {
                             "msisdn": {
-                                "+27820001001":{}
+                                "+27820001001":{ "default": true }
                             }
                         }
                     }
@@ -143,7 +143,7 @@ module.exports = function() {
                         "default_addr_type": "msisdn",
                         "addresses": {
                             "msisdn": {
-                                "+27820001001": {}
+                                "+27820001001": { "default": true }
                             }
                         }
                     },
