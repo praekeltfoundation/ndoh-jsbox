@@ -202,6 +202,7 @@ module.exports = function() {
 
         // 155: optin in identity cb245673-aa41-4302-ac47-00000001004
         {
+            "key": "post.is.optin.27820001004",
             "request": {
                 "url": 'http://is/api/v1/optin/',
                 "method": 'POST',

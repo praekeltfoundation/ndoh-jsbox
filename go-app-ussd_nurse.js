@@ -17,6 +17,7 @@ go.app = function() {
     var IdentityStore = SeedJsboxUtils.IdentityStore;
     var StageBasedMessaging = SeedJsboxUtils.StageBasedMessaging;
     // var Hub = SeedJsboxUtils.Hub;
+    var MessageSender = SeedJsboxUtils.MessageSender;
 
     var utils = SeedJsboxUtils.utils;
 
@@ -28,6 +29,7 @@ go.app = function() {
         var is;
         var sbm;
         // var hub;
+        var ms;
 
         self.init = function() {
             // initialising services
@@ -48,6 +50,12 @@ go.app = function() {
             //     self.im.config.services.hub.token,
             //     self.im.config.services.hub.url
             // );
+
+            ms = new MessageSender(
+                new JsonApi(self.im, {}),
+                self.im.config.services.message_sender.token,
+                self.im.config.services.message_sender.url
+            );
         };
 
         // override normal state adding
@@ -128,16 +136,14 @@ go.app = function() {
 
     // REGISTRATION FINISHED SMS HANDLING
 
-        // temporary - TODO: adapt MessageSender in seed-jsbox-utils (#19), post to 'outbound/'
         self.send_registration_thanks = function(msisdn) {
-            return self.im.outbound.send({
-                to: msisdn,
-                endpoint: 'sms',
-                lang: 'en',  // current default is english
-                content: $("Welcome to NurseConnect. For more options or to " +
-                           "opt out, dial {{channel}}.")
-                    .context({channel: self.im.config.channel})
-            });
+            return ms.
+            create_outbound_message(
+                self.im.user.answers.registrant.id,
+                msisdn,
+                "Welcome to NurseConnect. For more options or to " +
+                           "opt out, dial " + self.im.config.channel +"."
+            );
         };
 
     // DELEGATOR START STATE

@@ -69,10 +69,10 @@ describe("app", function() {
                             url: 'http://hub/api/v1/',
                             token: 'test Hub'
                         },
-                        // message_sender: {
-                        //     url: 'http://ms/api/v1/',
-                        //     token: 'test MessageSender'
-                        // }
+                        message_sender: {
+                            url: 'http://ms/api/v1/',
+                            token: 'test MessageSender'
+                        }
                     },
                 })
                 // .setup(function(api) {
@@ -591,16 +591,7 @@ describe("app", function() {
                         , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
-                        var smses = _.where(api.outbound.store, {
-                            endpoint: 'sms'
-                        });
-                        var sms = smses[0];
-                        assert.equal(smses.length, 1);
-                        assert.equal(sms.content,
-                            "Welcome to NurseConnect. For more options or to " +
-                            "opt out, dial *120*550*5#."
-                        );
-                        assert.equal(sms.to_addr, '+27820001001');
+                        utils.check_fixtures_used(api, [50, 100, 150, 153, 156]);
                     })
                     .run();
                 });
@@ -687,16 +678,7 @@ describe("app", function() {
                         , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
-                        var smses = _.where(api.outbound.store, {
-                            endpoint: 'sms'
-                        });
-                        var sms = smses[0];
-                        assert.equal(smses.length, 1);
-                        assert.equal(sms.content,
-                            "Welcome to NurseConnect. For more options or to " +
-                            "opt out, dial *120*550*5#."
-                        );
-                        assert.equal(sms.to_addr, '+27820001002');
+                        utils.check_fixtures_used(api, [50, 101, 150, 151, 153, 156]);
                     })
                     .run();
             });

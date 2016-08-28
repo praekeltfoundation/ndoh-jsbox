@@ -2,22 +2,66 @@
 module.exports = function() {
     return [
 
-        // 100:
+        // 100: create outbound message for cb245673-aa41-4302-ac47-00000001001
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820001001",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001001",
+                    "to_addr": "+27820001001",
+                    "content": "Welcome to NurseConnect. For more options or to opt out, dial *120*550*5#.",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    'attempts': 0,
+                    'updated_at': '2016-08-18T11:32:17.750207Z',
+                    'content': "Welcome to NurseConnect. For more options or to opt out, dial *120*550*5#.",
+                    'created_at': '2016-08-18T11:32:17.750236Z',
+                    'vumi_message_id': '075a32da-e1e4-4424-be46-1d09b71056fd',
+                    'to_addr': "+27820001001",
+                    'metadata': {},
+                    'id': 'cb245673-aa41-4302-ac47-00000001001',
+                    'delivered': "False",
+                    'version': 1,
+                    'url': 'http://ms.localhost:8004/api/v1/outbound/cb245673-aa41-4302-ac47-00000001001/'
+                }
+            }
         },
 
-        // 101:
+        // 101: create outbound message for cb245673-aa41-4302-ac47-00000001002
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820001002",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "to_addr": "+27820001002",
+                    "content": "Welcome to NurseConnect. For more options or to opt out, dial *120*550*5#.",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    'attempts': 0,
+                    'updated_at': '2016-08-18T11:32:17.750207Z',
+                    'content': "Welcome to NurseConnect. For more options or to opt out, dial *120*550*5#.",
+                    'created_at': '2016-08-18T11:32:17.750236Z',
+                    'vumi_message_id': '075a32da-e1e4-4424-be46-1d09b71056fd',
+                    'to_addr': "+27820001002",
+                    'metadata': {},
+                    'id': 'cb245673-aa41-4302-ac47-00000001002',
+                    'delivered': "False",
+                    'version': 1,
+                    'url': 'http://ms.localhost:8004/api/v1/outbound/cb245673-aa41-4302-ac47-00000001002/'
+                }
+            }
         },
 
         // 102:
