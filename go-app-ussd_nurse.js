@@ -126,20 +126,6 @@ go.app = function() {
             }
         },
 
-        // temporary - TODO: adapt IdentityStore class in seed-jsbox-utils (#15) to have optin function
-        self.optin_identity = function(identity) {
-            var http = new JsonApi(self.im, {});
-            http.defaults.headers.Authorization = ['Token ' + self.im.config.services.identity_store.token];
-
-            var endpoint = 'optin/';
-            var url = self.im.config.services.identity_store.url + endpoint;
-
-            return http.post(url, {data: identity})
-                .then(function(response) {
-                    return response.data;
-                });
-        },
-
     // REGISTRATION FINISHED SMS HANDLING
 
         // temporary - TODO: adapt MessageSender in seed-jsbox-utils (#19), post to 'outbound/'
@@ -303,9 +289,8 @@ go.app = function() {
                 next: function(choice) {
                     if (choice.value === 'yes') {
                         self.im.user.answers.registrant.details.nurseconnect.opt_out_reason = "";  // reset
-                        return self
-                        // TODO: adapt IdentityStore class in seed-jsbox-utils (#15) to have optin function
-                        .optin_identity(self.im.user.answers.registrant)
+                        return is
+                        .optin(self.im.user.answers.registrant.id, "msisdn", self.im.user.answers.registrant_msisdn)
                         .then(function() {
                             return 'state_faccode';
                         });
