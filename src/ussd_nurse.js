@@ -134,11 +134,6 @@ go.app = function() {
                 });
         },
 
-        // temporary - TODO: put function below in seed-jsbox-utils (#17)
-        self.extract_id_dob = function(id) {
-            return moment(id.slice(0,6), 'YYMMDD').format('YYYY-MM-DD');
-        },
-
     // DELEGATOR START STATE
 
         self.add('state_route', function(name) {
@@ -387,7 +382,7 @@ go.app = function() {
                     self.im.user.set_answer("registrant", self.im.user.answers.operator);
                     self.im.user.answers.registrant.details.nurseconnect.id_type = 'sa_id';
                     self.im.user.answers.registrant.details.nurseconnect.sa_id_no = content;
-                    self.im.user.answers.registrant.details.nurseconnect.dob = self.extract_id_dob(content);
+                    self.im.user.answers.registrant.details.nurseconnect.dob = utils.extract_za_id_dob(content);
 
                     return 'state_post_change_detail';
                 }
