@@ -134,34 +134,6 @@ go.app = function() {
                 });
         },
 
-        // temporary - TODO: put function below in seed-jsbox-utils (#16)
-        self.validate_id_sa = function(id) {
-            var i, c,
-                even = '',
-                sum = 0,
-                check = id.slice(-1);
-
-            if (id.length != 13 || id.match(/\D/)) {
-                return false;
-            }
-            if (!moment(id.slice(0,6), 'YYMMDD', true).isValid()) {
-                return false;
-            }
-            id = id.substr(0, id.length - 1);
-            for (i = 0; id.charAt(i); i += 2) {
-                c = id.charAt(i);
-                sum += +c;
-                even += id.charAt(i + 1);
-            }
-            even = '' + even * 2;
-            for (i = 0; even.charAt(i); i++) {
-                c = even.charAt(i);
-                sum += +c;
-            }
-            sum = 10 - ('' + sum).charAt(1);
-            return ('' + sum).slice(-1) == check;
-        },
-
         // temporary - TODO: put function below in seed-jsbox-utils (#17)
         self.extract_id_dob = function(id) {
             return moment(id.slice(0,6), 'YYMMDD').format('YYYY-MM-DD');
@@ -407,7 +379,7 @@ go.app = function() {
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
-                    if (!self.validate_id_sa(content)) {
+                    if (!utils.validate_id_za(content)) {
                         return error;
                     }
                 },
