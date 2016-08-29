@@ -5,6 +5,7 @@ go.app = function() {
     var vumigo = require("vumigo_v02");
     var moment = require('moment');
     // var _ = require('lodash');
+    var Q = require('q');
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
@@ -16,6 +17,8 @@ go.app = function() {
     var SeedJsboxUtils = require('seed-jsbox-utils');
     var IdentityStore = SeedJsboxUtils.IdentityStore;
     var StageBasedMessaging = SeedJsboxUtils.StageBasedMessaging;
+    // var Hub = SeedJsboxUtils.Hub;
+    var MessageSender = SeedJsboxUtils.MessageSender;
 
     var utils = SeedJsboxUtils.utils;
 
@@ -26,6 +29,8 @@ go.app = function() {
         // variables for services
         var is;
         var sbm;
+        // var hub;
+        var ms;
 
         self.init = function() {
             // initialising services
@@ -39,6 +44,19 @@ go.app = function() {
                 new JsonApi(self.im, {}),
                 self.im.config.services.stage_based_messaging.token,
                 self.im.config.services.stage_based_messaging.url
+            );
+
+            // TODO: uncomment as part of #30 registration submission
+            // hub = new Hub(
+            //     new JsonApi(self.im, {}),
+            //     self.im.config.services.hub.token,
+            //     self.im.config.services.hub.url
+            // );
+
+            ms = new MessageSender(
+                new JsonApi(self.im, {}),
+                self.im.config.services.message_sender.token,
+                self.im.config.services.message_sender.url
             );
         };
 
@@ -79,7 +97,7 @@ go.app = function() {
                 'criteria': 'value:' + clinic_code
             };
             return self
-                .jembi_json_api_call('get', params, null, 'NCfacilityCheck', im);
+            .jembi_json_api_call('get', params, null, 'NCfacilityCheck', im);
         };
 
         self.validate_nc_clinic_code = function(im, clinic_code) {
@@ -91,15 +109,15 @@ go.app = function() {
                     });
             } else {
                 return self
-                    .jembi_nc_clinic_validate(im, clinic_code)
-                    .then(function(json_result) {
-                        var rows = json_result.data.rows;
-                        if (rows.length === 0) {
-                            return false;
-                        } else {
-                            return rows[0][2];
-                        }
-                    });
+                .jembi_nc_clinic_validate(im, clinic_code)
+                .then(function(json_result) {
+                    var rows = json_result.data.rows;
+                    if (rows.length === 0) {
+                        return false;
+                    } else {
+                        return rows[0][2];
+                    }
+                });
             }
         };
 
@@ -111,10 +129,6 @@ go.app = function() {
                 }
             });
             switch(method) {
-                case "post":
-                    return http.post(im.config.jembi.url_json + endpoint, {
-                        data: payload
-                    });
                 case "get":
                     return http.get(im.config.jembi.url_json + endpoint, {
                         params: params
@@ -122,20 +136,18 @@ go.app = function() {
             }
         },
 
-        // temporary - TODO: adapt IdentityStore class in seed-jsbox-utils (#15) to have optin function
-        self.optin_identity = function(identity) {
-            var http = new JsonApi(self.im, {});
-            http.defaults.headers.Authorization = ['Token ' + self.im.config.services.identity_store.token];
+    // REGISTRATION FINISHED SMS HANDLING
 
-            var endpoint = 'optin/';
-            var url = self.im.config.services.identity_store.url + endpoint;
-
-            return http.post(url, {data: identity})
-                //.then(this.log_service_call('POST', url, identity, null))
-                .then(function(response) {
-                    return response.data;
-                });
-        },
+        self.send_registration_thanks = function(msisdn) {
+            return ms.
+            create_outbound_message(
+                self.im.user.answers.registrant.id,
+                msisdn,
+                // TODO #38 enable translation
+                "Welcome to NurseConnect. For more options or to " +
+                    "opt out, dial {{channel}}.".replace("{{channel}}", self.im.config.channel)
+            );
+        };
 
     // DELEGATOR START STATE
 
@@ -144,6 +156,8 @@ go.app = function() {
             self.im.user.answers = {};
 
             var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
+            self.im.user.set_answer("operator_msisdn", msisdn);
+
             return is
             .get_or_create_identity({"msisdn": msisdn})
             .then(function(identity) {
@@ -192,6 +206,104 @@ go.app = function() {
                     new Choice('state_subscribe_self', $("Subscribe for the first time")),
                     new Choice('state_change_old_nr', $('Change your old number')),
                     new Choice('state_subscribe_other', $('Subscribe somebody else'))
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+    // REGISTRATION STATES
+
+        self.add('state_subscribe_self', function(name) {
+            return new ChoiceState(name, {
+                question: $("To register we need to collect, store & use your info. You may also get messages on public holidays & weekends. Do you consent?"),
+                choices: [
+                    new Choice('state_check_optout_reg', $('Yes')),
+                    new Choice('state_permission_denied', $('No')),
+                ],
+                next: function(choice) {
+                    self.im.user.set_answer("registrant", self.im.user.answers.operator);
+                    self.im.user.set_answer("registrant_msisdn", self.im.user.answers.operator_msisdn);
+                    return choice.value;
+                }
+            });
+        });
+
+        self.add('state_subscribe_other', function(name) {
+            return new ChoiceState(name, {
+                question: $("We need to collect, store & use your friend's info. She may get messages on public holidays & weekends. Does she consent?"),
+                choices: [
+                    new Choice('state_msisdn', $('Yes')),
+                    new Choice('state_permission_denied', $('No')),
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+        self.add('state_check_optout_reg', function(name) {
+            var registrant_msisdn = self.im.user.answers.registrant_msisdn;
+            if (self.im.user.answers.registrant.details.addresses.msisdn[registrant_msisdn].optedout === "True") {
+                return self.states.create('state_opt_in_reg');
+            } else {
+                return self.states.create('state_faccode');
+            }
+        });
+
+        self.add('state_opt_in_reg', function(name) {
+            return new ChoiceState(name, {
+                question: $("This number previously opted out of NurseConnect messages. Please confirm that you would like to register this number again?"),
+                choices: [
+                    new Choice('yes', $('Yes')),
+                    new Choice('no', $('No'))
+                ],
+                next: function(choice) {
+                    if (choice.value === 'yes') {
+                        self.im.user.answers.registrant.details.nurseconnect.opt_out_reason = "";  // reset
+                        return is
+                        .optin(self.im.user.answers.registrant.id, "msisdn", self.im.user.answers.registrant_msisdn)
+                        .then(function() {
+                            return 'state_faccode';
+                        });
+                    } else {
+                        return 'state_permission_denied';
+                    }
+                }
+            });
+        });
+
+        self.add('state_msisdn', function(name) {
+            var error = $("Sorry, the format of the mobile number is not correct. Please enter the mobile number again, e.g. 0726252020");
+            var question = $("Please enter the number you would like to register, e.g. 0726252020:");
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    if (!utils.is_valid_msisdn(content, 0, 10)) {
+                        return error;
+                    }
+                },
+                next: function(content) {
+                    var msisdn = utils.normalize_msisdn(content, '27');
+
+                    return is
+                    .get_or_create_identity({"msisdn": msisdn})
+                    .then(function(identity) {
+                        self.im.user.set_answer("registrant", identity);
+                        self.im.user.set_answer("registrant_msisdn", msisdn);
+                        return self.states.create('state_check_optout_reg');
+                    });
+                }
+            });
+        });
+
+
+        self.add('state_permission_denied', function(name) {
+            return new ChoiceState(name, {
+                question: $("You have chosen not to receive NurseConnect SMSs on this number and so cannot complete registration."),
+                choices: [
+                    new Choice('state_route', $('Main Menu'))
                 ],
                 next: function(choice) {
                     return choice.value;
@@ -299,6 +411,52 @@ go.app = function() {
                     } else {
                         return 'state_permission_denied';
                     }
+                }
+            });
+        });
+
+        self.add('state_faccode', function(name) {
+            var owner = self.im.user.answers.operator.id === self.im.user.answers.registrant.id
+                ? 'your' : 'their';
+            var error = $("Sorry, that code is not recognized. Please enter the 6-digit facility code again, e. 535970:");
+            var question = $("Please enter {{owner}} 6-digit facility code:")
+                .context({owner: owner});
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    return self
+                    .validate_nc_clinic_code(self.im, content)
+                    .then(function(facname) {
+                        if (!facname) {
+                            return error;
+                        } else {
+                            self.im.user.answers.registrant.details.nurseconnect = {};
+                            self.im.user.answers.registrant.details.nurseconnect.facname = facname;
+                            self.im.user.answers.registrant.details.nurseconnect.faccode = content;
+
+                            return null;  // vumi expects null or undefined if check passes
+                        }
+                    });
+                },
+                next: 'state_facname'
+            });
+        });
+
+        self.add('state_facname', function(name) {
+            var owner = self.im.user.answers.operator.id === self.im.user.answers.registrant.id
+                ? 'your' : 'their';
+            return new ChoiceState(name, {
+                question: $("Please confirm {{owner}} facility: {{facname}}")
+                    .context({
+                        owner: owner,
+                        facname: self.im.user.answers.registrant.details.nurseconnect.facname
+                    }),
+                choices: [
+                    new Choice('state_save_nursereg', $('Confirm')),
+                    new Choice('state_faccode', $('Not the right facility')),
+                ],
+                next: function(choice) {
+                    return choice.value;
                 }
             });
         });
@@ -445,7 +603,6 @@ go.app = function() {
             });
         });
 
-
         self.add('state_change_sanc', function(name) {
             var question = $("Please enter your 8-digit SANC registration number, e.g. 34567899:");
             var error = $("Sorry, the format of the SANC registration number is not correct. Please enter it again, e.g. 34567899:");
@@ -539,18 +696,6 @@ go.app = function() {
             });
         });
 
-        self.add('state_permission_denied', function(name) {
-            return new ChoiceState(name, {
-                question: $("You have chosen not to receive NurseConnect SMSs on this number and so cannot complete registration."),
-                choices: [
-                    new Choice('state_route', $('Main Menu'))
-                ],
-                next: function(choice) {
-                    return choice.value;
-                }
-            });
-        });
-
         self.add('state_check_optout_optout', function(name) {
             var msisdn = Object.keys(self.im.user.answers.operator.details.addresses.msisdn)[0];
             if (self.im.user.answers.operator.details.addresses.msisdn[msisdn].optedout === "True") {
@@ -601,7 +746,6 @@ go.app = function() {
             });
         });
 
-
         self.add('state_post_change_old_nr', function(name, opts) {
             // transfer the old extras to the new contact
             // self.contact.extra = opts.contact.extra;
@@ -630,6 +774,31 @@ go.app = function() {
             return new EndState(name, {
                 text: $("Thank you. Your NurseConnect details have been changed. To change any other details, please dial {{channel}} again.")
                     .context({channel: self.im.config.channel}),
+                next: 'state_route',
+             });
+        });
+
+        self.add('state_save_nursereg', function(name) {
+            // Save useful identity info
+            self.im.user.answers.registrant.details.nurseconnect.is_registered = "true";
+
+            // TODO: #30 registration submission
+
+            // identity PATCH
+
+            return Q
+            .all([
+                self.send_registration_thanks(self.im.user.answers.registrant_msisdn),
+                // POST registration
+            ])
+            .then(function() {
+                return self.states.create('state_end_reg');
+            });
+        });
+
+        self.add('state_end_reg', function(name) {
+            return new EndState(name, {
+                text: $("Thank you. Weekly NurseConnect messages will now be sent to this number."),
                 next: 'state_route',
             });
         });

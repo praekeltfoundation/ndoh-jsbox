@@ -1,0 +1,127 @@
+{
+    "": {
+        "pot-creation-date": "2016-08-16 02:50:+0000",
+        "project-id-version": "USSD PMTCT",
+        "language-team": "XHOSA <LL@li.org>",
+        "mime-version": "1.0",
+        "content-type": "text/plain; charset=UTF-8",
+        "content-transfer-encoding": "8bit",
+        "po-revision-date": "2016-08-19 16:24+0200",
+        "last-translator": "",
+        "x-generator": "Poedit 1.6.7",
+        "plural-forms": "nplurals=2; plural=(n != 1);",
+        "language": "xh"
+    },
+    "You have an incomplete registration. Would you like to continue with this registration?": [
+        null,
+        ""
+    ],
+    "Yes": [
+        null,
+        "Ewe"
+    ],
+    "No, start a new registration": [
+        null,
+        ""
+    ],
+    "You need to be registered on MomConnect to receive these messages. Please visit the nearest clinic to register.": [
+        null,
+        "Kuzakufuneka ukuba ube ubhalisile kwiMomConnect ukuze ufumane le miyaleza. Nceda uye kwikliniki ekufuphi uyekubhalisa."
+    ],
+    "To sign up, we need to collect, store and use your info. You may also get messages on public holidays and weekends. Do you consent?": [
+        null,
+        "Ukuze ubhalise, kufuneka siqokelele, sigcine size sisebenzise iinkcukacha zakho. Usenokufumana nemiyaleza ngeeholide zikawonke-wonke. Uyavuma?"
+    ],
+    "No": [
+        null,
+        "Hayi"
+    ],
+    "Unfortunately without your consent, you cannot register to MomConnect. Thank you for using the MomConnect service. Goodbye.": [
+        null,
+        "Ngelishwa, ngaphandle kwemvume yakho awunakubhalisa kwiMomConnect. Enkosi"
+    ],
+    "Please enter the year you were born (For example 1981)": [
+        null,
+        "Njengoko ungenayo i-ID okanye ipasipoti, nceda ufake unyaka owazalwa ngawo (Umzekelo 1981)"
+    ],
+    "Invalid date. Please enter the year you were born (For example 1981)": [
+        null,
+        "Kubekho isiphosiso kungenelo lwakho. Nceda faka ngobunono unyaka wakho wokuzalwa kwakhona (umzekelo: 2001)"
+    ],
+    "In which month were you born?": [
+        null,
+        "Nceda ufake inyanga owazalwa ngayo"
+    ],
+    "Please enter the date of the month you were born (For example 21)": [
+        null,
+        "Nceda ufake inyanga owazalwa ngayo"
+    ],
+    "Invalid date. Please enter the date of the month you were born (For example 21)": [
+        null,
+        "Nceda ufake umhla owazalwa ngawo (Umzekelo 14)"
+    ],
+    "Would you like to receive messages about keeping your child HIV-negative?": [
+        null,
+        "Ingaba ungathanda ukufumana imiyaleza malunga nokugcina usana lwakho lungena-HIV? Le miyaleza iza kuquka amagama afana no-HIV, amayeza & iiARV"
+    ],
+    "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye.": [
+        null,
+        "Ngoku uzakuqalisa ukufumana imiyaleza malunga nokugcina usana lwakho lungena-HIV. Enkosi ngokusebenzisa "
+    ],
+    "You have chosen to not receive messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye.": [
+        null,
+        "Ukhethe ukungayifumani imiyaleza malunga nokugcina usana lwakho lungena-HIV. Enkosi ngokusebenzisa iinkonzo zeMomConnect. Sala kakuhle."
+    ],
+    "Please tell us why you do not want to receive messages:": [
+        null,
+        "Sixelele kutheni ungafuni ukufumana imiyaleza: "
+    ],
+    "More": [
+        null,
+        ""
+    ],
+    "Back": [
+        null,
+        ""
+    ],
+    "Not HIV-positive": [
+        null,
+        "Andina-HIV"
+    ],
+    "Miscarriage": [
+        null,
+        "Siphumile isisu"
+    ],
+    "Baby was stillborn": [
+        null,
+        "Usana luvele lungasekho"
+    ],
+    "Baby died": [
+        null,
+        "Usana alusekho"
+    ],
+    "Messages not useful": [
+        null,
+        "Imiyaleza ayiloncedo "
+    ],
+    "Other": [
+        null,
+        "Okunye"
+    ],
+    "You will not receive SMSs about keeping your baby HIV negative. You will still receive MomConnect SMSs. To stop receiving these SMSs, dial {{ mc_optout_number }}": [
+        null,
+        "AwuSAYI kuzifumana iiSMS malunga nookugcina usana lwakho lungena-HIV. UzakuHLALA uzifumana iiSMS zeMomConnect. Ukuyekisa ukufumana ezi SMS, cofa u-*134*550*01#"
+    ],
+    "We are sorry for your loss. Would you like to receive a small set of free messages from MomConnect that could help you in this difficult time?": [
+        null,
+        "Siyaxolisa ngokulahlekelwa kwakho. Ingaba ungathanda ukufumana imiyaleza yasimahla engephi esuka kwiMomConnect enokukunceda ngeli xesha linzima?"
+    ],
+    "Thank you. You will no longer receive any messages from MomConnect. If you have any medical concerns, please visit your nearest clinic.": [
+        null,
+        "kwiMomConnect. Ukuba unazo naziphina na iinkxalabo zempilo, nceda uye ekliniki ekufuphi nawe."
+    ],
+    "Thank you. You will receive support messages from MomConnect in the coming weeks.": [
+        null,
+        "Enkosi. Uzakufumana imiyaleza yenkxaso esuka kwiMomConnect kwezi veki zizayo."
+    ]
+}
