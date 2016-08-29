@@ -142,8 +142,9 @@ go.app = function() {
             create_outbound_message(
                 self.im.user.answers.registrant.id,
                 msisdn,
+                // TODO #38 enable translation
                 "Welcome to NurseConnect. For more options or to " +
-                           "opt out, dial " + self.im.config.channel +"."
+                    "opt out, dial {{channel}}.".replace("{{channel}}", self.im.config.channel)
             );
         };
 
