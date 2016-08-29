@@ -330,6 +330,7 @@ go.app = function() {
         });
 
         self.add('state_check_optout_change', function(name) {
+            // all the code in here will most probably still change (TODO #33)
             var new_msisdn = utils.normalize_msisdn(self.im.user.answers.state_change_num, '27');
 
             var optedout = 0;
@@ -639,6 +640,7 @@ go.app = function() {
                     }
                 },
                 next: function(content) {
+                    // the code in here will most probably still change (TODO #33)
                     return is
                     .list_by_address({msisdn: utils.normalize_msisdn(content, '27')})
                     .then(function(identities_found) {
@@ -707,20 +709,7 @@ go.app = function() {
                     if (choice.value === 'main_menu') {
                         return 'state_route';
                     } else {
-                        // return go.utils
-                        //     .nurse_optout(
-                        //         self.im, self.contact,
-                        //         optout_reason=choice.value,
-                        //         api_optout=true,
-                        //         unsub_all=true,
-                        //         jembi_optout=true,
-                        //         patch_last_reg=true,
-                        //         self.metric_prefix,
-                        //         self.env
-                        //     )
-                        //     .then(function() {
-                        //         return 'st_end_detail_changed';
-                        //     });
+                        // TODO #36 add optout logic
                          return 'state_end_detail_changed';
                     }
                 }
