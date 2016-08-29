@@ -42,6 +42,7 @@ go.app = function() {
                 self.im.config.services.stage_based_messaging.url
             );
 
+            // TODO: uncomment as part of #30 registration submission
             // hub = new Hub(
             //     new JsonApi(self.im, {}),
             //     self.im.config.services.hub.token,
@@ -354,36 +355,14 @@ go.app = function() {
             // Save useful identity info
             self.im.user.answers.registrant.details.nurseconnect.is_registered = "true";
 
-            // if (self.im.user.answers.operator.id !== self.im.user.answers.registrant.id) {
-            //     self.im.user.answers.registrant.details.nurseconnect.registered_by
-            //         = Object.keys(self.im.user.answers.operator.details.addresses.msisdn)[0];
-            //
-            //     if (self.im.user.answers.operator.details.nurseconnect === undefined) {
-            //         self.im.user.answers.operator.details.nurseconnect = {};
-            //     }
-            //
-            //     if (self.im.user.answers.operator.details.nurseconnect.registrees === undefined) {
-            //         self.im.user.answers.operator.details.nurseconnect.registrees
-            //          = Object.keys(self.im.user.answers.registrant.details.addresses.msisdn)[0];
-            //     } else {
-            //         self.im.user.answers.operator.details.nurseconnect.registrees += ', '
-            //          + Object.keys(self.im.user.answers.registrant.details.addresses.msisdn)[0];;
-            //     }
-            // }
+            // TODO: #30 registration submission
 
-            // identity PATCH..?
+            // identity PATCH
 
             return Q
             .all([
                 self.send_registration_thanks(self.im.user.answers.registrant_msisdn),
                 // POST registration
-                // self.post_nursereg(
-                //     self.im.user.answers.registrant,
-                //     Object.keys(self.im.user.answers.operator.details.addresses.msisdn)[0],
-                //     null
-                // )
-
-                // metrics ???
             ])
             .then(function() {
                 return self.states.create('state_end_reg');
