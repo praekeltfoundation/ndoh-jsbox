@@ -1518,7 +1518,7 @@ module.exports = function() {
             "key": "post.is.msisdn.27820000666",
             "request": {
                 "method": 'POST',
-                "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000666":{}}}}}',
+                "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000666":{"default":true}}}}}',
                 "url": 'http://is.localhost:8001/api/v1/identities/'
             },
             "response": {
@@ -1531,7 +1531,7 @@ module.exports = function() {
                         "default_addr_type": "msisdn",
                         "addresses": {
                             "msisdn": {
-                                "+27820000666": {}
+                                "+27820000666": { "default": true }
                             }
                         }
                     },
@@ -1547,7 +1547,7 @@ module.exports = function() {
             "repeatable": true,
             "request": {
                 "method": 'POST',
-                "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000777":{}}}}}',
+                "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000777":{"default":true}}}}}',
                 "url": 'http://is.localhost:8001/api/v1/identities/'
             },
             "response": {
@@ -1560,7 +1560,7 @@ module.exports = function() {
                         "default_addr_type": "msisdn",
                         "addresses": {
                             "msisdn": {
-                                "+27820000777": {}
+                                "+27820000777": { "default": true }
                             }
                         }
                     },
@@ -1575,7 +1575,7 @@ module.exports = function() {
             "key": "post.is.msisdn.27820000888",
             "request": {
                 "method": 'POST',
-                "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000888":{}}}}}',
+                "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000888":{"default":true}}}}}',
                 "url": 'http://is.localhost:8001/api/v1/identities/'
             },
             "response": {
@@ -1588,7 +1588,7 @@ module.exports = function() {
                         "default_addr_type": "msisdn",
                         "addresses": {
                             "msisdn": {
-                                "+27820000888": {}
+                                "+27820000888": { "default": true }
                             }
                         }
                     },
@@ -1603,7 +1603,7 @@ module.exports = function() {
             "key": "post.is.msisdn.27820000999",
             "request": {
                 "method": 'POST',
-                "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000999":{}}}}}',
+                "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000999":{"default":true}}}}}',
                 "url": 'http://is.localhost:8001/api/v1/identities/'
             },
             "response": {
@@ -1616,7 +1616,7 @@ module.exports = function() {
                         "default_addr_type": "msisdn",
                         "addresses": {
                             "msisdn": {
-                                "+27820000999": {}
+                                "+27820000999": { "default":true }
                             }
                         }
                     },
@@ -1631,7 +1631,7 @@ module.exports = function() {
             "key": "post.is.msisdn.27820101010",
             "request": {
                 "method": 'POST',
-                "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820101010":{}}}}}',
+                "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820101010":{"default":true}}}}}',
                 "url": 'http://is.localhost:8001/api/v1/identities/'
             },
             "response": {
@@ -1644,7 +1644,7 @@ module.exports = function() {
                         "default_addr_type": "msisdn",
                         "addresses": {
                             "msisdn": {
-                                "+27820101010": {}
+                                "+27820101010": { "default":true }
                             }
                         }
                     },
@@ -1659,7 +1659,7 @@ module.exports = function() {
             "key": "post.is.msisdn.27820111111",
             "request": {
                 "method": 'POST',
-                "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820111111":{}}}}}',
+                "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820111111":{"default":true}}}}}',
                 "url": 'http://is.localhost:8001/api/v1/identities/'
             },
             "response": {
@@ -1672,7 +1672,7 @@ module.exports = function() {
                         "default_addr_type": "msisdn",
                         "addresses": {
                             "msisdn": {
-                                "+27820111111": {}
+                                "+27820111111": { "default":true }
                             }
                         }
                     },
@@ -1995,7 +1995,7 @@ module.exports = function() {
                         "default_addr_type": "msisdn",
                         "addresses": {
                             "msisdn": {
-                                "+27820000666": {}
+                                "+27820000666": { "default": true }
                             }
                         },
                         "mom_dob": "1982-02-01",
@@ -2023,7 +2023,7 @@ module.exports = function() {
                         "default_addr_type": "msisdn",
                         "addresses": {
                             "msisdn": {
-                                "+27820000777": {}
+                                "+27820000777": { "default": true }
                             }
                         },
                         "mom_dob": "1954-05-29",
@@ -2052,7 +2052,7 @@ module.exports = function() {
                         "default_addr_type": "msisdn",
                         "addresses": {
                             "msisdn": {
-                                "+27820000888": {}
+                                "+27820000888": { "default": true }
                             }
                         },
                         "mom_dob": "1975-09-23",
@@ -2081,7 +2081,7 @@ module.exports = function() {
                         "default_addr_type": "msisdn",
                         "addresses": {
                             "msisdn": {
-                                "+27820000999": {}
+                                "+27820000999": { "default": true }
                             }
                         },
                         "mom_dob": "1981-04-26",
