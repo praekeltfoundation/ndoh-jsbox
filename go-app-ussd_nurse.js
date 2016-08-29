@@ -402,12 +402,11 @@ go.app = function() {
                 next: function(choice) {
                     if (choice.value === 'yes') {
                         self.im.user.answers.registrant.details.nurseconnect.opt_out_reason = "";  // reset
-                        return self
-                         // TODO: adapt IdentityStore class in seed-jsbox-utils (#15) to have optin function
-                         .optin_identity(self.im.user.answers.registrant)
-                         .then(function() {
-                             return 'state_switch_new_nr';
-                         });
+                        return is
+                        .optin(self.im.user.answers.registrant.id, "msisdn", self.im.user.answers.registrant_msisdn)
+                        .then(function() {
+                            return 'state_switch_new_nr';
+                        });
                     } else {
                         return 'state_permission_denied';
                     }
@@ -469,26 +468,8 @@ go.app = function() {
         });
 
         self.add('state_switch_new_nr', function(name) {
-            // load new contact
+            // TODO: #33 Change submission
             return self.states.create('state_end_detail_changed');
-            /*self.im.contacts
-                .get(go.utils.normalize_msisdn(
-                    self.im.user.answers.st_change_num, '27'), {create: true})  // false raises exception
-                .then(function(new_contact) {
-                    // transfer the old extras to the new contact
-                    new_contact.extra = self.contact.extra;
-                    // clean up old contact
-                    self.contact.extra = {};
-                    // save the contacts and post nursereg
-                    return Q.all([
-                        self.im.contacts.save(self.contact),
-                        self.im.contacts.save(new_contact),
-                        go.utils.post_nursereg(self.im, new_contact, self.contact.msisdn, self.contact.msisdn),
-                    ])
-                    .then(function() {
-                        return self.states.create('state_end_detail_changed');
-                    });
-                });*/
         });
 
         self.add('state_change_faccode', function(name) {
@@ -747,27 +728,13 @@ go.app = function() {
         });
 
         self.add('state_post_change_old_nr', function(name, opts) {
-            // transfer the old extras to the new contact
-            // self.contact.extra = opts.contact.extra;
-            // clean up old contact
-            // opts.contact.extra = {};
-            // save the contacts and post nursereg
-            // return Q.all([
-            //     self.im.contacts.save(self.contact),
-            //     self.im.contacts.save(opts.contact),
-            //     go.utils.post_nursereg(self.im, self.contact, self.contact.msisdn, opts.contact.msisdn),
-            // ])
-            // .then(function() {
+            // TODO: #33 Change submission
                 return self.states.create('state_end_detail_changed');
-            // });
         });
 
         self.add('state_post_change_detail', function() {
-            // return go.utils
-            //     .post_nursereg(self.im, self.contact, self.contact.msisdn, null)  // dmsisdn = cmsisdn for det changed
-            //     .then(function(response) {
-                    return self.states.create('state_end_detail_changed');
-                // });
+            // TODO: #33 Change submission
+                return self.states.create('state_end_detail_changed');
         });
 
         self.add('state_end_detail_changed', function(name) {
