@@ -158,46 +158,31 @@ go.app = function() {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
             self.im.user.set_answer("operator_msisdn", msisdn);
 
-            // return is
-            // .list_by_address(address)
-            // .then(function(identities_found) {
-            //     // get the first identity in the list of identities
-            //     var identity = (identities_found.results.length > 0)
-            //         ? identities_found.results[0]
-            //         : null;
-            //
-            //     if (identity !== null) {
-            //         self.im.user.set_answer("operator", identity);
-            //
-            //         return self
-            //         .has_active_nurseconnect_subscription(self.im.user.answers.operator.id)
-            //         .then(function(has_active_nurseconnect_subscription) {
-            //             if (has_active_nurseconnect_subscription) {
-            //                 return self.states.create('state_subscribed');
-            //             } else {
-            //                 return self.states.create('state_not_subscribed');
-            //             }
-            //         });
-            //     }
-            //     else {
-            //         self.im.user.set_answer("operator", identity);
-            //         return self.states.create('state_not_subscribed');
-            //     }
-
             return is
-            .get_or_create_identity({"msisdn": msisdn})
-            .then(function(identity) {
-                self.im.user.set_answer("operator", identity);
+            .list_by_address({"msisdn": msisdn})
+            .then(function(identities_found) {
+                // get the first identity in the list of identities
+                var identity = (identities_found.results.length > 0)
+                    ? identities_found.results[0]
+                    : null;
 
-                return self
-                .has_active_nurseconnect_subscription(self.im.user.answers.operator.id)
-                .then(function(has_active_nurseconnect_subscription) {
-                    if (has_active_nurseconnect_subscription) {
-                        return self.states.create('state_subscribed');
-                    } else {
-                        return self.states.create('state_not_subscribed');
-                    }
-                });
+                if (identity !== null) {
+                    self.im.user.set_answer("operator", identity);
+
+                    return self
+                    .has_active_nurseconnect_subscription(self.im.user.answers.operator.id)
+                    .then(function(has_active_nurseconnect_subscription) {
+                        if (has_active_nurseconnect_subscription) {
+                            return self.states.create('state_subscribed');
+                        } else {
+                            return self.states.create('state_not_subscribed');
+                        }
+                    });
+                }
+                else {
+                    self.im.user.set_answer("operator", identity); // null
+                    return self.states.create('state_not_subscribed');
+                }
             });
         });
 
@@ -234,7 +219,20 @@ go.app = function() {
                     new Choice('state_subscribe_other', $('Subscribe somebody else'))
                 ],
                 next: function(choice) {
-                    return choice.value;
+                    if (choice.value === "state_change_old_nr") {
+                        return choice.value;
+                    } else {
+                        if (self.im.user.answers.operator === null) {
+                            return is
+                            .create_identity({"msisdn": self.im.user.answers.operator_msisdn})
+                            .then(function(identity) {
+                                self.im.user.set_answer("operator", identity);
+                                return choice.value;
+                            });
+                        } else {
+                            return choice.value;
+                        }
+                    }
                 }
             });
         });
@@ -463,7 +461,7 @@ go.app = function() {
                     } else {
                         return self.states.create('state_block_active_subs');
                     }
-                } else {
+                } else {  // no other identities with new number exist
                     self.im.user.set_answer("registrant", self.im.user.answers.operator);
                     return self.states.create('state_switch_new_nr');
                 }
