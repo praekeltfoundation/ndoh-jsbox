@@ -180,7 +180,7 @@ module.exports = function() {
                                 "default_addr_type": "msisdn",
                                 "addresses": {
                                     "msisdn": {
-                                        "+27820001004": { "optedout": "True" }
+                                        "+27820001004": { "optedout": true }
                                     }
                                 },
                                 "nurseconnect": {
@@ -206,7 +206,7 @@ module.exports = function() {
                                 "addresses": {
                                     "msisdn": {
                                         "+27820001005": {},
-                                        "+27820001004": { "optedout": "True" }
+                                        "+27820001004": { "optedout": true }
                                     }
                                 },
                                 "nurseconnect": {
@@ -254,7 +254,7 @@ module.exports = function() {
                                 "addresses": {
                                     "msisdn": {
                                         "+27820001005": {},
-                                        "+27820001004": { "optedout": "True" }
+                                        "+27820001004": { "optedout": true }
                                     }
                                 },
                                 "nurseconnect": {

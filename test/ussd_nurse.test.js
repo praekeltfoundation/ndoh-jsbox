@@ -351,7 +351,7 @@ describe("app", function() {
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_not_subscribed
-                            , '1'  // state_permission_self
+                            , '1'  // state_subscribe_self
                             , '123456'  // state_faccode
                             , {session_event: 'close'}  // timeout
                             , {session_event: 'new'}  // redial
@@ -377,7 +377,7 @@ describe("app", function() {
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_not_subscribed
-                            , '1'  // state_permission_self
+                            , '1'  // state_subscribe_self
                             , '123456'  // state_faccode
                             , {session_event: 'close'}  // timeout
                             , {session_event: 'new'}  // redial
@@ -418,7 +418,7 @@ describe("app", function() {
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '1'  // state_not_subscribed
-                                , '1'  // state_permission_self
+                                , '1'  // state_subscribe_self
                                 , '123456'  // state_faccode
                                 , {session_event: 'close'}  // timeout
                                 , {session_event: 'new'}  // redial
@@ -441,7 +441,7 @@ describe("app", function() {
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '3'  // state_not_subscribed
-                                , '1'  // state_permission_other
+                                , '1'  // state_subscribe_other
                                 , '0821235555'  // state_msisdn
                                 , '123456'  // state_faccode
                                 , {session_event: 'close'}  // timeout
@@ -466,7 +466,7 @@ describe("app", function() {
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_not_subscribed
-                            , '1'  // state_permission_self
+                            , '1'  // state_subscribe_self
                             , '123456'  // state_faccode
                             , {session_event: 'close'}  // timeout
                             , {session_event: 'new'}  // redial
@@ -490,7 +490,7 @@ describe("app", function() {
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_not_subscribed
-                            , '1'  // state_permission_self
+                            , '1'  // state_subscribe_self
                             , '123456'  // state_faccode
                             , {session_event: 'close'}  // timeout
                             , {session_event: 'new'}  // redial
@@ -546,7 +546,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_not_subscribed - self registration
-                        , '1'  // state_permission_self - consent
+                        , '1'  // state_subscribe_self - consent
                         , '123456'  // state_faccode
                         , '1'  // state_facname - confirm
                     )
@@ -568,7 +568,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_not_subscribed - self registration
-                        , '1'  // state_permission_self - consent
+                        , '1'  // state_subscribe_self - consent
                         , '123456'  // state_faccode
                         , '1'  // state_facname - confirm
                     )
@@ -586,7 +586,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_not_subscribed - self registration
-                        , '1'  // state_permission_self - consent
+                        , '1'  // state_subscribe_self - consent
                         , '123456'  // state_faccode
                         , '1'  // state_facname - confirm
                     )
@@ -605,7 +605,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
-                        , '1'  // state_permission_other - consent
+                        , '1'  // state_subscribe_other - consent
                         , '0820001002'  // state_msisdn
                         , '123456'  // state_faccode
                         , '1'  // state_facname - confirm
@@ -622,7 +622,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
-                        , '1'  // state_permission_other - consent
+                        , '1'  // state_subscribe_other - consent
                         , '0820001002'  // state_msisdn
                         , '123456'  // state_faccode
                         , '1'  // state_facname - confirm
@@ -653,7 +653,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
-                        , '1'  // state_permission_other - consent
+                        , '1'  // state_subscribe_other - consent
                         , '0820001002'  // state_msisdn
                         , '123456'  // state_faccode
                         , '1'  // state_facname - confirm
@@ -672,7 +672,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
-                        , '1'  // state_permission_other - consent
+                        , '1'  // state_subscribe_other - consent
                         , '0820001002'  // state_msisdn
                         , '123456'  // state_faccode
                         , '1'  // state_facname - confirm
@@ -692,7 +692,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_not_subscribed - self registration
-                        , '1'  // state_permission_self - consent
+                        , '1'  // state_subscribe_self - consent
                     )
                     .check.interaction({
                         state: 'state_opt_in_reg',
@@ -710,7 +710,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_not_subscribed - self registration
-                        , '1'  // state_permission_self - consent
+                        , '1'  // state_subscribe_self - consent
                     )
                     .check(function(api) {
                         var contact = _.find(api.contacts.store, {
@@ -728,7 +728,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_not_subscribed - self registration
-                        , '1'  // state_permission_self - consent
+                        , '1'  // state_subscribe_self - consent
                         , '1'  // state_opt_in_reg - confirm
                     )
                     .check.interaction({
@@ -742,7 +742,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_not_subscribed - self registration
-                        , '1'  // state_permission_self - consent
+                        , '1'  // state_subscribe_self - consent
                         , '1'  // state_opt_in_reg - confirm
                     )
                     .check(function(api) {
@@ -765,7 +765,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
-                        , '1'  // state_permission_other - consent
+                        , '1'  // state_subscribe_other - consent
                         , '0820001004'  // state_msisdn
                     )
                     .check.interaction({
@@ -784,7 +784,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
-                        , '1'  // state_permission_other - consent
+                        , '1'  // state_subscribe_other - consent
                         , '0820001004'  // state_msisdn
                     )
                     .check(function(api) {
@@ -810,7 +810,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
-                        , '1'  // state_permission_other - consent
+                        , '1'  // state_subscribe_other - consent
                         , '0820001004'  // state_msisdn
                         , '1'  // state_opt_in_reg - confirm
                     )
@@ -826,7 +826,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
-                        , '1'  // state_permission_other - consent
+                        , '1'  // state_subscribe_other - consent
                         , '0820001004'  // state_msisdn
                         , '1'  // state_opt_in_reg - confirm
                     )
@@ -857,7 +857,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
-                        , '1'  // state_permission_other - consent
+                        , '1'  // state_subscribe_other - consent
                         , '0820001004'  // state_msisdn
                         , '2'  // state_opt_in_reg - deny
                     )
@@ -876,7 +876,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
-                        , '1'  // state_permission_other - consent
+                        , '1'  // state_subscribe_other - consent
                         , '0820001004'  // state_msisdn
                         , '2'  // state_opt_in_reg - deny
                         , '1'  // state_permission_denied - main menu
@@ -896,7 +896,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
-                        , '2'  // state_permission_other - denied
+                        , '2'  // state_subscribe_other - denied
                     )
                     .check.interaction({
                         state: 'state_permission_denied',
@@ -931,7 +931,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
-                        , '1'  // state_permission_other - consent
+                        , '1'  // state_subscribe_other - consent
                         , '0820001002'  // state_msisdn
                         , '123456'  // state_faccode
                         , '2'  // state_facname - facility wrong
@@ -953,7 +953,7 @@ describe("app", function() {
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '3'  // state_not_subscribed - other registration
-                            , '1'  // state_permission_other - consent
+                            , '1'  // state_subscribe_other - consent
                             , '07262520201'  // state_msisdn
                         )
                         .check.interaction({
@@ -974,7 +974,7 @@ describe("app", function() {
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '3'  // state_not_subscribed - other registration
-                            , '1'  // state_permission_other - consent
+                            , '1'  // state_subscribe_other - consent
                             , '0820001002'  // state_msisdn
                             , '12345A'  // state_faccode
                         )
@@ -992,7 +992,7 @@ describe("app", function() {
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '3'  // state_not_subscribed - other registration
-                            , '1'  // state_permission_other - consent
+                            , '1'  // state_subscribe_other - consent
                             , '0820001002'  // state_msisdn
                             , '12345'  // state_faccode
                         )
@@ -1010,7 +1010,7 @@ describe("app", function() {
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '3'  // state_not_subscribed - other registration
-                            , '1'  // state_permission_other - consent
+                            , '1'  // state_subscribe_other - consent
                             , '0820001002'  // state_msisdn
                             , '888888'  // state_faccode
                         )

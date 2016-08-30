@@ -242,7 +242,7 @@ go.app = function() {
 
         self.add('state_check_optout_reg', function(name) {
             var registrant_msisdn = self.im.user.answers.registrant_msisdn;
-            if (self.im.user.answers.registrant.details.addresses.msisdn[registrant_msisdn].optedout === "True") {
+            if (self.im.user.answers.registrant.details.addresses.msisdn[registrant_msisdn].optedout) {
                 return self.states.create('state_opt_in_reg');
             } else {
                 return self.states.create('state_faccode');
@@ -380,9 +380,9 @@ go.app = function() {
             var msisdn_available = true;
             // do existing identities use the 'new' number?
             var eval_new_msisdn = function(identity) {
-                if (identity.details.addresses.msisdn[new_msisdn].optedout === "True") {
+                if (identity.details.addresses.msisdn[new_msisdn].optedout) {
                     optedout++;
-                } else if (identity.details.addresses.msisdn[new_msisdn].inactive === "True") {
+                } else if (identity.details.addresses.msisdn[new_msisdn].inactive) {
                     inactive++;
                 } else {
                     msisdn_available = false;
@@ -417,10 +417,10 @@ go.app = function() {
 
                 if (msisdn_on_operator && msisdn_available) {
                     // more than one identity uses the number...
-                    return self.states.create('state_block_active_subs'); // need another state to route to..?
+                    return self.states.create('state_block_active_subs'); // need another state to route to..? route to thanks
                 } else if (msisdn_on_operator) {
                     // check whether number is opted out on operator
-                    if (self.im.user.answers.operator.details.addresses.msisdn[new_msisdn].optedout === "True") {
+                    if (self.im.user.answers.operator.details.addresses.msisdn[new_msisdn].optedout) {
                         // opt back in
                         return self.states.create('state_opt_in_change');
                     } else {
@@ -677,7 +677,7 @@ go.app = function() {
 
         self.add('state_check_optout_optout', function(name) {
             var msisdn = Object.keys(self.im.user.answers.operator.details.addresses.msisdn)[0];
-            if (self.im.user.answers.operator.details.addresses.msisdn[msisdn].optedout === "True") {
+            if (self.im.user.answers.operator.details.addresses.msisdn[msisdn].optedout) {
                 return self.states.create(
                     'state_optout', {opted_out: true}
                 );
