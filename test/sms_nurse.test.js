@@ -16,10 +16,6 @@ describe("app", function() {
         beforeEach(function() {
             app = new go.app.GoNDOH();
 
-            // go.utils.get_timestamp = function() {
-            //     return "20130819144811";
-            // };
-
             tester = new AppTester(app);
 
             tester
@@ -60,110 +56,6 @@ describe("app", function() {
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 150 ->
                     // fixtures_Jembi().forEach(api.http.fixtures.add);
                 });
-        });
-
-        describe.skip("using the session length helper", function () {
-            it("should publish metrics", function () {
-                return tester
-                    .setup(function(api) {
-                        api.kv.store["session_length_helper." + api.config.app.name + ".foodacom.sentinel"] = "2000-12-12";
-                        api.kv.store["session_length_helper." + api.config.app.name + ".foodacom"] = 42;
-                        api.contacts.add({
-                            msisdn: "+27001",
-                            extra : {},
-                            key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                            user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                        });
-                    })
-                    .setup.user({
-                        state: "states_start",
-                        metadata: {
-                          session_length_helper: {
-                            // one minute before the mocked timestamp
-                            start: Number(new Date("April 4, 2014 07:06:07"))
-                          }
-                        }
-                    })
-                    .input({
-                        content: "start",
-                        transport_metadata: {
-                            aat_ussd: {
-                                provider: "foodacom"
-                            }
-                        }
-                    })
-                    .input.session_event("close")
-                    .check(function(api, im) {
-
-                        var kv_store = api.kv.store;
-                        assert.equal(kv_store["session_length_helper." + im.config.name + ".foodacom"], 60000);
-                        assert.equal(
-                          kv_store["session_length_helper." + im.config.name + ".foodacom.sentinel"], "2014-04-04");
-
-                        var m_store = api.metrics.stores.test_nurse_sms_ms;
-                        assert.equal(
-                          m_store["session_length_helper." + im.config.name + ".foodacom"].agg, "max");
-                        assert.equal(
-                          m_store["session_length_helper." + im.config.name + ".foodacom"].values[0], 60);
-                    }).run();
-            });
-        });
-
-        describe.skip("test Metrics and KVs", function() {
-
-            describe("when a new unique user sends message in", function() {
-                it("should fire metrics", function() {
-                    return tester
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: "+27001",
-                                extra : {},
-                                key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                                user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                            });
-                        })
-                        .inputs("start")
-                        .check(function(api) {
-                            var metrics = api.metrics.stores.test_nurse_sms_ms;
-                            assert.equal(Object.keys(metrics).length, 2);
-                            assert.deepEqual(metrics["test.nurse_sms.inbound_sms.last"].values, [1]);
-                            assert.deepEqual(metrics["test.nurse_sms.inbound_sms.sum"].values, [1]);
-                        }).run();
-                });
-            });
-
-            describe("when the user sends a STOP message", function() {
-                it("should fire no metrics", function() {
-                    return tester
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: "+27001",
-                                extra : {
-                                    nc_id_type: "sa_id",
-                                    nc_sa_id_no: "7103035001001",
-                                    nc_last_reg_id: "99",
-                                },
-                                key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                                user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                            });
-                        })
-                        .setup.user.addr("27001")
-                        .inputs("STOP")
-                        .check(function(api) {
-                            var metrics = api.metrics.stores.test_nurse_sms_ms;
-                            assert.equal(Object.keys(metrics).length, 8);
-                            assert.deepEqual(metrics["test.nurse_sms.optouts.last"].values, [1]);
-                            assert.deepEqual(metrics["test.nurse_sms.optouts.sum"].values, [1]);
-                            assert.deepEqual(metrics["test.nurseconnect.optouts.last"].values, [1]);
-                            assert.deepEqual(metrics["test.nurseconnect.optouts.sum"].values, [1]);
-                            assert.deepEqual(metrics["test.nurseconnect.optouts.unknown.last"].values, [1]);
-                            assert.deepEqual(metrics["test.nurseconnect.optouts.unknown.sum"].values, [1]);
-                            assert.deepEqual(metrics["test.nurse_sms.inbound_sms.last"].values, [1]);
-                            assert.deepEqual(metrics["test.nurse_sms.inbound_sms.sum"].values, [1]);
-                        })
-                        .run();
-                });
-            });
         });
 
         describe("when the user sends a message containing a USSD code", function() {
