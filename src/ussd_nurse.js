@@ -295,6 +295,51 @@ go.app = function() {
             });
         });
 
+        self.add('state_faccode', function(name) {
+            var owner = self.im.user.answers.operator.id === self.im.user.answers.registrant.id
+                ? 'your' : 'their';
+            var error = $("Sorry, that code is not recognized. Please enter the 6-digit facility code again, e. 535970:");
+            var question = $("Please enter {{owner}} 6-digit facility code:")
+                .context({owner: owner});
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    return self
+                    .validate_nc_clinic_code(self.im, content)
+                    .then(function(facname) {
+                        if (!facname) {
+                            return error;
+                        } else {
+                            self.im.user.answers.registrant.details.nurseconnect = {};
+                            self.im.user.answers.registrant.details.nurseconnect.facname = facname;
+                            self.im.user.answers.registrant.details.nurseconnect.faccode = content;
+
+                            return null;  // vumi expects null or undefined if check passes
+                        }
+                    });
+                },
+                next: 'state_facname'
+            });
+        });
+
+        self.add('state_facname', function(name) {
+            var owner = self.im.user.answers.operator.id === self.im.user.answers.registrant.id
+                ? 'your' : 'their';
+            return new ChoiceState(name, {
+                question: $("Please confirm {{owner}} facility: {{facname}}")
+                    .context({
+                        owner: owner,
+                        facname: self.im.user.answers.registrant.details.nurseconnect.facname
+                    }),
+                choices: [
+                    new Choice('state_save_nursereg', $('Confirm')),
+                    new Choice('state_faccode', $('Not the right facility')),
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
 
         self.add('state_permission_denied', function(name) {
             return new ChoiceState(name, {
@@ -372,21 +417,21 @@ go.app = function() {
 
                 if (msisdn_on_operator && msisdn_available) {
                     // more than one identity uses the number...
-                    return self.states.create('state_block_active_subs');
+                    return self.states.create('state_block_active_subs'); // need another state to route to..?
                 } else if (msisdn_on_operator) {
                     // check whether number is opted out on operator
                     if (self.im.user.answers.operator.details.addresses.msisdn[new_msisdn].optedout === "True") {
                         // opt back in
                         return self.states.create('state_opt_in_change');
-                    } // else ....
+                    } else {
+                        self.states.create('state_block_active_subs'); // need another state to route to..?
+                    }
                 } else if (msisdn_available) {  // number have been used but available to change to
                     self.im.user.set_answer("registrant", self.im.user.answers.operator);
                     return self.states.create('state_switch_new_nr');
                 }
 
-                self.im.user.set_answer("registrant", self.im.user.answers.operator);
-                return self.states.create('state_switch_new_nr');
-
+                self.states.create('state_block_active_subs'); // need another state to route to..?
             });
         });
 
@@ -408,52 +453,6 @@ go.app = function() {
                     } else {
                         return 'state_permission_denied';
                     }
-                }
-            });
-        });
-
-        self.add('state_faccode', function(name) {
-            var owner = self.im.user.answers.operator.id === self.im.user.answers.registrant.id
-                ? 'your' : 'their';
-            var error = $("Sorry, that code is not recognized. Please enter the 6-digit facility code again, e. 535970:");
-            var question = $("Please enter {{owner}} 6-digit facility code:")
-                .context({owner: owner});
-            return new FreeText(name, {
-                question: question,
-                check: function(content) {
-                    return self
-                    .validate_nc_clinic_code(self.im, content)
-                    .then(function(facname) {
-                        if (!facname) {
-                            return error;
-                        } else {
-                            self.im.user.answers.registrant.details.nurseconnect = {};
-                            self.im.user.answers.registrant.details.nurseconnect.facname = facname;
-                            self.im.user.answers.registrant.details.nurseconnect.faccode = content;
-
-                            return null;  // vumi expects null or undefined if check passes
-                        }
-                    });
-                },
-                next: 'state_facname'
-            });
-        });
-
-        self.add('state_facname', function(name) {
-            var owner = self.im.user.answers.operator.id === self.im.user.answers.registrant.id
-                ? 'your' : 'their';
-            return new ChoiceState(name, {
-                question: $("Please confirm {{owner}} facility: {{facname}}")
-                    .context({
-                        owner: owner,
-                        facname: self.im.user.answers.registrant.details.nurseconnect.facname
-                    }),
-                choices: [
-                    new Choice('state_save_nursereg', $('Confirm')),
-                    new Choice('state_faccode', $('Not the right facility')),
-                ],
-                next: function(choice) {
-                    return choice.value;
                 }
             });
         });
@@ -641,7 +640,7 @@ go.app = function() {
                     return is
                     .list_by_address({msisdn: utils.normalize_msisdn(content, '27')})
                     .then(function(identities_found) {
-                        if (identities_found.results.length > 0) {
+                        if (identities_found.results.length > 0) {  // what if more than one identity use same 'old' number..?
                             return self
                             .has_active_nurseconnect_subscription(identities_found.results[0].id)
                             .then(function(has_active_nurseconnect_subscription) {
