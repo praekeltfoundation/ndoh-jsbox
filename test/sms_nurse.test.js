@@ -9,7 +9,7 @@ var SeedJsboxUtils = require('seed-jsbox-utils');
 var utils = SeedJsboxUtils.utils;
 
 describe("app", function() {
-    describe("for nurse sms use", function() {
+    describe("for sms_nurse use", function() {
         var app;
         var tester;
 
