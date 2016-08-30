@@ -1,10 +1,12 @@
 var vumigo = require('vumigo_v02');
-var fixtures = require('./fixtures');
+var fixtures_IdentityStore = require('./fixtures_identity_store');
+var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
-var optoutstore = require('./optoutstore');
-var DummyOptoutResource = optoutstore.DummyOptoutResource;
 var _ = require('lodash');
+
+var SeedJsboxUtils = require('seed-jsbox-utils');
+var utils = SeedJsboxUtils.utils;
 
 describe("app", function() {
     describe("for nurse sms use", function() {
@@ -31,15 +33,32 @@ describe("app", function() {
                     },
                     channel: "longcode",
                     nurse_ussd_channel: "nurse_ussd_channel",
+                    testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',
                     jembi: {
                         username: 'foo',
                         password: 'bar',
                         url: 'http://test/v2/',
                         url_json: 'http://test/v2/json/'
-                    }
+                    },
+                    services: {
+                        identity_store: {
+                            url: 'http://is/api/v1/',
+                            token: 'test IdentityStore'
+                        },
+                        stage_based_messaging: {
+                            url: 'http://sbm/api/v1/',
+                            token: 'test StageBasedMessaging'
+                        },
+                    },
+                    logging: "off"
                 })
                 .setup(function(api) {
-                    fixtures().forEach(api.http.fixtures.add);
+                    // add fixtures for services used
+                    // fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
+                    fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
+                    // fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 150 ->
+                    // fixtures_Jembi().forEach(api.http.fixtures.add);
                 });
         });
 
@@ -147,19 +166,11 @@ describe("app", function() {
             });
         });
 
-        describe.skip("when the user sends a message containing a USSD code", function() {
+        describe("when the user sends a message containing a USSD code", function() {
             it("should tell them to dial the number, not sms it", function() {
                 return tester
-                    .setup(function(api) {
-                        api.contacts.add({
-                            msisdn: '+27001',
-                            extra : {},
-                            key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                            user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                        });
-                    })
-                    .setup.user.addr('27001')
-                    .inputs('*134*12345# rate')
+                    .setup.user.addr('27820001003')
+                    .input('*134*12345# rate')
                     .check.interaction({
                         state: 'states_dial_not_sms',
                         reply:
@@ -170,110 +181,62 @@ describe("app", function() {
             });
         });
 
-        describe.skip("when the user sends a STOP message", function() {
+        describe("when the user sends a STOP message", function() {
             it("should set their opt out status", function() {
                 return tester
-                    .setup(function(api) {
-                        api.contacts.add({
-                            msisdn: '+27001',
-                            extra : {
-                                nc_id_type: 'sa_id',
-                                nc_sa_id_no: '7103035001001',
-                                nc_last_reg_id: '99',
-                            },
-                            key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                            user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                        });
-                    })
-                    .setup.user.addr('27001')
-                    .inputs('"stop" in the name of love')
+                    .setup.user.addr('27820001003')
+                    .input('"stop" in the name of love')
                     .check.interaction({
                         state: 'states_opt_out',
                         reply:
                             'Thank you. You will no longer receive messages from us.'
                     })
                     .check(function(api) {
-                        var contact = _.find(api.contacts.store, { msisdn: '+27001' });
-                        assert.equal(contact.extra.nc_opt_out_reason, 'unknown');
+                        utils.check_fixtures_used(api, [2, 4, 52, 56]);
                     })
                     .run();
             });
         });
 
-        describe.skip("when the user sends a BLOCK message", function() {
+        describe("when the user sends a BLOCK message", function() {
             it("should set their opt out status", function() {
                 return tester
-                    .setup(function(api) {
-                        api.contacts.add({
-                            msisdn: '+27001',
-                            extra : {
-                                nc_id_type: 'sa_id',
-                                nc_sa_id_no: '7103035001001',
-                                nc_last_reg_id: '99',
-                            },
-                            key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                            user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                        });
-                    })
-                    .setup.user.addr('27001')
-                    .inputs('BLOCK')
+                    .setup.user.addr('27820001003')
+                    .input('BLOCK')
                     .check.interaction({
                         state: 'states_opt_out',
                         reply:
                             'Thank you. You will no longer receive messages from us.'
                     })
                     .check(function(api) {
-                        var contact = _.find(api.contacts.store, { msisdn: '+27001' });
-                        assert.equal(contact.extra.nc_opt_out_reason, 'unknown');
+                        utils.check_fixtures_used(api, [2, 4, 52, 56]);
                     })
                     .run();
             });
         });
 
-        describe.skip("when the user sends a START message", function() {
+        describe("when the user sends a START message", function() {
             it("should reverse their opt out status", function() {
                 return tester
-                    .setup(function(api) {
-                        api.contacts.add({
-                            msisdn: '+27001',
-                            extra : {
-                                nc_opt_out_reason: 'unknown'
-                            },
-                            key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                            user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                        });
-                    })
-                    .setup.user.addr('27001')
-                    .inputs('"START"')
+                    .setup.user.addr('27820001003')
+                    .input('"START"')
                     .check.interaction({
                         state: 'states_opt_in',
                         reply:
                             'Thank you. You will now receive messages from us again. ' +
                             'If you have any medical concerns please visit your nearest clinic'
                     })
-                    .check(function(api) {
-                        var contact = _.find(api.contacts.store, { msisdn: '+27001' });
-                        assert.equal(contact.extra.nc_opt_out_reason, '');
-                    })
                     .run();
             });
         });
 
-        describe.skip("when the user sends a different message", function() {
+        describe("when the user sends a different message", function() {
             it("should tell them how to opt out", function() {
                 return tester
-                    .setup(function(api) {
-                        api.contacts.add({
-                            msisdn: '+27001',
-                            extra : {},
-                            key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                            user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                        });
-                    })
-                    .setup.user.addr('27001')
-                    .inputs('help')
+                    .setup.user.addr('27820001003')
+                    .input('help')
                     .check.interaction({
-                        state: 'st_unrecognised',
+                        state: 'state_unrecognised',
                         reply:
                             'We do not recognise the message you sent us. Reply STOP ' +
                             'to unsubscribe or dial nurse_ussd_channel for more options.'

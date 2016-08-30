@@ -217,5 +217,40 @@ module.exports = function() {
             }
         },
 
+        // 156: optout identity cb245673-aa41-4302-ac47-00000001003
+        {
+            "request": {
+                "url": 'http://is/api/v1/optout/',
+                "method": 'POST',
+                "data": {
+                    "optout_type": "STOP",
+                    "identity": "cb245673-aa41-4302-ac47-00000001003",
+                    "reason": "unknown",
+                    "address_type": "msisdn",
+                    "address": "+27820001003",
+                    "request_source": "sms_nurse", // correct?
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            "response": {}
+        },
+
+        // 157: optin in identity cb245673-aa41-4302-ac47-00000001003
+        {
+            "key": "post.is.optin.27820001003",
+            "request": {
+                "url": 'http://is/api/v1/optin/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001003",
+                    "address_type": "msisdn",
+                    "address": "+27820001003"
+                }
+            },
+            "response": {
+                "accepted": true
+            }
+        },
+
     ];
 };
