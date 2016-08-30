@@ -1267,10 +1267,10 @@ describe("app", function() {
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '2'  // state_subscribed - change num
-                            , '0820001004'  // state_change_num
+                            , '0820001003'  // state_change_num
                         )
                         .check.interaction({
-                            state: 'state_block_active_subs'
+                            state: 'state_block_active_subs' // number in use by 0820001003
                         })
                         .run();
                 });

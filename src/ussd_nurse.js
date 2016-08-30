@@ -155,6 +155,32 @@ go.app = function() {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
             self.im.user.set_answer("operator_msisdn", msisdn);
 
+            // return is
+            // .list_by_address(address)
+            // .then(function(identities_found) {
+            //     // get the first identity in the list of identities
+            //     var identity = (identities_found.results.length > 0)
+            //         ? identities_found.results[0]
+            //         : null;
+            //
+            //     if (identity !== null) {
+            //         self.im.user.set_answer("operator", identity);
+            //
+            //         return self
+            //         .has_active_nurseconnect_subscription(self.im.user.answers.operator.id)
+            //         .then(function(has_active_nurseconnect_subscription) {
+            //             if (has_active_nurseconnect_subscription) {
+            //                 return self.states.create('state_subscribed');
+            //             } else {
+            //                 return self.states.create('state_not_subscribed');
+            //             }
+            //         });
+            //     }
+            //     else {
+            //         self.im.user.set_answer("operator", identity);
+            //         return self.states.create('state_not_subscribed');
+            //     }
+
             return is
             .get_or_create_identity({"msisdn": msisdn})
             .then(function(identity) {
@@ -375,27 +401,23 @@ go.app = function() {
             // all the code in here will most probably still change (TODO #33)
             var new_msisdn = utils.normalize_msisdn(self.im.user.answers.state_change_num, '27');
 
-            var optedout = 0;
-            var inactive = 0;
-            var msisdn_available = true;
+            var msisdn_on_other_identities_but_available = false;
             // do existing identities use the 'new' number?
-            var eval_new_msisdn = function(identity) {
-                if (identity.details.addresses.msisdn[new_msisdn].optedout) {
-                    optedout++;
-                } else if (identity.details.addresses.msisdn[new_msisdn].inactive) {
-                    inactive++;
-                } else {
-                    msisdn_available = false;
+            var eval_new_msisdn_available_on_other_identities = function(identity) {
+                if (identity.details.addresses.msisdn[new_msisdn].optedout
+                    || identity.details.addresses.msisdn[new_msisdn].inactive) {
+
+                    msisdn_on_other_identities_but_available = true;
                 }
             };
 
-            var msisdn_on_operator = false;
+            var new_msisdn_on_operator = false;
             var cleaned_identities = [];
             var remove_operator_identity = function(identity) {
                 if (identity.id !== self.im.user.answers.operator.id) {
                     cleaned_identities.push(identity);
                 } else {
-                    msisdn_on_operator = true;
+                    new_msisdn_on_operator = true;
                 }
             };
 
@@ -410,28 +432,38 @@ go.app = function() {
                 if (identities !== null) {  // identities with new number exists
                     // clean identities array of operator identity (if present)
                     identities.forEach(remove_operator_identity);
-                    if (msisdn_on_operator) identities = cleaned_identities;
-                    // iterate through identities, checking whether msisdn is usable
-                    identities.forEach(eval_new_msisdn);
-                }
-
-                if (msisdn_on_operator && msisdn_available) {
-                    // more than one identity uses the number...
-                    return self.states.create('state_block_active_subs'); // need another state to route to..? route to thanks
-                } else if (msisdn_on_operator) {
-                    // check whether number is opted out on operator
-                    if (self.im.user.answers.operator.details.addresses.msisdn[new_msisdn].optedout) {
-                        // opt back in
-                        return self.states.create('state_opt_in_change');
-                    } else {
-                        self.states.create('state_block_active_subs'); // need another state to route to..?
+                    if (new_msisdn_on_operator) {
+                        identities = cleaned_identities;
                     }
-                } else if (msisdn_available) {  // number have been used but available to change to
+                    // iterate through identities, checking whether msisdn is usable
+                    if (identities.length > 0) {
+                        identities.forEach(eval_new_msisdn_available_on_other_identities);
+                    }
+
+                    // person wants to change to number already theirs but it's also active on another identity
+                    if (new_msisdn_on_operator && !msisdn_on_other_identities_but_available) {
+                        // disallow
+                        return self.states.create('state_block_active_subs');
+                    }
+                    if (new_msisdn_on_operator) { // person wants to change to number already theirs
+                        // check whether number is opted out on operator
+                        if (self.im.user.answers.operator.details.addresses.msisdn[new_msisdn].optedout) {
+                            self.im.user.set_answer("registrant", self.im.user.answers.operator);
+                            // opt back in
+                            return self.states.create('state_opt_in_change');
+                        } else {
+                            self.states.create('state_end_detail_changed');
+                        }
+                    } else if (msisdn_on_other_identities_but_available) {  // number have been used but available to change to
+                        self.im.user.set_answer("registrant", self.im.user.answers.operator);
+                        return self.states.create('state_switch_new_nr');
+                    } else {
+                        return self.states.create('state_block_active_subs');
+                    }
+                } else {  // no other identities with new number exist
                     self.im.user.set_answer("registrant", self.im.user.answers.operator);
                     return self.states.create('state_switch_new_nr');
                 }
-
-                self.states.create('state_block_active_subs'); // need another state to route to..?
             });
         });
 
