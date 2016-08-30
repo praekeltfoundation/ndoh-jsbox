@@ -24,18 +24,9 @@ describe("app", function() {
                     name: "nurse_sms",
                     testing: "true",
                     testing_today: "April 4, 2014 07:07:07",
-                    endpoints: {
-                        "sms": {"delivery_class": "sms"}
-                    },
+                    testing_message_id: "0170b7bb-978e-4b8a-35d2-662af5b6daee",
                     channel: "longcode",
                     nurse_ussd_channel: "nurse_ussd_channel",
-                    testing_message_id: "0170b7bb-978e-4b8a-35d2-662af5b6daee",
-                    jembi: {
-                        username: "foo",
-                        password: "bar",
-                        url: "http://test/v2/",
-                        url_json: "http://test/v2/json/"
-                    },
                     services: {
                         identity_store: {
                             url: "http://is/api/v1/",
