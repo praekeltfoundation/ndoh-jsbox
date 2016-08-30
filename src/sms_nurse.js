@@ -1,16 +1,16 @@
 go.app = function() {
-    var vumigo = require('vumigo_v02');
+    var vumigo = require("vumigo_v02");
     var App = vumigo.App;
     var EndState = vumigo.states.EndState;
     var JsonApi = vumigo.http.api.JsonApi;
 
-    var SeedJsboxUtils = require('seed-jsbox-utils');
+    var SeedJsboxUtils = require("seed-jsbox-utils");
     var IdentityStore = SeedJsboxUtils.IdentityStore;
     var StageBasedMessaging = SeedJsboxUtils.StageBasedMessaging;
     var utils = SeedJsboxUtils.utils;
 
     var GoNDOH = App.extend(function(self) {
-        App.call(self, 'states_start');
+        App.call(self, "states_start");
         var $ = self.$;
 
         // variables for services
@@ -43,7 +43,7 @@ go.app = function() {
                     return sbm
                     .get_messageset(active_subs[i].messageset)
                     .then(function(messageset) {
-                        if (messageset.short_name.indexOf('nurseconnect') > -1) {
+                        if (messageset.short_name.indexOf("nurseconnect") > -1) {
                             return true;
                         }
                     });
@@ -53,8 +53,8 @@ go.app = function() {
         };
 
 
-        self.states.add('states_start', function() {
-            var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
+        self.states.add("states_start", function() {
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
             self.im.user.set_answer("operator_msisdn", msisdn);
 
             return is
@@ -67,7 +67,7 @@ go.app = function() {
                 .then(function(has_active_nurseconnect_subscription) {
                     if (has_active_nurseconnect_subscription) {
                         // check if message contains a ussd code
-                        if (self.im.msg.content.indexOf('*120*') > -1 || self.im.msg.content.indexOf('*134*') > -1) {
+                        if (self.im.msg.content.indexOf("*120*") > -1 || self.im.msg.content.indexOf("*134*") > -1) {
                             return self.states.create("states_dial_not_sms");
                         } else {
                             // get the first word, remove non-alphanumerics, capitalise
@@ -83,23 +83,23 @@ go.app = function() {
                             }
                         }
                     } else {
-                        return self.states.create('state_unrecognised');
+                        return self.states.create("state_unrecognised");
                     }
                 });
             });
 
         });
 
-        self.states.add('states_dial_not_sms', function(name) {
+        self.states.add("states_dial_not_sms", function(name) {
             return new EndState(name, {
                 text: $("Please use your handset's keypad to dial the number that you received, " +
                         "rather than sending it to us in an sms."),
 
-                next: 'states_start',
+                next: "states_start",
             });
         });
 
-        self.states.add('states_opt_out_enter', function(name) {
+        self.states.add("states_opt_out_enter", function(name) {
             var optout_info = {
                 "optout_type": "STOP",
                 "identity": self.im.user.answers.operator.id,
@@ -112,40 +112,40 @@ go.app = function() {
             return is
             .optout(optout_info)
             .then(function() {
-                return self.states.create('states_opt_out');
+                return self.states.create("states_opt_out");
             });
         });
 
-        self.states.add('states_opt_out', function(name) {
+        self.states.add("states_opt_out", function(name) {
             return new EndState(name, {
-                text: $('Thank you. You will no longer receive messages from us.'),
-                next: 'states_start'
+                text: $("Thank you. You will no longer receive messages from us."),
+                next: "states_start"
             });
         });
 
-        self.states.add('states_opt_in_enter', function(name) {
+        self.states.add("states_opt_in_enter", function(name) {
             return is
             .optin(self.im.user.answers.operator.id, "msisdn", self.im.user.answers.operator_msisdn)
             .then(function() {
-                return self.states.create('states_opt_in');
+                return self.states.create("states_opt_in");
             });
         });
 
-        self.states.add('states_opt_in', function(name) {
+        self.states.add("states_opt_in", function(name) {
             return new EndState(name, {
-                text: $('Thank you. You will now receive messages from us again. ' +
-                        'If you have any medical concerns please visit your nearest clinic'),
+                text: $("Thank you. You will now receive messages from us again. " +
+                        "If you have any medical concerns please visit your nearest clinic"),
 
-                next: 'states_start'
+                next: "states_start"
             });
         });
 
-        self.states.add('state_unrecognised', function(name) {
+        self.states.add("state_unrecognised", function(name) {
             return new EndState(name, {
                 text: $("We do not recognise the message you sent us. Reply STOP " +
                         "to unsubscribe or dial {{channel}} for more options.")
                     .context({channel: self.im.config.nurse_ussd_channel}),
-                next: 'states_start'
+                next: "states_start"
             });
         });
 
