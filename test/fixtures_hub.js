@@ -175,7 +175,6 @@ module.exports = function() {
                     "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
                     "action": "nurse_update_detail",
                     "data": {
-                        "facname": "OLT clinic",
                         "faccode": "234567"
                     }
                 }

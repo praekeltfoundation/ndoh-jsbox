@@ -537,7 +537,6 @@ go.app = function() {
                         "registrant_id": self.im.user.answers.operator.id,
                         "action": "nurse_update_detail",
                         "data": {
-                            "facname": self.im.user.answers.operator.details.nurseconnect.facname,
                             "faccode": self.im.user.answers.operator.details.nurseconnect.faccode
                         }
                     };
