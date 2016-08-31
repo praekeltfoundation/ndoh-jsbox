@@ -14,7 +14,7 @@ go.app = function() {
     var SeedJsboxUtils = require('seed-jsbox-utils');
     var IdentityStore = SeedJsboxUtils.IdentityStore;
     var StageBasedMessaging = SeedJsboxUtils.StageBasedMessaging;
-    // var Hub = SeedJsboxUtils.Hub;
+    var Hub = SeedJsboxUtils.Hub;
     var MessageSender = SeedJsboxUtils.MessageSender;
 
     var utils = SeedJsboxUtils.utils;
@@ -26,7 +26,7 @@ go.app = function() {
         // variables for services
         var is;
         var sbm;
-        // var hub;
+        var hub;
         var ms;
 
         self.init = function() {
@@ -43,12 +43,11 @@ go.app = function() {
                 self.im.config.services.stage_based_messaging.url
             );
 
-            // TODO: uncomment as part of #30 registration submission
-            // hub = new Hub(
-            //     new JsonApi(self.im, {}),
-            //     self.im.config.services.hub.token,
-            //     self.im.config.services.hub.url
-            // );
+            hub = new Hub(
+                new JsonApi(self.im, {}),
+                self.im.config.services.hub.token,
+                self.im.config.services.hub.url
+            );
 
             ms = new MessageSender(
                 new JsonApi(self.im, {}),
@@ -745,11 +744,20 @@ go.app = function() {
                             "requestor_source_id": self.im.config.testing_message_id || self.im.msg.message_id
                         };
 
+                        var change_info = {
+                            "registrant_id": self.im.user.answers.operator.id,
+                            "action": "nurse_optout",
+                            "data": {
+                                "reason": choice.value
+                            }
+                        };
+
                         return Q
                         .all([
-                            is.optout(optout_info)
+                            // optout identity
+                            is.optout(optout_info),
                             // change regsitration to reflect optout
-                            // hub.create_change()
+                            hub.create_change(change_info)
                         ])
                         .then(function() {
                             return 'state_end_detail_changed';
