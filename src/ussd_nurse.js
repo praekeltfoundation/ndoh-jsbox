@@ -377,15 +377,13 @@ go.app = function() {
         });
 
         self.add('state_save_nursereg', function(name) {
-            // Save useful identity info
-            self.im.user.answers.registrant.details.nurseconnect.is_registered = "true";
-
+        
             var registrant_update_info = {
                 "details": {
                     "nurseconnect": {
                         "facname": self.im.user.answers.registrant.details.nurseconnect.facname,
                         "faccode": self.im.user.answers.registrant.details.nurseconnect.faccode,
-                        "is_registered": self.im.user.answers.registrant.details.nurseconnect.is_registered
+                        "is_registered": "true"
                     }
                 }
             };
