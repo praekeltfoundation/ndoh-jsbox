@@ -735,8 +735,26 @@ go.app = function() {
                     if (choice.value === 'main_menu') {
                         return 'state_route';
                     } else {
-                        // TODO #36 add optout logic
-                         return 'state_end_detail_changed';
+                        var optout_info = {
+                            "optout_type": "nurseconnect",
+                            "identity": self.im.user.answers.operator.id,
+                            "reason": choice.value,
+                            "address_type": "msisdn",
+                            "address": self.im.user.answers.operator_msisdn,
+                            "request_source": "ussd_nurse",
+                            "requestor_source_id": self.im.config.testing_message_id || self.im.msg.message_id
+                        };
+
+                        return Q
+                        .all([
+                            is.optout(optout_info)
+                            // change regsitration to reflect optout
+                            // hub.create_change()
+                        ])
+                        .then(function() {
+                            return 'state_end_detail_changed';
+                        });
+
                     }
                 }
             });
