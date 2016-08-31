@@ -493,7 +493,7 @@ describe("app", function() {
                         , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [100, 150, 153, 157, 160]);
+                        utils.check_fixtures_used(api, [2, 100, 150, 153, 157, 160]);
                     })
                     .run();
                 });
@@ -580,7 +580,7 @@ describe("app", function() {
                         , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [101, 150, 151, 153, 158, 159, 160]);
+                        utils.check_fixtures_used(api, [3, 101, 150, 151, 153, 158, 159, 160]);
                     })
                     .run();
             });

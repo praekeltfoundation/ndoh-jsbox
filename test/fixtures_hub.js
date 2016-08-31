@@ -53,22 +53,48 @@ module.exports = function() {
             }
         },
 
-        // 2:
+        // 2: register cb245673-aa41-4302-ac47-00000001001 (nurseconnect self registration)
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "request": {
+                "url": 'http://hub/api/v1/registration/',
+                "method": 'POST',
+                "data": {
+                    "reg_type": "nurseconnect",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001001",
+                        "msisdn_registrant": "+27820001001",
+                        "msisdn_device": "+27820001001",
+                        "faccode":"123456",
+                        "language": "eng_ZA"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "accepted": true
+            }
         },
 
-        // 3:
+        // 3: register cb245673-aa41-4302-ac47-00000001002 (nurseconnect registration by another, 27820001001)
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "request": {
+                "url": 'http://hub/api/v1/registration/',
+                "method": 'POST',
+                "data": {
+                    "reg_type": "nurseconnect",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001002",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001001",
+                        "msisdn_registrant": "+27820001002",
+                        "msisdn_device": "+27820001001",
+                        "faccode":"123456",
+                        "language": "eng_ZA"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "accepted": true
+            }
         },
 
         // 4:

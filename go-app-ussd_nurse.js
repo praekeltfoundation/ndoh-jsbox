@@ -383,7 +383,7 @@ go.app = function() {
             // Save useful identity info
             self.im.user.answers.registrant.details.nurseconnect.is_registered = "true";
 
-            var registrant_update_data = {
+            var registrant_update_info = {
                 "details": {
                     "nurseconnect": {
                         "facname": self.im.user.answers.registrant.details.nurseconnect.facname,
@@ -393,10 +393,22 @@ go.app = function() {
                 }
             };
 
-            if (self.im.user.answers.operator.id !== self.im.user.answers.registrant.id) {
-                registrant_update_data.details.nurseconnect.registered_by = self.im.user.answers.operator_msisdn;
+            var reg_info = {
+                "reg_type": "nurseconnect",
+                "registrant_id": self.im.user.answers.registrant.id,
+                "data": {
+                    "operator_id": self.im.user.answers.operator.id,  // device owner id
+                    "msisdn_registrant": self.im.user.answers.registrant_msisdn,  // msisdn of the registrant
+                    "msisdn_device": self.im.user.answers.operator_msisdn,  // device msisdn
+                    "faccode": self.im.user.answers.registrant.details.nurseconnect.faccode,  // facility code
+                    "language": "eng_ZA"  // currently always eng_ZA for nurseconnect
+                }
+            };
 
-                var operator_update_data = {
+            if (self.im.user.answers.operator.id !== self.im.user.answers.registrant.id) {
+                registrant_update_info.details.nurseconnect.registered_by = self.im.user.answers.operator_msisdn;
+
+                var operator_update_info = {
                     "details": {
                         "nurseconnect": {}
                     }
@@ -407,10 +419,10 @@ go.app = function() {
                 }
 
                 if (self.im.user.answers.operator.details.nurseconnect.registrees === undefined) {
-                    operator_update_data.details.nurseconnect.registrees
+                    operator_update_info.details.nurseconnect.registrees
                         = self.im.user.answers.registrant_msisdn;
                 } else {
-                    operator_update_data.details.nurseconnect.registrees
+                    operator_update_info.details.nurseconnect.registrees
                         += ', ' + self.im.user.answers.registrant_msisdn;
                 }
 
@@ -419,14 +431,15 @@ go.app = function() {
                     // identity PATCHes
                     is.update_identity(
                         self.im.user.answers.operator.id,
-                        operator_update_data
+                        operator_update_info
                     ),
                     is.update_identity(
                         self.im.user.answers.registrant.id,
-                        registrant_update_data
+                        registrant_update_info
                     ),
                     self.send_registration_thanks(self.im.user.answers.registrant_msisdn),
                     // POST registration
+                    hub.create_registration(reg_info)
                 ])
                 .then(function() {
                     return self.states.create('state_end_reg');
@@ -438,10 +451,11 @@ go.app = function() {
                     // identity PATCH
                     is.update_identity(
                         self.im.user.answers.registrant.id,
-                        registrant_update_data
+                        registrant_update_info
                     ),
                     self.send_registration_thanks(self.im.user.answers.registrant_msisdn),
                     // POST registration
+                    hub.create_registration(reg_info)
                 ])
                 .then(function() {
                     return self.states.create('state_end_reg');
