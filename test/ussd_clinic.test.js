@@ -77,5 +77,56 @@ describe("app", function() {
                     .run();
             });
         });
+
+        describe("state_start", function () {
+            describe("indicates this is the registrant number", function() {
+                describe("msisdn is not opted out", function() {
+                    it("should prompt for consent", function() {
+                        return tester
+                        .setup.user.addr("27820001001")
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , "1"  // state_start - yes
+                        )
+                        .check.interaction({
+                            state: "state_consent"
+                        })
+                        .run();
+                    });
+                });
+                describe("msisdn is opted out", function() {
+                    it("should prompt for opt-in", function() {
+                        return tester
+                        .setup.user.addr("27820001004")
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , "1"  // state_start - yes
+                        )
+                        .check.interaction({
+                            state: "state_opt_in"
+                        })
+                        .run();
+                    });
+                });
+            });
+
+            describe("indicates this is not the registrant number", function() {
+                it("should ask for the registrant number", function() {
+                    return tester
+                    .setup.user.addr("27820001004")
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , "2"  // state_start - no
+                    )
+                    .check.interaction({
+                        state: "state_mobile_no"
+                    })
+                    .run();
+                });
+            });
+
+        });
+
+
     });
 });
