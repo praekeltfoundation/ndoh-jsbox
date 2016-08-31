@@ -53,49 +53,117 @@ module.exports = function() {
             }
         },
 
-        // 2:
+        // 2: post change (number) for
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "action": "nurse_change_msisdn",
+                    "data": {
+                        "msisdn_new": "+27820001002",
+                        "msisdn_device": "+27820001002"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
         },
 
-        // 3:
+        // 3: post change (number to 27820001002) for cb245673-aa41-4302-ac47-00000001003
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
+                    "action": "nurse_change_msisdn",
+                    "data": {
+                        "msisdn_old": "+27820001003",
+                        "msisdn_new": "+27820001002",
+                        "msisdn_device":"+27820001002"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
         },
 
-        // 4:
+        // 4: post change (number to 27820001001) for cb245673-aa41-4302-ac47-00000001003
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
+                    "action": "nurse_change_msisdn",
+                    "data": {
+                        "msisdn_old": "+27820001003",
+                        "msisdn_new": "+27820001001",
+                        "msisdn_device":"+27820001003"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
         },
 
-        // 5:
+        // 5: post change (number to 27820001001) for cb245673-aa41-4302-ac47-00000001005
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001005",
+                    "action": "nurse_change_msisdn",
+                    "data": {
+                        "msisdn_old": "+27820001005",
+                        "msisdn_new": "+27820001001",
+                        "msisdn_device":"+27820001005"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
         },
 
-        // 6:
+        // 6: post change (number to 27820001004) for cb245673-aa41-4302-ac47-00000001003
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
+                    "action": "nurse_change_msisdn",
+                    "data": {
+                        "msisdn_old": "+27820001003",
+                        "msisdn_new": "+27820001004",
+                        "msisdn_device":"+27820001003"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
         },
 
         // 7:
