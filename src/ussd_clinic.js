@@ -1,8 +1,10 @@
 go.app = function() {
     var vumigo = require("vumigo_v02");
     var SeedJsboxUtils = require('seed-jsbox-utils');
+    // var moment = require('moment');
     var App = vumigo.App;
     var FreeText = vumigo.states.FreeText;
+    var EndState = vumigo.states.EndState;
     var ChoiceState = vumigo.states.ChoiceState;
     var Choice = vumigo.states.Choice;
     var JsonApi = vumigo.http.api.JsonApi;
@@ -37,6 +39,49 @@ go.app = function() {
                 return false;
             }
         },
+
+        self.jembi_json_api_call = function(method, params, payload, endpoint, im) {
+            var http = new JsonApi(im, {
+                auth: {
+                    username: im.config.jembi.username,
+                    password: im.config.jembi.password
+                }
+            });
+            switch(method) {
+                case "get":
+                    return http.get(im.config.jembi.url_json + endpoint, {
+                        params: params
+                    });
+            }
+        },
+
+        self.jembi_clinic_validate = function (im, clinic_code) {
+            var params = {
+                'criteria': 'code:' + clinic_code
+            };
+            return self.jembi_json_api_call('get', params, null, 'facilityCheck', im);
+        };
+
+        self.validate_clinic_code = function(im, clinic_code) {
+            if (!utils.check_valid_number(clinic_code) ||
+                clinic_code.length !== 6) {
+                return Q()
+                    .then(function() {
+                        return false;
+                    });
+            } else {
+                return self
+                .jembi_clinic_validate(im, clinic_code)
+                .then(function(json_result) {
+                    var rows = json_result.data.rows;
+                    if (rows.length === 0) {
+                        return false;
+                    } else {
+                        return rows[0][2];
+                    }
+                });
+            }
+        };
 
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
@@ -94,7 +139,7 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     return choice.value === 'yes' ? 'state_clinic_code'
-                                                  : 'states_consent_refused';
+                                                  : 'state_consent_refused';
                 }
             });
         });
@@ -110,22 +155,14 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (choice.value === 'yes') {
-                        return go.utils
-                            .opt_in(self.im, self.contact)
-                            .then(function() {
-                                return 'states_consent';
-                            });
+                        return is
+                        .optin(self.im.user.answers.registrant.id, "msisdn",
+                               self.im.user.answers.registrant_msisdn)
+                        .then(function() {
+                            return 'state_consent';
+                        });
                     } else {
-                        if (!_.isUndefined(self.user.extra.working_on)) {
-                            self.user.extra.working_on = "";
-                            return self.im.contacts
-                                .save(self.user)
-                                .then(function() {
-                                    return 'states_stay_out';
-                                });
-                        } else {
-                            return 'states_stay_out';
-                        }
+                        return 'state_stay_out';
                     }
                 }
             });
@@ -144,7 +181,7 @@ go.app = function() {
                     }
                 },
                 next: function(content) {
-                    var registrant_msisdn = utils.normalize_msisdn(consent, '27');
+                    var registrant_msisdn = utils.normalize_msisdn(content, '27');
                     return is
                     .get_or_create_identity({"msisdn": registrant_msisdn})
                     .then(function(identity) {
@@ -159,6 +196,58 @@ go.app = function() {
             });
         });
 
+        self.add('state_clinic_code', function(name) {
+            var error = $('Sorry, the clinic number did not validate. ' +
+                          'Please reenter the clinic number:');
+            var question = $('Please enter the clinic code for the facility ' +
+                            'where this pregnancy is being registered:');
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    return self
+                    .validate_clinic_code(self.im, content)
+                    .then(function(valid_clinic_code) {
+                        if (!valid_clinic_code) {
+                            return error;
+                        } else {
+                            return null;  // vumi expects null or undefined if check passes
+                        }
+                    });
+                },
+                next: 'state_due_date_month'
+            });
+        });
+
+        self.add('state_stay_out', function(name) {
+            return new ChoiceState(name, {
+                question: $('You have chosen not to receive MomConnect SMSs'),
+                choices: [
+                    new Choice('main_menu', $('Main Menu'))
+                ],
+                next: function(choice) {
+                    return 'state_start';
+                }
+            });
+        });
+
+        self.add('state_consent_refused', function(name) {
+            return new EndState(name, {
+                text: 'Unfortunately without her consent, she cannot register to MomConnect.',
+                next: 'state_start'
+            });
+        });
+
+        self.add('state_due_date_month', function(name) {
+            var today = utils.get_today(self.im.config);
+            return new ChoiceState(name, {
+                question: $('Please select the month when the baby is due:'),
+                choices: utils.make_month_choices($, today, 10, 1, "YYYY-MM", "MMM"),
+                next: function(choice) {
+                    console.log(choice.value);
+                    return 'states_due_date_day';
+                }
+            });
+        });
 
     });
 
