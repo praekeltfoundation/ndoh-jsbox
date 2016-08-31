@@ -289,7 +289,10 @@ module.exports = function() {
                 }
             },
             "response": {
-                "accepted": true
+                "code": 200,
+                "data": {
+                    "accepted": true
+                }
             }
         },
 
@@ -309,7 +312,10 @@ module.exports = function() {
                 }
             },
             "response": {
-                "accepted": true
+                "code": 200,
+                "data": {
+                    "accepted": true
+                }
             }
         },
 
@@ -327,7 +333,10 @@ module.exports = function() {
                 }
             },
             "response": {
-                "accepted": true
+                "code": 200,
+                "data": {
+                    "accepted": true
+                }
             }
         },
 
@@ -348,7 +357,10 @@ module.exports = function() {
                 }
             },
             "response": {
-                "accepted": true
+                "code": 200,
+                "data": {
+                    "accepted": true
+                }
             }
         },
 
