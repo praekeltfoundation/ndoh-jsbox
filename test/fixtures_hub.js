@@ -166,13 +166,26 @@ module.exports = function() {
             }
         },
 
-        // 7:
+        // 7: post change (faccode) for cb245673-aa41-4302-ac47-00000001003
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
+                    "action": "nurse_update_detail",
+                    "data": {
+                        "facname": "OLT clinic",
+                        "faccode": "234567"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
         },
 
         // 8:

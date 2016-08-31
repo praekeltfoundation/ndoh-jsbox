@@ -522,15 +522,29 @@ go.app = function() {
                             if (!facname) {
                                 return error;
                             } else {
-                                self.im.user.set_answer("registrant", self.im.user.answers.operator);
-                                self.im.user.answers.registrant.details.nurseconnect.facname = facname;
-                                self.im.user.answers.registrant.details.nurseconnect.faccode = content;
+                                self.im.user.answers.operator.details.nurseconnect.facname = facname;
+                                self.im.user.answers.operator.details.nurseconnect.faccode = content;
 
                                 return null;  // vumi expects null or undefined if check passes
                             }
                         });
                 },
-                next: 'state_post_change_detail'
+                next: function() {
+                    var change_info = {
+                        "registrant_id": self.im.user.answers.operator.id,
+                        "action": "nurse_update_detail",
+                        "data": {
+                            "facname": self.im.user.answers.operator.details.nurseconnect.facname,
+                            "faccode": self.im.user.answers.operator.details.nurseconnect.faccode
+                        }
+                    };
+
+                    return hub
+                    .create_change(change_info)
+                    .then(function () {
+                        return 'state_end_detail_changed';
+                    });
+                }
             });
         });
 
@@ -559,10 +573,9 @@ go.app = function() {
                     }
                 },
                 next: function(content) {
-                    self.im.user.set_answer("registrant", self.im.user.answers.operator);
-                    self.im.user.answers.registrant.details.nurseconnect.id_type = 'sa_id';
-                    self.im.user.answers.registrant.details.nurseconnect.sa_id_no = content;
-                    self.im.user.answers.registrant.details.nurseconnect.dob = utils.extract_za_id_dob(content);
+                    self.im.user.answers.operator.details.nurseconnect.id_type = 'sa_id';
+                    self.im.user.answers.operator.details.nurseconnect.sa_id_no = content;
+                    self.im.user.answers.operator.details.nurseconnect.dob = utils.extract_za_id_dob(content);
 
                     return 'state_post_change_detail';
                 }
@@ -610,11 +623,10 @@ go.app = function() {
                     }
                 },
                 next: function(content) {
-                    self.im.user.set_answer("registrant", self.im.user.answers.operator);
-                    self.im.user.answers.registrant.details.nurseconnect.id_type = 'passport';
-                    self.im.user.answers.registrant.details.nurseconnect.passport_country = self.im.user.answers.state_passport;
-                    self.im.user.answers.registrant.details.nurseconnect.passport_num = self.im.user.answers.state_passport_no;
-                    self.im.user.answers.registrant.details.nurseconnect.dob
+                    self.im.user.answers.operator.details.nurseconnect.id_type = 'passport';
+                    self.im.user.answers.operator.details.nurseconnect.passport_country = self.im.user.answers.state_passport;
+                    self.im.user.answers.operator.details.nurseconnect.passport_num = self.im.user.answers.state_passport_no;
+                    self.im.user.answers.operator.details.nurseconnect.dob
                         = moment(self.im.user.answers.state_passport_dob, 'DDMMYYYY').format('YYYY-MM-DD');
 
                     return 'state_post_change_detail';
@@ -636,8 +648,7 @@ go.app = function() {
                     }
                 },
                 next: function(content) {
-                    self.im.user.set_answer("registrant", self.im.user.answers.operator);
-                    self.im.user.answers.registrant.details.nurseconnect.sanc = content;
+                    self.im.user.answers.operator.details.nurseconnect.sanc = content;
 
                     return 'state_post_change_detail';
                 }
@@ -658,8 +669,7 @@ go.app = function() {
                     }
                 },
                 next: function(content) {
-                    self.im.user.set_answer("registrant", self.im.user.answers.operator);
-                    self.im.user.answers.registrant.details.nurseconnect.persal = content;
+                    self.im.user.answers.operator.details.nurseconnect.persal = content;
 
                     return 'state_post_change_detail';
                 }
