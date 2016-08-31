@@ -402,6 +402,7 @@ go.app = function() {
                 }
             };
 
+            // operator.id will equal registrant.id when a self registration
             if (self.im.user.answers.operator.id !== self.im.user.answers.registrant.id) {
                 registrant_update_info.details.nurseconnect.registered_by = self.im.user.answers.operator_msisdn;
 
