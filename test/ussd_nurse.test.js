@@ -17,28 +17,10 @@ describe("app", function() {
 
         beforeEach(function() {
             app = new go.app.GoNDOH();
-            // go.utils.get_timestamp = function() {
-            //     return '20130819144811';
-            // };
-            // go.utils.get_uuid = function() {
-            //     return 'b18c62b4-828e-4b52-25c9-725a1f43fb37';
-            // };
-            //
-            // go.utils.get_oid = function(){
-            //     return '2.25.169380846032024';
-            // };
+
             tester = new AppTester(app);
 
             tester
-                // .setup(function(api) {
-                    // api.resources.add(new DummyMessageStoreResource());
-                    // api.resources.add(new DummyOptoutResource());
-                    // api.resources.attach(api);
-                    // api.groups.add( {
-                    //     key: 'en_key',
-                    //     name: 'en',
-                    // });
-                // })
                 .setup.char_limit(182)
                 .setup.config.app({
                     name: 'ussd_nurse',
@@ -85,87 +67,7 @@ describe("app", function() {
                     fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 150 ->
                     fixtures_Jembi().forEach(api.http.fixtures.add);
-                })
-                // .setup(function(api) {
-                //     // user with working_on extra
-                //     api.contacts.add({
-                //         msisdn: '+27821231111',
-                //         extra: {
-                //             nc_working_on: '+27821232222'
-                //         },
-                //     });
-                // })
-                // .setup(function(api) {
-                //     // registered user
-                //     api.contacts.add({
-                //         msisdn: '+27821237777',
-                //         extra: {
-                //             nc_last_reg_id: "7",
-                //             nc_is_registered: 'true',
-                //             nc_faccode: '123456',
-                //             nc_facname: 'WCL clinic',
-                //             nc_working_on: "",
-                //             nc_id_type: "sa_id",
-                //             nc_sa_id_no: "5101025009086",
-                //             nc_dob: "1951-01-02"
-                //         },
-                //     });
-                // })
-                // .setup(function(api) {
-                //     // opted_out user 1
-                //     api.contacts.add({
-                //         msisdn: '+27821239999',
-                //         extra: {
-                //             nc_opt_out_reason: 'job_change'
-                //         },
-                //     });
-                // })
-                // .setup(function(api) {
-                //     // opted_out user 2
-                //     api.contacts.add({
-                //         msisdn: '+27821233333',
-                //         extra: {
-                //             nc_last_reg_id: '3',
-                //             nc_opt_out_reason: 'other',
-                //             nc_is_registered: 'true',
-                //             nc_faccode: '123456',
-                //             nc_facname: 'WCL clinic',
-                //             nc_id_type: 'passport',
-                //             nc_passport_country: 'bw',
-                //             nc_passport_num: '33333',
-                //             nc_dob: '1976-03-04'
-                //         },
-                //     });
-                // })
-                // .setup(function(api) {
-                //     // opted_out user 3
-                //     api.contacts.add({
-                //         msisdn: '+27821230000',
-                //         extra: {
-                //             nc_last_reg_id: '0',
-                //             nc_opt_out_reason: 'not_useful',
-                //             nc_is_registered: 'true'
-                //         },
-                //     });
-                // })
-                // .setup(function(api) {
-                //     // opted_out user 4
-                //     api.contacts.add({
-                //         msisdn: '+27821240000',
-                //         extra: {
-                //             nc_last_reg_id: '4',
-                //             nc_opt_out_reason: 'unknown',
-                //             nc_is_registered: 'true',
-                //             nc_faccode: '123456',
-                //             nc_facname: 'WCL clinic',
-                //             nc_id_type: 'passport',
-                //             nc_passport_country: 'bw',
-                //             nc_passport_num: '44444',
-                //             nc_dob: '1976-03-04'
-                //         },
-                //     });
-                // })
-                ;
+                });
         });
 
         // Session Length Helper
@@ -230,7 +132,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [50, 150, 153]);
+                            utils.check_fixtures_used(api, [150]);
                         })
                         .run();
                 });
@@ -303,7 +205,7 @@ describe("app", function() {
                         .setup.char_limit(140)  // limit first state chars
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '6'  // st_subscribed - more options
+                            , '6'  // state_subscribed - more options
                         )
                         .check.interaction({
                             state: 'state_subscribed',
@@ -322,8 +224,8 @@ describe("app", function() {
                         .setup.char_limit(140)  // limit first state chars
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '6'  // st_subscribed - more options
-                            , '3'  // st_subscribed - back to first set of options
+                            , '6'  // state_subscribed - more options
+                            , '3'  // state_subscribed - back to first set of options
                         )
                         .check.interaction({
                             state: 'state_subscribed',
@@ -350,9 +252,9 @@ describe("app", function() {
                         .setup.user.addr('27821234444')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '1'  // st_not_subscribed
-                            , '1'  // st_permission_self
-                            , '123456'  // st_faccode
+                            , '1'  // state_not_subscribed
+                            , '1'  // state_subscribe_self
+                            , '123456'  // state_faccode
                             , {session_event: 'close'}  // timeout
                             , {session_event: 'new'}  // redial
                         )
@@ -376,9 +278,9 @@ describe("app", function() {
                         .setup.user.addr('27821234444')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '1'  // st_not_subscribed
-                            , '1'  // st_permission_self
-                            , '123456'  // st_faccode
+                            , '1'  // state_not_subscribed
+                            , '1'  // state_subscribe_self
+                            , '123456'  // state_faccode
                             , {session_event: 'close'}  // timeout
                             , {session_event: 'new'}  // redial
                             , {session_event: 'close'}  // timeout
@@ -417,9 +319,9 @@ describe("app", function() {
                             .setup.user.addr('27821234444')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '1'  // st_not_subscribed
-                                , '1'  // st_permission_self
-                                , '123456'  // st_faccode
+                                , '1'  // state_not_subscribed
+                                , '1'  // state_subscribe_self
+                                , '123456'  // state_faccode
                                 , {session_event: 'close'}  // timeout
                                 , {session_event: 'new'}  // redial
                             )
@@ -440,10 +342,10 @@ describe("app", function() {
                             .setup.user.addr('27821234444')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '3'  // st_not_subscribed
-                                , '1'  // st_permission_other
-                                , '0821235555'  // st_msisdn
-                                , '123456'  // st_faccode
+                                , '3'  // state_not_subscribed
+                                , '1'  // state_subscribe_other
+                                , '0821235555'  // state_msisdn
+                                , '123456'  // state_faccode
                                 , {session_event: 'close'}  // timeout
                                 , {session_event: 'new'}  // redial
                             )
@@ -465,12 +367,12 @@ describe("app", function() {
                         .setup.user.addr('27821234444')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '1'  // st_not_subscribed
-                            , '1'  // st_permission_self
-                            , '123456'  // st_faccode
+                            , '1'  // state_not_subscribed
+                            , '1'  // state_subscribe_self
+                            , '123456'  // state_faccode
                             , {session_event: 'close'}  // timeout
                             , {session_event: 'new'}  // redial
-                            , '1'  // st_timed_out - continue registration
+                            , '1'  // state_timed_out - continue registration
                         )
                         .check.interaction({
                             state: 'st_facname',
@@ -489,12 +391,12 @@ describe("app", function() {
                         .setup.user.addr('27821234444')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '1'  // st_not_subscribed
-                            , '1'  // st_permission_self
-                            , '123456'  // st_faccode
+                            , '1'  // state_not_subscribed
+                            , '1'  // state_subscribe_self
+                            , '123456'  // state_faccode
                             , {session_event: 'close'}  // timeout
                             , {session_event: 'new'}  // redial
-                            , '2'  // st_timed_out - abort registration
+                            , '2'  // state_timed_out - abort registration
                         )
                         .check.interaction({
                             state: 'st_not_subscribed'
@@ -546,7 +448,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_not_subscribed - self registration
-                        , '1'  // state_permission_self - consent
+                        , '1'  // state_subscribe_self - consent
                         , '123456'  // state_faccode
                         , '1'  // state_facname - confirm
                     )
@@ -568,7 +470,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_not_subscribed - self registration
-                        , '1'  // state_permission_self - consent
+                        , '1'  // state_subscribe_self - consent
                         , '123456'  // state_faccode
                         , '1'  // state_facname - confirm
                     )
@@ -586,12 +488,12 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_not_subscribed - self registration
-                        , '1'  // state_permission_self - consent
+                        , '1'  // state_subscribe_self - consent
                         , '123456'  // state_faccode
                         , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [50, 100, 150, 153, 156]);
+                        utils.check_fixtures_used(api, [100, 150, 153, 157]);
                     })
                     .run();
                 });
@@ -605,7 +507,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
-                        , '1'  // state_permission_other - consent
+                        , '1'  // state_subscribe_other - consent
                         , '0820001002'  // state_msisdn
                         , '123456'  // state_faccode
                         , '1'  // state_facname - confirm
@@ -622,7 +524,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
-                        , '1'  // state_permission_other - consent
+                        , '1'  // state_subscribe_other - consent
                         , '0820001002'  // state_msisdn
                         , '123456'  // state_faccode
                         , '1'  // state_facname - confirm
@@ -653,7 +555,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
-                        , '1'  // state_permission_other - consent
+                        , '1'  // state_subscribe_other - consent
                         , '0820001002'  // state_msisdn
                         , '123456'  // state_faccode
                         , '1'  // state_facname - confirm
@@ -672,13 +574,13 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
-                        , '1'  // state_permission_other - consent
+                        , '1'  // state_subscribe_other - consent
                         , '0820001002'  // state_msisdn
                         , '123456'  // state_faccode
                         , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [50, 101, 150, 151, 153, 156]);
+                        utils.check_fixtures_used(api, [101, 150, 151, 153, 157]);
                     })
                     .run();
             });
@@ -692,7 +594,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_not_subscribed - self registration
-                        , '1'  // state_permission_self - consent
+                        , '1'  // state_subscribe_self - consent
                     )
                     .check.interaction({
                         state: 'state_opt_in_reg',
@@ -710,7 +612,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_not_subscribed - self registration
-                        , '1'  // state_permission_self - consent
+                        , '1'  // state_subscribe_self - consent
                     )
                     .check(function(api) {
                         var contact = _.find(api.contacts.store, {
@@ -728,7 +630,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_not_subscribed - self registration
-                        , '1'  // state_permission_self - consent
+                        , '1'  // state_subscribe_self - consent
                         , '1'  // state_opt_in_reg - confirm
                     )
                     .check.interaction({
@@ -742,7 +644,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_not_subscribed - self registration
-                        , '1'  // state_permission_self - consent
+                        , '1'  // state_subscribe_self - consent
                         , '1'  // state_opt_in_reg - confirm
                     )
                     .check(function(api) {
@@ -765,7 +667,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
-                        , '1'  // state_permission_other - consent
+                        , '1'  // state_subscribe_other - consent
                         , '0820001004'  // state_msisdn
                     )
                     .check.interaction({
@@ -784,7 +686,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
-                        , '1'  // state_permission_other - consent
+                        , '1'  // state_subscribe_other - consent
                         , '0820001004'  // state_msisdn
                     )
                     .check(function(api) {
@@ -810,7 +712,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
-                        , '1'  // state_permission_other - consent
+                        , '1'  // state_subscribe_other - consent
                         , '0820001004'  // state_msisdn
                         , '1'  // state_opt_in_reg - confirm
                     )
@@ -826,7 +728,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
-                        , '1'  // state_permission_other - consent
+                        , '1'  // state_subscribe_other - consent
                         , '0820001004'  // state_msisdn
                         , '1'  // state_opt_in_reg - confirm
                     )
@@ -857,7 +759,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
-                        , '1'  // state_permission_other - consent
+                        , '1'  // state_subscribe_other - consent
                         , '0820001004'  // state_msisdn
                         , '2'  // state_opt_in_reg - deny
                     )
@@ -876,7 +778,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
-                        , '1'  // state_permission_other - consent
+                        , '1'  // state_subscribe_other - consent
                         , '0820001004'  // state_msisdn
                         , '2'  // state_opt_in_reg - deny
                         , '1'  // state_permission_denied - main menu
@@ -896,7 +798,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
-                        , '2'  // state_permission_other - denied
+                        , '2'  // state_subscribe_other - denied
                     )
                     .check.interaction({
                         state: 'state_permission_denied',
@@ -931,7 +833,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '3'  // state_not_subscribed - other registration
-                        , '1'  // state_permission_other - consent
+                        , '1'  // state_subscribe_other - consent
                         , '0820001002'  // state_msisdn
                         , '123456'  // state_faccode
                         , '2'  // state_facname - facility wrong
@@ -953,7 +855,7 @@ describe("app", function() {
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '3'  // state_not_subscribed - other registration
-                            , '1'  // state_permission_other - consent
+                            , '1'  // state_subscribe_other - consent
                             , '07262520201'  // state_msisdn
                         )
                         .check.interaction({
@@ -974,7 +876,7 @@ describe("app", function() {
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '3'  // state_not_subscribed - other registration
-                            , '1'  // state_permission_other - consent
+                            , '1'  // state_subscribe_other - consent
                             , '0820001002'  // state_msisdn
                             , '12345A'  // state_faccode
                         )
@@ -992,7 +894,7 @@ describe("app", function() {
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '3'  // state_not_subscribed - other registration
-                            , '1'  // state_permission_other - consent
+                            , '1'  // state_subscribe_other - consent
                             , '0820001002'  // state_msisdn
                             , '12345'  // state_faccode
                         )
@@ -1010,7 +912,7 @@ describe("app", function() {
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '3'  // state_not_subscribed - other registration
-                            , '1'  // state_permission_other - consent
+                            , '1'  // state_subscribe_other - consent
                             , '0820001002'  // state_msisdn
                             , '888888'  // state_faccode
                         )
@@ -1024,17 +926,17 @@ describe("app", function() {
         });
 
         // Change Old Number
-        describe.skip("old number changing", function() {
+        describe("old number changing", function() {
             describe("choosing to change old number", function() {
                 it("should go to st_change_old_nr", function() {
                     return tester
-                        .setup.user.addr('27821234444')
+                        .setup.user.addr('27820001002')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_not_subscribed
+                            , '2'  // state_not_subscribed
                         )
                         .check.interaction({
-                            state: 'st_change_old_nr',
+                            state: 'state_change_old_nr',
                             reply: "Please enter the old number on which you used to receive messages, e.g. 0736436265:"
                         })
                         .run();
@@ -1043,14 +945,14 @@ describe("app", function() {
             describe("entering poor phone number", function() {
                 it("should loop back", function() {
                     return tester
-                        .setup.user.addr('27821234444')
+                        .setup.user.addr('27820001002')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_not_subscribed
-                            , '12345'  // st_change_old_nr
+                            , '2'  // state_not_subscribed
+                            , '12345'  // state_change_old_nr
                         )
                         .check.interaction({
-                            state: 'st_change_old_nr',
+                            state: 'state_change_old_nr',
                             reply: "Sorry, the format of the mobile number is not correct. Please enter your old mobile number again, e.g. 0726252020"
                         })
                         .run();
@@ -1059,16 +961,16 @@ describe("app", function() {
             describe("entering proper phone number - non-existent contact", function() {
                 it("should ask to try again", function() {
                     return tester
-                        .setup.user.addr('27821234444')
+                        .setup.user.addr('27820001002')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_not_subscribed
-                            , '0821236666'  // st_change_old_nr
+                            , '2'  // state_not_subscribed
+                            , '0820001001'  // state_change_old_nr
                         )
                         .check.interaction({
-                            state: 'st_change_old_not_found',
+                            state: 'state_change_old_not_found',
                             reply: [
-                                "The number 0821236666 is not currently subscribed to receive NurseConnect messages. Try again?",
+                                "The number 0820001001 is not currently subscribed to receive NurseConnect messages. Try again?",
                                 "1. Yes",
                                 "2. No"
                             ].join('\n')
@@ -1077,29 +979,29 @@ describe("app", function() {
                 });
                 it("should try again if chosen", function() {
                     return tester
-                        .setup.user.addr('27821234444')
+                        .setup.user.addr('27820001002')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_not_subscribed
-                            , '0821236666'  // st_change_old_nr
-                            , '1'  // st_change_old_not_found - yes
+                            , '2'  // state_not_subscribed
+                            , '0820001001'  // state_change_old_nr
+                            , '1'  // state_change_old_not_found - yes
                         )
                         .check.interaction({
-                            state: 'st_change_old_nr',
+                            state: 'state_change_old_nr',
                         })
                         .run();
                 });
                 it("should abort if chosen", function() {
                     return tester
-                        .setup.user.addr('27821234444')
+                        .setup.user.addr('27820001002')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_not_subscribed
-                            , '0821236666'  // st_change_old_nr
-                            , '2'  // st_change_old_not_found
+                            , '2'  // state_not_subscribed
+                            , '0820001001'  // state_change_old_nr
+                            , '2'  // state_change_old_not_found
                         )
                         .check.interaction({
-                            state: 'st_permission_denied',
+                            state: 'state_permission_denied',
                         })
                         .run();
                 });
@@ -1107,29 +1009,29 @@ describe("app", function() {
             describe("entering proper phone number - existing contact", function() {
                 it("should reach details changed end state", function() {
                     return tester
-                        .setup.user.addr('27821234444')
+                        .setup.user.addr('27820001002')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_not_subscribed
-                            , '0821237777'  // st_change_old_nr
+                            , '2'  // state_not_subscribed
+                            , '0820001003'  // state_change_old_nr
                         )
                         .check.interaction({
-                            state: 'st_end_detail_changed',
+                            state: 'state_end_detail_changed',
                             reply: "Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again."
                         })
                         .run();
                 });
-                it("should transfer extras", function() {
+                it.skip("should transfer extras", function() {
                     return tester
-                        .setup.user.addr('27821234444')
+                        .setup.user.addr('27820001002')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_not_subscribed
-                            , '0821237777'  // st_change_old_nr
+                            , '2'  // state_not_subscribed
+                            , '0820001003'  // state_change_old_nr
                         )
                         .check(function(api) {
                             var new_contact = _.find(api.contacts.store, {
-                              msisdn: '+27821234444'
+                              msisdn: '+27820001002'
                             });
                             assert.equal(Object.keys(new_contact.extra).length, 8);
                             assert.equal(new_contact.extra.nc_faccode, '123456');
@@ -1143,7 +1045,7 @@ describe("app", function() {
                         })
                         .check(function(api) {
                             var old_contact = _.find(api.contacts.store, {
-                              msisdn: '+27821237777'
+                              msisdn: '+27820001003'
                             });
                             assert.equal(Object.keys(old_contact.extra).length, 0);
                         })
@@ -1153,31 +1055,31 @@ describe("app", function() {
         });
 
         // Change to New Number
-        describe.skip("switch to new number", function() {
+        describe("switch to new number", function() {
             describe("choosing to switch to new number", function() {
-                it("should go to st_change_num", function() {
+                it("should go to state_change_num", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_subscribed - change num
+                            , '2'  // state_subscribed - change num
                         )
                         .check.interaction({
-                            state: 'st_change_num',
+                            state: 'state_change_num',
                             reply: "Please enter the new number on which you want to receive messages, e.g. 0736252020:"
                         })
                         .run();
                 });
-                it("should have extras", function() {
+                it.skip("should have extras", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_subscribed - change num
+                            , '2'  // state_subscribed - change num
                         )
                         .check(function(api) {
                             var old_contact = _.find(api.contacts.store, {
-                              msisdn: '+27821237777'
+                              msisdn: '+27820001003'
                             });
                             assert.equal(Object.keys(old_contact.extra).length, 8);
                             assert.equal(old_contact.extra.nc_last_reg_id, '7');
@@ -1200,26 +1102,26 @@ describe("app", function() {
                 });
             });
             describe("entering new unused number", function() {
-                it("should go to st_end_detail_changed", function() {
+                it("should go to state_end_detail_changed", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_subscribed - change num
-                            , '0821238888'  // st_change_num
+                            , '2'  // state_subscribed - change num
+                            , '0820001001'  // state_change_num
                         )
                         .check.interaction({
-                            state: 'st_end_detail_changed',
+                            state: 'state_end_detail_changed',
                         })
                         .run();
                 });
-                it("should transfer extras", function() {
+                it.skip("should transfer extras", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_subscribed - change num
-                            , '0821238888'  // st_change_num
+                            , '2'  // state_subscribed - change num
+                            , '0820001002'  // state_change_num
                         )
                         .check(function(api) {
                             var new_contact = _.find(api.contacts.store, {
@@ -1237,40 +1139,51 @@ describe("app", function() {
                         })
                         .check(function(api) {
                             var old_contact = _.find(api.contacts.store, {
-                              msisdn: '+27821237777'
+                              msisdn: '+27820001003'
                             });
                             assert.equal(Object.keys(old_contact.extra).length, 0);
                         })
                         .run();
                 });
             });
-            describe("entering opted out number", function() {
-                it("should go to st_opt_in_change", function() {
+            describe("entering opted out number (opted out by current id, not used by another)", function() {
+                it("should go to state_end_detail_changed", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001005')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_subscribed - change num
-                            , '0821239999'  // st_change_num
+                            , '2'  // state_subscribed - change num
+                            , '0820001001'  // state_change_num
                         )
                         .check.interaction({
-                            state: 'st_opt_in_change',
-                            reply: [
-                                "This number opted out of NurseConnect messages before. Please confirm that you want to receive messages again on this number?",
-                                "1. Yes",
-                                "2. No"
-                            ].join('\n')
+                            state: 'state_end_detail_changed'
                         })
                         .run();
                 });
-                it("should transfer extras on opt-in", function() {
+            });
+
+            describe("entering opted out number (opted out by current id and used by another)", function() {
+                it("should go to state_block_active_subs", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001005')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_subscribed - change num
-                            , '0821239999'  // st_change_num
-                            , '1'  // st_opt_in_change - yes
+                            , '2'  // state_subscribed - change num
+                            , '0820001003'  // state_change_num
+                        )
+                        .check.interaction({
+                            state: 'state_block_active_subs' // number in use by 0820001003
+                        })
+                        .run();
+                });
+                it.skip("should transfer extras on opt-in", function() {
+                    return tester
+                        .setup.user.addr('27820001003')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '2'  // state_subscribed - change num
+                            , '0821239999'  // state_change_num
+                            , '1'  // state_opt_in_change - yes
                         )
                         .check(function(api) {
                             var new_contact = _.find(api.contacts.store, {
@@ -1288,24 +1201,40 @@ describe("app", function() {
                         })
                         .check(function(api) {
                             var old_contact = _.find(api.contacts.store, {
-                              msisdn: '+27821237777'
+                              msisdn: '+27820001003'
                             });
                             assert.equal(Object.keys(old_contact.extra).length, 0);
                         })
                         .run();
                 });
+
+                describe("entering opted out number (opted out on another id)", function() {
+                    it("should go to state_end_detail_changed", function() {
+                        return tester
+                            .setup.user.addr('27820001003')
+                            .inputs(
+                                {session_event: 'new'}  // dial in
+                                , '2'  // state_subscribed - change num
+                                , '0820001004'  // state_change_num
+                            )
+                            .check.interaction({
+                                state: 'state_end_detail_changed'
+                            })
+                            .run();
+                    });
+                });
             });
-            describe("entering non-opted-out number with active subs", function() {
+            describe.skip("entering non-opted-out number with active subs", function() {
                 it("should block progress", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'  // st_subscribed - change num
-                            , '0821238889'  // st_change_num
+                            , '2'  // state_subscribed - change num
+                            , '0820001002'  // state_change_num
                         )
                         .check.interaction({
-                            state: 'st_block_active_subs',
+                            state: 'state_block_active_subs',
                             reply: "Sorry, the number you are trying to move to already has an active registration. To manage that registration, please redial from that number."
                         })
                         .check.reply.ends_session()
@@ -1315,15 +1244,15 @@ describe("app", function() {
         });
 
         // ID Validation
-        describe.skip("id number entry", function() {
+        describe("id number entry", function() {
             describe("invalid id", function() {
                 it("should loop back", function() {
                     return tester
-                        .setup.user.state('st_id_no')
+                        .setup.user.state('state_id_no')
                         .input('12345A')
                         .check.interaction({
-                            state: 'st_id_no',
-                            reply: "Sorry, the format of the ID number is not correct. Please enter their RSA ID number again, e.g. 7602095060082"
+                            state: 'state_id_no',
+                            reply: "Sorry, the format of the ID number is not correct. Please enter your RSA ID number again, e.g. 7602095060082"
                         })
                         .run();
                 });
@@ -1331,14 +1260,14 @@ describe("app", function() {
         });
 
         // Passport Validation
-        describe.skip("passport number entry", function() {
+        describe("passport number entry", function() {
             describe("invalid passport number - non alphanumeric", function() {
                 it("should loop back", function() {
                     return tester
-                        .setup.user.state('st_passport_no')
+                        .setup.user.state('state_passport_no')
                         .input('AA-1234')
                         .check.interaction({
-                            state: 'st_passport_no',
+                            state: 'state_passport_no',
                             reply: "Sorry, the format of the passport number is not correct. Please enter the passport number again."
                         })
                         .run();
@@ -1347,10 +1276,10 @@ describe("app", function() {
             describe("invalid passport number - too short", function() {
                 it("should loop back", function() {
                     return tester
-                        .setup.user.state('st_passport_no')
+                        .setup.user.state('state_passport_no')
                         .input('1234')
                         .check.interaction({
-                            state: 'st_passport_no',
+                            state: 'state_passport_no',
                             reply: "Sorry, the format of the passport number is not correct. Please enter the passport number again."
                         })
                         .run();
@@ -1359,14 +1288,14 @@ describe("app", function() {
         });
 
         // DOB Validation
-        describe.skip("dob entry", function() {
+        describe("dob entry", function() {
             describe("invalid dob chars", function() {
                 it("should loop back", function() {
                     return tester
-                        .setup.user.state('st_passport_dob')
+                        .setup.user.state('state_passport_dob')
                         .input('01-01-1980')
                         .check.interaction({
-                            state: 'st_passport_dob',
+                            state: 'state_passport_dob',
                             reply: "Sorry, the format of the date of birth is not correct. Please enter it again, e.g. 27 May 1975 as 27051975:"
                         })
                         .run();
@@ -1375,10 +1304,10 @@ describe("app", function() {
             describe("not real date", function() {
                 it("should loop back", function() {
                     return tester
-                        .setup.user.state('st_passport_dob')
+                        .setup.user.state('state_passport_dob')
                         .input('29021981    ')
                         .check.interaction({
-                            state: 'st_passport_dob',
+                            state: 'state_passport_dob',
                             reply: "Sorry, the format of the date of birth is not correct. Please enter it again, e.g. 27 May 1975 as 27051975:"
                         })
                         .run();
@@ -1387,10 +1316,10 @@ describe("app", function() {
             describe("inverted date", function() {
                 it("should loop back", function() {
                     return tester
-                        .setup.user.state('st_passport_dob')
+                        .setup.user.state('state_passport_dob')
                         .input('19800101')
                         .check.interaction({
-                            state: 'st_passport_dob',
+                            state: 'state_passport_dob',
                             reply: "Sorry, the format of the date of birth is not correct. Please enter it again, e.g. 27 May 1975 as 27051975:"
                         })
                         .run();
@@ -1399,31 +1328,31 @@ describe("app", function() {
         });
 
         // Change Details
-        describe.skip("changing details", function() {
+        describe("changing details", function() {
             describe("change faccode", function() {
                 it("should ask for new faccode", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '3'  // st_subscribed - change faccode
+                            , '3'  // state_subscribed - change faccode
                         )
                         .check.interaction({
-                            state: 'st_change_faccode',
+                            state: 'state_change_faccode',
                             reply: "Please enter the 6-digit facility code for your new facility, e.g. 456789:"
                         })
                         .run();
                 });
-                it("should have extras", function() {
+                it.skip("should have extras", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '3'  // st_subscribed - change faccode
+                            , '3'  // state_subscribed - change faccode
                         )
                         .check(function(api) {
                             var contact = _.find(api.contacts.store, {
-                              msisdn: '+27821237777'
+                              msisdn: '+27820001003'
                             });
                             assert.equal(Object.keys(contact.extra).length, 8);
                             assert.equal(contact.extra.nc_faccode, "123456");
@@ -1433,30 +1362,30 @@ describe("app", function() {
                 });
                 it("should reach details changed end state", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '3'  // st_subscribed - change faccode
-                            , '234567'  // st_change_faccode - olt clinic
+                            , '3'  // state_subscribed - change faccode
+                            , '234567'  // state_change_faccode - olt clinic
                         )
                         .check.interaction({
-                            state: 'st_end_detail_changed',
+                            state: 'state_end_detail_changed',
                             reply: "Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again."
                         })
                         .check.reply.ends_session()
                         .run();
                 });
-                it("should save extras", function() {
+                it.skip("should save extras", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '3'  // st_subscribed - change faccode
-                            , '234567'  // st_change_faccode - olt clinic
+                            , '3'  // state_subscribed - change faccode
+                            , '234567'  // state_change_faccode - olt clinic
                         )
                         .check(function(api) {
                             var contact = _.find(api.contacts.store, {
-                              msisdn: '+27821237777'
+                              msisdn: '+27820001003'
                             });
                             assert.equal(Object.keys(contact.extra).length, 8);
                             assert.equal(contact.extra.nc_faccode, "234567");
@@ -1469,27 +1398,27 @@ describe("app", function() {
             describe("change sanc", function() {
                 it("should ask for sanc", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '5' // st_subscribed - change sanc
+                            , '5' // state_subscribed - change sanc
                         )
                         .check.interaction({
-                            state: 'st_change_sanc',
+                            state: 'state_change_sanc',
                             reply: "Please enter your 8-digit SANC registration number, e.g. 34567899:"
                         })
                         .run();
                 });
-                it("should have extras", function() {
+                it.skip("should have extras", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '5' // st_subscribed - change sanc
+                            , '5' // state_subscribed - change sanc
                         )
                         .check(function(api) {
                             var contact = _.find(api.contacts.store, {
-                              msisdn: '+27821237777'
+                              msisdn: '+27820001003'
                             });
                             assert.equal(Object.keys(contact.extra).length, 8);
                             assert.equal(contact.extra.nc_sanc, undefined);
@@ -1498,57 +1427,57 @@ describe("app", function() {
                 });
                 it("should loop back if non-numeric char", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '5' // st_subscribed - change sanc
-                            , '3456789A'  // st_change_sanc
+                            , '5' // state_subscribed - change sanc
+                            , '3456789A'  // state_change_sanc
                         )
                         .check.interaction({
-                            state: 'st_change_sanc',
+                            state: 'state_change_sanc',
                             reply: "Sorry, the format of the SANC registration number is not correct. Please enter it again, e.g. 34567899:"
                         })
                         .run();
                 });
                 it("should loop back if not 8 chars", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '5' // st_subscribed - change sanc
-                            , '3456789'  // st_change_sanc
+                            , '5' // state_subscribed - change sanc
+                            , '3456789'  // state_change_sanc
                         )
                         .check.interaction({
-                            state: 'st_change_sanc',
+                            state: 'state_change_sanc',
                             reply: "Sorry, the format of the SANC registration number is not correct. Please enter it again, e.g. 34567899:"
                         })
                         .run();
                 });
                 it("should reach details changed end state", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '5' // st_subscribed - change sanc
-                            , '34567890'  // st_change_sanc
+                            , '5' // state_subscribed - change sanc
+                            , '34567890'  // state_change_sanc
                         )
                         .check.interaction({
-                            state: 'st_end_detail_changed',
+                            state: 'state_end_detail_changed',
                             reply: "Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again."
                         })
                         .run();
                 });
-                it("should save extras", function() {
+                it.skip("should save extras", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '5' // st_subscribed - change sanc
-                            , '34567890'  // st_change_sanc
+                            , '5' // state_subscribed - change sanc
+                            , '34567890'  // state_change_sanc
                         )
                         .check(function(api) {
                             var contact = _.find(api.contacts.store, {
-                              msisdn: '+27821237777'
+                              msisdn: '+27820001003'
                             });
                             assert.equal(Object.keys(contact.extra).length, 9);
                             assert.equal(contact.extra.nc_sanc, "34567890");
@@ -1560,29 +1489,29 @@ describe("app", function() {
             describe("change persal", function() {
                 it("should ask for persal", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '6'  // st_subscribed - more options
-                            , '1'  // st_subscribed - change persal
+                            , '6'  // state_subscribed - more options
+                            , '1'  // state_subscribed - change persal
                         )
                         .check.interaction({
-                            state: 'st_change_persal',
+                            state: 'state_change_persal',
                             reply: "Please enter your 8-digit Persal employee number, e.g. 11118888:"
                         })
                         .run();
                 });
-                it("should have extras", function() {
+                it.skip("should have extras", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '6'  // st_subscribed - more options
-                            , '1'  // st_subscribed - change persal
+                            , '6'  // state_subscribed - more options
+                            , '1'  // state_subscribed - change persal
                         )
                         .check(function(api) {
                             var contact = _.find(api.contacts.store, {
-                              msisdn: '+27821237777'
+                              msisdn: '+27820001003'
                             });
                             assert.equal(Object.keys(contact.extra).length, 8);
                             assert.equal(contact.extra.nc_persal, undefined);
@@ -1591,61 +1520,61 @@ describe("app", function() {
                 });
                 it("should loop back if non-numeric char", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '6'  // st_subscribed - more options
-                            , '1'  // st_subscribed - change persal
-                            , '3456789A'  // st_change_persal
+                            , '6'  // state_subscribed - more options
+                            , '1'  // state_subscribed - change persal
+                            , '3456789A'  // state_change_persal
                         )
                         .check.interaction({
-                            state: 'st_change_persal',
+                            state: 'state_change_persal',
                             reply: "Sorry, the format of the Persal employee number is not correct. Please enter it again, e.g. 11118888:"
                         })
                         .run();
                 });
                 it("should loop back if not 8 chars", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '6'  // st_subscribed - more options
-                            , '1' // st_subscribed - change persal
-                            , '3456789'  // st_change_persal
+                            , '6'  // state_subscribed - more options
+                            , '1' // state_subscribed - change persal
+                            , '3456789'  // state_change_persal
                         )
                         .check.interaction({
-                            state: 'st_change_persal',
+                            state: 'state_change_persal',
                             reply: "Sorry, the format of the Persal employee number is not correct. Please enter it again, e.g. 11118888:"
                         })
                         .run();
                 });
                 it("should reach details changed end state", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '6'  // st_subscribed - more options
-                            , '1'  // st_subscribed - change persal
-                            , '11114444'  // st_change_persal
+                            , '6'  // state_subscribed - more options
+                            , '1'  // state_subscribed - change persal
+                            , '11114444'  // state_change_persal
                         )
                         .check.interaction({
-                            state: 'st_end_detail_changed',
+                            state: 'state_end_detail_changed',
                             reply: "Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again."
                         })
                         .run();
                 });
-                it("should save extras", function() {
+                it.skip("should save extras", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '6'  // st_subscribed - more options
-                            , '1'  // st_subscribed - change persal
-                            , '11114444'  // st_change_persal
+                            , '6'  // state_subscribed - more options
+                            , '1'  // state_subscribed - change persal
+                            , '11114444'  // state_change_persal
                         )
                         .check(function(api) {
                             var contact = _.find(api.contacts.store, {
-                              msisdn: '+27821237777'
+                              msisdn: '+27820001003'
                             });
                             assert.equal(Object.keys(contact.extra).length, 9);
                             assert.equal(contact.extra.nc_persal, "11114444");
@@ -1657,13 +1586,13 @@ describe("app", function() {
             describe("change identification", function() {
                 it("should display 2 options", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'  // st_subscribed - change id
+                            , '4'  // state_subscribed - change id
                         )
                         .check.interaction({
-                            state: 'st_change_id_no',
+                            state: 'state_change_id_no',
                             reply: [
                                 'Please select your type of identification:',
                                 '1. RSA ID',
@@ -1672,12 +1601,12 @@ describe("app", function() {
                         })
                         .run();
                 });
-                it("should have extras", function() {
+                it.skip("should have extras", function() {
                     return tester
-                        .setup.user.addr('27821237777')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'  // st_subscribed - change id
+                            , '4'  // state_subscribed - change id
                         )
                         .check(function(api) {
                             var contact = _.find(api.contacts.store, {
@@ -1690,45 +1619,45 @@ describe("app", function() {
                 describe("change ID no", function() {
                     it("should ask for their ID no", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '4'  // st_subscribed - change id
-                                , '1'  // st_change_id_no - RSA ID
+                                , '4'  // state_subscribed - change id
+                                , '1'  // state_change_id_no - RSA ID
                             )
                             .check.interaction({
-                                state: 'st_id_no',
+                                state: 'state_id_no',
                                 reply: 'Please enter your 13-digit RSA ID number:'
                             })
                             .run();
                     });
                     it("should tell them their details have been changed", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '4'  // st_subscribed - change id
-                                , '1'  // st_change_id_no - RSA ID
-                                , '9001016265166 '  // st_id_no
+                                , '4'  // state_subscribed - change id
+                                , '1'  // state_change_id_no - RSA ID
+                                , '9001016265166 '  // state_id_no
                             )
                             .check.interaction({
-                                state: 'st_end_detail_changed',
+                                state: 'state_end_detail_changed',
                                 reply: 'Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again.'
                             })
                             .run();
                     });
-                    it("should save extras", function() {
+                    it.skip("should save extras", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '4'  // st_subscribed - change id
-                                , '1'  // st_change_id_no - RSA ID
-                                , '9001016265166 '  // st_id_no
+                                , '4'  // state_subscribed - change id
+                                , '1'  // state_change_id_no - RSA ID
+                                , '9001016265166 '  // state_id_no
                             )
                             .check(function(api) {
                                 var contact = _.find(api.contacts.store, {
-                                  msisdn: '+27821237777'
+                                  msisdn: '+27820001003'
                                 });
                                 assert.equal(Object.keys(contact.extra).length, 8);
                                 assert.equal(contact.extra.nc_id_type, 'sa_id');
@@ -1741,14 +1670,14 @@ describe("app", function() {
                 describe("when a user wants to change their passport no", function() {
                     it("should ask for the origin of their passport", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '4'  // st_subscribed - change id
-                                , '2'  // st_change_id_no - passport
+                                , '4'  // state_subscribed - change id
+                                , '2'  // state_change_id_no - passport
                             )
                             .check.interaction({
-                                state: 'st_passport',
+                                state: 'state_passport',
                                 reply: [
                                     'What is the country of origin of the passport?',
                                     '1. Namibia',
@@ -1764,66 +1693,66 @@ describe("app", function() {
                     });
                     it("should ask for their passport no", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}
-                                , '4'  // st_subscribed - change id
-                                , '2'  // st_change_id_no - passport
-                                , '1'  // st_passport - namibia
+                                , '4'  // state_subscribed - change id
+                                , '2'  // state_change_id_no - passport
+                                , '1'  // state_passport - namibia
                             )
                             .check.interaction({
-                                state: 'st_passport_no',
+                                state: 'state_passport_no',
                                 reply: 'Please enter the passport number:'
                             })
                             .run();
                     });
                     it("should ask for their date of birth", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}
-                                , '4'  // st_subscribed - change id
-                                , '2'  // st_change_id_no - passport
-                                , '1'  // st_passport - namibia
-                                , 'Nam1234'  // st_passport_no
+                                , '4'  // state_subscribed - change id
+                                , '2'  // state_change_id_no - passport
+                                , '1'  // state_passport - namibia
+                                , 'Nam1234'  // state_passport_no
                             )
                             .check.interaction({
-                                state: 'st_passport_dob',
+                                state: 'state_passport_dob',
                                 reply: 'Please enter the date of birth, e.g. 27 May 1975 as 27051975:'
                             })
                             .run();
                     });
                     it("should tell them their details have been changed", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}
-                                , '4'  // st_subscribed - change id
-                                , '2'  // st_change_id_no - passport
-                                , '1'  // st_passport - namibia
-                                , 'Nam1234'  // st_passport_no
-                                , '07031976'  // st_dob - 7 March 1976
+                                , '4'  // state_subscribed - change id
+                                , '2'  // state_change_id_no - passport
+                                , '1'  // state_passport - namibia
+                                , 'Nam1234'  // state_passport_no
+                                , '07031976'  // state_dob - 7 March 1976
                             )
                             .check.interaction({
-                                state: 'st_end_detail_changed',
+                                state: 'state_end_detail_changed',
                                 reply: 'Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again.'
                             })
                             .run();
                     });
-                    it("should save extras", function() {
+                    it.skip("should save extras", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}
-                                , '4'  // st_subscribed - change id
-                                , '2'  // st_change_id_no - passport
-                                , '1'  // st_passport - namibia
-                                , 'Nam1234'  // st_passport_no
-                                , '07031976'  // st_dob - 7 March 1976
+                                , '4'  // state_subscribed - change id
+                                , '2'  // state_change_id_no - passport
+                                , '1'  // state_passport - namibia
+                                , 'Nam1234'  // state_passport_no
+                                , '07031976'  // state_dob - 7 March 1976
                             )
                             .check(function(api) {
                                 var contact = _.find(api.contacts.store, {
-                                  msisdn: '+27821237777'
+                                  msisdn: '+27820001003'
                                 });
                                 assert.equal(Object.keys(contact.extra).length, 10);
                                 assert.equal(contact.extra.nc_id_type, 'passport');
@@ -1838,19 +1767,19 @@ describe("app", function() {
         });
 
         // Optout
-        describe.skip("opting out", function() {
+        describe("opting out", function() {
             describe("registered user - not opted out", function() {
-                describe("should reach st_optout", function() {
+                describe("should reach state_optout", function() {
                     it("should ask optout reason", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
                             )
                             .check.interaction({
-                                state: 'st_optout',
+                                state: 'state_optout',
                                 reply: [
                                     "Please tell us why you no longer want messages:",
                                     "1. Not a nurse or midwife",
@@ -1862,17 +1791,17 @@ describe("app", function() {
                             })
                             .run();
                     });
-                    it("should have extras", function() {
+                    it.skip("should have extras", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
                             )
                             .check(function(api) {
                                 var contact = _.find(api.contacts.store, {
-                                  msisdn: '+27821237777'
+                                  msisdn: '+27820001003'
                                 });
                                 assert.equal(Object.keys(contact.extra).length, 8);
                                 assert.equal(contact.extra.nc_opt_out_reason, undefined);
@@ -1884,44 +1813,44 @@ describe("app", function() {
                 describe("should reach st_end_detail_changed", function() {
                     it("should thank them", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '1'  // st_optout - not a nurse
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '1'  // state_optout - not a nurse
                             )
                             .check.interaction({
-                                state: 'st_end_detail_changed',
+                                state: 'state_end_detail_changed',
                             })
                             .run();
                     });
-                    it("should save extras", function() {
+                    it.skip("should save extras", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '1'  // st_optout - not a nurse
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '1'  // state_optout - not a nurse
                             )
                             .check(function(api) {
                                 var contact = _.find(api.contacts.store, {
-                                  msisdn: '+27821237777'
+                                  msisdn: '+27820001003'
                                 });
                                 assert.equal(Object.keys(contact.extra).length, 9);
                                 assert.equal(contact.extra.nc_opt_out_reason, 'job_change');
                             })
                             .run();
                     });
-                    it("should fire metrics", function() {
+                    it.skip("should fire metrics", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '1'  // st_optout - not a nurse
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '1'  // state_optout - not a nurse
                             )
                             .check(function(api) {
                                 var metrics = api.metrics.stores.test_metric_store;
@@ -1940,33 +1869,33 @@ describe("app", function() {
                 describe("choosing main menu", function() {
                     it("should bail", function() {
                         return tester
-                            .setup.user.addr('27821237777')
+                            .setup.user.addr('27820001003')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '5'  // st_optout - main menu
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '5'  // state_optout - main menu
                             )
                             .check.interaction({
-                                state: 'st_subscribed',
+                                state: 'state_subscribed',
                             })
                             .run();
                     });
                 });
             });
 
-            describe("registered user - opted out, reason other", function() {
+            describe.skip("registered user - opted out, reason other", function() {
                 describe("should reach st_optout", function() {
                     it("should ask prior optout reason", function() {
                         return tester
                             .setup.user.addr('27821233333')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
                             )
                             .check.interaction({
-                                state: 'st_optout',
+                                state: 'state_optout',
                                 reply: [
                                     "You have opted out before. Please tell us why:",
                                     "1. Not a nurse or midwife",
@@ -1983,8 +1912,8 @@ describe("app", function() {
                             .setup.user.addr('27821233333')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
                             )
                             .check(function(api) {
                                 var contact = _.find(api.contacts.store, {
@@ -2004,12 +1933,12 @@ describe("app", function() {
                             .setup.user.addr('27821233333')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '4'  // st_optout - other
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '4'  // state_optout - other
                             )
                             .check.interaction({
-                                state: 'st_end_detail_changed'
+                                state: 'state_end_detail_changed'
                             })
                             .run();
                     });
@@ -2018,9 +1947,9 @@ describe("app", function() {
                             .setup.user.addr('27821233333')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '4'  // st_optout - other
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '4'  // state_optout - other
                             )
                             .check(function(api) {
                                 var contact = _.find(api.contacts.store, {
@@ -2037,9 +1966,9 @@ describe("app", function() {
                             .setup.user.addr('27821233333')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '4'  // st_optout - other
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '4'  // state_optout - other
                             )
                             .check(function(api) {
                                 var metrics = api.metrics.stores.test_metric_store;
@@ -2055,30 +1984,30 @@ describe("app", function() {
                             .setup.user.addr('27821233333')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '5'  // st_optout - main menu
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '5'  // state_optout - main menu
                             )
                             .check.interaction({
-                                state: 'st_subscribed',
+                                state: 'state_subscribed',
                             })
                             .run();
                     });
                 });
             });
 
-            describe("registered user - opted out, reason not_useful", function() {
+            describe.skip("registered user - opted out, reason not_useful", function() {
                 describe("should reach st_optout", function() {
                     it("should ask prior optout reason", function() {
                         return tester
                             .setup.user.addr('27821230000')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
                             )
                             .check.interaction({
-                                state: 'st_optout',
+                                state: 'state_optout',
                                 reply: [
                                     "You have opted out before. Please tell us why:",
                                     "1. Not a nurse or midwife",
@@ -2095,8 +2024,8 @@ describe("app", function() {
                             .setup.user.addr('27821230000')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
                             )
                             .check(function(api) {
                                 var contact = _.find(api.contacts.store, {
@@ -2117,12 +2046,12 @@ describe("app", function() {
                             .setup.user.addr('27821230000')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '4'  // st_optout - other
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '4'  // state_optout - other
                             )
                             .check.interaction({
-                                state: 'st_end_detail_changed'
+                                state: 'state_end_detail_changed'
                             })
                             .run();
                     });
@@ -2131,9 +2060,9 @@ describe("app", function() {
                             .setup.user.addr('27821230000')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '4'  // st_optout - other
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '4'  // state_optout - other
                             )
                             .check(function(api) {
                                 var contact = _.find(api.contacts.store, {
@@ -2148,18 +2077,18 @@ describe("app", function() {
                 });
             });
 
-            describe("registered user - opted out, reason unknown", function() {
+            describe.skip("registered user - opted out, reason unknown", function() {
                 describe("should reach st_optout", function() {
                     it("should ask prior optout reason", function() {
                         return tester
                             .setup.user.addr('27821240000')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
                             )
                             .check.interaction({
-                                state: 'st_optout',
+                                state: 'state_optout',
                                 reply: [
                                     "You have opted out before. Please tell us why:",
                                     "1. Not a nurse or midwife",
@@ -2176,8 +2105,8 @@ describe("app", function() {
                             .setup.user.addr('27821240000')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
                             )
                             .check(function(api) {
                                 var contact = _.find(api.contacts.store, {
@@ -2198,12 +2127,12 @@ describe("app", function() {
                             .setup.user.addr('27821240000')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '4'  // st_optout - other
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '4'  // state_optout - other
                             )
                             .check.interaction({
-                                state: 'st_end_detail_changed'
+                                state: 'state_end_detail_changed'
                             })
                             .run();
                     });
@@ -2212,9 +2141,9 @@ describe("app", function() {
                             .setup.user.addr('27821237777')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '1'  // st_optout - not a nurse
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '1'  // state_optout - not a nurse
                             )
                             .check(function(api) {
                                 var metrics = api.metrics.stores.test_metric_store;
@@ -2233,9 +2162,9 @@ describe("app", function() {
                             .setup.user.addr('27821240000')
                             .inputs(
                                 {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '4'  // st_optout - other
+                                , '6'  // state_subscribed - more options
+                                , '2'  // state_subscribed - opt out
+                                , '4'  // state_optout - other
                             )
                             .check(function(api) {
                                 var contact = _.find(api.contacts.store, {

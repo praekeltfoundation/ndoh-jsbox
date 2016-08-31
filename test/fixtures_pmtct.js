@@ -1616,7 +1616,7 @@ module.exports = function() {
                         "default_addr_type": "msisdn",
                         "addresses": {
                             "msisdn": {
-                                "+27820000999": { "default":true }
+                                "+27820000999": { "default": true }
                             }
                         }
                     },
@@ -1644,7 +1644,7 @@ module.exports = function() {
                         "default_addr_type": "msisdn",
                         "addresses": {
                             "msisdn": {
-                                "+27820101010": { "default":true }
+                                "+27820101010": { "default": true }
                             }
                         }
                     },
@@ -1672,7 +1672,7 @@ module.exports = function() {
                         "default_addr_type": "msisdn",
                         "addresses": {
                             "msisdn": {
-                                "+27820111111": { "default":true }
+                                "+27820111111": { "default": true }
                             }
                         }
                     },
