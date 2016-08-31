@@ -64,130 +64,438 @@ module.exports = function() {
             }
         },
 
-        // 102:
+        // 102: create outbound message for cb245673-aa41-4302-ac47-00000001006
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820000666",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000000006",
+                    "to_addr": "+27820000666",
+                    "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    'attempts': 0,
+                    'updated_at': '2016-08-18T11:32:17.750207Z',
+                    'content': "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                    'created_at': '2016-08-18T11:32:17.750236Z',
+                    'vumi_message_id': '075a32da-e1e4-4424-be46-1d09b71056fd',
+                    'to_addr': "+27820000666",
+                    'metadata': {},
+                    'id': 'cb245673-aa41-4302-ac47-00000001003',
+                    'delivered': "False",
+                    'version': 1,
+                    'url': 'http://ms/api/v1/outbound/cb245673-aa41-4302-ac47-00000001003/'
+                }
+            }
         },
 
-        // 103:
+        // 103: create outbound message for cb245673-aa41-4302-ac47-00000001007
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820000777",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "to_addr": "+27820000777",
+                    "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    'attempts': 0,
+                    'updated_at': '2016-08-18T11:32:17.750207Z',
+                    'content': "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                    'created_at': '2016-08-18T11:32:17.750236Z',
+                    'vumi_message_id': '075a32da-e1e4-4424-be46-1d09b71056fd',
+                    'to_addr': "+27820000777",
+                    'metadata': {},
+                    'id': 'cb245673-aa41-4302-ac47-00000001004',
+                    'delivered': "False",
+                    'version': 1,
+                    'url': 'http://ms/api/v1/outbound/cb245673-aa41-4302-ac47-00000001004/'
+                }
+            }
         },
 
-        // 104:
+        // 104: create outbound message for cb245673-aa41-4302-ac47-00000001008
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820000888",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "to_addr": "+27820000888",
+                    "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    'attempts': 0,
+                    'updated_at': '2016-08-18T11:32:17.750207Z',
+                    'content': "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                    'created_at': '2016-08-18T11:32:17.750236Z',
+                    'vumi_message_id': '075a32da-e1e4-4424-be46-1d09b71056fd',
+                    'to_addr': "+27820000888",
+                    'metadata': {},
+                    'id': 'cb245673-aa41-4302-ac47-00000001005',
+                    'delivered': "False",
+                    'version': 1,
+                    'url': 'http://ms/api/v1/outbound/cb245673-aa41-4302-ac47-00000001005/'
+                }
+            }
         },
 
-        // 105:
+        // 105: create outbound message for cb245673-aa41-4302-ac47-00000001009
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820000999",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001009",
+                    "to_addr": "+27820000999",
+                    "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    'attempts': 0,
+                    'updated_at': '2016-08-18T11:32:17.750207Z',
+                    'content': "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                    'created_at': '2016-08-18T11:32:17.750236Z',
+                    'vumi_message_id': '075a32da-e1e4-4424-be46-1d09b71056fd',
+                    'to_addr': "+27820000999",
+                    'metadata': {},
+                    'id': 'cb245673-aa41-4302-ac47-00000001006',
+                    'delivered': "False",
+                    'version': 1,
+                    'url': 'http://ms/api/v1/outbound/cb245673-aa41-4302-ac47-00000001006/'
+                }
+            }
         },
 
-        // 106:
+        // 106: create outbound message for cb245673-aa41-4302-ac47-00000001006
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820000666",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000000006",
+                    "to_addr": "+27820000666",
+                    "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    'attempts': 0,
+                    'updated_at': '2016-08-18T11:32:17.750207Z',
+                    'content': "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                    'created_at': '2016-08-18T11:32:17.750236Z',
+                    'vumi_message_id': '075a32da-e1e4-4424-be46-1d09b71056fd',
+                    'to_addr': "+27820000666",
+                    'metadata': {},
+                    'id': 'cb245673-aa41-4302-ac47-00000001003',
+                    'delivered': "False",
+                    'version': 1,
+                    'url': 'http://ms/api/v1/outbound/cb245673-aa41-4302-ac47-00000001003/'
+                }
+            }
         },
 
-        // 107:
+        // 107: create outbound message for cb245673-aa41-4302-ac47-00000001007
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820000777",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "to_addr": "+27820000777",
+                    "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    'attempts': 0,
+                    'updated_at': '2016-08-18T11:32:17.750207Z',
+                    'content': "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                    'created_at': '2016-08-18T11:32:17.750236Z',
+                    'vumi_message_id': '075a32da-e1e4-4424-be46-1d09b71056fd',
+                    'to_addr': "+27820000777",
+                    'metadata': {},
+                    'id': 'cb245673-aa41-4302-ac47-00000001004',
+                    'delivered': "False",
+                    'version': 1,
+                    'url': 'http://ms/api/v1/outbound/cb245673-aa41-4302-ac47-00000001004/'
+                }
+            }
         },
 
-        // 108:
+        // 108: create outbound message for cb245673-aa41-4302-ac47-00000001008
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820000888",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "to_addr": "+27820000888",
+                    "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    'attempts': 0,
+                    'updated_at': '2016-08-18T11:32:17.750207Z',
+                    'content': "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                    'created_at': '2016-08-18T11:32:17.750236Z',
+                    'vumi_message_id': '075a32da-e1e4-4424-be46-1d09b71056fd',
+                    'to_addr': "+27820000888",
+                    'metadata': {},
+                    'id': 'cb245673-aa41-4302-ac47-00000001005',
+                    'delivered': "False",
+                    'version': 1,
+                    'url': 'http://ms/api/v1/outbound/cb245673-aa41-4302-ac47-00000001005/'
+                }
+            }
         },
 
-        // 109:
+        // 109: create outbound message for cb245673-aa41-4302-ac47-00000001009
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820000999",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001009",
+                    "to_addr": "+27820000999",
+                    "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    'attempts': 0,
+                    'updated_at': '2016-08-18T11:32:17.750207Z',
+                    'content': "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                    'created_at': '2016-08-18T11:32:17.750236Z',
+                    'vumi_message_id': '075a32da-e1e4-4424-be46-1d09b71056fd',
+                    'to_addr': "+27820000999",
+                    'metadata': {},
+                    'id': 'cb245673-aa41-4302-ac47-00000001006',
+                    'delivered': "False",
+                    'version': 1,
+                    'url': 'http://ms/api/v1/outbound/cb245673-aa41-4302-ac47-00000001006/'
+                }
+            }
         },
 
-        // 110:
+        // 110: create outbound message for cb245673-aa41-4302-ac47-00000000007
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820000777",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000000007",
+                    "to_addr": "+27820000777",
+                    "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    'attempts': 0,
+                    'updated_at': '2016-08-18T11:32:17.750207Z',
+                    'content': "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                    'created_at': '2016-08-18T11:32:17.750236Z',
+                    'vumi_message_id': '075a32da-e1e4-4424-be46-1d09b71056fd',
+                    'to_addr': "+27820000777",
+                    'metadata': {},
+                    'id': 'cb245673-aa41-4302-ac47-00000001007',
+                    'delivered': "False",
+                    'version': 1,
+                    'url': 'http://ms/api/v1/outbound/cb245673-aa41-4302-ac47-00000001007/'
+                }
+            }
         },
 
-        // 111:
+        // 111: create outbound message for cb245673-aa41-4302-ac47-00000001006
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820000777",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000000007",
+                    "to_addr": "+27820000777",
+                    "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    'attempts': 0,
+                    'updated_at': '2016-08-18T11:32:17.750207Z',
+                    'content': "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                    'created_at': '2016-08-18T11:32:17.750236Z',
+                    'vumi_message_id': '075a32da-e1e4-4424-be46-1d09b71056fd',
+                    'to_addr': "+27820000777",
+                    'metadata': {},
+                    'id': 'cb245673-aa41-4302-ac47-00000001003',
+                    'delivered': "False",
+                    'version': 1,
+                    'url': 'http://ms/api/v1/outbound/cb245673-aa41-4302-ac47-00000001003/'
+                }
+            }
         },
 
-        // 112:
+        // 112: create outbound message for cb245673-aa41-4302-ac47-00000000008
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820000888",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000000008",
+                    "to_addr": "+27820000888",
+                    "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    'attempts': 0,
+                    'updated_at': '2016-08-18T11:32:17.750207Z',
+                    'content': "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                    'created_at': '2016-08-18T11:32:17.750236Z',
+                    'vumi_message_id': '075a32da-e1e4-4424-be46-1d09b71056fd',
+                    'to_addr': "+27820000888",
+                    'metadata': {},
+                    'id': 'cb245673-aa41-4302-ac47-00000001008',
+                    'delivered': "False",
+                    'version': 1,
+                    'url': 'http://ms/api/v1/outbound/cb245673-aa41-4302-ac47-00000001008/'
+                }
+            }
         },
 
-        // 113:
+        // 113: create outbound message for cb245673-aa41-4302-ac47-00000000008
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820000888",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000000008",
+                    "to_addr": "+27820000888",
+                    "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    'attempts': 0,
+                    'updated_at': '2016-08-18T11:32:17.750207Z',
+                    'content': "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                    'created_at': '2016-08-18T11:32:17.750236Z',
+                    'vumi_message_id': '075a32da-e1e4-4424-be46-1d09b71056fd',
+                    'to_addr': "+27820000888",
+                    'metadata': {},
+                    'id': 'cb245673-aa41-4302-ac47-00000001004',
+                    'delivered': "False",
+                    'version': 1,
+                    'url': 'http://ms/api/v1/outbound/cb245673-aa41-4302-ac47-00000001004/'
+                }
+            }
         },
 
-        // 114:
+        // 114: create outbound message for cb245673-aa41-4302-ac47-00000000009
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820000999",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000000009",
+                    "to_addr": "+27820000999",
+                    "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    'attempts': 0,
+                    'updated_at': '2016-08-18T11:32:17.750207Z',
+                    'content': "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                    'created_at': '2016-08-18T11:32:17.750236Z',
+                    'vumi_message_id': '075a32da-e1e4-4424-be46-1d09b71056fd',
+                    'to_addr': "+27820000999",
+                    'metadata': {},
+                    'id': 'cb245673-aa41-4302-ac47-00000001009',
+                    'delivered': "False",
+                    'version': 1,
+                    'url': 'http://ms/api/v1/outbound/cb245673-aa41-4302-ac47-00000001009/'
+                }
+            }
         },
 
-        // 115:
+        // 115: create outbound message for cb245673-aa41-4302-ac47-00000000009
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820000999",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000000009",
+                    "to_addr": "+27820000999",
+                    "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    'attempts': 0,
+                    'updated_at': '2016-08-18T11:32:17.750207Z',
+                    'content': "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                    'created_at': '2016-08-18T11:32:17.750236Z',
+                    'vumi_message_id': '075a32da-e1e4-4424-be46-1d09b71056fd',
+                    'to_addr': "+27820000999",
+                    'metadata': {},
+                    'id': 'cb245673-aa41-4302-ac47-00000001009',
+                    'delivered': "False",
+                    'version': 1,
+                    'url': 'http://ms/api/v1/outbound/cb245673-aa41-4302-ac47-00000001009/'
+                }
+            }
         },
 
         // 116:

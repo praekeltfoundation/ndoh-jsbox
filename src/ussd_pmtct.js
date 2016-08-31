@@ -12,6 +12,7 @@ go.app = function() {
     var SeedJsboxUtils = require('seed-jsbox-utils');
     var IdentityStore = SeedJsboxUtils.IdentityStore;
     var StageBasedMessaging = SeedJsboxUtils.StageBasedMessaging;
+    var MessageSender = SeedJsboxUtils.MessageSender;
     var utils = SeedJsboxUtils.utils;
     var Hub = SeedJsboxUtils.Hub;
 
@@ -27,7 +28,6 @@ go.app = function() {
 
         self.init = function() {
             // initialising services
-            self.im.log("INIT!");
             is = new IdentityStore(
                 new JsonApi(self.im, {}),
                 self.im.config.services.identity_store.token,
@@ -44,6 +44,12 @@ go.app = function() {
                 new JsonApi(self.im, {}),
                 self.im.config.services.hub.token,
                 self.im.config.services.hub.url
+            );
+
+            ms = new MessageSender(
+                new JsonApi(self.im, {}),
+                self.im.config.services.message_sender.token,
+                self.im.config.services.message_sender.url
             );
         };
 
@@ -604,6 +610,20 @@ go.app = function() {
                 }
                 return hub
                 .create_registration(reg_info)
+                .then(function() {
+                  return ms.create_outbound_message(
+                      self.im.user.answers.identity.id,
+                      self.im.user.answers.msisdn,
+                      "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health"
+                  );
+                })
+                .then(function() {
+                  return ms.create_outbound_message(
+                      self.im.user.answers.identity.id,
+                      self.im.user.answers.msisdn,
+                      "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322"
+                  );
+                })
                 .then(function() {
                     return self.states.create('state_end_hiv_messages_confirm');
                 });
