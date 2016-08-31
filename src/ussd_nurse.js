@@ -665,10 +665,20 @@ go.app = function() {
                         return null;
                     }
                 },
-                next: function(content) {
-                    self.im.user.answers.operator.details.nurseconnect.sanc = content;
+                next: function(sanc_number) {
+                    var change_info = {
+                        "registrant_id": self.im.user.answers.operator.id,
+                        "action": "nurse_update_detail",
+                        "data": {
+                            "sanc_no": sanc_number
+                        }
+                    };
 
-                    return 'state_post_change_detail';
+                    return hub
+                    .create_change(change_info)
+                    .then(function () {
+                        return 'state_end_detail_changed';
+                    });
                 }
             });
         });
