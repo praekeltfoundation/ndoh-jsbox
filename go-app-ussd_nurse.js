@@ -3,6 +3,7 @@ go;
 
 go.app = function() {
     var vumigo = require("vumigo_v02");
+    var moment = require('moment');
     // var _ = require('lodash');
     var Q = require('q');
     var App = vumigo.App;
@@ -64,11 +65,11 @@ go.app = function() {
             self.states.add(name, function(name, opts) {
                 // if (!interrupt || !self.timed_out(self.im))
                     return creator(name, opts);
-
+                // TODO: #42 timeout handling
                 // interrupt = false;
                 // var timeout_opts = opts || {};
                 // timeout_opts.name = name;
-                // return self.states.create('st_timed_out', timeout_opts);
+                // return self.states.create('state_timed_out', timeout_opts);
             });
         };
 
@@ -158,19 +159,30 @@ go.app = function() {
             self.im.user.set_answer("operator_msisdn", msisdn);
 
             return is
-            .get_or_create_identity({"msisdn": msisdn})
-            .then(function(identity) {
-                self.im.user.set_answer("operator", identity);
+            .list_by_address({"msisdn": msisdn})
+            .then(function(identities_found) {
+                // get the first identity in the list of identities
+                var identity = (identities_found.results.length > 0)
+                    ? identities_found.results[0]
+                    : null;
 
-                return self
-                .has_active_nurseconnect_subscription(self.im.user.answers.operator.id)
-                .then(function(has_active_nurseconnect_subscription) {
-                    if (has_active_nurseconnect_subscription) {
-                        return self.states.create('state_subscribed');
-                    } else {
-                        return self.states.create('state_not_subscribed');
-                    }
-                });
+                if (identity !== null) {
+                    self.im.user.set_answer("operator", identity);
+
+                    return self
+                    .has_active_nurseconnect_subscription(self.im.user.answers.operator.id)
+                    .then(function(has_active_nurseconnect_subscription) {
+                        if (has_active_nurseconnect_subscription) {
+                            return self.states.create('state_subscribed');
+                        } else {
+                            return self.states.create('state_not_subscribed');
+                        }
+                    });
+                }
+                else {
+                    self.im.user.set_answer("operator", identity); // null
+                    return self.states.create('state_not_subscribed');
+                }
             });
         });
 
@@ -207,7 +219,20 @@ go.app = function() {
                     new Choice('state_subscribe_other', $('Subscribe somebody else'))
                 ],
                 next: function(choice) {
-                    return choice.value;
+                    if (choice.value === "state_change_old_nr") {
+                        return choice.value;
+                    } else {
+                        if (self.im.user.answers.operator === null) {
+                            return is
+                            .create_identity({"msisdn": self.im.user.answers.operator_msisdn})
+                            .then(function(identity) {
+                                self.im.user.set_answer("operator", identity);
+                                return choice.value;
+                            });
+                        } else {
+                            return choice.value;
+                        }
+                    }
                 }
             });
         });
@@ -242,45 +267,9 @@ go.app = function() {
             });
         });
 
-        self.add('state_permission_denied', function(name) {
-            return new ChoiceState(name, {
-                question: $("You have chosen not to receive NurseConnect SMSs on this number and so cannot complete registration."),
-                choices: [
-                    new Choice('state_route', $('Main Menu'))
-                ],
-                next: function(choice) {
-                    return choice.value;
-                }
-            });
-        });
-
-        self.add('state_msisdn', function(name) {
-            var error = $("Sorry, the format of the mobile number is not correct. Please enter the mobile number again, e.g. 0726252020");
-            var question = $("Please enter the number you would like to register, e.g. 0726252020:");
-            return new FreeText(name, {
-                question: question,
-                check: function(content) {
-                    if (!utils.is_valid_msisdn(content, 0, 10)) {
-                        return error;
-                    }
-                },
-                next: function(content) {
-                    var msisdn = utils.normalize_msisdn(content, '27');
-
-                    return is
-                    .get_or_create_identity({"msisdn": msisdn})
-                    .then(function(identity) {
-                        self.im.user.set_answer("registrant", identity);
-                        self.im.user.set_answer("registrant_msisdn", msisdn);
-                        return self.states.create('state_check_optout_reg');
-                    });
-                }
-            });
-        });
-
         self.add('state_check_optout_reg', function(name) {
             var registrant_msisdn = self.im.user.answers.registrant_msisdn;
-            if (self.im.user.answers.registrant.details.addresses.msisdn[registrant_msisdn].optedout === "True") {
+            if (self.im.user.answers.registrant.details.addresses.msisdn[registrant_msisdn].optedout) {
                 return self.states.create('state_opt_in_reg');
             } else {
                 return self.states.create('state_faccode');
@@ -305,6 +294,30 @@ go.app = function() {
                     } else {
                         return 'state_permission_denied';
                     }
+                }
+            });
+        });
+
+        self.add('state_msisdn', function(name) {
+            var error = $("Sorry, the format of the mobile number is not correct. Please enter the mobile number again, e.g. 0726252020");
+            var question = $("Please enter the number you would like to register, e.g. 0726252020:");
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    if (!utils.is_valid_msisdn(content, 0, 10)) {
+                        return error;
+                    }
+                },
+                next: function(content) {
+                    var msisdn = utils.normalize_msisdn(content, '27');
+
+                    return is
+                    .get_or_create_identity({"msisdn": msisdn})
+                    .then(function(identity) {
+                        self.im.user.set_answer("registrant", identity);
+                        self.im.user.set_answer("registrant_msisdn", msisdn);
+                        return self.states.create('state_check_optout_reg');
+                    });
                 }
             });
         });
@@ -353,6 +366,401 @@ go.app = function() {
                     return choice.value;
                 }
             });
+        });
+
+        self.add('state_permission_denied', function(name) {
+            return new ChoiceState(name, {
+                question: $("You have chosen not to receive NurseConnect SMSs on this number and so cannot complete registration."),
+                choices: [
+                    new Choice('state_route', $('Main Menu'))
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+    // CHANGE STATES
+
+        self.add('state_change_num', function(name) {
+            var question = $("Please enter the new number on which you want to receive messages, e.g. 0736252020:");
+            var error = $("Sorry, the format of the mobile number is not correct. Please enter the new number on which you want to receive messages, e.g. 0736252020");
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    if (!utils.is_valid_msisdn(content, 0, 10)) {
+                        return error;
+                    }
+                },
+                next: function(content) {
+                    return 'state_check_optout_change';
+                }
+            });
+        });
+
+        self.add('state_check_optout_change', function(name) {
+            // all the code in here will most probably still change (TODO #33)
+            var new_msisdn = utils.normalize_msisdn(self.im.user.answers.state_change_num, '27');
+
+            var msisdn_on_other_identities_but_available = false;
+            // do existing identities use the 'new' number?
+            var eval_new_msisdn_available_on_other_identities = function(identity) {
+                if (identity.details.addresses.msisdn[new_msisdn].optedout
+                    || identity.details.addresses.msisdn[new_msisdn].inactive) {
+
+                    msisdn_on_other_identities_but_available = true;
+                }
+            };
+
+            var new_msisdn_on_operator = false;
+            var cleaned_identities = [];
+            var remove_operator_identity = function(identity) {
+                if (identity.id !== self.im.user.answers.operator.id) {
+                    cleaned_identities.push(identity);
+                } else {
+                    new_msisdn_on_operator = true;
+                }
+            };
+
+            return is
+            .list_by_address({msisdn: new_msisdn})
+            .then(function(identities_found) {
+                // get existing identities with 'new' number
+                var identities = (identities_found.results.length > 0)
+                    ? identities_found.results
+                    : null;
+
+                if (identities !== null) {  // identities with new number exists
+                    // clean identities array of operator identity (if present)
+                    identities.forEach(remove_operator_identity);
+                    if (new_msisdn_on_operator) {
+                        identities = cleaned_identities;
+                    }
+                    // iterate through identities, checking whether msisdn is usable
+                    if (identities.length > 0) {
+                        identities.forEach(eval_new_msisdn_available_on_other_identities);
+                    }
+
+                    // person wants to change to number already theirs but it's also active on another identity
+                    if (new_msisdn_on_operator && !msisdn_on_other_identities_but_available) {
+                        // disallow
+                        return self.states.create('state_block_active_subs');
+                    }
+                    if (new_msisdn_on_operator) { // person wants to change to number already theirs
+                        // check whether number is opted out on operator
+                        if (self.im.user.answers.operator.details.addresses.msisdn[new_msisdn].optedout) {
+                            self.im.user.set_answer("registrant", self.im.user.answers.operator);
+                            // opt back in
+                            return self.states.create('state_opt_in_change');
+                        } else {
+                            self.states.create('state_end_detail_changed');
+                        }
+                    } else if (msisdn_on_other_identities_but_available) {  // number have been used but available to change to
+                        self.im.user.set_answer("registrant", self.im.user.answers.operator);
+                        return self.states.create('state_switch_new_nr');
+                    } else {
+                        return self.states.create('state_block_active_subs');
+                    }
+                } else {  // no other identities with new number exist
+                    self.im.user.set_answer("registrant", self.im.user.answers.operator);
+                    return self.states.create('state_switch_new_nr');
+                }
+            });
+        });
+
+        self.add('state_opt_in_change', function(name) {
+            return new ChoiceState(name, {
+                question: $("This number opted out of NurseConnect messages before. Please confirm that you want to receive messages again on this number?"),
+                choices: [
+                    new Choice('yes', $('Yes')),
+                    new Choice('no', $('No'))
+                ],
+                next: function(choice) {
+                    if (choice.value === 'yes') {
+                        self.im.user.answers.registrant.details.nurseconnect.opt_out_reason = "";  // reset
+                        return is
+                        .optin(self.im.user.answers.registrant.id, "msisdn", self.im.user.answers.registrant_msisdn)
+                        .then(function() {
+                            return 'state_switch_new_nr';
+                        });
+                    } else {
+                        return 'state_permission_denied';
+                    }
+                }
+            });
+        });
+
+        self.add('state_block_active_subs', function(name) {
+            return new EndState(name, {
+                text: $("Sorry, the number you are trying to move to already has an active registration. To manage that registration, please redial from that number."),
+                next: 'state_route',
+            });
+        });
+
+        self.add('state_switch_new_nr', function(name) {
+            // TODO: #33 Change submission
+            return self.states.create('state_end_detail_changed');
+        });
+
+        self.add('state_change_faccode', function(name) {
+            var question = $("Please enter the 6-digit facility code for your new facility, e.g. 456789:");
+            var error = $("Sorry, that code is not recognized. Please enter the 6-digit facility code again, e. 535970:");
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    return self
+                        .validate_nc_clinic_code(self.im, content)
+                        .then(function(facname) {
+                            if (!facname) {
+                                return error;
+                            } else {
+                                self.im.user.set_answer("registrant", self.im.user.answers.operator);
+                                self.im.user.answers.registrant.details.nurseconnect.facname = facname;
+                                self.im.user.answers.registrant.details.nurseconnect.faccode = content;
+
+                                return null;  // vumi expects null or undefined if check passes
+                            }
+                        });
+                },
+                next: 'state_post_change_detail'
+            });
+        });
+
+        self.add('state_change_id_no', function(name) {
+            var question = $("Please select your type of identification:");
+            return new ChoiceState(name, {
+                question: question,
+                choices: [
+                    new Choice('state_id_no', $('RSA ID')),
+                    new Choice('state_passport', $('Passport'))
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+        self.add('state_id_no', function(name) {
+            var error = $("Sorry, the format of the ID number is not correct. Please enter your RSA ID number again, e.g. 7602095060082");
+            var question = $("Please enter your 13-digit RSA ID number:");
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    if (!utils.validate_id_za(content)) {
+                        return error;
+                    }
+                },
+                next: function(content) {
+                    self.im.user.set_answer("registrant", self.im.user.answers.operator);
+                    self.im.user.answers.registrant.details.nurseconnect.id_type = 'sa_id';
+                    self.im.user.answers.registrant.details.nurseconnect.sa_id_no = content;
+                    self.im.user.answers.registrant.details.nurseconnect.dob = utils.extract_za_id_dob(content);
+
+                    return 'state_post_change_detail';
+                }
+            });
+        });
+
+        self.add('state_passport', function(name) {
+            return new ChoiceState(name, {
+                question: $('What is the country of origin of the passport?'),
+                choices: [
+                    new Choice('na', $('Namibia')),
+                    new Choice('bw', $('Botswana')),
+                    new Choice('mz', $('Mozambique')),
+                    new Choice('sz', $('Swaziland')),
+                    new Choice('ls', $('Lesotho')),
+                    new Choice('cu', $('Cuba')),
+                    new Choice('other', $('Other')),
+                ],
+                next: 'state_passport_no'
+            });
+        });
+
+        self.add('state_passport_no', function(name) {
+            var error = $("Sorry, the format of the passport number is not correct. Please enter the passport number again.");
+            var question = $("Please enter the passport number:");
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    if (!utils.is_alpha_numeric_only(content) || content.length <= 4) {
+                        return error;
+                    }
+                },
+                next: 'state_passport_dob'
+            });
+        });
+
+        self.add('state_passport_dob', function(name) {
+            var error = $("Sorry, the format of the date of birth is not correct. Please enter it again, e.g. 27 May 1975 as 27051975:");
+            var question = $("Please enter the date of birth, e.g. 27 May 1975 as 27051975:");
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    if (!utils.is_valid_date(content, 'DDMMYYYY')) {
+                        return error;
+                    }
+                },
+                next: function(content) {
+                    self.im.user.set_answer("registrant", self.im.user.answers.operator);
+                    self.im.user.answers.registrant.details.nurseconnect.id_type = 'passport';
+                    self.im.user.answers.registrant.details.nurseconnect.passport_country = self.im.user.answers.state_passport;
+                    self.im.user.answers.registrant.details.nurseconnect.passport_num = self.im.user.answers.state_passport_no;
+                    self.im.user.answers.registrant.details.nurseconnect.dob
+                        = moment(self.im.user.answers.state_passport_dob, 'DDMMYYYY').format('YYYY-MM-DD');
+
+                    return 'state_post_change_detail';
+                }
+            });
+        });
+
+        self.add('state_change_sanc', function(name) {
+            var question = $("Please enter your 8-digit SANC registration number, e.g. 34567899:");
+            var error = $("Sorry, the format of the SANC registration number is not correct. Please enter it again, e.g. 34567899:");
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    if (!utils.check_valid_number(content)
+                        || content.length !== 8) {
+                        return error;
+                    } else {
+                        return null;
+                    }
+                },
+                next: function(content) {
+                    self.im.user.set_answer("registrant", self.im.user.answers.operator);
+                    self.im.user.answers.registrant.details.nurseconnect.sanc = content;
+
+                    return 'state_post_change_detail';
+                }
+            });
+        });
+
+        self.add('state_change_persal', function(name) {
+            var question = $("Please enter your 8-digit Persal employee number, e.g. 11118888:");
+            var error = $("Sorry, the format of the Persal employee number is not correct. Please enter it again, e.g. 11118888:");
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    if (!utils.check_valid_number(content)
+                        || content.length !== 8) {
+                        return error;
+                    } else {
+                        return null;
+                    }
+                },
+                next: function(content) {
+                    self.im.user.set_answer("registrant", self.im.user.answers.operator);
+                    self.im.user.answers.registrant.details.nurseconnect.persal = content;
+
+                    return 'state_post_change_detail';
+                }
+            });
+        });
+
+        self.add('state_change_old_nr', function(name) {
+            var question = $("Please enter the old number on which you used to receive messages, e.g. 0736436265:");
+            var error = $("Sorry, the format of the mobile number is not correct. Please enter your old mobile number again, e.g. 0726252020");
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    if (!utils.is_valid_msisdn(content, 0, 10)) {
+                        return error;
+                    }
+                },
+                next: function(content) {
+                    // the code in here will most probably still change (TODO #33)
+                    return is
+                    .list_by_address({msisdn: utils.normalize_msisdn(content, '27')})
+                    .then(function(identities_found) {
+                        if (identities_found.results.length > 0) {  // what if more than one identity use same 'old' number..?
+                            return self
+                            .has_active_nurseconnect_subscription(identities_found.results[0].id)
+                            .then(function(has_active_nurseconnect_subscription) {
+                                if (has_active_nurseconnect_subscription) {
+                                    return {
+                                        name: 'state_post_change_old_nr',
+                                        creator_opts: {identity: identities_found.results[0].id}
+                                    };
+                                } else {
+                                    return 'state_change_old_not_found';
+                                }
+                            });
+                        }
+
+                        return 'state_change_old_not_found';
+                    });
+                }
+            });
+        });
+
+        self.add('state_change_old_not_found', function(name) {
+            return new ChoiceState(name, {
+                question: $("The number {{msisdn}} is not currently subscribed to receive NurseConnect messages. Try again?")
+                    .context({msisdn: self.im.user.answers.state_change_old_nr}),
+                choices: [
+                    new Choice('state_change_old_nr', $('Yes')),
+                    new Choice('state_permission_denied', $('No')),
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+        self.add('state_check_optout_optout', function(name) {
+            var msisdn = Object.keys(self.im.user.answers.operator.details.addresses.msisdn)[0];
+            if (self.im.user.answers.operator.details.addresses.msisdn[msisdn].optedout) {
+                return self.states.create(
+                    'state_optout', {opted_out: true}
+                );
+            } else {
+                return self.states.create(
+                    'state_optout', {opted_out: false}
+                );
+            }
+        });
+
+        self.add('state_optout', function(name, opts) {
+            var question = opts.opted_out === false
+                ? $("Please tell us why you no longer want messages:")
+                : $("You have opted out before. Please tell us why:");
+            return new ChoiceState(name, {
+                question: question,
+                choices: [
+                    new Choice('job_change', $('Not a nurse or midwife')),
+                    new Choice('number_owner_change', $('New user of number')),
+                    new Choice('not_useful', $("Messages not useful")),
+                    new Choice('other', $("Other")),
+                    new Choice('main_menu', $("Main menu"))
+                ],
+                next: function(choice) {
+                    if (choice.value === 'main_menu') {
+                        return 'state_route';
+                    } else {
+                        // TODO #36 add optout logic
+                         return 'state_end_detail_changed';
+                    }
+                }
+            });
+        });
+
+        self.add('state_post_change_old_nr', function(name, opts) {
+            // TODO: #33 Change submission
+                return self.states.create('state_end_detail_changed');
+        });
+
+        self.add('state_post_change_detail', function() {
+            // TODO: #33 Change submission
+                return self.states.create('state_end_detail_changed');
+        });
+
+        self.add('state_end_detail_changed', function(name) {
+            return new EndState(name, {
+                text: $("Thank you. Your NurseConnect details have been changed. To change any other details, please dial {{channel}} again.")
+                    .context({channel: self.im.config.channel}),
+                next: 'state_route',
+             });
         });
 
         self.add('state_save_nursereg', function(name) {
