@@ -293,5 +293,64 @@ module.exports = function() {
             }
         },
 
+        // 157: patch identity cb245673-aa41-4302-ac47-00000001001 (self registration)
+        {
+            "request": {
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/',
+                "method": 'PATCH',
+                "data": {
+                    "details": {
+                        "nurseconnect": {
+                            "facname": "WCL clinic",
+                            "faccode": "123456",
+                            "is_registered": "true"
+                        }
+                    }
+                }
+            },
+            "response": {
+                "accepted": true
+            }
+        },
+
+        // 158: patch identity cb245673-aa41-4302-ac47-00000001001 (registration of another, 27820001002)
+        {
+            "request": {
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/',
+                "method": 'PATCH',
+                "data": {
+                    "details": {
+                        "nurseconnect": {
+                            "registrees": "+27820001002"
+                        }
+                    }
+                }
+            },
+            "response": {
+                "accepted": true
+            }
+        },
+
+        // 158: patch identity cb245673-aa41-4302-ac47-00000001002 (registration of another, registered by 27820001001)
+        {
+            "request": {
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001002/',
+                "method": 'PATCH',
+                "data": {
+                    "details": {
+                        "nurseconnect": {
+                            "facname": "WCL clinic",
+                            "faccode": "123456",
+                            "is_registered": "true",
+                            "registered_by": "+27820001001"
+                        }
+                    }
+                }
+            },
+            "response": {
+                "accepted": true
+            }
+        },
+
     ];
 };

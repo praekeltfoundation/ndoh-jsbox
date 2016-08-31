@@ -376,6 +376,76 @@ go.app = function() {
             });
         });
 
+        self.add('state_save_nursereg', function(name) {
+            // Save useful identity info
+            self.im.user.answers.registrant.details.nurseconnect.is_registered = "true";
+
+            var registrant_update_data = {
+                "details": {
+                    "nurseconnect": {
+                        "facname": self.im.user.answers.registrant.details.nurseconnect.facname,
+                        "faccode": self.im.user.answers.registrant.details.nurseconnect.faccode,
+                        "is_registered": self.im.user.answers.registrant.details.nurseconnect.is_registered
+                    }
+                }
+            };
+
+            if (self.im.user.answers.operator.id !== self.im.user.answers.registrant.id) {
+                registrant_update_data.details.nurseconnect.registered_by = self.im.user.answers.operator_msisdn;
+
+                var operator_update_data = {
+                    "details": {
+                        "nurseconnect": {}
+                    }
+                };
+
+                if (self.im.user.answers.operator.details.nurseconnect === undefined) {
+                    self.im.user.answers.operator.details.nurseconnect = {};
+                }
+
+                if (self.im.user.answers.operator.details.nurseconnect.registrees === undefined) {
+                    operator_update_data.details.nurseconnect.registrees
+                        = self.im.user.answers.registrant_msisdn;
+                } else {
+                    operator_update_data.details.nurseconnect.registrees
+                        += ', ' + self.im.user.answers.registrant_msisdn;
+                }
+
+                return Q
+                .all ([
+                    // identity PATCHes
+                    is.update_identity(
+                        self.im.user.answers.operator.id,
+                        operator_update_data
+                    ),
+                    is.update_identity(
+                        self.im.user.answers.registrant.id,
+                        registrant_update_data
+                    ),
+                    self.send_registration_thanks(self.im.user.answers.registrant_msisdn),
+                    // POST registration
+                ])
+                .then(function() {
+                    return self.states.create('state_end_reg');
+                });
+
+            } else {
+                return Q
+                .all([
+                    // identity PATCH
+                    is.update_identity(
+                        self.im.user.answers.registrant.id,
+                        registrant_update_data
+                    ),
+                    self.send_registration_thanks(self.im.user.answers.registrant_msisdn),
+                    // POST registration
+                ])
+                .then(function() {
+                    return self.states.create('state_end_reg');
+                });
+            }
+        });
+
     // CHANGE STATES
 
         self.add('state_change_num', function(name) {
@@ -757,24 +827,6 @@ go.app = function() {
                     .context({channel: self.im.config.channel}),
                 next: 'state_route',
              });
-        });
-
-        self.add('state_save_nursereg', function(name) {
-            // Save useful identity info
-            self.im.user.answers.registrant.details.nurseconnect.is_registered = "true";
-
-            // TODO: #30 registration submission
-
-            // identity PATCH
-
-            return Q
-            .all([
-                self.send_registration_thanks(self.im.user.answers.registrant_msisdn),
-                // POST registration
-            ])
-            .then(function() {
-                return self.states.create('state_end_reg');
-            });
         });
 
         self.add('state_end_reg', function(name) {
