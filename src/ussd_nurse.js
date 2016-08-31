@@ -696,10 +696,20 @@ go.app = function() {
                         return null;
                     }
                 },
-                next: function(content) {
-                    self.im.user.answers.operator.details.nurseconnect.persal = content;
+                next: function(persal_number) {
+                    var change_info = {
+                        "registrant_id": self.im.user.answers.operator.id,
+                        "action": "nurse_update_detail",
+                        "data": {
+                            "persal_no": persal_number
+                        }
+                    };
 
-                    return 'state_post_change_detail';
+                    return hub
+                    .create_change(change_info)
+                    .then(function () {
+                        return 'state_end_detail_changed';
+                    });
                 }
             });
         });
