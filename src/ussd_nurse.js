@@ -632,13 +632,22 @@ go.app = function() {
                     }
                 },
                 next: function(content) {
-                    self.im.user.answers.operator.details.nurseconnect.id_type = 'passport';
-                    self.im.user.answers.operator.details.nurseconnect.passport_country = self.im.user.answers.state_passport;
-                    self.im.user.answers.operator.details.nurseconnect.passport_num = self.im.user.answers.state_passport_no;
-                    self.im.user.answers.operator.details.nurseconnect.dob
-                        = moment(self.im.user.answers.state_passport_dob, 'DDMMYYYY').format('YYYY-MM-DD');
+                    var change_info = {
+                        "registrant_id": self.im.user.answers.operator.id,
+                        "action": "nurse_update_detail",
+                        "data": {
+                            "id_type": "passport",
+                            "passport_no": self.im.user.answers.state_passport_no,
+                            "passport_origin": self.im.user.answers.state_passport,
+                            "dob": moment(content, 'DDMMYYYY').format('YYYY-MM-DD')
+                        }
+                    };
 
-                    return 'state_post_change_detail';
+                    return hub
+                    .create_change(change_info)
+                    .then(function () {
+                        return 'state_end_detail_changed';
+                    });
                 }
             });
         });
