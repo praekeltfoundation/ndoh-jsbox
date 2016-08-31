@@ -729,7 +729,7 @@ go.app = function() {
                 },
                 next: function(content) {
                     var old_msisdn = utils.normalize_msisdn(content, '27');
-                    // the code in here will most probably still change (TODO #33)
+
                     return is
                     .list_by_address({msisdn: old_msisdn})
                     .then(function(identities_found) {
@@ -826,11 +826,6 @@ go.app = function() {
             .then(function() {
                 return self.states.create('state_end_detail_changed');
             });
-        });
-
-        self.add('state_post_change_detail', function() {
-            // TODO: #33 Change submission
-                return self.states.create('state_end_detail_changed');
         });
 
         self.add('state_end_detail_changed', function(name) {
