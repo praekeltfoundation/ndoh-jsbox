@@ -187,13 +187,27 @@ module.exports = function() {
             }
         },
 
-        // 8:
+        // 8: post change (sa_id) for cb245673-aa41-4302-ac47-00000001003
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
+                    "action": "nurse_update_detail",
+                    "data": {
+                        "id_type": "sa_id",
+                        "sa_id_no": "9001016265166",
+                        "dob":"1990-01-01"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
         },
 
         // 9:

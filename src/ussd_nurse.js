@@ -571,12 +571,22 @@ go.app = function() {
                         return error;
                     }
                 },
-                next: function(content) {
-                    self.im.user.answers.operator.details.nurseconnect.id_type = 'sa_id';
-                    self.im.user.answers.operator.details.nurseconnect.sa_id_no = content;
-                    self.im.user.answers.operator.details.nurseconnect.dob = utils.extract_za_id_dob(content);
+                next: function(id_number) {
+                    var change_info = {
+                        "registrant_id": self.im.user.answers.operator.id,
+                        "action": "nurse_update_detail",
+                        "data": {
+                            "id_type": "sa_id",
+                            "sa_id_no": id_number,
+                            "dob": utils.extract_za_id_dob(id_number)
+                        }
+                    };
 
-                    return 'state_post_change_detail';
+                    return hub
+                    .create_change(change_info)
+                    .then(function () {
+                        return 'state_end_detail_changed';
+                    });
                 }
             });
         });
