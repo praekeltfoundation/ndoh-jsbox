@@ -62,7 +62,7 @@ go.app = function() {
             self.states.add(name, function(name, opts) {
                 // if (!interrupt || !self.timed_out(self.im))
                     return creator(name, opts);
-
+                // TODO: #42 timeout handling
                 // interrupt = false;
                 // var timeout_opts = opts || {};
                 // timeout_opts.name = name;
