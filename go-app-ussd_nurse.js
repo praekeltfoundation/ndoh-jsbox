@@ -398,7 +398,6 @@ go.app = function() {
         });
 
         self.add('state_check_optout_change', function(name) {
-            // all the code in here will most probably still change (TODO #33)
             var new_msisdn = utils.normalize_msisdn(self.im.user.answers.state_change_num, '27');
             self.im.user.set_answer("new_msisdn", new_msisdn);
 

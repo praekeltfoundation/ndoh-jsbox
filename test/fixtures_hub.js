@@ -53,28 +53,7 @@ module.exports = function() {
             }
         },
 
-        // 2: post change (number) for
-        {
-            "request": {
-                "url": 'http://hub/api/v1/change/',
-                "method": 'POST',
-                "data": {
-                    "action": "nurse_change_msisdn",
-                    "data": {
-                        "msisdn_new": "+27820001002",
-                        "msisdn_device": "+27820001002"
-                    }
-                }
-            },
-            "response": {
-                "code": 201,
-                "data": {
-                    "accepted": true
-                }
-            }
-        },
-
-        // 3: post change (number to 27820001002) for cb245673-aa41-4302-ac47-00000001003
+        // 2: post change (number to 27820001002) for cb245673-aa41-4302-ac47-00000001003
         {
             "request": {
                 "url": 'http://hub/api/v1/change/',
@@ -97,7 +76,7 @@ module.exports = function() {
             }
         },
 
-        // 4: post change (number to 27820001001) for cb245673-aa41-4302-ac47-00000001003
+        // 3: post change (number to 27820001001) for cb245673-aa41-4302-ac47-00000001003
         {
             "request": {
                 "url": 'http://hub/api/v1/change/',
@@ -120,7 +99,7 @@ module.exports = function() {
             }
         },
 
-        // 5: post change (number to 27820001001) for cb245673-aa41-4302-ac47-00000001005
+        // 4: post change (number to 27820001001) for cb245673-aa41-4302-ac47-00000001005
         {
             "request": {
                 "url": 'http://hub/api/v1/change/',
@@ -143,7 +122,7 @@ module.exports = function() {
             }
         },
 
-        // 6: post change (number to 27820001004) for cb245673-aa41-4302-ac47-00000001003
+        // 5: post change (number to 27820001004) for cb245673-aa41-4302-ac47-00000001003
         {
             "request": {
                 "url": 'http://hub/api/v1/change/',
@@ -166,7 +145,7 @@ module.exports = function() {
             }
         },
 
-        // 7: post change (facility code) for cb245673-aa41-4302-ac47-00000001003
+        // 6: post change (facility code) for cb245673-aa41-4302-ac47-00000001003
         {
             "request": {
                 "url": 'http://hub/api/v1/change/',
@@ -187,7 +166,7 @@ module.exports = function() {
             }
         },
 
-        // 8: post change (id number) for cb245673-aa41-4302-ac47-00000001003
+        // 7: post change (id number) for cb245673-aa41-4302-ac47-00000001003
         {
             "request": {
                 "url": 'http://hub/api/v1/change/',
@@ -210,7 +189,7 @@ module.exports = function() {
             }
         },
 
-        // 9: post change (passport) for cb245673-aa41-4302-ac47-00000001003
+        // 8: post change (passport) for cb245673-aa41-4302-ac47-00000001003
         {
             "request": {
                 "url": 'http://hub/api/v1/change/',
@@ -234,7 +213,7 @@ module.exports = function() {
             }
         },
 
-        // 10: post change (sanc) for cb245673-aa41-4302-ac47-00000001003
+        // 9: post change (sanc) for cb245673-aa41-4302-ac47-00000001003
         {
             "request": {
                 "url": 'http://hub/api/v1/change/',
@@ -255,7 +234,7 @@ module.exports = function() {
             }
         },
 
-        // 11: post change (persal) for cb245673-aa41-4302-ac47-00000001003
+        // 10: post change (persal) for cb245673-aa41-4302-ac47-00000001003
         {
             "request": {
                 "url": 'http://hub/api/v1/change/',
@@ -274,6 +253,15 @@ module.exports = function() {
                     "accepted": true
                 }
             }
+        },
+
+        // 11:
+        {
+            'request': {
+                'method': 'GET',
+                'url': 'http://',
+            },
+            'response': {}
         },
 
         // 12:
