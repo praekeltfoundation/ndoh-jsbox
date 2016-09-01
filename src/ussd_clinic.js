@@ -308,6 +308,27 @@ go.app = function() {
             });
         });
 
+        self.add('state_sa_id', function(name, opts) {
+            var error = $("Sorry, the mother's ID number did not validate. " +
+                          "Please reenter the SA ID number:");
+            var question = $("Please enter the pregnant mother\'s SA ID " +
+                            "number:");
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    if (!utils.validate_id_za(content)) {
+                        return error;
+                    }
+                },
+                next: 'state_language'
+                // next: function(content) {
+                //     var mom_dob = self.extract_za_id_dob(content);
+                //     self.im.user.set_answer("mom_dob", mom_dob);
+                //     return 'state_language';
+                // }
+            });
+        });
+
     });
 
     return {

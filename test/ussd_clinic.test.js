@@ -488,5 +488,48 @@ describe("app", function() {
             });
         });
 
+        describe("state_sa_id", function() {
+            describe("invalid sa_id", function() {
+                it("should ask for sa_id again", function() {
+                    return tester
+                    .setup.user.addr("27820001001")
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , "1"  // state_start - yes
+                        , "1"  // state_consent - yes
+                        , "123456"  // state_clinic_code
+                        , "2"  // state_due_date_month - may
+                        , "10"  // state_due_date_day
+                        , "1"  // state_id_type - sa_id
+                        , "1234"  // state_sa_id
+                    )
+                    .check.interaction({
+                        state: "state_sa_id"
+                    })
+                    .run();
+                });
+            });
+            describe("valid sa_id", function() {
+                it("should go to state_language", function() {
+                    return tester
+                    .setup.user.addr("27820001001")
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , "1"  // state_start - yes
+                        , "1"  // state_consent - yes
+                        , "123456"  // state_clinic_code
+                        , "2"  // state_due_date_month - may
+                        , "10"  // state_due_date_day
+                        , "1"  // state_id_type - sa_id
+                        , "5101015009088"  // state_sa_id
+                    )
+                    .check.interaction({
+                        state: "state_language"
+                    })
+                    .run();
+                });
+            });
+        });
+
     });
 });
