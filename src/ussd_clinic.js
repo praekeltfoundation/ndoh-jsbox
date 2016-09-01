@@ -381,6 +381,15 @@ go.app = function() {
             });
         });
 
+        self.add('state_birth_month', function(name) {
+            var jan = utils.get_january(self.im.config);
+            return new ChoiceState(name, {
+                question: $('Please enter the month that the mom was born.'),
+                choices: utils.make_month_choices($, jan, 12, 1, "MM", "MMM"),
+                next: 'state_birth_day'
+            });
+        });
+
     });
 
     return {

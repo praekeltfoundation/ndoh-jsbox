@@ -654,10 +654,47 @@ describe("app", function() {
                         , "1981"  // state_birth_year
                     )
                     .check.interaction({
-                        state: "state_birth_month"
+                        state: "state_birth_month",
+                        reply: [
+                            'Please enter the month that the mom was born.',
+                            '1. Jan',
+                            '2. Feb',
+                            '3. Mar',
+                            '4. Apr',
+                            '5. May',
+                            '6. Jun',
+                            '7. Jul',
+                            '8. Aug',
+                            '9. Sep',
+                            '10. Oct',
+                            '11. Nov',
+                            '12. Dec'
+                        ].join('\n')
                     })
                     .run();
                 });
+            });
+        });
+
+        describe("state_birth_month", function() {
+            it("should go to state_birth_day", function() {
+                return tester
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_start - yes
+                    , "1"  // state_consent - yes
+                    , "123456"  // state_clinic_code
+                    , "2"  // state_due_date_month - may
+                    , "10"  // state_due_date_day
+                    , "3"  // state_id_type - none
+                    , "1981"  // state_birth_year
+                    , "1"  // state_birth_month - january
+                )
+                .check.interaction({
+                    state: "state_birth_day"
+                })
+                .run();
             });
         });
 
