@@ -816,6 +816,7 @@ describe("app", function() {
                 .check.interaction({
                     state: "state_end_success"
                 })
+                .check.reply.ends_session()
                 .run();
             });
         });

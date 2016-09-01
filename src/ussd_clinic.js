@@ -90,6 +90,9 @@ go.app = function() {
             });
         };
 
+        // TODO: timeout handling
+        // TODO: dialback sms sending
+
         self.add("state_start", function(name) {
             self.im.user.set_answers = {};
             var operator_msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
@@ -452,6 +455,22 @@ go.app = function() {
                     new Choice('nr', 'isiNdebele'),
                 ],
                 next: 'state_save_subscription'
+            });
+        });
+
+        self.add('state_save_subscription', function(name) {  // interstitial state
+            // TODO: post registration
+            // TODO: update identity
+            // TODO: send thank you sms
+            return self.states.create('state_end_success');
+        });
+
+        self.add('state_end_success', function(name) {
+            return new EndState(name, {
+                text: $('Thank you. The pregnant woman will now ' +
+                        'receive weekly messages about her pregnancy ' +
+                        'from MomConnect.'),
+                next: 'state_start',
             });
         });
 
