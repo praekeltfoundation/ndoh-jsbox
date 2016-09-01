@@ -449,7 +449,7 @@ describe("app", function() {
                 });
             });
             describe("choosing passport", function() {
-                it("should go to state_passport", function() {
+                it("should go to state_passport_origin", function() {
                     return tester
                     .setup.user.addr("27820001001")
                     .inputs(
@@ -525,6 +525,70 @@ describe("app", function() {
                     )
                     .check.interaction({
                         state: "state_language"
+                    })
+                    .run();
+                });
+            });
+        });
+
+        describe("state_passport_origin", function() {
+            it("should go to state_passport_no", function() {
+                return tester
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_start - yes
+                    , "1"  // state_consent - yes
+                    , "123456"  // state_clinic_code
+                    , "2"  // state_due_date_month - may
+                    , "10"  // state_due_date_day
+                    , "2"  // state_id_type - passport
+                    , "1"  // states_passport_origin - zimbabwe
+                )
+                .check.interaction({
+                    state: "state_passport_no"
+                })
+                .run();
+            });
+        });
+
+        describe("state_birth_year", function() {
+            describe("birth year too recent", function() {
+                it("should ask for birth year again", function() {
+                    return tester
+                    .setup.user.addr("27820001001")
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , "1"  // state_start - yes
+                        , "1"  // state_consent - yes
+                        , "123456"  // state_clinic_code
+                        , "2"  // state_due_date_month - may
+                        , "10"  // state_due_date_day
+                        , "3"  // state_id_type - none
+                        , "2013"  // state_birth_year - 1 year old
+                    )
+                    .check.interaction({
+                        state: "state_birth_year"
+                    })
+                    .run();
+                });
+            });
+            describe("birth year valid", function() {
+                it("should go to state_birth_month", function() {
+                    return tester
+                    .setup.user.addr("27820001001")
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , "1"  // state_start - yes
+                        , "1"  // state_consent - yes
+                        , "123456"  // state_clinic_code
+                        , "2"  // state_due_date_month - may
+                        , "10"  // state_due_date_day
+                        , "3"  // state_id_type - none
+                        , "1981"  // state_birth_year
+                    )
+                    .check.interaction({
+                        state: "state_birth_month"
                     })
                     .run();
                 });
