@@ -289,6 +289,25 @@ go.app = function() {
             });
         });
 
+        self.add('state_id_type', function(name) {
+            return new ChoiceState(name, {
+                question: $('What kind of identification does the pregnant ' +
+                            'mother have?'),
+                choices: [
+                    new Choice('sa_id', $('SA ID')),
+                    new Choice('passport', $('Passport')),
+                    new Choice('none', $('None'))
+                ],
+                next: function(choice) {
+                    return {
+                        sa_id: 'state_sa_id',
+                        passport: 'state_passport_origin',
+                        none: 'state_birth_year'
+                    }[choice.value];
+                }
+            });
+        });
+
     });
 
     return {

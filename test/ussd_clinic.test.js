@@ -428,5 +428,65 @@ describe("app", function() {
             });
         });
 
+        describe("state_id_type", function() {
+            describe("choosing sa_id", function() {
+                it("should go to state_sa_id", function() {
+                    return tester
+                    .setup.user.addr("27820001001")
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , "1"  // state_start - yes
+                        , "1"  // state_consent - yes
+                        , "123456"  // state_clinic_code
+                        , "2"  // state_due_date_month - may
+                        , "10"  // state_due_date_day
+                        , "1"  // state_id_type - sa_id
+                    )
+                    .check.interaction({
+                        state: "state_sa_id"
+                    })
+                    .run();
+                });
+            });
+            describe("choosing passport", function() {
+                it("should go to state_passport", function() {
+                    return tester
+                    .setup.user.addr("27820001001")
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , "1"  // state_start - yes
+                        , "1"  // state_consent - yes
+                        , "123456"  // state_clinic_code
+                        , "2"  // state_due_date_month - may
+                        , "10"  // state_due_date_day
+                        , "2"  // state_id_type - passport
+                    )
+                    .check.interaction({
+                        state: "state_passport_origin"
+                    })
+                    .run();
+                });
+            });
+            describe("choosing none", function() {
+                it("should go to state_birth_year", function() {
+                    return tester
+                    .setup.user.addr("27820001001")
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , "1"  // state_start - yes
+                        , "1"  // state_consent - yes
+                        , "123456"  // state_clinic_code
+                        , "2"  // state_due_date_month - may
+                        , "10"  // state_due_date_day
+                        , "3"  // state_id_type - none
+                    )
+                    .check.interaction({
+                        state: "state_birth_year"
+                    })
+                    .run();
+                });
+            });
+        });
+
     });
 });
