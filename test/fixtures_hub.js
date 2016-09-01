@@ -4,7 +4,7 @@ module.exports = function() {
 
         // 0:
         {
-            "key": "post.hub.pmtct_nonloss_optout.identity.cb245673-aa41-4302-ac47-00000000001",
+            "key": "post.hub.change.pmtct_nonloss_optout.identity.cb245673-aa41-4302-ac47-00000000001",
             "request": {
                 "url": 'http://hub/api/v1/change/',
                 "method": 'POST',
@@ -19,42 +19,9 @@ module.exports = function() {
             "response": {}
         },
 
-        // 1:  Nursereg post - sa_id (self reg)
+        // 1: register cb245673-aa41-4302-ac47-00000001001 (nurseconnect self registration)
         {
-            "request": {
-                "method": "POST",
-                'headers': {
-                    'Authorization': ['Token test_token']
-                },
-                "url": "http://hub/api/v1/nurseregs/",
-                "data": {
-                    "cmsisdn": "+27820001001",
-                    "dmsisdn": "+27820001001",
-                    "faccode": "123456",
-                    "id_type": null,
-                    "dob": null,
-                    "sanc_reg_no": null,
-                    "persal_no": null,
-                    "id_no": null
-                }
-            },
-            "response": {
-                "code": 201,
-                "data": {
-                    "cmsisdn": "+27820001001",
-                    "dmsisdn": "+27820001001",
-                    "faccode": "123456",
-                    "id_type": null,
-                    "dob": null,
-                    "sanc_reg_no": null,
-                    "persal_no": null,
-                    "id_no": null
-                }
-            }
-        },
-
-        // 2: register cb245673-aa41-4302-ac47-00000001001 (nurseconnect self registration)
-        {
+            "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-00000001001",
             "request": {
                 "url": 'http://hub/api/v1/registration/',
                 "method": 'POST',
@@ -65,7 +32,7 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000001001",
                         "msisdn_registrant": "+27820001001",
                         "msisdn_device": "+27820001001",
-                        "faccode":"123456",
+                        "faccode": "123456",
                         "language": "eng_ZA"
                     }
                 }
@@ -78,8 +45,9 @@ module.exports = function() {
             }
         },
 
-        // 3: register cb245673-aa41-4302-ac47-00000001002 (nurseconnect registration by another, 27820001001)
+        // 2: register cb245673-aa41-4302-ac47-00000001002 (nurseconnect registration by another, 27820001001)
         {
+            "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-00000001002",
             "request": {
                 "url": 'http://hub/api/v1/registration/',
                 "method": 'POST',
@@ -101,6 +69,15 @@ module.exports = function() {
                     "accepted": true
                 }
             }
+        },
+
+        // 3:
+        {
+            'request': {
+                'method': 'GET',
+                'url': 'http://',
+            },
+            'response': {}
         },
 
         // 4:

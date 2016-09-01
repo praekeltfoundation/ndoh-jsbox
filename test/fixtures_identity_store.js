@@ -298,6 +298,7 @@ module.exports = function() {
 
         // 157: patch identity cb245673-aa41-4302-ac47-00000001001 (self registration)
         {
+            "key": "patch.is.27820001001",
             "request": {
                 "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/',
                 "method": 'PATCH',
@@ -321,6 +322,7 @@ module.exports = function() {
 
         // 158: patch identity cb245673-aa41-4302-ac47-00000001001 (registration of another, 27820001002)
         {
+            "key": "patch.is.27820001001",
             "request": {
                 "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/',
                 "method": 'PATCH',
@@ -342,6 +344,7 @@ module.exports = function() {
 
         // 158: patch identity cb245673-aa41-4302-ac47-00000001002 (registration of another, registered by 27820001001)
         {
+            "key": "patch.is.27820001002",
             "request": {
                 "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001002/',
                 "method": 'PATCH',
