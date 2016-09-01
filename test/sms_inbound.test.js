@@ -76,10 +76,7 @@ describe("app", function() {
                         three_per_week: 4,
                         four_per_week: 5,
                         five_per_week: 6
-                    },
-                    // snappybouncer: {
-                    //     conversation: 'dummyconversation'
-                    // }
+                    }
                 })
                 .setup(function(api) {
                     api.kv.store['test.smsinbound.unique_users'] = 0;
@@ -154,16 +151,6 @@ describe("app", function() {
             describe("when a new unique user sends message in", function() {
                 it("should increment the no. of unique users metric by 1", function() {
                     return tester
-                        // .setup(function(api) {
-                        //     api.contacts.add({
-                        //         msisdn: '+27820001002',
-                        //         extra : {
-                        //             language_choice: 'en'
-                        //         },
-                        //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                        //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                        //     });
-                        // })
                         .inputs('start')
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
@@ -175,16 +162,6 @@ describe("app", function() {
             describe("when user SMSs baby", function() {
                 it("should fire multiple metrics", function() {
                     return tester
-                        // .setup(function(api) {
-                        //     api.contacts.add({
-                        //         msisdn: '+27820001002',
-                        //         extra : {
-                        //             language_choice: 'en'
-                        //         },
-                        //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                        //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                        //     });
-                        // })
                         .setup.user.addr('27820001002')
                         .inputs('baby')
                         .check(function(api) {
@@ -204,18 +181,6 @@ describe("app", function() {
             describe("when the user sends a STOP message", function() {
                 it("should fire multiple metrics", function() {
                     return tester
-                        // .setup(function(api) {
-                        //     api.contacts.add({
-                        //         msisdn: '+27820001002',
-                        //         extra : {
-                        //             language_choice: 'en',
-                        //             id_type: 'none',
-                        //             is_registered_by: 'chw'
-                        //         },
-                        //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                        //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                        //     });
-                        // })
                         .setup.user.addr('27820001002')
                         .inputs('STOP')
                         .check(function(api) {
@@ -262,17 +227,6 @@ describe("app", function() {
             describe("when the message is received", function() {
                 it("should log a support ticket", function() {
                     return tester
-                        // .setup(function(api) {
-                        //     api.contacts.add({
-                        //         msisdn: '+27820001002',
-                        //         extra : {
-                        //             language_choice: 'en',
-                        //             clinic_code: '123456'
-                        //         },
-                        //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                        //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                        //     });
-                        // })
                         .setup.config.app({
                             // friday during working hours
                             testing_today: 'April 4, 2014 09:07:07 GMT+0200 (SAST)'
@@ -294,16 +248,6 @@ describe("app", function() {
         describe("when the user sends a message containing a USSD code", function() {
             it("should tell them to dial the number, not sms it", function() {
                 return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27820001002',
-                    //         extra : {
-                    //             language_choice: 'en'
-                    //         },
-                    //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                    //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                    //     });
-                    // })
                     .setup.user.addr('27820001002')
                     .inputs('*134*12345# rate')
                     .check.interaction({
@@ -319,17 +263,6 @@ describe("app", function() {
         describe("when the user sends an optout message", function() {
             it("STOP - should set their opt out status", function() {
                 return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27820001002',
-                    //         extra : {
-                    //             language_choice: 'en',
-                    //             id_type: 'none'
-                    //         },
-                    //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                    //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                    //     });
-                    // })
                     .setup.user.addr('27820001002')
                     .inputs('"stop" in the name of love')
                     .check.interaction({
@@ -342,17 +275,6 @@ describe("app", function() {
             });
             it("END - should set their opt out status", function() {
                 return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27820001002',
-                    //         extra : {
-                    //             language_choice: 'en',
-                    //             id_type: 'none'
-                    //         },
-                    //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                    //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                    //     });
-                    // })
                     .setup.user.addr('27820001002')
                     .inputs('END')
                     .check.interaction({
@@ -365,17 +287,6 @@ describe("app", function() {
             });
             it("CANCEL - should set their opt out status", function() {
                 return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27820001002',
-                    //         extra : {
-                    //             language_choice: 'en',
-                    //             id_type: 'none'
-                    //         },
-                    //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                    //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                    //     });
-                    // })
                     .setup.user.addr('27820001002')
                     .inputs('CANCEL')
                     .check.interaction({
@@ -388,17 +299,6 @@ describe("app", function() {
             });
             it("UNSUBSCRIBE - should set their opt out status", function() {
                 return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27820001002',
-                    //         extra : {
-                    //             language_choice: 'en',
-                    //             id_type: 'none'
-                    //         },
-                    //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                    //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                    //     });
-                    // })
                     .setup.user.addr('27820001002')
                     .inputs('UNSUBSCRIBE')
                     .check.interaction({
@@ -411,17 +311,6 @@ describe("app", function() {
             });
             it("QUIT - should set their opt out status", function() {
                 return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27820001002',
-                    //         extra : {
-                    //             language_choice: 'en',
-                    //             id_type: 'none'
-                    //         },
-                    //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                    //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                    //     });
-                    // })
                     .setup.user.addr('27820001002')
                     .inputs('QUIT')
                     .check.interaction({
@@ -434,17 +323,6 @@ describe("app", function() {
             });
             it("BLOCK - should set their opt out status", function() {
                 return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27820001002',
-                    //         extra : {
-                    //             language_choice: 'en',
-                    //             id_type: 'none'
-                    //         },
-                    //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                    //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                    //     });
-                    // })
                     .setup.user.addr('27820001002')
                     .inputs('BLOCK')
                     .check.interaction({
@@ -460,17 +338,6 @@ describe("app", function() {
         describe("when the user sends a START message", function() {
             it("should reverse their opt out status", function() {
                 return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27820001002',
-                    //         extra : {
-                    //             language_choice: 'en',
-                    //             opt_out_reason: 'unknown'
-                    //         },
-                    //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                    //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                    //     });
-                    // })
                     .setup.user.addr('27820001002')
                     .inputs('"START"')
                     .check.interaction({
@@ -486,16 +353,6 @@ describe("app", function() {
         describe("when the user sends a BABY message", function() {
             it("should switch their subscription to baby protocol", function() {
                 return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27820001002',
-                    //         extra : {
-                    //             language_choice: 'en'
-                    //         },
-                    //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                    //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                    //     });
-                    // })
                     .setup.user.addr('27820001002')
                     .inputs('baBy has been born, bub')
                     .check.interaction({
@@ -517,16 +374,6 @@ describe("app", function() {
             });
             it("using 'baby' keyword 'usana'", function() {
                 return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27820001002',
-                    //         extra : {
-                    //             language_choice: 'en'
-                    //         },
-                    //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                    //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                    //     });
-                    // })
                     .setup.user.addr('27820001002')
                     .inputs('usana has been born, bub')
                     .check.interaction({
@@ -539,16 +386,6 @@ describe("app", function() {
             });
             it("using 'baby' keyword 'sana'", function() {
                 return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27820001002',
-                    //         extra : {
-                    //             language_choice: 'en'
-                    //         },
-                    //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                    //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                    //     });
-                    // })
                     .setup.user.addr('27820001002')
                     .inputs('sana has been born, bub')
                     .check.interaction({
@@ -561,16 +398,6 @@ describe("app", function() {
             });
             it("using 'baby' keyword 'baba'", function() {
                 return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27820001002',
-                    //         extra : {
-                    //             language_choice: 'en'
-                    //         },
-                    //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                    //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                    //     });
-                    // })
                     .setup.user.addr('27820001002')
                     .inputs('baba has been born, bub')
                     .check.interaction({
@@ -583,16 +410,6 @@ describe("app", function() {
             });
             it("using 'baby' keyword 'babby'", function() {
                 return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27820001002',
-                    //         extra : {
-                    //             language_choice: 'en'
-                    //         },
-                    //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                    //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                    //     });
-                    // })
                     .setup.user.addr('27820001002')
                     .inputs('babby has been born, bub')
                     .check.interaction({
@@ -605,16 +422,6 @@ describe("app", function() {
             });
             it("using 'baby' keyword 'lesea'", function() {
                 return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27820001002',
-                    //         extra : {
-                    //             language_choice: 'en'
-                    //         },
-                    //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                    //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                    //     });
-                    // })
                     .setup.user.addr('27820001002')
                     .inputs('lesea has been born, bub')
                     .check.interaction({
@@ -627,16 +434,6 @@ describe("app", function() {
             });
             it("using 'baby' keyword 'bby'", function() {
                 return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27820001002',
-                    //         extra : {
-                    //             language_choice: 'en'
-                    //         },
-                    //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                    //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                    //     });
-                    // })
                     .setup.user.addr('27820001002')
                     .inputs('bby has been born, bub')
                     .check.interaction({
@@ -649,16 +446,6 @@ describe("app", function() {
             });
             it("using 'baby' keyword 'babya'", function() {
                 return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27820001002',
-                    //         extra : {
-                    //             language_choice: 'en'
-                    //         },
-                    //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                    //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                    //     });
-                    // })
                     .setup.user.addr('27820001002')
                     .inputs('babya has been born, bub')
                     .check.interaction({
