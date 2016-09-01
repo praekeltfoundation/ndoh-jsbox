@@ -181,12 +181,9 @@ go.app = function() {
         });
 
         self.states.add("states_default_enter", function(name) {
-            // return go.utils
-            //     .support_log_ticket(self.im.msg.content, self.contact, self.im,
-            //                         self.metric_prefix)
-            //     .then(function() {
-                    return self.states.create("states_default");
-                // });
+            // 'casepro not yet integrated'  (log support ticket)
+
+            return self.states.create("states_default");
         });
 
         self.states.add("states_default", function(name) {
