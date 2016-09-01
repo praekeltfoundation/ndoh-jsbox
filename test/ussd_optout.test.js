@@ -73,7 +73,8 @@ describe("app", function() {
                         three_per_week: 4,
                         four_per_week: 5,
                         five_per_week: 6
-                    }
+                    },
+                    logging: 'off'
                 })
                 .setup.char_limit(182)
                 /*.setup(function(api) {
