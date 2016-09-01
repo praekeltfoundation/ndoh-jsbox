@@ -478,7 +478,7 @@ go.app = function() {
                 "language": self.im.user.answers.state_language,
                 "edd": self.im.user.answers.edd,
                 "faccode": self.im.user.answers.state_clinic_code,
-                "consent": self.im.user.answers.state_consent === "yes" ? true : false
+                "consent": self.im.user.answers.state_consent === "yes" ? "true" : null
             };
 
             if (self.im.user.answers.state_id_type === "sa_id") {
@@ -497,7 +497,27 @@ go.app = function() {
                 "data": reg_details
             };
 
+            var registrant_info = self.im.user.answers.registrant;
+            registrant_info.details.lang_code = self.im.user.answers.lang_code;
+            registrant_info.details.consent =
+                self.im.user.answers.state_consent === "yes" ? "true" : null;
+
+            if (self.im.user.answers.state_id_type === "sa_id") {
+                registrant_info.details.sa_id_no = self.im.user.answers.state_sa_id;
+                registrant_info.details.mom_dob = self.im.user.answers.mom_dob;
+            } else if (self.im.user.answers.state_id_type === "passport") {
+                registrant_info.details.passport_no = self.im.user.answers.state_passport_no;
+                registrant_info.details.passport_origin = self.im.user.answers.state_passport_origin;
+            } else {
+                registrant_info.details.mom_dob = self.im.user.answers.mom_dob;
+            }
+
+            if (!("source" in registrant_info.details)) {
+                registrant_info.details.source = "clinic";
+            }
+
             return Q.all([
+                is.update_identity(self.im.user.answers.registrant.id, registrant_info),
                 hub.create_registration(reg_info)
             ])
             .then(function() {

@@ -816,7 +816,7 @@ describe("app", function() {
                         state: "state_end_success"
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [2, 154, 160, 163]);
+                        utils.check_fixtures_used(api, [2,154,160,163,167]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -843,7 +843,7 @@ describe("app", function() {
                         state: "state_end_success"
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [3, 154, 160, 162, 163]);
+                        utils.check_fixtures_used(api, [3,154,160,162,163,168]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -870,7 +870,7 @@ describe("app", function() {
                         state: "state_end_success"
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [4, 154, 160, 163]);
+                        utils.check_fixtures_used(api, [4,154,160,163,169]);
                     })
                     .check.reply.ends_session()
                     .run();
