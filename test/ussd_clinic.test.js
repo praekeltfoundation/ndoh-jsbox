@@ -23,8 +23,6 @@ describe("app", function() {
                 .setup.config.app({
                     name: 'ussd_nurse',
                     env: 'test',
-                    // metric_store: 'test_metric_store',
-                    // testing_today: 'April 4, 2014 07:07:07',
                     testing_today: "2014-04-04",
                     logging: "off",
                     endpoints: {
@@ -407,6 +405,26 @@ describe("app", function() {
                     })
                     .run();
                 });
+            });
+        });
+
+        describe("state_invalid_edd", function() {
+            it("should go to state_due_date_month", function() {
+                return tester
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_start - yes
+                    , "1"  // state_consent - yes
+                    , "123456"  // state_clinic_code
+                    , "8"  // state_due_date_month - nov
+                    , "31"  // state_due_date_day
+                    , "1"  // state_invalid_edd
+                )
+                .check.interaction({
+                    state: "state_due_date_month"
+                })
+                .run();
             });
         });
 

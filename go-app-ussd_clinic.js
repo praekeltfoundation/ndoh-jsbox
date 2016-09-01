@@ -279,6 +279,19 @@ go.app = function() {
             });
         });
 
+        self.add('state_invalid_edd', function(name, opts) {
+            return new ChoiceState(name, {
+                question: $(
+                    'The date you entered ({{ edd }}) is not a ' +
+                    'real date. Please try again.'
+                ).context({edd: opts.edd}),
+                choices: [
+                    new Choice('continue', $('Continue'))
+                ],
+                next: 'state_due_date_month'
+            });
+        });
+
     });
 
     return {
