@@ -9,6 +9,7 @@ go.app = function() {
     var FreeText = vumigo.states.FreeText;
     var EndState = vumigo.states.EndState;
     var ChoiceState = vumigo.states.ChoiceState;
+    var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
     var Choice = vumigo.states.Choice;
     var JsonApi = vumigo.http.api.JsonApi;
 
@@ -432,6 +433,28 @@ go.app = function() {
                     new Choice('continue', $('Continue'))
                 ],
                 next: 'state_birth_year'
+            });
+        });
+
+        self.add('state_language', function(name) {
+            return new PaginatedChoiceState(name, {
+                question: $('Please select the language that the ' +
+                            'pregnant mother would like to get messages in:'),
+                options_per_page: null,
+                choices: [
+                    new Choice('zu', 'isiZulu'),
+                    new Choice('xh', 'isiXhosa'),
+                    new Choice('af', 'Afrikaans'),
+                    new Choice('en', 'English'),
+                    new Choice('nso', 'Sesotho sa Leboa'),
+                    new Choice('tn', 'Setswana'),
+                    new Choice('st', 'Sesotho'),
+                    new Choice('ts', 'Xitsonga'),
+                    new Choice('ss', 'siSwati'),
+                    new Choice('ve', 'Tshivenda'),
+                    new Choice('nr', 'isiNdebele'),
+                ],
+                next: 'state_save_subscription'
             });
         });
 

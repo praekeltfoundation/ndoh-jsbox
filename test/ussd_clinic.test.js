@@ -749,7 +749,7 @@ describe("app", function() {
                 });
             });
             describe("date is valid", function() {
-                it("should ask for id_type", function() {
+                it("should ask for language", function() {
                     return tester
                     .setup.user.addr("27820001001")
                     .inputs(
@@ -791,6 +791,30 @@ describe("app", function() {
                 )
                 .check.interaction({
                     state: "state_birth_year"
+                })
+                .run();
+            });
+        });
+
+        describe("state_language", function() {
+            it("should go to state_end_success", function() {
+                return tester
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_start - yes
+                    , "1"  // state_consent - yes
+                    , "123456"  // state_clinic_code
+                    , "2"  // state_due_date_month - may
+                    , "10"  // state_due_date_day
+                    , "3"  // state_id_type - none
+                    , "1981"  // state_birth_year
+                    , "1"  // state_birth_month - january
+                    , "14"  // state_birth_day
+                    , "4"  // state_language - english
+                )
+                .check.interaction({
+                    state: "state_end_success"
                 })
                 .run();
             });
