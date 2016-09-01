@@ -1123,7 +1123,7 @@ describe("app", function() {
                             state: 'state_end_detail_changed',
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [3, 52, 54, 150, 152]);
+                            utils.check_fixtures_used(api, [2, 52, 54, 150, 152]);
                         })
                         .run();
                 });
@@ -1171,7 +1171,7 @@ describe("app", function() {
                             state: 'state_end_detail_changed'
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [4, 54, 56, 150, 155]);
+                            utils.check_fixtures_used(api, [3, 54, 56, 150, 155]);
                         })
                         .run();
                 });
@@ -1487,7 +1487,7 @@ describe("app", function() {
                             reply: "Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [9, 52, 54, 152]);
+                            utils.check_fixtures_used(api, [8, 52, 54, 152]);
                         })
                         .run();
                 });
@@ -1586,7 +1586,7 @@ describe("app", function() {
                             reply: "Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [10, 52, 54, 152]);
+                            utils.check_fixtures_used(api, [9, 52, 54, 152]);
                         })
                         .run();
                 });
@@ -1672,7 +1672,7 @@ describe("app", function() {
                                 reply: 'Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again.'
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [7, 52, 54, 152]);
+                                utils.check_fixtures_used(api, [6, 52, 54, 152]);
                             })
                             .run();
                     });
@@ -1768,7 +1768,7 @@ describe("app", function() {
                                 reply: 'Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again.'
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [8, 52, 54, 152]);
+                                utils.check_fixtures_used(api, [7, 52, 54, 152]);
                             })
                             .run();
                     });

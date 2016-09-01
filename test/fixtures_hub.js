@@ -19,42 +19,9 @@ module.exports = function() {
             "response": {}
         },
 
-        // 1:  Nursereg post - sa_id (self reg)
+        // 1: post change (number to 27820001002) for cb245673-aa41-4302-ac47-00000001003
         {
-            "request": {
-                "method": "POST",
-                'headers': {
-                    'Authorization': ['Token test_token']
-                },
-                "url": "http://hub/api/v1/nurseregs/",
-                "data": {
-                    "cmsisdn": "+27820001001",
-                    "dmsisdn": "+27820001001",
-                    "faccode": "123456",
-                    "id_type": null,
-                    "dob": null,
-                    "sanc_reg_no": null,
-                    "persal_no": null,
-                    "id_no": null
-                }
-            },
-            "response": {
-                "code": 201,
-                "data": {
-                    "cmsisdn": "+27820001001",
-                    "dmsisdn": "+27820001001",
-                    "faccode": "123456",
-                    "id_type": null,
-                    "dob": null,
-                    "sanc_reg_no": null,
-                    "persal_no": null,
-                    "id_no": null
-                }
-            }
-        },
-
-        // 2: post change (number to 27820001002) for cb245673-aa41-4302-ac47-00000001003
-        {
+            "key": "post.hub.change.nurse_change_msisdn.identity.cb245673-aa41-4302-ac47-00000001003",
             "request": {
                 "url": 'http://hub/api/v1/change/',
                 "method": 'POST',
@@ -76,8 +43,9 @@ module.exports = function() {
             }
         },
 
-        // 3: post change (number to 27820001001) for cb245673-aa41-4302-ac47-00000001003
+        // 2: post change (number to 27820001001) for cb245673-aa41-4302-ac47-00000001003
         {
+            "key": "post.hub.change.nurse_change_msisdn.identity.cb245673-aa41-4302-ac47-00000001003",
             "request": {
                 "url": 'http://hub/api/v1/change/',
                 "method": 'POST',
@@ -99,8 +67,9 @@ module.exports = function() {
             }
         },
 
-        // 4: post change (number to 27820001001) for cb245673-aa41-4302-ac47-00000001005
+        // 3: post change (number to 27820001001) for cb245673-aa41-4302-ac47-00000001005
         {
+            "key": "post.hub.change.nurse_change_msisdn.identity.cb245673-aa41-4302-ac47-00000001005",
             "request": {
                 "url": 'http://hub/api/v1/change/',
                 "method": 'POST',
@@ -122,8 +91,9 @@ module.exports = function() {
             }
         },
 
-        // 5: post change (number to 27820001004) for cb245673-aa41-4302-ac47-00000001003
+        // 4: post change (number to 27820001004) for cb245673-aa41-4302-ac47-00000001003
         {
+            "key": "post.hub.change.nurse_change_msisdn.identity.cb245673-aa41-4302-ac47-00000001003",
             "request": {
                 "url": 'http://hub/api/v1/change/',
                 "method": 'POST',
@@ -145,8 +115,9 @@ module.exports = function() {
             }
         },
 
-        // 6: post change (facility code) for cb245673-aa41-4302-ac47-00000001003
+        // 5: post change (facility code) for cb245673-aa41-4302-ac47-00000001003
         {
+            "key": "post.hub.change.nurse_update_detail.identity.cb245673-aa41-4302-ac47-00000001003",
             "request": {
                 "url": 'http://hub/api/v1/change/',
                 "method": 'POST',
@@ -166,8 +137,9 @@ module.exports = function() {
             }
         },
 
-        // 7: post change (id number) for cb245673-aa41-4302-ac47-00000001003
+        // 6: post change (id number) for cb245673-aa41-4302-ac47-00000001003
         {
+            "key": "post.hub.change.nurse_update_detail.identity.cb245673-aa41-4302-ac47-00000001003",
             "request": {
                 "url": 'http://hub/api/v1/change/',
                 "method": 'POST',
@@ -189,8 +161,9 @@ module.exports = function() {
             }
         },
 
-        // 8: post change (passport) for cb245673-aa41-4302-ac47-00000001003
+        // 7: post change (passport) for cb245673-aa41-4302-ac47-00000001003
         {
+            "key": "post.hub.change.nurse_update_detail.identity.cb245673-aa41-4302-ac47-00000001003",
             "request": {
                 "url": 'http://hub/api/v1/change/',
                 "method": 'POST',
@@ -213,8 +186,9 @@ module.exports = function() {
             }
         },
 
-        // 9: post change (sanc) for cb245673-aa41-4302-ac47-00000001003
+        // 8: post change (sanc) for cb245673-aa41-4302-ac47-00000001003
         {
+            "key": "post.hub.change.nurse_update_detail.identity.cb245673-aa41-4302-ac47-00000001003",
             "request": {
                 "url": 'http://hub/api/v1/change/',
                 "method": 'POST',
@@ -234,8 +208,9 @@ module.exports = function() {
             }
         },
 
-        // 10: post change (persal) for cb245673-aa41-4302-ac47-00000001003
+        // 9: post change (persal) for cb245673-aa41-4302-ac47-00000001003
         {
+            "key": "post.hub.change.nurse_update_detail.identity.cb245673-aa41-4302-ac47-00000001003",
             "request": {
                 "url": 'http://hub/api/v1/change/',
                 "method": 'POST',
@@ -253,6 +228,15 @@ module.exports = function() {
                     "accepted": true
                 }
             }
+        },
+
+        // 10:
+        {
+            'request': {
+                'method': 'GET',
+                'url': 'http://',
+            },
+            'response': {}
         },
 
         // 11:
