@@ -543,12 +543,78 @@ describe("app", function() {
                     , "2"  // state_due_date_month - may
                     , "10"  // state_due_date_day
                     , "2"  // state_id_type - passport
-                    , "1"  // states_passport_origin - zimbabwe
+                    , "1"  // state_passport_origin - zimbabwe
                 )
                 .check.interaction({
                     state: "state_passport_no"
                 })
                 .run();
+            });
+        });
+
+        describe("state_passport_no", function() {
+            describe("number too short", function() {
+                it("should ask for number again", function() {
+                    return tester
+                    .setup.user.addr("27820001001")
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , "1"  // state_start - yes
+                        , "1"  // state_consent - yes
+                        , "123456"  // state_clinic_code
+                        , "2"  // state_due_date_month - may
+                        , "10"  // state_due_date_day
+                        , "2"  // state_id_type - passport
+                        , "1"  // state_passport_origin - zimbabwe
+                        , "1234"  // state_passport_no
+                    )
+                    .check.interaction({
+                        state: "state_passport_no"
+                    })
+                    .run();
+                });
+            });
+            describe("number contains invalid char", function() {
+                it("should ask for number again", function() {
+                    return tester
+                    .setup.user.addr("27820001001")
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , "1"  // state_start - yes
+                        , "1"  // state_consent - yes
+                        , "123456"  // state_clinic_code
+                        , "2"  // state_due_date_month - may
+                        , "10"  // state_due_date_day
+                        , "2"  // state_id_type - passport
+                        , "1"  // state_passport_origin - zimbabwe
+                        , "1234 5678"  // state_passport_no
+                    )
+                    .check.interaction({
+                        state: "state_passport_no"
+                    })
+                    .run();
+                });
+            });
+            describe("number is valid", function() {
+                it("should go to state_language", function() {
+                    return tester
+                    .setup.user.addr("27820001001")
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , "1"  // state_start - yes
+                        , "1"  // state_consent - yes
+                        , "123456"  // state_clinic_code
+                        , "2"  // state_due_date_month - may
+                        , "10"  // state_due_date_day
+                        , "2"  // state_id_type - passport
+                        , "1"  // state_passport_origin - zimbabwe
+                        , "12345"  // state_passport_no
+                    )
+                    .check.interaction({
+                        state: "state_language"
+                    })
+                    .run();
+                });
             });
         });
 

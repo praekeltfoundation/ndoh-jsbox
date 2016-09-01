@@ -347,6 +347,21 @@ go.app = function() {
             });
         });
 
+        self.add('state_passport_no', function(name) {
+            var error = $('There was an error in your entry. Please ' +
+                        'carefully enter the passport number again.');
+            var question = $('Please enter the pregnant mother\'s Passport number:');
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    if (!utils.is_alpha_numeric_only(content) || content.length <= 4) {
+                        return error;
+                    }
+                },
+                next: 'state_language'
+            });
+        });
+
         self.add('state_birth_year', function(name, opts) {
             var error = $('There was an error in your entry. Please ' +
                         'carefully enter the mother\'s year of birth again ' +
