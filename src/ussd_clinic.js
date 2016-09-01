@@ -90,6 +90,59 @@ go.app = function() {
             }
         };
 
+        self.compile_registrant_info = function(im) {
+            var registrant_info = im.user.answers.registrant;
+            registrant_info.details.lang_code = im.user.answers.lang_code;
+            registrant_info.details.consent =
+                im.user.answers.state_consent === "yes" ? "true" : null;
+
+            if (im.user.answers.state_id_type === "sa_id") {
+                registrant_info.details.sa_id_no = im.user.answers.state_sa_id;
+                registrant_info.details.mom_dob = im.user.answers.mom_dob;
+            } else if (im.user.answers.state_id_type === "passport") {
+                registrant_info.details.passport_no = im.user.answers.state_passport_no;
+                registrant_info.details.passport_origin = im.user.answers.state_passport_origin;
+            } else {
+                registrant_info.details.mom_dob = im.user.answers.mom_dob;
+            }
+
+            if (!("source" in registrant_info.details)) {
+                registrant_info.details.source = "clinic";
+            }
+
+            return registrant_info;
+        };
+
+        self.compile_registration_info = function(im) {
+            var reg_details = {
+                "operator_id": self.im.user.answers.operator.id,
+                "msisdn_registrant": self.im.user.answers.registrant_msisdn,
+                "msisdn_device": self.im.user.answers.operator_msisdn,
+                "id_type": self.im.user.answers.state_id_type,
+                "language": self.im.user.answers.state_language,
+                "edd": self.im.user.answers.edd,
+                "faccode": self.im.user.answers.state_clinic_code,
+                "consent": self.im.user.answers.state_consent === "yes" ? "true" : null
+            };
+
+            if (self.im.user.answers.state_id_type === "sa_id") {
+                reg_details.sa_id_no = self.im.user.answers.state_sa_id;
+                reg_details.mom_dob = self.im.user.answers.mom_dob;
+            } else if (self.im.user.answers.state_id_type === "passport") {
+                reg_details.passport_no = self.im.user.answers.state_passport_no;
+                reg_details.passport_origin = self.im.user.answers.state_passport_origin;
+            } else {
+                reg_details.mom_dob = self.im.user.answers.mom_dob;
+            }
+
+            var registration_info = {
+                "reg_type": "momconnect_prebirth",
+                "registrant_id": self.im.user.answers.registrant.id,
+                "data": reg_details
+            };
+            return registration_info;
+        };
+
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
                 return creator(name, opts);
@@ -466,63 +519,17 @@ go.app = function() {
         });
 
         self.add('state_save_subscription', function(name) {  // interstitial state
-            // Post Registration
-            var reg_details = {
-                "operator_id": self.im.user.answers.operator.id,
-                "msisdn_registrant": self.im.user.answers.registrant_msisdn,
-                "msisdn_device": self.im.user.answers.operator_msisdn,
-                "id_type": self.im.user.answers.state_id_type,
-                "language": self.im.user.answers.state_language,
-                "edd": self.im.user.answers.edd,
-                "faccode": self.im.user.answers.state_clinic_code,
-                "consent": self.im.user.answers.state_consent === "yes" ? "true" : null
-            };
-
-            if (self.im.user.answers.state_id_type === "sa_id") {
-                reg_details.sa_id_no = self.im.user.answers.state_sa_id;
-                reg_details.mom_dob = self.im.user.answers.mom_dob;
-            } else if (self.im.user.answers.state_id_type === "passport") {
-                reg_details.passport_no = self.im.user.answers.state_passport_no;
-                reg_details.passport_origin = self.im.user.answers.state_passport_origin;
-            } else {
-                reg_details.mom_dob = self.im.user.answers.mom_dob;
-            }
-
-            var reg_info = {
-                "reg_type": "momconnect_prebirth",
-                "registrant_id": self.im.user.answers.registrant.id,
-                "data": reg_details
-            };
-
-            var registrant_info = self.im.user.answers.registrant;
-            registrant_info.details.lang_code = self.im.user.answers.lang_code;
-            registrant_info.details.consent =
-                self.im.user.answers.state_consent === "yes" ? "true" : null;
-
-            if (self.im.user.answers.state_id_type === "sa_id") {
-                registrant_info.details.sa_id_no = self.im.user.answers.state_sa_id;
-                registrant_info.details.mom_dob = self.im.user.answers.mom_dob;
-            } else if (self.im.user.answers.state_id_type === "passport") {
-                registrant_info.details.passport_no = self.im.user.answers.state_passport_no;
-                registrant_info.details.passport_origin = self.im.user.answers.state_passport_origin;
-            } else {
-                registrant_info.details.mom_dob = self.im.user.answers.mom_dob;
-            }
-
-            if (!("source" in registrant_info.details)) {
-                registrant_info.details.source = "clinic";
-            }
+            var registration_info = self.compile_registration_info(self.im);
+            var registrant_info = self.compile_registrant_info(self.im);
 
             return Q.all([
                 is.update_identity(self.im.user.answers.registrant.id, registrant_info),
-                hub.create_registration(reg_info)
+                hub.create_registration(registration_info)
+                // TODO: send thank you sms
             ])
             .then(function() {
                 return self.states.create('state_end_success');
             });
-
-            // TODO: update identity
-            // TODO: send thank you sms
         });
 
         self.add('state_end_success', function(name) {
