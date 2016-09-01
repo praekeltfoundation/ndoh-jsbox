@@ -53,31 +53,134 @@ module.exports = function() {
             }
         },
 
-        // 2:
+        // 2: register cb245673-aa41-4302-ac47-00000001001 (momconnect clinic self sa_id)
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "url": 'http://hub/api/v1/registration/',
+                "method": 'POST',
+                "data": {
+                    "reg_type": "momconnect_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001001",
+                        "msisdn_registrant": "+27820001001",
+                        "msisdn_device": "+27820001001",
+                        "id_type": "sa_id",
+                        "language": "eng_ZA",
+                        "edd": "2014-05-10",
+                        "faccode": "123456",
+                        "consent": true,
+                        "sa_id_no": "5101025009086",
+                        "mom_dob": "2051-01-02"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    "reg_type": "momconnect_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001001",
+                        "msisdn_registrant": "+27820001001",
+                        "msisdn_device": "+27820001001",
+                        "id_type": "sa_id",
+                        "language": "eng_ZA",
+                        "edd": "2014-05-10",
+                        "faccode": "123456",
+                        "consent": true,
+                        "sa_id_no": "5101015009088",
+                        "mom_dob": "1951-01-01"
+                    }
+                }
+            }
         },
 
-        // 3:
+        // 3: register cb245673-aa41-4302-ac47-00000001001 (momconnect clinic other passport)
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "url": 'http://hub/api/v1/registration/',
+                "method": 'POST',
+                "data": {
+                    "reg_type": "momconnect_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001003",
+                        "msisdn_registrant": "+27820001001",
+                        "msisdn_device": "+27820001003",
+                        "id_type": "passport",
+                        "language": "eng_ZA",
+                        "edd": "2014-05-10",
+                        "faccode": "123456",
+                        "consent": true,
+                        "passport_no": "12345",
+                        "passport_origin": "zw"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    "reg_type": "momconnect_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001003",
+                        "msisdn_registrant": "+27820001001",
+                        "msisdn_device": "+27820001003",
+                        "id_type": "passport",
+                        "language": "eng_ZA",
+                        "edd": "2014-05-10",
+                        "faccode": "123456",
+                        "consent": true,
+                        "passport_no": "12345",
+                        "passport_origin": "zw"
+                    }
+                }
+            }
         },
 
-        // 4:
+        // 4: register cb245673-aa41-4302-ac47-00000001001 (momconnect clinic self none)
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "url": 'http://hub/api/v1/registration/',
+                "method": 'POST',
+                "data": {
+                    "reg_type": "momconnect_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001001",
+                        "msisdn_registrant": "+27820001001",
+                        "msisdn_device": "+27820001001",
+                        "id_type": "none",
+                        "language": "eng_ZA",
+                        "edd": "2014-05-10",
+                        "faccode": "123456",
+                        "consent": true,
+                        "mom_dob": "1981-01-14"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    "reg_type": "momconnect_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001001",
+                        "msisdn_registrant": "+27820001001",
+                        "msisdn_device": "+27820001001",
+                        "id_type": "none",
+                        "language": "eng_ZA",
+                        "edd": "2014-05-10",
+                        "faccode": "123456",
+                        "consent": true,
+                        "mom_dob": "1981-01-14"
+                    }
+                }
+            }
         },
 
         // 5:

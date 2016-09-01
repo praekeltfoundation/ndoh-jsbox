@@ -797,28 +797,86 @@ describe("app", function() {
         });
 
         describe("state_language", function() {
-            it("should go to state_end_success", function() {
-                return tester
-                .setup.user.addr("27820001001")
-                .inputs(
-                    {session_event: 'new'}  // dial in
-                    , "1"  // state_start - yes
-                    , "1"  // state_consent - yes
-                    , "123456"  // state_clinic_code
-                    , "2"  // state_due_date_month - may
-                    , "10"  // state_due_date_day
-                    , "3"  // state_id_type - none
-                    , "1981"  // state_birth_year
-                    , "1"  // state_birth_month - january
-                    , "14"  // state_birth_day
-                    , "4"  // state_language - english
-                )
-                .check.interaction({
-                    state: "state_end_success"
-                })
-                .check.reply.ends_session()
-                .run();
+            describe("self sa_id registration", function() {
+                it("should go to state_end_success", function() {
+                    return tester
+                    .setup.user.addr("27820001001")
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , "1"  // state_start - yes
+                        , "1"  // state_consent - yes
+                        , "123456"  // state_clinic_code
+                        , "2"  // state_due_date_month - may
+                        , "10"  // state_due_date_day
+                        , "1"  // state_id_type - sa_id
+                        , "5101025009086"  // state_sa_id
+                        , "4"  // state_language - english
+                    )
+                    .check.interaction({
+                        state: "state_end_success"
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [2, 154, 160, 163]);
+                    })
+                    .check.reply.ends_session()
+                    .run();
+                });
             });
+            describe("other passport registration", function() {
+                it("should go to state_end_success", function() {
+                    return tester
+                    .setup.user.addr("27820001003")
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , "2"  // state_start - no
+                        , "0820001001"  // state_mobile_no
+                        , "1"  // state_consent - yes
+                        , "123456"  // state_clinic_code
+                        , "2"  // state_due_date_month - may
+                        , "10"  // state_due_date_day
+                        , "2"  // state_id_type - passport
+                        , "1"  // state_passport_origin - zimbabwe
+                        , "12345"  // state_passport_no
+                        , "4"  // state_language - english
+                    )
+                    .check.interaction({
+                        state: "state_end_success"
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [3, 154, 160, 162, 163]);
+                    })
+                    .check.reply.ends_session()
+                    .run();
+                });
+            });
+            describe("self none registration", function() {
+                it("should go to state_end_success", function() {
+                    return tester
+                    .setup.user.addr("27820001001")
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , "1"  // state_start - yes
+                        , "1"  // state_consent - yes
+                        , "123456"  // state_clinic_code
+                        , "2"  // state_due_date_month - may
+                        , "10"  // state_due_date_day
+                        , "3"  // state_id_type - none
+                        , "1981"  // state_birth_year
+                        , "1"  // state_birth_month - january
+                        , "14"  // state_birth_day
+                        , "4"  // state_language - english
+                    )
+                    .check.interaction({
+                        state: "state_end_success"
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [4, 154, 160, 163]);
+                    })
+                    .check.reply.ends_session()
+                    .run();
+                });
+            });
+
         });
 
     });

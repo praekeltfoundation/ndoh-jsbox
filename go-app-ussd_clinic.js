@@ -4,7 +4,7 @@ go;
 go.app = function() {
     var vumigo = require("vumigo_v02");
     var SeedJsboxUtils = require('seed-jsbox-utils');
-    // var moment = require('moment');
+    var Q = require('q');
     var App = vumigo.App;
     var FreeText = vumigo.states.FreeText;
     var EndState = vumigo.states.EndState;
@@ -20,6 +20,7 @@ go.app = function() {
 
         // variables for services
         var is;
+        var hub;
 
         self.init = function() {
             // initialise services
@@ -27,6 +28,11 @@ go.app = function() {
                 new JsonApi(self.im, {}),
                 self.im.config.services.identity_store.token,
                 self.im.config.services.identity_store.url
+            );
+            hub = new SeedJsboxUtils.Hub(
+                new JsonApi(self.im, {}),
+                self.im.config.services.hub.token,
+                self.im.config.services.hub.url
             );
         };
 
@@ -272,6 +278,7 @@ go.app = function() {
                     var edd = (self.im.user.answers.state_due_date_month + "-" +
                                utils.double_digit_number(content));
                     if (utils.is_valid_date(edd, 'YYYY-MM-DD')) {
+                        self.im.user.set_answer("edd", edd);
                         return 'state_id_type';
                     } else {
                         return {
@@ -445,27 +452,60 @@ go.app = function() {
                             'pregnant mother would like to get messages in:'),
                 options_per_page: null,
                 choices: [
-                    new Choice('zu', 'isiZulu'),
-                    new Choice('xh', 'isiXhosa'),
-                    new Choice('af', 'Afrikaans'),
-                    new Choice('en', 'English'),
-                    new Choice('nso', 'Sesotho sa Leboa'),
-                    new Choice('tn', 'Setswana'),
-                    new Choice('st', 'Sesotho'),
-                    new Choice('ts', 'Xitsonga'),
-                    new Choice('ss', 'siSwati'),
-                    new Choice('ve', 'Tshivenda'),
-                    new Choice('nr', 'isiNdebele'),
+                    new Choice('zul_ZA', 'isiZulu'),
+                    new Choice('xho_ZA', 'isiXhosa'),
+                    new Choice('afr_ZA', 'Afrikaans'),
+                    new Choice('eng_ZA', 'English'),
+                    new Choice('nso_ZA', 'Sesotho sa Leboa'),
+                    new Choice('tsn_ZA', 'Setswana'),
+                    new Choice('sot_ZA', 'Sesotho'),
+                    new Choice('tso_ZA', 'Xitsonga'),
+                    new Choice('ssw_ZA', 'siSwati'),
+                    new Choice('ven_ZA', 'Tshivenda'),
+                    new Choice('nbl_ZA', 'isiNdebele'),
                 ],
                 next: 'state_save_subscription'
             });
         });
 
         self.add('state_save_subscription', function(name) {  // interstitial state
-            // TODO: post registration
+            // Post Registration
+            var reg_details = {
+                "operator_id": self.im.user.answers.operator.id,
+                "msisdn_registrant": self.im.user.answers.registrant_msisdn,
+                "msisdn_device": self.im.user.answers.operator_msisdn,
+                "id_type": self.im.user.answers.state_id_type,
+                "language": self.im.user.answers.state_language,
+                "edd": self.im.user.answers.edd,
+                "faccode": self.im.user.answers.state_clinic_code,
+                "consent": self.im.user.answers.state_consent === "yes" ? true : false
+            };
+
+            if (self.im.user.answers.state_id_type === "sa_id") {
+                reg_details.sa_id_no = self.im.user.answers.state_sa_id;
+                reg_details.mom_dob = self.im.user.answers.mom_dob;
+            } else if (self.im.user.answers.state_id_type === "passport") {
+                reg_details.passport_no = self.im.user.answers.state_passport_no;
+                reg_details.passport_origin = self.im.user.answers.state_passport_origin;
+            } else {
+                reg_details.mom_dob = self.im.user.answers.mom_dob;
+            }
+
+            var reg_info = {
+                "reg_type": "momconnect_prebirth",
+                "registrant_id": self.im.user.answers.registrant.id,
+                "data": reg_details
+            };
+
+            return Q.all([
+                hub.create_registration(reg_info)
+            ])
+            .then(function() {
+                return self.states.create('state_end_success');
+            });
+
             // TODO: update identity
             // TODO: send thank you sms
-            return self.states.create('state_end_success');
         });
 
         self.add('state_end_success', function(name) {
