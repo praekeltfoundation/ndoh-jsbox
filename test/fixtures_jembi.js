@@ -1,7 +1,7 @@
 
 module.exports = function() {
     return [
-        // Jembi NurseConnect Clinic Code validation - code 123456
+        // 150: Jembi NurseConnect Clinic Code validation - code 123456
         {
             "request": {
                 "method": "GET",
@@ -54,7 +54,7 @@ module.exports = function() {
             }
         },
 
-        // Jembi NurseConnect Clinic Code validation - code 234567
+        // 151: Jembi NurseConnect Clinic Code validation - code 234567
         {
             "request": {
                 "method": "GET",
@@ -107,7 +107,7 @@ module.exports = function() {
             }
         },
 
-        // Jembi NurseConnect Clinic Code validation - code 888888 (non-valid clinic code)
+        // 152: Jembi NurseConnect Clinic Code validation - code 888888 (non-valid clinic code)
         {
             "request": {
                 "method": "GET",
@@ -137,6 +137,70 @@ module.exports = function() {
                 }
             }
         },
+
+        // 153:
+        {
+            'request': {
+                'method': 'GET',
+                'url': 'http://',
+            },
+            'response': {}
+        },
+
+        // 154:
+        {
+            'request': {
+                'method': 'GET',
+                'url': 'http://',
+            },
+            'response': {}
+        },
+
+        // 155:
+        {
+            'request': {
+                'method': 'GET',
+                'url': 'http://',
+            },
+            'response': {}
+        },
+
+        // 156:
+        {
+            'request': {
+                'method': 'GET',
+                'url': 'http://',
+            },
+            'response': {}
+        },
+
+        // 157:
+        {
+            'request': {
+                'method': 'GET',
+                'url': 'http://',
+            },
+            'response': {}
+        },
+
+        // 158:
+        {
+            'request': {
+                'method': 'GET',
+                'url': 'http://',
+            },
+            'response': {}
+        },
+
+        // 159:
+        {
+            'request': {
+                'method': 'GET',
+                'url': 'http://',
+            },
+            'response': {}
+        },
+
 
     ];
 };

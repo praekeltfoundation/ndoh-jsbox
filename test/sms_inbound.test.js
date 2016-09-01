@@ -5,9 +5,9 @@ var _ = require('lodash');
 
 var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
-// var fixtures_MessageSender = require('./fixtures_message_sender');
+var fixtures_MessageSender = require('./fixtures_message_sender');
 var fixtures_Hub = require('./fixtures_hub');
-// var fixtures_Jembi = require('./fixtures_jembi');
+var fixtures_Jembi = require('./fixtures_jembi');
 
 var utils = require('seed-jsbox-utils').utils;
 
@@ -92,9 +92,10 @@ describe("app", function() {
                     // add fixtures for services used
                     fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
-                    // fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
-                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 150 ->
-                    // fixtures_Jembi().forEach(api.http.fixtures.add);
+                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
+                    fixtures_Jembi().forEach(api.http.fixtures.add); // 150 - 159
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 160 ->
+
                 });
         });
 
@@ -241,6 +242,9 @@ describe("app", function() {
                                 'Thank you for your message, it has been captured and you will ' +
                                 'receive a response soon. Kind regards. MomConnect.'
                         })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [51, 53, 161]);
+                        })
                         .run();
                 });
             });
@@ -258,6 +262,9 @@ describe("app", function() {
                             "Please use your handset's keypad to dial the number that you " +
                             "received, rather than sending it to us in an sms."
                     })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [51, 53, 161]);
+                    })
                     .run();
             });
         });
@@ -273,6 +280,9 @@ describe("app", function() {
                             'Thank you. You will no longer receive messages from us. ' +
                             'If you have any medical concerns please visit your nearest clinic'
                     })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [51, 53, 161, 167]);
+                    })
                     .run();
             });
             it("END - should set their opt out status", function() {
@@ -284,6 +294,9 @@ describe("app", function() {
                         reply:
                             'Thank you. You will no longer receive messages from us. ' +
                             'If you have any medical concerns please visit your nearest clinic'
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [51, 53, 161, 167]);
                     })
                     .run();
             });
@@ -297,6 +310,9 @@ describe("app", function() {
                             'Thank you. You will no longer receive messages from us. ' +
                             'If you have any medical concerns please visit your nearest clinic'
                     })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [51, 53, 161, 167]);
+                    })
                     .run();
             });
             it("UNSUBSCRIBE - should set their opt out status", function() {
@@ -308,6 +324,9 @@ describe("app", function() {
                         reply:
                             'Thank you. You will no longer receive messages from us. ' +
                             'If you have any medical concerns please visit your nearest clinic'
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [51, 53, 161, 167]);
                     })
                     .run();
             });
@@ -321,6 +340,9 @@ describe("app", function() {
                             'Thank you. You will no longer receive messages from us. ' +
                             'If you have any medical concerns please visit your nearest clinic'
                     })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [51, 53, 161, 167]);
+                    })
                     .run();
             });
             it("BLOCK - should set their opt out status", function() {
@@ -332,6 +354,9 @@ describe("app", function() {
                         reply:
                             'Thank you. You will no longer receive messages from us. ' +
                             'If you have any medical concerns please visit your nearest clinic'
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [51, 53, 161, 167]);
                     })
                     .run();
             });
@@ -348,6 +373,9 @@ describe("app", function() {
                             'Thank you. You will now receive messages from us again. ' +
                             'If you have any medical concerns please visit your nearest clinic'
                     })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [51, 53, 161, 168]);
+                    })
                     .run();
             });
         });
@@ -363,15 +391,9 @@ describe("app", function() {
                             'Thank you. You will now receive messages related to newborn babies. ' +
                             'If you have any medical concerns please visit your nearest clinic'
                     })
-                    // .check(function(api) {
-                    //     var contact = _.find(api.contacts.store, {
-                    //       msisdn: '+27820001002'
-                    //     });
-                    //     assert.equal(contact.extra.subscription_type, '4');
-                    //     assert.equal(contact.extra.subscription_rate, '3');
-                    //     // check baby switch is not counted as an optout
-                    //     assert.equal(contact.extra.opt_out_reason, undefined);
-                    // })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [1, 51, 53, 161]);
+                    })
                     .run();
             });
             it("using 'baby' keyword 'usana'", function() {
@@ -383,6 +405,9 @@ describe("app", function() {
                         reply:
                             'Thank you. You will now receive messages related to newborn babies. ' +
                             'If you have any medical concerns please visit your nearest clinic'
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [1, 51, 53, 161]);
                     })
                     .run();
             });
@@ -396,6 +421,9 @@ describe("app", function() {
                             'Thank you. You will now receive messages related to newborn babies. ' +
                             'If you have any medical concerns please visit your nearest clinic'
                     })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [1, 51, 53, 161]);
+                    })
                     .run();
             });
             it("using 'baby' keyword 'baba'", function() {
@@ -407,6 +435,9 @@ describe("app", function() {
                         reply:
                             'Thank you. You will now receive messages related to newborn babies. ' +
                             'If you have any medical concerns please visit your nearest clinic'
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [1, 51, 53, 161]);
                     })
                     .run();
             });
@@ -420,6 +451,9 @@ describe("app", function() {
                             'Thank you. You will now receive messages related to newborn babies. ' +
                             'If you have any medical concerns please visit your nearest clinic'
                     })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [1, 51, 53, 161]);
+                    })
                     .run();
             });
             it("using 'baby' keyword 'lesea'", function() {
@@ -431,6 +465,9 @@ describe("app", function() {
                         reply:
                             'Thank you. You will now receive messages related to newborn babies. ' +
                             'If you have any medical concerns please visit your nearest clinic'
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [1, 51, 53, 161]);
                     })
                     .run();
             });
@@ -444,6 +481,9 @@ describe("app", function() {
                             'Thank you. You will now receive messages related to newborn babies. ' +
                             'If you have any medical concerns please visit your nearest clinic'
                     })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [1, 51, 53, 161]);
+                    })
                     .run();
             });
             it("using 'baby' keyword 'babya'", function() {
@@ -455,6 +495,9 @@ describe("app", function() {
                         reply:
                             'Thank you. You will now receive messages related to newborn babies. ' +
                             'If you have any medical concerns please visit your nearest clinic'
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [1, 51, 53, 161]);
                     })
                     .run();
             });
