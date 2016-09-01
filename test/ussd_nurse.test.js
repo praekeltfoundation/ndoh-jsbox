@@ -65,8 +65,9 @@ describe("app", function() {
                     fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
                     fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
-                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 150 ->
-                    fixtures_Jembi().forEach(api.http.fixtures.add);
+                    fixtures_Jembi().forEach(api.http.fixtures.add); // 150 - 159
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 160 ->
+
                 });
         });
 
@@ -132,7 +133,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [150]);
+                            utils.check_fixtures_used(api, [160]);
                         })
                         .run();
                 });
@@ -168,7 +169,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 53, 151]);
+                            utils.check_fixtures_used(api, [51, 53, 161]);
                         })
                         .run();
                 });
@@ -195,7 +196,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [52, 54, 152]);
+                            utils.check_fixtures_used(api, [52, 54, 162]);
                         })
                         .run();
                 });
@@ -493,7 +494,7 @@ describe("app", function() {
                         , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [1, 100, 150, 153, 157, 160]);
+                        utils.check_fixtures_used(api, [1, 100, 150, 160, 163, 168]);
                     })
                     .run();
             });
@@ -580,7 +581,7 @@ describe("app", function() {
                         , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [2, 101, 150, 151, 153, 158, 159, 160]);
+                        utils.check_fixtures_used(api, [2, 101, 150, 160, 161, 163, 169]);
                     })
                     .run();
             });

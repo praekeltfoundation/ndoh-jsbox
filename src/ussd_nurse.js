@@ -395,24 +395,9 @@ go.app = function() {
             if (self.im.user.answers.operator.id !== self.im.user.answers.registrant.id) {
                 self.im.user.answers.registrant.details.nurseconnect.registered_by = self.im.user.answers.operator_msisdn;
 
-                if (self.im.user.answers.operator.details.nurseconnect === undefined) {
-                    self.im.user.answers.operator.details.nurseconnect = {};
-                }
-
-                if (self.im.user.answers.operator.details.nurseconnect.registrees === undefined) {
-                    self.im.user.answers.operator.details.nurseconnect.registrees = [];
-                    self.im.user.answers.operator.details.nurseconnect.registrees.push(self.im.user.answers.registrant_msisdn);
-                } else {
-                    self.im.user.answers.operator.details.nurseconnect.registrees.push(self.im.user.answers.registrant_msisdn);
-                }
-
                 return Q
                 .all ([
-                    // identity PATCHes
-                    is.update_identity(
-                        self.im.user.answers.operator.id,
-                        self.im.user.answers.operator
-                    ),
+                    // identity PATCH
                     is.update_identity(
                         self.im.user.answers.registrant.id,
                         self.im.user.answers.registrant
