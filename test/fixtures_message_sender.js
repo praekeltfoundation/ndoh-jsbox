@@ -498,13 +498,23 @@ module.exports = function() {
             }
         },
 
-        // 116:
+        // 116: create outbound message for cb245673-aa41-4302-ac47-00000001001
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820001001",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001001",
+                    "to_addr": "+27820001001",
+                    "content": "Welcome. To stop getting SMSs dial *120*550*1# or for more services dial *120*550# (No Cost). Standard rates apply when replying to any SMS from MomConnect.",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {}
+            }
         },
 
         // 117:

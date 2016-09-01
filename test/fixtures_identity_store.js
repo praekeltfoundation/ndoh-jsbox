@@ -10,7 +10,7 @@
 module.exports = function() {
     return [
 
-        // 150: get identity by msisdn +27820001001
+        // 160: get identity by msisdn +27820001001
         {
             "key": "get.is.msisdn.27820001001",
             "repeatable": true,
@@ -33,7 +33,7 @@ module.exports = function() {
             }
         },
 
-        // 151: get identity by msisdn +27820001002
+        // 161: get identity by msisdn +27820001002
         {
             "key": "get.is.msisdn.27820001002",
             "request": {
@@ -71,7 +71,7 @@ module.exports = function() {
             }
         },
 
-        // 152: get identity by msisdn +27820001003
+        // 162: get identity by msisdn +27820001003
         {
             "key": "get.is.msisdn.27820001003",
             "repeatable": true,
@@ -146,7 +146,7 @@ module.exports = function() {
             }
         },
 
-        // 153: create identity with msisdn +27820001001
+        // 163: create identity with msisdn +27820001001
         {
             "key": "post.is.msisdn.27820001001",
             "repeatable": true,
@@ -184,7 +184,7 @@ module.exports = function() {
             }
         },
 
-        // 154: get identity by msisdn +27820001004
+        // 164: get identity by msisdn +27820001004
         {
             "key": "get.is.msisdn.27820001004",
             "repeatable": true,
@@ -233,7 +233,7 @@ module.exports = function() {
             }
         },
 
-        // 155: get identity by msisdn +27820001005
+        // 165: get identity by msisdn +27820001005
         {
             "key": "get.is.msisdn.27820001005",
             "request": {
@@ -282,7 +282,7 @@ module.exports = function() {
             }
         },
 
-        // 156: optin in identity cb245673-aa41-4302-ac47-00000001004
+        // 166: optin in identity cb245673-aa41-4302-ac47-00000001004
         {
             "key": "post.is.optin.27820001004",
             "request": {
@@ -297,6 +297,92 @@ module.exports = function() {
             "response": {
                 "accepted": true
             }
+        },
+
+        // 167: update identity cb245673-aa41-4302-ac47-00000001001
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/",
+                    "id": "cb245673-aa41-4302-ac47-00000001001",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001001": {"default": true}
+                            }
+                        },
+                        "consent": "true",
+                        "sa_id_no": "5101025009086",
+                        "mom_dob": "2051-01-02",
+                        "source": "clinic",
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z",
+                }
+            },
+            "response": {}
+        },
+
+        // 168: update identity cb245673-aa41-4302-ac47-00000001001
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/",
+                    "id": "cb245673-aa41-4302-ac47-00000001001",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001001": {"default": true}
+                            }
+                        },
+                        "consent": "true",
+                        "passport_no": "12345",
+                        "passport_origin": "zw",
+                        "source": "clinic"
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z"
+                }
+            },
+            "response": {}
+        },
+
+        // 169: update identity cb245673-aa41-4302-ac47-00000001001
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/",
+                    "id": "cb245673-aa41-4302-ac47-00000001001",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001001": {"default": true}
+                            }
+                        },
+                        "consent": "true",
+                        "mom_dob": "1981-01-14",
+                        "source": "clinic"
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z"
+                }
+            },
+            "response": {}
         },
 
     ];
