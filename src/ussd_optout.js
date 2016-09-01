@@ -5,49 +5,95 @@ go.app = function() {
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
     var EndState = vumigo.states.EndState;
+    var JsonApi = vumigo.http.api.JsonApi;
+
+    var SeedJsboxUtils = require('seed-jsbox-utils');
+    var IdentityStore = SeedJsboxUtils.IdentityStore;
+    var StageBasedMessaging = SeedJsboxUtils.StageBasedMessaging;
+    // var Hub = SeedJsboxUtils.Hub;
+    // var MessageSender = SeedJsboxUtils.MessageSender;
+
+    var utils = SeedJsboxUtils.utils;
 
     var GoNDOH = App.extend(function(self) {
         App.call(self, "states_start");
         var $ = self.$;
 
+        // variables for services
+        var is;
+        var sbm;
 
         self.init = function() {
+            // initialising services
+            is = new IdentityStore(
+                new JsonApi(self.im, {}),
+                self.im.config.services.identity_store.token,
+                self.im.config.services.identity_store.url
+            );
 
+            sbm = new StageBasedMessaging(
+                new JsonApi(self.im, {}),
+                self.im.config.services.stage_based_messaging.token,
+                self.im.config.services.stage_based_messaging.url
+            );
+        };
+
+        self.has_active_momconnect_subscription = function(id) {
+            return sbm
+            .list_active_subscriptions(id)
+            .then(function(active_subs_response) {
+                var active_subs = active_subs_response.results;
+                for (var i=0; i < active_subs.length; i++) {
+                    // get the subscription messageset
+                    return sbm
+                    .get_messageset(active_subs[i].messageset)
+                    .then(function(messageset) {
+                        if (messageset.short_name.indexOf("momconnect") > -1) {
+                            return true;
+                        }
+                    });
+                }
+                return false;
+            });
         };
 
         self.states.add("states_start", function(name) {
-            /*return go.utils.set_language(self.im.user, self.contact)
-                .then(function() {
-                    return go.utils.opted_out(self.im, self.contact)
-                        .then(function(opted_out) {
-                            if (opted_out === false) {
-                                question = $("Please let us know why you do not want MomConnect messages");
-                            } else {
-                                question = $("Please tell us why you previously opted out of messages");
-                            }*/
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
+            self.im.user.set_answer("operator_msisdn", msisdn);
 
-                            return new ChoiceState(name, {
-                                question:  $("Please let us know why you do not want MomConnect messages"),
+            return is
+            .get_or_create_identity({"msisdn": msisdn})
+            .then(function(identity) {
+                self.im.user.set_answer("operator", identity);
 
-                                choices: [
-                                    new Choice("miscarriage", $("Miscarriage")),
-                                    new Choice("stillbirth", $("Baby was stillborn")),
-                                    new Choice("babyloss", $("Baby died")),
-                                    new Choice("not_useful", $("Messages not useful")),
-                                    new Choice("other", $("Other"))
-                                ],
+                return self
+                .has_active_momconnect_subscription(self.im.user.answers.operator.id)
+                .then(function(has_active_nurseconnect_subscription) {
+                    if (has_active_nurseconnect_subscription) {
 
-                                next: function(choice) {
-                                    if (_.contains(["not_useful", "other"], choice.value)){
-                                        return "states_end_no_enter";
-                                    } else {
-                                        return "states_subscribe_option";
-                                    }
+                        return new ChoiceState(name, {
+                            question:  $("Please let us know why you do not want MomConnect messages"),
+
+                            choices: [
+                                new Choice("miscarriage", $("Miscarriage")),
+                                new Choice("stillbirth", $("Baby was stillborn")),
+                                new Choice("babyloss", $("Baby died")),
+                                new Choice("not_useful", $("Messages not useful")),
+                                new Choice("other", $("Other"))
+                            ],
+
+                            next: function(choice) {
+                                if (_.contains(["not_useful", "other"], choice.value)){
+                                    return "states_end_no_enter";
+                                } else {
+                                    return "states_subscribe_option";
                                 }
+                            }
 
-                            });
-                    /*    });
-                });*/
+                        });
+                    }
+                });
+            });
         });
 
         self.states.add("states_subscribe_option", function(name) {

@@ -35,6 +35,7 @@ module.exports = function() {
         // 151: get identity by msisdn +27820001002
         {
             "key": "get.is.msisdn.27820001002",
+            "repeatable": true,
             "request": {
                 "url": 'http://is/api/v1/identities/search/',
                 "method": 'GET',

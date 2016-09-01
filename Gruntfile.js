@@ -209,10 +209,10 @@ module.exports = function (grunt) {
             },
             test_ussd_public: {
                 src: ['<%= paths.test.ussd_public %>']
-            },
+            },*/
             test_ussd_optout: {
                 src: ['<%= paths.test.ussd_optout %>']
-            },
+            },/*
             test_sms_inbound: {
                 src: ['<%= paths.test.sms_inbound %>']
             },
