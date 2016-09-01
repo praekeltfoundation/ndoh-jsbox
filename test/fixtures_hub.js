@@ -38,7 +38,7 @@ module.exports = function() {
                 }
             },
             "response": {
-                "code": 200,
+                "code": 201,
                 "data": {
                     "accepted": true
                 }
@@ -64,7 +64,7 @@ module.exports = function() {
                 }
             },
             "response": {
-                "code": 200,
+                "code": 201,
                 "data": {
                     "accepted": true
                 }
