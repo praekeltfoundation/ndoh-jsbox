@@ -11,7 +11,7 @@ go.app = function() {
     var SeedJsboxUtils = require('seed-jsbox-utils');
     var IdentityStore = SeedJsboxUtils.IdentityStore;
     var StageBasedMessaging = SeedJsboxUtils.StageBasedMessaging;
-    // var Hub = SeedJsboxUtils.Hub;
+    var Hub = SeedJsboxUtils.Hub;
     // var MessageSender = SeedJsboxUtils.MessageSender;
     var utils = SeedJsboxUtils.utils;
 
@@ -22,6 +22,7 @@ go.app = function() {
         // variables for services
         var is;
         var sbm;
+        var hub;
 
         self.init = function() {
             // initialising services
@@ -29,13 +30,19 @@ go.app = function() {
                 new JsonApi(self.im, {}),
                 self.im.config.services.identity_store.token,
                 self.im.config.services.identity_store.url
-             );
+            );
 
             sbm = new StageBasedMessaging(
                 new JsonApi(self.im, {}),
                 self.im.config.services.stage_based_messaging.token,
                 self.im.config.services.stage_based_messaging.url
-             );
+            );
+
+            hub = new Hub(
+                new JsonApi(self.im, {}),
+                self.im.config.services.hub.token,
+                self.im.config.services.hub.url
+            );
         };
 
         self.has_active_momconnect_subscription = function(id) {
@@ -151,21 +158,20 @@ go.app = function() {
             // self.contact.extra.subscription_rate = opts.sub_rate.toString();
             // self.contact.extra.subscription_seq_start = opts.sub_seq_start.toString();
 
-            // return go.utils
-            //     .subscription_unsubscribe_all(self.contact, self.im)
-            //     .then(function() {
-            //         return Q
-            //             .all([
-            //                 go.utils.post_subscription(self.contact,
-            //                     self.im, self.metric_prefix, self.env, opts),
-            //                 self.im.metrics.fire.inc([self.env, "sum",
-            //                     "baby_sms"].join("."), {amount: 1}),
-            //                 self.im.contacts.save(self.contact)
-            //             ])
-            //             .then(function() {
-                            return self.states.create("states_baby");
-                //         });
-                // });
+            // sub type & rate?
+
+            var change_info = {
+                "registrant_id": self.im.user.answers.operator.id,
+                "action": "baby_switch",
+                "data": {}
+            };
+
+            // change to baby subscription
+            return hub
+            .create_change(change_info)
+            .then(function() {
+                return self.states.create("states_baby");
+            });
         });
 
         self.states.add("states_baby", function(name) {
