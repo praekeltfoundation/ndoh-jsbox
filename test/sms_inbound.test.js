@@ -5,9 +5,9 @@ var _ = require('lodash');
 
 var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
-var fixtures_MessageSender = require('./fixtures_message_sender');
-var fixtures_Hub = require('./fixtures_hub');
-var fixtures_Jembi = require('./fixtures_jembi');
+// var fixtures_MessageSender = require('./fixtures_message_sender');
+// var fixtures_Hub = require('./fixtures_hub');
+// var fixtures_Jembi = require('./fixtures_jembi');
 
 var utils = require('seed-jsbox-utils').utils;
 
@@ -28,7 +28,7 @@ describe("app", function() {
                     testing: 'true',
                     testing_today: 'April 4, 2014 07:07:07',
                     env: 'test',
-                    metric_store: 'test_metric_store',
+                    // metric_store: 'test_metric_store',
                     endpoints: {
                         "sms": {"delivery_class": "sms"}
                     },
@@ -77,26 +77,9 @@ describe("app", function() {
                         four_per_week: 5,
                         five_per_week: 6
                     },
-                    public_holidays: [
-                        "2015-01-01",  // new year's day
-                        "2015-03-21",  // human rights day
-                        "2015-04-03",  // good friday - VARIES
-                        "2015-04-06",  // family day - VARIES
-                        "2015-04-27",  // freedom day
-                        "2015-05-01",  // worker's day
-                        "2015-06-16",  // youth day
-                        "2015-08-09",  // women's day
-                        "2015-08-10",  // women's day OBSERVED (Sunday -> Monday)
-                        "2015-09-24",  // heritage day
-                        "2015-12-16",  // day of reconciliation
-                        "2015-12-25",  // christmas day
-                        "2015-12-26",  // day of goodwill
-                    ],
-                    helpdesk_hours: [8, 16],
-                    snappybouncer: {
-                        conversation: 'dummyconversation'
-                    },
-                    logging: 'off'
+                    // snappybouncer: {
+                    //     conversation: 'dummyconversation'
+                    // }
                 })
                 .setup(function(api) {
                     api.kv.store['test.smsinbound.unique_users'] = 0;
@@ -108,11 +91,11 @@ describe("app", function() {
                 // })
                 .setup(function(api) {
                     // add fixtures for services used
-                    fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
+                    // fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
-                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
+                    // fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 150 ->
-                    fixtures_Jembi().forEach(api.http.fixtures.add);
+                    // fixtures_Jembi().forEach(api.http.fixtures.add);
                 });
         });
 
@@ -276,7 +259,7 @@ describe("app", function() {
 
         describe("when the user sends a non standard keyword message", function() {
 
-            describe("when the message is received between 08:00 and 16:00", function() {
+            describe("when the message is received", function() {
                 it("should log a support ticket", function() {
                     return tester
                         // .setup(function(api) {
@@ -301,96 +284,6 @@ describe("app", function() {
                             reply:
                                 'Thank you for your message, it has been captured and you will ' +
                                 'receive a response soon. Kind regards. MomConnect.'
-                        })
-                        .run();
-                });
-            });
-
-            describe.skip("when the message is received out of hours", function() {
-                it("should give out of hours warning", function() {
-                    return tester
-                        // .setup(function(api) {
-                        //     api.contacts.add({
-                        //         msisdn: '+27820001002',
-                        //         extra : {
-                        //             language_choice: 'en'
-                        //         },
-                        //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                        //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                        //     });
-                        // })
-                        .setup.config.app({
-                            // friday out of hours
-                            testing_today: 'April 4, 2014 07:07:07  GMT+0200 (SAST)'
-                        })
-                        .setup.user.addr('27820001002')
-                        .inputs('DONUTS')
-                        .check.interaction({
-                            state: 'states_default',
-                            reply:
-                                "The helpdesk operates from 8am to 4pm Mon to Fri. " +
-                                "Responses will be delayed outside of these hrs. In an " +
-                                "emergency please go to your health provider immediately."
-                        })
-                        .run();
-                });
-            });
-
-            describe.skip("when the message is received on a weekend", function() {
-                it("should give weekend warning", function() {
-                    return tester
-                        // .setup(function(api) {
-                        //     api.contacts.add({
-                        //         msisdn: '+27820001002',
-                        //         extra : {
-                        //             language_choice: 'en'
-                        //         },
-                        //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                        //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                        //     });
-                        // })
-                        .setup.config.app({
-                            // saturday during working hours
-                            testing_today: 'April 5, 2014 09:07:07  GMT+0200 (SAST)'
-                        })
-                        .setup.user.addr('27820001002')
-                        .inputs('DONUTS')
-                        .check.interaction({
-                            state: 'states_default',
-                            reply:
-                                "The helpdesk is not currently available during weekends " +
-                                "and public holidays. In an emergency please go to your " +
-                                "health provider immediately."
-                        })
-                        .run();
-                });
-            });
-
-            describe.skip("when the message is received on a public holiday", function() {
-                it("should give public holiday warning", function() {
-                    return tester
-                        // .setup(function(api) {
-                        //     api.contacts.add({
-                        //         msisdn: '+27820001002',
-                        //         extra : {
-                        //             language_choice: 'en'
-                        //         },
-                        //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                        //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                        //     });
-                        // })
-                        .setup.config.app({
-                            // women's day 2015 during working hours
-                            testing_today: 'August 10, 2015 09:07:07  GMT+0200 (SAST)'
-                        })
-                        .setup.user.addr('27820001002')
-                        .inputs('DONUTS')
-                        .check.interaction({
-                            state: 'states_default',
-                            reply:
-                                "The helpdesk is not currently available during weekends " +
-                                "and public holidays. In an emergency please go to your " +
-                                "health provider immediately."
                         })
                         .run();
                 });
