@@ -106,14 +106,6 @@ describe("app", function() {
                     // .setup(function(api) {
                     //     api.kv.store['session_length_helper.' + api.config.app.name + '.foodacom.sentinel'] = '2000-12-12';
                     //     api.kv.store['session_length_helper.' + api.config.app.name + '.foodacom'] = 42;
-                    //     api.contacts.add({
-                    //         msisdn: '+27820001002',
-                    //         extra : {
-                    //             language_choice: 'en'
-                    //         },
-                    //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                    //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                    //     });
                     // })
                     .setup.user({
                         state: 'states_start',
