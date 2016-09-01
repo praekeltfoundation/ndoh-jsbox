@@ -16,6 +16,7 @@ go.app = function() {
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_start");
         var $ = self.$;
+        var interrupt = true;
         var utils = SeedJsboxUtils.utils;
 
         // variables for services
@@ -175,11 +176,33 @@ go.app = function() {
 
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                return creator(name, opts);
+                if (!interrupt || !utils.timed_out(self.im))
+                    return creator(name, opts);
+
+                interrupt = false;
+                var timeout_opts = opts || {};
+                timeout_opts.name = name;
+                return self.states.create('state_timed_out', timeout_opts);
             });
         };
 
-        // TODO: timeout handling
+        self.states.add('state_timed_out', function(name, creator_opts) {
+            var msisdn = self.im.user.answers.registrant_msisdn || self.im.user.answers.operator_msisdn;
+            var readable_no = self.readable_sa_msisdn(msisdn);
+            return new ChoiceState(name, {
+                question: $(
+                    'Would you like to complete pregnancy registration for {{ num }}?'
+                ).context({ num: readable_no }),
+                choices: [
+                    new Choice(creator_opts.name, $('Yes')),
+                    new Choice('state_start', $('Start new registration'))
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
         // TODO: dialback sms sending
 
         self.add("state_start", function(name) {
@@ -357,25 +380,23 @@ go.app = function() {
                 next: function(content) {
                     var edd = (self.im.user.answers.state_due_date_month + "-" +
                                utils.double_digit_number(content));
+                    self.im.user.set_answer("edd", edd);
+
                     if (utils.is_valid_date(edd, 'YYYY-MM-DD')) {
-                        self.im.user.set_answer("edd", edd);
                         return 'state_id_type';
                     } else {
-                        return {
-                            name: 'state_invalid_edd',
-                            creator_opts: {edd: edd}
-                        };
+                        return 'state_invalid_edd';
                     }
                 }
             });
         });
 
-        self.add('state_invalid_edd', function(name, opts) {
+        self.add('state_invalid_edd', function(name) {
             return new ChoiceState(name, {
                 question: $(
                     'The date you entered ({{ edd }}) is not a ' +
                     'real date. Please try again.'
-                ).context({edd: opts.edd}),
+                ).context({edd: self.im.user.answers.edd}),
                 choices: [
                     new Choice('continue', $('Continue'))
                 ],
@@ -402,7 +423,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_sa_id', function(name, opts) {
+        self.add('state_sa_id', function(name) {
             var error = $("Sorry, the mother's ID number did not validate. " +
                           "Please reenter the SA ID number:");
             var question = $("Please enter the pregnant mother\'s SA ID " +
@@ -455,7 +476,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_birth_year', function(name, opts) {
+        self.add('state_birth_year', function(name) {
             var error = $('There was an error in your entry. Please ' +
                         'carefully enter the mother\'s year of birth again ' +
                         '(for example: 2001)');
@@ -483,7 +504,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_birth_day', function(name, opts) {
+        self.add('state_birth_day', function(name) {
             var error = $('There was an error in your entry. Please ' +
                         'carefully enter the mother\'s day of birth again ' +
                         '(for example: 8)');
@@ -500,25 +521,22 @@ go.app = function() {
                     var dob = (self.im.user.answers.state_birth_year + "-" +
                                self.im.user.answers.state_birth_month + "-" +
                                utils.double_digit_number(content));
+                    self.im.user.set_answer("mom_dob", dob);
                     if (utils.is_valid_date(dob, 'YYYY-MM-DD')) {
-                        self.im.user.set_answer("mom_dob", dob);
                         return 'state_language';
                     } else {
-                        return {
-                            name: 'state_invalid_dob',
-                            creator_opts: {dob: dob}
-                        };
+                        return 'state_invalid_dob';
                     }
                 }
             });
         });
 
-        self.add('state_invalid_dob', function(name, opts) {
+        self.add('state_invalid_dob', function(name) {
             return new ChoiceState(name, {
                 question: $(
                     'The date you entered ({{ dob }}) is not a ' +
                     'real date. Please try again.'
-                ).context({ dob: opts.dob }),
+                ).context({ dob: self.im.user.answers.mom_dob }),
                 choices: [
                     new Choice('continue', $('Continue'))
                 ],

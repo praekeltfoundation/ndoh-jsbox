@@ -25,6 +25,7 @@ describe("app", function() {
                     env: 'test',
                     testing_today: "2014-04-04",
                     logging: "off",
+                    no_timeout_redirects: ["state_start"],
                     endpoints: {
                         "sms": {"delivery_class": "sms"}
                     },
@@ -64,6 +65,117 @@ describe("app", function() {
                     fixtures_Jembi().forEach(api.http.fixtures.add);  // 150 - 159
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 160 ->
                 });
+        });
+
+        describe("timeout testing", function() {
+            describe("when you timeout and dial back in", function() {
+                describe("when on a normal state", function() {
+                    it("should go to state_timed_out", function() {
+                        return tester
+                        .setup.user.addr("27820001001")
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , "1"  // state_start - yes
+                            , "1"  // state_consent - yes
+                            , "123456"  // state_clinic_code
+                            , "2"  // state_due_date_month - may
+                            , "10"  // state_due_date_day
+                            , {session_event: 'close'}
+                            , {session_event: 'new'}
+                        )
+                        .check.interaction({
+                            state: "state_timed_out",
+                            reply: [
+                                'Would you like to complete pregnancy registration for 0820001001?',
+                                '1. Yes',
+                                '2. Start new registration'
+                            ].join('\n')
+                        })
+                        .run();
+                    });
+                });
+                describe("when on state_mobile_no", function() {
+                    it("should go to state_timed_out", function() {
+                        return tester
+                        .setup.user.addr("27820001001")
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , "2"  // state_start - no
+                            , {session_event: 'close'}
+                            , {session_event: 'new'}
+                        )
+                        .check.interaction({
+                            state: "state_timed_out",
+                            reply: [
+                                'Would you like to complete pregnancy registration for 0820001001?',
+                                '1. Yes',
+                                '2. Start new registration'
+                            ].join('\n')
+                        })
+                        .run();
+                    });
+                });
+                describe("when on state_start", function() {
+                    it("should go to state_start, not state_timed_out", function() {
+                        return tester
+                        .setup.user.addr("27820001001")
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , {session_event: 'close'}
+                            , {session_event: 'new'}
+                        )
+                        .check.interaction({
+                            state: "state_start",
+                        })
+                        .run();
+                    });
+                });
+            });
+
+            describe("when you've reached state_timed_out", function() {
+                describe("choosing to continue", function() {
+                    it("should go back to the state you were on", function() {
+                        return tester
+                        .setup.user.addr("27820001001")
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , "1"  // state_start - yes
+                            , "1"  // state_consent - yes
+                            , "123456"  // state_clinic_code
+                            , "2"  // state_due_date_month - may
+                            , "10"  // state_due_date_day
+                            , {session_event: 'close'}
+                            , {session_event: 'new'}
+                            , "1"  // state_timed_out - continue
+                        )
+                        .check.interaction({
+                            state: "state_id_type",
+                        })
+                        .run();
+                    });
+                });
+                describe("choosing to abort", function() {
+                    it("should go back to state_start", function() {
+                        return tester
+                        .setup.user.addr("27820001001")
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , "1"  // state_start - yes
+                            , "1"  // state_consent - yes
+                            , "123456"  // state_clinic_code
+                            , "2"  // state_due_date_month - may
+                            , "10"  // state_due_date_day
+                            , {session_event: 'close'}
+                            , {session_event: 'new'}
+                            , "2"  // state_timed_out - start new registration
+                        )
+                        .check.interaction({
+                            state: "state_start",
+                        })
+                        .run();
+                    });
+                });
+            });
         });
 
         describe("session start", function() {
