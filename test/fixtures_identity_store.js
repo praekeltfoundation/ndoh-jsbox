@@ -276,7 +276,7 @@ module.exports = function() {
             }
         },
 
-        // 156: optin in identity cb245673-aa41-4302-ac47-00000001004
+        // 156: optin identity cb245673-aa41-4302-ac47-00000001004
         {
             "key": "post.is.optin.27820001004",
             "request": {
@@ -289,7 +289,54 @@ module.exports = function() {
                 }
             },
             "response": {
-                "accepted": true
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
+        },
+
+        // 157: optout identity cb245673-aa41-4302-ac47-00000001002
+        {
+            "key": "post.is.optout.identity.cb245673-aa41-4302-ac47-00000001002",
+            "request": {
+                "url": 'http://is/api/v1/optout/',
+                "method": 'POST',
+                "data": {
+                    "optout_type": "STOP",
+                    "identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "reason": "unknown",
+                    "address_type": "msisdn",
+                    "address": "+27820001002",
+                    "request_source": "sms_inbound",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
+        },
+
+        // 158: optin identity cb245673-aa41-4302-ac47-00000001002
+        {
+            "key": "post.is.optin.27820001002",
+            "request": {
+                "url": 'http://is/api/v1/optin/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "address_type": "msisdn",
+                    "address": "+27820001002"
+                }
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
             }
         },
 

@@ -103,12 +103,20 @@ go.app = function() {
         });
 
         self.states.add("states_opt_out_enter", function(name) {
-            // return go.utils
-                // .opt_out(self.im, self.contact, optout_reason="unknown", api_optout=true,
-                //     unsub_all=true, jembi_optout=true, self.metric_prefix, self.env)
-                // .then(function() {
-                    return self.states.create("states_opt_out");
-                // });
+            var optout_info = {
+                "optout_type": "STOP",
+                "identity": self.im.user.answers.operator.id,
+                "reason": "unknown",
+                "address_type": "msisdn",
+                "address": self.im.user.answers.operator_msisdn,
+                "request_source": "sms_inbound",
+                "requestor_source_id": self.im.config.testing_message_id || self.im.msg.message_id
+            };
+            return is
+            .optout(optout_info)
+            .then(function() {
+                return self.states.create('states_opt_out');
+            });
         });
 
         self.states.add("states_opt_out", function(name) {
@@ -121,11 +129,11 @@ go.app = function() {
         });
 
         self.states.add("states_opt_in_enter", function(name) {
-            // return go.utils
-                // .opt_in(self.im, self.contact)
-                // .then(function() {
-                    return self.states.create("states_opt_in");
-                // });
+            return is
+            .optin(self.im.user.answers.operator.id, "msisdn", self.im.user.answers.operator_msisdn)
+            .then(function() {
+                return self.states.create('states_opt_in');
+            });
         });
 
         self.states.add("states_opt_in", function(name) {
