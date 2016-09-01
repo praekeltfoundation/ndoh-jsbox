@@ -50,29 +50,29 @@ go.app = function() {
             }
         },
 
-        self.jembi_json_api_call = function(method, params, payload, endpoint, im) {
-            var http = new JsonApi(im, {
+        self.jembi_json_api_call = function(method, params, payload, endpoint) {
+            var http = new JsonApi(self.im, {
                 auth: {
-                    username: im.config.jembi.username,
-                    password: im.config.jembi.password
+                    username: self.im.config.jembi.username,
+                    password: self.im.config.jembi.password
                 }
             });
             switch(method) {
                 case "get":
-                    return http.get(im.config.jembi.url_json + endpoint, {
+                    return http.get(self.im.config.jembi.url_json + endpoint, {
                         params: params
                     });
             }
         },
 
-        self.jembi_clinic_validate = function (im, clinic_code) {
+        self.jembi_clinic_validate = function (clinic_code) {
             var params = {
                 'criteria': 'code:' + clinic_code
             };
-            return self.jembi_json_api_call('get', params, null, 'facilityCheck', im);
+            return self.jembi_json_api_call('get', params, null, 'facilityCheck');
         };
 
-        self.validate_clinic_code = function(im, clinic_code) {
+        self.validate_clinic_code = function(clinic_code) {
             if (!utils.check_valid_number(clinic_code) ||
                 clinic_code.length !== 6) {
                 return Q()
@@ -81,7 +81,7 @@ go.app = function() {
                     });
             } else {
                 return self
-                .jembi_clinic_validate(im, clinic_code)
+                .jembi_clinic_validate(clinic_code)
                 .then(function(json_result) {
                     var rows = json_result.data.rows;
                     if (rows.length === 0) {
@@ -93,20 +93,20 @@ go.app = function() {
             }
         };
 
-        self.compile_registrant_info = function(im) {
-            var registrant_info = im.user.answers.registrant;
-            registrant_info.details.lang_code = im.user.answers.lang_code;
+        self.compile_registrant_info = function() {
+            var registrant_info = self.im.user.answers.registrant;
+            registrant_info.details.lang_code = self.im.user.answers.lang_code;
             registrant_info.details.consent =
-                im.user.answers.state_consent === "yes" ? "true" : null;
+                self.im.user.answers.state_consent === "yes" ? "true" : null;
 
-            if (im.user.answers.state_id_type === "sa_id") {
-                registrant_info.details.sa_id_no = im.user.answers.state_sa_id;
-                registrant_info.details.mom_dob = im.user.answers.mom_dob;
-            } else if (im.user.answers.state_id_type === "passport") {
-                registrant_info.details.passport_no = im.user.answers.state_passport_no;
-                registrant_info.details.passport_origin = im.user.answers.state_passport_origin;
+            if (self.im.user.answers.state_id_type === "sa_id") {
+                registrant_info.details.sa_id_no = self.im.user.answers.state_sa_id;
+                registrant_info.details.mom_dob = self.im.user.answers.mom_dob;
+            } else if (self.im.user.answers.state_id_type === "passport") {
+                registrant_info.details.passport_no = self.im.user.answers.state_passport_no;
+                registrant_info.details.passport_origin = self.im.user.answers.state_passport_origin;
             } else {
-                registrant_info.details.mom_dob = im.user.answers.mom_dob;
+                registrant_info.details.mom_dob = self.im.user.answers.mom_dob;
             }
 
             if (!("source" in registrant_info.details)) {
@@ -116,7 +116,7 @@ go.app = function() {
             return registrant_info;
         };
 
-        self.compile_registration_info = function(im) {
+        self.compile_registration_info = function() {
             var reg_details = {
                 "operator_id": self.im.user.answers.operator.id,
                 "msisdn_registrant": self.im.user.answers.registrant_msisdn,
@@ -271,7 +271,7 @@ go.app = function() {
                 question: question,
                 check: function(content) {
                     return self
-                    .validate_clinic_code(self.im, content)
+                    .validate_clinic_code(content)
                     .then(function(valid_clinic_code) {
                         if (!valid_clinic_code) {
                             return error;
@@ -522,8 +522,8 @@ go.app = function() {
         });
 
         self.add('state_save_subscription', function(name) {  // interstitial state
-            var registration_info = self.compile_registration_info(self.im);
-            var registrant_info = self.compile_registrant_info(self.im);
+            var registration_info = self.compile_registration_info();
+            var registrant_info = self.compile_registrant_info();
 
             return Q.all([
                 is.update_identity(self.im.user.answers.registrant.id, registrant_info),
