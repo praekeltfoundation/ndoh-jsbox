@@ -171,7 +171,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_mobile_no', function(name, opts) {
+        self.add('state_mobile_no', function(name) {
             var error = $('Sorry, the mobile number did not validate. ' +
                           'Please reenter the mobile number:');
             var question = $('Please input the mobile number of the ' +
@@ -246,8 +246,35 @@ go.app = function() {
                 question: $('Please select the month when the baby is due:'),
                 choices: utils.make_month_choices($, today, 10, 1, "YYYY-MM", "MMM"),
                 next: function(choice) {
-                    console.log(choice.value);
-                    return 'states_due_date_day';
+                    return 'state_due_date_day';
+                }
+            });
+        });
+
+        self.add('state_due_date_day', function(name) {
+            var error = $('Sorry, the number did not validate. ' +
+                          'Please enter the estimated day that the baby ' +
+                          'is due (For example 12):');
+            var question = $('Please enter the estimated day that the baby ' +
+                             'is due (For example 12):');
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    if (!utils.check_number_in_range(content, 1, 31)) {
+                        return error;
+                    }
+                },
+                next: function(content) {
+                    var edd = (self.im.user.answers.state_due_date_month + "-" +
+                               utils.double_digit_number(content));
+                    if (utils.is_valid_date(edd, 'YYYY-MM-DD')) {
+                        return 'state_id_type';
+                    } else {
+                        return {
+                            name: 'state_invalid_edd',
+                            creator_opts: {edd: edd}
+                        };
+                    }
                 }
             });
         });

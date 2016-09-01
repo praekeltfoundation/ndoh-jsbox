@@ -311,5 +311,104 @@ describe("app", function() {
             });
         });
 
+        describe("state_stay_out", function() {
+            describe("selecting main menu", function() {
+                it("should go to state_start", function() {
+                    return tester
+                    .setup.user.addr("27820001004")
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , "1"  // state_start - yes
+                        , "2"  // state_opt_in - no
+                        , "1"  // state_stay_out - main menu
+                    )
+                    .check.interaction({
+                        state: "state_start"
+                    })
+                    .run();
+                });
+            });
+        });
+
+        describe("state_due_date_month", function() {
+            it("should go to state_due_date_day", function() {
+                return tester
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_start - yes
+                    , "1"  // state_consent - yes
+                    , "123456"  // state_clinic_code
+                    , "2"  // state_due_date_month - may
+                )
+                .check.interaction({
+                    state: "state_due_date_day"
+                })
+                .run();
+            });
+        });
+
+        describe("state_due_date_day", function() {
+            describe("day out of range", function() {
+                it("should ask for the day again", function() {
+                    return tester
+                    .setup.user.addr("27820001001")
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , "1"  // state_start - yes
+                        , "1"  // state_consent - yes
+                        , "123456"  // state_clinic_code
+                        , "2"  // state_due_date_month - may
+                        , "32"  // state_due_date_day
+                    )
+                    .check.interaction({
+                        state: "state_due_date_day"
+                    })
+                    .run();
+                });
+            });
+            describe("date is invalid", function() {
+                it("should tell them the date is invalid", function() {
+                    return tester
+                    .setup.user.addr("27820001001")
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , "1"  // state_start - yes
+                        , "1"  // state_consent - yes
+                        , "123456"  // state_clinic_code
+                        , "8"  // state_due_date_month - nov
+                        , "31"  // state_due_date_day
+                    )
+                    .check.interaction({
+                        state: "state_invalid_edd",
+                        reply: [
+                            'The date you entered (2014-11-31) is not a ' +
+                            'real date. Please try again.',
+                            '1. Continue'
+                        ].join('\n')
+                    })
+                    .run();
+                });
+            });
+            describe("date is valid", function() {
+                it("should ask for id_type", function() {
+                    return tester
+                    .setup.user.addr("27820001001")
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , "1"  // state_start - yes
+                        , "1"  // state_consent - yes
+                        , "123456"  // state_clinic_code
+                        , "2"  // state_due_date_month - may
+                        , "10"  // state_due_date_day
+                    )
+                    .check.interaction({
+                        state: "state_id_type"
+                    })
+                    .run();
+                });
+            });
+        });
+
     });
 });
