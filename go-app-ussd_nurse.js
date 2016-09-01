@@ -396,7 +396,7 @@ go.app = function() {
 
             // operator.id will equal registrant.id when a self registration
             if (self.im.user.answers.operator.id !== self.im.user.answers.registrant.id) {
-                self.im.user.answers.registrant.details.nurseconnect.registered_by = self.im.user.answers.operator_msisdn;
+                self.im.user.answers.registrant.details.nurseconnect.registered_by = self.im.user.answers.operator.id;
 
                 return Q
                 .all ([
