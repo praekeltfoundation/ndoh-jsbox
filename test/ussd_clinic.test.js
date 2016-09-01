@@ -698,5 +698,103 @@ describe("app", function() {
             });
         });
 
+        describe("state_birth_day", function() {
+            describe("day out of range", function() {
+                it("should ask for the day again", function() {
+                    return tester
+                    .setup.user.addr("27820001001")
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , "1"  // state_start - yes
+                        , "1"  // state_consent - yes
+                        , "123456"  // state_clinic_code
+                        , "2"  // state_due_date_month - may
+                        , "10"  // state_due_date_day
+                        , "3"  // state_id_type - none
+                        , "1981"  // state_birth_year
+                        , "1"  // state_birth_month - january
+                        , "32"  // state_birth_day
+                    )
+                    .check.interaction({
+                        state: "state_birth_day"
+                    })
+                    .run();
+                });
+            });
+            describe("date is invalid", function() {
+                it("should tell them the date is invalid", function() {
+                    return tester
+                    .setup.user.addr("27820001001")
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , "1"  // state_start - yes
+                        , "1"  // state_consent - yes
+                        , "123456"  // state_clinic_code
+                        , "2"  // state_due_date_month - may
+                        , "10"  // state_due_date_day
+                        , "3"  // state_id_type - none
+                        , "1981"  // state_birth_year
+                        , "2"  // state_birth_month - february
+                        , "29"  // state_birth_day
+                    )
+                    .check.interaction({
+                        state: "state_invalid_dob",
+                        reply: [
+                            'The date you entered (1981-02-29) is not a ' +
+                            'real date. Please try again.',
+                            '1. Continue'
+                        ].join('\n')
+                    })
+                    .run();
+                });
+            });
+            describe("date is valid", function() {
+                it("should ask for id_type", function() {
+                    return tester
+                    .setup.user.addr("27820001001")
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , "1"  // state_start - yes
+                        , "1"  // state_consent - yes
+                        , "123456"  // state_clinic_code
+                        , "2"  // state_due_date_month - may
+                        , "10"  // state_due_date_day
+                        , "3"  // state_id_type - none
+                        , "1981"  // state_birth_year
+                        , "1"  // state_birth_month - january
+                        , "14"  // state_birth_day
+                    )
+                    .check.interaction({
+                        state: "state_language"
+                    })
+                    .run();
+                });
+            });
+        });
+
+        describe("state_invalid_dob", function() {
+            it("should go to state_birth_year", function() {
+                return tester
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_start - yes
+                    , "1"  // state_consent - yes
+                    , "123456"  // state_clinic_code
+                    , "2"  // state_due_date_month - may
+                    , "10"  // state_due_date_day
+                    , "3"  // state_id_type - none
+                    , "1981"  // state_birth_year
+                    , "2"  // state_birth_month - february
+                    , "29"  // state_birth_day
+                    , "1"  // state_invalid_dob - continue
+                )
+                .check.interaction({
+                    state: "state_birth_year"
+                })
+                .run();
+            });
+        });
+
     });
 });

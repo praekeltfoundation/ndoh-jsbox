@@ -320,12 +320,11 @@ go.app = function() {
                         return error;
                     }
                 },
-                next: 'state_language'
-                // next: function(content) {
-                //     var mom_dob = self.extract_za_id_dob(content);
-                //     self.im.user.set_answer("mom_dob", mom_dob);
-                //     return 'state_language';
-                // }
+                next: function(content) {
+                    var mom_dob = utils.extract_za_id_dob(content);
+                    self.im.user.set_answer("mom_dob", mom_dob);
+                    return 'state_language';
+                }
             });
         });
 
@@ -387,6 +386,49 @@ go.app = function() {
                 question: $('Please enter the month that the mom was born.'),
                 choices: utils.make_month_choices($, jan, 12, 1, "MM", "MMM"),
                 next: 'state_birth_day'
+            });
+        });
+
+        self.add('state_birth_day', function(name, opts) {
+            var error = $('There was an error in your entry. Please ' +
+                        'carefully enter the mother\'s day of birth again ' +
+                        '(for example: 8)');
+            var question = $('Please enter the day that the mother was born ' +
+                    '(for example: 14).');
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    if (!utils.check_number_in_range(content, 1, 31)) {
+                        return error;
+                    }
+                },
+                next: function(content) {
+                    var dob = (self.im.user.answers.state_birth_year + "-" +
+                               self.im.user.answers.state_birth_month + "-" +
+                               utils.double_digit_number(content));
+                    if (utils.is_valid_date(dob, 'YYYY-MM-DD')) {
+                        self.im.user.set_answer("mom_dob", dob);
+                        return 'state_language';
+                    } else {
+                        return {
+                            name: 'state_invalid_dob',
+                            creator_opts: {dob: dob}
+                        };
+                    }
+                }
+            });
+        });
+
+        self.add('state_invalid_dob', function(name, opts) {
+            return new ChoiceState(name, {
+                question: $(
+                    'The date you entered ({{ dob }}) is not a ' +
+                    'real date. Please try again.'
+                ).context({ dob: opts.dob }),
+                choices: [
+                    new Choice('continue', $('Continue'))
+                ],
+                next: 'state_birth_year'
             });
         });
 
