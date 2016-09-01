@@ -415,11 +415,10 @@ go.app = function() {
                 }
 
                 if (self.im.user.answers.operator.details.nurseconnect.registrees === undefined) {
-                    operator_update_info.details.nurseconnect.registrees
-                        = self.im.user.answers.registrant_msisdn;
+                    operator_update_info.details.nurseconnect.registrees = [];
+                    operator_update_info.details.nurseconnect.registrees.push(self.im.user.answers.registrant_msisdn);
                 } else {
-                    operator_update_info.details.nurseconnect.registrees
-                        += ', ' + self.im.user.answers.registrant_msisdn;
+                    operator_update_info.details.nurseconnect.registrees.push(self.im.user.answers.registrant_msisdn);
                 }
 
                 return Q

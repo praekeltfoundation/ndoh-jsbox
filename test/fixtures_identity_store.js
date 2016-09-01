@@ -329,7 +329,7 @@ module.exports = function() {
                 "data": {
                     "details": {
                         "nurseconnect": {
-                            "registrees": "+27820001002"
+                            "registrees": [ "+27820001002" ]
                         }
                     }
                 }
