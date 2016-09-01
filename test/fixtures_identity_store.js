@@ -307,7 +307,7 @@ module.exports = function() {
                         "nurseconnect": {
                             "facname": "WCL clinic",
                             "faccode": "123456",
-                            "is_registered": "true"
+                            "is_registered": true
                         }
                     }
                 }
@@ -353,7 +353,7 @@ module.exports = function() {
                         "nurseconnect": {
                             "facname": "WCL clinic",
                             "faccode": "123456",
-                            "is_registered": "true",
+                            "is_registered": true,
                             "registered_by": "+27820001001"
                         }
                     }
