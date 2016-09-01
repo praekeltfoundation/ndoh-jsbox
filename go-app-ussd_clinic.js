@@ -21,6 +21,7 @@ go.app = function() {
         // variables for services
         var is;
         var hub;
+        var ms;
 
         self.init = function() {
             // initialise services
@@ -33,6 +34,11 @@ go.app = function() {
                 new JsonApi(self.im, {}),
                 self.im.config.services.hub.token,
                 self.im.config.services.hub.url
+            );
+            ms = new SeedJsboxUtils.MessageSender(
+                new JsonApi(self.im, {}),
+                self.im.config.services.message_sender.token,
+                self.im.config.services.message_sender.url
             );
         };
 
@@ -144,6 +150,27 @@ go.app = function() {
                 "data": reg_details
             };
             return registration_info;
+        };
+
+        self.send_registration_thanks = function() {
+            var msg = "Welcome. To stop getting SMSs dial {{optout_channel}} or for more " +
+                      "services dial {{public_channel}} (No Cost). Standard rates apply " +
+                      "when replying to any SMS from MomConnect.";
+            return ms.
+            create_outbound_message(
+                self.im.user.answers.registrant.id,
+                self.im.user.answers.registrant_msisdn,
+                msg.replace("{{optout_channel}}", self.im.config.optout_channel)
+                   .replace("{{public_channel}}", self.im.config.public_channel)
+                // TODO #38 enable translation
+                // $("Welcome. To stop getting SMSs dial {{optout_channel}} or for more " +
+                //   "services dial {{public_channel}} (No Cost). Standard rates apply " +
+                //   "when replying to any SMS from MomConnect."
+                // ).context({
+                //     public_channel: self.im.config.public_channel,
+                //     optout_channel: self.im.config.optout_channel
+                // })
+            );
         };
 
         self.add = function(name, creator) {
@@ -527,8 +554,8 @@ go.app = function() {
 
             return Q.all([
                 is.update_identity(self.im.user.answers.registrant.id, registrant_info),
-                hub.create_registration(registration_info)
-                // TODO: send thank you sms
+                hub.create_registration(registration_info),
+                self.send_registration_thanks()
             ])
             .then(function() {
                 return self.states.create('state_end_success');

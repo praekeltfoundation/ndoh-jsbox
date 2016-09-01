@@ -29,6 +29,8 @@ describe("app", function() {
                         "sms": {"delivery_class": "sms"}
                     },
                     channel: "*120*550*2#",
+                    public_channel: "*120*550#",
+                    optout_channel: "*120*550*1#",
                     jembi: {
                         username: 'foo',
                         password: 'bar',
@@ -816,7 +818,7 @@ describe("app", function() {
                         state: "state_end_success"
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [2,154,160,163,167]);
+                        utils.check_fixtures_used(api, [2,116,154,160,163,167]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -843,7 +845,7 @@ describe("app", function() {
                         state: "state_end_success"
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [3,154,160,162,163,168]);
+                        utils.check_fixtures_used(api, [3,116,154,160,162,163,168]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -870,7 +872,7 @@ describe("app", function() {
                         state: "state_end_success"
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [4,154,160,163,169]);
+                        utils.check_fixtures_used(api, [4,116,154,160,163,169]);
                     })
                     .check.reply.ends_session()
                     .run();
