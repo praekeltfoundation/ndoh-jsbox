@@ -163,7 +163,7 @@ go.app = function() {
                 self.im.user.answers.registrant_msisdn,
                 msg.replace("{{optout_channel}}", self.im.config.optout_channel)
                    .replace("{{public_channel}}", self.im.config.public_channel)
-                // TODO #38 enable translation
+                // TODO #38: enable translation
                 // $("Welcome. To stop getting SMSs dial {{optout_channel}} or for more " +
                 //   "services dial {{public_channel}} (No Cost). Standard rates apply " +
                 //   "when replying to any SMS from MomConnect."
@@ -203,7 +203,7 @@ go.app = function() {
             });
         });
 
-        // TODO: dialback sms sending
+        // TODO #49: dialback sms sending
 
         self.add("state_start", function(name) {
             self.im.user.set_answers = {};
