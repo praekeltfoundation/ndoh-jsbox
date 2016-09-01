@@ -496,7 +496,7 @@ describe("app", function() {
                         utils.check_fixtures_used(api, [1, 100, 150, 153, 157, 160]);
                     })
                     .run();
-                });
+            });
         });
 
         // Other Registration Flow
