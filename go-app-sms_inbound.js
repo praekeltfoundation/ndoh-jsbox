@@ -153,20 +153,12 @@ go.app = function() {
         });
 
         self.states.add("states_baby_enter", function(name) {
-            // var opts = go.utils.subscription_type_and_rate(self.contact, self.im);
-            // self.contact.extra.subscription_type = opts.sub_type.toString();
-            // self.contact.extra.subscription_rate = opts.sub_rate.toString();
-            // self.contact.extra.subscription_seq_start = opts.sub_seq_start.toString();
-
-            // sub type & rate?
-
             var change_info = {
                 "registrant_id": self.im.user.answers.operator.id,
                 "action": "baby_switch",
                 "data": {}
             };
 
-            // change to baby subscription
             return hub
             .create_change(change_info)
             .then(function() {
@@ -184,7 +176,7 @@ go.app = function() {
         });
 
         self.states.add("states_default_enter", function(name) {
-            // 'casepro not yet integrated'  (log support ticket)
+            // 'casepro not yet integrated'  (logging support ticket)
 
             return self.states.create("states_default");
         });
