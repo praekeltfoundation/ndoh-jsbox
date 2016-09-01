@@ -380,16 +380,7 @@ go.app = function() {
         });
 
         self.add('state_save_nursereg', function(name) {
-
-            var registrant_update_info = {
-                "details": {
-                    "nurseconnect": {
-                        "facname": self.im.user.answers.registrant.details.nurseconnect.facname,
-                        "faccode": self.im.user.answers.registrant.details.nurseconnect.faccode,
-                        "is_registered": true
-                    }
-                }
-            };
+            self.im.user.answers.registrant.details.nurseconnect.is_registered = true;
 
             var reg_info = {
                 "reg_type": "nurseconnect",
@@ -405,23 +396,17 @@ go.app = function() {
 
             // operator.id will equal registrant.id when a self registration
             if (self.im.user.answers.operator.id !== self.im.user.answers.registrant.id) {
-                registrant_update_info.details.nurseconnect.registered_by = self.im.user.answers.operator_msisdn;
-
-                var operator_update_info = {
-                    "details": {
-                        "nurseconnect": {}
-                    }
-                };
+                self.im.user.answers.registrant.details.nurseconnect.registered_by = self.im.user.answers.operator_msisdn;
 
                 if (self.im.user.answers.operator.details.nurseconnect === undefined) {
                     self.im.user.answers.operator.details.nurseconnect = {};
                 }
 
                 if (self.im.user.answers.operator.details.nurseconnect.registrees === undefined) {
-                    operator_update_info.details.nurseconnect.registrees = [];
-                    operator_update_info.details.nurseconnect.registrees.push(self.im.user.answers.registrant_msisdn);
+                    self.im.user.answers.operator.details.nurseconnect.registrees = [];
+                    self.im.user.answers.operator.details.nurseconnect.registrees.push(self.im.user.answers.registrant_msisdn);
                 } else {
-                    operator_update_info.details.nurseconnect.registrees.push(self.im.user.answers.registrant_msisdn);
+                    self.im.user.answers.operator.details.nurseconnect.registrees.push(self.im.user.answers.registrant_msisdn);
                 }
 
                 return Q
@@ -429,11 +414,11 @@ go.app = function() {
                     // identity PATCHes
                     is.update_identity(
                         self.im.user.answers.operator.id,
-                        operator_update_info
+                        self.im.user.answers.operator
                     ),
                     is.update_identity(
                         self.im.user.answers.registrant.id,
-                        registrant_update_info
+                        self.im.user.answers.registrant
                     ),
                     self.send_registration_thanks(self.im.user.answers.registrant_msisdn),
                     // POST registration
@@ -449,7 +434,7 @@ go.app = function() {
                     // identity PATCH
                     is.update_identity(
                         self.im.user.answers.registrant.id,
-                        registrant_update_info
+                        self.im.user.answers.registrant
                     ),
                     self.send_registration_thanks(self.im.user.answers.registrant_msisdn),
                     // POST registration
