@@ -10,7 +10,7 @@
 module.exports = function() {
     return [
 
-        // 150: get identity by msisdn +27820001001
+        // 160: get identity by msisdn +27820001001
         {
             "key": "get.is.msisdn.27820001001",
             "repeatable": true,
@@ -32,7 +32,7 @@ module.exports = function() {
             }
         },
 
-        // 151: get identity by msisdn +27820001002
+        // 161: get identity by msisdn +27820001002
         {
             "key": "get.is.msisdn.27820001002",
             "repeatable": true,
@@ -70,7 +70,7 @@ module.exports = function() {
             }
         },
 
-        // 152: get identity by msisdn +27820001003
+        // 162: get identity by msisdn +27820001003
         {
             "key": "get.is.msisdn.27820001003",
             "repeatable": true,
@@ -144,7 +144,7 @@ module.exports = function() {
             }
         },
 
-        // 153: create identity with msisdn +27820001001
+        // 163: create identity with msisdn +27820001001
         {
             "key": "post.is.msisdn.27820001001",
             "repeatable": true,
@@ -182,7 +182,7 @@ module.exports = function() {
             }
         },
 
-        // 154: get identity by msisdn +27820001004
+        // 164: get identity by msisdn +27820001004
         {
             "key": "get.is.msisdn.27820001004",
             "request": {
@@ -229,7 +229,7 @@ module.exports = function() {
             }
         },
 
-        // 155: get identity by msisdn +27820001005
+        // 165: get identity by msisdn +27820001005
         {
             "key": "get.is.msisdn.27820001005",
             "request": {
@@ -277,7 +277,7 @@ module.exports = function() {
             }
         },
 
-        // 156: optin in identity cb245673-aa41-4302-ac47-00000001004
+        // 166: optin identity cb245673-aa41-4302-ac47-00000001004
         {
             "key": "post.is.optin.27820001004",
             "request": {
@@ -290,9 +290,35 @@ module.exports = function() {
                 }
             },
             "response": {
-                "accepted": true
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
             }
         },
+
+        // 167: optout (ussd_optout) identity cb245673-aa41-4302-ac47-00000001002
+        {
+            "key": "post.is.optout.identity.cb245673-aa41-4302-ac47-00000001002",
+            "request": {
+                "url": 'http://is/api/v1/optout/',
+                "method": 'POST',
+                "data": {
+                    "optout_type": "STOP",
+                    "identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "address_type": "msisdn",
+                    "address": "+27820001002",
+                    "request_source": "ussd_optout",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
+        }
 
     ];
 };

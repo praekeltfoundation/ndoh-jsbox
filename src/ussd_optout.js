@@ -10,7 +10,7 @@ go.app = function() {
     var SeedJsboxUtils = require('seed-jsbox-utils');
     var IdentityStore = SeedJsboxUtils.IdentityStore;
     var StageBasedMessaging = SeedJsboxUtils.StageBasedMessaging;
-    // var Hub = SeedJsboxUtils.Hub;
+    var Hub = SeedJsboxUtils.Hub;
     // var MessageSender = SeedJsboxUtils.MessageSender;
 
     var utils = SeedJsboxUtils.utils;
@@ -35,6 +35,12 @@ go.app = function() {
                 new JsonApi(self.im, {}),
                 self.im.config.services.stage_based_messaging.token,
                 self.im.config.services.stage_based_messaging.url
+            );
+
+            hub = new Hub(
+                new JsonApi(self.im, {}),
+                self.im.config.services.hub.token,
+                self.im.config.services.hub.url
             );
         };
 
@@ -109,22 +115,19 @@ go.app = function() {
 
                 next: function(choice) {
                     if (choice.value == "states_end_yes") {
-
-                        /*return go.utils
-                            // deactivate current subscriptions, save reason for opting out
-                            .opt_out(self.im, self.contact, self.im.user.answers.states_start,
-                                api_optout=false, unsub_all=true, jembi_optout=true,
-                                self.metric_prefix, self.env)
-                            .then(function() {
-                                return go.utils.loss_message_opt_in(self.im, self.contact,
-                                    self.metric_prefix, self.env, opts);
-                            })
-                            .then(function() {
-                                return go.utils.adjust_percentage_optouts(self.im, self.env);
-                            })
-                            .then(function() {*/
-                                return choice.value;
-                            // });
+                        return hub
+                        .create_change(
+                            {
+                                "registrant_id": self.im.user.answers.operator.id,
+                                "action": "momconnect_loss_switch",
+                                "data": {
+                                    "reason": self.im.user.answers.state_start
+                                }
+                            }
+                        )
+                        .then(function() {
+                            return choice.value;
+                        });
                     } else {
                         return choice.value;
                     }
@@ -133,12 +136,20 @@ go.app = function() {
         });
 
         self.states.add("states_end_no_enter", function(name) {
-            /*return go.utils
-                .opt_out(self.im, self.contact, self.im.user.answers.states_start, api_optout=true,
-                    unsub_all=true, jembi_optout=true, self.metric_prefix, self.env)
-                .then(function() {*/
-                    return self.states.create("states_end_no");
-                // });
+            var optout_info = {
+                "optout_type": "STOP",
+                "identity": self.im.user.answers.operator.id,
+                "reason": self.im.user.answers.state_start,
+                "address_type": "msisdn",
+                "address": self.im.user.answers.operator_msisdn,
+                "request_source": "ussd_optout",
+                "requestor_source_id": self.im.config.testing_message_id || self.im.msg.message_id
+            };
+            return is
+            .optout(optout_info)
+            .then(function() {
+                return self.states.create("states_end_no");
+            });
         });
 
         self.states.add("states_end_no", function(name) {

@@ -2,9 +2,9 @@
 module.exports = function() {
     return [
 
-        // 0:
+        // 0: post pmtct_nonloss_optout change for cb245673-aa41-4302-ac47-00000000001
         {
-            "key": "post.hub.pmtct_nonloss_optout.identity.cb245673-aa41-4302-ac47-00000000001",
+            "key": "post.hub.change.pmtct_nonloss_optout.identity.cb245673-aa41-4302-ac47-00000000001",
             "request": {
                 "url": 'http://hub/api/v1/change/',
                 "method": 'POST',
@@ -19,38 +19,19 @@ module.exports = function() {
             "response": {}
         },
 
-        // 1:  Nursereg post - sa_id (self reg)
+        // 1:  post momconnect_loss_switch change for cb245673-aa41-4302-ac47-00000001002
         {
+            "key": "post.hub.change.momconnect_loss_switch.identity.cb245673-aa41-4302-ac47-00000001002",
             "request": {
-                "method": "POST",
-                'headers': {
-                    'Authorization': ['Token test_token']
-                },
-                "url": "http://hub/api/v1/nurseregs/",
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
                 "data": {
-                    "cmsisdn": "+27820001001",
-                    "dmsisdn": "+27820001001",
-                    "faccode": "123456",
-                    "id_type": null,
-                    "dob": null,
-                    "sanc_reg_no": null,
-                    "persal_no": null,
-                    "id_no": null
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001002",
+                    "action": "momconnect_loss_switch",
+                    "data":{}
                 }
             },
-            "response": {
-                "code": 201,
-                "data": {
-                    "cmsisdn": "+27820001001",
-                    "dmsisdn": "+27820001001",
-                    "faccode": "123456",
-                    "id_type": null,
-                    "dob": null,
-                    "sanc_reg_no": null,
-                    "persal_no": null,
-                    "id_no": null
-                }
-            }
+            "response": {}
         },
 
         // 2:

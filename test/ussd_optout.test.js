@@ -9,6 +9,8 @@ var fixtures_MessageSender = require('./fixtures_message_sender');
 var fixtures_Hub = require('./fixtures_hub');
 var fixtures_Jembi = require('./fixtures_jembi');
 
+var utils = require('seed-jsbox-utils').utils;
+
 describe("app", function() {
     describe("for ussd_optout use", function() {
         var app;
@@ -24,6 +26,7 @@ describe("app", function() {
                     name: 'ussd_optout',
                     testing: 'true',
                     testing_today: 'April 4, 2014 07:07:07',
+                    testing_message_id: "0170b7bb-978e-4b8a-35d2-662af5b6daee",
                     channel: "*120*550#1",
                     env: 'test',
                     // metric_store: 'test_metric_store',
@@ -128,8 +131,9 @@ describe("app", function() {
                     fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
                     fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
-                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 150 ->
-                    fixtures_Jembi().forEach(api.http.fixtures.add);
+                    fixtures_Jembi().forEach(api.http.fixtures.add); // 150 - 159
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 160 ->
+
                 })
                 .setup(function(api) {
                     api.kv.store['test_metric_store.test.sum.subscriptions'] = 4;
@@ -561,6 +565,9 @@ describe("app", function() {
                                 '5. Other'
                             ].join('\n')
                         })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [51, 53, 161]);
+                        })
                         // .check.user.properties({lang: 'en'})
                         .run();
                 });
@@ -584,7 +591,7 @@ describe("app", function() {
                                 '5. Other'
                             ].join('\n')
                         })
-                        .check.user.properties({lang: 'en'})
+                        // .check.user.properties({lang: 'en'})
                         .run();
                 });
             });
@@ -610,6 +617,9 @@ describe("app", function() {
                             '2. No'
                         ].join('\n')
                     })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [51, 53, 161]);
+                    })
                     .run();
             });
         });
@@ -628,6 +638,9 @@ describe("app", function() {
                         reply: ('Thank you. You will no longer receive ' +
                             'messages from us. If you have any medical ' +
                             'concerns please visit your nearest clinic.')
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [51, 53, 161, 167]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -649,6 +662,9 @@ describe("app", function() {
                             'messages from us. If you have any medical ' +
                             'concerns please visit your nearest clinic.')
                     })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [51, 53, 161, 167]);
+                    })
                     .check.reply.ends_session()
                     .run();
             });
@@ -669,6 +685,9 @@ describe("app", function() {
                             state: 'states_end_yes',
                             reply: ('Thank you. You will receive support messages ' +
                                 'from MomConnect in the coming weeks.')
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [1, 51, 53, 161]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -700,6 +719,9 @@ describe("app", function() {
                             state: 'states_end_yes',
                             reply: ('Thank you. You will receive support messages ' +
                                 'from MomConnect in the coming weeks.')
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [51, 53, 161]);
                         })
                         .check.reply.ends_session()
                         .run();
