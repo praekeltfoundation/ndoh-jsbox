@@ -19,36 +19,26 @@ module.exports = function() {
             "response": {}
         },
 
-        // 1:  Nursereg post - sa_id (self reg)
+        // 1: post change (number to 27820001002) for cb245673-aa41-4302-ac47-00000001003
         {
+            "key": "post.hub.change.nurse_change_msisdn.identity.cb245673-aa41-4302-ac47-00000001003",
             "request": {
-                "method": "POST",
-                'headers': {
-                    'Authorization': ['Token test_token']
-                },
-                "url": "http://hub/api/v1/nurseregs/",
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
                 "data": {
-                    "cmsisdn": "+27820001001",
-                    "dmsisdn": "+27820001001",
-                    "faccode": "123456",
-                    "id_type": null,
-                    "dob": null,
-                    "sanc_reg_no": null,
-                    "persal_no": null,
-                    "id_no": null
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
+                    "action": "nurse_change_msisdn",
+                    "data": {
+                        "msisdn_old": "+27820001003",
+                        "msisdn_new": "+27820001002",
+                        "msisdn_device":"+27820001002"
+                    }
                 }
             },
             "response": {
                 "code": 201,
                 "data": {
-                    "cmsisdn": "+27820001001",
-                    "dmsisdn": "+27820001001",
-                    "faccode": "123456",
-                    "id_type": null,
-                    "dob": null,
-                    "sanc_reg_no": null,
-                    "persal_no": null,
-                    "id_no": null
+                    "accepted": true
                 }
             }
         },
@@ -183,76 +173,191 @@ module.exports = function() {
             }
         },
 
-        // 5:
+        // 5: post change (facility code) for cb245673-aa41-4302-ac47-00000001003
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.change.nurse_update_detail.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
+                    "action": "nurse_update_detail",
+                    "data": {
+                        "faccode": "234567"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
         },
 
-        // 6:
+        // 6: post change (id number) for cb245673-aa41-4302-ac47-00000001003
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.change.nurse_update_detail.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
+                    "action": "nurse_update_detail",
+                    "data": {
+                        "id_type": "sa_id",
+                        "sa_id_no": "9001016265166",
+                        "dob":"1990-01-01"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
         },
 
-        // 7:
+        // 7: post change (passport) for cb245673-aa41-4302-ac47-00000001003
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.change.nurse_update_detail.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
+                    "action": "nurse_update_detail",
+                    "data": {
+                        "id_type": "passport",
+                        "passport_no": "Nam1234",
+                        "passport_origin": "na",
+                        "dob": "1976-03-07"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
         },
 
-        // 8:
+        // 8: post change (sanc) for cb245673-aa41-4302-ac47-00000001003
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.change.nurse_update_detail.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
+                    "action": "nurse_update_detail",
+                    "data": {
+                        "sanc_no": "34567890"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
         },
 
-        // 9:
+        // 9: post change (persal) for cb245673-aa41-4302-ac47-00000001003
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.change.nurse_update_detail.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
+                    "action": "nurse_update_detail",
+                    "data": {
+                        "persal_no": "11114444"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
         },
 
-        // 10:
+        // 10: post change (number to 27820001001) for cb245673-aa41-4302-ac47-00000001003
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.change.nurse_change_msisdn.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
+                    "action": "nurse_change_msisdn",
+                    "data": {
+                        "msisdn_old": "+27820001003",
+                        "msisdn_new": "+27820001001",
+                        "msisdn_device":"+27820001003"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
         },
 
-        // 11:
+        // 11: post change (number to 27820001001) for cb245673-aa41-4302-ac47-00000001005
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.change.nurse_change_msisdn.identity.cb245673-aa41-4302-ac47-00000001005",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001005",
+                    "action": "nurse_change_msisdn",
+                    "data": {
+                        "msisdn_old": "+27820001005",
+                        "msisdn_new": "+27820001001",
+                        "msisdn_device":"+27820001005"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
         },
 
-        // 12:
+        // 12: post change (number to 27820001004) for cb245673-aa41-4302-ac47-00000001003
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.change.nurse_change_msisdn.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
+                    "action": "nurse_change_msisdn",
+                    "data": {
+                        "msisdn_old": "+27820001003",
+                        "msisdn_new": "+27820001004",
+                        "msisdn_device":"+27820001003"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
         },
 
         // 13:
