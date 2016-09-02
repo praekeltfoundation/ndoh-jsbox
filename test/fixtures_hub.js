@@ -43,74 +43,132 @@ module.exports = function() {
             }
         },
 
-        // 2: post change (number to 27820001001) for cb245673-aa41-4302-ac47-00000001003
+        // 2: register cb245673-aa41-4302-ac47-00000001001 (momconnect clinic self sa_id)
         {
-            "key": "post.hub.change.nurse_change_msisdn.identity.cb245673-aa41-4302-ac47-00000001003",
+            "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-00000001001",
             "request": {
-                "url": 'http://hub/api/v1/change/',
+                "url": 'http://hub/api/v1/registration/',
                 "method": 'POST',
                 "data": {
-                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
-                    "action": "nurse_change_msisdn",
+                    "reg_type": "momconnect_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
                     "data": {
-                        "msisdn_old": "+27820001003",
-                        "msisdn_new": "+27820001001",
-                        "msisdn_device":"+27820001003"
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001001",
+                        "msisdn_registrant": "+27820001001",
+                        "msisdn_device": "+27820001001",
+                        "id_type": "sa_id",
+                        "language": "eng_ZA",
+                        "edd": "2014-05-10",
+                        "faccode": "123456",
+                        "consent": "true",
+                        "sa_id_no": "5101025009086",
+                        "mom_dob": "2051-01-02"
                     }
                 }
             },
             "response": {
                 "code": 201,
                 "data": {
-                    "accepted": true
+                    "reg_type": "momconnect_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001001",
+                        "msisdn_registrant": "+27820001001",
+                        "msisdn_device": "+27820001001",
+                        "id_type": "sa_id",
+                        "language": "eng_ZA",
+                        "edd": "2014-05-10",
+                        "faccode": "123456",
+                        "consent": "true",
+                        "sa_id_no": "5101015009088",
+                        "mom_dob": "1951-01-01"
+                    }
                 }
             }
         },
 
-        // 3: post change (number to 27820001001) for cb245673-aa41-4302-ac47-00000001005
+        // 3: register cb245673-aa41-4302-ac47-00000001001 (momconnect clinic other passport)
         {
-            "key": "post.hub.change.nurse_change_msisdn.identity.cb245673-aa41-4302-ac47-00000001005",
+            "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-00000001001",
             "request": {
-                "url": 'http://hub/api/v1/change/',
+                "url": 'http://hub/api/v1/registration/',
                 "method": 'POST',
                 "data": {
-                    "registrant_id": "cb245673-aa41-4302-ac47-00000001005",
-                    "action": "nurse_change_msisdn",
+                    "reg_type": "momconnect_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
                     "data": {
-                        "msisdn_old": "+27820001005",
-                        "msisdn_new": "+27820001001",
-                        "msisdn_device":"+27820001005"
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001003",
+                        "msisdn_registrant": "+27820001001",
+                        "msisdn_device": "+27820001003",
+                        "id_type": "passport",
+                        "language": "eng_ZA",
+                        "edd": "2014-05-10",
+                        "faccode": "123456",
+                        "consent": "true",
+                        "passport_no": "12345",
+                        "passport_origin": "zw"
                     }
                 }
             },
             "response": {
                 "code": 201,
                 "data": {
-                    "accepted": true
+                    "reg_type": "momconnect_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001003",
+                        "msisdn_registrant": "+27820001001",
+                        "msisdn_device": "+27820001003",
+                        "id_type": "passport",
+                        "language": "eng_ZA",
+                        "edd": "2014-05-10",
+                        "faccode": "123456",
+                        "consent": "true",
+                        "passport_no": "12345",
+                        "passport_origin": "zw"
+                    }
                 }
             }
         },
 
-        // 4: post change (number to 27820001004) for cb245673-aa41-4302-ac47-00000001003
+        // 4: register cb245673-aa41-4302-ac47-00000001001 (momconnect clinic self none)
         {
-            "key": "post.hub.change.nurse_change_msisdn.identity.cb245673-aa41-4302-ac47-00000001003",
+            "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-00000001001",
             "request": {
-                "url": 'http://hub/api/v1/change/',
+                "url": 'http://hub/api/v1/registration/',
                 "method": 'POST',
                 "data": {
-                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
-                    "action": "nurse_change_msisdn",
+                    "reg_type": "momconnect_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
                     "data": {
-                        "msisdn_old": "+27820001003",
-                        "msisdn_new": "+27820001004",
-                        "msisdn_device":"+27820001003"
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001001",
+                        "msisdn_registrant": "+27820001001",
+                        "msisdn_device": "+27820001001",
+                        "id_type": "none",
+                        "language": "eng_ZA",
+                        "edd": "2014-05-10",
+                        "faccode": "123456",
+                        "consent": "true",
+                        "mom_dob": "1981-01-14"
                     }
                 }
             },
             "response": {
                 "code": 201,
                 "data": {
-                    "accepted": true
+                    "reg_type": "momconnect_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001001",
+                        "msisdn_registrant": "+27820001001",
+                        "msisdn_device": "+27820001001",
+                        "id_type": "none",
+                        "language": "eng_ZA",
+                        "edd": "2014-05-10",
+                        "faccode": "123456",
+                        "consent": "true",
+                        "mom_dob": "1981-01-14"
+                    }
                 }
             }
         },
@@ -230,7 +288,79 @@ module.exports = function() {
             }
         },
 
-        // 10: register cb245673-aa41-4302-ac47-00000001001 (nurseconnect self registration)
+        // 10: post change (number to 27820001001) for cb245673-aa41-4302-ac47-00000001003
+        {
+            "key": "post.hub.change.nurse_change_msisdn.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
+                    "action": "nurse_change_msisdn",
+                    "data": {
+                        "msisdn_old": "+27820001003",
+                        "msisdn_new": "+27820001001",
+                        "msisdn_device":"+27820001003"
+                    }
+                }
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
+        },
+
+        // 11: post change (number to 27820001001) for cb245673-aa41-4302-ac47-00000001005
+        {
+            "key": "post.hub.change.nurse_change_msisdn.identity.cb245673-aa41-4302-ac47-00000001005",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001005",
+                    "action": "nurse_change_msisdn",
+                    "data": {
+                        "msisdn_old": "+27820001005",
+                        "msisdn_new": "+27820001001",
+                        "msisdn_device":"+27820001005"
+                    }
+                }
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
+        },
+
+        // 12: post change (number to 27820001004) for cb245673-aa41-4302-ac47-00000001003
+        {
+            "key": "post.hub.change.nurse_change_msisdn.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
+                    "action": "nurse_change_msisdn",
+                    "data": {
+                        "msisdn_old": "+27820001003",
+                        "msisdn_new": "+27820001004",
+                        "msisdn_device":"+27820001003"
+                    }
+                }
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
+        },
+
+        // 13: register cb245673-aa41-4302-ac47-00000001001 (nurseconnect self registration)
         {
             "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-00000001001",
             "request": {
@@ -256,7 +386,7 @@ module.exports = function() {
             }
         },
 
-        // 11: register cb245673-aa41-4302-ac47-00000001002 (nurseconnect registration by another, 27820001001)
+        // 14: register cb245673-aa41-4302-ac47-00000001002 (nurseconnect registration by another, 27820001001)
         {
             "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-00000001002",
             "request": {
@@ -280,33 +410,6 @@ module.exports = function() {
                     "accepted": true
                 }
             }
-        },
-
-        // 12:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
-        // 13:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
-        // 14:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
         },
 
         // 15:

@@ -493,7 +493,7 @@ describe("app", function() {
                         , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [10, 100, 150, 160, 163, 168]);
+                        utils.check_fixtures_used(api, [13, 100, 150, 160, 163, 170]);
                     })
                     .run();
             });
@@ -580,7 +580,7 @@ describe("app", function() {
                         , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [11, 101, 150, 160, 161, 163, 169]);
+                        utils.check_fixtures_used(api, [14, 101, 150, 160, 161, 163, 171]);
                     })
                     .run();
             });
@@ -1093,7 +1093,7 @@ describe("app", function() {
                             state: 'state_end_detail_changed',
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [2, 52, 54, 160, 162]);
+                            utils.check_fixtures_used(api, [10, 52, 54, 160, 162]);
                         })
                         .run();
                 });
@@ -1111,7 +1111,7 @@ describe("app", function() {
                             state: 'state_end_detail_changed'
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [3, 54, 56, 160, 165]);
+                            utils.check_fixtures_used(api, [11, 54, 56, 160, 165]);
                         })
                         .run();
                 });
