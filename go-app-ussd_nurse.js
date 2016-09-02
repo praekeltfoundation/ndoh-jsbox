@@ -737,16 +737,6 @@ go.app = function() {
                     if (choice.value === 'main_menu') {
                         return 'state_route';
                     } else {
-                        var optout_info = {
-                            "optout_type": "nurseconnect",
-                            "identity": self.im.user.answers.operator.id,
-                            "reason": choice.value,
-                            "address_type": "msisdn",
-                            "address": self.im.user.answers.operator_msisdn,
-                            "request_source": "ussd_nurse",
-                            "requestor_source_id": self.im.config.testing_message_id || self.im.msg.message_id
-                        };
-
                         var change_info = {
                             "registrant_id": self.im.user.answers.operator.id,
                             "action": "nurse_optout",
@@ -755,13 +745,8 @@ go.app = function() {
                             }
                         };
 
-                        return Q
-                        .all([
-                            // optout identity
-                            is.optout(optout_info),
-                            // change regsitration to reflect optout
-                            hub.create_change(change_info)
-                        ])
+                        return hub
+                        .create_change(change_info)
                         .then(function() {
                             return 'state_end_detail_changed';
                         });

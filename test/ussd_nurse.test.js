@@ -27,7 +27,6 @@ describe("app", function() {
                     env: 'test',
                     // metric_store: 'test_metric_store',
                     testing_today: 'April 4, 2014 07:07:07',
-                    testing_message_id: "0170b7bb-978e-4b8a-35d2-662af5b6daee",
                     logging: "off",
                     endpoints: {
                         "sms": {"delivery_class": "sms"}
@@ -1823,6 +1822,9 @@ describe("app", function() {
                             )
                             .check.interaction({
                                 state: 'state_end_detail_changed',
+                            })
+                            .check(function(api) {
+                                utils.check_fixtures_used(api, [2, 52, 54, 162]);
                             })
                             .run();
                     });

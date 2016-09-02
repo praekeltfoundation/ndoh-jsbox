@@ -298,25 +298,5 @@ module.exports = function() {
             }
         },
 
-        // 167: optout identity cb245673-aa41-4302-ac47-00000001003 (job change)
-        {
-            "request": {
-                "url": 'http://is/api/v1/optout/',
-                "method": 'POST',
-                "data": {
-                    "optout_type": "nurseconnect",
-                    "identity": "cb245673-aa41-4302-ac47-00000001003",
-                    "reason": "job_change",
-                    "address_type": "msisdn",
-                    "address": "+27820001003",
-                    "request_source": "ussd_nurse",
-                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
-                }
-            },
-            "response": {
-                "accepted": true
-            }
-        },
-
     ];
 };
