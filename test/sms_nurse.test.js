@@ -1,6 +1,9 @@
 var vumigo = require("vumigo_v02");
-var fixtures_IdentityStore = require("./fixtures_identity_store");
-var fixtures_StageBasedMessaging = require("./fixtures_stage_based_messaging");
+var fixtures_IdentityStore = require('./fixtures_identity_store');
+var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
+var fixtures_MessageSender = require('./fixtures_message_sender');
+var fixtures_Hub = require('./fixtures_hub');
+var fixtures_Jembi = require('./fixtures_jembi');
 var AppTester = vumigo.AppTester;
 var assert = require("assert");
 
@@ -40,11 +43,11 @@ describe("app", function() {
                 })
                 .setup(function(api) {
                     // add fixtures for services used
-                    // fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
+                    fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
-                    // fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
-                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 150 ->
-                    // fixtures_Jembi().forEach(api.http.fixtures.add);
+                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
+                    fixtures_Jembi().forEach(api.http.fixtures.add); // 150 - 159
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 160 ->
                 });
         });
 
@@ -74,7 +77,7 @@ describe("app", function() {
                             "Thank you. You will no longer receive messages from us."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [2, 4, 52, 56]);
+                        utils.check_fixtures_used(api, [52, 54, 162, 166]);
                     })
                     .run();
             });
@@ -91,7 +94,7 @@ describe("app", function() {
                             "Thank you. You will no longer receive messages from us."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [2, 4, 52, 56]);
+                        utils.check_fixtures_used(api, [52, 54, 162, 166]);
                     })
                     .run();
             });
