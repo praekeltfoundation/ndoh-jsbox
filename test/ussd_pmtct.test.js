@@ -1,5 +1,6 @@
 var vumigo = require("vumigo_v02");
 var fixtures = require("./fixtures_pmtct");
+var fixtures_MessageSender = require('./fixtures_message_sender');
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
 
@@ -59,7 +60,11 @@ describe("PMTCT app", function() {
                         hub: {
                             url: 'http://hub.localhost:8001/api/v1/',
                             token: 'test Hub'
-                        }
+                        },
+                        message_sender: {
+                            url: 'http://ms/api/v1/',
+                            token: 'test MessageSender'
+                        },
                     },
                     vumi: {
                         token: "abcde",
@@ -70,9 +75,10 @@ describe("PMTCT app", function() {
                     }
                 })
                 .setup(function(api) {
-                    fixtures().forEach(api.http.fixtures.add);
-                })
-                ;
+                    // add fixtures for services used
+                    fixtures().forEach(api.http.fixtures.add); // fixtures 0 - 49
+                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
+                });
         });
 
         // TEST TIMEOUTS
@@ -583,7 +589,7 @@ describe("PMTCT app", function() {
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [5, 16, 24, 31, 36, 54, 63]);
+                            utils.check_fixtures_used(api, [5, 16, 24, 31, 36, 54, 63, 81, 85]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -691,7 +697,7 @@ describe("PMTCT app", function() {
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [6, 17, 25, 32, 37, 55, 64]);
+                            utils.check_fixtures_used(api, [6, 17, 25, 32, 37, 55, 64, 89, 90]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -775,7 +781,7 @@ describe("PMTCT app", function() {
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [7, 18, 26, 33, 38, 56, 65]);
+                            utils.check_fixtures_used(api, [7, 18, 26, 33, 38, 56, 65, 91, 92]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -917,7 +923,7 @@ describe("PMTCT app", function() {
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [8, 19, 27, 34, 39, 57, 66]);
+                            utils.check_fixtures_used(api, [8, 19, 27, 34, 39, 57, 66, 93, 94]);
                         })
                         .check.reply.ends_session()
                         .run();

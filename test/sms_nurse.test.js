@@ -77,7 +77,7 @@ describe("app", function() {
                             "Thank you. You will no longer receive messages from us."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [52, 54, 162, 166]);
+                        utils.check_fixtures_used(api, [52, 54, 162, 172]);
                     })
                     .run();
             });
@@ -94,7 +94,7 @@ describe("app", function() {
                             "Thank you. You will no longer receive messages from us."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [52, 54, 162, 166]);
+                        utils.check_fixtures_used(api, [52, 54, 162, 172]);
                     })
                     .run();
             });
