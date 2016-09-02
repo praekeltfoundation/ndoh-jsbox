@@ -4,7 +4,7 @@ module.exports = function() {
 
         // 0:
         {
-            "key": "post.hub.pmtct_nonloss_optout.identity.cb245673-aa41-4302-ac47-00000000001",
+            "key": "post.hub.change.pmtct_nonloss_optout.identity.cb245673-aa41-4302-ac47-00000000001",
             "request": {
                 "url": 'http://hub/api/v1/change/',
                 "method": 'POST',
@@ -360,22 +360,56 @@ module.exports = function() {
             }
         },
 
-        // 13:
+        // 13: register cb245673-aa41-4302-ac47-00000001001 (nurseconnect self registration)
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "url": 'http://hub/api/v1/registration/',
+                "method": 'POST',
+                "data": {
+                    "reg_type": "nurseconnect",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001001",
+                        "msisdn_registrant": "+27820001001",
+                        "msisdn_device": "+27820001001",
+                        "faccode": "123456",
+                        "language": "eng_ZA"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
         },
 
-        // 14:
+        // 14: register cb245673-aa41-4302-ac47-00000001002 (nurseconnect registration by another, 27820001001)
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-00000001002",
+            "request": {
+                "url": 'http://hub/api/v1/registration/',
+                "method": 'POST',
+                "data": {
+                    "reg_type": "nurseconnect",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001002",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001001",
+                        "msisdn_registrant": "+27820001002",
+                        "msisdn_device": "+27820001001",
+                        "faccode":"123456",
+                        "language": "eng_ZA"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
         },
 
         // 15:

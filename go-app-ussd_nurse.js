@@ -379,6 +379,58 @@ go.app = function() {
             });
         });
 
+        self.add('state_save_nursereg', function(name) {
+            self.im.user.answers.registrant.details.nurseconnect.is_registered = true;
+
+            var reg_info = {
+                "reg_type": "nurseconnect",
+                "registrant_id": self.im.user.answers.registrant.id,
+                "data": {
+                    "operator_id": self.im.user.answers.operator.id,  // device owner id
+                    "msisdn_registrant": self.im.user.answers.registrant_msisdn,  // msisdn of the registrant
+                    "msisdn_device": self.im.user.answers.operator_msisdn,  // device msisdn
+                    "faccode": self.im.user.answers.registrant.details.nurseconnect.faccode,  // facility code
+                    "language": "eng_ZA"  // currently always eng_ZA for nurseconnect
+                }
+            };
+
+            // operator.id will equal registrant.id when a self registration
+            if (self.im.user.answers.operator.id !== self.im.user.answers.registrant.id) {
+                self.im.user.answers.registrant.details.nurseconnect.registered_by = self.im.user.answers.operator.id;
+
+                return Q
+                .all ([
+                    // identity PATCH
+                    is.update_identity(
+                        self.im.user.answers.registrant.id,
+                        self.im.user.answers.registrant
+                    ),
+                    self.send_registration_thanks(self.im.user.answers.registrant_msisdn),
+                    // POST registration
+                    hub.create_registration(reg_info)
+                ])
+                .then(function() {
+                    return self.states.create('state_end_reg');
+                });
+
+            } else {
+                return Q
+                .all([
+                    // identity PATCH
+                    is.update_identity(
+                        self.im.user.answers.registrant.id,
+                        self.im.user.answers.registrant
+                    ),
+                    self.send_registration_thanks(self.im.user.answers.registrant_msisdn),
+                    // POST registration
+                    hub.create_registration(reg_info)
+                ])
+                .then(function() {
+                    return self.states.create('state_end_reg');
+                });
+            }
+        });
+
     // CHANGE STATES
 
         self.add('state_change_num', function(name) {
@@ -833,24 +885,6 @@ go.app = function() {
                     .context({channel: self.im.config.channel}),
                 next: 'state_route',
              });
-        });
-
-        self.add('state_save_nursereg', function(name) {
-            // Save useful identity info
-            self.im.user.answers.registrant.details.nurseconnect.is_registered = "true";
-
-            // TODO: #30 registration submission
-
-            // identity PATCH
-
-            return Q
-            .all([
-                self.send_registration_thanks(self.im.user.answers.registrant_msisdn),
-                // POST registration
-            ])
-            .then(function() {
-                return self.states.create('state_end_reg');
-            });
         });
 
         self.add('state_end_reg', function(name) {

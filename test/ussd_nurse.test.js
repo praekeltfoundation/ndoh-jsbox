@@ -493,10 +493,10 @@ describe("app", function() {
                         , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [100, 150, 160, 163]);
+                        utils.check_fixtures_used(api, [13, 100, 150, 160, 163, 170]);
                     })
                     .run();
-                });
+            });
         });
 
         // Other Registration Flow
@@ -580,7 +580,7 @@ describe("app", function() {
                         , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [101, 150, 160, 161, 163]);
+                        utils.check_fixtures_used(api, [14, 101, 150, 160, 161, 163, 171]);
                     })
                     .run();
             });

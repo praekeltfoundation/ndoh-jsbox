@@ -36,6 +36,7 @@ module.exports = function() {
         // 161: get identity by msisdn +27820001002
         {
             "key": "get.is.msisdn.27820001002",
+            "repeatable": true,
             "request": {
                 "url": 'http://is/api/v1/identities/search/',
                 "method": 'GET',
@@ -282,7 +283,7 @@ module.exports = function() {
             }
         },
 
-        // 166: optin in identity cb245673-aa41-4302-ac47-00000001004
+        // 166: optin identity cb245673-aa41-4302-ac47-00000001004
         {
             "key": "post.is.optin.27820001004",
             "request": {
@@ -295,7 +296,10 @@ module.exports = function() {
                 }
             },
             "response": {
-                "accepted": true
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
             }
         },
 
@@ -387,6 +391,65 @@ module.exports = function() {
             },
             "response": {}
         },
+
+        // 170: patch cb245673-aa41-4302-ac47-00000001001
+        {
+            "request": {
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/',
+                "method": 'PATCH',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/",
+                    "id": "cb245673-aa41-4302-ac47-00000001001",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001001": { "default": true }
+                            }
+                        },
+                        "nurseconnect": {
+                            "facname": "WCL clinic",
+                            "faccode": "123456",
+                            "is_registered": true
+                        }
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z"
+                }
+            },
+            "response": {}
+        },
+
+        // 171: patch cb245673-aa41-4302-ac47-00000001002
+        {
+            "request": {
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001002/',
+                "method": 'PATCH',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001002/",
+                    "id": "cb245673-aa41-4302-ac47-00000001002",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001002": {}
+                            }
+                        },
+                        "nurseconnect": {
+                            "facname": "WCL clinic",
+                            "faccode": "123456",
+                            "is_registered": true,
+                            "registered_by": "cb245673-aa41-4302-ac47-00000001001"
+                        }
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z"
+                }
+            },
+            "response": {}
+        }
 
     ];
 };
