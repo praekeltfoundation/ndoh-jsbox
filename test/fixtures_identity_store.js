@@ -158,7 +158,7 @@ module.exports = function() {
                         "default_addr_type": "msisdn",
                         "addresses": {
                             "msisdn": {
-                                "+27820001001":{ "default": true }
+                                "+27820001001": { "default": true }
                             }
                         }
                     }
@@ -187,6 +187,7 @@ module.exports = function() {
         // 164: get identity by msisdn +27820001004
         {
             "key": "get.is.msisdn.27820001004",
+            "repeatable": true,
             "request": {
                 "url": 'http://is/api/v1/identities/search/',
                 "method": 'GET',
