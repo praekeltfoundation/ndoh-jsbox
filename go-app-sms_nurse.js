@@ -45,6 +45,7 @@ go.app = function() {
                     // get the subscription messageset
                     return sbm
                     .get_messageset(active_subs[i].messageset)
+                    // TODO 52: stop promise looping
                     .then(function(messageset) {
                         if (messageset.short_name.indexOf("nurseconnect") > -1) {
                             return true;
@@ -104,7 +105,7 @@ go.app = function() {
 
         self.states.add("states_opt_out_enter", function(name) {
             var optout_info = {
-                "optout_type": "STOP",
+                "optout_type": "stop",
                 "identity": self.im.user.answers.operator.id,
                 "reason": "unknown",
                 "address_type": "msisdn",

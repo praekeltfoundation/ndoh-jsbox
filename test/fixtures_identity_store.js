@@ -457,7 +457,7 @@ module.exports = function() {
                 "url": 'http://is/api/v1/optout/',
                 "method": 'POST',
                 "data": {
-                    "optout_type": "STOP",
+                    "optout_type": "stop",
                     "identity": "cb245673-aa41-4302-ac47-00000001003",
                     "reason": "unknown",
                     "address_type": "msisdn",
