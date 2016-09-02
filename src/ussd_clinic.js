@@ -35,7 +35,7 @@ go.app = function() {
         self.number_opted_out = function(identity, msisdn) {
             var details_msisdn = identity.details.addresses.msisdn[msisdn];
             if ("optedout" in details_msisdn) {
-                return details_msisdn.optedout === true;
+                return (details_msisdn.optedout === true || details_msisdn.opted_out === "true");
             } else {
                 return false;
             }
