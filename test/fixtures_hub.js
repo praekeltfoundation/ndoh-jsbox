@@ -19,7 +19,218 @@ module.exports = function() {
             "response": {}
         },
 
-        // 1: register cb245673-aa41-4302-ac47-00000001001 (nurseconnect self registration)
+        // 1: post change (number to 27820001002) for cb245673-aa41-4302-ac47-00000001003
+        {
+            "key": "post.hub.change.nurse_change_msisdn.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
+                    "action": "nurse_change_msisdn",
+                    "data": {
+                        "msisdn_old": "+27820001003",
+                        "msisdn_new": "+27820001002",
+                        "msisdn_device":"+27820001002"
+                    }
+                }
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
+        },
+
+        // 2: post change (number to 27820001001) for cb245673-aa41-4302-ac47-00000001003
+        {
+            "key": "post.hub.change.nurse_change_msisdn.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
+                    "action": "nurse_change_msisdn",
+                    "data": {
+                        "msisdn_old": "+27820001003",
+                        "msisdn_new": "+27820001001",
+                        "msisdn_device":"+27820001003"
+                    }
+                }
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
+        },
+
+        // 3: post change (number to 27820001001) for cb245673-aa41-4302-ac47-00000001005
+        {
+            "key": "post.hub.change.nurse_change_msisdn.identity.cb245673-aa41-4302-ac47-00000001005",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001005",
+                    "action": "nurse_change_msisdn",
+                    "data": {
+                        "msisdn_old": "+27820001005",
+                        "msisdn_new": "+27820001001",
+                        "msisdn_device":"+27820001005"
+                    }
+                }
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
+        },
+
+        // 4: post change (number to 27820001004) for cb245673-aa41-4302-ac47-00000001003
+        {
+            "key": "post.hub.change.nurse_change_msisdn.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
+                    "action": "nurse_change_msisdn",
+                    "data": {
+                        "msisdn_old": "+27820001003",
+                        "msisdn_new": "+27820001004",
+                        "msisdn_device":"+27820001003"
+                    }
+                }
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
+        },
+
+        // 5: post change (facility code) for cb245673-aa41-4302-ac47-00000001003
+        {
+            "key": "post.hub.change.nurse_update_detail.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
+                    "action": "nurse_update_detail",
+                    "data": {
+                        "faccode": "234567"
+                    }
+                }
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
+        },
+
+        // 6: post change (id number) for cb245673-aa41-4302-ac47-00000001003
+        {
+            "key": "post.hub.change.nurse_update_detail.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
+                    "action": "nurse_update_detail",
+                    "data": {
+                        "id_type": "sa_id",
+                        "sa_id_no": "9001016265166",
+                        "dob":"1990-01-01"
+                    }
+                }
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
+        },
+
+        // 7: post change (passport) for cb245673-aa41-4302-ac47-00000001003
+        {
+            "key": "post.hub.change.nurse_update_detail.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
+                    "action": "nurse_update_detail",
+                    "data": {
+                        "id_type": "passport",
+                        "passport_no": "Nam1234",
+                        "passport_origin": "na",
+                        "dob": "1976-03-07"
+                    }
+                }
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
+        },
+
+        // 8: post change (sanc) for cb245673-aa41-4302-ac47-00000001003
+        {
+            "key": "post.hub.change.nurse_update_detail.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
+                    "action": "nurse_update_detail",
+                    "data": {
+                        "sanc_no": "34567890"
+                    }
+                }
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
+        },
+
+        // 9: post change (persal) for cb245673-aa41-4302-ac47-00000001003
+        {
+            "key": "post.hub.change.nurse_update_detail.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
+                    "action": "nurse_update_detail",
+                    "data": {
+                        "persal_no": "11114444"
+                    }
+                }
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
+        },
+
+        // 10: register cb245673-aa41-4302-ac47-00000001001 (nurseconnect self registration)
         {
             "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-00000001001",
             "request": {
@@ -45,7 +256,7 @@ module.exports = function() {
             }
         },
 
-        // 2: register cb245673-aa41-4302-ac47-00000001002 (nurseconnect registration by another, 27820001001)
+        // 11: register cb245673-aa41-4302-ac47-00000001002 (nurseconnect registration by another, 27820001001)
         {
             "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-00000001002",
             "request": {
@@ -69,87 +280,6 @@ module.exports = function() {
                     "accepted": true
                 }
             }
-        },
-
-        // 3:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
-        // 4:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
-        // 5:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
-        // 6:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
-        // 7:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
-        // 8:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
-        // 9:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
-        // 10:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
-        // 11:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
         },
 
         // 12:
