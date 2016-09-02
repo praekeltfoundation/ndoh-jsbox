@@ -120,6 +120,8 @@ go.app = function() {
                 registrant_info.details.source = "clinic";
             }
 
+            registrant_info.details.last_mc_reg_on = "clinic";
+
             return registrant_info;
         };
 

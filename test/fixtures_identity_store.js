@@ -320,6 +320,7 @@ module.exports = function() {
                         "sa_id_no": "5101025009086",
                         "mom_dob": "2051-01-02",
                         "source": "clinic",
+                        "last_mc_reg_on": "clinic"
                     },
                     "created_at": "2016-08-05T06:13:29.693272Z",
                     "updated_at": "2016-08-05T06:13:29.693298Z",
@@ -348,7 +349,8 @@ module.exports = function() {
                         "consent": "true",
                         "passport_no": "12345",
                         "passport_origin": "zw",
-                        "source": "clinic"
+                        "source": "clinic",
+                        "last_mc_reg_on": "clinic"
                     },
                     "created_at": "2016-08-05T06:13:29.693272Z",
                     "updated_at": "2016-08-05T06:13:29.693298Z"
@@ -376,7 +378,8 @@ module.exports = function() {
                         },
                         "consent": "true",
                         "mom_dob": "1981-01-14",
-                        "source": "clinic"
+                        "source": "clinic",
+                        "last_mc_reg_on": "clinic"
                     },
                     "created_at": "2016-08-05T06:13:29.693272Z",
                     "updated_at": "2016-08-05T06:13:29.693298Z"
