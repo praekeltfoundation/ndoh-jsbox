@@ -27,7 +27,8 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'details__addresses__msisdn': '+27820000111'
+                    'details__addresses__msisdn': '+27820000111',
+                    "include_inactive": "false"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -191,7 +192,8 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'details__addresses__msisdn': '+27820000555'
+                    'details__addresses__msisdn': '+27820000555',
+                    "include_inactive": "false"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -231,7 +233,8 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'details__addresses__msisdn': '+27820000666'
+                    'details__addresses__msisdn': '+27820000666',
+                    "include_inactive": "false"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -257,7 +260,8 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'details__addresses__msisdn': '+27820000777'
+                    'details__addresses__msisdn': '+27820000777',
+                    "include_inactive": "false"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -283,7 +287,8 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'details__addresses__msisdn': '+27820000888'
+                    'details__addresses__msisdn': '+27820000888',
+                    "include_inactive": "false"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -309,7 +314,8 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'details__addresses__msisdn': '+27820000999'
+                    'details__addresses__msisdn': '+27820000999',
+                    "include_inactive": "false"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -335,7 +341,8 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'details__addresses__msisdn': '+27820101010'
+                    'details__addresses__msisdn': '+27820101010',
+                    "include_inactive": "false"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -361,7 +368,8 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'details__addresses__msisdn': '+27820111111'
+                    'details__addresses__msisdn': '+27820111111',
+                    "include_inactive": "false"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -1689,7 +1697,8 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'details__addresses__msisdn': '+27720000111'
+                    'details__addresses__msisdn': '+27720000111',
+                    "include_inactive": "false"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],

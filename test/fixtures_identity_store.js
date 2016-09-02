@@ -18,7 +18,8 @@ module.exports = function() {
                 "url": 'http://is/api/v1/identities/search/',
                 "method": 'GET',
                 "params": {
-                    "details__addresses__msisdn": '+27820001001'
+                    "details__addresses__msisdn": '+27820001001',
+                    "include_inactive": "false"
                 }
             },
             "response": {
@@ -39,7 +40,8 @@ module.exports = function() {
                 "url": 'http://is/api/v1/identities/search/',
                 "method": 'GET',
                 "params": {
-                    "details__addresses__msisdn": '+27820001002'
+                    "details__addresses__msisdn": '+27820001002',
+                    "include_inactive": "false"
                 }
             },
             "response": {
@@ -77,7 +79,8 @@ module.exports = function() {
                 "url": 'http://is/api/v1/identities/search/',
                 "method": 'GET',
                 "params": {
-                    "details__addresses__msisdn": '+27820001003'
+                    "details__addresses__msisdn": '+27820001003',
+                    "include_inactive": "false"
                 }
             },
             "response": {
@@ -188,7 +191,8 @@ module.exports = function() {
                 "url": 'http://is/api/v1/identities/search/',
                 "method": 'GET',
                 "params": {
-                    "details__addresses__msisdn": '+27820001004'
+                    "details__addresses__msisdn": '+27820001004',
+                    "include_inactive": "false"
                 }
             },
             "response": {
@@ -235,7 +239,8 @@ module.exports = function() {
                 "url": 'http://is/api/v1/identities/search/',
                 "method": 'GET',
                 "params": {
-                    "details__addresses__msisdn": '+27820001005'
+                    "details__addresses__msisdn": '+27820001005',
+                    "include_inactive": "false"
                 }
             },
             "response": {
