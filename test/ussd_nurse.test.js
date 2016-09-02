@@ -17,28 +17,10 @@ describe("app", function() {
 
         beforeEach(function() {
             app = new go.app.GoNDOH();
-            // go.utils.get_timestamp = function() {
-            //     return '20130819144811';
-            // };
-            // go.utils.get_uuid = function() {
-            //     return 'b18c62b4-828e-4b52-25c9-725a1f43fb37';
-            // };
-            //
-            // go.utils.get_oid = function(){
-            //     return '2.25.169380846032024';
-            // };
+
             tester = new AppTester(app);
 
             tester
-                // .setup(function(api) {
-                    // api.resources.add(new DummyMessageStoreResource());
-                    // api.resources.add(new DummyOptoutResource());
-                    // api.resources.attach(api);
-                    // api.groups.add( {
-                    //     key: 'en_key',
-                    //     name: 'en',
-                    // });
-                // })
                 .setup.char_limit(182)
                 .setup.config.app({
                     name: 'ussd_nurse',
@@ -86,85 +68,6 @@ describe("app", function() {
                     fixtures_Jembi().forEach(api.http.fixtures.add); // 160 - 169
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 160 ->
                 })
-                // .setup(function(api) {
-                //     // user with working_on extra
-                //     api.contacts.add({
-                //         msisdn: '+27821231111',
-                //         extra: {
-                //             nc_working_on: '+27821232222'
-                //         },
-                //     });
-                // })
-                // .setup(function(api) {
-                //     // registered user
-                //     api.contacts.add({
-                //         msisdn: '+27821237777',
-                //         extra: {
-                //             nc_last_reg_id: "7",
-                //             nc_is_registered: 'true',
-                //             nc_faccode: '123456',
-                //             nc_facname: 'WCL clinic',
-                //             nc_working_on: "",
-                //             nc_id_type: "sa_id",
-                //             nc_sa_id_no: "5101025009086",
-                //             nc_dob: "1951-01-02"
-                //         },
-                //     });
-                // })
-                // .setup(function(api) {
-                //     // opted_out user 1
-                //     api.contacts.add({
-                //         msisdn: '+27821239999',
-                //         extra: {
-                //             nc_opt_out_reason: 'job_change'
-                //         },
-                //     });
-                // })
-                // .setup(function(api) {
-                //     // opted_out user 2
-                //     api.contacts.add({
-                //         msisdn: '+27821233333',
-                //         extra: {
-                //             nc_last_reg_id: '3',
-                //             nc_opt_out_reason: 'other',
-                //             nc_is_registered: 'true',
-                //             nc_faccode: '123456',
-                //             nc_facname: 'WCL clinic',
-                //             nc_id_type: 'passport',
-                //             nc_passport_country: 'bw',
-                //             nc_passport_num: '33333',
-                //             nc_dob: '1976-03-04'
-                //         },
-                //     });
-                // })
-                // .setup(function(api) {
-                //     // opted_out user 3
-                //     api.contacts.add({
-                //         msisdn: '+27821230000',
-                //         extra: {
-                //             nc_last_reg_id: '0',
-                //             nc_opt_out_reason: 'not_useful',
-                //             nc_is_registered: 'true'
-                //         },
-                //     });
-                // })
-                // .setup(function(api) {
-                //     // opted_out user 4
-                //     api.contacts.add({
-                //         msisdn: '+27821240000',
-                //         extra: {
-                //             nc_last_reg_id: '4',
-                //             nc_opt_out_reason: 'unknown',
-                //             nc_is_registered: 'true',
-                //             nc_faccode: '123456',
-                //             nc_facname: 'WCL clinic',
-                //             nc_id_type: 'passport',
-                //             nc_passport_country: 'bw',
-                //             nc_passport_num: '44444',
-                //             nc_dob: '1976-03-04'
-                //         },
-                //     });
-                // })
                 ;
         });
 
@@ -540,28 +443,6 @@ describe("app", function() {
                     .check.reply.ends_session()
                     .run();
             });
-            it.skip("should save extras", function() {
-                return tester
-                    .setup.user.addr('27820001001')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '1'  // state_not_subscribed - self registration
-                        , '1'  // state_permission_self - consent
-                        , '123456'  // state_faccode
-                        , '1'  // state_facname - confirm
-                    )
-                    .check(function(api) {
-                        var contact = _.find(api.contacts.store, {
-                          msisdn: '+27820001001'
-                        });
-                        assert.equal(Object.keys(contact.extra).length, 4);
-                        assert.equal(contact.extra.nc_faccode, '123456');
-                        assert.equal(contact.extra.nc_facname, 'WCL clinic');
-                        assert.equal(contact.extra.nc_is_registered, 'true');
-                        assert.equal(contact.extra.nc_working_on, "");
-                    })
-                    .run();
-            });
             it.skip("should fire metrics", function() {
                 return tester
                     .setup.user.addr('27820001001')
@@ -613,37 +494,6 @@ describe("app", function() {
                     .check.interaction({
                         state: 'state_end_reg',
                         reply: "Thank you. Weekly NurseConnect messages will now be sent to this number."
-                    })
-                    .run();
-            });
-            it.skip("should save extras", function() {
-                return tester
-                    .setup.user.addr('27820001001')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '3'  // state_not_subscribed - other registration
-                        , '1'  // state_permission_other - consent
-                        , '0820001002'  // state_msisdn
-                        , '123456'  // state_faccode
-                        , '1'  // state_facname - confirm
-                    )
-                    .check(function(api) {
-                        var user = _.find(api.contacts.store, {
-                          msisdn: '+27820001001'
-                        });
-                        assert.equal(Object.keys(user.extra).length, 2);
-                        assert.equal(user.extra.nc_working_on, '+27820001002');
-                        assert.equal(user.extra.nc_registrees, '+27820001002');
-                    })
-                    .check(function(api) {
-                        var contact = _.find(api.contacts.store, {
-                          msisdn: '+27820001002'
-                        });
-                        assert.equal(Object.keys(contact.extra).length, 4);
-                        assert.equal(contact.extra.nc_faccode, '123456');
-                        assert.equal(contact.extra.nc_facname, 'WCL clinic');
-                        assert.equal(contact.extra.nc_is_registered, 'true');
-                        assert.equal(contact.extra.nc_registered_by, '+27821234444');
                     })
                     .run();
             });
@@ -704,24 +554,6 @@ describe("app", function() {
                     })
                     .run();
             });
-            it.skip("should have extras", function() {
-                return tester
-                    .setup.user.addr('27820001004')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '1'  // state_not_subscribed - self registration
-                        , '1'  // state_permission_self - consent
-                    )
-                    .check(function(api) {
-                        var contact = _.find(api.contacts.store, {
-                          msisdn: '+27820001004'
-                        });
-                        assert.equal(Object.keys(contact.extra).length, 2);
-                        assert.equal(contact.extra.nc_working_on, "");
-                        assert.equal(contact.extra.nc_opt_out_reason, "job_change");
-                    })
-                    .run();
-            });
             it("should go to state_faccode if confirmed opt in", function() {
                 return tester
                     .setup.user.addr('27820001004')
@@ -733,25 +565,6 @@ describe("app", function() {
                     )
                     .check.interaction({
                         state: 'state_faccode'
-                    })
-                    .run();
-            });
-            it.skip("should save extras", function() {
-                return tester
-                    .setup.user.addr('27820001004')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '1'  // state_not_subscribed - self registration
-                        , '1'  // state_permission_self - consent
-                        , '1'  // state_opt_in_reg - confirm
-                    )
-                    .check(function(api) {
-                        var contact = _.find(api.contacts.store, {
-                          msisdn: '+27820001004'
-                        });
-                        assert.equal(Object.keys(contact.extra).length, 2);
-                        assert.equal(contact.extra.nc_working_on, "");
-                        assert.equal(contact.extra.nc_opt_out_reason, "");
                     })
                     .run();
             });
@@ -778,32 +591,6 @@ describe("app", function() {
                     })
                     .run();
             });
-            it.skip("should have extras", function() {
-                return tester
-                    .setup.user.addr('27820001001')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '3'  // state_not_subscribed - other registration
-                        , '1'  // state_permission_other - consent
-                        , '0820001004'  // state_msisdn
-                    )
-                    .check(function(api) {
-                        var contact = _.find(api.contacts.store, {
-                          msisdn: '+27820001004'
-                        });
-                        assert.equal(Object.keys(contact.extra).length, 1);
-                        assert.equal(contact.extra.nc_working_on, undefined);  // defined on user
-                        assert.equal(contact.extra.nc_opt_out_reason, "job_change");
-                    })
-                    .check(function(api) {
-                        var contact = _.find(api.contacts.store, {
-                          msisdn: '+27820001001'
-                        });
-                        assert.equal(Object.keys(contact.extra).length, 1);
-                        assert.equal(contact.extra.nc_working_on, "+27821239999");
-                    })
-                    .run();
-            });
             it("should go to state_faccode if confirmed opt in", function() {
                 return tester
                     .setup.user.addr('27820001001')
@@ -816,34 +603,6 @@ describe("app", function() {
                     )
                     .check.interaction({
                         state: 'state_faccode'
-                    })
-                    .run();
-            });
-            it.skip("should save extras", function() {
-                return tester
-                    .setup.user.addr('27820001004')
-                    .setup.user.addr('27820001001')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '3'  // state_not_subscribed - other registration
-                        , '1'  // state_permission_other - consent
-                        , '0820001004'  // state_msisdn
-                        , '1'  // state_opt_in_reg - confirm
-                    )
-                    .check(function(api) {
-                        var contact = _.find(api.contacts.store, {
-                          msisdn: '+27820001004'
-                        });
-                        assert.equal(Object.keys(contact.extra).length, 1);
-                        assert.equal(contact.extra.nc_working_on, undefined);  // defined on user
-                        assert.equal(contact.extra.nc_opt_out_reason, "");
-                    })
-                    .check(function(api) {
-                        var contact = _.find(api.contacts.store, {
-                          msisdn: '+27820001001'
-                        });
-                        assert.equal(Object.keys(contact.extra).length, 1);
-                        assert.equal(contact.extra.nc_working_on, "+27820001004");
                     })
                     .run();
             });
@@ -1119,36 +878,6 @@ describe("app", function() {
                         })
                         .run();
                 });
-                it("should transfer extras", function() {
-                    return tester
-                        .setup.user.addr('27821234444')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '2'  // st_not_subscribed
-                            , '0821237777'  // st_change_old_nr
-                        )
-                        .check(function(api) {
-                            var new_contact = _.find(api.contacts.store, {
-                              msisdn: '+27821234444'
-                            });
-                            assert.equal(Object.keys(new_contact.extra).length, 8);
-                            assert.equal(new_contact.extra.nc_faccode, '123456');
-                            assert.equal(new_contact.extra.nc_last_reg_id, '7');
-                            assert.equal(new_contact.extra.nc_facname, 'WCL clinic');
-                            assert.equal(new_contact.extra.nc_is_registered, 'true');
-                            assert.equal(new_contact.extra.nc_working_on, "");
-                            assert.equal(new_contact.extra.nc_id_type, "sa_id");
-                            assert.equal(new_contact.extra.nc_sa_id_no, "5101025009086");
-                            assert.equal(new_contact.extra.nc_dob, "1951-01-02");
-                        })
-                        .check(function(api) {
-                            var old_contact = _.find(api.contacts.store, {
-                              msisdn: '+27821237777'
-                            });
-                            assert.equal(Object.keys(old_contact.extra).length, 0);
-                        })
-                        .run();
-                });
             });
         });
 
@@ -1168,36 +897,6 @@ describe("app", function() {
                         })
                         .run();
                 });
-                it("should have extras", function() {
-                    return tester
-                        .setup.user.addr('27821237777')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '2'  // st_subscribed - change num
-                        )
-                        .check(function(api) {
-                            var old_contact = _.find(api.contacts.store, {
-                              msisdn: '+27821237777'
-                            });
-                            assert.equal(Object.keys(old_contact.extra).length, 8);
-                            assert.equal(old_contact.extra.nc_last_reg_id, '7');
-                            assert.equal(old_contact.extra.nc_faccode, '123456');
-                            assert.equal(old_contact.extra.nc_facname, 'WCL clinic');
-                            assert.equal(old_contact.extra.nc_is_registered, 'true');
-                            assert.equal(old_contact.extra.nc_working_on, "");
-                            assert.equal(old_contact.extra.nc_id_type, "sa_id");
-                            assert.equal(old_contact.extra.nc_sa_id_no, "5101025009086");
-                            assert.equal(old_contact.extra.nc_dob, "1951-01-02");
-                        })
-                        .check(function(api) {
-                            var opted_out_contact = _.find(api.contacts.store, {
-                              msisdn: '+27821239999'
-                            });
-                            assert.equal(Object.keys(opted_out_contact.extra).length, 1);
-                            assert.equal(opted_out_contact.extra.nc_opt_out_reason, "job_change");
-                        })
-                        .run();
-                });
             });
             describe("entering new unused number", function() {
                 it("should go to st_end_detail_changed", function() {
@@ -1210,36 +909,6 @@ describe("app", function() {
                         )
                         .check.interaction({
                             state: 'st_end_detail_changed',
-                        })
-                        .run();
-                });
-                it("should transfer extras", function() {
-                    return tester
-                        .setup.user.addr('27821237777')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '2'  // st_subscribed - change num
-                            , '0821238888'  // st_change_num
-                        )
-                        .check(function(api) {
-                            var new_contact = _.find(api.contacts.store, {
-                              msisdn: '+27821238888'
-                            });
-                            assert.equal(Object.keys(new_contact.extra).length, 8);
-                            assert.equal(new_contact.extra.nc_last_reg_id, '7');
-                            assert.equal(new_contact.extra.nc_faccode, '123456');
-                            assert.equal(new_contact.extra.nc_facname, 'WCL clinic');
-                            assert.equal(new_contact.extra.nc_is_registered, 'true');
-                            assert.equal(new_contact.extra.nc_working_on, "");
-                            assert.equal(new_contact.extra.nc_id_type, "sa_id");
-                            assert.equal(new_contact.extra.nc_sa_id_no, "5101025009086");
-                            assert.equal(new_contact.extra.nc_dob, "1951-01-02");
-                        })
-                        .check(function(api) {
-                            var old_contact = _.find(api.contacts.store, {
-                              msisdn: '+27821237777'
-                            });
-                            assert.equal(Object.keys(old_contact.extra).length, 0);
                         })
                         .run();
                 });
@@ -1260,37 +929,6 @@ describe("app", function() {
                                 "1. Yes",
                                 "2. No"
                             ].join('\n')
-                        })
-                        .run();
-                });
-                it("should transfer extras on opt-in", function() {
-                    return tester
-                        .setup.user.addr('27821237777')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '2'  // st_subscribed - change num
-                            , '0821239999'  // st_change_num
-                            , '1'  // st_opt_in_change - yes
-                        )
-                        .check(function(api) {
-                            var new_contact = _.find(api.contacts.store, {
-                              msisdn: '+27821239999'
-                            });
-                            assert.equal(Object.keys(new_contact.extra).length, 8);
-                            assert.equal(new_contact.extra.nc_last_reg_id, '7');
-                            assert.equal(new_contact.extra.nc_faccode, '123456');
-                            assert.equal(new_contact.extra.nc_facname, 'WCL clinic');
-                            assert.equal(new_contact.extra.nc_is_registered, 'true');
-                            assert.equal(new_contact.extra.nc_working_on, "");
-                            assert.equal(new_contact.extra.nc_id_type, "sa_id");
-                            assert.equal(new_contact.extra.nc_sa_id_no, "5101025009086");
-                            assert.equal(new_contact.extra.nc_dob, "1951-01-02");
-                        })
-                        .check(function(api) {
-                            var old_contact = _.find(api.contacts.store, {
-                              msisdn: '+27821237777'
-                            });
-                            assert.equal(Object.keys(old_contact.extra).length, 0);
                         })
                         .run();
                 });
@@ -1411,23 +1049,6 @@ describe("app", function() {
                         .check.interaction({
                             state: 'st_change_faccode',
                             reply: "Please enter the 6-digit facility code for your new facility, e.g. 456789:"
-                        })
-                        .run();
-                });
-                it("should have extras", function() {
-                    return tester
-                        .setup.user.addr('27821237777')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '3'  // st_subscribed - change faccode
-                        )
-                        .check(function(api) {
-                            var contact = _.find(api.contacts.store, {
-                              msisdn: '+27821237777'
-                            });
-                            assert.equal(Object.keys(contact.extra).length, 8);
-                            assert.equal(contact.extra.nc_faccode, "123456");
-                            assert.equal(contact.extra.nc_facname, "WCL clinic");
                         })
                         .run();
                 });
@@ -1672,21 +1293,6 @@ describe("app", function() {
                         })
                         .run();
                 });
-                it("should have extras", function() {
-                    return tester
-                        .setup.user.addr('27821237777')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '4'  // st_subscribed - change id
-                        )
-                        .check(function(api) {
-                            var contact = _.find(api.contacts.store, {
-                              msisdn: '+27821237777'
-                            });
-                            assert.equal(Object.keys(contact.extra).length, 8);
-                        })
-                        .run();
-                });
                 describe("change ID no", function() {
                     it("should ask for their ID no", function() {
                         return tester
@@ -1810,29 +1416,6 @@ describe("app", function() {
                             })
                             .run();
                     });
-                    it("should save extras", function() {
-                        return tester
-                            .setup.user.addr('27821237777')
-                            .inputs(
-                                {session_event: 'new'}
-                                , '4'  // st_subscribed - change id
-                                , '2'  // st_change_id_no - passport
-                                , '1'  // st_passport - namibia
-                                , 'Nam1234'  // st_passport_no
-                                , '07031976'  // st_dob - 7 March 1976
-                            )
-                            .check(function(api) {
-                                var contact = _.find(api.contacts.store, {
-                                  msisdn: '+27821237777'
-                                });
-                                assert.equal(Object.keys(contact.extra).length, 10);
-                                assert.equal(contact.extra.nc_id_type, 'passport');
-                                assert.equal(contact.extra.nc_passport_country, 'na');
-                                assert.equal(contact.extra.nc_passport_num, 'Nam1234');
-                                assert.equal(contact.extra.nc_dob, '1976-03-07');
-                            })
-                            .run();
-                    });
                 });
             });
         });
@@ -1862,23 +1445,6 @@ describe("app", function() {
                             })
                             .run();
                     });
-                    it("should have extras", function() {
-                        return tester
-                            .setup.user.addr('27821237777')
-                            .inputs(
-                                {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                            )
-                            .check(function(api) {
-                                var contact = _.find(api.contacts.store, {
-                                  msisdn: '+27821237777'
-                                });
-                                assert.equal(Object.keys(contact.extra).length, 8);
-                                assert.equal(contact.extra.nc_opt_out_reason, undefined);
-                            })
-                            .run();
-                    });
                 });
 
                 describe("should reach st_end_detail_changed", function() {
@@ -1893,24 +1459,6 @@ describe("app", function() {
                             )
                             .check.interaction({
                                 state: 'st_end_detail_changed',
-                            })
-                            .run();
-                    });
-                    it("should save extras", function() {
-                        return tester
-                            .setup.user.addr('27821237777')
-                            .inputs(
-                                {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '1'  // st_optout - not a nurse
-                            )
-                            .check(function(api) {
-                                var contact = _.find(api.contacts.store, {
-                                  msisdn: '+27821237777'
-                                });
-                                assert.equal(Object.keys(contact.extra).length, 9);
-                                assert.equal(contact.extra.nc_opt_out_reason, 'job_change');
                             })
                             .run();
                     });
@@ -1978,24 +1526,6 @@ describe("app", function() {
                             })
                             .run();
                     });
-                    it("should have extras", function() {
-                        return tester
-                            .setup.user.addr('27821233333')
-                            .inputs(
-                                {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                            )
-                            .check(function(api) {
-                                var contact = _.find(api.contacts.store, {
-                                  msisdn: '+27821233333'
-                                });
-                                assert.equal(Object.keys(contact.extra).length, 10);
-                                assert.equal(contact.extra.nc_opt_out_reason, 'other');
-                                assert.equal(contact.extra.nc_is_registered, 'true');
-                            })
-                            .run();
-                    });
                 });
 
                 describe("should reach st_end_detail_changed", function() {
@@ -2010,25 +1540,6 @@ describe("app", function() {
                             )
                             .check.interaction({
                                 state: 'st_end_detail_changed'
-                            })
-                            .run();
-                    });
-                    it("should save extras", function() {
-                        return tester
-                            .setup.user.addr('27821233333')
-                            .inputs(
-                                {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '4'  // st_optout - other
-                            )
-                            .check(function(api) {
-                                var contact = _.find(api.contacts.store, {
-                                  msisdn: '+27821233333'
-                                });
-                                assert.equal(Object.keys(contact.extra).length, 10);
-                                assert.equal(contact.extra.nc_opt_out_reason, 'other');
-                                assert.equal(contact.extra.nc_is_registered, 'true');
                             })
                             .run();
                     });
@@ -2090,24 +1601,6 @@ describe("app", function() {
                             })
                             .run();
                     });
-                    it("should have extras", function() {
-                        return tester
-                            .setup.user.addr('27821230000')
-                            .inputs(
-                                {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                            )
-                            .check(function(api) {
-                                var contact = _.find(api.contacts.store, {
-                                  msisdn: '+27821230000'
-                                });
-                                assert.equal(Object.keys(contact.extra).length, 4);
-                                assert.equal(contact.extra.nc_opt_out_reason, 'not_useful');
-                                assert.equal(contact.extra.nc_is_registered, 'true');
-                            })
-                            .run();
-                    });
                 });
 
                 describe("should reach st_end_detail_changed", function() {
@@ -2123,25 +1616,6 @@ describe("app", function() {
                             )
                             .check.interaction({
                                 state: 'st_end_detail_changed'
-                            })
-                            .run();
-                    });
-                    it("should save extras", function() {
-                        return tester
-                            .setup.user.addr('27821230000')
-                            .inputs(
-                                {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '4'  // st_optout - other
-                            )
-                            .check(function(api) {
-                                var contact = _.find(api.contacts.store, {
-                                  msisdn: '+27821230000'
-                                });
-                                assert.equal(Object.keys(contact.extra).length, 4);
-                                assert.equal(contact.extra.nc_opt_out_reason, 'other');
-                                assert.equal(contact.extra.nc_is_registered, 'true');
                             })
                             .run();
                     });
@@ -2168,24 +1642,6 @@ describe("app", function() {
                                     "4. Other",
                                     "5. Main menu"
                                 ].join("\n")
-                            })
-                            .run();
-                    });
-                    it("should have extras", function() {
-                        return tester
-                            .setup.user.addr('27821240000')
-                            .inputs(
-                                {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                            )
-                            .check(function(api) {
-                                var contact = _.find(api.contacts.store, {
-                                  msisdn: '+27821240000'
-                                });
-                                assert.equal(Object.keys(contact.extra).length, 10);
-                                assert.equal(contact.extra.nc_opt_out_reason, 'unknown');
-                                assert.equal(contact.extra.nc_is_registered, 'true');
                             })
                             .run();
                     });
@@ -2225,25 +1681,6 @@ describe("app", function() {
                                 assert.deepEqual(metrics['test.nurseconnect.optouts.sum'].values, [1]);
                                 assert.deepEqual(metrics['test.nurseconnect.optouts.job_change.last'].values, [1]);
                                 assert.deepEqual(metrics['test.nurseconnect.optouts.job_change.sum'].values, [1]);
-                            })
-                            .run();
-                    });
-                    it("should save extras", function() {
-                        return tester
-                            .setup.user.addr('27821240000')
-                            .inputs(
-                                {session_event: 'new'}  // dial in
-                                , '6'  // st_subscribed - more options
-                                , '2'  // st_subscribed - opt out
-                                , '4'  // st_optout - other
-                            )
-                            .check(function(api) {
-                                var contact = _.find(api.contacts.store, {
-                                  msisdn: '+27821240000'
-                                });
-                                assert.equal(Object.keys(contact.extra).length, 10);
-                                assert.equal(contact.extra.nc_opt_out_reason, 'other');
-                                assert.equal(contact.extra.nc_is_registered, 'true');
                             })
                             .run();
                     });
