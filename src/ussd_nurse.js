@@ -849,8 +849,20 @@ go.app = function() {
                     if (choice.value === 'main_menu') {
                         return 'state_route';
                     } else {
-                        // TODO #36 add optout logic
-                         return 'state_end_detail_changed';
+                        var change_info = {
+                            "registrant_id": self.im.user.answers.operator.id,
+                            "action": "nurse_optout",
+                            "data": {
+                                "reason": choice.value
+                            }
+                        };
+
+                        return hub
+                        .create_change(change_info)
+                        .then(function() {
+                            return 'state_end_detail_changed';
+                        });
+
                     }
                 }
             });

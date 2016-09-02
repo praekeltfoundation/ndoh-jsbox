@@ -412,13 +412,20 @@ module.exports = function() {
             }
         },
 
-        // 15:
+        // 15: change optout for identity cb245673-aa41-4302-ac47-00000001003 (job_change)
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
+                    "action": "nurse_optout",
+                    "data": {
+                        "reason":"job_change"
+                    }
+                }
             },
-            'response': {}
+            "response": {}
         },
 
         // 16:

@@ -1601,6 +1601,9 @@ describe("app", function() {
                             .check.interaction({
                                 state: 'state_end_detail_changed',
                             })
+                            .check(function(api) {
+                                utils.check_fixtures_used(api, [15, 52, 54, 162]);
+                            })
                             .run();
                     });
                     it.skip("should fire metrics", function() {
