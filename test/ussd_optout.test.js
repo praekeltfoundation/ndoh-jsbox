@@ -57,75 +57,9 @@ describe("app", function() {
                             token: 'test MessageSender'
                         }
                     },
-                    subscription: {
-                        standard: 1,
-                        later: 2,
-                        accelerated: 3,
-                        baby1: 4,
-                        baby2: 5,
-                        miscarriage: 6,
-                        stillbirth: 7,
-                        babyloss: 8,
-                        subscription: 9,
-                        chw: 10
-                    },
-                    rate: {
-                        daily: 1,
-                        one_per_week: 2,
-                        two_per_week: 3,
-                        three_per_week: 4,
-                        four_per_week: 5,
-                        five_per_week: 6
-                    },
                     logging: 'off'
                 })
                 .setup.char_limit(182)
-                /*.setup(function(api) {
-                    api.contacts.add( {
-                        msisdn: '+27820001002',
-                        extra : {
-                            language_choice: 'en',
-                            suspect_pregnancy: 'yes',
-                            id_type: 'passport',
-                            passport_origin: 'zw',
-                            passport_no: '12345',
-                            ussd_sessions: '5',
-                            is_registered_by: 'clinic'
-                        },
-                        key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                        user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                    });
-                    api.contacts.add( {
-                        msisdn: '+27820001001',
-                        extra : {
-                            language_choice: 'en',
-                            suspect_pregnancy: 'yes',
-                            id_type: 'passport',
-                            passport_origin: 'zw',
-                            passport_no: '12345',
-                            ussd_sessions: '5',
-                            is_registered_by: 'personal',
-                            opt_out_reason: 'babyloss'
-                        },
-                        key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                        user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                    });
-                    api.contacts.add( {
-                        msisdn: '+27831113333',
-                        extra : {
-                            language_choice: 'en',
-                            suspect_pregnancy: 'yes',
-                            id_type: 'passport',
-                            passport_origin: 'zw',
-                            passport_no: '12345',
-                            ussd_sessions: '5',
-                            is_registered_by: 'chw',
-                            opt_out_reason: 'unknown'
-                        },
-                        key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                        user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                    });
-                })*/
                 .setup(function(api) {
                     // add fixtures for services used
                     fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49

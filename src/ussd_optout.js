@@ -11,7 +11,6 @@ go.app = function() {
     var IdentityStore = SeedJsboxUtils.IdentityStore;
     var StageBasedMessaging = SeedJsboxUtils.StageBasedMessaging;
     var Hub = SeedJsboxUtils.Hub;
-    // var MessageSender = SeedJsboxUtils.MessageSender;
 
     var utils = SeedJsboxUtils.utils;
 
