@@ -9,7 +9,7 @@
 module.exports = function() {
     return [
 
-        // 150: get identity by msisdn +27820001001
+        // 160: get identity by msisdn +27820001001
         {
             "key": "get.is.msisdn.27820001001",
             "repeatable": true,
@@ -17,7 +17,8 @@ module.exports = function() {
                 "url": 'http://is/api/v1/identities/search/',
                 "method": 'GET',
                 "params": {
-                    "details__addresses__msisdn": '+27820001001'
+                    "details__addresses__msisdn": '+27820001001',
+                    "include_inactive": "false"
                 }
             },
             "response": {
@@ -31,14 +32,15 @@ module.exports = function() {
             }
         },
 
-        // 151: get identity by msisdn +27820001002
+        // 161: get identity by msisdn +27820001002
         {
             "key": "get.is.msisdn.27820001002",
             "request": {
                 "url": 'http://is/api/v1/identities/search/',
                 "method": 'GET',
                 "params": {
-                    "details__addresses__msisdn": '+27820001002'
+                    "details__addresses__msisdn": '+27820001002',
+                    "include_inactive": "false"
                 }
             },
             "response": {
@@ -68,14 +70,15 @@ module.exports = function() {
             }
         },
 
-        // 152: get identity by msisdn +27820001003
+        // 162: get identity by msisdn +27820001003
         {
             "key": "get.is.msisdn.27820001003",
             "request": {
                 "url": 'http://is/api/v1/identities/search/',
                 "method": 'GET',
                 "params": {
-                    "details__addresses__msisdn": '+27820001003'
+                    "details__addresses__msisdn": '+27820001003',
+                    "include_inactive": "false"
                 }
             },
             "response": {
@@ -115,7 +118,7 @@ module.exports = function() {
             }
         },
 
-        // 153: create identity with msisdn +27820001001
+        // 163: create identity with msisdn +27820001001
         {
             "key": "post.is.msisdn.27820001001",
             "repeatable": true,
@@ -153,14 +156,15 @@ module.exports = function() {
             }
         },
 
-        // 154: get identity by msisdn +27820001004
+        // 164: get identity by msisdn +27820001004
         {
             "key": "get.is.msisdn.27820001004",
             "request": {
                 "url": 'http://is/api/v1/identities/search/',
                 "method": 'GET',
                 "params": {
-                    "details__addresses__msisdn": '+27820001004'
+                    "details__addresses__msisdn": '+27820001004',
+                    "include_inactive": "false"
                 }
             },
             "response": {
@@ -200,7 +204,7 @@ module.exports = function() {
             }
         },
 
-        // 155: optin in identity cb245673-aa41-4302-ac47-00000001004
+        // 165: optin in identity cb245673-aa41-4302-ac47-00000001004
         {
             "key": "post.is.optin.27820001004",
             "request": {
@@ -217,7 +221,7 @@ module.exports = function() {
             }
         },
 
-        // 156: optout identity cb245673-aa41-4302-ac47-00000001003
+        // 166: optout identity cb245673-aa41-4302-ac47-00000001003
         {
             "request": {
                 "url": 'http://is/api/v1/optout/',
@@ -235,7 +239,7 @@ module.exports = function() {
             "response": {}
         },
 
-        // 157: optin in identity cb245673-aa41-4302-ac47-00000001003
+        // 167: optin in identity cb245673-aa41-4302-ac47-00000001003
         {
             "key": "post.is.optin.27820001003",
             "request": {
