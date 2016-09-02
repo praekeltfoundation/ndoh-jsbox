@@ -176,7 +176,7 @@ go.app = function() {
         });
 
         self.states.add("states_default_enter", function(name) {
-            // 'casepro not yet integrated'  (logging support ticket)
+            // 'casepro not yet integrated'  (log support ticket)
 
             return self.states.create("states_default");
         });
