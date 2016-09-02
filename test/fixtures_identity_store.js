@@ -299,5 +299,94 @@ module.exports = function() {
             }
         },
 
+        // 167: update identity cb245673-aa41-4302-ac47-00000001001
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/",
+                    "id": "cb245673-aa41-4302-ac47-00000001001",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001001": {"default": true}
+                            }
+                        },
+                        "consent": "true",
+                        "sa_id_no": "5101025009086",
+                        "mom_dob": "2051-01-02",
+                        "source": "clinic",
+                        "last_mc_reg_on": "clinic"
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z",
+                }
+            },
+            "response": {}
+        },
+
+        // 168: update identity cb245673-aa41-4302-ac47-00000001001
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/",
+                    "id": "cb245673-aa41-4302-ac47-00000001001",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001001": {"default": true}
+                            }
+                        },
+                        "consent": "true",
+                        "passport_no": "12345",
+                        "passport_origin": "zw",
+                        "source": "clinic",
+                        "last_mc_reg_on": "clinic"
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z"
+                }
+            },
+            "response": {}
+        },
+
+        // 169: update identity cb245673-aa41-4302-ac47-00000001001
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/",
+                    "id": "cb245673-aa41-4302-ac47-00000001001",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001001": {"default": true}
+                            }
+                        },
+                        "consent": "true",
+                        "mom_dob": "1981-01-14",
+                        "source": "clinic",
+                        "last_mc_reg_on": "clinic"
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z"
+                }
+            },
+            "response": {}
+        },
+
     ];
 };

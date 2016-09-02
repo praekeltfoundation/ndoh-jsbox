@@ -4,7 +4,7 @@ go;
 go.app = function() {
     var vumigo = require("vumigo_v02");
     var SeedJsboxUtils = require('seed-jsbox-utils');
-    // var moment = require('moment');
+    var Q = require('q');
     var App = vumigo.App;
     var FreeText = vumigo.states.FreeText;
     var EndState = vumigo.states.EndState;
@@ -16,10 +16,13 @@ go.app = function() {
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_start");
         var $ = self.$;
+        var interrupt = true;
         var utils = SeedJsboxUtils.utils;
 
         // variables for services
         var is;
+        var hub;
+        var ms;
 
         self.init = function() {
             // initialise services
@@ -27,6 +30,16 @@ go.app = function() {
                 new JsonApi(self.im, {}),
                 self.im.config.services.identity_store.token,
                 self.im.config.services.identity_store.url
+            );
+            hub = new SeedJsboxUtils.Hub(
+                new JsonApi(self.im, {}),
+                self.im.config.services.hub.token,
+                self.im.config.services.hub.url
+            );
+            ms = new SeedJsboxUtils.MessageSender(
+                new JsonApi(self.im, {}),
+                self.im.config.services.message_sender.token,
+                self.im.config.services.message_sender.url
             );
         };
 
@@ -44,29 +57,29 @@ go.app = function() {
             }
         },
 
-        self.jembi_json_api_call = function(method, params, payload, endpoint, im) {
-            var http = new JsonApi(im, {
+        self.jembi_json_api_call = function(method, params, payload, endpoint) {
+            var http = new JsonApi(self.im, {
                 auth: {
-                    username: im.config.jembi.username,
-                    password: im.config.jembi.password
+                    username: self.im.config.jembi.username,
+                    password: self.im.config.jembi.password
                 }
             });
             switch(method) {
                 case "get":
-                    return http.get(im.config.jembi.url_json + endpoint, {
+                    return http.get(self.im.config.jembi.url_json + endpoint, {
                         params: params
                     });
             }
         },
 
-        self.jembi_clinic_validate = function (im, clinic_code) {
+        self.jembi_clinic_validate = function (clinic_code) {
             var params = {
                 'criteria': 'code:' + clinic_code
             };
-            return self.jembi_json_api_call('get', params, null, 'facilityCheck', im);
+            return self.jembi_json_api_call('get', params, null, 'facilityCheck');
         };
 
-        self.validate_clinic_code = function(im, clinic_code) {
+        self.validate_clinic_code = function(clinic_code) {
             if (!utils.check_valid_number(clinic_code) ||
                 clinic_code.length !== 6) {
                 return Q()
@@ -75,7 +88,7 @@ go.app = function() {
                     });
             } else {
                 return self
-                .jembi_clinic_validate(im, clinic_code)
+                .jembi_clinic_validate(clinic_code)
                 .then(function(json_result) {
                     var rows = json_result.data.rows;
                     if (rows.length === 0) {
@@ -87,14 +100,112 @@ go.app = function() {
             }
         };
 
+        self.compile_registrant_info = function() {
+            var registrant_info = self.im.user.answers.registrant;
+            registrant_info.details.lang_code = self.im.user.answers.lang_code;
+            registrant_info.details.consent =
+                self.im.user.answers.state_consent === "yes" ? "true" : null;
+
+            if (self.im.user.answers.state_id_type === "sa_id") {
+                registrant_info.details.sa_id_no = self.im.user.answers.state_sa_id;
+                registrant_info.details.mom_dob = self.im.user.answers.mom_dob;
+            } else if (self.im.user.answers.state_id_type === "passport") {
+                registrant_info.details.passport_no = self.im.user.answers.state_passport_no;
+                registrant_info.details.passport_origin = self.im.user.answers.state_passport_origin;
+            } else {
+                registrant_info.details.mom_dob = self.im.user.answers.mom_dob;
+            }
+
+            if (!("source" in registrant_info.details)) {
+                registrant_info.details.source = "clinic";
+            }
+
+            registrant_info.details.last_mc_reg_on = "clinic";
+
+            return registrant_info;
+        };
+
+        self.compile_registration_info = function() {
+            var reg_details = {
+                "operator_id": self.im.user.answers.operator.id,
+                "msisdn_registrant": self.im.user.answers.registrant_msisdn,
+                "msisdn_device": self.im.user.answers.operator_msisdn,
+                "id_type": self.im.user.answers.state_id_type,
+                "language": self.im.user.answers.state_language,
+                "edd": self.im.user.answers.edd,
+                "faccode": self.im.user.answers.state_clinic_code,
+                "consent": self.im.user.answers.state_consent === "yes" ? "true" : null
+            };
+
+            if (self.im.user.answers.state_id_type === "sa_id") {
+                reg_details.sa_id_no = self.im.user.answers.state_sa_id;
+                reg_details.mom_dob = self.im.user.answers.mom_dob;
+            } else if (self.im.user.answers.state_id_type === "passport") {
+                reg_details.passport_no = self.im.user.answers.state_passport_no;
+                reg_details.passport_origin = self.im.user.answers.state_passport_origin;
+            } else {
+                reg_details.mom_dob = self.im.user.answers.mom_dob;
+            }
+
+            var registration_info = {
+                "reg_type": "momconnect_prebirth",
+                "registrant_id": self.im.user.answers.registrant.id,
+                "data": reg_details
+            };
+            return registration_info;
+        };
+
+        self.send_registration_thanks = function() {
+            var msg = "Welcome. To stop getting SMSs dial {{optout_channel}} or for more " +
+                      "services dial {{public_channel}} (No Cost). Standard rates apply " +
+                      "when replying to any SMS from MomConnect.";
+            return ms.
+            create_outbound_message(
+                self.im.user.answers.registrant.id,
+                self.im.user.answers.registrant_msisdn,
+                msg.replace("{{optout_channel}}", self.im.config.optout_channel)
+                   .replace("{{public_channel}}", self.im.config.public_channel)
+                // TODO #38: enable translation
+                // $("Welcome. To stop getting SMSs dial {{optout_channel}} or for more " +
+                //   "services dial {{public_channel}} (No Cost). Standard rates apply " +
+                //   "when replying to any SMS from MomConnect."
+                // ).context({
+                //     public_channel: self.im.config.public_channel,
+                //     optout_channel: self.im.config.optout_channel
+                // })
+            );
+        };
+
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                return creator(name, opts);
+                if (!interrupt || !utils.timed_out(self.im))
+                    return creator(name, opts);
+
+                interrupt = false;
+                var timeout_opts = opts || {};
+                timeout_opts.name = name;
+                return self.states.create('state_timed_out', timeout_opts);
             });
         };
 
-        // TODO: timeout handling
-        // TODO: dialback sms sending
+        self.states.add('state_timed_out', function(name, creator_opts) {
+            var msisdn = self.im.user.answers.registrant_msisdn || self.im.user.answers.operator_msisdn;
+            var readable_no = self.readable_sa_msisdn(msisdn);
+            return new ChoiceState(name, {
+                question: $(
+                    'Would you like to complete pregnancy registration for {{ num }}?'
+                ).context({ num: readable_no }),
+                choices: [
+                    new Choice(creator_opts.name, $('Yes')),
+                    new Choice('state_start', $('Start new registration'))
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+        // TODO #49: dialback sms sending
 
         self.add("state_start", function(name) {
             self.im.user.set_answers = {};
@@ -212,7 +323,7 @@ go.app = function() {
                 question: question,
                 check: function(content) {
                     return self
-                    .validate_clinic_code(self.im, content)
+                    .validate_clinic_code(content)
                     .then(function(valid_clinic_code) {
                         if (!valid_clinic_code) {
                             return error;
@@ -271,24 +382,23 @@ go.app = function() {
                 next: function(content) {
                     var edd = (self.im.user.answers.state_due_date_month + "-" +
                                utils.double_digit_number(content));
+                    self.im.user.set_answer("edd", edd);
+
                     if (utils.is_valid_date(edd, 'YYYY-MM-DD')) {
                         return 'state_id_type';
                     } else {
-                        return {
-                            name: 'state_invalid_edd',
-                            creator_opts: {edd: edd}
-                        };
+                        return 'state_invalid_edd';
                     }
                 }
             });
         });
 
-        self.add('state_invalid_edd', function(name, opts) {
+        self.add('state_invalid_edd', function(name) {
             return new ChoiceState(name, {
                 question: $(
                     'The date you entered ({{ edd }}) is not a ' +
                     'real date. Please try again.'
-                ).context({edd: opts.edd}),
+                ).context({edd: self.im.user.answers.edd}),
                 choices: [
                     new Choice('continue', $('Continue'))
                 ],
@@ -315,7 +425,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_sa_id', function(name, opts) {
+        self.add('state_sa_id', function(name) {
             var error = $("Sorry, the mother's ID number did not validate. " +
                           "Please reenter the SA ID number:");
             var question = $("Please enter the pregnant mother\'s SA ID " +
@@ -368,7 +478,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_birth_year', function(name, opts) {
+        self.add('state_birth_year', function(name) {
             var error = $('There was an error in your entry. Please ' +
                         'carefully enter the mother\'s year of birth again ' +
                         '(for example: 2001)');
@@ -396,7 +506,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_birth_day', function(name, opts) {
+        self.add('state_birth_day', function(name) {
             var error = $('There was an error in your entry. Please ' +
                         'carefully enter the mother\'s day of birth again ' +
                         '(for example: 8)');
@@ -413,25 +523,22 @@ go.app = function() {
                     var dob = (self.im.user.answers.state_birth_year + "-" +
                                self.im.user.answers.state_birth_month + "-" +
                                utils.double_digit_number(content));
+                    self.im.user.set_answer("mom_dob", dob);
                     if (utils.is_valid_date(dob, 'YYYY-MM-DD')) {
-                        self.im.user.set_answer("mom_dob", dob);
                         return 'state_language';
                     } else {
-                        return {
-                            name: 'state_invalid_dob',
-                            creator_opts: {dob: dob}
-                        };
+                        return 'state_invalid_dob';
                     }
                 }
             });
         });
 
-        self.add('state_invalid_dob', function(name, opts) {
+        self.add('state_invalid_dob', function(name) {
             return new ChoiceState(name, {
                 question: $(
                     'The date you entered ({{ dob }}) is not a ' +
                     'real date. Please try again.'
-                ).context({ dob: opts.dob }),
+                ).context({ dob: self.im.user.answers.mom_dob }),
                 choices: [
                     new Choice('continue', $('Continue'))
                 ],
@@ -445,27 +552,34 @@ go.app = function() {
                             'pregnant mother would like to get messages in:'),
                 options_per_page: null,
                 choices: [
-                    new Choice('zu', 'isiZulu'),
-                    new Choice('xh', 'isiXhosa'),
-                    new Choice('af', 'Afrikaans'),
-                    new Choice('en', 'English'),
-                    new Choice('nso', 'Sesotho sa Leboa'),
-                    new Choice('tn', 'Setswana'),
-                    new Choice('st', 'Sesotho'),
-                    new Choice('ts', 'Xitsonga'),
-                    new Choice('ss', 'siSwati'),
-                    new Choice('ve', 'Tshivenda'),
-                    new Choice('nr', 'isiNdebele'),
+                    new Choice('zul_ZA', 'isiZulu'),
+                    new Choice('xho_ZA', 'isiXhosa'),
+                    new Choice('afr_ZA', 'Afrikaans'),
+                    new Choice('eng_ZA', 'English'),
+                    new Choice('nso_ZA', 'Sesotho sa Leboa'),
+                    new Choice('tsn_ZA', 'Setswana'),
+                    new Choice('sot_ZA', 'Sesotho'),
+                    new Choice('tso_ZA', 'Xitsonga'),
+                    new Choice('ssw_ZA', 'siSwati'),
+                    new Choice('ven_ZA', 'Tshivenda'),
+                    new Choice('nbl_ZA', 'isiNdebele'),
                 ],
                 next: 'state_save_subscription'
             });
         });
 
         self.add('state_save_subscription', function(name) {  // interstitial state
-            // TODO: post registration
-            // TODO: update identity
-            // TODO: send thank you sms
-            return self.states.create('state_end_success');
+            var registration_info = self.compile_registration_info();
+            var registrant_info = self.compile_registrant_info();
+
+            return Q.all([
+                is.update_identity(self.im.user.answers.registrant.id, registrant_info),
+                hub.create_registration(registration_info),
+                self.send_registration_thanks()
+            ])
+            .then(function() {
+                return self.states.create('state_end_success');
+            });
         });
 
         self.add('state_end_success', function(name) {
