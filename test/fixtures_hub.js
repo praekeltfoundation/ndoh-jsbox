@@ -60,7 +60,7 @@ module.exports = function() {
                         "language": "eng_ZA",
                         "edd": "2014-05-10",
                         "faccode": "123456",
-                        "consent": "true",
+                        "consent": true,
                         "sa_id_no": "5101025009086",
                         "mom_dob": "2051-01-02"
                     }
@@ -79,7 +79,7 @@ module.exports = function() {
                         "language": "eng_ZA",
                         "edd": "2014-05-10",
                         "faccode": "123456",
-                        "consent": "true",
+                        "consent": true,
                         "sa_id_no": "5101015009088",
                         "mom_dob": "1951-01-01"
                     }
@@ -104,7 +104,7 @@ module.exports = function() {
                         "language": "eng_ZA",
                         "edd": "2014-05-10",
                         "faccode": "123456",
-                        "consent": "true",
+                        "consent": true,
                         "passport_no": "12345",
                         "passport_origin": "zw"
                     }
@@ -123,7 +123,7 @@ module.exports = function() {
                         "language": "eng_ZA",
                         "edd": "2014-05-10",
                         "faccode": "123456",
-                        "consent": "true",
+                        "consent": true,
                         "passport_no": "12345",
                         "passport_origin": "zw"
                     }
@@ -148,7 +148,7 @@ module.exports = function() {
                         "language": "eng_ZA",
                         "edd": "2014-05-10",
                         "faccode": "123456",
-                        "consent": "true",
+                        "consent": true,
                         "mom_dob": "1981-01-14"
                     }
                 }
@@ -166,7 +166,7 @@ module.exports = function() {
                         "language": "eng_ZA",
                         "edd": "2014-05-10",
                         "faccode": "123456",
-                        "consent": "true",
+                        "consent": true,
                         "mom_dob": "1981-01-14"
                     }
                 }

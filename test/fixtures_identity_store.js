@@ -327,7 +327,7 @@ module.exports = function() {
                             }
                         },
                         "lang_code": "eng_ZA",
-                        "consent": "true",
+                        "consent": true,
                         "sa_id_no": "5101025009086",
                         "mom_dob": "2051-01-02",
                         "source": "clinic",
@@ -358,7 +358,7 @@ module.exports = function() {
                             }
                         },
                         "lang_code": "eng_ZA",
-                        "consent": "true",
+                        "consent": true,
                         "passport_no": "12345",
                         "passport_origin": "zw",
                         "source": "clinic",
@@ -389,7 +389,7 @@ module.exports = function() {
                             }
                         },
                         "lang_code": "eng_ZA",
-                        "consent": "true",
+                        "consent": true,
                         "mom_dob": "1981-01-14",
                         "source": "clinic",
                         "last_mc_reg_on": "clinic"
