@@ -515,7 +515,7 @@ go.app = function() {
                 next: function(choice) {
                     if (choice.value === "yes") {
                         // set consent
-                        self.im.user.set_answer("consent", "true");
+                        self.im.user.set_answer("consent", true);
                         if (self.im.user.answers.mom_dob) {
                             return "state_hiv_messages";
                         } else {

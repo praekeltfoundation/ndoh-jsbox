@@ -48,7 +48,7 @@ go.app = function() {
         self.number_opted_out = function(identity, msisdn) {
             var details_msisdn = identity.details.addresses.msisdn[msisdn];
             if ("optedout" in details_msisdn) {
-                return (details_msisdn.optedout === true || details_msisdn.opted_out === "true");
+                return (details_msisdn.optedout === true || details_msisdn.optedout === "true");
             } else {
                 return false;
             }
@@ -101,7 +101,7 @@ go.app = function() {
             var registrant_info = self.im.user.answers.registrant;
             registrant_info.details.lang_code = self.im.user.answers.lang_code;
             registrant_info.details.consent =
-                self.im.user.answers.state_consent === "yes" ? "true" : null;
+                self.im.user.answers.state_consent === "yes" ? true : null;
 
             if (self.im.user.answers.state_id_type === "sa_id") {
                 registrant_info.details.sa_id_no = self.im.user.answers.state_sa_id;
@@ -131,7 +131,7 @@ go.app = function() {
                 "language": self.im.user.answers.state_language,
                 "edd": self.im.user.answers.edd,
                 "faccode": self.im.user.answers.state_clinic_code,
-                "consent": self.im.user.answers.state_consent === "yes" ? "true" : null
+                "consent": self.im.user.answers.state_consent === "yes" ? true : null
             };
 
             if (self.im.user.answers.state_id_type === "sa_id") {
