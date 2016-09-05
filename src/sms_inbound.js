@@ -42,40 +42,6 @@ go.app = function() {
             );
         };
 
-        self.has_active_subscription = function(id, search_text) {
-            return sbm
-            .list_active_subscriptions(id)
-            .then(function(active_subs_response) {
-                var active_subs = active_subs_response.results;
-                if (active_subs_response.count === 0) {
-                    // immediately return false if user has no active subs
-                    return false;
-                } else {
-                    // otherwise get all the messagesets
-                    return sbm
-                    .list_messagesets()
-                    .then(function(messagesets_response) {
-                        var messagesets = messagesets_response.results;
-                        var short_name_map = {};
-
-                        // create a mapping of messageset ids to shortnames
-                        for (var k=0; k < messagesets.length; k++) {
-                            short_name_map[messagesets[k].id] = messagesets[k].short_name;
-                        }
-
-                        // see if the active subscriptions shortnames contain the searched text
-                        for (var i=0; i < active_subs.length; i++) {
-                            var active_sub_shortname = short_name_map[active_subs[i].messageset];
-                            if (active_sub_shortname.indexOf(search_text) > -1) {
-                                return true;
-                            }
-                        }
-                        return false;
-                    });
-                }
-            });
-        };
-
         self.states.add("states_start", function() {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
             self.im.user.set_answer("operator_msisdn", msisdn);
@@ -85,10 +51,10 @@ go.app = function() {
             .then(function(identity) {
                 self.im.user.set_answer("operator", identity);
 
-                return self
-                .has_active_subscription(self.im.user.answers.operator.id, "momconnect")
-                .then(function(has_active_momconnect_subscription) {
-                    if (has_active_momconnect_subscription) {
+                return sbm
+                .check_identity_subscribed(self.im.user.answers.operator.id, "momconnect")
+                .then(function(identity_subscribed_to_momconnect) {
+                    if (identity_subscribed_to_momconnect) {
                         // check if message contains a ussd code
                         if (self.im.msg.content.indexOf("*120*") > -1 || self.im.msg.content.indexOf("*134*") > -1) {
                             return self.states.create("states_dial_not_sms");

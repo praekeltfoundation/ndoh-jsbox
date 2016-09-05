@@ -119,40 +119,6 @@ go.app = function() {
             });
         };
 
-        self.has_active_subscription = function(id, search_text) {
-            return sbm
-            .list_active_subscriptions(id)
-            .then(function(active_subs_response) {
-                var active_subs = active_subs_response.results;
-                if (active_subs_response.count === 0) {
-                    // immediately return false if user has no active subs
-                    return false;
-                } else {
-                    // otherwise get all the messagesets
-                    return sbm
-                    .list_messagesets()
-                    .then(function(messagesets_response) {
-                        var messagesets = messagesets_response.results;
-                        var short_name_map = {};
-
-                        // create a mapping of messageset ids to shortnames
-                        for (var k=0; k < messagesets.length; k++) {
-                            short_name_map[messagesets[k].id] = messagesets[k].short_name;
-                        }
-
-                        // see if the active subscriptions shortnames contain the searched text
-                        for (var i=0; i < active_subs.length; i++) {
-                            var active_sub_shortname = short_name_map[active_subs[i].messageset];
-                            if (active_sub_shortname.indexOf(search_text) > -1) {
-                                return true;
-                            }
-                        }
-                        return false;
-                    });
-                }
-            });
-        };
-
         self.get_valid_active_subscription = function(active_subscriptions) {
             for (var i=0; i < active_subscriptions.length; i++) {
                 var messageset_id = active_subscriptions[i].message_set.match(/\d+\/$/)[0].replace('/', '');
@@ -406,10 +372,10 @@ go.app = function() {
             .get_or_create_identity({"msisdn": msisdn})
             .then(function(identity) {
                 self.im.user.set_answer("identity", identity);
-                return self
-                .has_active_subscription(identity.id, "pmtct")
-                .then(function(has_active_pmtct_subscription) {
-                    if (has_active_pmtct_subscription) {
+                return sbm
+                .check_identity_subscribed(identity.id, "pmtct")
+                .then(function(identity_subscribed_to_pmtct) {
+                    if (identity_subscribed_to_pmtct) {
                         return self.im.user
                         .set_lang(self.im.user.answers.identity.details.lang_code || "eng_ZA")
                         .then(function(lang_set_response) {
