@@ -142,9 +142,9 @@ go.app = function() {
             create_outbound_message(
                 self.im.user.answers.registrant.id,
                 msisdn,
-                // TODO #38 enable translation
-                "Welcome to NurseConnect. For more options or to " +
-                    "opt out, dial {{channel}}.".replace("{{channel}}", self.im.config.channel)
+                self.im.user.i18n($(
+                    "Welcome to NurseConnect. For more options or to opt out, dial {{channel}}."
+                ).context({channel: self.im.config.channel}))
             );
         };
 
