@@ -36,6 +36,7 @@ module.exports = function() {
         // 161: get identity by msisdn +27820001002
         {
             "key": "get.is.msisdn.27820001002",
+            "repeatable": true,
             "request": {
                 "url": 'http://is/api/v1/identities/search/',
                 "method": 'GET',
@@ -158,7 +159,7 @@ module.exports = function() {
                         "default_addr_type": "msisdn",
                         "addresses": {
                             "msisdn": {
-                                "+27820001001":{ "default": true }
+                                "+27820001001": { "default": true }
                             }
                         }
                     }
@@ -187,6 +188,7 @@ module.exports = function() {
         // 164: get identity by msisdn +27820001004
         {
             "key": "get.is.msisdn.27820001004",
+            "repeatable": true,
             "request": {
                 "url": 'http://is/api/v1/identities/search/',
                 "method": 'GET',
@@ -301,7 +303,190 @@ module.exports = function() {
             }
         },
 
-        // 167: optout identity cb245673-aa41-4302-ac47-00000001002
+        // 167: update identity cb245673-aa41-4302-ac47-00000001001
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/",
+                    "id": "cb245673-aa41-4302-ac47-00000001001",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001001": {"default": true}
+                            }
+                        },
+                        "consent": "true",
+                        "sa_id_no": "5101025009086",
+                        "mom_dob": "2051-01-02",
+                        "source": "clinic",
+                        "last_mc_reg_on": "clinic"
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z",
+                }
+            },
+            "response": {}
+        },
+
+        // 168: update identity cb245673-aa41-4302-ac47-00000001001
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/",
+                    "id": "cb245673-aa41-4302-ac47-00000001001",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001001": {"default": true}
+                            }
+                        },
+                        "consent": "true",
+                        "passport_no": "12345",
+                        "passport_origin": "zw",
+                        "source": "clinic",
+                        "last_mc_reg_on": "clinic"
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z"
+                }
+            },
+            "response": {}
+        },
+
+        // 169: update identity cb245673-aa41-4302-ac47-00000001001
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/",
+                    "id": "cb245673-aa41-4302-ac47-00000001001",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001001": {"default": true}
+                            }
+                        },
+                        "consent": "true",
+                        "mom_dob": "1981-01-14",
+                        "source": "clinic",
+                        "last_mc_reg_on": "clinic"
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z"
+                }
+            },
+            "response": {}
+        },
+
+        // 170: patch cb245673-aa41-4302-ac47-00000001001
+        {
+            "request": {
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/',
+                "method": 'PATCH',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/",
+                    "id": "cb245673-aa41-4302-ac47-00000001001",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001001": { "default": true }
+                            }
+                        },
+                        "nurseconnect": {
+                            "facname": "WCL clinic",
+                            "faccode": "123456",
+                            "is_registered": true
+                        }
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z"
+                }
+            },
+            "response": {}
+        },
+
+        // 171: patch cb245673-aa41-4302-ac47-00000001002
+        {
+            "request": {
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001002/',
+                "method": 'PATCH',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001002/",
+                    "id": "cb245673-aa41-4302-ac47-00000001002",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001002": {}
+                            }
+                        },
+                        "nurseconnect": {
+                            "facname": "WCL clinic",
+                            "faccode": "123456",
+                            "is_registered": true,
+                            "registered_by": "cb245673-aa41-4302-ac47-00000001001"
+                        }
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z"
+                }
+            },
+            "response": {}
+        },
+
+        // 172: optout identity cb245673-aa41-4302-ac47-00000001003
+        {
+            "request": {
+                "url": 'http://is/api/v1/optout/',
+                "method": 'POST',
+                "data": {
+                    "optout_type": "stop",
+                    "identity": "cb245673-aa41-4302-ac47-00000001003",
+                    "reason": "unknown",
+                    "address_type": "msisdn",
+                    "address": "+27820001003",
+                    "request_source": "sms_nurse", // correct?
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            "response": {}
+        },
+
+        // 173: optin in identity cb245673-aa41-4302-ac47-00000001003
+        {
+            "key": "post.is.optin.27820001003",
+            "request": {
+                "url": 'http://is/api/v1/optin/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001003",
+                    "address_type": "msisdn",
+                    "address": "+27820001003"
+                }
+            },
+            "response": {
+                "accepted": true
+            }
+        },
+
+        // 174: optout identity cb245673-aa41-4302-ac47-00000001002
         {
             "key": "post.is.optout.identity.cb245673-aa41-4302-ac47-00000001002",
             "request": {
@@ -325,7 +510,7 @@ module.exports = function() {
             }
         },
 
-        // 168: optin identity cb245673-aa41-4302-ac47-00000001002
+        // 175: optin identity cb245673-aa41-4302-ac47-00000001002
         {
             "key": "post.is.optin.27820001002",
             "request": {

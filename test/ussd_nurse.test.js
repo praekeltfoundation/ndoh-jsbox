@@ -471,10 +471,10 @@ describe("app", function() {
                         , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [100, 150, 160, 163]);
+                        utils.check_fixtures_used(api, [13, 100, 150, 160, 163, 170]);
                     })
                     .run();
-                });
+            });
         });
 
         // Other Registration Flow
@@ -527,7 +527,7 @@ describe("app", function() {
                         , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [101, 150, 160, 161, 163]);
+                        utils.check_fixtures_used(api, [14, 101, 150, 160, 161, 163, 171]);
                     })
                     .run();
             });
@@ -795,6 +795,9 @@ describe("app", function() {
                             state: 'state_change_old_nr',
                             reply: "Please enter the old number on which you used to receive messages, e.g. 0736436265:"
                         })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [51, 53, 161]);
+                        })
                         .run();
                 });
             });
@@ -845,6 +848,9 @@ describe("app", function() {
                         .check.interaction({
                             state: 'state_change_old_nr',
                         })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [51, 53, 160, 161]);
+                        })
                         .run();
                 });
                 it("should abort if chosen", function() {
@@ -894,6 +900,9 @@ describe("app", function() {
                             state: 'state_change_num',
                             reply: "Please enter the new number on which you want to receive messages, e.g. 0736252020:"
                         })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [52, 54, 162]);
+                        })
                         .run();
                 });
             });
@@ -908,6 +917,9 @@ describe("app", function() {
                         )
                         .check.interaction({
                             state: 'state_end_detail_changed',
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [10, 52, 54, 160, 162]);
                         })
                         .run();
                 });
@@ -924,6 +936,9 @@ describe("app", function() {
                         .check.interaction({
                             state: 'state_end_detail_changed'
                         })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [11, 54, 56, 160, 165]);
+                        })
                         .run();
                 });
             });
@@ -939,6 +954,23 @@ describe("app", function() {
                         )
                         .check.interaction({
                             state: 'state_block_active_subs' // number in use by 0820001003
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [54, 56, 162, 165]);
+                        })
+                        .run();
+                });
+                it.skip("should transfer extras on opt-in", function() {
+                    return tester
+                        .setup.user.addr('27820001003')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '2'  // state_subscribed - change num
+                            , '0821239999'  // state_change_num
+                            , '1'  // state_opt_in_change - yes
+                        )
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [54, 56, 162, 165]);
                         })
                         .run();
                 });
@@ -1076,6 +1108,9 @@ describe("app", function() {
                             state: 'state_change_faccode',
                             reply: "Please enter the 6-digit facility code for your new facility, e.g. 456789:"
                         })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [52, 54, 162]);
+                        })
                         .run();
                 });
                 it("should reach details changed end state", function() {
@@ -1149,6 +1184,9 @@ describe("app", function() {
                             state: 'state_end_detail_changed',
                             reply: "Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again."
                         })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [8, 52, 54, 162]);
+                        })
                         .run();
                 });
             });
@@ -1211,6 +1249,9 @@ describe("app", function() {
                             state: 'state_end_detail_changed',
                             reply: "Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again."
                         })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [9, 52, 54, 162]);
+                        })
                         .run();
                 });
             });
@@ -1260,6 +1301,9 @@ describe("app", function() {
                             .check.interaction({
                                 state: 'state_end_detail_changed',
                                 reply: 'Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again.'
+                            })
+                            .check(function(api) {
+                                utils.check_fixtures_used(api, [6, 52, 54, 162]);
                             })
                             .run();
                     });
@@ -1334,6 +1378,9 @@ describe("app", function() {
                                 state: 'state_end_detail_changed',
                                 reply: 'Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again.'
                             })
+                            .check(function(api) {
+                                utils.check_fixtures_used(api, [7, 52, 54, 162]);
+                            })
                             .run();
                     });
                 });
@@ -1379,6 +1426,9 @@ describe("app", function() {
                             )
                             .check.interaction({
                                 state: 'state_end_detail_changed',
+                            })
+                            .check(function(api) {
+                                utils.check_fixtures_used(api, [15, 52, 54, 162]);
                             })
                             .run();
                     });
