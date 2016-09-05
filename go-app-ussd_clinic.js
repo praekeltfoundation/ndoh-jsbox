@@ -156,23 +156,18 @@ go.app = function() {
         };
 
         self.send_registration_thanks = function() {
-            var msg = "Welcome. To stop getting SMSs dial {{optout_channel}} or for more " +
-                      "services dial {{public_channel}} (No Cost). Standard rates apply " +
-                      "when replying to any SMS from MomConnect.";
             return ms.
             create_outbound_message(
                 self.im.user.answers.registrant.id,
                 self.im.user.answers.registrant_msisdn,
-                msg.replace("{{optout_channel}}", self.im.config.optout_channel)
-                   .replace("{{public_channel}}", self.im.config.public_channel)
-                // TODO #38: enable translation
-                // $("Welcome. To stop getting SMSs dial {{optout_channel}} or for more " +
-                //   "services dial {{public_channel}} (No Cost). Standard rates apply " +
-                //   "when replying to any SMS from MomConnect."
-                // ).context({
-                //     public_channel: self.im.config.public_channel,
-                //     optout_channel: self.im.config.optout_channel
-                // })
+                self.im.user.i18n($(
+                    "Welcome. To stop getting SMSs dial {{optout_channel}} or for more " +
+                    "services dial {{public_channel}} (No Cost). Standard rates apply " +
+                    "when replying to any SMS from MomConnect."
+                ).context({
+                    public_channel: self.im.config.public_channel,
+                    optout_channel: self.im.config.optout_channel
+                }))
             );
         };
 
