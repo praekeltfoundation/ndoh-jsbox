@@ -54,6 +54,7 @@ go.app = function() {
                     // get the subscription messageset
                     return sbm
                     .get_messageset(active_subs[i].messageset)
+                    // TODO 52: stop promise looping
                     .then(function(messageset) {
                         if (messageset.short_name.indexOf("momconnect") > -1) {
                             return true;
