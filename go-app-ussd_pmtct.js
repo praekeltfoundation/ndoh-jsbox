@@ -122,22 +122,37 @@ go.app = function() {
             });
         };
 
-        self.has_active_pmtct_subscription = function(id) {
+        self.has_active_subscription = function(id, search_text) {
             return sbm
             .list_active_subscriptions(id)
             .then(function(active_subs_response) {
                 var active_subs = active_subs_response.results;
-                for (var i=0; i < active_subs.length; i++) {
-                    // get the subscription messageset
+                if (active_subs_response.count === 0) {
+                    // immediately return false if user has no active subs
+                    return false;
+                } else {
+                    // otherwise get all the messagesets
                     return sbm
-                    .get_messageset(active_subs[i].messageset)
-                    .then(function(messageset) {
-                        if (messageset.short_name.indexOf('pmtct') > -1) {
-                            return true;
+                    .list_messagesets()
+                    .then(function(messagesets_response) {
+                        var messagesets = messagesets_response.results;
+                        var short_name_map = {};
+
+                        // create a mapping of messageset ids to shortnames
+                        for (var k=0; k < messagesets.length; k++) {
+                            short_name_map[messagesets[k].id] = messagesets[k].short_name;
                         }
+
+                        // see if the active subscriptions shortnames contain the searched text
+                        for (var i=0; i < active_subs.length; i++) {
+                            var active_sub_shortname = short_name_map[active_subs[i].messageset];
+                            if (active_sub_shortname.indexOf(search_text) > -1) {
+                                return true;
+                            }
+                        }
+                        return false;
                     });
                 }
-                return false;
             });
         };
 
@@ -395,7 +410,7 @@ go.app = function() {
             .then(function(identity) {
                 self.im.user.set_answer("identity", identity);
                 return self
-                .has_active_pmtct_subscription(identity.id)
+                .has_active_subscription(identity.id, "pmtct")
                 .then(function(has_active_pmtct_subscription) {
                     if (has_active_pmtct_subscription) {
                         return self.im.user

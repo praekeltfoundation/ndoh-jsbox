@@ -72,22 +72,37 @@ go.app = function() {
             });
         };
 
-        self.has_active_nurseconnect_subscription = function(id) {
+        self.has_active_subscription = function(id, search_text) {
             return sbm
             .list_active_subscriptions(id)
             .then(function(active_subs_response) {
                 var active_subs = active_subs_response.results;
-                for (var i=0; i < active_subs.length; i++) {
-                    // get the subscription messageset
+                if (active_subs_response.count === 0) {
+                    // immediately return false if user has no active subscriptions
+                    return false;
+                } else {
+                    // otherwise get all the messagesets
                     return sbm
-                    .get_messageset(active_subs[i].messageset)
-                    .then(function(messageset) {
-                        if (messageset.short_name.indexOf('nurseconnect') > -1) {
-                            return true;
+                    .list_messagesets()
+                    .then(function(messagesets_response) {
+                        var messagesets = messagesets_response.results;
+
+                        // create a mapping of messageset ids to shortnames
+                        var short_name_map = {};
+                        for (var k=0; k < messagesets.length; k++) {
+                            short_name_map[messagesets[k].id] = messagesets[k].short_name;
                         }
+
+                        // see if the active subscriptions shortnames contain the searched text
+                        for (var i=0; i < active_subs.length; i++) {
+                            var active_sub_shortname = short_name_map[active_subs[i].messageset];
+                            if (active_sub_shortname.indexOf(search_text) > -1) {
+                                return true;
+                            }
+                        }
+                        return false;
                     });
                 }
-                return false;
             });
         };
 
@@ -169,7 +184,7 @@ go.app = function() {
                     self.im.user.set_answer("operator", identity);
 
                     return self
-                    .has_active_nurseconnect_subscription(self.im.user.answers.operator.id)
+                    .has_active_subscription(self.im.user.answers.operator.id, "nurseconnect")
                     .then(function(has_active_nurseconnect_subscription) {
                         if (has_active_nurseconnect_subscription) {
                             return self.states.create('state_subscribed');
@@ -786,7 +801,7 @@ go.app = function() {
                     .then(function(identities_found) {
                         if (identities_found.results.length > 0) {  // what if more than one identity use same 'old' number..?
                             return self
-                            .has_active_nurseconnect_subscription(identities_found.results[0].id)
+                            .has_active_subscription(identities_found.results[0].id, "nurseconnect")
                             .then(function(has_active_nurseconnect_subscription) {
                                 if (has_active_nurseconnect_subscription) {
                                     return {
