@@ -51,7 +51,7 @@ go.app = function() {
         self.number_opted_out = function(identity, msisdn) {
             var details_msisdn = identity.details.addresses.msisdn[msisdn];
             if ("optedout" in details_msisdn) {
-                return details_msisdn.optedout === true;
+                return (details_msisdn.optedout === true || details_msisdn.opted_out === "true");
             } else {
                 return false;
             }
@@ -119,6 +119,8 @@ go.app = function() {
             if (!("source" in registrant_info.details)) {
                 registrant_info.details.source = "clinic";
             }
+
+            registrant_info.details.last_mc_reg_on = "clinic";
 
             return registrant_info;
         };
