@@ -6,6 +6,8 @@
     // (+27820001003) - existing identity with an active NurseConnect subscription
     // (+27820001004) - existing identity with an inactive NurseConnect subscription (opted out)
     // (+27820001005) - existing identity; two msisdn's (opted out on +27820001004)
+    // (+27820001006) - existing identity with an inactive MomConnect subscription
+    // (+27820001007) - existing identity with an active MomConnect CHW subscription
 
 module.exports = function() {
     return [
@@ -60,7 +62,7 @@ module.exports = function() {
                                 "default_addr_type": "msisdn",
                                 "addresses": {
                                     "msisdn": {
-                                        "+27820001001": {"default": true}
+                                        "+27820001002": {"default": true}
                                     }
                                 },
                                 "lang_code": "eng_ZA",
@@ -535,6 +537,96 @@ module.exports = function() {
                 "code": 201,
                 "data": {
                     "accepted": true
+                }
+            }
+        },
+
+        // 176: get identity by msisdn +27820001006
+        {
+            "key": "get.is.msisdn.27820001006",
+            "repeatable": true,
+            "request": {
+                "url": 'http://is/api/v1/identities/search/',
+                "method": 'GET',
+                "params": {
+                    "details__addresses__msisdn": '+27820001006',
+                    "include_inactive": "false"
+                }
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001006/",
+                            "id": "cb245673-aa41-4302-ac47-00000001006",
+                            "version": 1,
+                            "details": {
+                                "default_addr_type": "msisdn",
+                                "addresses": {
+                                    "msisdn": {
+                                        "+27820001006": {"default": true}
+                                    }
+                                },
+                                "lang_code": "eng_ZA",
+                                "consent": true,
+                                "sa_id_no": "5101025009086",
+                                "mom_dob": "2051-01-02",
+                                "source": "clinic",
+                                "last_mc_reg_on": "clinic"
+                            },
+                            "created_at": "2016-08-05T06:13:29.693272Z",
+                            "updated_at": "2016-08-05T06:13:29.693298Z"
+                        }
+                    ]
+                }
+            }
+        },
+
+        // 177: get identity by msisdn +27820001007
+        {
+            "key": "get.is.msisdn.27820001007",
+            "repeatable": true,
+            "request": {
+                "url": 'http://is/api/v1/identities/search/',
+                "method": 'GET',
+                "params": {
+                    "details__addresses__msisdn": '+27820001007',
+                    "include_inactive": "false"
+                }
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001007/",
+                            "id": "cb245673-aa41-4302-ac47-00000001007",
+                            "version": 1,
+                            "details": {
+                                "default_addr_type": "msisdn",
+                                "addresses": {
+                                    "msisdn": {
+                                        "+27820001007": {"default": true}
+                                    }
+                                },
+                                "lang_code": "eng_ZA",
+                                "consent": true,
+                                "sa_id_no": "5101025009086",
+                                "mom_dob": "2051-01-02",
+                                "source": "chw",
+                                "last_mc_reg_on": "chw"
+                            },
+                            "created_at": "2016-08-05T06:13:29.693272Z",
+                            "updated_at": "2016-08-05T06:13:29.693298Z"
+                        }
+                    ]
                 }
             }
         },

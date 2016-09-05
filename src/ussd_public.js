@@ -2,12 +2,17 @@ go.app = function() {
     var vumigo = require("vumigo_v02");
     var SeedJsboxUtils = require('seed-jsbox-utils');
     var App = vumigo.App;
-    var EndState = vumigo.states.EndState;
+    // var EndState = vumigo.states.EndState;
+    var ChoiceState = vumigo.states.ChoiceState;
+    var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
+    var Choice = vumigo.states.Choice;
+    var JsonApi = vumigo.http.api.JsonApi;
 
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_start");
         var $ = self.$;
-        // var utils = SeedJsboxUtils.utils;
+        var interrupt = true;
+        var utils = SeedJsboxUtils.utils;
 
         var is;
 
@@ -18,14 +23,175 @@ go.app = function() {
                 self.im.config.services.identity_store.token,
                 self.im.config.services.identity_store.url
             );
+            sbm = new SeedJsboxUtils.StageBasedMessaging(
+                new JsonApi(self.im, {}),
+                self.im.config.services.stage_based_messaging.token,
+                self.im.config.services.stage_based_messaging.url
+            );
+            hub = new SeedJsboxUtils.Hub(
+                new JsonApi(self.im, {}),
+                self.im.config.services.hub.token,
+                self.im.config.services.hub.url
+            );
+            ms = new SeedJsboxUtils.MessageSender(
+                new JsonApi(self.im, {}),
+                self.im.config.services.message_sender.token,
+                self.im.config.services.message_sender.url
+            );
         };
 
-        self.states.add("state_start", function(name) {
-            return new EndState(name, {
-                text: $("Welcome to The Department of Health's ussd_public.js"),
-                next: function(choice) {
-                    return "state_start";
+        self.has_active_subscription = function(id, search_text) {
+            return sbm
+            .list_active_subscriptions(id)
+            .then(function(active_subs_response) {
+                var active_subs = active_subs_response.results;
+                if (active_subs_response.count === 0) {
+                    // immediately return false if user has no active subscriptions
+                    return false;
+                } else {
+                    // otherwise get all the messagesets
+                    return sbm
+                    .list_messagesets()
+                    .then(function(messagesets_response) {
+                        var messagesets = messagesets_response.results;
+
+                        // create a mapping of messageset ids to shortnames
+                        var short_name_map = {};
+                        for (var k=0; k < messagesets.length; k++) {
+                            short_name_map[messagesets[k].id] = messagesets[k].short_name;
+                        }
+
+                        // see if the active subscriptions shortnames contain the searched text
+                        for (var i=0; i < active_subs.length; i++) {
+                            var active_sub_shortname = short_name_map[active_subs[i].messageset];
+                            if (active_sub_shortname.indexOf(search_text) > -1) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    });
                 }
+            });
+        };
+
+        self.add = function(name, creator) {
+            self.states.add(name, function(name, opts) {
+                if (!interrupt || !utils.timed_out(self.im))
+                    return creator(name, opts);
+
+                interrupt = false;
+                var timeout_opts = opts || {};
+                timeout_opts.name = name;
+                return self.states.create('state_timed_out', timeout_opts);
+            });
+        };
+
+
+        self.add("state_start", function(name) {
+            self.im.user.set_answers = {};
+            var registrant_msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
+
+            return is
+            .get_or_create_identity({"msisdn": registrant_msisdn})
+            .then(function(identity) {
+                self.im.user.set_answer("registrant", identity);
+                self.im.user.set_answer("registrant_msisdn", registrant_msisdn);
+
+                if (!("last_mc_reg_on" in self.im.user.answers.registrant.details)) {
+                    return self.states.create('state_language');
+                } else if (self.im.user.answers.registrant.details.last_mc_reg_on === 'clinic') {
+                    // last registration on clinic line
+                    return self.im.user
+                    .set_lang(self.im.user.answers.registrant.details.lang_code)
+                    .then(function() {
+                        return self
+                        .has_active_subscription(self.im.user.answers.registrant.id, "momconnect")
+                        .then(function(has_active_momconnect_subscription) {
+                            return has_active_momconnect_subscription
+                                ? self.states.create('state_registered_full')
+                                : self.states.create('state_suspect_pregnancy');
+                        });
+                    });
+                } else {
+                    // registration on chw / public lines
+                    return self.im.user
+                    .set_lang(self.im.user.answers.registrant.details.lang_code)
+                    .then(function() {
+                        return self.states.create('state_registered_not_full');
+                    });
+                }
+            });
+        });
+
+        self.add('state_language', function(name) {
+            return new PaginatedChoiceState(name, {
+                question: 'Welcome to the Department of Health\'s MomConnect. Choose your language:',
+                options_per_page: null,
+                characters_per_page: 160,
+                choices: [
+                    new Choice('zul_ZA', 'isiZulu'),
+                    new Choice('xho_ZA', 'isiXhosa'),
+                    new Choice('afr_ZA', 'Afrikaans'),
+                    new Choice('eng_ZA', 'English'),
+                    new Choice('nso_ZA', 'Sesotho sa Leboa'),
+                    new Choice('tsn_ZA', 'Setswana'),
+                    new Choice('sot_ZA', 'Sesotho'),
+                    new Choice('tso_ZA', 'Xitsonga'),
+                    new Choice('ssw_ZA', 'siSwati'),
+                    new Choice('ven_ZA', 'Tshivenda'),
+                    new Choice('nbl_ZA', 'isiNdebele'),
+                ],
+                next: function(choice) {
+                    return self.im.user
+                    .set_lang(choice.value)
+                    .then(function() {
+                        return 'state_suspect_pregnancy';
+                    });
+                },
+            });
+        });
+
+        self.add('state_suspect_pregnancy', function(name) {
+            return new ChoiceState(name, {
+                question: $('MomConnect sends free support SMSs to ' +
+                    'pregnant mothers. Are you or do you suspect that you ' +
+                    'are pregnant?'),
+                choices: [
+                    new Choice('yes', $('Yes')),
+                    new Choice('no', $('No'))
+                ],
+                next: function(choice) {
+                    return choice.value === 'yes'
+                        ? 'state_consent'
+                        : 'state_end_not_pregnant';
+                }
+            });
+        });
+
+        self.add('state_registered_full', function(name) {
+            return new ChoiceState(name, {
+                question: $(
+                    'Welcome to the Department of Health\'s ' +
+                    'MomConnect. Please choose an option:'
+                ),
+                choices: [
+                    new Choice('state_end_compliment', $('Send us a compliment')),
+                    new Choice('state_end_complaint', $('Send us a complaint'))
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+        self.add('state_registered_not_full', function(name) {
+            return new ChoiceState(name, {
+                question: $('Welcome to the Department of Health\'s ' +
+                    'MomConnect. Choose an option:'),
+                choices: [
+                    new Choice('full_set', $('Get the full set of messages'))
+                ],
+                next: 'state_end_go_clinic'
             });
         });
 
