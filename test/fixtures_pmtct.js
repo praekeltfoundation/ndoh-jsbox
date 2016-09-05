@@ -2153,25 +2153,212 @@ module.exports = function() {
             "response": {}
         },
 
-        // 62: get messageset 21
+        // 62: get messagesets
         {
-            "key": "get.sbm.messageset.21",
+            "key": "get.sbm.messageset.all",
             "repeatable": true,
             "request": {
                 "method": 'GET',
-                "url": "http://sbm.localhost:8001/api/v1/messageset/21/"
+                "url": "http://sbm.localhost:8001/api/v1/messageset/"
             },
             "response": {
                 "code": 200,
                 "data": {
-                    "id": 21,
-                    "short_name": 'momconnect_prebirth.hw_full.1',
-                    "notes": null,
-                    "next_set": 2,
-                    "default_schedule": 121,
-                    "content_type": 'text',
-                    "created_at": '2016-06-22T06:13:29.693272Z',
-                    "updated_at": '2016-06-22T06:13:29.693272Z'
+                    "count": 0,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            "id": 11,
+                            "short_name": 'pmtct_prebirth.patient.1',
+                            "notes": null,
+                            "next_set": null,  // inaccurate
+                            "default_schedule": 111,
+                            "content_type": 'text',
+                            "created_at": '2016-06-22T06:13:29.693272Z',
+                            "updated_at": '2016-06-22T06:13:29.693272Z'
+                        },
+                        {
+                            "id": 12,
+                            "short_name": 'pmtct_prebirth.patient.2',
+                            "notes": null,
+                            "next_set": null,  // inaccurate
+                            "default_schedule": 111,
+                            "content_type": 'text',
+                            "created_at": '2016-06-22T06:13:29.693272Z',
+                            "updated_at": '2016-06-22T06:13:29.693272Z'
+                        },
+                        {
+                            "id": 13,
+                            "short_name": 'pmtct_prebirth.patient.3',
+                            "notes": null,
+                            "next_set": null,  // inaccurate
+                            "default_schedule": 111,
+                            "content_type": 'text',
+                            "created_at": '2016-06-22T06:13:29.693272Z',
+                            "updated_at": '2016-06-22T06:13:29.693272Z'
+                        },
+                        {
+                            "id": 14,
+                            "short_name": 'pmtct_postbirth.patient.1',
+                            "notes": null,
+                            "next_set": null,  // inaccurate
+                            "default_schedule": 111,
+                            "content_type": 'text',
+                            "created_at": '2016-06-22T06:13:29.693272Z',
+                            "updated_at": '2016-06-22T06:13:29.693272Z'
+                        },
+                        {
+                            "id": 15,
+                            "short_name": 'pmtct_postbirth.patient.2',
+                            "notes": null,
+                            "next_set": null,  // inaccurate
+                            "default_schedule": 111,
+                            "content_type": 'text',
+                            "created_at": '2016-06-22T06:13:29.693272Z',
+                            "updated_at": '2016-06-22T06:13:29.693272Z'
+                        },
+                        {
+                            "id": 21,
+                            "short_name": 'momconnect_prebirth.hw_full.1',
+                            "notes": null,
+                            "next_set": null,  // inaccurate
+                            "default_schedule": 111,
+                            "content_type": 'text',
+                            "created_at": '2016-06-22T06:13:29.693272Z',
+                            "updated_at": '2016-06-22T06:13:29.693272Z'
+                        },
+                        {
+                            "id": 22,
+                            "short_name": 'momconnect_prebirth.hw_full.2',
+                            "notes": null,
+                            "next_set": null,  // inaccurate
+                            "default_schedule": 111,
+                            "content_type": 'text',
+                            "created_at": '2016-06-22T06:13:29.693272Z',
+                            "updated_at": '2016-06-22T06:13:29.693272Z'
+                        },
+                        {
+                            "id": 23,
+                            "short_name": 'momconnect_prebirth.hw_full.3',
+                            "notes": null,
+                            "next_set": null,  // inaccurate
+                            "default_schedule": 111,
+                            "content_type": 'text',
+                            "created_at": '2016-06-22T06:13:29.693272Z',
+                            "updated_at": '2016-06-22T06:13:29.693272Z'
+                        },
+                        {
+                            "id": 24,
+                            "short_name": 'momconnect_prebirth.hw_full.4',
+                            "notes": null,
+                            "next_set": null,  // inaccurate
+                            "default_schedule": 111,
+                            "content_type": 'text',
+                            "created_at": '2016-06-22T06:13:29.693272Z',
+                            "updated_at": '2016-06-22T06:13:29.693272Z'
+                        },
+                        {
+                            "id": 25,
+                            "short_name": 'momconnect_prebirth.hw_full.5',
+                            "notes": null,
+                            "next_set": null,  // inaccurate
+                            "default_schedule": 111,
+                            "content_type": 'text',
+                            "created_at": '2016-06-22T06:13:29.693272Z',
+                            "updated_at": '2016-06-22T06:13:29.693272Z'
+                        },
+                        {
+                            "id": 26,
+                            "short_name": 'momconnect_prebirth.hw_full.6',
+                            "notes": null,
+                            "next_set": null,  // inaccurate
+                            "default_schedule": 111,
+                            "content_type": 'text',
+                            "created_at": '2016-06-22T06:13:29.693272Z',
+                            "updated_at": '2016-06-22T06:13:29.693272Z'
+                        },
+                        {
+                            "id": 31,
+                            "short_name": 'momconnect_postbirth.hw_full.1',
+                            "notes": null,
+                            "next_set": null,  // inaccurate
+                            "default_schedule": 111,
+                            "content_type": 'text',
+                            "created_at": '2016-06-22T06:13:29.693272Z',
+                            "updated_at": '2016-06-22T06:13:29.693272Z'
+                        },
+                        {
+                            "id": 32,
+                            "short_name": 'momconnect_postbirth.hw_full.2',
+                            "notes": null,
+                            "next_set": null,  // inaccurate
+                            "default_schedule": 111,
+                            "content_type": 'text',
+                            "created_at": '2016-06-22T06:13:29.693272Z',
+                            "updated_at": '2016-06-22T06:13:29.693272Z'
+                        },
+                        {
+                            "id": 41,
+                            "short_name": 'momconnect_prebirth.patient.1',
+                            "notes": null,
+                            "next_set": null,  // inaccurate
+                            "default_schedule": 111,
+                            "content_type": 'text',
+                            "created_at": '2016-06-22T06:13:29.693272Z',
+                            "updated_at": '2016-06-22T06:13:29.693272Z'
+                        },
+                        {
+                            "id": 42,
+                            "short_name": 'momconnect_prebirth.hw_partial.1',
+                            "notes": null,
+                            "next_set": null,  // inaccurate
+                            "default_schedule": 111,
+                            "content_type": 'text',
+                            "created_at": '2016-06-22T06:13:29.693272Z',
+                            "updated_at": '2016-06-22T06:13:29.693272Z'
+                        },
+                        {
+                            "id": 51,
+                            "short_name": 'loss_miscarriage.patient.1',
+                            "notes": null,
+                            "next_set": null,  // inaccurate
+                            "default_schedule": 111,
+                            "content_type": 'text',
+                            "created_at": '2016-06-22T06:13:29.693272Z',
+                            "updated_at": '2016-06-22T06:13:29.693272Z'
+                        },
+                        {
+                            "id": 52,
+                            "short_name": 'loss_stillbirth.patient.1',
+                            "notes": null,
+                            "next_set": null,  // inaccurate
+                            "default_schedule": 111,
+                            "content_type": 'text',
+                            "created_at": '2016-06-22T06:13:29.693272Z',
+                            "updated_at": '2016-06-22T06:13:29.693272Z'
+                        },
+                        {
+                            "id": 53,
+                            "short_name": 'loss_babyloss.patient.1',
+                            "notes": null,
+                            "next_set": null,  // inaccurate
+                            "default_schedule": 111,
+                            "content_type": 'text',
+                            "created_at": '2016-06-22T06:13:29.693272Z',
+                            "updated_at": '2016-06-22T06:13:29.693272Z'
+                        },
+                        {
+                            "id": 61,
+                            "short_name": 'nurseconnect.hw_full.1',
+                            "notes": null,
+                            "next_set": null,  // inaccurate
+                            "default_schedule": 111,
+                            "content_type": 'text',
+                            "created_at": '2016-06-22T06:13:29.693272Z',
+                            "updated_at": '2016-06-22T06:13:29.693272Z'
+                        }
+                    ]
                 }
             }
         },
@@ -2620,27 +2807,16 @@ module.exports = function() {
             "response": {}
         },
 
-        // 76: get messageset 11 (pmtct - +27720000111)
+        // 76: unused
         {
-            "key": "get.sbm.messageset.11",
-            "repeatable": true,
             "request": {
-                "method": 'GET',
-                "url": "http://sbm.localhost:8001/api/v1/messageset/11/"
-            },
-            "response": {
-                "code": 200,
+                "method": 'POST',
                 "data": {
-                    "id": 11,
-                    "short_name": 'pmtct_prebirth.patient.1',
-                    "notes": null,
-                    "next_set": 2,
-                    "default_schedule": 111,
-                    "content_type": 'text',
-                    "created_at": '2016-06-22T06:13:29.693272Z',
-                    "updated_at": '2016-06-22T06:13:29.693272Z'
-                }
-            }
+                    "deprecated": "fixture"
+                },
+                "url": 'http://'
+            },
+            "response": {}
         },
 
         // 77: optout cb245673-aa41-4302-ac47-00000000001 (sms_pmtct)
