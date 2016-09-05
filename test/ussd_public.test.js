@@ -5,8 +5,7 @@ var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
 var fixtures_MessageSender = require('./fixtures_message_sender');
 var fixtures_Hub = require('./fixtures_hub');
 var fixtures_Jembi = require('./fixtures_jembi');
-
-// var utils = require('seed-jsbox-utils').utils;
+var utils = require('seed-jsbox-utils').utils;
 
 describe("app", function() {
     describe("for ussd_public use", function() {
@@ -80,6 +79,9 @@ describe("app", function() {
                             "7. More"
                         ].join('\n')
                     })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [160, 163]);
+                    })
                     .run();
                 });
             });
@@ -98,6 +100,9 @@ describe("app", function() {
                                 "2. Send us a complaint"
                             ].join('\n')
                         })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [51, 54, 161]);
+                        })
                         .run();
                     });
                 });
@@ -113,6 +118,9 @@ describe("app", function() {
                                 "1. Yes",
                                 "2. No"
                             ].join('\n')
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [58, 176]);
                         })
                         .run();
                     });
@@ -131,6 +139,9 @@ describe("app", function() {
                                 'MomConnect. Choose an option:',
                                 '1. Get the full set of messages'
                         ].join('\n')
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [177]);
                         })
                         .run();
                 });
