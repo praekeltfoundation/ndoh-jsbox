@@ -102,7 +102,7 @@ go.app = function() {
 
         self.compile_registrant_info = function() {
             var registrant_info = self.im.user.answers.registrant;
-            registrant_info.details.lang_code = self.im.user.answers.lang_code;
+            registrant_info.details.lang_code = self.im.user.answers.state_language;
             registrant_info.details.consent =
                 self.im.user.answers.state_consent === "yes" ? "true" : null;
 

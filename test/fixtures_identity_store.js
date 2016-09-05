@@ -60,9 +60,15 @@ module.exports = function() {
                                 "default_addr_type": "msisdn",
                                 "addresses": {
                                     "msisdn": {
-                                        "+27820001002": {}
+                                        "+27820001001": {"default": true}
                                     }
-                                }
+                                },
+                                "lang_code": "eng_ZA",
+                                "consent": true,
+                                "sa_id_no": "5101025009086",
+                                "mom_dob": "2051-01-02",
+                                "source": "clinic",
+                                "last_mc_reg_on": "clinic"
                             },
                             "created_at": "2016-08-05T06:13:29.693272Z",
                             "updated_at": "2016-08-05T06:13:29.693298Z"
@@ -320,6 +326,7 @@ module.exports = function() {
                                 "+27820001001": {"default": true}
                             }
                         },
+                        "lang_code": "eng_ZA",
                         "consent": "true",
                         "sa_id_no": "5101025009086",
                         "mom_dob": "2051-01-02",
@@ -350,6 +357,7 @@ module.exports = function() {
                                 "+27820001001": {"default": true}
                             }
                         },
+                        "lang_code": "eng_ZA",
                         "consent": "true",
                         "passport_no": "12345",
                         "passport_origin": "zw",
@@ -380,6 +388,7 @@ module.exports = function() {
                                 "+27820001001": {"default": true}
                             }
                         },
+                        "lang_code": "eng_ZA",
                         "consent": "true",
                         "mom_dob": "1981-01-14",
                         "source": "clinic",
