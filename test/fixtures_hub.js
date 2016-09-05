@@ -428,13 +428,19 @@ module.exports = function() {
             "response": {}
         },
 
-        // 16:
+        // 16:  change to baby subscription for cb245673-aa41-4302-ac47-00000001002
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.change.baby_switch.identity.cb245673-aa41-4302-ac47-00000001002",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001002",
+                    "action": "baby_switch",
+                    "data": {}
+                }
             },
-            'response': {}
+            "response": {}
         },
 
         // 17:
