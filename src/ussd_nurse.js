@@ -393,20 +393,39 @@ go.app = function() {
 
             // operator.id will equal registrant.id when a self registration
             if (self.im.user.answers.operator.id !== self.im.user.answers.registrant.id) {
-                self.im.user.answers.registrant.details.nurseconnect.registered_by =
-                    self.im.user.answers.operator.id;
-            }
+                self.im.user.answers.registrant.details.nurseconnect.registered_by = self.im.user.answers.operator.id;
 
-            return Q
-            .all([
-                is.update_identity(self.im.user.answers.registrant.id,
-                                   self.im.user.answers.registrant),
-                self.send_registration_thanks(self.im.user.answers.registrant_msisdn),
-                hub.create_registration(reg_info)
-            ])
-            .then(function() {
-                return self.states.create('state_end_reg');
-            });
+                return Q
+                .all ([
+                    // identity PATCH
+                    is.update_identity(
+                        self.im.user.answers.registrant.id,
+                        self.im.user.answers.registrant
+                    ),
+                    self.send_registration_thanks(self.im.user.answers.registrant_msisdn),
+                    // POST registration
+                    hub.create_registration(reg_info)
+                ])
+                .then(function() {
+                    return self.states.create('state_end_reg');
+                });
+
+            } else {
+                return Q
+                .all([
+                    // identity PATCH
+                    is.update_identity(
+                        self.im.user.answers.registrant.id,
+                        self.im.user.answers.registrant
+                    ),
+                    self.send_registration_thanks(self.im.user.answers.registrant_msisdn),
+                    // POST registration
+                    hub.create_registration(reg_info)
+                ])
+                .then(function() {
+                    return self.states.create('state_end_reg');
+                });
+            }
         });
 
     // CHANGE STATES
