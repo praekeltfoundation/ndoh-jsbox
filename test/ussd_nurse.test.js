@@ -265,6 +265,9 @@ describe("app", function() {
                             , {session_event: 'close'}  // timeout
                             , {session_event: 'new'}  // redial
                         )
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [150, 160, 163]);
+                        })
                         .run();
                 });
             });
@@ -282,6 +285,9 @@ describe("app", function() {
                             , {session_event: 'close'}  // timeout
                             , {session_event: 'new'}  // redial
                         )
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [150, 160, 163]);
+                        })
                         .run();
                 });
             });
@@ -297,6 +303,9 @@ describe("app", function() {
                             )
                             .check.interaction({
                                 state: 'state_not_subscribed'
+                            })
+                            .check(function(api) {
+                                utils.check_fixtures_used(api, [160]);
                             })
                             .run();
                     });
@@ -321,6 +330,9 @@ describe("app", function() {
                                     '2. Start Over'
                                 ].join('\n')
                             })
+                            .check(function(api) {
+                                utils.check_fixtures_used(api, [150, 160, 163]);
+                            })
                             .run();
                     });
                 });
@@ -344,6 +356,9 @@ describe("app", function() {
                                     '1. Yes',
                                     '2. Start Over'
                                 ].join('\n')
+                            })
+                            .check(function(api) {
+                                utils.check_fixtures_used(api, [150, 160, 161, 163]);
                             })
                             .run();
                     });
@@ -370,6 +385,9 @@ describe("app", function() {
                                 '2. Not the right facility'
                             ].join('\n')
                         })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [150, 160, 163]);
+                        })
                         .run();
                 });
             });
@@ -388,6 +406,9 @@ describe("app", function() {
                         )
                         .check.interaction({
                             state: 'state_not_subscribed'
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [150, 160, 163]);
                         })
                         .run();
                 });
