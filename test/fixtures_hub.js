@@ -443,22 +443,52 @@ module.exports = function() {
             "response": {}
         },
 
-        // 17:
+        // 17: register cb245673-aa41-4302-ac47-00000001001 (momconnect public)
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "url": 'http://hub/api/v1/registration/',
+                "method": 'POST',
+                "data": {
+                    "reg_type": "momconnect_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001001",
+                        "msisdn_registrant": "+27820001001",
+                        "msisdn_device": "+27820001001",
+                        "language": "zul_ZA",
+                        "consent": true,
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {}
+            }
         },
 
-        // 18:
+        // 18: register cb245673-aa41-4302-ac47-00000001004 (momconnect public)
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-00000001004",
+            "request": {
+                "url": 'http://hub/api/v1/registration/',
+                "method": 'POST',
+                "data": {
+                    "reg_type": "momconnect_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001004",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001004",
+                        "msisdn_registrant": "+27820001004",
+                        "msisdn_device": "+27820001004",
+                        "language": "zul_ZA",
+                        "consent": true,
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {}
+            }
         },
 
         // 19:

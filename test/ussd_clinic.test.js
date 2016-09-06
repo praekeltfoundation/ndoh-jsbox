@@ -22,13 +22,9 @@ describe("app", function() {
                 .setup.char_limit(182)
                 .setup.config.app({
                     name: 'ussd_nurse',
-                    env: 'test',
                     testing_today: "2014-04-04",
                     logging: "off",
                     no_timeout_redirects: ["state_start"],
-                    endpoints: {
-                        "sms": {"delivery_class": "sms"}
-                    },
                     channel: "*120*550*2#",
                     public_channel: "*120*550#",
                     optout_channel: "*120*550*1#",
@@ -67,7 +63,7 @@ describe("app", function() {
                 });
         });
 
-        describe("timeout testing", function() {
+        describe.only("timeout testing", function() {
             describe("when you timeout and dial back in", function() {
                 describe("when on a normal state", function() {
                     it("should go to state_timed_out", function() {
@@ -144,6 +140,8 @@ describe("app", function() {
                             , "123456"  // state_clinic_code
                             , "2"  // state_due_date_month - may
                             , "10"  // state_due_date_day
+                            , {session_event: 'close'}
+                            , {session_event: 'new'}
                             , {session_event: 'close'}
                             , {session_event: 'new'}
                             , "1"  // state_timed_out - continue

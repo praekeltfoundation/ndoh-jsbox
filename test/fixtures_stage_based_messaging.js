@@ -28,6 +28,7 @@ module.exports = function() {
         // 51: get active subscriptions for cb245673-aa41-4302-ac47-00000001002
         {
             "key": "get.sbm.identity.cb245673-aa41-4302-ac47-00000001002",
+            "repeatable": "true",
             "request": {
                 "url": 'http://sbm/api/v1/subscriptions/',
                 "method": 'GET',
@@ -395,13 +396,26 @@ module.exports = function() {
             'response': {}
         },
 
-        // 58:
+        // 58: get active subscriptions for cb245673-aa41-4302-ac47-00000001006
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "get.sbm.identity.cb245673-aa41-4302-ac47-00000001006",
+            "request": {
+                "url": 'http://sbm/api/v1/subscriptions/',
+                "method": 'GET',
+                "params": {
+                    "identity": 'cb245673-aa41-4302-ac47-00000001006',
+                    "active": 'true'
+                }
             },
-            'response': {}
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 0,
+                    "next": null,
+                    "previous": null,
+                    "results": []
+                }
+            }
         },
 
         // 59:
