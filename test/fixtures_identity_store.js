@@ -223,6 +223,7 @@ module.exports = function() {
                                         "+27820001004": { "optedout": true }
                                     }
                                 },
+                                "source": "clinic",
                                 "nurseconnect": {
                                     "last_reg_id": "7",
                                     "is_registered": 'true',
@@ -629,6 +630,74 @@ module.exports = function() {
                     ]
                 }
             }
+        },
+
+        // 178: update identity cb245673-aa41-4302-ac47-00000001001
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/",
+                    "id": "cb245673-aa41-4302-ac47-00000001001",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001001": {"default": true}
+                            }
+                        },
+                        "lang_code": "zul_ZA",
+                        "consent": true,
+                        "source": "public",
+                        "last_mc_reg_on": "public"
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z"
+                }
+            },
+            "response": {}
+        },
+
+        // 179: update identity cb245673-aa41-4302-ac47-00000001004
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001004",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001004/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001004/",
+                    "id": "cb245673-aa41-4302-ac47-00000001004",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001004": {"optedout": true}
+                            }
+                        },
+                        "source": "clinic",
+                        "nurseconnect": {
+                            "last_reg_id": "7",
+                            "is_registered": 'true',
+                            "faccode": '123456',
+                            "facname": 'WCL clinic',
+                            "id_type": "sa_id",
+                            "sa_id_no": "5101025009086",
+                            "dob": "1964-07-11",
+                            "opt_out_reason": "unknown"
+                        },
+                        "lang_code": "zul_ZA",
+                        "consent": true,
+                        "last_mc_reg_on": "public"
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z"
+                }
+            },
+            "response": {}
         },
 
     ];

@@ -250,7 +250,7 @@ describe("app", function() {
                                    'helpful messages at a clinic.'
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [160, 163]);
+                            utils.check_fixtures_used(api, [17, 117, 160, 163, 178]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -319,7 +319,7 @@ describe("app", function() {
                         state: "state_end_success"
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [164, 166]);
+                        utils.check_fixtures_used(api, [18, 118, 164, 166, 179]);
                     })
                     .check.reply.ends_session()
                     .run();

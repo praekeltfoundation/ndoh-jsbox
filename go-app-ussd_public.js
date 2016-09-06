@@ -4,6 +4,7 @@ go;
 go.app = function() {
     var vumigo = require("vumigo_v02");
     var SeedJsboxUtils = require('seed-jsbox-utils');
+    var Q = require('q');
     var App = vumigo.App;
     var EndState = vumigo.states.EndState;
     var ChoiceState = vumigo.states.ChoiceState;
@@ -52,6 +53,50 @@ go.app = function() {
             }
         },
 
+        self.compile_registrant_info = function() {
+            var registrant_info = self.im.user.answers.registrant;
+            registrant_info.details.lang_code = self.im.user.answers.state_language;
+            registrant_info.details.consent =
+                self.im.user.answers.state_consent === "yes" ? true : null;
+
+            if (!("source" in registrant_info.details)) {
+                registrant_info.details.source = "public";
+            }
+
+            registrant_info.details.last_mc_reg_on = "public";
+
+            return registrant_info;
+        };
+
+        self.compile_registration_info = function() {
+            var reg_details = {
+                "operator_id": self.im.user.answers.registrant.id,
+                "msisdn_registrant": self.im.user.answers.registrant_msisdn,
+                "msisdn_device": self.im.user.answers.registrant_msisdn,
+                "language": self.im.user.answers.state_language,
+                "consent": self.im.user.answers.state_consent === "yes" ? true : null
+            };
+
+            var registration_info = {
+                "reg_type": "momconnect_prebirth",
+                "registrant_id": self.im.user.answers.registrant.id,
+                "data": reg_details
+            };
+            return registration_info;
+        };
+
+        self.send_registration_thanks = function() {
+            return ms.
+            create_outbound_message(
+                self.im.user.answers.registrant.id,
+                self.im.user.answers.registrant_msisdn,
+                self.im.user.i18n($(
+                    "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. " +
+                    "You can register for the full set of FREE helpful messages at a clinic."
+                ))
+            );
+        };
+
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
                 if (!interrupt || !utils.timed_out(self.im))
@@ -65,7 +110,7 @@ go.app = function() {
         };
 
 
-        self.add("state_start", function(name) {
+        self.add("state_start", function(name) {  // interstitial state
             self.im.user.set_answers = {};
             var registrant_msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
 
@@ -215,36 +260,19 @@ go.app = function() {
             });
         });
 
-        self.add('state_save_subscription', function(name) {
-            return self.states.create('state_end_success');
-        });
+        self.add('state_save_subscription', function(name) {  // interstitial state
+            var registration_info = self.compile_registration_info();
+            var registrant_info = self.compile_registrant_info();
 
-        // self.states.add('save_subscription_data', function(name) {
-        //     self.contact.extra.is_registered = 'true';
-        //     self.contact.extra.is_registered_by = 'personal';
-        //     self.contact.extra.metric_sessions_to_register = self.contact.extra.ussd_sessions;
-        //     self.contact.extra.ussd_sessions = '0';
-        //     return Q.all([
-        //         go.utils.post_registration(self.contact.msisdn, self.contact, self.im, 'personal'),
-        //         self.im.outbound.send_to_user({
-        //             endpoint: 'sms',
-        //             content: $("Congratulations on your pregnancy. You will now get free SMSs about MomConnect. " +
-        //                      "You can register for the full set of FREE helpful messages at a clinic.")
-        //         }),
-        //         self.im.metrics.fire.avg((self.metric_prefix + ".avg.sessions_to_register"),
-        //             parseInt(self.contact.extra.metric_sessions_to_register, 10)),
-        //         go.utils.incr_kv(self.im, [self.store_name, 'no_complete_registrations'].join('.')),
-        //         go.utils.decr_kv(self.im, [self.store_name, 'no_incomplete_registrations'].join('.')),
-        //         go.utils.incr_kv(self.im, [self.store_name, 'conversion_registrations'].join('.')),
-        //         self.im.contacts.save(self.contact)
-        //     ])
-        //     .then(function() {
-        //         return go.utils.adjust_percentage_registrations(self.im, self.metric_prefix);
-        //     })
-        //     .then(function() {
-        //         return self.states.create('states_end_success');
-        //     });
-        // });
+            return Q.all([
+                is.update_identity(self.im.user.answers.registrant.id, registrant_info),
+                hub.create_registration(registration_info),
+                self.send_registration_thanks()
+            ])
+            .then(function() {
+                return self.states.create('state_end_success');
+            });
+        });
 
         self.add('state_end_success', function(name) {
             return new EndState(name, {
