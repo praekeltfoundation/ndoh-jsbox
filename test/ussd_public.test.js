@@ -215,7 +215,7 @@ describe("app", function() {
 
         describe("state_consent", function() {
             describe("refusing consent", function() {
-                it("should go to state_consent_refused", function() {
+                it("should go to state_end_consent_refused", function() {
                     return tester
                     .setup.user.addr("27820001001")
                     .inputs(
@@ -225,9 +225,10 @@ describe("app", function() {
                         , "2"  // state_consent - no
                     )
                     .check.interaction({
-                        state: "state_consent_refused",
+                        state: "state_end_consent_refused",
                         reply: "Unfortunately without your consent, you cannot register to MomConnect."
                     })
+                    .check.reply.ends_session()
                     .run();
                 });
             });
@@ -248,6 +249,10 @@ describe("app", function() {
                                    'about MomConnect. You can register for the full set of FREE ' +
                                    'helpful messages at a clinic.'
                         })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [160, 163]);
+                        })
+                        .check.reply.ends_session()
                         .run();
                     });
                 });
@@ -273,6 +278,51 @@ describe("app", function() {
                         })
                         .run();
                     });
+                });
+            });
+        });
+
+        describe("state_opt_in", function() {
+            describe("choosing not to opt in", function() {
+                it("should go to state_stay_out", function() {
+                    return tester
+                    .setup.user.addr("27820001004")
+                    .inputs(
+                        {session_event: "new"}
+                        , "1"  // state_language - zul_ZA
+                        , "1"  // state_suspect_pregnancy - yes
+                        , "1"  // state_consent - yes
+                        , "2"  // state_opt_in - no
+                    )
+                    .check.interaction({
+                        state: "state_stay_out",
+                        reply: [(
+                            'You have chosen not to receive MomConnect SMSs'),
+                            '1. Main Menu'
+                        ].join('\n')
+                    })
+                    .run();
+                });
+            });
+            describe("choosing to opt in", function() {
+                it("should go to state_end_success", function() {
+                    return tester
+                    .setup.user.addr("27820001004")
+                    .inputs(
+                        {session_event: "new"}
+                        , "1"  // state_language - zul_ZA
+                        , "1"  // state_suspect_pregnancy - yes
+                        , "1"  // state_consent - yes
+                        , "1"  // state_opt_in - ues
+                    )
+                    .check.interaction({
+                        state: "state_end_success"
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [164, 166]);
+                    })
+                    .check.reply.ends_session()
+                    .run();
                 });
             });
         });

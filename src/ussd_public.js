@@ -157,7 +157,7 @@ go.app = function() {
                             self.im.user.answers.registrant_msisdn);
                         return opted_out ? 'state_opt_in' : 'state_save_subscription';
                     } else {
-                        return 'state_consent_refused';
+                        return 'state_end_consent_refused';
                     }
                 }
             });
@@ -170,7 +170,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_consent_refused', function(name) {
+        self.add('state_end_consent_refused', function(name) {
             return new EndState(name, {
                 text: 'Unfortunately without your consent, you cannot register' +
                       ' to MomConnect.',
@@ -198,6 +198,18 @@ go.app = function() {
                     } else {
                         return 'state_stay_out';
                     }
+                }
+            });
+        });
+
+        self.add('state_stay_out', function(name) {
+            return new ChoiceState(name, {
+                question: $('You have chosen not to receive MomConnect SMSs'),
+                choices: [
+                    new Choice('main_menu', $('Main Menu'))
+                ],
+                next: function(choice) {
+                    return 'state_start';
                 }
             });
         });
