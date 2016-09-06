@@ -105,16 +105,7 @@ module.exports = function() {
             }
         },
 
-        // 53:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
-        // 54: get messagesets
+        // 53: get messagesets
         {
             "key": "get.sbm.messageset.all",
             "repeatable": true,
@@ -324,7 +315,7 @@ module.exports = function() {
             }
         },
 
-        // 55: get active subscriptions for cb245673-aa41-4302-ac47-00000001004
+        // 54: get active subscriptions for cb245673-aa41-4302-ac47-00000001004
         {
             "key": "get.sbm.identity.cb245673-aa41-4302-ac47-00000001004",
             "repeatable": true,
@@ -347,7 +338,7 @@ module.exports = function() {
             }
         },
 
-        // 56: get active subscriptions for cb245673-aa41-4302-ac47-00000001005
+        // 55: get active subscriptions for cb245673-aa41-4302-ac47-00000001005
         {
             "key": "get.sbm.identity.cb245673-aa41-4302-ac47-00000001005",
             "repeatable": true,
@@ -387,16 +378,7 @@ module.exports = function() {
             }
         },
 
-        // 57: get messagesets
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
-        // 58: get active subscriptions for cb245673-aa41-4302-ac47-00000001006
+        // 56: get active subscriptions for cb245673-aa41-4302-ac47-00000001006
         {
             "key": "get.sbm.identity.cb245673-aa41-4302-ac47-00000001006",
             "request": {
@@ -416,6 +398,24 @@ module.exports = function() {
                     "results": []
                 }
             }
+        },
+
+        // 57:
+        {
+            'request': {
+                'method': 'GET',
+                'url': 'http://',
+            },
+            'response': {}
+        },
+
+        // 58:
+        {
+            'request': {
+                'method': 'GET',
+                'url': 'http://',
+            },
+            'response': {}
         },
 
         // 59:

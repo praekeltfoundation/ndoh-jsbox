@@ -414,6 +414,7 @@ module.exports = function() {
 
         // 15: change optout for identity cb245673-aa41-4302-ac47-00000001003 (job_change)
         {
+            "key": "post.hub.change.nurse_optout.identity.cb245673-aa41-4302-ac47-00000001003",
             "request": {
                 "url": 'http://hub/api/v1/change/',
                 "method": 'POST',
@@ -513,6 +514,7 @@ module.exports = function() {
 
         // 20: post momconnect_loss_switch change for cb245673-aa41-4302-ac47-00000001001
         {
+            "key": "post.hub.change.momconnect_loss_switch.identity.cb245673-aa41-4302-ac47-00000001001",
             "request": {
                 "url": 'http://hub/api/v1/change/',
                 "method": 'POST',

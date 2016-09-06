@@ -175,7 +175,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 161]);
+                            utils.check_fixtures_used(api, [51, 53, 161]);
                         })
                         .run();
                 });
@@ -202,7 +202,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [52, 54, 162]);
+                            utils.check_fixtures_used(api, [52, 53, 162]);
                         })
                         .run();
                 });
@@ -805,7 +805,7 @@ describe("app", function() {
                             reply: "Please enter the old number on which you used to receive messages, e.g. 0736436265:"
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 161]);
+                            utils.check_fixtures_used(api, [51, 53, 161]);
                         })
                         .run();
                 });
@@ -858,7 +858,7 @@ describe("app", function() {
                             state: 'state_change_old_nr',
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 160, 161]);
+                            utils.check_fixtures_used(api, [51, 53, 160, 161]);
                         })
                         .run();
                 });
@@ -910,7 +910,7 @@ describe("app", function() {
                             reply: "Please enter the new number on which you want to receive messages, e.g. 0736252020:"
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [52, 54, 162]);
+                            utils.check_fixtures_used(api, [52, 53, 162]);
                         })
                         .run();
                 });
@@ -928,7 +928,7 @@ describe("app", function() {
                             state: 'state_end_detail_changed',
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [10, 52, 54, 160, 162]);
+                            utils.check_fixtures_used(api, [10, 52, 53, 160, 162]);
                         })
                         .run();
                 });
@@ -946,7 +946,7 @@ describe("app", function() {
                             state: 'state_end_detail_changed'
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [11, 54, 56, 160, 165]);
+                            utils.check_fixtures_used(api, [11, 53, 55, 160, 165]);
                         })
                         .run();
                 });
@@ -965,7 +965,7 @@ describe("app", function() {
                             state: 'state_block_active_subs' // number in use by 0820001003
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [54, 56, 162, 165]);
+                            utils.check_fixtures_used(api, [53, 55, 162, 165]);
                         })
                         .run();
                 });
@@ -1118,7 +1118,7 @@ describe("app", function() {
                             reply: "Please enter the 6-digit facility code for your new facility, e.g. 456789:"
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [52, 54, 162]);
+                            utils.check_fixtures_used(api, [52, 53, 162]);
                         })
                         .run();
                 });
@@ -1194,7 +1194,7 @@ describe("app", function() {
                             reply: "Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [8, 52, 54, 162]);
+                            utils.check_fixtures_used(api, [8, 52, 53, 162]);
                         })
                         .run();
                 });
@@ -1259,7 +1259,7 @@ describe("app", function() {
                             reply: "Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [9, 52, 54, 162]);
+                            utils.check_fixtures_used(api, [9, 52, 53, 162]);
                         })
                         .run();
                 });
@@ -1312,7 +1312,7 @@ describe("app", function() {
                                 reply: 'Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again.'
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [6, 52, 54, 162]);
+                                utils.check_fixtures_used(api, [6, 52, 53, 162]);
                             })
                             .run();
                     });
@@ -1388,7 +1388,7 @@ describe("app", function() {
                                 reply: 'Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again.'
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [7, 52, 54, 162]);
+                                utils.check_fixtures_used(api, [7, 52, 53, 162]);
                             })
                             .run();
                     });
@@ -1437,7 +1437,7 @@ describe("app", function() {
                                 state: 'state_end_detail_changed',
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [15, 52, 54, 162]);
+                                utils.check_fixtures_used(api, [15, 52, 53, 162]);
                             })
                             .run();
                     });
