@@ -146,7 +146,7 @@ describe("app", function() {
                                 'Welcome to the Department of Health\'s ' +
                                 'MomConnect. Choose an option:',
                                 '1. Get the full set of messages'
-                        ].join('\n')
+                            ].join('\n')
                         })
                         .check(function(api) {
                             utils.check_fixtures_used(api, [177]);
@@ -168,6 +168,47 @@ describe("app", function() {
                     state: "state_suspect_pregnancy"
                 })
                 .run();
+            });
+        });
+
+        describe("state_suspect_pregnancy", function() {
+            describe("indicating that you suspect pregnancy", function() {
+                it("should go to state_consent", function() {
+                    return tester
+                    .setup.user.addr("27820001001")
+                    .inputs(
+                        {session_event: "new"}
+                        , "1"  // state_language - zul_ZA
+                        , "1"  // state_suspect_pregnancy - yes
+                    )
+                    .check.interaction({
+                        state: "state_consent",
+                        reply: [
+                            'To register we need to collect, store & use ' +
+                            'your info. You may get messages on public ' +
+                            'holidays & weekends. Do you consent?',
+                            '1. Yes',
+                            '2. No'
+                        ].join('\n')
+                    })
+                    .run();
+                });
+            });
+            describe("indicating that you are not pregnant", function() {
+                it("should go to state_end_not_pregnant", function() {
+                    return tester
+                    .setup.user.addr("27820001001")
+                    .inputs(
+                        {session_event: "new"}
+                        , "1"  // state_language - zul_ZA
+                        , "2"  // state_suspect_pregnancy - no
+                    )
+                    .check.interaction({
+                        state: "state_end_not_pregnant",
+                        reply: "You have chosen not to receive MomConnect SMSs"
+                    })
+                    .run();
+                });
             });
         });
 
