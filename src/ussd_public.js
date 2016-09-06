@@ -94,6 +94,32 @@ go.app = function() {
             );
         };
 
+        self.send_compliment_instructions = function() {
+            return ms.
+            create_outbound_message(
+                self.im.user.answers.registrant.id,
+                self.im.user.answers.registrant_msisdn,
+                self.im.user.i18n($(
+                    "Please reply to this message with your compliment. If it " +
+                    "relates to the service at the clinic, include the clinic or " +
+                    "clinic worker name. Standard rates apply."
+                ))
+            );
+        };
+
+        self.send_complaint_instructions = function() {
+            return ms.
+            create_outbound_message(
+                self.im.user.answers.registrant.id,
+                self.im.user.answers.registrant_msisdn,
+                self.im.user.i18n($(
+                    "Please reply to this message with your complaint. If it " +
+                    "relates to the service at the clinic, include the clinic or " +
+                    "clinic worker name. Standard rates apply."
+                ))
+            );
+        };
+
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
                 if (!interrupt || !utils.timed_out(self.im))
@@ -143,6 +169,7 @@ go.app = function() {
             });
         });
 
+        // Registration States
         self.add('state_language', function(name) {
             return new PaginatedChoiceState(name, {
                 question: 'Welcome to the Department of Health\'s MomConnect. Choose your language:',
@@ -280,7 +307,7 @@ go.app = function() {
             });
         });
 
-
+        // Information States
         self.add('state_registered_full', function(name) {
             return new ChoiceState(name, {
                 question: $(
@@ -288,12 +315,42 @@ go.app = function() {
                     'MomConnect. Please choose an option:'
                 ),
                 choices: [
-                    new Choice('state_end_compliment', $('Send us a compliment')),
-                    new Choice('state_end_complaint', $('Send us a complaint'))
+                    new Choice('compliment', $('Send us a compliment')),
+                    new Choice('complaint', $('Send us a complaint'))
                 ],
                 next: function(choice) {
-                    return choice.value;
+                    if (choice.value === "compliment") {
+                        return self
+                        .send_compliment_instructions()
+                        .then(function() {
+                            return 'state_end_compliment';
+                        });
+                    } else if (choice.value === "complaint") {
+                        return self
+                        .send_complaint_instructions()
+                        .then(function() {
+                            return 'state_end_complaint';
+                        });
+                    }
                 }
+            });
+        });
+
+        self.add('state_end_compliment', function(name) {
+            return new EndState(name, {
+                text: $('Thank you. We will send you a message ' +
+                    'shortly with instructions on how to send us ' +
+                    'your compliment.'),
+                next: 'state_start',
+            });
+        });
+
+        self.add('state_end_complaint', function(name) {
+            return new EndState(name, {
+                text: $('Thank you. We will send you a message ' +
+                    'shortly with instructions on how to send us ' +
+                    'your complaint.'),
+                next: 'state_start',
             });
         });
 

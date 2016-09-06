@@ -348,5 +348,50 @@ describe("app", function() {
             });
         });
 
+        describe("state_registered_full", function() {
+            describe("choosing to send compliment", function() {
+                it("should go to state_end_compliment", function() {
+                    return tester
+                    .setup.user.addr("27820001002")
+                    .inputs(
+                        {session_event: "new"}
+                        , "1"  // state_registered_full - compliment
+                    )
+                    .check.interaction({
+                        state: "state_end_compliment",
+                        reply: 'Thank you. We will send you a message ' +
+                            'shortly with instructions on how to send us ' +
+                            'your compliment.'
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [51, 54, 119, 161]);
+                    })
+                    .check.reply.ends_session()
+                    .run();
+                });
+            });
+            describe("choosing to send complaint", function() {
+                it("should go to state_end_complaint", function() {
+                    return tester
+                    .setup.user.addr("27820001002")
+                    .inputs(
+                        {session_event: "new"}
+                        , "2"  // state_registered_full - complaint
+                    )
+                    .check.interaction({
+                        state: "state_end_complaint",
+                        reply: 'Thank you. We will send you a message ' +
+                            'shortly with instructions on how to send us ' +
+                            'your complaint.'
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [51, 54, 120, 161]);
+                    })
+                    .check.reply.ends_session()
+                    .run();
+                });
+            });
+        });
+
     });
 });

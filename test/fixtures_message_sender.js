@@ -555,22 +555,42 @@ module.exports = function() {
             }
         },
 
-        // 119:
+        // 119: create outbound message for cb245673-aa41-4302-ac47-00000001002
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820001002",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "to_addr": "+27820001002",
+                    "content": "Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {}
+            }
         },
 
-        // 120:
+        // 120: create outbound message for cb245673-aa41-4302-ac47-00000001002
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820001002",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "to_addr": "+27820001002",
+                    "content": "Please reply to this message with your complaint. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {}
+            }
         },
 
         // 121:
