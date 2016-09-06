@@ -446,9 +446,15 @@ module.exports = function() {
                         "default_addr_type": "msisdn",
                         "addresses": {
                             "msisdn": {
-                                "+27820001002": {}
+                                "+27820001002": {"default": true}
                             }
                         },
+                        "lang_code": "eng_ZA",
+                        "consent": true,
+                        "sa_id_no": "5101025009086",
+                        "mom_dob": "2051-01-02",
+                        "source": "clinic",
+                        "last_mc_reg_on": "clinic",
                         "nurseconnect": {
                             "facname": "WCL clinic",
                             "faccode": "123456",
