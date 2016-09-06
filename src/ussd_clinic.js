@@ -40,11 +40,6 @@ go.app = function() {
             );
         };
 
-        self.readable_sa_msisdn = function(msisdn) {
-            readable_no = '0' + msisdn.slice(msisdn.length-9, msisdn.length);
-            return readable_no;
-        },
-
         self.number_opted_out = function(identity, msisdn) {
             var details_msisdn = identity.details.addresses.msisdn[msisdn];
             if ("optedout" in details_msisdn) {
@@ -182,7 +177,7 @@ go.app = function() {
 
         self.states.add('state_timed_out', function(name, creator_opts) {
             var msisdn = self.im.user.answers.registrant_msisdn || self.im.user.answers.operator_msisdn;
-            var readable_no = self.readable_sa_msisdn(msisdn);
+            var readable_no = utils.readable_msisdn(msisdn, '+27');
             return new ChoiceState(name, {
                 question: $(
                     'Would you like to complete pregnancy registration for {{ num }}?'
@@ -202,7 +197,7 @@ go.app = function() {
         self.add("state_start", function(name) {
             self.im.user.set_answers = {};
             var operator_msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
-            var readable_no = self.readable_sa_msisdn(self.im.user.addr);
+            var readable_no = utils.readable_msisdn(self.im.user.addr, '+27');
 
             return is
             .get_or_create_identity({"msisdn": operator_msisdn})
