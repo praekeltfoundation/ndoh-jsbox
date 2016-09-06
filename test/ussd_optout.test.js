@@ -574,7 +574,7 @@ describe("app", function() {
                             'concerns please visit your nearest clinic.')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [161, 167]);
+                        utils.check_fixtures_used(api, [161, 180]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -597,7 +597,7 @@ describe("app", function() {
                             'concerns please visit your nearest clinic.')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [161, 167]);
+                        utils.check_fixtures_used(api, [161, 180]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -621,7 +621,7 @@ describe("app", function() {
                                 'from MomConnect in the coming weeks.')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [1, 161]);
+                            utils.check_fixtures_used(api, [19, 161]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -643,7 +643,7 @@ describe("app", function() {
                                 'from MomConnect in the coming weeks.')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [2, 160, 163]);
+                            utils.check_fixtures_used(api, [20, 160, 163]);
                         })
                         .check.reply.ends_session()
                         .run();

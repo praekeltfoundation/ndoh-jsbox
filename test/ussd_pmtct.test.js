@@ -1004,7 +1004,7 @@ describe("PMTCT app", function() {
                         reply: "You will not receive SMSs about keeping your baby HIV negative. You will still receive MomConnect SMSs. To stop receiving these SMSs, dial *134*550*1#"
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [42, 48, 69, 76]);
+                        utils.check_fixtures_used(api, [42, 48, 62, 69]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -1047,7 +1047,7 @@ describe("PMTCT app", function() {
                         reply: "Thank you. You will no longer receive any messages from MomConnect. If you have any medical concerns, please visit your nearest clinic."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [42, 44, 67, 68, 69, 74, 75, 76]);
+                        utils.check_fixtures_used(api, [42, 44, 62, 67, 68, 69, 74, 75]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -1065,7 +1065,7 @@ describe("PMTCT app", function() {
                         reply: "Thank you. You will receive support messages from MomConnect in the coming weeks."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [42, 49, 67, 68, 69, 73, 76]);
+                        utils.check_fixtures_used(api, [42, 49, 62, 67, 68, 69, 73]);
                     })
                     .check.reply.ends_session()
                     .run();

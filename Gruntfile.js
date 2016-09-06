@@ -201,7 +201,7 @@ module.exports = function (grunt) {
             options: {
                 reporter: 'spec'
             },
-            /* test_ussd_clinic: {
+            test_ussd_clinic: {
                 src: ['<%= paths.test.ussd_clinic %>']
             },
             test_ussd_chw: {
@@ -209,23 +209,22 @@ module.exports = function (grunt) {
             },
             test_ussd_public: {
                 src: ['<%= paths.test.ussd_public %>']
-            },*/
+            },
             test_ussd_optout: {
                 src: ['<%= paths.test.ussd_optout %>']
-            },/*
+            },
             test_sms_inbound: {
                 src: ['<%= paths.test.sms_inbound %>']
             },
             test_ussd_servicerating: {
                 src: ['<%= paths.test.ussd_servicerating %>']
-            },*/
+            },
             test_ussd_nurse: {
                 src: ['<%= paths.test.ussd_nurse %>']
-
             },
-            /*test_sms_nurse: {
+            test_sms_nurse: {
                 src: ['<%= paths.test.sms_nurse %>']
-            },*/
+            },
             test_ussd_pmtct: {
                 src: ['<%= paths.test.ussd_pmtct %>']
             },

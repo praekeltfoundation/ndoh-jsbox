@@ -122,24 +122,18 @@ go.app = function() {
             });
         };
 
-        self.has_active_pmtct_subscription = function(id) {
-            return sbm
-            .list_active_subscriptions(id)
-            .then(function(active_subs_response) {
-                var active_subs = active_subs_response.results;
-                for (var i=0; i < active_subs.length; i++) {
-                    // get the subscription messageset
-                    return sbm
-                    .get_messageset(active_subs[i].messageset)
-                    .then(function(messageset) {
-                        if (messageset.short_name.indexOf('pmtct') > -1) {
-                            return true;
-                        }
-                    });
+        self.get_valid_active_subscription = function(active_subscriptions) {
+            for (var i=0; i < active_subscriptions.length; i++) {
+                var messageset_id = active_subscriptions[i].message_set.match(/\d+\/$/)[0].replace('/', '');
+                var subscription_type = self.getSubscriptionType(messageset_id);
+                // check that current active subscription is to momconnect
+                if (['baby1', 'baby2', 'standard', 'later', 'accelerated'].indexOf(subscription_type) >= 0) {
+                  return subscription_type;
                 }
-                return false;
-            });
+            }
+            return false;
         };
+
 
         self.get_6_lang_code = function(lang) {
             // Return the six-char code for a two or six letter language code
@@ -310,6 +304,30 @@ go.app = function() {
             return http.put(vumigo_base_url + endpoint);
         };
 
+        self.send_registration_thanks = function() {
+            return ms
+            .create_outbound_message(
+                self.im.user.answers.identity.id,
+                self.im.user.answers.msisdn,
+                self.im.user.i18n($(
+                    "HIV positive moms can have an HIV negative baby! You can get free " +
+                    "medicine at the clinic to protect your baby and improve your health"
+                ))
+            )
+            .then(function() {
+                return ms
+                .create_outbound_message(
+                    self.im.user.answers.identity.id,
+                    self.im.user.answers.msisdn,
+                    self.im.user.i18n($(
+                        "Recently tested HIV positive? You are not alone, many other pregnant " +
+                        "women go through this. Visit b-wise.mobi or call the AIDS Helpline " +
+                        "0800 012 322"
+                    ))
+                );
+            });
+        };
+
         // TIMEOUT HANDLING
 
         // override normal state adding
@@ -381,10 +399,10 @@ go.app = function() {
             .get_or_create_identity({"msisdn": msisdn})
             .then(function(identity) {
                 self.im.user.set_answer("identity", identity);
-                return self
-                .has_active_pmtct_subscription(identity.id)
-                .then(function(has_active_pmtct_subscription) {
-                    if (has_active_pmtct_subscription) {
+                return sbm
+                .check_identity_subscribed(identity.id, "pmtct")
+                .then(function(identity_subscribed_to_pmtct) {
+                    if (identity_subscribed_to_pmtct) {
                         return self.im.user
                         .set_lang(self.im.user.answers.identity.details.lang_code || "eng_ZA")
                         .then(function(lang_set_response) {
@@ -417,11 +435,9 @@ go.app = function() {
                         .getVumiActiveSubscriptions(self.im, msisdn)
                         .then(function(active_subscriptions) {
                             if (active_subscriptions.length > 0) {
-                                // extract messageset number
-                                var messageset_id = active_subscriptions[0].message_set.match(/\d+\/$/)[0].replace('/', '');
-                                var subscription_type = self.getSubscriptionType(messageset_id);
                                 // check that current active subscription is to momconnect
-                                if (['baby1', 'baby2', 'standard', 'later', 'accelerated'].indexOf(subscription_type) > -1) {
+                                subscription_type = self.get_valid_active_subscription(active_subscriptions);
+                                if (subscription_type !== false) {
                                     // save contact data (set_answer's) - lang, consent, dob, edd
                                     self.im.user.set_answer("lang_code",
                                         self.get_6_lang_code(contacts[0].extra.language_choice) || "eng_ZA");
@@ -483,7 +499,7 @@ go.app = function() {
                 next: function(choice) {
                     if (choice.value === "yes") {
                         // set consent
-                        self.im.user.set_answer("consent", "true");
+                        self.im.user.set_answer("consent", true);
                         if (self.im.user.answers.mom_dob) {
                             return "state_hiv_messages";
                         } else {
@@ -611,22 +627,10 @@ go.app = function() {
                         }
                     };
                 }
-                return hub
-                .create_registration(reg_info)
-                .then(function() {
-                  return ms.create_outbound_message(
-                      self.im.user.answers.identity.id,
-                      self.im.user.answers.msisdn,
-                      "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health"
-                  );
-                })
-                .then(function() {
-                  return ms.create_outbound_message(
-                      self.im.user.answers.identity.id,
-                      self.im.user.answers.msisdn,
-                      "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322"
-                  );
-                })
+                return Q.all([
+                    hub.create_registration(reg_info),
+                    self.send_registration_thanks()
+                ])
                 .then(function() {
                     return self.states.create('state_end_hiv_messages_confirm');
                 });
