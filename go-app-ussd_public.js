@@ -173,6 +173,79 @@ go.app = function() {
             });
         });
 
+        self.add('state_consent_refused', function(name) {
+            return new EndState(name, {
+                text: 'Unfortunately without your consent, you cannot register' +
+                      ' to MomConnect.',
+                next: 'state_start'
+            });
+        });
+
+        self.add('state_opt_in', function(name) {
+            return new ChoiceState(name, {
+                question: $('You have previously opted out of MomConnect ' +
+                            'SMSs. Please confirm that you would like to ' +
+                            'opt in to receive messages again?'),
+                choices: [
+                    new Choice('yes', $('Yes')),
+                    new Choice('no', $('No'))
+                ],
+                next: function(choice) {
+                    if (choice.value === 'yes') {
+                        return is
+                        .optin(self.im.user.answers.registrant.id, "msisdn",
+                               self.im.user.answers.registrant_msisdn)
+                        .then(function() {
+                            return 'state_save_subscription';
+                        });
+                    } else {
+                        return 'state_stay_out';
+                    }
+                }
+            });
+        });
+
+        self.add('state_save_subscription', function(name) {
+            return self.states.create('state_end_success');
+        });
+
+        // self.states.add('save_subscription_data', function(name) {
+        //     self.contact.extra.is_registered = 'true';
+        //     self.contact.extra.is_registered_by = 'personal';
+        //     self.contact.extra.metric_sessions_to_register = self.contact.extra.ussd_sessions;
+        //     self.contact.extra.ussd_sessions = '0';
+        //     return Q.all([
+        //         go.utils.post_registration(self.contact.msisdn, self.contact, self.im, 'personal'),
+        //         self.im.outbound.send_to_user({
+        //             endpoint: 'sms',
+        //             content: $("Congratulations on your pregnancy. You will now get free SMSs about MomConnect. " +
+        //                      "You can register for the full set of FREE helpful messages at a clinic.")
+        //         }),
+        //         self.im.metrics.fire.avg((self.metric_prefix + ".avg.sessions_to_register"),
+        //             parseInt(self.contact.extra.metric_sessions_to_register, 10)),
+        //         go.utils.incr_kv(self.im, [self.store_name, 'no_complete_registrations'].join('.')),
+        //         go.utils.decr_kv(self.im, [self.store_name, 'no_incomplete_registrations'].join('.')),
+        //         go.utils.incr_kv(self.im, [self.store_name, 'conversion_registrations'].join('.')),
+        //         self.im.contacts.save(self.contact)
+        //     ])
+        //     .then(function() {
+        //         return go.utils.adjust_percentage_registrations(self.im, self.metric_prefix);
+        //     })
+        //     .then(function() {
+        //         return self.states.create('states_end_success');
+        //     });
+        // });
+
+        self.add('state_end_success', function(name) {
+            return new EndState(name, {
+                text: $('Congratulations on your pregnancy. You will now get free SMSs ' +
+                        'about MomConnect. You can register for the full set of FREE ' +
+                        'helpful messages at a clinic.'),
+                next: 'state_start'
+            });
+        });
+
+
         self.add('state_registered_full', function(name) {
             return new ChoiceState(name, {
                 question: $(

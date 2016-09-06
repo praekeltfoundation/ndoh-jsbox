@@ -207,7 +207,72 @@ describe("app", function() {
                         state: "state_end_not_pregnant",
                         reply: "You have chosen not to receive MomConnect SMSs"
                     })
+                    .check.reply.ends_session()
                     .run();
+                });
+            });
+        });
+
+        describe("state_consent", function() {
+            describe("refusing consent", function() {
+                it("should go to state_consent_refused", function() {
+                    return tester
+                    .setup.user.addr("27820001001")
+                    .inputs(
+                        {session_event: "new"}
+                        , "1"  // state_language - zul_ZA
+                        , "1"  // state_suspect_pregnancy - yes
+                        , "2"  // state_consent - no
+                    )
+                    .check.interaction({
+                        state: "state_consent_refused",
+                        reply: "Unfortunately without your consent, you cannot register to MomConnect."
+                    })
+                    .run();
+                });
+            });
+            describe("giving consent", function() {
+                describe("if the number was not opted out", function() {
+                    it("should go to state_end_success", function() {
+                        return tester
+                        .setup.user.addr("27820001001")
+                        .inputs(
+                            {session_event: "new"}
+                            , "1"  // state_language - zul_ZA
+                            , "1"  // state_suspect_pregnancy - yes
+                            , "1"  // state_consent - yes
+                        )
+                        .check.interaction({
+                            state: "state_end_success",
+                            reply: 'Congratulations on your pregnancy. You will now get free SMSs ' +
+                                   'about MomConnect. You can register for the full set of FREE ' +
+                                   'helpful messages at a clinic.'
+                        })
+                        .run();
+                    });
+                });
+                describe("if the number was opted out", function() {
+                    it("should go to state_opt_in", function() {
+                        return tester
+                        .setup.user.addr("27820001004")
+                        .inputs(
+                            {session_event: "new"}
+                            , "1"  // state_language - zul_ZA
+                            , "1"  // state_suspect_pregnancy - yes
+                            , "1"  // state_consent - yes
+                        )
+                        .check.interaction({
+                            state: "state_opt_in",
+                            reply: [
+                                'You have previously opted out of MomConnect ' +
+                                'SMSs. Please confirm that you would like to ' +
+                                'opt in to receive messages again?',
+                                '1. Yes',
+                                '2. No'
+                            ].join('\n')
+                        })
+                        .run();
+                    });
                 });
             });
         });
