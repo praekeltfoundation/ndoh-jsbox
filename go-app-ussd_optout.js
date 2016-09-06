@@ -118,7 +118,7 @@ go.app = function() {
 
         self.states.add("states_end_no_enter", function(name) {
             var optout_info = {
-                "optout_type": "STOP",
+                "optout_type": "stop",
                 "identity": self.im.user.answers.operator.id,
                 "reason": self.im.user.answers.state_start,
                 "address_type": "msisdn",
