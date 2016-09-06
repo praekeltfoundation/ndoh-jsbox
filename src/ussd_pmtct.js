@@ -301,6 +301,30 @@ go.app = function() {
             return http.put(vumigo_base_url + endpoint);
         };
 
+        self.send_registration_thanks = function() {
+            return ms
+            .create_outbound_message(
+                self.im.user.answers.identity.id,
+                self.im.user.answers.msisdn,
+                self.im.user.i18n($(
+                    "HIV positive moms can have an HIV negative baby! You can get free " +
+                    "medicine at the clinic to protect your baby and improve your health"
+                ))
+            )
+            .then(function() {
+                return ms
+                .create_outbound_message(
+                    self.im.user.answers.identity.id,
+                    self.im.user.answers.msisdn,
+                    self.im.user.i18n($(
+                        "Recently tested HIV positive? You are not alone, many other pregnant " +
+                        "women go through this. Visit b-wise.mobi or call the AIDS Helpline " +
+                        "0800 012 322"
+                    ))
+                );
+            });
+        };
+
         // TIMEOUT HANDLING
 
         // override normal state adding
@@ -472,7 +496,7 @@ go.app = function() {
                 next: function(choice) {
                     if (choice.value === "yes") {
                         // set consent
-                        self.im.user.set_answer("consent", "true");
+                        self.im.user.set_answer("consent", true);
                         if (self.im.user.answers.mom_dob) {
                             return "state_hiv_messages";
                         } else {
@@ -600,22 +624,10 @@ go.app = function() {
                         }
                     };
                 }
-                return hub
-                .create_registration(reg_info)
-                .then(function() {
-                  return ms.create_outbound_message(
-                      self.im.user.answers.identity.id,
-                      self.im.user.answers.msisdn,
-                      "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health"
-                  );
-                })
-                .then(function() {
-                  return ms.create_outbound_message(
-                      self.im.user.answers.identity.id,
-                      self.im.user.answers.msisdn,
-                      "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322"
-                  );
-                })
+                return Q.all([
+                    hub.create_registration(reg_info),
+                    self.send_registration_thanks()
+                ])
                 .then(function() {
                     return self.states.create('state_end_hiv_messages_confirm');
                 });

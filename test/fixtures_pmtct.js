@@ -93,7 +93,7 @@ module.exports = function() {
                                     "+27820000222": {}
                                 }
                             },
-                            "consent": "true"
+                            "consent": true
                         },
                         "created_at": "2016-06-21T06:13:29.693272Z",
                         "updated_at": "2016-06-21T06:13:29.693298Z"
@@ -175,7 +175,7 @@ module.exports = function() {
                                     "+27820000444": {}
                                 }
                             },
-                            "consent": "true",
+                            "consent": true,
                             "dob": "1981-04-26"
                         },
                         "created_at": "2016-06-21T06:13:29.693272Z",
@@ -828,7 +828,7 @@ module.exports = function() {
                                 "language_choice": "en",
                                 "nc_source_name": "Vumi Go",
                                 "ussd_sessions": "3",
-                                "consent": "true",
+                                "consent": true,
                                 "dob": "1982-02-01",
                                 "edd": "2016-09-06",
                             },
@@ -894,7 +894,7 @@ module.exports = function() {
                                 "language_choice": "en",
                                 "nc_source_name": "Vumi Go",
                                 "ussd_sessions": "3",
-                                "consent": "true",
+                                "consent": true,
                                 "edd": "2016-09-07"
                             },
                             "msisdn": "+27820000777",
@@ -1928,7 +1928,7 @@ module.exports = function() {
                                 "+27820000222": {}
                             }
                         },
-                        "consent":"true",
+                        "consent": true,
                         "created_at":"2016-06-21T06:13:29.693272Z",
                         "updated_at":"2016-06-21T06:13:29.693298Z"
                     }
@@ -1980,7 +1980,7 @@ module.exports = function() {
                                 "+27820000444": {}
                             }
                         },
-                        "consent": "true",
+                        "consent": true,
                         "dob": "1981-04-26",
                         "created_at": "2016-06-21T06:13:29.693272Z",
                         "updated_at": "2016-06-21T06:13:29.693298Z"
@@ -2657,7 +2657,7 @@ module.exports = function() {
                                 "language_choice": "en",
                                 "nc_source_name": "Vumi Go",
                                 "ussd_sessions": "3",
-                                "consent": "true",
+                                "consent": true,
                                 "dob": "1982-02-01",
                                 "edd": "2016-09-06",
                             },
