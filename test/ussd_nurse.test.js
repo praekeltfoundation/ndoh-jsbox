@@ -253,7 +253,7 @@ describe("app", function() {
 
         // Timeout Testing
         describe("when a user timed out", function() {
-            describe("very first timeout", function() {
+            describe.skip("very first timeout", function() {
                 it("should send redial sms", function() {
                     return tester
                         .setup.user.addr('27820001001')
@@ -271,7 +271,7 @@ describe("app", function() {
                         .run();
                 });
             });
-            describe("second timeout", function() {
+            describe.skip("second timeout", function() {
                 it("should not send another redial sms", function() {
                     return tester
                         .setup.user.addr('27820001001')

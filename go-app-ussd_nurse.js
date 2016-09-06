@@ -154,6 +154,8 @@ go.app = function() {
             );
         };
 
+    // TODO: #49 Do dialback sms handling
+
     // TIMEOUT STATE
         self.states.add('state_timed_out', function(name, creator_opts) {
             var msisdn = self.readable_sa_msisdn(self.im.user.answers.registrant_msisdn);
