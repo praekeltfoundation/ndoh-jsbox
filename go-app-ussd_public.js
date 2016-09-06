@@ -368,6 +368,14 @@ go.app = function() {
             });
         });
 
+        self.add('state_end_go_clinic', function(name) {
+            return new EndState(name, {
+                text: $('To register for the full set of MomConnect ' +
+                    'messages, please visit your nearest clinic.'),
+                next: 'state_start'
+            });
+        });
+
     });
 
     return {

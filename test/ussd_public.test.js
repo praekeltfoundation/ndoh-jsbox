@@ -136,22 +136,22 @@ describe("app", function() {
             describe("last momconnect registration on chw/public line", function() {
                 it("should go to state_registered_not_full", function() {
                     return tester
-                        .setup.user.addr("27820001007")
-                        .inputs(
-                            {session_event: "new"}
-                        )
-                        .check.interaction({
-                            state: "state_registered_not_full",
-                            reply: [
-                                'Welcome to the Department of Health\'s ' +
-                                'MomConnect. Choose an option:',
-                                '1. Get the full set of messages'
-                            ].join('\n')
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [177]);
-                        })
-                        .run();
+                    .setup.user.addr("27820001007")
+                    .inputs(
+                        {session_event: "new"}
+                    )
+                    .check.interaction({
+                        state: "state_registered_not_full",
+                        reply: [
+                            'Welcome to the Department of Health\'s ' +
+                            'MomConnect. Choose an option:',
+                            '1. Get the full set of messages'
+                        ].join('\n')
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [177]);
+                    })
+                    .run();
                 });
             });
         });
@@ -386,6 +386,29 @@ describe("app", function() {
                     })
                     .check(function(api) {
                         utils.check_fixtures_used(api, [51, 54, 120, 161]);
+                    })
+                    .check.reply.ends_session()
+                    .run();
+                });
+            });
+        });
+
+        describe("state_registered_not_full", function() {
+            describe("choosing to get the full set", function() {
+                it("should go to state_end_go_clinic", function() {
+                    return tester
+                    .setup.user.addr("27820001007")
+                    .inputs(
+                        {session_event: "new"}
+                        , "1"  // state_registered_not_full - full_set
+                    )
+                    .check.interaction({
+                        state: "state_end_go_clinic",
+                        reply: 'To register for the full set of MomConnect ' +
+                            'messages, please visit your nearest clinic.'
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [177]);
                     })
                     .check.reply.ends_session()
                     .run();
