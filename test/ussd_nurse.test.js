@@ -56,6 +56,13 @@ describe("app", function() {
                             token: 'test MessageSender'
                         }
                     },
+                    no_timeout_redirects: [
+                        'state_subscribed',
+                        'state_not_subscribed',
+                        'state_end_detail_changed',
+                        'state_end_reg',
+                        'state_block_active_subs'
+                    ]
                 })
                 // .setup(function(api) {
                     // api.metrics.stores = {'test_metric_store': {}};

@@ -22,6 +22,7 @@ go.app = function() {
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_route");
         var $ = self.$;
+        var interrupt = true;
 
         // variables for services
         var is;
@@ -59,13 +60,13 @@ go.app = function() {
         // override normal state adding
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                // if (!interrupt || !self.timed_out(self.im))
+                if (!interrupt || !utils.timed_out(self.im))
                     return creator(name, opts);
-                // TODO: #42 timeout handling
-                // interrupt = false;
-                // var timeout_opts = opts || {};
-                // timeout_opts.name = name;
-                // return self.states.create('state_timed_out', timeout_opts);
+
+                interrupt = false;
+                var timeout_opts = opts || {};
+                timeout_opts.name = name;
+                return self.states.create('state_timed_out', timeout_opts);
             });
         };
 
@@ -144,6 +145,33 @@ go.app = function() {
                 ).context({channel: self.im.config.channel}))
             );
         };
+
+    // TIMEOUT STATE
+        self.states.add('state_timed_out', function(name, creator_opts) {
+            return new ChoiceState(name, {
+                question: $("Welcome to NurseConnect. Would you like to continue your previous session for {{num}}?")
+                    .context({ num: self.im.user.answers.operator_msisdn }),
+
+                choices: [
+                    new Choice(creator_opts.name, $('Yes')),
+                    new Choice('state_route', $('Start Over'))
+                ],
+
+                next: function(choice) {
+                    if (choice.value === 'state_route') {
+                        return "state_route";
+                    } else {
+                        return Q()
+                            .then(function() {
+                                return {
+                                    name: choice.value,
+                                    creator_opts: creator_opts
+                                };
+                            });
+                    }
+                }
+            });
+        });
 
     // DELEGATOR START STATE
 
