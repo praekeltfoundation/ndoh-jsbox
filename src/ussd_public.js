@@ -132,6 +132,20 @@ go.app = function() {
             });
         };
 
+        self.states.add('state_timed_out', function(name, creator_opts) {
+            return new ChoiceState(name, {
+                question: $('Welcome back. Please select an option:'),
+                choices: [
+                    new Choice(creator_opts.name, $('Continue signing up for messages')),
+                    new Choice('state_start', $('Main menu'))
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+        // TODO #49: dialback sms sending
 
         self.add("state_start", function(name) {  // interstitial state
             self.im.user.set_answers = {};

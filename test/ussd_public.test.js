@@ -22,7 +22,10 @@ describe("app", function() {
                     name: 'ussd_nurse',
                     testing_today: "2014-04-04",
                     logging: "off",
-                    no_timeout_redirects: ["state_start"],
+                    no_timeout_redirects: [
+                        "state_start", "state_end_not_pregnant", "state_end_consent_refused",
+                        "state_end_success", "state_registered_full", "state_registered_not_full",
+                        "state_end_compliment", "state_end_complaint", "state_end_go_clinic"],
                     channel: "*120*550#",
                     optout_channel: "*120*550*1#",
                     jembi: {
@@ -58,6 +61,87 @@ describe("app", function() {
                     fixtures_Jembi().forEach(api.http.fixtures.add);  // 150 - 159
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 160 ->
                 });
+        });
+
+        describe("timeout testing", function() {
+            describe("when you timeout and dial back in", function() {
+                describe("when on a registration state", function() {
+                    it("should go to state_timed_out", function() {
+                        return tester
+                        .setup.user.addr("27820001001")
+                        .inputs(
+                            {session_event: "new"}
+                            , "1"  // state_language - zul_ZA
+                            , {session_event: "close"}
+                            , {session_event: "new"}
+                        )
+                        .check.interaction({
+                            state: "state_timed_out",
+                            reply: [
+                                'Welcome back. Please select an option:',
+                                '1. Continue signing up for messages',
+                                '2. Main menu'
+                            ].join('\n')
+                        })
+                        .run();
+                    });
+                });
+                describe("when on a non-registration state", function() {
+                    it("should restart, not go state_timed_out", function() {
+                        return tester
+                        .setup.user.addr("27820001002")
+                        .inputs(
+                            {session_event: "new"}
+                            , "1"  // state_registered_full - compliment
+                            , {session_event: "close"}
+                            , {session_event: "new"}
+                        )
+                        .check.interaction({
+                            state: "state_registered_full",
+                        })
+                        .run();
+                    });
+                });
+            });
+
+            describe("when you've reached state_timed_out", function() {
+                describe("choosing to continue", function() {
+                    it("should go back to the state you were on", function() {
+                        return tester
+                        .setup.user.addr("27820001001")
+                        .inputs(
+                            {session_event: "new"}
+                            , "1"  // state_language - zul_ZA
+                            , {session_event: "close"}
+                            , {session_event: "new"}
+                            , {session_event: "close"}
+                            , {session_event: "new"}
+                            , "1"  // state_timed_out - continue
+                        )
+                        .check.interaction({
+                            state: "state_suspect_pregnancy",
+                        })
+                        .run();
+                    });
+                });
+                describe("choosing to abort", function() {
+                    it("should restart", function() {
+                        return tester
+                        .setup.user.addr("27820001001")
+                        .inputs(
+                            {session_event: "new"}
+                            , "1"  // state_language - zul_ZA
+                            , {session_event: "close"}
+                            , {session_event: "new"}
+                            , "2"  // state_timed_out - main menu
+                        )
+                        .check.interaction({
+                            state: "state_language",
+                        })
+                        .run();
+                    });
+                });
+            });
         });
 
         describe("state_start", function() {

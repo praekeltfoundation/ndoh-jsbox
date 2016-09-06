@@ -28,6 +28,7 @@ module.exports = function() {
         // 51: get active subscriptions for cb245673-aa41-4302-ac47-00000001002
         {
             "key": "get.sbm.identity.cb245673-aa41-4302-ac47-00000001002",
+            "repeatable": "true",
             "request": {
                 "url": 'http://sbm/api/v1/subscriptions/',
                 "method": 'GET',
