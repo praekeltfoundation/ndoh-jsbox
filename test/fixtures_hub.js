@@ -28,19 +28,34 @@ module.exports = function() {
                 "data": {
                     "registrant_id": "cb245673-aa41-4302-ac47-00000001002",
                     "action": "momconnect_loss_switch",
-                    "data":{}
+                    "data": {}
                 }
             },
-            "response": {}
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
         },
 
-        // 2:
+        // 2: post momconnect_loss_switch change for cb245673-aa41-4302-ac47-00000001001
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
+                    "action": "momconnect_loss_switch",
+                    "data": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
         },
 
         // 3:

@@ -484,7 +484,7 @@ describe("app", function() {
                 it("should ask for the reason they are opting out", function() {
                     return tester
                         .setup.char_limit(160)  // limit first state chars
-                        .setup.user.addr('27820001002')
+                        .setup.user.addr('27820001001')
                         .input(
                             {session_event: "new"}
                         )
@@ -500,17 +500,17 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 53, 161]);
+                            utils.check_fixtures_used(api, [160, 163]);
                         })
                         // .check.user.properties({lang: 'en'})
                         .run();
                 });
             });
 
-            describe.skip("when the user has previously opted out", function() {
+            describe("when the user has previously opted out", function() {
                 it("should ask for the reason they are opting out", function() {
                     return tester
-                        .setup.user.addr('27820001001')
+                        .setup.user.addr('27820001004')
                         .input(
                             {session_event: "new"}
                         )
@@ -525,7 +525,7 @@ describe("app", function() {
                                 '5. Other'
                             ].join('\n')
                         })
-                        // .check.user.properties({lang: 'en'})
+                        .check.user.properties({lang: 'eng_ZA'})
                         .run();
                 });
             });
@@ -552,7 +552,7 @@ describe("app", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [51, 53, 161]);
+                        utils.check_fixtures_used(api, [161]);
                     })
                     .run();
             });
@@ -574,7 +574,7 @@ describe("app", function() {
                             'concerns please visit your nearest clinic.')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [51, 53, 161, 167]);
+                        utils.check_fixtures_used(api, [161, 167]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -597,7 +597,7 @@ describe("app", function() {
                             'concerns please visit your nearest clinic.')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [51, 53, 161, 167]);
+                        utils.check_fixtures_used(api, [161, 167]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -621,27 +621,15 @@ describe("app", function() {
                                 'from MomConnect in the coming weeks.')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [1, 51, 53, 161]);
+                            utils.check_fixtures_used(api, [1, 161]);
                         })
                         .check.reply.ends_session()
-                        .run();
-                });
-
-                it.skip("should set their optout reason as '' since they opted in to babyloss " +
-                   "messages", function() {
-                    return tester
-                        .setup.user.addr('27820001002')
-                        .inputs(
-                            {session_event: "new"}
-                            , '1' // state_start - miscarriage
-                            , '1' // states_subscribe_option - yes
-                        )
                         .run();
                 });
             });
 
             describe("when the user has no existing subscriptions", function() {
-                it.skip("should subscribe them and exit", function() {
+                it("should subscribe them and exit", function() {
                     return tester
                         .setup.user.addr('27820001001')
                         .inputs(
@@ -655,21 +643,9 @@ describe("app", function() {
                                 'from MomConnect in the coming weeks.')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 53, 161]);
+                            utils.check_fixtures_used(api, [2, 160, 163]);
                         })
                         .check.reply.ends_session()
-                        .run();
-                });
-
-                it.skip("should set their optout reason as '' since they opted in to babyloss " +
-                   "messages", function() {
-                    return tester
-                        .setup.user.addr('27820001001')
-                        .inputs(
-                            {session_event: "new"}
-                            , '1' // state_start - miscarriage
-                            , '1' // states_subscribe_option - yes
-                        )
                         .run();
                 });
             });

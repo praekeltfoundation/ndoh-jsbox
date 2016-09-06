@@ -73,32 +73,30 @@ go.app = function() {
             .get_or_create_identity({"msisdn": msisdn})
             .then(function(identity) {
                 self.im.user.set_answer("operator", identity);
+                self.im.user.set_lang(identity.details.lang_code || "eng_ZA");
 
-                return self
-                .has_active_momconnect_subscription(self.im.user.answers.operator.id)
-                .then(function(has_active_nurseconnect_subscription) {
-                    if (has_active_nurseconnect_subscription) {
+                var opted_out = self.im.user.answers.operator.details.addresses.msisdn[msisdn].optedout || false;
+                var question = opted_out
+                    ? $('Please tell us why you previously opted out of messages')
+                    : $('Please let us know why you do not want MomConnect messages');
 
-                        return new ChoiceState(name, {
-                            question:  $("Please let us know why you do not want MomConnect messages"),
+                return new ChoiceState(name, {
+                    question:  question,
 
-                            choices: [
-                                new Choice("miscarriage", $("Miscarriage")),
-                                new Choice("stillbirth", $("Baby was stillborn")),
-                                new Choice("babyloss", $("Baby died")),
-                                new Choice("not_useful", $("Messages not useful")),
-                                new Choice("other", $("Other"))
-                            ],
+                    choices: [
+                        new Choice("miscarriage", $("Miscarriage")),
+                        new Choice("stillbirth", $("Baby was stillborn")),
+                        new Choice("babyloss", $("Baby died")),
+                        new Choice("not_useful", $("Messages not useful")),
+                        new Choice("other", $("Other"))
+                    ],
 
-                            next: function(choice) {
-                                if (_.contains(["not_useful", "other"], choice.value)){
-                                    return "states_end_no_enter";
-                                } else {
-                                    return "states_subscribe_option";
-                                }
-                            }
-
-                        });
+                    next: function(choice) {
+                        if (_.contains(["not_useful", "other"], choice.value)){
+                            return "states_end_no_enter";
+                        } else {
+                            return "states_subscribe_option";
+                        }
                     }
                 });
             });
