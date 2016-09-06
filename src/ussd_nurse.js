@@ -133,6 +133,11 @@ go.app = function() {
             }
         },
 
+        self.readable_sa_msisdn = function(msisdn) {
+            readable_no = '0' + msisdn.slice(msisdn.length-9, msisdn.length);
+            return readable_no;
+        },
+
     // REGISTRATION FINISHED SMS HANDLING
 
         self.send_registration_thanks = function(msisdn) {
@@ -148,9 +153,11 @@ go.app = function() {
 
     // TIMEOUT STATE
         self.states.add('state_timed_out', function(name, creator_opts) {
+            var msisdn = self.readable_sa_msisdn(self.im.user.answers.registrant_msisdn);
+
             return new ChoiceState(name, {
                 question: $("Welcome to NurseConnect. Would you like to continue your previous session for {{num}}?")
-                    .context({ num: self.im.user.answers.operator_msisdn }),
+                    .context({ num: msisdn }),
 
                 choices: [
                     new Choice(creator_opts.name, $('Yes')),
