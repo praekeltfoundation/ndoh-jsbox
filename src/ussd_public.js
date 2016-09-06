@@ -208,9 +208,7 @@ go.app = function() {
                 choices: [
                     new Choice('main_menu', $('Main Menu'))
                 ],
-                next: function(choice) {
-                    return 'state_start';
-                }
+                next: 'state_start'
             });
         });
 

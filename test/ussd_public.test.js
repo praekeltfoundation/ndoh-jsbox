@@ -296,8 +296,8 @@ describe("app", function() {
                     )
                     .check.interaction({
                         state: "state_stay_out",
-                        reply: [(
-                            'You have chosen not to receive MomConnect SMSs'),
+                        reply: [
+                            'You have chosen not to receive MomConnect SMSs',
                             '1. Main Menu'
                         ].join('\n')
                     })
@@ -322,6 +322,27 @@ describe("app", function() {
                         utils.check_fixtures_used(api, [164, 166]);
                     })
                     .check.reply.ends_session()
+                    .run();
+                });
+            });
+        });
+
+        describe("state_stay_out", function() {
+            describe("choosing main menu", function() {
+                it("should go to state_language", function() {
+                    return tester
+                    .setup.user.addr("27820001004")
+                    .inputs(
+                        {session_event: "new"}
+                        , "1"  // state_language - zul_ZA
+                        , "1"  // state_suspect_pregnancy - yes
+                        , "1"  // state_consent - yes
+                        , "2"  // state_opt_in - no
+                        , "1"  // state_stay_out - main menu
+                    )
+                    .check.interaction({
+                        state: "state_language"
+                    })
                     .run();
                 });
             });
