@@ -46,25 +46,6 @@ go.app = function() {
             );
         };
 
-        self.has_active_momconnect_subscription = function(id) {
-            return sbm
-            .list_active_subscriptions(id)
-            .then(function(active_subs_response) {
-                var active_subs = active_subs_response.results;
-                for (var i=0; i < active_subs.length; i++) {
-                    // get the subscription messageset
-                    return sbm
-                    .get_messageset(active_subs[i].messageset)
-                    .then(function(messageset) {
-                        if (messageset.short_name.indexOf("momconnect") > -1) {
-                            return true;
-                        }
-                    });
-                }
-                return false;
-            });
-        };
-
         self.states.add("states_start", function(name) {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
             self.im.user.set_answer("operator_msisdn", msisdn);
