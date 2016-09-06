@@ -56,6 +56,13 @@ describe("app", function() {
                             token: 'test MessageSender'
                         }
                     },
+                    no_timeout_redirects: [
+                        'state_subscribed',
+                        'state_not_subscribed',
+                        'state_end_detail_changed',
+                        'state_end_reg',
+                        'state_block_active_subs'
+                    ]
                 })
                 // .setup(function(api) {
                     // api.metrics.stores = {'test_metric_store': {}};
@@ -168,7 +175,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 53, 161]);
+                            utils.check_fixtures_used(api, [51, 54, 161]);
                         })
                         .run();
                 });
@@ -245,11 +252,11 @@ describe("app", function() {
         });
 
         // Timeout Testing
-        describe.skip("when a user timed out", function() {
-            describe("very first timeout", function() {
+        describe("when a user timed out", function() {
+            describe.skip("very first timeout", function() {
                 it("should send redial sms", function() {
                     return tester
-                        .setup.user.addr('27821234444')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_not_subscribed
@@ -259,23 +266,15 @@ describe("app", function() {
                             , {session_event: 'new'}  // redial
                         )
                         .check(function(api) {
-                            var smses = _.where(api.outbound.store, {
-                                endpoint: 'sms'
-                            });
-                            var sms = smses[0];
-                            assert.equal(smses.length,1);
-                            assert.equal(sms.content,
-                                "Please dial back in to *120*550*5# to complete the NurseConnect registration."
-                            );
-                            assert.equal(sms.to_addr,'27821234444');
+                            utils.check_fixtures_used(api, [150, 160, 163]);
                         })
                         .run();
                 });
             });
-            describe("second timeout", function() {
+            describe.skip("second timeout", function() {
                 it("should not send another redial sms", function() {
                     return tester
-                        .setup.user.addr('27821234444')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_not_subscribed
@@ -287,12 +286,7 @@ describe("app", function() {
                             , {session_event: 'new'}  // redial
                         )
                         .check(function(api) {
-                            var smses = _.where(api.outbound.store, {
-                                endpoint: 'sms'
-                            });
-                            var sms = smses[0];
-                            assert.equal(smses.length,1);
-                            assert.equal(sms.to_addr,'27821234444');
+                            utils.check_fixtures_used(api, [150, 160, 163]);
                         })
                         .run();
                 });
@@ -301,14 +295,17 @@ describe("app", function() {
                 describe("if they were on a non-timeout state", function() {
                     it("should directly go back to their previous state", function() {
                         return tester
-                            .setup.user.addr('27821234444')
+                            .setup.user.addr('27820001001')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , {session_event: 'close'}  // timeout
                                 , {session_event: 'new'}  // redial
                             )
                             .check.interaction({
-                                state: 'st_not_subscribed'
+                                state: 'state_not_subscribed'
+                            })
+                            .check(function(api) {
+                                utils.check_fixtures_used(api, [160]);
                             })
                             .run();
                     });
@@ -316,7 +313,7 @@ describe("app", function() {
                 describe("if they were on a timeout state - self reg", function() {
                     it("should ask if they want to continue registration", function() {
                         return tester
-                            .setup.user.addr('27821234444')
+                            .setup.user.addr('27820001001')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '1'  // state_not_subscribed
@@ -326,12 +323,15 @@ describe("app", function() {
                                 , {session_event: 'new'}  // redial
                             )
                             .check.interaction({
-                                state: 'st_timed_out',
+                                state: 'state_timed_out',
                                 reply: [
-                                    "Welcome to NurseConnect. Would you like to continue your previous session for 0821234444?",
+                                    "Welcome to NurseConnect. Would you like to continue your previous session for 0820001001?",
                                     '1. Yes',
                                     '2. Start Over'
                                 ].join('\n')
+                            })
+                            .check(function(api) {
+                                utils.check_fixtures_used(api, [150, 160, 163]);
                             })
                             .run();
                     });
@@ -339,23 +339,26 @@ describe("app", function() {
                 describe("if they were on a timeout state - other reg", function() {
                     it("should ask if they want to continue registration", function() {
                         return tester
-                            .setup.user.addr('27821234444')
+                            .setup.user.addr('27820001001')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '3'  // state_not_subscribed
                                 , '1'  // state_subscribe_other
-                                , '0821235555'  // state_msisdn
+                                , '0820001002'  // state_msisdn
                                 , '123456'  // state_faccode
                                 , {session_event: 'close'}  // timeout
                                 , {session_event: 'new'}  // redial
                             )
                             .check.interaction({
-                                state: 'st_timed_out',
+                                state: 'state_timed_out',
                                 reply: [
-                                    "Welcome to NurseConnect. Would you like to continue your previous session for 0821235555?",
+                                    "Welcome to NurseConnect. Would you like to continue your previous session for 0820001002?",
                                     '1. Yes',
                                     '2. Start Over'
                                 ].join('\n')
+                            })
+                            .check(function(api) {
+                                utils.check_fixtures_used(api, [150, 160, 161, 163]);
                             })
                             .run();
                     });
@@ -364,7 +367,7 @@ describe("app", function() {
             describe("if the user chooses to continue registration", function() {
                 it("should return to dropoff state", function() {
                     return tester
-                        .setup.user.addr('27821234444')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_not_subscribed
@@ -375,12 +378,15 @@ describe("app", function() {
                             , '1'  // state_timed_out - continue registration
                         )
                         .check.interaction({
-                            state: 'st_facname',
+                            state: 'state_facname',
                             reply: [
                                 'Please confirm your facility: WCL clinic',
                                 '1. Confirm',
                                 '2. Not the right facility'
                             ].join('\n')
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [150, 160, 163]);
                         })
                         .run();
                 });
@@ -388,7 +394,7 @@ describe("app", function() {
             describe("if the user chooses to abort registration", function() {
                 it("should restart", function() {
                     return tester
-                        .setup.user.addr('27821234444')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_not_subscribed
@@ -399,7 +405,10 @@ describe("app", function() {
                             , '2'  // state_timed_out - abort registration
                         )
                         .check.interaction({
-                            state: 'st_not_subscribed'
+                            state: 'state_not_subscribed'
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [150, 160, 163]);
                         })
                         .run();
                 });
@@ -796,7 +805,7 @@ describe("app", function() {
                             reply: "Please enter the old number on which you used to receive messages, e.g. 0736436265:"
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 53, 161]);
+                            utils.check_fixtures_used(api, [51, 54, 161]);
                         })
                         .run();
                 });
@@ -849,7 +858,7 @@ describe("app", function() {
                             state: 'state_change_old_nr',
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 53, 160, 161]);
+                            utils.check_fixtures_used(api, [51, 54, 160, 161]);
                         })
                         .run();
                 });

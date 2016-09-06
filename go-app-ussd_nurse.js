@@ -25,6 +25,7 @@ go.app = function() {
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_route");
         var $ = self.$;
+        var interrupt = true;
 
         // variables for services
         var is;
@@ -62,32 +63,13 @@ go.app = function() {
         // override normal state adding
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                // if (!interrupt || !self.timed_out(self.im))
+                if (!interrupt || !utils.timed_out(self.im))
                     return creator(name, opts);
-                // TODO: #42 timeout handling
-                // interrupt = false;
-                // var timeout_opts = opts || {};
-                // timeout_opts.name = name;
-                // return self.states.create('state_timed_out', timeout_opts);
-            });
-        };
 
-        self.has_active_nurseconnect_subscription = function(id) {
-            return sbm
-            .list_active_subscriptions(id)
-            .then(function(active_subs_response) {
-                var active_subs = active_subs_response.results;
-                for (var i=0; i < active_subs.length; i++) {
-                    // get the subscription messageset
-                    return sbm
-                    .get_messageset(active_subs[i].messageset)
-                    .then(function(messageset) {
-                        if (messageset.short_name.indexOf('nurseconnect') > -1) {
-                            return true;
-                        }
-                    });
-                }
-                return false;
+                interrupt = false;
+                var timeout_opts = opts || {};
+                timeout_opts.name = name;
+                return self.states.create('state_timed_out', timeout_opts);
             });
         };
 
@@ -135,6 +117,11 @@ go.app = function() {
             }
         },
 
+        self.readable_sa_msisdn = function(msisdn) {
+            readable_no = '0' + msisdn.slice(msisdn.length-9, msisdn.length);
+            return readable_no;
+        },
+
     // REGISTRATION FINISHED SMS HANDLING
 
         self.send_registration_thanks = function(msisdn) {
@@ -142,11 +129,42 @@ go.app = function() {
             create_outbound_message(
                 self.im.user.answers.registrant.id,
                 msisdn,
-                // TODO #38 enable translation
-                "Welcome to NurseConnect. For more options or to " +
-                    "opt out, dial {{channel}}.".replace("{{channel}}", self.im.config.channel)
+                self.im.user.i18n($(
+                    "Welcome to NurseConnect. For more options or to opt out, dial {{channel}}."
+                ).context({channel: self.im.config.channel}))
             );
         };
+
+    // TODO: #49 Do dialback sms handling
+
+    // TIMEOUT STATE
+        self.states.add('state_timed_out', function(name, creator_opts) {
+            var msisdn = self.readable_sa_msisdn(self.im.user.answers.registrant_msisdn);
+
+            return new ChoiceState(name, {
+                question: $("Welcome to NurseConnect. Would you like to continue your previous session for {{num}}?")
+                    .context({ num: msisdn }),
+
+                choices: [
+                    new Choice(creator_opts.name, $('Yes')),
+                    new Choice('state_route', $('Start Over'))
+                ],
+
+                next: function(choice) {
+                    if (choice.value === 'state_route') {
+                        return "state_route";
+                    } else {
+                        return Q()
+                            .then(function() {
+                                return {
+                                    name: choice.value,
+                                    creator_opts: creator_opts
+                                };
+                            });
+                    }
+                }
+            });
+        });
 
     // DELEGATOR START STATE
 
@@ -168,10 +186,10 @@ go.app = function() {
                 if (identity !== null) {
                     self.im.user.set_answer("operator", identity);
 
-                    return self
-                    .has_active_nurseconnect_subscription(self.im.user.answers.operator.id)
-                    .then(function(has_active_nurseconnect_subscription) {
-                        if (has_active_nurseconnect_subscription) {
+                    return sbm
+                    .check_identity_subscribed(self.im.user.answers.operator.id, "nurseconnect")
+                    .then(function(identity_subscribed_to_nurseconnect) {
+                        if (identity_subscribed_to_nurseconnect) {
                             return self.states.create('state_subscribed');
                         } else {
                             return self.states.create('state_not_subscribed');
@@ -766,10 +784,10 @@ go.app = function() {
                     .list_by_address({msisdn: old_msisdn})
                     .then(function(identities_found) {
                         if (identities_found.results.length > 0) {  // what if more than one identity use same 'old' number..?
-                            return self
-                            .has_active_nurseconnect_subscription(identities_found.results[0].id)
-                            .then(function(has_active_nurseconnect_subscription) {
-                                if (has_active_nurseconnect_subscription) {
+                            return sbm
+                            .check_identity_subscribed(identities_found.results[0].id, "nurseconnect")
+                            .then(function(identity_subscribed_to_nurseconnect) {
+                                if (identity_subscribed_to_nurseconnect) {
                                     return {
                                         name: 'state_post_change_old_nr',
                                         creator_opts: {

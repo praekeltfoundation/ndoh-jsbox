@@ -60,7 +60,7 @@ module.exports = function() {
                         "language": "eng_ZA",
                         "edd": "2014-05-10",
                         "faccode": "123456",
-                        "consent": "true",
+                        "consent": true,
                         "sa_id_no": "5101025009086",
                         "mom_dob": "2051-01-02"
                     }
@@ -79,7 +79,7 @@ module.exports = function() {
                         "language": "eng_ZA",
                         "edd": "2014-05-10",
                         "faccode": "123456",
-                        "consent": "true",
+                        "consent": true,
                         "sa_id_no": "5101015009088",
                         "mom_dob": "1951-01-01"
                     }
@@ -104,7 +104,7 @@ module.exports = function() {
                         "language": "eng_ZA",
                         "edd": "2014-05-10",
                         "faccode": "123456",
-                        "consent": "true",
+                        "consent": true,
                         "passport_no": "12345",
                         "passport_origin": "zw"
                     }
@@ -123,7 +123,7 @@ module.exports = function() {
                         "language": "eng_ZA",
                         "edd": "2014-05-10",
                         "faccode": "123456",
-                        "consent": "true",
+                        "consent": true,
                         "passport_no": "12345",
                         "passport_origin": "zw"
                     }
@@ -148,7 +148,7 @@ module.exports = function() {
                         "language": "eng_ZA",
                         "edd": "2014-05-10",
                         "faccode": "123456",
-                        "consent": "true",
+                        "consent": true,
                         "mom_dob": "1981-01-14"
                     }
                 }
@@ -166,7 +166,7 @@ module.exports = function() {
                         "language": "eng_ZA",
                         "edd": "2014-05-10",
                         "faccode": "123456",
-                        "consent": "true",
+                        "consent": true,
                         "mom_dob": "1981-01-14"
                     }
                 }
@@ -443,22 +443,52 @@ module.exports = function() {
             "response": {}
         },
 
-        // 17:
+        // 17: register cb245673-aa41-4302-ac47-00000001001 (momconnect public)
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "url": 'http://hub/api/v1/registration/',
+                "method": 'POST',
+                "data": {
+                    "reg_type": "momconnect_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001001",
+                        "msisdn_registrant": "+27820001001",
+                        "msisdn_device": "+27820001001",
+                        "language": "zul_ZA",
+                        "consent": true,
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {}
+            }
         },
 
-        // 18:
+        // 18: register cb245673-aa41-4302-ac47-00000001004 (momconnect public)
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-00000001004",
+            "request": {
+                "url": 'http://hub/api/v1/registration/',
+                "method": 'POST',
+                "data": {
+                    "reg_type": "momconnect_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001004",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001004",
+                        "msisdn_registrant": "+27820001004",
+                        "msisdn_device": "+27820001004",
+                        "language": "zul_ZA",
+                        "consent": true,
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {}
+            }
         },
 
         // 19:
