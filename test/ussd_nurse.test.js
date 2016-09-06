@@ -175,7 +175,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 53, 161]);
+                            utils.check_fixtures_used(api, [51, 54, 161]);
                         })
                         .run();
                 });
@@ -805,7 +805,7 @@ describe("app", function() {
                             reply: "Please enter the old number on which you used to receive messages, e.g. 0736436265:"
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 53, 161]);
+                            utils.check_fixtures_used(api, [51, 54, 161]);
                         })
                         .run();
                 });
@@ -858,7 +858,7 @@ describe("app", function() {
                             state: 'state_change_old_nr',
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 53, 160, 161]);
+                            utils.check_fixtures_used(api, [51, 54, 160, 161]);
                         })
                         .run();
                 });

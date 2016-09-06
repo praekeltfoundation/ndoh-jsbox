@@ -73,25 +73,6 @@ go.app = function() {
             });
         };
 
-        self.has_active_nurseconnect_subscription = function(id) {
-            return sbm
-            .list_active_subscriptions(id)
-            .then(function(active_subs_response) {
-                var active_subs = active_subs_response.results;
-                for (var i=0; i < active_subs.length; i++) {
-                    // get the subscription messageset
-                    return sbm
-                    .get_messageset(active_subs[i].messageset)
-                    .then(function(messageset) {
-                        if (messageset.short_name.indexOf('nurseconnect') > -1) {
-                            return true;
-                        }
-                    });
-                }
-                return false;
-            });
-        };
-
         self.jembi_nc_clinic_validate = function (im, clinic_code) {
             var params = {
                 'criteria': 'value:' + clinic_code
@@ -205,10 +186,10 @@ go.app = function() {
                 if (identity !== null) {
                     self.im.user.set_answer("operator", identity);
 
-                    return self
-                    .has_active_nurseconnect_subscription(self.im.user.answers.operator.id)
-                    .then(function(has_active_nurseconnect_subscription) {
-                        if (has_active_nurseconnect_subscription) {
+                    return sbm
+                    .check_identity_subscribed(self.im.user.answers.operator.id, "nurseconnect")
+                    .then(function(identity_subscribed_to_nurseconnect) {
+                        if (identity_subscribed_to_nurseconnect) {
                             return self.states.create('state_subscribed');
                         } else {
                             return self.states.create('state_not_subscribed');
@@ -822,10 +803,10 @@ go.app = function() {
                     .list_by_address({msisdn: old_msisdn})
                     .then(function(identities_found) {
                         if (identities_found.results.length > 0) {  // what if more than one identity use same 'old' number..?
-                            return self
-                            .has_active_nurseconnect_subscription(identities_found.results[0].id)
-                            .then(function(has_active_nurseconnect_subscription) {
-                                if (has_active_nurseconnect_subscription) {
+                            return sbm
+                            .check_identity_subscribed(identities_found.results[0].id, "nurseconnect")
+                            .then(function(identity_subscribed_to_nurseconnect) {
+                                if (identity_subscribed_to_nurseconnect) {
                                     return {
                                         name: 'state_post_change_old_nr',
                                         creator_opts: {
