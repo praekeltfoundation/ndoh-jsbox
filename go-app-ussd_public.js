@@ -43,40 +43,6 @@ go.app = function() {
             );
         };
 
-        self.has_active_subscription = function(id, search_text) {
-            return sbm
-            .list_active_subscriptions(id)
-            .then(function(active_subs_response) {
-                var active_subs = active_subs_response.results;
-                if (active_subs_response.count === 0) {
-                    // immediately return false if user has no active subscriptions
-                    return false;
-                } else {
-                    // otherwise get all the messagesets
-                    return sbm
-                    .list_messagesets()
-                    .then(function(messagesets_response) {
-                        var messagesets = messagesets_response.results;
-
-                        // create a mapping of messageset ids to shortnames
-                        var short_name_map = {};
-                        for (var k=0; k < messagesets.length; k++) {
-                            short_name_map[messagesets[k].id] = messagesets[k].short_name;
-                        }
-
-                        // see if the active subscriptions shortnames contain the searched text
-                        for (var i=0; i < active_subs.length; i++) {
-                            var active_sub_shortname = short_name_map[active_subs[i].messageset];
-                            if (active_sub_shortname.indexOf(search_text) > -1) {
-                                return true;
-                            }
-                        }
-                        return false;
-                    });
-                }
-            });
-        };
-
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
                 if (!interrupt || !utils.timed_out(self.im))
@@ -107,10 +73,10 @@ go.app = function() {
                     return self.im.user
                     .set_lang(self.im.user.answers.registrant.details.lang_code)
                     .then(function() {
-                        return self
-                        .has_active_subscription(self.im.user.answers.registrant.id, "momconnect")
-                        .then(function(has_active_momconnect_subscription) {
-                            return has_active_momconnect_subscription
+                        return sbm
+                        .check_identity_subscribed(self.im.user.answers.registrant.id, "momconnect")
+                        .then(function(identity_subscribed_to_momconnect) {
+                            return identity_subscribed_to_momconnect
                                 ? self.states.create('state_registered_full')
                                 : self.states.create('state_suspect_pregnancy');
                         });
@@ -160,13 +126,11 @@ go.app = function() {
                     'pregnant mothers. Are you or do you suspect that you ' +
                     'are pregnant?'),
                 choices: [
-                    new Choice('yes', $('Yes')),
-                    new Choice('no', $('No'))
+                    new Choice('state_consent', $('Yes')),
+                    new Choice('state_end_not_pregnant', $('No'))
                 ],
                 next: function(choice) {
-                    return choice.value === 'yes'
-                        ? 'state_consent'
-                        : 'state_end_not_pregnant';
+                    return choice.value;
                 }
             });
         });

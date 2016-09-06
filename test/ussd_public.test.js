@@ -60,12 +60,14 @@ describe("app", function() {
                 });
         });
 
-        describe("state_start", function () {
+        describe("state_start", function() {
             describe("no previous momconnect registration", function() {
                 it("should go to state_language", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .start()
+                    .inputs(
+                        {session_event: "new"}
+                    )
                     .check.interaction({
                         state: "state_language",
                         reply: [
@@ -91,7 +93,9 @@ describe("app", function() {
                     it("should go to state_registered_full", function() {
                         return tester
                         .setup.user.addr("27820001002")
-                        .start()
+                        .inputs(
+                            {session_event: "new"}
+                        )
                         .check.interaction({
                             state: "state_registered_full",
                             reply: [
@@ -110,7 +114,9 @@ describe("app", function() {
                     it("should go to state_suspect_pregnancy", function() {
                         return tester
                         .setup.user.addr("27820001006")
-                        .start()
+                        .inputs(
+                            {session_event: "new"}
+                        )
                         .check.interaction({
                             state: "state_suspect_pregnancy",
                             reply: [
@@ -131,7 +137,9 @@ describe("app", function() {
                 it("should go to state_registered_not_full", function() {
                     return tester
                         .setup.user.addr("27820001007")
-                        .start()
+                        .inputs(
+                            {session_event: "new"}
+                        )
                         .check.interaction({
                             state: "state_registered_not_full",
                             reply: [
@@ -147,5 +155,21 @@ describe("app", function() {
                 });
             });
         });
+
+        describe("state_language", function() {
+            it("should go to state_suspect_pregnancy", function() {
+                return tester
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: "new"}
+                    , "1"  // state_language - zul_ZA
+                )
+                .check.interaction({
+                    state: "state_suspect_pregnancy"
+                })
+                .run();
+            });
+        });
+
     });
 });
