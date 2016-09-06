@@ -19,7 +19,7 @@ describe("app", function() {
 
             tester
                 .setup.config.app({
-                    name: 'ussd_nurse',
+                    name: 'ussd_public',
                     testing_today: "2014-04-04",
                     logging: "off",
                     no_timeout_redirects: [
