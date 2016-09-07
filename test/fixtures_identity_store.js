@@ -406,6 +406,7 @@ module.exports = function() {
 
         // 170: patch cb245673-aa41-4302-ac47-00000001001
         {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001001",
             "request": {
                 "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/',
                 "method": 'PATCH',
@@ -435,6 +436,7 @@ module.exports = function() {
 
         // 171: patch cb245673-aa41-4302-ac47-00000001002
         {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001002",
             "request": {
                 "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001002/',
                 "method": 'PATCH',
@@ -471,6 +473,7 @@ module.exports = function() {
 
         // 172: optout identity cb245673-aa41-4302-ac47-00000001003
         {
+            "key": "post.is.optout.identity.cb245673-aa41-4302-ac47-00000001003",
             "request": {
                 "url": 'http://is/api/v1/optout/',
                 "method": 'POST',
@@ -489,7 +492,7 @@ module.exports = function() {
 
         // 173: optin in identity cb245673-aa41-4302-ac47-00000001003
         {
-            "key": "post.is.optin.27820001003",
+            "key": "post.is.optin.identity.cb245673-aa41-4302-ac47-00000001003",
             "request": {
                 "url": 'http://is/api/v1/optin/',
                 "method": 'POST',
@@ -504,14 +507,14 @@ module.exports = function() {
             }
         },
 
-        // 174: optout identity cb245673-aa41-4302-ac47-00000001002
+        // 174: optout (sms_inbound) identity cb245673-aa41-4302-ac47-00000001002
         {
             "key": "post.is.optout.identity.cb245673-aa41-4302-ac47-00000001002",
             "request": {
                 "url": 'http://is/api/v1/optout/',
                 "method": 'POST',
                 "data": {
-                    "optout_type": "STOP",
+                    "optout_type": "stop",
                     "identity": "cb245673-aa41-4302-ac47-00000001002",
                     "reason": "unknown",
                     "address_type": "msisdn",
@@ -530,7 +533,7 @@ module.exports = function() {
 
         // 175: optin identity cb245673-aa41-4302-ac47-00000001002
         {
-            "key": "post.is.optin.27820001002",
+            "key": "post.is.optin.identity.cb245673-aa41-4302-ac47-00000001002",
             "request": {
                 "url": 'http://is/api/v1/optin/',
                 "method": 'POST',
@@ -738,7 +741,7 @@ module.exports = function() {
             "response": {}
         },
 
-        // 180: update identity cb245673-aa41-4302-ac47-00000001001
+        // 181: update identity cb245673-aa41-4302-ac47-00000001001
         {
             "request": {
                 "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/',
