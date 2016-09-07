@@ -43,6 +43,15 @@ go.app = function() {
             );
         };
 
+        self.number_opted_out = function(identity, msisdn) {
+            var details_msisdn = identity.details.addresses.msisdn[msisdn];
+            if ("optedout" in details_msisdn) {
+                return (details_msisdn.optedout === true || details_msisdn.optedout === "true");
+            } else {
+                return false;
+            }
+        };
+
         self.states.add("states_start", function(name) {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
             self.im.user.set_answer("operator_msisdn", msisdn);
@@ -53,7 +62,10 @@ go.app = function() {
                 self.im.user.set_answer("operator", identity);
                 self.im.user.set_lang(identity.details.lang_code || "eng_ZA");
 
-                var opted_out = self.im.user.answers.operator.details.addresses.msisdn[msisdn].optedout || false;
+                opted_out = self.number_opted_out(
+                    self.im.user.answers.operator,
+                    self.im.user.answers.operator_msisdn);
+
                 var question = opted_out
                     ? $('Please tell us why you previously opted out of messages')
                     : $('Please let us know why you do not want MomConnect messages');
