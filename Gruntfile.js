@@ -201,13 +201,13 @@ module.exports = function (grunt) {
             options: {
                 reporter: 'spec'
             },
-            /*test_ussd_clinic: {
+            test_ussd_clinic: {
                 src: ['<%= paths.test.ussd_clinic %>']
-            },*/
+            },
             test_ussd_chw: {
                 src: ['<%= paths.test.ussd_chw %>']
             },
-            /*test_ussd_public: {
+            test_ussd_public: {
                 src: ['<%= paths.test.ussd_public %>']
             },
             test_ussd_optout: {
@@ -230,7 +230,7 @@ module.exports = function (grunt) {
             },
             test_sms_pmtct: {
                 src: ['<%= paths.test.sms_pmtct %>']
-            }*/
+            }
         }
     });
 

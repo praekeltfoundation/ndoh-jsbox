@@ -97,7 +97,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [160, 163]);
+                            utils.check_fixtures_used(api, [162, 165]);
                         })
                         .check.user.properties({lang: 'eng_ZA'})
                         .run();
@@ -149,7 +149,7 @@ describe("app", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [161]);
+                        utils.check_fixtures_used(api, [163]);
                     })
                     .run();
             });
@@ -171,7 +171,7 @@ describe("app", function() {
                             'concerns please visit your nearest clinic.')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [21, 161]);
+                        utils.check_fixtures_used(api, [23, 163]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -194,7 +194,7 @@ describe("app", function() {
                             'concerns please visit your nearest clinic.')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [21, 161]);
+                        utils.check_fixtures_used(api, [23, 163]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -218,7 +218,7 @@ describe("app", function() {
                                 'from MomConnect in the coming weeks.')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [19, 22, 161]);
+                            utils.check_fixtures_used(api, [19, 24, 163]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -240,7 +240,7 @@ describe("app", function() {
                                 'from MomConnect in the coming weeks.')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [20, 23, 160, 163]);
+                            utils.check_fixtures_used(api, [20, 25, 162, 165]);
                         })
                         .check.reply.ends_session()
                         .run();

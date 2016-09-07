@@ -234,7 +234,7 @@ describe("app", function() {
                                 'receive a response soon. Kind regards. MomConnect.'
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 161]);
+                            utils.check_fixtures_used(api, [53, 56, 163]);
                         })
                         .run();
                 });
@@ -254,7 +254,7 @@ describe("app", function() {
                             "received, rather than sending it to us in an sms."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [51, 54, 161]);
+                        utils.check_fixtures_used(api, [53, 56, 163]);
                     })
                     .run();
             });
@@ -272,7 +272,7 @@ describe("app", function() {
                             'If you have any medical concerns please visit your nearest clinic'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [51, 54, 161, 174]);
+                        utils.check_fixtures_used(api, [53, 56, 163, 176]);
                     })
                     .run();
             });
@@ -287,7 +287,7 @@ describe("app", function() {
                             'If you have any medical concerns please visit your nearest clinic'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [51, 54, 161, 174]);
+                        utils.check_fixtures_used(api, [53, 56, 163, 176]);
                     })
                     .run();
             });
@@ -302,7 +302,7 @@ describe("app", function() {
                             'If you have any medical concerns please visit your nearest clinic'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [51, 54, 161, 174]);
+                        utils.check_fixtures_used(api, [53, 56, 163, 176]);
                     })
                     .run();
             });
@@ -317,7 +317,7 @@ describe("app", function() {
                             'If you have any medical concerns please visit your nearest clinic'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [51, 54, 161, 174]);
+                        utils.check_fixtures_used(api, [53, 56, 163, 176]);
                     })
                     .run();
             });
@@ -332,7 +332,7 @@ describe("app", function() {
                             'If you have any medical concerns please visit your nearest clinic'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [51, 54, 161, 174]);
+                        utils.check_fixtures_used(api, [53, 56, 163, 176]);
                     })
                     .run();
             });
@@ -347,7 +347,7 @@ describe("app", function() {
                             'If you have any medical concerns please visit your nearest clinic'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [51, 54, 161, 174]);
+                        utils.check_fixtures_used(api, [53, 56, 163, 176]);
                     })
                     .run();
             });
@@ -365,7 +365,7 @@ describe("app", function() {
                             'If you have any medical concerns please visit your nearest clinic'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [51, 54, 161, 175]);
+                        utils.check_fixtures_used(api, [53, 56, 163, 177]);
                     })
                     .run();
             });
@@ -383,7 +383,7 @@ describe("app", function() {
                             'If you have any medical concerns please visit your nearest clinic'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [16, 51, 54, 161]);
+                        utils.check_fixtures_used(api, [16, 53, 56, 163]);
                     })
                     .run();
             });
@@ -398,7 +398,7 @@ describe("app", function() {
                             'If you have any medical concerns please visit your nearest clinic'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [16, 51, 54, 161]);
+                        utils.check_fixtures_used(api, [16, 53, 56, 163]);
                     })
                     .run();
             });
@@ -413,7 +413,7 @@ describe("app", function() {
                             'If you have any medical concerns please visit your nearest clinic'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [16, 51, 54, 161]);
+                        utils.check_fixtures_used(api, [16, 53, 56, 163]);
                     })
                     .run();
             });
@@ -428,7 +428,7 @@ describe("app", function() {
                             'If you have any medical concerns please visit your nearest clinic'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [16, 51, 54, 161]);
+                        utils.check_fixtures_used(api, [16, 53, 56, 163]);
                     })
                     .run();
             });
@@ -443,7 +443,7 @@ describe("app", function() {
                             'If you have any medical concerns please visit your nearest clinic'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [16, 51, 54, 161]);
+                        utils.check_fixtures_used(api, [16, 53, 56, 163]);
                     })
                     .run();
             });
@@ -458,7 +458,7 @@ describe("app", function() {
                             'If you have any medical concerns please visit your nearest clinic'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [16, 51, 54, 161]);
+                        utils.check_fixtures_used(api, [16, 53, 56, 163]);
                     })
                     .run();
             });
@@ -473,7 +473,7 @@ describe("app", function() {
                             'If you have any medical concerns please visit your nearest clinic'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [16, 51, 54, 161]);
+                        utils.check_fixtures_used(api, [16, 53, 56, 163]);
                     })
                     .run();
             });
@@ -488,7 +488,7 @@ describe("app", function() {
                             'If you have any medical concerns please visit your nearest clinic'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [16, 51, 54, 161]);
+                        utils.check_fixtures_used(api, [16, 53, 56, 163]);
                     })
                     .run();
             });
