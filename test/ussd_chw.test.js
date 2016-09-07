@@ -92,13 +92,14 @@ describe("app", function() {
             });
 
             // pregnant woman's phone
-            describe.skip("when the user timed out during registration", function() {
+            describe("when the user timed out during registration", function() {
                 it("should ask if they want to continue registration", function() {
                     return tester
-                        .setup.user.addr('27820001002')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}
-                            , '1'  // state_start - yes
+                            , '2'  // state_start - no
+                            , '0820001002'  // state_mobile_no
                             , '1'  // state_consent - yes
                             , {session_event: 'new'}
                         )
@@ -114,25 +115,16 @@ describe("app", function() {
                 });
             });
 
-            describe.skip("when the user chooses to continue registration", function() {
+            describe("when the user chooses to continue registration", function() {
                 it("should take them back to state they were on at timeout", function() {
                     return tester
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+27821234444',
-                                extra : {
-                                    working_on: '+27821234567',
-                                }
-                            });
-                            api.contacts.add( {
-                                msisdn: '+27821234567',
-                            });
-                        })
-                        .setup.user.addr('27821234444')
-                        .setup.user.state('state_id_type')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}
-                            , '1'
+                            , '1'  // state_start - yes
+                            , '1'  // state_consent - yes
+                            , {session_event: 'new'}
+                            , '1'  // state_timed_out - continue
                         )
                         .check.interaction({
                             state: 'state_id_type',
@@ -148,62 +140,32 @@ describe("app", function() {
                 });
             });
 
-            describe.skip("when the user chooses to abort registration", function() {
+            describe("when the user chooses to abort registration", function() {
                 it("should take them back to state_start", function() {
                     return tester
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+27821234444',
-                                extra : {
-                                    working_on: '+27821234567',
-                                }
-                            });
-                            api.contacts.add( {
-                                msisdn: '+27821234567',
-                            });
-                        })
-                        .setup.user.addr('27821234444')
-                        .setup.user.state('state_id_type')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}
-                            , '2'
+                            , '1'  // state_start - yes
+                            , '1'  // state_consent - yes
+                            , {session_event: 'new'}
+                            , '2'  // state_timed_out - start new registration
                         )
                         .check.interaction({
                             state: 'state_start',
                             reply: [
                                 'Welcome to The Department of Health\'s ' +
                                 'MomConnect. Tell us if this is the no. that ' +
-                                'the mother would like to get SMSs on: 0821234444',
+                                'the mother would like to get SMSs on: 0820001001',
                                 '1. Yes',
                                 '2. No'
                             ].join('\n')
-                        })
-                        .check(function(api) {
-                            var contact = _.find(api.contacts.store, {
-                              msisdn: '+27821234444'
-                            });
-                            assert.equal(contact.extra.working_on, '');
                         })
                         .run();
                 });
             });
         });
         // end re-dial flow tests
-
-        describe.skip("when a new unique user logs on", function() {
-            it("should increment the no. of unique users by 1", function() {
-                return tester
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                    )
-                    .check(function(api) {
-                        var metrics = api.metrics.stores.test_metric_store;
-                        assert.deepEqual(metrics['test.chw.sum.unique_users'].values, [1]);
-                        assert.deepEqual(metrics['test.chw.percentage_users'].values, [100]);
-                        assert.deepEqual(metrics['test.sum.unique_users'].values, [1]);
-                    }).run();
-            });
-        });
 
         describe("when the user starts a session", function() {
             it("should check if no. belongs to pregnant woman", function() {
@@ -223,60 +185,17 @@ describe("app", function() {
                             '2. No'
                         ].join('\n')
                     })
-                    // .check(function(api) {
-                    //     var contact = _.find(api.contacts.store, {
-                    //       msisdn: '+27821234444'
-                    //     });
-                    //     assert.equal(contact.extra.ussd_sessions, '1');
-                    //     assert.equal(contact.extra.metric_sum_sessions, '1');
-                    //     assert.equal(contact.extra.last_state, 'state_start');
-                    // })
-                    // .check(function(api) {
-                    //     var metrics = api.metrics.stores.test_metric_store;
-                    //     assert.deepEqual(metrics['test.sum.sessions'].values, [1]);
-                    // })
                     .run();
             });
         });
 
-        describe.skip("when the user has previously logged on", function() {
-            it("should increase their number of ussd_sessions by 1", function() {
-                return tester
-                    .setup(function(api) {
-                        api.contacts.add( {
-                            msisdn: '+270001',
-                            extra : {
-                                ussd_sessions: '3',
-                                working_on: '+2712345'
-                            }
-                        });
-                    })
-                    .setup.user.addr('270001')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                    )
-                    .check(function(api) {
-                        var contact = _.find(api.contacts.store, {
-                          msisdn: '+270001'
-                        });
-                        assert.equal(contact.extra.ussd_sessions, '4');
-                    })
-                    .run();
-            });
-        });
-
-        // opt-in flow for contact phone usage
-        describe.skip("when the no. is the pregnant woman's no.", function() {
+        // opt-in flow
+        describe("when the no. is the pregnant woman's no.", function() {
 
             describe("if not previously opted out", function() {
                 it("should ask for consent", function() {
                     return tester
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+27001',
-                            });
-                        })
-                        .setup.user.addr('27001')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_start - yes
@@ -295,12 +214,7 @@ describe("app", function() {
                 });
                 it("should ask for the id type", function() {
                     return tester
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+27001',
-                            });
-                        })
-                        .setup.user.addr('27001')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_start - yes
@@ -316,21 +230,11 @@ describe("app", function() {
                                 '3. None'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            var contact = api.contacts.store[0];
-                            assert.equal(contact.extra.consent, 'true');
-                        })
                         .run();
                 });
                 it("should tell them they cannot register", function() {
                     return tester
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+27001',
-                            });
-                        })
-                        .setup.user.addr('27001')
-                        .setup.user.state('state_start')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_start - yes
@@ -348,12 +252,7 @@ describe("app", function() {
             describe("if the user previously opted out", function() {
                 it("should ask to confirm opting back in", function() {
                     return tester
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+27831112222',
-                            });
-                        })
-                        .setup.user.addr('27831112222')
+                        .setup.user.addr('27820001004')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_start - yes
@@ -375,12 +274,7 @@ describe("app", function() {
             describe("if the user confirms opting back in", function() {
                 it("should ask for consent", function() {
                     return tester
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+27831112222',
-                            });
-                        })
-                        .setup.user.addr('27831112222')
+                        .setup.user.addr('27820001004')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_start - yes
@@ -396,20 +290,11 @@ describe("app", function() {
                                 '2. No'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            var optouts = api.optout.optout_store;
-                            assert.equal(optouts.length, 4);
-                        })
                         .run();
                 });
                 it("should ask for the id type", function() {
                     return tester
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+27831112222',
-                            });
-                        })
-                        .setup.user.addr('27831112222')
+                        .setup.user.addr('27820001004')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_start - yes
@@ -426,22 +311,11 @@ describe("app", function() {
                                 '3. None'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            var optouts = api.optout.optout_store;
-                            assert.equal(optouts.length, 4);
-                            var contact = api.contacts.store[0];
-                            assert.equal(contact.extra.consent, 'true');
-                        })
                         .run();
                 });
                 it("should tell them they cannot register", function() {
                     return tester
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+27831112222',
-                            });
-                        })
-                        .setup.user.addr('27831112222')
+                        .setup.user.addr('27820001004')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_start - yes
@@ -460,12 +334,7 @@ describe("app", function() {
             describe("if the user declines opting back in", function() {
                 it("should tell them they cannot complete registration", function() {
                     return tester
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+27831112222',
-                            });
-                        })
-                        .setup.user.addr('27831112222')
+                        .setup.user.addr('27820001004')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_start - yes
@@ -478,14 +347,6 @@ describe("app", function() {
                                 '1. Main Menu'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            var contact = api.contacts.store[0];
-                            assert.equal(contact.extra.working_on, undefined);
-                        })
-                        .check(function(api) {
-                            var optouts = api.optout.optout_store;
-                            assert.equal(optouts.length, 5);
-                        })
                         .run();
                 });
             });
@@ -493,12 +354,7 @@ describe("app", function() {
             describe("if the user selects Main Menu", function() {
                 it("should take them back to state_start", function() {
                     return tester
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+27831112222',
-                            });
-                        })
-                        .setup.user.addr('27831112222')
+                        .setup.user.addr('27820001004')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_start - yes
@@ -510,7 +366,7 @@ describe("app", function() {
                             reply: [
                                 'Welcome to The Department of Health\'s ' +
                                 'MomConnect. Tell us if this is the no. that ' +
-                                'the mother would like to get SMSs on: 0831112222',
+                                'the mother would like to get SMSs on: 0820001004',
                                 '1. Yes',
                                 '2. No'
                             ].join('\n')
@@ -520,7 +376,7 @@ describe("app", function() {
             });
 
         });
-        // end opt-in flow for contact phone usage
+        // end opt-in flow
 
         describe.skip("when the no. is not the pregnant woman's no.", function() {
             it("should ask for the pregnant woman's no.", function() {
