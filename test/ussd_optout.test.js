@@ -91,7 +91,7 @@ describe("app", function() {
                           }
                         }
                     })
-                    .input({
+                    .inputs({
                         content: '1',
                         transport_metadata: {
                             aat_ussd: {
@@ -485,7 +485,7 @@ describe("app", function() {
                     return tester
                         .setup.char_limit(160)  // limit first state chars
                         .setup.user.addr('27820001001')
-                        .input(
+                        .inputs(
                             {session_event: "new"}
                         )
                         .check.interaction({
@@ -511,7 +511,7 @@ describe("app", function() {
                 it("should ask for the reason they are opting out", function() {
                     return tester
                         .setup.user.addr('27820001004')
-                        .input(
+                        .inputs(
                             {session_event: "new"}
                         )
                         .check.interaction({
