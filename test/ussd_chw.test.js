@@ -1259,7 +1259,7 @@ describe("app", function() {
                 });
             });
 
-            describe("if the phone used is not the mom's", function() {
+            describe("if the phone used is not the mom's and id type passport", function() {
                 it("should save msg language, thank them and exit", function() {
                     return tester
                         .setup.user.addr('27820001001')
@@ -1288,7 +1288,7 @@ describe("app", function() {
                 });
             });
 
-            describe("if the phone used is the mom's", function() {
+            describe("if the phone used is the mom's and id type sa id", function() {
                 it("should save msg language, thank them and exit", function() {
                     return tester
                         .setup.user.addr('27820001001')

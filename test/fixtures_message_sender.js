@@ -602,7 +602,8 @@ module.exports = function() {
                 "data": {
                     "identity": "cb245673-aa41-4302-ac47-00000001002",
                     "to_addr": "+27820001002",
-                    "content": "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. You can register for the full set of FREE helpful messages at a clinic.","metadata":{}
+                    "content": "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. You can register for the full set of FREE helpful messages at a clinic.",
+                    "metadata":{}
                 }
             },
             "response": {
