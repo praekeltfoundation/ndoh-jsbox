@@ -227,7 +227,7 @@ go.app = function() {
                             self.im.user.set_answer("registrant", self.im.user.answers.operator);
                             self.im.user.set_answer("registrant_msisdn", self.im.user.answers.operator_msisdn);
 
-                            opted_out = self.number_opted_out(
+                            var opted_out = self.number_opted_out(
                                 self.im.user.answers.registrant,
                                 self.im.user.answers.registrant_msisdn);
 
