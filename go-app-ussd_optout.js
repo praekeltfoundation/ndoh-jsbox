@@ -65,7 +65,7 @@ go.app = function() {
                 self.im.user.set_answer("operator", identity);
                 self.im.user.set_lang(identity.details.lang_code || "eng_ZA");
 
-                opted_out = self.number_opted_out(
+                var opted_out = self.number_opted_out(
                     self.im.user.answers.operator,
                     self.im.user.answers.operator_msisdn);
 
