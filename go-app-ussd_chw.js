@@ -78,6 +78,73 @@ go.app = function() {
             }
         },
 
+        self.compile_registrant_info = function() {
+            var registrant_info = self.im.user.answers.registrant;
+            registrant_info.details.lang_code = self.im.user.answers.state_language;
+            registrant_info.details.consent =
+                self.im.user.answers.state_consent === "yes" ? true : null;
+
+            if (self.im.user.answers.state_id_type === "sa_id") {
+                registrant_info.details.sa_id_no = self.im.user.answers.state_sa_id;
+                registrant_info.details.mom_dob = self.im.user.answers.mom_dob;
+            } else if (self.im.user.answers.state_id_type === "passport") {
+                registrant_info.details.passport_no = self.im.user.answers.state_passport_no;
+                registrant_info.details.passport_origin = self.im.user.answers.state_passport_origin;
+            } else {
+                registrant_info.details.mom_dob = self.im.user.answers.mom_dob;
+            }
+
+            if (!("source" in registrant_info.details)) {
+                registrant_info.details.source = "chw";
+            }
+
+            registrant_info.details.last_mc_reg_on = "chw";
+
+            return registrant_info;
+        };
+
+        self.compile_registration_info = function() {
+            var reg_details = {
+                "operator_id": self.im.user.answers.operator.id,
+                "msisdn_registrant": self.im.user.answers.registrant_msisdn,
+                "msisdn_device": self.im.user.answers.operator_msisdn,
+                "id_type": self.im.user.answers.state_id_type,
+                "language": self.im.user.answers.state_language,
+                "edd": self.im.user.answers.edd,
+                "faccode": self.im.user.answers.state_clinic_code,
+                "consent": self.im.user.answers.state_consent === "yes" ? true : null
+            };
+
+            if (self.im.user.answers.state_id_type === "sa_id") {
+                reg_details.sa_id_no = self.im.user.answers.state_sa_id;
+                reg_details.mom_dob = self.im.user.answers.mom_dob;
+            } else if (self.im.user.answers.state_id_type === "passport") {
+                reg_details.passport_no = self.im.user.answers.state_passport_no;
+                reg_details.passport_origin = self.im.user.answers.state_passport_origin;
+            } else {
+                reg_details.mom_dob = self.im.user.answers.mom_dob;
+            }
+
+            var registration_info = {
+                "reg_type": "momconnect_prebirth",
+                "registrant_id": self.im.user.answers.registrant.id,
+                "data": reg_details
+            };
+            return registration_info;
+        };
+
+        self.send_registration_thanks = function() {
+            return ms.
+            create_outbound_message(
+                self.im.user.answers.registrant.id,
+                self.im.user.answers.registrant_msisdn,
+                $(
+                    "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. " +
+                    "You can register for the full set of FREE helpful messages at a clinic."
+                )
+            );
+        };
+
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
                 if (!interrupt || !utils.timed_out(self.im))
@@ -95,11 +162,11 @@ go.app = function() {
             var readable_no = utils.readable_msisdn(msisdn, '+27');
             return new ChoiceState(name, {
                 question: $(
-                    'Would you like to complete pregnancy registration for {{ num }}?'
+                    "Would you like to complete pregnancy registration for {{ num }}?"
                 ).context({ num: readable_no }),
                 choices: [
-                    new Choice(creator_opts.name, $('Yes')),
-                    new Choice('state_start', $('Start new registration'))
+                    new Choice(creator_opts.name, $("Yes")),
+                    new Choice("state_start", $("Start new registration"))
                 ],
                 next: function(choice) {
                     return choice.value;
@@ -109,8 +176,8 @@ go.app = function() {
 
         self.add("state_start", function(name) {
             self.im.user.set_answers = {};
-            var operator_msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
-            var readable_no = utils.readable_msisdn(operator_msisdn, '+27');
+            var operator_msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
+            var readable_no = utils.readable_msisdn(operator_msisdn, "+27");
 
             return is
             .get_or_create_identity({"msisdn": operator_msisdn})
@@ -119,16 +186,16 @@ go.app = function() {
                 self.im.user.set_answer("operator_msisdn", operator_msisdn);
                 return new ChoiceState(name, {
                     question: $(
-                        'Welcome to The Department of Health\'s ' +
-                        'MomConnect. Tell us if this is the no. that ' +
-                        'the mother would like to get SMSs on: {{ num }}'
+                        "Welcome to The Department of Health's " +
+                        "MomConnect. Tell us if this is the no. that " +
+                        "the mother would like to get SMSs on: {{ num }}"
                         ).context({num: readable_no}),
                     choices: [
-                        new Choice('yes', $('Yes')),
-                        new Choice('no', $('No'))
+                        new Choice("yes", $("Yes")),
+                        new Choice("no", $("No"))
                     ],
                     next: function(choice) {
-                        if (choice.value === 'yes') {
+                        if (choice.value === "yes") {
                             self.im.user.set_answer("registrant", self.im.user.answers.operator);
                             self.im.user.set_answer("registrant_msisdn", self.im.user.answers.operator_msisdn);
 
@@ -136,9 +203,9 @@ go.app = function() {
                                 self.im.user.answers.registrant,
                                 self.im.user.answers.registrant_msisdn);
 
-                            return opted_out ? 'state_opt_in' : 'state_consent';
+                            return opted_out ? "state_opt_in" : "state_consent";
                         } else {
-                            return 'state_mobile_no';
+                            return "state_mobile_no";
                         }
                     }
                 });
@@ -147,23 +214,23 @@ go.app = function() {
 
         self.add("state_opt_in", function(name) {
             return new ChoiceState(name, {
-                question: $('This number has previously opted out of MomConnect ' +
-                            'SMSs. Please confirm that the mom would like to ' +
-                            'opt in to receive messages again?'),
+                question: $("This number has previously opted out of MomConnect " +
+                            "SMSs. Please confirm that the mom would like to " +
+                            "opt in to receive messages again?"),
                 choices: [
-                    new Choice('yes', $('Yes')),
-                    new Choice('no', $('No'))
+                    new Choice("yes", $("Yes")),
+                    new Choice("no", $("No"))
                 ],
                 next: function(choice) {
-                    if (choice.value === 'yes') {
+                    if (choice.value === "yes") {
                         return is
                         .optin(self.im.user.answers.registrant.id, "msisdn",
                                self.im.user.answers.registrant_msisdn)
                         .then(function() {
-                            return 'state_consent';
+                            return "state_consent";
                         });
                     } else {
-                        return 'state_stay_out';
+                        return "state_stay_out";
                     }
                 }
             });
@@ -184,10 +251,10 @@ go.app = function() {
         });
 
         self.add("state_mobile_no", function(name, opts) {
-            var error = $('Sorry, the mobile number did not validate. ' +
-                          'Please reenter the mobile number:');
-            var question = $('Please input the mobile number of the ' +
-                            'pregnant woman to be registered:');
+            var error = $("Sorry, the mobile number did not validate. " +
+                          "Please reenter the mobile number:");
+            var question = $("Please input the mobile number of the " +
+                            "pregnant woman to be registered:");
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
@@ -214,16 +281,16 @@ go.app = function() {
         self.add("state_consent", function(name) {
             return new ChoiceState(name, {
                 question: $(
-                    'We need to collect, store & use her info. She ' +
-                    'may get messages on public holidays & weekends. ' +
-                    'Does she consent?'),
+                    "We need to collect, store & use her info. She " +
+                    "may get messages on public holidays & weekends. " +
+                    "Does she consent?"),
                 choices: [
-                    new Choice('yes', $('Yes')),
-                    new Choice('no', $('No')),
+                    new Choice("yes", $("Yes")),
+                    new Choice("no", $("No")),
                 ],
                 next: function(choice) {
-                    return choice.value === 'yes' ? 'state_id_type'
-                                                  : 'state_consent_refused';
+                    return choice.value === "yes" ? "state_id_type"
+                                                  : "state_consent_refused";
                 }
             });
         });
@@ -248,18 +315,11 @@ go.app = function() {
                 ],
 
                 next: function(choice) {
-                    // self.contact.extra.id_type = choice.value;
-                    // self.contact.extra.is_registered = "false";
-                    //
-                    // return self.im.contacts
-                    //     .save(self.contact)
-                    //     .then(function() {
-                            return {
-                                sa_id: "state_sa_id",
-                                passport: "state_passport_origin",
-                                none: "state_birth_year"
-                            } [choice.value];
-                        // });
+                    return {
+                        sa_id: 'state_sa_id',
+                        passport: 'state_passport_origin',
+                        none: 'state_birth_year'
+                    }[choice.value];
                 },
 
                 // events: {
@@ -276,37 +336,21 @@ go.app = function() {
         });
 
         self.add("state_sa_id", function(name, opts) {
-            var error = $("Sorry, the mother\"s ID number did not validate. " +
+            var error = $("Sorry, the mother's ID number did not validate. " +
                           "Please reenter the SA ID number:");
-
-            var question = $("Please enter the pregnant mother\"s SA ID " +
+            var question = $("Please enter the pregnant mother\'s SA ID " +
                             "number:");
-
             return new FreeText(name, {
                 question: question,
-
                 check: function(content) {
                     if (!utils.validate_id_za(content)) {
                         return error;
                     }
                 },
-
                 next: function(content) {
-                    // self.contact.extra.sa_id = content;
-                    //
-                    // var id_date_of_birth = utils.extract_id_dob(content);
-                    // self.contact.extra.birth_year = moment(id_date_of_birth, "YYYY-MM-DD").format("YYYY");
-                    // self.contact.extra.birth_month = moment(id_date_of_birth, "YYYY-MM-DD").format("MM");
-                    // self.contact.extra.birth_day = moment(id_date_of_birth, "YYYY-MM-DD").format("DD");
-                    // self.contact.extra.dob = id_date_of_birth;
-                    //
-                    // return self.im.contacts
-                    //     .save(self.contact)
-                    //     .then(function() {
-                            return {
-                                name: "state_language"
-                            };
-                        // });
+                    var mom_dob = utils.extract_za_id_dob(content);
+                    self.im.user.set_answer("mom_dob", mom_dob);
+                    return 'state_language';
                 }
             });
         });
@@ -326,15 +370,7 @@ go.app = function() {
                 ],
 
                 next: function(choice) {
-                    // self.contact.extra.passport_origin = choice.value;
-                    //
-                    // return self.im.contacts
-                    //     .save(self.contact)
-                    //     .then(function() {
-                            return {
-                                name: "state_passport_no"
-                            };
-                        // });
+                    return 'state_passport_no';
                 }
             });
         });
@@ -342,132 +378,79 @@ go.app = function() {
         self.add("state_passport_no", function(name) {
             var error = $("There was an error in your entry. Please " +
                         "carefully enter the passport number again.");
-            var question = $("Please enter the pregnant mother\"s Passport number:");
-
+            var question = $("Please enter the pregnant mother's Passport number:");
             return new FreeText(name, {
                 question: question,
-
                 check: function(content) {
                     if (!utils.is_alpha_numeric_only(content) || content.length <= 4) {
                         return error;
                     }
                 },
-
-                next: function(content) {
-                    // self.contact.extra.passport_no = content;
-                    //
-                    // return self.im.contacts
-                    //     .save(self.contact)
-                    //     .then(function() {
-                            return {
-                                name: "state_language"
-                            };
-                        // });
-                }
+                next: "state_language"
             });
         });
 
         self.add("state_birth_year", function(name, opts) {
             var error = $("There was an error in your entry. Please " +
-                        "carefully enter the mother\"s year of birth again " +
+                        "carefully enter the mother's year of birth again " +
                         "(for example: 2001)");
-
             var question = $("Please enter the year that the pregnant " +
                     "mother was born (for example: 1981)");
-
             return new FreeText(name, {
                 question: question,
-
                 check: function(content) {
-                    if (!utils.check_number_in_range(content, 1900,
-                      utils.get_today(self.im.config).getFullYear() - 5)) {
+                    var today = utils.get_today(self.im.config);
+                    if (!utils.check_number_in_range(content, 1900, today.year() - 5)) {
                         // assumes youngest possible birth age is 5 years old
                         return error;
                     }
                 },
-
-                next: function(content) {
-                    // self.contact.extra.birth_year = content;
-
-                    // return self.im.contacts
-                    //     .save(self.contact)
-                    //     .then(function() {
-                            return {
-                                name: "state_birth_month"
-                            };
-                        // });
-                }
+                next: "state_birth_month"
             });
         });
 
         self.add("state_birth_month", function(name) {
+            var jan = utils.get_january(self.im.config);
             return new ChoiceState(name, {
-                question: $("Please enter the month that you were born."),
-
-                choices: utils.make_month_choices($, 0, 12),
-
-                next: function(choice) {
-                    // self.contact.extra.birth_month = choice.value;
-                    //
-                    // return self.im.contacts
-                    //     .save(self.contact)
-                    //     .then(function() {
-                            return {
-                                name: "state_birth_day"
-                            };
-                        // });
-                }
+                question: $('Please enter the month that the mom was born.'),
+                choices: utils.make_month_choices($, jan, 12, 1, "MM", "MMM"),
+                next: 'state_birth_day'
             });
         });
 
-        self.add("state_birth_day", function(name, opts) {
+        self.add("state_birth_day", function(name) {
             var error = $("There was an error in your entry. Please " +
-                        "carefully enter the mother\"s day of birth again " +
+                        "carefully enter the mother's day of birth again " +
                         "(for example: 8)");
-
             var question = $("Please enter the day that the mother was born " +
                     "(for example: 14).");
-
             return new FreeText(name, {
                 question: question,
-
                 check: function(content) {
                     if (!utils.check_number_in_range(content, 1, 31)) {
                         return error;
                     }
                 },
-
                 next: function(content) {
-                    var dob = utils.get_entered_birth_date(self.im.user.answers.state_birth_year,
-                        self.im.user.answers.state_birth_month, content);
-
+                    var dob = (self.im.user.answers.state_birth_year + "-" +
+                               self.im.user.answers.state_birth_month + "-" +
+                               utils.double_digit_number(content));
+                    self.im.user.set_answer("mom_dob", dob);
                     if (utils.is_valid_date(dob, "YYYY-MM-DD")) {
-                        // self.contact.extra.birth_day = utils.double_digit_day(content);
-                        // self.contact.extra.dob = dob;
-                        //
-                        // return self.im.contacts
-                        //     .save(self.contact)
-                        //     .then(function() {
-                                return {
-                                    name: "state_language"
-                                };
-                            // });
+                        return "state_language";
                     } else {
-                        return {
-                            name: "state_invalid_dob",
-                            creator_opts: {dob: dob}
-                        };
+                        return "state_invalid_dob";
                     }
                 }
             });
         });
 
-        self.add("state_invalid_dob", function(name, opts) {
+        self.add("state_invalid_dob", function(name) {
             return new ChoiceState(name, {
                 question:
                     $("The date you entered ({{ dob }}) is not a " +
                         "real date. Please try again."
-                     ).context({ dob: opts.dob }),
+                     ).context({ dob: self.im.user.answers.mom_dob }),
 
                 choices: [
                     new Choice("continue", $("Continue"))
@@ -483,72 +466,34 @@ go.app = function() {
                             "pregnant mother would like to get messages in:"),
                 options_per_page: null,
                 choices: [
-                    new Choice("zu", "isiZulu"),
-                    new Choice("xh", "isiXhosa"),
-                    new Choice("af", "Afrikaans"),
-                    new Choice("en", "English"),
-                    new Choice("nso", "Sesotho sa Leboa"),
-                    new Choice("tn", "Setswana"),
-                    new Choice("st", "Sesotho"),
-                    new Choice("ts", "Xitsonga"),
-                    new Choice("ss", "siSwati"),
-                    new Choice("ve", "Tshivenda"),
-                    new Choice("nr", "isiNdebele"),
+                    new Choice('zul_ZA', 'isiZulu'),
+                    new Choice('xho_ZA', 'isiXhosa'),
+                    new Choice('afr_ZA', 'Afrikaans'),
+                    new Choice('eng_ZA', 'English'),
+                    new Choice('nso_ZA', 'Sesotho sa Leboa'),
+                    new Choice('tsn_ZA', 'Setswana'),
+                    new Choice('sot_ZA', 'Sesotho'),
+                    new Choice('tso_ZA', 'Xitsonga'),
+                    new Choice('ssw_ZA', 'siSwati'),
+                    new Choice('ven_ZA', 'Tshivenda'),
+                    new Choice('nbl_ZA', 'isiNdebele'),
                 ],
-                next: function(choice) {
-                    // self.contact.extra.language_choice = choice.value;
-                    // self.contact.extra.is_registered = "true";
-                    // self.contact.extra.is_registered_by = "chw";
-                    // self.contact.extra.metric_sessions_to_register = self.user.extra.ussd_sessions;
-                    //
-                    // return self.im.contacts
-                    //     .save(self.contact)
-                    //     .then(function() {
-                    //         return Q.all([
-                    //             self.im.metrics.fire.avg((self.metric_prefix + ".avg.sessions_to_register"),
-                    //                 parseInt(self.user.extra.ussd_sessions, 10)),
-                    //             utils.incr_kv(self.im, [self.store_name, "no_complete_registrations"].join(".")),
-                    //             utils.decr_kv(self.im, [self.store_name, "no_incomplete_registrations"].join(".")),
-                    //             // new duplicate kv_store entry below to start tracking conversion rates
-                    //             utils.incr_kv(self.im, [self.store_name, "conversion_registrations"].join("."))
-                    //         ]);
-                    //     })
-                    //     .then(function() {
-                    //         if (!_.isUndefined(self.user.extra.working_on) && (self.user.extra.working_on !== "")) {
-                    //             self.user.extra.working_on = "";
-                    //             self.user.extra.no_registrations = utils.incr_user_extra(self.user.extra.no_registrations, 1);
-                    //             self.contact.extra.registered_by = self.user.msisdn;
-                    //         }
-                    //         self.user.extra.ussd_sessions = "0";
-                    //         return Q.all([
-                    //             self.im.contacts.save(self.user),
-                    //             self.im.contacts.save(self.contact),
-                    //             utils.adjust_percentage_registrations(self.im, self.metric_prefix)
-                    //         ]);
-                    //     })
-                    //     .then(function() {
-                            return "state_save_subscription";
-                        // });
-                }
+                next: "state_save_subscription"
             });
         });
 
-        self.add("state_save_subscription", function(name) {
-            // if (self.contact.extra.id_type !== undefined){
-            //     return Q.all([
-            //         utils.post_registration(self.user.msisdn, self.contact, self.im, "chw"),
-            //         self.im.outbound.send({
-            //             to: self.contact,
-            //             endpoint: "sms",
-            //             lang: self.contact.extra.language_choice,
-            //             content: $("Congratulations on your pregnancy. You will now get free SMSs about MomConnect. " +
-            //                      "You can register for the full set of FREE helpful messages at a clinic.")
-            //         }),
-            //     ])
-            //     .then(function() {
-                    return self.states.create("state_end_success");
-                // });
-            // }
+        self.add("state_save_subscription", function(name) {  // interstitial state
+            var registration_info = self.compile_registration_info();
+            var registrant_info = self.compile_registrant_info();
+
+            return Q.all([
+                is.update_identity(self.im.user.answers.registrant.id, registrant_info),
+                hub.create_registration(registration_info),
+                self.send_registration_thanks()
+            ])
+            .then(function() {
+                return self.states.create("state_end_success");
+            });
         });
 
         self.add("state_end_success", function(name) {
