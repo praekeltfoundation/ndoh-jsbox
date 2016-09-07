@@ -378,9 +378,10 @@ describe("app", function() {
         });
         // end opt-in flow
 
-        describe.skip("when the no. is not the pregnant woman's no.", function() {
+        describe("when the no. is not the pregnant woman's no.", function() {
             it("should ask for the pregnant woman's no.", function() {
                 return tester
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '2'  // state_start - no
@@ -395,9 +396,10 @@ describe("app", function() {
             });
         });
 
-        describe.skip("after entering the pregnant woman's number incorrectly", function() {
+        describe("after entering the pregnant woman's number incorrectly", function() {
             it("should ask for the mobile number again", function() {
                 return tester
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '2'  // state_start - no
@@ -414,16 +416,16 @@ describe("app", function() {
         });
 
         // opt in flow for chw worker's phone usage
-        describe.skip("after entering the pregnant woman's number", function() {
+        describe("after entering the pregnant woman's number", function() {
 
             describe("if the number has not opted out before", function() {
                 it("should ask for consent", function() {
                     return tester
-                        .setup.user.addr('270001')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '2'  // state_start - no
-                            , '0821234567'  // state_mobile_no
+                            , '0820001002'  // state_mobile_no
                         )
                         .check.interaction({
                             state: 'state_consent',
@@ -435,19 +437,15 @@ describe("app", function() {
                                 '2. No'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            var contact = api.contacts.store[0];
-                            assert.equal(contact.extra.working_on, "+27821234567");
-                        })
                         .run();
                 });
                 it("should ask for the id type", function() {
                     return tester
-                        .setup.user.addr('270001')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '2'  // state_start - no
-                            , '0821234567'  // state_mobile_no
+                            , '0820001002'  // state_mobile_no
                             , '1'  // state_consent - yes
                         )
                         .check.interaction({
@@ -460,21 +458,15 @@ describe("app", function() {
                                 '3. None'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            var contact = api.contacts.store[0]; // chw
-                            assert.equal(contact.extra.working_on, "+27821234567");
-                            contact = api.contacts.store[1]; // pregnant mother
-                            assert.equal(contact.extra.consent, 'true');
-                        })
                         .run();
                 });
                 it("should tell them they cannot register", function() {
                     return tester
-                        .setup.user.addr('270001')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '2'  // state_start - no
-                            , '0821234567'  // state_mobile_no
+                            , '0820001002'  // state_mobile_no
                             , '2'  // state_consent - no
                         )
                         .check.interaction({
@@ -489,21 +481,11 @@ describe("app", function() {
             describe("if the user previously opted out", function() {
                 it("should ask to confirm opting back in", function() {
                     return tester
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+27001',
-                            });
-                        })
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+27831112222',
-                            });
-                        })
-                        .setup.user.addr('27001')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '2'  // state_start - no
-                            , '0831112222'  // state_mobile_no
+                            , '0820001004'  // state_mobile_no
                         )
                         .check.interaction({
                             state: 'state_opt_in',
@@ -515,10 +497,6 @@ describe("app", function() {
                                 '2. No'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            var contact = api.contacts.store[0];
-                            assert.equal(contact.extra.working_on, "+27831112222");
-                        })
                         .run();
                 });
             });
@@ -526,24 +504,11 @@ describe("app", function() {
             describe("if the user confirms opting back in", function() {
                 it("should ask for consent", function() {
                     return tester
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+27001',
-                                extra : {
-                                    working_on: '+27831112222'
-                                }
-                            });
-                        })
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+27831112222',
-                            });
-                        })
-                        .setup.user.addr('27001')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '2'  // state_start - no
-                            , '0831112222'  // state_mobile_no
+                            , '0820001004'  // state_mobile_no
                             , '1'  // state_opt_in - yes
                         )
                         .check.interaction({
@@ -556,32 +521,15 @@ describe("app", function() {
                                 '2. No'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            var optouts = api.optout.optout_store;
-                            assert.equal(optouts.length, 4);
-                        })
                         .run();
                 });
                 it("should ask for the id type", function() {
                     return tester
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+27001',
-                                extra : {
-                                    working_on: '+27831112222'
-                                }
-                            });
-                        })
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+27831112222',
-                            });
-                        })
-                        .setup.user.addr('27001')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '2'  // state_start - no
-                            , '0831112222'  // state_mobile_no
+                            , '0820001004'  // state_mobile_no
                             , '1'  // state_opt_in - yes
                             , '1'  // state_consent - yes
                         )
@@ -595,28 +543,15 @@ describe("app", function() {
                                 '3. None'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            var optouts = api.optout.optout_store;
-                            assert.equal(optouts.length, 4);
-                            var contact = _.find(api.contacts.store, {
-                              msisdn: '+27831112222'
-                            });
-                            assert.equal(contact.extra.consent, 'true');
-                        })
                         .run();
                 });
                 it("should tell them they cannot complete registration", function() {
                     return tester
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+27831112222',
-                            });
-                        })
-                        .setup.user.addr('27001')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '2'  // state_start - no
-                            , '0831112222'  // state_mobile_no
+                            , '0820001004'  // state_mobile_no
                             , '1'  // state_opt_in - yes
                             , '2'  // state_consent - no
                         )
@@ -632,24 +567,11 @@ describe("app", function() {
             describe("if the user does not choose to opt back in", function() {
                 it("should tell them they cannot complete registration", function() {
                     return tester
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+27001',
-                                extra : {
-                                    working_on: '+27831112222'
-                                }
-                            });
-                        })
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+27831112222',
-                            });
-                        })
-                        .setup.user.addr('27001')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '2'  // state_start - no
-                            , '0831112222'  // state_mobile_no
+                            , '0820001004'  // state_mobile_no
                             , '2'  // state_opt_in - no
                         )
                         .check.interaction({
@@ -659,10 +581,6 @@ describe("app", function() {
                                 '1. Main Menu'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            var contact = api.contacts.store[0];
-                            assert.equal(contact.extra.working_on, "");
-                        })
                         .run();
                 });
             });
@@ -670,24 +588,11 @@ describe("app", function() {
             describe("if the user selects 1. Main Menu", function() {
                 it("should return to state_start", function() {
                     return tester
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+27001',
-                                extra : {
-                                    working_on: ''
-                                }
-                            });
-                        })
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+27002',
-                            });
-                        })
-                        .setup.user.addr('27001')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '2'  // state_start - no
-                            , '0831112222'  // state_mobile_no
+                            , '0820001004'  // state_mobile_no
                             , '2'  // state_opt_in - no
                             , '1'  // state_stay_out - main menu
                         )
@@ -696,7 +601,7 @@ describe("app", function() {
                             reply: [
                                 'Welcome to The Department of Health\'s ' +
                                 'MomConnect. Tell us if this is the no. that ' +
-                                'the mother would like to get SMSs on: 07001',
+                                'the mother would like to get SMSs on: 0820001001',
                                 '1. Yes',
                                 '2. No'
                             ].join('\n')
