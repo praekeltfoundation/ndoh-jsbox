@@ -13,7 +13,6 @@ go.app = function() {
 
     var SeedJsboxUtils = require('seed-jsbox-utils');
     var IdentityStore = SeedJsboxUtils.IdentityStore;
-    // var StageBasedMessaging = SeedJsboxUtils.StageBasedMessaging;
     var Hub = SeedJsboxUtils.Hub;
     var MessageSender = SeedJsboxUtils.MessageSender;
 
@@ -26,7 +25,6 @@ go.app = function() {
 
         // variables for services
         var is;
-        // var sbm;
         var hub;
         var ms;
 
@@ -37,13 +35,7 @@ go.app = function() {
                 self.im.config.services.identity_store.token,
                 self.im.config.services.identity_store.url
             );
-            //
-            // sbm = new StageBasedMessaging(
-            //     new JsonApi(self.im, {}),
-            //     self.im.config.services.stage_based_messaging.token,
-            //     self.im.config.services.stage_based_messaging.url
-            // );
-            //
+
             hub = new Hub(
                 new JsonApi(self.im, {}),
                 self.im.config.services.hub.token,

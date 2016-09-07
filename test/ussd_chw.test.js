@@ -1315,32 +1315,6 @@ describe("app", function() {
                 });
             });
 
-            describe("if the ID type is South Africa ID", function() {
-                it("should save msg language, thank them and exit", function() {
-                    return tester
-                        .setup.user.addr('27820001001')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_start - yes
-                            , '1'  // state_consent - yes
-                            , '1'  // state_id_type - sa id
-                            , '5101015009088'  // state_sa_id
-                            , '4'  // state_language - english
-                        )
-                        .check.interaction({
-                            state: 'state_end_success',
-                            reply: ('Thank you, registration is complete. The ' +
-                            'pregnant woman will now receive messages to ' +
-                            'encourage her to register at her nearest ' +
-                            'clinic.')
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [22, 119, 162, 165, 183]);
-                        })
-                        .check.reply.ends_session()
-                        .run();
-                });
-            });
         });
 
     });
