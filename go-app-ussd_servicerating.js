@@ -8,46 +8,89 @@ go.app = function() {
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
     var EndState = vumigo.states.EndState;
+    var JsonApi = vumigo.http.api.JsonApi;
+
+    var SeedJsboxUtils = require('seed-jsbox-utils');
+    var IdentityStore = SeedJsboxUtils.IdentityStore;
+    // var StageBasedMessaging = SeedJsboxUtils.StageBasedMessaging;
+    // var Hub = SeedJsboxUtils.Hub;
+    // var MessageSender = SeedJsboxUtils.MessageSender;
+
+    var utils = SeedJsboxUtils.utils;
 
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_start");
         var $ = self.$;
 
-        self.init = function() {
+        // variables for services
+        var is;
+        // var sbm;
+        // var hub;
+        // var ms;
 
+        self.init = function() {
+            // initialising services
+            is = new IdentityStore(
+                new JsonApi(self.im, {}),
+                self.im.config.services.identity_store.token,
+                self.im.config.services.identity_store.url
+            );
+
+            // sbm = new StageBasedMessaging(
+            //     new JsonApi(self.im, {}),
+            //     self.im.config.services.stage_based_messaging.token,
+            //     self.im.config.services.stage_based_messaging.url
+            // );
+            //
+            // hub = new Hub(
+            //     new JsonApi(self.im, {}),
+            //     self.im.config.services.hub.token,
+            //     self.im.config.services.hub.url
+            // );
+            //
+            // ms = new MessageSender(
+            //     new JsonApi(self.im, {}),
+            //     self.im.config.services.message_sender.token,
+            //     self.im.config.services.message_sender.url
+            // );
         };
 
         self.states.add("state_start", function(name) {
-            // if (self.contact.extra.is_registered_by === "clinic") {
-            //     if (self.contact.extra.last_service_rating === "never" ||
-            //         self.contact.extra.last_service_rating === undefined) { // undefined allows older registrations to rate service
-            //         return  self.states.create("question_1_friendliness");
-            //     } else {
-            //         return self.states.create("end_thanks_revisit");
-            //     }
-            // } else {
-                return self.states.create("end_reg_clinic");
-            // }
+            self.im.user.set_answers = {};
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
+
+            return is
+            .get_or_create_identity({"msisdn": msisdn})
+            .then(function(identity) {
+                if (identity.details.is_registered_by === "clinic") {  // or 'source', or 'last_mc_reg_on' ??
+                    if (identity.details.last_service_rating === "never"
+                        || self.contact.extra.last_service_rating === undefined) {  // undefined allows older registrations to rate service
+
+                        self.im.user.set_lang(identity.details.lang_code || "eng_ZA");
+
+                        return  self.states.create("question_1_friendliness");
+                    } else {
+                        return self.states.create("end_thanks_revisit");
+                    }
+                } else {
+                    return self.states.create("end_reg_clinic");
+                }
+            });
         });
 
         self.states.add("question_1_friendliness", function(name) {
-            // return go.utils.set_language(self.im.user, self.contact)
-            //     .then(function() {
+            return new ChoiceState(name, {
+                question: $("Welcome. When you signed up, were staff at the facility friendly & helpful?"),
 
-                    return new ChoiceState(name, {
-                        question: $("Welcome. When you signed up, were staff at the facility friendly & helpful?"),
+                choices: [
+                    new Choice("very-satisfied", $("Very Satisfied")),
+                    new Choice("satisfied", $("Satisfied")),
+                    new Choice("not-satisfied", $("Not Satisfied")),
+                    new Choice("very-unsatisfied", $("Very unsatisfied"))
+                ],
 
-                        choices: [
-                            new Choice("very-satisfied", $("Very Satisfied")),
-                            new Choice("satisfied", $("Satisfied")),
-                            new Choice("not-satisfied", $("Not Satisfied")),
-                            new Choice("very-unsatisfied", $("Very unsatisfied"))
-                        ],
-
-                        next: "question_2_waiting_times_feel"
-                    });
-
-                // });
+                next: "question_2_waiting_times_feel"
+            });
         });
 
         self.states.add("question_2_waiting_times_feel", function(name) {
