@@ -24,7 +24,7 @@ describe("app", function() {
                     name: 'ussd_chw',
                     env: 'test',
                     testing: 'true',
-                    testing_today: 'April 4, 2014 07:07:07',
+                    testing_today: "2014-04-04",
                     channel: "*120*550*3#",
                     jembi: {
                         username: 'foo',
@@ -614,11 +614,11 @@ describe("app", function() {
         // end opt-in flow for chw's phone usage
 
 
-        describe.skip("if the user selects SA ID (id type)", function() {
+        describe("if the user selects SA ID (id type)", function() {
             describe("if the user is the pregnant woman", function() {
                 it("should set id type, ask for their id number", function() {
                     return tester
-                        .setup.user.addr('270001')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_start - yes
@@ -631,24 +631,6 @@ describe("app", function() {
                                 'Please enter the pregnant mother\'s SA ID ' +
                                 'number:')
                         })
-                        .check(function(api) {
-                            var contact = _.find(api.contacts.store, {
-                              msisdn: '+270001'
-                            });
-                            assert.equal(contact.extra.id_type, 'sa_id');
-                            assert.equal(contact.extra.last_state, 'state_sa_id');
-                            assert.equal(contact.extra.is_registered, 'false');
-                        })
-                        .check(function(api) {
-                            var metrics = api.metrics.stores.test_metric_store;
-                            assert.deepEqual(metrics['test.chw.percent_incomplete_registrations'].values, [60]);
-                            assert.deepEqual(metrics['test.chw.percent_complete_registrations'].values, [40]);
-                        })
-                        .check(function(api) {
-                            var kv_store = api.kv.store;
-                            assert.equal(kv_store['test.chw.no_complete_registrations'], 2);
-                            assert.equal(kv_store['test.chw.conversion_registrations'], undefined);
-                        })
                         .run();
                 });
             });
@@ -656,19 +638,11 @@ describe("app", function() {
             describe("if the user is not the pregnant woman", function() {
                 it("should set id type, ask for their id number", function() {
                     return tester
-                        .setup.user.addr('270001')
-                        .setup(function(api) {
-                            api.contacts.add( {
-                                msisdn: '+270001',
-                                extra : {
-                                    working_on: '+27821234567'
-                                }
-                            });
-                        })
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '2'  // state_start - no
-                            , '0821234567' // state_mobile_no
+                            , '0820001002' // state_mobile_no
                             , '1'  // state_consent - yes
                             , '1'  // state_id_type - sa id
                         )
@@ -678,26 +652,15 @@ describe("app", function() {
                                 'Please enter the pregnant mother\'s SA ID ' +
                                 'number:')
                         })
-                        .check(function(api) {
-                            var contact = _.find(api.contacts.store, {
-                              msisdn: '+27821234567'
-                            });
-                            assert.equal(contact.extra.id_type, 'sa_id');
-                        })
-                        .check(function(api) {
-                            var metrics = api.metrics.stores.test_metric_store;
-                            assert.deepEqual(metrics['test.chw.percent_incomplete_registrations'].values, [60]);
-                            assert.deepEqual(metrics['test.chw.percent_complete_registrations'].values, [40]);
-                        })
                         .run();
                 });
             });
         });
 
-        describe.skip("after the user enters the ID number after '50", function() {
+        describe("after the user enters the ID number after '50", function() {
             it("should save ID, extract DOB, ask for pregnant woman's msg language", function() {
                 return tester
-                    .setup.user.addr('270001')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_start - yes
@@ -717,24 +680,14 @@ describe("app", function() {
                             '6. More'
                             ].join('\n')
                     })
-                    .check(function(api) {
-                        var contact = _.find(api.contacts.store, {
-                          msisdn: '+270001'
-                        });
-                        assert.equal(contact.extra.sa_id, '5101015009088');
-                        assert.equal(contact.extra.birth_year, '1951');
-                        assert.equal(contact.extra.birth_month, '01');
-                        assert.equal(contact.extra.birth_day, '01');
-                        assert.equal(contact.extra.dob, '1951-01-01');
-                    })
                     .run();
             });
         });
 
-        describe.skip("after the user enters the ID number before '50", function() {
+        describe("after the user enters the ID number before '50", function() {
             it("should save ID, extract DOB", function() {
                 return tester
-                    .setup.user.addr('270001')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_start - yes
@@ -742,21 +695,14 @@ describe("app", function() {
                         , '1'  // state_id_type - sa id
                         , '2012315678097'  // state_sa_id
                     )
-                    .check(function(api) {
-                        var contact = _.find(api.contacts.store, {
-                          msisdn: '+270001'
-                        });
-                        assert.equal(contact.extra.sa_id, '2012315678097');
-                        assert.equal(contact.extra.dob, '2020-12-31');
-                    })
                     .run();
             });
         });
 
-        describe.skip("after the user enters the ID number on '50", function() {
+        describe("after the user enters the ID number on '50", function() {
             it("should save ID, extract DOB", function() {
                 return tester
-                    .setup.user.addr('270001')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_start - yes
@@ -764,21 +710,14 @@ describe("app", function() {
                         , '1'  // state_id_type - sa id
                         , '5002285000007'  // state_sa_id
                     )
-                    .check(function(api) {
-                        var contact = _.find(api.contacts.store, {
-                          msisdn: '+270001'
-                        });
-                        assert.equal(contact.extra.sa_id, '5002285000007');
-                        assert.equal(contact.extra.dob, '1950-02-28');
-                    })
                     .run();
             });
         });
 
-        describe.skip("after the user enters their ID number incorrectly", function() {
+        describe("after the user enters their ID number incorrectly", function() {
             it("should not save ID, ask them to try again", function() {
                 return tester
-                    .setup.user.addr('270001')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_start - yes
@@ -791,20 +730,14 @@ describe("app", function() {
                         reply: 'Sorry, the mother\'s ID number did not validate. ' +
                           'Please reenter the SA ID number:'
                     })
-                    .check(function(api) {
-                        var contact = _.find(api.contacts.store, {
-                          msisdn: '+270001'
-                        });
-                        assert.equal(contact.extra.sa_id, undefined);
-                    })
                     .run();
             });
         });
 
-        describe.skip("if the user selects Passport (id type)", function() {
+        describe("if the user selects Passport (id type)", function() {
             it("should set id type, ask for their country of origin", function() {
                 return tester
-                    .setup.user.addr('270001')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_start - yes
@@ -824,20 +757,14 @@ describe("app", function() {
                             '7. Other'
                         ].join('\n')
                     })
-                    .check(function(api) {
-                        var contact = _.find(api.contacts.store, {
-                          msisdn: '+270001'
-                        });
-                        assert.equal(contact.extra.id_type, 'passport');
-                    })
                     .run();
             });
         });
 
-        describe.skip("after the user selects passport country", function() {
+        describe("after the user selects passport country", function() {
             it("should save passport country, ask for their passport number", function() {
                 return tester
-                    .setup.user.addr('270001')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_start - yes
@@ -849,20 +776,14 @@ describe("app", function() {
                         state: 'state_passport_no',
                         reply: 'Please enter the pregnant mother\'s Passport number:'
                     })
-                    .check(function(api) {
-                        var contact = _.find(api.contacts.store, {
-                          msisdn: '+270001'
-                        });
-                        assert.equal(contact.extra.passport_origin, 'zw');
-                    })
                     .run();
             });
         });
 
-        describe.skip("after the user enters the passport number", function() {
+        describe("after the user enters the passport number", function() {
             it("should save passport no, ask for pregnant woman's msg language", function() {
                 return tester
-                    .setup.user.addr('270001')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_start - yes
@@ -883,20 +804,14 @@ describe("app", function() {
                             '6. More'
                             ].join('\n')
                     })
-                    .check(function(api) {
-                        var contact = _.find(api.contacts.store, {
-                          msisdn: '+270001'
-                        });
-                        assert.equal(contact.extra.passport_no, '12345');
-                    })
                     .run();
             });
         });
 
-        describe.skip("if the user enters their passport incorrectly (non alpha-numeric)", function() {
+        describe("if the user enters their passport incorrectly (non alpha-numeric)", function() {
             it("should ask for their passport number again", function() {
                 return tester
-                    .setup.user.addr('270001')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_start - yes
@@ -914,10 +829,10 @@ describe("app", function() {
             });
         });
 
-        describe.skip("if the user enters their passport incorrectly (too short)", function() {
+        describe("if the user enters their passport incorrectly (too short)", function() {
             it("should ask for their passport number again", function() {
                 return tester
-                    .setup.user.addr('270001')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_start - yes
@@ -935,10 +850,10 @@ describe("app", function() {
             });
         });
 
-        describe.skip("if the user selects None (id type)", function() {
+        describe("if the user selects None (id type)", function() {
             it("should set id type, ask for their birth year", function() {
                 return tester
-                    .setup.user.addr('270001')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_start - yes
@@ -950,20 +865,14 @@ describe("app", function() {
                         reply: ('Please enter the year that the pregnant ' +
                                 'mother was born (for example: 1981)')
                     })
-                    .check(function(api) {
-                        var contact = _.find(api.contacts.store, {
-                          msisdn: '+270001'
-                        });
-                        assert.equal(contact.extra.id_type, 'none');
-                    })
                     .run();
             });
         });
 
-        describe.skip("after the user enters their birth year incorrectly", function() {
+        describe("after the user enters their birth year incorrectly", function() {
             it("text error - should ask for their birth year again", function() {
                 return tester
-                    .setup.user.addr('270001')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_start - yes
@@ -982,7 +891,7 @@ describe("app", function() {
 
             it("too young - should ask for their birth year again", function() {
                 return tester
-                    .setup.user.addr('270001')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_start - yes
@@ -1000,10 +909,10 @@ describe("app", function() {
             });
         });
 
-        describe.skip("after the user enters their birth year", function() {
+        describe("after the user enters their birth year", function() {
             it("should save birth year, ask for their birth month", function() {
                 return tester
-                    .setup.user.addr('270001')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_start - yes
@@ -1013,7 +922,7 @@ describe("app", function() {
                     )
                     .check.interaction({
                         state: 'state_birth_month',
-                        reply: ['Please enter the month that you were born.',
+                        reply: ['Please enter the month that the mom was born.',
                             '1. Jan',
                             '2. Feb',
                             '3. Mar',
@@ -1028,20 +937,14 @@ describe("app", function() {
                             '12. Dec'
                         ].join('\n')
                     })
-                    .check(function(api) {
-                        var contact = _.find(api.contacts.store, {
-                          msisdn: '+270001'
-                        });
-                        assert.equal(contact.extra.birth_year, '1981');
-                    })
                     .run();
             });
         });
 
-        describe.skip("after the user enters their birth month", function() {
+        describe("after the user enters their birth month", function() {
             it("should save birth month, ask for their birth day", function() {
                 return tester
-                    .setup.user.addr('270001')
+                    .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '1'  // state_start - yes
@@ -1055,21 +958,15 @@ describe("app", function() {
                         reply: ('Please enter the day that the mother was ' +
                             'born (for example: 14).')
                     })
-                    .check(function(api) {
-                        var contact = _.find(api.contacts.store, {
-                          msisdn: '+270001'
-                        });
-                        assert.equal(contact.extra.birth_month, '01');
-                    })
                     .run();
             });
         });
 
-        describe.skip("after the user enters the birth day", function() {
+        describe("after the user enters the birth day", function() {
             describe("if the date validates", function() {
                 it("should save birth day and dob, ask for pregnant woman's msg language", function() {
                     return tester
-                        .setup.user.addr('270001')
+                        .setup.user.addr('27820001001')
                         .setup.user.answers({
                             'state_birth_year': '1981',
                             'state_birth_month': '01'
@@ -1095,13 +992,6 @@ describe("app", function() {
                             '6. More'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            var contact = _.find(api.contacts.store, {
-                              msisdn: '+270001'
-                            });
-                            assert.equal(contact.extra.birth_day, '14');
-                            assert.equal(contact.extra.dob, '1981-01-14');
-                        })
                         .run();
                 });
             });
@@ -1109,7 +999,7 @@ describe("app", function() {
             describe("if the day entry is obviously wrong", function() {
                 it("should reprompt for the day", function() {
                     return tester
-                        .setup.user.addr('270001')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_start - yes
@@ -1132,7 +1022,7 @@ describe("app", function() {
             describe("if the date is not a real date", function() {
                 it("should go to error state, ask them to continue", function() {
                     return tester
-                        .setup.user.addr('270001')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_start - yes
@@ -1155,7 +1045,7 @@ describe("app", function() {
 
                 it("should take them back to birth year if they continue", function() {
                     return tester
-                        .setup.user.addr('270001')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_start - yes
@@ -1180,7 +1070,7 @@ describe("app", function() {
             describe("if they select to see language page 2", function() {
                 it("should display more language options", function() {
                     return tester
-                        .setup.user.addr('270001')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_start - yes
@@ -1209,7 +1099,7 @@ describe("app", function() {
             describe("if they select to see language page 3", function() {
                 it("should display more language options", function() {
                     return tester
-                        .setup.user.addr('270001')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_start - yes
