@@ -189,7 +189,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 53, 161]);
+                            utils.check_fixtures_used(api, [51, 54, 161]);
                         })
                         .run();
                     });
@@ -210,7 +210,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [56, 176]);
+                            utils.check_fixtures_used(api, [58, 176]);
                         })
                         .run();
                     });
@@ -448,7 +448,7 @@ describe("app", function() {
                             'your compliment.'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [51, 53, 119, 161]);
+                        utils.check_fixtures_used(api, [51, 54, 119, 161]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -469,7 +469,7 @@ describe("app", function() {
                             'your complaint.'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [51, 53, 120, 161]);
+                        utils.check_fixtures_used(api, [51, 54, 120, 161]);
                     })
                     .check.reply.ends_session()
                     .run();
