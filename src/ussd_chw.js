@@ -79,7 +79,6 @@ go.app = function() {
             } else if (self.im.user.answers.state_id_type === "passport") {
                 registrant_info.details.passport_no = self.im.user.answers.state_passport_no;
                 registrant_info.details.passport_origin = self.im.user.answers.state_passport_origin;
-                // registrant_info.details.mom_dob = self.im.user.answers.mom_dob;  should this be added for passport registrations?
             } else {
                 registrant_info.details.mom_dob = self.im.user.answers.mom_dob;
             }
@@ -413,8 +412,8 @@ go.app = function() {
                 },
                 next: function(content) {
                     var dob = (self.im.user.answers.state_birth_year + "-" +
-                               self.im.user.answers.state_birth_month + "-" +
-                               utils.double_digit_number(content));
+                        self.im.user.answers.state_birth_month + "-" +
+                        utils.double_digit_number(content));
                     self.im.user.set_answer("mom_dob", dob);
                     if (utils.is_valid_date(dob, "YYYY-MM-DD")) {
                         return "state_language";
