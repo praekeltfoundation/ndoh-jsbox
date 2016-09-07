@@ -1,5 +1,9 @@
 var vumigo = require('vumigo_v02');
 var fixtures_IdentityStore = require('./fixtures_identity_store');
+var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
+var fixtures_MessageSender = require('./fixtures_message_sender');
+var fixtures_Hub = require('./fixtures_hub');
+var fixtures_Jembi = require('./fixtures_jembi');
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
 var _ = require('lodash');
@@ -19,12 +23,8 @@ describe("app", function() {
                 .setup.config.app({
                     name: 'ussd_chw',
                     env: 'test',
-                    // metric_store: 'test_metric_store',
                     testing: 'true',
                     testing_today: 'April 4, 2014 07:07:07',
-                    endpoints: {
-                        "sms": {"delivery_class": "sms"}
-                    },
                     channel: "*120*550*3#",
                     jembi: {
                         username: 'foo',
@@ -51,307 +51,18 @@ describe("app", function() {
                         }
                     },
                     no_timeout_redirects: [
-
+                        "states_start"
                     ]
                 })
-                // .setup(function(api) {
-                //     api.kv.store['test.clinic.unique_users'] = 0;
-                //     api.kv.store['test.chw.unique_users'] = 0;
-                //     api.kv.store['test.personal.unique_users'] = 0;
-                //     api.kv.store['test.chw.no_complete_registrations'] = 2;
-                //     api.kv.store['test.chw.no_incomplete_registrations'] = 2;
-                // })
-                // .setup(function(api) {
-                //     api.metrics.stores = {'test_metric_store': {}};
-                // })
                 .setup(function(api) {
                     // add fixtures for services used
-                    // fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
-                    // fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
-                    // fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
-                    // fixtures_Jembi().forEach(api.http.fixtures.add); // 150 - 159
+                    fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
+                    fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
+                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
+                    fixtures_Jembi().forEach(api.http.fixtures.add); // 150 - 159
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 160 ->
                 });
         });
-
-        describe.skip('using the session length helper', function () {
-
-            it('should lower case the provider name', function () {
-                return tester
-                    .setup.user({
-                        state: 'state_start',
-                        metadata: {
-                          session_length_helper: {
-                            // one minute before the mocked timestamp
-                            start: Number(new Date('April 4, 2014 07:06:07'))
-                          }
-                        }
-                    })
-                    .input({
-                        content: '1',
-                        transport_metadata: {
-                            aat_ussd: {
-                                provider: 'FOODACOM'
-                            }
-                        }
-                    })
-                    .input.session_event('close')
-                    .check(function(api, im) {
-                        var kv_store = api.kv.store;
-                        assert.equal(
-                            kv_store['session_length_helper.' + im.config.name + '.foodacom'],
-                            60000);
-                        assert.equal(
-                          kv_store['session_length_helper.' + im.config.name + '.foodacom.sentinel'],
-                          '2014-04-04');
-
-                        var m_store = api.metrics.stores.test_metric_store;
-                        assert.equal(
-                          m_store['session_length_helper.' + im.config.name + '.foodacom'].agg, 'max');
-                        assert.equal(
-                          m_store['session_length_helper.' + im.config.name + '.foodacom'].values[0], 60);
-                    }).run();
-            });
-
-            it('should publish metrics', function () {
-                return tester
-                    .setup(function(api) {
-                        api.kv.store['session_length_helper.' + api.config.app.name + '.foodacom.sentinel'] = '2000-12-12';
-                        api.kv.store['session_length_helper.' + api.config.app.name + '.foodacom'] = 42;
-                    })
-                    .setup.user({
-                        state: 'state_start',
-                        metadata: {
-                          session_length_helper: {
-                            // one minute before the mocked timestamp
-                            start: Number(new Date('April 4, 2014 07:06:07'))
-                          }
-                        }
-                    })
-                    .input({
-                        content: '1',
-                        transport_metadata: {
-                            aat_ussd: {
-                                provider: 'foodacom'
-                            }
-                        }
-                    })
-                    .input.session_event('close')
-                    .check(function(api, im) {
-
-                        var kv_store = api.kv.store;
-                        assert.equal(kv_store['session_length_helper.' + im.config.name + '.foodacom'], 60000);
-                        assert.equal(
-                          kv_store['session_length_helper.' + im.config.name + '.foodacom.sentinel'], '2014-04-04');
-
-                        var m_store = api.metrics.stores.test_metric_store;
-                        assert.equal(
-                          m_store['session_length_helper.' + im.config.name + '.foodacom'].agg, 'max');
-                        assert.equal(
-                          m_store['session_length_helper.' + im.config.name + '.foodacom'].values[0], 60);
-                    }).run();
-            });
-
-            it('should publish metrics when provider is unknown', function () {
-                return tester
-                    .setup.user({
-                        state: 'state_start',
-                        metadata: {
-                          session_length_helper: {
-                            // one minute before the mocked timestamp
-                            start: Number(new Date('April 4, 2014 07:06:07'))
-                          }
-                        }
-                    })
-                    .input({
-                        content: '1',
-                        transport_metadata: {
-                            aat_ussd: {}
-                        }
-                    })
-                    .input.session_event('close')
-                    .check(function(api, im) {
-
-                        var kv_store = api.kv.store;
-                        assert.equal(kv_store['session_length_helper.' + im.config.name + '.unspecified'], 60000);
-                        assert.equal(
-                          kv_store['session_length_helper.' + im.config.name + '.unspecified.sentinel'], '2014-04-04');
-
-                        var m_store = api.metrics.stores.test_metric_store;
-                        assert.equal(
-                          m_store['session_length_helper.' + im.config.name + '.unspecified'].agg, 'max');
-                        assert.equal(
-                          m_store['session_length_helper.' + im.config.name + '.unspecified'].values[0], 60);
-                    }).run();
-            });
-
-            it('should publish metrics when metadata is unknown', function () {
-                return tester
-                    .setup.user({
-                        state: 'state_start',
-                        metadata: {
-                          session_length_helper: {
-                            // one minute before the mocked timestamp
-                            start: Number(new Date('April 4, 2014 07:06:07'))
-                          }
-                        }
-                    })
-                    .input({
-                        content: '1',
-                        transport_metadata: {}
-                    })
-                    .input.session_event('close')
-                    .check(function(api, im) {
-
-                        var kv_store = api.kv.store;
-                        assert.equal(kv_store['session_length_helper.' + im.config.name + '.unknown'], 60000);
-                        assert.equal(
-                          kv_store['session_length_helper.' + im.config.name + '.unknown.sentinel'], '2014-04-04');
-
-                        var m_store = api.metrics.stores.test_metric_store;
-                        assert.equal(
-                          m_store['session_length_helper.' + im.config.name + '.unknown'].agg, 'max');
-                        assert.equal(
-                          m_store['session_length_helper.' + im.config.name + '.unknown'].values[0], 60);
-                    }).run();
-            });
-        });
-
-        // no_incomplete metric tests
-        describe.skip("when a session is terminated", function() {
-
-            describe("when the last state is state_start", function() {
-                it("should increase state_start.no_incomplete metric by 1", function() {
-                    return tester
-                        .setup.user.state('state_start')
-                        .input.session_event('close')
-                        .check(function(api) {
-                            var metrics = api.metrics.stores.test_metric_store;
-                            assert.deepEqual(metrics['test.chw.state_start.no_incomplete'].values, [1]);
-                        })
-                        .run();
-                });
-            });
-
-            describe("when the last state is state_birth_day", function() {
-                it("should increase state_birth_day.no_incomplete metric by 1", function() {
-                    return tester
-                        .setup.user.state('state_birth_day')
-                        .input.session_event('close')
-                        .check(function(api) {
-                            var metrics = api.metrics.stores.test_metric_store;
-                            assert.deepEqual(metrics['test.chw.state_birth_day.no_incomplete'].values, [1]);
-                        })
-                        .run();
-                });
-            });
-
-            describe("when the last state is state_birth_day", function() {
-                it("and no_incomplete was 1 should increase state_birth_day.no_incomplete metric to 2", function() {
-                    return tester
-                        .setup(function(api) {
-                            api.metrics.stores.test_metric_store = {
-                                'test.chw.state_birth_day.no_incomplete': { agg: 'last', values: [ 1 ] }
-                            };
-                            api.kv.store['test_metric_store.test.chw.state_birth_day.no_incomplete'] = 1;
-                        })
-                        .setup.user.state('state_birth_day')
-                        .input.session_event('close')
-                        .check(function(api) {
-                            var metrics = api.metrics.stores.test_metric_store;
-                            assert.deepEqual(metrics['test.chw.state_birth_day.no_incomplete'].values, [1, 2]);
-                        })
-                        .run();
-                });
-            });
-
-            describe("when the last state is state_end_success", function() {
-                it("should not fire a metric", function() {
-                    return tester
-                        .setup(function(api) {
-                            api.contacts.add( {
-                                msisdn: '+27001',
-                                extra : {
-                                    ussd_sessions: '5',
-                                    language_choice: 'en',
-                                    id_type: 'passport',
-                                    passport_origin: 'zw',
-                                    passport_no: '5101025009086'
-                                },
-                                key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                                user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                            });
-                        })
-                        .setup.user.addr('27001')
-                        .setup.user.state('state_end_success')
-                        .input.session_event('close')
-                        .check(function(api) {
-                            var metrics = api.metrics.stores.test_metric_store;
-                            assert.deepEqual(metrics['test.chw.state_end_success.no_incomplete'], undefined);
-                        })
-                        .run();
-                });
-            });
-        });
-
-        describe.skip("when a new session is started", function() {
-
-            describe("when it is a new user logging on", function() {
-                it("should set the last metric value in state_start.no_incomplete to 0", function() {
-                    return tester
-                        .setup.user.addr('275678')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                        )
-                        // .check(function(api) {
-                        //     var metrics = api.metrics.stores.test_metric_store;
-                        //     assert.deepEqual(metrics['test.chw.state_start.no_incomplete'].values, [1, 0]);
-                        // })
-                        .run();
-                });
-            });
-
-            describe("when it is an existing user logging on at state_start", function() {
-                it("should decrease the metric state_start.no_incomplete by 1", function() {
-                    return tester
-                        .setup.user.lang('en')  // make sure user is not seen as new
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                        )
-                        // .check(function(api) {
-                        //     var metrics = api.metrics.stores.test_metric_store;
-                        //     assert.deepEqual(metrics['test.chw.state_start.no_incomplete'].values, [-1]);
-                        // })
-                        .run();
-                });
-            });
-
-            describe("when it is an existing starting a session at state_birth_day", function() {
-                it("should decrease the metric state_birth_day.no_incomplete by 1", function() {
-                    return tester
-                        .setup.user.state('state_birth_day')
-                        // .check(function(api) {
-                        //     var metrics = api.metrics.stores.test_metric_store;
-                        //     assert.deepEqual(metrics['test.chw.state_birth_day.no_incomplete'].values, [-1]);
-                        // })
-                        .run();
-                });
-            });
-
-            describe("when it is an existing user continuing a session at state_birth_day", function() {
-                it("should not fire metric state_birth_day.no_incomplete", function() {
-                    return tester
-                        .setup.user.state('state_birth_day')
-                        .input('2') // make sure session is not new
-                        // .check(function(api) {
-                        //     var metrics = api.metrics.stores.test_metric_store;
-                        //     assert.deepEqual(metrics['test.chw.state_birth_day.no_incomplete'], undefined);
-                        // })
-                        .run();
-                });
-            });
-        });
-        // end no_incomplete metrics tests
 
         // re-dial flow tests
         describe("when a user timed out", function() {
@@ -361,17 +72,6 @@ describe("app", function() {
                 it("should ask if they want to continue registration", function() {
                     return tester
                         .setup.char_limit(160)  // limit first state chars
-                        // .setup(function(api) {
-                        //     api.contacts.add({
-                        //         msisdn: '+27821234444',
-                        //         extra : {
-                        //             working_on: '+27821234567',
-                        //         }
-                        //     });
-                        //     api.contacts.add( {
-                        //         msisdn: '+27821234567',
-                        //     });
-                        // })
                         .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}
@@ -395,14 +95,6 @@ describe("app", function() {
             describe.skip("when the user timed out during registration", function() {
                 it("should ask if they want to continue registration", function() {
                     return tester
-                        // .setup(function(api) {
-                        //     api.contacts.add({
-                        //         msisdn: '+27821234444',
-                        //     });
-                        //     api.contacts.add( {
-                        //         msisdn: '+27821234567',
-                        //     });
-                        // })
                         .setup.user.addr('27820001002')
                         .inputs(
                             {session_event: 'new'}
