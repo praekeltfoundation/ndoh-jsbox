@@ -86,7 +86,7 @@ go.app = function() {
 
                     next: function(choice) {
                         if (_.contains(["not_useful", "other"], choice.value)){
-                            return "states_end_no_enter";
+                            return "state_send_nonloss_optout";
                         } else {
                             return "states_subscribe_option";
                         }
@@ -102,12 +102,12 @@ go.app = function() {
                             "to help you in this difficult time?"),
 
                 choices: [
-                    new Choice("states_end_yes", $("Yes")),
-                    new Choice("states_end_no_enter", $("No"))
+                    new Choice("state_send_loss_optout", $("Yes")),
+                    new Choice("state_send_nonloss_optout", $("No"))
                 ],
 
                 next: function(choice) {
-                    if (choice.value == "states_end_yes") {
+                    if (choice.value == "state_send_loss_optout") {
                         return hub
                         .create_change(
                             {
@@ -128,18 +128,33 @@ go.app = function() {
             });
         });
 
-        self.states.add("states_end_no_enter", function(name) {
-            var optout_info = {
-                "optout_type": "stop",
-                "identity": self.im.user.answers.operator.id,
-                "reason": self.im.user.answers.state_start,
-                "address_type": "msisdn",
-                "address": self.im.user.answers.operator_msisdn,
-                "request_source": "ussd_optout",
-                "requestor_source_id": self.im.config.testing_message_id || self.im.msg.message_id
-            };
-            return is
-            .optout(optout_info)
+        self.states.add("state_send_loss_optout", function(name) {
+            return hub
+            .create_change(
+                {
+                    "registrant_id": self.im.user.answers.operator.id,
+                    "action": "momconnect_loss_optout",
+                    "data": {
+                        "reason": self.im.user.answers.state_start
+                    }
+                }
+            )
+            .then(function() {
+                return self.states.create("states_end_yes");
+            });
+        });
+
+        self.states.add("state_send_nonloss_optout", function(name) {
+            return hub
+            .create_change(
+                {
+                    "registrant_id": self.im.user.answers.operator.id,
+                    "action": "momconnect_nonloss_optout",
+                    "data": {
+                        "reason": self.im.user.answers.state_start
+                    }
+                }
+            )
             .then(function() {
                 return self.states.create("states_end_no");
             });
