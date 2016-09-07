@@ -6,7 +6,6 @@ var fixtures_Hub = require('./fixtures_hub');
 var fixtures_Jembi = require('./fixtures_jembi');
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
-var _ = require('lodash');
 
 var utils = require('seed-jsbox-utils').utils;
 
