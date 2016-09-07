@@ -1,5 +1,5 @@
 var vumigo = require('vumigo_v02');
-// var fixtures = require('./fixtures');
+var fixtures_IdentityStore = require('./fixtures_identity_store');
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
 var _ = require('lodash');
@@ -65,7 +65,12 @@ describe("app", function() {
                 //     api.metrics.stores = {'test_metric_store': {}};
                 // })
                 .setup(function(api) {
-                    // fixtures().forEach(api.http.fixtures.add);
+                    // add fixtures for services used
+                    // fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
+                    // fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
+                    // fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
+                    // fixtures_Jembi().forEach(api.http.fixtures.add); // 150 - 159
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 160 ->
                 });
         });
 
@@ -349,31 +354,35 @@ describe("app", function() {
         // end no_incomplete metrics tests
 
         // re-dial flow tests
-        describe.skip("when a user timed out", function() {
+        describe("when a user timed out", function() {
 
             // clinic worker's phone
             describe("when the user timed out during registration", function() {
                 it("should ask if they want to continue registration", function() {
                     return tester
                         .setup.char_limit(160)  // limit first state chars
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+27821234444',
-                                extra : {
-                                    working_on: '+27821234567',
-                                }
-                            });
-                            api.contacts.add( {
-                                msisdn: '+27821234567',
-                            });
-                        })
-                        .setup.user.addr('27821234444')
-                        .setup.user.state('state_id_type')
-                        .input.session_event('new')
+                        // .setup(function(api) {
+                        //     api.contacts.add({
+                        //         msisdn: '+27821234444',
+                        //         extra : {
+                        //             working_on: '+27821234567',
+                        //         }
+                        //     });
+                        //     api.contacts.add( {
+                        //         msisdn: '+27821234567',
+                        //     });
+                        // })
+                        .setup.user.addr('27820001001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '1'  // state_start - yes
+                            , '1'  // state_consent - yes
+                            , {session_event: 'new'}
+                        )
                         .check.interaction({
                             state: 'state_timed_out',
                             reply: [
-                                'Would you like to complete pregnancy registration for 0821234567?',
+                                'Would you like to complete pregnancy registration for 0820001001?',
                                 '1. Yes',
                                 '2. Start new registration'
                             ].join('\n')
@@ -383,24 +392,28 @@ describe("app", function() {
             });
 
             // pregnant woman's phone
-            describe("when the user timed out during registration", function() {
+            describe.skip("when the user timed out during registration", function() {
                 it("should ask if they want to continue registration", function() {
                     return tester
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+27821234444',
-                            });
-                            api.contacts.add( {
-                                msisdn: '+27821234567',
-                            });
-                        })
-                        .setup.user.addr('27821234567')
-                        .setup.user.state('state_id_type')
-                        .input.session_event('new')
+                        // .setup(function(api) {
+                        //     api.contacts.add({
+                        //         msisdn: '+27821234444',
+                        //     });
+                        //     api.contacts.add( {
+                        //         msisdn: '+27821234567',
+                        //     });
+                        // })
+                        .setup.user.addr('27820001002')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '1'  // state_start - yes
+                            , '1'  // state_consent - yes
+                            , {session_event: 'new'}
+                        )
                         .check.interaction({
                             state: 'state_timed_out',
                             reply: [
-                                'Would you like to complete pregnancy registration for 0821234567?',
+                                'Would you like to complete pregnancy registration for 0820001002?',
                                 '1. Yes',
                                 '2. Start new registration'
                             ].join('\n')
@@ -409,7 +422,7 @@ describe("app", function() {
                 });
             });
 
-            describe("when the user chooses to continue registration", function() {
+            describe.skip("when the user chooses to continue registration", function() {
                 it("should take them back to state they were on at timeout", function() {
                     return tester
                         .setup(function(api) {
@@ -443,7 +456,7 @@ describe("app", function() {
                 });
             });
 
-            describe("when the user chooses to abort registration", function() {
+            describe.skip("when the user chooses to abort registration", function() {
                 it("should take them back to state_start", function() {
                     return tester
                         .setup(function(api) {
@@ -500,10 +513,10 @@ describe("app", function() {
             });
         });
 
-        describe.skip("when the user starts a session", function() {
+        describe("when the user starts a session", function() {
             it("should check if no. belongs to pregnant woman", function() {
                 return tester
-                    .setup.user.addr('27821234444')
+                    .setup.user.addr('27820001001')
                     .setup.char_limit(160)  // limit first state chars
                     .inputs(
                         {session_event: 'new'}  // dial in
@@ -513,23 +526,23 @@ describe("app", function() {
                         reply: [
                             'Welcome to The Department of Health\'s ' +
                             'MomConnect. Tell us if this is the no. that ' +
-                            'the mother would like to get SMSs on: 0821234444',
+                            'the mother would like to get SMSs on: 0820001001',
                             '1. Yes',
                             '2. No'
                         ].join('\n')
                     })
-                    .check(function(api) {
-                        var contact = _.find(api.contacts.store, {
-                          msisdn: '+27821234444'
-                        });
-                        assert.equal(contact.extra.ussd_sessions, '1');
-                        assert.equal(contact.extra.metric_sum_sessions, '1');
-                        assert.equal(contact.extra.last_state, 'state_start');
-                    })
-                    .check(function(api) {
-                        var metrics = api.metrics.stores.test_metric_store;
-                        assert.deepEqual(metrics['test.sum.sessions'].values, [1]);
-                    })
+                    // .check(function(api) {
+                    //     var contact = _.find(api.contacts.store, {
+                    //       msisdn: '+27821234444'
+                    //     });
+                    //     assert.equal(contact.extra.ussd_sessions, '1');
+                    //     assert.equal(contact.extra.metric_sum_sessions, '1');
+                    //     assert.equal(contact.extra.last_state, 'state_start');
+                    // })
+                    // .check(function(api) {
+                    //     var metrics = api.metrics.stores.test_metric_store;
+                    //     assert.deepEqual(metrics['test.sum.sessions'].values, [1]);
+                    // })
                     .run();
             });
         });

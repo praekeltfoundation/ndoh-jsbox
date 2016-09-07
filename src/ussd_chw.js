@@ -9,9 +9,10 @@ go.app = function() {
     var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
+    var JsonApi = vumigo.http.api.JsonApi;
 
     var SeedJsboxUtils = require('seed-jsbox-utils');
-    // var IdentityStore = SeedJsboxUtils.IdentityStore;
+    var IdentityStore = SeedJsboxUtils.IdentityStore;
     // var StageBasedMessaging = SeedJsboxUtils.StageBasedMessaging;
     // var Hub = SeedJsboxUtils.Hub;
     // var MessageSender = SeedJsboxUtils.MessageSender;
@@ -24,18 +25,18 @@ go.app = function() {
         var interrupt = true;
 
         // variables for services
-        // var is;
+        var is;
         // var sbm;
         // var hub;
         // var ms;
 
         self.init = function() {
             // initialising services
-            // is = new IdentityStore(
-            //     new JsonApi(self.im, {}),
-            //     self.im.config.services.identity_store.token,
-            //     self.im.config.services.identity_store.url
-            // );
+            is = new IdentityStore(
+                new JsonApi(self.im, {}),
+                self.im.config.services.identity_store.token,
+                self.im.config.services.identity_store.url
+            );
             //
             // sbm = new StageBasedMessaging(
             //     new JsonApi(self.im, {}),
@@ -65,6 +66,15 @@ go.app = function() {
                 });
         };
 
+        self.number_opted_out = function(identity, msisdn) {
+            var details_msisdn = identity.details.addresses.msisdn[msisdn];
+            if ("optedout" in details_msisdn) {
+                return (details_msisdn.optedout === true || details_msisdn.optedout === "true");
+            } else {
+                return false;
+            }
+        },
+
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
                 if (!interrupt || !utils.timed_out(self.im))
@@ -78,95 +88,79 @@ go.app = function() {
         };
 
         self.states.add("state_timed_out", function(name, creator_opts) {
-            var readable_no = utils.readable_msisdn(self.contact.msisdn, "+27");
-
+            var msisdn = self.im.user.answers.registrant_msisdn || self.im.user.answers.operator_msisdn;
+            var readable_no = utils.readable_msisdn(msisdn, '+27');
             return new ChoiceState(name, {
-                question: $("Would you like to complete pregnancy registration for " +
-                            "{{ num }}?")
-                    .context({ num: readable_no }),
-
+                question: $(
+                    'Would you like to complete pregnancy registration for {{ num }}?'
+                ).context({ num: readable_no }),
                 choices: [
-                    new Choice(creator_opts.name, $("Yes")),
-                    new Choice("state_start", $("Start new registration"))
+                    new Choice(creator_opts.name, $('Yes')),
+                    new Choice('state_start', $('Start new registration'))
                 ],
-
                 next: function(choice) {
-                    // if (choice.value === "state_start") {
-                    //     self.user.extra.working_on = "";
-                    // }
-                    //
-                    // return self.im.contacts
-                    //     .save(self.user)
-                    //     .then(function() {
-                            return {
-                                name: choice.value,
-                                creator_opts: creator_opts
-                            };
-                        // });
+                    return choice.value;
                 }
             });
         });
 
         self.add("state_start", function(name) {
-            var readable_no = utils.readable_msisdn(self.im.user.addr, "+27");
+            self.im.user.set_answers = {};
+            var operator_msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
+            var readable_no = utils.readable_msisdn(operator_msisdn, '+27');
 
-            return new ChoiceState(name, {
-                question: $("Welcome to The Department of Health's " +
-                            "MomConnect. Tell us if this is the no. that " +
-                            "the mother would like to get SMSs on: {{ num }}")
-                    .context({ num: readable_no }),
+            return is
+            .get_or_create_identity({"msisdn": operator_msisdn})
+            .then(function(identity) {
+                self.im.user.set_answer("operator", identity);
+                self.im.user.set_answer("operator_msisdn", operator_msisdn);
+                return new ChoiceState(name, {
+                    question: $(
+                        'Welcome to The Department of Health\'s ' +
+                        'MomConnect. Tell us if this is the no. that ' +
+                        'the mother would like to get SMSs on: {{ num }}'
+                        ).context({num: readable_no}),
+                    choices: [
+                        new Choice('yes', $('Yes')),
+                        new Choice('no', $('No'))
+                    ],
+                    next: function(choice) {
+                        if (choice.value === 'yes') {
+                            self.im.user.set_answer("registrant", self.im.user.answers.operator);
+                            self.im.user.set_answer("registrant_msisdn", self.im.user.answers.operator_msisdn);
 
-                choices: [
-                    new Choice("yes", $("Yes")),
-                    new Choice("no", $("No"))
-                ],
+                            opted_out = self.number_opted_out(
+                                self.im.user.answers.registrant,
+                                self.im.user.answers.registrant_msisdn);
 
-                next: function(choice) {
-                    if (choice.value === "yes") {
-                        // return utils
-                        //     .opted_out(self.im, self.contact)
-                        //     .then(function(opted_out) {
-                                return {
-                                    true: "state_opt_in",
-                                    false: "state_consent",
-                                } [opted_out];
-                            // });
-                    } else {
-                        return "state_mobile_no";
+                            return opted_out ? 'state_opt_in' : 'state_consent';
+                        } else {
+                            return 'state_mobile_no';
+                        }
                     }
-                }
+                });
             });
         });
 
         self.add("state_opt_in", function(name) {
             return new ChoiceState(name, {
-                question: $("This number has previously opted out of MomConnect " +
-                            "SMSs. Please confirm that the mom would like to " +
-                            "opt in to receive messages again?"),
-
+                question: $('This number has previously opted out of MomConnect ' +
+                            'SMSs. Please confirm that the mom would like to ' +
+                            'opt in to receive messages again?'),
                 choices: [
-                    new Choice("yes", $("Yes")),
-                    new Choice("no", $("No"))
+                    new Choice('yes', $('Yes')),
+                    new Choice('no', $('No'))
                 ],
-
                 next: function(choice) {
-                    if (choice.value === "yes") {
-                        // return utils
-                        //     .opt_in(self.im, self.contact)
-                        //     .then(function() {
-                                return "state_consent";
-                            // });
+                    if (choice.value === 'yes') {
+                        return is
+                        .optin(self.im.user.answers.registrant.id, "msisdn",
+                               self.im.user.answers.registrant_msisdn)
+                        .then(function() {
+                            return 'state_consent';
+                        });
                     } else {
-                        // if (!_.isUndefined(self.user.extra.working_on)) {
-                        //     self.user.extra.working_on = "";
-                        //     return self.im.contacts
-                        //         .save(self.user)
-                                // .then(function() {
-                                    return "state_stay_out";
-                                // });
-                        // } else {
-                        //     return "state_stay_out";
-                        // }
+                        return 'state_stay_out';
                     }
                 }
             });
@@ -187,63 +181,46 @@ go.app = function() {
         });
 
         self.add("state_mobile_no", function(name, opts) {
-            var error = $("Sorry, the mobile number did not validate. " +
-                          "Please reenter the mobile number:");
-
-            var question = $("Please input the mobile number of the " +
-                            "pregnant woman to be registered:");
-
+            var error = $('Sorry, the mobile number did not validate. ' +
+                          'Please reenter the mobile number:');
+            var question = $('Please input the mobile number of the ' +
+                            'pregnant woman to be registered:');
             return new FreeText(name, {
                 question: question,
-
                 check: function(content) {
-                    if (!utils.check_valid_number(content)) {
+                    if (!utils.is_valid_msisdn(content, 0, 10)) {
                         return error;
                     }
                 },
-
                 next: function(content) {
-                    msisdn = utils.normalize_msisdn(content, "27");
-                    // self.contact.extra.working_on = msisdn;
-
-                    // return self.im.contacts
-                    //     .save(self.contact)
-                    //     .then(function() {
-                    //         return utils
-                    //             .opted_out_by_msisdn(self.im, msisdn)
-                    //             .then(function(opted_out) {
-                                    return {
-                                        true: "state_opt_in",
-                                        false: "state_consent",
-                                    } [opted_out];
-                        //         });
-                        // });
+                    var registrant_msisdn = utils.normalize_msisdn(content, '27');
+                    return is
+                    .get_or_create_identity({"msisdn": registrant_msisdn})
+                    .then(function(identity) {
+                        self.im.user.set_answer("registrant", identity);
+                        self.im.user.set_answer("registrant_msisdn", registrant_msisdn);
+                        opted_out = self.number_opted_out(
+                            self.im.user.answers.registrant,
+                            self.im.user.answers.registrant_msisdn);
+                        return opted_out ? 'state_opt_in' : 'state_consent';
+                    });
                 }
             });
         });
 
         self.add("state_consent", function(name) {
             return new ChoiceState(name, {
-                question: $("We need to collect, store & use her info. She " +
-                            "may get messages on public holidays & weekends. " +
-                            "Does she consent?"),
+                question: $(
+                    'We need to collect, store & use her info. She ' +
+                    'may get messages on public holidays & weekends. ' +
+                    'Does she consent?'),
                 choices: [
-                    new Choice("yes", $("Yes")),
-                    new Choice("no", $("No")),
+                    new Choice('yes', $('Yes')),
+                    new Choice('no', $('No')),
                 ],
-
                 next: function(choice) {
-                    if (choice.value === "yes") {
-                        // self.contact.extra.consent = "true";
-                        //
-                        // return self.im.contacts
-                        //     .save(self.contact)
-                        //     .then(function() {
-                                return "state_id_type";
-                            // });
-                    } else {
-                        return "state_consent_refused";
-                    }
+                    return choice.value === 'yes' ? 'state_id_type'
+                                                  : 'state_consent_refused';
                 }
             });
         });
