@@ -199,11 +199,14 @@ describe("app", function() {
                             '2. No'
                         ].join('\n')
                     })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [162, 165]);
+                    })
                     .run();
             });
         });
 
-        // opt-in flow
+        // opt-in flow using pregnant woman's phone
         describe("when the no. is the pregnant woman's no.", function() {
 
             describe("if not previously opted out", function() {
@@ -417,7 +420,7 @@ describe("app", function() {
             });
 
         });
-        // end opt-in flow
+        // end opt-in flow (using pregnant woman's phone)
 
         describe("when the no. is not the pregnant woman's no.", function() {
             it("should ask for the pregnant woman's no.", function() {
@@ -432,6 +435,9 @@ describe("app", function() {
                         reply: (
                             'Please input the mobile number of the ' +
                             'pregnant woman to be registered:')
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [162, 165]);
                     })
                     .run();
             });
@@ -452,11 +458,14 @@ describe("app", function() {
                             'Sorry, the mobile number did not validate. ' +
                             'Please reenter the mobile number:')
                     })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [162, 165]);
+                    })
                     .run();
             });
         });
 
-        // opt in flow for chw worker's phone usage
+        // opt in flow using chw worker's phone
         describe("after entering the pregnant woman's number", function() {
 
             describe("if the number has not opted out before", function() {
@@ -679,8 +688,7 @@ describe("app", function() {
             });
 
         });
-        // end opt-in flow for chw's phone usage
-
+        // end opt-in flow (using chw's phone)
 
         describe("if the user selects SA ID (id type)", function() {
             describe("if the user is the pregnant woman", function() {
@@ -754,6 +762,9 @@ describe("app", function() {
                             '6. More'
                             ].join('\n')
                     })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [162, 165]);
+                    })
                     .run();
             });
         });
@@ -769,6 +780,9 @@ describe("app", function() {
                         , '1'  // state_id_type - sa id
                         , '2012315678097'  // state_sa_id
                     )
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [162, 165]);
+                    })
                     .run();
             });
         });
@@ -784,6 +798,9 @@ describe("app", function() {
                         , '1'  // state_id_type - sa id
                         , '5002285000007'  // state_sa_id
                     )
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [162, 165]);
+                    })
                     .run();
             });
         });
@@ -803,6 +820,9 @@ describe("app", function() {
                         state: 'state_sa_id',
                         reply: 'Sorry, the mother\'s ID number did not validate. ' +
                           'Please reenter the SA ID number:'
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [162, 165]);
                     })
                     .run();
             });
@@ -831,6 +851,9 @@ describe("app", function() {
                             '7. Other'
                         ].join('\n')
                     })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [162, 165]);
+                    })
                     .run();
             });
         });
@@ -849,6 +872,9 @@ describe("app", function() {
                     .check.interaction({
                         state: 'state_passport_no',
                         reply: 'Please enter the pregnant mother\'s Passport number:'
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [162, 165]);
                     })
                     .run();
             });
@@ -878,6 +904,9 @@ describe("app", function() {
                             '6. More'
                             ].join('\n')
                     })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [162, 165]);
+                    })
                     .run();
             });
         });
@@ -898,6 +927,9 @@ describe("app", function() {
                         state: 'state_passport_no',
                         reply: ('There was an error in your entry. Please ' +
                         'carefully enter the passport number again.')
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [162, 165]);
                     })
                     .run();
             });
@@ -920,6 +952,9 @@ describe("app", function() {
                         reply: ('There was an error in your entry. Please ' +
                         'carefully enter the passport number again.')
                     })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [162, 165]);
+                    })
                     .run();
             });
         });
@@ -938,6 +973,9 @@ describe("app", function() {
                         state: 'state_birth_year',
                         reply: ('Please enter the year that the pregnant ' +
                                 'mother was born (for example: 1981)')
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [162, 165]);
                     })
                     .run();
             });
@@ -960,6 +998,9 @@ describe("app", function() {
                         'carefully enter the mother\'s year of birth again ' +
                         '(for example: 2001)')
                     })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [162, 165]);
+                    })
                     .run();
             });
 
@@ -978,6 +1019,9 @@ describe("app", function() {
                         reply: ('There was an error in your entry. Please ' +
                         'carefully enter the mother\'s year of birth again ' +
                         '(for example: 2001)')
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [162, 165]);
                     })
                     .run();
             });
@@ -1011,6 +1055,9 @@ describe("app", function() {
                             '12. Dec'
                         ].join('\n')
                     })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [162, 165]);
+                    })
                     .run();
             });
         });
@@ -1031,6 +1078,9 @@ describe("app", function() {
                         state: 'state_birth_day',
                         reply: ('Please enter the day that the mother was ' +
                             'born (for example: 14).')
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [162, 165]);
                     })
                     .run();
             });
@@ -1206,7 +1256,6 @@ describe("app", function() {
                             utils.check_fixtures_used(api, [162, 165]);
                         })
                         .run();
-
                 });
             });
 
@@ -1237,26 +1286,6 @@ describe("app", function() {
                         .check.reply.ends_session()
                         .run();
                 });
-
-                it("should send them an SMS on completion", function() {
-                    return tester
-                        .setup.user.addr('27820001001')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '2'  // state_start - no
-                            , '0820001002' // state_mobile_no
-                            , '1'  // state_consent - yes
-                            , '2'  // state_id_type - passport
-                            , '1'  // state_passport_origin - Zimbabwe
-                            , '12345'  // state_passport_no
-                            , '4'  // state_language - english
-                        )
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [21, 123, 162, 163, 165, 182]);
-                        })
-                        .run();
-                });
-
             });
 
             describe("if the phone used is the mom's", function() {
@@ -1278,24 +1307,6 @@ describe("app", function() {
                             'encourage her to register at her nearest ' +
                             'clinic.')
                         })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [22, 119, 162, 165, 183]);
-                        })
-                        .check.reply.ends_session()
-                        .run();
-                });
-
-                it("should send them SMS on completion", function() {
-                    return tester
-                        .setup.user.addr('27820001001')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_start - yes
-                            , '1'  // state_consent - yes
-                            , '1'  // state_id_type - sa id
-                            , '5101015009088'  // state_sa_id
-                            , '4'  // state_language - english
-                        )
                         .check(function(api) {
                             utils.check_fixtures_used(api, [22, 119, 162, 165, 183]);
                         })
