@@ -502,7 +502,7 @@ describe("app", function() {
                         .check(function(api) {
                             utils.check_fixtures_used(api, [160, 163]);
                         })
-                        // .check.user.properties({lang: 'en'})
+                        .check.user.properties({lang: 'eng_ZA'})
                         .run();
                 });
             });
