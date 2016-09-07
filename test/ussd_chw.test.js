@@ -967,10 +967,6 @@ describe("app", function() {
                 it("should save birth day and dob, ask for pregnant woman's msg language", function() {
                     return tester
                         .setup.user.addr('27820001001')
-                        .setup.user.answers({
-                            'state_birth_year': '1981',
-                            'state_birth_month': '01'
-                        })
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_start - yes
@@ -1066,7 +1062,7 @@ describe("app", function() {
             });
         });
 
-        describe.skip("after the mom's msg language is selected", function() {
+        describe("after the mom's msg language is selected", function() {
             describe("if they select to see language page 2", function() {
                 it("should display more language options", function() {
                     return tester
@@ -1125,19 +1121,11 @@ describe("app", function() {
             describe("if the phone used is not the mom's", function() {
                 it("should save msg language, thank them and exit", function() {
                     return tester
-                        .setup.user.addr('27001')
-                        .setup(function(api) {
-                            api.contacts.add( {
-                                msisdn: '+27001',
-                                extra : {
-                                    ussd_sessions: '5'
-                                }
-                            });
-                        })
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '2'  // state_start - no
-                            , '0821234567' // state_mobile_no
+                            , '0820001002' // state_mobile_no
                             , '1'  // state_consent - yes
                             , '2'  // state_id_type - passport
                             , '1'  // state_passport_origin - Zimbabwe
@@ -1151,61 +1139,23 @@ describe("app", function() {
                             'encourage her to register at her nearest ' +
                             'clinic.')
                         })
-                        .check(function(api) {
-                            var contact_mom = _.find(api.contacts.store, {
-                                msisdn: '+27821234567'
-                            });
-                            var contact_user = _.find(api.contacts.store, {
-                                msisdn: '+27001'
-                            });
-                            assert.equal(contact_mom.extra.language_choice, 'en');
-                            assert.equal(contact_user.extra.ussd_sessions, '0');
-                            assert.equal(contact_user.extra.working_on, '');
-                            assert.equal(contact_mom.extra.last_state, 'state_end_success');
-                            assert.equal(contact_user.extra.last_state, 'state_consent');
-                            assert.equal(contact_mom.extra.metric_sessions_to_register, '6');
-                            assert.equal(contact_user.extra.no_registrations, '1');
-                            assert.equal(contact_mom.extra.no_registrations, undefined);
-                            assert.equal(contact_mom.extra.registered_by, '+27001');
-                            assert.equal(contact_mom.extra.is_registered, 'true');
-                            assert.equal(contact_mom.extra.is_registered_by, 'chw');
-                            assert.equal(contact_user.extra.is_registered, undefined);
-                            assert.equal(contact_user.extra.is_registered_by, undefined);
-                        })
-                        .check(function(api) {
-                            var metrics = api.metrics.stores.test_metric_store;
-                            assert.deepEqual(metrics['test.chw.avg.sessions_to_register'].values, [6]);
-                            assert.equal(metrics['test.chw.states:end_success.no_incomplete'], undefined);
-                        })
                         .check.reply.ends_session()
                         .run();
                 });
 
                 it("should send them an SMS on completion", function() {
                     return tester
-                        .setup.user.addr('27001')
+                        .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '2'  // state_start - no
-                            , '0821234567' // state_mobile_no
+                            , '0820001002' // state_mobile_no
                             , '1'  // state_consent - yes
                             , '2'  // state_id_type - passport
                             , '1'  // state_passport_origin - Zimbabwe
                             , '12345'  // state_passport_no
                             , '4'  // state_language - english
                         )
-                        .check(function(api) {
-                            var smses = _.where(api.outbound.store, {
-                                endpoint: 'sms'
-                            });
-                            var sms = smses[0];
-                            assert.equal(smses.length,1);
-                            assert.equal(sms.content,
-                                "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. " +
-                                "You can register for the full set of FREE helpful messages at a clinic."
-                            );
-                            assert.equal(sms.to_addr,'+27821234567');
-                        })
                         .run();
                 });
 
@@ -1214,24 +1164,15 @@ describe("app", function() {
             describe("if the phone used is the mom's", function() {
                 it("should save msg language, thank them and exit", function() {
                     return tester
-                        .setup(function(api) {
-                            api.contacts.add( {
-                                msisdn: '+27001',
-                                extra : {
-                                    ussd_sessions: '5',
-                                    language_choice: 'en',
-                                    id_type: 'passport',
-                                    passport_origin: 'zw',
-                                    passport_no: '5101025009086',
-                                    consent: 'true'
-                                },
-                                key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                                user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                            });
-                        })
-                        .setup.user.addr('27001')
-                        .setup.user.state('state_language')
-                        .input('4')
+                        .setup.user.addr('27820001001')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'  // state_start - yes
+                            , '1'  // state_consent - yes
+                            , '1'  // state_id_type - sa id
+                            , '5101015009088'  // state_sa_id
+                            , '4'  // state_language - english
+                        )
                         .check.interaction({
                             state: 'state_end_success',
                             reply: ('Thank you, registration is complete. The ' +
@@ -1239,92 +1180,21 @@ describe("app", function() {
                             'encourage her to register at her nearest ' +
                             'clinic.')
                         })
-                        .check(function(api) {
-                            var contact = _.find(api.contacts.store, {
-                              msisdn: '+27001'
-                            });
-                            assert.equal(contact.extra.language_choice, 'en');
-                            assert.equal(contact.extra.ussd_sessions, '0');
-                            assert.equal(contact.extra.metric_sessions_to_register, '5');
-                            assert.equal(contact.extra.no_registrations, undefined);
-                            assert.equal(contact.extra.registered_by, undefined);
-                            assert.equal(contact.extra.is_registered, 'true');
-                            assert.equal(contact.extra.is_registered_by, 'chw');
-                        })
-                        .check(function(api) {
-                            var metrics = api.metrics.stores.test_metric_store;
-                            assert.deepEqual(metrics['test.chw.avg.sessions_to_register'].values, [5]);
-                            assert.deepEqual(metrics['test.chw.percent_incomplete_registrations'].values, [25]);
-                            assert.deepEqual(metrics['test.chw.percent_complete_registrations'].values, [75]);
-                        })
-                        .check(function(api) {
-                            var kv_store = api.kv.store;
-                            assert.equal(kv_store['test.chw.no_complete_registrations'], 3);
-                            assert.equal(kv_store['test.chw.conversion_registrations'], 1);
-                        })
                         .check.reply.ends_session()
-                        .run();
-                });
-
-                it("should put them in language group", function() {
-                    return tester
-                        .setup(function(api) {
-                            api.contacts.add( {
-                                msisdn: '+27001',
-                                extra : {
-                                    ussd_sessions: '5',
-                                    language_choice: 'en',
-                                    id_type: 'passport',
-                                    passport_origin: 'zw',
-                                    passport_no: '5101025009086',
-                                    consent: 'true'
-                                },
-                                key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                                user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                            });
-                        })
-                        .setup.user.addr('27001')
-                        .setup.user.state('state_language')
-                        .input('4')
-                        .check(function(api) {
-                            var contact = api.contacts.store[0];
-                            assert.equal(contact.extra.language_choice, 'en');
-                        })
                         .run();
                 });
 
                 it("should send them SMS on completion", function() {
                     return tester
-                        .setup(function(api) {
-                            api.contacts.add( {
-                                msisdn: '+27001',
-                                extra : {
-                                    ussd_sessions: '5',
-                                    language_choice: 'en',
-                                    id_type: 'passport',
-                                    passport_origin: 'zw',
-                                    passport_no: '5101025009086',
-                                    consent: 'true'
-                                },
-                                key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                                user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                            });
-                        })
-                        .setup.user.addr('27001')
-                        .setup.user.state('state_language')
-                        .input('4')
-                        .check(function(api) {
-                            var smses = _.where(api.outbound.store, {
-                                endpoint: 'sms'
-                            });
-                            var sms = smses[0];
-                            assert.equal(smses.length,1);
-                            assert.equal(sms.content,
-                                "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. " +
-                                "You can register for the full set of FREE helpful messages at a clinic."
-                            );
-                            assert.equal(sms.to_addr,'+27001');
-                        })
+                        .setup.user.addr('27820001001')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'  // state_start - yes
+                            , '1'  // state_consent - yes
+                            , '1'  // state_id_type - sa id
+                            , '5101015009088'  // state_sa_id
+                            , '4'  // state_language - english
+                        )
                         .check.reply.ends_session()
                         .run();
                 });
@@ -1333,27 +1203,15 @@ describe("app", function() {
             describe("if the ID type is South Africa ID", function() {
                 it("should save msg language, thank them and exit", function() {
                     return tester
-                        .setup(function(api) {
-                            api.contacts.add( {
-                                msisdn: '+27001',
-                                extra : {
-                                    ussd_sessions: '5',
-                                    language_choice: 'en',
-                                    id_type: 'sa_id',
-                                    sa_id: '5101025009086',
-                                    birth_year: '1951',
-                                    birth_month: '01',
-                                    birth_day: '02',
-                                    dob: '1951-01-02',
-                                    consent: 'true'
-                                },
-                                key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                                user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4"
-                            });
-                        })
-                        .setup.user.addr('27001')
-                        .setup.user.state('state_language')
-                        .input('4')
+                        .setup.user.addr('27820001001')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'  // state_start - yes
+                            , '1'  // state_consent - yes
+                            , '1'  // state_id_type - sa id
+                            , '5101015009088'  // state_sa_id
+                            , '4'  // state_language - english
+                        )
                         .check.interaction({
                             state: 'state_end_success',
                             reply: ('Thank you, registration is complete. The ' +
@@ -1361,83 +1219,11 @@ describe("app", function() {
                             'encourage her to register at her nearest ' +
                             'clinic.')
                         })
-                        .check(function(api) {
-                            var contact = _.find(api.contacts.store, {
-                              msisdn: '+27001'
-                            });
-                            assert.equal(contact.extra.language_choice, 'en');
-                            assert.equal(contact.extra.ussd_sessions, '0');
-                            assert.equal(contact.extra.metric_sessions_to_register, '5');
-                            assert.equal(contact.extra.no_registrations, undefined);
-                            assert.equal(contact.extra.registered_by, undefined);
-                            assert.equal(contact.extra.is_registered, 'true');
-                            assert.equal(contact.extra.is_registered_by, 'chw');
-                        })
-                        .check(function(api) {
-                            var metrics = api.metrics.stores.test_metric_store;
-                            assert.deepEqual(metrics['test.chw.avg.sessions_to_register'].values, [5]);
-                            assert.deepEqual(metrics['test.chw.percent_incomplete_registrations'].values, [25]);
-                            assert.deepEqual(metrics['test.chw.percent_complete_registrations'].values, [75]);
-                        })
                         .check.reply.ends_session()
                         .run();
                 });
             });
         });
 
-        describe.skip("when a session is terminated", function() {
-            describe("when they have not completed registration",function() {
-                describe("when they have already been sent a registration sms",function() {
-                    it("should not send them an sms",function() {
-                        return tester
-                            .setup(function(api) {
-                                api.contacts.add( {
-                                    msisdn: '+273444',
-                                    extra : {
-                                        redial_sms_sent: 'true'
-                                    }
-                                });
-                            })
-                            .setup.user.addr('273444')
-                            .setup.user.state('state_start')
-                            .input('1')
-                            .input.session_event('close')
-                            .check(function(api) {
-                                var smses = _.where(api.outbound.store, {
-                                    endpoint: 'sms'
-                                });
-                                assert.equal(smses.length,0);
-                            }).run();
-                    });
-                });
-
-                describe("when they have not been sent a registration sms",function() {
-                    it("should send them an sms thanking them for their registration",function() {
-                        return tester
-                            .setup(function(api) {
-                                api.contacts.add( {
-                                    msisdn: '+273323',
-                                    extra : {}
-                                });
-                            })
-                            .setup.user.addr('273323')
-                            .setup.user.state('state_start')
-                            .input(1)
-                            .input.session_event('close')
-                            .check(function(api) {
-                                var smses = _.where(api.outbound.store, {
-                                    endpoint: 'sms'
-                                });
-                                var sms = smses[0];
-                                assert.equal(smses.length,1);
-                                assert.equal(sms.content,
-                                    "Please dial back in to *120*550*3# to complete the pregnancy registration."
-                                );
-                                assert.equal(sms.to_addr,'273323');
-                            }).run();
-                    });
-                });
-            });
-        });
     });
 });

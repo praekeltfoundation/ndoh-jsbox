@@ -2,7 +2,7 @@ go.app = function() {
     var vumigo = require("vumigo_v02");
     // var _ = require("lodash");
     // var moment = require("moment");
-    // var Q = require("q");
+    var Q = require("q");
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
@@ -14,8 +14,8 @@ go.app = function() {
     var SeedJsboxUtils = require('seed-jsbox-utils');
     var IdentityStore = SeedJsboxUtils.IdentityStore;
     // var StageBasedMessaging = SeedJsboxUtils.StageBasedMessaging;
-    // var Hub = SeedJsboxUtils.Hub;
-    // var MessageSender = SeedJsboxUtils.MessageSender;
+    var Hub = SeedJsboxUtils.Hub;
+    var MessageSender = SeedJsboxUtils.MessageSender;
 
     var utils = SeedJsboxUtils.utils;
 
@@ -27,8 +27,8 @@ go.app = function() {
         // variables for services
         var is;
         // var sbm;
-        // var hub;
-        // var ms;
+        var hub;
+        var ms;
 
         self.init = function() {
             // initialising services
@@ -44,17 +44,17 @@ go.app = function() {
             //     self.im.config.services.stage_based_messaging.url
             // );
             //
-            // hub = new Hub(
-            //     new JsonApi(self.im, {}),
-            //     self.im.config.services.hub.token,
-            //     self.im.config.services.hub.url
-            // );
-            //
-            // ms = new MessageSender(
-            //     new JsonApi(self.im, {}),
-            //     self.im.config.services.message_sender.token,
-            //     self.im.config.services.message_sender.url
-            // );
+            hub = new Hub(
+                new JsonApi(self.im, {}),
+                self.im.config.services.hub.token,
+                self.im.config.services.hub.url
+            );
+
+            ms = new MessageSender(
+                new JsonApi(self.im, {}),
+                self.im.config.services.message_sender.token,
+                self.im.config.services.message_sender.url
+            );
         };
 
         // TODO #49 dialback sms handling
@@ -87,6 +87,7 @@ go.app = function() {
             } else if (self.im.user.answers.state_id_type === "passport") {
                 registrant_info.details.passport_no = self.im.user.answers.state_passport_no;
                 registrant_info.details.passport_origin = self.im.user.answers.state_passport_origin;
+                // registrant_info.details.mom_dob = self.im.user.answers.mom_dob;  should this be added for passport registrations?
             } else {
                 registrant_info.details.mom_dob = self.im.user.answers.mom_dob;
             }
@@ -135,10 +136,10 @@ go.app = function() {
             create_outbound_message(
                 self.im.user.answers.registrant.id,
                 self.im.user.answers.registrant_msisdn,
-                $(
+                self.im.user.i18n($(
                     "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. " +
                     "You can register for the full set of FREE helpful messages at a clinic."
-                )
+                ))
             );
         };
 
@@ -317,18 +318,7 @@ go.app = function() {
                         passport: 'state_passport_origin',
                         none: 'state_birth_year'
                     }[choice.value];
-                },
-
-                // events: {
-                //     "state:enter": function(content) {
-                //         return utils
-                //             .incr_kv(self.im, [self.store_name, "no_incomplete_registrations"].join("."))
-                //             .then(function() {
-                //                 return utils.adjust_percentage_registrations(self.im, self.metric_prefix);
-                //             });
-                //     }
-                // }
-
+                }
             });
         });
 

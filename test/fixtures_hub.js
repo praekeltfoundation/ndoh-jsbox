@@ -491,22 +491,58 @@ module.exports = function() {
             }
         },
 
-        // 19:
+        // 19: register cb245673-aa41-4302-ac47-00000001002 (chw cb245673-aa41-4302-ac47-00000001001)
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-00000001002",
+            "request": {
+                "url": 'http://hub/api/v1/registration/',
+                "method": 'POST',
+                "data": {
+                    "reg_type": "momconnect_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001002",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001001",
+                        "msisdn_registrant": "+27820001002",
+                        "msisdn_device": "+27820001001",
+                        "id_type": "passport",
+                        "language": "eng_ZA",
+                        "consent": true,
+                        "passport_no": "12345",
+                        "passport_origin":"zw"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {}
+            }
         },
 
-        // 20:
+        // 20: register cb245673-aa41-4302-ac47-00000001001 (chw cb245673-aa41-4302-ac47-00000001001)
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "url": 'http://hub/api/v1/registration/',
+                "method": 'POST',
+                "data": {
+                    "reg_type": "momconnect_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001001",
+                        "msisdn_registrant": "+27820001001",
+                        "msisdn_device": "+27820001001",
+                        "id_type": "sa_id",
+                        "language": "eng_ZA",
+                        "consent": true,
+                        "sa_id_no": "5101015009088",
+                        "mom_dob":"2051-01-01"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {}
+            }
         },
 
         // 21:
