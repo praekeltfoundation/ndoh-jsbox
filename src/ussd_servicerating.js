@@ -9,9 +9,8 @@ go.app = function() {
 
     var SeedJsboxUtils = require('seed-jsbox-utils');
     var IdentityStore = SeedJsboxUtils.IdentityStore;
-    // var StageBasedMessaging = SeedJsboxUtils.StageBasedMessaging;
-    // var Hub = SeedJsboxUtils.Hub;
-    // var MessageSender = SeedJsboxUtils.MessageSender;
+    var MessageSender = SeedJsboxUtils.MessageSender;
+    var ServiceRating = SeedJsboxUtils.ServiceRating;
 
     var utils = SeedJsboxUtils.utils;
 
@@ -21,9 +20,8 @@ go.app = function() {
 
         // variables for services
         var is;
-        // var sbm;
-        // var hub;
-        // var ms;
+        var ms;
+        var sr;
 
         self.init = function() {
             // initialising services
@@ -33,23 +31,17 @@ go.app = function() {
                 self.im.config.services.identity_store.url
             );
 
-            // sbm = new StageBasedMessaging(
-            //     new JsonApi(self.im, {}),
-            //     self.im.config.services.stage_based_messaging.token,
-            //     self.im.config.services.stage_based_messaging.url
-            // );
-            //
-            // hub = new Hub(
-            //     new JsonApi(self.im, {}),
-            //     self.im.config.services.hub.token,
-            //     self.im.config.services.hub.url
-            // );
-            //
-            // ms = new MessageSender(
-            //     new JsonApi(self.im, {}),
-            //     self.im.config.services.message_sender.token,
-            //     self.im.config.services.message_sender.url
-            // );
+            ms = new MessageSender(
+                new JsonApi(self.im, {}),
+                self.im.config.services.message_sender.token,
+                self.im.config.services.message_sender.url
+            );
+
+            sr = new ServiceRating(
+                new JsonApi(self.im, {}),
+                self.im.config.services.service_rating.token,
+                self.im.config.services.service_rating.url
+            );
         };
 
         self.states.add("state_start", function(name) {

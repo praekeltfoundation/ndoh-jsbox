@@ -8,6 +8,7 @@ var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
 var fixtures_MessageSender = require('./fixtures_message_sender');
 var fixtures_Hub = require('./fixtures_hub');
 var fixtures_Jembi = require('./fixtures_jembi');
+var fixtures_ServiceRating = require('./fixtures_service_rating');
 
 var utils = require('seed-jsbox-utils').utils;
 
@@ -64,8 +65,9 @@ describe("app", function() {
                     // add fixtures for services used
                     fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
-                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
-                    fixtures_Jembi().forEach(api.http.fixtures.add); // 150 - 159
+                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 139
+                    fixtures_ServiceRating().forEach(api.http.fixtures.add); // 140 - 149
+                    fixtures_Jembi().forEach(api.http.fixtures.add);  // 150 - 159
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 160 ->
 
                 })
