@@ -62,16 +62,20 @@ go.app = function() {
             return is
             .get_or_create_identity({"msisdn": msisdn})
             .then(function(identity) {
+                self.im.user.set_answer("operator", identity);
                 if (identity.details.is_registered_by === "clinic") {  // or 'source', or 'last_mc_reg_on' ??
-                    if (identity.details.last_service_rating === "never"
-                        || self.contact.extra.last_service_rating === undefined) {  // undefined allows older registrations to rate service
-
-                        self.im.user.set_lang(identity.details.lang_code || "eng_ZA");
-
-                        return  self.states.create("question_1_friendliness");
-                    } else {
-                        return self.states.create("end_thanks_revisit");
-                    }
+                    return sr
+                    .get_servicerating_status(identity.id)
+                    .then(function(status_data) {
+                        if (status_data.results.length > 0) {
+                            self.im.user.set_lang(identity.details.lang_code || "eng_ZA");
+                            self.im.user.set_answer('invite_uuid', status_data.results[0].id);
+                            return self.states.create("question_1_friendliness");
+                        } else {
+                            // service rating already completed
+                            return self.states.create("end_thanks_revisit");
+                        }
+                    });
                 } else {
                     return self.states.create("end_reg_clinic");
                 }
@@ -79,8 +83,11 @@ go.app = function() {
         });
 
         self.states.add("question_1_friendliness", function(name) {
+            var q_id = 1;
+            var q_text_en = $("Welcome. When you signed up, were staff at the facility friendly & helpful?");
+
             return new ChoiceState(name, {
-                question: $("Welcome. When you signed up, were staff at the facility friendly & helpful?"),
+                question: q_text_en,
 
                 choices: [
                     new Choice("very-satisfied", $("Very Satisfied")),
@@ -89,13 +96,30 @@ go.app = function() {
                     new Choice("very-unsatisfied", $("Very unsatisfied"))
                 ],
 
-                next: "question_2_waiting_times_feel"
+                next: function(choice) {
+                    return sr
+                    .post_servicerating_feedback(
+                        self.im.user.answers.operator,
+                        q_id,
+                        q_text_en.args[0],
+                        choice.label,
+                        choice.value,
+                        1,
+                        self.im.user.answers.invite_uuid
+                    )
+                    .then(function() {
+                        return "question_2_waiting_times_feel";
+                    });
+                }
             });
         });
 
         self.states.add("question_2_waiting_times_feel", function(name) {
+            var q_id = 2;
+            var q_text_en = $("How do you feel about the time you had to wait at the facility?");
+
             return new ChoiceState(name, {
-                question: $("How do you feel about the time you had to wait at the facility?"),
+                question: q_text_en,
 
                 choices: [
                     new Choice("very-satisfied", $("Very Satisfied")),
@@ -104,13 +128,30 @@ go.app = function() {
                     new Choice("very-unsatisfied", $("Very unsatisfied"))
                 ],
 
-                next: "question_3_waiting_times_length"
+                next: function(choice) {
+                    return sr
+                    .post_servicerating_feedback(
+                        self.im.user.answers.operator,
+                        q_id,
+                        q_text_en.args[0],
+                        choice.label,
+                        choice.value,
+                        1,
+                        self.im.user.answers.invite_uuid
+                    )
+                    .then(function() {
+                        return "question_3_waiting_times_length";
+                    });
+                }
             });
         });
 
         self.states.add("question_3_waiting_times_length", function(name) {
+            var q_id = 3;
+            var q_text_en = $("How long did you wait to be helped at the clinic?");
+
             return new ChoiceState(name, {
-                question: $("How long did you wait to be helped at the clinic?"),
+                question: q_text_en,
 
                 choices: [
                     new Choice("less-than-an-hour", $("Less than an hour")),
@@ -119,13 +160,30 @@ go.app = function() {
                     new Choice("all-day", $("All day"))
                 ],
 
-                next: "question_4_cleanliness"
+                next: function(choice) {
+                    return sr
+                    .post_servicerating_feedback(
+                        self.im.user.answers.operator,
+                        q_id,
+                        q_text_en.args[0],
+                        choice.label,
+                        choice.value,
+                        1,
+                        self.im.user.answers.invite_uuid
+                    )
+                    .then(function() {
+                        return "question_4_cleanliness";
+                    });
+                }
             });
         });
 
         self.states.add("question_4_cleanliness", function(name) {
+            var q_id = 4;
+            var q_text_en = $("Was the facility clean?");
+
             return new ChoiceState(name, {
-                question: $("Was the facility clean?"),
+                question: q_text_en,
 
                 choices: [
                     new Choice("very-satisfied", $("Very Satisfied")),
@@ -134,13 +192,30 @@ go.app = function() {
                     new Choice("very-unsatisfied", $("Very unsatisfied"))
                 ],
 
-                next: "question_5_privacy"
+                next: function(choice) {
+                    return sr
+                    .post_servicerating_feedback(
+                        self.im.user.answers.operator,
+                        q_id,
+                        q_text_en.args[0],
+                        choice.label,
+                        choice.value,
+                        1,
+                        self.im.user.answers.invite_uuid
+                    )
+                    .then(function() {
+                        return "question_5_privacy";
+                    });
+                }
             });
         });
 
         self.states.add("question_5_privacy", function(name) {
+            var q_id = 5;
+            var q_text_en = $("Did you feel that your privacy was respected by the staff?");
+
             return new ChoiceState(name, {
-                question: $("Did you feel that your privacy was respected by the staff?"),
+                question: q_text_en,
 
                 choices: [
                     new Choice("very-satisfied", $("Very Satisfied")),
@@ -149,36 +224,49 @@ go.app = function() {
                     new Choice("very-unsatisfied", $("Very unsatisfied"))
                 ],
 
-                next: "log_servicerating_send_sms"
+                next: function(choice) {
+                    return sr
+                    .post_servicerating_feedback(
+                        self.im.user.answers.operator,
+                        q_id,
+                        q_text_en.args[0],
+                        choice.label,
+                        choice.value,
+                        1,
+                        self.im.user.answers.invite_uuid
+                    )
+                    .then(function() {
+                        return "log_servicerating_send_sms";
+                    });
+                }
             });
         });
 
         self.states.add("log_servicerating_send_sms", function(name) {
-            // return Q.all([
-            //     go.utils.servicerating_log(self.contact, self.im, self.metric_prefix),
-            //     go.utils.jembi_send_servicerating(self.im, self.contact, self.metric_prefix,
-            //                                       "servicerating"),
-            //     self.im.outbound.send_to_user({
-            //             endpoint: "sms",
-            //             content: $("Thank you for rating our service.")
-            //     })
-            // ])
-            // .then(function() {
-            //     self.contact.extra.last_service_rating = go.utils.get_timestamp();
-            //     return Q.all([
-            //         self.im.contacts.save(self.contact),
-            //         go.utils.adjust_percentage_serviceratings(self.im, self.metric_prefix)
-            //     ]);
-            // })
-            // .then(function() {
-                return self.states.create("end_thanks");
-            // });
+            return sr
+            .update_servicerating_status_completed(self.im.user.answers.invite_uuid)
+            .then(function(status_data) {
+                if (status_data.success) {
+                    return ms
+                    .create_outbound_message(
+                        self.im.user.answers.operator.id,
+                        self.im.user.answers.msisdn,
+                        "Thank you for rating our service."
+                    )
+                    .then(function () {
+                        return self.states.create("end_thanks");
+                    });
+                } else {
+                    return self.states.create("states_error");
+                }
+
+            });
         });
 
         self.states.add("end_thanks", function(name) {
             return new EndState(name, {
                 text: $("Thank you for rating our service."),
-                next: "end_thanks_revisit"
+                next: "state_start"
             });
         });
 
