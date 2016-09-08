@@ -1,13 +1,13 @@
 var vumigo = require('vumigo_v02');
+var AppTester = vumigo.AppTester;
+var assert = require('assert');
+
 var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
 var fixtures_MessageSender = require('./fixtures_message_sender');
 var fixtures_Hub = require('./fixtures_hub');
 var fixtures_ServiceRating = require('./fixtures_service_rating');
 var fixtures_Jembi = require('./fixtures_jembi');
-var AppTester = vumigo.AppTester;
-var _ = require('lodash');
-var assert = require('assert');
 
 describe("app", function() {
     describe("for ussd_servicerating use", function() {
@@ -26,11 +26,6 @@ describe("app", function() {
                     testing: 'true',
                     channel: "*120*550*4#",
                     public_channel: "*120*550#",
-                    jembi: {
-                        username: 'foo',
-                        password: 'bar',
-                        url_json: 'http://test/v2/json/'
-                    },
                     services: {
                         identity_store: {
                             url: 'http://is/api/v1/',
@@ -57,18 +52,15 @@ describe("app", function() {
                 });
         });
 
-        describe.skip("when the user starts a session", function() {
+        describe("when the user starts a session", function() {
             describe("when the user has NOT registered at a clinic", function() {
                 it("should tell them to register at a clinic first", function() {
                     return tester
                         .setup.char_limit(160)  // limit first state chars
-                        .setup.user.addr('27001')
-                        // .setup(function(api) {
-                        //     api.contacts.add({
-                        //         msisdn: '+27001',
-                        //     });
-                        // })
-                        .inputs({session_event: 'new'})
+                        .setup.user.addr('27820001001')
+                        .inputs(
+                            {session_event: 'new'}
+                        )
                         .check.interaction({
                             state: 'end_reg_clinic',
                             reply: 'Please register at a clinic before using this line.'
@@ -81,47 +73,8 @@ describe("app", function() {
                 it("should ask for their friendliness rating", function() {
                     return tester
                         .setup.char_limit(160)  // limit first state chars
-                        .setup.user.addr('27001')
-                        // .setup(function(api) {
-                        //     api.contacts.add({
-                        //         msisdn: '+27001',
-                        //         extra : {
-                        //             language_choice: 'zu',
-                        //             is_registered_by: 'clinic',
-                        //             last_service_rating: 'never'
-                        //         }
-                        //     });
-                        // })
-                        .inputs({session_event: 'new'})
-                        .check.interaction({
-                            state: 'question_1_friendliness',
-                            reply: [
-                                'Welcome. When you signed up, were staff at the facility friendly & helpful?',
-                                '1. Very Satisfied',
-                                '2. Satisfied',
-                                '3. Not Satisfied',
-                                '4. Very unsatisfied'
-                            ].join('\n')
-                        })
-                        .check.user.properties({lang: 'zu'})
-                        .run();
-                });
-
-                it("should ask for their friendliness rating if they have no " +
-                    "last_service_rating extra", function() {
-                    // test for older registrations where last_servicerating is undefined
-                    return tester
-                        .setup.user.addr('27001')
-                        // .setup(function(api) {
-                        //     api.contacts.add({
-                        //         msisdn: '+27001',
-                        //         extra : {
-                        //             language_choice: 'zu',
-                        //             is_registered_by: 'clinic'
-                        //         }
-                        //     });
-                        // })
-                        .input(
+                        .setup.user.addr('27820001002')
+                        .inputs(
                             {session_event: 'new'}
                         )
                         .check.interaction({
@@ -134,7 +87,7 @@ describe("app", function() {
                                 '4. Very unsatisfied'
                             ].join('\n')
                         })
-                        .check.user.properties({lang: 'zu'})
+                        .check.user.properties({lang: 'eng_ZA'})
                         .run();
                 });
             });
@@ -143,18 +96,8 @@ describe("app", function() {
                 it("should tell them they can't do it again", function() {
                     return tester
                         .setup.char_limit(160)  // limit first state chars
-                        .setup.user.addr('27001')
-                        .setup(function(api) {
-                            api.contacts.add({
-                                msisdn: '+27001',
-                                extra : {
-                                    language_choice: 'zu',
-                                    is_registered_by: 'clinic',
-                                    last_service_rating: '20130819144811'
-                                }
-                            });
-                        })
-                        .input(
+                        .setup.user.addr('27820001008')
+                        .inputs(
                             {session_event: 'new'}
                         )
                         .check.interaction({
@@ -171,19 +114,10 @@ describe("app", function() {
             });
         });
 
-        describe.skip("when the user answers their friendliness rating", function() {
+        describe("when the user answers their friendliness rating", function() {
             it("should ask for their waiting times feeling", function() {
                 return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27001',
-                    //         extra : {
-                    //             is_registered_by: 'clinic',
-                    //             last_service_rating: 'never'
-                    //         }
-                    //     });
-                    // })
-                    .setup.user.addr('27001')
+                    .setup.user.addr('27820001002')
                     .inputs(
                         {session_event: 'new'}
                         , '1' // question_1_friendliness - very satisfied
@@ -202,19 +136,10 @@ describe("app", function() {
             });
         });
 
-        describe.skip("when the user answers their waiting times feeling", function() {
+        describe("when the user answers their waiting times feeling", function() {
             it("should ask for their waiting times length feeling", function() {
                 return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27001',
-                    //         extra : {
-                    //             is_registered_by: 'clinic',
-                    //             last_service_rating: 'never'
-                    //         }
-                    //     });
-                    // })
-                    .setup.user.addr('27001')
+                    .setup.user.addr('27820001002')
                     .inputs(
                         {session_event: 'new'}
                         , '1' // question_1_friendliness - very satisfied
@@ -234,19 +159,10 @@ describe("app", function() {
             });
         });
 
-        describe.skip("when the user answers their waiting times length feeling", function() {
+        describe("when the user answers their waiting times length feeling", function() {
             it("should ask for their cleanliness rating", function() {
                 return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27001',
-                    //         extra : {
-                    //             is_registered_by: 'clinic',
-                    //             last_service_rating: 'never'
-                    //         }
-                    //     });
-                    // })
-                    .setup.user.addr('27001')
+                    .setup.user.addr('27820001002')
                     .inputs(
                         {session_event: 'new'}
                         , '1' // question_1_friendliness - very satisfied
@@ -267,19 +183,10 @@ describe("app", function() {
             });
         });
 
-        describe.skip("when the user answers their cleanliness rating", function() {
+        describe("when the user answers their cleanliness rating", function() {
             it("should ask for their privacy rating", function() {
                 return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27001',
-                    //         extra : {
-                    //             is_registered_by: 'clinic',
-                    //             last_service_rating: 'never'
-                    //         }
-                    //     });
-                    // })
-                    .setup.user.addr('27001')
+                    .setup.user.addr('27820001002')
                     .inputs(
                         {session_event: 'new'}
                         , '1' // question_1_friendliness - very satisfied
@@ -301,23 +208,10 @@ describe("app", function() {
             });
         });
 
-        describe.skip("when the user answers their privacy rating", function() {
+        describe("when the user answers their privacy rating", function() {
             it("should thank and end", function() {
                 return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27001',
-                    //         created_at: "2014-07-28 09:35:26.732",
-                    //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                    //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4",
-                    //         extra : {
-                    //             is_registered_by: 'clinic',
-                    //             clinic_code: '123456',
-                    //             last_service_rating: 'never'
-                    //         }
-                    //     });
-                    // })
-                    .setup.user.addr('27001')
+                    .setup.user.addr('27820001002')
                     .inputs(
                         {session_event: 'new'}
                         , '1' // question_1_friendliness - very satisfied
@@ -330,155 +224,6 @@ describe("app", function() {
                         state: 'end_thanks',
                         reply: [
                             'Thank you for rating our service.'
-                        ].join('\n')
-                    })
-                    .check.reply.ends_session()
-                    .run();
-            });
-
-            it("save the servicerating date to their contact extras", function() {
-                return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27001',
-                    //         created_at: "2014-07-28 09:35:26.732",
-                    //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                    //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4",
-                    //         extra : {
-                    //             is_registered_by: 'clinic',
-                    //             clinic_code: '123456',
-                    //             last_service_rating: 'never'
-                    //         }
-                    //     });
-                    // })
-                    .setup.user.addr('27001')
-                    .inputs(
-                        {session_event: 'new'}
-                        , '1' // question_1_friendliness - very satisfied
-                        , '1' // question_2_waiting_times_feel - very satisfied
-                        , '1' // question_3_waiting_times_length - less than hour
-                        , '1' // question_4_cleanliness - very satisfied
-                        , '1' // question_5_privacy - very satisfied
-                    )
-                    .run();
-            });
-
-            it("should send them an sms thanking them for their rating", function() {
-                return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27001',
-                    //         created_at: "2014-07-28 09:35:26.732",
-                    //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                    //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4",
-                    //         extra : {
-                    //             is_registered_by: 'clinic',
-                    //             clinic_code: '123456',
-                    //             last_service_rating: 'never'
-                    //         }
-                    //     });
-                    // })
-                    .setup.user.addr('27001')
-                    .inputs(
-                        {session_event: 'new'}
-                        , '1' // question_1_friendliness - very satisfied
-                        , '1' // question_2_waiting_times_feel - very satisfied
-                        , '1' // question_3_waiting_times_length - less than hour
-                        , '1' // question_4_cleanliness - very satisfied
-                        , '1' // question_5_privacy - very satisfied
-                    )
-                    .run();
-            });
-
-            it("should use a delegator state to send sms", function() {
-                return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27001',
-                    //         created_at: "2014-07-28 09:35:26.732",
-                    //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                    //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4",
-                    //         extra: {
-                    //             is_registered_by: "clinic",
-                    //             clinic_code: "123456",
-                    //             last_service_rating: 'never'
-                    //         }
-                    //     });
-                    // })
-                    .setup.user.addr('27001')
-                    .inputs(
-                        {session_event: 'new'}
-                        , '1' // question_1_friendliness - very satisfied
-                        , '1' // question_2_waiting_times_feel - very satisfied
-                        , '1' // question_3_waiting_times_length - less than hour
-                        , '1' // question_4_cleanliness - very satisfied
-                        , '1' // question_5_privacy - very satisfied
-                    )
-                    .run();
-            });
-
-        });
-
-        describe.skip("when the user revisits after rating service previously", function() {
-            it("should not allow them to rate again", function() {
-                return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27001',
-                    //         created_at: "2014-07-28 09:35:26.732",
-                    //         key: "63ee4fa9-6888-4f0c-065a-939dc2473a99",
-                    //         user_account: "4a11907a-4cc4-415a-9011-58251e15e2b4",
-                    //         extra : {
-                    //             is_registered_by: 'clinic',
-                    //             clinic_code: '123456',
-                    //             last_service_rating: 'never'
-                    //         }
-                    //     });
-                    // })
-                    .setup.user.addr('27001')
-                    .inputs(
-                        {session_event: 'new'}
-                        , '1' // question_1_friendliness - very satisfied
-                        , '1' // question_2_waiting_times_feel - very satisfied
-                        , '1' // question_3_waiting_times_length - less than hour
-                        , '1' // question_4_cleanliness - very satisfied
-                        , '1' // question_5_privacy - very satisfied
-                        , {session_event: 'new'}
-                    )
-                    .check.interaction({
-                        state: 'end_thanks_revisit',
-                        reply: [
-                            'Sorry, you\'ve already rated service. For baby and pregnancy ' +
-                            'help or if you have compliments or complaints ' +
-                            'dial *120*550# or reply to any of the SMSs you receive'
-                        ].join('\n')
-                    })
-                    .check.reply.ends_session()
-                    .run();
-            });
-
-            it("should not send another sms", function() {
-                return tester
-                    // .setup(function(api) {
-                    //     api.contacts.add({
-                    //         msisdn: '+27001',
-                    //         extra : {
-                    //             is_registered_by: 'clinic',
-                    //             clinic_code: '123456',
-                    //             last_service_rating: 'any-string-except-"never"-or-undefined'
-                    //         }
-                    //     });
-                    // })
-                    .setup.user.addr('27001')
-                    .input(
-                        {session_event: 'new'}
-                    )
-                    .check.interaction({
-                        state: 'end_thanks_revisit',
-                        reply: [
-                            'Sorry, you\'ve already rated service. For baby and pregnancy ' +
-                            'help or if you have compliments or complaints ' +
-                            'dial *120*550# or reply to any of the SMSs you receive'
                         ].join('\n')
                     })
                     .check.reply.ends_session()

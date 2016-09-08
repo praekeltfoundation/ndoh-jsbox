@@ -1,6 +1,5 @@
 go.app = function() {
     var vumigo = require("vumigo_v02");
-    // var Q = require("q");
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
@@ -51,8 +50,9 @@ go.app = function() {
             return is
             .get_or_create_identity({"msisdn": msisdn})
             .then(function(identity) {
+                self.im.user.set_answer("msisdn", msisdn);
                 self.im.user.set_answer("operator", identity);
-                if (identity.details.is_registered_by === "clinic") {  // or 'source', or 'last_mc_reg_on' ??
+                if (identity.details.last_mc_reg_on === "clinic") {  // or 'source', or 'is_registered_by' ??
                     return sr
                     .get_servicerating_status(identity.id)
                     .then(function(status_data) {
@@ -87,8 +87,8 @@ go.app = function() {
 
                 next: function(choice) {
                     return sr
-                    .post_servicerating_feedback(
-                        self.im.user.answers.operator,
+                    .create_servicerating_feedback(
+                        self.im.user.answers.operator.id,
                         q_id,
                         q_text_en.args[0],
                         choice.label,
@@ -119,8 +119,8 @@ go.app = function() {
 
                 next: function(choice) {
                     return sr
-                    .post_servicerating_feedback(
-                        self.im.user.answers.operator,
+                    .create_servicerating_feedback(
+                        self.im.user.answers.operator.id,
                         q_id,
                         q_text_en.args[0],
                         choice.label,
@@ -151,8 +151,8 @@ go.app = function() {
 
                 next: function(choice) {
                     return sr
-                    .post_servicerating_feedback(
-                        self.im.user.answers.operator,
+                    .create_servicerating_feedback(
+                        self.im.user.answers.operator.id,
                         q_id,
                         q_text_en.args[0],
                         choice.label,
@@ -183,8 +183,8 @@ go.app = function() {
 
                 next: function(choice) {
                     return sr
-                    .post_servicerating_feedback(
-                        self.im.user.answers.operator,
+                    .create_servicerating_feedback(
+                        self.im.user.answers.operator.id,
                         q_id,
                         q_text_en.args[0],
                         choice.label,
@@ -215,8 +215,8 @@ go.app = function() {
 
                 next: function(choice) {
                     return sr
-                    .post_servicerating_feedback(
-                        self.im.user.answers.operator,
+                    .create_servicerating_feedback(
+                        self.im.user.answers.operator.id,
                         q_id,
                         q_text_en.args[0],
                         choice.label,
