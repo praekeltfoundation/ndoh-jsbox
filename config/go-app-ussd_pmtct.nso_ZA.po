@@ -12,6 +12,24 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "Language: nso\n"
 
+#: go-app-ussd_pmtct.js:331
+msgid ""
+"HIV positive moms can have an HIV negative baby! You can get free medicine "
+"at the clinic to protect your baby and improve your health"
+msgstr ""
+"Bomma ba HIV ba ka ba le bana ba go sebe le HIV!O ka hwetsa dihlare tsa "
+"mahala kliniking go sireletsa ngwana wa gago le go hlabolla tsa maphelo a "
+"gago"
+
+#: go-app-ussd_pmtct.js:341
+msgid ""
+"Recently tested HIV positive? You are not alone, many other pregnant women "
+"go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322"
+msgstr ""
+"Ao lekotswe goba le HIV malobanyana? Gao nnosi, basadi ba bantsi ba baimana "
+"ba diregile ka mokgwa wo. Etela b-wise.mobi goba leletsa AIDS Helpline 0800 "
+"012 322"
+
 #: go-app-ussd_pmtct.js:343
 msgid ""
 "You have an incomplete registration. Would you like to continue with this "
