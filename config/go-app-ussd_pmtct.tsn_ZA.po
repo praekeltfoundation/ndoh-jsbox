@@ -11,6 +11,24 @@ msgstr ""
 "X-Generator: Poedit 1.6.7\n"
 "Language: tn\n"
 
+#: go-app-ussd_pmtct.js:331
+msgid ""
+"HIV positive moms can have an HIV negative baby! You can get free medicine "
+"at the clinic to protect your baby and improve your health"
+msgstr ""
+"Bomme ba ba nang le HIV ba ka belega masea a a senang HIV! Sireletsa lesea "
+"la gago ka go bona melemo ya mahala kwa tliliniking go tokafatsa boitekanelo "
+"ba gago."
+
+#: go-app-ussd_pmtct.js:341
+msgid ""
+"Recently tested HIV positive? You are not alone, many other pregnant women "
+"go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322"
+msgstr ""
+"A o dirile diteko tsa HIV mme di supile fa o na le HIV? Go jalo le ka basadi "
+"ba bangwe ba baimana. Etela b-wise.mobi, leletsa Aids Helpline mo go 0800 "
+"012 322"
+
 #: go-app-ussd_pmtct.js:343
 msgid ""
 "You have an incomplete registration. Would you like to continue with this "
