@@ -1,167 +1,174 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2016-09-05 04:59:+0000\n"
-"Project-Id-Version: USSD PMTCT\n"
-"Language-Team: TSWANA <LL@li.org>\n"
+"POT-Creation-Date: 2016-08-16 02:50:+0000\n"
+"Project-Id-Version: ussd pmtct\n"
+"Language-Team: tswana <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-09-06 15:07+0200\n"
+"PO-Revision-Date: 2016-08-19 17:02+0200\n"
 "Last-Translator: \n"
 "X-Generator: Poedit 1.6.7\n"
 "Language: tn\n"
 
-#: go-app-ussd_pmtct.js:331
-msgid ""
-"HIV positive moms can have an HIV negative baby! You can get free medicine "
-"at the clinic to protect your baby and improve your health"
-msgstr ""
-"Bomme ba ba nang le HIV ba ka belega masea a a senang HIV! Sireletsa lesea "
-"la gago ka go bona melemo ya mahala kwa tliliniking go tokafatsa boitekanelo "
-"ba gago."
-
-#: go-app-ussd_pmtct.js:341
-msgid ""
-"Recently tested HIV positive? You are not alone, many other pregnant women "
-"go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322"
-msgstr ""
-"A o dirile diteko tsa HIV mme di supile fa o na le HIV? Go jalo le ka basadi "
-"ba bangwe ba baimana. Etela b-wise.mobi, leletsa Aids Helpline mo go 0800 "
-"012 322"
-
-#: go-app-ussd_pmtct.js:386
+#: go-app-ussd_pmtct.js:343
 msgid ""
 "You have an incomplete registration. Would you like to continue with this "
 "registration?"
 msgstr ""
 
-#: go-app-ussd_pmtct.js:388 go-app-ussd_pmtct.js:515 go-app-ussd_pmtct.js:597
-#: go-app-ussd_pmtct.js:731
+#: go-app-ussd_pmtct.js:345 go-app-ussd_pmtct.js:474 go-app-ussd_pmtct.js:556
+#: go-app-ussd_pmtct.js:688
 msgid "Yes"
-msgstr ""
+msgstr "Ee"
 
-#: go-app-ussd_pmtct.js:389
+#: go-app-ussd_pmtct.js:346
 msgid "No, start a new registration"
 msgstr ""
 
-#: go-app-ussd_pmtct.js:505
+#: go-app-ussd_pmtct.js:464
 msgid ""
 "You need to be registered on MomConnect to receive these messages. Please "
 "visit the nearest clinic to register."
 msgstr ""
+"O tla tlhoka go ikwadisa mo MomConnect go amogela melaetsa e. Tsweetswee "
+"etela tliliniki e e gaufi nao go ikwadisa."
 
-#: go-app-ussd_pmtct.js:512
+#: go-app-ussd_pmtct.js:471
 msgid ""
 "To sign up, we need to collect, store and use your info. You may also get "
 "messages on public holidays and weekends. Do you consent?"
 msgstr ""
+"Go ikwadisa, re tsaya dintlha tsa gago, ra di boloka le go di dirisa. O ka "
+"amogela melaetsa ka matsatsi a boikhutso le mafelo a beke. O a dumela?"
 
-#: go-app-ussd_pmtct.js:516 go-app-ussd_pmtct.js:598 go-app-ussd_pmtct.js:732
+#: go-app-ussd_pmtct.js:475 go-app-ussd_pmtct.js:557 go-app-ussd_pmtct.js:689
 msgid "No"
-msgstr ""
+msgstr "Nnyaa"
 
-#: go-app-ussd_pmtct.js:536
+#: go-app-ussd_pmtct.js:495
 msgid ""
 "Unfortunately without your consent, you cannot register to MomConnect. Thank "
 "you for using the MomConnect service. Goodbye."
 msgstr ""
+"Ka bomadimabe, ntle le tumelelo ya gago, o ka se kwadisiwe le MomConnect. Re "
+"lebogela gore o dirisitse tirelo ya MomConnect. Go siame."
 
-#: go-app-ussd_pmtct.js:543
+#: go-app-ussd_pmtct.js:502
 msgid "Please enter the year you were born (For example 1981)"
 msgstr ""
+"Ka ntlha ya gore ga o na ID kgotsa paseporoto, tsweetswee tsenya ngwaga o o "
+"belegweng ka ona (Sekao 1981)"
 
-#: go-app-ussd_pmtct.js:549
+#: go-app-ussd_pmtct.js:508
 msgid "Invalid date. Please enter the year you were born (For example 1981)"
 msgstr ""
+"Ka ntlha ya gore ga o na ID kgotsa paseporoto, tsweetswee tsenya ngwaga o o "
+"belegweng ka ona (Sekao 1981)"
 
-#: go-app-ussd_pmtct.js:561
+#: go-app-ussd_pmtct.js:520
 msgid "In which month were you born?"
-msgstr ""
+msgstr "Tsweetswee tsenya kgwedi e o belegweng ka yona "
 
-#: go-app-ussd_pmtct.js:573
+#: go-app-ussd_pmtct.js:532
 msgid "Please enter the date of the month you were born (For example 21)"
-msgstr ""
+msgstr "Tsweetswee tsenya kgwedi e o belegweng ka yona "
 
-#: go-app-ussd_pmtct.js:579
+#: go-app-ussd_pmtct.js:538
 msgid ""
 "Invalid date. Please enter the date of the month you were born (For example "
 "21)"
-msgstr ""
+msgstr "Siza ufake usuku owazalwa ngalo (Isibonelo 14)"
 
-#: go-app-ussd_pmtct.js:594
+#: go-app-ussd_pmtct.js:553
 msgid ""
 "Would you like to receive messages about keeping your child HIV-negative?"
 msgstr ""
+"A o rata go ka amogela melaetsa e e ka ga go tshola lesea la gago le sena "
+"HIV? Melaetsa e tla nna le mafoko a a jaaka HIV, melemo & diARV"
 
-#: go-app-ussd_pmtct.js:661
+#: go-app-ussd_pmtct.js:618
 msgid ""
 "You will now start receiving messages about keeping your child HIV-negative. "
 "Thank you for using the MomConnect service. Goodbye."
 msgstr ""
+"O tla simolola go amogela melaetsa ka go tshola lesea la gago le sena HIV. "
+"Re lebogela gore o dirisitse tirelo ya MomConnect. Go siame."
 
-#: go-app-ussd_pmtct.js:668
+#: go-app-ussd_pmtct.js:625
 msgid ""
 "You have chosen to not receive messages about keeping your child HIV-"
 "negative. Thank you for using the MomConnect service. Goodbye."
 msgstr ""
+"O tlhophile go se amogele melaetsa ya go tshola lesea la gago le sena HIV. "
+"Re lebogela gore o dirisitse tirelo ya MomConnect. Go siame."
 
-#: go-app-ussd_pmtct.js:676
+#: go-app-ussd_pmtct.js:633
 msgid "Please tell us why you do not want to receive messages:"
-msgstr ""
+msgstr "Goreng o sa tlhole o batla melaetsa:"
 
-#: go-app-ussd_pmtct.js:679
+#: go-app-ussd_pmtct.js:636
 msgid "More"
 msgstr ""
 
-#: go-app-ussd_pmtct.js:680
+#: go-app-ussd_pmtct.js:637
 msgid "Back"
 msgstr ""
 
-#: go-app-ussd_pmtct.js:683
+#: go-app-ussd_pmtct.js:640
 msgid "Not HIV-positive"
-msgstr ""
+msgstr "Ga ke na HIV"
 
-#: go-app-ussd_pmtct.js:684
+#: go-app-ussd_pmtct.js:641
 msgid "Miscarriage"
-msgstr ""
+msgstr "Fetetswe ke mpa"
 
-#: go-app-ussd_pmtct.js:685
+#: go-app-ussd_pmtct.js:642
 msgid "Baby was stillborn"
-msgstr ""
+msgstr "Lesea ke motlaalapile"
 
-#: go-app-ussd_pmtct.js:686
+#: go-app-ussd_pmtct.js:643
 msgid "Baby died"
-msgstr ""
+msgstr "Lesea le tlhokafetse"
 
-#: go-app-ussd_pmtct.js:687
+#: go-app-ussd_pmtct.js:644
 msgid "Messages not useful"
-msgstr ""
+msgstr "Melaetsa ga e mosola"
 
-#: go-app-ussd_pmtct.js:688
+#: go-app-ussd_pmtct.js:645
 msgid "Other"
-msgstr ""
+msgstr "Se sengwe"
 
-#: go-app-ussd_pmtct.js:717
+#: go-app-ussd_pmtct.js:674
 msgid ""
 "You will not receive SMSs about keeping your baby HIV negative. You will "
 "still receive MomConnect SMSs. To stop receiving these SMSs, dial "
 "{{ mc_optout_number }}"
 msgstr ""
+"O ka se amogele diSMS ka ga go tshola lesea la gago le sena HIV. O tla nna o "
+"amogela diSMS tsa MomConnect. Gore o se tlhole o di amogela, leletsa "
+"*134*550*1#"
 
-#: go-app-ussd_pmtct.js:728
+#: go-app-ussd_pmtct.js:685
 msgid ""
 "We are sorry for your loss. Would you like to receive a small set of free "
 "messages from MomConnect that could help you in this difficult time?"
 msgstr ""
+"Re maswabi ka tatlhegelo ya gago. A o ka rata go amogela melaetsa e le "
+"mmalwa ya mahala ya MomConnect e e tla go thusang mo nakong e e bokete e?"
 
-#: go-app-ussd_pmtct.js:790
+#: go-app-ussd_pmtct.js:747
 msgid ""
 "Thank you. You will no longer receive any messages from MomConnect. If you "
 "have any medical concerns, please visit your nearest clinic."
 msgstr ""
+"Re a leboga. O ka se tlhole o amogela melaetsa ya MomConnect. Fa o na le "
+"mathata a boitekanelo, etela tliliniki e e gaufi nao."
 
-#: go-app-ussd_pmtct.js:798
+#: go-app-ussd_pmtct.js:755
 msgid ""
 "Thank you. You will receive support messages from MomConnect in the coming "
 "weeks."
 msgstr ""
+"Re a leboga. O tla amogela melaetsa ya tshegetso go tswa go MomConnect mo "
+"dibekeng tse di tlang."
