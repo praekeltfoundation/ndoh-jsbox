@@ -1,175 +1,167 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2016-08-16 02:50:+0000\n"
+"POT-Creation-Date: 2016-09-05 04:59:+0000\n"
 "Project-Id-Version: USSD PMTCT\n"
-"Language-Team: AFRIKAANS <LL@li.org>\n"
+"Language-Team: AF <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-08-19 16:40+0200\n"
+"PO-Revision-Date: 2016-09-06 14:53+0200\n"
 "Last-Translator: \n"
 "X-Generator: Poedit 1.6.7\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Language: af\n"
 
-#: go-app-ussd_pmtct.js:343
+#: go-app-ussd_pmtct.js:331
+msgid ""
+"HIV positive moms can have an HIV negative baby! You can get free medicine "
+"at the clinic to protect your baby and improve your health"
+msgstr ""
+"Moeders wat MIV-positief is kan n MIV-negatiewe baba he! Jy kan gratis "
+"medisyne by die kliniek kry om jou baba te beskerm en om jou gesondheid te "
+"verbeter."
+
+#: go-app-ussd_pmtct.js:341
+msgid ""
+"Recently tested HIV positive? You are not alone, many other pregnant women "
+"go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322"
+msgstr ""
+"Onlangs MIV-positief getoets? Jy is nie alleen nie, baie ander swanger vroue "
+"is ook positief. Besoek b-wise.mobi of skakel die Vigs-hulplyn 0800 012 322"
+
+#: go-app-ussd_pmtct.js:386
 msgid ""
 "You have an incomplete registration. Would you like to continue with this "
 "registration?"
 msgstr ""
 
-#: go-app-ussd_pmtct.js:345 go-app-ussd_pmtct.js:474 go-app-ussd_pmtct.js:556
-#: go-app-ussd_pmtct.js:688
+#: go-app-ussd_pmtct.js:388 go-app-ussd_pmtct.js:515 go-app-ussd_pmtct.js:597
+#: go-app-ussd_pmtct.js:731
 msgid "Yes"
-msgstr "Ja"
+msgstr ""
 
-#: go-app-ussd_pmtct.js:346
+#: go-app-ussd_pmtct.js:389
 msgid "No, start a new registration"
 msgstr ""
 
-#: go-app-ussd_pmtct.js:464
+#: go-app-ussd_pmtct.js:505
 msgid ""
 "You need to be registered on MomConnect to receive these messages. Please "
 "visit the nearest clinic to register."
 msgstr ""
-"Jy moet by MomConnect geregistreer wees om hierdie boodskappe te ontvang. "
-"Gaan asb na jou naaste kliniek om te registreer."
 
-#: go-app-ussd_pmtct.js:471
+#: go-app-ussd_pmtct.js:512
 msgid ""
 "To sign up, we need to collect, store and use your info. You may also get "
 "messages on public holidays and weekends. Do you consent?"
 msgstr ""
-"To sign up, we need to collect , store and use your info. You may also get "
-"messages on public holidays and weekends. Do you consent?"
 
-#: go-app-ussd_pmtct.js:475 go-app-ussd_pmtct.js:557 go-app-ussd_pmtct.js:689
+#: go-app-ussd_pmtct.js:516 go-app-ussd_pmtct.js:598 go-app-ussd_pmtct.js:732
 msgid "No"
-msgstr "Nee"
+msgstr ""
 
-#: go-app-ussd_pmtct.js:495
+#: go-app-ussd_pmtct.js:536
 msgid ""
 "Unfortunately without your consent, you cannot register to MomConnect. Thank "
 "you for using the MomConnect service. Goodbye."
 msgstr ""
-"Sonder jou toestemming kan jy ongelukkig nie vir die MomConnect-diens "
-"registreer nie. Dankie dat jy MomConnect se diens gebruik het. Totsiens."
 
-#: go-app-ussd_pmtct.js:502
+#: go-app-ussd_pmtct.js:543
 msgid "Please enter the year you were born (For example 1981)"
 msgstr ""
-"Aangesien jy nie ’n ID of ’n paspoort het nie, tik asb die jaar in toe jy "
-"gebore is (bv 1981)"
 
-#: go-app-ussd_pmtct.js:508
+#: go-app-ussd_pmtct.js:549
 msgid "Invalid date. Please enter the year you were born (For example 1981)"
 msgstr ""
-"Khona iphutha olenzile. Phinda ufake usuku lwakho lokuzalwa ngokucophelela "
-"(isibonelo: 2001)"
 
-#: go-app-ussd_pmtct.js:520
+#: go-app-ussd_pmtct.js:561
 msgid "In which month were you born?"
-msgstr "Tik asb die maand in toe jy gebore is"
+msgstr ""
 
-#: go-app-ussd_pmtct.js:532
+#: go-app-ussd_pmtct.js:573
 msgid "Please enter the date of the month you were born (For example 21)"
-msgstr "Tik asb die maand in toe jy gebore is"
+msgstr ""
 
-#: go-app-ussd_pmtct.js:538
+#: go-app-ussd_pmtct.js:579
 msgid ""
 "Invalid date. Please enter the date of the month you were born (For example "
 "21)"
-msgstr "Tik asb die dag in toe jy gebore is (bv 14)"
+msgstr ""
 
-#: go-app-ussd_pmtct.js:553
+#: go-app-ussd_pmtct.js:594
 msgid ""
 "Would you like to receive messages about keeping your child HIV-negative?"
 msgstr ""
-"Wil jy graag boodskappe ontvang oor hoe om jou kind MIV-negatief te hou? Die "
-"boodskappe sal woorde soos MIV, medisyne en ARV's bevat"
 
-#: go-app-ussd_pmtct.js:618
+#: go-app-ussd_pmtct.js:661
 msgid ""
 "You will now start receiving messages about keeping your child HIV-negative. "
 "Thank you for using the MomConnect service. Goodbye."
 msgstr ""
-"Jy sal nou boodskappe begin ontvang oor hoe om jou kind MIV-negatief te hou. "
-"Dankie dat jy die MomConnect-diens gebruik. Totsiens."
 
-#: go-app-ussd_pmtct.js:625
+#: go-app-ussd_pmtct.js:668
 msgid ""
 "You have chosen to not receive messages about keeping your child HIV-"
 "negative. Thank you for using the MomConnect service. Goodbye."
 msgstr ""
-"Jy het gekies om NIE boodskappe te ontvang oor hoe om jou kind MIV-negatief "
-"te hou nie. Dankie dat jy MomConnect se diens gebruik het. Totsiens."
 
-#: go-app-ussd_pmtct.js:633
+#: go-app-ussd_pmtct.js:676
 msgid "Please tell us why you do not want to receive messages:"
-msgstr "Laat ons asb weet waarom jy nie meer boodskappe wil ontvang nie: "
+msgstr ""
 
-#: go-app-ussd_pmtct.js:636
+#: go-app-ussd_pmtct.js:679
 msgid "More"
 msgstr ""
 
-#: go-app-ussd_pmtct.js:637
+#: go-app-ussd_pmtct.js:680
 msgid "Back"
 msgstr ""
 
-#: go-app-ussd_pmtct.js:640
+#: go-app-ussd_pmtct.js:683
 msgid "Not HIV-positive"
-msgstr "Nie MIV+ nie"
+msgstr ""
 
-#: go-app-ussd_pmtct.js:641
+#: go-app-ussd_pmtct.js:684
 msgid "Miscarriage"
-msgstr "Miskraam"
+msgstr ""
 
-#: go-app-ussd_pmtct.js:642
+#: go-app-ussd_pmtct.js:685
 msgid "Baby was stillborn"
-msgstr "Baba doodgebore"
+msgstr ""
 
-#: go-app-ussd_pmtct.js:643
+#: go-app-ussd_pmtct.js:686
 msgid "Baby died"
-msgstr "Baba dood"
+msgstr ""
 
-#: go-app-ussd_pmtct.js:644
+#: go-app-ussd_pmtct.js:687
 msgid "Messages not useful"
-msgstr "SMSse help nie"
+msgstr ""
 
-#: go-app-ussd_pmtct.js:645
+#: go-app-ussd_pmtct.js:688
 msgid "Other"
-msgstr "Ander"
+msgstr ""
 
-#: go-app-ussd_pmtct.js:674
+#: go-app-ussd_pmtct.js:717
 msgid ""
 "You will not receive SMSs about keeping your baby HIV negative. You will "
 "still receive MomConnect SMSs. To stop receiving these SMSs, dial "
 "{{ mc_optout_number }}"
 msgstr ""
-"Jy sal NIE meer SMSse ontvang oor hoe om jou baba MIV negatief te hou nie. "
-"Jy sal egter steeds MomConnect se SMSse ontvang. Om dit te stop, skakel "
-"*134*550*1#"
 
-#: go-app-ussd_pmtct.js:685
+#: go-app-ussd_pmtct.js:728
 msgid ""
 "We are sorry for your loss. Would you like to receive a small set of free "
 "messages from MomConnect that could help you in this difficult time?"
 msgstr ""
-"Ons is jammer oor jou verlies. Wil jy npaar SMSse ontvang om jou gedurende "
-"hierdie moeilike tyd te help?"
 
-#: go-app-ussd_pmtct.js:747
+#: go-app-ussd_pmtct.js:790
 msgid ""
 "Thank you. You will no longer receive any messages from MomConnect. If you "
 "have any medical concerns, please visit your nearest clinic."
 msgstr ""
-"Baie dankie. Jy sal glad nie meer boodskappe van MomConnect ontvang nie. "
-"Gaan asb na jou naaste kliniek as jy enige mediese probleme of kwellings het."
 
-#: go-app-ussd_pmtct.js:755
+#: go-app-ussd_pmtct.js:798
 msgid ""
 "Thank you. You will receive support messages from MomConnect in the coming "
 "weeks."
 msgstr ""
-"Baie dankie. Jy sal die MomConnect-boodskappe in die hieropvolgende weke kry "
-"om jou te ondersteun."
