@@ -68,7 +68,7 @@ module.exports = function() {
                                 "lang_code": "eng_ZA",
                                 "consent": true,
                                 "sa_id_no": "5101025009086",
-                                "mom_dob": "2051-01-02",
+                                "mom_dob": "1951-01-02",
                                 "source": "clinic",
                                 "last_mc_reg_on": "clinic"
                             },
@@ -332,7 +332,7 @@ module.exports = function() {
                         "lang_code": "eng_ZA",
                         "consent": true,
                         "sa_id_no": "5101025009086",
-                        "mom_dob": "2051-01-02",
+                        "mom_dob": "1951-01-02",
                         "source": "clinic",
                         "last_mc_reg_on": "clinic"
                     },
@@ -454,7 +454,7 @@ module.exports = function() {
                         "lang_code": "eng_ZA",
                         "consent": true,
                         "sa_id_no": "5101025009086",
-                        "mom_dob": "2051-01-02",
+                        "mom_dob": "1951-01-02",
                         "source": "clinic",
                         "last_mc_reg_on": "clinic",
                         "nurseconnect": {
@@ -584,7 +584,7 @@ module.exports = function() {
                                 "lang_code": "eng_ZA",
                                 "consent": true,
                                 "sa_id_no": "5101025009086",
-                                "mom_dob": "2051-01-02",
+                                "mom_dob": "1951-01-02",
                                 "source": "clinic",
                                 "last_mc_reg_on": "clinic"
                             },
@@ -629,7 +629,7 @@ module.exports = function() {
                                 "lang_code": "eng_ZA",
                                 "consent": true,
                                 "sa_id_no": "5101025009086",
-                                "mom_dob": "2051-01-02",
+                                "mom_dob": "1951-01-02",
                                 "source": "chw",
                                 "last_mc_reg_on": "chw"
                             },
@@ -728,7 +728,7 @@ module.exports = function() {
                         "lang_code": "eng_ZA",
                         "consent": true,
                         "sa_id_no": "5101025009086",
-                        "mom_dob": "2051-01-02",
+                        "mom_dob": "1951-01-02",
                         "source": "clinic",
                         "last_mc_reg_on":"chw",
                         "passport_no":"12345",
@@ -760,7 +760,7 @@ module.exports = function() {
                         "lang_code": "eng_ZA",
                         "consent": true,
                         "sa_id_no": "5101015009088",
-                        "mom_dob": "2051-01-01",
+                        "mom_dob": "1951-01-01",
                         "source": "chw",
                         "last_mc_reg_on":"chw"
                     },

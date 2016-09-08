@@ -578,7 +578,7 @@ module.exports = function() {
                         "language": "eng_ZA",
                         "consent": true,
                         "sa_id_no": "5101015009088",
-                        "mom_dob":"2051-01-01"
+                        "mom_dob":"1951-01-01"
                     }
                 }
             },
