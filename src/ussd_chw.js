@@ -1,7 +1,6 @@
 go.app = function() {
     var vumigo = require("vumigo_v02");
-    // var _ = require("lodash");
-    // var moment = require("moment");
+    var SeedJsboxUtils = require('seed-jsbox-utils');
     var Q = require("q");
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
@@ -11,17 +10,11 @@ go.app = function() {
     var FreeText = vumigo.states.FreeText;
     var JsonApi = vumigo.http.api.JsonApi;
 
-    var SeedJsboxUtils = require('seed-jsbox-utils');
-    var IdentityStore = SeedJsboxUtils.IdentityStore;
-    var Hub = SeedJsboxUtils.Hub;
-    var MessageSender = SeedJsboxUtils.MessageSender;
-
-    var utils = SeedJsboxUtils.utils;
-
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_start");
         var $ = self.$;
         var interrupt = true;
+        var utils = SeedJsboxUtils.utils;
 
         // variables for services
         var is;
@@ -30,19 +23,17 @@ go.app = function() {
 
         self.init = function() {
             // initialising services
-            is = new IdentityStore(
+            is = new SeedJsboxUtils.IdentityStore(
                 new JsonApi(self.im, {}),
                 self.im.config.services.identity_store.token,
                 self.im.config.services.identity_store.url
             );
-
-            hub = new Hub(
+            hub = new SeedJsboxUtils.Hub(
                 new JsonApi(self.im, {}),
                 self.im.config.services.hub.token,
                 self.im.config.services.hub.url
             );
-
-            ms = new MessageSender(
+            ms = new SeedJsboxUtils.MessageSender(
                 new JsonApi(self.im, {}),
                 self.im.config.services.message_sender.token,
                 self.im.config.services.message_sender.url
@@ -50,13 +41,6 @@ go.app = function() {
         };
 
         // TODO #49 dialback sms handling
-
-        self.get_finish_reg_sms = function() {
-            return $("Please dial back in to {{ USSD_number }} to complete the pregnancy registration.")
-                .context({
-                    USSD_number: self.im.config.channel
-                });
-        };
 
         self.number_opted_out = function(identity, msisdn) {
             var details_msisdn = identity.details.addresses.msisdn[msisdn];
@@ -99,8 +83,6 @@ go.app = function() {
                 "msisdn_device": self.im.user.answers.operator_msisdn,
                 "id_type": self.im.user.answers.state_id_type,
                 "language": self.im.user.answers.state_language,
-                "edd": self.im.user.answers.edd,
-                "faccode": self.im.user.answers.state_clinic_code,
                 "consent": self.im.user.answers.state_consent === "yes" ? true : null
             };
 
@@ -148,7 +130,7 @@ go.app = function() {
 
         self.states.add("state_timed_out", function(name, creator_opts) {
             var msisdn = self.im.user.answers.registrant_msisdn || self.im.user.answers.operator_msisdn;
-            var readable_no = utils.readable_msisdn(msisdn, '+27');
+            var readable_no = utils.readable_msisdn(msisdn, '27');
             return new ChoiceState(name, {
                 question: $(
                     "Would you like to complete pregnancy registration for {{ num }}?"
@@ -166,7 +148,7 @@ go.app = function() {
         self.add("state_start", function(name) {
             self.im.user.set_answers = {};
             var operator_msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
-            var readable_no = utils.readable_msisdn(operator_msisdn, "+27");
+            var readable_no = utils.readable_msisdn(operator_msisdn, "27");
 
             return is
             .get_or_create_identity({"msisdn": operator_msisdn})
@@ -201,6 +183,23 @@ go.app = function() {
             });
         });
 
+        self.add("state_consent", function(name) {
+            return new ChoiceState(name, {
+                question: $(
+                    "We need to collect, store & use her info. She " +
+                    "may get messages on public holidays & weekends. " +
+                    "Does she consent?"),
+                choices: [
+                    new Choice("yes", $("Yes")),
+                    new Choice("no", $("No")),
+                ],
+                next: function(choice) {
+                    return choice.value === "yes" ? "state_id_type"
+                                                  : "state_consent_refused";
+                }
+            });
+        });
+
         self.add("state_opt_in", function(name) {
             return new ChoiceState(name, {
                 question: $("This number has previously opted out of MomConnect " +
@@ -228,18 +227,16 @@ go.app = function() {
         self.add("state_stay_out", function(name) {
             return new ChoiceState(name, {
                 question: $("You have chosen not to receive MomConnect SMSs"),
-
                 choices: [
                     new Choice("main_menu", $("Main Menu"))
                 ],
-
                 next: function(choice) {
                     return "state_start";
                 }
             });
         });
 
-        self.add("state_mobile_no", function(name, opts) {
+        self.add("state_mobile_no", function(name) {
             var error = $("Sorry, the mobile number did not validate. " +
                           "Please reenter the mobile number:");
             var question = $("Please input the mobile number of the " +
@@ -267,27 +264,9 @@ go.app = function() {
             });
         });
 
-        self.add("state_consent", function(name) {
-            return new ChoiceState(name, {
-                question: $(
-                    "We need to collect, store & use her info. She " +
-                    "may get messages on public holidays & weekends. " +
-                    "Does she consent?"),
-                choices: [
-                    new Choice("yes", $("Yes")),
-                    new Choice("no", $("No")),
-                ],
-                next: function(choice) {
-                    return choice.value === "yes" ? "state_id_type"
-                                                  : "state_consent_refused";
-                }
-            });
-        });
-
         self.add("state_consent_refused", function(name) {
             return new EndState(name, {
-                text: "Unfortunately without her consent, she cannot register" +
-                        " to MomConnect.",
+                text: "Unfortunately without her consent, she cannot register to MomConnect.",
                 next: "state_start"
             });
         });
@@ -296,13 +275,11 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $("What kind of identification does the pregnant " +
                             "mother have?"),
-
                 choices: [
                     new Choice("sa_id", $("SA ID")),
                     new Choice("passport", $("Passport")),
                     new Choice("none", $("None"))
                 ],
-
                 next: function(choice) {
                     return {
                         sa_id: 'state_sa_id',
@@ -313,7 +290,7 @@ go.app = function() {
             });
         });
 
-        self.add("state_sa_id", function(name, opts) {
+        self.add("state_sa_id", function(name) {
             var error = $("Sorry, the mother's ID number did not validate. " +
                           "Please reenter the SA ID number:");
             var question = $("Please enter the pregnant mother\'s SA ID " +
@@ -336,7 +313,6 @@ go.app = function() {
         self.add("state_passport_origin", function(name) {
             return new ChoiceState(name, {
                 question: $("What is the country of origin of the passport?"),
-
                 choices: [
                     new Choice("zw", $("Zimbabwe")),
                     new Choice("mz", $("Mozambique")),
@@ -346,7 +322,6 @@ go.app = function() {
                     new Choice("so", $("Somalia")),
                     new Choice("other", $("Other"))
                 ],
-
                 next: function(choice) {
                     return 'state_passport_no';
                 }
@@ -368,7 +343,7 @@ go.app = function() {
             });
         });
 
-        self.add("state_birth_year", function(name, opts) {
+        self.add("state_birth_year", function(name) {
             var error = $("There was an error in your entry. Please " +
                         "carefully enter the mother's year of birth again " +
                         "(for example: 2001)");
@@ -378,7 +353,6 @@ go.app = function() {
                 question: question,
                 check: function(content) {
                     var today = utils.get_today(self.im.config);
-
                     if (!utils.check_number_in_range(content, 1900, today.year() - 5)) {
                         // assumes youngest possible birth age is 5 years old
                         return error;
@@ -412,8 +386,8 @@ go.app = function() {
                 },
                 next: function(content) {
                     var dob = (self.im.user.answers.state_birth_year + "-" +
-                        self.im.user.answers.state_birth_month + "-" +
-                        utils.double_digit_number(content));
+                               self.im.user.answers.state_birth_month + "-" +
+                               utils.double_digit_number(content));
                     self.im.user.set_answer("mom_dob", dob);
                     if (utils.is_valid_date(dob, "YYYY-MM-DD")) {
                         return "state_language";
@@ -426,15 +400,13 @@ go.app = function() {
 
         self.add("state_invalid_dob", function(name) {
             return new ChoiceState(name, {
-                question:
-                    $("The date you entered ({{ dob }}) is not a " +
-                        "real date. Please try again."
-                     ).context({ dob: self.im.user.answers.mom_dob }),
-
+                question: $(
+                    "The date you entered ({{ dob }}) is not a " +
+                    "real date. Please try again."
+                ).context({ dob: self.im.user.answers.mom_dob }),
                 choices: [
                     new Choice("continue", $("Continue"))
                 ],
-
                 next: "state_birth_year"
             });
         });
@@ -480,7 +452,6 @@ go.app = function() {
                 text: $("Thank you, registration is complete. The pregnant " +
                         "woman will now receive messages to encourage her " +
                         "to register at her nearest clinic."),
-
                 next: "state_start"
             });
         });
