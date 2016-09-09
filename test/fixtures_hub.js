@@ -635,24 +635,6 @@ module.exports = function() {
             'response': {}
         },
 
-        // 24:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
-        // 25:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
         // 26:
         {
             'request': {

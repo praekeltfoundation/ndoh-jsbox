@@ -40,7 +40,7 @@ go.app = function() {
             );
         };
 
-        // TODO #49 dialback sms handling
+        // TODO #49: dialback sms sending
 
         self.number_opted_out = function(identity, msisdn) {
             var details_msisdn = identity.details.addresses.msisdn[msisdn];
