@@ -197,7 +197,7 @@ go.app = function() {
         self.add("state_start", function(name) {
             self.im.user.set_answers = {};
             var operator_msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
-            var readable_no = utils.readable_msisdn(self.im.user.addr, '27');
+            var readable_no = utils.readable_msisdn(operator_msisdn, '27');
 
             return is
             .get_or_create_identity({"msisdn": operator_msisdn})

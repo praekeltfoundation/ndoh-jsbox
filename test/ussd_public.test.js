@@ -166,7 +166,7 @@ describe("app", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [162, 165]);
+                        utils.check_fixtures_used(api, [160, 163]);
                     })
                     .run();
                 });
@@ -189,7 +189,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [53, 56, 163]);
+                            utils.check_fixtures_used(api, [51, 54, 161]);
                         })
                         .run();
                     });
@@ -210,7 +210,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [60, 178]);
+                            utils.check_fixtures_used(api, [58, 176]);
                         })
                         .run();
                     });
@@ -233,7 +233,7 @@ describe("app", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [179]);
+                        utils.check_fixtures_used(api, [177]);
                     })
                     .run();
                 });
@@ -334,7 +334,7 @@ describe("app", function() {
                                    'helpful messages at a clinic.'
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [17, 119, 162, 165, 180]);
+                            utils.check_fixtures_used(api, [17, 117, 160, 163, 178]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -403,7 +403,7 @@ describe("app", function() {
                         state: "state_end_success"
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [18, 120, 166, 168, 181]);
+                        utils.check_fixtures_used(api, [18, 118, 164, 166, 179]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -448,7 +448,7 @@ describe("app", function() {
                             'your compliment.'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [53, 56, 121, 163]);
+                        utils.check_fixtures_used(api, [51, 54, 119, 161]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -469,7 +469,7 @@ describe("app", function() {
                             'your complaint.'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [53, 56, 122, 163]);
+                        utils.check_fixtures_used(api, [51, 54, 120, 161]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -492,7 +492,7 @@ describe("app", function() {
                             'messages, please visit your nearest clinic.'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [179]);
+                        utils.check_fixtures_used(api, [177]);
                     })
                     .check.reply.ends_session()
                     .run();

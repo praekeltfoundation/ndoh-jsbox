@@ -201,6 +201,7 @@ module.exports = function (grunt) {
             options: {
                 reporter: 'spec'
             },
+            /*
             test_ussd_clinic: {
                 src: ['<%= paths.test.ussd_clinic %>']
             },
@@ -210,6 +211,7 @@ module.exports = function (grunt) {
             test_ussd_public: {
                 src: ['<%= paths.test.ussd_public %>']
             },
+            */
             test_ussd_optout: {
                 src: ['<%= paths.test.ussd_optout %>']
             },

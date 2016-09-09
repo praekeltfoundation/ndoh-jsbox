@@ -62,7 +62,7 @@ module.exports = function() {
                         "faccode": "123456",
                         "consent": true,
                         "sa_id_no": "5101025009086",
-                        "mom_dob": "2051-01-02"
+                        "mom_dob": "1951-01-02"
                     }
                 }
             },

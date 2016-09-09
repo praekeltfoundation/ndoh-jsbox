@@ -63,7 +63,7 @@ describe("app", function() {
                 });
         });
 
-        describe.only("timeout testing", function() {
+        describe("timeout testing", function() {
             describe("when you timeout and dial back in", function() {
                 describe("when on a normal state", function() {
                     it("should go to state_timed_out", function() {
