@@ -1,15 +1,11 @@
 var vumigo = require('vumigo_v02');
-var AppTester = vumigo.AppTester;
-var assert = require('assert');
-var _ = require('lodash');
-
+var utils = require('seed-jsbox-utils').utils;
 var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
 var fixtures_MessageSender = require('./fixtures_message_sender');
 var fixtures_Hub = require('./fixtures_hub');
 var fixtures_Jembi = require('./fixtures_jembi');
-
-var utils = require('seed-jsbox-utils').utils;
+var AppTester = vumigo.AppTester;
 
 describe("app", function() {
     describe("for ussd_optout use", function() {
@@ -29,7 +25,6 @@ describe("app", function() {
                     testing_message_id: "0170b7bb-978e-4b8a-35d2-662af5b6daee",
                     channel: "*120*550#1",
                     env: 'test',
-                    // metric_store: 'test_metric_store',
                     endpoints: {
                         "sms": {"delivery_class": "sms"}
                     },
@@ -171,7 +166,7 @@ describe("app", function() {
                             'concerns please visit your nearest clinic.')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [21, 161]);
+                        utils.check_fixtures_used(api, [23, 161]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -194,7 +189,7 @@ describe("app", function() {
                             'concerns please visit your nearest clinic.')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [21, 161]);
+                        utils.check_fixtures_used(api, [23, 161]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -218,7 +213,7 @@ describe("app", function() {
                                 'from MomConnect in the coming weeks.')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [19, 22, 161]);
+                            utils.check_fixtures_used(api, [19, 24, 161]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -240,7 +235,7 @@ describe("app", function() {
                                 'from MomConnect in the coming weeks.')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [20, 23, 160, 163]);
+                            utils.check_fixtures_used(api, [20, 25, 160, 163]);
                         })
                         .check.reply.ends_session()
                         .run();

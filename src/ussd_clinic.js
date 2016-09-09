@@ -197,7 +197,7 @@ go.app = function() {
         self.add("state_start", function(name) {
             self.im.user.set_answers = {};
             var operator_msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
-            var readable_no = utils.readable_msisdn(self.im.user.addr, '+27');
+            var readable_no = utils.readable_msisdn(operator_msisdn, '27');
 
             return is
             .get_or_create_identity({"msisdn": operator_msisdn})
@@ -273,6 +273,18 @@ go.app = function() {
             });
         });
 
+        self.add('state_stay_out', function(name) {
+            return new ChoiceState(name, {
+                question: $('You have chosen not to receive MomConnect SMSs'),
+                choices: [
+                    new Choice('main_menu', $('Main Menu'))
+                ],
+                next: function(choice) {
+                    return 'state_start';
+                }
+            });
+        });
+
         self.add('state_mobile_no', function(name) {
             var error = $('Sorry, the mobile number did not validate. ' +
                           'Please reenter the mobile number:');
@@ -320,18 +332,6 @@ go.app = function() {
                     });
                 },
                 next: 'state_due_date_month'
-            });
-        });
-
-        self.add('state_stay_out', function(name) {
-            return new ChoiceState(name, {
-                question: $('You have chosen not to receive MomConnect SMSs'),
-                choices: [
-                    new Choice('main_menu', $('Main Menu'))
-                ],
-                next: function(choice) {
-                    return 'state_start';
-                }
             });
         });
 

@@ -62,7 +62,7 @@ module.exports = function() {
                         "faccode": "123456",
                         "consent": true,
                         "sa_id_no": "5101025009086",
-                        "mom_dob": "2051-01-02"
+                        "mom_dob": "1951-01-02"
                     }
                 }
             },
@@ -532,8 +532,67 @@ module.exports = function() {
             }
         },
 
-        // 21: post momconnect_nonloss_optout change for cb245673-aa41-4302-ac47-00000001002
+        // 21: register cb245673-aa41-4302-ac47-00000001002 (chw cb245673-aa41-4302-ac47-00000001001)
         {
+            "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-00000001002",
+            "request": {
+                "url": 'http://hub/api/v1/registration/',
+                "method": 'POST',
+                "data": {
+                    "reg_type": "momconnect_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001002",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001001",
+                        "msisdn_registrant": "+27820001002",
+                        "msisdn_device": "+27820001001",
+                        "id_type": "passport",
+                        "language": "eng_ZA",
+                        "consent": true,
+                        "passport_no": "12345",
+                        "passport_origin":"zw"
+                    }
+                }
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
+        },
+
+        // 22: register cb245673-aa41-4302-ac47-00000001001 (chw cb245673-aa41-4302-ac47-00000001001)
+        {
+            "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "url": 'http://hub/api/v1/registration/',
+                "method": 'POST',
+                "data": {
+                    "reg_type": "momconnect_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001001",
+                        "msisdn_registrant": "+27820001001",
+                        "msisdn_device": "+27820001001",
+                        "id_type": "sa_id",
+                        "language": "eng_ZA",
+                        "consent": true,
+                        "sa_id_no": "5101015009088",
+                        "mom_dob":"1951-01-01"
+                    }
+                }
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
+        },
+
+        // 23: post momconnect_nonloss_optout change for cb245673-aa41-4302-ac47-00000001002
+        {
+            "key": "post.hub.change.momconnect_nonloss_optout.idenitity.cb245673-aa41-4302-ac47-00000001002",
             "request": {
                 "url": 'http://hub/api/v1/change/',
                 "method": 'POST',
@@ -546,8 +605,9 @@ module.exports = function() {
             'response': {}
         },
 
-        // 22: post momconnect_loss_optout change for cb245673-aa41-4302-ac47-00000001002
+        // 24: post momconnect_loss_optout change for cb245673-aa41-4302-ac47-00000001002
         {
+            "key": "post.hub.change.momconnect_loss_optout.idenitity.cb245673-aa41-4302-ac47-00000001002",
             "request": {
                 "url": 'http://hub/api/v1/change/',
                 "method": 'POST',
@@ -560,8 +620,9 @@ module.exports = function() {
             'response': {}
         },
 
-        // 23: post momconnect_loss_optout change for cb245673-aa41-4302-ac47-00000001001
+        // 25: post momconnect_loss_optout change for cb245673-aa41-4302-ac47-00000001001
         {
+            "key": "post.hub.change.momconnect_loss_optout.idenitity.cb245673-aa41-4302-ac47-00000001001",
             "request": {
                 "url": 'http://hub/api/v1/change/',
                 "method": 'POST',
@@ -570,24 +631,6 @@ module.exports = function() {
                     "action": "momconnect_loss_optout",
                     "data": {}
                 }
-            },
-            'response': {}
-        },
-
-        // 24:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
-        // 25:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
             },
             'response': {}
         },
