@@ -5,8 +5,6 @@ var fixtures_MessageSender = require('./fixtures_message_sender');
 var fixtures_Hub = require('./fixtures_hub');
 var fixtures_Jembi = require('./fixtures_jembi');
 var AppTester = vumigo.AppTester;
-var assert = require('assert');
-var _ = require('lodash');
 
 var utils = require('seed-jsbox-utils').utils;
 
@@ -89,9 +87,6 @@ describe("app", function() {
                                 '2. Start new registration'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [162, 165]);
-                        })
                         .run();
                 });
             });
@@ -115,9 +110,6 @@ describe("app", function() {
                                 '1. Yes',
                                 '2. Start new registration'
                             ].join('\n')
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [162, 163, 165]);
                         })
                         .run();
                 });
@@ -144,9 +136,6 @@ describe("app", function() {
                                 '3. None'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [162, 165]);
-                        })
                         .run();
                 });
             });
@@ -172,9 +161,6 @@ describe("app", function() {
                                 '2. No'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [162, 165]);
-                        })
                         .run();
                 });
             });
@@ -198,9 +184,6 @@ describe("app", function() {
                             '1. Yes',
                             '2. No'
                         ].join('\n')
-                    })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [162, 165]);
                     })
                     .run();
             });
@@ -227,9 +210,6 @@ describe("app", function() {
                                 '2. No'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [162, 165]);
-                        })
                         .run();
                 });
                 it("should ask for the id type", function() {
@@ -250,9 +230,6 @@ describe("app", function() {
                                 '3. None'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [162, 165]);
-                        })
                         .run();
                 });
                 it("should tell them they cannot register", function() {
@@ -267,9 +244,6 @@ describe("app", function() {
                             state: 'state_consent_refused',
                             reply: 'Unfortunately without her consent, she ' +
                                     'cannot register to MomConnect.'
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [162, 165]);
                         })
                         .run();
                 });
@@ -292,9 +266,6 @@ describe("app", function() {
                                 '1. Yes',
                                 '2. No'
                             ].join('\n')
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [166]);
                         })
                         .run();
                 });
@@ -319,9 +290,6 @@ describe("app", function() {
                                 '2. No'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [166, 168]);
-                        })
                         .run();
                 });
                 it("should ask for the id type", function() {
@@ -343,9 +311,6 @@ describe("app", function() {
                                 '3. None'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [166, 168]);
-                        })
                         .run();
                 });
                 it("should tell them they cannot register", function() {
@@ -361,9 +326,6 @@ describe("app", function() {
                             state: 'state_consent_refused',
                             reply: 'Unfortunately without her consent, she ' +
                                     'cannot register to MomConnect.'
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [166, 168]);
                         })
                         .run();
                 });
@@ -384,9 +346,6 @@ describe("app", function() {
                                 'You have chosen not to receive MomConnect SMSs'),
                                 '1. Main Menu'
                             ].join('\n')
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [166]);
                         })
                         .run();
                 });
@@ -412,9 +371,6 @@ describe("app", function() {
                                 '2. No'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [166]);
-                        })
                         .run();
                 });
             });
@@ -436,9 +392,6 @@ describe("app", function() {
                             'Please input the mobile number of the ' +
                             'pregnant woman to be registered:')
                     })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [162, 165]);
-                    })
                     .run();
             });
         });
@@ -457,9 +410,6 @@ describe("app", function() {
                         reply: (
                             'Sorry, the mobile number did not validate. ' +
                             'Please reenter the mobile number:')
-                    })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [162, 165]);
                     })
                     .run();
             });
@@ -487,9 +437,6 @@ describe("app", function() {
                                 '2. No'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [162, 163, 165]);
-                        })
                         .run();
                 });
                 it("should ask for the id type", function() {
@@ -511,9 +458,6 @@ describe("app", function() {
                                 '3. None'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [162, 163, 165]);
-                        })
                         .run();
                 });
                 it("should tell them they cannot register", function() {
@@ -529,9 +473,6 @@ describe("app", function() {
                             state: 'state_consent_refused',
                             reply: 'Unfortunately without her consent, she ' +
                                     'cannot register to MomConnect.'
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [162, 163, 165]);
                         })
                         .run();
                 });
@@ -555,9 +496,6 @@ describe("app", function() {
                                 '1. Yes',
                                 '2. No'
                             ].join('\n')
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [162, 165, 166]);
                         })
                         .run();
                 });
@@ -584,7 +522,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [162, 165, 166, 168]);
+                            utils.check_fixtures_used(api, [160, 163, 164, 166]);
                         })
                         .run();
                 });
@@ -608,9 +546,6 @@ describe("app", function() {
                                 '3. None'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [162, 165, 166, 168]);
-                        })
                         .run();
                 });
                 it("should tell them they cannot complete registration", function() {
@@ -627,9 +562,6 @@ describe("app", function() {
                             state: 'state_consent_refused',
                             reply: 'Unfortunately without her consent, she ' +
                                     'cannot register to MomConnect.'
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [162, 165, 166, 168]);
                         })
                         .run();
                 });
@@ -651,9 +583,6 @@ describe("app", function() {
                                 'You have chosen not to receive MomConnect SMSs'),
                                 '1. Main Menu'
                             ].join('\n')
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [162, 165, 166]);
                         })
                         .run();
                 });
@@ -680,9 +609,6 @@ describe("app", function() {
                                 '2. No'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [162, 165, 166]);
-                        })
                         .run();
                 });
             });
@@ -707,9 +633,6 @@ describe("app", function() {
                                 'Please enter the pregnant mother\'s SA ID ' +
                                 'number:')
                         })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [162, 165]);
-                        })
                         .run();
                 });
             });
@@ -730,9 +653,6 @@ describe("app", function() {
                             reply: (
                                 'Please enter the pregnant mother\'s SA ID ' +
                                 'number:')
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [162, 163, 165]);
                         })
                         .run();
                 });
@@ -762,9 +682,6 @@ describe("app", function() {
                             '6. More'
                             ].join('\n')
                     })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [162, 165]);
-                    })
                     .run();
             });
         });
@@ -780,9 +697,6 @@ describe("app", function() {
                         , '1'  // state_id_type - sa id
                         , '2012315678097'  // state_sa_id
                     )
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [162, 165]);
-                    })
                     .run();
             });
         });
@@ -798,9 +712,6 @@ describe("app", function() {
                         , '1'  // state_id_type - sa id
                         , '5002285000007'  // state_sa_id
                     )
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [162, 165]);
-                    })
                     .run();
             });
         });
@@ -820,9 +731,6 @@ describe("app", function() {
                         state: 'state_sa_id',
                         reply: 'Sorry, the mother\'s ID number did not validate. ' +
                           'Please reenter the SA ID number:'
-                    })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [162, 165]);
                     })
                     .run();
             });
@@ -851,9 +759,6 @@ describe("app", function() {
                             '7. Other'
                         ].join('\n')
                     })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [162, 165]);
-                    })
                     .run();
             });
         });
@@ -872,9 +777,6 @@ describe("app", function() {
                     .check.interaction({
                         state: 'state_passport_no',
                         reply: 'Please enter the pregnant mother\'s Passport number:'
-                    })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [162, 165]);
                     })
                     .run();
             });
@@ -904,9 +806,6 @@ describe("app", function() {
                             '6. More'
                             ].join('\n')
                     })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [162, 165]);
-                    })
                     .run();
             });
         });
@@ -927,9 +826,6 @@ describe("app", function() {
                         state: 'state_passport_no',
                         reply: ('There was an error in your entry. Please ' +
                         'carefully enter the passport number again.')
-                    })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [162, 165]);
                     })
                     .run();
             });
@@ -952,9 +848,6 @@ describe("app", function() {
                         reply: ('There was an error in your entry. Please ' +
                         'carefully enter the passport number again.')
                     })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [162, 165]);
-                    })
                     .run();
             });
         });
@@ -973,9 +866,6 @@ describe("app", function() {
                         state: 'state_birth_year',
                         reply: ('Please enter the year that the pregnant ' +
                                 'mother was born (for example: 1981)')
-                    })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [162, 165]);
                     })
                     .run();
             });
@@ -998,9 +888,6 @@ describe("app", function() {
                         'carefully enter the mother\'s year of birth again ' +
                         '(for example: 2001)')
                     })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [162, 165]);
-                    })
                     .run();
             });
 
@@ -1019,9 +906,6 @@ describe("app", function() {
                         reply: ('There was an error in your entry. Please ' +
                         'carefully enter the mother\'s year of birth again ' +
                         '(for example: 2001)')
-                    })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [162, 165]);
                     })
                     .run();
             });
@@ -1055,9 +939,6 @@ describe("app", function() {
                             '12. Dec'
                         ].join('\n')
                     })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [162, 165]);
-                    })
                     .run();
             });
         });
@@ -1078,9 +959,6 @@ describe("app", function() {
                         state: 'state_birth_day',
                         reply: ('Please enter the day that the mother was ' +
                             'born (for example: 14).')
-                    })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [162, 165]);
                     })
                     .run();
             });
@@ -1112,9 +990,6 @@ describe("app", function() {
                             '6. More'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [162, 165]);
-                        })
                         .run();
                 });
             });
@@ -1137,9 +1012,6 @@ describe("app", function() {
                             reply: 'There was an error in your entry. Please ' +
                                 'carefully enter the mother\'s day of birth again ' +
                                 '(for example: 8)'
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [162, 165]);
                         })
                         .run();
                     });
@@ -1166,9 +1038,6 @@ describe("app", function() {
                                 '1. Continue'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [162, 165]);
-                        })
                         .run();
                 });
 
@@ -1189,9 +1058,6 @@ describe("app", function() {
                             state: 'state_birth_year',
                             reply: 'Please enter the year that the pregnant ' +
                                     'mother was born (for example: 1981)'
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [162, 165]);
                         })
                         .run();
                 });
@@ -1224,9 +1090,6 @@ describe("app", function() {
                                 '7. Back'
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [162, 165]);
-                        })
                         .run();
                 });
             });
@@ -1251,9 +1114,6 @@ describe("app", function() {
                                 '1. isiNdebele',
                                 '2. Back'
                             ].join('\n')
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [162, 165]);
                         })
                         .run();
                 });
@@ -1281,7 +1141,7 @@ describe("app", function() {
                             'clinic.')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [21, 123, 162, 163, 165, 182]);
+                            utils.check_fixtures_used(api, [21, 121, 160, 161, 163, 180]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -1308,7 +1168,7 @@ describe("app", function() {
                             'clinic.')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [22, 119, 162, 165, 183]);
+                            utils.check_fixtures_used(api, [22, 117, 160, 163, 181]);
                         })
                         .check.reply.ends_session()
                         .run();
