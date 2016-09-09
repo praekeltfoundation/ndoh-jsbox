@@ -180,7 +180,7 @@ go.app = function() {
 
         self.states.add('state_timed_out', function(name, creator_opts) {
             var msisdn = self.im.user.answers.registrant_msisdn || self.im.user.answers.operator_msisdn;
-            var readable_no = utils.readable_msisdn(msisdn, '+27');
+            var readable_no = utils.readable_msisdn(msisdn, '27');
             return new ChoiceState(name, {
                 question: $(
                     'Would you like to complete pregnancy registration for {{ num }}?'
