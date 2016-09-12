@@ -12,6 +12,23 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Language: af\n"
 
+#: go-app-ussd_pmtct.js:331
+msgid ""
+"HIV positive moms can have an HIV negative baby! You can get free medicine "
+"at the clinic to protect your baby and improve your health"
+msgstr ""
+"Moeders wat MIV-positief is kan n MIV-negatiewe baba he! Jy kan gratis "
+"medisyne by die kliniek kry om jou baba te beskerm en om jou gesondheid te "
+"verbeter."
+
+#: go-app-ussd_pmtct.js:341
+msgid ""
+"Recently tested HIV positive? You are not alone, many other pregnant women "
+"go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322"
+msgstr ""
+"Onlangs MIV-positief getoets? Jy is nie alleen nie, baie ander swanger vroue "
+"is ook positief. Besoek b-wise.mobi of skakel die Vigs-hulplyn 0800 012 322"
+
 #: go-app-ussd_pmtct.js:343
 msgid ""
 "You have an incomplete registration. Would you like to continue with this "
