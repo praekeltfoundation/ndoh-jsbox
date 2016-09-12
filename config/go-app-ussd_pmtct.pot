@@ -80,7 +80,9 @@ msgid ""
 msgstr ""
 
 #: go-app-ussd_pmtct.js:594
-msgid "Would you like to receive messages about keeping your child HIV-negative?"
+msgid ""
+"Would you like to receive messages about keeping your child HIV-negative? The"
+" messages will contain words like HIV, medicine & ARVs?"
 msgstr ""
 
 #: go-app-ussd_pmtct.js:661

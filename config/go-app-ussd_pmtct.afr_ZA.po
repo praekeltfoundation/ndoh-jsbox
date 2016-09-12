@@ -100,7 +100,8 @@ msgstr "Tik asb die dag in toe jy gebore is (bv 14)"
 
 #: go-app-ussd_pmtct.js:553
 msgid ""
-"Would you like to receive messages about keeping your child HIV-negative?"
+"Would you like to receive messages about keeping your child HIV-negative? The"
+" messages will contain words like HIV, medicine & ARVs?"
 msgstr ""
 "Wil jy graag boodskappe ontvang oor hoe om jou kind MIV-negatief te hou? Die "
 "boodskappe sal woorde soos MIV, medisyne en ARV's bevat"
