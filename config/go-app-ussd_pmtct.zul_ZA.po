@@ -103,7 +103,7 @@ msgstr ""
 #: go-app-ussd_pmtct.js:553
 msgid ""
 "Would you like to receive messages about keeping your child HIV-negative? The"
-" messages will contain words like HIV, medicine & ARVs?"
+" messages will contain words like HIV, medicine & ARVs"
 msgstr ""
 "Kungabe uyathanda ukuqhubeka uthole imiyalezo emayelana nokugcina ingane "
 "yakho ingena-HIV? Imiyalezo izoba namagama afana no-HIV, imithi, nama-ARV"

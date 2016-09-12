@@ -101,7 +101,7 @@ msgstr "Nghenisa siku leri u nga velekiwa hi rona (Xikombiso 14) s"
 #: go-app-ussd_pmtct.js:553
 msgid ""
 "Would you like to receive messages about keeping your child HIV-negative? The"
-" messages will contain words like HIV, medicine & ARVs?"
+" messages will contain words like HIV, medicine & ARVs"
 msgstr ""
 "Wa sw lava ku amkel mahungu mayelana na ku hlayis nwan wa wen a ngav na HIV? "
 "Mahungu ma ta va na marito yo fana na HIV, murhi na ARV"
