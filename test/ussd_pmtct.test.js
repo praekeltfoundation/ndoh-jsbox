@@ -238,7 +238,7 @@ describe("PMTCT app", function() {
                         .check.interaction({
                             state: "state_hiv_messages",
                             reply: [
-                                "Would you like to receive messages about keeping your child HIV-negative?",
+                                "Would you like to receive messages about keeping your child HIV-negative? The messages will contain words like HIV, medicine & ARVs?",
                                 "1. Yes",
                                 "2. No"
                             ].join("\n")
@@ -348,7 +348,7 @@ describe("PMTCT app", function() {
                         .check.interaction({
                             state: "state_hiv_messages",
                             reply: [
-                                "Would you like to receive messages about keeping your child HIV-negative?",
+                                "Would you like to receive messages about keeping your child HIV-negative? The messages will contain words like HIV, medicine & ARVs?",
                                 "1. Yes",
                                 "2. No"
                             ].join("\n")
@@ -435,7 +435,7 @@ describe("PMTCT app", function() {
                         .check.interaction({
                             state: "state_hiv_messages",
                             reply: [
-                                "Would you like to receive messages about keeping your child HIV-negative?",
+                                "Would you like to receive messages about keeping your child HIV-negative? The messages will contain words like HIV, medicine & ARVs?",
                                 "1. Yes",
                                 "2. No"
                             ].join("\n")
@@ -487,7 +487,7 @@ describe("PMTCT app", function() {
                         .check.interaction({
                             state: "state_hiv_messages",
                             reply: [
-                                "Would you like to receive messages about keeping your child HIV-negative?",
+                                "Would you like to receive messages about keeping your child HIV-negative? The messages will contain words like HIV, medicine & ARVs?",
                                 "1. Yes",
                                 "2. No"
                             ].join("\n")
@@ -556,7 +556,7 @@ describe("PMTCT app", function() {
                         .check.interaction({
                             state: "state_hiv_messages",
                             reply: [
-                                "Would you like to receive messages about keeping your child HIV-negative?",
+                                "Would you like to receive messages about keeping your child HIV-negative? The messages will contain words like HIV, medicine & ARVs?",
                                 "1. Yes",
                                 "2. No"
                             ].join("\n")
@@ -661,7 +661,7 @@ describe("PMTCT app", function() {
                         .check.interaction({
                             state: "state_hiv_messages",
                             reply: [
-                                "Would you like to receive messages about keeping your child HIV-negative?",
+                                "Would you like to receive messages about keeping your child HIV-negative? The messages will contain words like HIV, medicine & ARVs?",
                                 "1. Yes",
                                 "2. No"
                             ].join("\n")
@@ -747,7 +747,7 @@ describe("PMTCT app", function() {
                         .check.interaction({
                             state: "state_hiv_messages",
                             reply: [
-                                "Would you like to receive messages about keeping your child HIV-negative?",
+                                "Would you like to receive messages about keeping your child HIV-negative? The messages will contain words like HIV, medicine & ARVs?",
                                 "1. Yes",
                                 "2. No"
                             ].join("\n")
@@ -886,7 +886,7 @@ describe("PMTCT app", function() {
                         .check.interaction({
                             state: "state_hiv_messages",
                             reply: [
-                                "Would you like to receive messages about keeping your child HIV-negative?",
+                                "Would you like to receive messages about keeping your child HIV-negative? The messages will contain words like HIV, medicine & ARVs?",
                                 "1. Yes",
                                 "2. No"
                             ].join("\n")

@@ -98,7 +98,8 @@ msgstr "Nceda ufake umhla owazalwa ngawo (Umzekelo 14)"
 
 #: go-app-ussd_pmtct.js:553
 msgid ""
-"Would you like to receive messages about keeping your child HIV-negative?"
+"Would you like to receive messages about keeping your child HIV-negative? The"
+" messages will contain words like HIV, medicine & ARVs?"
 msgstr ""
 "Ingaba ungathanda ukufumana imiyaleza malunga nokugcina usana lwakho lungena-"
 "HIV? Le miyaleza iza kuquka amagama afana no-HIV, amayeza & iiARV"
