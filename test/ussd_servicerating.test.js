@@ -9,6 +9,8 @@ var fixtures_Hub = require('./fixtures_hub');
 var fixtures_ServiceRating = require('./fixtures_service_rating');
 var fixtures_Jembi = require('./fixtures_jembi');
 
+var utils = require('seed-jsbox-utils').utils;
+
 describe("app", function() {
     describe("for ussd_servicerating use", function() {
         var app;
@@ -65,6 +67,9 @@ describe("app", function() {
                             state: 'end_reg_clinic',
                             reply: 'Please register at a clinic before using this line.'
                         })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [160, 163]);
+                        })
                         .run();
                 });
             });
@@ -87,6 +92,9 @@ describe("app", function() {
                                 '4. Very unsatisfied'
                             ].join('\n')
                         })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [140, 161]);
+                        })
                         .check.user.properties({lang: 'eng_ZA'})
                         .run();
                 });
@@ -107,6 +115,9 @@ describe("app", function() {
                                 'help or if you have compliments or complaints ' +
                                 'dial *120*550# or reply to any of the SMSs you receive'
                             ].join('\n')
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [141, 182]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -132,6 +143,9 @@ describe("app", function() {
                             '4. Very unsatisfied'
                         ].join('\n')
                     })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [140, 142, 161]);
+                    })
                     .run();
             });
         });
@@ -154,6 +168,9 @@ describe("app", function() {
                             '3. More than 4 hours',
                             '4. All day'
                         ].join('\n')
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [140, 142, 143, 161]);
                     })
                     .run();
             });
@@ -178,6 +195,9 @@ describe("app", function() {
                             '3. Not Satisfied',
                             '4. Very unsatisfied'
                         ].join('\n')
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [140, 142, 143, 144, 161]);
                     })
                     .run();
             });
@@ -204,6 +224,9 @@ describe("app", function() {
                             '4. Very unsatisfied'
                         ].join('\n')
                     })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [140, 142, 143, 144, 145, 161]);
+                    })
                     .run();
             });
         });
@@ -225,6 +248,9 @@ describe("app", function() {
                         reply: [
                             'Thank you for rating our service.'
                         ].join('\n')
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [122, 140, 142, 143, 144, 145, 146, 147, 161]);
                     })
                     .check.reply.ends_session()
                     .run();

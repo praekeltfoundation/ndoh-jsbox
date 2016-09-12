@@ -622,7 +622,7 @@ module.exports = function() {
                     "identity": "cb245673-aa41-4302-ac47-00000001002",
                     "to_addr": "+27820001002",
                     "content": "Thank you for rating our service.",
-                    "metadata":{}
+                    "metadata": {}
                 }
             },
             "response": {

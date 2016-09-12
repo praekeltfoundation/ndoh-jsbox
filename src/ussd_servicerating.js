@@ -1,21 +1,16 @@
 go.app = function() {
     var vumigo = require("vumigo_v02");
+    var SeedJsboxUtils = require('seed-jsbox-utils');
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
     var EndState = vumigo.states.EndState;
     var JsonApi = vumigo.http.api.JsonApi;
 
-    var SeedJsboxUtils = require('seed-jsbox-utils');
-    var IdentityStore = SeedJsboxUtils.IdentityStore;
-    var MessageSender = SeedJsboxUtils.MessageSender;
-    var ServiceRating = SeedJsboxUtils.ServiceRating;
-
-    var utils = SeedJsboxUtils.utils;
-
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_start");
         var $ = self.$;
+        var utils = SeedJsboxUtils.utils;
 
         // variables for services
         var is;
@@ -24,19 +19,17 @@ go.app = function() {
 
         self.init = function() {
             // initialising services
-            is = new IdentityStore(
+            is = new SeedJsboxUtils.IdentityStore(
                 new JsonApi(self.im, {}),
                 self.im.config.services.identity_store.token,
                 self.im.config.services.identity_store.url
             );
-
-            ms = new MessageSender(
+            ms = new SeedJsboxUtils.MessageSender(
                 new JsonApi(self.im, {}),
                 self.im.config.services.message_sender.token,
                 self.im.config.services.message_sender.url
             );
-
-            sr = new ServiceRating(
+            sr = new SeedJsboxUtils.ServiceRating(
                 new JsonApi(self.im, {}),
                 self.im.config.services.service_rating.token,
                 self.im.config.services.service_rating.url
