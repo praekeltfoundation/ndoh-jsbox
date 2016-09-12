@@ -103,6 +103,7 @@ msgstr "Nceda ufake umhla owazalwa ngawo (Umzekelo 14)"
 msgid ""
 "Would you like to receive messages about keeping your child HIV-negative? The"
 " messages will contain words like HIV, medicine & ARVs?"
+msgstr ""
 "Na o ka rata ho fumana melaetsa ka ho boloka lesea la hao le se na tshwaetso "
 "ya HIV? Melaetsa e tla kenyeletsa mantswe a kang HIV, meriana le ARVs"
 
