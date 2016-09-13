@@ -569,7 +569,9 @@ go.app = function() {
 
         self.add("state_hiv_messages", function(name) {
             return new ChoiceState(name, {
-                question: $("Would you like to receive messages about keeping your child HIV-negative?"),
+                question: $(
+                    "Would you like to receive messages about keeping your child HIV-negative? " +
+                    "The messages will contain words like HIV, medicine & ARVs"),
                 // error: ,
                 choices: [
                     new Choice("yes", $("Yes")),
