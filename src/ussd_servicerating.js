@@ -36,6 +36,19 @@ go.app = function() {
             );
         };
 
+        self.submit_feedback = function(question_id, question_text, choice) {
+            return sr
+            .create_servicerating_feedback(
+                self.im.user.answers.operator.id,  // identity
+                question_id,  // question_id
+                self.im.user.i18n(question_text),  // question_text (translated)
+                self.im.user.i18n(choice.label),  // answer_text (translated)
+                choice.value,  // answer_value
+                1,  // version
+                self.im.user.answers.invite_uuid  // invite
+            );
+        };
+
         self.states.add("state_start", function(name) {
             self.im.user.set_answers = {};
             var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
@@ -45,50 +58,56 @@ go.app = function() {
             .then(function(identity) {
                 self.im.user.set_answer("msisdn", msisdn);
                 self.im.user.set_answer("operator", identity);
-                if (identity.details.last_mc_reg_on === "clinic") {  // or 'source', or 'is_registered_by' ??
-                    return sr
-                    .get_servicerating_status(identity.id)
-                    .then(function(status_data) {
-                        if (status_data.results.length > 0) {
-                            self.im.user.set_lang(identity.details.lang_code || "eng_ZA");
-                            self.im.user.set_answer('invite_uuid', status_data.results[0].id);
-                            return self.states.create("question_1_friendliness");
-                        } else {
-                            // service rating already completed
-                            return self.states.create("end_thanks_revisit");
-                        }
-                    });
-                } else {
-                    return self.states.create("end_reg_clinic");
-                }
+
+                // get all the identity's serviceratings
+                return sr
+                .get_servicerating_status({
+                    identity: identity.id
+                })
+                .then(function(status_data) {
+                    if (status_data.count === 0) {
+                        // if she has no serviceratings, she probably never registered at a clinic
+                        return self.states.create("end_reg_clinic");
+                    } else {
+                        // get only the incomplete, non-expired serviceratings
+                        return sr
+                        .get_servicerating_status({
+                            identity: identity.id,
+                            completed: false,
+                            expired: false
+                        })
+                        .then(function(status_data) {
+                            if (status_data.count > 0) {
+                                // if she has an incomplete servicerating, continue to the first question
+                                self.im.user.set_lang(identity.details.lang_code || "eng_ZA");
+                                // grab the first result even if multiple found
+                                self.im.user.set_answer('invite_uuid', status_data.results[0].id);
+                                return self.states.create("question_1_friendliness");
+                            } else {
+                                // otherwise assume service rating already completed
+                                // (could also have expired)
+                                return self.states.create("end_thanks_revisit");
+                            }
+                        });
+                    }
+                });
             });
         });
 
         self.states.add("question_1_friendliness", function(name) {
             var q_id = 1;
             var q_text_en = $("Welcome. When you signed up, were staff at the facility friendly & helpful?");
-
             return new ChoiceState(name, {
                 question: q_text_en,
-
                 choices: [
                     new Choice("very-satisfied", $("Very Satisfied")),
                     new Choice("satisfied", $("Satisfied")),
                     new Choice("not-satisfied", $("Not Satisfied")),
                     new Choice("very-unsatisfied", $("Very unsatisfied"))
                 ],
-
                 next: function(choice) {
-                    return sr
-                    .create_servicerating_feedback(
-                        self.im.user.answers.operator.id,
-                        q_id,
-                        q_text_en.args[0],
-                        choice.label,
-                        choice.value,
-                        1,
-                        self.im.user.answers.invite_uuid
-                    )
+                    return self
+                    .submit_feedback(q_id, q_text_en, choice)
                     .then(function() {
                         return "question_2_waiting_times_feel";
                     });
@@ -99,28 +118,17 @@ go.app = function() {
         self.states.add("question_2_waiting_times_feel", function(name) {
             var q_id = 2;
             var q_text_en = $("How do you feel about the time you had to wait at the facility?");
-
             return new ChoiceState(name, {
                 question: q_text_en,
-
                 choices: [
                     new Choice("very-satisfied", $("Very Satisfied")),
                     new Choice("satisfied", $("Satisfied")),
                     new Choice("not-satisfied", $("Not Satisfied")),
                     new Choice("very-unsatisfied", $("Very unsatisfied"))
                 ],
-
                 next: function(choice) {
-                    return sr
-                    .create_servicerating_feedback(
-                        self.im.user.answers.operator.id,
-                        q_id,
-                        q_text_en.args[0],
-                        choice.label,
-                        choice.value,
-                        1,
-                        self.im.user.answers.invite_uuid
-                    )
+                    return self
+                    .submit_feedback(q_id, q_text_en, choice)
                     .then(function() {
                         return "question_3_waiting_times_length";
                     });
@@ -131,28 +139,17 @@ go.app = function() {
         self.states.add("question_3_waiting_times_length", function(name) {
             var q_id = 3;
             var q_text_en = $("How long did you wait to be helped at the clinic?");
-
             return new ChoiceState(name, {
                 question: q_text_en,
-
                 choices: [
                     new Choice("less-than-an-hour", $("Less than an hour")),
                     new Choice("between-1-and-3-hours", $("Between 1 and 3 hours")),
                     new Choice("more-than-4-hours", $("More than 4 hours")),
                     new Choice("all-day", $("All day"))
                 ],
-
                 next: function(choice) {
-                    return sr
-                    .create_servicerating_feedback(
-                        self.im.user.answers.operator.id,
-                        q_id,
-                        q_text_en.args[0],
-                        choice.label,
-                        choice.value,
-                        1,
-                        self.im.user.answers.invite_uuid
-                    )
+                    return self
+                    .submit_feedback(q_id, q_text_en, choice)
                     .then(function() {
                         return "question_4_cleanliness";
                     });
@@ -163,28 +160,17 @@ go.app = function() {
         self.states.add("question_4_cleanliness", function(name) {
             var q_id = 4;
             var q_text_en = $("Was the facility clean?");
-
             return new ChoiceState(name, {
                 question: q_text_en,
-
                 choices: [
                     new Choice("very-satisfied", $("Very Satisfied")),
                     new Choice("satisfied", $("Satisfied")),
                     new Choice("not-satisfied", $("Not Satisfied")),
                     new Choice("very-unsatisfied", $("Very unsatisfied"))
                 ],
-
                 next: function(choice) {
-                    return sr
-                    .create_servicerating_feedback(
-                        self.im.user.answers.operator.id,
-                        q_id,
-                        q_text_en.args[0],
-                        choice.label,
-                        choice.value,
-                        1,
-                        self.im.user.answers.invite_uuid
-                    )
+                    return self
+                    .submit_feedback(q_id, q_text_en, choice)
                     .then(function() {
                         return "question_5_privacy";
                     });
@@ -195,28 +181,17 @@ go.app = function() {
         self.states.add("question_5_privacy", function(name) {
             var q_id = 5;
             var q_text_en = $("Did you feel that your privacy was respected by the staff?");
-
             return new ChoiceState(name, {
                 question: q_text_en,
-
                 choices: [
                     new Choice("very-satisfied", $("Very Satisfied")),
                     new Choice("satisfied", $("Satisfied")),
                     new Choice("not-satisfied", $("Not Satisfied")),
                     new Choice("very-unsatisfied", $("Very unsatisfied"))
                 ],
-
                 next: function(choice) {
-                    return sr
-                    .create_servicerating_feedback(
-                        self.im.user.answers.operator.id,
-                        q_id,
-                        q_text_en.args[0],
-                        choice.label,
-                        choice.value,
-                        1,
-                        self.im.user.answers.invite_uuid
-                    )
+                    return self
+                    .submit_feedback(q_id, q_text_en, choice)
                     .then(function() {
                         return "log_servicerating_send_sms";
                     });
@@ -241,7 +216,6 @@ go.app = function() {
                 } else {
                     return self.states.create("states_error");
                 }
-
             });
         });
 

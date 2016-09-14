@@ -2,15 +2,38 @@
 module.exports = function() {
     return [
 
-        // 140: get identity cb245673-aa41-4302-ac47-00000001002 service rating status
+        // 135: get identity cb245673-aa41-4302-ac47-00000001001 service rating status all
+        {
+            'repeatable': true,
+            'request': {
+                'method': 'GET',
+                'params': {
+                    "identity": "cb245673-aa41-4302-ac47-00000001001",
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://sr/api/v1/invite/',
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 0,
+                    "next": null,
+                    "previous": null,
+                    "results": []
+                }
+            }
+        },
+
+        // 136: get identity cb245673-aa41-4302-ac47-00000001002 service rating status all
         {
             'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
                     "identity": "cb245673-aa41-4302-ac47-00000001002",
-                    "completed": 'False',
-                    "expired": 'False'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -35,14 +58,12 @@ module.exports = function() {
             }
         },
 
-        // 141: get identity cb245673-aa41-4302-ac47-00000001008 service rating status
+        // 137: get identity cb245673-aa41-4302-ac47-00000001008 service rating status all
         {
             'request': {
                 'method': 'GET',
                 'params': {
                     "identity": "cb245673-aa41-4302-ac47-00000001008",
-                    "completed": 'False',
-                    "expired": 'False'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -54,6 +75,89 @@ module.exports = function() {
                 "code": 200,
                 "data": {
                     "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [{
+                        "updated_at": "2016-04-04T17:06:08.411867Z",
+                        "created_at": "2016-04-04T17:06:08.411843Z",
+                        "version": 1,
+                        "id": "1b47bab8-1c37-44a2-94e6-85c3ee9a8c8b",
+                        "identity": "cb245673-aa41-4302-ac47-00000001008",
+                    }]
+                }
+            }
+        },
+
+        // 138:
+        {
+            'request': {
+                'method': 'GET',
+                'url': 'http://',
+            },
+            'response': {}
+        },
+
+        // 139:
+        {
+            'request': {
+                'method': 'GET',
+                'url': 'http://',
+            },
+            'response': {}
+        },
+
+        // 140: get identity cb245673-aa41-4302-ac47-00000001002 service rating status incomplete
+        {
+            'repeatable': true,
+            'request': {
+                'method': 'GET',
+                'params': {
+                    "identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "completed": 'false',
+                    "expired": 'false'
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://sr/api/v1/invite/',
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [{
+                        "updated_at": "2016-04-04T17:06:08.411867Z",
+                        "created_at": "2016-04-04T17:06:08.411843Z",
+                        "version": 1,
+                        "id": "1b47bab8-1c37-44a2-94e6-85c3ee9a8c8b",
+                        "identity": "cb245673-aa41-4302-ac47-00000001002",
+                    }]
+                }
+            }
+        },
+
+        // 141: get identity cb245673-aa41-4302-ac47-00000001008 service rating status incomplete
+        {
+            'request': {
+                'method': 'GET',
+                'params': {
+                    "identity": "cb245673-aa41-4302-ac47-00000001008",
+                    "completed": 'false',
+                    "expired": 'false'
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://sr/api/v1/invite/',
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 0,
                     "next": null,
                     "previous": null,
                     "results": []

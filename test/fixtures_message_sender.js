@@ -739,50 +739,5 @@ module.exports = function() {
             'response': {}
         },
 
-        // 135:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
-        // 136:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
-        // 137:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
-        // 138:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
-        // 139:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
     ];
 };

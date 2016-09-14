@@ -68,7 +68,7 @@ describe("app", function() {
                             reply: 'Please register at a clinic before using this line.'
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [160, 163]);
+                            utils.check_fixtures_used(api, [135, 160, 163]);
                         })
                         .run();
                 });
@@ -93,7 +93,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [140, 161]);
+                            utils.check_fixtures_used(api, [136, 140, 161]);
                         })
                         .check.user.properties({lang: 'eng_ZA'})
                         .run();
@@ -117,7 +117,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [141, 182]);
+                            utils.check_fixtures_used(api, [137, 141, 182]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -144,7 +144,7 @@ describe("app", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [140, 142, 161]);
+                        utils.check_fixtures_used(api, [136, 140, 142, 161]);
                     })
                     .run();
             });
@@ -170,7 +170,7 @@ describe("app", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [140, 142, 143, 161]);
+                        utils.check_fixtures_used(api, [136, 140, 142, 143, 161]);
                     })
                     .run();
             });
@@ -197,7 +197,7 @@ describe("app", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [140, 142, 143, 144, 161]);
+                        utils.check_fixtures_used(api, [136, 140, 142, 143, 144, 161]);
                     })
                     .run();
             });
@@ -225,7 +225,7 @@ describe("app", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [140, 142, 143, 144, 145, 161]);
+                        utils.check_fixtures_used(api, [136, 140, 142, 143, 144, 145, 161]);
                     })
                     .run();
             });
@@ -250,7 +250,8 @@ describe("app", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [122, 140, 142, 143, 144, 145, 146, 147, 161]);
+                        utils.check_fixtures_used(api, [
+                            122, 136, 140, 142, 143, 144, 145, 146, 147, 161]);
                     })
                     .check.reply.ends_session()
                     .run();
