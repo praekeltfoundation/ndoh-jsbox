@@ -65,7 +65,7 @@ go.app = function() {
                         params: params
                     });
             }
-        },
+        };
 
         self.jembi_clinic_validate = function (clinic_code) {
             var params = {
