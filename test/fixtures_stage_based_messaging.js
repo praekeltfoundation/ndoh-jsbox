@@ -11,7 +11,7 @@ module.exports = function() {
                 "method": 'GET',
                 "params": {
                     "identity": 'cb245673-aa41-4302-ac47-00000001001',
-                    "active": 'true'
+                    "active": 'True'
                 }
             },
             "response": {
@@ -34,7 +34,7 @@ module.exports = function() {
                 "method": 'GET',
                 "params": {
                     "identity": 'cb245673-aa41-4302-ac47-00000001002',
-                    "active": 'true'
+                    "active": 'True'
                 }
             },
             "response": {
@@ -74,7 +74,7 @@ module.exports = function() {
                 "method": 'GET',
                 "params": {
                     "identity": 'cb245673-aa41-4302-ac47-00000001003',
-                    "active": 'true'
+                    "active": 'True'
                 }
             },
             "response": {
@@ -333,7 +333,7 @@ module.exports = function() {
                 "method": 'GET',
                 "params": {
                     "identity": 'cb245673-aa41-4302-ac47-00000001004',
-                    "active": 'true'
+                    "active": 'True'
                 }
             },
             "response": {
@@ -356,7 +356,7 @@ module.exports = function() {
                 "method": 'GET',
                 "params": {
                     "identity": 'cb245673-aa41-4302-ac47-00000001005',
-                    "active": 'true'
+                    "active": 'True'
                 }
             },
             "response": {
@@ -404,7 +404,7 @@ module.exports = function() {
                 "method": 'GET',
                 "params": {
                     "identity": 'cb245673-aa41-4302-ac47-00000001006',
-                    "active": 'true'
+                    "active": 'True'
                 }
             },
             "response": {

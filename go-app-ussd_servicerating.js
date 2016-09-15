@@ -76,8 +76,8 @@ go.app = function() {
                         return sr
                         .get_servicerating_status({
                             identity: identity.id,
-                            completed: false,
-                            expired: false
+                            completed: "False",
+                            expired: "False"
                         })
                         .then(function(status_data) {
                             if (status_data.count > 0) {

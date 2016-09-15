@@ -113,8 +113,8 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "identity": "cb245673-aa41-4302-ac47-00000001002",
-                    "completed": 'false',
-                    "expired": 'false'
+                    "completed": 'False',
+                    "expired": 'False'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -145,8 +145,8 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     "identity": "cb245673-aa41-4302-ac47-00000001008",
-                    "completed": 'false',
-                    "expired": 'false'
+                    "completed": 'False',
+                    "expired": 'False'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],

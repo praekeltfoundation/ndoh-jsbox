@@ -22,7 +22,7 @@ module.exports = function() {
                 "method": 'GET',
                 "params": {
                     "details__addresses__msisdn": '+27820001001',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 }
             },
             "response": {
@@ -45,7 +45,7 @@ module.exports = function() {
                 "method": 'GET',
                 "params": {
                     "details__addresses__msisdn": '+27820001002',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 }
             },
             "response": {
@@ -90,7 +90,7 @@ module.exports = function() {
                 "method": 'GET',
                 "params": {
                     "details__addresses__msisdn": '+27820001003',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 }
             },
             "response": {
@@ -203,7 +203,7 @@ module.exports = function() {
                 "method": 'GET',
                 "params": {
                     "details__addresses__msisdn": '+27820001004',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 }
             },
             "response": {
@@ -252,7 +252,7 @@ module.exports = function() {
                 "method": 'GET',
                 "params": {
                     "details__addresses__msisdn": '+27820001005',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 }
             },
             "response": {
@@ -561,7 +561,7 @@ module.exports = function() {
                 "method": 'GET',
                 "params": {
                     "details__addresses__msisdn": '+27820001006',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 }
             },
             "response": {
@@ -606,7 +606,7 @@ module.exports = function() {
                 "method": 'GET',
                 "params": {
                     "details__addresses__msisdn": '+27820001007',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 }
             },
             "response": {
@@ -781,7 +781,7 @@ module.exports = function() {
                 "method": 'GET',
                 "params": {
                     "details__addresses__msisdn": '+27820001008',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 }
             },
             "response": {
