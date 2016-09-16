@@ -51,7 +51,7 @@ go.app = function() {
             } else {
                 return false;
             }
-        },
+        };
 
         self.compile_registrant_info = function() {
             var registrant_info = self.im.user.answers.registrant;

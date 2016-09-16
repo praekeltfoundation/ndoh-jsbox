@@ -112,7 +112,7 @@ go.app = function() {
                         params: params
                     });
             }
-        },
+        };
 
     // REGISTRATION FINISHED SMS HANDLING
 

@@ -28,7 +28,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'details__addresses__msisdn': '+27820000111',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -193,7 +193,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'details__addresses__msisdn': '+27820000555',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -234,7 +234,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'details__addresses__msisdn': '+27820000666',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -261,7 +261,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'details__addresses__msisdn': '+27820000777',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -288,7 +288,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'details__addresses__msisdn': '+27820000888',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -315,7 +315,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'details__addresses__msisdn': '+27820000999',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -342,7 +342,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'details__addresses__msisdn': '+27820101010',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -369,7 +369,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'details__addresses__msisdn': '+27820111111',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -395,7 +395,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-00000000001',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test StageBasedMessaging'],
@@ -439,7 +439,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-00000000002',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test StageBasedMessaging'],
@@ -483,7 +483,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-00000000003',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test StageBasedMessaging'],
@@ -527,7 +527,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-00000000004',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test StageBasedMessaging'],
@@ -571,7 +571,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-00000000005',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test StageBasedMessaging'],
@@ -597,7 +597,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-00000000006',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test StageBasedMessaging'],
@@ -624,7 +624,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-00000000007',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test StageBasedMessaging'],
@@ -650,7 +650,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-00000000008',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test StageBasedMessaging'],
@@ -676,7 +676,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-00000000009',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test StageBasedMessaging'],
@@ -702,7 +702,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-00000000010',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test StageBasedMessaging'],
@@ -728,7 +728,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-00000000011',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test StageBasedMessaging'],
@@ -1698,7 +1698,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'details__addresses__msisdn': '+27720000111',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -2577,7 +2577,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-10000000001',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test StageBasedMessaging'],

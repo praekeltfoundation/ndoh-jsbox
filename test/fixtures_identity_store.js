@@ -8,6 +8,7 @@
     // (+27820001005) - existing identity; two msisdn's (opted out on +27820001004)
     // (+27820001006) - existing identity with an inactive MomConnect subscription
     // (+27820001007) - existing identity with an active MomConnect CHW subscription
+    // (+27820001008) - existing identity with an active MomConnect Clinic subscription; completed servicerating
 
 module.exports = function() {
     return [
@@ -21,7 +22,7 @@ module.exports = function() {
                 "method": 'GET',
                 "params": {
                     "details__addresses__msisdn": '+27820001001',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 }
             },
             "response": {
@@ -44,7 +45,7 @@ module.exports = function() {
                 "method": 'GET',
                 "params": {
                     "details__addresses__msisdn": '+27820001002',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 }
             },
             "response": {
@@ -89,7 +90,7 @@ module.exports = function() {
                 "method": 'GET',
                 "params": {
                     "details__addresses__msisdn": '+27820001003',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 }
             },
             "response": {
@@ -202,7 +203,7 @@ module.exports = function() {
                 "method": 'GET',
                 "params": {
                     "details__addresses__msisdn": '+27820001004',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 }
             },
             "response": {
@@ -251,7 +252,7 @@ module.exports = function() {
                 "method": 'GET',
                 "params": {
                     "details__addresses__msisdn": '+27820001005',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 }
             },
             "response": {
@@ -560,7 +561,7 @@ module.exports = function() {
                 "method": 'GET',
                 "params": {
                     "details__addresses__msisdn": '+27820001006',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 }
             },
             "response": {
@@ -605,7 +606,7 @@ module.exports = function() {
                 "method": 'GET',
                 "params": {
                     "details__addresses__msisdn": '+27820001007',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 }
             },
             "response": {
@@ -769,7 +770,52 @@ module.exports = function() {
                 }
             },
             "response": {}
-        }
+        },
+
+        // 182: get identity by msisdn +27820001008
+        {
+            "key": "get.is.msisdn.27820001008",
+            "repeatable": true,
+            "request": {
+                "url": 'http://is/api/v1/identities/search/',
+                "method": 'GET',
+                "params": {
+                    "details__addresses__msisdn": '+27820001008',
+                    "include_inactive": "False"
+                }
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001008/",
+                            "id": "cb245673-aa41-4302-ac47-00000001008",
+                            "version": 1,
+                            "details": {
+                                "default_addr_type": "msisdn",
+                                "addresses": {
+                                    "msisdn": {
+                                        "+27820001008": {"default": true}
+                                    }
+                                },
+                                "lang_code": "eng_ZA",
+                                "consent": true,
+                                "sa_id_no": "5101025009086",
+                                "mom_dob": "2051-01-02",
+                                "source": "clinic",
+                                "last_mc_reg_on": "clinic"
+                            },
+                            "created_at": "2016-08-05T06:13:29.693272Z",
+                            "updated_at": "2016-08-05T06:13:29.693298Z"
+                        }
+                    ]
+                }
+            }
+        },
 
     ];
 };
