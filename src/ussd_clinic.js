@@ -146,8 +146,9 @@ go.app = function() {
             if (registrant_info.details.clinic) {
                 registrant_info.details.clinic.redial_sms_sent = self.im.user.answers.redial_sms_sent;
             } else {
-                registrant_info.details.clinic = {};
-                registrant_info.details.clinic.redial_sms_sent = self.im.user.answers.redial_sms_sent;
+                registrant_info.details.clinic = {
+                    redial_sms_sent: self.im.user.answers.redial_sms_sent
+                };
             }
 
 
