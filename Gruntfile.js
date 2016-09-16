@@ -208,11 +208,11 @@ module.exports = function (grunt) {
             },
             test_ussd_chw: {
                 src: ['<%= paths.test.ussd_chw %>']
-            },*/
+            },
             test_ussd_public: {
                 src: ['<%= paths.test.ussd_public %>']
             },
-            /*test_ussd_optout: {
+            test_ussd_optout: {
                 src: ['<%= paths.test.ussd_optout %>']
             },
             test_sms_inbound: {
@@ -220,10 +220,10 @@ module.exports = function (grunt) {
             },
             test_ussd_servicerating: {
                 src: ['<%= paths.test.ussd_servicerating %>']
-            },
+            },*/
             test_ussd_nurse: {
                 src: ['<%= paths.test.ussd_nurse %>']
-            },
+            },/*
             test_sms_nurse: {
                 src: ['<%= paths.test.sms_nurse %>']
             },

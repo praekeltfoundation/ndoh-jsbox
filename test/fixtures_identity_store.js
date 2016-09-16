@@ -437,7 +437,8 @@ module.exports = function() {
                         "nurseconnect": {
                             "facname": "WCL clinic",
                             "faccode": "123456",
-                            "is_registered": true
+                            "is_registered": true,
+                            "redial_sms_sent": false
                         }
                     },
                     "created_at": "2016-08-05T06:13:29.693272Z",
@@ -474,7 +475,8 @@ module.exports = function() {
                             "facname": "WCL clinic",
                             "faccode": "123456",
                             "is_registered": true,
-                            "registered_by": "cb245673-aa41-4302-ac47-00000001001"
+                            "registered_by": "cb245673-aa41-4302-ac47-00000001001",
+                            "redial_sms_sent": false
                         }
                     },
                     "created_at": "2016-08-05T06:13:29.693272Z",

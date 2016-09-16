@@ -58,6 +58,39 @@ go.app = function() {
                 self.im.config.services.message_sender.token,
                 self.im.config.services.message_sender.url
             );
+
+            // evaluate whether dialback sms needs to be sent on session close
+            self.im.on('session:close', function(e) {
+                return self.dial_back(e);
+            });
+        };
+
+        self.dial_back = function(e) {
+            if (e.user_terminated
+                    && self.im.user.answers.operator
+                    && !self.im.user.answers.redial_sms_sent) {
+                return self
+                .send_redial_sms()
+                .then(function() {
+                    self.im.user.answers.redial_sms_sent = true;
+                    return ;
+                });
+            } else {
+                return ;
+            }
+        };
+
+        self.send_redial_sms = function() {
+            return ms.
+            create_outbound_message(
+                self.im.user.answers.operator.id,
+                self.im.user.answers.operator_msisdn,
+                self.im.user.i18n($(
+                    "Please dial back in to {{ USSD_number }} to complete the NurseConnect registration."
+                ).context({
+                    USSD_number: self.im.config.channel
+                }))
+            );
         };
 
         // override normal state adding
@@ -130,8 +163,6 @@ go.app = function() {
             );
         };
 
-    // TODO: #49 Do dialback sms handling
-
     // TIMEOUT STATE
         self.states.add('state_timed_out', function(name, creator_opts) {
             var msisdn = utils.readable_msisdn(self.im.user.answers.registrant_msisdn, '27');
@@ -181,6 +212,13 @@ go.app = function() {
                 if (identity !== null) {
                     self.im.user.set_answer("operator", identity);
 
+                    // init redial_sms_sent
+                    if (identity.details.nurseconnect) {
+                        self.im.user.set_answer("redial_sms_sent", identity.details.nurseconnect.redial_sms_sent || false);
+                    } else {
+                        self.im.user.set_answer("redial_sms_sent", false);
+                    }
+
                     return sbm
                     .check_identity_subscribed(self.im.user.answers.operator.id, "nurseconnect")
                     .then(function(identity_subscribed_to_nurseconnect) {
@@ -193,6 +231,9 @@ go.app = function() {
                 }
                 else {
                     self.im.user.set_answer("operator", identity); // null
+                    // init redial_sms_sent
+                    self.im.user.set_answer("redial_sms_sent", false);
+
                     return self.states.create('state_not_subscribed');
                 }
             });
@@ -407,6 +448,15 @@ go.app = function() {
                 }
             };
 
+            var registrant_info = self.im.user.answers.registrant;
+            if (registrant_info.details.nurseconnect) {
+                registrant_info.details.nurseconnect.redial_sms_sent = self.im.user.answers.redial_sms_sent;
+            } else {
+                registrant_info.details.nurseconnect = {
+                    redial_sms_sent: self.im.user.answers.redial_sms_sent
+                };
+            }
+
             // operator.id will equal registrant.id when a self registration
             if (self.im.user.answers.operator.id !== self.im.user.answers.registrant.id) {
                 self.im.user.answers.registrant.details.nurseconnect.registered_by = self.im.user.answers.operator.id;
@@ -415,8 +465,8 @@ go.app = function() {
                 .all ([
                     // identity PATCH
                     is.update_identity(
-                        self.im.user.answers.registrant.id,
-                        self.im.user.answers.registrant
+                        registrant_info.id,
+                        registrant_info
                     ),
                     self.send_registration_thanks(self.im.user.answers.registrant_msisdn),
                     // POST registration
@@ -431,8 +481,8 @@ go.app = function() {
                 .all([
                     // identity PATCH
                     is.update_identity(
-                        self.im.user.answers.registrant.id,
-                        self.im.user.answers.registrant
+                        registrant_info.id,
+                        registrant_info
                     ),
                     self.send_registration_thanks(self.im.user.answers.registrant_msisdn),
                     // POST registration
