@@ -170,7 +170,7 @@ describe("app", function() {
         // end re-dial flow tests
 
         describe("dialback sms testing", function() {
-            it("redial sms not yet sent", function() {
+            it("send if redial sms not yet sent", function() {
                 return tester
                 .setup.user.addr("27820001001")
                 .inputs(
@@ -185,7 +185,7 @@ describe("app", function() {
                 })
                 .run();
             });
-            it("redial sms already sent", function() {
+            it("don't send if redial sms already sent", function() {
                 return tester
                 .setup.user.addr("27820001010")
                 .inputs(
