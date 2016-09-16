@@ -198,8 +198,8 @@ go.app = function() {
                 self.im.user.set_answer("registrant_msisdn", registrant_msisdn);
 
                 // init redial_sms_sent
-                if (identity.details.clinic) {
-                    self.im.user.set_answer("redial_sms_sent", identity.details.clinic.redial_sms_sent || false);
+                if (identity.details.public) {
+                    self.im.user.set_answer("redial_sms_sent", identity.details.public.redial_sms_sent || false);
                 } else {
                     self.im.user.set_answer("redial_sms_sent", false);
                 }

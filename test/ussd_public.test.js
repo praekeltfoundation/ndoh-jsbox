@@ -148,6 +148,55 @@ describe("app", function() {
             });
         });
 
+        describe("dialback sms testing", function() {
+            it("redial sms not yet sent", function() {
+                return tester
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_language - isiZulu
+                    , {session_event: 'close'}
+                )
+                .check.user.answer("redial_sms_sent", true)
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [125, 160, 163]);
+                })
+                .run();
+            });
+            it("redial sms already sent", function() {
+                return tester
+                .setup.user.addr("27820001011")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_registered_full - compliment
+                    , {session_event: 'close'}
+                )
+                .check.user.answer("redial_sms_sent", true)
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [53, 54, 127, 187]);
+                })
+                .run();
+            });
+            it("updates identity with redial_sms_sent 'true'", function() {
+                return tester
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_language - zul_ZA
+                    , "1"  // state_suspect_pregnancy - yes
+                    , {session_event: 'close'}
+                    , {session_event: 'new'}
+                    , "1"  // state_timed_out - continue
+                    , "1"  // state_consent - yes
+                )
+                .check.user.answer("redial_sms_sent", true)
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [17, 117, 125, 160, 163, 188]);
+                })
+                .run();
+            });
+        });
+
         describe("state_start", function() {
             describe("no previous momconnect registration", function() {
                 it("should go to state_language", function() {
@@ -401,7 +450,7 @@ describe("app", function() {
                         , "1"  // state_language - zul_ZA
                         , "1"  // state_suspect_pregnancy - yes
                         , "1"  // state_consent - yes
-                        , "1"  // state_opt_in - ues
+                        , "1"  // state_opt_in - yes
                     )
                     .check.interaction({
                         state: "state_end_success"

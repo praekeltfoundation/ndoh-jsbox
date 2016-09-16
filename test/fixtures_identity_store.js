@@ -11,6 +11,7 @@
     // (+27820001008) - existing identity with an active MomConnect Clinic subscription; completed servicerating
     // (+27820001009) - existing identity with an active MomConnect Clinic subscription; CLINIC dialback sms already sent
     // (+27820001010) - existing identity with an active MomConnect Clinic subscription; CHW dialback sms already sent
+    // (+27820001011) - existing identity with an active MomConnect Clinic subscription; PUBLIC dialback sms already sent
 
 module.exports = function() {
     return [
@@ -993,6 +994,86 @@ module.exports = function() {
                         "source": "chw",
                         "last_mc_reg_on": "chw",
                         "chw": {
+                            "redial_sms_sent": true
+                        }
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z"
+                }
+            },
+            "response": {}
+        },
+
+        // 187: get identity by msisdn +27820001011
+        {
+            "key": "get.is.msisdn.27820001011",
+            "repeatable": true,
+            "request": {
+                "url": 'http://is/api/v1/identities/search/',
+                "method": 'GET',
+                "params": {
+                    "details__addresses__msisdn": '+27820001011',
+                    "include_inactive": "False"
+                }
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001011/",
+                            "id": "cb245673-aa41-4302-ac47-00000001011",
+                            "version": 1,
+                            "details": {
+                                "default_addr_type": "msisdn",
+                                "addresses": {
+                                    "msisdn": {
+                                        "+27820001011": {"default": true}
+                                    }
+                                },
+                                "lang_code": "eng_ZA",
+                                "consent": true,
+                                "sa_id_no": "5101025009086",
+                                "mom_dob": "2051-01-02",
+                                "source": "clinic",
+                                "last_mc_reg_on": "clinic",
+                                "public": {
+                                    "redial_sms_sent": true
+                                }
+                            },
+                            "created_at": "2016-08-05T06:13:29.693272Z",
+                            "updated_at": "2016-08-05T06:13:29.693298Z"
+                        }
+                    ]
+                }
+            }
+        },
+
+        // 188: update identity cb245673-aa41-4302-ac47-00000001001
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/",
+                    "id": "cb245673-aa41-4302-ac47-00000001001",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001001": {"default": true}
+                            }
+                        },
+                        "lang_code": "zul_ZA",
+                        "consent": true,
+                        "source": "public",
+                        "last_mc_reg_on": "public",
+                        "public": {
                             "redial_sms_sent": true
                         }
                     },

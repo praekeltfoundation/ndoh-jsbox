@@ -707,13 +707,23 @@ module.exports = function() {
             }
         },
 
-        // 127:
+        // 127: create outbound message for cb245673-aa41-4302-ac47-00000001011
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820001011",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001011",
+                    "to_addr": "+27820001011",
+                    "content": "Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {}
+            }
         },
 
         // 128:

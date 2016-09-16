@@ -105,13 +105,44 @@ module.exports = function() {
             }
         },
 
-        // 53:
+        // 53: get active subscriptions for cb245673-aa41-4302-ac47-00000001011
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "get.sbm.identity.cb245673-aa41-4302-ac47-00000001011",
+            "repeatable": true,
+            "request": {
+                "url": 'http://sbm/api/v1/subscriptions/',
+                "method": 'GET',
+                "params": {
+                    "identity": 'cb245673-aa41-4302-ac47-00000001011',
+                    "active": 'True'
+                }
             },
-            'response': {}
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            'url': 'http://sbm/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-1011',
+                            'id': '51fcca25-2e85-4c44-subscription-1011',
+                            'version': 1,
+                            'identity': 'cb245673-aa41-4302-ac47-00000001011',
+                            'messageset': 21,
+                            'next_sequence_number': 1,
+                            'lang': "eng_ZA",
+                            'active': true,
+                            'completed': false,
+                            'schedule': 1,
+                            'process_status': 0,
+                            'metadata': {},
+                            'created_at': "2016-08-12T06:13:29.693272Z",
+                            'updated_at': "2016-08-12T06:13:29.693272Z"
+                        }
+                    ]
+                }
+            }
         },
 
         // 54: get messagesets
