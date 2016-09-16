@@ -39,6 +39,37 @@ go.app = function() {
                 self.im.config.services.message_sender.token,
                 self.im.config.services.message_sender.url
             );
+
+            // evaluate whether dialback sms needs to be sent on session close
+            self.im.on('session:close', function(e) {
+                return self.dial_back(e);
+            });
+        };
+
+        self.dial_back = function(e) {
+            if (e.user_terminated && !self.im.user.answers.redial_sms_sent) {
+                return self
+                .send_redial_sms()
+                .then(function() {
+                    self.im.user.answers.redial_sms_sent = true;
+                    return ;
+                });
+            } else {
+                return ;
+            }
+        };
+
+        self.send_redial_sms = function() {
+            return ms.
+            create_outbound_message(
+                self.im.user.answers.registrant.id,
+                self.im.user.answers.registrant_msisdn,
+                self.im.user.i18n($(
+                    "Please dial back in to {{ USSD_number }} to complete the pregnancy registration."
+                ).context({
+                    USSD_number: self.im.config.channel
+                }))
+            );
         };
 
         self.number_opted_out = function(identity, msisdn) {
@@ -58,6 +89,14 @@ go.app = function() {
 
             if (!("source" in registrant_info.details)) {
                 registrant_info.details.source = "public";
+            }
+
+            if (registrant_info.details.public) {
+                registrant_info.details.public.redial_sms_sent = self.im.user.answers.redial_sms_sent;
+            } else {
+                registrant_info.details.public = {
+                    redial_sms_sent: self.im.user.answers.redial_sms_sent
+                };
             }
 
             registrant_info.details.last_mc_reg_on = "public";
@@ -145,8 +184,6 @@ go.app = function() {
             });
         });
 
-        // TODO #49: dialback sms sending
-
         self.add("state_start", function(name) {  // interstitial state
             self.im.user.set_answers = {};
             var registrant_msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
@@ -156,6 +193,13 @@ go.app = function() {
             .then(function(identity) {
                 self.im.user.set_answer("registrant", identity);
                 self.im.user.set_answer("registrant_msisdn", registrant_msisdn);
+
+                // init redial_sms_sent
+                if (identity.details.clinic) {
+                    self.im.user.set_answer("redial_sms_sent", identity.details.clinic.redial_sms_sent || false);
+                } else {
+                    self.im.user.set_answer("redial_sms_sent", false);
+                }
 
                 if (!("last_mc_reg_on" in self.im.user.answers.registrant.details)) {
                     return self.states.create('state_language');

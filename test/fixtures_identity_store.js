@@ -673,7 +673,10 @@ module.exports = function() {
                         "lang_code": "zul_ZA",
                         "consent": true,
                         "source": "public",
-                        "last_mc_reg_on": "public"
+                        "last_mc_reg_on": "public",
+                        "public": {
+                            "redial_sms_sent": false
+                        }
                     },
                     "created_at": "2016-08-05T06:13:29.693272Z",
                     "updated_at": "2016-08-05T06:13:29.693298Z"
@@ -712,7 +715,10 @@ module.exports = function() {
                         },
                         "lang_code": "zul_ZA",
                         "consent": true,
-                        "last_mc_reg_on": "public"
+                        "last_mc_reg_on": "public",
+                        "public": {
+                            "redial_sms_sent": false
+                        }
                     },
                     "created_at": "2016-08-05T06:13:29.693272Z",
                     "updated_at": "2016-08-05T06:13:29.693298Z"
