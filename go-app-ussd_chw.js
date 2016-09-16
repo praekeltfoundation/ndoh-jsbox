@@ -208,7 +208,7 @@ go.app = function() {
                     next: function(choice) {
                         if (choice.value === "yes") {
                             // init redial_sms_sent
-                            if (identity.details.clinic) {
+                            if (identity.details.chw) {
                                 self.im.user.set_answer("redial_sms_sent", identity.details.chw.redial_sms_sent || false);
                             } else {
                                 self.im.user.set_answer("redial_sms_sent", false);
@@ -301,7 +301,7 @@ go.app = function() {
                     .get_or_create_identity({"msisdn": registrant_msisdn})
                     .then(function(identity) {
                         // init redial_sms_sent
-                        if (identity.details.clinic) {
+                        if (identity.details.chw) {
                             self.im.user.set_answer("redial_sms_sent", identity.details.chw.redial_sms_sent || false);
                         } else {
                             self.im.user.set_answer("redial_sms_sent", false);

@@ -169,6 +169,59 @@ describe("app", function() {
         });
         // end re-dial flow tests
 
+        describe("dialback sms testing", function() {
+            it("redial sms not yet sent", function() {
+                return tester
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_start - yes
+                    , "1"  // state_consent - yes
+                    , {session_event: 'close'}
+                )
+                .check.user.answer("redial_sms_sent", true)
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [124, 160, 163]);
+                })
+                .run();
+            });
+            it("redial sms already sent", function() {
+                return tester
+                .setup.user.addr("27820001010")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_start - yes
+                    , "1"  // state_consent - yes
+                    , {session_event: 'close'}
+                )
+                .check.user.answer("redial_sms_sent", true)
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [185]);
+                })
+                .run();
+            });
+            it("updates identity with redial_sms_sent 'true'", function() {
+                return tester
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_start - yes
+                    , "1"  // state_consent - yes
+                    , {session_event: 'close'}
+                    , {session_event: 'new'}
+                    , '1'  // state_timed_out - continue
+                    , '1'  // state_id_type - sa id
+                    , '5101015009088'  // state_sa_id
+                    , '4'  // state_language - english
+                )
+                .check.user.answer("redial_sms_sent", true)
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [22, 117, 124, 160, 163, 186]);
+                })
+                .run();
+            });
+        });
+
         describe("when the user starts a session", function() {
             it("should check if no. belongs to pregnant woman", function() {
                 return tester
