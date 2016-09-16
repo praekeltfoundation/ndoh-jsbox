@@ -595,7 +595,7 @@ module.exports = function() {
 
         // 121: create outbound message for cb245673-aa41-4302-ac47-00000001002
         {
-            "key": "post.ms.outbount.27820001002",
+            "key": "post.ms.outbound.27820001002",
             "request": {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
@@ -614,7 +614,7 @@ module.exports = function() {
 
         // 122: create outbound message for cb245673-aa41-4302-ac47-00000001002
         {
-            "key": "post.ms.outbount.27820001002",
+            "key": "post.ms.outbound.27820001002",
             "request": {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
@@ -631,13 +631,23 @@ module.exports = function() {
             }
         },
 
-        // 123:
+        // 123: create outbound message (dialback) for cb245673-aa41-4302-ac47-00000001001
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820001001",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001001",
+                    "to_addr": "+27820001001",
+                    "content": "Please dial back in to *120*550*2# to complete the pregnancy registration.",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {}
+            }
         },
 
         // 124:

@@ -41,6 +41,39 @@ go.app = function() {
                 self.im.config.services.message_sender.token,
                 self.im.config.services.message_sender.url
             );
+
+            // evaluate whether dialback sms has been sent on session close
+            self.im.on('session:close', function(e) {
+                return self.dial_back(e);
+            });
+        };
+
+        self.dial_back = function(e) {
+            var redial_sms_sent = self.im.user.answers.redial_sms_sent;
+
+            if (e.user_terminated && !redial_sms_sent) {
+                return self
+                .send_redial_sms()
+                .then(function() {
+                    self.im.user.answers.redial_sms_sent = true;
+                    return ;
+                });
+            } else {
+                return ;
+            }
+        };
+
+        self.send_redial_sms = function() {
+            return ms.
+            create_outbound_message(
+                self.im.user.answers.operator.id,
+                self.im.user.answers.operator_msisdn,
+                self.im.user.i18n($(
+                    "Please dial back in to {{ USSD_number }} to complete the pregnancy registration."
+                ).context({
+                    USSD_number: self.im.config.channel
+                }))
+            );
         };
 
         self.number_opted_out = function(identity, msisdn) {
@@ -181,6 +214,7 @@ go.app = function() {
         self.states.add('state_timed_out', function(name, creator_opts) {
             var msisdn = self.im.user.answers.registrant_msisdn || self.im.user.answers.operator_msisdn;
             var readable_no = utils.readable_msisdn(msisdn, '27');
+
             return new ChoiceState(name, {
                 question: $(
                     'Would you like to complete pregnancy registration for {{ num }}?'
@@ -207,6 +241,16 @@ go.app = function() {
             .then(function(identity) {
                 self.im.user.set_answer("operator", identity);
                 self.im.user.set_answer("operator_msisdn", operator_msisdn);
+
+                // init redial_sms_sent
+                if (identity.details.clinic) {
+                    self.im.user.set_answer("redial_sms_sent", identity.details.clinic.redial_sms_sent || false);
+                } else {
+                    identity.details.clinic = {};
+                    identity.details.clinic.redial_sms_sent = false;
+                    self.im.user.set_answer("redial_sms_sent", false);
+                }
+
                 return new ChoiceState(name, {
                     question: $(
                         'Welcome to The Department of Health\'s ' +
