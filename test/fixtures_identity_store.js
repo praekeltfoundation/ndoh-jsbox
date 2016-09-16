@@ -9,6 +9,7 @@
     // (+27820001006) - existing identity with an inactive MomConnect subscription
     // (+27820001007) - existing identity with an active MomConnect CHW subscription
     // (+27820001008) - existing identity with an active MomConnect Clinic subscription; completed servicerating
+    // (+27820001009) - existing identity with an active MomConnect Clinic subscription; dialback sms already sent
 
 module.exports = function() {
     return [
@@ -369,7 +370,10 @@ module.exports = function() {
                         "passport_no": "12345",
                         "passport_origin": "zw",
                         "source": "clinic",
-                        "last_mc_reg_on": "clinic"
+                        "last_mc_reg_on": "clinic",
+                        "clinic": {
+                            "redial_sms_sent": false
+                        }
                     },
                     "created_at": "2016-08-05T06:13:29.693272Z",
                     "updated_at": "2016-08-05T06:13:29.693298Z"
@@ -821,6 +825,87 @@ module.exports = function() {
                     ]
                 }
             }
+        },
+
+        // 183: get identity by msisdn +27820001009
+        {
+            "key": "get.is.msisdn.27820001009",
+            "repeatable": true,
+            "request": {
+                "url": 'http://is/api/v1/identities/search/',
+                "method": 'GET',
+                "params": {
+                    "details__addresses__msisdn": '+27820001009',
+                    "include_inactive": "False"
+                }
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001009/",
+                            "id": "cb245673-aa41-4302-ac47-00000001009",
+                            "version": 1,
+                            "details": {
+                                "default_addr_type": "msisdn",
+                                "addresses": {
+                                    "msisdn": {
+                                        "+27820001009": {"default": true}
+                                    }
+                                },
+                                "lang_code": "eng_ZA",
+                                "consent": true,
+                                "sa_id_no": "5101025009086",
+                                "mom_dob": "2051-01-02",
+                                "source": "clinic",
+                                "last_mc_reg_on": "clinic",
+                                "clinic": {
+                                    "redial_sms_sent": true
+                                }
+                            },
+                            "created_at": "2016-08-05T06:13:29.693272Z",
+                            "updated_at": "2016-08-05T06:13:29.693298Z"
+                        }
+                    ]
+                }
+            }
+        },
+
+        // 184: update identity cb245673-aa41-4302-ac47-00000001001
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/",
+                    "id": "cb245673-aa41-4302-ac47-00000001001",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001001": {"default": true}
+                            }
+                        },
+                        "lang_code": "eng_ZA",
+                        "consent": true,
+                        "mom_dob": "1981-01-14",
+                        "source": "clinic",
+                        "last_mc_reg_on": "clinic",
+                        "clinic": {
+                            "redial_sms_sent": true
+                        }
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z"
+                }
+            },
+            "response": {}
         },
 
     ];

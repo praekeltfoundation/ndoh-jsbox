@@ -179,6 +179,64 @@ describe("app", function() {
             });
         });
 
+        describe("dialback sms testing", function() {
+            it("redial sms not yet sent", function() {
+                return tester
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_start - yes
+                    , "1"  // state_consent - yes
+                    , {session_event: 'close'}
+                )
+                .check.user.answer("redial_sms_sent", true)
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [123, 160, 163]);
+                })
+                .run();
+            });
+            it("redial sms already sent", function() {
+                return tester
+                .setup.user.addr("27820001009")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_start - yes
+                    , "1"  // state_consent - yes
+                    , {session_event: 'close'}
+                )
+                .check.user.answer("redial_sms_sent", true)
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [183]);
+                })
+                .run();
+            });
+            it("updates identity with redial_sms_sent 'true'", function() {
+                return tester
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_start - yes
+                    , "1"  // state_consent - yes
+                    , {session_event: 'close'}
+                    , {session_event: 'new'}
+                    , "1"  // state_timed_out - continue
+                    , "123456"  // state_clinic_code
+                    , "2"  // state_due_date_month - may
+                    , "10"  // state_due_date_day
+                    , "3"  // state_id_type - none
+                    , "1981"  // state_birth_year
+                    , "1"  // state_birth_month - january
+                    , "14"  // state_birth_day
+                    , "4"  // state_language - english
+                )
+                .check.user.answer("redial_sms_sent", true)
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [4, 116, 123, 154, 160, 163, 184]);
+                })
+                .run();
+            });
+        });
+
         describe("session start", function() {
             it("should display welcome message", function () {
                 return tester
