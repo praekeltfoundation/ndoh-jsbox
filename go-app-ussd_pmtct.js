@@ -758,7 +758,7 @@ go.app = function() {
                             hub.create_change(pmtct_loss_optout),
                             is.optout(optout_info),
                             self.deactivateVumiSubscriptions(self.im, self.im.user.answers.msisdn),
-                            self.optoutVumiAddress(self.im, self.im.user.answers.msisdn)
+                            // self.optoutVumiAddress(self.im, self.im.user.answers.msisdn)
                         ])
                         .then(function() {
                             return "state_end_loss_optout";
