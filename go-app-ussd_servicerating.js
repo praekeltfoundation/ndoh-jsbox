@@ -64,7 +64,7 @@ go.app = function() {
 
                 // get all the identity's serviceratings
                 return sr
-                .get_servicerating_status({
+                .list_serviceratings({
                     identity: identity.id
                 })
                 .then(function(status_data) {
@@ -74,7 +74,7 @@ go.app = function() {
                     } else {
                         // get only the incomplete, non-expired serviceratings
                         return sr
-                        .get_servicerating_status({
+                        .list_serviceratings({
                             identity: identity.id,
                             completed: "False",
                             expired: "False"
