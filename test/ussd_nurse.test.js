@@ -418,6 +418,58 @@ describe("app", function() {
             });
         });
 
+        describe("dialback sms testing", function() {
+            it("redial sms not yet sent", function() {
+                return tester
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , '1'  // state_not_subscribed - self registration
+                    , '1'  // state_subscribe_self - consent
+                    , {session_event: 'close'}
+                )
+                .check.user.answer("redial_sms_sent", true)
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [128, 160, 163]);
+                })
+                .run();
+            });
+            it("redial sms already sent", function() {
+                return tester
+                .setup.user.addr("27820001003")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_start - yes
+                    , "1"  // state_consent - yes
+                    , {session_event: 'close'}
+                )
+                .check.user.answer("redial_sms_sent", true)
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [52, 54, 162]);
+                })
+                .run();
+            });
+            it("updates identity with redial_sms_sent 'true'", function() {
+                return tester
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , '1'  // state_not_subscribed - self registration
+                    , '1'  // state_subscribe_self - consent
+                    , {session_event: 'close'}
+                    , {session_event: 'new'}
+                    , '1'  // state_timed_out - continue
+                    , '123456'  // state_faccode
+                    , '1'  // state_facname - confirm
+                )
+                .check.user.answer("redial_sms_sent", true)
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [13, 100, 128, 150, 160, 163, 189]);
+                })
+                .run();
+            });
+        });
+
         // Unique User Metrics
         describe.skip("when a new unique user logs on", function() {
             it("should increment the no. of unique users metric by 1", function() {
