@@ -2,6 +2,7 @@ go.app = function() {
     var vumigo = require("vumigo_v02");
     var SeedJsboxUtils = require('seed-jsbox-utils');
     var Q = require('q');
+    var _ = require('lodash');
     var App = vumigo.App;
     var EndState = vumigo.states.EndState;
     var ChoiceState = vumigo.states.ChoiceState;
@@ -47,7 +48,22 @@ go.app = function() {
         };
 
         self.dial_back = function(e) {
-            if (e.user_terminated && !self.im.user.answers.redial_sms_sent) {
+            var dial_back_states = [
+                'state_language',
+                'state_register_info',
+                'state_suspect_pregnancy',
+                'state_id_type',
+                'state_sa_id',
+                'state_passport_origin',
+                'state_passport_no',
+                'state_birth_year',
+                'state_birth_month',
+                'state_birth_day'
+            ];
+
+            if (e.user_terminated
+                && !self.im.user.answers.redial_sms_sent
+                && _.contains(dial_back_states, e.im.state.name)) {
                 return self
                 .send_redial_sms()
                 .then(function() {

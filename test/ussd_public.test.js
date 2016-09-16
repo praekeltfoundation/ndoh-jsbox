@@ -177,7 +177,7 @@ describe("app", function() {
                 })
                 .run();
             });
-            it("updates identity with redial_sms_sent 'true'", function() {
+            it("updates identity with redial_sms_sent 'false'", function() {
                 return tester
                 .setup.user.addr("27820001001")
                 .inputs(
@@ -189,7 +189,25 @@ describe("app", function() {
                     , "1"  // state_timed_out - continue
                     , "1"  // state_consent - yes
                 )
-                .check.user.answer("redial_sms_sent", true)
+                .check.user.answer("redial_sms_sent", false)  // session closed on non-dialback state
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [17, 117, 160, 163, 178]);
+                })
+                .run();
+            });
+            it("updates identity with redial_sms_sent 'true'", function() {
+                return tester
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_language - zul_ZA
+                    , {session_event: 'close'}
+                    , {session_event: 'new'}
+                    , "1"  // state_suspect_pregnancy - yes
+                    , "1"  // state_timed_out - continue
+                    , "1"  // state_consent - yes
+                )
+                .check.user.answer("redial_sms_sent", true)  // session closed on dialback state
                 .check(function(api) {
                     utils.check_fixtures_used(api, [17, 117, 125, 160, 163, 188]);
                 })
