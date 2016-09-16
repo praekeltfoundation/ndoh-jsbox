@@ -226,8 +226,6 @@ go.app = function() {
             });
         });
 
-        // TODO #49: dialback sms sending
-
         self.add("state_start", function(name) {
             self.im.user.set_answers = {};
             var operator_msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
