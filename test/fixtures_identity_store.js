@@ -743,7 +743,10 @@ module.exports = function() {
                         "source": "clinic",
                         "last_mc_reg_on":"chw",
                         "passport_no":"12345",
-                        "passport_origin":"zw"
+                        "passport_origin":"zw",
+                        "chw": {
+                            "redial_sms_sent": false
+                        }
                     },
                     "created_at": "2016-08-05T06:13:29.693272Z",
                     "updated_at": "2016-08-05T06:13:29.693298Z"
@@ -773,7 +776,10 @@ module.exports = function() {
                         "sa_id_no": "5101015009088",
                         "mom_dob": "1951-01-01",
                         "source": "chw",
-                        "last_mc_reg_on":"chw"
+                        "last_mc_reg_on":"chw",
+                        "chw": {
+                            "redial_sms_sent": false
+                        }
                     },
                     "created_at": "2016-08-05T06:13:29.693272Z",
                     "updated_at": "2016-08-05T06:13:29.693298Z"

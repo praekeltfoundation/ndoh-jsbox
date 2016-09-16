@@ -42,7 +42,7 @@ go.app = function() {
                 self.im.config.services.message_sender.url
             );
 
-            // evaluate whether dialback sms has been sent on session close
+            // evaluate whether dialback sms needs to be sent on session close
             self.im.on('session:close', function(e) {
                 return self.dial_back(e);
             });
@@ -153,7 +153,6 @@ go.app = function() {
                     redial_sms_sent: self.im.user.answers.redial_sms_sent
                 };
             }
-
 
             registrant_info.details.last_mc_reg_on = "clinic";
 
