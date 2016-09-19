@@ -126,9 +126,9 @@ go.app = function() {
                     case "STOP":
                         self.im.user.set_answer("keyword", "stop");
                         return self.states.create("state_check_identity");
-                    case "MOM":
-                        self.im.user.set_answer("keyword", "mom");
-                        return self.states.create("state_check_identity");
+                    // case "MOM":
+                    //     self.im.user.set_answer("keyword", "mom");
+                    //     return self.states.create("state_check_identity");
                     default:
                         return self.states.create("state_default");
                 }
@@ -141,11 +141,11 @@ go.app = function() {
                 .then(function(identities) {
                     if (identities.results.length > 0) {
                         self.im.user.set_answer('identity_id', identities.results[0].id);
-                        if (self.im.user.answers.keyword === 'stop') {
+                        // if (self.im.user.answers.keyword === 'stop') {
                             return self.states.create('state_opt_out_enter');
-                        } else if (self.im.user.answers.keyword === 'mom') {
-                            return self.states.create('state_opt_in_momconnect');
-                        }
+                        // } else if (self.im.user.answers.keyword === 'mom') {
+                        //     return self.states.create('state_opt_in_momconnect');
+                        // }
                     } else {
                         return self.states.create('state_end_unrecognised');
                     }
@@ -188,15 +188,15 @@ go.app = function() {
                 });
         });
 
-        self.states.add('state_opt_in_momconnect', function(name) {
-            // re-activate the subscriptions that were deactivated by STOP message
-        });
+        // self.states.add('state_opt_in_momconnect', function(name) {
+        //     // re-activate the subscriptions that were deactivated by STOP message
+        // });
 
         self.states.add('state_opt_out', function(name) {
             return new EndState(name, {
-                text: $("If you only wanted to stop the messages about HIV, " +
-                    "please reply MOM to this message and you will still receive " +
-                    "MomConnect messages."),
+                text: $("You will no longer receive messages about HIV. Reply STOP to a " +
+                        "MomConnect message if you also want to stop receiving messages " +
+                        "about your pregnancy or baby."),
                 next: 'state_start'
             });
         });

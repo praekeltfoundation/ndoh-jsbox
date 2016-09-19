@@ -83,9 +83,9 @@ describe("app", function() {
                     .check.interaction({
                         state: 'state_opt_out',
                         reply:
-                            "If you only wanted to stop the messages about HIV, " +
-                            "please reply MOM to this message and you will still " +
-                            "receive MomConnect messages."
+                            "You will no longer receive messages about HIV. Reply STOP to a " +
+                            "MomConnect message if you also want to stop receiving messages " +
+                            "about your pregnancy or baby."
                     })
                     .check(function(api) {
                         // utils.check_fixtures_used(api, [0, 58, 59, 60, 77, 78]);
