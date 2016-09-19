@@ -23,6 +23,10 @@ describe("app", function() {
                 .setup.char_limit(182)
                 .setup.config.app({
                     name: 'ussd_chw',
+                    logging: "off",
+                    no_timeout_redirects: [
+                        "states_start"
+                    ],
                     env: 'test',
                     testing: 'true',
                     testing_today: "2014-04-04",
@@ -38,10 +42,6 @@ describe("app", function() {
                             url: 'http://is/api/v1/',
                             token: 'test IdentityStore'
                         },
-                        stage_based_messaging: {
-                            url: 'http://sbm/api/v1/',
-                            token: 'test StageBasedMessaging'
-                        },
                         hub: {
                             url: 'http://hub/api/v1/',
                             token: 'test Hub'
@@ -51,9 +51,6 @@ describe("app", function() {
                             token: 'test MessageSender'
                         }
                     },
-                    no_timeout_redirects: [
-                        "states_start"
-                    ]
                 })
                 .setup(function(api) {
                     // add fixtures for services used
