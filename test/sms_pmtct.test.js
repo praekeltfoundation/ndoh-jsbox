@@ -91,7 +91,8 @@ describe("app", function() {
                             "receive MomConnect messages."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [0, 58, 59, 60, 77, 78]);
+                        // utils.check_fixtures_used(api, [0, 58, 59, 60, 77, 78]);
+                        utils.check_fixtures_used(api, [0, 77, 78]);
                     })
                     .run();
             });

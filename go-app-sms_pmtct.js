@@ -124,6 +124,10 @@ go.app = function() {
                 // get the first word, remove non-alphanumerics, capitalise
                 switch (utils.get_clean_first_word(self.im.msg.content)) {
                     case "STOP":
+                        self.im.user.set_answer("keyword", "stop");
+                        return self.states.create("state_check_identity");
+                    case "MOM":
+                        self.im.user.set_answer("keyword", "mom");
                         return self.states.create("state_check_identity");
                     default:
                         return self.states.create("state_default");
@@ -137,7 +141,11 @@ go.app = function() {
                 .then(function(identities) {
                     if (identities.results.length > 0) {
                         self.im.user.set_answer('identity_id', identities.results[0].id);
-                        return self.states.create('state_opt_out_enter');
+                        if (self.im.user.answers.keyword === 'stop') {
+                            return self.states.create('state_opt_out_enter');
+                        } else if (self.im.user.answers.keyword === 'mom') {
+                            return self.states.create('state_opt_in_momconnect');
+                        }
                     } else {
                         return self.states.create('state_end_unrecognised');
                     }
@@ -173,11 +181,15 @@ go.app = function() {
                 .all([
                     hub.create_change(optout_change),
                     is.optout(optout_info),
-                    self.deactivate_store_vumi_subscriptions(self.im.user.answers.msisdn)
+                    // self.deactivate_store_vumi_subscriptions(self.im.user.answers.msisdn)
                 ])
                 .then(function() {
                     return self.states.create('state_opt_out');
                 });
+        });
+
+        self.states.add('state_opt_in_momconnect', function(name) {
+            // re-activate the subscriptions that were deactivated by STOP message
         });
 
         self.states.add('state_opt_out', function(name) {
