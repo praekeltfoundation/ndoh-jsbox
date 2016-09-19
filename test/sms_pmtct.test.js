@@ -1,9 +1,7 @@
 var vumigo = require('vumigo_v02');
 var fixtures = require('./fixtures_pmtct');
-var AppTester = vumigo.AppTester;
-var assert = require('assert');
-
 var SeedJsboxUtils = require('seed-jsbox-utils');
+var AppTester = vumigo.AppTester;
 var utils = SeedJsboxUtils.utils;
 
 describe("app", function() {

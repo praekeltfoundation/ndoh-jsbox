@@ -38,10 +38,6 @@ describe("app", function() {
                             url: 'http://is/api/v1/',
                             token: 'test IdentityStore'
                         },
-                        stage_based_messaging: {
-                            url: 'http://sbm/api/v1/',
-                            token: 'test StageBasedMessaging'
-                        },
                         hub: {
                             url: 'http://hub/api/v1/',
                             token: 'test Hub'
