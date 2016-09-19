@@ -34,6 +34,13 @@ describe("app", function() {
                             url: 'http://hub.localhost:8001/api/v1/',
                             token: 'test Hub'
                         }
+                    },
+                    vumi: {
+                        token: "abcde",
+                        contact_url: "https://contacts/api/v1/go/",
+                        username: "test_username",
+                        api_key: "test_api_key",
+                        subscription_url: "https://subscriptions/api/v1/go/"
                     }
                 })
                 .setup(function(api) {
@@ -84,7 +91,7 @@ describe("app", function() {
                             "receive MomConnect messages."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [0, 77, 78]);
+                        utils.check_fixtures_used(api, [0, 58, 59, 60, 77, 78]);
                     })
                     .run();
             });

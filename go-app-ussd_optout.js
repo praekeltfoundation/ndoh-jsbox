@@ -24,6 +24,7 @@ go.app = function() {
         // variables for services
         var is;
         var sbm;
+        var hub;
 
         self.init = function() {
             // initialising services
