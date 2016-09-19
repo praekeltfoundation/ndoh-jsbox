@@ -23,7 +23,7 @@ describe("app", function() {
             tester
                 .setup.char_limit(182)
                 .setup.config.app({
-                    name: 'ussd_nurse',
+                    name: 'ussd_clinic',
                     testing_today: "2014-04-04",
                     logging: "off",
                     no_timeout_redirects: ["state_start"],

@@ -22,9 +22,6 @@ describe("app", function() {
                     testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',
                     pmtct_ussd_channel: "*134*550*10#",
                     logging: "off",
-                    endpoints: {
-                        "sms": {"delivery_class": "sms"}
-                    },
                     services: {
                         identity_store: {
                             url: 'http://is.localhost:8001/api/v1/',
