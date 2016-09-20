@@ -30,13 +30,6 @@ describe("app", function() {
                         "state_end_success", "state_registered_full", "state_registered_not_full",
                         "state_end_compliment", "state_end_complaint", "state_end_go_clinic"],
                     channel: "*120*550#",
-                    optout_channel: "*120*550*1#",
-                    jembi: {
-                        username: 'foo',
-                        password: 'bar',
-                        url: 'http://test/v2/',
-                        url_json: 'http://test/v2/json/'
-                    },
                     services: {
                         identity_store: {
                             url: 'http://is/api/v1/',

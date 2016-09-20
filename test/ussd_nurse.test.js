@@ -26,18 +26,12 @@ describe("app", function() {
                 .setup.char_limit(182)
                 .setup.config.app({
                     name: 'ussd_nurse',
-                    env: 'test',
-                    // metric_store: 'test_metric_store',
                     testing_today: 'April 4, 2014 07:07:07',
                     logging: "off",
-                    endpoints: {
-                        "sms": {"delivery_class": "sms"}
-                    },
                     channel: "*120*550*5#",
                     jembi: {
                         username: 'foo',
                         password: 'bar',
-                        url: 'http://test/v2/',
                         url_json: 'http://test/v2/json/'
                     },
                     services: {

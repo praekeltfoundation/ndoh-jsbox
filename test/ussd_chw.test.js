@@ -27,12 +27,6 @@ describe("app", function() {
                     testing: 'true',
                     testing_today: "2014-04-04",
                     channel: "*120*550*3#",
-                    jembi: {
-                        username: 'foo',
-                        password: 'bar',
-                        url: 'http://test/v2/',
-                        url_json: 'http://test/v2/json/'
-                    },
                     services: {
                         identity_store: {
                             url: 'http://is/api/v1/',

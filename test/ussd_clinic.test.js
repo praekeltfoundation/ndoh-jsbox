@@ -33,7 +33,6 @@ describe("app", function() {
                     jembi: {
                         username: 'foo',
                         password: 'bar',
-                        url: 'http://test/v2/',
                         url_json: 'http://test/v2/json/'
                     },
                     services: {

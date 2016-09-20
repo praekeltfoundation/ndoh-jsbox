@@ -1,9 +1,7 @@
 var vumigo = require('vumigo_v02');
 var fixtures = require('./fixtures_pmtct');
-var AppTester = vumigo.AppTester;
-var assert = require('assert');
-
 var SeedJsboxUtils = require('seed-jsbox-utils');
+var AppTester = vumigo.AppTester;
 var utils = SeedJsboxUtils.utils;
 
 describe("app", function() {
@@ -19,14 +17,10 @@ describe("app", function() {
                 .setup.char_limit(160)
                 .setup.config.app({
                     name: 'sms_pmtct',
-                    testing: 'true',
+                    logging: "off",
                     testing_today: 'August 2, 2016 13:30:07',
                     testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',
                     pmtct_ussd_channel: "*134*550*10#",
-                    logging: "off",
-                    endpoints: {
-                        "sms": {"delivery_class": "sms"}
-                    },
                     services: {
                         identity_store: {
                             url: 'http://is.localhost:8001/api/v1/',
