@@ -3,16 +3,17 @@ go;
 
 go.app = function() {
     var vumigo = require("vumigo_v02");
+    var moment = require('moment');
+    var _ = require('lodash');
     var App = vumigo.App;
     var EndState = vumigo.states.EndState;
-    // var Q = require("q");
     var JsonApi = vumigo.http.api.JsonApi;
 
     var SeedJsboxUtils = require('seed-jsbox-utils');
     var IdentityStore = SeedJsboxUtils.IdentityStore;
     var StageBasedMessaging = SeedJsboxUtils.StageBasedMessaging;
     var Hub = SeedJsboxUtils.Hub;
-    // var MessageSender = SeedJsboxUtils.MessageSender;
+
     var utils = SeedJsboxUtils.utils;
 
     var GoNDOH = App.extend(function(self) {
@@ -43,6 +44,38 @@ go.app = function() {
                 self.im.config.services.hub.token,
                 self.im.config.services.hub.url
             );
+        };
+
+        // instead of utils.get_today that does not currently handle hh:mm:ss
+        self.get_today = function(config) {
+            if (config) {
+                return new moment(config.testing_today, 'YYYY-MM-DD hh:mm:ss');
+            } else {
+                return new moment();
+            }
+        };
+
+        self.is_weekend = function(config) {
+            var today = self.get_today(config);
+            var moment_today = moment.utc(today);
+            return moment_today.format('dddd') === 'Saturday' ||
+              moment_today.format('dddd') === 'Sunday';
+        };
+
+        self.is_public_holiday = function(config) {
+            var today = self.get_today(config);
+            var moment_today = moment.utc(today);
+            var date_as_string = moment_today.format('YYYY-MM-DD');
+            return _.contains(config.public_holidays, date_as_string);
+        };
+
+        self.is_out_of_hours = function(config) {
+            var today = self.get_today(config);
+            var moment_today = moment.utc(today);
+            // get business hours from config, -2 for utc to local time conversion
+            var opening_time = Math.min.apply(null, config.helpdesk_hours) - 2;
+            var closing_time = Math.max.apply(null, config.helpdesk_hours) - 2;
+            return (moment_today.hour() < opening_time || moment_today.hour() >= closing_time);
         };
 
         self.states.add("states_start", function() {
@@ -163,9 +196,31 @@ go.app = function() {
         });
 
         self.states.add("states_default", function(name) {
+            var out_of_hours_text =
+                $("The helpdesk operates from 8am to 4pm Mon to Fri. " +
+                  "Responses will be delayed outside of these hrs. In an " +
+                  "emergency please go to your health provider immediately.");
+
+            var weekend_public_holiday_text =
+                $("The helpdesk is not currently available during weekends " +
+                  "and public holidays. In an emergency please go to your " +
+                  "health provider immediately.");
+
+            var business_hours_text =
+                $("Thank you for your message, it has been captured and you will receive a " +
+                "response soon. Kind regards. MomConnect.");
+
+            if (self.is_out_of_hours(self.im.config)) {
+                text = out_of_hours_text;
+            } else if (self.is_weekend(self.im.config) ||
+              self.is_public_holiday(self.im.config)) {
+                text = weekend_public_holiday_text;
+            } else {
+                text = business_hours_text;
+            }
+
             return new EndState(name, {
-                text: $("Thank you for your message, it has been captured and you will receive a " +
-                "response soon. Kind regards. MomConnect."),
+                text: text,
                 next: "states_start"
             });
         });
