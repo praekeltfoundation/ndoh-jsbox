@@ -301,7 +301,7 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (choice.value === 'yes') {
-                        opted_out = self.number_opted_out(
+                        var opted_out = self.number_opted_out(
                             self.im.user.answers.registrant,
                             self.im.user.answers.registrant_msisdn);
                         return opted_out ? 'state_opt_in' : 'state_save_subscription';
