@@ -170,7 +170,7 @@ describe("app", function() {
                 })
                 .run();
             });
-            it("updates identity with redial_sms_sent 'false'", function() {
+            it("don't send when timeout occurs on a non-dialback state", function() {
                 return tester
                 .setup.user.addr("27820001001")
                 .inputs(
