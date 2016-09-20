@@ -745,40 +745,80 @@ module.exports = function() {
             }
         },
 
-        // 129:
+        // 129: create outbound message for cb245673-aa41-4302-ac47-00000001008
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820001008",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001008",
+                    "to_addr": "+27820001008",
+                    "content": "Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {}
+            }
         },
 
-        // 130:
+        // 130: create outbound message (chw dialback) for cb245673-aa41-4302-ac47-00000001008
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820001008",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001008",
+                    "to_addr": "+27820001008",
+                    "content": "Please dial back in to *120*550*3# to complete the pregnancy registration.",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {}
+            }
         },
 
-        // 131:
+        // 131: create outbound message (clinic dialback) for cb245673-aa41-4302-ac47-00000001008
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820001008",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001008",
+                    "to_addr": "+27820001008",
+                    "content": "Please dial back in to *120*550*2# to complete the pregnancy registration.",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {}
+            }
         },
 
-        // 132:
+        // 132: create outbound message (nurseconnect dialback) for cb245673-aa41-4302-ac47-00000001008
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820001008",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001008",
+                    "to_addr": "+27820001008",
+                    "content": "Please dial back in to *120*550*5# to complete the NurseConnect registration.",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {}
+            }
         },
 
         // 133:

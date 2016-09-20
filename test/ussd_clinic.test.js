@@ -179,7 +179,7 @@ describe("app", function() {
         });
 
         describe("dialback sms testing", function() {
-            it("send if redial sms not yet sent", function() {
+            it("send if redial sms not yet sent (identity loads without redial_sms_sent defined)", function() {
                 return tester
                 .setup.user.addr("27820001001")
                 .inputs(
@@ -194,7 +194,7 @@ describe("app", function() {
                 })
                 .run();
             });
-            it("don't send if redial sms already sent", function() {
+            it("don't send if redial sms already sent (identity loads with redial_sms_sent set as 'true')", function() {
                 return tester
                 .setup.user.addr("27820001009")
                 .inputs(
@@ -209,7 +209,22 @@ describe("app", function() {
                 })
                 .run();
             });
-            it("updates identity with redial_sms_sent 'true'", function() {
+            it("send if redial sms not yet sent (identity loads without redial_sms_sent set as 'false')", function() {
+                return tester
+                .setup.user.addr("27820001008")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_start - yes
+                    , "1"  // state_consent - yes
+                    , {session_event: 'close'}
+                )
+                .check.user.answer("redial_sms_sent", true)
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [131, 182]);
+                })
+                .run();
+            });
+            it("don't send when timeout occurs on a non-dialback state", function() {
                 return tester
                 .setup.user.addr("27820001001")
                 .inputs(
