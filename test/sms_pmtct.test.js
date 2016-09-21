@@ -17,7 +17,7 @@ describe("app", function() {
                 .setup.char_limit(160)
                 .setup.config.app({
                     name: 'sms_pmtct',
-                    testing: 'true',
+                    logging: "off",
                     testing_today: 'August 2, 2016 13:30:07',
                     testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',
                     pmtct_ussd_channel: "*134*550*10#",

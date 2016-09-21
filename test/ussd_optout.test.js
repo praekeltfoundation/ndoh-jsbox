@@ -23,20 +23,10 @@ describe("app", function() {
             tester
                 .setup.config.app({
                     name: 'ussd_optout',
-                    testing: 'true',
+                    logging: 'off',
                     testing_today: 'April 4, 2014 07:07:07',
-                    testing_message_id: "0170b7bb-978e-4b8a-35d2-662af5b6daee",
                     channel: "*120*550#1",
                     env: 'test',
-                    endpoints: {
-                        "sms": {"delivery_class": "sms"}
-                    },
-                    jembi: {
-                        username: 'foo',
-                        password: 'bar',
-                        url: 'http://test/v2/',
-                        url_json: 'http://test/v2/json/'
-                    },
                     services: {
                         identity_store: {
                             url: 'http://is/api/v1/',
@@ -51,7 +41,6 @@ describe("app", function() {
                             token: 'test Hub'
                         },
                     },
-                    logging: 'off'
                 })
                 .setup.char_limit(182)
                 .setup(function(api) {

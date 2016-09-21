@@ -26,18 +26,12 @@ describe("app", function() {
                 .setup.char_limit(182)
                 .setup.config.app({
                     name: 'ussd_nurse',
-                    env: 'test',
-                    // metric_store: 'test_metric_store',
                     testing_today: 'April 4, 2014 07:07:07',
                     logging: "off",
-                    endpoints: {
-                        "sms": {"delivery_class": "sms"}
-                    },
                     channel: "*120*550*5#",
                     jembi: {
                         username: 'foo',
                         password: 'bar',
-                        url: 'http://test/v2/',
                         url_json: 'http://test/v2/json/'
                     },
                     services: {
@@ -334,7 +328,7 @@ describe("app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [150, 160, 163]);
+                                utils.check_fixtures_used(api, [128, 150, 160, 163]);
                             })
                             .run();
                     });
@@ -361,7 +355,7 @@ describe("app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [150, 160, 161, 163]);
+                                utils.check_fixtures_used(api, [128, 150, 160, 161, 163]);
                             })
                             .run();
                     });
@@ -389,7 +383,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [150, 160, 163]);
+                            utils.check_fixtures_used(api, [128, 150, 160, 163]);
                         })
                         .run();
                 });
@@ -411,10 +405,77 @@ describe("app", function() {
                             state: 'state_not_subscribed'
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [150, 160, 163]);
+                            utils.check_fixtures_used(api, [128, 150, 160, 163]);
                         })
                         .run();
                 });
+            });
+        });
+
+        describe("dialback sms testing", function() {
+            it("send if redial sms not yet sent (identity loads without redial_sms_sent defined)", function() {
+                return tester
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , '1'  // state_not_subscribed - self registration
+                    , '1'  // state_subscribe_self - consent
+                    , {session_event: 'close'}
+                )
+                .check.user.answer("redial_sms_sent", true)
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [128, 160, 163]);
+                })
+                .run();
+            });
+            it("don't send if redial sms already sent (identity loads with redial_sms_sent set as 'true')", function() {
+                return tester
+                .setup.user.addr("27820001003")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_start - yes
+                    , "1"  // state_consent - yes
+                    , {session_event: 'close'}
+                )
+                .check.user.answer("redial_sms_sent", true)
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [52, 54, 162]);
+                })
+                .run();
+            });
+            it("send if redial sms not yet sent (identity loads with redial_sms_sent set as 'false')", function() {
+                return tester
+                .setup.user.addr("27820001008")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_start - yes
+                    , "1"  // state_consent - yes
+                    , {session_event: 'close'}
+                )
+                .check.user.answer("redial_sms_sent", true)
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [54, 59, 132, 182]);
+                })
+                .run();
+            });
+            it("don't send when timeout occurs on a non-dialback state", function() {
+                return tester
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , '1'  // state_not_subscribed - self registration
+                    , '1'  // state_subscribe_self - consent
+                    , {session_event: 'close'}
+                    , {session_event: 'new'}
+                    , '1'  // state_timed_out - continue
+                    , '123456'  // state_faccode
+                    , '1'  // state_facname - confirm
+                )
+                .check.user.answer("redial_sms_sent", true)
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [13, 100, 128, 150, 160, 163, 189]);
+                })
+                .run();
             });
         });
 

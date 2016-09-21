@@ -41,6 +41,37 @@ go.app = function() {
                 self.im.config.services.message_sender.token,
                 self.im.config.services.message_sender.url
             );
+
+            // evaluate whether dialback sms needs to be sent on session close
+            self.im.on('session:close', function(e) {
+                return self.dial_back(e);
+            });
+        };
+
+        self.dial_back = function(e) {
+            if (e.user_terminated && !self.im.user.answers.redial_sms_sent) {
+                return self
+                .send_redial_sms()
+                .then(function() {
+                    self.im.user.answers.redial_sms_sent = true;
+                    return ;
+                });
+            } else {
+                return ;
+            }
+        };
+
+        self.send_redial_sms = function() {
+            return ms.
+            create_outbound_message(
+                self.im.user.answers.operator.id,
+                self.im.user.answers.operator_msisdn,
+                self.im.user.i18n($(
+                    "Please dial back in to {{ USSD_number }} to complete the pregnancy registration."
+                ).context({
+                    USSD_number: self.im.config.channel
+                }))
+            );
         };
 
         self.number_opted_out = function(identity, msisdn) {
@@ -115,6 +146,14 @@ go.app = function() {
                 registrant_info.details.source = "clinic";
             }
 
+            if (registrant_info.details.clinic) {
+                registrant_info.details.clinic.redial_sms_sent = self.im.user.answers.redial_sms_sent;
+            } else {
+                registrant_info.details.clinic = {
+                    redial_sms_sent: self.im.user.answers.redial_sms_sent
+                };
+            }
+
             registrant_info.details.last_mc_reg_on = "clinic";
 
             return registrant_info;
@@ -181,6 +220,7 @@ go.app = function() {
         self.states.add('state_timed_out', function(name, creator_opts) {
             var msisdn = self.im.user.answers.registrant_msisdn || self.im.user.answers.operator_msisdn;
             var readable_no = utils.readable_msisdn(msisdn, '27');
+
             return new ChoiceState(name, {
                 question: $(
                     'Would you like to complete pregnancy registration for {{ num }}?'
@@ -195,8 +235,6 @@ go.app = function() {
             });
         });
 
-        // TODO #49: dialback sms sending
-
         self.add("state_start", function(name) {
             self.im.user.set_answers = {};
             var operator_msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
@@ -207,6 +245,7 @@ go.app = function() {
             .then(function(identity) {
                 self.im.user.set_answer("operator", identity);
                 self.im.user.set_answer("operator_msisdn", operator_msisdn);
+
                 return new ChoiceState(name, {
                     question: $(
                         'Welcome to The Department of Health\'s ' +
@@ -219,10 +258,17 @@ go.app = function() {
                     ],
                     next: function(choice) {
                         if (choice.value === 'yes') {
-                            self.im.user.set_answer("registrant", self.im.user.answers.operator);
-                            self.im.user.set_answer("registrant_msisdn", self.im.user.answers.operator_msisdn);
+                            // init redial_sms_sent
+                            if (identity.details.clinic) {
+                                self.im.user.set_answer("redial_sms_sent", identity.details.clinic.redial_sms_sent || false);
+                            } else {
+                                self.im.user.set_answer("redial_sms_sent", false);
+                            }
 
-                            opted_out = self.number_opted_out(
+                            self.im.user.set_answer("registrant", identity);
+                            self.im.user.set_answer("registrant_msisdn", operator_msisdn);
+
+                            var opted_out = self.number_opted_out(
                                 self.im.user.answers.registrant,
                                 self.im.user.answers.registrant_msisdn);
 
@@ -305,11 +351,20 @@ go.app = function() {
                     return is
                     .get_or_create_identity({"msisdn": registrant_msisdn})
                     .then(function(identity) {
+                        // init redial_sms_sent
+                        if (identity.details.clinic) {
+                            self.im.user.set_answer("redial_sms_sent", identity.details.clinic.redial_sms_sent || false);
+                        } else {
+                            self.im.user.set_answer("redial_sms_sent", false);
+                        }
+
                         self.im.user.set_answer("registrant", identity);
                         self.im.user.set_answer("registrant_msisdn", registrant_msisdn);
-                        opted_out = self.number_opted_out(
+
+                        var opted_out = self.number_opted_out(
                             self.im.user.answers.registrant,
                             self.im.user.answers.registrant_msisdn);
+
                         return opted_out ? 'state_opt_in' : 'state_consent';
                     });
                 }

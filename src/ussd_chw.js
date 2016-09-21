@@ -38,9 +38,38 @@ go.app = function() {
                 self.im.config.services.message_sender.token,
                 self.im.config.services.message_sender.url
             );
+
+            // evaluate whether dialback sms needs to be sent on session close
+            self.im.on('session:close', function(e) {
+                return self.dial_back(e);
+            });
         };
 
-        // TODO #49: dialback sms sending
+        self.dial_back = function(e) {
+            if (e.user_terminated && !self.im.user.answers.redial_sms_sent) {
+                return self
+                .send_redial_sms()
+                .then(function() {
+                    self.im.user.answers.redial_sms_sent = true;
+                    return ;
+                });
+            } else {
+                return ;
+            }
+        };
+
+        self.send_redial_sms = function() {
+            return ms.
+            create_outbound_message(
+                self.im.user.answers.operator.id,
+                self.im.user.answers.operator_msisdn,
+                self.im.user.i18n($(
+                    "Please dial back in to {{ USSD_number }} to complete the pregnancy registration."
+                ).context({
+                    USSD_number: self.im.config.channel
+                }))
+            );
+        };
 
         self.number_opted_out = function(identity, msisdn) {
             var details_msisdn = identity.details.addresses.msisdn[msisdn];
@@ -69,6 +98,14 @@ go.app = function() {
 
             if (!("source" in registrant_info.details)) {
                 registrant_info.details.source = "chw";
+            }
+
+            if (registrant_info.details.chw) {
+                registrant_info.details.chw.redial_sms_sent = self.im.user.answers.redial_sms_sent;
+            } else {
+                registrant_info.details.chw = {
+                    redial_sms_sent: self.im.user.answers.redial_sms_sent
+                };
             }
 
             registrant_info.details.last_mc_reg_on = "chw";
@@ -167,10 +204,17 @@ go.app = function() {
                     ],
                     next: function(choice) {
                         if (choice.value === "yes") {
+                            // init redial_sms_sent
+                            if (identity.details.chw) {
+                                self.im.user.set_answer("redial_sms_sent", identity.details.chw.redial_sms_sent || false);
+                            } else {
+                                self.im.user.set_answer("redial_sms_sent", false);
+                            }
+
                             self.im.user.set_answer("registrant", self.im.user.answers.operator);
                             self.im.user.set_answer("registrant_msisdn", self.im.user.answers.operator_msisdn);
 
-                            opted_out = self.number_opted_out(
+                            var opted_out = self.number_opted_out(
                                 self.im.user.answers.registrant,
                                 self.im.user.answers.registrant_msisdn);
 
@@ -253,9 +297,17 @@ go.app = function() {
                     return is
                     .get_or_create_identity({"msisdn": registrant_msisdn})
                     .then(function(identity) {
+                        // init redial_sms_sent
+                        if (identity.details.chw) {
+                            self.im.user.set_answer("redial_sms_sent", identity.details.chw.redial_sms_sent || false);
+                        } else {
+                            self.im.user.set_answer("redial_sms_sent", false);
+                        }
+
                         self.im.user.set_answer("registrant", identity);
                         self.im.user.set_answer("registrant_msisdn", registrant_msisdn);
-                        opted_out = self.number_opted_out(
+
+                        var opted_out = self.number_opted_out(
                             self.im.user.answers.registrant,
                             self.im.user.answers.registrant_msisdn);
                         return opted_out ? 'state_opt_in' : 'state_consent';

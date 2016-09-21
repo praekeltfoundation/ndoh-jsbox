@@ -3,12 +3,15 @@
 // NURSECONNECT
     // (+27820001001) - new identity; no subscriptions
     // (+27820001002) - existing identity with an active MomConnect subscription (no active NurseConnect subscription)
-    // (+27820001003) - existing identity with an active NurseConnect subscription
+    // (+27820001003) - existing identity with an active NurseConnect subscription; NurseConnect dialback sms already sent
     // (+27820001004) - existing identity with an inactive NurseConnect subscription (opted out)
     // (+27820001005) - existing identity; two msisdn's (opted out on +27820001004)
     // (+27820001006) - existing identity with an inactive MomConnect subscription
     // (+27820001007) - existing identity with an active MomConnect CHW subscription
     // (+27820001008) - existing identity with an active MomConnect Clinic subscription; completed servicerating
+    // (+27820001009) - existing identity with an active MomConnect Clinic subscription; CLINIC dialback sms already sent
+    // (+27820001010) - existing identity with an active MomConnect Clinic subscription; CHW dialback sms already sent
+    // (+27820001011) - existing identity with an active MomConnect Clinic subscription; PUBLIC dialback sms already sent
 
 module.exports = function() {
     return [
@@ -119,7 +122,8 @@ module.exports = function() {
                                     "id_type": "sa_id",
                                     "sa_id_no": "5101025009086",
                                     "dob": "1951-01-02",
-                                    "opt_out_reason": ""
+                                    "opt_out_reason": "",
+                                    "redial_sms_sent": true
                                 }
                             },
                             "created_at": "2016-08-05T06:13:29.693272Z",
@@ -335,7 +339,10 @@ module.exports = function() {
                         "sa_id_no": "5101025009086",
                         "mom_dob": "1951-01-02",
                         "source": "clinic",
-                        "last_mc_reg_on": "clinic"
+                        "last_mc_reg_on": "clinic",
+                        "clinic": {
+                            "redial_sms_sent": false
+                        }
                     },
                     "created_at": "2016-08-05T06:13:29.693272Z",
                     "updated_at": "2016-08-05T06:13:29.693298Z",
@@ -366,7 +373,10 @@ module.exports = function() {
                         "passport_no": "12345",
                         "passport_origin": "zw",
                         "source": "clinic",
-                        "last_mc_reg_on": "clinic"
+                        "last_mc_reg_on": "clinic",
+                        "clinic": {
+                            "redial_sms_sent": false
+                        }
                     },
                     "created_at": "2016-08-05T06:13:29.693272Z",
                     "updated_at": "2016-08-05T06:13:29.693298Z"
@@ -396,7 +406,10 @@ module.exports = function() {
                         "consent": true,
                         "mom_dob": "1981-01-14",
                         "source": "clinic",
-                        "last_mc_reg_on": "clinic"
+                        "last_mc_reg_on": "clinic",
+                        "clinic": {
+                            "redial_sms_sent": false
+                        }
                     },
                     "created_at": "2016-08-05T06:13:29.693272Z",
                     "updated_at": "2016-08-05T06:13:29.693298Z"
@@ -425,7 +438,8 @@ module.exports = function() {
                         "nurseconnect": {
                             "facname": "WCL clinic",
                             "faccode": "123456",
-                            "is_registered": true
+                            "is_registered": true,
+                            "redial_sms_sent": false
                         }
                     },
                     "created_at": "2016-08-05T06:13:29.693272Z",
@@ -462,7 +476,8 @@ module.exports = function() {
                             "facname": "WCL clinic",
                             "faccode": "123456",
                             "is_registered": true,
-                            "registered_by": "cb245673-aa41-4302-ac47-00000001001"
+                            "registered_by": "cb245673-aa41-4302-ac47-00000001001",
+                            "redial_sms_sent": false
                         }
                     },
                     "created_at": "2016-08-05T06:13:29.693272Z",
@@ -662,7 +677,10 @@ module.exports = function() {
                         "lang_code": "zul_ZA",
                         "consent": true,
                         "source": "public",
-                        "last_mc_reg_on": "public"
+                        "last_mc_reg_on": "public",
+                        "public": {
+                            "redial_sms_sent": false
+                        }
                     },
                     "created_at": "2016-08-05T06:13:29.693272Z",
                     "updated_at": "2016-08-05T06:13:29.693298Z"
@@ -701,7 +719,10 @@ module.exports = function() {
                         },
                         "lang_code": "zul_ZA",
                         "consent": true,
-                        "last_mc_reg_on": "public"
+                        "last_mc_reg_on": "public",
+                        "public": {
+                            "redial_sms_sent": false
+                        }
                     },
                     "created_at": "2016-08-05T06:13:29.693272Z",
                     "updated_at": "2016-08-05T06:13:29.693298Z"
@@ -733,7 +754,10 @@ module.exports = function() {
                         "source": "clinic",
                         "last_mc_reg_on":"chw",
                         "passport_no":"12345",
-                        "passport_origin":"zw"
+                        "passport_origin":"zw",
+                        "chw": {
+                            "redial_sms_sent": false
+                        }
                     },
                     "created_at": "2016-08-05T06:13:29.693272Z",
                     "updated_at": "2016-08-05T06:13:29.693298Z"
@@ -763,7 +787,10 @@ module.exports = function() {
                         "sa_id_no": "5101015009088",
                         "mom_dob": "1951-01-01",
                         "source": "chw",
-                        "last_mc_reg_on":"chw"
+                        "last_mc_reg_on":"chw",
+                        "chw": {
+                            "redial_sms_sent": false
+                        }
                     },
                     "created_at": "2016-08-05T06:13:29.693272Z",
                     "updated_at": "2016-08-05T06:13:29.693298Z"
@@ -807,7 +834,19 @@ module.exports = function() {
                                 "sa_id_no": "5101025009086",
                                 "mom_dob": "2051-01-02",
                                 "source": "clinic",
-                                "last_mc_reg_on": "clinic"
+                                "last_mc_reg_on": "clinic",
+                                "chw": {
+                                    "redial_sms_sent": false
+                                },
+                                "clinic": {
+                                    "redial_sms_sent": false
+                                },
+                                "public": {
+                                    "redial_sms_sent": false
+                                },
+                                "nurseconnect": {
+                                    "redial_sms_sent": false
+                                }
                             },
                             "created_at": "2016-08-05T06:13:29.693272Z",
                             "updated_at": "2016-08-05T06:13:29.693298Z"
@@ -815,6 +854,280 @@ module.exports = function() {
                     ]
                 }
             }
+        },
+
+        // 183: get identity by msisdn +27820001009
+        {
+            "key": "get.is.msisdn.27820001009",
+            "repeatable": true,
+            "request": {
+                "url": 'http://is/api/v1/identities/search/',
+                "method": 'GET',
+                "params": {
+                    "details__addresses__msisdn": '+27820001009',
+                    "include_inactive": "False"
+                }
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001009/",
+                            "id": "cb245673-aa41-4302-ac47-00000001009",
+                            "version": 1,
+                            "details": {
+                                "default_addr_type": "msisdn",
+                                "addresses": {
+                                    "msisdn": {
+                                        "+27820001009": {"default": true}
+                                    }
+                                },
+                                "lang_code": "eng_ZA",
+                                "consent": true,
+                                "sa_id_no": "5101025009086",
+                                "mom_dob": "2051-01-02",
+                                "source": "clinic",
+                                "last_mc_reg_on": "clinic",
+                                "clinic": {
+                                    "redial_sms_sent": true
+                                }
+                            },
+                            "created_at": "2016-08-05T06:13:29.693272Z",
+                            "updated_at": "2016-08-05T06:13:29.693298Z"
+                        }
+                    ]
+                }
+            }
+        },
+
+        // 184: update identity cb245673-aa41-4302-ac47-00000001001
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/",
+                    "id": "cb245673-aa41-4302-ac47-00000001001",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001001": {"default": true}
+                            }
+                        },
+                        "lang_code": "eng_ZA",
+                        "consent": true,
+                        "mom_dob": "1981-01-14",
+                        "source": "clinic",
+                        "last_mc_reg_on": "clinic",
+                        "clinic": {
+                            "redial_sms_sent": true
+                        }
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z"
+                }
+            },
+            "response": {}
+        },
+
+        // 185: get identity by msisdn +27820001010
+        {
+            "key": "get.is.msisdn.27820001010",
+            "repeatable": true,
+            "request": {
+                "url": 'http://is/api/v1/identities/search/',
+                "method": 'GET',
+                "params": {
+                    "details__addresses__msisdn": '+27820001010',
+                    "include_inactive": "False"
+                }
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001010/",
+                            "id": "cb245673-aa41-4302-ac47-00000001010",
+                            "version": 1,
+                            "details": {
+                                "default_addr_type": "msisdn",
+                                "addresses": {
+                                    "msisdn": {
+                                        "+27820001010": {"default": true}
+                                    }
+                                },
+                                "lang_code": "eng_ZA",
+                                "consent": true,
+                                "sa_id_no": "5101025009086",
+                                "mom_dob": "2051-01-02",
+                                "source": "clinic",
+                                "last_mc_reg_on": "clinic",
+                                "chw": {
+                                    "redial_sms_sent": true
+                                }
+                            },
+                            "created_at": "2016-08-05T06:13:29.693272Z",
+                            "updated_at": "2016-08-05T06:13:29.693298Z"
+                        }
+                    ]
+                }
+            }
+        },
+
+        // 186: update identity cb245673-aa41-4302-ac47-00000001001
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/",
+                    "id": "cb245673-aa41-4302-ac47-00000001001",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001001": {"default": true}
+                            }
+                        },
+                        "lang_code": "eng_ZA",
+                        "consent": true,
+                        "sa_id_no":"5101015009088",
+                        "mom_dob":"1951-01-01",
+                        "source": "chw",
+                        "last_mc_reg_on": "chw",
+                        "chw": {
+                            "redial_sms_sent": true
+                        }
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z"
+                }
+            },
+            "response": {}
+        },
+
+        // 187: get identity by msisdn +27820001011
+        {
+            "key": "get.is.msisdn.27820001011",
+            "repeatable": true,
+            "request": {
+                "url": 'http://is/api/v1/identities/search/',
+                "method": 'GET',
+                "params": {
+                    "details__addresses__msisdn": '+27820001011',
+                    "include_inactive": "False"
+                }
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001011/",
+                            "id": "cb245673-aa41-4302-ac47-00000001011",
+                            "version": 1,
+                            "details": {
+                                "default_addr_type": "msisdn",
+                                "addresses": {
+                                    "msisdn": {
+                                        "+27820001011": {"default": true}
+                                    }
+                                },
+                                "lang_code": "eng_ZA",
+                                "consent": true,
+                                "sa_id_no": "5101025009086",
+                                "mom_dob": "2051-01-02",
+                                "source": "clinic",
+                                "last_mc_reg_on": "clinic",
+                                "public": {
+                                    "redial_sms_sent": true
+                                }
+                            },
+                            "created_at": "2016-08-05T06:13:29.693272Z",
+                            "updated_at": "2016-08-05T06:13:29.693298Z"
+                        }
+                    ]
+                }
+            }
+        },
+
+        // 188: update identity cb245673-aa41-4302-ac47-00000001001
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/",
+                    "id": "cb245673-aa41-4302-ac47-00000001001",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001001": {"default": true}
+                            }
+                        },
+                        "lang_code": "zul_ZA",
+                        "consent": true,
+                        "source": "public",
+                        "last_mc_reg_on": "public",
+                        "public": {
+                            "redial_sms_sent": true
+                        }
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z"
+                }
+            },
+            "response": {}
+        },
+
+        // 189: patch cb245673-aa41-4302-ac47-00000001001
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/',
+                "method": 'PATCH',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001001/",
+                    "id": "cb245673-aa41-4302-ac47-00000001001",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001001": { "default": true }
+                            }
+                        },
+                        "nurseconnect": {
+                            "facname": "WCL clinic",
+                            "faccode": "123456",
+                            "is_registered": true,
+                            "redial_sms_sent": true
+                        }
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z"
+                }
+            },
+            "response": {}
         },
 
     ];
