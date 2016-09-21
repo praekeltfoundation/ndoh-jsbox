@@ -420,34 +420,27 @@ go.app = function() {
         });
 
         self.add('state_save_nursereg', function(name) {
-            self.im.user.answers.registrant.details.nurseconnect.is_registered = true;
+            var registrant_info = self.im.user.answers.registrant;
+            registrant_info.details.nurseconnect.is_registered = true;
+            registrant_info.details.nurseconnect.redial_sms_sent = self.im.user.answers.redial_sms_sent;
+
+            // operator.id will equal registrant.id when a self registration
+            if (self.im.user.answers.operator.id !== registrant_info.id) {
+                registrant_info.details.nurseconnect.registered_by =
+                    self.im.user.answers.operator.id;
+            }
 
             var reg_info = {
                 "reg_type": "nurseconnect",
-                "registrant_id": self.im.user.answers.registrant.id,
+                "registrant_id": registrant_info.id,
                 "data": {
                     "operator_id": self.im.user.answers.operator.id,  // device owner id
                     "msisdn_registrant": self.im.user.answers.registrant_msisdn,  // msisdn of the registrant
                     "msisdn_device": self.im.user.answers.operator_msisdn,  // device msisdn
-                    "faccode": self.im.user.answers.registrant.details.nurseconnect.faccode,  // facility code
+                    "faccode": registrant_info.details.nurseconnect.faccode,  // facility code
                     "language": "eng_ZA"  // currently always eng_ZA for nurseconnect
                 }
             };
-
-            var registrant_info = self.im.user.answers.registrant;
-            if (registrant_info.details.nurseconnect) {
-                registrant_info.details.nurseconnect.redial_sms_sent = self.im.user.answers.redial_sms_sent;
-            } else {
-                registrant_info.details.nurseconnect = {
-                    redial_sms_sent: self.im.user.answers.redial_sms_sent
-                };
-            }
-
-            // operator.id will equal registrant.id when a self registration
-            if (self.im.user.answers.operator.id !== self.im.user.answers.registrant.id) {
-                self.im.user.answers.registrant.details.nurseconnect.registered_by =
-                    self.im.user.answers.operator.id;
-            }
 
             return Q
             .all([
@@ -459,16 +452,6 @@ go.app = function() {
                 return self.states.create('state_end_reg');
             });
 
-            // return Q
-            // .all([
-            //     is.update_identity(self.im.user.answers.registrant.id,
-            //                        self.im.user.answers.registrant),
-            //     self.send_registration_thanks(self.im.user.answers.registrant_msisdn),
-            //     hub.create_registration(reg_info)
-            // ])
-            // .then(function() {
-            //     return self.states.create('state_end_reg');
-            // });
         });
 
     // CHANGE STATES
