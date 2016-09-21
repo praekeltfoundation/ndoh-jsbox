@@ -2,6 +2,7 @@ go.app = function() {
     var vumigo = require("vumigo_v02");
     var SeedJsboxUtils = require('seed-jsbox-utils');
     var Q = require('q');
+    var _ = require('lodash');
     var App = vumigo.App;
     var EndState = vumigo.states.EndState;
     var ChoiceState = vumigo.states.ChoiceState;
@@ -16,6 +17,9 @@ go.app = function() {
         var utils = SeedJsboxUtils.utils;
 
         var is;
+        var sbm;
+        var hub;
+        var ms;
 
         self.init = function() {
             // initialise services
@@ -39,6 +43,52 @@ go.app = function() {
                 self.im.config.services.message_sender.token,
                 self.im.config.services.message_sender.url
             );
+
+            // evaluate whether dialback sms needs to be sent on session close
+            self.im.on('session:close', function(e) {
+                return self.dial_back(e);
+            });
+        };
+
+        self.dial_back = function(e) {
+            var dial_back_states = [
+                'state_language',
+                'state_register_info',
+                'state_suspect_pregnancy',
+                'state_id_type',
+                'state_sa_id',
+                'state_passport_origin',
+                'state_passport_no',
+                'state_birth_year',
+                'state_birth_month',
+                'state_birth_day'
+            ];
+
+            if (e.user_terminated
+                && !self.im.user.answers.redial_sms_sent
+                && _.contains(dial_back_states, e.im.state.name)) {
+                return self
+                .send_redial_sms()
+                .then(function() {
+                    self.im.user.answers.redial_sms_sent = true;
+                    return ;
+                });
+            } else {
+                return ;
+            }
+        };
+
+        self.send_redial_sms = function() {
+            return ms.
+            create_outbound_message(
+                self.im.user.answers.registrant.id,
+                self.im.user.answers.registrant_msisdn,
+                self.im.user.i18n($(
+                    "Please dial back in to {{ USSD_number }} to complete the pregnancy registration."
+                ).context({
+                    USSD_number: self.im.config.channel
+                }))
+            );
         };
 
         self.number_opted_out = function(identity, msisdn) {
@@ -48,7 +98,7 @@ go.app = function() {
             } else {
                 return false;
             }
-        },
+        };
 
         self.compile_registrant_info = function() {
             var registrant_info = self.im.user.answers.registrant;
@@ -58,6 +108,14 @@ go.app = function() {
 
             if (!("source" in registrant_info.details)) {
                 registrant_info.details.source = "public";
+            }
+
+            if (registrant_info.details.public) {
+                registrant_info.details.public.redial_sms_sent = self.im.user.answers.redial_sms_sent;
+            } else {
+                registrant_info.details.public = {
+                    redial_sms_sent: self.im.user.answers.redial_sms_sent
+                };
             }
 
             registrant_info.details.last_mc_reg_on = "public";
@@ -145,8 +203,6 @@ go.app = function() {
             });
         });
 
-        // TODO #49: dialback sms sending
-
         self.add("state_start", function(name) {  // interstitial state
             self.im.user.set_answers = {};
             var registrant_msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
@@ -156,6 +212,13 @@ go.app = function() {
             .then(function(identity) {
                 self.im.user.set_answer("registrant", identity);
                 self.im.user.set_answer("registrant_msisdn", registrant_msisdn);
+
+                // init redial_sms_sent
+                if (identity.details.public) {
+                    self.im.user.set_answer("redial_sms_sent", identity.details.public.redial_sms_sent || false);
+                } else {
+                    self.im.user.set_answer("redial_sms_sent", false);
+                }
 
                 if (!("last_mc_reg_on" in self.im.user.answers.registrant.details)) {
                     return self.states.create('state_language');
@@ -238,7 +301,7 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (choice.value === 'yes') {
-                        opted_out = self.number_opted_out(
+                        var opted_out = self.number_opted_out(
                             self.im.user.answers.registrant,
                             self.im.user.answers.registrant_msisdn);
                         return opted_out ? 'state_opt_in' : 'state_save_subscription';

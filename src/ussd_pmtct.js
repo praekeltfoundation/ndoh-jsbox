@@ -25,6 +25,7 @@ go.app = function() {
         var is;
         var sbm;
         var hub;
+        var ms;
 
         self.init = function() {
             // initialising services
@@ -569,7 +570,9 @@ go.app = function() {
 
         self.add("state_hiv_messages", function(name) {
             return new ChoiceState(name, {
-                question: $("Would you like to receive messages about keeping your child HIV-negative?"),
+                question: $(
+                    "Would you like to receive messages about keeping your child HIV-negative? " +
+                    "The messages will contain words like HIV, medicine & ARVs"),
                 // error: ,
                 choices: [
                     new Choice("yes", $("Yes")),
@@ -753,7 +756,7 @@ go.app = function() {
                             hub.create_change(pmtct_loss_optout),
                             is.optout(optout_info),
                             self.deactivateVumiSubscriptions(self.im, self.im.user.answers.msisdn),
-                            self.optoutVumiAddress(self.im, self.im.user.answers.msisdn)
+                            // self.optoutVumiAddress(self.im, self.im.user.answers.msisdn)
                         ])
                         .then(function() {
                             return "state_end_loss_optout";

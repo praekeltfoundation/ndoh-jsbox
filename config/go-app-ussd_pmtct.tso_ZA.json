@@ -11,6 +11,14 @@
         "x-generator": "Poedit 1.6.7",
         "language": "ts"
     },
+    "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health": [
+        null,
+        "Vamhani lava a nga na HIV va nga kuma vana lava nga riki na yona! U nga kuma mirhi ya mahala etliliniki ku sirhelela nwana wa wena no antswisa rihanyo ra wena."
+    ],
+    "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322": [
+        null,
+        "Wa ha ku kamberiwa u kumeka u ri na HIV? A wu wexe, vayimani votala va na yona. Endzela b-wise.mobi kumbe u fonela Riqingho ra mfuno wa AIDS ra 0800 012 322"
+    ],
     "You have an incomplete registration. Would you like to continue with this registration?": [
         null,
         ""
@@ -59,7 +67,7 @@
         null,
         "Nghenisa siku leri u nga velekiwa hi rona (Xikombiso 14) s"
     ],
-    "Would you like to receive messages about keeping your child HIV-negative?": [
+    "Would you like to receive messages about keeping your child HIV-negative? The messages will contain words like HIV, medicine & ARVs": [
         null,
         "Wa sw lava ku amkel mahungu mayelana na ku hlayis nwan wa wen a ngav na HIV? Mahungu ma ta va na marito yo fana na HIV, murhi na ARV"
     ],

@@ -12,6 +12,14 @@
         "plural-forms": "nplurals=2; plural=(n != 1);",
         "language": "af"
     },
+    "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health": [
+        null,
+        "Moeders wat MIV-positief is kan n MIV-negatiewe baba he! Jy kan gratis medisyne by die kliniek kry om jou baba te beskerm en om jou gesondheid te verbeter."
+    ],
+    "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322": [
+        null,
+        "Onlangs MIV-positief getoets? Jy is nie alleen nie, baie ander swanger vroue is ook positief. Besoek b-wise.mobi of skakel die Vigs-hulplyn 0800 012 322"
+    ],
     "You have an incomplete registration. Would you like to continue with this registration?": [
         null,
         ""
@@ -60,7 +68,7 @@
         null,
         "Tik asb die dag in toe jy gebore is (bv 14)"
     ],
-    "Would you like to receive messages about keeping your child HIV-negative?": [
+    "Would you like to receive messages about keeping your child HIV-negative? The messages will contain words like HIV, medicine & ARVs": [
         null,
         "Wil jy graag boodskappe ontvang oor hoe om jou kind MIV-negatief te hou? Die boodskappe sal woorde soos MIV, medisyne en ARV's bevat"
     ],

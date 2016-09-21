@@ -11,6 +11,23 @@ msgstr ""
 "X-Generator: Poedit 1.6.7\n"
 "Language: ve\n"
 
+msgid ""
+"HIV positive moms can have an HIV negative baby! You can get free medicine "
+"at the clinic to protect your baby and improve your health"
+msgstr ""
+"Vhomme vhane vha vha na HIV vha nga beba vhana vha si na HIV! Vha nga wana "
+"mishonga ya mahala kiliniki ya u tsireledza Nwana na u khwinisa mutakalo "
+"wavho."
+
+#: go-app-ussd_pmtct.js:341
+msgid ""
+"Recently tested HIV positive? You are not alone, many other pregnant women "
+"go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322"
+msgstr ""
+"Vha khou bva u wana uri vha HIV? A vha vhothe, vhaimana vhanzhi vha kha "
+"nyimele iyi. Vha dalele b-wise.mobi kana u fonela Lutingo lwa Thuso AIDS "
+"0800 012 322"
+
 #: go-app-ussd_pmtct.js:343
 msgid ""
 "You have an incomplete registration. Would you like to continue with this "
@@ -82,7 +99,8 @@ msgstr "Kha vha nwale deithi ye vha bebwa ngayo (Sa tsumbo 14)"
 
 #: go-app-ussd_pmtct.js:553
 msgid ""
-"Would you like to receive messages about keeping your child HIV-negative?"
+"Would you like to receive messages about keeping your child HIV-negative? The"
+" messages will contain words like HIV, medicine & ARVs"
 msgstr ""
 "Vha a funa a wana milaedza nga ha u dzudza nwana wavho a si na HIV? Milaedza "
 "i do vha na maipfi a nga ho HIV, mushonga & ARVS"

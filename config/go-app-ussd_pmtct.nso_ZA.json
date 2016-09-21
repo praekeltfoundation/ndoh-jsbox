@@ -12,6 +12,14 @@
         "plural-forms": "nplurals=2; plural=(n > 1);",
         "language": "nso"
     },
+    "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health": [
+        null,
+        "Bomma ba HIV ba ka ba le bana ba go sebe le HIV!O ka hwetsa dihlare tsa mahala kliniking go sireletsa ngwana wa gago le go hlabolla tsa maphelo a gago"
+    ],
+    "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322": [
+        null,
+        "Ao lekotswe goba le HIV malobanyana? Gao nnosi, basadi ba bantsi ba baimana ba diregile ka mokgwa wo. Etela b-wise.mobi goba leletsa AIDS Helpline 0800 012 322"
+    ],
     "You have an incomplete registration. Would you like to continue with this registration?": [
         null,
         ""
@@ -60,7 +68,7 @@
         null,
         "O kgopelwa go tsenya letšatši la matswalo (Go fa mohlala, 14)"
     ],
-    "Would you like to receive messages about keeping your child HIV-negative?": [
+    "Would you like to receive messages about keeping your child HIV-negative? The messages will contain words like HIV, medicine & ARVs": [
         null,
         "Na o nyaka go hwetsa melaetsa ka ga go ba le ngwana yo a se nago HIV? Melaetsa e tla ba le mantsu a go swana le HIV, dihlare & diARV"
     ],

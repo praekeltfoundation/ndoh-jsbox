@@ -28,7 +28,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'details__addresses__msisdn': '+27820000111',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -193,7 +193,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'details__addresses__msisdn': '+27820000555',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -234,7 +234,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'details__addresses__msisdn': '+27820000666',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -261,7 +261,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'details__addresses__msisdn': '+27820000777',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -288,7 +288,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'details__addresses__msisdn': '+27820000888',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -315,7 +315,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'details__addresses__msisdn': '+27820000999',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -342,7 +342,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'details__addresses__msisdn': '+27820101010',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -369,7 +369,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'details__addresses__msisdn': '+27820111111',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -395,7 +395,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-00000000001',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test StageBasedMessaging'],
@@ -439,7 +439,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-00000000002',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test StageBasedMessaging'],
@@ -483,7 +483,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-00000000003',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test StageBasedMessaging'],
@@ -527,7 +527,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-00000000004',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test StageBasedMessaging'],
@@ -571,7 +571,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-00000000005',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test StageBasedMessaging'],
@@ -597,7 +597,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-00000000006',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test StageBasedMessaging'],
@@ -624,7 +624,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-00000000007',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test StageBasedMessaging'],
@@ -650,7 +650,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-00000000008',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test StageBasedMessaging'],
@@ -676,7 +676,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-00000000009',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test StageBasedMessaging'],
@@ -702,7 +702,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-00000000010',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test StageBasedMessaging'],
@@ -728,7 +728,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-00000000011',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test StageBasedMessaging'],
@@ -1140,14 +1140,14 @@ module.exports = function() {
             },
             'response': {
                 "code": 200,
+                "meta": {
+                    "limit": 20,
+                    "next": "/api/v1/subscription/?to_addr=%2B27820000555&limit=20&offset=20",
+                    "offset": 0,
+                    "previous": null,
+                    "total_count": 3
+                },
                 "data": {
-                    "meta": {
-                        "limit": 20,
-                        "next": "/api/v1/subscription/?to_addr=%2B27820000555&limit=20&offset=20",
-                        "offset": 0,
-                        "previous": null,
-                        "total_count": 2497070
-                    },
                     "objects": [
                         {
                             "active": false,
@@ -1161,7 +1161,7 @@ module.exports = function() {
                             "process_status": 2,
                             "resource_uri": "/api/v1/subscription/1467333/",
                             "schedule": "/api/v1/periodic_task/3/",
-                            "to_addr": "+27822911223",
+                            "to_addr": "+27820000555",
                             "updated_at": "2016-02-22T10:20:20.563675",
                             "user_account": "1aa0dea2f82945a48cc258c61d756f16"
                         },
@@ -1177,7 +1177,7 @@ module.exports = function() {
                             "process_status": 2,
                             "resource_uri": "/api/v1/subscription/962818/",
                             "schedule": "/api/v1/periodic_task/2/",
-                            "to_addr": "+27728394085",
+                            "to_addr": "+27820000555",
                             "updated_at": "2016-03-28T10:40:50.939858",
                             "user_account": "1aa0dea2f82945a48cc258c61d756f16"
                         },
@@ -1193,7 +1193,7 @@ module.exports = function() {
                             "process_status": 2,
                             "resource_uri": "/api/v1/subscription/425407/",
                             "schedule": "/api/v1/periodic_task/2/",
-                            "to_addr": "+27764536488",
+                            "to_addr": "+27820000555",
                             "updated_at": "2015-10-26T11:38:59.099219",
                             "user_account": "1aa0dea2f82945a48cc258c61d756f16"
                         }
@@ -1213,14 +1213,14 @@ module.exports = function() {
             },
             'response': {
                 "code": 200,
+                "meta": {
+                    "limit": 20,
+                    "next": "/api/v1/subscription/?to_addr=%2B27820000666&limit=20&offset=20",
+                    "offset": 0,
+                    "previous": null,
+                    "total_count": 3
+                },
                 "data": {
-                    "meta": {
-                        "limit": 20,
-                        "next": "/api/v1/subscription/?to_addr=%2B27820000666&limit=20&offset=20",
-                        "offset": 0,
-                        "previous": null,
-                        "total_count": 2497070
-                    },
                     "objects": [
                         {
                             "active": true,
@@ -1234,7 +1234,7 @@ module.exports = function() {
                             "process_status": 2,
                             "resource_uri": "/api/v1/subscription/1467333/",
                             "schedule": "/api/v1/periodic_task/3/",
-                            "to_addr": "+27822911223",
+                            "to_addr": "+27820000666",
                             "updated_at": "2016-02-22T10:20:20.563675",
                             "user_account": "1aa0dea2f82945a48cc258c61d756f16"
                         },
@@ -1250,7 +1250,7 @@ module.exports = function() {
                             "process_status": 2,
                             "resource_uri": "/api/v1/subscription/962818/",
                             "schedule": "/api/v1/periodic_task/2/",
-                            "to_addr": "+27728394085",
+                            "to_addr": "+27820000666",
                             "updated_at": "2016-03-28T10:40:50.939858",
                             "user_account": "1aa0dea2f82945a48cc258c61d756f16"
                         },
@@ -1266,7 +1266,7 @@ module.exports = function() {
                             "process_status": 2,
                             "resource_uri": "/api/v1/subscription/425407/",
                             "schedule": "/api/v1/periodic_task/2/",
-                            "to_addr": "+27764536488",
+                            "to_addr": "+27820000666",
                             "updated_at": "2015-10-26T11:38:59.099219",
                             "user_account": "1aa0dea2f82945a48cc258c61d756f16"
                         }
@@ -1287,14 +1287,14 @@ module.exports = function() {
             },
             'response': {
                 "code": 200,
+                "meta": {
+                    "limit": 20,
+                    "next": "/api/v1/subscription/?to_addr=%2B27820000777&limit=20&offset=20",
+                    "offset": 0,
+                    "previous": null,
+                    "total_count": 3
+                },
                 "data": {
-                    "meta": {
-                        "limit": 20,
-                        "next": "/api/v1/subscription/?to_addr=%2B27820000777&limit=20&offset=20",
-                        "offset": 0,
-                        "previous": null,
-                        "total_count": 2497070
-                    },
                     "objects": [
                         {
                             "active": true,
@@ -1308,7 +1308,7 @@ module.exports = function() {
                             "process_status": 2,
                             "resource_uri": "/api/v1/subscription/1467333/",
                             "schedule": "/api/v1/periodic_task/3/",
-                            "to_addr": "+27822911223",
+                            "to_addr": "+27820000777",
                             "updated_at": "2016-02-22T10:20:20.563675",
                             "user_account": "1aa0dea2f82945a48cc258c61d756f16"
                         },
@@ -1324,7 +1324,7 @@ module.exports = function() {
                             "process_status": 2,
                             "resource_uri": "/api/v1/subscription/962818/",
                             "schedule": "/api/v1/periodic_task/2/",
-                            "to_addr": "+27728394085",
+                            "to_addr": "+27820000777",
                             "updated_at": "2016-03-28T10:40:50.939858",
                             "user_account": "1aa0dea2f82945a48cc258c61d756f16"
                         },
@@ -1340,7 +1340,7 @@ module.exports = function() {
                             "process_status": 2,
                             "resource_uri": "/api/v1/subscription/425407/",
                             "schedule": "/api/v1/periodic_task/2/",
-                            "to_addr": "+27764536488",
+                            "to_addr": "+27820000777",
                             "updated_at": "2015-10-26T11:38:59.099219",
                             "user_account": "1aa0dea2f82945a48cc258c61d756f16"
                         }
@@ -1360,14 +1360,14 @@ module.exports = function() {
             },
             'response': {
                 "code": 200,
+                "meta": {
+                    "limit": 20,
+                    "next": "/api/v1/subscription/?to_addr=%2B27820000888&limit=20&offset=20",
+                    "offset": 0,
+                    "previous": null,
+                    "total_count": 2
+                },
                 "data": {
-                    "meta": {
-                        "limit": 20,
-                        "next": "/api/v1/subscription/?to_addr=%2B27820000888&limit=20&offset=20",
-                        "offset": 0,
-                        "previous": null,
-                        "total_count": 2497070
-                    },
                     "objects": [
                         {
                             "active": true,
@@ -1381,7 +1381,7 @@ module.exports = function() {
                             "process_status": 2,
                             "resource_uri": "/api/v1/subscription/1467333/",
                             "schedule": "/api/v1/periodic_task/3/",
-                            "to_addr": "+27822911223",
+                            "to_addr": "+27820000888",
                             "updated_at": "2016-02-22T10:20:20.563675",
                             "user_account": "1aa0dea2f82945a48cc258c61d756f16"
                         },
@@ -1397,7 +1397,7 @@ module.exports = function() {
                             "process_status": 2,
                             "resource_uri": "/api/v1/subscription/962818/",
                             "schedule": "/api/v1/periodic_task/2/",
-                            "to_addr": "+27728394085",
+                            "to_addr": "+27820000888",
                             "updated_at": "2016-03-28T10:40:50.939858",
                             "user_account": "1aa0dea2f82945a48cc258c61d756f16"
                         }
@@ -1417,15 +1417,14 @@ module.exports = function() {
             },
             'response': {
                 "code": 200,
+                "meta": {
+                    "limit": 20,
+                    "next": "/api/v1/subscription/?to_addr=%2B27820000999&limit=20&offset=20",
+                    "offset": 0,
+                    "previous": null,
+                    "total_count": 2
+                },
                 "data": {
-                    "meta": {
-                        "limit": 20,
-                        "next": "/api/v1/subscription/?to_addr=%2B27820000999&limit=20&offset=20",
-                        "offset": 0,
-                        "previous": null,
-                        "total_count": 2497070
-                    },
-
                     "objects": [
                         {
                             "active": true,
@@ -1439,7 +1438,7 @@ module.exports = function() {
                             "process_status": 2,
                             "resource_uri": "/api/v1/subscription/1467333/",
                             "schedule": "/api/v1/periodic_task/3/",
-                            "to_addr": "+27822911223",
+                            "to_addr": "+27820000999",
                             "updated_at": "2016-02-22T10:20:20.563675",
                             "user_account": "1aa0dea2f82945a48cc258c61d756f16"
                         },
@@ -1455,7 +1454,7 @@ module.exports = function() {
                             "process_status": 2,
                             "resource_uri": "/api/v1/subscription/962818/",
                             "schedule": "/api/v1/periodic_task/2/",
-                            "to_addr": "+27728394085",
+                            "to_addr": "+27820000999",
                             "updated_at": "2016-03-28T10:40:50.939858",
                             "user_account": "1aa0dea2f82945a48cc258c61d756f16"
                         }
@@ -1475,14 +1474,14 @@ module.exports = function() {
             },
             'response': {
                 "code": 200,
+                "meta": {
+                    "limit": 20,
+                    "next": "/api/v1/subscription/?to_addr=%2B27820101010&limit=20&offset=20",
+                    "offset": 0,
+                    "previous": null,
+                    "total_count": 2
+                },
                 "data": {
-                    "meta": {
-                        "limit": 20,
-                        "next": "/api/v1/subscription/?to_addr=%2B27820101010&limit=20&offset=20",
-                        "offset": 0,
-                        "previous": null,
-                        "total_count": 2497070
-                    },
                     "objects": [
                         {
                             "active": false,
@@ -1496,7 +1495,7 @@ module.exports = function() {
                             "process_status": 2,
                             "resource_uri": "/api/v1/subscription/1467333/",
                             "schedule": "/api/v1/periodic_task/3/",
-                            "to_addr": "+27822911223",
+                            "to_addr": "+27820101010",
                             "updated_at": "2016-02-22T10:20:20.563675",
                             "user_account": "1aa0dea2f82945a48cc258c61d756f16"
                         },
@@ -1512,7 +1511,7 @@ module.exports = function() {
                             "process_status": 2,
                             "resource_uri": "/api/v1/subscription/962818/",
                             "schedule": "/api/v1/periodic_task/2/",
-                            "to_addr": "+27728394085",
+                            "to_addr": "+27820101010",
                             "updated_at": "2016-03-28T10:40:50.939858",
                             "user_account": "1aa0dea2f82945a48cc258c61d756f16"
                         }
@@ -1698,7 +1697,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'details__addresses__msisdn': '+27720000111',
-                    "include_inactive": "false"
+                    "include_inactive": "False"
                 },
                 'headers': {
                     'Authorization': ['Token test IdentityStore'],
@@ -2105,38 +2104,164 @@ module.exports = function() {
             "response": {}
         },
 
-        // 58: unused
+        // 58: get vumi contact subscriptions msisdn +27820000666
+        {
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'to_addr': '+27820000111'
+                },
+                'url': 'https://subscriptions/api/v1/go/subscription/',
+            },
+            'response': {
+                "code": 200,
+                "meta": {
+                    "limit": 20,
+                    "next": "/api/v1/subscription/?to_addr=%2B27820000111&limit=20&offset=20",
+                    "offset": 0,
+                    "previous": null,
+                    "total_count": 3
+                },
+                "data": {
+                    "objects": [
+                        {
+                            "active": true,
+                            "completed": false,
+                            "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
+                            "created_at": "2015-11-11T07:49:21.172038",
+                            "id": 1467333,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/4/",  // baby1
+                            "next_sequence_number": 30,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/1467333/",
+                            "schedule": "/api/v1/periodic_task/3/",
+                            "to_addr": "+27820000111",
+                            "updated_at": "2016-02-22T10:20:20.563675",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        },
+                        {
+                            "active": false,
+                            "completed": true,
+                            "contact_key": "a368fbce5a274ff6b3b28dfdfbf8dfbe",
+                            "created_at": "2015-07-09T12:47:03.727247",
+                            "id": 962818,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/5/",
+                            "next_sequence_number": 38,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/962818/",
+                            "schedule": "/api/v1/periodic_task/2/",
+                            "to_addr": "+27820000111",
+                            "updated_at": "2016-03-28T10:40:50.939858",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        },
+                        {
+                            "active": false,
+                            "completed": true,
+                            "contact_key": "234ba28edb314b4da369158f6adf769a",
+                            "created_at": "2015-02-05T11:23:25.689583",
+                            "id": 425407,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/5/",
+                            "next_sequence_number": 38,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/425407/",
+                            "schedule": "/api/v1/periodic_task/2/",
+                            "to_addr": "+27820000111",
+                            "updated_at": "2015-10-26T11:38:59.099219",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        }
+                    ]
+                }
+            }
+        },
+
+        // 59: deactivate vumi subscriptions
         {
             "request": {
-                "method": 'POST',
+                "url": 'https://subscriptions/api/v1/go/subscription/',
+                "method": 'PATCH',
                 "data": {
-                    "deprecated": "fixture"
-                },
-                "url": 'http://'
+                    "objects": [
+                        {
+                            "active": false,
+                            "completed": false,
+                            "contact_key": "1082752d5fcb482b8e744ad4d6356eb2",
+                            "created_at": "2015-11-11T07:49:21.172038",
+                            "id": 1467333,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/4/",  // baby1
+                            "next_sequence_number": 30,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/1467333/",
+                            "schedule": "/api/v1/periodic_task/3/",
+                            "to_addr": "+27820000111",
+                            "updated_at": "2016-02-22T10:20:20.563675",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        },
+                        {
+                            "active": false,
+                            "completed": true,
+                            "contact_key": "a368fbce5a274ff6b3b28dfdfbf8dfbe",
+                            "created_at": "2015-07-09T12:47:03.727247",
+                            "id": 962818,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/5/",
+                            "next_sequence_number": 38,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/962818/",
+                            "schedule": "/api/v1/periodic_task/2/",
+                            "to_addr": "+27820000111",
+                            "updated_at": "2016-03-28T10:40:50.939858",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        },
+                        {
+                            "active": false,
+                            "completed": true,
+                            "contact_key": "234ba28edb314b4da369158f6adf769a",
+                            "created_at": "2015-02-05T11:23:25.689583",
+                            "id": 425407,
+                            "lang": "en",
+                            "message_set": "/api/v1/message_set/5/",
+                            "next_sequence_number": 38,
+                            "process_status": 2,
+                            "resource_uri": "/api/v1/subscription/425407/",
+                            "schedule": "/api/v1/periodic_task/2/",
+                            "to_addr": "+27820000111",
+                            "updated_at": "2015-10-26T11:38:59.099219",
+                            "user_account": "1aa0dea2f82945a48cc258c61d756f16"
+                        }
+                    ]
+                }
             },
             "response": {}
         },
 
-        // 59: unused
+        // 60: update identity cb245673-aa41-4302-ac47-00000000001
         {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000001",
             "request": {
-                "method": 'POST',
+                "method": 'PATCH',
+                "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/',
                 "data": {
-                    "deprecated": "fixture"
-                },
-                "url": 'http://'
-            },
-            "response": {}
-        },
-
-        // 60: unused
-        {
-            "request": {
-                "method": 'POST',
-                "data": {
-                    "deprecated": "fixture"
-                },
-                "url": 'http://'
+                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/",
+                    "id": "cb245673-aa41-4302-ac47-00000000001",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820000111": {}
+                            }
+                        },
+                        "pmtct": {
+                            "sms_deactivated_subs": [1467333]
+                        }
+                    },
+                    "created_at": "2016-06-21T06:13:29.693272Z",
+                    "updated_at": "2016-06-21T06:13:29.693298Z"
+                }
             },
             "response": {}
         },
@@ -2443,7 +2568,7 @@ module.exports = function() {
             "response": {}
         },
 
-        // 67: get vumi subscriptions by msisdn +27720000111
+        // 67: get vumi contact subscriptions by msisdn +27720000111
         {
             "request": {
                 "url": 'https://subscriptions/api/v1/go/subscription/',
@@ -2453,6 +2578,8 @@ module.exports = function() {
                 }
             },
             "response": {
+                "code": 200,
+                "meta": {},
                 "data": {
                     "objects": [
                         {
@@ -2577,7 +2704,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-10000000001',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test StageBasedMessaging'],

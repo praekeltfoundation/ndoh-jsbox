@@ -11,6 +11,14 @@
         "x-generator": "Poedit 1.6.7",
         "language": "tn"
     },
+    "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health": [
+        null,
+        "Bomme ba ba nang le HIV ba ka belega masea a a senang HIV! Sireletsa lesea la gago ka go bona melemo ya mahala kwa tliliniking go tokafatsa boitekanelo ba gago."
+    ],
+    "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322": [
+        null,
+        "A o dirile diteko tsa HIV mme di supile fa o na le HIV? Go jalo le ka basadi ba bangwe ba baimana. Etela b-wise.mobi, leletsa Aids Helpline mo go 0800 012 322"
+    ],
     "You have an incomplete registration. Would you like to continue with this registration?": [
         null,
         ""
@@ -59,7 +67,7 @@
         null,
         "Siza ufake usuku owazalwa ngalo (Isibonelo 14)"
     ],
-    "Would you like to receive messages about keeping your child HIV-negative?": [
+    "Would you like to receive messages about keeping your child HIV-negative? The messages will contain words like HIV, medicine & ARVs": [
         null,
         "A o rata go ka amogela melaetsa e e ka ga go tshola lesea la gago le sena HIV? Melaetsa e tla nna le mafoko a a jaaka HIV, melemo & diARV"
     ],

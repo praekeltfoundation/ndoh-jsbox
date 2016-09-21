@@ -41,12 +41,38 @@ go.app = function() {
                 self.im.config.services.message_sender.token,
                 self.im.config.services.message_sender.url
             );
+
+            // evaluate whether dialback sms needs to be sent on session close
+            self.im.on('session:close', function(e) {
+                return self.dial_back(e);
+            });
         };
 
-        self.readable_sa_msisdn = function(msisdn) {
-            readable_no = '0' + msisdn.slice(msisdn.length-9, msisdn.length);
-            return readable_no;
-        },
+        self.dial_back = function(e) {
+            if (e.user_terminated && !self.im.user.answers.redial_sms_sent) {
+                return self
+                .send_redial_sms()
+                .then(function() {
+                    self.im.user.answers.redial_sms_sent = true;
+                    return ;
+                });
+            } else {
+                return ;
+            }
+        };
+
+        self.send_redial_sms = function() {
+            return ms.
+            create_outbound_message(
+                self.im.user.answers.operator.id,
+                self.im.user.answers.operator_msisdn,
+                self.im.user.i18n($(
+                    "Please dial back in to {{ USSD_number }} to complete the pregnancy registration."
+                ).context({
+                    USSD_number: self.im.config.channel
+                }))
+            );
+        };
 
         self.number_opted_out = function(identity, msisdn) {
             var details_msisdn = identity.details.addresses.msisdn[msisdn];
@@ -55,7 +81,7 @@ go.app = function() {
             } else {
                 return false;
             }
-        },
+        };
 
         self.jembi_json_api_call = function(method, params, payload, endpoint) {
             var http = new JsonApi(self.im, {
@@ -70,7 +96,7 @@ go.app = function() {
                         params: params
                     });
             }
-        },
+        };
 
         self.jembi_clinic_validate = function (clinic_code) {
             var params = {
@@ -118,6 +144,14 @@ go.app = function() {
 
             if (!("source" in registrant_info.details)) {
                 registrant_info.details.source = "clinic";
+            }
+
+            if (registrant_info.details.clinic) {
+                registrant_info.details.clinic.redial_sms_sent = self.im.user.answers.redial_sms_sent;
+            } else {
+                registrant_info.details.clinic = {
+                    redial_sms_sent: self.im.user.answers.redial_sms_sent
+                };
             }
 
             registrant_info.details.last_mc_reg_on = "clinic";
@@ -185,7 +219,8 @@ go.app = function() {
 
         self.states.add('state_timed_out', function(name, creator_opts) {
             var msisdn = self.im.user.answers.registrant_msisdn || self.im.user.answers.operator_msisdn;
-            var readable_no = self.readable_sa_msisdn(msisdn);
+            var readable_no = utils.readable_msisdn(msisdn, '27');
+
             return new ChoiceState(name, {
                 question: $(
                     'Would you like to complete pregnancy registration for {{ num }}?'
@@ -200,32 +235,37 @@ go.app = function() {
             });
         });
 
-        // TODO #49: dialback sms sending
-
         self.add("state_start", function(name) {
             self.im.user.set_answers = {};
             var operator_msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
-            var readable_no = self.readable_sa_msisdn(self.im.user.addr);
+            var readable_no = utils.readable_msisdn(operator_msisdn, '27');
 
             return is
             .get_or_create_identity({"msisdn": operator_msisdn})
             .then(function(identity) {
                 self.im.user.set_answer("operator", identity);
                 self.im.user.set_answer("operator_msisdn", operator_msisdn);
+
                 return new ChoiceState(name, {
                     question: $(
                         'Welcome to The Department of Health\'s ' +
                         'MomConnect. Tell us if this is the no. that ' +
                         'the mother would like to get SMSs on: {{ num }}'
-                        ).context({num: readable_no}),
+                    ).context({num: readable_no}),
                     choices: [
                         new Choice('yes', $('Yes')),
                         new Choice('no', $('No'))
                     ],
                     next: function(choice) {
                         if (choice.value === 'yes') {
-                            self.im.user.set_answer("registrant", self.im.user.answers.operator);
-                            self.im.user.set_answer("registrant_msisdn", self.im.user.answers.operator_msisdn);
+                            // init redial_sms_sent
+                            if (identity.details.clinic) {
+                                self.im.user.set_answer("redial_sms_sent", identity.details.clinic.redial_sms_sent || false);
+                            } else {
+                                self.im.user.set_answer("redial_sms_sent", false);
+                            }
+                            self.im.user.set_answer("registrant", identity);
+                            self.im.user.set_answer("registrant_msisdn", operator_msisdn);
 
                             var opted_out = self.number_opted_out(
                                 self.im.user.answers.registrant,
@@ -281,6 +321,18 @@ go.app = function() {
             });
         });
 
+        self.add('state_stay_out', function(name) {
+            return new ChoiceState(name, {
+                question: $('You have chosen not to receive MomConnect SMSs'),
+                choices: [
+                    new Choice('main_menu', $('Main Menu'))
+                ],
+                next: function(choice) {
+                    return 'state_start';
+                }
+            });
+        });
+
         self.add('state_mobile_no', function(name) {
             var error = $('Sorry, the mobile number did not validate. ' +
                           'Please reenter the mobile number:');
@@ -298,11 +350,20 @@ go.app = function() {
                     return is
                     .get_or_create_identity({"msisdn": registrant_msisdn})
                     .then(function(identity) {
+                        // init redial_sms_sent
+                        if (identity.details.clinic) {
+                            self.im.user.set_answer("redial_sms_sent", identity.details.clinic.redial_sms_sent || false);
+                        } else {
+                            self.im.user.set_answer("redial_sms_sent", false);
+                        }
+
                         self.im.user.set_answer("registrant", identity);
                         self.im.user.set_answer("registrant_msisdn", registrant_msisdn);
-                        opted_out = self.number_opted_out(
+
+                        var opted_out = self.number_opted_out(
                             self.im.user.answers.registrant,
                             self.im.user.answers.registrant_msisdn);
+
                         return opted_out ? 'state_opt_in' : 'state_consent';
                     });
                 }
@@ -328,18 +389,6 @@ go.app = function() {
                     });
                 },
                 next: 'state_due_date_month'
-            });
-        });
-
-        self.add('state_stay_out', function(name) {
-            return new ChoiceState(name, {
-                question: $('You have chosen not to receive MomConnect SMSs'),
-                choices: [
-                    new Choice('main_menu', $('Main Menu'))
-                ],
-                next: function(choice) {
-                    return 'state_start';
-                }
             });
         });
 

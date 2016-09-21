@@ -12,6 +12,14 @@
         "plural-forms": "nplurals=2; plural=(n != 1);",
         "language": "zu"
     },
+    "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health": [
+        null,
+        "Omama abane-HIV bangayithola ingane ingenayo i-HIV! Ungathola imishanguzo yamahhala ekliniki ukuvikela ingane yakho kwenze ngcono impilo yakho."
+    ],
+    "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322": [
+        null,
+        "Kungabe usanda kuthola ukuthi u-HIV? Awuwedwa, baningi abesimame abakhulelwe abanjengawe. Iya ku b-wise.mobi noma ufonele i-AIDS Helpline 0800 012 322"
+    ],
     "You have an incomplete registration. Would you like to continue with this registration?": [
         null,
         ""
@@ -60,7 +68,7 @@
         null,
         "Kuye kwaba nephutha kokufakile. Phinda ufake usuku owazalwa  ngalo ngokucophelela (isibonelo: 8)"
     ],
-    "Would you like to receive messages about keeping your child HIV-negative?": [
+    "Would you like to receive messages about keeping your child HIV-negative? The messages will contain words like HIV, medicine & ARVs": [
         null,
         "Kungabe uyathanda ukuqhubeka uthole imiyalezo emayelana nokugcina ingane yakho ingena-HIV? Imiyalezo izoba namagama afana no-HIV, imithi, nama-ARV"
     ],

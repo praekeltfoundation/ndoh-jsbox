@@ -1,10 +1,13 @@
 var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
+
 var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
 var fixtures_MessageSender = require('./fixtures_message_sender');
 var fixtures_Hub = require('./fixtures_hub');
 var fixtures_Jembi = require('./fixtures_jembi');
+var fixtures_ServiceRating = require('./fixtures_service_rating');
+
 var utils = require('seed-jsbox-utils').utils;
 
 describe("app", function() {
@@ -27,13 +30,6 @@ describe("app", function() {
                         "state_end_success", "state_registered_full", "state_registered_not_full",
                         "state_end_compliment", "state_end_complaint", "state_end_go_clinic"],
                     channel: "*120*550#",
-                    optout_channel: "*120*550*1#",
-                    jembi: {
-                        username: 'foo',
-                        password: 'bar',
-                        url: 'http://test/v2/',
-                        url_json: 'http://test/v2/json/'
-                    },
                     services: {
                         identity_store: {
                             url: 'http://is/api/v1/',
@@ -57,7 +53,8 @@ describe("app", function() {
                     // add fixtures for services used
                     fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
-                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
+                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 139
+                    fixtures_ServiceRating().forEach(api.http.fixtures.add); // 140 - 149
                     fixtures_Jembi().forEach(api.http.fixtures.add);  // 150 - 159
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 160 ->
                 });
@@ -141,6 +138,87 @@ describe("app", function() {
                         .run();
                     });
                 });
+            });
+        });
+
+        describe("dialback sms testing", function() {
+            it("send if redial sms not yet sent (identity loads without redial_sms_sent defined)", function() {
+                return tester
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_language - isiZulu
+                    , {session_event: 'close'}
+                )
+                .check.user.answer("redial_sms_sent", true)
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [125, 160, 163]);
+                })
+                .run();
+            });
+            it("don't send if redial sms already sent (identity loads with redial_sms_sent set as 'true')", function() {
+                return tester
+                .setup.user.addr("27820001011")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_registered_full - compliment
+                    , {session_event: 'close'}
+                )
+                .check.user.answer("redial_sms_sent", true)
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [53, 54, 127, 187]);
+                })
+                .run();
+            });
+            it("send if redial sms not yet sent (identity loads with redial_sms_sent set as 'false')", function() {
+                return tester
+                .setup.user.addr("27820001008")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_registered_full - compliment
+                    , {session_event: 'close'}
+                )
+                // .check.user.answer("redial_sms_sent", true)
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [54, 59, 129, 182]);
+                })
+                .run();
+            });
+            it("don't send when timeout occurs on a non-dialback state", function() {
+                return tester
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_language - zul_ZA
+                    , "1"  // state_suspect_pregnancy - yes
+                    , {session_event: 'close'}
+                    , {session_event: 'new'}
+                    , "1"  // state_timed_out - continue
+                    , "1"  // state_consent - yes
+                )
+                .check.user.answer("redial_sms_sent", false)  // session closed on non-dialback state
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [17, 117, 160, 163, 178]);
+                })
+                .run();
+            });
+            it("updates identity with redial_sms_sent 'true'", function() {
+                return tester
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_language - zul_ZA
+                    , {session_event: 'close'}
+                    , {session_event: 'new'}
+                    , "1"  // state_suspect_pregnancy - yes
+                    , "1"  // state_timed_out - continue
+                    , "1"  // state_consent - yes
+                )
+                .check.user.answer("redial_sms_sent", true)  // session closed on dialback state
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [17, 117, 125, 160, 163, 188]);
+                })
+                .run();
             });
         });
 
@@ -397,7 +475,7 @@ describe("app", function() {
                         , "1"  // state_language - zul_ZA
                         , "1"  // state_suspect_pregnancy - yes
                         , "1"  // state_consent - yes
-                        , "1"  // state_opt_in - ues
+                        , "1"  // state_opt_in - yes
                     )
                     .check.interaction({
                         state: "state_end_success"

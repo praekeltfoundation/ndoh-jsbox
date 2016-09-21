@@ -11,6 +11,24 @@ msgstr ""
 "X-Generator: Poedit 1.6.7\n"
 "Language: ss\n"
 
+#: go-app-ussd_pmtct.js:331
+msgid ""
+"HIV positive moms can have an HIV negative baby! You can get free medicine "
+"at the clinic to protect your baby and improve your health"
+msgstr ""
+"Bomake labane-HIV bangamtfola umntfwana lote i-HIV! Emtfolamphilo ungatfola "
+"umutsi wamahhala wekuvikela umntfwa wakho kanye nekwenta imphilo yakho ibe "
+"ncono."
+
+#: go-app-ussd_pmtct.js:341
+msgid ""
+"Recently tested HIV positive? You are not alone, many other pregnant women "
+"go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322"
+msgstr ""
+"Usandza kutfola kutsi une-HIV? Awuwedvwa, banengi bomake labakhulelwe "
+"labandlula kuloku. Yani ku: b-wise.mobi/ushayele Lucingo Lwekusitwa nge-"
+"AIDS:0800 012 322"
+
 #: go-app-ussd_pmtct.js:343
 msgid ""
 "You have an incomplete registration. Would you like to continue with this "
@@ -82,7 +100,8 @@ msgstr "Sicela kutrsi ufake lilanga lowatalwa ngalo (Sibonelo 14)"
 
 #: go-app-ussd_pmtct.js:553
 msgid ""
-"Would you like to receive messages about keeping your child HIV-negative?"
+"Would you like to receive messages about keeping your child HIV-negative? The"
+" messages will contain words like HIV, medicine & ARVs"
 msgstr ""
 "Ungatsandza yini kutfola imilayeto mayelana nekugcina umntfwanakho ete i-"
 "HIV? Lomlayeto utawuba nemagama latsi HIV, imitsi nema-ARV"

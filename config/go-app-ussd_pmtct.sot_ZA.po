@@ -12,6 +12,24 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Language: st\n"
 
+#: go-app-ussd_pmtct.js:331
+msgid ""
+"HIV positive moms can have an HIV negative baby! You can get free medicine "
+"at the clinic to protect your baby and improve your health"
+msgstr ""
+"Bomme ba nang le HIV ba ka ba le masea a se nang tshwaetso!O ka fumana "
+"meriana ya mahala kliniking ho tshireletsa lesea la hao le ho ntlafatsa "
+"bophelo ba hao."
+
+#: go-app-ussd_pmtct.js:341
+msgid ""
+"Recently tested HIV positive? You are not alone, many other pregnant women "
+"go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322"
+msgstr ""
+"O sa tswa tseba hore o na le tshwaetso ya HIV?Ha se wena feela, baimana ba "
+"bangata ba fetile moo. Etela b-wise.mobi kapa o letsetse AIDS Helpline ho "
+"0800012322."
+
 #: go-app-ussd_pmtct.js:343
 msgid ""
 "You have an incomplete registration. Would you like to continue with this "
@@ -83,7 +101,8 @@ msgstr "Nceda ufake umhla owazalwa ngawo (Umzekelo 14)"
 
 #: go-app-ussd_pmtct.js:553
 msgid ""
-"Would you like to receive messages about keeping your child HIV-negative?"
+"Would you like to receive messages about keeping your child HIV-negative? The"
+" messages will contain words like HIV, medicine & ARVs"
 msgstr ""
 "Na o ka rata ho fumana melaetsa ka ho boloka lesea la hao le se na tshwaetso "
 "ya HIV? Melaetsa e tla kenyeletsa mantswe a kang HIV, meriana le ARVs"

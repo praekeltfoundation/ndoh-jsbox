@@ -1,10 +1,12 @@
 var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
+
 var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
 var fixtures_MessageSender = require('./fixtures_message_sender');
 var fixtures_Hub = require('./fixtures_hub');
 var fixtures_Jembi = require('./fixtures_jembi');
+var fixtures_ServiceRating = require('./fixtures_service_rating');
 
 var utils = require('seed-jsbox-utils').utils;
 
@@ -21,7 +23,7 @@ describe("app", function() {
             tester
                 .setup.char_limit(182)
                 .setup.config.app({
-                    name: 'ussd_nurse',
+                    name: 'ussd_clinic',
                     testing_today: "2014-04-04",
                     logging: "off",
                     no_timeout_redirects: ["state_start"],
@@ -31,17 +33,12 @@ describe("app", function() {
                     jembi: {
                         username: 'foo',
                         password: 'bar',
-                        url: 'http://test/v2/',
                         url_json: 'http://test/v2/json/'
                     },
                     services: {
                         identity_store: {
                             url: 'http://is/api/v1/',
                             token: 'test IdentityStore'
-                        },
-                        stage_based_messaging: {
-                            url: 'http://sbm/api/v1/',
-                            token: 'test StageBasedMessaging'
                         },
                         hub: {
                             url: 'http://hub/api/v1/',
@@ -57,13 +54,14 @@ describe("app", function() {
                     // add fixtures for services used
                     fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
-                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
+                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 139
+                    fixtures_ServiceRating().forEach(api.http.fixtures.add); // 140 - 149
                     fixtures_Jembi().forEach(api.http.fixtures.add);  // 150 - 159
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 160 ->
                 });
         });
 
-        describe.only("timeout testing", function() {
+        describe("timeout testing", function() {
             describe("when you timeout and dial back in", function() {
                 describe("when on a normal state", function() {
                     it("should go to state_timed_out", function() {
@@ -173,6 +171,79 @@ describe("app", function() {
                         .run();
                     });
                 });
+            });
+        });
+
+        describe("dialback sms testing", function() {
+            it("send if redial sms not yet sent (identity loads without redial_sms_sent defined)", function() {
+                return tester
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_start - yes
+                    , "1"  // state_consent - yes
+                    , {session_event: 'close'}
+                )
+                .check.user.answer("redial_sms_sent", true)
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [123, 160, 163]);
+                })
+                .run();
+            });
+            it("don't send if redial sms already sent (identity loads with redial_sms_sent set as 'true')", function() {
+                return tester
+                .setup.user.addr("27820001009")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_start - yes
+                    , "1"  // state_consent - yes
+                    , {session_event: 'close'}
+                )
+                .check.user.answer("redial_sms_sent", true)
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [183]);
+                })
+                .run();
+            });
+            it("send if redial sms not yet sent (identity loads with redial_sms_sent set as 'false')", function() {
+                return tester
+                .setup.user.addr("27820001008")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_start - yes
+                    , "1"  // state_consent - yes
+                    , {session_event: 'close'}
+                )
+                .check.user.answer("redial_sms_sent", true)
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [131, 182]);
+                })
+                .run();
+            });
+            it("don't send when timeout occurs on a non-dialback state", function() {
+                return tester
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_start - yes
+                    , "1"  // state_consent - yes
+                    , {session_event: 'close'}
+                    , {session_event: 'new'}
+                    , "1"  // state_timed_out - continue
+                    , "123456"  // state_clinic_code
+                    , "2"  // state_due_date_month - may
+                    , "10"  // state_due_date_day
+                    , "3"  // state_id_type - none
+                    , "1981"  // state_birth_year
+                    , "1"  // state_birth_month - january
+                    , "14"  // state_birth_day
+                    , "4"  // state_language - english
+                )
+                .check.user.answer("redial_sms_sent", true)
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [4, 116, 123, 154, 160, 163, 184]);
+                })
+                .run();
             });
         });
 
