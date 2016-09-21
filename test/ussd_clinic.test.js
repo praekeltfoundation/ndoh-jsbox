@@ -209,7 +209,7 @@ describe("app", function() {
                 })
                 .run();
             });
-            it("send if redial sms not yet sent (identity loads without redial_sms_sent set as 'false')", function() {
+            it("send if redial sms not yet sent (identity loads with redial_sms_sent set as 'false')", function() {
                 return tester
                 .setup.user.addr("27820001008")
                 .inputs(
