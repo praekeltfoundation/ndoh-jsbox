@@ -81,7 +81,7 @@ describe("app", function() {
                             {session_event: "new"}
                         )
                         .check.interaction({
-                            state: 'states_start',
+                            state: 'state_start',
                             reply: [
                                 'Please let us know why you do not want MomConnect messages',
                                 '1. Miscarriage',
@@ -107,7 +107,7 @@ describe("app", function() {
                             {session_event: "new"}
                         )
                         .check.interaction({
-                            state: 'states_start',
+                            state: 'state_start',
                             reply: [
                                 'Please tell us why you previously opted out of messages',
                                 '1. Miscarriage',
@@ -131,10 +131,10 @@ describe("app", function() {
                     .setup.user.addr('27820001002')
                     .inputs(
                         {session_event: "new"}
-                        , '1' // states_start - miscarriage
+                        , '1' // state_start - miscarriage
                     )
                     .check.interaction({
-                        state: 'states_subscribe_option',
+                        state: 'state_subscribe_option',
                         reply: [
                             'We are sorry for your loss. Would you like ' +
                             'to receive a small set of free messages ' +
@@ -160,7 +160,7 @@ describe("app", function() {
                         , '4' // state_start - messages not useful
                     )
                     .check.interaction({
-                        state: 'states_end_no',
+                        state: 'state_end_no',
                         reply: ('Thank you. You will no longer receive ' +
                             'messages from us. If you have any medical ' +
                             'concerns please visit your nearest clinic.')
@@ -180,16 +180,16 @@ describe("app", function() {
                     .inputs(
                         {session_event: "new"}
                         , '1' // state_start - miscarriage
-                        , '2' // states_subscribe_option - no
+                        , '2' // state_subscribe_option - no
                     )
                     .check.interaction({
-                        state: 'states_end_no',
+                        state: 'state_end_no',
                         reply: ('Thank you. You will no longer receive ' +
                             'messages from us. If you have any medical ' +
                             'concerns please visit your nearest clinic.')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [23, 161]);
+                        utils.check_fixtures_used(api, [26, 161]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -205,10 +205,10 @@ describe("app", function() {
                         .inputs(
                             {session_event: "new"}
                             , '1' // state_start - miscarriage
-                            , '1' // states_subscribe_option - yes
+                            , '1' // state_subscribe_option - yes
                         )
                         .check.interaction({
-                            state: 'states_end_yes',
+                            state: 'state_end_yes',
                             reply: ('Thank you. You will receive support messages ' +
                                 'from MomConnect in the coming weeks.')
                         })
@@ -227,10 +227,10 @@ describe("app", function() {
                         .inputs(
                             {session_event: "new"}
                             , '1' // state_start - miscarriage
-                            , '1' // states_subscribe_option - yes
+                            , '1' // state_subscribe_option - yes
                         )
                         .check.interaction({
-                            state: 'states_end_yes',
+                            state: 'state_end_yes',
                             reply: ('Thank you. You will receive support messages ' +
                                 'from MomConnect in the coming weeks.')
                         })

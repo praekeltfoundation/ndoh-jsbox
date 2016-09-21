@@ -15,7 +15,7 @@ go.app = function() {
     var utils = SeedJsboxUtils.utils;
 
     var GoNDOH = App.extend(function(self) {
-        App.call(self, "states_start");
+        App.call(self, "state_start");
         var $ = self.$;
 
         // variables for services
@@ -53,7 +53,7 @@ go.app = function() {
             }
         };
 
-        self.states.add("states_start", function(name) {
+        self.states.add("state_start", function(name) {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
             self.im.user.set_answer("operator_msisdn", msisdn);
 
@@ -86,14 +86,14 @@ go.app = function() {
                         if (_.contains(["not_useful", "other"], choice.value)){
                             return "state_send_nonloss_optout";
                         } else {
-                            return "states_subscribe_option";
+                            return "state_subscribe_option";
                         }
                     }
                 });
             });
         });
 
-        self.states.add("states_subscribe_option", function(name) {
+        self.states.add("state_subscribe_option", function(name) {
             return new ChoiceState(name, {
                 question: $("We are sorry for your loss. Would you like " +
                             "to receive a small set of free messages " +
@@ -138,7 +138,7 @@ go.app = function() {
                 }
             )
             .then(function() {
-                return self.states.create("states_end_yes");
+                return self.states.create("state_end_yes");
             });
         });
 
@@ -154,27 +154,27 @@ go.app = function() {
                 }
             )
             .then(function() {
-                return self.states.create("states_end_no");
+                return self.states.create("state_end_no");
             });
         });
 
-        self.states.add("states_end_no", function(name) {
+        self.states.add("state_end_no", function(name) {
             return new EndState(name, {
                 text: $("Thank you. You will no longer receive " +
                         "messages from us. If you have any medical " +
                         "concerns please visit your nearest clinic."),
 
-                next: "states_start"
+                next: "state_start"
 
             });
         });
 
-        self.states.add("states_end_yes", function(name) {
+        self.states.add("state_end_yes", function(name) {
             return new EndState(name, {
                 text: $("Thank you. You will receive support messages " +
                             "from MomConnect in the coming weeks."),
 
-                next: "states_start"
+                next: "state_start"
             });
         });
 
