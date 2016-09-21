@@ -25,10 +25,8 @@ describe("app", function() {
                     name: 'ussd_chw',
                     logging: "off",
                     no_timeout_redirects: [
-                        "states_start"
+                        "state_start"
                     ],
-                    env: 'test',
-                    testing: 'true',
                     testing_today: "2014-04-04",
                     channel: "*120*550*3#",
                     services: {
