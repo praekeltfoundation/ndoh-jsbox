@@ -40,10 +40,6 @@ describe("app", function() {
                             url: 'http://hub/api/v1/',
                             token: 'test Hub'
                         },
-                        message_sender: {
-                            url: 'http://ms/api/v1/',
-                            token: 'test MessageSender'
-                        }
                     },
                 })
                 .setup.char_limit(182)

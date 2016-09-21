@@ -52,10 +52,6 @@ describe("app", function() {
                         hub: {
                             url: 'http://hub/api/v1/',
                             token: 'test Hub'
-                        },
-                        message_sender: {
-                            url: 'http://ms/api/v1/',
-                            token: 'test MessageSender'
                         }
                     },
                     subscription: {

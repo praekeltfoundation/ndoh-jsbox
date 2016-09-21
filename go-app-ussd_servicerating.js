@@ -211,7 +211,7 @@ go.app = function() {
                     .create_outbound_message(
                         self.im.user.answers.operator.id,
                         self.im.user.answers.msisdn,
-                        "Thank you for rating our service."
+                        self.im.user.i18n($("Thank you for rating our service."))
                     )
                     .then(function () {
                         return self.states.create("end_thanks");

@@ -21,6 +21,7 @@ describe("app", function() {
                     testing_today: 'August 2, 2016 13:30:07',
                     testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',
                     pmtct_ussd_channel: "*134*550*10#",
+                    logging: "off",
                     services: {
                         identity_store: {
                             url: 'http://is.localhost:8001/api/v1/',
@@ -30,6 +31,13 @@ describe("app", function() {
                             url: 'http://hub.localhost:8001/api/v1/',
                             token: 'test Hub'
                         }
+                    },
+                    vumi: {
+                        token: "abcde",
+                        contact_url: "https://contacts/api/v1/go/",
+                        username: "test_username",
+                        api_key: "test_api_key",
+                        subscription_url: "https://subscriptions/api/v1/go/"
                     }
                 })
                 .setup(function(api) {
@@ -75,11 +83,12 @@ describe("app", function() {
                     .check.interaction({
                         state: 'state_opt_out',
                         reply:
-                            "If you only wanted to stop the messages about HIV, " +
-                            "please reply MOM to this message and you will still " +
-                            "receive MomConnect messages."
+                            "You will no longer receive messages about HIV. Reply STOP to a " +
+                            "MomConnect message if you also want to stop receiving messages " +
+                            "about your pregnancy or baby."
                     })
                     .check(function(api) {
+                        // utils.check_fixtures_used(api, [0, 58, 59, 60, 77, 78]);
                         utils.check_fixtures_used(api, [0, 77, 78]);
                     })
                     .run();

@@ -17,6 +17,9 @@ go.app = function() {
         var utils = SeedJsboxUtils.utils;
 
         var is;
+        var sbm;
+        var hub;
+        var ms;
 
         self.init = function() {
             // initialise services
