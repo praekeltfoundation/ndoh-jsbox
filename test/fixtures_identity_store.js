@@ -835,6 +835,15 @@ module.exports = function() {
                                 "mom_dob": "2051-01-02",
                                 "source": "clinic",
                                 "last_mc_reg_on": "clinic",
+                                "chw": {
+                                    "redial_sms_sent": false
+                                },
+                                "clinic": {
+                                    "redial_sms_sent": false
+                                },
+                                "public": {
+                                    "redial_sms_sent": false
+                                },
                                 "nurseconnect": {
                                     "redial_sms_sent": false
                                 }
