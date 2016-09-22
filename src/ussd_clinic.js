@@ -78,7 +78,7 @@ go.app = function() {
             } else {
                 return false;
             }
-        },
+        };
 
         self.jembi_json_api_call = function(method, params, payload, endpoint) {
             var http = new JsonApi(self.im, {
@@ -248,7 +248,7 @@ go.app = function() {
                         'Welcome to The Department of Health\'s ' +
                         'MomConnect. Tell us if this is the no. that ' +
                         'the mother would like to get SMSs on: {{ num }}'
-                        ).context({num: readable_no}),
+                    ).context({num: readable_no}),
                     choices: [
                         new Choice('yes', $('Yes')),
                         new Choice('no', $('No'))
@@ -261,7 +261,6 @@ go.app = function() {
                             } else {
                                 self.im.user.set_answer("redial_sms_sent", false);
                             }
-
                             self.im.user.set_answer("registrant", identity);
                             self.im.user.set_answer("registrant_msisdn", operator_msisdn);
 

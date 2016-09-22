@@ -1,7 +1,7 @@
 go.app = function() {
     var vumigo = require("vumigo_v02");
     var moment = require('moment');
-    // var _ = require('lodash');
+    var SeedJsboxUtils = require('seed-jsbox-utils');
     var Q = require('q');
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
@@ -10,13 +10,6 @@ go.app = function() {
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
     var JsonApi = vumigo.http.api.JsonApi;
-
-    var SeedJsboxUtils = require('seed-jsbox-utils');
-    var IdentityStore = SeedJsboxUtils.IdentityStore;
-    var StageBasedMessaging = SeedJsboxUtils.StageBasedMessaging;
-    var Hub = SeedJsboxUtils.Hub;
-    var MessageSender = SeedJsboxUtils.MessageSender;
-
     var utils = SeedJsboxUtils.utils;
 
     var GoNDOH = App.extend(function(self) {
@@ -32,25 +25,22 @@ go.app = function() {
 
         self.init = function() {
             // initialising services
-            is = new IdentityStore(
+            is = new SeedJsboxUtils.IdentityStore(
                 new JsonApi(self.im, {}),
                 self.im.config.services.identity_store.token,
                 self.im.config.services.identity_store.url
             );
-
-            sbm = new StageBasedMessaging(
+            sbm = new SeedJsboxUtils.StageBasedMessaging(
                 new JsonApi(self.im, {}),
                 self.im.config.services.stage_based_messaging.token,
                 self.im.config.services.stage_based_messaging.url
             );
-
-            hub = new Hub(
+            hub = new SeedJsboxUtils.Hub(
                 new JsonApi(self.im, {}),
                 self.im.config.services.hub.token,
                 self.im.config.services.hub.url
             );
-
-            ms = new MessageSender(
+            ms = new SeedJsboxUtils.MessageSender(
                 new JsonApi(self.im, {}),
                 self.im.config.services.message_sender.token,
                 self.im.config.services.message_sender.url
@@ -147,6 +137,15 @@ go.app = function() {
             }
         };
 
+        self.number_opted_out = function(identity, msisdn) {
+            var details_msisdn = identity.details.addresses.msisdn[msisdn];
+            if ("optedout" in details_msisdn) {
+                return (details_msisdn.optedout === true || details_msisdn.optedout === "true");
+            } else {
+                return false;
+            }
+        },
+
     // REGISTRATION FINISHED SMS HANDLING
 
         self.send_registration_thanks = function(msisdn) {
@@ -160,31 +159,21 @@ go.app = function() {
             );
         };
 
+
     // TIMEOUT STATE
         self.states.add('state_timed_out', function(name, creator_opts) {
             var msisdn = utils.readable_msisdn(self.im.user.answers.registrant_msisdn, '27');
-
             return new ChoiceState(name, {
-                question: $("Welcome to NurseConnect. Would you like to continue your previous session for {{num}}?")
-                    .context({ num: msisdn }),
-
+                question: $(
+                    "Welcome to NurseConnect. Would you like to continue your " +
+                    "previous session for {{num}}?"
+                ).context({ num: msisdn }),
                 choices: [
                     new Choice(creator_opts.name, $('Yes')),
                     new Choice('state_route', $('Start Over'))
                 ],
-
                 next: function(choice) {
-                    if (choice.value === 'state_route') {
-                        return "state_route";
-                    } else {
-                        return Q()
-                            .then(function() {
-                                return {
-                                    name: choice.value,
-                                    creator_opts: creator_opts
-                                };
-                            });
-                    }
+                    return choice.value;
                 }
             });
         });
@@ -431,64 +420,38 @@ go.app = function() {
         });
 
         self.add('state_save_nursereg', function(name) {
-            self.im.user.answers.registrant.details.nurseconnect.is_registered = true;
+            var registrant_info = self.im.user.answers.registrant;
+            registrant_info.details.nurseconnect.is_registered = true;
+            registrant_info.details.nurseconnect.redial_sms_sent = self.im.user.answers.redial_sms_sent;
+
+            // operator.id will equal registrant.id when a self registration
+            if (self.im.user.answers.operator.id !== registrant_info.id) {
+                registrant_info.details.nurseconnect.registered_by =
+                    self.im.user.answers.operator.id;
+            }
 
             var reg_info = {
                 "reg_type": "nurseconnect",
-                "registrant_id": self.im.user.answers.registrant.id,
+                "registrant_id": registrant_info.id,
                 "data": {
                     "operator_id": self.im.user.answers.operator.id,  // device owner id
                     "msisdn_registrant": self.im.user.answers.registrant_msisdn,  // msisdn of the registrant
                     "msisdn_device": self.im.user.answers.operator_msisdn,  // device msisdn
-                    "faccode": self.im.user.answers.registrant.details.nurseconnect.faccode,  // facility code
+                    "faccode": registrant_info.details.nurseconnect.faccode,  // facility code
                     "language": "eng_ZA"  // currently always eng_ZA for nurseconnect
                 }
             };
 
-            var registrant_info = self.im.user.answers.registrant;
-            if (registrant_info.details.nurseconnect) {
-                registrant_info.details.nurseconnect.redial_sms_sent = self.im.user.answers.redial_sms_sent;
-            } else {
-                registrant_info.details.nurseconnect = {
-                    redial_sms_sent: self.im.user.answers.redial_sms_sent
-                };
-            }
+            return Q
+            .all([
+                is.update_identity(registrant_info.id, registrant_info),
+                self.send_registration_thanks(self.im.user.answers.registrant_msisdn),
+                hub.create_registration(reg_info)
+            ])
+            .then(function() {
+                return self.states.create('state_end_reg');
+            });
 
-            // operator.id will equal registrant.id when a self registration
-            if (self.im.user.answers.operator.id !== self.im.user.answers.registrant.id) {
-                self.im.user.answers.registrant.details.nurseconnect.registered_by = self.im.user.answers.operator.id;
-
-                return Q
-                .all ([
-                    // identity PATCH
-                    is.update_identity(
-                        registrant_info.id,
-                        registrant_info
-                    ),
-                    self.send_registration_thanks(self.im.user.answers.registrant_msisdn),
-                    // POST registration
-                    hub.create_registration(reg_info)
-                ])
-                .then(function() {
-                    return self.states.create('state_end_reg');
-                });
-
-            } else {
-                return Q
-                .all([
-                    // identity PATCH
-                    is.update_identity(
-                        registrant_info.id,
-                        registrant_info
-                    ),
-                    self.send_registration_thanks(self.im.user.answers.registrant_msisdn),
-                    // POST registration
-                    hub.create_registration(reg_info)
-                ])
-                .then(function() {
-                    return self.states.create('state_end_reg');
-                });
-            }
         });
 
     // CHANGE STATES
@@ -612,8 +575,6 @@ go.app = function() {
                 "data": {
                     "msisdn_old": self.im.user.answers.operator_msisdn,
                     "msisdn_new": self.im.user.answers.new_msisdn,
-                    // number of device used - will be the same as either msisdn_old or msisdn_new,
-                    // depending on whether number dialing in was recognised or not
                     "msisdn_device": self.im.user.answers.operator_msisdn
                 }
             };
@@ -844,18 +805,14 @@ go.app = function() {
                     return is
                     .list_by_address({msisdn: old_msisdn})
                     .then(function(identities_found) {
-                        if (identities_found.results.length > 0) {  // what if more than one identity use same 'old' number..?
+                        if (identities_found.results.length > 0) {
                             return sbm
                             .check_identity_subscribed(identities_found.results[0].id, "nurseconnect")
                             .then(function(identity_subscribed_to_nurseconnect) {
                                 if (identity_subscribed_to_nurseconnect) {
-                                    return {
-                                        name: 'state_post_change_old_nr',
-                                        creator_opts: {
-                                            identity: identities_found.results[0],
-                                            msisdn: old_msisdn
-                                        }
-                                    };
+                                    self.im.user.set_answer("old_msisdn", old_msisdn);
+                                    self.im.user.set_answer("old_identity_id", identities_found.results[0].id);
+                                    return 'state_post_change_old_nr';
                                 } else {
                                     return 'state_change_old_not_found';
                                 }
@@ -883,20 +840,17 @@ go.app = function() {
         });
 
         self.add('state_check_optout_optout', function(name) {
-            var msisdn = Object.keys(self.im.user.answers.operator.details.addresses.msisdn)[0];
-            if (self.im.user.answers.operator.details.addresses.msisdn[msisdn].optedout) {
-                return self.states.create(
-                    'state_optout', {opted_out: true}
-                );
-            } else {
-                return self.states.create(
-                    'state_optout', {opted_out: false}
-                );
-            }
+            var opted_out = self.number_opted_out(
+                self.im.user.answers.operator,
+                self.im.user.answers.operator_msisdn);
+
+            self.im.user.set_answer("opted_out", opted_out);
+
+            return self.states.create('state_optout');
         });
 
-        self.add('state_optout', function(name, opts) {
-            var question = opts.opted_out === false
+        self.add('state_optout', function(name) {
+            var question = self.im.user.answers.opted_out === false
                 ? $("Please tell us why you no longer want messages:")
                 : $("You have opted out before. Please tell us why:");
             return new ChoiceState(name, {
@@ -931,15 +885,13 @@ go.app = function() {
             });
         });
 
-        self.add('state_post_change_old_nr', function(name, old_identity) {
+        self.add('state_post_change_old_nr', function(name) {
             var change_info = {
-                "registrant_id": old_identity.identity.id,
+                "registrant_id": self.im.user.answers.old_identity_id,
                 "action": "nurse_change_msisdn",
                 "data": {
-                    "msisdn_old": old_identity.msisdn,
+                    "msisdn_old": self.im.user.answers.old_msisdn,
                     "msisdn_new": self.im.user.answers.operator_msisdn,
-                    // number of device used - will be the same as either msisdn_old or msisdn_new,
-                    // depending on whether number dialing in was recognised or not
                     "msisdn_device": self.im.user.answers.operator_msisdn,
                 }
             };
