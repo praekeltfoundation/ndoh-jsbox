@@ -26,7 +26,7 @@ describe("app", function() {
                 .setup.config.app({
                     name: 'sms_inbound',
                     testing: 'true',
-                    testing_today: '2014-04-04 07:07:07',
+                    testing_today: '2014-04-04 03:07:07',
                     testing_message_id: "0170b7bb-978e-4b8a-35d2-662af5b6daee",
                     env: 'test',
                     // metric_store: 'test_metric_store',
@@ -259,7 +259,7 @@ describe("app", function() {
                     return tester
                         .setup.config.app({
                             // friday out of hours
-                            testing_today: '2014-04-04 07:07:07'
+                            testing_today: '2014-04-04 04:07:07'
                         })
                         .setup.user.addr('27820001002')
                         .inputs('DONUTS')
