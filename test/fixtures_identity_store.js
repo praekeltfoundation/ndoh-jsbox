@@ -5,13 +5,14 @@
     // (+27820001002) - existing identity with an active MomConnect subscription (no active NurseConnect subscription)
     // (+27820001003) - existing identity with an active NurseConnect subscription; NurseConnect dialback sms already sent
     // (+27820001004) - existing identity with an inactive NurseConnect subscription (opted out)
-    // (+27820001005) - existing identity; two msisdn's (opted out on +27820001004)
+    // (+27820001005) - existing identity; thre msisdn's (opted out on 27820001003 & +27820001012)
     // (+27820001006) - existing identity with an inactive MomConnect subscription
     // (+27820001007) - existing identity with an active MomConnect CHW subscription
     // (+27820001008) - existing identity with an active MomConnect Clinic subscription; completed servicerating
     // (+27820001009) - existing identity with an active MomConnect Clinic subscription; CLINIC dialback sms already sent
     // (+27820001010) - existing identity with an active MomConnect Clinic subscription; CHW dialback sms already sent
     // (+27820001011) - existing identity with an active MomConnect Clinic subscription; PUBLIC dialback sms already sent
+    // (+27820001012) - old/opted_out number used before by 27820001005 (used to test changing number)
 
 module.exports = function() {
     return [
@@ -138,7 +139,8 @@ module.exports = function() {
                                 "addresses": {
                                     "msisdn": {
                                         "+27820001005": {},
-                                        "+27820001003": { "optedout": true }
+                                        "+27820001003": { "optedout": true },
+                                        "+27820001012": { "optedout": true },
                                     }
                                 },
                                 "nurseconnect": {
@@ -275,7 +277,8 @@ module.exports = function() {
                                 "addresses": {
                                     "msisdn": {
                                         "+27820001005": {},
-                                        "+27820001003": { "optedout": true }
+                                        "+27820001003": { "optedout": true },
+                                        "+27820001012": { "optedout": true }
                                     }
                                 },
                                 "nurseconnect": {
@@ -1128,6 +1131,75 @@ module.exports = function() {
                 }
             },
             "response": {}
+        },
+
+        // 190: get identity by msisdn +27820001012
+        {
+            "key": "get.is.msisdn.27820001012",
+            "repeatable": true,
+            "request": {
+                "url": 'http://is/api/v1/identities/search/',
+                "method": 'GET',
+                "params": {
+                    "details__addresses__msisdn": '+27820001012',
+                    "include_inactive": "False"
+                }
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 0,
+                    "next": null,
+                    "previous": null,
+                    "results": [{
+                        "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001005/",
+                        "id": "cb245673-aa41-4302-ac47-00000001005",
+                        "version": 1,
+                        "details": {
+                            "default_addr_type": "msisdn",
+                            "addresses": {
+                                "msisdn": {
+                                    "+27820001005": {},
+                                    "+27820001003": { "optedout": true },
+                                    "+27820001012": { "optedout": true },
+                                }
+                            },
+                            "nurseconnect": {
+                                "last_reg_id": "7",
+                                "is_registered": 'true',
+                                "faccode": '123456',
+                                "facname": 'WCL clinic',
+                                "id_type": "sa_id",
+                                "sa_id_no": "5101025009086",
+                                "dob": "1964-07-11",
+                                "opt_out_reason": "unknown"
+                            }
+                        },
+                        "created_at": "2016-08-05T06:13:29.693272Z",
+                        "updated_at": "2016-08-05T06:13:29.693298Z"
+                    }]
+                }
+            }
+        },
+
+        // 191: optin identity cb245673-aa41-4302-ac47-00000001005 (msisdn +27820001012)
+        {
+            "key": "post.is.optin.27820001005",
+            "request": {
+                "url": 'http://is/api/v1/optin/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001005",
+                    "address_type": "msisdn",
+                    "address": "+27820001012"
+                }
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
         },
 
     ];

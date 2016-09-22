@@ -1002,13 +1002,31 @@ describe("app", function() {
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '2'  // state_subscribed - change num
-                            , '0820001001'  // state_change_num
+                            , '0820001012'  // state_change_num
+                            , '1' // state_opt_in_change - yes
                         )
                         .check.interaction({
                             state: 'state_end_detail_changed'
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [11, 54, 56, 160, 165]);
+                            utils.check_fixtures_used(api, [27, 54, 56, 165, 190, 191]);
+                        })
+                        .run();
+                });
+                it("should go to state_end_detail_changed", function() {
+                    return tester
+                        .setup.user.addr('27820001005')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '2'  // state_subscribed - change num
+                            , '0820001012'  // state_change_num
+                            , '2' // state_opt_in_change - no
+                        )
+                        .check.interaction({
+                            state: 'state_permission_denied'
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [54, 56, 165, 190]);
                         })
                         .run();
                 });

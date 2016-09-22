@@ -519,10 +519,11 @@ go.app = function() {
                     }
 
                     // person wants to change to number already theirs but it's also active on another identity
-                    if (new_msisdn_on_operator && !msisdn_on_other_identities_but_available) {
+                    if (new_msisdn_on_operator && identities.length > 0 && !msisdn_on_other_identities_but_available) {
                         // disallow
                         return self.states.create('state_block_active_subs');
                     }
+
                     if (new_msisdn_on_operator) { // person wants to change to number already theirs
                         // check whether number is opted out on operator
                         if (self.im.user.answers.operator.details.addresses.msisdn[new_msisdn].optedout) {
@@ -551,9 +552,9 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (choice.value === 'yes') {
-                        self.im.user.answers.registrant.details.nurseconnect.opt_out_reason = "";  // reset
+                        self.im.user.answers.operator.details.nurseconnect.opt_out_reason = "";  // reset
                         return is
-                        .optin(self.im.user.answers.registrant.id, "msisdn", self.im.user.answers.registrant_msisdn)
+                        .optin(self.im.user.answers.operator.id, "msisdn", self.im.user.answers.new_msisdn)
                         .then(function() {
                             return 'state_switch_new_nr';
                         });
@@ -581,8 +582,11 @@ go.app = function() {
                     "msisdn_device": self.im.user.answers.operator_msisdn
                 }
             };
-            return hub
-            .create_change(change_info)
+            return Q
+            .all([
+                // is.update_identity
+                hub.create_change(change_info)
+            ])
             .then(function() {
                 return self.states.create('state_end_detail_changed');
             });
@@ -616,8 +620,11 @@ go.app = function() {
                         }
                     };
 
-                    return hub
-                    .create_change(change_info)
+                    return Q
+                    .all([
+                        // is.update_identity
+                        hub.create_change(change_info)
+                    ])
                     .then(function () {
                         return 'state_end_detail_changed';
                     });
@@ -660,8 +667,11 @@ go.app = function() {
                         }
                     };
 
-                    return hub
-                    .create_change(change_info)
+                    return Q
+                    .all([
+                        // is.update_identity
+                        hub.create_change(change_info)
+                    ])
                     .then(function () {
                         return 'state_end_detail_changed';
                     });
@@ -721,8 +731,11 @@ go.app = function() {
                         }
                     };
 
-                    return hub
-                    .create_change(change_info)
+                    return Q
+                    .all([
+                        // is.update_identity
+                        hub.create_change(change_info)
+                    ])
                     .then(function () {
                         return 'state_end_detail_changed';
                     });
@@ -752,8 +765,11 @@ go.app = function() {
                         }
                     };
 
-                    return hub
-                    .create_change(change_info)
+                    return Q
+                    .all([
+                        // is.update_identity
+                        hub.create_change(change_info)
+                    ])
                     .then(function () {
                         return 'state_end_detail_changed';
                     });
@@ -783,8 +799,11 @@ go.app = function() {
                         }
                     };
 
-                    return hub
-                    .create_change(change_info)
+                    return Q
+                    .all([
+                        // is.update_identity
+                        hub.create_change(change_info)
+                    ])
                     .then(function () {
                         return 'state_end_detail_changed';
                     });
@@ -877,8 +896,11 @@ go.app = function() {
                             }
                         };
 
-                        return hub
-                        .create_change(change_info)
+                        return Q
+                        .all([
+                            // is.update_identity
+                            hub.create_change(change_info)
+                        ])
                         .then(function() {
                             return 'state_end_detail_changed';
                         });
@@ -899,8 +921,11 @@ go.app = function() {
                 }
             };
 
-            return hub
-            .create_change(change_info)
+            return Q
+            .all([
+                // is.update_identity
+                hub.create_change(change_info)
+            ])
             .then(function() {
                 return self.states.create('state_end_detail_changed');
             });

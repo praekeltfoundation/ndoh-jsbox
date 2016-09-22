@@ -662,13 +662,28 @@ module.exports = function() {
             'response': {}
         },
 
-        // 27:
+        // 27: post change (number to +27820001012) for cb245673-aa41-4302-ac47-00000001005
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.change.nurse_change_msisdn.identity.cb245673-aa41-4302-ac47-00000001005",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001005",
+                    "action": "nurse_change_msisdn",
+                    "data": {
+                        "msisdn_old": "+27820001005",
+                        "msisdn_new": "+27820001012",
+                        "msisdn_device":"+27820001005"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
         },
 
         // 28:
