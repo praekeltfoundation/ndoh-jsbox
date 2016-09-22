@@ -48,25 +48,25 @@ go.app = function() {
 
         self.is_weekend = function(config) {
             var today = utils.get_moment_date(config.testing_today, "YYYY-MM-DD hh:mm:ss");
-            var moment_today = moment.utc(today);
-            return moment_today.format('dddd') === 'Saturday' ||
-              moment_today.format('dddd') === 'Sunday';
+            var today_utc = moment.utc(today);
+            return today_utc.format('dddd') === 'Saturday' ||
+              today_utc.format('dddd') === 'Sunday';
         };
 
         self.is_public_holiday = function(config) {
             var today = utils.get_moment_date(config.testing_today, "YYYY-MM-DD hh:mm:ss");
-            var moment_today = moment.utc(today);
-            var date_as_string = moment_today.format('YYYY-MM-DD');
+            var today_utc = moment.utc(today);
+            var date_as_string = today_utc.format('YYYY-MM-DD');
             return _.contains(config.public_holidays, date_as_string);
         };
 
         self.is_out_of_hours = function(config) {
             var today = utils.get_moment_date(config.testing_today, "YYYY-MM-DD hh:mm:ss");
-            var moment_today = moment.utc(today);
+            var today_utc = moment.utc(today);
             // get business hours from config, -2 for utc to local time conversion
             var opening_time = Math.min.apply(null, config.helpdesk_hours) - 2;
             var closing_time = Math.max.apply(null, config.helpdesk_hours) - 2;
-            return (moment_today.hour() < opening_time || moment_today.hour() >= closing_time);
+            return (today_utc.hour() < opening_time || today_utc.hour() >= closing_time);
         };
 
         self.states.add("state_start", function() {
