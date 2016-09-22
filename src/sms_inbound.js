@@ -43,31 +43,22 @@ go.app = function() {
             );
         };
 
-        // instead of utils.get_today that does not currently handle hh:mm:ss
-        self.get_today = function(config) {
-            if (config) {
-                return new moment(config.testing_today, 'YYYY-MM-DD hh:mm:ss');
-            } else {
-                return new moment();
-            }
-        };
-
         self.is_weekend = function(config) {
-            var today = self.get_today(config);
+            var today = utils.get_moment_date(config.testing_today, "YYYY-MM-DD hh:mm:ss");
             var moment_today = moment.utc(today);
             return moment_today.format('dddd') === 'Saturday' ||
               moment_today.format('dddd') === 'Sunday';
         };
 
         self.is_public_holiday = function(config) {
-            var today = self.get_today(config);
+            var today = utils.get_moment_date(config.testing_today, "YYYY-MM-DD hh:mm:ss");
             var moment_today = moment.utc(today);
             var date_as_string = moment_today.format('YYYY-MM-DD');
             return _.contains(config.public_holidays, date_as_string);
         };
 
         self.is_out_of_hours = function(config) {
-            var today = self.get_today(config);
+            var today = utils.get_moment_date(config.testing_today, "YYYY-MM-DD hh:mm:ss");
             var moment_today = moment.utc(today);
             // get business hours from config, -2 for utc to local time conversion
             var opening_time = Math.min.apply(null, config.helpdesk_hours) - 2;
