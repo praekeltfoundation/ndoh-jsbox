@@ -400,7 +400,7 @@ go.app = function() {
             var today = utils.get_moment_date(self.im.config.testing_today);
 
             return self.im
-            .log(today)
+            .log('today:' + today)
             .then(function() {
 
             return new ChoiceState(name, {
