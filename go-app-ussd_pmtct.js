@@ -542,7 +542,7 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $("In which month were you born?"),
                 choices: utils.make_month_choices(
-                    $, get_january(self.im.config.testing_today), 12, 1, "MM", "MMM"),
+                    $, utils.get_january(self.im.config.testing_today), 12, 1, "MM", "MMM"),
                 next: function(choice) {
                     self.im.user.set_answer("dob_month", choice.value);
                     return "state_birth_day";
