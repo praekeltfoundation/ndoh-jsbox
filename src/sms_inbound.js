@@ -58,11 +58,14 @@ go.app = function() {
         };
 
         self.is_out_of_hours = function(config) {
+            console.log("testing today: "+config.testing_today);
             var today = utils.get_moment_date(config.testing_today, "YYYY-MM-DD hh:mm:ss");
             var today_utc = moment.utc(today);
+            console.log("today_utc: "+today_utc.format());
             // get business hours from config, -2 for utc to local time conversion
             var opening_time = Math.min.apply(null, config.helpdesk_hours) - 2;
             var closing_time = Math.max.apply(null, config.helpdesk_hours) - 2;
+            console.log("business hours (utc): "+opening_time+"-"+closing_time);
             return (today_utc.hour() < opening_time || today_utc.hour() >= closing_time);
         };
 
