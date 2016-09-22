@@ -525,7 +525,7 @@ go.app = function() {
                 question: $("Please enter the year you were born (For example 1981)"),
                 check: function(content) {
                     if (utils.check_valid_number(content)
-                        && utils.check_number_in_range(content, "1900", utils.get_today().year())) {
+                        && utils.check_number_in_range(content, "1900", utils.get_moment_date().year())) {
                             return null;  // vumi expects null or undefined if check passes
                     } else {
                         return $("Invalid date. Please enter the year you were born (For example 1981)");
@@ -542,7 +542,7 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $("In which month were you born?"),
                 choices: utils.make_month_choices(
-                    $, get_january(self.im.config), 12, 1, "MM", "MMM"),
+                    $, get_january(self.im.config.testing_today), 12, 1, "MM", "MMM"),
                 next: function(choice) {
                     self.im.user.set_answer("dob_month", choice.value);
                     return "state_birth_day";

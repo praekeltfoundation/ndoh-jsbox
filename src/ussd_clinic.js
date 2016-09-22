@@ -398,7 +398,7 @@ go.app = function() {
         });
 
         self.add('state_due_date_month', function(name) {
-            var today = utils.get_today(self.im.config);
+            var today = utils.get_moment_date(self.im.config.testing_today);
             return new ChoiceState(name, {
                 question: $('Please select the month when the baby is due:'),
                 choices: utils.make_month_choices($, today, 10, 1, "YYYY-MM", "MMM"),
@@ -529,7 +529,7 @@ go.app = function() {
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
-                    var today = utils.get_today(self.im.config);
+                    var today = utils.get_moment_date(self.im.config.testing_today);
                     if (!utils.check_number_in_range(content, 1900, today.year() - 5)) {
                         // assumes youngest possible birth age is 5 years old
                         return error;
@@ -540,7 +540,7 @@ go.app = function() {
         });
 
         self.add('state_birth_month', function(name) {
-            var jan = utils.get_january(self.im.config);
+            var jan = utils.get_january(self.im.config.testing_today);
             return new ChoiceState(name, {
                 question: $('Please enter the month that the mom was born.'),
                 choices: utils.make_month_choices($, jan, 12, 1, "MM", "MMM"),
