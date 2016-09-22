@@ -121,7 +121,7 @@ describe("app", function() {
                     //     api.kv.store['session_length_helper.' + api.config.app.name + '.foodacom'] = 42;
                     // })
                     .setup.user({
-                        state: 'states_start',
+                        state: 'state_start',
                         metadata: {
                           session_length_helper: {
                             // one minute before the mocked timestamp
@@ -242,7 +242,7 @@ describe("app", function() {
                         .setup.user.addr('27820001002')
                         .inputs('DONUTS')
                         .check.interaction({
-                            state: 'states_default',
+                            state: 'state_default',
                             reply:
                                 'Thank you for your message, it has been captured and you will ' +
                                 'receive a response soon. Kind regards. MomConnect.'
@@ -264,7 +264,7 @@ describe("app", function() {
                         .setup.user.addr('27820001002')
                         .inputs('DONUTS')
                         .check.interaction({
-                            state: 'states_default',
+                            state: 'state_default',
                             reply:
                                 "The helpdesk operates from 8am to 4pm Mon to Fri. " +
                                 "Responses will be delayed outside of these hrs. In an " +
@@ -287,7 +287,7 @@ describe("app", function() {
                         .setup.user.addr('27820001002')
                         .inputs('DONUTS')
                         .check.interaction({
-                            state: 'states_default',
+                            state: 'state_default',
                             reply:
                                 "The helpdesk is not currently available during weekends " +
                                 "and public holidays. In an emergency please go to your " +
@@ -310,7 +310,7 @@ describe("app", function() {
                         .setup.user.addr('27820001002')
                         .inputs('DONUTS')
                         .check.interaction({
-                            state: 'states_default',
+                            state: 'state_default',
                             reply:
                                 "The helpdesk is not currently available during weekends " +
                                 "and public holidays. In an emergency please go to your " +
@@ -331,7 +331,7 @@ describe("app", function() {
                     .setup.user.addr('27820001002')
                     .inputs('*134*12345# rate')
                     .check.interaction({
-                        state: 'states_dial_not_sms',
+                        state: 'state_dial_not_sms',
                         reply:
                             "Please use your handset's keypad to dial the number that you " +
                             "received, rather than sending it to us in an sms."
@@ -349,7 +349,7 @@ describe("app", function() {
                     .setup.user.addr('27820001002')
                     .inputs('"stop" in the name of love')
                     .check.interaction({
-                        state: 'states_opt_out',
+                        state: 'state_opt_out',
                         reply:
                             'Thank you. You will no longer receive messages from us. ' +
                             'If you have any medical concerns please visit your nearest clinic'
@@ -364,7 +364,7 @@ describe("app", function() {
                     .setup.user.addr('27820001002')
                     .inputs('END')
                     .check.interaction({
-                        state: 'states_opt_out',
+                        state: 'state_opt_out',
                         reply:
                             'Thank you. You will no longer receive messages from us. ' +
                             'If you have any medical concerns please visit your nearest clinic'
@@ -379,7 +379,7 @@ describe("app", function() {
                     .setup.user.addr('27820001002')
                     .inputs('CANCEL')
                     .check.interaction({
-                        state: 'states_opt_out',
+                        state: 'state_opt_out',
                         reply:
                             'Thank you. You will no longer receive messages from us. ' +
                             'If you have any medical concerns please visit your nearest clinic'
@@ -394,7 +394,7 @@ describe("app", function() {
                     .setup.user.addr('27820001002')
                     .inputs('UNSUBSCRIBE')
                     .check.interaction({
-                        state: 'states_opt_out',
+                        state: 'state_opt_out',
                         reply:
                             'Thank you. You will no longer receive messages from us. ' +
                             'If you have any medical concerns please visit your nearest clinic'
@@ -409,7 +409,7 @@ describe("app", function() {
                     .setup.user.addr('27820001002')
                     .inputs('QUIT')
                     .check.interaction({
-                        state: 'states_opt_out',
+                        state: 'state_opt_out',
                         reply:
                             'Thank you. You will no longer receive messages from us. ' +
                             'If you have any medical concerns please visit your nearest clinic'
@@ -424,7 +424,7 @@ describe("app", function() {
                     .setup.user.addr('27820001002')
                     .inputs('BLOCK')
                     .check.interaction({
-                        state: 'states_opt_out',
+                        state: 'state_opt_out',
                         reply:
                             'Thank you. You will no longer receive messages from us. ' +
                             'If you have any medical concerns please visit your nearest clinic'
@@ -442,7 +442,7 @@ describe("app", function() {
                     .setup.user.addr('27820001002')
                     .inputs('"START"')
                     .check.interaction({
-                        state: 'states_opt_in',
+                        state: 'state_opt_in',
                         reply:
                             'Thank you. You will now receive messages from us again. ' +
                             'If you have any medical concerns please visit your nearest clinic'
@@ -460,7 +460,7 @@ describe("app", function() {
                     .setup.user.addr('27820001002')
                     .inputs('baBy has been born, bub')
                     .check.interaction({
-                        state: 'states_baby',
+                        state: 'state_baby',
                         reply:
                             'Thank you. You will now receive messages related to newborn babies. ' +
                             'If you have any medical concerns please visit your nearest clinic'
@@ -475,7 +475,7 @@ describe("app", function() {
                     .setup.user.addr('27820001002')
                     .inputs('usana has been born, bub')
                     .check.interaction({
-                        state: 'states_baby',
+                        state: 'state_baby',
                         reply:
                             'Thank you. You will now receive messages related to newborn babies. ' +
                             'If you have any medical concerns please visit your nearest clinic'
@@ -490,7 +490,7 @@ describe("app", function() {
                     .setup.user.addr('27820001002')
                     .inputs('sana has been born, bub')
                     .check.interaction({
-                        state: 'states_baby',
+                        state: 'state_baby',
                         reply:
                             'Thank you. You will now receive messages related to newborn babies. ' +
                             'If you have any medical concerns please visit your nearest clinic'
@@ -505,7 +505,7 @@ describe("app", function() {
                     .setup.user.addr('27820001002')
                     .inputs('baba has been born, bub')
                     .check.interaction({
-                        state: 'states_baby',
+                        state: 'state_baby',
                         reply:
                             'Thank you. You will now receive messages related to newborn babies. ' +
                             'If you have any medical concerns please visit your nearest clinic'
@@ -520,7 +520,7 @@ describe("app", function() {
                     .setup.user.addr('27820001002')
                     .inputs('babby has been born, bub')
                     .check.interaction({
-                        state: 'states_baby',
+                        state: 'state_baby',
                         reply:
                             'Thank you. You will now receive messages related to newborn babies. ' +
                             'If you have any medical concerns please visit your nearest clinic'
@@ -535,7 +535,7 @@ describe("app", function() {
                     .setup.user.addr('27820001002')
                     .inputs('lesea has been born, bub')
                     .check.interaction({
-                        state: 'states_baby',
+                        state: 'state_baby',
                         reply:
                             'Thank you. You will now receive messages related to newborn babies. ' +
                             'If you have any medical concerns please visit your nearest clinic'
@@ -550,7 +550,7 @@ describe("app", function() {
                     .setup.user.addr('27820001002')
                     .inputs('bby has been born, bub')
                     .check.interaction({
-                        state: 'states_baby',
+                        state: 'state_baby',
                         reply:
                             'Thank you. You will now receive messages related to newborn babies. ' +
                             'If you have any medical concerns please visit your nearest clinic'
@@ -565,7 +565,7 @@ describe("app", function() {
                     .setup.user.addr('27820001002')
                     .inputs('babya has been born, bub')
                     .check.interaction({
-                        state: 'states_baby',
+                        state: 'state_baby',
                         reply:
                             'Thank you. You will now receive messages related to newborn babies. ' +
                             'If you have any medical concerns please visit your nearest clinic'
