@@ -401,12 +401,19 @@ go.app = function() {
 
         self.add('state_due_date_month', function(name) {
             var today = utils.get_moment_date(self.im.config.testing_today);
+
+            return self.im
+            .log('today:' + today)
+            .then(function() {
+
             return new ChoiceState(name, {
                 question: $('Please select the month when the baby is due:'),
                 choices: utils.make_month_choices($, today, 10, 1, "YYYY-MM", "MMM"),
                 next: function(choice) {
                     return 'state_due_date_day';
                 }
+            });
+
             });
         });
 
