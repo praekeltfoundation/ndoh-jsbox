@@ -1471,7 +1471,7 @@ describe("app", function() {
                                 reply: 'Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again.'
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [7, 52, 54, 162]);
+                                utils.check_fixtures_used(api, [7, 52, 54, 162, 197]);
                             })
                             .run();
                     });

@@ -1390,5 +1390,44 @@ module.exports = function() {
             "response": {}
         },
 
+        // 197: update identity cb245673-aa41-4302-ac47-00000001003
+        //      passport details changed
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001003/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001003/",
+                    "id": "cb245673-aa41-4302-ac47-00000001003",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001003": {}
+                            }
+                        },
+                        "nurseconnect": {
+                            "last_reg_id": "7",
+                            "is_registered": "true",
+                            "faccode": "123456",
+                            "facname": "WCL clinic",
+                            "id_type": "passport",
+                            "sa_id_no": "5101025009086",
+                            "dob": "1976-03-07",
+                            "opt_out_reason": "",
+                            "redial_sms_sent": true,
+                            "passport_no": "Nam1234",
+                            "passport_origin": "na"
+                        }
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z",
+                }
+            },
+            "response": {}
+        },
+
     ];
 };

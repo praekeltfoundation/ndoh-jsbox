@@ -728,6 +728,12 @@ go.app = function() {
                     }
                 },
                 next: function(content) {
+                    var date_of_birth = moment(content, 'DDMMYYYY').format('YYYY-MM-DD');
+                    self.im.user.answers.operator.details.nurseconnect.id_type = "passport";
+                    self.im.user.answers.operator.details.nurseconnect.passport_no = self.im.user.answers.state_passport_no;
+                    self.im.user.answers.operator.details.nurseconnect.passport_origin = self.im.user.answers.state_passport;
+                    self.im.user.answers.operator.details.nurseconnect.dob = date_of_birth;
+
                     var change_info = {
                         "registrant_id": self.im.user.answers.operator.id,
                         "action": "nurse_update_detail",
@@ -735,13 +741,13 @@ go.app = function() {
                             "id_type": "passport",
                             "passport_no": self.im.user.answers.state_passport_no,
                             "passport_origin": self.im.user.answers.state_passport,
-                            "dob": moment(content, 'DDMMYYYY').format('YYYY-MM-DD')
+                            "dob": date_of_birth
                         }
                     };
 
                     return Q
                     .all([
-                        // is.update_identity
+                        is.update_identity(self.im.user.answers.operator.id, self.im.user.answers.operator),
                         hub.create_change(change_info)
                     ])
                     .then(function () {
