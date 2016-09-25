@@ -1388,14 +1388,14 @@ describe("app", function() {
                                 {session_event: 'new'}  // dial in
                                 , '4'  // state_subscribed - change id
                                 , '1'  // state_change_id_no - RSA ID
-                                , '9001016265166 '  // state_id_no
+                                , '9001016265166'  // state_id_no
                             )
                             .check.interaction({
                                 state: 'state_end_detail_changed',
                                 reply: 'Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again.'
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [6, 52, 54, 162]);
+                                utils.check_fixtures_used(api, [6, 52, 54, 162, 196]);
                             })
                             .run();
                     });

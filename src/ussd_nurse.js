@@ -660,19 +660,24 @@ go.app = function() {
                     }
                 },
                 next: function(id_number) {
+                    var date_of_birth = utils.extract_za_id_dob(id_number);
+                    self.im.user.answers.operator.details.nurseconnect.id_type = "sa_id";
+                    self.im.user.answers.operator.details.nurseconnect.sa_id_no = id_number;
+                    self.im.user.answers.operator.details.nurseconnect.dob = date_of_birth;
+
                     var change_info = {
                         "registrant_id": self.im.user.answers.operator.id,
                         "action": "nurse_update_detail",
                         "data": {
                             "id_type": "sa_id",
                             "sa_id_no": id_number,
-                            "dob": utils.extract_za_id_dob(id_number)
+                            "dob": date_of_birth
                         }
                     };
 
                     return Q
                     .all([
-                        // is.update_identity
+                        is.update_identity(self.im.user.answers.operator.id, self.im.user.answers.operator),
                         hub.create_change(change_info)
                     ])
                     .then(function () {
