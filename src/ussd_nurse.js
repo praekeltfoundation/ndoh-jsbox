@@ -625,7 +625,7 @@ go.app = function() {
 
                     return Q
                     .all([
-                        // is.update_identity
+                        is.update_identity(self.im.user.answers.operator.id, self.im.user.answers.operator),
                         hub.create_change(change_info)
                     ])
                     .then(function () {
