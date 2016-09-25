@@ -990,7 +990,7 @@ describe("app", function() {
                             state: 'state_end_detail_changed',
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [10, 52, 54, 160, 162]);
+                            utils.check_fixtures_used(api, [10, 52, 54, 160, 162, 192]);
                         })
                         .run();
                 });
@@ -1009,7 +1009,7 @@ describe("app", function() {
                             state: 'state_end_detail_changed'
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [27, 54, 56, 165, 190, 191]);
+                            utils.check_fixtures_used(api, [27, 54, 56, 165, 190, 191, 194]);
                         })
                         .run();
                 });
@@ -1075,6 +1075,9 @@ describe("app", function() {
                             )
                             .check.interaction({
                                 state: 'state_end_detail_changed'
+                            })
+                            .check(function(api) {
+                                utils.check_fixtures_used(api, [12, 52, 54, 162, 164, 193]);
                             })
                             .run();
                     });

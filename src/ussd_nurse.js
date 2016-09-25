@@ -579,9 +579,15 @@ go.app = function() {
                     "msisdn_device": self.im.user.answers.operator_msisdn
                 }
             };
+
+            var old_num = self.im.user.answers.operator_msisdn;
+            var new_num = self.im.user.answers.new_msisdn;
+            self.im.user.answers.operator.details.addresses.msisdn[old_num].inactive = true;
+            self.im.user.answers.operator.details.addresses.msisdn[new_num] = { "default": true };
+
             return Q
             .all([
-                // is.update_identity
+                is.update_identity(self.im.user.answers.operator.id, self.im.user.answers.operator),
                 hub.create_change(change_info)
             ])
             .then(function() {
