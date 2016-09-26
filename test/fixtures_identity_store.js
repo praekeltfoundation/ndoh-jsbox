@@ -1295,7 +1295,10 @@ module.exports = function() {
                             "msisdn": {
                                 "+27820001005": { "inactive": true },
                                 "+27820001003": { "optedout": true },
-                                "+27820001012": { "default": true }
+                                "+27820001012": {
+                                    "default": true,
+                                    "optedout": false
+                                }
                             }
                         },
                         "nurseconnect": {

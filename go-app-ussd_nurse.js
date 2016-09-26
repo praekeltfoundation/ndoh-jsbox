@@ -556,6 +556,7 @@ go.app = function() {
                         return is
                         .optin(self.im.user.answers.operator.id, "msisdn", self.im.user.answers.new_msisdn)
                         .then(function() {
+                            self.im.user.answers.operator.details.addresses.msisdn[self.im.user.answers.new_msisdn].optedout = false;
                             return 'state_switch_new_nr';
                         });
                     } else {
@@ -586,7 +587,11 @@ go.app = function() {
             var old_num = self.im.user.answers.operator_msisdn;
             var new_num = self.im.user.answers.new_msisdn;
             self.im.user.answers.operator.details.addresses.msisdn[old_num].inactive = true;
-            self.im.user.answers.operator.details.addresses.msisdn[new_num] = { "default": true };
+            if (self.im.user.answers.operator.details.addresses.msisdn.hasOwnProperty(new_num)) {
+                self.im.user.answers.operator.details.addresses.msisdn[new_num].default = true;
+            } else {
+                self.im.user.answers.operator.details.addresses.msisdn[new_num] = { "default": true };
+            }
 
             return Q
             .all([
