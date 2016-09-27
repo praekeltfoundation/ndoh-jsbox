@@ -1271,7 +1271,7 @@ module.exports = function() {
                                 "+27820001003": { "optedout": true },
                                 "+27820001012": {
                                     "default": true,
-                                    "optedout": false
+                                    "optedout": true  // this should be unset by is.optin
                                 }
                             }
                         },

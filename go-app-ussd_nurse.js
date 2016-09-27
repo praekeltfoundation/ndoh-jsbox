@@ -547,7 +547,6 @@ go.app = function() {
                         return is
                         .optin(self.im.user.answers.operator.id, "msisdn", self.im.user.answers.new_msisdn)
                         .then(function() {
-                            self.im.user.answers.operator.details.addresses.msisdn[self.im.user.answers.new_msisdn].optedout = false;
                             return 'state_switch_new_nr';
                         });
                     } else {
