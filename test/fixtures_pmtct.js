@@ -136,7 +136,7 @@ module.exports = function() {
                                     "+27820000333": {}
                                 }
                             },
-                            "dob": "1981-04-26"
+                            "mom_dob": "1981-04-26"
                         },
                         "created_at": "2016-06-21T06:13:29.693272Z",
                         "updated_at": "2016-06-21T06:13:29.693298Z"
@@ -484,6 +484,7 @@ module.exports = function() {
         // 13: has_active_subscription - cb245673-aa41-4302-ac47-00000000003 (no consent, dob)
         {
             'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000003",
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -508,7 +509,7 @@ module.exports = function() {
                             'id': '51fcca25-2e85-4c44-subscription-3333',
                             'version': 1,
                             'identity': 'cb245673-aa41-4302-ac47-00000000003',
-                            'messageset': 21,
+                            'messageset': 31,
                             'next_sequence_number': 1,
                             'lang': "en",
                             'active': true,
@@ -1908,8 +1909,9 @@ module.exports = function() {
                                 "+27820000111": {}
                             }
                         },
+                        "consent": true,
+                        "mom_dob": "1981-04-26",
                         "pmtct": {
-                            "mom_dob": "1981-04-26",
                             "lang_code": "eng_ZA"
                         },
                         "source": "pmtct"
@@ -1939,8 +1941,8 @@ module.exports = function() {
                             }
                         },
                         "consent": true,
+                        "mom_dob": "1981-04-26",
                         "pmtct": {
-                            "mom_dob": "1981-04-26",
                             "lang_code": "eng_ZA"
                         },
                         "source": "pmtct"
@@ -1969,10 +1971,15 @@ module.exports = function() {
                                 "+27820000333": {}
                             }
                         },
-                        "dob": "1981-04-26",
-                        "created_at": "2016-06-21T06:13:29.693272Z",
-                        "updated_at": "2016-06-21T06:13:29.693298Z"
-                    }
+                        "consent": true,
+                        "mom_dob": "1981-04-26",
+                        "pmtct": {
+                            "lang_code": "eng_ZA"
+                        },
+                        "source": "pmtct"
+                    },
+                    "created_at": "2016-06-21T06:13:29.693272Z",
+                    "updated_at": "2016-06-21T06:13:29.693298Z"
                 }
             },
             "response": {}
@@ -3094,5 +3101,52 @@ module.exports = function() {
             "response": {}
         },
 
+        // 85: post registration (pmtct_postbirth) for cb245673-aa41-4302-ac47-00000000003
+        {
+            "request": {
+                "url": 'http://hub/api/v1/registration/',
+                "method": 'POST',
+                "data": {
+                    "reg_type": "pmtct_postbirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000000003",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000003",
+                        "mom_dob": "1981-04-26",
+                        "language": "eng_ZA"
+                    }
+                }
+            },
+            "response": {}
+        },
+
+        // 86: post outbound message for cb245673-aa41-4302-ac47-00000000003
+        {
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000000003",
+                    "to_addr": "+27820000333",
+                    "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                    "metadata":{}
+                }
+            },
+            "response": {}
+        },
+
+        // 87: post outbound message for cb245673-aa41-4302-ac47-00000000003
+        {
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000000003",
+                    "to_addr": "+27820000333",
+                    "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                    "metadata":{}
+                }
+            },
+            "response": {}
+        },
     ];
 };

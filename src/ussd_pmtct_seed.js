@@ -384,8 +384,9 @@ go.app = function() {
 
         self.add("state_register_pmtct", function(name) {
             var identity_info = self.im.user.answers.identity;
+            identity_info.details.consent = self.im.user.answers.consent;
+            identity_info.details.mom_dob = self.im.user.answers.mom_dob;
             identity_info.details.pmtct = {};
-            identity_info.details.pmtct.mom_dob = self.im.user.answers.mom_dob;
             identity_info.details.pmtct.lang_code = self.im.user.lang || "eng_ZA";
             identity_info.details.source = "pmtct";
 
