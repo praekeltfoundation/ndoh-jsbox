@@ -847,7 +847,7 @@ go.app = function() {
                             .then(function(identity_subscribed_to_nurseconnect) {
                                 if (identity_subscribed_to_nurseconnect) {
                                     self.im.user.set_answer("old_msisdn", old_msisdn);
-                                    self.im.user.set_answer("old_identity", identities_found.results[0]);
+                                    self.im.user.set_answer("identity", identities_found.results[0]);
                                     return 'state_post_change_old_nr';
                                 } else {
                                     return 'state_change_old_not_found';
@@ -926,7 +926,7 @@ go.app = function() {
 
         self.add('state_post_change_old_nr', function(name) {
             var change_info = {
-                "registrant_id": self.im.user.answers.old_identity.id,
+                "registrant_id": self.im.user.answers.identity.id,
                 "action": "nurse_change_msisdn",
                 "data": {
                     "msisdn_old": self.im.user.answers.old_msisdn,
@@ -937,12 +937,12 @@ go.app = function() {
 
             var old_num = self.im.user.answers.old_msisdn;
             var new_num = self.im.user.answers.operator_msisdn;
-            self.im.user.answers.old_identity.details.addresses.msisdn[old_num].inactive = true;
-            self.im.user.answers.old_identity.details.addresses.msisdn[new_num] = { "default": true };
+            self.im.user.answers.identity.details.addresses.msisdn[old_num].inactive = true;
+            self.im.user.answers.identity.details.addresses.msisdn[new_num] = { "default": true };
 
             return Q
             .all([
-                is.update_identity(self.im.user.answers.old_identity.id, self.im.user.answers.old_identity),
+                is.update_identity(self.im.user.answers.identity.id, self.im.user.answers.identity),
                 hub.create_change(change_info)
             ])
             .then(function() {
