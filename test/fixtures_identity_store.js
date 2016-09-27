@@ -5,7 +5,7 @@
     // (+27820001002) - existing identity with an active MomConnect subscription (no active NurseConnect subscription)
     // (+27820001003) - existing identity with an active NurseConnect subscription; NurseConnect dialback sms already sent
     // (+27820001004) - existing identity with an inactive NurseConnect subscription (opted out)
-    // (+27820001005) - existing identity; thre msisdn's (opted out on 27820001003 & +27820001012)
+    // (+27820001005) - existing identity; three msisdn's (opted out on 27820001003 & +27820001012)
     // (+27820001006) - existing identity with an inactive MomConnect subscription
     // (+27820001007) - existing identity with an active MomConnect CHW subscription
     // (+27820001008) - existing identity with an active MomConnect Clinic subscription; completed servicerating
