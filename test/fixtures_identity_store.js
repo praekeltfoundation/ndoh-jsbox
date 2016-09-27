@@ -116,7 +116,6 @@ module.exports = function() {
                                     }
                                 },
                                 "nurseconnect": {
-                                    "is_registered": 'true',
                                     "faccode": '123456',
                                     "facname": 'WCL clinic',
                                     "id_type": "sa_id",
@@ -142,7 +141,6 @@ module.exports = function() {
                                     }
                                 },
                                 "nurseconnect": {
-                                    "is_registered": 'true',
                                     "faccode": '123456',
                                     "facname": 'WCL clinic',
                                     "id_type": "sa_id",
@@ -228,7 +226,6 @@ module.exports = function() {
                                 },
                                 "source": "clinic",
                                 "nurseconnect": {
-                                    "is_registered": 'true',
                                     "faccode": '123456',
                                     "facname": 'WCL clinic',
                                     "id_type": "sa_id",
@@ -276,7 +273,6 @@ module.exports = function() {
                                     }
                                 },
                                 "nurseconnect": {
-                                    "is_registered": 'true',
                                     "faccode": '123456',
                                     "facname": 'WCL clinic',
                                     "id_type": "sa_id",
@@ -433,7 +429,6 @@ module.exports = function() {
                         "nurseconnect": {
                             "facname": "WCL clinic",
                             "faccode": "123456",
-                            "is_registered": true,
                             "redial_sms_sent": false
                         }
                     },
@@ -470,7 +465,6 @@ module.exports = function() {
                         "nurseconnect": {
                             "facname": "WCL clinic",
                             "faccode": "123456",
-                            "is_registered": true,
                             "registered_by": "cb245673-aa41-4302-ac47-00000001001",
                             "redial_sms_sent": false
                         }
@@ -703,7 +697,6 @@ module.exports = function() {
                         },
                         "source": "clinic",
                         "nurseconnect": {
-                            "is_registered": 'true',
                             "faccode": '123456',
                             "facname": 'WCL clinic',
                             "id_type": "sa_id",
@@ -1112,7 +1105,6 @@ module.exports = function() {
                         "nurseconnect": {
                             "facname": "WCL clinic",
                             "faccode": "123456",
-                            "is_registered": true,
                             "redial_sms_sent": true
                         }
                     },
@@ -1155,7 +1147,6 @@ module.exports = function() {
                                 }
                             },
                             "nurseconnect": {
-                                "is_registered": 'true',
                                 "faccode": '123456',
                                 "facname": 'WCL clinic',
                                 "id_type": "sa_id",
@@ -1210,7 +1201,6 @@ module.exports = function() {
                             }
                         },
                         "nurseconnect": {
-                            "is_registered": "true",
                             "faccode": "123456",
                             "facname": "WCL clinic",
                             "id_type": "sa_id",
@@ -1247,7 +1237,6 @@ module.exports = function() {
                             }
                         },
                         "nurseconnect": {
-                            "is_registered": "true",
                             "faccode": "123456",
                             "facname": "WCL clinic",
                             "id_type": "sa_id",
@@ -1288,7 +1277,6 @@ module.exports = function() {
                             }
                         },
                         "nurseconnect": {
-                            "is_registered": "true",
                             "faccode": "123456",
                             "facname": "WCL clinic",
                             "id_type": "sa_id",
@@ -1322,7 +1310,6 @@ module.exports = function() {
                             }
                         },
                         "nurseconnect": {
-                            "is_registered": "true",
                             "faccode": "234567",
                             "facname": "OLT clinic",
                             "id_type": "sa_id",
@@ -1358,7 +1345,6 @@ module.exports = function() {
                             }
                         },
                         "nurseconnect": {
-                            "is_registered": "true",
                             "faccode": "123456",
                             "facname": "WCL clinic",
                             "id_type": "sa_id",
@@ -1394,7 +1380,6 @@ module.exports = function() {
                             }
                         },
                         "nurseconnect": {
-                            "is_registered": "true",
                             "faccode": "123456",
                             "facname": "WCL clinic",
                             "id_type": "passport",
@@ -1432,7 +1417,6 @@ module.exports = function() {
                             }
                         },
                         "nurseconnect": {
-                            "is_registered": "true",
                             "faccode": "123456",
                             "facname": "WCL clinic",
                             "id_type": "sa_id",
@@ -1469,7 +1453,6 @@ module.exports = function() {
                             }
                         },
                         "nurseconnect": {
-                            "is_registered": "true",
                             "faccode": "123456",
                             "facname": "WCL clinic",
                             "id_type": "sa_id",
@@ -1505,7 +1488,6 @@ module.exports = function() {
                             }
                         },
                         "nurseconnect": {
-                            "is_registered": "true",
                             "faccode": "123456",
                             "facname": "WCL clinic",
                             "id_type": "sa_id",
@@ -1540,7 +1522,6 @@ module.exports = function() {
                             }
                         },
                         "nurseconnect": {
-                            "is_registered": "true",
                             "faccode": "123456",
                             "facname": "WCL clinic",
                             "id_type": "sa_id",

@@ -423,7 +423,6 @@ go.app = function() {
 
         self.add('state_save_nursereg', function(name) {
             var registrant_info = self.im.user.answers.registrant;
-            registrant_info.details.nurseconnect.is_registered = true;
             registrant_info.details.nurseconnect.redial_sms_sent = self.im.user.answers.redial_sms_sent;
 
             // operator.id will equal registrant.id when a self registration
