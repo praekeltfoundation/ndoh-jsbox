@@ -465,7 +465,6 @@ module.exports = function() {
                         "nurseconnect": {
                             "facname": "WCL clinic",
                             "faccode": "123456",
-                            "registered_by": "cb245673-aa41-4302-ac47-00000001001",
                             "redial_sms_sent": false
                         }
                     },

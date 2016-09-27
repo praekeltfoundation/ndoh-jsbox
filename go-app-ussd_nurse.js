@@ -425,12 +425,6 @@ go.app = function() {
             var registrant_info = self.im.user.answers.registrant;
             registrant_info.details.nurseconnect.redial_sms_sent = self.im.user.answers.redial_sms_sent;
 
-            // operator.id will equal registrant.id when a self registration
-            if (self.im.user.answers.operator.id !== registrant_info.id) {
-                registrant_info.details.nurseconnect.registered_by =
-                    self.im.user.answers.operator.id;
-            }
-
             var reg_info = {
                 "reg_type": "nurseconnect",
                 "registrant_id": registrant_info.id,
