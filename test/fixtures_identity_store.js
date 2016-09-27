@@ -123,7 +123,6 @@ module.exports = function() {
                                     "id_type": "sa_id",
                                     "sa_id_no": "5101025009086",
                                     "dob": "1951-01-02",
-                                    "opt_out_reason": "",
                                     "redial_sms_sent": true
                                 }
                             },
@@ -150,8 +149,7 @@ module.exports = function() {
                                     "facname": 'WCL clinic',
                                     "id_type": "sa_id",
                                     "sa_id_no": "5101025009086",
-                                    "dob": "1964-07-11",
-                                    "opt_out_reason": "unknown"
+                                    "dob": "1964-07-11"
                                 }
                             },
                             "created_at": "2016-08-05T06:13:29.693272Z",
@@ -238,8 +236,7 @@ module.exports = function() {
                                     "facname": 'WCL clinic',
                                     "id_type": "sa_id",
                                     "sa_id_no": "5101025009086",
-                                    "dob": "1964-07-11",
-                                    "opt_out_reason": "unknown"
+                                    "dob": "1964-07-11"
                                 }
                             },
                             "created_at": "2016-08-05T06:13:29.693272Z",
@@ -288,8 +285,7 @@ module.exports = function() {
                                     "facname": 'WCL clinic',
                                     "id_type": "sa_id",
                                     "sa_id_no": "5101025009086",
-                                    "dob": "1964-07-11",
-                                    "opt_out_reason": "unknown"
+                                    "dob": "1964-07-11"
                                 }
                             },
                             "created_at": "2016-08-05T06:13:29.693272Z",
@@ -717,8 +713,7 @@ module.exports = function() {
                             "facname": 'WCL clinic',
                             "id_type": "sa_id",
                             "sa_id_no": "5101025009086",
-                            "dob": "1964-07-11",
-                            "opt_out_reason": "unknown"
+                            "dob": "1964-07-11"
                         },
                         "lang_code": "zul_ZA",
                         "consent": true,
@@ -1171,8 +1166,7 @@ module.exports = function() {
                                 "facname": 'WCL clinic',
                                 "id_type": "sa_id",
                                 "sa_id_no": "5101025009086",
-                                "dob": "1964-07-11",
-                                "opt_out_reason": "unknown"
+                                "dob": "1964-07-11"
                             }
                         },
                         "created_at": "2016-08-05T06:13:29.693272Z",
@@ -1229,7 +1223,7 @@ module.exports = function() {
                             "id_type": "sa_id",
                             "sa_id_no": "5101025009086",
                             "dob": "1951-01-02",
-                            "opt_out_reason": "",
+
                             "redial_sms_sent": true
                         }
                     },
@@ -1267,7 +1261,7 @@ module.exports = function() {
                             "id_type": "sa_id",
                             "sa_id_no": "5101025009086",
                             "dob": "1951-01-02",
-                            "opt_out_reason": "",
+
                             "redial_sms_sent": true
                         }
                     },
@@ -1308,8 +1302,7 @@ module.exports = function() {
                             "facname": "WCL clinic",
                             "id_type": "sa_id",
                             "sa_id_no": "5101025009086",
-                            "dob": "1964-07-11",
-                            "opt_out_reason": null
+                            "dob": "1964-07-11"
                         }
                     },
                     "created_at": "2016-08-05T06:13:29.693272Z",
@@ -1345,7 +1338,7 @@ module.exports = function() {
                             "id_type": "sa_id",
                             "sa_id_no": "5101025009086",
                             "dob": "1951-01-02",
-                            "opt_out_reason": "",
+
                             "redial_sms_sent": true
                         }
                     },
@@ -1382,7 +1375,7 @@ module.exports = function() {
                             "id_type": "sa_id",
                             "sa_id_no": "9001016265166",
                             "dob": "1990-01-01",
-                            "opt_out_reason": "",
+
                             "redial_sms_sent": true
                         }
                     },
@@ -1419,7 +1412,7 @@ module.exports = function() {
                             "id_type": "passport",
                             "sa_id_no": "5101025009086",
                             "dob": "1976-03-07",
-                            "opt_out_reason": "",
+
                             "redial_sms_sent": true,
                             "passport_no": "Nam1234",
                             "passport_origin": "na"
@@ -1458,7 +1451,7 @@ module.exports = function() {
                             "id_type": "sa_id",
                             "sa_id_no": "5101025009086",
                             "dob": "1951-01-02",
-                            "opt_out_reason": "",
+
                             "redial_sms_sent": true,
                             "sanc_reg_no": "34567890"
                         }
@@ -1496,7 +1489,7 @@ module.exports = function() {
                             "id_type": "sa_id",
                             "sa_id_no": "5101025009086",
                             "dob": "1951-01-02",
-                            "opt_out_reason": "",
+
                             "redial_sms_sent": true,
                             "persal_no": "11114444"
                         }
@@ -1533,7 +1526,6 @@ module.exports = function() {
                             "id_type": "sa_id",
                             "sa_id_no": "5101025009086",
                             "dob": "1951-01-02",
-                            "opt_out_reason": "job_change",
                             "redial_sms_sent": true
                         }
                     },
@@ -1570,7 +1562,7 @@ module.exports = function() {
                             "id_type": "sa_id",
                             "sa_id_no": "5101025009086",
                             "dob": "1951-01-02",
-                            "opt_out_reason": "",
+
                             "redial_sms_sent": true
                         }
                     },

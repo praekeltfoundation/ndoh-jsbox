@@ -327,7 +327,6 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (choice.value === 'yes') {
-                        self.im.user.answers.registrant.details.nurseconnect.opt_out_reason = null;  // reset
                         return is
                         .optin(self.im.user.answers.registrant.id, "msisdn", self.im.user.answers.registrant_msisdn)
                         .then(function() {
@@ -552,7 +551,6 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (choice.value === 'yes') {
-                        self.im.user.answers.operator.details.nurseconnect.opt_out_reason = null;  // reset
                         return is
                         .optin(self.im.user.answers.operator.id, "msisdn", self.im.user.answers.new_msisdn)
                         .then(function() {
@@ -914,8 +912,6 @@ go.app = function() {
                     if (choice.value === 'main_menu') {
                         return 'state_route';
                     } else {
-                        self.im.user.answers.operator.details.nurseconnect.opt_out_reason = choice.value;
-
                         var change_info = {
                             "registrant_id": self.im.user.answers.operator.id,
                             "action": "nurse_optout",
