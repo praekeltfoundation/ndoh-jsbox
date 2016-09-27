@@ -324,7 +324,7 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (choice.value === 'yes') {
-                        self.im.user.answers.registrant.details.nurseconnect.opt_out_reason = "";  // reset
+                        self.im.user.answers.registrant.details.nurseconnect.opt_out_reason = null;  // reset
                         return is
                         .optin(self.im.user.answers.registrant.id, "msisdn", self.im.user.answers.registrant_msisdn)
                         .then(function() {
@@ -549,7 +549,7 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (choice.value === 'yes') {
-                        self.im.user.answers.operator.details.nurseconnect.opt_out_reason = "";  // reset
+                        self.im.user.answers.operator.details.nurseconnect.opt_out_reason = null;  // reset
                         return is
                         .optin(self.im.user.answers.operator.id, "msisdn", self.im.user.answers.new_msisdn)
                         .then(function() {
@@ -856,7 +856,7 @@ go.app = function() {
                             .then(function(identity_subscribed_to_nurseconnect) {
                                 if (identity_subscribed_to_nurseconnect) {
                                     self.im.user.set_answer("old_msisdn", old_msisdn);
-                                    self.im.user.set_answer("old_identity_id", identities_found.results[0].id);
+                                    self.im.user.set_answer("old_identity", identities_found.results[0]);
                                     return 'state_post_change_old_nr';
                                 } else {
                                     return 'state_change_old_not_found';
@@ -937,7 +937,7 @@ go.app = function() {
 
         self.add('state_post_change_old_nr', function(name) {
             var change_info = {
-                "registrant_id": self.im.user.answers.old_identity_id,
+                "registrant_id": self.im.user.answers.old_identity.id,
                 "action": "nurse_change_msisdn",
                 "data": {
                     "msisdn_old": self.im.user.answers.old_msisdn,
@@ -946,9 +946,14 @@ go.app = function() {
                 }
             };
 
+            var old_num = self.im.user.answers.old_msisdn;
+            var new_num = self.im.user.answers.operator_msisdn;
+            self.im.user.answers.old_identity.details.addresses.msisdn[old_num].inactive = true;
+            self.im.user.answers.old_identity.details.addresses.msisdn[new_num] = { "default": true };
+
             return Q
             .all([
-                // is.update_identity
+                is.update_identity(self.im.user.answers.old_identity.id, self.im.user.answers.old_identity),
                 hub.create_change(change_info)
             ])
             .then(function() {
