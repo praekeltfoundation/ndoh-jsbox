@@ -50,15 +50,15 @@ describe("PMTCT app", function() {
                     ],
                     services: {
                         identity_store: {
-                            url: 'http://is.localhost:8001/api/v1/',
+                            url: 'http://is/api/v1/',
                             token: 'test IdentityStore'
                         },
                         stage_based_messaging: {
-                            url: 'http://sbm.localhost:8001/api/v1/',
+                            url: 'http://sbm/api/v1/',
                             token: 'test StageBasedMessaging'
                         },
                         hub: {
-                            url: 'http://hub.localhost:8001/api/v1/',
+                            url: 'http://hub/api/v1/',
                             token: 'test Hub'
                         },
                         message_sender: {
@@ -131,8 +131,7 @@ describe("PMTCT app", function() {
         // TEST PMTCT SIGN-UP FLOWS
 
         describe("Sign-up flow testing", function() {
-            // See Note 1 in src/ussd_pmtct for why these four next users' tests are skipped
-            describe.skip("0820000111 exists on new system; has active " +
+            describe("0820000111 exists on new system; has active " +
             "non-pmtct subscription; no consent, no dob", function() {
                 it("to state_consent", function() {
                     return tester
@@ -148,8 +147,6 @@ describe("PMTCT app", function() {
                                 "2. No"
                             ].join("\n")
                         })
-                        /*.check.user.answer('consent', 'true')
-                        .check.user.answer('dob', null)*/
                         .run();
                 });
                 it("to state_end_consent_refused", function() {
@@ -268,7 +265,7 @@ describe("PMTCT app", function() {
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [0, 11, 42, 54]);
+                            utils.check_fixtures_used(api, [0, 11, 50, 62, 79, 80, 81]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -532,14 +529,14 @@ describe("PMTCT app", function() {
                             reply: "You need to be registered on MomConnect to receive these messages. Please visit the nearest clinic to register."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [4, 15, 23]);
+                            utils.check_fixtures_used(api, [4, 15]);
                         })
                         .check.reply.ends_session()
                         .run();
                 });
             });
 
-            describe("0820000666 exists on old system; has active baby1 subscription; consent, dob", function() {
+            describe.skip("0820000666 exists on old system; has active baby1 subscription; consent, dob", function() {
                 it("to state_hiv_messages", function() {
                     return tester
                         .setup.user.addr("0820000666")
@@ -589,7 +586,7 @@ describe("PMTCT app", function() {
                 });
             });
 
-            describe("0820000777 exists on old system; has active standardsubscription; consent, no dob", function() {
+            describe.skip("0820000777 exists on old system; has active standardsubscription; consent, no dob", function() {
                 it("to state_birth_year", function() {
                     return tester
                         .setup.user.addr("0820000777")
@@ -697,7 +694,7 @@ describe("PMTCT app", function() {
                 });
             });
 
-            describe("0820000888 exists on old system; has active later subscription; no consent, dob", function() {
+            describe.skip("0820000888 exists on old system; has active later subscription; no consent, dob", function() {
                 it("to state_consent", function() {
                     return tester
                         .setup.user.addr("0820000888")
@@ -781,7 +778,7 @@ describe("PMTCT app", function() {
                 });
             });
 
-            describe("0820000999 exists on old system; has active accelerated subscription; no consent, no dob", function() {
+            describe.skip("0820000999 exists on old system; has active accelerated subscription; no consent, no dob", function() {
                 it("to state_consent", function() {
                     return tester
                         .setup.user.addr("0820000999")
@@ -923,7 +920,7 @@ describe("PMTCT app", function() {
                 });
             });
 
-            describe("0820101010 exists on old system; has no active sub", function() {
+            describe.skip("0820101010 exists on old system; has no active sub", function() {
                 it("to state_end_not_registered", function() {
                     return tester
                         .setup.user.addr("0820101010")
@@ -954,7 +951,7 @@ describe("PMTCT app", function() {
                             reply: "You need to be registered on MomConnect to receive these messages. Please visit the nearest clinic to register."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [10, 21, 29, 41]);
+                            utils.check_fixtures_used(api, [10]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -1040,8 +1037,7 @@ describe("PMTCT app", function() {
                         reply: "Thank you. You will no longer receive any messages from MomConnect. If you have any medical concerns, please visit your nearest clinic."
                     })
                     .check(function(api) {
-                        // utils.check_fixtures_used(api, [42, 44, 62, 67, 68, 69, 74, 75]);
-                        utils.check_fixtures_used(api, [42, 44, 62, 67, 68, 69, 74]);
+                        utils.check_fixtures_used(api, [42, 44, 62, 69, 74]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -1059,7 +1055,7 @@ describe("PMTCT app", function() {
                         reply: "Thank you. You will receive support messages from MomConnect in the coming weeks."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [42, 49, 62, 67, 68, 69, 73]);
+                        utils.check_fixtures_used(api, [42, 49, 62, 69]);
                     })
                     .check.reply.ends_session()
                     .run();

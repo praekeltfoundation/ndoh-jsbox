@@ -34,7 +34,7 @@ module.exports = function() {
                     'Authorization': ['Token test IdentityStore'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://is.localhost:8001/api/v1/identities/search/',
+                'url': 'http://is/api/v1/identities/search/',
             },
             'response': {
                 "code": 200,
@@ -43,7 +43,7 @@ module.exports = function() {
                     "next": null,
                     "previous": null,
                     "results": [{
-                        "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/",
+                        "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/",
                         "id": "cb245673-aa41-4302-ac47-00000000001",
                         "version": 1,
                         "details": {
@@ -74,7 +74,7 @@ module.exports = function() {
                     'Authorization': ['Token test IdentityStore'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://is.localhost:8001/api/v1/identities/search/',
+                'url': 'http://is/api/v1/identities/search/',
             },
             'response': {
                 "code": 200,
@@ -83,7 +83,7 @@ module.exports = function() {
                     "next": null,
                     "previous": null,
                     "results": [{
-                        "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/",
+                        "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/",
                         "id": "cb245673-aa41-4302-ac47-00000000002",
                         "version": 1,
                         "details": {
@@ -115,7 +115,7 @@ module.exports = function() {
                     'Authorization': ['Token test IdentityStore'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://is.localhost:8001/api/v1/identities/search/',
+                'url': 'http://is/api/v1/identities/search/',
             },
             'response': {
                 "code": 200,
@@ -124,7 +124,7 @@ module.exports = function() {
                     "next": null,
                     "previous": null,
                     "results": [{
-                        "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000003/",
+                        "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000003/",
                         "id": "cb245673-aa41-4302-ac47-00000000003",
                         "version": 1,
                         "details": {
@@ -156,7 +156,7 @@ module.exports = function() {
                     'Authorization': ['Token test IdentityStore'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://is.localhost:8001/api/v1/identities/search/',
+                'url': 'http://is/api/v1/identities/search/',
             },
             'response': {
                 "code": 200,
@@ -165,7 +165,7 @@ module.exports = function() {
                     "next": null,
                     "previous": null,
                     "results": [{
-                        "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000004/",
+                        "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000004/",
                         "id": "cb245673-aa41-4302-ac47-00000000004",
                         "version": 1,
                         "details": {
@@ -199,7 +199,7 @@ module.exports = function() {
                     'Authorization': ['Token test IdentityStore'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://is.localhost:8001/api/v1/identities/search/',
+                'url': 'http://is/api/v1/identities/search/',
             },
             'response': {
                 "code": 200,
@@ -208,7 +208,7 @@ module.exports = function() {
                     "next": null,
                     "previous": null,
                     "results": [{
-                        "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000005/",
+                        "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000005/",
                         "id": "cb245673-aa41-4302-ac47-00000000005",
                         "version": 1,
                         "details": {
@@ -240,7 +240,7 @@ module.exports = function() {
                     'Authorization': ['Token test IdentityStore'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://is.localhost:8001/api/v1/identities/search/',
+                'url': 'http://is/api/v1/identities/search/',
             },
             'response': {
                 "code": 200,
@@ -267,7 +267,7 @@ module.exports = function() {
                     'Authorization': ['Token test IdentityStore'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://is.localhost:8001/api/v1/identities/search/',
+                'url': 'http://is/api/v1/identities/search/',
             },
             'response': {
                 "code": 200,
@@ -294,7 +294,7 @@ module.exports = function() {
                     'Authorization': ['Token test IdentityStore'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://is.localhost:8001/api/v1/identities/search/',
+                'url': 'http://is/api/v1/identities/search/',
             },
             'response': {
                 "code": 200,
@@ -321,7 +321,7 @@ module.exports = function() {
                     'Authorization': ['Token test IdentityStore'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://is.localhost:8001/api/v1/identities/search/',
+                'url': 'http://is/api/v1/identities/search/',
             },
             'response': {
                 "code": 200,
@@ -348,7 +348,7 @@ module.exports = function() {
                     'Authorization': ['Token test IdentityStore'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://is.localhost:8001/api/v1/identities/search/',
+                'url': 'http://is/api/v1/identities/search/',
             },
             'response': {
                 "code": 200,
@@ -375,7 +375,7 @@ module.exports = function() {
                     'Authorization': ['Token test IdentityStore'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://is.localhost:8001/api/v1/identities/search/',
+                'url': 'http://is/api/v1/identities/search/',
             },
             'response': {
                 "code": 200,
@@ -391,6 +391,7 @@ module.exports = function() {
         // 11: has_active_subscription - cb245673-aa41-4302-ac47-00000000001 (no consent, no dob)
         {
             'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000001",
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -401,7 +402,7 @@ module.exports = function() {
                     'Authorization': ['Token test StageBasedMessaging'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://sbm.localhost:8001/api/v1/subscriptions/',
+                'url': 'http://sbm/api/v1/subscriptions/',
             },
             'response': {
                 "code": 200,
@@ -411,7 +412,7 @@ module.exports = function() {
                     "previous": null,
                     "results": [
                         {
-                            'url': 'http://sbm.localhost:8001/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-1111',
+                            'url': 'http://sbm/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-1111',
                             'id': '51fcca25-2e85-4c44-subscription-1111',
                             'version': 1,
                             'identity': 'cb245673-aa41-4302-ac47-00000000001',
@@ -445,7 +446,7 @@ module.exports = function() {
                     'Authorization': ['Token test StageBasedMessaging'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://sbm.localhost:8001/api/v1/subscriptions/',
+                'url': 'http://sbm/api/v1/subscriptions/',
             },
             'response': {
                 "code": 200,
@@ -455,7 +456,7 @@ module.exports = function() {
                     "previous": null,
                     "results": [
                         {
-                            'url': 'http://sbm.localhost:8001/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-2222',
+                            'url': 'http://sbm/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-2222',
                             'id': '51fcca25-2e85-4c44-subscription-2222',
                             'version': 1,
                             'identity': 'cb245673-aa41-4302-ac47-00000000002',
@@ -489,7 +490,7 @@ module.exports = function() {
                     'Authorization': ['Token test StageBasedMessaging'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://sbm.localhost:8001/api/v1/subscriptions/',
+                'url': 'http://sbm/api/v1/subscriptions/',
             },
             'response': {
                 "code": 200,
@@ -499,7 +500,7 @@ module.exports = function() {
                     "previous": null,
                     "results": [
                         {
-                            'url': 'http://sbm.localhost:8001/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-3333',
+                            'url': 'http://sbm/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-3333',
                             'id': '51fcca25-2e85-4c44-subscription-3333',
                             'version': 1,
                             'identity': 'cb245673-aa41-4302-ac47-00000000003',
@@ -533,7 +534,7 @@ module.exports = function() {
                     'Authorization': ['Token test StageBasedMessaging'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://sbm.localhost:8001/api/v1/subscriptions/',
+                'url': 'http://sbm/api/v1/subscriptions/',
             },
             'response': {
                 "code": 200,
@@ -543,7 +544,7 @@ module.exports = function() {
                     "previous": null,
                     "results": [
                         {
-                            'url': 'http://sbm.localhost:8001/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-4444',
+                            'url': 'http://sbm/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-4444',
                             'id': '51fcca25-2e85-4c44-subscription-4444',
                             'version': 1,
                             'identity': 'cb245673-aa41-4302-ac47-00000000004',
@@ -567,6 +568,7 @@ module.exports = function() {
         // 15: has_active_subscription - cb245673-aa41-4302-ac47-00000000005 (no active subscription on new system)
         {
             'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000005",
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -577,7 +579,7 @@ module.exports = function() {
                     'Authorization': ['Token test StageBasedMessaging'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://sbm.localhost:8001/api/v1/subscriptions/',
+                'url': 'http://sbm/api/v1/subscriptions/',
             },
             'response': {
                 "code": 200,
@@ -603,7 +605,7 @@ module.exports = function() {
                     'Authorization': ['Token test StageBasedMessaging'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://sbm.localhost:8001/api/v1/subscriptions/',
+                'url': 'http://sbm/api/v1/subscriptions/',
             },
             'response': {
                 "code": 200,
@@ -630,7 +632,7 @@ module.exports = function() {
                     'Authorization': ['Token test StageBasedMessaging'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://sbm.localhost:8001/api/v1/subscriptions/',
+                'url': 'http://sbm/api/v1/subscriptions/',
             },
             'response': {
                 "code": 200,
@@ -656,7 +658,7 @@ module.exports = function() {
                     'Authorization': ['Token test StageBasedMessaging'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://sbm.localhost:8001/api/v1/subscriptions/',
+                'url': 'http://sbm/api/v1/subscriptions/',
             },
             'response': {
                 "code": 200,
@@ -682,7 +684,7 @@ module.exports = function() {
                     'Authorization': ['Token test StageBasedMessaging'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://sbm.localhost:8001/api/v1/subscriptions/',
+                'url': 'http://sbm/api/v1/subscriptions/',
             },
             'response': {
                 "code": 200,
@@ -708,7 +710,7 @@ module.exports = function() {
                     'Authorization': ['Token test StageBasedMessaging'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://sbm.localhost:8001/api/v1/subscriptions/',
+                'url': 'http://sbm/api/v1/subscriptions/',
             },
             'response': {
                 "code": 200,
@@ -734,7 +736,7 @@ module.exports = function() {
                     'Authorization': ['Token test StageBasedMessaging'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://sbm.localhost:8001/api/v1/subscriptions/',
+                'url': 'http://sbm/api/v1/subscriptions/',
             },
             'response': {
                 "code": 200,
@@ -1526,12 +1528,12 @@ module.exports = function() {
             "request": {
                 "method": 'POST',
                 "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000666":{"default":true}}}}}',
-                "url": 'http://is.localhost:8001/api/v1/identities/'
+                "url": 'http://is/api/v1/identities/'
             },
             "response": {
                 "code": 201,
                 "data": {
-                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000006/",
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000006/",
                     "id": "cb245673-aa41-4302-ac47-00000000006",
                     "version": 1,
                     "details": {
@@ -1555,12 +1557,12 @@ module.exports = function() {
             "request": {
                 "method": 'POST',
                 "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000777":{"default":true}}}}}',
-                "url": 'http://is.localhost:8001/api/v1/identities/'
+                "url": 'http://is/api/v1/identities/'
             },
             "response": {
                 "code": 201,
                 "data": {
-                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000007/",
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000007/",
                     "id": "cb245673-aa41-4302-ac47-00000000007",
                     "version": 1,
                     "details": {
@@ -1583,12 +1585,12 @@ module.exports = function() {
             "request": {
                 "method": 'POST',
                 "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000888":{"default":true}}}}}',
-                "url": 'http://is.localhost:8001/api/v1/identities/'
+                "url": 'http://is/api/v1/identities/'
             },
             "response": {
                 "code": 201,
                 "data": {
-                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000008/",
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000008/",
                     "id": "cb245673-aa41-4302-ac47-00000000008",
                     "version": 1,
                     "details": {
@@ -1611,12 +1613,12 @@ module.exports = function() {
             "request": {
                 "method": 'POST',
                 "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000999":{"default":true}}}}}',
-                "url": 'http://is.localhost:8001/api/v1/identities/'
+                "url": 'http://is/api/v1/identities/'
             },
             "response": {
                 "code": 201,
                 "data": {
-                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/",
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/",
                     "id": "cb245673-aa41-4302-ac47-00000000009",
                     "version": 1,
                     "details": {
@@ -1639,12 +1641,12 @@ module.exports = function() {
             "request": {
                 "method": 'POST',
                 "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820101010":{"default":true}}}}}',
-                "url": 'http://is.localhost:8001/api/v1/identities/'
+                "url": 'http://is/api/v1/identities/'
             },
             "response": {
                 "code": 201,
                 "data": {
-                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000010/",
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000010/",
                     "id": "cb245673-aa41-4302-ac47-00000000010",
                     "version": 1,
                     "details": {
@@ -1667,12 +1669,12 @@ module.exports = function() {
             "request": {
                 "method": 'POST',
                 "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820111111":{"default":true}}}}}',
-                "url": 'http://is.localhost:8001/api/v1/identities/'
+                "url": 'http://is/api/v1/identities/'
             },
             "response": {
                 "code": 201,
                 "data": {
-                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000011/",
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000011/",
                     "id": "cb245673-aa41-4302-ac47-00000000011",
                     "version": 1,
                     "details": {
@@ -1703,7 +1705,7 @@ module.exports = function() {
                     'Authorization': ['Token test IdentityStore'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://is.localhost:8001/api/v1/identities/search/',
+                'url': 'http://is/api/v1/identities/search/',
             },
             'response': {
                 "code": 200,
@@ -1712,7 +1714,7 @@ module.exports = function() {
                     "next": null,
                     "previous": null,
                     "results": [{
-                        "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-10000000001/",
+                        "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-10000000001/",
                         "id": "cb245673-aa41-4302-ac47-10000000001",
                         "version": 1,
                         "details": {
@@ -1744,7 +1746,7 @@ module.exports = function() {
                     "request_source": "ussd_pmtct",
                     "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 },
-                "url": 'http://is.localhost:8001/api/v1/optout/'
+                "url": 'http://is/api/v1/optout/'
             },
             "response": {
                 "code": 201,
@@ -1768,7 +1770,7 @@ module.exports = function() {
                     "request_source": "ussd_pmtct",
                     "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 },
-                "url": 'http://is.localhost:8001/api/v1/optout/'
+                "url": 'http://is/api/v1/optout/'
             },
             "response": {
                 "code": 201,
@@ -1786,7 +1788,7 @@ module.exports = function() {
                 "data": {
                     "identity": "cb245673-aa41-4302-ac47-10000000001"
                 },
-                "url": 'http://hub.localhost:8001/api/v1/registration/'
+                "url": 'http://hub/api/v1/registration/'
             },
             'response': {
                 "code": 201,
@@ -1808,7 +1810,7 @@ module.exports = function() {
                     "identity": "cb245673-aa41-4302-ac47-10000000001",
                     "action": "unsubscribe_PMTCT"
                 },
-                "url": 'http://hub.localhost:8001/api/v1/change/'
+                "url": 'http://hub/api/v1/change/'
             },
             "response": {
                 "code": 201,
@@ -1827,7 +1829,7 @@ module.exports = function() {
                     "identity": "cb245673-aa41-4302-ac47-10000000001",
                     "action": "subscribe_loss"
                 },
-                "url": 'http://hub.localhost:8001/api/v1/change/'
+                "url": 'http://hub/api/v1/change/'
             },
             "response": {
                 "code": 201,
@@ -1849,7 +1851,7 @@ module.exports = function() {
                         "reason": "not_hiv_pos"
                     }
                 },
-                "url": 'http://hub.localhost:8001/api/v1/change/',
+                "url": 'http://hub/api/v1/change/',
             },
             "response": {
                 "response": {
@@ -1865,7 +1867,7 @@ module.exports = function() {
         {
             "key": "post.hub.change.pmtct_loss_switch.identity.cb245673-aa41-4302-ac47-10000000001",
             "request": {
-                "url": 'http://hub.localhost:8001/api/v1/change/',
+                "url": 'http://hub/api/v1/change/',
                 "method": 'POST',
                 "data": {
                     "registrant_id": "cb245673-aa41-4302-ac47-10000000001",
@@ -1890,9 +1892,9 @@ module.exports = function() {
             "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000001",
             "request": {
                 "method": 'PATCH',
-                "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/',
-                "body": {
-                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/",
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/",
                     "id": "cb245673-aa41-4302-ac47-00000000001",
                     "version": 1,
                     "details": {
@@ -1902,9 +1904,14 @@ module.exports = function() {
                                 "+27820000111": {}
                             }
                         },
-                        "created_at":"2016-06-21T06:13:29.693272Z",
-                        "updated_at":"2016-06-21T06:13:29.693298Z"
-                    }
+                        "pmtct": {
+                            "mom_dob": "1981-04-26",
+                            "lang_code": "eng_ZA"
+                        },
+                        "source": "pmtct"
+                    },
+                    "created_at":"2016-06-21T06:13:29.693272Z",
+                    "updated_at":"2016-06-21T06:13:29.693298Z"
                 }
             },
             "response": {}
@@ -1915,9 +1922,9 @@ module.exports = function() {
             "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000002",
             "request": {
                 "method": 'PATCH',
-                "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/',
-                "body": {
-                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/",
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/",
                     "id": "cb245673-aa41-4302-ac47-00000000002",
                     "version": 1,
                     "details": {
@@ -1941,9 +1948,9 @@ module.exports = function() {
             "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000003",
             "request": {
                 "method": 'PATCH',
-                "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000003/',
-                "body": {
-                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000003/",
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000003/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000003/",
                     "id": "cb245673-aa41-4302-ac47-00000000003",
                     "version": 1,
                     "details": {
@@ -1967,9 +1974,9 @@ module.exports = function() {
             "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000004",
             "request": {
                 "method": 'PATCH',
-                "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000004/',
-                "body": {
-                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000004/",
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000004/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000004/",
                     "id": "cb245673-aa41-4302-ac47-00000000004",
                     "version": 1,
                     "details": {
@@ -1994,9 +2001,9 @@ module.exports = function() {
             "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000006",
             "request": {
                 "method": 'PATCH',
-                "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000006/',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000006/',
                 "data": {
-                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000006/",
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000006/",
                     "id": "cb245673-aa41-4302-ac47-00000000006",
                     "version": 1,
                     "details": {
@@ -2022,9 +2029,9 @@ module.exports = function() {
             "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000007",
             "request": {
                 "method": 'PATCH',
-                "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000007/',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000007/',
                 "data": {
-                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000007/",
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000007/",
                     "id": "cb245673-aa41-4302-ac47-00000000007",
                     "version": 1,
                     "details": {
@@ -2051,9 +2058,9 @@ module.exports = function() {
             "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000008",
             "request": {
                 "method": 'PATCH',
-                "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000008/',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000008/',
                 "data": {
-                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000008/",
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000008/",
                     "id": "cb245673-aa41-4302-ac47-00000000008",
                     "version": 1,
                     "details": {
@@ -2080,9 +2087,9 @@ module.exports = function() {
             "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000009",
             "request": {
                 "method": 'PATCH',
-                "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/',
                 "data": {
-                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/",
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/",
                     "id": "cb245673-aa41-4302-ac47-00000000009",
                     "version": 1,
                     "details": {
@@ -2243,9 +2250,9 @@ module.exports = function() {
             "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000000001",
             "request": {
                 "method": 'PATCH',
-                "url": 'http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/',
                 "data": {
-                    "url": "http://is.localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/",
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/",
                     "id": "cb245673-aa41-4302-ac47-00000000001",
                     "version": 1,
                     "details": {
@@ -2284,7 +2291,7 @@ module.exports = function() {
             "repeatable": true,
             "request": {
                 "method": 'GET',
-                "url": "http://sbm.localhost:8001/api/v1/messageset/"
+                "url": "http://sbm/api/v1/messageset/"
             },
             "response": {
                 "code": 200,
@@ -2493,7 +2500,7 @@ module.exports = function() {
             "key": "post.hub.register.pmtct_postbirth.identity.cb245673-aa41-4302-ac47-00000000006",
             "request": {
                 "method": 'POST',
-                "url": "http://hub.localhost:8001/api/v1/registration/",
+                "url": "http://hub/api/v1/registration/",
                 "data": {
                     "reg_type": "pmtct_postbirth",
                     "registrant_id": "cb245673-aa41-4302-ac47-00000000006",
@@ -2513,7 +2520,7 @@ module.exports = function() {
             "key": "post.hub.register.pmtct_prebirth.identity.cb245673-aa41-4302-ac47-00000000007",
             "request": {
                 "method": 'POST',
-                "url": "http://hub.localhost:8001/api/v1/registration/",
+                "url": "http://hub/api/v1/registration/",
                 "data": {
                     "reg_type": "pmtct_prebirth",
                     "registrant_id": "cb245673-aa41-4302-ac47-00000000007",
@@ -2533,7 +2540,7 @@ module.exports = function() {
             "key": "post.hub.register.pmtct_prebirth.identity.cb245673-aa41-4302-ac47-00000000008",
             "request": {
                 "method": 'POST',
-                "url": "http://hub.localhost:8001/api/v1/registration/",
+                "url": "http://hub/api/v1/registration/",
                 "data": {
                     "reg_type": "pmtct_prebirth",
                     "registrant_id": "cb245673-aa41-4302-ac47-00000000008",
@@ -2553,7 +2560,7 @@ module.exports = function() {
             "key": "post.hub.register.pmtct_postbirth.identity.cb245673-aa41-4302-ac47-00000000009",
             "request": {
                 "method": 'POST',
-                "url": "http://hub.localhost:8001/api/v1/registration/",
+                "url": "http://hub/api/v1/registration/",
                 "data": {
                     "reg_type": "pmtct_prebirth",
                     "registrant_id": "cb245673-aa41-4302-ac47-00000000009",
@@ -2710,7 +2717,7 @@ module.exports = function() {
                     'Authorization': ['Token test StageBasedMessaging'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://sbm.localhost:8001/api/v1/subscriptions/',
+                'url': 'http://sbm/api/v1/subscriptions/',
             },
             'response': {
                 "code": 200,
@@ -2720,7 +2727,7 @@ module.exports = function() {
                     "previous": null,
                     "results": [
                         {
-                            'url': 'http://sbm.localhost:8001/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-1111',
+                            'url': 'http://sbm/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-1111',
                             'id': '51fcca25-2e85-4c44-subscription-1111',
                             'version': 1,
                             'identity': 'cb245673-aa41-4302-ac47-10000000001',
@@ -2912,7 +2919,7 @@ module.exports = function() {
         {
             "key": "post.hub.change.pmtct_loss_optout.miscarriage.identity.cb245673-aa41-4302-ac47-10000000001",
             "request": {
-                "url": 'http://hub.localhost:8001/api/v1/change/',
+                "url": 'http://hub/api/v1/change/',
                 "method": 'POST',
                 "data": {
                     "registrant_id": "cb245673-aa41-4302-ac47-10000000001",
@@ -2950,7 +2957,7 @@ module.exports = function() {
         {
             "key": "post.is.optout.stop.identity.cb245673-aa41-4302-ac47-00000000001",
             "request": {
-                "url": "http://is.localhost:8001/api/v1/optout/",
+                "url": "http://is/api/v1/optout/",
                 "method": 'POST',
                 "data": {
                     "optout_type": "stop",
@@ -2969,13 +2976,61 @@ module.exports = function() {
         {
             "key": "post.hub.change.pmtct_nonloss_optout.unknown.identity.cb245673-aa41-4302-ac47-00000000001",
             "request": {
-                "url": 'http://hub.localhost:8001/api/v1/change/',
+                "url": 'http://hub/api/v1/change/',
                 "method": 'POST',
                 "data": {
                     "registrant_id": "cb245673-aa41-4302-ac47-00000000001",
                     "action": "pmtct_nonloss_optout",
                     "data": {
                         "reason": "unknown"
+                    }
+                }
+            },
+            "response": {}
+        },
+
+        // 79: post outbound message for cb245673-aa41-4302-ac47-00000000001
+        {
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000000001",
+                    "to_addr": "+27820000111",
+                    "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                    "metadata":{}
+                }
+            },
+            "response": {}
+        },
+
+        // 80: post outbound message for cb245673-aa41-4302-ac47-00000000001
+        {
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000000001",
+                    "to_addr": "+27820000111",
+                    "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                    "metadata":{}
+                }
+            },
+            "response": {}
+        },
+
+        // 81: post registration (pmtct_prebirth) for cb245673-aa41-4302-ac47-00000000001
+        {
+            "request": {
+                "url": 'http://hub/api/v1/registration/',
+                "method": 'POST',
+                "data": {
+                    "reg_type": "pmtct_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000000001",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000001",
+                        "mom_dob": "1981-04-26",
+                        "language": "eng_ZA"
                     }
                 }
             },

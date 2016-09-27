@@ -54,19 +54,6 @@ go.app = function() {
             );
         };
 
-        self.get_valid_active_subscription = function(active_subscriptions) {
-            for (var i=0; i < active_subscriptions.length; i++) {
-                var messageset_id = active_subscriptions[i].message_set.match(/\d+\/$/)[0].replace('/', '');
-                var subscription_type = self.getSubscriptionType(messageset_id);
-                // check that current active subscription is to momconnect
-                if (['baby1', 'baby2', 'standard', 'later', 'accelerated'].indexOf(subscription_type) >= 0) {
-                  return subscription_type;
-                }
-            }
-            return false;
-        };
-
-
         self.get_6_lang_code = function(lang) {
             // Return the six-char code for a two or six letter language code
             if (lang.length == 6) {
@@ -109,23 +96,6 @@ go.app = function() {
                     "nbl_ZA": "nr"
                 }[lang];
             }
-        };
-
-        self.getSubscriptionType = function(messageset_id) {
-            var subscriptionTypeMapping = {
-                "1": "standard",
-                "2": "later",
-                "3": "accelerated",
-                "4": "baby1",
-                "5": "baby2",
-                "6": "miscarriage",
-                "7": "stillbirth",
-                "8": "babyloss",
-                "9": "subscription",
-                "10": "chw"
-            };
-
-            return subscriptionTypeMapping[messageset_id];
         };
 
         self.send_registration_thanks = function() {
@@ -221,11 +191,11 @@ go.app = function() {
 
             return is
             .list_by_address({"msisdn": msisdn})
-            .then(function(identity) {
-                if (identity === null) {
+            .then(function(identities_found) {
+                if (identities_found.results.length === 0) {
                     return self.states.create("state_end_not_registered");
                 }
-
+                var identity = identities_found.results[0];
                 self.im.user.set_answer("identity", identity);
                 return sbm
                 .check_identity_subscribed(identity.id, "pmtct")
@@ -237,7 +207,49 @@ go.app = function() {
                             return self.states.create("state_optout_reason_menu");
                         });
                     } else {
-                        return self.states.create("state_route");
+                        return sbm
+                        // .check_identity_subscribed(identity.id, "momconnect") // "momconnect_prebirth"
+                        // .then(function(identity_subscribed_to_momconnect) {
+                        //     if (identity_subscribed_to_momconnect) {
+                        //         return self.states.create("state_route");
+                        //     } else {
+                        //         return self.states.create("state_end_not_registered");
+                        //     }
+                        // });
+                        .list_active_subscriptions(identity.id)
+                        .then(function(active_subs_response) {
+                            var active_subs = active_subs_response.results;
+                            if (active_subs_response.count === 0) {
+                                return self.states.create("state_end_not_registered");
+                            } else {
+                                return sbm
+                                .list_messagesets()
+                                .then(function(messagesets_response) {
+                                    var messagesets = messagesets_response.results;
+
+                                    // create a mapping of messageset ids to shortnames
+                                    var short_name_map = {};
+                                    for (var k=0; k < messagesets.length; k++) {
+                                        short_name_map[messagesets[k].id] = messagesets[k].short_name;
+                                    }
+
+                                    // see if the active subscriptions shortnames contain the searched text
+                                    for (var i=0; i < active_subs.length; i++) {
+                                        var active_sub_shortname = short_name_map[active_subs[i].messageset];
+                                        var index = active_sub_shortname.indexOf("momconnect");
+                                        if (index > -1) {
+                                            if (active_sub_shortname.indexOf("prebirth") > -1) {
+                                                self.im.user.set_answer("subscription_type", "prebirth");
+                                            } else if (active_sub_shortname.indexOf("postbirth") > -1) {
+                                                self.im.user.set_answer("subscription_type", "postbirth");
+                                            }
+                                            return self.states.create("state_route");
+                                        }
+                                    }
+                                    return self.states.create("state_end_not_registered");
+                                });
+                            }
+                        });
                     }
                 });
             });
@@ -368,9 +380,9 @@ go.app = function() {
 
         self.add("state_register_pmtct", function(name) {
             var identity_info = self.im.user.answers.identity;
-            identity_info.details.mom_dob = self.im.user.answers.mom_dob;
-            identity_info.details.lang_code = self.im.user.answers.lang_code;
-            // identity_info.details.vumi_contact_key = self.im.user.answers.vumi_contact_key;
+            identity_info.details.pmtct = {};
+            identity_info.details.pmtct.mom_dob = self.im.user.answers.mom_dob;
+            identity_info.details.pmtct.lang_code = self.im.user.lang || "eng_ZA";
             identity_info.details.source = "pmtct";
 
             return is
@@ -378,28 +390,27 @@ go.app = function() {
             .then(function() {
                 var reg_info;
                 var subscription_type = self.im.user.answers.subscription_type;
-                if (subscription_type === 'baby1' || subscription_type === 'baby2') {
+                if (subscription_type === "postbirth") {
                     reg_info = {
                         "reg_type": "pmtct_postbirth",
                         "registrant_id": self.im.user.answers.identity.id,
                         "data": {
                             "operator_id": self.im.user.answers.identity.id,
-                            "language": self.im.user.answers.lang_code,
+                            "language": self.im.user.lang || "eng_ZA",
                             "mom_dob": self.im.user.answers.mom_dob,
-                            "baby_dob": self.im.user.answers.baby_dob,
+                            // "baby_dob": self.im.user.answers.baby_dob,
                         }
                     };
 
-                } else if (subscription_type === 'standard' || subscription_type === 'later'
-                           || subscription_type == 'accelerated') {
+                } else if (subscription_type === "prebirth") {
                     reg_info = {
                         "reg_type": "pmtct_prebirth",
                         "registrant_id": self.im.user.answers.identity.id,
                         "data": {
                             "operator_id": self.im.user.answers.identity.id,
-                            "language": self.im.user.answers.lang_code,
+                            "language": self.im.user.lang || "eng_ZA",
                             "mom_dob": self.im.user.answers.mom_dob,
-                            "edd": self.im.user.answers.edd
+                            // "edd": self.im.user.answers.edd
                         }
                     };
                 }
