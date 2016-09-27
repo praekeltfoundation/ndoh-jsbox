@@ -911,6 +911,8 @@ go.app = function() {
                     if (choice.value === 'main_menu') {
                         return 'state_route';
                     } else {
+                        self.im.user.answers.operator.details.nurseconnect.opt_out_reason = choice.value;
+
                         var change_info = {
                             "registrant_id": self.im.user.answers.operator.id,
                             "action": "nurse_optout",
@@ -921,7 +923,7 @@ go.app = function() {
 
                         return Q
                         .all([
-                            // is.update_identity
+                            is.update_identity(self.im.user.answers.operator.id, self.im.user.answers.operator),
                             hub.create_change(change_info)
                         ])
                         .then(function() {

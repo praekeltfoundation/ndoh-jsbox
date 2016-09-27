@@ -1520,7 +1520,7 @@ describe("app", function() {
                                 state: 'state_end_detail_changed',
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [15, 52, 54, 162]);
+                                utils.check_fixtures_used(api, [15, 52, 54, 162, 200]);
                             })
                             .run();
                     });
