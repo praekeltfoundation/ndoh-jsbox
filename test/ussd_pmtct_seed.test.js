@@ -272,12 +272,12 @@ describe("PMTCT app", function() {
                 });
             });
 
-            describe.skip("0820000222 exists on new system; has active " +
+            describe("0820000222 exists on new system; has active " +
             "non-pmtct subscription; consent, no dob", function() {
                 it("to state_birth_year", function() {
                     return tester
                         .setup.user.addr("0820000222")
-                        .input(
+                        .inputs(
                             {session_event: "new"}  // dial in
                         )
                         .check.interaction({
@@ -374,7 +374,7 @@ describe("PMTCT app", function() {
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [1, 12, 43, 54]);
+                            utils.check_fixtures_used(api, [1, 12, 51, 62, 82, 83, 84]);
                         })
                         .check.reply.ends_session()
                         .run();

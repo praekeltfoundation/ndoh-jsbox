@@ -243,6 +243,10 @@ go.app = function() {
                                             } else if (active_sub_shortname.indexOf("postbirth") > -1) {
                                                 self.im.user.set_answer("subscription_type", "postbirth");
                                             }
+
+                                            self.im.user.set_answer("consent", identity.details.consent);
+                                            self.im.user.set_answer("mom_dob", identity.details.mom_dob);
+
                                             return self.states.create("state_route");
                                         }
                                     }
