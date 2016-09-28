@@ -201,61 +201,47 @@ go.app = function() {
                 var identity = identities_found.results[0];
                 self.im.user.set_answer("identity", identity);
                 return sbm
-                .check_identity_subscribed(identity.id, "pmtct")
-                .then(function(identity_subscribed_to_pmtct) {
-                    if (identity_subscribed_to_pmtct) {
-                        return self.im.user
-                        .set_lang(self.im.user.answers.identity.details.lang_code || "eng_ZA")
-                        .then(function(lang_set_response) {
-                            return self.states.create("state_optout_reason_menu");
-                        });
+                .list_active_subscriptions(identity.id)
+                .then(function(active_subs_response) {
+                    var active_subs = active_subs_response.results;
+                    if (active_subs_response.count === 0) {
+                        return self.states.create("state_end_not_registered");
                     } else {
                         return sbm
-                        // .check_identity_subscribed(identity.id, "momconnect") // "momconnect_prebirth"
-                        // .then(function(identity_subscribed_to_momconnect) {
-                        //     if (identity_subscribed_to_momconnect) {
-                        //         return self.states.create("state_route");
-                        //     } else {
-                        //         return self.states.create("state_end_not_registered");
-                        //     }
-                        // });
-                        .list_active_subscriptions(identity.id)
-                        .then(function(active_subs_response) {
-                            var active_subs = active_subs_response.results;
-                            if (active_subs_response.count === 0) {
-                                return self.states.create("state_end_not_registered");
-                            } else {
-                                return sbm
-                                .list_messagesets()
-                                .then(function(messagesets_response) {
-                                    var messagesets = messagesets_response.results;
+                        .list_messagesets()
+                        .then(function(messagesets_response) {
+                            var messagesets = messagesets_response.results;
 
-                                    // create a mapping of messageset ids to shortnames
-                                    var short_name_map = {};
-                                    for (var k=0; k < messagesets.length; k++) {
-                                        short_name_map[messagesets[k].id] = messagesets[k].short_name;
-                                    }
-
-                                    // see if the active subscriptions shortnames contain the searched text
-                                    for (var i=0; i < active_subs.length; i++) {
-                                        var active_sub_shortname = short_name_map[active_subs[i].messageset];
-                                        var index = active_sub_shortname.indexOf("momconnect");
-                                        if (index > -1) {
-                                            if (active_sub_shortname.indexOf("prebirth") > -1) {
-                                                self.im.user.set_answer("subscription_type", "prebirth");
-                                            } else if (active_sub_shortname.indexOf("postbirth") > -1) {
-                                                self.im.user.set_answer("subscription_type", "postbirth");
-                                            }
-
-                                            self.im.user.set_answer("consent", identity.details.consent);
-                                            self.im.user.set_answer("mom_dob", identity.details.mom_dob);
-
-                                            return self.states.create("state_route");
-                                        }
-                                    }
-                                    return self.states.create("state_end_not_registered");
-                                });
+                            // create a mapping of messageset ids to shortnames
+                            var short_name_map = {};
+                            for (var k=0; k < messagesets.length; k++) {
+                                short_name_map[messagesets[k].id] = messagesets[k].short_name;
                             }
+
+                            // see if the active subscriptions shortnames contain the searched text
+                            for (var i=0; i < active_subs.length; i++) {
+                                var active_sub_shortname = short_name_map[active_subs[i].messageset];
+
+                                var pmtct_index = active_sub_shortname.indexOf("pmtct");
+                                if (pmtct_index > -1) {
+                                    return self.states.create("state_optout_reason_menu");
+                                }
+
+                                var momconnect_index = active_sub_shortname.indexOf("momconnect");
+                                if (momconnect_index > -1) {
+                                    if (active_sub_shortname.indexOf("prebirth") > -1) {
+                                        self.im.user.set_answer("subscription_type", "prebirth");
+                                    } else if (active_sub_shortname.indexOf("postbirth") > -1) {
+                                        self.im.user.set_answer("subscription_type", "postbirth");
+                                    }
+
+                                    self.im.user.set_answer("consent", identity.details.consent);
+                                    self.im.user.set_answer("mom_dob", identity.details.mom_dob);
+
+                                    return self.states.create("state_route");
+                                }
+                            }
+                            return self.states.create("state_end_not_registered");
                         });
                     }
                 });
@@ -448,43 +434,47 @@ go.app = function() {
 
         // start of OPT-OUT flow
         self.add("state_optout_reason_menu", function(name) {
-            return new PaginatedChoiceState(name, {
-                question: $("Please tell us why you do not want to receive messages:"),
-                characters_per_page: 182,
-                options_per_page: null,
-                more: $('More'),
-                back: $('Back'),
-                // error: ,
-                choices: [
-                    new Choice("not_hiv_pos", $("Not HIV-positive")),
-                    new Choice("miscarriage", $("Miscarriage")),
-                    new Choice("stillbirth", $("Baby was stillborn")),
-                    new Choice("babyloss", $("Baby died")),
-                    new Choice("not_useful", $("Messages not useful")),
-                    new Choice("other", $("Other"))
-                ],
-                next: function(choice) {
-                    if (["not_hiv_pos", "not_useful", "other"].indexOf(choice.value) !== -1) {
-                        var pmtct_nonloss_optout = {
-                            "registrant_id": self.im.user.answers.identity.id,
-                            "action": "pmtct_nonloss_optout",
-                            "data": {
-                                "reason": choice.value
-                            }
-                        };
+            return self.im.user
+            .set_lang(self.im.user.answers.identity.details.lang_code || "eng_ZA")
+            .then(function(lang_set_response) {
+                return new PaginatedChoiceState(name, {
+                    question: $("Please tell us why you do not want to receive messages:"),
+                    characters_per_page: 182,
+                    options_per_page: null,
+                    more: $('More'),
+                    back: $('Back'),
+                    // error: ,
+                    choices: [
+                        new Choice("not_hiv_pos", $("Not HIV-positive")),
+                        new Choice("miscarriage", $("Miscarriage")),
+                        new Choice("stillbirth", $("Baby was stillborn")),
+                        new Choice("babyloss", $("Baby died")),
+                        new Choice("not_useful", $("Messages not useful")),
+                        new Choice("other", $("Other"))
+                    ],
+                    next: function(choice) {
+                        if (["not_hiv_pos", "not_useful", "other"].indexOf(choice.value) !== -1) {
+                            var pmtct_nonloss_optout = {
+                                "registrant_id": self.im.user.answers.identity.id,
+                                "action": "pmtct_nonloss_optout",
+                                "data": {
+                                    "reason": choice.value
+                                }
+                            };
 
-                        // only opt user out of the PMTCT message set NOT MomConnect
-                        return hub
-                        .create_change(pmtct_nonloss_optout)
-                        // TODO: We are currently not opting the identity out - should we?
-                        .then(function() {
-                            return "state_end_optout";
-                        });
+                            // only opt user out of the PMTCT message set NOT MomConnect
+                            return hub
+                            .create_change(pmtct_nonloss_optout)
+                            // TODO: We are currently not opting the identity out - should we?
+                            .then(function() {
+                                return "state_end_optout";
+                            });
 
-                    } else {
-                        return "state_loss_messages";
+                        } else {
+                            return "state_loss_messages";
+                        }
                     }
-                }
+                });
             });
         });
 

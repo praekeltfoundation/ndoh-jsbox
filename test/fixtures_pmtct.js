@@ -23,7 +23,6 @@ module.exports = function() {
         // 0: get identity by msisdn +27820000111 (no consent, no dob)
         {
             'key': "get.is.msisdn.27820000111",
-            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -64,7 +63,6 @@ module.exports = function() {
         // 1: get identity by msisdn +27820000222 (consent, no dob)
         {
             'key': "get.is.msisdn.27820000222",
-            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -106,7 +104,6 @@ module.exports = function() {
         // 2: get identity by msisdn +27820000333 (no consent, dob)
         {
             'key': "get.is.msisdn.27820000333",
-            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -148,7 +145,6 @@ module.exports = function() {
         // 3: get identity by msisdn +27820000444 (consent, dob)
         {
             'key': "get.is.msisdn.27820000444",
-            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -191,7 +187,6 @@ module.exports = function() {
         // 4: get identity by msisdn +27820000555 (no active sub, no consent, no dob)
         {
             'key': "get.is.msisdn.27820000555",
-            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -232,7 +227,6 @@ module.exports = function() {
         // 5: get identity by msisdn +27820000666 (does not exist)
         {
             'key': "get.is.msisdn.27820000666",
-            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -259,7 +253,6 @@ module.exports = function() {
         // 6: get identity by msisdn +27820000777 (does not exist)
         {
             'key': "get.is.msisdn.27820000777",
-            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -286,7 +279,6 @@ module.exports = function() {
         // 7: get identity by msisdn +27820000888 (does not exist)
         {
             'key': "get.is.msisdn.27820000888",
-            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -313,7 +305,6 @@ module.exports = function() {
         // 8: get identity by msisdn +27820000999 (does not exist)
         {
             'key': "get.is.msisdn.27820000999",
-            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -340,7 +331,6 @@ module.exports = function() {
         // 9: get identity by msisdn +27820101010 (does not exist)
         {
             'key': "get.is.msisdn.27820101010",
-            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -367,7 +357,6 @@ module.exports = function() {
         // 10: get identity by msisdn +27820111111 (does not exist)
         {
             'key': "get.is.msisdn.27820111111",
-            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -394,7 +383,6 @@ module.exports = function() {
         // 11: has_active_subscription - cb245673-aa41-4302-ac47-00000000001 (no consent, no dob)
         {
             'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000001",
-            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -439,7 +427,6 @@ module.exports = function() {
         // 12: has_active_subscription - cb245673-aa41-4302-ac47-00000000002 (consent, no dob)
         {
             'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000002",
-            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -484,7 +471,6 @@ module.exports = function() {
         // 13: has_active_subscription - cb245673-aa41-4302-ac47-00000000003 (no consent, dob)
         {
             'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000003",
-            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -529,7 +515,6 @@ module.exports = function() {
         // 14: has_active_subscription - cb245673-aa41-4302-ac47-00000000004 (consent, dob)
         {
             'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000004",
-            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -574,7 +559,6 @@ module.exports = function() {
         // 15: has_active_subscription - cb245673-aa41-4302-ac47-00000000005 (no active subscription on new system)
         {
             'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000005",
-            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -627,7 +611,6 @@ module.exports = function() {
         // 17: has_active_subscription - cb245673-aa41-4302-ac47-00000000007 (no active subscription on new system)
         {
             'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000007",
-            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -1559,7 +1542,6 @@ module.exports = function() {
         // 37: create identity cb245673-aa41-4302-ac47-00000000007
         {
             "key": "post.is.msisdn.27820000777",
-            "repeatable": true,
             "request": {
                 "method": 'POST',
                 "body": '{"details":{"default_addr_type":"msisdn","addresses":{"msisdn":{"+27820000777":{"default":true}}}}}',
@@ -1700,7 +1682,6 @@ module.exports = function() {
         // 42: get identity by msisdn +27720000111 (optout)
         {
             'key': "get.is.msisdn.27720000111",
-            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -2309,7 +2290,6 @@ module.exports = function() {
         // 62: get messagesets
         {
             "key": "get.sbm.messageset.all",
-            "repeatable": true,
             "request": {
                 "method": 'GET',
                 "url": "http://sbm/api/v1/messageset/"
