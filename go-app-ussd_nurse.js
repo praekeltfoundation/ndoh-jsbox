@@ -327,7 +327,6 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (choice.value === 'yes') {
-                        self.im.user.answers.registrant.details.nurseconnect.opt_out_reason = "";  // reset
                         return is
                         .optin(self.im.user.answers.registrant.id, "msisdn", self.im.user.answers.registrant_msisdn)
                         .then(function() {
@@ -424,14 +423,7 @@ go.app = function() {
 
         self.add('state_save_nursereg', function(name) {
             var registrant_info = self.im.user.answers.registrant;
-            registrant_info.details.nurseconnect.is_registered = true;
             registrant_info.details.nurseconnect.redial_sms_sent = self.im.user.answers.redial_sms_sent;
-
-            // operator.id will equal registrant.id when a self registration
-            if (self.im.user.answers.operator.id !== registrant_info.id) {
-                registrant_info.details.nurseconnect.registered_by =
-                    self.im.user.answers.operator.id;
-            }
 
             var reg_info = {
                 "reg_type": "nurseconnect",
@@ -519,10 +511,11 @@ go.app = function() {
                     }
 
                     // person wants to change to number already theirs but it's also active on another identity
-                    if (new_msisdn_on_operator && !msisdn_on_other_identities_but_available) {
+                    if (new_msisdn_on_operator && identities.length > 0 && !msisdn_on_other_identities_but_available) {
                         // disallow
                         return self.states.create('state_block_active_subs');
                     }
+
                     if (new_msisdn_on_operator) { // person wants to change to number already theirs
                         // check whether number is opted out on operator
                         if (self.im.user.answers.operator.details.addresses.msisdn[new_msisdn].optedout) {
@@ -551,9 +544,8 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (choice.value === 'yes') {
-                        self.im.user.answers.registrant.details.nurseconnect.opt_out_reason = "";  // reset
                         return is
-                        .optin(self.im.user.answers.registrant.id, "msisdn", self.im.user.answers.registrant_msisdn)
+                        .optin(self.im.user.answers.operator.id, "msisdn", self.im.user.answers.new_msisdn)
                         .then(function() {
                             return 'state_switch_new_nr';
                         });
@@ -581,8 +573,21 @@ go.app = function() {
                     "msisdn_device": self.im.user.answers.operator_msisdn
                 }
             };
-            return hub
-            .create_change(change_info)
+
+            var old_num = self.im.user.answers.operator_msisdn;
+            var new_num = self.im.user.answers.new_msisdn;
+            self.im.user.answers.operator.details.addresses.msisdn[old_num].inactive = true;
+            if (self.im.user.answers.operator.details.addresses.msisdn.hasOwnProperty(new_num)) {
+                self.im.user.answers.operator.details.addresses.msisdn[new_num].default = true;
+            } else {
+                self.im.user.answers.operator.details.addresses.msisdn[new_num] = { "default": true };
+            }
+
+            return Q
+            .all([
+                is.update_identity(self.im.user.answers.operator.id, self.im.user.answers.operator),
+                hub.create_change(change_info)
+            ])
             .then(function() {
                 return self.states.create('state_end_detail_changed');
             });
@@ -616,8 +621,11 @@ go.app = function() {
                         }
                     };
 
-                    return hub
-                    .create_change(change_info)
+                    return Q
+                    .all([
+                        is.update_identity(self.im.user.answers.operator.id, self.im.user.answers.operator),
+                        hub.create_change(change_info)
+                    ])
                     .then(function () {
                         return 'state_end_detail_changed';
                     });
@@ -650,20 +658,27 @@ go.app = function() {
                     }
                 },
                 next: function(id_number) {
+                    var date_of_birth = utils.extract_za_id_dob(id_number);
+                    self.im.user.answers.operator.details.nurseconnect.id_type = "sa_id";
+                    self.im.user.answers.operator.details.nurseconnect.sa_id_no = id_number;
+                    self.im.user.answers.operator.details.nurseconnect.dob = date_of_birth;
+
                     var change_info = {
                         "registrant_id": self.im.user.answers.operator.id,
                         "action": "nurse_update_detail",
                         "data": {
                             "id_type": "sa_id",
                             "sa_id_no": id_number,
-                            "dob": utils.extract_za_id_dob(id_number)
+                            "dob": date_of_birth
                         }
                     };
 
-                    return hub
-                    .create_change(change_info)
-                    .then(function(response) {
-                        console.log("response: "+response);
+                    return Q
+                    .all([
+                        is.update_identity(self.im.user.answers.operator.id, self.im.user.answers.operator),
+                        hub.create_change(change_info)
+                    ])
+                    .then(function () {
                         return 'state_end_detail_changed';
                     });
                 }
@@ -711,6 +726,12 @@ go.app = function() {
                     }
                 },
                 next: function(content) {
+                    var date_of_birth = moment(content, 'DDMMYYYY').format('YYYY-MM-DD');
+                    self.im.user.answers.operator.details.nurseconnect.id_type = "passport";
+                    self.im.user.answers.operator.details.nurseconnect.passport_no = self.im.user.answers.state_passport_no;
+                    self.im.user.answers.operator.details.nurseconnect.passport_origin = self.im.user.answers.state_passport;
+                    self.im.user.answers.operator.details.nurseconnect.dob = date_of_birth;
+
                     var change_info = {
                         "registrant_id": self.im.user.answers.operator.id,
                         "action": "nurse_update_detail",
@@ -718,12 +739,15 @@ go.app = function() {
                             "id_type": "passport",
                             "passport_no": self.im.user.answers.state_passport_no,
                             "passport_origin": self.im.user.answers.state_passport,
-                            "dob": moment(content, 'DDMMYYYY').format('YYYY-MM-DD')
+                            "dob": date_of_birth
                         }
                     };
 
-                    return hub
-                    .create_change(change_info)
+                    return Q
+                    .all([
+                        is.update_identity(self.im.user.answers.operator.id, self.im.user.answers.operator),
+                        hub.create_change(change_info)
+                    ])
                     .then(function () {
                         return 'state_end_detail_changed';
                     });
@@ -745,6 +769,8 @@ go.app = function() {
                     }
                 },
                 next: function(sanc_number) {
+                    self.im.user.answers.operator.details.nurseconnect.sanc_reg_no = sanc_number;
+
                     var change_info = {
                         "registrant_id": self.im.user.answers.operator.id,
                         "action": "nurse_update_detail",
@@ -753,8 +779,11 @@ go.app = function() {
                         }
                     };
 
-                    return hub
-                    .create_change(change_info)
+                    return Q
+                    .all([
+                        is.update_identity(self.im.user.answers.operator.id, self.im.user.answers.operator),
+                        hub.create_change(change_info)
+                    ])
                     .then(function () {
                         return 'state_end_detail_changed';
                     });
@@ -776,6 +805,8 @@ go.app = function() {
                     }
                 },
                 next: function(persal_number) {
+                    self.im.user.answers.operator.details.nurseconnect.persal_no = persal_number;
+
                     var change_info = {
                         "registrant_id": self.im.user.answers.operator.id,
                         "action": "nurse_update_detail",
@@ -784,8 +815,11 @@ go.app = function() {
                         }
                     };
 
-                    return hub
-                    .create_change(change_info)
+                    return Q
+                    .all([
+                        is.update_identity(self.im.user.answers.operator.id, self.im.user.answers.operator),
+                        hub.create_change(change_info)
+                    ])
                     .then(function () {
                         return 'state_end_detail_changed';
                     });
@@ -815,7 +849,7 @@ go.app = function() {
                             .then(function(identity_subscribed_to_nurseconnect) {
                                 if (identity_subscribed_to_nurseconnect) {
                                     self.im.user.set_answer("old_msisdn", old_msisdn);
-                                    self.im.user.set_answer("old_identity_id", identities_found.results[0].id);
+                                    self.im.user.set_answer("identity_changing_number", identities_found.results[0]);
                                     return 'state_post_change_old_nr';
                                 } else {
                                     return 'state_change_old_not_found';
@@ -878,8 +912,11 @@ go.app = function() {
                             }
                         };
 
-                        return hub
-                        .create_change(change_info)
+                        return Q
+                        .all([
+                            is.update_identity(self.im.user.answers.operator.id, self.im.user.answers.operator),
+                            hub.create_change(change_info)
+                        ])
                         .then(function() {
                             return 'state_end_detail_changed';
                         });
@@ -891,7 +928,7 @@ go.app = function() {
 
         self.add('state_post_change_old_nr', function(name) {
             var change_info = {
-                "registrant_id": self.im.user.answers.old_identity_id,
+                "registrant_id": self.im.user.answers.identity_changing_number.id,
                 "action": "nurse_change_msisdn",
                 "data": {
                     "msisdn_old": self.im.user.answers.old_msisdn,
@@ -900,8 +937,16 @@ go.app = function() {
                 }
             };
 
-            return hub
-            .create_change(change_info)
+            var old_num = self.im.user.answers.old_msisdn;
+            var new_num = self.im.user.answers.operator_msisdn;
+            self.im.user.answers.identity_changing_number.details.addresses.msisdn[old_num].inactive = true;
+            self.im.user.answers.identity_changing_number.details.addresses.msisdn[new_num] = { "default": true };
+
+            return Q
+            .all([
+                is.update_identity(self.im.user.answers.identity_changing_number.id, self.im.user.answers.identity_changing_number),
+                hub.create_change(change_info)
+            ])
             .then(function() {
                 return self.states.create('state_end_detail_changed');
             });
