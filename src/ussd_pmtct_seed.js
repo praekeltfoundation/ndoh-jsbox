@@ -238,6 +238,7 @@ go.app = function() {
                                     return self.states.create("state_route");
                                 }
                             }
+
                             return self.states.create("state_end_not_registered");
                         });
                     }
@@ -351,7 +352,6 @@ go.app = function() {
                 question: $(
                     "Would you like to receive messages about keeping your child HIV-negative? " +
                     "The messages will contain words like HIV, medicine & ARVs"),
-                // error: ,
                 choices: [
                     new Choice("yes", $("Yes")),
                     new Choice("no", $("No"))
@@ -440,7 +440,6 @@ go.app = function() {
                     options_per_page: null,
                     more: $('More'),
                     back: $('Back'),
-                    // error: ,
                     choices: [
                         new Choice("not_hiv_pos", $("Not HIV-positive")),
                         new Choice("miscarriage", $("Miscarriage")),
@@ -489,7 +488,6 @@ go.app = function() {
         self.add("state_loss_messages", function(name) {
             return new ChoiceState(name, {
                 question: $("We are sorry for your loss. Would you like to receive a small set of free messages from MomConnect that could help you in this difficult time?"),
-                // error: ,
                 choices: [
                     new Choice("yes", $("Yes")),
                     new Choice("no", $("No"))
@@ -505,7 +503,6 @@ go.app = function() {
                         };
                         return Q.all([
                             hub.create_change(pmtct_loss_switch),
-                            // self.deactivateVumiSubscriptions(self.im, self.im.user.answers.msisdn)
                         ])
                         .then(function() {
                             return "state_end_loss_optin";
@@ -532,8 +529,6 @@ go.app = function() {
                         .all([
                             hub.create_change(pmtct_loss_optout),
                             is.optout(optout_info),
-                            // self.deactivateVumiSubscriptions(self.im, self.im.user.answers.msisdn),
-                            // self.optoutVumiAddress(self.im, self.im.user.answers.msisdn)
                         ])
                         .then(function() {
                             return "state_end_loss_optout";
