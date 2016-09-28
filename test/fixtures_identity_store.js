@@ -1205,7 +1205,6 @@ module.exports = function() {
                             "id_type": "sa_id",
                             "sa_id_no": "5101025009086",
                             "dob": "1951-01-02",
-
                             "redial_sms_sent": true
                         }
                     },
@@ -1241,7 +1240,6 @@ module.exports = function() {
                             "id_type": "sa_id",
                             "sa_id_no": "5101025009086",
                             "dob": "1951-01-02",
-
                             "redial_sms_sent": true
                         }
                     },
@@ -1314,7 +1312,6 @@ module.exports = function() {
                             "id_type": "sa_id",
                             "sa_id_no": "5101025009086",
                             "dob": "1951-01-02",
-
                             "redial_sms_sent": true
                         }
                     },
@@ -1349,7 +1346,6 @@ module.exports = function() {
                             "id_type": "sa_id",
                             "sa_id_no": "9001016265166",
                             "dob": "1990-01-01",
-
                             "redial_sms_sent": true
                         }
                     },
@@ -1384,7 +1380,6 @@ module.exports = function() {
                             "id_type": "passport",
                             "sa_id_no": "5101025009086",
                             "dob": "1976-03-07",
-
                             "redial_sms_sent": true,
                             "passport_no": "Nam1234",
                             "passport_origin": "na"
@@ -1421,7 +1416,6 @@ module.exports = function() {
                             "id_type": "sa_id",
                             "sa_id_no": "5101025009086",
                             "dob": "1951-01-02",
-
                             "redial_sms_sent": true,
                             "sanc_reg_no": "34567890"
                         }
@@ -1457,7 +1451,6 @@ module.exports = function() {
                             "id_type": "sa_id",
                             "sa_id_no": "5101025009086",
                             "dob": "1951-01-02",
-
                             "redial_sms_sent": true,
                             "persal_no": "11114444"
                         }
@@ -1526,7 +1519,6 @@ module.exports = function() {
                             "id_type": "sa_id",
                             "sa_id_no": "5101025009086",
                             "dob": "1951-01-02",
-
                             "redial_sms_sent": true
                         }
                     },
