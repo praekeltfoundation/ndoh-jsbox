@@ -131,8 +131,7 @@ describe("PMTCT app", function() {
         // TEST PMTCT SIGN-UP FLOWS
 
         describe("Sign-up flow testing", function() {
-            describe("0820000111 exists on new system; has active " +
-            "non-pmtct subscription; no consent, no dob", function() {
+            describe("0820000111 has active non-pmtct subscription; no consent, no dob", function() {
                 it("to state_consent", function() {
                     return tester
                         .setup.user.addr("0820000111")
@@ -272,8 +271,7 @@ describe("PMTCT app", function() {
                 });
             });
 
-            describe("0820000222 exists on new system; has active " +
-            "non-pmtct subscription; consent, no dob", function() {
+            describe("0820000222 has active non-pmtct subscription; consent, no dob", function() {
                 it("to state_birth_year", function() {
                     return tester
                         .setup.user.addr("0820000222")
@@ -381,8 +379,7 @@ describe("PMTCT app", function() {
                 });
             });
 
-            describe("0820000333 exists on new system; has active " +
-            "non-pmtct subscription; no consent, dob", function() {
+            describe("0820000333 has active non-pmtct subscription; no consent, dob", function() {
                 it("to state_consent", function() {
                     return tester
                         .setup.user.addr("0820000333")
@@ -464,8 +461,7 @@ describe("PMTCT app", function() {
                 });
             });
 
-            describe("0820000444 exists on new system; has active " +
-            "non-pmtct subscription; consent, dob", function() {
+            describe("0820000444 has active non-pmtct subscription; consent, dob", function() {
                 it("to state_hiv_messages", function() {
                     return tester
                         .setup.user.addr("0820000444")
@@ -515,7 +511,7 @@ describe("PMTCT app", function() {
                 });
             });
 
-            describe("0820000555 exists on new system; has no active sub", function() {
+            describe("0820000555 has no active sub", function() {
                 it("to state_end_not_registered", function() {
                     return tester
                         .setup.user.addr("0820000555")
@@ -528,409 +524,6 @@ describe("PMTCT app", function() {
                         })
                         .check(function(api) {
                             utils.check_fixtures_used(api, [4, 15]);
-                        })
-                        .check.reply.ends_session()
-                        .run();
-                });
-            });
-
-            describe.skip("0820000666 exists on old system; has active baby1 subscription; consent, dob", function() {
-                it("to state_hiv_messages", function() {
-                    return tester
-                        .setup.user.addr("0820000666")
-                        .input(
-                            {session_event: "new"}
-                        )
-                        .check.interaction({
-                            state: "state_hiv_messages",
-                            reply: [
-                                "Would you like to receive messages about keeping your child HIV-negative? The messages will contain words like HIV, medicine & ARVs",
-                                "1. Yes",
-                                "2. No"
-                            ].join("\n")
-                        })
-                        .run();
-                });
-                it("to state_end_hiv_messages_declined", function() {
-                    return tester
-                        .setup.user.addr("0820000666")
-                        .setup.user.state("state_hiv_messages")
-                        .input(
-                            "2"  // state_hiv_messages - no
-                        )
-                        .check.interaction({
-                            state: "state_end_hiv_messages_declined",
-                            reply: "You have chosen to not receive messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
-                        })
-                        .check.reply.ends_session()
-                        .run();
-                });
-                it("to state_end_hiv_messages_confirm (entire flow)", function() {
-                    return tester
-                        .setup.user.addr("0820000666")
-                        .inputs(
-                            {session_event: "new"}
-                            , "1"  // state_hiv_messages - yes
-                        )
-                        .check.interaction({
-                            state: "state_end_hiv_messages_confirm",
-                            reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [5, 16, 24, 31, 36, 54, 63, 81, 85]);
-                        })
-                        .check.reply.ends_session()
-                        .run();
-                });
-            });
-
-            describe.skip("0820000777 exists on old system; has active standardsubscription; consent, no dob", function() {
-                it("to state_birth_year", function() {
-                    return tester
-                        .setup.user.addr("0820000777")
-                        .input(
-                            {session_event: "new"}  // dial in
-                        )
-                        .check.interaction({
-                            state: "state_birth_year",
-                            reply: "Please enter the year you were born (For example 1981)"
-                        })
-                        .run();
-                });
-                it("to state_birth_month", function() {
-                    return tester
-                        .setup.user.addr("0820000777")
-                        .setup.user.state("state_birth_year")
-                        .input(
-                            "1954"  // state_birth_year
-                        )
-                        .check.interaction({
-                            state: "state_birth_month",
-                            reply: [
-                                "In which month were you born?",
-                                "1. Jan",
-                                "2. Feb",
-                                "3. Mar",
-                                "4. Apr",
-                                "5. May",
-                                "6. Jun",
-                                "7. Jul",
-                                "8. Aug",
-                                "9. Sep",
-                                "10. Oct",
-                                "11. Nov",
-                                "12. Dec"
-                            ].join("\n")
-                        })
-                        .run();
-                });
-                it("to state_birth_day", function() {
-                    return tester
-                        .setup.user.addr("0820000777")
-                        .setup.user.state("state_birth_month")
-                        .input(
-                            "5"  // state_birth_month - may
-                        )
-                        .check.interaction({
-                            state: "state_birth_day",
-                            reply: "Please enter the date of the month you were born (For example 21)"
-                        })
-                        .run();
-                });
-                it("to state_hiv_messages", function() {
-                    return tester
-                        .setup.user.addr("0820000777")
-                        .setup.user.state("state_birth_day")
-                        .setup.user.answer("dob_year", "1954")
-                        .setup.user.answer("dob_month", "05")
-                        .input(
-                            "29"  // state_birth_day
-                        )
-                        .check.interaction({
-                            state: "state_hiv_messages",
-                            reply: [
-                                "Would you like to receive messages about keeping your child HIV-negative? The messages will contain words like HIV, medicine & ARVs",
-                                "1. Yes",
-                                "2. No"
-                            ].join("\n")
-                        })
-                        .run();
-                });
-                it("to state_end_hiv_messages_declined", function() {
-                    return tester
-                        .setup.user.addr("0820000777")
-                        .setup.user.state("state_hiv_messages")
-                        .input(
-                            "2"  // state_hiv_messages - no
-                        )
-                        .check.interaction({
-                            state: "state_end_hiv_messages_declined",
-                            reply: "You have chosen to not receive messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
-                        })
-                        .check.reply.ends_session()
-                        .run();
-                });
-                it("to state_end_hiv_messages_confirm (entire flow)", function() {
-                    return tester
-                        .setup.user.addr("0820000777")
-                        .inputs(
-                            {session_event: "new"}  // dial in
-                            , "1954"  // state_birth_year
-                            , "5"  // state_birth_month - may
-                            , "29"  // state_birth_day
-                            , "1"  // state_hiv_messages - yes
-                        )
-                        .check.interaction({
-                            state: "state_end_hiv_messages_confirm",
-                            reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [6, 17, 25, 32, 37, 55, 64, 89, 90]);
-                        })
-                        .check.reply.ends_session()
-                        .run();
-                });
-            });
-
-            describe.skip("0820000888 exists on old system; has active later subscription; no consent, dob", function() {
-                it("to state_consent", function() {
-                    return tester
-                        .setup.user.addr("0820000888")
-                        .input(
-                            {session_event: "new"}  // dial in
-                        )
-                        .check.interaction({
-                            state: "state_consent",
-                            reply: [
-                                "To sign up, we need to collect, store and use your info. You may also get messages on public holidays and weekends. Do you consent?",
-                                "1. Yes",
-                                "2. No"
-                            ].join("\n")
-                        })
-                        // .check.user.answer('consent', 'true')
-                        // .check.user.answer('dob', '1970-04-05')
-                        .run();
-                });
-                it("to state_end_consent_refused", function() {
-                    return tester
-                        .setup.user.addr("0820000888")
-                        .setup.user.state("state_consent")
-                        .input(
-                            "2"  // state_consent - no
-                        )
-                        .check.interaction({
-                            state: "state_end_consent_refused",
-                            reply: "Unfortunately without your consent, you cannot register to MomConnect. Thank you for using the MomConnect service. Goodbye."
-                        })
-                        .check.reply.ends_session()
-                        .run();
-                });
-                it("to state_hiv_messages", function() {
-                    return tester
-                        .setup.user.addr("0820000888")
-                        .inputs(
-                            {session_event: "new"},  // dial in
-                            '1'  // state_consent - yes
-                        )
-                        .check.interaction({
-                            state: "state_hiv_messages",
-                            reply: [
-                                "Would you like to receive messages about keeping your child HIV-negative? The messages will contain words like HIV, medicine & ARVs",
-                                "1. Yes",
-                                "2. No"
-                            ].join("\n")
-                        })
-                        .run();
-                });
-                it("to state_end_hiv_messages_declined", function() {
-                    return tester
-                        .setup.user.addr("0820000888")
-                        .setup.user.state("state_hiv_messages")
-                        .input(
-                            "2"  // state_hiv_messages - no
-                        )
-                        .check.interaction({
-                            state: "state_end_hiv_messages_declined",
-                            reply: "You have chosen to not receive messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
-                        })
-                        .check.reply.ends_session()
-                        .run();
-                });
-                it("to state_end_hiv_messages_confirm (entire flow)", function() {
-                    return tester
-                        .setup.user.addr("0820000888")
-                        .inputs(
-                            {session_event: "new"}  // dial in
-                            , "1"  // state_consent - yes
-                            , "1"  // state_hiv_messages - yes
-                        )
-                        .check.interaction({
-                            state: "state_end_hiv_messages_confirm",
-                            reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [7, 18, 26, 33, 38, 56, 65, 91, 92]);
-                        })
-                        .check.reply.ends_session()
-                        .run();
-                });
-            });
-
-            describe.skip("0820000999 exists on old system; has active accelerated subscription; no consent, no dob", function() {
-                it("to state_consent", function() {
-                    return tester
-                        .setup.user.addr("0820000999")
-                        .input(
-                            {session_event: "new"}  // dial in
-                        )
-                        .check.interaction({
-                            state: "state_consent",
-                            reply: [
-                                "To sign up, we need to collect, store and use your info. You may also get messages on public holidays and weekends. Do you consent?",
-                                "1. Yes",
-                                "2. No"
-                            ].join("\n")
-                        })
-                        /*.check.user.answer('consent', 'true')
-                        .check.user.answer('dob', null)*/
-                        .run();
-                });
-                it("to state_end_consent_refused", function() {
-                    return tester
-                        .setup.user.addr("0820000999")
-                        .setup.user.state("state_consent")
-                        .input(
-                            "2"  // state_consent - no
-                        )
-                        .check.interaction({
-                            state: "state_end_consent_refused",
-                            reply: "Unfortunately without your consent, you cannot register to MomConnect. Thank you for using the MomConnect service. Goodbye."
-                        })
-                        .check.reply.ends_session()
-                        .run();
-                });
-                it("to state_birth_year", function() {
-                    return tester
-                        .setup.user.addr("0820000999")
-                        .setup.user.state("state_consent")
-                        .input(
-                            "1"  // state_consent - yes
-                        )
-                        .check.interaction({
-                            state: "state_birth_year",
-                            reply: "Please enter the year you were born (For example 1981)"
-                        })
-                        .run();
-                });
-                it("to state_birth_month", function() {
-                    return tester
-                        .setup.user.addr("0820000999")
-                        .setup.user.state("state_birth_year")
-                        .input(
-                            "1981"  // state_birth_year
-                        )
-                        .check.interaction({
-                            state: "state_birth_month",
-                            reply: [
-                                "In which month were you born?",
-                                "1. Jan",
-                                "2. Feb",
-                                "3. Mar",
-                                "4. Apr",
-                                "5. May",
-                                "6. Jun",
-                                "7. Jul",
-                                "8. Aug",
-                                "9. Sep",
-                                "10. Oct",
-                                "11. Nov",
-                                "12. Dec"
-                            ].join("\n")
-                        })
-                        .run();
-                });
-                it("to state_birth_day", function() {
-                    return tester
-                        .setup.user.addr("0820000999")
-                        .setup.user.state("state_birth_month")
-                        .input(
-                            "4"  // state_birth_month - apr
-                        )
-                        .check.interaction({
-                            state: "state_birth_day",
-                            reply: "Please enter the date of the month you were born (For example 21)"
-                        })
-                        .run();
-                });
-                it("to state_hiv_messages", function() {
-                    return tester
-                        .setup.user.addr("0820000999")
-                        .setup.user.state("state_birth_day")
-                        .setup.user.answer("dob_year", "1981")
-                        .setup.user.answer("dob_month", "04")
-                        .input(
-                            "26"  // state_birth_day
-                        )
-                        .check.interaction({
-                            state: "state_hiv_messages",
-                            reply: [
-                                "Would you like to receive messages about keeping your child HIV-negative? The messages will contain words like HIV, medicine & ARVs",
-                                "1. Yes",
-                                "2. No"
-                            ].join("\n")
-                        })
-                        .run();
-                });
-                it("to state_end_hiv_messages_declined", function() {
-                    return tester
-                        .setup.user.addr("0820000999")
-                        .setup.user.state("state_hiv_messages")
-                        .input(
-                            "2"  // state_hiv_messages - no
-                        )
-                        .check.interaction({
-                            state: "state_end_hiv_messages_declined",
-                            reply: "You have chosen to not receive messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
-                        })
-                        .check.reply.ends_session()
-                        .run();
-                });
-                it("to state_end_hiv_messages_confirm (entire flow)", function() {
-                    return tester
-                        .setup.user.addr("0820000999")
-                        .inputs(
-                            {session_event: "new"}  // dial in
-                            , "1"  // state_consent - yes
-                            , "1981"  // state_birth_year
-                            , "4"  // state_birth_month - apr
-                            , "26"  // state_birth_day
-                            , "1"  // state_hiv_messages - yes
-                        )
-                        .check.interaction({
-                            state: "state_end_hiv_messages_confirm",
-                            reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [8, 19, 27, 34, 39, 57, 66, 93, 94]);
-                        })
-                        .check.reply.ends_session()
-                        .run();
-                });
-            });
-
-            describe.skip("0820101010 exists on old system; has no active sub", function() {
-                it("to state_end_not_registered", function() {
-                    return tester
-                        .setup.user.addr("0820101010")
-                        .inputs(
-                            {session_event: "new"}  // dial in
-                        )
-                        .check.interaction({
-                            state: "state_end_not_registered",
-                            reply: "You need to be registered on MomConnect to receive these messages. Please visit the nearest clinic to register."
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [9, 20, 28, 35, 40]);
                         })
                         .check.reply.ends_session()
                         .run();
