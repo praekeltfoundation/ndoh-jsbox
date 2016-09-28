@@ -5,13 +5,14 @@
     // (+27820001002) - existing identity with an active MomConnect subscription (no active NurseConnect subscription)
     // (+27820001003) - existing identity with an active NurseConnect subscription; NurseConnect dialback sms already sent
     // (+27820001004) - existing identity with an inactive NurseConnect subscription (opted out)
-    // (+27820001005) - existing identity; two msisdn's (opted out on +27820001004)
+    // (+27820001005) - existing identity; three msisdn's (opted out on 27820001003 & +27820001012)
     // (+27820001006) - existing identity with an inactive MomConnect subscription
     // (+27820001007) - existing identity with an active MomConnect CHW subscription
     // (+27820001008) - existing identity with an active MomConnect Clinic subscription; completed servicerating
     // (+27820001009) - existing identity with an active MomConnect Clinic subscription; CLINIC dialback sms already sent
     // (+27820001010) - existing identity with an active MomConnect Clinic subscription; CHW dialback sms already sent
     // (+27820001011) - existing identity with an active MomConnect Clinic subscription; PUBLIC dialback sms already sent
+    // (+27820001012) - old/opted_out number used before by 27820001005 (used to test changing number)
 
 module.exports = function() {
     return [
@@ -115,14 +116,11 @@ module.exports = function() {
                                     }
                                 },
                                 "nurseconnect": {
-                                    "last_reg_id": "7",
-                                    "is_registered": 'true',
                                     "faccode": '123456',
                                     "facname": 'WCL clinic',
                                     "id_type": "sa_id",
                                     "sa_id_no": "5101025009086",
                                     "dob": "1951-01-02",
-                                    "opt_out_reason": "",
                                     "redial_sms_sent": true
                                 }
                             },
@@ -138,18 +136,16 @@ module.exports = function() {
                                 "addresses": {
                                     "msisdn": {
                                         "+27820001005": {},
-                                        "+27820001003": { "optedout": true }
+                                        "+27820001003": { "optedout": true },
+                                        "+27820001012": { "optedout": true },
                                     }
                                 },
                                 "nurseconnect": {
-                                    "last_reg_id": "7",
-                                    "is_registered": 'true',
                                     "faccode": '123456',
                                     "facname": 'WCL clinic',
                                     "id_type": "sa_id",
                                     "sa_id_no": "5101025009086",
-                                    "dob": "1964-07-11",
-                                    "opt_out_reason": "unknown"
+                                    "dob": "1964-07-11"
                                 }
                             },
                             "created_at": "2016-08-05T06:13:29.693272Z",
@@ -230,14 +226,11 @@ module.exports = function() {
                                 },
                                 "source": "clinic",
                                 "nurseconnect": {
-                                    "last_reg_id": "7",
-                                    "is_registered": 'true',
                                     "faccode": '123456',
                                     "facname": 'WCL clinic',
                                     "id_type": "sa_id",
                                     "sa_id_no": "5101025009086",
-                                    "dob": "1964-07-11",
-                                    "opt_out_reason": "unknown"
+                                    "dob": "1964-07-11"
                                 }
                             },
                             "created_at": "2016-08-05T06:13:29.693272Z",
@@ -275,18 +268,16 @@ module.exports = function() {
                                 "addresses": {
                                     "msisdn": {
                                         "+27820001005": {},
-                                        "+27820001003": { "optedout": true }
+                                        "+27820001003": { "optedout": true },
+                                        "+27820001012": { "optedout": true }
                                     }
                                 },
                                 "nurseconnect": {
-                                    "last_reg_id": "7",
-                                    "is_registered": 'true',
                                     "faccode": '123456',
                                     "facname": 'WCL clinic',
                                     "id_type": "sa_id",
                                     "sa_id_no": "5101025009086",
-                                    "dob": "1964-07-11",
-                                    "opt_out_reason": "unknown"
+                                    "dob": "1964-07-11"
                                 }
                             },
                             "created_at": "2016-08-05T06:13:29.693272Z",
@@ -438,7 +429,6 @@ module.exports = function() {
                         "nurseconnect": {
                             "facname": "WCL clinic",
                             "faccode": "123456",
-                            "is_registered": true,
                             "redial_sms_sent": false
                         }
                     },
@@ -475,8 +465,6 @@ module.exports = function() {
                         "nurseconnect": {
                             "facname": "WCL clinic",
                             "faccode": "123456",
-                            "is_registered": true,
-                            "registered_by": "cb245673-aa41-4302-ac47-00000001001",
                             "redial_sms_sent": false
                         }
                     },
@@ -708,14 +696,11 @@ module.exports = function() {
                         },
                         "source": "clinic",
                         "nurseconnect": {
-                            "last_reg_id": "7",
-                            "is_registered": 'true',
                             "faccode": '123456',
                             "facname": 'WCL clinic',
                             "id_type": "sa_id",
                             "sa_id_no": "5101025009086",
-                            "dob": "1964-07-11",
-                            "opt_out_reason": "unknown"
+                            "dob": "1964-07-11"
                         },
                         "lang_code": "zul_ZA",
                         "consent": true,
@@ -1119,12 +1104,426 @@ module.exports = function() {
                         "nurseconnect": {
                             "facname": "WCL clinic",
                             "faccode": "123456",
-                            "is_registered": true,
                             "redial_sms_sent": true
                         }
                     },
                     "created_at": "2016-08-05T06:13:29.693272Z",
                     "updated_at": "2016-08-05T06:13:29.693298Z"
+                }
+            },
+            "response": {}
+        },
+
+        // 190: get identity by msisdn +27820001012
+        {
+            "key": "get.is.msisdn.27820001012",
+            "repeatable": true,
+            "request": {
+                "url": 'http://is/api/v1/identities/search/',
+                "method": 'GET',
+                "params": {
+                    "details__addresses__msisdn": '+27820001012',
+                    "include_inactive": "False"
+                }
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 0,
+                    "next": null,
+                    "previous": null,
+                    "results": [{
+                        "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001005/",
+                        "id": "cb245673-aa41-4302-ac47-00000001005",
+                        "version": 1,
+                        "details": {
+                            "default_addr_type": "msisdn",
+                            "addresses": {
+                                "msisdn": {
+                                    "+27820001005": {},
+                                    "+27820001003": { "optedout": true },
+                                    "+27820001012": { "optedout": true },
+                                }
+                            },
+                            "nurseconnect": {
+                                "faccode": '123456',
+                                "facname": 'WCL clinic',
+                                "id_type": "sa_id",
+                                "sa_id_no": "5101025009086",
+                                "dob": "1964-07-11"
+                            }
+                        },
+                        "created_at": "2016-08-05T06:13:29.693272Z",
+                        "updated_at": "2016-08-05T06:13:29.693298Z"
+                    }]
+                }
+            }
+        },
+
+        // 191: optin identity cb245673-aa41-4302-ac47-00000001005 (msisdn +27820001012)
+        {
+            "key": "post.is.optin.27820001005",
+            "request": {
+                "url": 'http://is/api/v1/optin/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001005",
+                    "address_type": "msisdn",
+                    "address": "+27820001012"
+                }
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
+        },
+
+        // 192: update identity cb245673-aa41-4302-ac47-00000001003
+        //      number changed from 27820001003 to 27820001001
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001003/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001003/",
+                    "id": "cb245673-aa41-4302-ac47-00000001003",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001003": {"inactive": true},
+                                "+27820001001": {"default": true}
+                            }
+                        },
+                        "nurseconnect": {
+                            "faccode": "123456",
+                            "facname": "WCL clinic",
+                            "id_type": "sa_id",
+                            "sa_id_no": "5101025009086",
+                            "dob": "1951-01-02",
+                            "redial_sms_sent": true
+                        }
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z",
+                }
+            },
+            "response": {}
+        },
+
+        // 193: update identity cb245673-aa41-4302-ac47-00000001003
+        //      number changed from 27820001003 to 27820001004
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001003/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001003/",
+                    "id": "cb245673-aa41-4302-ac47-00000001003",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001003": {"inactive": true},
+                                "+27820001004": {"default": true}
+                            }
+                        },
+                        "nurseconnect": {
+                            "faccode": "123456",
+                            "facname": "WCL clinic",
+                            "id_type": "sa_id",
+                            "sa_id_no": "5101025009086",
+                            "dob": "1951-01-02",
+                            "redial_sms_sent": true
+                        }
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z",
+                }
+            },
+            "response": {}
+        },
+
+        // 194: update identity cb245673-aa41-4302-ac47-00000001005
+        //      number changed from 27820001005 to 27820001012
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001005",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001005/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001005/",
+                    "id": "cb245673-aa41-4302-ac47-00000001005",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001005": { "inactive": true },
+                                "+27820001003": { "optedout": true },
+                                "+27820001012": {
+                                    "default": true,
+                                    "optedout": true  // this should be unset by is.optin
+                                }
+                            }
+                        },
+                        "nurseconnect": {
+                            "faccode": "123456",
+                            "facname": "WCL clinic",
+                            "id_type": "sa_id",
+                            "sa_id_no": "5101025009086",
+                            "dob": "1964-07-11"
+                        }
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z",
+                }
+            },
+            "response": {}
+        },
+
+        // 195: update identity cb245673-aa41-4302-ac47-00000001003
+        //      facility changed from "WCL clinic" to "OLT clinic"
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001003/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001003/",
+                    "id": "cb245673-aa41-4302-ac47-00000001003",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001003": {}
+                            }
+                        },
+                        "nurseconnect": {
+                            "faccode": "234567",
+                            "facname": "OLT clinic",
+                            "id_type": "sa_id",
+                            "sa_id_no": "5101025009086",
+                            "dob": "1951-01-02",
+                            "redial_sms_sent": true
+                        }
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z",
+                }
+            },
+            "response": {}
+        },
+
+        // 196: update identity cb245673-aa41-4302-ac47-00000001003
+        //      south african id changed from "5101025009086" to "9001016265166"
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001003/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001003/",
+                    "id": "cb245673-aa41-4302-ac47-00000001003",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001003": {}
+                            }
+                        },
+                        "nurseconnect": {
+                            "faccode": "123456",
+                            "facname": "WCL clinic",
+                            "id_type": "sa_id",
+                            "sa_id_no": "9001016265166",
+                            "dob": "1990-01-01",
+                            "redial_sms_sent": true
+                        }
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z",
+                }
+            },
+            "response": {}
+        },
+
+        // 197: update identity cb245673-aa41-4302-ac47-00000001003
+        //      passport details changed
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001003/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001003/",
+                    "id": "cb245673-aa41-4302-ac47-00000001003",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001003": {}
+                            }
+                        },
+                        "nurseconnect": {
+                            "faccode": "123456",
+                            "facname": "WCL clinic",
+                            "id_type": "passport",
+                            "sa_id_no": "5101025009086",
+                            "dob": "1976-03-07",
+                            "redial_sms_sent": true,
+                            "passport_no": "Nam1234",
+                            "passport_origin": "na"
+                        }
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z",
+                }
+            },
+            "response": {}
+        },
+
+        // 198: update identity cb245673-aa41-4302-ac47-00000001003
+        //      SANC registration number changed
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001003/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001003/",
+                    "id": "cb245673-aa41-4302-ac47-00000001003",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001003": {}
+                            }
+                        },
+                        "nurseconnect": {
+                            "faccode": "123456",
+                            "facname": "WCL clinic",
+                            "id_type": "sa_id",
+                            "sa_id_no": "5101025009086",
+                            "dob": "1951-01-02",
+                            "redial_sms_sent": true,
+                            "sanc_reg_no": "34567890"
+                        }
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z",
+                }
+            },
+            "response": {}
+        },
+
+        // 199: update identity cb245673-aa41-4302-ac47-00000001003
+        //      PERSAL number changed
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001003/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001003/",
+                    "id": "cb245673-aa41-4302-ac47-00000001003",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001003": {}
+                            }
+                        },
+                        "nurseconnect": {
+                            "faccode": "123456",
+                            "facname": "WCL clinic",
+                            "id_type": "sa_id",
+                            "sa_id_no": "5101025009086",
+                            "dob": "1951-01-02",
+                            "redial_sms_sent": true,
+                            "persal_no": "11114444"
+                        }
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z",
+                }
+            },
+            "response": {}
+        },
+
+        // 200: update identity cb245673-aa41-4302-ac47-00000001003
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001003/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001003/",
+                    "id": "cb245673-aa41-4302-ac47-00000001003",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001003": {}
+                            }
+                        },
+                        "nurseconnect": {
+                            "faccode": "123456",
+                            "facname": "WCL clinic",
+                            "id_type": "sa_id",
+                            "sa_id_no": "5101025009086",
+                            "dob": "1951-01-02",
+                            "redial_sms_sent": true
+                        }
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z",
+                }
+            },
+            "response": {}
+        },
+
+        // 201: update identity cb245673-aa41-4302-ac47-00000001003
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "method": 'PATCH',
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001003/',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001003/",
+                    "id": "cb245673-aa41-4302-ac47-00000001003",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001003": { "inactive": true },
+                                "+27820001002": { "default": true }
+                            }
+                        },
+                        "nurseconnect": {
+                            "faccode": "123456",
+                            "facname": "WCL clinic",
+                            "id_type": "sa_id",
+                            "sa_id_no": "5101025009086",
+                            "dob": "1951-01-02",
+                            "redial_sms_sent": true
+                        }
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z",
                 }
             },
             "response": {}
