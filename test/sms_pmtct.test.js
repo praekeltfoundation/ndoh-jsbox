@@ -24,11 +24,11 @@ describe("app", function() {
                     logging: "off",
                     services: {
                         identity_store: {
-                            url: 'http://is.localhost:8001/api/v1/',
+                            url: 'http://is/api/v1/',
                             token: 'test IdentityStore'
                         },
                         hub: {
-                            url: 'http://hub.localhost:8001/api/v1/',
+                            url: 'http://hub/api/v1/',
                             token: 'test Hub'
                         }
                     },

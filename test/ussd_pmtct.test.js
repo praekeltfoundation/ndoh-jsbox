@@ -50,15 +50,15 @@ describe("PMTCT app", function() {
                     ],
                     services: {
                         identity_store: {
-                            url: 'http://is.localhost:8001/api/v1/',
+                            url: 'http://is/api/v1/',
                             token: 'test IdentityStore'
                         },
                         stage_based_messaging: {
-                            url: 'http://sbm.localhost:8001/api/v1/',
+                            url: 'http://sbm/api/v1/',
                             token: 'test StageBasedMessaging'
                         },
                         hub: {
-                            url: 'http://hub.localhost:8001/api/v1/',
+                            url: 'http://hub/api/v1/',
                             token: 'test Hub'
                         },
                         message_sender: {
@@ -589,7 +589,7 @@ describe("PMTCT app", function() {
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [5, 16, 24, 31, 36, 54, 63, 81, 85]);
+                            utils.check_fixtures_used(api, [5, 16, 24, 31, 36, 54, 63, 93, 97]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -697,7 +697,7 @@ describe("PMTCT app", function() {
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [6, 17, 25, 32, 37, 55, 64, 89, 90]);
+                            utils.check_fixtures_used(api, [6, 17, 25, 32, 37, 55, 64, 101, 102]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -781,7 +781,7 @@ describe("PMTCT app", function() {
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [7, 18, 26, 33, 38, 56, 65, 91, 92]);
+                            utils.check_fixtures_used(api, [7, 18, 26, 33, 38, 56, 65, 103, 104]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -923,7 +923,7 @@ describe("PMTCT app", function() {
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [8, 19, 27, 34, 39, 57, 66, 93, 94]);
+                            utils.check_fixtures_used(api, [8, 19, 27, 34, 39, 57, 66, 105, 106]);
                         })
                         .check.reply.ends_session()
                         .run();

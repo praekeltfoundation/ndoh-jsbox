@@ -19,7 +19,7 @@ module.exports = function (grunt) {
                     ussd_pmtct: 'src/ussd_pmtct.js',
                     sms_pmtct: 'src/sms_pmtct.js',
                     ussd_pmtct_seed: 'src/ussd_pmtct_seed.js',
-                    sms_pmtct_seed: 'src/sms_pmtct.js'
+                    sms_pmtct_seed: 'src/sms_pmtct_seed.js'
                 },
                 ussd_clinic: [
                     'src/index.js',
@@ -235,7 +235,7 @@ module.exports = function (grunt) {
             },
             /*
             */
-            /*test_ussd_clinic: {
+            test_ussd_clinic: {
                 src: ['<%= paths.test.ussd_clinic %>']
             },
             test_ussd_chw: {
@@ -264,7 +264,7 @@ module.exports = function (grunt) {
             },
             test_sms_pmtct: {
                 src: ['<%= paths.test.sms_pmtct %>']
-            },*/
+            },
             test_ussd_pmtct_seed: {
                 src: ['<%= paths.test.ussd_pmtct_seed %>']
             },
