@@ -235,7 +235,7 @@ module.exports = function (grunt) {
             },
             /*
             */
-            /*test_ussd_clinic: {
+            test_ussd_clinic: {
                 src: ['<%= paths.test.ussd_clinic %>']
             },
             test_ussd_chw: {
@@ -258,7 +258,7 @@ module.exports = function (grunt) {
             },
             test_sms_nurse: {
                 src: ['<%= paths.test.sms_nurse %>']
-            },*/
+            },
             test_ussd_pmtct: {
                 src: ['<%= paths.test.ussd_pmtct %>']
             },
