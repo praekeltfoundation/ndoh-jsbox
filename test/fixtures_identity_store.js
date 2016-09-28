@@ -340,6 +340,7 @@ module.exports = function() {
                         "mom_dob": "1951-01-02",
                         "source": "clinic",
                         "last_mc_reg_on": "clinic",
+                        "last_edd": "2014-05-10",
                         "clinic": {
                             "redial_sms_sent": false
                         }
@@ -374,6 +375,7 @@ module.exports = function() {
                         "passport_origin": "zw",
                         "source": "clinic",
                         "last_mc_reg_on": "clinic",
+                        "last_edd": "2014-05-10",
                         "clinic": {
                             "redial_sms_sent": false
                         }
@@ -407,6 +409,7 @@ module.exports = function() {
                         "mom_dob": "1981-01-14",
                         "source": "clinic",
                         "last_mc_reg_on": "clinic",
+                        "last_edd": "2014-05-10",
                         "clinic": {
                             "redial_sms_sent": false
                         }
@@ -926,6 +929,7 @@ module.exports = function() {
                         "mom_dob": "1981-01-14",
                         "source": "clinic",
                         "last_mc_reg_on": "clinic",
+                        "last_edd": "2014-05-10",
                         "clinic": {
                             "redial_sms_sent": true
                         }

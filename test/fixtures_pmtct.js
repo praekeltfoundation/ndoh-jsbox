@@ -3097,7 +3097,6 @@ module.exports = function() {
                     "data": {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000003",
                         "mom_dob": "1981-04-26",
-                        "baby_dob": null,
                         "language": "eng_ZA"
                     }
                 }
@@ -3146,7 +3145,6 @@ module.exports = function() {
                     "data": {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000004",
                         "mom_dob": "1981-04-26",
-                        "baby_dob": null,
                         "language": "eng_ZA"
                     }
                 }

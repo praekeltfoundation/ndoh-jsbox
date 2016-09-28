@@ -152,6 +152,7 @@ go.app = function() {
             }
 
             registrant_info.details.last_mc_reg_on = "clinic";
+            registrant_info.details.last_edd = self.im.user.answers.edd;
 
             return registrant_info;
         };

@@ -195,7 +195,7 @@ go.app = function() {
                 if (identities_found.results.length === 0) {
                     return self.states.create("state_end_not_registered");
                 }
-                var identity = identities_found.results[0];
+                var identity = identities_found.results[0];  // should only be one identity
                 self.im.user.set_answer("identity", identity);
                 return self.im.user
                 .set_lang(self.im.user.answers.identity.details.lang_code || "eng_ZA")
@@ -393,7 +393,7 @@ go.app = function() {
                             "operator_id": self.im.user.answers.identity.id,
                             "language": self.im.user.lang || "eng_ZA",
                             "mom_dob": self.im.user.answers.mom_dob,
-                            "baby_dob": self.im.user.answers.identity.baby_dob || null,
+                            "baby_dob": self.im.user.answers.identity.last_baby_dob,
                         }
                     };
 
@@ -405,7 +405,7 @@ go.app = function() {
                             "operator_id": self.im.user.answers.identity.id,
                             "language": self.im.user.lang || "eng_ZA",
                             "mom_dob": self.im.user.answers.mom_dob,
-                            // "edd": self.im.user.answers.edd
+                            "edd": self.im.user.answers.identity.last_edd
                         }
                     };
                 }
