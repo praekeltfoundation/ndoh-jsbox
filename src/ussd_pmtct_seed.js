@@ -393,7 +393,7 @@ go.app = function() {
                             "operator_id": self.im.user.answers.identity.id,
                             "language": self.im.user.lang || "eng_ZA",
                             "mom_dob": self.im.user.answers.mom_dob,
-                            // "baby_dob": self.im.user.answers.baby_dob,
+                            "baby_dob": self.im.user.answers.identity.baby_dob || null,
                         }
                     };
 
