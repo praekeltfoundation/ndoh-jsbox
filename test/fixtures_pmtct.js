@@ -461,6 +461,22 @@ module.exports = function() {
                             'metadata': {},
                             'created_at': "2015-07-10T06:13:29.693272Z",
                             'updated_at': "2015-07-10T06:13:29.693272Z"
+                        },
+                        {
+                            'url': 'http://sbm/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-2222',
+                            'id': '51fcca25-2e85-4c44-subscription-2222',
+                            'version': 1,
+                            'identity': 'cb245673-aa41-4302-ac47-00000000002',
+                            'messageset': 31,
+                            'next_sequence_number': 1,
+                            'lang': "en",
+                            'active': true,
+                            'completed': false,
+                            'schedule': 1,
+                            'process_status': 0,
+                            'metadata': {},
+                            'created_at': "2015-07-10T06:13:29.693272Z",
+                            'updated_at': "2015-07-10T06:13:29.693272Z"
                         }
                     ]
 
