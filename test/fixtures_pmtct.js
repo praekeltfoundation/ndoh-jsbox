@@ -179,7 +179,7 @@ module.exports = function() {
                                 }
                             },
                             "consent": true,
-                            "dob": "1981-04-26"
+                            "mom_dob": "1981-04-26"
                         },
                         "created_at": "2016-06-21T06:13:29.693272Z",
                         "updated_at": "2016-06-21T06:13:29.693298Z"
@@ -529,6 +529,7 @@ module.exports = function() {
         // 14: has_active_subscription - cb245673-aa41-4302-ac47-00000000004 (consent, dob)
         {
             'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000004",
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -553,7 +554,7 @@ module.exports = function() {
                             'id': '51fcca25-2e85-4c44-subscription-4444',
                             'version': 1,
                             'identity': 'cb245673-aa41-4302-ac47-00000000004',
-                            'messageset': 21,
+                            'messageset': 31,
                             'next_sequence_number': 1,
                             'lang': "en",
                             'active': true,
@@ -2003,10 +2004,14 @@ module.exports = function() {
                             }
                         },
                         "consent": true,
-                        "dob": "1981-04-26",
-                        "created_at": "2016-06-21T06:13:29.693272Z",
-                        "updated_at": "2016-06-21T06:13:29.693298Z"
-                    }
+                        "mom_dob": "1981-04-26",
+                        "pmtct": {
+                            "lang_code": "eng_ZA"
+                        },
+                        "source": "pmtct"
+                    },
+                    "created_at": "2016-06-21T06:13:29.693272Z",
+                    "updated_at": "2016-06-21T06:13:29.693298Z"
                 }
             },
             "response": {}
@@ -3142,6 +3147,54 @@ module.exports = function() {
                 "data": {
                     "identity": "cb245673-aa41-4302-ac47-00000000003",
                     "to_addr": "+27820000333",
+                    "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                    "metadata":{}
+                }
+            },
+            "response": {}
+        },
+
+        // 88: post registration (pmtct_postbirth) for cb245673-aa41-4302-ac47-00000000004
+        {
+            "request": {
+                "url": 'http://hub/api/v1/registration/',
+                "method": 'POST',
+                "data": {
+                    "reg_type": "pmtct_postbirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000000004",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000004",
+                        "mom_dob": "1981-04-26",
+                        "language": "eng_ZA"
+                    }
+                }
+            },
+            "response": {}
+        },
+
+        // 89: post outbound message for cb245673-aa41-4302-ac47-00000000004
+        {
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000000004",
+                    "to_addr": "+27820000444",
+                    "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                    "metadata":{}
+                }
+            },
+            "response": {}
+        },
+
+        // 90: post outbound message for cb245673-aa41-4302-ac47-00000000004
+        {
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000000004",
+                    "to_addr": "+27820000444",
                     "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
                     "metadata":{}
                 }
