@@ -218,31 +218,51 @@ go.app = function() {
                                     short_name_map[messagesets[k].id] = messagesets[k].short_name;
                                 }
 
+                                var subscribed_to_pmtct = false;
+                                var subscribed_to_momconnect = false;
+                                var prebirth_subscription = false, postbirth_subscription = false;
                                 // see if the active subscriptions shortnames contain the searched text
                                 for (var i=0; i < active_subs.length; i++) {
                                     var active_sub_shortname = short_name_map[active_subs[i].messageset];
 
                                     var pmtct_index = active_sub_shortname.indexOf("pmtct");
                                     if (pmtct_index > -1) {
-                                        return self.states.create("state_optout_reason_menu");
+                                        subscribed_to_pmtct = true;
                                     }
 
                                     var momconnect_index = active_sub_shortname.indexOf("momconnect");
                                     if (momconnect_index > -1) {
+                                        subscribed_to_momconnect = true;
                                         if (active_sub_shortname.indexOf("prebirth") > -1) {
-                                            self.im.user.set_answer("subscription_type", "prebirth");
+                                            prebirth_subscription = true;
                                         } else if (active_sub_shortname.indexOf("postbirth") > -1) {
-                                            self.im.user.set_answer("subscription_type", "postbirth");
+                                            postbirth_subscription = true;
                                         }
-
-                                        self.im.user.set_answer("consent", identity.details.consent);
-                                        self.im.user.set_answer("mom_dob", identity.details.mom_dob);
-
-                                        return self.states.create("state_route");
                                     }
                                 }
 
-                                return self.states.create("state_end_not_registered");
+                                if (subscribed_to_pmtct) {
+                                    return self.states.create("state_optout_reason_menu");
+                                }
+
+                                if (subscribed_to_momconnect) {
+                                    self.im.user.set_answer("consent", identity.details.consent);
+                                    self.im.user.set_answer("mom_dob", identity.details.mom_dob);
+
+                                    if (prebirth_subscription && postbirth_subscription) {
+                                        // default to prebirth in case of multiple subscriptions
+                                        self.im.user.set_answer("subscription_type", "prebirth");
+                                    } else if (prebirth_subscription) {
+                                        self.im.user.set_answer("subscription_type", "prebirth");
+                                    } else if (postbirth_subscription) {
+                                        self.im.user.set_answer("subscription_type", "postbirth");
+                                    }
+
+                                    return self.states.create("state_route");
+                                } else {
+                                    return self.states.create("state_end_not_registered");
+                                }
+
                             });
                         }
                     });
