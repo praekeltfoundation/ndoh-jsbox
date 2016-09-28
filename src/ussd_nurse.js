@@ -659,7 +659,8 @@ go.app = function() {
 
                     return hub
                     .create_change(change_info)
-                    .then(function () {
+                    .then(function(response) {
+                        console.log("response: "+response);
                         return 'state_end_detail_changed';
                     });
                 }

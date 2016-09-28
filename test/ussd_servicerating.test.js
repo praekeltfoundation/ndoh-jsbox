@@ -46,10 +46,10 @@ describe("app", function() {
                     // add fixtures for services used
                     fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
-                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 139
-                    fixtures_ServiceRating().forEach(api.http.fixtures.add); // 140 - 149
-                    fixtures_Jembi().forEach(api.http.fixtures.add); // 150 - 159
-                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 160 ->
+                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
+                    fixtures_ServiceRating().forEach(api.http.fixtures.add); // 150 - 169
+                    fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 ->
                 });
         });
 
@@ -67,7 +67,7 @@ describe("app", function() {
                             reply: 'Please register at a clinic before using this line.'
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [135, 160, 163]);
+                            utils.check_fixtures_used(api, [150, 180, 183]);
                         })
                         .run();
                 });
@@ -92,7 +92,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [136, 140, 161]);
+                            utils.check_fixtures_used(api, [151, 155, 181]);
                         })
                         .check.user.properties({lang: 'eng_ZA'})
                         .run();
@@ -116,7 +116,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [137, 141, 182]);
+                            utils.check_fixtures_used(api, [152, 156, 202]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -143,7 +143,7 @@ describe("app", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [136, 140, 142, 161]);
+                        utils.check_fixtures_used(api, [151, 155, 157, 181]);
                     })
                     .run();
             });
@@ -169,7 +169,7 @@ describe("app", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [136, 140, 142, 143, 161]);
+                        utils.check_fixtures_used(api, [151, 155, 157, 158, 181]);
                     })
                     .run();
             });
@@ -196,7 +196,7 @@ describe("app", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [136, 140, 142, 143, 144, 161]);
+                        utils.check_fixtures_used(api, [151, 155, 157, 158, 159, 181]);
                     })
                     .run();
             });
@@ -224,7 +224,7 @@ describe("app", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [136, 140, 142, 143, 144, 145, 161]);
+                        utils.check_fixtures_used(api, [151, 155, 157, 158, 159, 160, 181]);
                     })
                     .run();
             });
@@ -250,7 +250,7 @@ describe("app", function() {
                     })
                     .check(function(api) {
                         utils.check_fixtures_used(api, [
-                            122, 136, 140, 142, 143, 144, 145, 146, 147, 161]);
+                            122, 151, 155, 157, 158, 159, 160, 161, 162, 181]);
                     })
                     .check.reply.ends_session()
                     .run();

@@ -1,7 +1,7 @@
 
 module.exports = function() {
     return [
-        // 150: Jembi NurseConnect Clinic Code validation - code 123456
+        // 170: Jembi NurseConnect Clinic Code validation - code 123456
         {
             "request": {
                 "method": "GET",
@@ -54,7 +54,7 @@ module.exports = function() {
             }
         },
 
-        // 151: Jembi NurseConnect Clinic Code validation - code 234567
+        // 171: Jembi NurseConnect Clinic Code validation - code 234567
         {
             "request": {
                 "method": "GET",
@@ -107,7 +107,7 @@ module.exports = function() {
             }
         },
 
-        // 152: Jembi NurseConnect Clinic Code validation - code 888888 (non-valid clinic code)
+        // 172: Jembi NurseConnect Clinic Code validation - code 888888 (non-valid clinic code)
         {
             "request": {
                 "method": "GET",
@@ -138,7 +138,7 @@ module.exports = function() {
             }
         },
 
-        // 153: Jembi Clinic Code validation - code 888888 (non-valid clinic code)
+        // 173: Jembi Clinic Code validation - code 888888 (non-valid clinic code)
         {
             "request": {
                 "method": "GET",
@@ -169,7 +169,7 @@ module.exports = function() {
             }
         },
 
-        // 154: Jembi Clinic Code validation - code 123456
+        // 174: Jembi Clinic Code validation - code 123456
         {
             "request": {
                 "method": "GET",
@@ -222,7 +222,7 @@ module.exports = function() {
             }
         },
 
-        // 155:
+        // 175:
         {
             'request': {
                 'method': 'GET',
@@ -231,7 +231,7 @@ module.exports = function() {
             'response': {}
         },
 
-        // 156:
+        // 176:
         {
             'request': {
                 'method': 'GET',
@@ -240,7 +240,7 @@ module.exports = function() {
             'response': {}
         },
 
-        // 157:
+        // 177:
         {
             'request': {
                 'method': 'GET',
@@ -249,7 +249,7 @@ module.exports = function() {
             'response': {}
         },
 
-        // 158:
+        // 178:
         {
             'request': {
                 'method': 'GET',
@@ -258,7 +258,7 @@ module.exports = function() {
             'response': {}
         },
 
-        // 159:
+        // 179:
         {
             'request': {
                 'method': 'GET',

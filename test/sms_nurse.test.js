@@ -47,10 +47,10 @@ describe("app", function() {
                     // add fixtures for services used
                     fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
-                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 139
-                    fixtures_ServiceRating().forEach(api.http.fixtures.add); // 140 - 149
-                    fixtures_Jembi().forEach(api.http.fixtures.add);  // 150 - 159
-                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 160 ->
+                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
+                    fixtures_ServiceRating().forEach(api.http.fixtures.add); // 150 - 169
+                    fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 ->
                 });
         });
 
@@ -80,7 +80,7 @@ describe("app", function() {
                             "Thank you. You will no longer receive messages from us."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [52, 54, 162, 172]);
+                        utils.check_fixtures_used(api, [52, 54, 182, 192]);
                     })
                     .run();
             });
@@ -97,7 +97,7 @@ describe("app", function() {
                             "Thank you. You will no longer receive messages from us."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [52, 54, 162, 172]);
+                        utils.check_fixtures_used(api, [52, 54, 182, 192]);
                     })
                     .run();
             });

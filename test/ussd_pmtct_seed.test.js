@@ -1,8 +1,13 @@
 var vumigo = require("vumigo_v02");
-var fixtures = require("./fixtures_pmtct");
-var fixtures_MessageSender = require('./fixtures_message_sender');
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
+
+var fixtures_IdentityStore = require('./fixtures_identity_store');
+var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
+var fixtures_MessageSender = require('./fixtures_message_sender');
+var fixtures_Hub = require('./fixtures_hub');
+var fixtures_Jembi = require('./fixtures_jembi');
+var fixtures_ServiceRating = require('./fixtures_service_rating');
 
 var utils = require('seed-jsbox-utils').utils;
 
@@ -69,8 +74,12 @@ describe("PMTCT app", function() {
                 })
                 .setup(function(api) {
                     // add fixtures for services used
-                    fixtures().forEach(api.http.fixtures.add); // fixtures 0 - 49
+                    fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
+                    fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
                     fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
+                    fixtures_ServiceRating().forEach(api.http.fixtures.add); // 150 - 169
+                    fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 ->
                 });
         });
 
@@ -264,7 +273,7 @@ describe("PMTCT app", function() {
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [0, 11, 50, 62, 79, 80, 81]);
+                            utils.check_fixtures_used(api, [27, 54, 60, 133, 134, 210, 215]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -372,7 +381,7 @@ describe("PMTCT app", function() {
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [1, 12, 51, 62, 82, 83, 84]);
+                            utils.check_fixtures_used(api, [28, 54, 61, 135, 136, 211, 216]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -454,7 +463,7 @@ describe("PMTCT app", function() {
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [2, 13, 52, 62, 85, 86, 87]);
+                            utils.check_fixtures_used(api, [29, 54, 62, 137, 138, 212, 217]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -504,7 +513,7 @@ describe("PMTCT app", function() {
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [3, 14, 53, 62, 88, 89, 90]);
+                            utils.check_fixtures_used(api, [30, 54, 63, 139, 140, 213, 218]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -523,7 +532,7 @@ describe("PMTCT app", function() {
                             reply: "You need to be registered on MomConnect to receive these messages. Please visit the nearest clinic to register."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [4, 15]);
+                            utils.check_fixtures_used(api, [64, 214]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -542,7 +551,7 @@ describe("PMTCT app", function() {
                             reply: "You need to be registered on MomConnect to receive these messages. Please visit the nearest clinic to register."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [10]);
+                            utils.check_fixtures_used(api, [219]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -585,7 +594,7 @@ describe("PMTCT app", function() {
                         reply: "You will not receive SMSs about keeping your baby HIV negative. You will still receive MomConnect SMSs. To stop receiving these SMSs, dial *134*550*1#"
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [42, 48, 62, 69]);
+                        utils.check_fixtures_used(api, [32, 54, 65, 220]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -628,7 +637,7 @@ describe("PMTCT app", function() {
                         reply: "Thank you. You will no longer receive any messages from MomConnect. If you have any medical concerns, please visit your nearest clinic."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [42, 44, 62, 69, 74]);
+                        utils.check_fixtures_used(api, [31, 54, 65, 220, 222]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -646,7 +655,7 @@ describe("PMTCT app", function() {
                         reply: "Thank you. You will receive support messages from MomConnect in the coming weeks."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [42, 49, 62, 69]);
+                        utils.check_fixtures_used(api, [33, 54, 65, 220]);
                     })
                     .check.reply.ends_session()
                     .run();

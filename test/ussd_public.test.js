@@ -53,10 +53,10 @@ describe("app", function() {
                     // add fixtures for services used
                     fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
-                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 139
-                    fixtures_ServiceRating().forEach(api.http.fixtures.add); // 140 - 149
-                    fixtures_Jembi().forEach(api.http.fixtures.add);  // 150 - 159
-                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 160 ->
+                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
+                    fixtures_ServiceRating().forEach(api.http.fixtures.add); // 150 - 169
+                    fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 ->
                 });
         });
 
@@ -152,7 +152,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [125, 160, 163]);
+                    utils.check_fixtures_used(api, [125, 180, 183]);
                 })
                 .run();
             });
@@ -166,7 +166,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [53, 54, 127, 187]);
+                    utils.check_fixtures_used(api, [53, 54, 127, 207]);
                 })
                 .run();
             });
@@ -178,9 +178,8 @@ describe("app", function() {
                     , "1"  // state_registered_full - compliment
                     , {session_event: 'close'}
                 )
-                // .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [54, 59, 129, 182]);
+                    utils.check_fixtures_used(api, [54, 59, 129, 202]);
                 })
                 .run();
             });
@@ -198,7 +197,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", false)  // session closed on non-dialback state
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [17, 117, 160, 163, 178]);
+                    utils.check_fixtures_used(api, [17, 117, 180, 183, 198]);
                 })
                 .run();
             });
@@ -216,7 +215,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)  // session closed on dialback state
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [17, 117, 125, 160, 163, 188]);
+                    utils.check_fixtures_used(api, [17, 117, 125, 180, 183, 208]);
                 })
                 .run();
             });
@@ -244,7 +243,7 @@ describe("app", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [160, 163]);
+                        utils.check_fixtures_used(api, [180, 183]);
                     })
                     .run();
                 });
@@ -267,7 +266,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 161]);
+                            utils.check_fixtures_used(api, [51, 54, 181]);
                         })
                         .run();
                     });
@@ -288,7 +287,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [58, 176]);
+                            utils.check_fixtures_used(api, [58, 196]);
                         })
                         .run();
                     });
@@ -311,7 +310,7 @@ describe("app", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [177]);
+                        utils.check_fixtures_used(api, [197]);
                     })
                     .run();
                 });
@@ -412,7 +411,7 @@ describe("app", function() {
                                    'helpful messages at a clinic.'
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [17, 117, 160, 163, 178]);
+                            utils.check_fixtures_used(api, [17, 117, 180, 183, 198]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -481,7 +480,7 @@ describe("app", function() {
                         state: "state_end_success"
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [18, 118, 164, 166, 179]);
+                        utils.check_fixtures_used(api, [18, 118, 184, 186, 199]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -526,7 +525,7 @@ describe("app", function() {
                             'your compliment.'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [51, 54, 119, 161]);
+                        utils.check_fixtures_used(api, [51, 54, 119, 181]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -547,7 +546,7 @@ describe("app", function() {
                             'your complaint.'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [51, 54, 120, 161]);
+                        utils.check_fixtures_used(api, [51, 54, 120, 181]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -570,7 +569,7 @@ describe("app", function() {
                             'messages, please visit your nearest clinic.'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [177]);
+                        utils.check_fixtures_used(api, [197]);
                     })
                     .check.reply.ends_session()
                     .run();

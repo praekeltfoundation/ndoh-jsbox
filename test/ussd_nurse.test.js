@@ -65,10 +65,10 @@ describe("app", function() {
                     // add fixtures for services used
                     fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
-                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 139
-                    fixtures_ServiceRating().forEach(api.http.fixtures.add); // 140 - 149
-                    fixtures_Jembi().forEach(api.http.fixtures.add);  // 150 - 159
-                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 160 ->
+                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
+                    fixtures_ServiceRating().forEach(api.http.fixtures.add); // 150 - 169
+                    fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 ->
                 });
         });
 
@@ -134,7 +134,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [160]);
+                            utils.check_fixtures_used(api, [180]);
                         })
                         .run();
                 });
@@ -170,7 +170,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 161]);
+                            utils.check_fixtures_used(api, [51, 54, 181]);
                         })
                         .run();
                 });
@@ -197,7 +197,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [52, 54, 162]);
+                            utils.check_fixtures_used(api, [52, 54, 182]);
                         })
                         .run();
                 });
@@ -261,7 +261,7 @@ describe("app", function() {
                             , {session_event: 'new'}  // redial
                         )
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [150, 160, 163]);
+                            utils.check_fixtures_used(api, [150, 180, 183]);
                         })
                         .run();
                 });
@@ -281,7 +281,7 @@ describe("app", function() {
                             , {session_event: 'new'}  // redial
                         )
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [150, 160, 163]);
+                            utils.check_fixtures_used(api, [150, 180, 183]);
                         })
                         .run();
                 });
@@ -300,7 +300,7 @@ describe("app", function() {
                                 state: 'state_not_subscribed'
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [160]);
+                                utils.check_fixtures_used(api, [180]);
                             })
                             .run();
                     });
@@ -326,7 +326,7 @@ describe("app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [128, 150, 160, 163]);
+                                utils.check_fixtures_used(api, [128, 170, 180, 183]);
                             })
                             .run();
                     });
@@ -353,7 +353,7 @@ describe("app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [128, 150, 160, 161, 163]);
+                                utils.check_fixtures_used(api, [128, 170, 180, 181, 183]);
                             })
                             .run();
                     });
@@ -381,7 +381,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [128, 150, 160, 163]);
+                            utils.check_fixtures_used(api, [128, 170, 180, 183]);
                         })
                         .run();
                 });
@@ -403,7 +403,7 @@ describe("app", function() {
                             state: 'state_not_subscribed'
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [128, 150, 160, 163]);
+                            utils.check_fixtures_used(api, [128, 170, 180, 183]);
                         })
                         .run();
                 });
@@ -422,7 +422,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [128, 160, 163]);
+                    utils.check_fixtures_used(api, [128, 180, 183]);
                 })
                 .run();
             });
@@ -437,7 +437,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [52, 54, 162]);
+                    utils.check_fixtures_used(api, [52, 54, 182]);
                 })
                 .run();
             });
@@ -452,7 +452,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [54, 59, 132, 182]);
+                    utils.check_fixtures_used(api, [54, 59, 132, 202]);
                 })
                 .run();
             });
@@ -471,7 +471,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [13, 100, 128, 150, 160, 163, 189]);
+                    utils.check_fixtures_used(api, [13, 100, 128, 170, 180, 183, 209]);
                 })
                 .run();
             });
@@ -542,7 +542,7 @@ describe("app", function() {
                         , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [13, 100, 150, 160, 163, 170]);
+                        utils.check_fixtures_used(api, [13, 100, 170, 180, 183, 190]);
                     })
                     .run();
             });
@@ -598,7 +598,7 @@ describe("app", function() {
                         , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [14, 101, 150, 160, 161, 163, 171]);
+                        utils.check_fixtures_used(api, [14, 101, 170, 180, 181, 183, 191]);
                     })
                     .run();
             });
@@ -867,7 +867,7 @@ describe("app", function() {
                             reply: "Please enter the old number on which you used to receive messages, e.g. 0736436265:"
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 161]);
+                            utils.check_fixtures_used(api, [51, 54, 181]);
                         })
                         .run();
                 });
@@ -920,7 +920,7 @@ describe("app", function() {
                             state: 'state_change_old_nr',
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 160, 161]);
+                            utils.check_fixtures_used(api, [51, 54, 180, 181]);
                         })
                         .run();
                 });
@@ -972,7 +972,7 @@ describe("app", function() {
                             reply: "Please enter the new number on which you want to receive messages, e.g. 0736252020:"
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [52, 54, 162]);
+                            utils.check_fixtures_used(api, [52, 54, 182]);
                         })
                         .run();
                 });
@@ -990,7 +990,7 @@ describe("app", function() {
                             state: 'state_end_detail_changed',
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [10, 52, 54, 160, 162]);
+                            utils.check_fixtures_used(api, [10, 52, 54, 180, 182]);
                         })
                         .run();
                 });
@@ -1008,7 +1008,7 @@ describe("app", function() {
                             state: 'state_end_detail_changed'
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [11, 54, 56, 160, 165]);
+                            utils.check_fixtures_used(api, [11, 54, 56, 180, 185]);
                         })
                         .run();
                 });
@@ -1027,7 +1027,7 @@ describe("app", function() {
                             state: 'state_block_active_subs' // number in use by 0820001003
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [54, 56, 162, 165]);
+                            utils.check_fixtures_used(api, [54, 56, 182, 185]);
                         })
                         .run();
                 });
@@ -1041,7 +1041,7 @@ describe("app", function() {
                             , '1'  // state_opt_in_change - yes
                         )
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [54, 56, 162, 165]);
+                            utils.check_fixtures_used(api, [54, 56, 182, 165]);
                         })
                         .run();
                 });
@@ -1180,7 +1180,7 @@ describe("app", function() {
                             reply: "Please enter the 6-digit facility code for your new facility, e.g. 456789:"
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [52, 54, 162]);
+                            utils.check_fixtures_used(api, [52, 54, 182]);
                         })
                         .run();
                 });
@@ -1256,7 +1256,7 @@ describe("app", function() {
                             reply: "Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [8, 52, 54, 162]);
+                            utils.check_fixtures_used(api, [8, 52, 54, 182]);
                         })
                         .run();
                 });
@@ -1321,7 +1321,7 @@ describe("app", function() {
                             reply: "Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [9, 52, 54, 162]);
+                            utils.check_fixtures_used(api, [9, 52, 54, 182]);
                         })
                         .run();
                 });
@@ -1367,14 +1367,14 @@ describe("app", function() {
                                 {session_event: 'new'}  // dial in
                                 , '4'  // state_subscribed - change id
                                 , '1'  // state_change_id_no - RSA ID
-                                , '9001016265166 '  // state_id_no
+                                , '9001015087082'  // state_id_no
                             )
                             .check.interaction({
                                 state: 'state_end_detail_changed',
                                 reply: 'Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again.'
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [6, 52, 54, 162]);
+                                utils.check_fixtures_used(api, [6, 52, 54, 182]);
                             })
                             .run();
                     });
@@ -1450,7 +1450,7 @@ describe("app", function() {
                                 reply: 'Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again.'
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [7, 52, 54, 162]);
+                                utils.check_fixtures_used(api, [7, 52, 54, 182]);
                             })
                             .run();
                     });
@@ -1499,7 +1499,7 @@ describe("app", function() {
                                 state: 'state_end_detail_changed',
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [15, 52, 54, 162]);
+                                utils.check_fixtures_used(api, [15, 52, 54, 182]);
                             })
                             .run();
                     });
