@@ -51,6 +51,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_servicerating: [
                     'src/index.js',
+                    'src/session_length_helper.js',
                     '<%= paths.src.app.ussd_servicerating %>',
                     'src/init.js'
                 ],
@@ -133,6 +134,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_servicerating: [
                     'test/setup.js',
+                    'src/session_length_helper.js',
                     '<%= paths.src.app.ussd_servicerating %>',
                     'test/ussd_servicerating.test.js'
                 ],
@@ -259,10 +261,10 @@ module.exports = function (grunt) {
             },
             test_sms_inbound: {
                 src: ['<%= paths.test.sms_inbound %>']
-            },
+            },*/
             test_ussd_servicerating: {
                 src: ['<%= paths.test.ussd_servicerating %>']
-            },
+            },/*
             test_ussd_nurse: {
                 src: ['<%= paths.test.ussd_nurse %>']
             },
