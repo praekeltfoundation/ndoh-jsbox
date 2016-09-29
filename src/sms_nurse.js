@@ -1,5 +1,6 @@
 go.app = function() {
     var vumigo = require("vumigo_v02");
+    var Q = require('q');
     var App = vumigo.App;
     var EndState = vumigo.states.EndState;
     var JsonApi = vumigo.http.api.JsonApi;
@@ -18,7 +19,6 @@ go.app = function() {
         var sbm;
 
         self.init = function() {
-
             // initialising services
             is = new IdentityStore(
                 new JsonApi(self.im, {}),
@@ -31,43 +31,56 @@ go.app = function() {
                 self.im.config.services.stage_based_messaging.token,
                 self.im.config.services.stage_based_messaging.url
             );
+
+            self.env = self.im.config.env;
+            self.metric_prefix = [self.env, self.im.config.name].join('.');
+            self.store_name = [self.env, self.im.config.name].join('.');
+
+            //self.attach_session_length_helper(self.im);
         };
 
         self.states.add("states_start", function() {
-            var msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
-            self.im.user.set_answer("operator_msisdn", msisdn);
+            // fire inbound message count metric
+            return Q.all([
+                self.im.metrics.fire.sum(
+                    ([self.metric_prefix, "inbound_sms", "sum"].join('.')), 1),
+                self.im.metrics.fire.inc(
+                    ([self.metric_prefix, "inbound_sms", "last"].join('.')), {amount: 1})
+            ]).then(function() {
+                var msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
+                self.im.user.set_answer("operator_msisdn", msisdn);
 
-            return is
-            .get_or_create_identity({"msisdn": msisdn})
-            .then(function(identity) {
-                self.im.user.set_answer("operator", identity);
+                return is
+                .get_or_create_identity({"msisdn": msisdn})
+                .then(function(identity) {
+                    self.im.user.set_answer("operator", identity);
 
-                return sbm
-                .check_identity_subscribed(self.im.user.answers.operator.id, "nurseconnect")
-                .then(function(identity_subscribed_to_nurseconnect) {
-                    if (identity_subscribed_to_nurseconnect) {
-                        // check if message contains a ussd code
-                        if (self.im.msg.content.indexOf("*120*") > -1 || self.im.msg.content.indexOf("*134*") > -1) {
-                            return self.states.create("states_dial_not_sms");
-                        } else {
-                            // get the first word, remove non-alphanumerics, capitalise
-                            switch (utils.get_clean_first_word(self.im.msg.content)) {
-                                case "STOP":
-                                    return self.states.create("states_opt_out_enter");
-                                case "BLOCK":
-                                    return self.states.create("states_opt_out_enter");
-                                case "START":
-                                    return self.states.create("states_opt_in_enter");
-                                default:
-                                    return self.states.create("state_unrecognised");
+                    return sbm
+                    .check_identity_subscribed(self.im.user.answers.operator.id, "nurseconnect")
+                    .then(function(identity_subscribed_to_nurseconnect) {
+                        if (identity_subscribed_to_nurseconnect) {
+                            // check if message contains a ussd code
+                            if (self.im.msg.content.indexOf("*120*") > -1 || self.im.msg.content.indexOf("*134*") > -1) {
+                                return self.states.create("states_dial_not_sms");
+                            } else {
+                                // get the first word, remove non-alphanumerics, capitalise
+                                switch (utils.get_clean_first_word(self.im.msg.content)) {
+                                    case "STOP":
+                                        return self.states.create("states_opt_out_enter");
+                                    case "BLOCK":
+                                        return self.states.create("states_opt_out_enter");
+                                    case "START":
+                                        return self.states.create("states_opt_in_enter");
+                                    default:
+                                        return self.states.create("state_unrecognised");
+                                }
                             }
+                        } else {
+                            return self.states.create("state_unrecognised");
                         }
-                    } else {
-                        return self.states.create("state_unrecognised");
-                    }
+                    });
                 });
             });
-
         });
 
         self.states.add("states_dial_not_sms", function(name) {

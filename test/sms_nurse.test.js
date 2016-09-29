@@ -41,7 +41,9 @@ describe("app", function() {
                             token: "test StageBasedMessaging"
                         },
                     },
-                    logging: "off"
+                    logging: "off",
+                    env: 'test',
+                    metric_store: 'test_sms_nurse_ms',
                 })
                 .setup(function(api) {
                     // add fixtures for services used
