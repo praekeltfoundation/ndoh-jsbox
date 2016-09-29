@@ -39,16 +39,24 @@ go.app = function() {
                 self.im.config.services.message_sender.url
             );
 
-            // evaluate whether dialback sms needs to be sent on session close
-            self.im.on('session:close', function(e) {
-                return self.dial_back(e);
-            });
-
             self.env = self.im.config.env;
             self.metric_prefix = [self.env, self.im.config.name].join('.');
             self.store_name = [self.env, self.im.config.name].join('.');
 
             self.attach_session_length_helper(self.im);
+
+            // evaluate whether dialback sms needs to be sent on session close
+            self.im.on('session:close', function(e) {
+                return self.dial_back(e);
+            });
+
+            self.im.user.on('user:new', function(e) {
+                return self
+                .incr_kv(self.im, [self.store_name, 'unique_users'].join('.'))
+                .then(function() {
+                    self.im.metrics.fire.inc([self.env, 'sum', 'unique_users'].join('.'));
+                });
+            });
         };
 
         self.attach_session_length_helper = function(im) {
@@ -74,6 +82,13 @@ go.app = function() {
             });
             slh.attach();
             return slh;
+        };
+
+        self.incr_kv = function(im, name) {
+            return im.api_request('kv.incr', {key: name, amount: 1})
+                .then(function(result){
+                    return result.value;
+                });
         };
 
         self.dial_back = function(e) {
