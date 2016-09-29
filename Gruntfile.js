@@ -249,7 +249,7 @@ module.exports = function (grunt) {
             },
             /*
             */
-            /*test_ussd_clinic: {
+            test_ussd_clinic: {
                 src: ['<%= paths.test.ussd_clinic %>']
             },
             test_ussd_chw: {
@@ -260,13 +260,13 @@ module.exports = function (grunt) {
             },
             test_ussd_optout: {
                 src: ['<%= paths.test.ussd_optout %>']
-            },*/
+            },
             test_sms_inbound: {
                 src: ['<%= paths.test.sms_inbound %>']
             },
             test_ussd_servicerating: {
                 src: ['<%= paths.test.ussd_servicerating %>']
-            },/*
+            },
             test_ussd_nurse: {
                 src: ['<%= paths.test.ussd_nurse %>']
             },
@@ -284,7 +284,7 @@ module.exports = function (grunt) {
             },
             test_sms_pmtct_seed: {
                 src: ['<%= paths.test.sms_pmtct_seed %>']
-            },*/
+            },
             test_session_length_helper: {
                 src: ['<%= paths.test.session_length_helper %>']
             },

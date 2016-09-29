@@ -54,6 +54,9 @@ describe("app", function() {
                     },
                 })
                 .setup(function(api) {
+                    api.kv.store['test.ussd_clinic.unique_users'] = 0;
+                })
+                .setup(function(api) {
                     api.metrics.stores = {'test_metric_store': {}};
                 })
                 .setup(function(api) {
@@ -112,49 +115,41 @@ describe("app", function() {
         // no_complete metric tests
         describe("test dropoff metrics", function() {
 
-            describe("states_start", function() {
+            describe("state_start", function() {
                 it("entering once", function() {
                     return tester
                         .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
                         )
-                        // .check(function(api) {
-                        //     var metrics = api.metrics.stores.test_metric_store;
-                        //     assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete'].values, [1]);
-                        //     assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete.transient'].values, [1]);
-                        // })
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_metric_store;
+                            assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete'], undefined);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete.transient'], undefined);
+                        })
                         .run();
                 });
 
-                it("entering once, timing out", function() {
+                it("entering, timing out, redialing (session:close detected), restart", function() {
                     return tester
                         .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , {session_event: 'close'}  // states_start
+                            , '1'  // state_start
+                            , {session_event: 'close'}  // state_consent
+                            , {session_event: 'new'}  // dial in
+                            , '2'  // state_timed_out - restart
+                            , '1'  // state_start
                         )
-                        // .check(function(api) {
-                        //     var metrics = api.metrics.stores.test_metric_store;
-                        //     assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete'].values, [1]);
-                        //     assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete.transient'].values, [1]);
-                        // })
-                        .run();
-                });
-
-                it("entering once, timing out, redialing (session:close detected)", function() {
-                    return tester
-                        .setup.user.addr('27820001001')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , {session_event: 'close'}  // states_start
-                            , {session_event: 'new'}  // redial
-                        )
-                        // .check(function(api) {
-                        //     var metrics = api.metrics.stores.test_metric_store;
-                        //     assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete'].values, [1]);
-                        //     assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete.transient'].values, [1]);
-                        // })
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_metric_store;
+                            assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete'].values, [1, 2]);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete.transient'].values, [1, 1]);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_consent.no_complete'], undefined);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_consent.no_complete.transient'], undefined);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_timed_out.no_complete'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_timed_out.no_complete.transient'].values, [1]);
+                        })
                         .run();
                 });
 
@@ -165,11 +160,11 @@ describe("app", function() {
                             {session_event: 'new'}  // dial in
                             , {session_event: 'new'}  // redial
                         )
-                        // .check(function(api) {
-                        //     var metrics = api.metrics.stores.test_metric_store;
-                        //     assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete'].values, [1]);
-                        //     assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete.transient'].values, [1]);
-                        // })
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_metric_store;
+                            assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete'], undefined);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete.transient'], undefined);
+                        })
                         .run();
                 });
 
@@ -178,9 +173,9 @@ describe("app", function() {
                         .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , {session_event: 'close'}  // states_start
+                            , {session_event: 'close'}  // state_start
                             , {session_event: 'new'}  // redial
-                            , '1'  // states_start
+                            , '1'  // state_start
                         )
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
@@ -191,17 +186,17 @@ describe("app", function() {
                 });
             });
 
-            describe("states_due_date_month", function() {
-                // This idea applies to all states except states_start and end states, for which measuring
+            describe("state_due_date_month", function() {
+                // This idea applies to all states except state_start and end states, for which measuring
                 // dropoffs is not a real thing
                 it("entering once", function() {
                     return tester
                         .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '1'  // states_start
-                            , '1'  // states_consent
-                            , '123456'  // states_clinic_code
+                            , '1'  // state_start
+                            , '1'  // state_consent
+                            , '123456'  // state_clinic_code
                         )
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
@@ -209,8 +204,8 @@ describe("app", function() {
                             assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete.transient'].values, [1]);
                             assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete'].values, [1]);
                             assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete.transient'].values, [1]);
-                            // assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete'].values, [1]);
-                            // assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete'], undefined);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete.transient'], undefined);
                         })
                         .run();
                 });
@@ -220,10 +215,10 @@ describe("app", function() {
                         .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '1'  // states_start
-                            , '1'  // states_consent
-                            , '123456'  // states_clinic_code
-                            , {session_event: 'close'}  // states_due_date_month
+                            , '1'  // state_start
+                            , '1'  // state_consent
+                            , '123456'  // state_clinic_code
+                            , {session_event: 'close'}  // state_due_date_month
                         )
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
@@ -231,8 +226,8 @@ describe("app", function() {
                             assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete.transient'].values, [1]);
                             assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete'].values, [1]);
                             assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete.transient'].values, [1]);
-                            // assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete'].values, [1]);
-                            // assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete'], undefined);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete.transient'], undefined);
                         })
                         .run();
                 });
@@ -242,10 +237,10 @@ describe("app", function() {
                         .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '1'  // states_start
-                            , '1'  // states_consent
-                            , '123456'  // states_clinic_code
-                            , {session_event: 'close'}  // states_due_date_month
+                            , '1'  // state_start
+                            , '1'  // state_consent
+                            , '123456'  // state_clinic_code
+                            , {session_event: 'close'}  // state_due_date_month
                             , {session_event: 'new'}  // redial
                         )
                         .check(function(api) {
@@ -254,8 +249,8 @@ describe("app", function() {
                             assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete.transient'].values, [1]);
                             assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete'].values, [1]);
                             assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete.transient'].values, [1]);
-                            // assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete'].values, [1]);
-                            // assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete'], undefined);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete.transient'], undefined);
                         })
                         .run();
                 });
@@ -265,9 +260,9 @@ describe("app", function() {
                         .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '1'  // states_start
-                            , '1'  // states_consent
-                            , '123456'  // states_clinic_code
+                            , '1'  // state_start
+                            , '1'  // state_consent
+                            , '123456'  // state_clinic_code
                             , {session_event: 'new'}  // redial
                         )
                         .check(function(api) {
@@ -276,8 +271,8 @@ describe("app", function() {
                             assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete.transient'].values, [1]);
                             assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete'].values, [1]);
                             assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete.transient'].values, [1]);
-                            // assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete'].values, [1]);
-                            // assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete'], undefined);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete.transient'], undefined);
                         })
                         .run();
                 });
@@ -287,12 +282,12 @@ describe("app", function() {
                         .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '1'  // states_start
-                            , '1'  // states_consent
-                            , '123456'  // states_clinic_code
-                            , {session_event: 'close'}  // states_due_date_month
+                            , '1'  // state_start
+                            , '1'  // state_consent
+                            , '123456'  // state_clinic_code
+                            , {session_event: 'close'}  // state_due_date_month
                             , {session_event: 'new'}  // redial
-                            , '2'  // states_timed_out
+                            , '2'  // state_timed_out
                         )
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
@@ -300,8 +295,10 @@ describe("app", function() {
                             assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete.transient'].values, [1]);
                             assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete'].values, [1]);
                             assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete.transient'].values, [1]);
-                            // assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete'].values, [1]);
-                            // assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete'], undefined);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete.transient'], undefined);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_timed_out.no_complete'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_timed_out.no_complete.transient'].values, [1]);
                         })
                         .run();
                 });
@@ -311,12 +308,12 @@ describe("app", function() {
                         .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '1'  // states_start
-                            , '1'  // states_consent
-                            , '123456'  // states_clinic_code
-                            , {session_event: 'close'}  // states_due_date_month
+                            , '1'  // state_start
+                            , '1'  // state_consent
+                            , '123456'  // state_clinic_code
+                            , {session_event: 'close'}  // state_due_date_month
                             , {session_event: 'new'}  // redial
-                            , '1'  // states_timed_out
+                            , '1'  // state_timed_out
                         )
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
@@ -324,8 +321,10 @@ describe("app", function() {
                             assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete.transient'].values, [1]);
                             assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete'].values, [1]);
                             assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete.transient'].values, [1]);
-                            // assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete'].values, [1, 0, 1]);
-                            // assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete.transient'].values, [1, -1, 1]);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete'], undefined);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete.transient'], undefined);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_timed_out.no_complete'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_timed_out.no_complete.transient'].values, [1]);
                         })
                         .run();
                 });
@@ -335,13 +334,13 @@ describe("app", function() {
                         .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '1'  // states_start
-                            , '1'  // states_consent
-                            , '123456'  // states_clinic_code
-                            , {session_event: 'close'}  // states_due_date_month
+                            , '1'  // state_start
+                            , '1'  // state_consent
+                            , '123456'  // state_clinic_code
+                            , {session_event: 'close'}  // state_due_date_month
                             , {session_event: 'new'}  // redial
-                            , '1'  // states_timed_out
-                            , '5'  // states_due_date_month
+                            , '1'  // state_timed_out
+                            , '5'  // state_due_date_month
                         )
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
@@ -349,8 +348,10 @@ describe("app", function() {
                             assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete.transient'].values, [1]);
                             assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete'].values, [1]);
                             assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete.transient'].values, [1]);
-                            // assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete'].values, [1, 0, 1, 0]);
-                            // assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete.transient'].values, [1, -1, 1, -1]);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_timed_out.no_complete'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_timed_out.no_complete.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete.transient'].values, [1]);
                         })
                         .run();
                 });
