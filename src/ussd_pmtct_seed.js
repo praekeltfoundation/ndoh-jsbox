@@ -347,7 +347,6 @@ go.app = function() {
             identity_info.details.mom_dob = self.im.user.answers.mom_dob;
             identity_info.details.pmtct = {};
             identity_info.details.pmtct.lang_code = self.im.user.lang || "eng_ZA";
-            identity_info.details.source = "pmtct";
 
             return is
             .update_identity(self.im.user.answers.identity.id, identity_info)

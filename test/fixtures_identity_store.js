@@ -1356,7 +1356,6 @@ module.exports = function() {
                         "pmtct": {
                             "lang_code": "eng_ZA"
                         },
-                        "source": "pmtct"
                     },
                     "created_at":"2016-06-21T06:13:29.693272Z",
                     "updated_at":"2016-06-21T06:13:29.693298Z"
@@ -1387,7 +1386,6 @@ module.exports = function() {
                         "pmtct": {
                             "lang_code": "eng_ZA"
                         },
-                        "source": "pmtct"
                     },
                     "created_at":"2016-06-21T06:13:29.693272Z",
                     "updated_at":"2016-06-21T06:13:29.693298Z"
@@ -1418,7 +1416,6 @@ module.exports = function() {
                         "pmtct": {
                             "lang_code": "eng_ZA"
                         },
-                        "source": "pmtct"
                     },
                     "created_at": "2016-06-21T06:13:29.693272Z",
                     "updated_at": "2016-06-21T06:13:29.693298Z"
@@ -1449,7 +1446,6 @@ module.exports = function() {
                         "pmtct": {
                             "lang_code": "eng_ZA"
                         },
-                        "source": "pmtct"
                     },
                     "created_at": "2016-06-21T06:13:29.693272Z",
                     "updated_at": "2016-06-21T06:13:29.693298Z"
