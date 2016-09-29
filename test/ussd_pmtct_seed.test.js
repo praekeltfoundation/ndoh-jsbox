@@ -583,7 +583,7 @@ describe("PMTCT app", function() {
                         reply: "Thank you. You will no longer receive any messages from MomConnect. If you have any medical concerns, please visit your nearest clinic."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [31, 54, 65, 220, 222]);
+                        utils.check_fixtures_used(api, [31, 54, 65, 220]);
                     })
                     .check.reply.ends_session()
                     .run();

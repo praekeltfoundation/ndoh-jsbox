@@ -1548,28 +1548,13 @@ module.exports = function() {
             }
         },
 
-        // 222: optout identity cb245673-aa41-4302-ac47-10000000001
+        // 222: unused
         {
-            "key": "post.is.optout_miscarriage.identity.cb245673-aa41-4302-ac47-10000000001",
-            "request": {
-                "method": 'POST',
-                "data": {
-                    "optout_type": "stop",
-                    "identity": "cb245673-aa41-4302-ac47-10000000001",
-                    "reason": "miscarriage",
-                    "address_type": "msisdn",
-                    "address": "+27720000111",
-                    "request_source": "ussd_pmtct",
-                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
-                },
-                "url": 'http://is/api/v1/optout/'
+            'request': {
+                'method': 'GET',
+                'url': 'http://',
             },
-            "response": {
-                "code": 201,
-                "data": {
-                    "id": 1
-                }
-            }
+            'response': {}
         },
 
         // 223: optout cb245673-aa41-4302-ac47-00000000001 (sms_pmtct)

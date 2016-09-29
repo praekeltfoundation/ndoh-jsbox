@@ -468,9 +468,8 @@ go.app = function() {
                                 "reason": self.im.user.answers.state_optout_reason_menu
                             }
                         };
-                        return Q.all([
-                            hub.create_change(pmtct_loss_switch),
-                        ])
+                        return hub
+                        .create_change(pmtct_loss_switch)
                         .then(function() {
                             return "state_end_loss_optin";
                         });
@@ -482,21 +481,9 @@ go.app = function() {
                                 "reason": self.im.user.answers.state_optout_reason_menu
                             }
                         };
-                        var optout_info = {
-                            optout_type: "stop",  // default to "stop"
-                            identity: self.im.user.answers.identity.id,
-                            reason: self.im.user.answers.state_optout_reason_menu,  // default to "unknown"
-                            address_type: "msisdn",  // default to 'msisdn'
-                            address: self.im.user.answers.msisdn,
-                            request_source: "ussd_pmtct",
-                            requestor_source_id: self.im.config.testing_message_id || self.im.msg.message_id,
-                        };
 
-                        return Q
-                        .all([
-                            hub.create_change(pmtct_loss_optout),
-                            is.optout(optout_info),
-                        ])
+                        return hub
+                        .create_change(pmtct_loss_optout)
                         .then(function() {
                             return "state_end_loss_optout";
                         });
