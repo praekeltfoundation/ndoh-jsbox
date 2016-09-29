@@ -47,10 +47,10 @@ describe("app", function() {
                     // add fixtures for services used
                     fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
-                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 139
-                    fixtures_ServiceRating().forEach(api.http.fixtures.add); // 140 - 149
-                    fixtures_Jembi().forEach(api.http.fixtures.add);  // 150 - 159
-                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 160 ->
+                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
+                    fixtures_ServiceRating().forEach(api.http.fixtures.add); // 150 - 169
+                    fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 ->
 
                 })
                 .setup(function(api) {
@@ -81,7 +81,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [160, 163]);
+                            utils.check_fixtures_used(api, [180, 183]);
                         })
                         .check.user.properties({lang: 'eng_ZA'})
                         .run();
@@ -133,7 +133,7 @@ describe("app", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [161]);
+                        utils.check_fixtures_used(api, [181]);
                     })
                     .run();
             });
@@ -155,7 +155,7 @@ describe("app", function() {
                             'concerns please visit your nearest clinic.')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [23, 161]);
+                        utils.check_fixtures_used(api, [23, 181]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -178,7 +178,7 @@ describe("app", function() {
                             'concerns please visit your nearest clinic.')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [26, 161]);
+                        utils.check_fixtures_used(api, [26, 181]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -202,7 +202,7 @@ describe("app", function() {
                                 'from MomConnect in the coming weeks.')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [19, 24, 161]);
+                            utils.check_fixtures_used(api, [19, 24, 181]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -224,7 +224,7 @@ describe("app", function() {
                                 'from MomConnect in the coming weeks.')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [20, 25, 160, 163]);
+                            utils.check_fixtures_used(api, [20, 25, 180, 183]);
                         })
                         .check.reply.ends_session()
                         .run();

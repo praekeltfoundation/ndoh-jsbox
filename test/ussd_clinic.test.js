@@ -21,7 +21,7 @@ describe("app", function() {
             tester = new AppTester(app);
 
             tester
-                .setup.char_limit(182)
+                .setup.char_limit(183)
                 .setup.config.app({
                     name: 'ussd_clinic',
                     testing_today: "2014-04-04",
@@ -54,10 +54,10 @@ describe("app", function() {
                     // add fixtures for services used
                     fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
-                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 139
-                    fixtures_ServiceRating().forEach(api.http.fixtures.add); // 140 - 149
-                    fixtures_Jembi().forEach(api.http.fixtures.add);  // 150 - 159
-                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 160 ->
+                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
+                    fixtures_ServiceRating().forEach(api.http.fixtures.add); // 150 - 169
+                    fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 ->
                 });
         });
 
@@ -186,7 +186,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [123, 160, 163]);
+                    utils.check_fixtures_used(api, [123, 180, 183]);
                 })
                 .run();
             });
@@ -201,7 +201,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [183]);
+                    utils.check_fixtures_used(api, [203]);
                 })
                 .run();
             });
@@ -216,7 +216,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [131, 182]);
+                    utils.check_fixtures_used(api, [131, 202]);
                 })
                 .run();
             });
@@ -241,7 +241,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [4, 116, 123, 154, 160, 163, 184]);
+                    utils.check_fixtures_used(api, [4, 116, 123, 174, 180, 183, 204]);
                 })
                 .run();
             });
@@ -365,7 +365,7 @@ describe("app", function() {
                         state: "state_consent"
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [164, 166]);
+                        utils.check_fixtures_used(api, [184, 186]);
                     })
                     .run();
                 });
@@ -453,7 +453,7 @@ describe("app", function() {
                         state: "state_clinic_code"
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [153, 160, 163]);
+                        utils.check_fixtures_used(api, [173, 180, 183]);
                     })
                     .run();
                 });
@@ -485,7 +485,7 @@ describe("app", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [154, 160, 163]);
+                        utils.check_fixtures_used(api, [174, 180, 183]);
                     })
                     .run();
                 });
@@ -999,7 +999,7 @@ describe("app", function() {
                         state: "state_end_success"
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [2,116,154,160,163,167]);
+                        utils.check_fixtures_used(api, [2, 116, 174, 180, 183, 187]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -1026,7 +1026,7 @@ describe("app", function() {
                         state: "state_end_success"
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [3,116,154,160,162,163,168]);
+                        utils.check_fixtures_used(api, [3, 116, 174, 180, 182, 183, 188]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -1053,7 +1053,7 @@ describe("app", function() {
                         state: "state_end_success"
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [4,116,154,160,163,169]);
+                        utils.check_fixtures_used(api, [4, 116, 174, 180, 183, 189]);
                     })
                     .check.reply.ends_session()
                     .run();

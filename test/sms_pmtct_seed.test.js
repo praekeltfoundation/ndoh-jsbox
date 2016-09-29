@@ -1,8 +1,15 @@
 var vumigo = require('vumigo_v02');
 var fixtures = require('./fixtures_pmtct');
-var SeedJsboxUtils = require('seed-jsbox-utils');
 var AppTester = vumigo.AppTester;
-var utils = SeedJsboxUtils.utils;
+
+var fixtures_IdentityStore = require('./fixtures_identity_store');
+var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
+var fixtures_MessageSender = require('./fixtures_message_sender');
+var fixtures_Hub = require('./fixtures_hub');
+var fixtures_Jembi = require('./fixtures_jembi');
+var fixtures_ServiceRating = require('./fixtures_service_rating');
+
+var utils = require('seed-jsbox-utils').utils;
 
 describe("app", function() {
     describe("for sms inbound use", function() {
@@ -31,17 +38,16 @@ describe("app", function() {
                             url: 'http://hub/api/v1/',
                             token: 'test Hub'
                         }
-                    },
-                    vumi: {
-                        token: "abcde",
-                        contact_url: "https://contacts/api/v1/go/",
-                        username: "test_username",
-                        api_key: "test_api_key",
-                        subscription_url: "https://subscriptions/api/v1/go/"
                     }
                 })
                 .setup(function(api) {
-                    fixtures().forEach(api.http.fixtures.add);
+                    // add fixtures for services used
+                    fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
+                    fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
+                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
+                    fixtures_ServiceRating().forEach(api.http.fixtures.add); // 150 - 169
+                    fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 ->
                 });
         });
 
@@ -88,8 +94,7 @@ describe("app", function() {
                             "about your pregnancy or baby."
                     })
                     .check(function(api) {
-                        // utils.check_fixtures_used(api, [0, 58, 59, 60, 77, 78]);
-                        utils.check_fixtures_used(api, [0, 77, 78]);
+                        utils.check_fixtures_used(api, [0, 210, 223]);
                     })
                     .run();
             });

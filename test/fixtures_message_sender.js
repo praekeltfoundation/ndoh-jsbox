@@ -821,7 +821,127 @@ module.exports = function() {
             }
         },
 
-        // 133:
+        // 133: post outbound message for cb245673-aa41-4302-ac47-00000000001
+        {
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000000001",
+                    "to_addr": "+27820000111",
+                    "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                    "metadata":{}
+                }
+            },
+            "response": {}
+        },
+
+        // 134: post outbound message for cb245673-aa41-4302-ac47-00000000001
+        {
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000000001",
+                    "to_addr": "+27820000111",
+                    "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                    "metadata":{}
+                }
+            },
+            "response": {}
+        },
+
+        // 135: post outbound message for cb245673-aa41-4302-ac47-00000000002
+        {
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000000002",
+                    "to_addr": "+27820000222",
+                    "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                    "metadata":{}
+                }
+            },
+            "response": {}
+        },
+
+        // 136: post outbound message for cb245673-aa41-4302-ac47-00000000002
+        {
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000000002",
+                    "to_addr": "+27820000222",
+                    "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                    "metadata":{}
+                }
+            },
+            "response": {}
+        },
+
+        // 137: post outbound message for cb245673-aa41-4302-ac47-00000000003
+        {
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000000003",
+                    "to_addr": "+27820000333",
+                    "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                    "metadata":{}
+                }
+            },
+            "response": {}
+        },
+
+        // 138: post outbound message for cb245673-aa41-4302-ac47-00000000003
+        {
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000000003",
+                    "to_addr": "+27820000333",
+                    "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                    "metadata":{}
+                }
+            },
+            "response": {}
+        },
+
+        // 139: post outbound message for cb245673-aa41-4302-ac47-00000000004
+        {
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000000004",
+                    "to_addr": "+27820000444",
+                    "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                    "metadata":{}
+                }
+            },
+            "response": {}
+        },
+
+        // 140: post outbound message for cb245673-aa41-4302-ac47-00000000004
+        {
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000000004",
+                    "to_addr": "+27820000444",
+                    "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                    "metadata":{}
+                }
+            },
+            "response": {}
+        },
+
+        // 141:
         {
             'request': {
                 'method': 'GET',
@@ -830,7 +950,70 @@ module.exports = function() {
             'response': {}
         },
 
-        // 134:
+        // 142:
+        {
+            'request': {
+                'method': 'GET',
+                'url': 'http://',
+            },
+            'response': {}
+        },
+
+        // 143:
+        {
+            'request': {
+                'method': 'GET',
+                'url': 'http://',
+            },
+            'response': {}
+        },
+
+        // 144:
+        {
+            'request': {
+                'method': 'GET',
+                'url': 'http://',
+            },
+            'response': {}
+        },
+
+        // 145:
+        {
+            'request': {
+                'method': 'GET',
+                'url': 'http://',
+            },
+            'response': {}
+        },
+
+        // 146:
+        {
+            'request': {
+                'method': 'GET',
+                'url': 'http://',
+            },
+            'response': {}
+        },
+
+        // 147:
+        {
+            'request': {
+                'method': 'GET',
+                'url': 'http://',
+            },
+            'response': {}
+        },
+
+        // 148:
+        {
+            'request': {
+                'method': 'GET',
+                'url': 'http://',
+            },
+            'response': {}
+        },
+
+        // 149:
         {
             'request': {
                 'method': 'GET',

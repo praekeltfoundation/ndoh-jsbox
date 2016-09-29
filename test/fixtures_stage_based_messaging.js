@@ -489,58 +489,266 @@ module.exports = function() {
             }
         },
 
-        // 60:
+        // 60: has_active_subscription - cb245673-aa41-4302-ac47-00000000001 (no consent, no dob)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000001",
             'request': {
                 'method': 'GET',
-                'url': 'http://',
+                'params': {
+                    'identity': 'cb245673-aa41-4302-ac47-00000000001',
+                    'active': 'True'
+                },
+                'headers': {
+                    'Authorization': ['Token test StageBasedMessaging'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://sbm/api/v1/subscriptions/',
             },
-            'response': {}
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            'url': 'http://sbm/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-1111',
+                            'id': '51fcca25-2e85-4c44-subscription-1111',
+                            'version': 1,
+                            'identity': 'cb245673-aa41-4302-ac47-00000000001',
+                            'messageset': 21,
+                            'next_sequence_number': 1,
+                            'lang': "en",
+                            'active': true,
+                            'completed': false,
+                            'schedule': 1,
+                            'process_status': 0,
+                            'metadata': {},
+                            'created_at': "2015-07-10T06:13:29.693272Z",
+                            'updated_at': "2015-07-10T06:13:29.693272Z"
+                        }
+                    ]
+
+                }
+            }
         },
 
-        // 61:
+        // 61: has_active_subscription - cb245673-aa41-4302-ac47-00000000002 (consent, no dob)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000002",
             'request': {
                 'method': 'GET',
-                'url': 'http://',
+                'params': {
+                    'identity': 'cb245673-aa41-4302-ac47-00000000002',
+                    'active': 'True'
+                },
+                'headers': {
+                    'Authorization': ['Token test StageBasedMessaging'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://sbm/api/v1/subscriptions/',
             },
-            'response': {}
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            'url': 'http://sbm/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-2222',
+                            'id': '51fcca25-2e85-4c44-subscription-2222',
+                            'version': 1,
+                            'identity': 'cb245673-aa41-4302-ac47-00000000002',
+                            'messageset': 21,
+                            'next_sequence_number': 1,
+                            'lang': "en",
+                            'active': true,
+                            'completed': false,
+                            'schedule': 1,
+                            'process_status': 0,
+                            'metadata': {},
+                            'created_at': "2015-07-10T06:13:29.693272Z",
+                            'updated_at': "2015-07-10T06:13:29.693272Z"
+                        },
+                        {
+                            'url': 'http://sbm/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-2222',
+                            'id': '51fcca25-2e85-4c44-subscription-2222',
+                            'version': 1,
+                            'identity': 'cb245673-aa41-4302-ac47-00000000002',
+                            'messageset': 31,
+                            'next_sequence_number': 1,
+                            'lang': "en",
+                            'active': true,
+                            'completed': false,
+                            'schedule': 1,
+                            'process_status': 0,
+                            'metadata': {},
+                            'created_at': "2015-07-10T06:13:29.693272Z",
+                            'updated_at': "2015-07-10T06:13:29.693272Z"
+                        }
+                    ]
+
+                }
+            }
         },
 
-        // 62:
+        // 62: has_active_subscription - cb245673-aa41-4302-ac47-00000000003 (no consent, dob)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000003",
             'request': {
                 'method': 'GET',
-                'url': 'http://',
+                'params': {
+                    'identity': 'cb245673-aa41-4302-ac47-00000000003',
+                    'active': 'True'
+                },
+                'headers': {
+                    'Authorization': ['Token test StageBasedMessaging'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://sbm/api/v1/subscriptions/',
             },
-            'response': {}
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            'url': 'http://sbm/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-3333',
+                            'id': '51fcca25-2e85-4c44-subscription-3333',
+                            'version': 1,
+                            'identity': 'cb245673-aa41-4302-ac47-00000000003',
+                            'messageset': 31,
+                            'next_sequence_number': 1,
+                            'lang': "en",
+                            'active': true,
+                            'completed': false,
+                            'schedule': 1,
+                            'process_status': 0,
+                            'metadata': {},
+                            'created_at': "2015-07-10T06:13:29.693272Z",
+                            'updated_at': "2015-07-10T06:13:29.693272Z"
+                        }
+                    ]
+
+                }
+            }
         },
 
-        // 63:
+        // 63: has_active_subscription - cb245673-aa41-4302-ac47-00000000004 (consent, dob)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000004",
             'request': {
                 'method': 'GET',
-                'url': 'http://',
+                'params': {
+                    'identity': 'cb245673-aa41-4302-ac47-00000000004',
+                    'active': 'True'
+                },
+                'headers': {
+                    'Authorization': ['Token test StageBasedMessaging'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://sbm/api/v1/subscriptions/',
             },
-            'response': {}
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            'url': 'http://sbm/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-4444',
+                            'id': '51fcca25-2e85-4c44-subscription-4444',
+                            'version': 1,
+                            'identity': 'cb245673-aa41-4302-ac47-00000000004',
+                            'messageset': 31,
+                            'next_sequence_number': 1,
+                            'lang': "en",
+                            'active': true,
+                            'completed': false,
+                            'schedule': 1,
+                            'process_status': 0,
+                            'metadata': {},
+                            'created_at': "2015-07-10T06:13:29.693272Z",
+                            'updated_at': "2015-07-10T06:13:29.693272Z"
+                        }
+                    ]
+
+                }
+            }
         },
 
-        // 64:
+        // 64: has_active_subscription - cb245673-aa41-4302-ac47-00000000005 (no active subscription on new system)
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-00000000005",
             'request': {
                 'method': 'GET',
-                'url': 'http://',
+                'params': {
+                    'identity': 'cb245673-aa41-4302-ac47-00000000005',
+                    'active': 'True'
+                },
+                'headers': {
+                    'Authorization': ['Token test StageBasedMessaging'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://sbm/api/v1/subscriptions/',
             },
-            'response': {}
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 0,
+                    "next": null,
+                    "previous": null,
+                    "results": []
+                }
+            }
         },
 
-        // 65:
+        // 65: get active subscriptions for cb245673-aa41-4302-ac47-10000000001
         {
+            'key': "get.sbm.identity.cb245673-aa41-4302-ac47-10000000001",
+            'repeatable': true,
             'request': {
                 'method': 'GET',
-                'url': 'http://',
+                'params': {
+                    'identity': 'cb245673-aa41-4302-ac47-10000000001',
+                    'active': 'True'
+                },
+                'headers': {
+                    'Authorization': ['Token test StageBasedMessaging'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://sbm/api/v1/subscriptions/',
             },
-            'response': {}
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            'url': 'http://sbm/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-1111',
+                            'id': '51fcca25-2e85-4c44-subscription-1111',
+                            'version': 1,
+                            'identity': 'cb245673-aa41-4302-ac47-10000000001',
+                            'messageset': 11,
+                            'next_sequence_number': 1,
+                            'lang': "en",
+                            'active': true,
+                            'completed': false,
+                            'schedule': 1,
+                            'process_status': 0,
+                            'metadata': {},
+                            'created_at': "2015-07-10T06:13:29.693272Z",
+                            'updated_at': "2015-07-10T06:13:29.693272Z"
+                        }
+                    ]
+                }
+            }
         },
 
         // 66:

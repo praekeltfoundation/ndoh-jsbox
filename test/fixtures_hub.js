@@ -206,7 +206,7 @@ module.exports = function() {
                     "action": "nurse_update_detail",
                     "data": {
                         "id_type": "sa_id",
-                        "sa_id_no": "9001016265166",
+                        "sa_id_no": "9001015087082",
                         "dob":"1990-01-01"
                     }
                 }
@@ -662,7 +662,144 @@ module.exports = function() {
             'response': {}
         },
 
-        // 27: post change (number to +27820001012) for cb245673-aa41-4302-ac47-00000001005
+        // 27: post registration (pmtct_prebirth) for cb245673-aa41-4302-ac47-00000000001
+        {
+            "request": {
+                "url": 'http://hub/api/v1/registration/',
+                "method": 'POST',
+                "data": {
+                    "reg_type": "pmtct_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000000001",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000001",
+                        "mom_dob": "1981-04-26",
+                        "language": "eng_ZA"
+                    }
+                }
+            },
+            "response": {}
+        },
+
+        // 28: post registration (pmtct_prebirth) for cb245673-aa41-4302-ac47-00000000002
+        {
+            "request": {
+                "url": 'http://hub/api/v1/registration/',
+                "method": 'POST',
+                "data": {
+                    "reg_type": "pmtct_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000000002",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000002",
+                        "mom_dob": "1981-04-26",
+                        "language": "eng_ZA"
+                    }
+                }
+            },
+            "response": {}
+        },
+
+        // 29: post registration (pmtct_postbirth) for cb245673-aa41-4302-ac47-00000000003
+        {
+            "request": {
+                "url": 'http://hub/api/v1/registration/',
+                "method": 'POST',
+                "data": {
+                    "reg_type": "pmtct_postbirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000000003",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000003",
+                        "mom_dob": "1981-04-26",
+                        "language": "eng_ZA"
+                    }
+                }
+            },
+            "response": {}
+        },
+
+        // 30: post registration (pmtct_postbirth) for cb245673-aa41-4302-ac47-00000000004
+        {
+            "request": {
+                "url": 'http://hub/api/v1/registration/',
+                "method": 'POST',
+                "data": {
+                    "reg_type": "pmtct_postbirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000000004",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000004",
+                        "mom_dob": "1981-04-26",
+                        "language": "eng_ZA"
+                    }
+                }
+            },
+            "response": {}
+        },
+
+        // 31: create change for cb245673-aa41-4302-ac47-10000000001; reason miscarriage
+        {
+            "key": "post.hub.change.pmtct_loss_optout.miscarriage.identity.cb245673-aa41-4302-ac47-10000000001",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-10000000001",
+                    "action": "pmtct_loss_optout",
+                    "data": {
+                        "reason": "miscarriage"
+                    }
+                }
+            },
+            "response": {}
+        },
+
+        // 32:  create change for cb245673-aa41-4302-ac47-10000000001; reason not hiv positive
+        {
+            "key": "post.hub.change.pmtct_nonloss_optout.not_hiv_pos.identity.cb245673-aa41-4302-ac47-10000000001",
+            "request": {
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-10000000001",
+                    "action": "pmtct_nonloss_optout",
+                    "data": {
+                        "reason": "not_hiv_pos"
+                    }
+                },
+                "url": 'http://hub/api/v1/change/',
+            },
+            "response": {
+                "response": {
+                    "code": 201,
+                    "data": {
+                        "id": 1
+                    }
+                }
+            }
+        },
+
+        // 33: create change for cb245673-aa41-4302-ac47-10000000001; reason miscarriage
+        {
+            "key": "post.hub.change.pmtct_loss_switch.identity.cb245673-aa41-4302-ac47-10000000001",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-10000000001",
+                    "action": "pmtct_loss_switch",
+                    "data": {
+                        "reason": "miscarriage"
+                    }
+                }
+            },
+            "response": {
+                "response": {
+                    "code": 201,
+                    "data": {
+                        "id": 1
+                    }
+                }
+            }
+        },
+
+        // 34: post change (number to +27820001012) for cb245673-aa41-4302-ac47-00000001005
         {
             "key": "post.hub.change.nurse_change_msisdn.identity.cb245673-aa41-4302-ac47-00000001005",
             "request": {
@@ -684,69 +821,6 @@ module.exports = function() {
                     "accepted": true
                 }
             }
-        },
-
-        // 28:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
-        // 29:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
-        // 30:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
-        // 31:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
-        // 32:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
-        // 33:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
-
-        // 34:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
         },
 
         // 35:
