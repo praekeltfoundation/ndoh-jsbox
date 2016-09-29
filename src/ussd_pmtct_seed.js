@@ -165,8 +165,10 @@ go.app = function() {
 
                                 var subscribed_to_pmtct = false;
                                 var subscribed_to_momconnect = false;
-                                var prebirth_subscription = false, postbirth_subscription = false;
-                                // see if the active subscriptions shortnames contain the searched text
+                                var momconnect_prebirth_subscription = false,
+                                    momconnect_postbirth_subscription = false;
+
+                                // see if the active subscriptions shortnames contain the searched text,
                                 for (var i=0; i < active_subs.length; i++) {
                                     var active_sub_shortname = short_name_map[active_subs[i].messageset];
 
@@ -179,9 +181,9 @@ go.app = function() {
                                     if (momconnect_index > -1) {
                                         subscribed_to_momconnect = true;
                                         if (active_sub_shortname.indexOf("prebirth") > -1) {
-                                            prebirth_subscription = true;
+                                            momconnect_prebirth_subscription = true;
                                         } else if (active_sub_shortname.indexOf("postbirth") > -1) {
-                                            postbirth_subscription = true;
+                                            momconnect_postbirth_subscription = true;
                                         }
                                     }
                                 }
@@ -194,12 +196,12 @@ go.app = function() {
                                     self.im.user.set_answer("consent", identity.details.consent);
                                     self.im.user.set_answer("mom_dob", identity.details.mom_dob);
 
-                                    if (prebirth_subscription && postbirth_subscription) {
+                                    if (momconnect_prebirth_subscription && momconnect_postbirth_subscription) {
                                         // default to prebirth in case of multiple subscriptions
                                         self.im.user.set_answer("subscription_type", "prebirth");
-                                    } else if (prebirth_subscription) {
+                                    } else if (momconnect_prebirth_subscription) {
                                         self.im.user.set_answer("subscription_type", "prebirth");
-                                    } else if (postbirth_subscription) {
+                                    } else if (momconnect_postbirth_subscription) {
                                         self.im.user.set_answer("subscription_type", "postbirth");
                                     }
 
