@@ -1,5 +1,6 @@
 var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
+var assert = require('assert');
 
 var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
@@ -23,7 +24,9 @@ describe("app", function() {
             tester
                 .setup.config.app({
                     name: 'ussd_public',
-                    testing_today: "2014-04-04",
+                    testing_today: "2014-04-04 07:07:07",
+                    env: 'test',
+                    metric_store: 'test_metric_store',
                     logging: "off",
                     no_timeout_redirects: [
                         "state_start", "state_end_not_pregnant", "state_end_consent_refused",
@@ -50,6 +53,9 @@ describe("app", function() {
                     },
                 })
                 .setup(function(api) {
+                    api.metrics.stores = {'test_metric_store': {}};
+                })
+                .setup(function(api) {
                     // add fixtures for services used
                     fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
@@ -58,6 +64,48 @@ describe("app", function() {
                     fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 ->
                 });
+        });
+
+        describe('using the session length helper', function () {
+            it('should publish metrics', function () {
+                return tester
+                    .setup(function(api, im) {
+                        api.kv.store['session_length_helper.' + api.config.app.name + '.foodacom.sentinel'] = '2000-12-12';
+                        api.kv.store['session_length_helper.' + api.config.app.name + '.foodacom'] = 42;
+                    })
+                    .setup.user({
+                        state: 'state_start',
+                        addr: '27820001001',
+                        metadata: {
+                          session_length_helper: {
+                            // one minute before the mocked timestamp
+                            start: Number(new Date('April 4, 2014 07:06:07'))
+                          }
+                        }
+                    })
+                    .input({
+                        content: '1',
+                        transport_metadata: {
+                            aat_ussd: {
+                                provider: 'foodacom'
+                            }
+                        }
+                    })
+                    .input.session_event('close')
+                    .check(function(api, im) {
+
+                        var kv_store = api.kv.store;
+                        assert.equal(kv_store['session_length_helper.' + im.config.name + '.foodacom'], 60000);
+                        assert.equal(
+                          kv_store['session_length_helper.' + im.config.name + '.foodacom.sentinel'], '2014-04-04');
+
+                        var m_store = api.metrics.stores.test_metric_store;
+                        assert.equal(
+                          m_store['session_length_helper.' + im.config.name + '.foodacom'].agg, 'max');
+                        assert.equal(
+                          m_store['session_length_helper.' + im.config.name + '.foodacom'].values[0], 60);
+                    }).run();
+            });
         });
 
         describe("timeout testing", function() {

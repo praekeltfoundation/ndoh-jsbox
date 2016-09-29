@@ -1,12 +1,13 @@
 var vumigo = require('vumigo_v02');
+var AppTester = vumigo.AppTester;
+var assert = require('assert');
+
 var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
 var fixtures_MessageSender = require('./fixtures_message_sender');
 var fixtures_ServiceRating = require('./fixtures_service_rating');
 var fixtures_Hub = require('./fixtures_hub');
 var fixtures_Jembi = require('./fixtures_jembi');
-var AppTester = vumigo.AppTester;
-
 var utils = require('seed-jsbox-utils').utils;
 
 describe("app", function() {
@@ -29,7 +30,7 @@ describe("app", function() {
                     no_timeout_redirects: [
                         "state_start"
                     ],
-                    testing_today: "2014-04-04",
+                    testing_today: "2014-04-04 07:07:07",
                     channel: "*120*550*3#",
                     services: {
                         identity_store: {
@@ -58,6 +59,48 @@ describe("app", function() {
                     fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 ->
                 });
+        });
+
+        describe('using the session length helper', function () {
+            it('should publish metrics', function () {
+                return tester
+                    .setup(function(api, im) {
+                        api.kv.store['session_length_helper.' + api.config.app.name + '.foodacom.sentinel'] = '2000-12-12';
+                        api.kv.store['session_length_helper.' + api.config.app.name + '.foodacom'] = 42;
+                    })
+                    .setup.user({
+                        state: 'state_start',
+                        addr: '27820001001',
+                        metadata: {
+                          session_length_helper: {
+                            // one minute before the mocked timestamp
+                            start: Number(new Date('April 4, 2014 07:06:07'))
+                          }
+                        }
+                    })
+                    .input({
+                        content: '1',
+                        transport_metadata: {
+                            aat_ussd: {
+                                provider: 'foodacom'
+                            }
+                        }
+                    })
+                    .input.session_event('close')
+                    .check(function(api, im) {
+
+                        var kv_store = api.kv.store;
+                        assert.equal(kv_store['session_length_helper.' + im.config.name + '.foodacom'], 60000);
+                        assert.equal(
+                          kv_store['session_length_helper.' + im.config.name + '.foodacom.sentinel'], '2014-04-04');
+
+                        var m_store = api.metrics.stores.test_metric_store;
+                        assert.equal(
+                          m_store['session_length_helper.' + im.config.name + '.foodacom'].agg, 'max');
+                        assert.equal(
+                          m_store['session_length_helper.' + im.config.name + '.foodacom'].values[0], 60);
+                    }).run();
+            });
         });
 
         // re-dial flow tests
