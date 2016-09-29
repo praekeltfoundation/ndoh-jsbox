@@ -171,7 +171,8 @@ go.app = function() {
                                 var momconnect_prebirth_subscription = false,
                                     momconnect_postbirth_subscription = false;
 
-                                // see if the active subscriptions shortnames contain the searched text,
+                                // see if any of the active subscriptions shortnames contain
+                                // either "pmtct" or "momconnect" in order to route appropriately
                                 for (var i=0; i < active_subs.length; i++) {
                                     var active_sub_shortname = short_name_map[active_subs[i].messageset];
 
@@ -183,6 +184,8 @@ go.app = function() {
                                     var momconnect_index = active_sub_shortname.indexOf("momconnect");
                                     if (momconnect_index > -1) {
                                         subscribed_to_momconnect = true;
+                                        // if subscribed to momconnect, also check to see if
+                                        // subscription is pre- or postbirth
                                         if (active_sub_shortname.indexOf("prebirth") > -1) {
                                             momconnect_prebirth_subscription = true;
                                         } else if (active_sub_shortname.indexOf("postbirth") > -1) {
@@ -212,7 +215,6 @@ go.app = function() {
                                 } else {
                                     return self.states.create("state_end_not_registered");
                                 }
-
                             });
                         }
                     });
