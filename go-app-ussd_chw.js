@@ -207,12 +207,21 @@ go.app = function() {
                 // Total sessions
                 // This adds <env>.servicerating.sum.sessions 'last' metric
                 // As well as <env>.servicerating.sum.sessions.transient 'sum' metric
-                .add.total_sessions([self.metric_prefix, 'sum', 'sessions'].join('.'))
+                //.add.total_sessions([self.metric_prefix, 'sum', 'sessions'].join('.'))
             ;
 
             // evaluate whether dialback sms needs to be sent on session close
             self.im.on('session:close', function(e) {
                 return self.dial_back(e);
+            });
+
+
+            self.im.on('session:new', function(e) {
+                return self
+                .incr_kv(self.im, [self.store_name, 'sessions'].join('.'))
+                .then(function() {
+                    self.im.metrics.fire.inc([self.env, 'sum', 'sessions'].join('.'));
+                });
             });
 
             self.im.user.on('user:new', function(e) {
