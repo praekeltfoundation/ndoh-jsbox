@@ -57,50 +57,6 @@ go.app = function() {
             );
         };
 
-        self.get_6_lang_code = function(lang) {
-            // Return the six-char code for a two or six letter language code
-            if (lang.length == 6) {
-                // assume it is correct code
-                return lang;
-            } else {
-                return {
-                    "zu": "zul_ZA",
-                    "xh": "xho_ZA",
-                    "af": "afr_ZA",
-                    "en": "eng_ZA",
-                    "nso": "nso_ZA",
-                    "tn": "tsn_ZA",
-                    "st": "sot_ZA",
-                    "ts": "tso_ZA",
-                    "ss": "ssw_ZA",
-                    "ve": "ven_ZA",
-                    "nr": "nbl_ZA"
-                }[lang];
-            }
-        };
-
-        self.get_2_lang_code = function(lang) {
-            // Return the two-char code for a two or six letter language code
-            if (lang.length == 2 || lang.length == 3) {
-                // assume it is correct code
-                return lang;
-            } else {
-                return {
-                    "zul_ZA": "zu",
-                    "xho_ZA": "xh",
-                    "afr_ZA": "af",
-                    "eng_ZA": "en",
-                    "nso_ZA": "nso",
-                    "tsn_ZA": "tn",
-                    "sot_ZA": "st",
-                    "tso_ZA": "ts",
-                    "ssw_ZA": "ss",
-                    "ven_ZA": "ve",
-                    "nbl_ZA": "nr"
-                }[lang];
-            }
-        };
-
         self.send_registration_thanks = function() {
             return ms
             .create_outbound_message(
