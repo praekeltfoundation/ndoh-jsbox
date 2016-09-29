@@ -46,6 +46,7 @@ module.exports = function (grunt) {
                 ],
                 sms_inbound: [
                     'src/index.js',
+                    'src/session_length_helper.js',
                     '<%= paths.src.app.sms_inbound %>',
                     'src/init.js'
                 ],
@@ -129,6 +130,7 @@ module.exports = function (grunt) {
                 ],
                 sms_inbound: [
                     'test/setup.js',
+                    'src/session_length_helper.js',
                     '<%= paths.src.app.sms_inbound %>',
                     'test/sms_inbound.test.js'
                 ],
@@ -247,7 +249,7 @@ module.exports = function (grunt) {
             },
             /*
             */
-            test_ussd_clinic: {
+            /*test_ussd_clinic: {
                 src: ['<%= paths.test.ussd_clinic %>']
             },
             test_ussd_chw: {
@@ -255,13 +257,13 @@ module.exports = function (grunt) {
             },
             test_ussd_public: {
                 src: ['<%= paths.test.ussd_public %>']
-            },/*
+            },
             test_ussd_optout: {
                 src: ['<%= paths.test.ussd_optout %>']
-            },
+            },*/
             test_sms_inbound: {
                 src: ['<%= paths.test.sms_inbound %>']
-            },*/
+            },
             test_ussd_servicerating: {
                 src: ['<%= paths.test.ussd_servicerating %>']
             },/*

@@ -29,7 +29,7 @@ describe("app", function() {
                     testing_today: '2014-04-04 03:07:07',
                     testing_message_id: "0170b7bb-978e-4b8a-35d2-662af5b6daee",
                     env: 'test',
-                    // metric_store: 'test_metric_store',
+                    metric_store: 'test_metric_store',
                     endpoints: {
                         "sms": {"delivery_class": "sms"}
                     },
@@ -112,20 +112,21 @@ describe("app", function() {
                 });
         });
 
-        describe.skip('using the session length helper', function () {
+        describe('using the session length helper', function () {
             it('should publish metrics', function () {
 
                 return tester
-                    // .setup(function(api) {
-                    //     api.kv.store['session_length_helper.' + api.config.app.name + '.foodacom.sentinel'] = '2000-12-12';
-                    //     api.kv.store['session_length_helper.' + api.config.app.name + '.foodacom'] = 42;
-                    // })
+                    .setup(function(api) {
+                        api.kv.store['session_length_helper.' + api.config.app.name + '.foodacom.sentinel'] = '2000-12-12';
+                        api.kv.store['session_length_helper.' + api.config.app.name + '.foodacom'] = 42;
+                    })
                     .setup.user({
                         state: 'state_start',
+                        addr: '27820001002',
                         metadata: {
                           session_length_helper: {
                             // one minute before the mocked timestamp
-                            start: Number(new Date('April 4, 2014 07:06:07'))
+                            start: Number(new Date('April 4, 2014 03:06:07'))
                           }
                         }
                     })

@@ -2,6 +2,7 @@ go.app = function() {
     var vumigo = require("vumigo_v02");
     var moment = require('moment');
     var _ = require('lodash');
+    var MetricsHelper = require('go-jsbox-metrics-helper');
     var App = vumigo.App;
     var EndState = vumigo.states.EndState;
     var JsonApi = vumigo.http.api.JsonApi;
@@ -41,6 +42,45 @@ go.app = function() {
                 self.im.config.services.hub.token,
                 self.im.config.services.hub.url
             );
+
+            self.env = self.im.config.env;
+            self.metric_prefix = [self.env, self.im.config.name].join('.');
+            self.store_name = [self.env, self.im.config.name].join('.');
+
+            self.attach_session_length_helper(self.im);
+
+            mh = new MetricsHelper(self.im);
+            mh
+                // Total unique users
+                // This adds <env>.servicerating.sum.unique_users 'last' metric
+                // As well as <env>.servicerating.sum.unique_users.transient 'sum' metric
+                .add.total_unique_users([self.metric_prefix, 'sum', 'unique_users'].join('.'))
+            ;
+        };
+
+        self.attach_session_length_helper = function(im) {
+            // If we have transport metadata then attach the session length
+            // helper to this app
+            if(!im.msg.transport_metadata)
+                return;
+
+            var slh = new go.SessionLengthHelper(im, {
+                name: function () {
+                    var metadata = im.msg.transport_metadata.aat_ussd;
+                    var provider;
+                    if(metadata) {
+                        provider = (metadata.provider || 'unspecified').toLowerCase();
+                    } else {
+                        provider = 'unknown';
+                    }
+                    return [im.config.name, provider].join('.');
+                },
+                clock: function () {
+                    return utils.get_moment_date(im.config.testing_today, "YYYY-MM-DD hh:mm:ss");
+                }
+            });
+            slh.attach();
+            return slh;
         };
 
         self.is_weekend = function(config) {
