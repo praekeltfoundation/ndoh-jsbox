@@ -25,9 +25,9 @@ describe("app", function() {
             tester
                 .setup.char_limit(160)
                 .setup.config.app({
-                    name: "nurse_sms",
+                    name: "sms_nurse",
                     testing: "true",
-                    testing_today: "April 4, 2014 07:07:07",
+                    testing_today: "2014-04-04 07:07:07",
                     testing_message_id: "0170b7bb-978e-4b8a-35d2-662af5b6daee",
                     channel: "longcode",
                     nurse_ussd_channel: "nurse_ussd_channel",
@@ -46,6 +46,9 @@ describe("app", function() {
                     metric_store: 'test_sms_nurse_ms',
                 })
                 .setup(function(api) {
+                    api.metrics.stores = {'test_sms_nurse_ms': {}};
+                })
+                .setup(function(api) {
                     // add fixtures for services used
                     fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
@@ -54,6 +57,48 @@ describe("app", function() {
                     fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 ->
                 });
+        });
+
+        describe('using the session length helper', function () {
+            it('should publish metrics', function () {
+                return tester
+                    .setup(function(api) {
+                        api.kv.store['session_length_helper.' + api.config.app.name + '.foodacom.sentinel'] = '2000-12-12';
+                        api.kv.store['session_length_helper.' + api.config.app.name + '.foodacom'] = 42;
+                    })
+                    .setup.user({
+                        state: 'states_start',
+                        addr: '27820001001',
+                        metadata: {
+                          session_length_helper: {
+                            // one minute before the mocked timestamp
+                            start: Number(new Date('April 4, 2014 07:06:07'))
+                          }
+                        }
+                    })
+                    .input({
+                        content: 'start',
+                        transport_metadata: {
+                            aat_ussd: {
+                                provider: 'foodacom'
+                            }
+                        }
+                    })
+                    .input.session_event('close')
+                    .check(function(api, im) {
+
+                        var kv_store = api.kv.store;
+                        assert.equal(kv_store['session_length_helper.' + im.config.name + '.foodacom'], 60000);
+                        assert.equal(
+                          kv_store['session_length_helper.' + im.config.name + '.foodacom.sentinel'], '2014-04-04');
+
+                        var m_store = api.metrics.stores.test_sms_nurse_ms;
+                        assert.equal(
+                          m_store['session_length_helper.' + im.config.name + '.foodacom'].agg, 'max');
+                        assert.equal(
+                          m_store['session_length_helper.' + im.config.name + '.foodacom'].values[0], 60);
+                    }).run();
+            });
         });
 
         describe("when the user sends a message containing a USSD code", function() {

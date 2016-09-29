@@ -137,6 +137,7 @@ module.exports = function (grunt) {
                 ],
                 sms_nurse: [
                     'test/setup.js',
+                    'src/session_length_helper.js',
                     '<%= paths.src.app.sms_nurse %>',
                     'test/sms_nurse.test.js'
                 ],
@@ -159,6 +160,10 @@ module.exports = function (grunt) {
                     'test/setup.js',
                     '<%= paths.src.app.sms_pmtct_seed %>',
                     'test/sms_pmtct_seed.test.js'
+                ],
+                session_length_helper: [
+                    'src/session_length_helper.js',
+                    'test/session_length_helper.test.js'
                 ]
             }
         },
@@ -235,7 +240,7 @@ module.exports = function (grunt) {
             },
             /*
             */
-            test_ussd_clinic: {
+            /*test_ussd_clinic: {
                 src: ['<%= paths.test.ussd_clinic %>']
             },
             test_ussd_chw: {
@@ -255,10 +260,10 @@ module.exports = function (grunt) {
             },
             test_ussd_nurse: {
                 src: ['<%= paths.test.ussd_nurse %>']
-            },
+            },*/
             test_sms_nurse: {
                 src: ['<%= paths.test.sms_nurse %>']
-            },
+            },/*
             test_ussd_pmtct: {
                 src: ['<%= paths.test.ussd_pmtct %>']
             },
@@ -270,6 +275,9 @@ module.exports = function (grunt) {
             },
             test_sms_pmtct_seed: {
                 src: ['<%= paths.test.sms_pmtct_seed %>']
+            },*/
+            test_session_length_helper: {
+                src: ['<%= paths.test.session_length_helper %>']
             }
             /*
             */
