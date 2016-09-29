@@ -134,10 +134,11 @@ go.app = function() {
                     return sbm
                     .list_active_subscriptions(identity.id)
                     .then(function(active_subs_response) {
-                        var active_subs = active_subs_response.results;
                         if (active_subs_response.count === 0) {
                             return self.states.create("state_end_not_registered");
                         } else {
+                            var active_subs = active_subs_response.results;
+
                             return sbm
                             .list_messagesets()
                             .then(function(messagesets_response) {
