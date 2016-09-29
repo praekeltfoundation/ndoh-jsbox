@@ -86,7 +86,6 @@ go.app = function() {
         // override normal state adding
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-            /*if (!interrupt || !go.utils.timed_out(self.im))*/
                 log_mode = self.im.config.logging;
                 if (log_mode === 'prod') {
                     return self.im
@@ -106,35 +105,8 @@ go.app = function() {
                         return creator(name, opts);
                     });
                 }
-
-                /*interrupt = false;
-                opts = opts || {};
-                opts.name = name;
-                return self.states.create("state_timed_out", opts);*/
             });
         };
-
-        // timeout 01
-        self.states.add("state_timed_out", function(name, creator_opts) {
-            return new ChoiceState(name, {
-                question: $("You have an incomplete registration. Would you like to continue with this registration?"),
-                choices: [
-                    new Choice("continue", $("Yes")),
-                    new Choice("restart", $("No, start a new registration"))
-                ],
-                next: function(choice) {
-                    if (choice.value === "continue") {
-                        return {
-                            name: creator_opts.name,
-                            creator_opts: creator_opts
-                        };
-                    } else if (choice.value === "restart") {
-                        return "state_start";
-                    }
-                }
-            });
-        });
-
 
         // START STATE
 

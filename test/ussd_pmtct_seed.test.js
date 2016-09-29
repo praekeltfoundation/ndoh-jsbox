@@ -83,60 +83,6 @@ describe("PMTCT app", function() {
                 });
         });
 
-        // TEST TIMEOUTS
-
-        describe.skip("Timeout testing", function() {
-            it("should ask about continuing", function() {
-                return tester
-                    .setup.user.addr("0820000222")
-                    .inputs(
-                        {session_event: "new"}  // dial in
-                        , "12345"
-                        , {session_event: "close"}
-                        , {session_event: "new"}
-                    )
-                    .check.interaction({
-                        state: "state_timed_out",
-                        reply: [
-                            "You have an incomplete registration. Would you like to continue with this registration?",
-                            "1. Yes",
-                            "2. No, start new registration"
-                        ].join("\n")
-                    })
-                    .run();
-            });
-            it("should continue", function() {
-                return tester
-                    .setup.user.addr("0820000222")
-                    .inputs(
-                        {session_event: "new"}  // dial in
-                        , "12345"
-                        , {session_event: "close"}
-                        , {session_event: "new"}
-                        , "1"  // state_timed_out - continue
-                    )
-                    .check.interaction({
-                        state: "state_msg_receiver"
-                    })
-                    .run();
-            });
-            it("should restart", function() {
-                return tester
-                    .setup.user.addr("0820000222")
-                    .inputs(
-                        {session_event: "new"}  // dial in
-                        , "12345"
-                        , {session_event: "close"}
-                        , {session_event: "new"}
-                        , "2"  // state_timed_out - restart
-                    )
-                    .check.interaction({
-                        state: "state_auth_code"
-                    })
-                    .run();
-            });
-        });
-
         // TEST PMTCT SIGN-UP FLOWS
 
         describe("Sign-up flow testing", function() {
