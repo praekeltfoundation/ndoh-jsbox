@@ -59,7 +59,7 @@ go.app = function() {
                 // bug is creating problems
                 .add.tracker({
                     action: 'exit',
-                    state: 'states_start'
+                    state: 'state_start'
                 }, {
                     action: 'exit',
                     state: 'question_5_privacy'
