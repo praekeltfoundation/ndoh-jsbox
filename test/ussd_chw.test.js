@@ -48,6 +48,9 @@ describe("app", function() {
                     },
                 })
                 .setup(function(api) {
+                    api.kv.store['test.ussd_chw.unique_users'] = 0;
+                })
+                .setup(function(api) {
                     api.metrics.stores = {'test_metric_store': {}};
                 })
                 .setup(function(api) {
@@ -102,6 +105,163 @@ describe("app", function() {
                     }).run();
             });
         });
+
+        // no_complete metric tests
+        describe("when a session is terminated", function() {
+
+            describe("when the last state is state_start", function() {
+                it("should increase state_start.no_complete metric by 1", function() {
+                    return tester
+                        .setup.user.addr('27820001001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '1'  // state_start
+                        )
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_metric_store;
+                            assert.deepEqual(metrics['test.ussd_chw.state_start.no_complete'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.state_start.no_complete.transient'].values, [1]);
+                        })
+                        .run();
+                });
+            });
+
+            describe("when the last state is state_birth_day", function() {
+                it("should increase state_birth_day.no_complete metric by 1", function() {
+                    return tester
+                        .setup.user.state('state_birth_day')
+                        .setup.user.addr('27820001001')
+                        .inputs(
+                            '24'
+                        )
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_metric_store;
+                            assert.deepEqual(metrics['test.ussd_chw.state_birth_day.no_complete'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.state_birth_day.no_complete.transient'].values, [1]);
+                        })
+                        .run();
+                });
+            });
+
+            describe("when the last state is state_birth_day", function() {
+                it("and no_complete was 1 should increase state_birth_day.no_complete metric to 2", function() {
+                    return tester
+                        .setup(function(api) {
+                            api.metrics.stores.test_metric_store = {
+                                'test.ussd_chw.state_birth_day.no_complete': { agg: 'last', values: [ 1 ] },
+                                'test.ussd_chw.state_birth_day.no_complete.transient': { agg: 'sum', values: [ 1 ] }
+                            };
+                            api.kv.store['test_metric_store.test.ussd_chw.state_birth_day.no_complete'] = 1;
+                        })
+                        .setup.user.state('state_birth_day')
+                        .setup.user.addr('27820001001')
+                        .inputs(
+                            '14'
+                        )
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_metric_store;
+                            assert.deepEqual(metrics['test.ussd_chw.state_birth_day.no_complete'].values, [1, 2]);
+                            assert.deepEqual(metrics['test.ussd_chw.state_birth_day.no_complete.transient'].values, [1, 1]);
+                        })
+                        .run();
+                });
+            });
+
+            describe("when the last state is state_end_success", function() {
+                it("should not fire a metric", function() {
+                    return tester
+                        .setup.user.addr('27820001001')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'  // state_start - yes
+                            , '1'  // state_consent - yes
+                            , '1'  // state_id_type - sa id
+                            , '5101015009088'  // state_sa_id
+                            , '4'  // state_language - english
+                        )
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_metric_store;
+                            assert.deepEqual(metrics['test.ussd_chw.state_end_success.no_complete'], undefined);
+                        })
+                        .run();
+                });
+            });
+        });
+
+        describe("when a new session is started", function() {
+
+            describe("when it is a new user logging on", function() {
+                it("should increase the metric state_start.no_complete by 1", function() {
+                    return tester
+                        .setup.user.addr('27820001001')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'  // state_start
+                        )
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_metric_store;
+                            assert.deepEqual(metrics['test.ussd_chw.state_start.no_complete'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.state_start.no_complete.transient'].values, [1]);
+                        })
+                        .run();
+                });
+            });
+
+            describe("when it is an existing user logging on at state_start", function() {
+                it("the metric state_start.no_complete should be undefined", function() {
+                    return tester
+                        .setup.user.lang('eng_ZA')  // make sure user is not seen as new
+                        .setup.user.addr('27820001001')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                        )
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_metric_store;
+                            assert.deepEqual(metrics['test.ussd_chw.state_start.no_complete'], undefined);
+                        })
+                        .run();
+                });
+            });
+
+            describe("when it is an existing starting a session at state_birth_day", function() {
+                it("the metric state_birth_day.no_complete should be undefined", function() {
+                    return tester
+                        .setup.user.state('state_birth_day')
+                        .setup.user.addr('27820001001')
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_metric_store;
+                            assert.deepEqual(metrics['test.ussd_chw.state_birth_day.no_complete'], undefined);
+                        })
+                        .run();
+                });
+            });
+
+            describe("when it is an existing user continuing a session at state_birth_day", function() {
+                it("should fire metric state_birth_day.no_complete", function() {
+                    return tester
+                        .setup.user.addr('27820001001')
+                        .inputs(   // make sure session is not new
+                            {session_event: 'new'}  // dial in
+                            , '1'  // state_start - yes
+                            , '1'  // state_consent - yes
+                            , '3'  // state_id_type - none
+                            , '1981'  // state_birth_year
+                            , '2'  // state_birth_month
+                            , {session_event: 'close'}
+                            , {session_event: 'new'}
+                            , '1'  // state_timed_out - continue
+                            , '29'  // state_birth_day
+                        )
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_metric_store;
+                            assert.deepEqual(metrics['test.ussd_chw.state_birth_day.no_complete'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.state_birth_day.no_complete.transient'].values, [1]);
+                        })
+                        .run();
+                });
+            });
+        });
+        // end no_complete metrics tests
 
         // re-dial flow tests
         describe("when a user timed out", function() {
@@ -291,6 +451,11 @@ describe("app", function() {
                             '1. Yes',
                             '2. No'
                         ].join('\n')
+                    })
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_metric_store;
+                        assert.deepEqual(metrics['test.ussd_chw.sum.unique_users'].values, [1]);
+                        assert.deepEqual(metrics['test.sum.unique_users'].values, [1]);
                     })
                     .run();
             });
