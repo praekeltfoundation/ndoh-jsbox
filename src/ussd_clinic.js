@@ -43,6 +43,37 @@ go.app = function() {
             self.im.on('session:close', function(e) {
                 return self.dial_back(e);
             });
+
+            self.env = self.im.config.env;
+            self.metric_prefix = [self.env, self.im.config.name].join('.');
+            self.store_name = [self.env, self.im.config.name].join('.');
+
+            self.attach_session_length_helper(self.im);
+        };
+
+        self.attach_session_length_helper = function(im) {
+            // If we have transport metadata then attach the session length
+            // helper to this app
+            if(!im.msg.transport_metadata)
+                return;
+
+            var slh = new go.SessionLengthHelper(im, {
+                name: function () {
+                    var metadata = im.msg.transport_metadata.aat_ussd;
+                    var provider;
+                    if(metadata) {
+                        provider = (metadata.provider || 'unspecified').toLowerCase();
+                    } else {
+                        provider = 'unknown';
+                    }
+                    return [im.config.name, provider].join('.');
+                },
+                clock: function () {
+                    return utils.get_moment_date(im.config.testing_today, "YYYY-MM-DD hh:mm:ss");
+                }
+            });
+            slh.attach();
+            return slh;
         };
 
         self.dial_back = function(e) {
