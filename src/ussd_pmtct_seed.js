@@ -428,10 +428,8 @@ go.app = function() {
                             }
                         };
 
-                        // only opt user out of the PMTCT message set NOT MomConnect
                         return hub
                         .create_change(pmtct_nonloss_optout)
-                        // TODO: We are currently not opting the identity out - should we?
                         .then(function() {
                             return "state_end_optout";
                         });
@@ -519,8 +517,6 @@ go.app = function() {
             return new EndState(name, {
                 text: $("Thank you. You will receive support messages from MomConnect in the coming weeks."),
                 next: "state_start"
-                // opt user out of PMTCT & main MomConnect messages sets
-                // opt user in to MomConnect loss support message set
             });
         });
 
