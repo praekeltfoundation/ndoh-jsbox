@@ -705,7 +705,7 @@ go.app = function() {
                 hub.create_registration(registration_info),
                 self.send_registration_thanks()
             ])
-            .then(function() {
+            .then(function(response) {
                 return self.states.create('state_end_success');
             });
         });

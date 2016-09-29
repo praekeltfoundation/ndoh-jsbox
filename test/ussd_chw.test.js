@@ -23,6 +23,8 @@ describe("app", function() {
                 .setup.char_limit(182)
                 .setup.config.app({
                     name: 'ussd_chw',
+                    env: 'test',
+                    metric_store: 'test_metric_store',
                     logging: "off",
                     no_timeout_redirects: [
                         "state_start"
@@ -43,6 +45,9 @@ describe("app", function() {
                             token: 'test MessageSender'
                         }
                     },
+                })
+                .setup(function(api) {
+                    api.metrics.stores = {'test_metric_store': {}};
                 })
                 .setup(function(api) {
                     // add fixtures for services used

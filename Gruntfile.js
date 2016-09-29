@@ -29,6 +29,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_chw: [
                     'src/index.js',
+                    'src/session_length_helper.js',
                     '<%= paths.src.app.ussd_chw %>',
                     'src/init.js'
                 ],
@@ -109,6 +110,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_chw: [
                     'test/setup.js',
+                    'src/session_length_helper.js',
                     '<%= paths.src.app.ussd_chw %>',
                     'test/ussd_chw.test.js'
                 ],
@@ -244,9 +246,9 @@ module.exports = function (grunt) {
             test_ussd_clinic: {
                 src: ['<%= paths.test.ussd_clinic %>']
             },
-            /*test_ussd_chw: {
+            test_ussd_chw: {
                 src: ['<%= paths.test.ussd_chw %>']
-            },
+            },/*
             test_ussd_public: {
                 src: ['<%= paths.test.ussd_public %>']
             },
