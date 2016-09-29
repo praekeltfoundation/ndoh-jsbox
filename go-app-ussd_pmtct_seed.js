@@ -145,6 +145,22 @@ go.app = function() {
                                 var messagesets = messagesets_response.results;
 
                                 // create a mapping of messageset ids to shortnames
+                                // i.e.
+                                //      {
+                                //          11:  pmtct_prebirth.patient.1,
+                                //          12:  pmtct_prebirth.patient.2,
+                                //          14:  pmtct_postbirth.patient.1,
+                                //          21:  momconnect_prebirth.hw_full.1,
+                                //          22:  momconnect_prebirth.hw_full.2,
+                                //          31:  momconnect_postbirth.hw_full.1,
+                                //          32:  momconnect_postbirth.hw_full.2,
+                                //          41:  momconnect_prebirth.patient.1,
+                                //          42:  momconnect_prebirth.hw_partial.1',
+                                //          51:  loss_miscarriage.patient.1,
+                                //          52:  loss_stillbirth.patient.1,
+                                //          53:  loss_babyloss.patient.1,
+                                //          61:  nurseconnect.hw_full.1
+                                //      }
                                 var short_name_map = {};
                                 for (var k=0; k < messagesets.length; k++) {
                                     short_name_map[messagesets[k].id] = messagesets[k].short_name;
