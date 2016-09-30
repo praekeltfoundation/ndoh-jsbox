@@ -208,27 +208,16 @@ go.app = function() {
                 // This adds <env>.ussd_clinic.sum.sessions 'last' metric
                 // As well as <env>.ussd_clinic.sum.sessions.transient 'sum' metric
                 .add.total_sessions([self.metric_prefix, 'sum', 'sessions'].join('.'))
+
+                // Total unique users for environment, across apps
+                .add.total_unique_users([self.env, 'sum', 'unique_users'].join('.'))
+                // Total sessions for environment, across apps
+                .add.total_sessions([self.env, 'sum', 'sessions'].join('.'))
             ;
 
             // evaluate whether dialback sms needs to be sent on session close
             self.im.on('session:close', function(e) {
                 return self.dial_back(e);
-            });
-
-            self.im.on('session:new', function(e) {
-                return self
-                .incr_kv(self.im, [self.store_name, 'sessions'].join('.'))
-                .then(function() {
-                    self.im.metrics.fire.inc([self.env, 'sum', 'sessions'].join('.'));
-                });
-            });
-
-            self.im.user.on('user:new', function(e) {
-                return self
-                .incr_kv(self.im, [self.store_name, 'unique_users'].join('.'))
-                .then(function() {
-                    self.im.metrics.fire.inc([self.env, 'sum', 'unique_users'].join('.'));
-                });
             });
 
             self.im.on('state:exit', function(e) {
@@ -259,13 +248,6 @@ go.app = function() {
             });
             slh.attach();
             return slh;
-        };
-
-        self.incr_kv = function(im, name) {
-            return im.api_request('kv.incr', {key: name, amount: 1})
-                .then(function(result){
-                    return result.value;
-                });
         };
 
         self.fire_complete = function(name, val) {
