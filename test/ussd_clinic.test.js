@@ -326,8 +326,8 @@ describe("app", function() {
                             assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete.transient'].values, [1]);
                             assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete'], undefined);
                             assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete.transient'], undefined);
-                            assert.deepEqual(metrics['test.ussd_clinic.state_timed_out.no_complete'].values, [1,2]);
-                            assert.deepEqual(metrics['test.ussd_clinic.state_timed_out.no_complete.transient'].values, [1,1]);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_timed_out.no_complete'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_timed_out.no_complete.transient'].values, [1]);
                         })
                         .run();
                 });
@@ -351,8 +351,8 @@ describe("app", function() {
                             assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete.transient'].values, [1]);
                             assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete'].values, [1]);
                             assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete.transient'].values, [1]);
-                            assert.deepEqual(metrics['test.ussd_clinic.state_timed_out.no_complete'].values, [1,2]);
-                            assert.deepEqual(metrics['test.ussd_clinic.state_timed_out.no_complete.transient'].values, [1,1]);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_timed_out.no_complete'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_clinic.state_timed_out.no_complete.transient'].values, [1]);
                             assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete'].values, [1]);
                             assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete.transient'].values, [1]);
                         })
