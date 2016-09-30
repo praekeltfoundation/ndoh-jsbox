@@ -207,7 +207,7 @@ go.app = function() {
                 // Total sessions
                 // This adds <env>.servicerating.sum.sessions 'last' metric
                 // As well as <env>.servicerating.sum.sessions.transient 'sum' metric
-                // .add.total_sessions([self.metric_prefix, 'sum', 'sessions'].join('.'))
+                .add.total_sessions([self.metric_prefix, 'sum', 'sessions'].join('.'))
             ;
 
             // evaluate whether dialback sms needs to be sent on session close
