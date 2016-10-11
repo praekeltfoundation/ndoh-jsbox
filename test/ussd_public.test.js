@@ -293,6 +293,15 @@ describe("app", function() {
                     .check(function(api) {
                         utils.check_fixtures_used(api, [180, 183]);
                     })
+                    // check metrics
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_metric_store;
+                        assert.deepEqual(metrics['test.sum.unique_users'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_public.sum.unique_users'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_public.sum.sessions'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_public.state_start.no_complete'], undefined);
+                        assert.deepEqual(metrics['test.ussd_public.state_start.no_complete.transient'], undefined);
+                    })
                     .run();
                 });
             });
@@ -415,6 +424,17 @@ describe("app", function() {
                     .check.interaction({
                         state: "state_end_not_pregnant",
                         reply: "You have chosen not to receive MomConnect SMSs"
+                    })
+                    // check metrics
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_metric_store;
+                        assert.deepEqual(metrics['test.sum.unique_users'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_public.sum.unique_users'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_public.sum.sessions'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_public.state_language.no_complete'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_public.state_language.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_public.state_suspect_pregnancy.no_complete'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_public.state_suspect_pregnancy.no_complete.transient'].values, [1]);
                     })
                     .check.reply.ends_session()
                     .run();
