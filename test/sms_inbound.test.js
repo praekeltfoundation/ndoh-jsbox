@@ -25,21 +25,10 @@ describe("app", function() {
                 .setup.char_limit(160)
                 .setup.config.app({
                     name: 'sms_inbound',
-                    testing: 'true',
                     testing_today: '2014-04-04 03:07:07',
                     testing_message_id: "0170b7bb-978e-4b8a-35d2-662af5b6daee",
                     env: 'test',
                     metric_store: 'test_metric_store',
-                    endpoints: {
-                        "sms": {"delivery_class": "sms"}
-                    },
-                    channel: "longcode",
-                    jembi: {
-                        username: 'foo',
-                        password: 'bar',
-                        url: 'http://test/v2/',
-                        url_json: 'http://test/v2/json/'
-                    },
                     services: {
                         identity_store: {
                             url: 'http://is/api/v1/',
@@ -53,26 +42,6 @@ describe("app", function() {
                             url: 'http://hub/api/v1/',
                             token: 'test Hub'
                         }
-                    },
-                    subscription: {
-                        standard: 1,
-                        later: 2,
-                        accelerated: 3,
-                        baby1: 4,
-                        baby2: 5,
-                        miscarriage: 6,
-                        stillbirth: 7,
-                        babyloss: 8,
-                        subscription: 9,
-                        chw: 10
-                    },
-                    rate: {
-                        daily: 1,
-                        one_per_week: 2,
-                        two_per_week: 3,
-                        three_per_week: 4,
-                        four_per_week: 5,
-                        five_per_week: 6
                     },
                     logging: 'off',
                     public_holidays: [
