@@ -26,10 +26,7 @@ describe("app", function() {
                 .setup.char_limit(160)
                 .setup.config.app({
                     name: "nurse_sms",
-                    testing: "true",
-                    testing_today: "April 4, 2014 07:07:07",
                     testing_message_id: "0170b7bb-978e-4b8a-35d2-662af5b6daee",
-                    channel: "longcode",
                     nurse_ussd_channel: "nurse_ussd_channel",
                     services: {
                         identity_store: {

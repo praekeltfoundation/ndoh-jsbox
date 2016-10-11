@@ -49,12 +49,13 @@ go.app = function() {
 
             mh = new MetricsHelper(self.im);
             mh
-                // Total unique users
+                // Total unique users for app
                 // This adds <env>.ussd_clinic.sum.unique_users 'last' metric
                 // As well as <env>.ussd_clinic.sum.unique_users.transient 'sum' metric
                 .add.total_unique_users([self.metric_prefix, 'sum', 'unique_users'].join('.'))
 
-                // Total sessions
+
+                // Total sessions for app
                 // This adds <env>.ussd_clinic.sum.sessions 'last' metric
                 // As well as <env>.ussd_clinic.sum.sessions.transient 'sum' metric
                 .add.total_sessions([self.metric_prefix, 'sum', 'sessions'].join('.'))
