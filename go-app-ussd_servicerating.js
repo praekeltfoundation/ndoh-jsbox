@@ -188,7 +188,6 @@ go.app = function() {
 
             self.env = self.im.config.env;
             self.metric_prefix = [self.env, self.im.config.name].join('.');
-            self.store_name = [self.im.config.metric_store, self.env, self.im.config.name].join('.');
 
             self.attach_session_length_helper(self.im);
 
