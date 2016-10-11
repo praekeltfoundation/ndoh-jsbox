@@ -297,15 +297,7 @@ go.app = function() {
                     new Choice('state_start', $('Start new registration'))
                 ],
                 next: function(choice) {
-                    if (choice.value !== 'state_start') {
-                        return self
-                        .fire_complete(self.im.state.name, 1)
-                        .then(function() {
-                            return choice.value;
-                        });
-                    } else {
-                        return choice.value;
-                    }
+                    return choice.value;
                 }
             });
         });
