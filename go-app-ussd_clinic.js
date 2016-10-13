@@ -616,7 +616,16 @@ go.app = function() {
                         }
                     });
                 },
-                next: 'state_due_date_month'
+                next: 'state_due_date_month',
+
+                events: {
+                    'state:enter': function() {
+                        return Q(
+                            self.im.metrics.fire.inc(
+                                ([self.metric_prefix, "registrations_started"].join('.')))
+                            );
+                    }
+                }
             });
         });
 
