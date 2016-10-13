@@ -63,6 +63,17 @@ go.app = function() {
                 .add.total_unique_users([self.env, 'sum', 'unique_users'].join('.'))
                 // Total sessions for environment, across apps
                 .add.total_sessions([self.env, 'sum', 'sessions'].join('.'))
+
+                // Average sessions to register
+                .add.tracker({
+                    action: 'exit',
+                    state: 'state_start'
+                }, {
+                    action: 'exit',
+                    state: 'state_save_subscription'
+                }, {
+                    sessions_between_states: [self.metric_prefix, 'avg.sessions_to_register'].join('.')
+                })
             ;
 
             // evaluate whether dialback sms needs to be sent on session close
