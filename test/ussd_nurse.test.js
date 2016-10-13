@@ -24,6 +24,8 @@ describe("app", function() {
                 .setup.char_limit(182)
                 .setup.config.app({
                     name: 'ussd_nurse',
+                    env: 'test',
+                    metric_store: 'test_metric_store',
                     testing_today: 'April 4, 2014 07:07:07',
                     logging: "off",
                     channel: "*120*550*5#",
@@ -58,9 +60,9 @@ describe("app", function() {
                         'state_block_active_subs'
                     ]
                 })
-                // .setup(function(api) {
-                    // api.metrics.stores = {'test_metric_store': {}};
-                // })
+                .setup(function(api) {
+                    api.metrics.stores = {'test_metric_store': {}};
+                })
                 .setup(function(api) {
                     // add fixtures for services used
                     fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
