@@ -68,26 +68,26 @@ go.app = function() {
                 // Total sessions for environment, across apps
                 .add.total_sessions([self.env, 'sum', 'sessions'].join('.'))
 
-                // Average sessions to register
-                // .add.tracker({
-                //     action: 'enter',
-                //     state: 'state_subscribe_self'
-                // }, {
-                //     action: 'exit',
-                //     state: 'state_save_subscription'
-                // }, {
-                //     sessions_between_states: [self.metric_prefix, 'avg.sessions_to_self_register'].join('.')
-                // })
-                // // Average sessions to register
-                // .add.tracker({
-                //     action: 'enter',
-                //     state: 'state_subscribe_other'
-                // }, {
-                //     action: 'exit',
-                //     state: 'state_save_subscription'
-                // }, {
-                //     sessions_between_states: [self.metric_prefix, 'avg.sessions_to_self_other'].join('.')
-                // })
+                // Average sessions to register self
+                .add.tracker({
+                    action: 'enter',
+                    state: 'state_subscribe_self'
+                }, {
+                    action: 'exit',
+                    state: 'state_save_subscription'
+                }, {
+                    sessions_between_states: [self.metric_prefix, 'avg.sessions_to_register_self'].join('.')
+                })
+                // Average sessions to register another
+                .add.tracker({
+                    action: 'enter',
+                    state: 'state_subscribe_other'
+                }, {
+                    action: 'exit',
+                    state: 'state_save_subscription'
+                }, {
+                    sessions_between_states: [self.metric_prefix, 'avg.sessions_to_register_other'].join('.')
+                })
             ;
 
             // evaluate whether dialback sms needs to be sent on session close
