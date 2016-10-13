@@ -568,6 +568,15 @@ go.app = function() {
                         passport: 'state_passport_origin',
                         none: 'state_birth_year'
                     }[choice.value];
+                },
+
+                events: {
+                    'state:enter': function() {
+                        return Q(
+                            self.im.metrics.fire.inc(
+                                ([self.metric_prefix, "registrations_started"].join('.')))
+                            );
+                    }
                 }
             });
         });
