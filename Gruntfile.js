@@ -23,6 +23,7 @@ module.exports = function (grunt) {
                 },
                 ussd_clinic: [
                     'src/index.js',
+                    'src/session_length_helper.js',
                     '<%= paths.src.app.ussd_clinic %>',
                     'src/init.js'
                 ],
@@ -102,6 +103,7 @@ module.exports = function (grunt) {
             test: {
                 ussd_clinic: [
                     'test/setup.js',
+                    'src/session_length_helper.js',
                     '<%= paths.src.app.ussd_clinic %>',
                     'test/ussd_clinic.test.js'
                 ],
