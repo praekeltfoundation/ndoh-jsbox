@@ -25,7 +25,8 @@
     "seed-jsbox-utils": "~0.1.11",
     "lodash": "~2.4.1",
     "q": "~0.9.7",
-    "moment": "~2.6"
+    "moment": "~2.6",
+    "go-jsbox-metrics-helper": "^0.1.0"
   },
   "devDependencies": {
     "mocha-as-promised": "~2.0.0",
