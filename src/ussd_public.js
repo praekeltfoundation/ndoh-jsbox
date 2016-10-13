@@ -309,9 +309,16 @@ go.app = function() {
                         return sbm
                         .check_identity_subscribed(self.im.user.answers.registrant.id, "momconnect")
                         .then(function(identity_subscribed_to_momconnect) {
-                            return identity_subscribed_to_momconnect
-                                ? self.states.create('state_registered_full')
-                                : self.states.create('state_suspect_pregnancy');
+                            if (identity_subscribed_to_momconnect) {
+                                return self.states.create('state_registered_full');
+                            } else {
+                                return self
+                                .im.metrics.fire.inc(
+                                        ([self.metric_prefix, "registrations_started"].join('.')))
+                                .then(function() {
+                                    return self.states.create('state_suspect_pregnancy');
+                                });
+                            }
                         });
                     });
                 } else {
@@ -351,6 +358,15 @@ go.app = function() {
                         return 'state_suspect_pregnancy';
                     });
                 },
+
+                events: {
+                    'state:enter': function() {
+                        return Q(
+                            self.im.metrics.fire.inc(
+                                ([self.metric_prefix, "registrations_started"].join('.')))
+                            );
+                    }
+                }
             });
         });
 
