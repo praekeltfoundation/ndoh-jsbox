@@ -54,12 +54,6 @@ describe("app", function() {
                     },
                 })
                 .setup(function(api) {
-                    api.kv.store['test.unique_users'] = 0;
-                    api.kv.store['test.sum.sessions'] = 0;
-                    api.kv.store['test.ussd_clinic.unique_users'] = 0;
-                    api.kv.store['test.ussd_clinic.sum.sessions'] = 0;
-                })
-                .setup(function(api) {
                     api.metrics.stores = {'test_metric_store': {}};
                 })
                 .setup(function(api) {

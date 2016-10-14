@@ -48,9 +48,6 @@ describe("app", function() {
                     },
                 })
                 .setup(function(api) {
-                    api.kv.store['test.ussd_chw.unique_users'] = 0;
-                })
-                .setup(function(api) {
                     api.metrics.stores = {'test_metric_store': {}};
                 })
                 .setup(function(api) {
@@ -455,6 +452,7 @@ describe("app", function() {
                     .check(function(api) {
                         var metrics = api.metrics.stores.test_metric_store;
                         assert.deepEqual(metrics['test.ussd_chw.sum.unique_users'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_chw.sum.sessions'].values, [1]);
                         assert.deepEqual(metrics['test.sum.sessions'].values, [1]);
                         assert.deepEqual(metrics['test.sum.unique_users'].values, [1]);
                     })

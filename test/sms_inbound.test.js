@@ -62,11 +62,6 @@ describe("app", function() {
                     helpdesk_hours: [8, 16]
                 })
                 .setup(function(api) {
-                    api.kv.store['test.sms_inbound.unique_users'] = 0;
-                    // api.kv.store['test_metric_store.test.sum.subscriptions'] = 4;
-                    // api.kv.store['test_metric_store.test.sum.optout_cause.loss'] = 2;
-                })
-                .setup(function(api) {
                     api.metrics.stores = {'test_metric_store': {}};
                 })
                 .setup(function(api) {
@@ -130,12 +125,17 @@ describe("app", function() {
                 it("should increment the no. of unique users metric by 1", function() {
                     return tester
                         .setup.user.addr('27820001002')
-                        .inputs('start')
+                        .inputs(
+                            'start'
+                            )
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
-                            assert.deepEqual(metrics['test.sms_inbound.sum.unique_users'].values, [1]);
                             assert.deepEqual(metrics['test.sum.unique_users'].values, [1]);
-                        }).run();
+                            assert.deepEqual(metrics['test.sms_inbound.sum.unique_users'].values, [1]);
+                            // assert.deepEqual(metrics['test.sum.sessions'].values, [1]);
+                            // assert.deepEqual(metrics['test.sms_inbound.sum.sessions'].values, [1]);
+                        })
+                        .run();
                 });
             });
         });
