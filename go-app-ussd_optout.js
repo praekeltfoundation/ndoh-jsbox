@@ -53,13 +53,13 @@ go.app = function() {
             mh = new MetricsHelper(self.im);
             mh
                 // Total unique users for app
-                // This adds <env>.sms_nurse.sum.unique_users 'last' metric
-                // As well as <env>.sms_nurse.sum.unique_users.transient 'sum' metric
+                // This adds <env>.ussd_optout.sum.unique_users 'last' metric
+                // As well as <env>.ussd_optout.sum.unique_users.transient 'sum' metric
                 .add.total_unique_users([self.metric_prefix, 'sum', 'unique_users'].join('.'))
 
                 // Total sessions for app
-                // This adds <env>.sms_nurse.sum.sessions 'last' metric
-                // As well as <env>.sms_nurse.sum.sessions.transient 'sum' metric
+                // This adds <env>.ussd_optout.sum.sessions 'last' metric
+                // As well as <env>.ussd_optout.sum.sessions.transient 'sum' metric
                 .add.total_sessions([self.metric_prefix, 'sum', 'sessions'].join('.'))
 
                 // Total unique users for environment, across apps
