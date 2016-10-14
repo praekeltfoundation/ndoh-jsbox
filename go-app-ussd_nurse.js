@@ -60,7 +60,6 @@ go.app = function() {
                 // As well as <env>.ussd_nurse.sum.unique_users.transient 'sum' metric
                 .add.total_unique_users([self.metric_prefix, 'sum', 'unique_users'].join('.'))
 
-
                 // Total sessions for app
                 // This adds <env>.ussd_nurse.sum.sessions 'last' metric
                 // As well as <env>.ussd_nurse.sum.sessions.transient 'sum' metric
@@ -70,27 +69,6 @@ go.app = function() {
                 .add.total_unique_users([self.env, 'sum', 'unique_users'].join('.'))
                 // Total sessions for environment, across apps
                 .add.total_sessions([self.env, 'sum', 'sessions'].join('.'))
-
-                // Average sessions to register self
-                .add.tracker({
-                    action: 'enter',
-                    state: 'state_subscribe_self'
-                }, {
-                    action: 'enter',
-                    state: 'state_end_reg'
-                }, {
-                    sessions_between_states: [self.metric_prefix, 'avg.sessions_to_register_self'].join('.')
-                })
-                // Average sessions to register another
-                .add.tracker({
-                    action: 'enter',
-                    state: 'state_subscribe_other'
-                }, {
-                    action: 'enter',
-                    state: 'state_end_reg'
-                }, {
-                    sessions_between_states: [self.metric_prefix, 'avg.sessions_to_register_other'].join('.')
-                })
             ;
 
             // evaluate whether dialback sms needs to be sent on session close

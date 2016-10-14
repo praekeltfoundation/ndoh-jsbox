@@ -518,8 +518,6 @@ describe("app", function() {
                         var metrics = api.metrics.stores.test_metric_store;
                         assert.deepEqual(metrics['test.ussd_nurse.self.registration_started'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_nurse.other.registration_started'], undefined);
-                        assert.deepEqual(metrics['test.ussd_nurse.avg.sessions_to_register_self'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_nurse.avg.sessions_to_register_other'].values, [1]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -583,8 +581,6 @@ describe("app", function() {
                         var metrics = api.metrics.stores.test_metric_store;
                         assert.deepEqual(metrics['test.ussd_nurse.self.registration_started'], undefined);
                         assert.deepEqual(metrics['test.ussd_nurse.other.registration_started'].values, [1]);
-                        // assert.deepEqual(metrics['test.ussd_nurse.avg.sessions_to_register_self'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_nurse.avg.sessions_to_register_other'].values, [2]);
                     })
                     .check(function(api) {
                         utils.check_fixtures_used(api, [14, 101, 128, 170, 180, 181, 183, 236 ]);
