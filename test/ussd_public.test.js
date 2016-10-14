@@ -24,6 +24,7 @@ describe("app", function() {
                 .setup.config.app({
                     name: 'ussd_public',
                     testing_today: "2014-04-04",
+                    testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',
                     logging: "off",
                     no_timeout_redirects: [
                         "state_start", "state_end_not_pregnant", "state_end_consent_refused",
@@ -480,7 +481,7 @@ describe("app", function() {
                         state: "state_end_success"
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [18, 118, 184, 186, 199]);
+                        utils.check_fixtures_used(api, [18, 118, 184, 199, 238]);
                     })
                     .check.reply.ends_session()
                     .run();

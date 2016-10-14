@@ -154,8 +154,15 @@ go.app = function() {
         });
 
         self.states.add("states_opt_in_enter", function(name) {
+            var optin_info = {
+                "identity": self.im.user.answers.operator.id,
+                "address_type": "msisdn",
+                "address": self.im.user.answers.operator_msisdn,
+                "request_source": self.im.config.name || "sms_nurse",
+                "requestor_source_id": self.im.config.testing_message_id || self.im.msg.message_id
+            };
             return is
-            .optin(self.im.user.answers.operator.id, "msisdn", self.im.user.answers.operator_msisdn)
+            .optin(optin_info)
             .then(function() {
                 return self.states.create("states_opt_in");
             });

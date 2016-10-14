@@ -28,6 +28,7 @@ describe("app", function() {
                         "state_start"
                     ],
                     testing_today: "2014-04-04",
+                    testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',
                     channel: "*120*550*3#",
                     services: {
                         identity_store: {
@@ -581,7 +582,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [180, 183, 184, 186]);
+                            utils.check_fixtures_used(api, [180, 183, 184, 237]);
                         })
                         .run();
                 });
