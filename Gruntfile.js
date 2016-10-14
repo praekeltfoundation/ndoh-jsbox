@@ -252,9 +252,9 @@ module.exports = function (grunt) {
             test_ussd_clinic: {
                 src: ['<%= paths.test.ussd_clinic %>']
             },
-            /*test_ussd_chw: {
+            test_ussd_chw: {
                 src: ['<%= paths.test.ussd_chw %>']
-            },
+            },/*
             test_ussd_public: {
                 src: ['<%= paths.test.ussd_public %>']
             },

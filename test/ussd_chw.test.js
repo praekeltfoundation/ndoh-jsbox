@@ -185,6 +185,42 @@ describe("app", function() {
             });
         });
 
+        describe("test avg.sessions_to_register metric", function() {
+            it("should increment metric according to number of sessions", function() {
+                return tester
+                    .setup.user.addr('27820001001')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '2'  // state_start - no
+                        , '0820001002' // state_mobile_no
+                        , '1'  // state_consent - yes
+                        , '2'  // state_id_type - passport
+                        , {session_event: 'close'}  // timeout
+                        , {session_event: 'new'}  // dial in
+                        , '1'  // state_timed_out - yes (continue)
+                        , '1'  // state_passport_origin - Zimbabwe
+                        , '12345'  // state_passport_no
+                        , '4'  // state_language - english
+                    )
+                    .check.interaction({
+                        state: 'state_end_success',
+                        reply: ('Thank you, registration is complete. The ' +
+                        'pregnant woman will now receive messages to ' +
+                        'encourage her to register at her nearest ' +
+                        'clinic.')
+                    })
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_metric_store;
+                        assert.deepEqual(metrics['test.ussd_chw.avg.sessions_to_register'].values, [2]);
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [21, 121, 124, 180, 181, 183, 236]);
+                    })
+                    .check.reply.ends_session()
+                    .run();
+            });
+        });
+
         describe("when a new session is started", function() {
 
             describe("when it is a new user logging on", function() {
@@ -1412,6 +1448,22 @@ describe("app", function() {
                             'clinic.')
                         })
                         .check(function(api) {
+                            var metrics = api.metrics.stores.test_metric_store;
+                            assert.deepEqual(metrics['test.ussd_chw.state_start.no_complete'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.state_start.no_complete.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.state_consent.no_complete'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.state_consent.no_complete.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.state_id_type.no_complete'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.state_id_type.no_complete.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.state_passport_origin.no_complete'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.state_passport_origin.no_complete.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.state_passport_no.no_complete'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.state_passport_no.no_complete.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.state_language.no_complete'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.state_language.no_complete.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.avg.sessions_to_register'].values, [1]);
+                        })
+                        .check(function(api) {
                             utils.check_fixtures_used(api, [21, 121, 180, 181, 183, 200]);
                         })
                         .check.reply.ends_session()
@@ -1437,6 +1489,20 @@ describe("app", function() {
                             'pregnant woman will now receive messages to ' +
                             'encourage her to register at her nearest ' +
                             'clinic.')
+                        })
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_metric_store;
+                            assert.deepEqual(metrics['test.ussd_chw.state_start.no_complete'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.state_start.no_complete.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.state_consent.no_complete'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.state_consent.no_complete.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.state_id_type.no_complete'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.state_id_type.no_complete.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.state_sa_id.no_complete'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.state_sa_id.no_complete.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.state_language.no_complete'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.state_language.no_complete.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_chw.avg.sessions_to_register'].values, [1]);
                         })
                         .check(function(api) {
                             utils.check_fixtures_used(api, [22, 117, 180, 183, 201]);
