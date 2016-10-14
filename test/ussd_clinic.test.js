@@ -355,6 +355,41 @@ describe("app", function() {
             });
         });
 
+        describe("test avg.sessions_to_register metric", function() {
+            it("should increment metric according to number of sessions", function() {
+                return tester
+                    .setup.user.addr('27820001001')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , "1"  // state_start - yes
+                        , "1"  // state_consent - yes
+                        , "123456"  // state_clinic_code
+                        , "2"  // state_due_date_month - may
+                        , "10"  // state_due_date_day
+                        , "3"  // state_id_type - none
+                        , "1981"  // state_birth_year
+                        , {session_event: 'close'}  // timeout
+                        , {session_event: 'new'}  // dial in
+                        , '1'  // state_timed_out - yes (continue)
+                        , "1"  // state_birth_month - january
+                        , "14"  // state_birth_day
+                        , "4"  // state_language - english
+                    )
+                    .check.interaction({
+                        state: "state_end_success"
+                    })
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_metric_store;
+                        assert.deepEqual(metrics['test.ussd_clinic.avg.sessions_to_register'].values, [2]);
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [4, 116, 123, 174, 180, 183, 204]);
+                    })
+                    .check.reply.ends_session()
+                    .run();
+            });
+        });
+
         describe("timeout testing", function() {
             describe("when you timeout and dial back in", function() {
                 describe("when on a normal state", function() {
