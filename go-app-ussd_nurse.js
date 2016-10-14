@@ -76,8 +76,8 @@ go.app = function() {
                     action: 'enter',
                     state: 'state_subscribe_self'
                 }, {
-                    action: 'exit',
-                    state: 'state_save_subscription'
+                    action: 'enter',
+                    state: 'state_end_reg'
                 }, {
                     sessions_between_states: [self.metric_prefix, 'avg.sessions_to_register_self'].join('.')
                 })
@@ -86,8 +86,8 @@ go.app = function() {
                     action: 'enter',
                     state: 'state_subscribe_other'
                 }, {
-                    action: 'exit',
-                    state: 'state_save_subscription'
+                    action: 'enter',
+                    state: 'state_end_reg'
                 }, {
                     sessions_between_states: [self.metric_prefix, 'avg.sessions_to_register_other'].join('.')
                 })

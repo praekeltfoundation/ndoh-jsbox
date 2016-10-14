@@ -146,11 +146,13 @@ describe("app", function() {
                         .inputs(
                             {session_event: 'new'}  // dial in
                         )
-                        // .check(function(api) {
-                        //     var metrics = api.metrics.stores.test_metric_store;
-                        //     assert.equal(Object.keys(metrics).length, 0);
-                        //     assert.deepEqual(metrics['test.sum.sessions'], undefined);
-                        // })
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_metric_store;
+                            assert.deepEqual(metrics['test.sum.sessions'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_nurse.sum.sessions'].values, [1]);
+                            assert.deepEqual(metrics['test.sum.unique_users'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_nurse.sum.unique_users'].values, [1]);
+                        })
                         .run();
                 });
             });
@@ -512,6 +514,13 @@ describe("app", function() {
                         state: 'state_end_reg',
                         reply: "Thank you. Weekly NurseConnect messages will now be sent to this number."
                     })
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_metric_store;
+                        assert.deepEqual(metrics['test.ussd_nurse.self.registration_started'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_nurse.other.registration_started'], undefined);
+                        assert.deepEqual(metrics['test.ussd_nurse.avg.sessions_to_register_self'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_nurse.avg.sessions_to_register_other'].values, [1]);
+                    })
                     .check.reply.ends_session()
                     .run();
             });
@@ -561,12 +570,26 @@ describe("app", function() {
                         , '1'  // state_subscribe_other - consent
                         , '0820001002'  // state_msisdn
                         , '123456'  // state_faccode
+                        , {session_event: 'close'} // timeout
+                        , {session_event: 'new'}  // dial in
+                        , '1'  // state_timed_out - yes (continue)
                         , '1'  // state_facname - confirm
                     )
                     .check.interaction({
                         state: 'state_end_reg',
                         reply: "Thank you. Weekly NurseConnect messages will now be sent to this number."
                     })
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_metric_store;
+                        assert.deepEqual(metrics['test.ussd_nurse.self.registration_started'], undefined);
+                        assert.deepEqual(metrics['test.ussd_nurse.other.registration_started'].values, [1]);
+                        // assert.deepEqual(metrics['test.ussd_nurse.avg.sessions_to_register_self'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_nurse.avg.sessions_to_register_other'].values, [2]);
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [14, 101, 128, 170, 180, 181, 183, 236 ]);
+                    })
+                    .check.reply.ends_session()
                     .run();
             });
             it.skip("should fire metrics", function() {
