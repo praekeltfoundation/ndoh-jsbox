@@ -139,6 +139,7 @@ module.exports = function (grunt) {
                 ],
                 sms_nurse: [
                     'test/setup.js',
+                    'src/session_length_helper.js',
                     '<%= paths.src.app.sms_nurse %>',
                     'test/sms_nurse.test.js'
                 ],
@@ -279,7 +280,7 @@ module.exports = function (grunt) {
             },
             test_session_length_helper: {
                 src: ['<%= paths.test.session_length_helper %>']
-            },
+            }
             /*
             */
         }

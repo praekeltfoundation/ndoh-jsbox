@@ -309,7 +309,9 @@ module.exports = function() {
                 "data": {
                     "identity": "cb245673-aa41-4302-ac47-00000001004",
                     "address_type": "msisdn",
-                    "address": "+27820001004"
+                    "address": "+27820001004",
+                    "request_source": "ussd_clinic",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             "response": {
@@ -518,7 +520,9 @@ module.exports = function() {
                 "data": {
                     "identity": "cb245673-aa41-4302-ac47-00000001003",
                     "address_type": "msisdn",
-                    "address": "+27820001003"
+                    "address": "+27820001003",
+                    "request_source": "ussd_chw",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             "response": {
@@ -559,7 +563,9 @@ module.exports = function() {
                 "data": {
                     "identity": "cb245673-aa41-4302-ac47-00000001002",
                     "address_type": "msisdn",
-                    "address": "+27820001002"
+                    "address": "+27820001002",
+                    "request_source": "sms_inbound",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             "response": {
@@ -1627,7 +1633,9 @@ module.exports = function() {
                 "data": {
                     "identity": "cb245673-aa41-4302-ac47-00000001005",
                     "address_type": "msisdn",
-                    "address": "+27820001012"
+                    "address": "+27820001012",
+                    "request_source": "ussd_nurse",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             "response": {
@@ -1985,6 +1993,127 @@ module.exports = function() {
                 }
             },
             "response": {}
+        },
+
+        // 236: patch cb245673-aa41-4302-ac47-00000001002
+        {
+            "key": "patch.is.identity.cb245673-aa41-4302-ac47-00000001002",
+            "request": {
+                "url": 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001002/',
+                "method": 'PATCH',
+                "data": {
+                    "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001002/",
+                    "id": "cb245673-aa41-4302-ac47-00000001002",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+27820001002": {"default": true}
+                            }
+                        },
+                        "lang_code": "eng_ZA",
+                        "consent": true,
+                        "sa_id_no": "5101025009086",
+                        "mom_dob": "1951-01-02",
+                        "source": "clinic",
+                        "last_mc_reg_on": "clinic",
+                        "nurseconnect": {
+                            "facname": "WCL clinic",
+                            "faccode": "123456",
+                            "redial_sms_sent": true
+                        }
+                    },
+                    "created_at": "2016-08-05T06:13:29.693272Z",
+                    "updated_at": "2016-08-05T06:13:29.693298Z"
+                }
+            },
+            "response": {}
+        },
+
+        // 237: optin identity cb245673-aa41-4302-ac47-00000001004 (ussd_chw)
+        {
+            "key": "post.is.optin.27820001004",
+            "request": {
+                "url": 'http://is/api/v1/optin/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001004",
+                    "address_type": "msisdn",
+                    "address": "+27820001004",
+                    "request_source": "ussd_chw",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
+        },
+
+        // 238: optin identity cb245673-aa41-4302-ac47-00000001004 (ussd_public)
+        {
+            "key": "post.is.optin.27820001004",
+            "request": {
+                "url": 'http://is/api/v1/optin/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001004",
+                    "address_type": "msisdn",
+                    "address": "+27820001004",
+                    "request_source": "ussd_public",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
+        },
+
+        //  239: optin identity cb245673-aa41-4302-ac47-00000001004 (ussd_nurse)
+        {
+            "key": "post.is.optin.27820001004",
+            "request": {
+                "url": 'http://is/api/v1/optin/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001004",
+                    "address_type": "msisdn",
+                    "address": "+27820001004",
+                    "request_source": "ussd_nurse",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
+        },
+
+        // 240: optin in identity cb245673-aa41-4302-ac47-00000001003
+        {
+            "key": "post.is.optin.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "url": 'http://is/api/v1/optin/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001003",
+                    "address_type": "msisdn",
+                    "address": "+27820001003",
+                    "request_source": "sms_nurse",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            "response": {
+                "accepted": true
+            }
         },
 
     ];
