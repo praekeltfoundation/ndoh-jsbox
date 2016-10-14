@@ -1356,6 +1356,7 @@ describe("app", function() {
                         assert.deepEqual(metrics['test.ussd_clinic.state_sa_id.no_complete.transient'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.registrations_started'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_clinic.avg.sessions_to_register'].values, [1]);
                     })
                     .check.reply.ends_session()
@@ -1406,6 +1407,7 @@ describe("app", function() {
                         assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete.transient'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.registrations_started'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_clinic.avg.sessions_to_register'].values, [1]);
                     })
                     .check(function(api) {
@@ -1458,6 +1460,7 @@ describe("app", function() {
                         assert.deepEqual(metrics['test.ussd_clinic.state_birth_day.no_complete.transient'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.registrations_started'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_clinic.avg.sessions_to_register'].values, [1]);
                     })
                     .check(function(api) {

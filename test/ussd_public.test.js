@@ -511,6 +511,7 @@ describe("app", function() {
                         })
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
+                            assert.deepEqual(metrics['test.ussd_public.registrations_started'].values, [1]);
                             assert.deepEqual(metrics['test.ussd_public.avg.sessions_to_register'].values, [1]);
                         })
                         .check(function(api) {
