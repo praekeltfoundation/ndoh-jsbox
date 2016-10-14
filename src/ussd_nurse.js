@@ -409,10 +409,9 @@ go.app = function() {
 
                 events: {
                     'state:enter': function() {
-                        var reg_type = self.im.user.answers.state_subscribe_self ? "self" : "other";
                         return self
                             .im.metrics.fire.inc(
-                                ([self.metric_prefix, reg_type, "registration_started"].join('.')));
+                                ([self.metric_prefix, "registrations_started"].join('.')));
 
                     }
                 }
