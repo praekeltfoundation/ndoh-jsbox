@@ -31,6 +31,7 @@ describe("app", function() {
                         "state_start"
                     ],
                     testing_today: "2014-04-04 07:07:07",
+                    testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',
                     channel: "*120*550*3#",
                     services: {
                         identity_store: {
@@ -214,7 +215,7 @@ describe("app", function() {
                         assert.deepEqual(metrics['test.ussd_chw.avg.sessions_to_register'].values, [2]);
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [21, 121, 124, 180, 181, 183, 236]);
+                        utils.check_fixtures_used(api, [21, 121, 124, 180, 181, 183, 241]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -829,7 +830,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [180, 183, 184, 186]);
+                            utils.check_fixtures_used(api, [180, 183, 184, 237]);
                         })
                         .run();
                 });

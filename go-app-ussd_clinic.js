@@ -536,9 +536,15 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (choice.value === 'yes') {
+                        var optin_info = {
+                            "identity": self.im.user.answers.registrant.id,
+                            "address_type": "msisdn",
+                            "address": self.im.user.answers.registrant_msisdn,
+                            "request_source": self.im.config.name || "ussd_clinic",
+                            "requestor_source_id": self.im.config.testing_message_id || self.im.msg.message_id
+                        };
                         return is
-                        .optin(self.im.user.answers.registrant.id, "msisdn",
-                               self.im.user.answers.registrant_msisdn)
+                        .optin(optin_info)
                         .then(function() {
                             return 'state_consent';
                         });

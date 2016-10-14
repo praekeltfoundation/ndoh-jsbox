@@ -5,6 +5,7 @@ go.app = function() {
     var vumigo = require("vumigo_v02");
     var moment = require('moment');
     var SeedJsboxUtils = require('seed-jsbox-utils');
+    var MetricsHelper = require('go-jsbox-metrics-helper');
     var Q = require('q');
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
@@ -48,6 +49,27 @@ go.app = function() {
                 self.im.config.services.message_sender.token,
                 self.im.config.services.message_sender.url
             );
+
+            self.env = self.im.config.env;
+            self.metric_prefix = [self.env, self.im.config.name].join('.');
+
+            mh = new MetricsHelper(self.im);
+            mh
+                // Total unique users for app
+                // This adds <env>.ussd_nurse.sum.unique_users 'last' metric
+                // As well as <env>.ussd_nurse.sum.unique_users.transient 'sum' metric
+                .add.total_unique_users([self.metric_prefix, 'sum', 'unique_users'].join('.'))
+
+                // Total sessions for app
+                // This adds <env>.ussd_nurse.sum.sessions 'last' metric
+                // As well as <env>.ussd_nurse.sum.sessions.transient 'sum' metric
+                .add.total_sessions([self.metric_prefix, 'sum', 'sessions'].join('.'))
+
+                // Total unique users for environment, across apps
+                .add.total_unique_users([self.env, 'sum', 'unique_users'].join('.'))
+                // Total sessions for environment, across apps
+                .add.total_sessions([self.env, 'sum', 'sessions'].join('.'))
+            ;
 
             // evaluate whether dialback sms needs to be sent on session close
             self.im.on('session:close', function(e) {
@@ -327,8 +349,15 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (choice.value === 'yes') {
+                        var optin_info = {
+                            "identity": self.im.user.answers.registrant.id,
+                            "address_type": "msisdn",
+                            "address": self.im.user.answers.registrant_msisdn,
+                            "request_source": self.im.config.name || "ussd_nurse",
+                            "requestor_source_id": self.im.config.testing_message_id || self.im.msg.message_id
+                        };
                         return is
-                        .optin(self.im.user.answers.registrant.id, "msisdn", self.im.user.answers.registrant_msisdn)
+                        .optin(optin_info)
                         .then(function() {
                             return 'state_faccode';
                         });
@@ -386,7 +415,16 @@ go.app = function() {
                         }
                     });
                 },
-                next: 'state_facname'
+                next: 'state_facname',
+
+                events: {
+                    'state:enter': function() {
+                        return self
+                            .im.metrics.fire.inc(
+                                ([self.metric_prefix, "registrations_started"].join('.')));
+
+                    }
+                }
             });
         });
 
@@ -544,8 +582,15 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (choice.value === 'yes') {
+                        var optin_info = {
+                            "identity": self.im.user.answers.operator.id,
+                            "address_type": "msisdn",
+                            "address": self.im.user.answers.new_msisdn,
+                            "request_source": self.im.config.name || "ussd_nurse",
+                            "requestor_source_id": self.im.config.testing_message_id || self.im.msg.message_id
+                        };
                         return is
-                        .optin(self.im.user.answers.operator.id, "msisdn", self.im.user.answers.new_msisdn)
+                        .optin(optin_info)
                         .then(function() {
                             return 'state_switch_new_nr';
                         });

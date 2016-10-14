@@ -1,6 +1,7 @@
 go.app = function() {
     var vumigo = require("vumigo_v02");
     var _ = require("lodash");
+    var MetricsHelper = require('go-jsbox-metrics-helper');
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
@@ -42,6 +43,27 @@ go.app = function() {
                 self.im.config.services.hub.token,
                 self.im.config.services.hub.url
             );
+
+            self.env = self.im.config.env;
+            self.metric_prefix = [self.env, self.im.config.name].join('.');
+
+            mh = new MetricsHelper(self.im);
+            mh
+                // Total unique users for app
+                // This adds <env>.ussd_optout.sum.unique_users 'last' metric
+                // As well as <env>.ussd_optout.sum.unique_users.transient 'sum' metric
+                .add.total_unique_users([self.metric_prefix, 'sum', 'unique_users'].join('.'))
+
+                // Total sessions for app
+                // This adds <env>.ussd_optout.sum.sessions 'last' metric
+                // As well as <env>.ussd_optout.sum.sessions.transient 'sum' metric
+                .add.total_sessions([self.metric_prefix, 'sum', 'sessions'].join('.'))
+
+                // Total unique users for environment, across apps
+                .add.total_unique_users([self.env, 'sum', 'unique_users'].join('.'))
+                // Total sessions for environment, across apps
+                .add.total_sessions([self.env, 'sum', 'sessions'].join('.'))
+            ;
         };
 
         self.number_opted_out = function(identity, msisdn) {
