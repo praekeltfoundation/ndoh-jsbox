@@ -201,19 +201,21 @@ go.app = function() {
 
             mh = new MetricsHelper(self.im);
             mh
-                // Total unique users
-                // This adds <env>.servicerating.sum.unique_users 'last' metric
-                // As well as <env>.servicerating.sum.unique_users.transient 'sum' metric
+                // Total unique users for app
+                // This adds <env>.sms_inbound.sum.unique_users 'last' metric
+                // As well as <env>.sms_inbound.sum.unique_users.transient 'sum' metric
                 .add.total_unique_users([self.metric_prefix, 'sum', 'unique_users'].join('.'))
-            ;
 
-            self.im.user.on('user:new', function(e) {
-                return self
-                .incr_kv(self.im, [self.store_name, 'unique_users'].join('.'))
-                .then(function() {
-                    self.im.metrics.fire.inc([self.env, 'sum', 'unique_users'].join('.'));
-                });
-            });
+                // Total sessions for app
+                // This adds <env>.sms_inbound.sum.sessions 'last' metric
+                // As well as <env>.sms_inbound.sum.sessions.transient 'sum' metric
+                .add.total_sessions([self.metric_prefix, 'sum', 'sessions'].join('.'))
+
+                // Total unique users for environment, across apps
+                .add.total_unique_users([self.env, 'sum', 'unique_users'].join('.'))
+                // Total sessions for environment, across apps
+                .add.total_sessions([self.env, 'sum', 'sessions'].join('.'))
+            ;
         };
 
         self.attach_session_length_helper = function(im) {
@@ -239,13 +241,6 @@ go.app = function() {
             });
             slh.attach();
             return slh;
-        };
-
-        self.incr_kv = function(im, name) {
-            return im.api_request('kv.incr', {key: name, amount: 1})
-                .then(function(result){
-                    return result.value;
-                });
         };
 
         self.is_weekend = function(config) {
