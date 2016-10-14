@@ -254,7 +254,7 @@ module.exports = function (grunt) {
             },
             test_ussd_chw: {
                 src: ['<%= paths.test.ussd_chw %>']
-            },/*
+            },
             test_ussd_public: {
                 src: ['<%= paths.test.ussd_public %>']
             },
@@ -287,7 +287,7 @@ module.exports = function (grunt) {
             },
             test_session_length_helper: {
                 src: ['<%= paths.test.session_length_helper %>']
-            },*/
+            },
             /*
             */
         }

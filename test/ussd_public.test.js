@@ -108,6 +108,37 @@ describe("app", function() {
             });
         });
 
+        describe("test avg.sessions_to_register metric", function() {
+            it("should increment metric according to number of sessions", function() {
+                return tester
+                    .setup.user.addr('27820001001')
+                    .inputs(
+                        {session_event: "new"}
+                        , "1"  // state_language - zul_ZA
+                        , "1"  // state_suspect_pregnancy - yes
+                        , {session_event: 'close'}  // timeout
+                        , {session_event: 'new'}  // dial in
+                        , '1'  // state_timed_out - yes (continue)
+                        , "1"  // state_consent - yes
+                    )
+                    .check.interaction({
+                        state: "state_end_success",
+                        reply: 'Congratulations on your pregnancy. You will now get free SMSs ' +
+                               'about MomConnect. You can register for the full set of FREE ' +
+                               'helpful messages at a clinic.'
+                    })
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_metric_store;
+                        assert.deepEqual(metrics['test.ussd_public.avg.sessions_to_register'].values, [2]);
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [17, 117, 180, 183, 198]);
+                    })
+                    .check.reply.ends_session()
+                    .run();
+            });
+        });
+
         describe("timeout testing", function() {
             describe("when you timeout and dial back in", function() {
                 describe("when on a registration state", function() {
@@ -477,6 +508,10 @@ describe("app", function() {
                             reply: 'Congratulations on your pregnancy. You will now get free SMSs ' +
                                    'about MomConnect. You can register for the full set of FREE ' +
                                    'helpful messages at a clinic.'
+                        })
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_metric_store;
+                            assert.deepEqual(metrics['test.ussd_public.avg.sessions_to_register'].values, [1]);
                         })
                         .check(function(api) {
                             utils.check_fixtures_used(api, [17, 117, 180, 183, 198]);

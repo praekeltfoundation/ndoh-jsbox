@@ -73,8 +73,8 @@ go.app = function() {
                     action: 'exit',
                     state: 'state_start'
                 }, {
-                    action: 'exit',
-                    state: 'state_save_subscription'
+                    action: 'enter',
+                    state: 'state_end_success'
                 }, {
                     sessions_between_states: [self.metric_prefix, 'avg.sessions_to_register'].join('.')
                 })
