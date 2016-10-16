@@ -202,18 +202,15 @@ go.app = function() {
             mh
                 // Total unique users for app
                 // This adds <env>.sms_inbound.sum.unique_users 'last' metric
-                // As well as <env>.sms_inbound.sum.unique_users.transient 'sum' metric
+                // as well as <env>.sms_inbound.sum.unique_users.transient 'sum' metric
                 .add.total_unique_users([self.metric_prefix, 'sum', 'unique_users'].join('.'))
 
-                // Total sessions for app
-                // This adds <env>.sms_inbound.sum.sessions 'last' metric
-                // As well as <env>.sms_inbound.sum.sessions.transient 'sum' metric
-                .add.total_sessions([self.metric_prefix, 'sum', 'sessions'].join('.'))
-
                 // Total unique users for environment, across apps
+                // This adds <env>.sum.unique_users 'last' metric
+                // as well as <env>.sum.unique_users.transient 'sum' metric
                 .add.total_unique_users([self.env, 'sum', 'unique_users'].join('.'))
-                // Total sessions for environment, across apps
-                .add.total_sessions([self.env, 'sum', 'sessions'].join('.'))
+
+                // Note 'sessions' are not tracked as this is an sms app
             ;
         };
 
