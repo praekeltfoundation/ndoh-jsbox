@@ -615,9 +615,13 @@ describe("app", function() {
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
                             assert.deepEqual(metrics['test.sum.unique_users'].values, [1]);
+                            assert.deepEqual(metrics['test.sum.unique_users.transient'].values, [1]);
                             assert.deepEqual(metrics['test.sum.sessions'].values, [1]);
+                            assert.deepEqual(metrics['test.sum.sessions.transient'].values, [1]);
                             assert.deepEqual(metrics['test.ussd_clinic.sum.sessions'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_clinic.sum.sessions.transient'].values, [1]);
                             assert.deepEqual(metrics['test.ussd_clinic.sum.unique_users'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_clinic.sum.unique_users.transient'].values, [1]);
                         })
                         .run();
                     });
