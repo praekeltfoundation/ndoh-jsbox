@@ -34,6 +34,10 @@ describe("app", function() {
                             url: "http://is/api/v1/",
                             token: "test IdentityStore"
                         },
+                        hub: {
+                            url: 'http://hub/api/v1/',
+                            token: 'test Hub'
+                        },
                         stage_based_messaging: {
                             url: "http://sbm/api/v1/",
                             token: "test StageBasedMessaging"
@@ -125,7 +129,7 @@ describe("app", function() {
                             "Thank you. You will no longer receive messages from us."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [52, 54, 182, 192]);
+                        utils.check_fixtures_used(api, [35, 52, 54, 182, 192]);
                     })
                     .run();
             });
@@ -142,7 +146,7 @@ describe("app", function() {
                             "Thank you. You will no longer receive messages from us."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [52, 54, 182, 192]);
+                        utils.check_fixtures_used(api, [35, 52, 54, 182, 192]);
                     })
                     .run();
             });
