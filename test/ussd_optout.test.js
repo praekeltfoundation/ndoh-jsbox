@@ -140,7 +140,7 @@ describe("app", function() {
         });
 
         describe("when the user selects a reason for opting out 4 or 5", function() {
-            it("should thank them and exit", function() {
+            it("should post nonloss optout change, thank them and exit", function() {
                 return tester
                     .setup.char_limit(160)  // limit first state chars
                     .setup.user.addr('27820001002')
@@ -163,7 +163,7 @@ describe("app", function() {
         });
 
         describe("when the user selects no to futher help", function() {
-            it("should thank them and exit", function() {
+            it("should post loss optout change, thank them and exit", function() {
                 return tester
                     .setup.user.addr('27820001002')
                     .inputs(
@@ -178,7 +178,7 @@ describe("app", function() {
                             'concerns please visit your nearest clinic.')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [26, 181]);
+                        utils.check_fixtures_used(api, [24, 181]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -186,51 +186,26 @@ describe("app", function() {
         });
 
         describe("when the user selects yes to futher help", function() {
-
-            describe("when the user has existing subscriptions", function() {
-                it("should unsubscribe from other lines, subscribe them and exit", function() {
-                    return tester
-                        .setup.user.addr('27820001002')
-                        .inputs(
-                            {session_event: "new"}
-                            , '1' // state_start - miscarriage
-                            , '1' // state_subscribe_option - yes
-                        )
-                        .check.interaction({
-                            state: 'state_end_yes',
-                            reply: ('Thank you. You will receive support messages ' +
-                                'from MomConnect in the coming weeks.')
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [19, 24, 181]);
-                        })
-                        .check.reply.ends_session()
-                        .run();
-                });
+            it("should post loss switch change, thank them and exit", function() {
+                return tester
+                    .setup.user.addr('27820001002')
+                    .inputs(
+                        {session_event: "new"}
+                        , '1' // state_start - miscarriage
+                        , '1' // state_subscribe_option - yes
+                    )
+                    .check.interaction({
+                        state: 'state_end_yes',
+                        reply: ('Thank you. You will receive support messages ' +
+                            'from MomConnect in the coming weeks.')
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [19, 181]);
+                    })
+                    .check.reply.ends_session()
+                    .run();
             });
-
-            describe("when the user has no existing subscriptions", function() {
-                it("should subscribe them and exit", function() {
-                    return tester
-                        .setup.user.addr('27820001001')
-                        .inputs(
-                            {session_event: "new"}
-                            , '1' // state_start - miscarriage
-                            , '1' // state_subscribe_option - yes
-                        )
-                        .check.interaction({
-                            state: 'state_end_yes',
-                            reply: ('Thank you. You will receive support messages ' +
-                                'from MomConnect in the coming weeks.')
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [20, 25, 180, 183]);
-                        })
-                        .check.reply.ends_session()
-                        .run();
-                });
-            });
-
         });
+
     });
 });
