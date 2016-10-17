@@ -43,7 +43,6 @@ go.app = function() {
 
             self.env = self.im.config.env;
             self.metric_prefix = [self.env, self.im.config.name].join('.');
-            self.store_name = [self.env, self.im.config.name].join('.');
 
             self.attach_session_length_helper(self.im);
 
@@ -51,18 +50,34 @@ go.app = function() {
             mh
                 // Total unique users for app
                 // This adds <env>.ussd_clinic.sum.unique_users 'last' metric
-                // As well as <env>.ussd_clinic.sum.unique_users.transient 'sum' metric
+                // as well as <env>.ussd_clinic.sum.unique_users.transient 'sum' metric
                 .add.total_unique_users([self.metric_prefix, 'sum', 'unique_users'].join('.'))
 
                 // Total sessions for app
                 // This adds <env>.ussd_clinic.sum.sessions 'last' metric
-                // As well as <env>.ussd_clinic.sum.sessions.transient 'sum' metric
+                // as well as <env>.ussd_clinic.sum.sessions.transient 'sum' metric
                 .add.total_sessions([self.metric_prefix, 'sum', 'sessions'].join('.'))
 
                 // Total unique users for environment, across apps
+                // This adds <env>.sum.unique_users 'last' metric
+                // as well as <env>.sum.unique_users.transient 'sum' metric
                 .add.total_unique_users([self.env, 'sum', 'unique_users'].join('.'))
+
                 // Total sessions for environment, across apps
+                // This adds <env>.sum.sessions 'last' metric
+                // as well as <env>.sum.sessions.transient 'sum' metric
                 .add.total_sessions([self.env, 'sum', 'sessions'].join('.'))
+
+                // Average sessions to register
+                .add.tracker({
+                    action: 'exit',
+                    state: 'state_start'
+                }, {
+                    action: 'enter',
+                    state: 'state_end_success'
+                }, {
+                    sessions_between_states: [self.metric_prefix, 'avg.sessions_to_register'].join('.')
+                })
             ;
 
             // evaluate whether dialback sms needs to be sent on session close
@@ -461,7 +476,16 @@ go.app = function() {
                         }
                     });
                 },
-                next: 'state_due_date_month'
+                next: 'state_due_date_month',
+
+                events: {
+                    'state:enter': function() {
+                        return Q(
+                            self.im.metrics.fire.inc(
+                                ([self.metric_prefix, "registrations_started"].join('.')))
+                            );
+                    }
+                }
             });
         });
 

@@ -29,11 +29,13 @@ module.exports = function (grunt) {
                 ],
                 ussd_chw: [
                     'src/index.js',
+                    'src/session_length_helper.js',
                     '<%= paths.src.app.ussd_chw %>',
                     'src/init.js'
                 ],
                 ussd_public: [
                     'src/index.js',
+                    'src/session_length_helper.js',
                     '<%= paths.src.app.ussd_public %>',
                     'src/init.js'
                 ],
@@ -44,11 +46,13 @@ module.exports = function (grunt) {
                 ],
                 sms_inbound: [
                     'src/index.js',
+                    'src/session_length_helper.js',
                     '<%= paths.src.app.sms_inbound %>',
                     'src/init.js'
                 ],
                 ussd_servicerating: [
                     'src/index.js',
+                    'src/session_length_helper.js',
                     '<%= paths.src.app.ussd_servicerating %>',
                     'src/init.js'
                 ],
@@ -109,11 +113,13 @@ module.exports = function (grunt) {
                 ],
                 ussd_chw: [
                     'test/setup.js',
+                    'src/session_length_helper.js',
                     '<%= paths.src.app.ussd_chw %>',
                     'test/ussd_chw.test.js'
                 ],
                 ussd_public: [
                     'test/setup.js',
+                    'src/session_length_helper.js',
                     '<%= paths.src.app.ussd_public %>',
                     'test/ussd_public.test.js'
                 ],
@@ -124,11 +130,13 @@ module.exports = function (grunt) {
                 ],
                 sms_inbound: [
                     'test/setup.js',
+                    'src/session_length_helper.js',
                     '<%= paths.src.app.sms_inbound %>',
                     'test/sms_inbound.test.js'
                 ],
                 ussd_servicerating: [
                     'test/setup.js',
+                    'src/session_length_helper.js',
                     '<%= paths.src.app.ussd_servicerating %>',
                     'test/ussd_servicerating.test.js'
                 ],

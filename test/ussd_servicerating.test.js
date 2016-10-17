@@ -1,4 +1,5 @@
 var vumigo = require('vumigo_v02');
+var assert = require('assert');
 var AppTester = vumigo.AppTester;
 
 var fixtures_IdentityStore = require('./fixtures_identity_store');
@@ -24,7 +25,10 @@ describe("app", function() {
                 .setup.char_limit(182)
                 .setup.config.app({
                     name: 'ussd_servicerating',
+                    env: 'test',
+                    metric_store: 'test_metric_store',
                     testing: 'true',
+                    testing_today: '2014-04-04 07:07:07',
                     channel: "*120*550*4#",
                     public_channel: "*120*550#",
                     services: {
@@ -43,6 +47,9 @@ describe("app", function() {
                     }
                 })
                 .setup(function(api) {
+                    api.metrics.stores = {'test_metric_store': {}};
+                })
+                .setup(function(api) {
                     // add fixtures for services used
                     fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
@@ -51,6 +58,84 @@ describe("app", function() {
                     fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 ->
                 });
+        });
+
+        describe('using the session length helper', function () {
+            it('should publish metrics', function () {
+                return tester
+                    .setup(function(api, im) {
+                        api.kv.store['session_length_helper.' + api.config.app.name + '.foodacom.sentinel'] = '2000-12-12';
+                        api.kv.store['session_length_helper.' + api.config.app.name + '.foodacom'] = 42;
+                    })
+                    .setup.user({
+                        state: 'state_start',
+                        addr: '27820001001',
+                        metadata: {
+                          session_length_helper: {
+                            // one minute before the mocked timestamp
+                            start: Number(new Date('April 4, 2014 07:06:07'))
+                          }
+                        }
+                    })
+                    .input({
+                        content: '1',
+                        transport_metadata: {
+                            aat_ussd: {
+                                provider: 'foodacom'
+                            }
+                        }
+                    })
+                    .input.session_event('close')
+                    .check(function(api, im) {
+
+                        var kv_store = api.kv.store;
+                        assert.equal(kv_store['session_length_helper.' + im.config.name + '.foodacom'], 60000);
+                        assert.equal(
+                          kv_store['session_length_helper.' + im.config.name + '.foodacom.sentinel'], '2014-04-04');
+
+                        var m_store = api.metrics.stores.test_metric_store;
+                        assert.equal(
+                          m_store['session_length_helper.' + im.config.name + '.foodacom'].agg, 'max');
+                        assert.equal(
+                          m_store['session_length_helper.' + im.config.name + '.foodacom'].values[0], 60);
+                    }).run();
+            });
+        });
+
+        describe("Testing Metrics...", function() {
+            describe("when the user completes a servicerating", function() {
+                it("should fire multiple metrics", function() {
+                    return tester
+                        .setup.user.addr('27820001002')
+                        .inputs(
+                            {session_event: "new"}
+                            , "1"  // question_1_friendliness
+                            , "1"  // question_2_waiting_times_feel
+                            , "1"  // question_3_waiting_times_length
+                            , {session_event: "new"}
+                            , "1"  // question_4_cleanliness
+                            , "1"  // question_5_privacy
+                        )
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_metric_store;
+                            assert.deepEqual(metrics['test.sum.unique_users'].values, [1]);
+                            assert.deepEqual(metrics['test.sum.unique_users.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.sum.sessions'].values, [1, 2]);
+                            assert.deepEqual(metrics['test.sum.sessions.transient'].values, [1, 1]);
+                            assert.deepEqual(metrics['test.ussd_servicerating.sum.unique_users'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_servicerating.sum.unique_users.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_servicerating.sum.sessions'].values, [1, 2]);
+                            assert.deepEqual(metrics['test.ussd_servicerating.sum.sessions.transient'].values, [1, 1]);
+                            assert.deepEqual(metrics['test.ussd_servicerating.avg.sessions_rate_service'].values, [2]);
+                            assert.deepEqual(metrics['test.ussd_servicerating.sum.question_1_friendliness.exits'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_servicerating.sum.question_2_waiting_times_feel.exits'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_servicerating.sum.question_3_waiting_times_length.exits'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_servicerating.sum.question_4_cleanliness.exits'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_servicerating.sum.question_5_privacy.exits'].values, [1]);
+                        })
+                        .run();
+                });
+            });
         });
 
         describe("when the user starts a session", function() {

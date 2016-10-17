@@ -1,5 +1,6 @@
 var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
+var assert = require('assert');
 
 var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
@@ -23,7 +24,9 @@ describe("app", function() {
             tester
                 .setup.config.app({
                     name: 'ussd_public',
-                    testing_today: "2014-04-04",
+                    env: 'test',
+                    metric_store: 'test_metric_store',
+                    testing_today: "2014-04-04 07:07:07",
                     testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',
                     logging: "off",
                     no_timeout_redirects: [
@@ -51,6 +54,9 @@ describe("app", function() {
                     },
                 })
                 .setup(function(api) {
+                    api.metrics.stores = {'test_metric_store': {}};
+                })
+                .setup(function(api) {
                     // add fixtures for services used
                     fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
@@ -59,6 +65,79 @@ describe("app", function() {
                     fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 ->
                 });
+        });
+
+        describe('using the session length helper', function () {
+            it('should publish metrics', function () {
+                return tester
+                    .setup(function(api, im) {
+                        api.kv.store['session_length_helper.' + api.config.app.name + '.foodacom.sentinel'] = '2000-12-12';
+                        api.kv.store['session_length_helper.' + api.config.app.name + '.foodacom'] = 42;
+                    })
+                    .setup.user({
+                        state: 'state_start',
+                        addr: '27820001001',
+                        metadata: {
+                          session_length_helper: {
+                            // one minute before the mocked timestamp
+                            start: Number(new Date('April 4, 2014 07:06:07'))
+                          }
+                        }
+                    })
+                    .input({
+                        content: '1',
+                        transport_metadata: {
+                            aat_ussd: {
+                                provider: 'foodacom'
+                            }
+                        }
+                    })
+                    .input.session_event('close')
+                    .check(function(api, im) {
+
+                        var kv_store = api.kv.store;
+                        assert.equal(kv_store['session_length_helper.' + im.config.name + '.foodacom'], 60000);
+                        assert.equal(
+                          kv_store['session_length_helper.' + im.config.name + '.foodacom.sentinel'], '2014-04-04');
+
+                        var m_store = api.metrics.stores.test_metric_store;
+                        assert.equal(
+                          m_store['session_length_helper.' + im.config.name + '.foodacom'].agg, 'max');
+                        assert.equal(
+                          m_store['session_length_helper.' + im.config.name + '.foodacom'].values[0], 60);
+                    }).run();
+            });
+        });
+
+        describe("test avg.sessions_to_register metric", function() {
+            it("should increment metric according to number of sessions", function() {
+                return tester
+                    .setup.user.addr('27820001001')
+                    .inputs(
+                        {session_event: "new"}
+                        , "1"  // state_language - zul_ZA
+                        , "1"  // state_suspect_pregnancy - yes
+                        , {session_event: 'close'}  // timeout
+                        , {session_event: 'new'}  // dial in
+                        , '1'  // state_timed_out - yes (continue)
+                        , "1"  // state_consent - yes
+                    )
+                    .check.interaction({
+                        state: "state_end_success",
+                        reply: 'Congratulations on your pregnancy. You will now get free SMSs ' +
+                               'about MomConnect. You can register for the full set of FREE ' +
+                               'helpful messages at a clinic.'
+                    })
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_metric_store;
+                        assert.deepEqual(metrics['test.ussd_public.avg.sessions_to_register'].values, [2]);
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [17, 117, 180, 183, 198]);
+                    })
+                    .check.reply.ends_session()
+                    .run();
+            });
         });
 
         describe("timeout testing", function() {
@@ -246,6 +325,20 @@ describe("app", function() {
                     .check(function(api) {
                         utils.check_fixtures_used(api, [180, 183]);
                     })
+                    // check metrics
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_metric_store;
+                        assert.deepEqual(metrics['test.sum.unique_users'].values, [1]);
+                        assert.deepEqual(metrics['test.sum.sessions'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_public.sum.unique_users'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_public.sum.sessions'].values, [1]);
+                        assert.deepEqual(metrics['test.sum.unique_users.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.sum.sessions.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_public.sum.unique_users.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_public.sum.sessions.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_public.state_start.no_complete'], undefined);
+                        assert.deepEqual(metrics['test.ussd_public.state_start.no_complete.transient'], undefined);
+                    })
                     .run();
                 });
             });
@@ -369,6 +462,17 @@ describe("app", function() {
                         state: "state_end_not_pregnant",
                         reply: "You have chosen not to receive MomConnect SMSs"
                     })
+                    // check metrics
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_metric_store;
+                        assert.deepEqual(metrics['test.sum.unique_users'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_public.sum.unique_users'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_public.sum.sessions'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_public.state_language.no_complete'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_public.state_language.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_public.state_suspect_pregnancy.no_complete'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_public.state_suspect_pregnancy.no_complete.transient'].values, [1]);
+                    })
                     .check.reply.ends_session()
                     .run();
                 });
@@ -410,6 +514,11 @@ describe("app", function() {
                             reply: 'Congratulations on your pregnancy. You will now get free SMSs ' +
                                    'about MomConnect. You can register for the full set of FREE ' +
                                    'helpful messages at a clinic.'
+                        })
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_metric_store;
+                            assert.deepEqual(metrics['test.ussd_public.registrations_started'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_public.avg.sessions_to_register'].values, [1]);
                         })
                         .check(function(api) {
                             utils.check_fixtures_used(api, [17, 117, 180, 183, 198]);
