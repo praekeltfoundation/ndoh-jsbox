@@ -53,8 +53,18 @@ go.app = function() {
                 // As well as <env>.servicerating.sum.sessions.transient 'sum' metric
                 .add.total_sessions([self.metric_prefix, 'sum', 'sessions'].join('.'))
 
+                // Total unique users for environment, across apps
+                // This adds <env>.sum.unique_users 'last' metric
+                // As well as <env>.sum.unique_users.transient 'sum' metric
+                .add.total_unique_users([self.env, 'sum', 'unique_users'].join('.'))
+
+                // Total sessions for environment, across apps
+                // This adds <env>.sum.sessions 'last' metric
+                // As well as <env>.sum.sessions.transient 'sum' metric
+                .add.total_sessions([self.env, 'sum', 'sessions'].join('.'))
+
                 // Average sessions to complete service rating
-                // Ideally would have used 'enter:question_1_friendliness' here, but double on-enter
+                // Ideally would have used 'enter:question_1_friendliness' here, but causes double on-enter
                 // bug is creating problems
                 .add.tracker({
                     action: 'exit',

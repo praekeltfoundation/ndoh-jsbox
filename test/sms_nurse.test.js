@@ -90,7 +90,7 @@ describe("app", function() {
                         assert.equal(
                           kv_store['session_length_helper.' + im.config.name + '.foodacom.sentinel'], '2014-04-04');
 
-                        var m_store = api.metrics.stores.test_sms_nurse_ms;
+                        var m_store = api.metrics.stores.test_metric_store;
                         assert.equal(
                           m_store['session_length_helper.' + im.config.name + '.foodacom'].agg, 'max');
                         assert.equal(
@@ -102,7 +102,7 @@ describe("app", function() {
         describe("test unique user Metrics", function() {
 
             describe("when a new unique user sends message in", function() {
-                it.only("should increment the no. of unique users metric by 1", function() {
+                it("should increment the no. of unique users metric by 1", function() {
                     return tester
                         .setup.user.addr('27820001002')
                         .inputs(

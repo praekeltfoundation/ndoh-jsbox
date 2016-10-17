@@ -50,6 +50,7 @@ go.app = function() {
                 // This adds <env>.sum.unique_users 'last' metric
                 // as well as <env>.sum.unique_users.transient 'sum' metric
                 .add.total_unique_users([self.env, 'sum', 'unique_users'].join('.'))
+
                 // Note 'sessions' are not tracked as this is an sms app
             ;
 

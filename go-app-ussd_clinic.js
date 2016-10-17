@@ -210,12 +210,12 @@ go.app = function() {
 
                 // Total unique users for environment, across apps
                 // This adds <env>.sum.unique_users 'last' metric
-                // As well as <env>.sum.unique_users.transient 'sum' metric
+                // as well as <env>.sum.unique_users.transient 'sum' metric
                 .add.total_unique_users([self.env, 'sum', 'unique_users'].join('.'))
 
                 // Total sessions for environment, across apps
                 // This adds <env>.sum.sessions 'last' metric
-                // As well as <env>.sum.sessions.transient 'sum' metric
+                // as well as <env>.sum.sessions.transient 'sum' metric
                 .add.total_sessions([self.env, 'sum', 'sessions'].join('.'))
 
                 // Average sessions to register

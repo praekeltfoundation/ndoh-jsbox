@@ -141,9 +141,9 @@ describe("app", function() {
                         })
                         .run();
                 });
-                it.skip("should record metrics", function() {
+                it.only("should record metrics", function() {
                     return tester
-                        .setup.user.addr('27821234444')
+                        .setup.user.addr('27820001002')
                         .inputs(
                             {session_event: 'new'}  // dial in
                         )
@@ -153,6 +153,10 @@ describe("app", function() {
                             assert.deepEqual(metrics['test.ussd_nurse.sum.sessions'].values, [1]);
                             assert.deepEqual(metrics['test.sum.unique_users'].values, [1]);
                             assert.deepEqual(metrics['test.ussd_nurse.sum.unique_users'].values, [1]);
+                            assert.deepEqual(metrics['test.sum.sessions.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_nurse.sum.sessions.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.sum.unique_users.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_nurse.sum.unique_users.transient'].values, [1]);
                         })
                         .run();
                 });

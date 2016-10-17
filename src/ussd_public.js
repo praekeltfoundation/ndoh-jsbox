@@ -54,18 +54,23 @@ go.app = function() {
             mh = new MetricsHelper(self.im);
             mh
                 // Total unique users
-                // This adds <env>.servicerating.sum.unique_users 'last' metric
-                // As well as <env>.servicerating.sum.unique_users.transient 'sum' metric
+                // This adds <env>.ussd_public.sum.unique_users 'last' metric
+                // as well as <env>.ussd_public.sum.unique_users.transient 'sum' metric
                 .add.total_unique_users([self.metric_prefix, 'sum', 'unique_users'].join('.'))
 
                 // Total sessions
-                // This adds <env>.servicerating.sum.sessions 'last' metric
-                // As well as <env>.servicerating.sum.sessions.transient 'sum' metric
+                // This adds <env>.ussd_public.sum.sessions 'last' metric
+                // as well as <env>.ussd_public.sum.sessions.transient 'sum' metric
                 .add.total_sessions([self.metric_prefix, 'sum', 'sessions'].join('.'))
 
                 // Total unique users for environment, across apps
+                // This adds <env>.sum.unique_users 'last' metric
+                // as well as <env>.sum.unique_users.transient 'sum' metric
                 .add.total_unique_users([self.env, 'sum', 'unique_users'].join('.'))
+
                 // Total sessions for environment, across apps
+                // This adds <env>.sum.sessions 'last' metric
+                // as well as <env>.sum.sessions.transient 'sum' metric
                 .add.total_sessions([self.env, 'sum', 'sessions'].join('.'))
 
                 // Average sessions to register
