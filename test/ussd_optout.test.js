@@ -1,5 +1,6 @@
 var vumigo = require('vumigo_v02');
 var utils = require('seed-jsbox-utils').utils;
+var assert = require('assert');
 var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
 var fixtures_MessageSender = require('./fixtures_message_sender');
@@ -23,10 +24,11 @@ describe("app", function() {
             tester
                 .setup.config.app({
                     name: 'ussd_optout',
+                    env: 'test',
+                    metric_store: 'test_metric_store',
                     logging: 'off',
                     testing_today: 'April 4, 2014 07:07:07',
                     channel: "*120*550#1",
-                    env: 'test',
                     services: {
                         identity_store: {
                             url: 'http://is/api/v1/',
@@ -44,6 +46,9 @@ describe("app", function() {
                 })
                 .setup.char_limit(182)
                 .setup(function(api) {
+                    api.metrics.stores = {'test_metric_store': {}};
+                })
+                .setup(function(api) {
                     // add fixtures for services used
                     fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
@@ -51,11 +56,6 @@ describe("app", function() {
                     fixtures_ServiceRating().forEach(api.http.fixtures.add); // 150 - 169
                     fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 ->
-
-                })
-                .setup(function(api) {
-                    api.kv.store['test_metric_store.test.sum.subscriptions'] = 4;
-                    api.kv.store['test_metric_store.test.sum.optout_cause.loss'] = 2;
                 });
         });
 
@@ -84,6 +84,17 @@ describe("app", function() {
                             utils.check_fixtures_used(api, [180, 183]);
                         })
                         .check.user.properties({lang: 'eng_ZA'})
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_metric_store;
+                            assert.deepEqual(metrics['test.sum.unique_users'].values, [1]);
+                            assert.deepEqual(metrics['test.sum.unique_users.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.sum.sessions'].values, [1]);
+                            assert.deepEqual(metrics['test.sum.sessions.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_optout.sum.sessions'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_optout.sum.sessions.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_optout.sum.unique_users'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_optout.sum.unique_users.transient'].values, [1]);
+                        })
                         .run();
                 });
             });

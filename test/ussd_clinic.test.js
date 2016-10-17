@@ -55,12 +55,6 @@ describe("app", function() {
                     },
                 })
                 .setup(function(api) {
-                    api.kv.store['test.unique_users'] = 0;
-                    api.kv.store['test.sum.sessions'] = 0;
-                    api.kv.store['test.ussd_clinic.unique_users'] = 0;
-                    api.kv.store['test.ussd_clinic.sum.sessions'] = 0;
-                })
-                .setup(function(api) {
                     api.metrics.stores = {'test_metric_store': {}};
                 })
                 .setup(function(api) {
@@ -362,6 +356,41 @@ describe("app", function() {
             });
         });
 
+        describe("test avg.sessions_to_register metric", function() {
+            it("should increment metric according to number of sessions", function() {
+                return tester
+                    .setup.user.addr('27820001001')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , "1"  // state_start - yes
+                        , "1"  // state_consent - yes
+                        , "123456"  // state_clinic_code
+                        , "2"  // state_due_date_month - may
+                        , "10"  // state_due_date_day
+                        , "3"  // state_id_type - none
+                        , "1981"  // state_birth_year
+                        , {session_event: 'close'}  // timeout
+                        , {session_event: 'new'}  // dial in
+                        , '1'  // state_timed_out - yes (continue)
+                        , "1"  // state_birth_month - january
+                        , "14"  // state_birth_day
+                        , "4"  // state_language - english
+                    )
+                    .check.interaction({
+                        state: "state_end_success"
+                    })
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_metric_store;
+                        assert.deepEqual(metrics['test.ussd_clinic.avg.sessions_to_register'].values, [2]);
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [4, 116, 123, 174, 180, 183, 204]);
+                    })
+                    .check.reply.ends_session()
+                    .run();
+            });
+        });
+
         describe("timeout testing", function() {
             describe("when you timeout and dial back in", function() {
                 describe("when on a normal state", function() {
@@ -586,9 +615,13 @@ describe("app", function() {
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
                             assert.deepEqual(metrics['test.sum.unique_users'].values, [1]);
+                            assert.deepEqual(metrics['test.sum.unique_users.transient'].values, [1]);
                             assert.deepEqual(metrics['test.sum.sessions'].values, [1]);
+                            assert.deepEqual(metrics['test.sum.sessions.transient'].values, [1]);
                             assert.deepEqual(metrics['test.ussd_clinic.sum.sessions'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_clinic.sum.sessions.transient'].values, [1]);
                             assert.deepEqual(metrics['test.ussd_clinic.sum.unique_users'].values, [1]);
+                            assert.deepEqual(metrics['test.ussd_clinic.sum.unique_users.transient'].values, [1]);
                         })
                         .run();
                     });
@@ -1306,6 +1339,7 @@ describe("app", function() {
                     .check.interaction({
                         state: "state_end_success"
                     })
+
                     .check(function(api) {
                         utils.check_fixtures_used(api, [2, 116, 174, 180, 183, 187]);
                     })
@@ -1327,6 +1361,8 @@ describe("app", function() {
                         assert.deepEqual(metrics['test.ussd_clinic.state_sa_id.no_complete.transient'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.registrations_started'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.avg.sessions_to_register'].values, [1]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -1351,6 +1387,33 @@ describe("app", function() {
                     )
                     .check.interaction({
                         state: "state_end_success"
+                    })
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_metric_store;
+                        assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_consent.no_complete'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_consent.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_due_date_day.no_complete'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_due_date_day.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_id_type.no_complete'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_id_type.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_sa_id.no_complete'], undefined);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_sa_id.no_complete.transient'], undefined);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_passport_origin.no_complete'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_passport_origin.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_passport_no.no_complete'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_passport_no.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.registrations_started'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.avg.sessions_to_register'].values, [1]);
                     })
                     .check(function(api) {
                         utils.check_fixtures_used(api, [3, 116, 174, 180, 182, 183, 188]);
@@ -1378,6 +1441,32 @@ describe("app", function() {
                     )
                     .check.interaction({
                         state: "state_end_success"
+                    })
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_metric_store;
+                        assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_consent.no_complete'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_consent.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_due_date_day.no_complete'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_due_date_day.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_id_type.no_complete'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_id_type.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_sa_id.no_complete'], undefined);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_birth_year.no_complete'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_birth_year.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_birth_month.no_complete'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_birth_month.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_birth_day.no_complete'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_birth_day.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete.transient'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.registrations_started'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.avg.sessions_to_register'].values, [1]);
                     })
                     .check(function(api) {
                         utils.check_fixtures_used(api, [4, 116, 174, 180, 183, 189]);

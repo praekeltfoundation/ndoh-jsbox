@@ -49,15 +49,12 @@ go.app = function() {
                 // As well as <env>.sms_nurse.sum.unique_users.transient 'sum' metric
                 .add.total_unique_users([self.metric_prefix, 'sum', 'unique_users'].join('.'))
 
-                // Total sessions for app
-                // This adds <env>.sms_nurse.sum.sessions 'last' metric
-                // As well as <env>.sms_nurse.sum.sessions.transient 'sum' metric
-                .add.total_sessions([self.metric_prefix, 'sum', 'sessions'].join('.'))
-
                 // Total unique users for environment, across apps
+                // This adds <env>.sum.unique_users 'last' metric
+                // as well as <env>.sum.unique_users.transient 'sum' metric
                 .add.total_unique_users([self.env, 'sum', 'unique_users'].join('.'))
-                // Total sessions for environment, across apps
-                .add.total_sessions([self.env, 'sum', 'sessions'].join('.'))
+
+                // Note 'sessions' are not tracked as this is an sms app
             ;
 
             self.attach_session_length_helper(self.im);

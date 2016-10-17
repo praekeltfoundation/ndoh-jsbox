@@ -3,6 +3,7 @@ go.app = function() {
     var SeedJsboxUtils = require('seed-jsbox-utils');
     var Q = require('q');
     var _ = require('lodash');
+    var MetricsHelper = require('go-jsbox-metrics-helper');
     var App = vumigo.App;
     var EndState = vumigo.states.EndState;
     var ChoiceState = vumigo.states.ChoiceState;
@@ -44,10 +45,93 @@ go.app = function() {
                 self.im.config.services.message_sender.url
             );
 
+            self.env = self.im.config.env;
+            self.metric_prefix = [self.env, self.im.config.name].join('.');
+            self.store_name = [self.env, self.im.config.name].join('.');
+
+            self.attach_session_length_helper(self.im);
+
+            mh = new MetricsHelper(self.im);
+            mh
+                // Total unique users
+                // This adds <env>.ussd_public.sum.unique_users 'last' metric
+                // as well as <env>.ussd_public.sum.unique_users.transient 'sum' metric
+                .add.total_unique_users([self.metric_prefix, 'sum', 'unique_users'].join('.'))
+
+                // Total sessions
+                // This adds <env>.ussd_public.sum.sessions 'last' metric
+                // as well as <env>.ussd_public.sum.sessions.transient 'sum' metric
+                .add.total_sessions([self.metric_prefix, 'sum', 'sessions'].join('.'))
+
+                // Total unique users for environment, across apps
+                // This adds <env>.sum.unique_users 'last' metric
+                // as well as <env>.sum.unique_users.transient 'sum' metric
+                .add.total_unique_users([self.env, 'sum', 'unique_users'].join('.'))
+
+                // Total sessions for environment, across apps
+                // This adds <env>.sum.sessions 'last' metric
+                // as well as <env>.sum.sessions.transient 'sum' metric
+                .add.total_sessions([self.env, 'sum', 'sessions'].join('.'))
+
+                // Average sessions to register
+                .add.tracker({
+                    action: 'exit',
+                    state: 'state_start'
+                }, {
+                    action: 'enter',
+                    state: 'state_end_success'
+                }, {
+                    sessions_between_states: [self.metric_prefix, 'avg.sessions_to_register'].join('.')
+                })
+            ;
+
             // evaluate whether dialback sms needs to be sent on session close
             self.im.on('session:close', function(e) {
                 return self.dial_back(e);
             });
+
+            self.im.on('state:exit', function(e) {
+                return self.fire_complete(e.state.name, 1);
+            });
+        };
+
+        self.attach_session_length_helper = function(im) {
+            // If we have transport metadata then attach the session length
+            // helper to this app
+            if(!im.msg.transport_metadata)
+                return;
+
+            var slh = new go.SessionLengthHelper(im, {
+                name: function () {
+                    var metadata = im.msg.transport_metadata.aat_ussd;
+                    var provider;
+                    if(metadata) {
+                        provider = (metadata.provider || 'unspecified').toLowerCase();
+                    } else {
+                        provider = 'unknown';
+                    }
+                    return [im.config.name, provider].join('.');
+                },
+                clock: function () {
+                    return utils.get_moment_date(im.config.testing_today, "YYYY-MM-DD hh:mm:ss");
+                }
+            });
+            slh.attach();
+            return slh;
+        };
+
+        self.fire_complete = function(name, val) {
+            var ignore_states = [];
+            if (!_.contains(ignore_states, name)) {
+                return Q.all([
+                    self.im.metrics.fire.inc(
+                        ([self.metric_prefix, name, "no_complete"].join('.')), {amount: val}),
+                    self.im.metrics.fire.sum(
+                        ([self.metric_prefix, name, "no_complete.transient"].join('.')), val)
+                ]);
+            } else {
+                return Q();
+            }
         };
 
         self.dial_back = function(e) {
@@ -230,9 +314,16 @@ go.app = function() {
                         return sbm
                         .check_identity_subscribed(self.im.user.answers.registrant.id, "momconnect")
                         .then(function(identity_subscribed_to_momconnect) {
-                            return identity_subscribed_to_momconnect
-                                ? self.states.create('state_registered_full')
-                                : self.states.create('state_suspect_pregnancy');
+                            if (identity_subscribed_to_momconnect) {
+                                return self.states.create('state_registered_full');
+                            } else {
+                                return self
+                                .im.metrics.fire.inc(
+                                        ([self.metric_prefix, "registrations_started"].join('.')))
+                                .then(function() {
+                                    return self.states.create('state_suspect_pregnancy');
+                                });
+                            }
                         });
                     });
                 } else {
@@ -272,6 +363,15 @@ go.app = function() {
                         return 'state_suspect_pregnancy';
                     });
                 },
+
+                events: {
+                    'state:enter': function() {
+                        return Q(
+                            self.im.metrics.fire.inc(
+                                ([self.metric_prefix, "registrations_started"].join('.')))
+                            );
+                    }
+                }
             });
         });
 

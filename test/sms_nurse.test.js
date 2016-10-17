@@ -45,10 +45,10 @@ describe("app", function() {
                     },
                     logging: "off",
                     env: 'test',
-                    metric_store: 'test_sms_nurse_ms',
+                    metric_store: 'test_metric_store',
                 })
                 .setup(function(api) {
-                    api.metrics.stores = {'test_sms_nurse_ms': {}};
+                    api.metrics.stores = {'test_metric_store': {}};
                 })
                 .setup(function(api) {
                     // add fixtures for services used
@@ -94,12 +94,33 @@ describe("app", function() {
                         assert.equal(
                           kv_store['session_length_helper.' + im.config.name + '.foodacom.sentinel'], '2014-04-04');
 
-                        var m_store = api.metrics.stores.test_sms_nurse_ms;
+                        var m_store = api.metrics.stores.test_metric_store;
                         assert.equal(
                           m_store['session_length_helper.' + im.config.name + '.foodacom'].agg, 'max');
                         assert.equal(
                           m_store['session_length_helper.' + im.config.name + '.foodacom'].values[0], 60);
                     }).run();
+            });
+        });
+
+        describe("test unique user Metrics", function() {
+
+            describe("when a new unique user sends message in", function() {
+                it("should increment the no. of unique users metric by 1", function() {
+                    return tester
+                        .setup.user.addr('27820001002')
+                        .inputs(
+                            'start'
+                            )
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_metric_store;
+                            assert.deepEqual(metrics['test.sum.unique_users'].values, [1]);
+                            assert.deepEqual(metrics['test.sum.unique_users.transient'].values, [1]);
+                            assert.deepEqual(metrics['test.sms_nurse.sum.unique_users'].values, [1]);
+                            assert.deepEqual(metrics['test.sms_nurse.sum.unique_users.transient'].values, [1]);
+                        })
+                        .run();
+                });
             });
         });
 
