@@ -7,6 +7,7 @@ var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
 var fixtures_MessageSender = require('./fixtures_message_sender');
 var fixtures_Hub = require('./fixtures_hub');
 var fixtures_Jembi = require('./fixtures_jembi');
+var fixtures_Casepro = require('./fixtures_casepro');
 var fixtures_ServiceRating = require('./fixtures_service_rating');
 
 var utils = require('seed-jsbox-utils').utils;
@@ -41,6 +42,9 @@ describe("app", function() {
                         hub: {
                             url: 'http://hub/api/v1/',
                             token: 'test Hub'
+                        },
+                        casepro: {
+                            url: 'http://casepro/'
                         }
                     },
                     logging: 'off',
@@ -71,7 +75,8 @@ describe("app", function() {
                     fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 139
                     fixtures_ServiceRating().forEach(api.http.fixtures.add); // 140 - 149
                     fixtures_Jembi().forEach(api.http.fixtures.add);  // 150 - 159
-                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 160 ->
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 160 - 241
+                    fixtures_Casepro().forEach(api.http.fixtures.add); // 242
 
                 });
         });
@@ -158,7 +163,7 @@ describe("app", function() {
                                 'receive a response soon. Kind regards. MomConnect.'
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 181]);
+                            utils.check_fixtures_used(api, [51, 54, 181, 242]);
                         })
                         .run();
                 });
@@ -181,7 +186,7 @@ describe("app", function() {
                                 "emergency please go to your health provider immediately."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 181]);
+                            utils.check_fixtures_used(api, [51, 54, 181, 242]);
                         })
                         .run();
                 });
@@ -204,7 +209,7 @@ describe("app", function() {
                                 "health provider immediately."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 181]);
+                            utils.check_fixtures_used(api, [51, 54, 181, 242]);
                         })
                         .run();
                 });
@@ -227,7 +232,7 @@ describe("app", function() {
                                 "health provider immediately."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 181]);
+                            utils.check_fixtures_used(api, [51, 54, 181, 242]);
                         })
                         .run();
                 });
