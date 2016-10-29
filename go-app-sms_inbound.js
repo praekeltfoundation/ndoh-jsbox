@@ -385,12 +385,13 @@ go.app = function() {
             var casepro_url = self.im.config.services.casepro.url;
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
             var http = new JsonApi(self.im, {});
+            var data = {
+              from: msisdn,
+              message_id: self.im.config.testing_message_id || self.im.msg.message_id,
+              content: self.im.msg.content,
+            };
             return http.post(casepro_url, {
-                data: {
-                  from: msisdn,
-                  message_id: self.im.config.testing_message_id || self.im.msg.message_id,
-                  content: self.im.msg.content,
-                }
+                data: data
               }).then(function (result) {
                 return self.states.create("state_default");
               });

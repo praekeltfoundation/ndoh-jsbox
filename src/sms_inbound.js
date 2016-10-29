@@ -244,8 +244,6 @@ go.app = function() {
                 data: data
               }).then(function (result) {
                 return self.states.create("state_default");
-              }, function(exception) {
-                console.log(exception);
               });
         });
 
