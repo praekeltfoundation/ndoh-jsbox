@@ -381,7 +381,6 @@ go.app = function() {
         });
 
         self.states.add("state_default_enter", function(name) {
-            // 'casepro not yet integrated'  (log support ticket)
             var casepro_url = self.im.config.services.casepro.url;
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
             var http = new JsonApi(self.im, {});
@@ -392,8 +391,15 @@ go.app = function() {
             };
             return http.post(casepro_url, {
                 data: data
-              }).then(function (result) {
-                return self.states.create("state_default");
+              }).then(function (response) {
+                return self.im.log([
+                      'Request: POST ' + casepro_url,
+                      'Payload: ' + JSON.stringify(data),
+                      'Response: ' + JSON.stringify(response),
+                    ].join('\n'))
+                  .then(function() {
+                    return self.states.create("state_default");
+                  });
               });
         });
 
