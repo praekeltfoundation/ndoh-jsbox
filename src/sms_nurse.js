@@ -1,6 +1,7 @@
 go.app = function() {
     var vumigo = require("vumigo_v02");
     var MetricsHelper = require('go-jsbox-metrics-helper');
+    var Q = require('q');
     var App = vumigo.App;
     var EndState = vumigo.states.EndState;
     var JsonApi = vumigo.http.api.JsonApi;
@@ -16,6 +17,7 @@ go.app = function() {
 
         // variables for services
         var is;
+        var hub;
         var sbm;
 
         self.init = function() {
@@ -25,7 +27,11 @@ go.app = function() {
                 self.im.config.services.identity_store.token,
                 self.im.config.services.identity_store.url
             );
-
+            hub = new SeedJsboxUtils.Hub(
+                new JsonApi(self.im, {}),
+                self.im.config.services.hub.token,
+                self.im.config.services.hub.url
+            );
             sbm = new StageBasedMessaging(
                 new JsonApi(self.im, {}),
                 self.im.config.services.stage_based_messaging.token,
@@ -136,8 +142,17 @@ go.app = function() {
                 "request_source": "sms_nurse",
                 "requestor_source_id": self.im.config.testing_message_id || self.im.msg.message_id
             };
-            return is
-            .optout(optout_info)
+            var change_info = {
+                "registrant_id": self.im.user.answers.operator.id,
+                "action": "nurse_optout",
+                "data": {
+                    "reason": "unknown"
+                }
+            };
+            return Q.all([
+                is.optout(optout_info),
+                hub.create_change(change_info)
+            ])
             .then(function() {
                 return self.states.create("states_opt_out");
             });
