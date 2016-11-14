@@ -825,9 +825,17 @@ module.exports = function() {
 
         // 35:
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.change.nurse_optout.identity.cb245673-aa41-4302-ac47-00000001003",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001003",
+                    "action": "nurse_optout",
+                    "data": {
+                        "reason": "unknown"
+                    }
+                }
             },
             'response': {}
         },
