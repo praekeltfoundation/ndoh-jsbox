@@ -8,6 +8,7 @@ go.app = function() {
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
+    var MenuState = vumigo.states.MenuState;
     var EndState = vumigo.states.EndState;
     var JsonApi = vumigo.http.api.JsonApi;
 
@@ -124,35 +125,31 @@ go.app = function() {
         });
 
         self.states.add("state_subscribe_option", function(name) {
-            return new ChoiceState(name, {
+            return new MenuState(name, {
                 question: $("We are sorry for your loss. Would you like " +
                             "to receive a small set of free messages " +
                             "to help you in this difficult time?"),
 
                 choices: [
-                    new Choice("state_send_loss_optout", $("Yes")),
-                    new Choice("state_send_nonloss_optout", $("No"))
+                    new Choice("state_send_loss_switch", $("Yes")),
+                    new Choice("state_send_loss_optout", $("No"))
                 ],
+            });
+        });
 
-                next: function(choice) {
-                    if (choice.value == "state_send_loss_optout") {
-                        return hub
-                        .create_change(
-                            {
-                                "registrant_id": self.im.user.answers.operator.id,
-                                "action": "momconnect_loss_switch",
-                                "data": {
-                                    "reason": self.im.user.answers.state_start
-                                }
-                            }
-                        )
-                        .then(function() {
-                            return choice.value;
-                        });
-                    } else {
-                        return choice.value;
+        self.states.add("state_send_loss_switch", function(name) {
+            return hub
+            .create_change(
+                {
+                    "registrant_id": self.im.user.answers.operator.id,
+                    "action": "momconnect_loss_switch",
+                    "data": {
+                        "reason": self.im.user.answers.state_start
                     }
                 }
+            )
+            .then(function() {
+                return self.states.create("state_end_yes");
             });
         });
 
@@ -168,7 +165,7 @@ go.app = function() {
                 }
             )
             .then(function() {
-                return self.states.create("state_end_yes");
+                return self.states.create("state_end_no");
             });
         });
 
