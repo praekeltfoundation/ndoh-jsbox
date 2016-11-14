@@ -8,6 +8,7 @@ go.app = function() {
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
+    var MenuState = vumigo.states.MenuState;
     var EndState = vumigo.states.EndState;
     var JsonApi = vumigo.http.api.JsonApi;
 
@@ -124,7 +125,7 @@ go.app = function() {
         });
 
         self.states.add("state_subscribe_option", function(name) {
-            return new ChoiceState(name, {
+            return new MenuState(name, {
                 question: $("We are sorry for your loss. Would you like " +
                             "to receive a small set of free messages " +
                             "to help you in this difficult time?"),
@@ -133,10 +134,6 @@ go.app = function() {
                     new Choice("state_send_loss_switch", $("Yes")),
                     new Choice("state_send_loss_optout", $("No"))
                 ],
-
-                next: function(choice) {
-                    return choice.value;
-                }
             });
         });
 
