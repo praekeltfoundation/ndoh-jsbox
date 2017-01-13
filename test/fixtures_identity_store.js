@@ -1168,6 +1168,7 @@ module.exports = function() {
                                     "+27820000111": {}
                                 }
                             },
+                            "last_edd": "2017-05-28"
                         },
                         "created_at": "2016-06-21T06:13:29.693272Z",
                         "updated_at": "2016-06-21T06:13:29.693298Z"
@@ -1208,7 +1209,8 @@ module.exports = function() {
                                     "+27820000222": {}
                                 }
                             },
-                            "consent": true
+                            "consent": true,
+                            "last_edd": "2017-05-27"
                         },
                         "created_at": "2016-06-21T06:13:29.693272Z",
                         "updated_at": "2016-06-21T06:13:29.693298Z"
@@ -1249,7 +1251,8 @@ module.exports = function() {
                                     "+27820000333": {}
                                 }
                             },
-                            "mom_dob": "1981-04-26"
+                            "mom_dob": "1981-04-26",
+                            "last_baby_dob": "2017-05-27"
                         },
                         "created_at": "2016-06-21T06:13:29.693272Z",
                         "updated_at": "2016-06-21T06:13:29.693298Z"
@@ -1291,7 +1294,8 @@ module.exports = function() {
                                 }
                             },
                             "consent": true,
-                            "mom_dob": "1981-04-26"
+                            "mom_dob": "1981-04-26",
+                            "last_baby_dob": "2017-05-27"
                         },
                         "created_at": "2016-06-21T06:13:29.693272Z",
                         "updated_at": "2016-06-21T06:13:29.693298Z"
@@ -1362,6 +1366,7 @@ module.exports = function() {
                         "pmtct": {
                             "lang_code": "eng_ZA"
                         },
+                        "last_edd": "2017-05-28"
                     },
                     "created_at":"2016-06-21T06:13:29.693272Z",
                     "updated_at":"2016-06-21T06:13:29.693298Z"
@@ -1392,6 +1397,7 @@ module.exports = function() {
                         "pmtct": {
                             "lang_code": "eng_ZA"
                         },
+                        "last_edd": "2017-05-27"
                     },
                     "created_at":"2016-06-21T06:13:29.693272Z",
                     "updated_at":"2016-06-21T06:13:29.693298Z"
@@ -1422,6 +1428,7 @@ module.exports = function() {
                         "pmtct": {
                             "lang_code": "eng_ZA"
                         },
+                        "last_baby_dob": "2017-05-27"
                     },
                     "created_at": "2016-06-21T06:13:29.693272Z",
                     "updated_at": "2016-06-21T06:13:29.693298Z"
@@ -1452,6 +1459,7 @@ module.exports = function() {
                         "pmtct": {
                             "lang_code": "eng_ZA"
                         },
+                        "last_baby_dob": "2017-05-27"
                     },
                     "created_at": "2016-06-21T06:13:29.693272Z",
                     "updated_at": "2016-06-21T06:13:29.693298Z"

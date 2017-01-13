@@ -673,7 +673,8 @@ module.exports = function() {
                     "data": {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000001",
                         "mom_dob": "1981-04-26",
-                        "language": "eng_ZA"
+                        "language": "eng_ZA",
+                        "edd": "2017-05-28"
                     }
                 }
             },
@@ -691,7 +692,8 @@ module.exports = function() {
                     "data": {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000002",
                         "mom_dob": "1981-04-26",
-                        "language": "eng_ZA"
+                        "language": "eng_ZA",
+                        "edd": "2017-05-27"
                     }
                 }
             },
@@ -709,7 +711,8 @@ module.exports = function() {
                     "data": {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000003",
                         "mom_dob": "1981-04-26",
-                        "language": "eng_ZA"
+                        "language": "eng_ZA",
+                        "baby_dob": "2017-05-27"
                     }
                 }
             },
@@ -727,7 +730,8 @@ module.exports = function() {
                     "data": {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000004",
                         "mom_dob": "1981-04-26",
-                        "language": "eng_ZA"
+                        "language": "eng_ZA",
+                        "baby_dob": "2017-05-27"
                     }
                 }
             },
