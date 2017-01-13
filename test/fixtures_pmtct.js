@@ -133,7 +133,8 @@ module.exports = function() {
                                     "+27820000333": {}
                                 }
                             },
-                            "mom_dob": "1981-04-26"
+                            "mom_dob": "1981-04-26",
+                            "last_baby_dob": "2017-05-27"
                         },
                         "created_at": "2016-06-21T06:13:29.693272Z",
                         "updated_at": "2016-06-21T06:13:29.693298Z"
@@ -175,7 +176,8 @@ module.exports = function() {
                                 }
                             },
                             "consent": true,
-                            "mom_dob": "1981-04-26"
+                            "mom_dob": "1981-04-26",
+                            "last_baby_dob": "2017-05-27"
                         },
                         "created_at": "2016-06-21T06:13:29.693272Z",
                         "updated_at": "2016-06-21T06:13:29.693298Z"
@@ -1974,7 +1976,8 @@ module.exports = function() {
                         "pmtct": {
                             "lang_code": "eng_ZA"
                         },
-                        "source": "pmtct"
+                        "source": "pmtct",
+                        "last_baby_dob": "2017-05-27"
                     },
                     "created_at": "2016-06-21T06:13:29.693272Z",
                     "updated_at": "2016-06-21T06:13:29.693298Z"
@@ -2005,7 +2008,8 @@ module.exports = function() {
                         "pmtct": {
                             "lang_code": "eng_ZA"
                         },
-                        "source": "pmtct"
+                        "source": "pmtct",
+                        "last_baby_dob": "2017-05-27"
                     },
                     "created_at": "2016-06-21T06:13:29.693272Z",
                     "updated_at": "2016-06-21T06:13:29.693298Z"
@@ -3047,7 +3051,8 @@ module.exports = function() {
                     "data": {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000001",
                         "mom_dob": "1981-04-26",
-                        "language": "eng_ZA"
+                        "language": "eng_ZA",
+                        "edd": "2017-05-28"
                     }
                 }
             },
@@ -3065,7 +3070,8 @@ module.exports = function() {
                     "data": {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000002",
                         "mom_dob": "1981-04-26",
-                        "language": "eng_ZA"
+                        "language": "eng_ZA",
+                        "edd": "2017-05-28"
                     }
                 }
             },
@@ -3113,7 +3119,8 @@ module.exports = function() {
                     "data": {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000003",
                         "mom_dob": "1981-04-26",
-                        "language": "eng_ZA"
+                        "language": "eng_ZA",
+                        "baby_dob": "2017-05-28"
                     }
                 }
             },
@@ -3161,7 +3168,8 @@ module.exports = function() {
                     "data": {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000004",
                         "mom_dob": "1981-04-26",
-                        "language": "eng_ZA"
+                        "language": "eng_ZA",
+                        "baby_dob": "2017-05-27"
                     }
                 }
             },

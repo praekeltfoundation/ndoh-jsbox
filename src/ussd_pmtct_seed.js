@@ -351,7 +351,7 @@ go.app = function() {
                             "operator_id": self.im.user.answers.identity.id,
                             "language": self.im.user.lang || "eng_ZA",
                             "mom_dob": self.im.user.answers.mom_dob,
-                            "baby_dob": self.im.user.answers.identity.last_baby_dob,
+                            "baby_dob": self.im.user.answers.identity.details.last_baby_dob,
                         }
                     };
 
@@ -363,7 +363,7 @@ go.app = function() {
                             "operator_id": self.im.user.answers.identity.id,
                             "language": self.im.user.lang || "eng_ZA",
                             "mom_dob": self.im.user.answers.mom_dob,
-                            "edd": self.im.user.answers.identity.last_edd
+                            "edd": self.im.user.answers.identity.details.last_edd
                         }
                     };
                 }
