@@ -505,6 +505,21 @@ describe("app", function() {
                     })
                     .run();
             });
+            it("using 'baby' keyword 'ngwana'", function() {
+                return tester
+                    .setup.user.addr('27820001002')
+                    .inputs('Ngwana has been born, bub')
+                    .check.interaction({
+                        state: 'state_baby',
+                        reply:
+                            'Thank you. You will now receive messages related to newborn babies. ' +
+                            'If you have any medical concerns please visit your nearest clinic'
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [16, 51, 54, 181]);
+                    })
+                    .run();
+            });
         });
     });
 });
