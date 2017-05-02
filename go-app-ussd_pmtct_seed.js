@@ -53,7 +53,8 @@ go.app = function() {
             ms = new MessageSender(
                 new JsonApi(self.im, {}),
                 self.im.config.services.message_sender.token,
-                self.im.config.services.message_sender.url
+                self.im.config.services.message_sender.url,
+                self.im.config.services.message_sender.channel
             );
         };
 
