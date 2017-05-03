@@ -1,7 +1,9 @@
 go.app = function() {
     var vumigo = require("vumigo_v02");
+    var moment = require('moment');
     var MetricsHelper = require('go-jsbox-metrics-helper');
     var Q = require('q');
+    var _ = require('lodash');
     var App = vumigo.App;
     var EndState = vumigo.states.EndState;
     var JsonApi = vumigo.http.api.JsonApi;
@@ -136,11 +138,11 @@ go.app = function() {
                                 case "START":
                                     return self.states.create("states_opt_in_enter");
                                 default:
-                                    return self.states.create("state_default_enter");
+                                    return self.states.create("states_default_enter");
                             }
                         }
                     } else {
-                        return self.states.create("state_unrecognised");
+                        return self.states.create("states_unrecognised");
                     }
                 });
             });
@@ -212,7 +214,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_unrecognised", function(name) {
+        self.states.add("states_unrecognised", function(name) {
             return new EndState(name, {
                 text: $("We do not recognise the message you sent us. Reply STOP " +
                         "to unsubscribe or dial {{channel}} for more options.")
@@ -221,8 +223,9 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_default_enter", function(name) {
-            var casepro_url = self.im.config.services.casepro.url;
+        self.states.add("states_default_enter", function(name) {
+           var casepro_url = self.im.config.services.casepro.url;
+           console.log(casepro_url);
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
             var http = new JsonApi(self.im, {});
             var data = {
@@ -230,6 +233,7 @@ go.app = function() {
               message_id: self.im.config.testing_message_id || self.im.msg.message_id,
               content: self.im.msg.content,
             };
+            console.log(data);
             return http.post(casepro_url, {
                 data: data
               }).then(function (response) {
@@ -239,12 +243,12 @@ go.app = function() {
                       'Response: ' + JSON.stringify(response),
                     ].join('\n'))
                   .then(function() {
-                    return self.states.create("state_default");
+                    return self.states.create("states_default");
                   });
-              });
+                });
         });
 
-        self.states.add("state_default", function(name) {
+        self.states.add("states_default", function(name) {
             var out_of_hours_text =
                 $("The helpdesk operates from 8am to 4pm Mon to Fri. " +
                   "Responses will be delayed outside of these hrs.");
@@ -268,7 +272,7 @@ go.app = function() {
 
             return new EndState(name, {
                 text: text,
-                next: "state_start"
+                next: "states_start"
             });
         });
 

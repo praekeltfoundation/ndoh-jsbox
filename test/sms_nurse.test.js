@@ -7,6 +7,7 @@ var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
 var fixtures_MessageSender = require('./fixtures_message_sender');
 var fixtures_Hub = require('./fixtures_hub');
 var fixtures_Jembi = require('./fixtures_jembi');
+var fixtures_Casepro = require('./fixtures_casepro');
 var fixtures_ServiceRating = require('./fixtures_service_rating');
 
 var SeedJsboxUtils = require("seed-jsbox-utils");
@@ -28,6 +29,8 @@ describe("app", function() {
                     name: "sms_nurse",
                     testing_today: "2014-04-04 07:07:07",
                     testing_message_id: "0170b7bb-978e-4b8a-35d2-662af5b6daee",
+                    env: 'test',
+                    metric_store: 'test_metric_store',
                     nurse_ussd_channel: "nurse_ussd_channel",
                     services: {
                         identity_store: {
@@ -42,10 +45,27 @@ describe("app", function() {
                             url: "http://sbm/api/v1/",
                             token: "test StageBasedMessaging"
                         },
+                        casepro: {
+                            url: 'http://casepro/'
+                        }
                     },
-                    logging: "off",
-                    env: 'test',
-                    metric_store: 'test_metric_store',
+                    logging: "off",                  
+                    public_holidays: [
+                        "2015-01-01",  // new year's day
+                        "2015-03-21",  // human rights day
+                        "2015-04-03",  // good friday - VARIES
+                        "2015-04-06",  // family day - VARIES
+                        "2015-04-27",  // freedom day
+                        "2015-05-01",  // worker's day
+                        "2015-06-16",  // youth day
+                        "2015-08-09",  // women's day
+                        "2015-08-10",  // women's day OBSERVED (Sunday -> Monday)
+                        "2015-09-24",  // heritage day
+                        "2015-12-16",  // day of reconciliation
+                        "2015-12-25",  // christmas day
+                        "2015-12-26",  // day of goodwill
+                    ],
+                    helpdesk_hours: [8, 16]
                 })
                 .setup(function(api) {
                     api.metrics.stores = {'test_metric_store': {}};
@@ -58,6 +78,8 @@ describe("app", function() {
                     fixtures_ServiceRating().forEach(api.http.fixtures.add); // 150 - 169
                     fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 ->
+                    fixtures_Casepro().forEach(api.http.fixtures.add); // 242
+
                 });
         });
 
@@ -177,29 +199,97 @@ describe("app", function() {
             it("should reverse their opt out status", function() {
                 return tester
                     .setup.user.addr("27820001003")
-                    .input("START")
+                    .inputs("START")
                     .check.interaction({
                         state: "states_opt_in",
                         reply:
                             "Thank you. You will now receive messages from us again. " +
                             "If you have any medical concerns please visit your nearest clinic"
                     })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [52, 54, 182, 240]);
+                    })
                     .run();
             });
         });
 
         describe("when the user sends a different message", function() {
-            it("should tell them how to opt out", function() {
-                return tester
-                    .setup.user.addr("27820001003")
-                    .input("help")
-                    .check.interaction({
-                        state: "state_unrecognised",
-                        reply:
-                            "We do not recognise the message you sent us. Reply STOP " +
-                            "to unsubscribe or dial nurse_ussd_channel for more options."
-                    })
-                    .run();
+            
+            describe("when the message is received between 08:00 and 16:00", function() {
+                it("should log a support ticket", function() {
+                    return tester
+                        .setup.config.app({
+                            // friday during working hours
+                            testing_today: '2014-04-04 09:07:07'  // GMT+0200 (SAST)
+                        })
+                        .setup.user.addr('27820001003')
+                        .inputs('DONUTS')
+                        .check.interaction({
+                            state: 'states_default',
+                            reply:
+                                'Thank you for your message, it has been captured and you will ' +
+                                'receive a response soon. Kind regards. NurseConnect.'
+                        })
+                        .run();
+                });
+            });
+
+            describe("when the message is received out of hours", function() {
+                it("should give out of hours warning", function() {
+                    return tester
+                        .setup.config.app({
+                            // friday out of hours
+                            testing_today: '2014-04-04 04:07:07'
+                        })
+                        .setup.user.addr('27820001003')
+                        .input('DONUTS')
+                        .check.interaction({
+                            state: 'states_default',
+                            reply:
+                                "The helpdesk operates from 8am to 4pm Mon to Fri. " +
+                                "Responses will be delayed outside of these hrs."
+                        })
+                        
+                        .run();
+                });
+            });
+
+            describe("when the message is received on a weekend", function() {
+                it("should give weekend warning", function() {
+                    return tester
+                        .setup.config.app({
+                            // saturday during working hours
+                            testing_today: '2014-04-05 09:07:07'
+                        })
+                        .setup.user.addr('27820001003')
+                        .input('DONUTS')
+                        .check.interaction({
+                            state: 'states_default',
+                            reply:
+                                "The helpdesk is not currently available during weekends " +
+                                "and public holidays. Responses will be delayed during this time."
+                        })
+                        .run();
+                });
+            });
+
+            describe("when the message is received on a public holiday", function() {
+                it("should give public holiday warning", function() {
+                    return tester
+                        .setup.config.app({
+                            // women's day 2015 during working hours
+                            testing_today: '2015-08-10 09:07:07'
+                        })
+                        .setup.user.addr('27820001003')
+                        .input('DONUTS')
+                        .check.interaction({
+                            state: 'states_default',
+                            reply:
+                                "The helpdesk is not currently available during weekends " +
+                                "and public holidays. Responses will be delayed during this time."
+                        })
+                        .run();
+                });
             });
         });
 
