@@ -60,6 +60,29 @@ go.app = function() {
             self.attach_session_length_helper(self.im);
         };
 
+        self.is_weekend = function(config) {
+            var today = utils.get_moment_date(config.testing_today, "YYYY-MM-DD hh:mm:ss");
+            var today_utc = moment.utc(today);
+            return today_utc.format('dddd') === 'Saturday' ||
+              today_utc.format('dddd') === 'Sunday';
+        };
+
+        self.is_public_holiday = function(config) {
+            var today = utils.get_moment_date(config.testing_today, "YYYY-MM-DD hh:mm:ss");
+            var today_utc = moment.utc(today);
+            var date_as_string = today_utc.format('YYYY-MM-DD');
+            return _.contains(config.public_holidays, date_as_string);
+        };
+
+        self.is_out_of_hours = function(config) {
+            var today = utils.get_moment_date(config.testing_today, "YYYY-MM-DD hh:mm:ss");
+            var today_utc = moment.utc(today);
+            // get business hours from config, -2 for utc to local time conversion
+            var opening_time = Math.min.apply(null, config.helpdesk_hours) - 2;
+            var closing_time = Math.max.apply(null, config.helpdesk_hours) - 2;
+            return (today_utc.hour() < opening_time || today_utc.hour() >= closing_time);
+        };
+
         self.attach_session_length_helper = function (im) {
             // If we have transport metadata then attach the session length
             // helper to this app
@@ -113,7 +136,7 @@ go.app = function() {
                                 case "START":
                                     return self.states.create("states_opt_in_enter");
                                 default:
-                                    return self.states.create("state_unrecognised");
+                                    return self.states.create("state_default_enter");
                             }
                         }
                     } else {
@@ -195,6 +218,57 @@ go.app = function() {
                         "to unsubscribe or dial {{channel}} for more options.")
                     .context({channel: self.im.config.nurse_ussd_channel}),
                 next: "states_start"
+            });
+        });
+
+        self.states.add("state_default_enter", function(name) {
+            var casepro_url = self.im.config.services.casepro.url;
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
+            var http = new JsonApi(self.im, {});
+            var data = {
+              from: msisdn,
+              message_id: self.im.config.testing_message_id || self.im.msg.message_id,
+              content: self.im.msg.content,
+            };
+            return http.post(casepro_url, {
+                data: data
+              }).then(function (response) {
+                return self.im.log([
+                      'Request: POST ' + casepro_url,
+                      'Payload: ' + JSON.stringify(data),
+                      'Response: ' + JSON.stringify(response),
+                    ].join('\n'))
+                  .then(function() {
+                    return self.states.create("state_default");
+                  });
+              });
+        });
+
+        self.states.add("state_default", function(name) {
+            var out_of_hours_text =
+                $("The helpdesk operates from 8am to 4pm Mon to Fri. " +
+                  "Responses will be delayed outside of these hrs.");
+
+            var weekend_public_holiday_text =
+                $("The helpdesk is not currently available during weekends " +
+                  "and public holidays. Responses will be delayed during this time.");
+
+            var business_hours_text =
+                $("Thank you for your message, it has been captured and you will receive a " +
+                "response soon. Kind regards. NurseConnect.");
+
+            if (self.is_out_of_hours(self.im.config)) {
+                text = out_of_hours_text;
+            } else if (self.is_weekend(self.im.config) ||
+              self.is_public_holiday(self.im.config)) {
+                text = weekend_public_holiday_text;
+            } else {
+                text = business_hours_text;
+            }
+
+            return new EndState(name, {
+                text: text,
+                next: "state_start"
             });
         });
 
