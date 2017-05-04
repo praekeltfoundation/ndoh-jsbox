@@ -1,7 +1,6 @@
 var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
 var assert = require("assert");
-
 var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
 var fixtures_MessageSender = require('./fixtures_message_sender');
@@ -29,8 +28,6 @@ describe("app", function() {
                     name: "sms_nurse",
                     testing_today: "2014-04-04 07:07:07",
                     testing_message_id: "0170b7bb-978e-4b8a-35d2-662af5b6daee",
-                    env: 'test',
-                    metric_store: 'test_metric_store',
                     nurse_ussd_channel: "nurse_ussd_channel",
                     services: {
                         identity_store: {
@@ -49,7 +46,9 @@ describe("app", function() {
                             url: 'http://casepro/'
                         }
                     },
-                    logging: "off",                  
+                    logging: "off",
+                    env: 'test',
+                    metric_store: 'test_metric_store',             
                     public_holidays: [
                         "2015-01-01",  // new year's day
                         "2015-03-21",  // human rights day
@@ -78,7 +77,7 @@ describe("app", function() {
                     fixtures_ServiceRating().forEach(api.http.fixtures.add); // 150 - 169
                     fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 ->
-                    fixtures_Casepro().forEach(api.http.fixtures.add); // 242
+                    fixtures_Casepro().forEach(api.http.fixtures.add); // 243
 
                 });
         });
@@ -92,7 +91,7 @@ describe("app", function() {
                     })
                     .setup.user({
                         state: 'states_start',
-                        addr: '27820001001',
+                        addr: '27820001003',
                         metadata: {
                           session_length_helper: {
                             // one minute before the mocked timestamp
@@ -130,7 +129,7 @@ describe("app", function() {
             describe("when a new unique user sends message in", function() {
                 it("should increment the no. of unique users metric by 1", function() {
                     return tester
-                        .setup.user.addr('27820001002')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             'start'
                             )
@@ -213,8 +212,7 @@ describe("app", function() {
             });
         });
 
-        describe("when the user sends a different message", function() {
-            
+        describe("when the user sends a different message", function() {            
             describe("when the message is received between 08:00 and 16:00", function() {
                 it("should log a support ticket", function() {
                     return tester
@@ -229,6 +227,9 @@ describe("app", function() {
                             reply:
                                 'Thank you for your message, it has been captured and you will ' +
                                 'receive a response soon. Kind regards. NurseConnect.'
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [52, 54, 182, 243]);
                         })
                         .run();
                 });
@@ -249,7 +250,9 @@ describe("app", function() {
                                 "The helpdesk operates from 8am to 4pm Mon to Fri. " +
                                 "Responses will be delayed outside of these hrs."
                         })
-                        
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [52, 54, 182, 243]);
+                        })
                         .run();
                 });
             });
@@ -269,6 +272,9 @@ describe("app", function() {
                                 "The helpdesk is not currently available during weekends " +
                                 "and public holidays. Responses will be delayed during this time."
                         })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [52, 54, 182, 243]);
+                        })
                         .run();
                 });
             });
@@ -287,6 +293,9 @@ describe("app", function() {
                             reply:
                                 "The helpdesk is not currently available during weekends " +
                                 "and public holidays. Responses will be delayed during this time."
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [52, 54, 182, 243]);
                         })
                         .run();
                 });

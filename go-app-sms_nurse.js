@@ -144,8 +144,6 @@ go.app = function() {
                                     return self.states.create("states_default_enter");
                             }
                         }
-                    } else {
-                        return self.states.create("states_unrecognised");
                     }
                 });
             });
@@ -217,18 +215,8 @@ go.app = function() {
             });
         });
 
-        self.states.add("states_unrecognised", function(name) {
-            return new EndState(name, {
-                text: $("We do not recognise the message you sent us. Reply STOP " +
-                        "to unsubscribe or dial {{channel}} for more options.")
-                    .context({channel: self.im.config.nurse_ussd_channel}),
-                next: "states_start"
-            });
-        });
-
         self.states.add("states_default_enter", function(name) {
            var casepro_url = self.im.config.services.casepro.url;
-           console.log(casepro_url);
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
             var http = new JsonApi(self.im, {});
             var data = {
@@ -236,7 +224,6 @@ go.app = function() {
               message_id: self.im.config.testing_message_id || self.im.msg.message_id,
               content: self.im.msg.content,
             };
-            console.log(data);
             return http.post(casepro_url, {
                 data: data
               }).then(function (response) {
