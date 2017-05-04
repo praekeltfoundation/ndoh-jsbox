@@ -19,7 +19,8 @@ module.exports = function (grunt) {
                     ussd_pmtct: 'src/ussd_pmtct.js',
                     sms_pmtct: 'src/sms_pmtct.js',
                     ussd_pmtct_seed: 'src/ussd_pmtct_seed.js',
-                    sms_pmtct_seed: 'src/sms_pmtct_seed.js'
+                    sms_pmtct_seed: 'src/sms_pmtct_seed.js',
+                    ussd_faq: 'src/ussd_faq.js'
                 },
                 ussd_clinic: [
                     'src/index.js',
@@ -86,6 +87,11 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.sms_pmtct_seed %>',
                     'src/init.js'
                 ],
+                ussd_faq: [
+                    'src/index.js',
+                    '<%= paths.src.app.ussd_faq %>',
+                    'src/init.js'
+                ],
                 all: [
                     'src/**/*.js'
                 ]
@@ -102,7 +108,8 @@ module.exports = function (grunt) {
                 ussd_pmtct: 'go-app-ussd_pmtct.js',
                 sms_pmtct: 'go-app-sms_pmtct.js',
                 ussd_pmtct_seed: 'go-app-ussd_pmtct_seed.js',
-                sms_pmtct_seed: 'go-app-sms_pmtct_seed.js'
+                sms_pmtct_seed: 'go-app-sms_pmtct_seed.js',
+                ussd_faq: 'go-app-ussd_faq.js'
             },
             test: {
                 ussd_clinic: [
@@ -170,6 +177,11 @@ module.exports = function (grunt) {
                     'test/setup.js',
                     '<%= paths.src.app.sms_pmtct_seed %>',
                     'test/sms_pmtct_seed.test.js'
+                ],
+                ussd_faq: [
+                    'test/setup.js',
+                    '<%= paths.src.app.ussd_faq %>',
+                    'test/ussd_faq.test.js'
                 ],
                 session_length_helper: [
                     'src/session_length_helper.js',
@@ -241,6 +253,10 @@ module.exports = function (grunt) {
             sms_pmtct_seed: {
                 src: ['<%= paths.src.sms_pmtct_seed %>'],
                 dest: '<%= paths.dest.sms_pmtct_seed %>'
+            },
+            ussd_faq: {
+                src: ['<%= paths.src.ussd_faq %>'],
+                dest: '<%= paths.dest.ussd_faq %>'
             }
         },
 
@@ -285,6 +301,9 @@ module.exports = function (grunt) {
             },
             test_sms_pmtct_seed: {
                 src: ['<%= paths.test.sms_pmtct_seed %>']
+            },
+            test_ussd_faq: {
+                src: ['<%= paths.test.ussd_faq %>']
             },
             test_session_length_helper: {
                 src: ['<%= paths.test.session_length_helper %>']
