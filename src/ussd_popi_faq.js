@@ -1,8 +1,6 @@
 go.app = function() {
     var vumigo = require("vumigo_v02");
     var SeedJsboxUtils = require('seed-jsbox-utils');
-    var Q = require('q');
-    var _ = require('lodash');
     var MetricsHelper = require('go-jsbox-metrics-helper');
     var App = vumigo.App;
     var EndState = vumigo.states.EndState;
@@ -20,8 +18,6 @@ go.app = function() {
 
         var is;
         var sbm;
-        var hub;
-        var ms;
 
         self.init = function() {
             // initialise services
@@ -34,17 +30,6 @@ go.app = function() {
                 new JsonApi(self.im, {}),
                 self.im.config.services.stage_based_messaging.token,
                 self.im.config.services.stage_based_messaging.url
-            );
-            hub = new SeedJsboxUtils.Hub(
-                new JsonApi(self.im, {}),
-                self.im.config.services.hub.token,
-                self.im.config.services.hub.url
-            );
-            ms = new SeedJsboxUtils.MessageSender(
-                new JsonApi(self.im, {}),
-                self.im.config.services.message_sender.token,
-                self.im.config.services.message_sender.url,
-                self.im.config.services.message_sender.channel
             );
 
             self.env = self.im.config.env;
@@ -74,22 +59,7 @@ go.app = function() {
                 // This adds <env>.sum.sessions 'last' metric
                 // as well as <env>.sum.sessions.transient 'sum' metric
                 .add.total_sessions([self.env, 'sum', 'sessions'].join('.'))
-
-                // Average sessions to register
-                .add.tracker({
-                    action: 'exit',
-                    state: 'state_start'
-                }, {
-                    action: 'enter',
-                    state: 'state_end_success'
-                }, {
-                    sessions_between_states: [self.metric_prefix, 'avg.sessions_to_register'].join('.')
-                })
             ;
-
-            self.im.on('state:exit', function(e) {
-                return self.fire_complete(e.state.name, 1);
-            });
         };
 
         self.attach_session_length_helper = function(im) {
@@ -117,20 +87,6 @@ go.app = function() {
             return slh;
         };
 
-        self.fire_complete = function(name, val) {
-            var ignore_states = [];
-            if (!_.contains(ignore_states, name)) {
-                return Q.all([
-                    self.im.metrics.fire.inc(
-                        ([self.metric_prefix, name, "no_complete"].join('.')), {amount: val}),
-                    self.im.metrics.fire.sum(
-                        ([self.metric_prefix, name, "no_complete.transient"].join('.')), val)
-                ]);
-            } else {
-                return Q();
-            }
-        };
-
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
                 if (!interrupt || !utils.timed_out(self.im))
@@ -156,44 +112,27 @@ go.app = function() {
             });
         });
 
-        self.add("state_start", function(name) {  // interstitial state
+        self.add("state_start", function(name) {
             self.im.user.set_answers = {};
-            var registrant_msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
 
             return is
-            .get_or_create_identity({"msisdn": registrant_msisdn})
+            .get_or_create_identity({"msisdn": msisdn})
             .then(function(identity) {
-                self.im.user.set_answer("registrant", identity);
-                self.im.user.set_answer("registrant_msisdn", registrant_msisdn);
+                self.im.user.set_answer("operator", identity);
+                self.im.user.set_answer("msisdn", msisdn);
 
-                if (!("last_mc_reg_on" in self.im.user.answers.registrant.details)) {
-                    return self.states.create('state_not_registered');
-                } else if (self.im.user.answers.registrant.details.last_mc_reg_on === 'clinic') {
-                    // last registration on clinic line
-                    return self.im.user
-                    .set_lang(self.im.user.answers.registrant.details.lang_code)
-                    .then(function() {
-                        return sbm
-                        .check_identity_subscribed(self.im.user.answers.registrant.id, "momconnect")
-                        .then(function(identity_subscribed_to_momconnect) {
-                            if (identity_subscribed_to_momconnect) {
-                                return self.states.create('state_all_questions_view');
-                            } else {
-                                return self
-                                .then(function() {
-                                    return self.states.create('state_not_registered');
-                                });
-                            }
-                        });
-                    });
-                } else {
-                    // registration on chw / public lines
-                    return self.im.user
-                    .set_lang(self.im.user.answers.registrant.details.lang_code)
-                    .then(function() {
+
+                return sbm
+                // check if registered
+                .check_identity_subscribed(self.im.user.answers.operator.id, "momconnect")
+                .then(function(identity_subscribed_to_momconnect) {
+                    if (identity_subscribed_to_momconnect) {
                         return self.states.create('state_all_questions_view');
-                    });
-                }
+                    } else {
+                        return self.states.create('state_not_registered');
+                    }
+                });
             });
         });
 

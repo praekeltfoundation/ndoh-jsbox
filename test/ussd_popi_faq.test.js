@@ -121,7 +121,7 @@ describe("app", function() {
                         , {session_event: "new"}
                     )
                     .check.interaction({
-                        state: "state_timed_out", // FIX THIS!!!
+                        state: "state_timed_out",
                     })
                     .run();
                 });
@@ -182,7 +182,7 @@ describe("app", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [180, 183]);
+                        utils.check_fixtures_used(api, [50, 180, 183]);
                     })
                     .run();
                 });
