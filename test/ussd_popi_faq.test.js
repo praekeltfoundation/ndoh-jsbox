@@ -11,7 +11,7 @@ var fixtures_ServiceRating = require('./fixtures_service_rating');
 var utils = require('seed-jsbox-utils').utils;
 
 describe("app", function() {
-    describe("for ussd_faq use", function() {
+    describe("for ussd_popi_faq use", function() {
         var app;
         var tester;
 
@@ -22,7 +22,7 @@ describe("app", function() {
 
             tester
                 .setup.config.app({
-                    name: 'ussd_faq',
+                    name: 'ussd_popi_faq',
                     env: 'test',
                     metric_store: 'test_metric_store',
                     testing_today: "2014-04-04 07:07:07",
