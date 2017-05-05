@@ -273,8 +273,7 @@ describe("app", function() {
                             reply: [
                                 "MomConnect needs your personal info to send " +
                                 "you messages that are relevant to your " +
-                                "pregnancy progress or your baby\'s age. " +
-                                "Info on",
+                                "pregnancy progress",
                                 "1. More",
                                 "2. Main Menu"
                             ].join('\n')
@@ -296,10 +295,9 @@ describe("app", function() {
                             .check.interaction({
                                 state: "state_question_2",
                                 reply: [
-                                    "the clinic where you registered " +
-                                    "for MomConnect is used to ensure that " +
-                                    "the service is offered to women at all " +
-                                    "clinics. Your clinic",
+                                    "or your baby\'s age. Info on the clinic " +
+                                    "where you registered for MomConnect is " +
+                                    "used to ensure that the",
                                     "1. More",
                                     "2. Back",
                                     "3. Main Menu"
@@ -323,11 +321,12 @@ describe("app", function() {
                                 .check.interaction({
                                     state: "state_question_2",
                                     reply: [
-                                        "info can also help the health " +
-                                        "department address compliments or " +
-                                        "complaints that you send to MomConnect.",
-                                        "1. Back",
-                                        "2. Main Menu"
+                                        "service is offered to women at all " +
+                                        "clinics. Your clinic info can " +
+                                        "also help the health department",
+                                        "1. More",
+                                        "2. Back",
+                                        "3. Main Menu"
                                     ].join('\n')
                                 })
                                 .check(function(api) {
