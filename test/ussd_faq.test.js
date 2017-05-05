@@ -401,8 +401,7 @@ describe("app", function() {
                             reply: [
                                 "The MomConnect service is owned and run by " +
                                 "the National Department of Health (NDoH). " +
-                                "Partners who collect & process your data on " +
-                                "behalf of",
+                                "Partners who collect &",
                                 "1. More",
                                 "2. Main Menu"
                             ].join('\n')
@@ -425,6 +424,7 @@ describe("app", function() {
                             .check.interaction({
                                 state: "state_question_4",
                                 reply: [
+                                    "process your data on behalf of " +
                                     "the NDoH are Vodacom, Cell C, " +
                                     "Telkom, Praekelt, Jembi and HISP.",
                                     "1. Back",
