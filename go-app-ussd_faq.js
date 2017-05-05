@@ -249,7 +249,7 @@ go.app = function() {
                         'Your clinic info can also help the health ' +
                         'department address compliments or complaints ' +
                         'that you send to MomConnect.'),
-                characters_per_page: 130,
+                characters_per_page: 132,
                 exit: $('Main Menu'),
                 more: $('More'),
                 next: function() {
