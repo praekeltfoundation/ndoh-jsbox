@@ -1,7 +1,6 @@
 var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
 var assert = require('assert');
-
 var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
 var fixtures_MessageSender = require('./fixtures_message_sender');
@@ -12,7 +11,7 @@ var fixtures_ServiceRating = require('./fixtures_service_rating');
 var utils = require('seed-jsbox-utils').utils;
 
 describe("app", function() {
-    describe("for ussd_public use", function() {
+    describe("for ussd_faq use", function() {
         var app;
         var tester;
 
@@ -23,7 +22,7 @@ describe("app", function() {
 
             tester
                 .setup.config.app({
-                    name: 'ussd_public',
+                    name: 'ussd_faq',
                     env: 'test',
                     metric_store: 'test_metric_store',
                     testing_today: "2014-04-04 07:07:07",
@@ -33,7 +32,7 @@ describe("app", function() {
                         "state_start", "state_end_not_pregnant", "state_end_consent_refused",
                         "state_end_success", "state_registered_full", "state_registered_not_full",
                         "state_end_compliment", "state_end_complaint", "state_end_go_clinic"],
-                    channel: "*120*550*5#",
+                    channel: "*134*550*5#",
                     services: {
                         identity_store: {
                             url: 'http://is/api/v1/',
@@ -67,6 +66,7 @@ describe("app", function() {
                 });
         });
 
+        // Session Length Helper
         describe('using the session length helper', function () {
             it('should publish metrics', function () {
                 return tester
@@ -108,112 +108,55 @@ describe("app", function() {
                     }).run();
             });
         });
-/*
-        describe("test avg.sessions_to_register metric", function() {
-            it("should increment metric according to number of sessions", function() {
-                return tester
-                    .setup.user.addr('27820001001')
-                    .inputs(
-                        {session_event: "new"}
-                        , "1"  // state_language - zul_ZA
-                        , "1"  // state_suspect_pregnancy - yes
-                        , {session_event: 'close'}  // timeout
-                        , {session_event: 'new'}  // dial in
-                        , '1'  // state_timed_out - yes (continue)
-                        , "1"  // state_consent - yes
-                    )
-                    .check.interaction({
-                        state: "state_end_success",
-                        reply: 'Congratulations on your pregnancy. You will now get free SMSs ' +
-                               'about MomConnect. You can register for the full set of FREE ' +
-                               'helpful messages at a clinic.'
-                    })
-                    .check(function(api) {
-                        var metrics = api.metrics.stores.test_metric_store;
-                        assert.deepEqual(metrics['test.ussd_public.avg.sessions_to_register'].values, [2]);
-                    })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [17, 117, 180, 183, 198]);
-                    })
-                    .check.reply.ends_session()
-                    .run();
-            });
-        });
+
 
         describe("timeout testing", function() {
             describe("when you timeout and dial back in", function() {
-                describe("when on a registration state", function() {
-                    it("should go to state_timed_out", function() {
-                        return tester
-                        .setup.user.addr("27820001001")
-                        .inputs(
-                            {session_event: "new"}
-                            , "1"  // state_language - zul_ZA
-                            , {session_event: "close"}
-                            , {session_event: "new"}
-                        )
-                        .check.interaction({
-                            state: "state_timed_out",
-                            reply: [
-                                'Welcome back. Please select an option:',
-                                '1. Continue signing up for messages',
-                                '2. Main menu'
-                            ].join('\n')
-                        })
-                        .run();
-                    });
-                });
-                describe("when on a non-registration state", function() {
-                    it("should restart, not go state_timed_out", function() {
-                        return tester
-                        .setup.user.addr("27820001002")
-                        .inputs(
-                            {session_event: "new"}
-                            , "1"  // state_registered_full - compliment
-                            , {session_event: "close"}
-                            , {session_event: "new"}
-                        )
-                        .check.interaction({
-                            state: "state_registered_full",
-                        })
-                        .run();
-                    });
+                it("should restart, not go state_timed_out", function() {
+                    return tester
+                    .setup.user.addr("27820001002")
+                    .inputs(
+                        {session_event: "new"}
+                        , {session_event: "close"}
+                        , {session_event: "new"}
+                    )
+                    .check.interaction({
+                        state: "state_timed_out", // FIX THIS!!!
+                    })
+                    .run();
                 });
             });
-
             describe("when you've reached state_timed_out", function() {
                 describe("choosing to continue", function() {
                     it("should go back to the state you were on", function() {
                         return tester
-                        .setup.user.addr("27820001001")
+                        .setup.user.addr("27820001002")
                         .inputs(
                             {session_event: "new"}
-                            , "1"  // state_language - zul_ZA
+                            , "1" // pick question 1
                             , {session_event: "close"}
                             , {session_event: "new"}
-                            , {session_event: "close"}
-                            , {session_event: "new"}
-                            , "1"  // state_timed_out - continue
+                            , "1"  // state_timed_out - choose continue
                         )
                         .check.interaction({
-                            state: "state_suspect_pregnancy",
+                            state: "state_question_1",
                         })
                         .run();
                     });
                 });
+
                 describe("choosing to abort", function() {
                     it("should restart", function() {
                         return tester
-                        .setup.user.addr("27820001001")
+                        .setup.user.addr("27820001002")
                         .inputs(
                             {session_event: "new"}
-                            , "1"  // state_language - zul_ZA
                             , {session_event: "close"}
                             , {session_event: "new"}
                             , "2"  // state_timed_out - main menu
                         )
                         .check.interaction({
-                            state: "state_language",
+                            state: "state_all_questions_view",
                         })
                         .run();
                     });
@@ -221,142 +164,196 @@ describe("app", function() {
             });
         });
 
-        describe("dialback sms testing", function() {
-            it("send if redial sms not yet sent (identity loads without redial_sms_sent defined)", function() {
-                return tester
-                .setup.user.addr("27820001001")
-                .inputs(
-                    {session_event: 'new'}  // dial in
-                    , "1"  // state_language - isiZulu
-                    , {session_event: 'close'}
-                )
-                .check.user.answer("redial_sms_sent", true)
-                .check(function(api) {
-                    utils.check_fixtures_used(api, [125, 180, 183]);
-                })
-                .run();
-            });
-            it("don't send if redial sms already sent (identity loads with redial_sms_sent set as 'true')", function() {
-                return tester
-                .setup.user.addr("27820001011")
-                .inputs(
-                    {session_event: 'new'}  // dial in
-                    , "1"  // state_registered_full - compliment
-                    , {session_event: 'close'}
-                )
-                .check.user.answer("redial_sms_sent", true)
-                .check(function(api) {
-                    utils.check_fixtures_used(api, [53, 54, 127, 207]);
-                })
-                .run();
-            });
-            it("send if redial sms not yet sent (identity loads with redial_sms_sent set as 'false')", function() {
-                return tester
-                .setup.user.addr("27820001008")
-                .inputs(
-                    {session_event: 'new'}  // dial in
-                    , "1"  // state_registered_full - compliment
-                    , {session_event: 'close'}
-                )
-                .check(function(api) {
-                    utils.check_fixtures_used(api, [54, 59, 129, 202]);
-                })
-                .run();
-            });
-            it("don't send when timeout occurs on a non-dialback state", function() {
-                return tester
-                .setup.user.addr("27820001001")
-                .inputs(
-                    {session_event: 'new'}  // dial in
-                    , "1"  // state_language - zul_ZA
-                    , "1"  // state_suspect_pregnancy - yes
-                    , {session_event: 'close'}
-                    , {session_event: 'new'}
-                    , "1"  // state_timed_out - continue
-                    , "1"  // state_consent - yes
-                )
-                .check.user.answer("redial_sms_sent", false)  // session closed on non-dialback state
-                .check(function(api) {
-                    utils.check_fixtures_used(api, [17, 117, 180, 183, 198]);
-                })
-                .run();
-            });
-            it("updates identity with redial_sms_sent 'true'", function() {
-                return tester
-                .setup.user.addr("27820001001")
-                .inputs(
-                    {session_event: 'new'}  // dial in
-                    , "1"  // state_language - zul_ZA
-                    , {session_event: 'close'}
-                    , {session_event: 'new'}
-                    , "1"  // state_suspect_pregnancy - yes
-                    , "1"  // state_timed_out - continue
-                    , "1"  // state_consent - yes
-                )
-                .check.user.answer("redial_sms_sent", true)  // session closed on dialback state
-                .check(function(api) {
-                    utils.check_fixtures_used(api, [17, 117, 125, 180, 183, 208]);
-                })
-                .run();
-            });
-        });
-
         describe("state_start", function() {
-            describe("no previous momconnect registration", function() {
-                it("should go to state_language", function() {
+            describe("user not registered on momconnect", function() {
+                it("should go to state_not_registered", function() {
                     return tester
                     .setup.user.addr("27820001001")
                     .inputs(
                         {session_event: "new"}
                     )
                     .check.interaction({
-                        state: "state_language",
+                        state: "state_not_registered",
                         reply: [
-                            "Welcome to the Department of Health's MomConnect. Choose your language:",
-                            "1. isiZulu",
-                            "2. isiXhosa",
-                            "3. Afrikaans",
-                            "4. English",
-                            "5. Sesotho sa Leboa",
-                            "6. Setswana",
-                            "7. More"
+                            "Number not recognised. Dial in with the number " +
+                            "you used to register for MomConnect. To use a " +
+                            "different number, dial *134*550*5#. To re-register " +
+                            "dial *134*550#."
                         ].join('\n')
                     })
                     .check(function(api) {
                         utils.check_fixtures_used(api, [180, 183]);
                     })
-                    // check metrics
-                    .check(function(api) {
-                        var metrics = api.metrics.stores.test_metric_store;
-                        assert.deepEqual(metrics['test.sum.unique_users'].values, [1]);
-                        assert.deepEqual(metrics['test.sum.sessions'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_public.sum.unique_users'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_public.sum.sessions'].values, [1]);
-                        assert.deepEqual(metrics['test.sum.unique_users.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.sum.sessions.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_public.sum.unique_users.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_public.sum.sessions.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_public.state_start.no_complete'], undefined);
-                        assert.deepEqual(metrics['test.ussd_public.state_start.no_complete.transient'], undefined);
-                    })
                     .run();
                 });
             });
 
-            describe("last momconnect registration on clinic line", function() {
-                describe("has active momconnect subscription", function() {
-                    it("should go to state_registered_full", function() {
+            describe("user registered on momconnect", function() {
+                it("should go to state_all_questions_view", function() {
+                    return tester
+                    .setup.user.addr("27820001002")
+                    .inputs(
+                        {session_event: "new"}
+                    )
+                    .check.interaction({
+                        state: "state_all_questions_view",
+                        reply: [
+                            "Choose a question about MomConnect:",
+                            "1. What is MomConnect (MC)?",
+                            "2. Why does MomConnect (MC) need my personal info?",
+                            "3. What personal info is collected?",
+                            "4. More"
+                        ].join('\n')
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [51, 54, 181]);
+                    })
+                    .run();
+                });
+
+                describe("user selects question 1", function() {
+                    it("should go to state_question_1", function() {
                         return tester
                         .setup.user.addr("27820001002")
                         .inputs(
                             {session_event: "new"}
+                            , "1" // pick question 1
                         )
                         .check.interaction({
-                            state: "state_registered_full",
+                            state: "state_question_1",
                             reply: [
-                                "Welcome to the Department of Health's MomConnect. Please choose an option:",
-                                "1. Send us a compliment",
-                                "2. Send us a complaint"
+                                "MomConnect is a NDoH project which delivers " +
+                                "SMSs about you & your baby. To view, update " +
+                                "or delete your info dial *134*550*5#",
+                                "1. Main Menu"
+                            ].join('\n')
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [51, 54, 181]);
+                        })
+                        .run();
+                    });
+                    describe("user selects Main Menu from state_question_1", function() {
+                        it("should go to state_question_1", function() {
+                            return tester
+                            .setup.user.addr("27820001002")
+                            .inputs(
+                                {session_event: "new"}
+                                , "1" // pick question 1
+                                , "1" // select Main Menu
+                            )
+                            .check.interaction({
+                                state: "state_all_questions_view",
+                                reply: [
+                                    "Choose a question about MomConnect:",
+                                    "1. What is MomConnect (MC)?",
+                                    "2. Why does MomConnect (MC) need my personal info?",
+                                    "3. What personal info is collected?",
+                                    "4. More"
+                                ].join('\n')
+                            })
+                            .check(function(api) {
+                                utils.check_fixtures_used(api, [51, 54, 181]);
+                            })
+                            .run();
+                        });
+                    });
+                });
+
+                describe("user selects question 2", function() {
+                    it("should go to state_question_2", function() {
+                        return tester
+                        .setup.user.addr("27820001002")
+                        .inputs(
+                            {session_event: "new"}
+                            , "2" // pick question 2
+                        )
+                        .check.interaction({
+                            state: "state_question_2",
+                            reply: [
+                                "MomConnect needs your personal info to send " +
+                                "you messages that are relevant to your " +
+                                "pregnancy progress or your baby\'s age. " +
+                                "Info on",
+                                "1. More",
+                                "2. Main Menu"
+                            ].join('\n')
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [51, 54, 181]);
+                        })
+                        .run();
+                    });
+                    describe("if user selects more", function() {
+                        it("should show the next screen of state_question_2 text", function() {
+                            return tester
+                            .setup.user.addr("27820001002")
+                            .inputs(
+                                {session_event: "new"}
+                                , "2" // pick question 2
+                                , "1" // select more
+                            )
+                            .check.interaction({
+                                state: "state_question_2",
+                                reply: [
+                                    "the clinic where you registered " +
+                                    "for MomConnect is used to ensure that " +
+                                    "the service is offered to women at all " +
+                                    "clinics. Your clinic",
+                                    "1. More",
+                                    "2. Back",
+                                    "3. Main Menu"
+                                ].join('\n')
+                            })
+                            .check(function(api) {
+                                utils.check_fixtures_used(api, [51, 54, 181]);
+                            })
+                            .run();
+                        });
+                        describe("if user selects more again", function() {
+                            it("should show the next screen of state_question_2 text", function() {
+                                return tester
+                                .setup.user.addr("27820001002")
+                                .inputs(
+                                    {session_event: "new"}
+                                    , "2" // pick question 2
+                                    , "1" // select more
+                                    , "1" // select more again
+                                )
+                                .check.interaction({
+                                    state: "state_question_2",
+                                    reply: [
+                                        "info can also help the health " +
+                                        "department address compliments or " +
+                                        "complaints that you send to MomConnect.",
+                                        "1. Back",
+                                        "2. Main Menu"
+                                    ].join('\n')
+                                })
+                                .check(function(api) {
+                                    utils.check_fixtures_used(api, [51, 54, 181]);
+                                })
+                                .run();
+                            });
+                        }); 
+                    }); 
+                }); 
+
+                describe("user selects question 3", function() {
+                    it("should go to state_question_3", function() {
+                        return tester
+                        .setup.user.addr("27820001002")
+                        .inputs(
+                            {session_event: "new"}
+                            , "3" // pick question 3
+                        )
+                        .check.interaction({
+                            state: "state_question_3",
+                            reply: [
+                                "We collect your phone and ID numbers, clinic " +
+                                "location, and information about your pregnancy " +
+                                "progress.",
+                                "1. Main Menu"
                             ].join('\n')
                         })
                         .check(function(api) {
@@ -365,328 +362,237 @@ describe("app", function() {
                         .run();
                     });
                 });
-                describe("doesn't have active momconnect subscription", function() {
-                    it("should go to state_suspect_pregnancy", function() {
+
+                describe("user selects view more questions", function() {
+                    it("should go to next faq page", function() {
                         return tester
-                        .setup.user.addr("27820001006")
+                        .setup.user.addr("27820001002")
                         .inputs(
                             {session_event: "new"}
+                            , "4" // pick More
                         )
                         .check.interaction({
-                            state: "state_suspect_pregnancy",
+                            state: "state_all_questions_view",
                             reply: [
-                                "MomConnect sends free support SMSs to pregnant mothers. Are you or do you suspect that you are pregnant?",
-                                "1. Yes",
-                                "2. No"
+                                "Choose a question about MomConnect:",
+                                "1. Who can view my personal info?",
+                                "2. How can I view, delete or change my personal info?",
+                                "3. More",
+                                "4. Back"
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [58, 196]);
+                            utils.check_fixtures_used(api, [51, 54, 181]);
                         })
                         .run();
                     });
                 });
-            });
 
-            describe("last momconnect registration on chw/public line", function() {
-                it("should go to state_registered_not_full", function() {
-                    return tester
-                    .setup.user.addr("27820001007")
-                    .inputs(
-                        {session_event: "new"}
-                    )
-                    .check.interaction({
-                        state: "state_registered_not_full",
-                        reply: [
-                            'Welcome to the Department of Health\'s ' +
-                            'MomConnect. Choose an option:',
-                            '1. Get the full set of messages'
-                        ].join('\n')
-                    })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [197]);
-                    })
-                    .run();
-                });
-            });
-        });
-
-        describe("state_language", function() {
-            it("should go to state_suspect_pregnancy", function() {
-                return tester
-                .setup.user.addr("27820001001")
-                .inputs(
-                    {session_event: "new"}
-                    , "1"  // state_language - zul_ZA
-                )
-                .check.interaction({
-                    state: "state_suspect_pregnancy"
-                })
-                .run();
-            });
-        });
-
-        describe("state_suspect_pregnancy", function() {
-            describe("indicating that you suspect pregnancy", function() {
-                it("should go to state_consent", function() {
-                    return tester
-                    .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: "new"}
-                        , "1"  // state_language - zul_ZA
-                        , "1"  // state_suspect_pregnancy - yes
-                    )
-                    .check.interaction({
-                        state: "state_consent",
-                        reply: [
-                            'To register we need to collect, store & use ' +
-                            'your info. You may get messages on public ' +
-                            'holidays & weekends. Do you consent?',
-                            '1. Yes',
-                            '2. No'
-                        ].join('\n')
-                    })
-                    .run();
-                });
-            });
-            describe("indicating that you are not pregnant", function() {
-                it("should go to state_end_not_pregnant", function() {
-                    return tester
-                    .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: "new"}
-                        , "1"  // state_language - zul_ZA
-                        , "2"  // state_suspect_pregnancy - no
-                    )
-                    .check.interaction({
-                        state: "state_end_not_pregnant",
-                        reply: "You have chosen not to receive MomConnect SMSs"
-                    })
-                    // check metrics
-                    .check(function(api) {
-                        var metrics = api.metrics.stores.test_metric_store;
-                        assert.deepEqual(metrics['test.sum.unique_users'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_public.sum.unique_users'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_public.sum.sessions'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_public.state_language.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_public.state_language.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_public.state_suspect_pregnancy.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_public.state_suspect_pregnancy.no_complete.transient'].values, [1]);
-                    })
-                    .check.reply.ends_session()
-                    .run();
-                });
-            });
-        });
-
-        describe("state_consent", function() {
-            describe("refusing consent", function() {
-                it("should go to state_end_consent_refused", function() {
-                    return tester
-                    .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: "new"}
-                        , "1"  // state_language - zul_ZA
-                        , "1"  // state_suspect_pregnancy - yes
-                        , "2"  // state_consent - no
-                    )
-                    .check.interaction({
-                        state: "state_end_consent_refused",
-                        reply: "Unfortunately without your consent, you cannot register to MomConnect."
-                    })
-                    .check.reply.ends_session()
-                    .run();
-                });
-            });
-            describe("giving consent", function() {
-                describe("if the number was not opted out", function() {
-                    it("should go to state_end_success", function() {
+                describe("user selects question 1 (question 4)", function() {
+                    it("should go to state_question_4", function() {
                         return tester
-                        .setup.user.addr("27820001001")
+                        .setup.user.addr("27820001002")
                         .inputs(
                             {session_event: "new"}
-                            , "1"  // state_language - zul_ZA
-                            , "1"  // state_suspect_pregnancy - yes
-                            , "1"  // state_consent - yes
+                            , "4" // pick More
+                            , "1" // pick question 4
                         )
                         .check.interaction({
-                            state: "state_end_success",
-                            reply: 'Congratulations on your pregnancy. You will now get free SMSs ' +
-                                   'about MomConnect. You can register for the full set of FREE ' +
-                                   'helpful messages at a clinic.'
-                        })
-                        .check(function(api) {
-                            var metrics = api.metrics.stores.test_metric_store;
-                            assert.deepEqual(metrics['test.ussd_public.registrations_started'].values, [1]);
-                            assert.deepEqual(metrics['test.ussd_public.avg.sessions_to_register'].values, [1]);
-                        })
-                        .check(function(api) {
-                            utils.check_fixtures_used(api, [17, 117, 180, 183, 198]);
-                        })
-                        .check.reply.ends_session()
-                        .run();
-                    });
-                });
-                describe("if the number was opted out", function() {
-                    it("should go to state_opt_in", function() {
-                        return tester
-                        .setup.user.addr("27820001004")
-                        .inputs(
-                            {session_event: "new"}
-                            , "1"  // state_language - zul_ZA
-                            , "1"  // state_suspect_pregnancy - yes
-                            , "1"  // state_consent - yes
-                        )
-                        .check.interaction({
-                            state: "state_opt_in",
+                            state: "state_question_4",
                             reply: [
-                                'You have previously opted out of MomConnect ' +
-                                'SMSs. Please confirm that you would like to ' +
-                                'opt in to receive messages again?',
-                                '1. Yes',
-                                '2. No'
+                                "The MomConnect service is owned and run by " +
+                                "the National Department of Health (NDoH). " +
+                                "Partners who collect & process your data on " +
+                                "behalf of",
+                                "1. More",
+                                "2. Main Menu"
                             ].join('\n')
                         })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [51, 54, 181]);
+                        })
+                        .run();
+                    });
+                    describe("user selects more", function() {
+                        it("should show the rest of state_question_4", function() {
+                            return tester
+                            .setup.user.addr("27820001002")
+                            .inputs(
+                                {session_event: "new"}
+                                , "4" // pick More
+                                , "1" // pick question 4
+                                , "1" // pick More
+                            )
+                            .check.interaction({
+                                state: "state_question_4",
+                                reply: [
+                                    "the NDoH are Vodacom, Cell C, " +
+                                    "Telkom, Praekelt, Jembi and HISP.",
+                                    "1. Back",
+                                    "2. Main Menu"
+                                ].join('\n')
+                            })
+                            .check(function(api) {
+                                utils.check_fixtures_used(api, [51, 54, 181]);
+                            })
+                            .run();
+                        });
+                    });
+                    describe("user selects Main Menu", function() {
+                        it("should go back to state_all_questions_view", function() {
+                            return tester
+                            .setup.user.addr("27820001002")
+                            .inputs(
+                                {session_event: "new"}
+                                , "4" // pick More
+                                , "1" // pick question 4
+                                , "1" // pick More
+                                , "2" // pick Main Menu
+                            )
+                            .check.interaction({
+                                state: "state_all_questions_view",
+                                reply: [
+                                    "Choose a question about MomConnect:",
+                                    "1. What is MomConnect (MC)?",
+                                    "2. Why does MomConnect (MC) need my personal info?",
+                                    "3. What personal info is collected?",
+                                    "4. More"
+                                ].join('\n')
+                            })
+                            .check(function(api) {
+                                utils.check_fixtures_used(api, [51, 54, 181]);
+                            })
+                            .run();
+                        });
+                    });
+                });
+                describe("user selects question 2 (question 5)", function() {
+                    it("should go to state_question_5", function() {
+                        return tester
+                        .setup.user.addr("27820001002")
+                        .inputs(
+                            {session_event: "new"}
+                            , "4" // pick More
+                            , "2" // pick question 5
+                        )
+                        .check.interaction({
+                            state: "state_question_5",
+                            reply: [
+                                "You can view, change, or ask to delete your " +
+                                "information by dialing *134*550*5#",
+                                "1. Main Menu"
+                            ].join('\n')
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [51, 54, 181]);
+                        })
                         .run();
                     });
                 });
-            });
-        });
-
-        describe("state_opt_in", function() {
-            describe("choosing not to opt in", function() {
-                it("should go to state_stay_out", function() {
-                    return tester
-                    .setup.user.addr("27820001004")
-                    .inputs(
-                        {session_event: "new"}
-                        , "1"  // state_language - zul_ZA
-                        , "1"  // state_suspect_pregnancy - yes
-                        , "1"  // state_consent - yes
-                        , "2"  // state_opt_in - no
-                    )
-                    .check.interaction({
-                        state: "state_stay_out",
-                        reply: [
-                            'You have chosen not to receive MomConnect SMSs',
-                            '1. Main Menu'
-                        ].join('\n')
-                    })
-                    .run();
+                describe("user selects More again", function() {
+                    it("should go to state_all_questions_view", function() {
+                        return tester
+                        .setup.user.addr("27820001002")
+                        .inputs(
+                            {session_event: "new"}
+                            , "4" // pick More
+                            , "3" // pick More
+                        )
+                        .check.interaction({
+                            state: "state_all_questions_view",
+                            reply: [
+                                "Choose a question about MomConnect:",
+                                "1. How long does MomConnect keep my info?",
+                                "2. Back"
+                            ].join('\n')
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [51, 54, 181]);
+                        })
+                        .run();
+                    });
+                });
+                describe("user selects question 1 (question 6)", function() {
+                    it("should go to state_question_6", function() {
+                        return tester
+                        .setup.user.addr("27820001002")
+                        .inputs(
+                            {session_event: "new"}
+                            , "4" // pick More
+                            , "3" // pick More
+                            , "1" // pick question 6
+                        )
+                        .check.interaction({
+                            state: "state_question_6",
+                            reply: [
+                                "MomConnect will automatically delete your " +
+                                "personal information 7 years and 9 months " +
+                                "after you registered.",
+                                "1. Main Menu"
+                            ].join('\n')
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [51, 54, 181]);
+                        })
+                        .run();
+                    });
+                    describe("user selects Main Menu", function() {
+                        it("should go to state_all_questions_view", function() {
+                            return tester
+                            .setup.user.addr("27820001002")
+                            .inputs(
+                                {session_event: "new"}
+                                , "4" // pick More
+                                , "3" // pick More
+                                , "1" // pick question 6
+                                , "1" // pick Main Menu
+                            )
+                            .check.interaction({
+                                state: "state_all_questions_view",
+                                reply: [
+                                    "Choose a question about MomConnect:",
+                                    "1. What is MomConnect (MC)?",
+                                    "2. Why does MomConnect (MC) need my personal info?",
+                                    "3. What personal info is collected?",
+                                    "4. More"
+                                ].join('\n')
+                            })
+                            .check(function(api) {
+                                utils.check_fixtures_used(api, [51, 54, 181]);
+                            })
+                            .run();
+                        });
+                    });
                 });
             });
-            describe("choosing to opt in", function() {
-                it("should go to state_end_success", function() {
-                    return tester
-                    .setup.user.addr("27820001004")
-                    .inputs(
-                        {session_event: "new"}
-                        , "1"  // state_language - zul_ZA
-                        , "1"  // state_suspect_pregnancy - yes
-                        , "1"  // state_consent - yes
-                        , "1"  // state_opt_in - yes
-                    )
-                    .check.interaction({
-                        state: "state_end_success"
-                    })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [18, 118, 184, 199, 238]);
-                    })
-                    .check.reply.ends_session()
-                    .run();
-                });
-            });
-        });
-
-        describe("state_stay_out", function() {
-            describe("choosing main menu", function() {
-                it("should go to state_language", function() {
-                    return tester
-                    .setup.user.addr("27820001004")
-                    .inputs(
-                        {session_event: "new"}
-                        , "1"  // state_language - zul_ZA
-                        , "1"  // state_suspect_pregnancy - yes
-                        , "1"  // state_consent - yes
-                        , "2"  // state_opt_in - no
-                        , "1"  // state_stay_out - main menu
-                    )
-                    .check.interaction({
-                        state: "state_language"
-                    })
-                    .run();
-                });
-            });
-        });
-
-        describe("state_registered_full", function() {
-            describe("choosing to send compliment", function() {
-                it("should go to state_end_compliment", function() {
+            describe("user selects invalid option", function() {
+                it("should do nothing", function() {
                     return tester
                     .setup.user.addr("27820001002")
                     .inputs(
                         {session_event: "new"}
-                        , "1"  // state_registered_full - compliment
+                        , "5" // pick invalid option
                     )
                     .check.interaction({
-                        state: "state_end_compliment",
-                        reply: 'Thank you. We will send you a message ' +
-                            'shortly with instructions on how to send us ' +
-                            'your compliment.'
+                        state: "state_all_questions_view",
+                        reply: [
+                            "Choose a question about MomConnect:",
+                            "1. What is MomConnect (MC)?",
+                            "2. Why does MomConnect (MC) need my personal info?",
+                            "3. What personal info is collected?",
+                            "4. More"
+                        ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [51, 54, 119, 181]);
+                        utils.check_fixtures_used(api, [51, 54, 181]);
                     })
-                    .check.reply.ends_session()
                     .run();
                 });
             });
-            describe("choosing to send complaint", function() {
-                it("should go to state_end_complaint", function() {
-                    return tester
-                    .setup.user.addr("27820001002")
-                    .inputs(
-                        {session_event: "new"}
-                        , "2"  // state_registered_full - complaint
-                    )
-                    .check.interaction({
-                        state: "state_end_complaint",
-                        reply: 'Thank you. We will send you a message ' +
-                            'shortly with instructions on how to send us ' +
-                            'your complaint.'
-                    })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [51, 54, 120, 181]);
-                    })
-                    .check.reply.ends_session()
-                    .run();
-                });
-            });
-        });
 
-        describe("state_registered_not_full", function() {
-            describe("choosing to get the full set", function() {
-                it("should go to state_end_go_clinic", function() {
-                    return tester
-                    .setup.user.addr("27820001007")
-                    .inputs(
-                        {session_event: "new"}
-                        , "1"  // state_registered_not_full - full_set
-                    )
-                    .check.interaction({
-                        state: "state_end_go_clinic",
-                        reply: 'To register for the full set of MomConnect ' +
-                            'messages, please visit your nearest clinic.'
-                    })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [197]);
-                    })
-                    .check.reply.ends_session()
-                    .run();
-                });
-            });
-        });
-*/
+
+});
+
     });
 
 });

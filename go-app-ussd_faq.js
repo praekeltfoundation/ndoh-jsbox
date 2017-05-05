@@ -11,6 +11,7 @@ go.app = function() {
     var EndState = vumigo.states.EndState;
     var ChoiceState = vumigo.states.ChoiceState;
     var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
+    var PaginatedState = vumigo.states.PaginatedState;
     var Choice = vumigo.states.Choice;
     var JsonApi = vumigo.http.api.JsonApi;
 
@@ -209,7 +210,7 @@ go.app = function() {
                 choices: [
                     new Choice('state_question_1', 'What is MomConnect (MC)?'),
                     new Choice('state_question_2', 'Why does MomConnect (MC) need my personal info?'),
-                    new Choice('state_question_3', 'What personal info is collect?'),
+                    new Choice('state_question_3', 'What personal info is collected?'),
                     new Choice('state_question_4', 'Who can view my personal info?'),
                     new Choice('state_question_5', 'How can I view, delete or change my personal info?'),
                     new Choice('state_question_6', 'How long does MomConnect keep my info?')
@@ -223,104 +224,93 @@ go.app = function() {
         // ANSWERS
 
         self.add('state_question_1', function(name) {
-            return new PaginatedChoiceState(name, {
-                question: $('MomConnect is a NDoH project which delivers ' +
+            return new PaginatedState(name, {
+                text: $('MomConnect is a NDoH project which delivers ' +
                         'SMSs about you & your baby. To view, update ' +
                         'or delete your info dial *134*550*5#'),
-                options_per_page: null,
                 characters_per_page: 160,
-                choices: [
-                    new Choice('state_all_questions_view', 'Main Menu')
-                ],
+                exit: $('Main Menu'),
+                more: $('More'),
                 next: function(choice) {
-                    return choice.value;
+                    return {name: 'state_all_questions_view'};
                 }
             });
         });
 
+
         self.add('state_question_2', function(name) {
-            return new PaginatedChoiceState(name, {
-                question: $('MomConnect needs your personal info to send ' +
+            return new PaginatedState(name, {
+                text: $('MomConnect needs your personal info to send ' +
                         'you messages that are relevant to your ' +
-                        'pregnancy progress or your baby\'s age.' +
+                        'pregnancy progress or your baby\'s age. ' +
                         'Info on the clinic where you registered ' +
                         'for MomConnect is used to ensure that the ' +
                         'service is offered to women at all clinics. ' +
                         'Your clinic info can also help the health ' +
                         'department address compliments or complaints ' +
                         'that you send to MomConnect.'),
-                options_per_page: null,
-                characters_per_page: 160,
-                choices: [
-                    new Choice('state_all_questions_view', 'Main Menu')
-                ],
-                next: function(choice) {
-                    return choice.value;
+                characters_per_page: 130,
+                exit: $('Main Menu'),
+                more: $('More'),
+                next: function() {
+                    return {name: 'state_all_questions_view'};
                 }
             });
-        });
+        }); 
 
         self.add('state_question_3', function(name) {
-            return new PaginatedChoiceState(name, {
-                question: $('We collect your phone and ID numbers, clinic ' +
+            return new PaginatedState(name, {
+                text: $('We collect your phone and ID numbers, clinic ' +
                         'location, and information about your pregnancy ' +
                         'progress.'),
-                options_per_page: null,
-                characters_per_page: 160,
-                choices: [
-                    new Choice('state_all_questions_view', 'Main Menu')
-                ],
+                characters_per_page: 140,
+                exit: $('Main Menu'),
+                more: $('More'),
                 next: function(choice) {
-                    return choice.value;
+                    return {name: 'state_all_questions_view'};
                 }
             });
         });
 
         self.add('state_question_4', function(name) {
-            return new PaginatedChoiceState(name, {
-                question: $('The MomConnect service is owned and run by ' +
+            return new PaginatedState(name, {
+                text: $('The MomConnect service is owned and run by ' +
                         'the National Department of Health (NDoH). ' +
                         'Partners who collect & process your data on ' +
                         'behalf of the NDoH are Vodacom, Cell C, ' +
                         'Telkom, Praekelt, Jembi and HISP.'),
-                options_per_page: null,
-                characters_per_page: 160,
-                choices: [
-                    new Choice('state_all_questions_view', 'Main Menu')
-                ],
+                characters_per_page: 140,
+                exit: $('Main Menu'),
+                more: $('More'),
                 next: function(choice) {
-                    return choice.value;
+                    return {name: 'state_all_questions_view'};
                 }
             });
         });
 
         self.add('state_question_5', function(name) {
-            return new PaginatedChoiceState(name, {
-                question: $('You can view, change, or ask to delete your ' +
+            return new PaginatedState(name, {
+                text: $('You can view, change, or ask to delete your ' +
                         'information by dialing *134*550*5#'),
-                options_per_page: null,
-                characters_per_page: 160,
-                choices: [
-                    new Choice('state_all_questions_view', 'Main Menu')
-                ],
+                characters_per_page: 140,
+                exit: $('Main Menu'),
+                more: $('More'),
                 next: function(choice) {
-                    return choice.value;
+                    return {name: 'state_all_questions_view'};
                 }
             });
         });
 
         self.add('state_question_6', function(name) {
-            return new PaginatedChoiceState(name, {
-                question: $('MomConnect will automatically delete your ' +
+            return new PaginatedState(name, {
+                text: $('MomConnect will automatically delete your ' +
                         'personal information 7 years and 9 months ' +
                         'after you registered.'),
-                options_per_page: null,
-                characters_per_page: 160,
-                choices: [
-                    new Choice('state_all_questions_view', 'Main Menu')
-                ],
+                characters_per_page: 140,
+                exit: $('Main Menu'),
+                more: $('More'),
                 next: function(choice) {
-                    return choice.value;
+                    return {name: 'state_all_questions_view'};
                 }
             });
         });
