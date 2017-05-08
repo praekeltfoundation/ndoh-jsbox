@@ -28,10 +28,7 @@ describe("app", function() {
                     testing_today: "2014-04-04 07:07:07",
                     testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',
                     logging: "off",
-                    no_timeout_redirects: [
-                        "state_start", "state_end_not_pregnant", "state_end_consent_refused",
-                        "state_end_success", "state_registered_full", "state_registered_not_full",
-                        "state_end_compliment", "state_end_complaint", "state_end_go_clinic"],
+                    no_timeout_redirects: ["state_start"],
                     channel: "*134*550*5#",
                     services: {
                         identity_store: {
@@ -42,14 +39,6 @@ describe("app", function() {
                             url: 'http://sbm/api/v1/',
                             token: 'test StageBasedMessaging'
                         },
-                        hub: {
-                            url: 'http://hub/api/v1/',
-                            token: 'test Hub'
-                        },
-                        message_sender: {
-                            url: 'http://ms/api/v1/',
-                            token: 'test MessageSender'
-                        }
                     },
                 })
                 .setup(function(api) {
@@ -57,12 +46,9 @@ describe("app", function() {
                 })
                 .setup(function(api) {
                     // add fixtures for services used
-                    fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
-                    fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
-                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
-                    fixtures_ServiceRating().forEach(api.http.fixtures.add); // 150 - 169
-                    fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
-                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 ->
+                    fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 0 - 49
+                    fixtures_ServiceRating().forEach(api.http.fixtures.add); // 50 - 69
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 70 ->
                 });
         });
 
@@ -182,7 +168,7 @@ describe("app", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [50, 180, 183]);
+                        utils.check_fixtures_used(api, [0, 70, 73]);
                     })
                     .run();
                 });
@@ -206,7 +192,7 @@ describe("app", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [51, 54, 181]);
+                        utils.check_fixtures_used(api, [1, 4, 71]);
                     })
                     .run();
                 });
@@ -229,7 +215,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 181]);
+                            utils.check_fixtures_used(api, [1, 4, 71]);
                         })
                         .run();
                     });
@@ -253,7 +239,7 @@ describe("app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [51, 54, 181]);
+                                utils.check_fixtures_used(api, [1, 4, 71]);
                             })
                             .run();
                         });
@@ -279,7 +265,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 181]);
+                            utils.check_fixtures_used(api, [1, 4, 71]);
                         })
                         .run();
                     });
@@ -304,7 +290,7 @@ describe("app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [51, 54, 181]);
+                                utils.check_fixtures_used(api, [1, 4, 71]);
                             })
                             .run();
                         });
@@ -330,7 +316,7 @@ describe("app", function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [51, 54, 181]);
+                                    utils.check_fixtures_used(api, [1, 4, 71]);
                                 })
                                 .run();
                             });
@@ -356,7 +342,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 181]);
+                            utils.check_fixtures_used(api, [1, 4, 71]);
                         })
                         .run();
                     });
@@ -381,7 +367,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 181]);
+                            utils.check_fixtures_used(api, [1, 4, 71]);
                         })
                         .run();
                     });
@@ -407,7 +393,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 181]);
+                            utils.check_fixtures_used(api, [1, 4, 71]);
                         })
                         .run();
                     });
@@ -432,7 +418,7 @@ describe("app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [51, 54, 181]);
+                                utils.check_fixtures_used(api, [1, 4, 71]);
                             })
                             .run();
                         });
@@ -459,7 +445,7 @@ describe("app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [51, 54, 181]);
+                                utils.check_fixtures_used(api, [1, 4, 71]);
                             })
                             .run();
                         });
@@ -483,7 +469,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 181]);
+                            utils.check_fixtures_used(api, [1, 4, 71]);
                         })
                         .run();
                     });
@@ -506,7 +492,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 181]);
+                            utils.check_fixtures_used(api, [1, 4, 71]);
                         })
                         .run();
                     });
@@ -531,7 +517,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 181]);
+                            utils.check_fixtures_used(api, [1, 4, 71]);
                         })
                         .run();
                     });
@@ -557,7 +543,7 @@ describe("app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [51, 54, 181]);
+                                utils.check_fixtures_used(api, [1, 4, 71]);
                             })
                             .run();
                         });
@@ -583,7 +569,7 @@ describe("app", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [51, 54, 181]);
+                        utils.check_fixtures_used(api, [1, 4, 71]);
                     })
                     .run();
                 });
