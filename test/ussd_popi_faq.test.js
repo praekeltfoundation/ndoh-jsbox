@@ -3,9 +3,6 @@ var AppTester = vumigo.AppTester;
 var assert = require('assert');
 var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
-var fixtures_MessageSender = require('./fixtures_message_sender');
-var fixtures_Hub = require('./fixtures_hub');
-var fixtures_Jembi = require('./fixtures_jembi');
 var fixtures_ServiceRating = require('./fixtures_service_rating');
 
 var utils = require('seed-jsbox-utils').utils;
