@@ -49,50 +49,6 @@ describe("app", function() {
                 });
         });
 
-        // Session Length Helper
-        describe('using the session length helper', function () {
-            it('should publish metrics', function () {
-                return tester
-                    .setup(function(api, im) {
-                        api.kv.store['session_length_helper.' + api.config.app.name + '.foodacom.sentinel'] = '2000-12-12';
-                        api.kv.store['session_length_helper.' + api.config.app.name + '.foodacom'] = 42;
-                    })
-                    .setup.user({
-                        state: 'state_start',
-                        addr: '27820001001',
-                        metadata: {
-                          session_length_helper: {
-                            // one minute before the mocked timestamp
-                            start: Number(new Date('April 4, 2014 07:06:07'))
-                          }
-                        }
-                    })
-                    .input({
-                        content: '1',
-                        transport_metadata: {
-                            aat_ussd: {
-                                provider: 'foodacom'
-                            }
-                        }
-                    })
-                    .input.session_event('close')
-                    .check(function(api, im) {
-
-                        var kv_store = api.kv.store;
-                        assert.equal(kv_store['session_length_helper.' + im.config.name + '.foodacom'], 60000);
-                        assert.equal(
-                          kv_store['session_length_helper.' + im.config.name + '.foodacom.sentinel'], '2014-04-04');
-
-                        var m_store = api.metrics.stores.test_metric_store;
-                        assert.equal(
-                          m_store['session_length_helper.' + im.config.name + '.foodacom'].agg, 'max');
-                        assert.equal(
-                          m_store['session_length_helper.' + im.config.name + '.foodacom'].values[0], 60);
-                    }).run();
-            });
-        });
-
-
         describe("timeout testing", function() {
             describe("when you timeout and dial back in", function() {
                 it("should restart, not go state_timed_out", function() {
