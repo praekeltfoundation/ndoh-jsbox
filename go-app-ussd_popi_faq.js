@@ -23,6 +23,7 @@ go.app = function() {
         var sbm;
 
         self.init = function() {
+            self.im.log("gets into init");
             // initialise services
             is = new SeedJsboxUtils.IdentityStore(
                 new JsonApi(self.im, {}),
@@ -63,6 +64,7 @@ go.app = function() {
                 // as well as <env>.sum.sessions.transient 'sum' metric
                 .add.total_sessions([self.env, 'sum', 'sessions'].join('.'))
             ;
+            self.im.log("gets to the bottom of init");
         };
 
         self.attach_session_length_helper = function(im) {
@@ -91,6 +93,7 @@ go.app = function() {
         };
 
         self.add = function(name, creator) {
+            console.log("gets into add function");
             self.states.add(name, function(name, opts) {
                 if (!interrupt || !utils.timed_out(self.im))
                     return creator(name, opts);
@@ -100,6 +103,7 @@ go.app = function() {
                 timeout_opts.name = name;
                 return self.states.create('state_timed_out', timeout_opts);
             });
+            console.log("gets to the end of the add function");
         };
 
         self.states.add('state_timed_out', function(name, creator_opts) {
@@ -118,7 +122,7 @@ go.app = function() {
         self.add("state_start", function(name) {
             self.im.user.set_answers = {};
             var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
-
+            self.im.log("starts state after normalisation");
             return is
             .get_or_create_identity({"msisdn": msisdn})
             .then(function(identity) {
