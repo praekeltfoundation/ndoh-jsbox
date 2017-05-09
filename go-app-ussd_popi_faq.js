@@ -93,7 +93,6 @@ go.app = function() {
         };
 
         self.add = function(name, creator) {
-            console.log("gets into add function");
             self.states.add(name, function(name, opts) {
                 if (!interrupt || !utils.timed_out(self.im))
                     return creator(name, opts);
@@ -103,7 +102,6 @@ go.app = function() {
                 timeout_opts.name = name;
                 return self.states.create('state_timed_out', timeout_opts);
             });
-            console.log("gets to the end of the add function");
         };
 
         self.states.add('state_timed_out', function(name, creator_opts) {
