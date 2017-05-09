@@ -20,33 +20,25 @@ go.app = function() {
         var sbm;
 
         self.init = function() {
-            self.im.log("gets into init");
             // initialise services
             is = new SeedJsboxUtils.IdentityStore(
                 new JsonApi(self.im, {}),
                 self.im.config.services.identity_store.token,
                 self.im.config.services.identity_store.url
             );
-            self.im.log("connected to IS");
             sbm = new SeedJsboxUtils.StageBasedMessaging(
                 new JsonApi(self.im, {}),
                 self.im.config.services.stage_based_messaging.token,
                 self.im.config.services.stage_based_messaging.url
             );
-            self.im.log("connected to SBM");
 
             self.env = self.im.config.env;
-            self.im.log("env set");
             self.metric_prefix = [self.env, self.im.config.name].join('.');
-            self.im.log("metric_prefix set");
             self.store_name = [self.env, self.im.config.name].join('.');
-            self.im.log("store_name set");
 
             self.attach_session_length_helper(self.im);
-            self.im.log("session_length_helper set");
 
             mh = new MetricsHelper(self.im);
-            self.im.log("metrics_helper set");
             mh
                 // Total unique users
                 // This adds <env>.ussd_public.sum.unique_users 'last' metric
@@ -68,17 +60,14 @@ go.app = function() {
                 // as well as <env>.sum.sessions.transient 'sum' metric
                 .add.total_sessions([self.env, 'sum', 'sessions'].join('.'))
             ;
-            self.im.log("gets to the bottom of init");
         };
 
         self.attach_session_length_helper = function(im) {
             // If we have transport metadata then attach the session length
             // helper to this app
-            im.log("enter attach_session_length_helper set");
             if(!im.msg.transport_metadata)
                 return;
 
-            im.log("message has transport metadata");
             var slh = new go.SessionLengthHelper(im, {
                 name: function () {
                     var metadata = im.msg.transport_metadata.aat_ussd;
@@ -94,9 +83,7 @@ go.app = function() {
                     return utils.get_moment_date(im.config.testing_today, "YYYY-MM-DD hh:mm:ss");
                 }
             });
-            im.log("slh created");
             slh.attach();
-            im.log("slh attached");
             return slh;
         };
 
@@ -128,7 +115,6 @@ go.app = function() {
         self.add("state_start", function(name) {
             self.im.user.set_answers = {};
             var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
-            self.im.log("starts state after normalisation");
             return is
             .get_or_create_identity({"msisdn": msisdn})
             .then(function(identity) {
