@@ -72,17 +72,48 @@ go.app = function() {
             create_outbound_message(
                 self.im.user.answers.operator.id,
                 self.im.user.answers.msisdn,
-                self.im.user.i18n($(
-                    "Your personal information that is stored:\n" +
-                    "Operator ID: {{operator_id}}\n" +
-                    "Number: {{msisdn}}\n" +
-                    "Language: {{lang}}"
-                ).context({
-                    operator_id: self.im.user.answers.operator.id,
-                    msisdn: self.im.user.answers.msisdn,
-                    lang: self.return_language()
-                }))
+                self.im.user.i18n(self.return_user_data())
             );
+        };
+
+        self.return_user_data = function(){
+            var data;
+            if(self.im.user.answers.operator.details.sa_id_no){
+                data = $("Personal info:\n" +
+                "Phone number: {{msisdn}}\n" +
+                "ID number: {{id}}\n" +
+                "Date of birth: {{dob}}\n" +
+                "Language: {{lang}}")
+                .context({
+                    msisdn: self.im.user.answers.msisdn,
+                    id: self.im.user.answers.operator.details.sa_id_no,
+                    dob: self.im.user.answers.operator.details.mom_dob,
+                    lang: self.return_language()
+                });
+            }else{
+                data = $("Personal info:\n" +
+                "Phone number: {{msisdn}}\n" +
+                "Passport Origin: {{passport_or}}\n" +
+                "Passport Number: {{passport_num}}\n" +
+                "Date of birth: {{dob}}\n" +
+                "Language: {{lang}}"
+                ).context({
+                    msisdn: self.im.user.answers.msisdn,
+                    passport_or: self.im.user.answers.operator.details.passport_origin,
+                    passport_num: self.im.user.answers.operator.details.passport_no,
+                    dob: self.im.user.answers.operator.details.mom_dob,
+                    lang: self.return_language()
+                });
+            }
+            if(self.im.user.answers.message_sets !== ''){
+                var message = $("{{first}}\nCurrent message set: {{mset}}") 
+                        .context({
+                            first: data,
+                            mset: self.im.user.answers.message_set
+                        });
+                return message;
+            }
+            return data;
         };
 
         self.return_language =function(){
@@ -147,7 +178,8 @@ go.app = function() {
             .get_or_create_identity({"msisdn": msisdn})
             .then(function(identity) {
                 self.im.user.set_answer("operator", identity);
-                self.im.user.set_answer("msisdn", msisdn);
+                self.im.user.set_answer("msisdn",msisdn);
+                
                 // display in previously chosen language
                 self.im.user.set_lang(self.im.user.answers.state_language);
                 
@@ -156,6 +188,12 @@ go.app = function() {
                 .check_identity_subscribed(self.im.user.answers.operator.id, "momconnect")
                 .then(function(identity_subscribed_to_momconnect) {
                     if (identity_subscribed_to_momconnect) {
+                        var mset = sbm.list_active_subscriptions();
+                        var allmset = '';
+                        for(var i = 0; i < mset.length; i++){
+                            allmset += sbm.get_messageset(mset[i]);
+                        }
+                        self.im.user.set_answer("message_sets",allmset);
                         return self.states.create('state_all_options_view');
                     } else {
                         return self.states.create('state_not_registered');
@@ -183,17 +221,7 @@ go.app = function() {
 
         self.add('state_view', function(name) {
             return new ChoiceState(name, {
-                question: $("Personal info:\n" +
-                        "MSISDN: {{operator_id}}\n" +
-                        "Number: {{msisdn}}\n" +
-                        "User ID: {{consent}}\n" +
-                        "Language: {{lang}}"
-                        ).context({
-                            operator_id: self.im.user.answers.operator.id,
-                            msisdn: self.im.user.answers.msisdn,
-                            consent: self.im.user.answers.state_consent,
-                            lang: self.return_language()
-                        }),
+                question: self.return_user_data(),
                 choices: [
                     new Choice('send_sms', $('Send to me by sms')),
                     new Choice('start_state', $('Back')),

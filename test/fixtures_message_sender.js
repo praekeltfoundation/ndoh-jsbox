@@ -950,7 +950,7 @@ module.exports = function() {
                 "data": {
                     "identity": "cb245673-aa41-4302-ac47-00000001002",
                     "to_addr": "+27820001002",
-                    "content": "Your personal information that is stored:\nOperator ID: cb245673-aa41-4302-ac47-00000001002\nNumber: +27820001002\nLanguage: ",
+                    "content": "Personal info:\nPhone number: +27820001002\nID number: 5101025009086\nDate of birth: 1951-01-02\nLanguage: ",                    
                     "metadata":{}
                 }
             },

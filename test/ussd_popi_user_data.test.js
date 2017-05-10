@@ -115,9 +115,9 @@ describe('app', function() {
                             state: 'state_view',
                             reply: [
                                 'Personal info:',
-                                'MSISDN: cb245673-aa41-4302-ac47-00000001002',
-                                'Number: +27820001002',
-                                'User ID: ',
+                                'Phone number: +27820001002',
+                                'ID number: 5101025009086',
+                                'Date of birth: 1951-01-02',
                                 'Language: ',
                                 '1. Send to me by sms',
                                 '2. Back'
