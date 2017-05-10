@@ -20,7 +20,6 @@ go.app = function() {
         var sbm;
 
         self.init = function() {
-            self.im.log("gets into init");
             // initialise services
             is = new SeedJsboxUtils.IdentityStore(
                 new JsonApi(self.im, {}),
@@ -36,8 +35,6 @@ go.app = function() {
             self.env = self.im.config.env;
             self.metric_prefix = [self.env, self.im.config.name].join('.');
             self.store_name = [self.env, self.im.config.name].join('.');
-
-            self.attach_session_length_helper(self.im);
 
             mh = new MetricsHelper(self.im);
             mh
@@ -61,36 +58,9 @@ go.app = function() {
                 // as well as <env>.sum.sessions.transient 'sum' metric
                 .add.total_sessions([self.env, 'sum', 'sessions'].join('.'))
             ;
-            self.im.log("gets to the bottom of init");
-        };
-
-        self.attach_session_length_helper = function(im) {
-            // If we have transport metadata then attach the session length
-            // helper to this app
-            if(!im.msg.transport_metadata)
-                return;
-
-            var slh = new go.SessionLengthHelper(im, {
-                name: function () {
-                    var metadata = im.msg.transport_metadata.aat_ussd;
-                    var provider;
-                    if(metadata) {
-                        provider = (metadata.provider || 'unspecified').toLowerCase();
-                    } else {
-                        provider = 'unknown';
-                    }
-                    return [im.config.name, provider].join('.');
-                },
-                clock: function () {
-                    return utils.get_moment_date(im.config.testing_today, "YYYY-MM-DD hh:mm:ss");
-                }
-            });
-            slh.attach();
-            return slh;
         };
 
         self.add = function(name, creator) {
-            console.log("gets into add function");
             self.states.add(name, function(name, opts) {
                 if (!interrupt || !utils.timed_out(self.im))
                     return creator(name, opts);
@@ -100,7 +70,6 @@ go.app = function() {
                 timeout_opts.name = name;
                 return self.states.create('state_timed_out', timeout_opts);
             });
-            console.log("gets to the end of the add function");
         };
 
         self.states.add('state_timed_out', function(name, creator_opts) {
@@ -119,7 +88,6 @@ go.app = function() {
         self.add("state_start", function(name) {
             self.im.user.set_answers = {};
             var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
-            self.im.log("starts state after normalisation");
             return is
             .get_or_create_identity({"msisdn": msisdn})
             .then(function(identity) {
