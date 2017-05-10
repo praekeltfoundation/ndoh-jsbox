@@ -79,9 +79,36 @@ go.app = function() {
                 ).context({
                     operator_id: self.im.user.answers.operator.id,
                     msisdn: self.im.user.answers.msisdn,
-                    lang: self.im.user.answers.state_language
+                    lang: self.return_language()
                 }))
             );
+        };
+
+        self.return_language =function(){
+            switch(self.im.user.answers.state_language){
+                case 'zul_ZA':
+                    return 'isiZulu';
+                case 'xho_ZA':
+                    return 'isiXhosa';
+                case 'afr_ZA':
+                    return 'Afrikaans';
+                case 'eng_ZA':
+                    return 'English';
+                case 'nso_ZA':
+                    return 'Sesotho sa Leboa';
+                case 'tsn_ZA':
+                    return 'Setswana';
+                case 'sot_ZA':
+                    return 'Sesotho';
+                case 'tso_ZA':
+                    return 'Xitsonga';
+                case 'ssw_ZA':
+                    return 'siSwati';
+                case 'ven_ZA':
+                    return 'Tshivenda';
+                case 'nbl_ZA':
+                    return 'isiNdebele';
+                }
         };
 
         // override normal state adding
@@ -173,7 +200,7 @@ go.app = function() {
                             operator_id: self.im.user.answers.operator.id,
                             msisdn: self.im.user.answers.msisdn,
                             consent: self.im.user.answers.state_consent,
-                            lang: self.im.user.answers.state_language
+                            lang: self.return_language()
                         }),
                 next: 'state_start'
             });
@@ -263,36 +290,10 @@ go.app = function() {
 
         self.add('state_language_changed', function(name) {
             return new EndState(name, {
-                text: $('Your language preference stored on MomConnect has ' +
+                text: $('Your language preference has ' +
                         'been set to: {{lang}}'
                         ).context({
-                            lang: self.im.user.answers.state_language
-                            /*
-                            lang: function(self.im.user.answers.state_language){
-                                    case 'zul_ZA':
-                                        return 'isiZulu'
-                                    case 'xho_ZA':
-                                        return 'isiXhosa'
-                                    case 'afr_ZA':
-                                        return 'Afrikaans'
-                                    case 'eng_ZA':
-                                        return 'English'
-                                    case 'nso_ZA':
-                                        return 'Sesotho sa Leboa'
-                                    case 'tsn_ZA':
-                                        return 'Setswana'
-                                    case 'sot_ZA':
-                                        return 'Sesotho'
-                                    case 'tso_ZA':
-                                        return 'Xitsonga'
-                                    case 'ssw_ZA':
-                                        return 'siSwati'
-                                    case 'ven_ZA':
-                                        return 'Tshivenda'
-                                    case 'nbl_ZA':
-                                        return 'isiNdebele'
-                                }
-                                */
+                            lang: self.return_language()
                         }),
                 next: 'start_state'
             });

@@ -217,8 +217,8 @@ describe("app", function() {
                                 .check.interaction({
                                     state: "state_language_changed",
                                     reply: [
-                                        "Your language preference stored on " +
-                                        "MomConnect has been set to: eng_ZA"
+                                        "Your language preference " +
+                                        "has been set to: English"
                                     ].join('\n')
                                 })
                                 .check(function(api) {

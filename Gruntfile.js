@@ -318,9 +318,9 @@ module.exports = function (grunt) {
             test_sms_pmtct_seed: {
                 src: ['<%= paths.test.sms_pmtct_seed %>']
             },
-            //test_ussd_popi_faq: {
-              //  src: ['<%= paths.test.ussd_popi_faq %>']
-            //},
+            test_ussd_popi_faq: {
+                src: ['<%= paths.test.ussd_popi_faq %>']
+            },
             test_ussd_popi_user_data: {
                 src: ['<%= paths.test.ussd_popi_user_data %>']
             },
