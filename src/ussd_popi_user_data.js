@@ -6,6 +6,7 @@ go.app = function() {
     var EndState = vumigo.states.EndState;
     var ChoiceState = vumigo.states.ChoiceState;
     var Choice = vumigo.states.Choice;
+    var FreeText = vumigo.states.FreeText;
     var JsonApi = vumigo.http.api.JsonApi;
 
     var GoNDOH = App.extend(function(self) {
@@ -166,12 +167,36 @@ go.app = function() {
         // OPTIONS MENU
         self.add('state_all_options_view', function(name) {
             return new ChoiceState(name, {
-                question: $('Select an option:'),
+                question: $('What would you like to do?'),
                 choices: [
-                    new Choice('state_view', $('View personal details held by MomConnect')),
-                    new Choice('send_sms', $('Request sms of personal details')),
-                    new Choice('state_language_preferences', $('View language preferences')),
-                    new Choice('state_delete_data', $('Delete personal information')),
+                    new Choice('state_view', $('See my personal info')),
+                    new Choice('state_change_data', $('Change my info')),
+                    new Choice('state_delete_data', $('Request to delete my info')),
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+        // OPTIONS
+
+        self.add('state_view', function(name) {
+            return new ChoiceState(name, {
+                question: $("Personal info:\n" +
+                        "MSISDN: {{operator_id}}\n" +
+                        "Number: {{msisdn}}\n" +
+                        "User ID: {{consent}}\n" +
+                        "Language: {{lang}}"
+                        ).context({
+                            operator_id: self.im.user.answers.operator.id,
+                            msisdn: self.im.user.answers.msisdn,
+                            consent: self.im.user.answers.state_consent,
+                            lang: self.return_language()
+                        }),
+                choices: [
+                    new Choice('send_sms', $('Send to me by sms')),
+                    new Choice('start_state', $('Back')),
                 ],
                 next: function(choice) {
                     if (choice.value === 'send_sms') {
@@ -187,25 +212,6 @@ go.app = function() {
             });
         });
 
-        // OPTIONS
-
-        self.add('state_view', function(name) {
-            return new EndState(name, {
-                text: $("Your personal information that is stored:\n" +
-                        "Operator ID: {{operator_id}}\n" +
-                        "Number: {{msisdn}}\n" +
-                        "Consent: {{consent}}\n" +
-                        "Language: {{lang}}"
-                        ).context({
-                            operator_id: self.im.user.answers.operator.id,
-                            msisdn: self.im.user.answers.msisdn,
-                            consent: self.im.user.answers.state_consent,
-                            lang: self.return_language()
-                        }),
-                next: 'state_start'
-            });
-        });
-
 
         self.add('state_view_sms', function(name) {
             return new EndState(name, {
@@ -215,34 +221,31 @@ go.app = function() {
             });
         }); 
 
-        self.add('state_language_preferences', function(name) {
+        self.add('state_change_data', function(name) {
             return new ChoiceState(name, {
-                question: $('Would you like to change your language preference?'),
+                question: $('What would you like to change?'),
                 choices: [
-                    new Choice('yes', $('Yes')),
-                    new Choice('no', $('No')),
+                    new Choice('state_select_language', $('Update my language choice')),
+                    new Choice('state_change_identity', $('Update my identification')),
+                    new Choice('state_change_msisdn', $('Use a different phone number'))
                 ],
                 next: function(choice) {
-                    if (choice.value === 'yes') {
-                        return 'state_select_language';
-                    } else {
-                        return 'state_language_not_changed';
-                    }
+                    return choice.value;
                 }
             });
         });
 
         self.add('state_delete_data', function(name) {
             return new ChoiceState(name, {
-                question: $('Are you sure you would like to permanently ' +
-                    'delete all personal information stored on MomConnect? '),
+                question: $('MomConnect will automatically delete your ' +
+                    'personal information 7 years and 9 months after you ' +
+                    'registered. Do you want us to delete it now?'),
                 choices: [
                     new Choice('yes', $('Yes')),
                     new Choice('no', $('No')),
                 ],
                 next: function(choice) {
                     if (choice.value === 'yes') {
-                        // how to remove?
                         self.im.user.set_answer("operator", null);
                         self.im.user.set_answer("msisdn", null);
                         return 'state_info_deleted';
@@ -253,9 +256,9 @@ go.app = function() {
             });
         });
 
-                self.add('state_select_language', function(name) {
+        self.add('state_select_language', function(name) {
             return new ChoiceState(name, {
-                question: 'Select language:',
+                question: 'Choose language:',
                 choices: [
                     new Choice('zul_ZA', 'isiZulu'),
                     new Choice('xho_ZA', 'isiXhosa'),
@@ -271,30 +274,98 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     return self.im.user
+                    // TODO: update on IdentityStore
                     .set_lang(choice.value)
                     .then(function() {
                         self.im.user.set_answer("state_language", choice.value);
-                        return 'state_language_changed';
+                        return 'state_updated';
                     });
                 },
             });
         });
 
-        self.add('state_language_not_changed', function(name) {
-            return new EndState(name, {
-                text: $('Your language preference stored on MomConnect has ' +
-                        'not been changed.'),
-                next: 'start_state'
+        self.add('state_change_identity', function(name) {
+            return new ChoiceState(name, {
+                question: $('What kind of identification do you have?'),
+                choices: [
+                    new Choice('state_change_sa_id', $('South African ID')),
+                    new Choice('state_change_passport', $('Passport')),
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
             });
         });
 
-        self.add('state_language_changed', function(name) {
+        self.add('state_change_sa_id', function(name) {
+            return new FreeText(name, {
+                question: $('Thank you. Please enter your ID number. eg. ' +
+                            '8805100273098'),
+                check: function(content) {
+                    if (utils.check_valid_number(content) && (content.length == 13)) {
+                            return null;  // vumi expects null or undefined if check passes
+                    } else {
+                        return $("Invalid ID number. Please re-enter");
+                    }
+                },
+                next: function(content) {
+                    // TODO: Update ID on identitystore
+                    return 'state_updated';
+                }
+            });
+        });
+
+        self.add('state_change_passport', function(name) {
+            return new ChoiceState(name, {
+                question: $('What is the country of origin of the passport?'),
+                choices: [
+                    new Choice('state_change_passport_zim', $('Zimbabwe')),
+                    new Choice('state_change_passport_moz', $('Mozambique')),
+                    new Choice('state_change_passport_mal', $('Malawi')),
+                    new Choice('state_change_passport_ng', $('Nigeria')),
+                    new Choice('state_change_passport_drc', $('DRC')),
+                    new Choice('state_change_passport_som', $('Somalia')),
+                    new Choice('state_change_passport_oth', $('Other'))
+                ],
+                next: function(choice) {
+                    // TODO: Update passport on identitystore
+                    return 'state_update_passport';
+                }
+            });
+        });
+
+        self.add('state_update_passport', function(name) {
+            return new FreeText(name, {
+                question: $('Thank you. Please enter your passport number:'),
+                // TODO: insert check for valid passport number if necessary
+                next: function(content) {
+                    // TODO: Update passport number on identitystore
+                    return 'state_updated';
+                }
+            });
+        });
+
+        self.add('state_change_msisdn', function(name) {
+            return new FreeText(name, {
+                question: $('Please enter the new phone number we should use ' +
+                            'to send you messages eg. 0813547654'),
+                check: function(content) {
+                    if (utils.check_valid_number(content) && (content.length == 10)) {
+                            return null;  // vumi expects null or undefined if check passes
+                    } else {
+                        return $("Invalid phone number. Please re-enter (with no spaces)");
+                    }
+                },
+                next: function(content) {
+                    // TODO: Update phone number on identitystore
+                    return 'state_updated';
+                }
+            });
+        });
+
+        self.add('state_updated', function(name) {
             return new EndState(name, {
-                text: $('Your language preference has ' +
-                        'been set to: {{lang}}'
-                        ).context({
-                            lang: self.return_language()
-                        }),
+                text: $('Thank you. Your info has been updated.'),
                 next: 'start_state'
             });
         });
@@ -309,8 +380,8 @@ go.app = function() {
 
         self.add('state_info_deleted', function(name) {
             return new EndState(name, {
-                text: $('Thank you. Your personal information stored on ' +
-                        'MomConnect has been permanently removed.'),
+                text: $('Thank you. All your information will be deleted ' +
+                        'from MomConnect in the next [X] days.'),
                 next: 'start_state'
             });
         });
@@ -318,10 +389,10 @@ go.app = function() {
 
         self.add('state_not_registered', function(name) {
             return new EndState(name, {
-                text: $('Number not recognised. Dial in with the number ' +
-                        'you used to register for MomConnect. To use a ' +
-                        'different number, dial *134*550*5#. To re-register ' +
-                        'dial *134*550#.'),
+                text: $('Sorry, that number is not recognised. Dial in with the number ' +
+                        'you used to register for MomConnect. To update ' +
+                        'number, dial *134*550*5# or register ' +
+                        'at a clinic'),
                 next: 'start_state'
             });
         });
