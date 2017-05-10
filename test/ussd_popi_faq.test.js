@@ -573,8 +573,7 @@ describe("app", function() {
             });
 
 
-});
-
+        });
     });
 
 });
