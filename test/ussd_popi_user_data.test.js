@@ -115,13 +115,13 @@ describe('app', function() {
                             state: 'state_view',
                             reply: [
                                 'Personal info:',
-                                'Phone number: +27820001002',
-                                'ID number: 5101025009086',
-                                'Date of birth: 1951-01-02',
+                                'Phone #: +27820001002',
+                                'ID: 5101025009086',
+                                'DOB: 1951-01-02',
                                 'Language: ',
-                                '1. Send to me by sms',
+                                'Message set: momconnect_prebirth.hw_full.1',
+                                '1. Send by sms',
                                 '2. Back'
-
                             ].join('\n')
                         })
                         .check(function(api) {

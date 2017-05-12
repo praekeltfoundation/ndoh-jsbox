@@ -83,9 +83,9 @@ go.app = function() {
             var data;
             if(self.im.user.answers.operator.details.sa_id_no){
                 data = $("Personal info:\n" +
-                "Phone number: {{msisdn}}\n" +
-                "ID number: {{id}}\n" +
-                "Date of birth: {{dob}}\n" +
+                "Phone #: {{msisdn}}\n" +
+                "ID: {{id}}\n" +
+                "DOB: {{dob}}\n" +
                 "Language: {{lang}}")
                 .context({
                     msisdn: self.im.user.answers.msisdn,
@@ -95,11 +95,11 @@ go.app = function() {
                 });
             }else{
                 data = $("Personal info:\n" +
-                "Phone number: {{msisdn}}\n" +
-                "Passport Origin: {{passport_or}}\n" +
-                "Passport Number: {{passport_num}}\n" +
-                "Date of birth: {{dob}}\n" +
-                "Language: {{lang}}"
+                "Phone #: {{msisdn}}\n" +
+                "Origin: {{passport_or}}\n" +
+                "Passport: {{passport_num}}\n" +
+                "DOB: {{dob}}\n" +
+                "Lang: {{lang}}"
                 ).context({
                     msisdn: self.im.user.answers.msisdn,
                     passport_or: self.im.user.answers.operator.details.passport_origin,
@@ -109,10 +109,10 @@ go.app = function() {
                 });
             }
             if(self.im.user.answers.message_sets !== ''){
-                var message = $("{{first}}\nCurrent message set: {{mset}}") 
+                var message = $("{{first}}\nMessage set: {{mset}}") 
                         .context({
                             first: data,
-                            mset: self.im.user.answers.message_set
+                            mset: self.im.user.answers.message_sets
                         });
                 return message;
             }
@@ -185,19 +185,27 @@ go.app = function() {
                 
                 // display in previously chosen language
                 self.im.user.set_lang(self.im.user.answers.state_language);
-                
                 return sbm
                 // check that user is registered on momconnect
+                                 
                 .check_identity_subscribed(self.im.user.answers.operator.id, "momconnect")
                 .then(function(identity_subscribed_to_momconnect) {
                     if (identity_subscribed_to_momconnect) {
-                        var mset = sbm.list_active_subscriptions();
-                        var allmset = '';
-                        for(var i = 0; i < mset.length; i++){
-                            allmset += sbm.get_messageset(mset[i]);
-                        }
-                        self.im.user.set_answer("message_sets",allmset);
-                        return self.states.create('state_all_options_view');
+                        
+                        return sbm
+                        .list_active_subscriptions(self.im.user.answers.operator.id)
+                        .then(function(active_subscriptions){
+                            return sbm
+                            .list_messagesets(active_subscriptions.results[0].id)
+                            .then(function(allmset){
+                                for(i = 0; i < allmset.results.length; i++){
+                                    if(allmset.results[i].id == active_subscriptions.results[0].messageset){
+                                        self.im.user.set_answer("message_sets",allmset.results[i].short_name);
+                                    }  
+                                }
+                                return self.states.create('state_all_options_view'); 
+                            });
+                        });
                     } else {
                         return self.states.create('state_not_registered');
                     }
@@ -226,7 +234,7 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: self.return_user_data(),
                 choices: [
-                    new Choice('send_sms', $('Send to me by sms')),
+                    new Choice('send_sms', $('Send by sms')),
                     new Choice('start_state', $('Back')),
                 ],
                 next: function(choice) {
