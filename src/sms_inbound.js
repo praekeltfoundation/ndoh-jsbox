@@ -256,7 +256,7 @@ go.app = function() {
 
         self.states.add("state_default", function(name) {
             var out_of_hours_text =
-                $("The helpdesk operates from 8am to 4pm Mon to Fri. " +
+                $("The helpdesk operates from 8am to 6pm Mon to Fri. " +
                   "Responses will be delayed outside of these hrs. In an " +
                   "emergency please go to your health provider immediately.");
 
