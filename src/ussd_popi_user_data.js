@@ -1,3 +1,4 @@
+/*jshint loopfunc:true */
 go.app = function() {
     var vumigo = require("vumigo_v02");
     var SeedJsboxUtils = require('seed-jsbox-utils');
@@ -6,6 +7,7 @@ go.app = function() {
     var EndState = vumigo.states.EndState;
     var ChoiceState = vumigo.states.ChoiceState;
     var Choice = vumigo.states.Choice;
+    var PaginatedState = vumigo.states.PaginatedState;
     var FreeText = vumigo.states.FreeText;
     var JsonApi = vumigo.http.api.JsonApi;
 
@@ -80,9 +82,9 @@ go.app = function() {
             var data;
             if(self.im.user.answers.operator.details.sa_id_no){
                 data = $("Personal info:\n" +
-                "Phone #: {{msisdn}}\n" +
-                "ID: {{id}}\n" +
-                "DOB: {{dob}}\n" +
+                "Phone Number: {{msisdn}}\n" +
+                "ID Number: {{id}}\n" +
+                "Date of Birth: {{dob}}\n" +
                 "Language: {{lang}}")
                 .context({
                     msisdn: self.im.user.answers.msisdn,
@@ -92,11 +94,11 @@ go.app = function() {
                 });
             }else{
                 data = $("Personal info:\n" +
-                "Phone #: {{msisdn}}\n" +
-                "Origin: {{passport_or}}\n" +
+                "Phone Number: {{msisdn}}\n" +
+                "Origin of Passport: {{passport_or}}\n" +
                 "Passport: {{passport_num}}\n" +
-                "DOB: {{dob}}\n" +
-                "Lang: {{lang}}"
+                "Date of Birth: {{dob}}\n" +
+                "Language: {{lang}}"
                 ).context({
                     msisdn: self.im.user.answers.msisdn,
                     passport_or: self.im.user.answers.operator.details.passport_origin,
@@ -143,6 +145,10 @@ go.app = function() {
                 }
         };
 
+        self.return_messageset = function(active_subscriptions, i){
+
+        };
+
         // override normal state adding
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
@@ -182,27 +188,30 @@ go.app = function() {
                 
                 // display in previously chosen language
                 self.im.user.set_lang(self.im.user.answers.state_language);
+                
                 return sbm
-                // check that user is registered on momconnect
-                                 
+                // check that user is registered on momconnect   
                 .check_identity_subscribed(self.im.user.answers.operator.id, "momconnect")
                 .then(function(identity_subscribed_to_momconnect) {
                     if (identity_subscribed_to_momconnect) {
-                        
+                        var promises = [];
                         return sbm
                         .list_active_subscriptions(self.im.user.answers.operator.id)
                         .then(function(active_subscriptions){
-                            return sbm
-                            .list_messagesets(active_subscriptions.results[0].id)
-                            .then(function(allmset){
-                                for(i = 0; i < allmset.results.length; i++){
-                                    if(allmset.results[i].id == active_subscriptions.results[0].messageset){
-                                        self.im.user.set_answer("message_sets",allmset.results[i].short_name);
-                                    }  
-                                }
-                                return self.states.create('state_all_options_view'); 
+                            promises = active_subscriptions.results.map(function(result){
+                                return sbm.get_messageset(result.messageset); 
                             });
-                        });
+                            var sets = '';
+                            return Promise.all(promises)
+                            .then(function(allmset){
+                                for(j = 0; j < allmset.length; j++){
+                                    message_set = allmset[j].results.short_name;
+                                    sets += " " + message_set;
+                                }
+                                self.im.user.set_answer("message_sets", sets.substring(1,sets.length));
+                                return self.states.create('state_all_options_view');   
+                                });
+                            });
                     } else {
                         return self.states.create('state_not_registered');
                     }
@@ -216,26 +225,12 @@ go.app = function() {
                 question: $('What would you like to do?'),
                 choices: [
                     new Choice('state_view', $('See my personal info')),
+                    new Choice('state_view_sms', $('Send my personal info as sms')),
                     new Choice('state_change_data', $('Change my info')),
                     new Choice('state_delete_data', $('Request to delete my info')),
                 ],
                 next: function(choice) {
-                    return choice.value;
-                }
-            });
-        });
-
-        // OPTIONS
-
-        self.add('state_view', function(name) {
-            return new ChoiceState(name, {
-                question: self.return_user_data(),
-                choices: [
-                    new Choice('send_sms', $('Send by sms')),
-                    new Choice('start_state', $('Back')),
-                ],
-                next: function(choice) {
-                    if (choice.value === 'send_sms') {
+                    if (choice.value === 'state_view_sms') {
                         return self
                         .send_data_as_sms()
                         .then(function() {
@@ -244,6 +239,21 @@ go.app = function() {
                     }else{
                         return choice.value;
                     }
+                }
+            });
+        });
+
+        // OPTIONS
+
+        self.add('state_view', function(name) {
+            return new PaginatedState(name, {
+                text: self.return_user_data(),
+                characters_per_page: 140,
+                more: $('More'),
+                back: $('Back'),
+                exit: $('Exit'),
+                next: function() {
+                    return {name: 'state_all_options_view'};
                 }
             });
         });

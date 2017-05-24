@@ -13,6 +13,7 @@
     // (+27820001010) - existing identity with an active MomConnect Clinic subscription; CHW dialback sms already sent
     // (+27820001011) - existing identity with an active MomConnect Clinic subscription; PUBLIC dialback sms already sent
     // (+27820001012) - old/opted_out number used before by 27820001005 (used to test changing number)
+    // (+27820001013) - existing identity with an active MomConnect subscription (no active NurseConnect subscription) and multiple messagesets
 
 // PMTCT
     // (+27820000111) active sub non-pmtct; no consent, no dob
@@ -2158,6 +2159,53 @@ module.exports = function() {
                 }
             },
             "response": {}
+        },
+
+        
+
+        // 242: get identity by msisdn +27820001013
+        {
+            "key": "get.is.msisdn.27820001013",
+            "repeatable": true,
+            "request": {
+                "url": 'http://is/api/v1/identities/search/',
+                "method": 'GET',
+                "params": {
+                    "details__addresses__msisdn": '+27820001013',
+                    "include_inactive": "False"
+                }
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001013/",
+                            "id": "cb245673-aa41-4302-ac47-00000001013",
+                            "version": 1,
+                            "details": {
+                                "default_addr_type": "msisdn",
+                                "addresses": {
+                                    "msisdn": {
+                                        "+27820001013": {"default": true}
+                                    }
+                                },
+                                "lang_code": "eng_ZA",
+                                "consent": true,
+                                "sa_id_no": "5101025009086",
+                                "mom_dob": "1951-01-02",
+                                "source": "clinic",
+                                "last_mc_reg_on": "clinic"
+                            },
+                            "created_at": "2016-08-05T06:13:29.693272Z",
+                            "updated_at": "2016-08-05T06:13:29.693298Z"
+                        }
+                    ]
+                }
+            }
         }
 
     ];

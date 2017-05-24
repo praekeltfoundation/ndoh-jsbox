@@ -950,7 +950,7 @@ module.exports = function() {
                 "data": {
                     "identity": "cb245673-aa41-4302-ac47-00000001002",
                     "to_addr": "+27820001002",
-                    "content": "Personal info:\nPhone #: +27820001002\nID: 5101025009086\nDOB: 1951-01-02\nLanguage: \nMessage set: momconnect_prebirth.hw_full.1",                    
+                    "content": "Personal info:\nPhone Number: +27820001002\nID Number: 5101025009086\nDate of Birth: 1951-01-02\nLanguage: \nMessage set: momconnect_prebirth.hw_full.1",                    
                     "metadata":{}
                 }
             },
@@ -960,15 +960,24 @@ module.exports = function() {
             }
         },
 
-        // 142:
+        // 142: post outbound message for cb245673-aa41-4302-ac47-00000001013
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820001013",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001013",
+                    "to_addr": "+27820001013",
+                    "content": "Personal info:\nPhone #: +27820001013\nID: 5101025009086\nDOB: 1951-01-02\nLanguage: \nMessage set: momconnect_prebirth.hw_full.1",                    
+                    "metadata":{}
+                }
             },
-            'response': {}
+                "response": {
+                "code": 201,
+                "data": {}
+            }
         },
-
         // 143:
         {
             'request': {
