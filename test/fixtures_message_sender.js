@@ -9,7 +9,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000001001",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001001",
                     "to_addr": "+27820001001",
                     "content": "Welcome to NurseConnect. For more options or to opt out, dial *120*550*5#.",
                     "metadata": {}
@@ -40,7 +40,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001002",
                     "to_addr": "+27820001002",
                     "content": "Welcome to NurseConnect. For more options or to opt out, dial *120*550*5#.",
                     "metadata": {}
@@ -71,7 +71,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000000006",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000000006",
                     "to_addr": "+27820000666",
                     "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
                     "metadata": {}
@@ -102,7 +102,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001002",
                     "to_addr": "+27820000777",
                     "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
                     "metadata": {}
@@ -133,7 +133,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001002",
                     "to_addr": "+27820000888",
                     "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
                     "metadata": {}
@@ -164,7 +164,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000001009",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001009",
                     "to_addr": "+27820000999",
                     "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
                     "metadata": {}
@@ -195,7 +195,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000000006",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000000006",
                     "to_addr": "+27820000666",
                     "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
                     "metadata": {}
@@ -226,7 +226,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001002",
                     "to_addr": "+27820000777",
                     "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
                     "metadata": {}
@@ -257,7 +257,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001002",
                     "to_addr": "+27820000888",
                     "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
                     "metadata": {}
@@ -288,7 +288,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000001009",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001009",
                     "to_addr": "+27820000999",
                     "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
                     "metadata": {}
@@ -319,7 +319,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000000007",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000000007",
                     "to_addr": "+27820000777",
                     "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
                     "metadata": {}
@@ -350,7 +350,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000000007",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000000007",
                     "to_addr": "+27820000777",
                     "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
                     "metadata": {}
@@ -381,7 +381,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000000008",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000000008",
                     "to_addr": "+27820000888",
                     "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
                     "metadata": {}
@@ -412,7 +412,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000000008",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000000008",
                     "to_addr": "+27820000888",
                     "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
                     "metadata": {}
@@ -443,7 +443,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000000009",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000000009",
                     "to_addr": "+27820000999",
                     "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
                     "metadata": {}
@@ -474,7 +474,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000000009",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000000009",
                     "to_addr": "+27820000999",
                     "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
                     "metadata": {}
@@ -505,7 +505,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000001001",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001001",
                     "to_addr": "+27820001001",
                     "content": "Welcome. To stop getting SMSs dial *120*550*1# or for more services dial *120*550# (No Cost). Standard rates apply when replying to any SMS from MomConnect.",
                     "metadata": {}
@@ -524,7 +524,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000001001",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001001",
                     "to_addr": "+27820001001",
                     "content": "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. You can register for the full set of FREE helpful messages at a clinic.",
                     "metadata": {}
@@ -543,7 +543,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000001004",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001004",
                     "to_addr": "+27820001004",
                     "content": "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. You can register for the full set of FREE helpful messages at a clinic.",
                     "metadata": {}
@@ -562,7 +562,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001002",
                     "to_addr": "+27820001002",
                     "content": "Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.",
                     "metadata": {}
@@ -581,7 +581,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001002",
                     "to_addr": "+27820001002",
                     "content": "Please reply to this message with your complaint. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.",
                     "metadata": {}
@@ -600,7 +600,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001002",
                     "to_addr": "+27820001002",
                     "content": "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. You can register for the full set of FREE helpful messages at a clinic.",
                     "metadata":{}
@@ -619,7 +619,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001002",
                     "to_addr": "+27820001002",
                     "content": "Thank you for rating our service.",
                     "metadata": {}
@@ -638,7 +638,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000001001",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001001",
                     "to_addr": "+27820001001",
                     "content": "Please dial back in to *120*550*2# to complete the pregnancy registration.",
                     "metadata": {}
@@ -657,7 +657,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000001001",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001001",
                     "to_addr": "+27820001001",
                     "content": "Please dial back in to *120*550*3# to complete the pregnancy registration.",
                     "metadata": {}
@@ -676,7 +676,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000001001",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001001",
                     "to_addr": "+27820001001",
                     "content": "Please dial back in to *120*550# to complete the pregnancy registration.",
                     "metadata": {}
@@ -695,7 +695,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001002",
                     "to_addr": "+27820001002",
                     "content": "Please dial back in to *120*550# to complete the pregnancy registration.",
                     "metadata": {}
@@ -714,7 +714,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000001011",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001011",
                     "to_addr": "+27820001011",
                     "content": "Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.",
                     "metadata": {}
@@ -733,7 +733,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000001001",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001001",
                     "to_addr": "+27820001001",
                     "content": "Please dial back in to *120*550*5# to complete the NurseConnect registration.",
                     "metadata": {}
@@ -752,7 +752,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000001008",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001008",
                     "to_addr": "+27820001008",
                     "content": "Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.",
                     "metadata": {}
@@ -771,7 +771,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000001008",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001008",
                     "to_addr": "+27820001008",
                     "content": "Please dial back in to *120*550*3# to complete the pregnancy registration.",
                     "metadata": {}
@@ -790,7 +790,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000001008",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001008",
                     "to_addr": "+27820001008",
                     "content": "Please dial back in to *120*550*2# to complete the pregnancy registration.",
                     "metadata": {}
@@ -809,7 +809,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000001008",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001008",
                     "to_addr": "+27820001008",
                     "content": "Please dial back in to *120*550*5# to complete the NurseConnect registration.",
                     "metadata": {}
@@ -827,7 +827,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000000001",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000000001",
                     "to_addr": "+27820000111",
                     "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
                     "metadata":{}
@@ -842,7 +842,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000000001",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000000001",
                     "to_addr": "+27820000111",
                     "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
                     "metadata":{}
@@ -857,7 +857,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000000002",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000000002",
                     "to_addr": "+27820000222",
                     "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
                     "metadata":{}
@@ -872,7 +872,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000000002",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000000002",
                     "to_addr": "+27820000222",
                     "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
                     "metadata":{}
@@ -887,7 +887,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000000003",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000000003",
                     "to_addr": "+27820000333",
                     "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
                     "metadata":{}
@@ -902,7 +902,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000000003",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000000003",
                     "to_addr": "+27820000333",
                     "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
                     "metadata":{}
@@ -917,7 +917,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000000004",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000000004",
                     "to_addr": "+27820000444",
                     "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
                     "metadata":{}
@@ -932,7 +932,7 @@ module.exports = function() {
                 "url": 'http://ms/api/v1/outbound/',
                 "method": 'POST',
                 "data": {
-                    "identity": "cb245673-aa41-4302-ac47-00000000004",
+                    "to_identity": "cb245673-aa41-4302-ac47-00000000004",
                     "to_addr": "+27820000444",
                     "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
                     "metadata":{}
