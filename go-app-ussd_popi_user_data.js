@@ -13,6 +13,7 @@ go.app = function() {
     var PaginatedState = vumigo.states.PaginatedState;
     var FreeText = vumigo.states.FreeText;
     var JsonApi = vumigo.http.api.JsonApi;
+    //var Promise = require('es6-promise');
 
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_start");

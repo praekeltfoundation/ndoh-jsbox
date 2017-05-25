@@ -1,3 +1,4 @@
+/*jshint loopfunc:true */
 go.app = function() {
     var vumigo = require("vumigo_v02");
     var SeedJsboxUtils = require('seed-jsbox-utils');
@@ -9,6 +10,7 @@ go.app = function() {
     var PaginatedState = vumigo.states.PaginatedState;
     var FreeText = vumigo.states.FreeText;
     var JsonApi = vumigo.http.api.JsonApi;
+    //var Promise = require('es6-promise');
 
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_start");
@@ -142,6 +144,10 @@ go.app = function() {
                 case 'nbl_ZA':
                     return 'isiNdebele';
                 }
+        };
+
+        self.return_messageset = function(active_subscriptions, i){
+
         };
 
         // override normal state adding
