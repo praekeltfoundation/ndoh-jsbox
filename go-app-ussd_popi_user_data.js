@@ -1,11 +1,11 @@
 var go = {};
 go;
 
-/*jshint loopfunc:true */
 go.app = function() {
     var vumigo = require("vumigo_v02");
     var SeedJsboxUtils = require('seed-jsbox-utils');
     var MetricsHelper = require('go-jsbox-metrics-helper');
+    var Q = require('q');
     var App = vumigo.App;
     var EndState = vumigo.states.EndState;
     var ChoiceState = vumigo.states.ChoiceState;
@@ -148,10 +148,6 @@ go.app = function() {
                 }
         };
 
-        self.return_messageset = function(active_subscriptions, i){
-
-        };
-
         // override normal state adding
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
@@ -205,7 +201,7 @@ go.app = function() {
                                 return sbm.get_messageset(result.messageset); 
                             });
                             var sets = '';
-                            return Promise.all(promises)
+                            return Q.all(promises)
                             .then(function(allmset){
                                 for(j = 0; j < allmset.length; j++){
                                     message_set = allmset[j].results.short_name;
