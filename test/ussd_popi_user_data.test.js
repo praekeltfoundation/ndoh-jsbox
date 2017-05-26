@@ -4,7 +4,6 @@ var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
 var fixtures_ServiceRating = require('./fixtures_service_rating');
 var fixtures_MessageSender = require('./fixtures_message_sender');
-var Promise = require('es6-promise').Promise;
 var fixtures_Hub = require('./fixtures_hub');
 
 var utils = require('seed-jsbox-utils').utils;
