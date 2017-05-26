@@ -229,7 +229,7 @@ describe("app", function() {
                                 'receive a response soon. Kind regards. NurseConnect.'
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [52, 54, 182, 243]);
+                            utils.check_fixtures_used(api, [52, 54, 182, 244]);
                         })
                         .run();
                 });
@@ -251,7 +251,7 @@ describe("app", function() {
                                 "Responses will be delayed outside of these hrs."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [52, 54, 182, 243]);
+                            utils.check_fixtures_used(api, [52, 54, 182, 244]);
                         })
                         .run();
                 });
@@ -273,7 +273,7 @@ describe("app", function() {
                                 "and public holidays. Responses will be delayed during this time."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [52, 54, 182, 243]);
+                            utils.check_fixtures_used(api, [52, 54, 182, 244]);
                         })
                         .run();
                 });
@@ -295,7 +295,7 @@ describe("app", function() {
                                 "and public holidays. Responses will be delayed during this time."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [52, 54, 182, 243]);
+                            utils.check_fixtures_used(api, [52, 54, 182, 244]);
                         })
                         .run();
                 });

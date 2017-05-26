@@ -751,31 +751,117 @@ module.exports = function() {
             }
         },
 
-        // 66:
+        // 66: get active subscriptions for cb245673-aa41-4302-ac47-00000001013
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "get.sbm.identity.cb245673-aa41-4302-ac47-00000001013",
+            "repeatable": true,
+            "request": {
+                "url": 'http://sbm/api/v1/subscriptions/',
+                "method": 'GET',
+                "params": {
+                    "identity": 'cb245673-aa41-4302-ac47-00000001013',
+                    "active": 'True'
+                }
             },
-            'response': {}
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            'url': 'http://sbm/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-1013',
+                            'id': '51fcca25-2e85-4c44-subscription-1013',
+                            'version': 1,
+                            'identity': 'cb245673-aa41-4302-ac47-00000001013',
+                            'messageset': 21,
+                            'next_sequence_number': 1,
+                            'lang': "eng_ZA",
+                            'active': true,
+                            'completed': false,
+                            'schedule': 1,
+                            'process_status': 0,
+                            'metadata': {},
+                            'created_at': "2016-08-12T06:13:29.693272Z",
+                            'updated_at': "2016-08-12T06:13:29.693272Z"
+                        },
+                        {
+                            'url': 'http://sbm/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-1013',
+                            'id': '51fcca25-2e85-4c44-subscription-1013',
+                            'version': 1,
+                            'identity': 'cb245673-aa41-4302-ac47-00000001013',
+                            'messageset': 22,
+                            'next_sequence_number': 1,
+                            'lang': "eng_ZA",
+                            'active': true,
+                            'completed': false,
+                            'schedule': 1,
+                            'process_status': 0,
+                            'metadata': {},
+                            'created_at': "2016-08-12T06:13:29.693272Z",
+                            'updated_at': "2016-08-12T06:13:29.693272Z"
+                        }
+                    ]
+                }
+            }
         },
 
-        // 67:
+        // 67: get messageset 21
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "get.sbm.messageset.all",
+            "repeatable": true,
+            "request": {
+                "method": 'GET',
+                "url": "http://sbm/api/v1/messageset/21/"
             },
-            'response': {}
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 0,
+                    "next": null,
+                    "previous": null,
+                    "results":
+                        {
+                            "id": 21,
+                            "short_name": 'momconnect_prebirth.hw_full.1',
+                            "notes": null,
+                            "next_set": null,  // inaccurate
+                            "default_schedule": 111,
+                            "content_type": 'text',
+                            "created_at": '2016-06-22T06:13:29.693272Z',
+                            "updated_at": '2016-06-22T06:13:29.693272Z'
+                        }
+                    }
+                }
         },
-
-        // 68:
+        // 68: get messageset 22
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "get.sbm.messageset.all",
+            "repeatable": true,
+            "request": {
+                "method": 'GET',
+                "url": "http://sbm/api/v1/messageset/22/"
             },
-            'response': {}
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 0,
+                    "next": null,
+                    "previous": null,
+                    "results":
+                        {
+                            "id": 22,
+                            "short_name": 'momconnect_prebirth.hw_full.2',
+                            "notes": null,
+                            "next_set": null,  // inaccurate
+                            "default_schedule": 111,
+                            "content_type": 'text',
+                            "created_at": '2016-06-22T06:13:29.693272Z',
+                            "updated_at": '2016-06-22T06:13:29.693272Z'
+                        }
+                    }
+                }
         },
 
         // 69:

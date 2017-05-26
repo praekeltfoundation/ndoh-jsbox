@@ -529,8 +529,7 @@ describe("app", function() {
             });
 
 
-});
-
+        });
     });
 
 });

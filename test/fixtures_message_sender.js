@@ -941,13 +941,23 @@ module.exports = function() {
             "response": {}
         },
 
-        // 141:
+        // 141: post outbound message for cb245673-aa41-4302-ac47-00000001002
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820001002",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "to_addr": "+27820001002",
+                    "content": "Personal info:\nPhone Number: +27820001002\nID Number: 5101025009086\nDate of Birth: 1951-01-02\nLanguage: \nMessage set: momconnect_prebirth.hw_full.1",                    
+                    "metadata":{}
+                }
             },
-            'response': {}
+                "response": {
+                "code": 201,
+                "data": {}
+            }
         },
 
         // 142:
