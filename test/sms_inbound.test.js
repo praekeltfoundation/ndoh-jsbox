@@ -181,7 +181,7 @@ describe("app", function() {
                         .check.interaction({
                             state: 'state_default',
                             reply:
-                                "The helpdesk operates from 8am to 4pm Mon to Fri. " +
+                                "The helpdesk operates from 8am to 6pm Mon to Fri. " +
                                 "Responses will be delayed outside of these hrs. In an " +
                                 "emergency please go to your health provider immediately."
                         })
