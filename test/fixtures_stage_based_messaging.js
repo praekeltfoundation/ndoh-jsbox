@@ -809,7 +809,7 @@ module.exports = function() {
 
         // 67: get messageset 21
         {
-            "key": "get.sbm.messageset.all",
+            "key": "get.sbm.messageset",
             "repeatable": true,
             "request": {
                 "method": 'GET',
@@ -818,26 +818,20 @@ module.exports = function() {
             "response": {
                 "code": 200,
                 "data": {
-                    "count": 0,
-                    "next": null,
-                    "previous": null,
-                    "results":
-                        {
-                            "id": 21,
-                            "short_name": 'momconnect_prebirth.hw_full.1',
-                            "notes": null,
-                            "next_set": null,  // inaccurate
-                            "default_schedule": 111,
-                            "content_type": 'text',
-                            "created_at": '2016-06-22T06:13:29.693272Z',
-                            "updated_at": '2016-06-22T06:13:29.693272Z'
-                        }
-                    }
+                    "id": 21,
+                    "short_name": 'momconnect_prebirth.hw_full.1',
+                    "notes": null,
+                    "next_set": null,  // inaccurate
+                    "default_schedule": 111,
+                    "content_type": 'text',
+                    "created_at": '2016-06-22T06:13:29.693272Z',
+                    "updated_at": '2016-06-22T06:13:29.693272Z'
                 }
+            }
         },
         // 68: get messageset 22
         {
-            "key": "get.sbm.messageset.all",
+            "key": "get.sbm.messageset",
             "repeatable": true,
             "request": {
                 "method": 'GET',
@@ -846,22 +840,16 @@ module.exports = function() {
             "response": {
                 "code": 200,
                 "data": {
-                    "count": 0,
-                    "next": null,
-                    "previous": null,
-                    "results":
-                        {
-                            "id": 22,
-                            "short_name": 'momconnect_prebirth.hw_full.2',
-                            "notes": null,
-                            "next_set": null,  // inaccurate
-                            "default_schedule": 111,
-                            "content_type": 'text',
-                            "created_at": '2016-06-22T06:13:29.693272Z',
-                            "updated_at": '2016-06-22T06:13:29.693272Z'
-                        }
-                    }
+                    "id": 22,
+                    "short_name": 'momconnect_prebirth.hw_full.2',
+                    "notes": null,
+                    "next_set": null,  // inaccurate
+                    "default_schedule": 111,
+                    "content_type": 'text',
+                    "created_at": '2016-06-22T06:13:29.693272Z',
+                    "updated_at": '2016-06-22T06:13:29.693272Z'
                 }
+            }
         },
 
         // 69:
