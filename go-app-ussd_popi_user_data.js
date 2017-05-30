@@ -204,7 +204,7 @@ go.app = function() {
                             return Q.all(promises)
                             .then(function(allmset){
                                 for(j = 0; j < allmset.length; j++){
-                                    message_set = allmset[j].results.short_name;
+                                    message_set = allmset[j].short_name;
                                     sets += " " + message_set;
                                 }
                                 self.im.user.set_answer("message_sets", sets.substring(1,sets.length));
