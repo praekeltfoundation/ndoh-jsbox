@@ -37,6 +37,10 @@ describe('app', function() {
                             url: 'http://sbm/api/v1/',
                             token: 'test StageBasedMessaging'
                         },
+                        hub: {
+                            url: 'http://hub/api/v1/',
+                            token: 'test Hub'
+                        },
                         message_sender: {
                             url: 'http://ms/api/v1/',
                             token: 'test MessageSender'
@@ -119,8 +123,7 @@ describe('app', function() {
                                 'Phone Number: +27820001002',
                                 'ID Number: 5101025009086',
                                 'Date of Birth: 1951-01-02',
-                                'Language: ',
-                                'Message set:',
+                                'Language:',
                                 '1. More',
                                 '2. Exit',
                             ].join('\n')
@@ -144,7 +147,8 @@ describe('app', function() {
                             .check.interaction({
                                 state: 'state_view',
                                 reply: [
-                                    'momconnect_prebirth.hw_full.1',
+                                    'English',
+                                    'Message set: momconnect_prebirth.hw_full.1',
                                     '1. Back',
                                     '2. Exit',
                                 ].join('\n')
@@ -242,7 +246,7 @@ describe('app', function() {
                                     {session_event: 'new'}
                                     , '3' // pick option 3
                                     , '1' // pick language
-                                    , '4' // pick English
+                                    , '6' // pick Setswana
                                 )
                                 .check.interaction({
                                     state: 'state_updated',
@@ -250,7 +254,7 @@ describe('app', function() {
                                         'Thank you. Your info has been updated.'].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [51, 54, 67, 171]);
+                                    utils.check_fixtures_used(api, [36, 51, 54, 67, 171]);
                                 })
                                 .run();
                             });
@@ -667,8 +671,7 @@ describe('app', function() {
                             'Phone Number: +27820001013',
                             'ID Number: 5101025009086',
                             'Date of Birth: 1951-01-02',
-                            'Language: ',
-                            'Message set:',
+                            'Language:',
                             '1. More',
                             '2. Exit'
                         ].join('\n')
@@ -691,7 +694,8 @@ describe('app', function() {
                         .check.interaction({
                             state: 'state_view',
                             reply: [
-                                'momconnect_prebirth.hw_full.1 momconnect_prebirth.hw_full.2',
+                                'English',
+                                'Message set: momconnect_prebirth.hw_full.1 momconnect_prebirth.hw_full.2',
                                 '1. Back',
                                 '2. Exit'
                             ].join('\n')

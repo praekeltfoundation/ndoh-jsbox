@@ -950,7 +950,7 @@ module.exports = function() {
                 "data": {
                     "to_identity": "cb245673-aa41-4302-ac47-00000001002",
                     "to_addr": "+27820001002",
-                    "content": "Personal info:\nPhone Number: +27820001002\nID Number: 5101025009086\nDate of Birth: 1951-01-02\nLanguage: \nMessage set: momconnect_prebirth.hw_full.1",                    
+                    "content": "Personal info:\nPhone Number: +27820001002\nID Number: 5101025009086\nDate of Birth: 1951-01-02\nLanguage: English\nMessage set: momconnect_prebirth.hw_full.1",                    
                     "metadata":{}
                 }
             },

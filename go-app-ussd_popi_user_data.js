@@ -23,6 +23,7 @@ go.app = function() {
         // variables for services
         var is;
         var sbm;
+        var hub;
         var ms;
 
         self.init = function() {
@@ -36,6 +37,11 @@ go.app = function() {
                 new JsonApi(self.im, {}),
                 self.im.config.services.stage_based_messaging.token,
                 self.im.config.services.stage_based_messaging.url
+            );
+            hub = new SeedJsboxUtils.Hub(
+                new JsonApi(self.im, {}),
+                self.im.config.services.hub.token,
+                self.im.config.services.hub.url
             );
             ms = new SeedJsboxUtils.MessageSender(
                 new JsonApi(self.im, {}),
@@ -122,7 +128,7 @@ go.app = function() {
         };
 
         self.return_language =function(){
-            switch(self.im.user.answers.state_language){
+            switch(self.im.user.answers.operator.details.lang_code){
                 case 'zul_ZA':
                     return 'isiZulu';
                 case 'xho_ZA':
@@ -185,8 +191,8 @@ go.app = function() {
                 self.im.user.set_answer("operator", identity);
                 self.im.user.set_answer("msisdn",msisdn);
                 
-                // display in previously chosen language
-                self.im.user.set_lang(self.im.user.answers.state_language);
+                // display in users preferred language
+                self.im.user.set_lang(self.im.user.answers.operator.details.lang_code);
                 
                 return sbm
                 // check that user is registered on momconnect   
@@ -319,13 +325,32 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     return self.im.user
-                    // TODO: update on IdentityStore
                     .set_lang(choice.value)
                     .then(function() {
-                        self.im.user.set_answer("state_language", choice.value);
-                        return 'state_updated';
+                        self.im.user.set_answer("new_language", choice.value);
+                        return 'state_switch_lang';
                     });
                 },
+            });
+        });
+
+        self.add('state_switch_lang', function(name) {
+            var change_info = {
+                "registrant_id": self.im.user.answers.operator.id,
+                "action": "momconnect_change_language",
+                "data": {
+                    "language": self.im.user.answers.new_language,
+                    "old_language": self.im.user.answers.operator.details.lang_code
+                }
+            };
+
+            self.im.user.set_answer("state_language", self.im.user.answers.new_language);
+            self.im.user.set_lang(self.im.user.answers.new_language);
+            self.im.user.answers.operator.details.lang_code = self.im.user.answers.new_language;
+
+            return hub.create_change(change_info)
+            .then(function() {
+                return self.states.create('state_updated');
             });
         });
 
