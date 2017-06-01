@@ -324,11 +324,7 @@ go.app = function() {
                     new Choice('nbl_ZA', 'isiNdebele'),
                 ],
                 next: function(choice) {
-                    return self.im.user
-                    .set_lang(choice.value)
-                    .then(function() {
-                        return 'state_switch_lang';
-                    });
+                    return 'state_switch_lang';
                 },
             });
         });
@@ -342,13 +338,15 @@ go.app = function() {
                     "old_language": self.im.user.answers.operator.details.lang_code
                 }
             };
-
-            self.im.user.set_lang(self.im.user.answers.state_select_language);
+            
+            
             self.im.user.answers.operator.details.lang_code = self.im.user.answers.state_select_language;
-
-            return hub.create_change(change_info)
+            return self.im.user.set_lang(self.im.user.answers.state_select_language)
             .then(function() {
-                return self.states.create('state_updated');
+                return hub.create_change(change_info)
+                .then(function() {
+                    return self.states.create('state_updated');
+                });
             });
         });
 
