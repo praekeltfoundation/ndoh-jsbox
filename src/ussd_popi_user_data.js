@@ -324,7 +324,6 @@ go.app = function() {
                     return self.im.user
                     .set_lang(choice.value)
                     .then(function() {
-                        self.im.user.set_answer("new_language", choice.value);
                         return 'state_switch_lang';
                     });
                 },
@@ -336,14 +335,13 @@ go.app = function() {
                 "registrant_id": self.im.user.answers.operator.id,
                 "action": "momconnect_change_language",
                 "data": {
-                    "language": self.im.user.answers.new_language,
+                    "language": self.im.user.answers.state_select_language,
                     "old_language": self.im.user.answers.operator.details.lang_code
                 }
             };
 
-            self.im.user.set_answer("state_language", self.im.user.answers.new_language);
-            self.im.user.set_lang(self.im.user.answers.new_language);
-            self.im.user.answers.operator.details.lang_code = self.im.user.answers.new_language;
+            self.im.user.set_lang(self.im.user.answers.state_select_language);
+            self.im.user.answers.operator.details.lang_code = self.im.user.answers.state_select_language;
 
             return hub.create_change(change_info)
             .then(function() {
