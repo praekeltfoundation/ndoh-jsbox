@@ -846,9 +846,18 @@ module.exports = function() {
 
         // 36:
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.change.momconnect_language.idenitity.cb245673-aa41-4302-ac47-00000001002",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001002",
+                    "action": "momconnect_change_language",
+                    "data": {
+                        "language": "tsn_ZA",
+                        "old_language": "eng_ZA"
+                    }
+                }
             },
             'response': {}
         },
