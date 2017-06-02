@@ -443,22 +443,21 @@ go.app = function() {
 
                 var opted_out_on_operator = false;
                 var msisdn_available = true;
-                for(i=0; i < identities.length; i++) {
+                identities.forEach(function(identity) {
                     // Msisdn already on this operator but inactive
-                    if (identities[i].id === self.im.user.answers.operator.id) {
-                      if (identities[i].details.addresses.msisdn[new_msisdn].optedout ||
-                              identities[i].details.addresses.msisdn[new_msisdn].inactive)
+                    if (identity.id === self.im.user.answers.operator.id) {
+                      if (identity.details.addresses.msisdn[new_msisdn].optedout ||
+                              identity.details.addresses.msisdn[new_msisdn].inactive)
                         opted_out_on_operator = true;
                     }
                     // Msisdn active on any other than this operator
-                    if (!identities[i].details.addresses.msisdn[new_msisdn].optedout &&
-                            !identities[i].details.addresses.msisdn[new_msisdn].inactive) {
-                        if (identities[i].id !== self.im.user.answers.operator.id) {
+                    if (!identity.details.addresses.msisdn[new_msisdn].optedout &&
+                            !identity.details.addresses.msisdn[new_msisdn].inactive) {
+                        if (identity.id !== self.im.user.answers.operator.id) {
                             msisdn_available = false;
-                            break;
                         }
                     }
-                }
+                });
 
                 if (!msisdn_available) {
                     return self.states.create('state_msisdn_change_fail');
