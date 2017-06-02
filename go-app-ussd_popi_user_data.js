@@ -446,9 +446,10 @@ go.app = function() {
                 identities.forEach(function(identity) {
                     // Msisdn already on this operator but inactive
                     if (identity.id === self.im.user.answers.operator.id) {
-                      if (identity.details.addresses.msisdn[new_msisdn].optedout ||
-                              identity.details.addresses.msisdn[new_msisdn].inactive)
-                        opted_out_on_operator = true;
+                        if (identity.details.addresses.msisdn[new_msisdn].optedout ||
+                                identity.details.addresses.msisdn[new_msisdn].inactive) {
+                            opted_out_on_operator = true;
+                        }
                     }
                     // Msisdn active on any other than this operator
                     if (!identity.details.addresses.msisdn[new_msisdn].optedout &&
