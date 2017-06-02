@@ -352,7 +352,7 @@ go.app = function() {
                 question: $('What kind of identification do you have?'),
                 choices: [
                     new Choice('state_change_sa_id', $('South African ID')),
-                    new Choice('state_change_passport', $('Passport')),
+                    new Choice('state_passport_origin', $('Passport')),
                 ],
                 next: function(choice) {
                     return choice.value;
@@ -372,39 +372,67 @@ go.app = function() {
                     }
                 },
                 next: function(content) {
-                    // TODO: Update ID on identitystore
-                    return 'state_updated';
+                    return 'state_create_identification_change';
                 }
             });
         });
 
-        self.add('state_change_passport', function(name) {
+        self.add('state_passport_origin', function(name) {
             return new ChoiceState(name, {
                 question: $('What is the country of origin of the passport?'),
                 choices: [
-                    new Choice('state_change_passport_zim', $('Zimbabwe')),
-                    new Choice('state_change_passport_moz', $('Mozambique')),
-                    new Choice('state_change_passport_mal', $('Malawi')),
-                    new Choice('state_change_passport_ng', $('Nigeria')),
-                    new Choice('state_change_passport_drc', $('DRC')),
-                    new Choice('state_change_passport_som', $('Somalia')),
-                    new Choice('state_change_passport_oth', $('Other'))
+                    new Choice('zw', $('Zimbabwe')),
+                    new Choice('mz', $('Mozambique')),
+                    new Choice('mw', $('Malawi')),
+                    new Choice('ng', $('Nigeria')),
+                    new Choice('cd', $('DRC')),
+                    new Choice('so', $('Somalia')),
+                    new Choice('other', $('Other'))
                 ],
                 next: function(choice) {
-                    // TODO: Update passport on identitystore
-                    return 'state_update_passport';
+                    return 'state_passport_no';
                 }
             });
         });
 
-        self.add('state_update_passport', function(name) {
+        self.add('state_passport_no', function(name) {
+            var error = $('There was an error in your entry. Please ' +
+                        'carefully enter the passport number again.');
+            var question = $('Please enter the passport number:');
             return new FreeText(name, {
-                question: $('Thank you. Please enter your passport number:'),
-                // TODO: insert check for valid passport number if necessary
-                next: function(content) {
-                    // TODO: Update passport number on identitystore
-                    return 'state_updated';
-                }
+                question: question,
+                check: function(content) {
+                    if (!utils.is_alpha_numeric_only(content) || content.length <= 4) {
+                        return error;
+                    }
+                },
+                next: 'state_create_identification_change'
+            });
+        });
+        
+        self.add('state_create_identification_change', function(name) {
+            var data = {};
+            if (self.im.user.answers.state_change_identity == 'state_change_sa_id') {
+                data = {
+                    "id_type": "sa_id",
+                    "sa_id_no": self.im.user.answers.state_change_sa_id
+                };
+            } else if (self.im.user.answers.state_change_identity == 'state_passport_origin') {
+                data = {
+                    "id_type": "passport",
+                    "passport_origin": self.im.user.answers.state_passport_origin,
+                    "passport_no": self.im.user.answers.state_passport_no
+                };
+            }
+            var change_info = {
+                "registrant_id": self.im.user.answers.operator.id,
+                "action": "momconnect_change_identification",
+                "data": data
+            };
+
+            return hub.create_change(change_info)
+            .then(function() {
+                return self.states.create('state_updated');
             });
         });
 
