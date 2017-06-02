@@ -325,7 +325,7 @@ describe('app', function() {
                                         ].join('\n')
                                     })
                                     .check(function(api) {
-                                        utils.check_fixtures_used(api, [51, 54, 67, 171]);
+                                        utils.check_fixtures_used(api, [37, 51, 54, 67, 171]);
                                     })
                                     .run();
                                 });
@@ -372,7 +372,7 @@ describe('app', function() {
                                             ].join('\n')
                                         })
                                         .check(function(api) {
-                                            utils.check_fixtures_used(api, [51, 54, 67, 171]);
+                                            utils.check_fixtures_used(api, [37, 51, 54, 67, 171]);
                                         })
                                         .run();
                                     });
@@ -381,7 +381,7 @@ describe('app', function() {
                         });
 
                         describe('user chooses to update their passport', function() {
-                            it('should go to state_change_passport', function() {
+                            it('should go to state_passport_origin', function() {
                                 return tester
                                 .setup.user.addr('27820001002')
                                 .inputs(
@@ -391,7 +391,7 @@ describe('app', function() {
                                     , '2' // pick passport
                                 )
                                 .check.interaction({
-                                    state: 'state_change_passport',
+                                    state: 'state_passport_origin',
                                     reply: [
                                         'What is the country of origin of the passport?',
                                         '1. Zimbabwe',
@@ -410,7 +410,7 @@ describe('app', function() {
                             });
 
                             describe('user chooses to update their Nigerian passport', function() {
-                                it('should go to state_update_passport', function() {
+                                it('should go to state_passport_no', function() {
                                     return tester
                                     .setup.user.addr('27820001002')
                                     .inputs(
@@ -421,10 +421,9 @@ describe('app', function() {
                                         , '4' // pick Nigeria
                                     )
                                     .check.interaction({
-                                        state: 'state_update_passport',
+                                        state: 'state_passport_no',
                                         reply: [
-                                            'Thank you. Please enter your ' +
-                                            'passport number:'
+                                            'Please enter the passport number:'
                                         ].join('\n')
                                     })
                                     .check(function(api) {
@@ -453,7 +452,7 @@ describe('app', function() {
                                             ].join('\n')
                                         })
                                         .check(function(api) {
-                                            utils.check_fixtures_used(api, [51, 54, 67, 171]);
+                                            utils.check_fixtures_used(api, [38, 51, 54, 67, 171]);
                                         })
                                         .run();
                                     });
