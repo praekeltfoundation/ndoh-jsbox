@@ -639,7 +639,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [51, 54, 67, 171, 234, 235]);
+                                    utils.check_fixtures_used(api, [40, 51, 54, 67, 171, 234, 235]);
                                 })
                                 .run();
                             });

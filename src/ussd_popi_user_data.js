@@ -502,7 +502,7 @@ go.app = function() {
             return is
             .optin(optin_info)
             .then(function() {
-                return self.states.create('state_updated');
+                return self.states.create('state_create_msisdn_change');
             });
         });
 
