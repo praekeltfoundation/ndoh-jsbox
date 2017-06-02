@@ -460,21 +460,44 @@ describe('app', function() {
                                 });
                             });
                         });
+                    });
 
-                        describe('user chooses to update their phone number', function() {
-                            it('should go to state_change_msisdn', function() {
+                    describe('user chooses to update their phone number', function() {
+                        it('should go to state_change_msisdn', function() {
+                            return tester
+                            .setup.user.addr('27820001002')
+                            .inputs(
+                                {session_event: 'new'}
+                                , '3' // pick option 3
+                                , '3' // pick msisdn
+                            )
+                            .check.interaction({
+                                state: 'state_change_msisdn',
+                                reply: [
+                                    'Please enter the new phone number we should use ' +
+                                    'to send you messages eg. 0813547654'
+                                ].join('\n')
+                            })
+                            .check(function(api) {
+                                utils.check_fixtures_used(api, [51, 54, 67, 171]);
+                            })
+                            .run();
+                        });
+
+                        describe('user enters valid phone number', function() {
+                            it('should go to state_updated', function() {
                                 return tester
                                 .setup.user.addr('27820001002')
                                 .inputs(
                                     {session_event: 'new'}
                                     , '3' // pick option 3
                                     , '3' // pick msisdn
+                                    , '0813547654'
                                 )
                                 .check.interaction({
-                                    state: 'state_change_msisdn',
+                                    state: 'state_updated',
                                     reply: [
-                                        'Please enter the new phone number we should use ' +
-                                        'to send you messages eg. 0813547654'
+                                        'Thank you. Your info has been updated.'
                                     ].join('\n')
                                 })
                                 .check(function(api) {
@@ -482,8 +505,30 @@ describe('app', function() {
                                 })
                                 .run();
                             });
+                        });
 
-                            describe('user enters valid phone number', function() {
+                        describe('user enters invalid phone number', function() {
+                            it('should go to state_change_msisdn', function() {
+                                return tester
+                                .setup.user.addr('27820001002')
+                                .inputs(
+                                    {session_event: 'new'}
+                                    , '3' // pick option 3
+                                    , '3' // pick msisdn
+                                    , '081354765p' // invalid phone number
+                                )
+                                .check.interaction({
+                                    state: 'state_change_msisdn',
+                                    reply: [
+                                        'Invalid phone number. Please re-enter (with no spaces)'
+                                    ].join('\n')
+                                })
+                                .check(function(api) {
+                                    utils.check_fixtures_used(api, [51, 54, 67, 171]);
+                                })
+                                .run();
+                            });
+                            describe('user then enters valid phone number', function() {
                                 it('should go to state_updated', function() {
                                     return tester
                                     .setup.user.addr('27820001002')
@@ -491,7 +536,8 @@ describe('app', function() {
                                         {session_event: 'new'}
                                         , '3' // pick option 3
                                         , '3' // pick msisdn
-                                        , '0813547654'
+                                        , '081354765p' // invalid phone number
+                                        , '0813547653' // valid phone number
                                     )
                                     .check.interaction({
                                         state: 'state_updated',
@@ -503,52 +549,6 @@ describe('app', function() {
                                         utils.check_fixtures_used(api, [51, 54, 67, 171]);
                                     })
                                     .run();
-                                });
-                            });
-
-                            describe('user enters invalid phone number', function() {
-                                it('should go to state_change_msisdn', function() {
-                                    return tester
-                                    .setup.user.addr('27820001002')
-                                    .inputs(
-                                        {session_event: 'new'}
-                                        , '3' // pick option 3
-                                        , '3' // pick msisdn
-                                        , '081354765p' // invalid phone number
-                                    )
-                                    .check.interaction({
-                                        state: 'state_change_msisdn',
-                                        reply: [
-                                            'Invalid phone number. Please re-enter (with no spaces)'
-                                        ].join('\n')
-                                    })
-                                    .check(function(api) {
-                                        utils.check_fixtures_used(api, [51, 54, 67, 171]);
-                                    })
-                                    .run();
-                                });
-                                describe('user then enters valid phone number', function() {
-                                    it('should go to state_updated', function() {
-                                        return tester
-                                        .setup.user.addr('27820001002')
-                                        .inputs(
-                                            {session_event: 'new'}
-                                            , '3' // pick option 3
-                                            , '3' // pick msisdn
-                                            , '081354765p' // invalid phone number
-                                            , '0813547653' // valid phone number
-                                        )
-                                        .check.interaction({
-                                            state: 'state_updated',
-                                            reply: [
-                                                'Thank you. Your info has been updated.'
-                                            ].join('\n')
-                                        })
-                                        .check(function(api) {
-                                            utils.check_fixtures_used(api, [51, 54, 67, 171]);
-                                        })
-                                        .run();
-                                    });
                                 });
                             });
                         });
