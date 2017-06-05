@@ -877,7 +877,6 @@ module.exports = function() {
                   }
               },
               'response': {}
-          },
         },
 
         // 38:

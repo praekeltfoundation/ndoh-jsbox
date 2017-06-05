@@ -325,7 +325,7 @@ describe('app', function() {
                                         ].join('\n')
                                     })
                                     .check(function(api) {
-                                        utils.check_fixtures_used(api, [37, 51, 54, 67, 171]);
+                                        utils.check_fixtures_used(api, [41, 51, 54, 67, 171]);
                                     })
                                     .run();
                                 });
@@ -372,7 +372,7 @@ describe('app', function() {
                                             ].join('\n')
                                         })
                                         .check(function(api) {
-                                            utils.check_fixtures_used(api, [37, 51, 54, 67, 171]);
+                                            utils.check_fixtures_used(api, [41, 51, 54, 67, 171]);
                                         })
                                         .run();
                                     });
@@ -452,7 +452,7 @@ describe('app', function() {
                                             ].join('\n')
                                         })
                                         .check(function(api) {
-                                            utils.check_fixtures_used(api, [38, 51, 54, 67, 171]);
+                                            utils.check_fixtures_used(api, [42, 51, 54, 67, 171]);
                                         })
                                         .run();
                                     });
