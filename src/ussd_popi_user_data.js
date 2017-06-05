@@ -275,7 +275,7 @@ go.app = function() {
                 choices: [
                     new Choice('state_select_language', $('Update my language choice')),
                     new Choice('state_change_identity', $('Update my identification')),
-                    new Choice('state_change_msisdn', $('Use a different phone number'))
+                    new Choice('state_new_msisdn', $('Use a different phone number'))
                 ],
                 next: function(choice) {
                     return choice.value;
@@ -436,7 +436,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_change_msisdn', function(name) {
+        self.add('state_new_msisdn', function(name) {
             return new FreeText(name, {
                 question: $('Please enter the new phone number we should use ' +
                             'to send you messages eg. 0813547654'),
@@ -448,16 +448,96 @@ go.app = function() {
                     }
                 },
                 next: function(content) {
-                    // TODO: Update phone number on identitystore
-                    return 'state_updated';
+                    return 'state_check_msisdn_available';
                 }
+            });
+        });
+        
+        self.add('state_check_msisdn_available', function(name) {
+            var new_msisdn = utils.normalize_msisdn(self.im.user.answers.state_new_msisdn, '27');
+            self.im.user.set_answer("new_msisdn", new_msisdn);
+
+            return is
+            .list_by_address({msisdn: new_msisdn})
+            .then(function(identities_found) {
+                var identities = (identities_found.results.length > 0) ? identities_found.results : null;
+
+                if (identities === null) {
+                    return self.states.create('state_create_msisdn_change');
+                }
+
+                var opted_out_on_operator = false;
+                var msisdn_available = true;
+                identities.forEach(function(identity) {
+                    // Msisdn already on this operator but inactive
+                    if (identity.id === self.im.user.answers.operator.id) {
+                        if (identity.details.addresses.msisdn[new_msisdn].optedout ||
+                                identity.details.addresses.msisdn[new_msisdn].inactive) {
+                            opted_out_on_operator = true;
+                        }
+                    }
+                    // Msisdn active on any other than this operator
+                    if (!identity.details.addresses.msisdn[new_msisdn].optedout &&
+                            !identity.details.addresses.msisdn[new_msisdn].inactive) {
+                        if (identity.id !== self.im.user.answers.operator.id) {
+                            msisdn_available = false;
+                        }
+                    }
+                });
+
+                if (!msisdn_available) {
+                    return self.states.create('state_msisdn_change_fail');
+                }
+
+                if (opted_out_on_operator) {
+                    return self.states.create('state_opt_in');
+                }
+
+                return self.states.create('state_create_msisdn_change');
+            });
+        });
+
+        self.add('state_msisdn_change_fail', function(name) {
+            return new EndState(name, {
+                text: $("Sorry, the number you are trying to move to already has an active registration. To manage that registration, please redial from that number."),
+                next: 'state_start'
+            });
+        });
+
+        self.add('state_create_msisdn_change', function(name) {
+            var change_info = {
+                "registrant_id": self.im.user.answers.operator.id,
+                "action": "momconnect_change_msisdn",
+                "data": {
+                    "msisdn": self.im.user.answers.new_msisdn
+                }
+            };
+
+            self.im.user.set_answer("operator_msisdn", self.im.user.answers.new_msisdn);
+            return hub.create_change(change_info)
+            .then(function() {
+                return self.states.create('state_updated');
+            });
+        });
+
+        self.states.add("state_opt_in", function(name) {
+            var optin_info = {
+                "identity": self.im.user.answers.operator.id,
+                "address_type": "msisdn",
+                "address": self.im.user.answers.new_msisdn,
+                "request_source": self.im.config.name || "ussd_popi_user_data"
+            };
+            return is
+            .optin(optin_info)
+            .then(function() {
+                return self.states.create('state_create_msisdn_change');
             });
         });
 
         self.add('state_updated', function(name) {
             return new EndState(name, {
                 text: $('Thank you. Your info has been updated.'),
-                next: 'start_state'
+                next: 'state_start'
             });
         });
 
@@ -465,7 +545,7 @@ go.app = function() {
             return new EndState(name, {
                 text: $('Your personal information stored on MomConnect has ' +
                         'not been removed.'),
-                next: 'start_state'
+                next: 'state_start'
             });
         });
 
@@ -473,7 +553,7 @@ go.app = function() {
             return new EndState(name, {
                 text: $('Thank you. All your information will be deleted ' +
                         'from MomConnect in the next [X] days.'),
-                next: 'start_state'
+                next: 'state_start'
             });
         });
 
@@ -484,7 +564,7 @@ go.app = function() {
                         'you used to register for MomConnect. To update ' +
                         'number, dial *134*550*5# or register ' +
                         'at a clinic'),
-                next: 'start_state'
+                next: 'state_start'
             });
         });
     });
