@@ -2318,6 +2318,24 @@ module.exports = function() {
             "response": {
                 "accepted": true
             }
+        },
+
+        // 246: optout identity cb245673-aa41-4302-ac47-00000001002
+        {
+            "key": "post.is.optout.identity.cb245673-aa41-4302-ac47-00000001002",
+            "request": {
+                "url": 'http://is/api/v1/optout/',
+                "method": 'POST',
+                "data": {
+                    "optout_type": "forget",
+                    "identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "reason": "unknown",
+                    "address_type": "msisdn",
+                    "address": "+27820001002",
+                    "request_source": "ussd_popi_user_data"
+                }
+            },
+            "response": {}
         }
     ];
 };

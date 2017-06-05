@@ -648,7 +648,7 @@ describe('app', function() {
                 });
 
                 describe('user chooses to delete data', function() {
-                    it('should go to state_delete_data', function() {
+                    it('should go to state_confirm_delete', function() {
                         return tester
                         .setup.user.addr('27820001002')
                         .inputs(
@@ -656,7 +656,7 @@ describe('app', function() {
                             , '4' // pick option 4
                         )
                         .check.interaction({
-                            state: 'state_delete_data',
+                            state: 'state_confirm_delete',
                             reply: [
                                 'MomConnect will automatically delete your ' +
                                 'personal information 7 years and 9 months after you ' +
@@ -689,10 +689,7 @@ describe('app', function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                // TODO: check that actually has been removed
-                            })
-                            .check(function(api) {
-                                utils.check_fixtures_used(api, [51, 54, 67, 171]);
+                                utils.check_fixtures_used(api, [51, 54, 67, 171, 236]);
                             })
                             .run();
                         });
