@@ -864,36 +864,68 @@ module.exports = function() {
 
         // 37:
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.change.momconnect_msisdn.idenitity.cb245673-aa41-4302-ac47-00000001002",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001002",
+                    "action": "momconnect_change_msisdn",
+                    "data": {
+                        "msisdn": "+27820001001"
+                    }
+                }
             },
             'response': {}
         },
 
         // 38:
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.change.momconnect_msisdn.idenitity.cb245673-aa41-4302-ac47-00000001002",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001002",
+                    "action": "momconnect_change_msisdn",
+                    "data": {
+                        "msisdn": "+27820001004"
+                    }
+                }
             },
             'response': {}
         },
 
         // 39:
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.change.momconnect_msisdn.idenitity.cb245673-aa41-4302-ac47-00000001002",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001002",
+                    "action": "momconnect_change_msisdn",
+                    "data": {
+                        "msisdn": "+27820001014"
+                    }
+                }
             },
             'response': {}
         },
 
         // 40:
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.change.momconnect_msisdn.idenitity.cb245673-aa41-4302-ac47-00000001002",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001002",
+                    "action": "momconnect_change_msisdn",
+                    "data": {
+                        "msisdn": "+27820001015"
+                    }
+                }
             },
             'response': {}
         },

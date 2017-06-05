@@ -14,6 +14,8 @@
     // (+27820001011) - existing identity with an active MomConnect Clinic subscription; PUBLIC dialback sms already sent
     // (+27820001012) - old/opted_out number used before by 27820001005 (used to test changing number)
     // (+27820001013) - existing identity with an active MomConnect subscription (no active NurseConnect subscription) and multiple messagesets
+    // (+27820001014) - existing identity; two msisdn's (other is +27820001002 not opted out)
+    // (+27820001015) - existing identity; two msisdn's (opted out on +27820001002)
 
 // PMTCT
     // (+27820000111) active sub non-pmtct; no consent, no dob
@@ -2206,7 +2208,116 @@ module.exports = function() {
                     ]
                 }
             }
-        }
+        },
 
+        // 243: get identity by msisdn +27820001014
+        {
+            "key": "get.is.msisdn.27820001014",
+            "repeatable": true,
+            "request": {
+                "url": 'http://is/api/v1/identities/search/',
+                "method": 'GET',
+                "params": {
+                    "details__addresses__msisdn": '+27820001014',
+                    "include_inactive": "False"
+                }
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001002/",
+                            "id": "cb245673-aa41-4302-ac47-00000001002",
+                            "version": 1,
+                            "details": {
+                                "default_addr_type": "msisdn",
+                                "addresses": {
+                                    "msisdn": {
+                                        "+27820001002": {"default": true},
+                                        "+27820001014": {}
+                                    }
+                                },
+                                "lang_code": "eng_ZA",
+                                "consent": true,
+                                "sa_id_no": "5101025009086",
+                                "mom_dob": "1951-01-02",
+                                "source": "clinic",
+                                "last_mc_reg_on": "clinic"
+                            },
+                            "created_at": "2016-08-05T06:13:29.693272Z",
+                            "updated_at": "2016-08-05T06:13:29.693298Z"
+                        }
+                    ]
+                }
+            }
+        },
+
+        // 244: get identity by msisdn +27820001015
+        {
+            "key": "get.is.msisdn.27820001015",
+            "repeatable": true,
+            "request": {
+                "url": 'http://is/api/v1/identities/search/',
+                "method": 'GET',
+                "params": {
+                    "details__addresses__msisdn": '+27820001015',
+                    "include_inactive": "False"
+                }
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001002/",
+                            "id": "cb245673-aa41-4302-ac47-00000001002",
+                            "version": 1,
+                            "details": {
+                                "default_addr_type": "msisdn",
+                                "addresses": {
+                                    "msisdn": {
+                                        "+27820001002": {"default": true},
+                                        "+27820001015": {"optedout": true}
+                                    }
+                                },
+                                "lang_code": "eng_ZA",
+                                "consent": true,
+                                "sa_id_no": "5101025009086",
+                                "mom_dob": "1951-01-02",
+                                "source": "clinic",
+                                "last_mc_reg_on": "clinic"
+                            },
+                            "created_at": "2016-08-05T06:13:29.693272Z",
+                            "updated_at": "2016-08-05T06:13:29.693298Z"
+                        }
+                    ]
+                }
+            }
+        },
+
+        // 245: optin in msisdn +27820001015 on identity cb245673-aa41-4302-ac47-00000001002
+        {
+            "key": "post.is.optin.identity.cb245673-aa41-4302-ac47-00000001002",
+            "request": {
+                "url": 'http://is/api/v1/optin/',
+                "method": 'POST',
+                "data": {
+                    "identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "address_type": "msisdn",
+                    "address": "+27820001015",
+                    "request_source": "ussd_popi_user_data"
+                }
+            },
+            "response": {
+                "accepted": true
+            }
+        }
     ];
 };

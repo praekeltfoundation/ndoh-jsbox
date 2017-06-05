@@ -75,8 +75,8 @@ describe("app", function() {
                     fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 139
                     fixtures_ServiceRating().forEach(api.http.fixtures.add); // 140 - 149
                     fixtures_Jembi().forEach(api.http.fixtures.add);  // 150 - 159
-                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 160 - 241
-                    fixtures_Casepro().forEach(api.http.fixtures.add); // 242
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 160 - 245
+                    fixtures_Casepro().forEach(api.http.fixtures.add); // 246
 
                 });
         });
@@ -163,7 +163,7 @@ describe("app", function() {
                                 'receive a response soon. Kind regards. MomConnect.'
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 181, 243]);
+                            utils.check_fixtures_used(api, [51, 54, 181, 246]);
                         })
                         .run();
                 });
@@ -186,7 +186,7 @@ describe("app", function() {
                                 "emergency please go to your health provider immediately."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 181, 243]);
+                            utils.check_fixtures_used(api, [51, 54, 181, 246]);
                         })
                         .run();
                 });
@@ -209,7 +209,7 @@ describe("app", function() {
                                 "health provider immediately."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 181, 243]);
+                            utils.check_fixtures_used(api, [51, 54, 181, 246]);
                         })
                         .run();
                 });
@@ -232,7 +232,7 @@ describe("app", function() {
                                 "health provider immediately."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 181, 243]);
+                            utils.check_fixtures_used(api, [51, 54, 181, 246]);
                         })
                         .run();
                 });
