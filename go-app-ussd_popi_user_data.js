@@ -523,20 +523,32 @@ go.app = function() {
         });
 
         self.add('state_optout', function(name) {
-            var optout_info = {
-                "optout_type": "forget",
-                "identity": self.im.user.answers.operator.id,
-                "reason": "unknown",
-                "address_type": "msisdn",
-                "address": self.im.user.answers.operator_msisdn,
-                "request_source": self.im.config.name || "ussd_popi_user_data"
-            };
-            return is
-            .optout(optout_info)
+            return hub
+            .create_change(
+                {
+                    "registrant_id": self.im.user.answers.operator.id,
+                    "action": "momconnect_nonloss_optout",
+                    "data": {
+                        "reason": "unknown"
+                    }
+                }
+            )
             .then(function() {
-                self.im.user.set_answer("operator", null);
-                self.im.user.set_answer("msisdn", null);
-                return self.states.create('state_info_deleted');
+                var optout_info = {
+                    "optout_type": "forget",
+                    "identity": self.im.user.answers.operator.id,
+                    "reason": "unknown",
+                    "address_type": "msisdn",
+                    "address": self.im.user.answers.operator_msisdn,
+                    "request_source": self.im.config.name || "ussd_popi_user_data"
+                };
+                return is
+                .optout(optout_info)
+                .then(function() {
+                    self.im.user.set_answer("operator", null);
+                    self.im.user.set_answer("msisdn", null);
+                    return self.states.create('state_info_deleted');
+                });
             });
         });
 

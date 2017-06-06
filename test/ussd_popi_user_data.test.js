@@ -691,7 +691,7 @@ describe('app', function() {
                             .check.user.answer("operator", null)
                             .check.user.answer("msisdn", null)
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [51, 54, 67, 171, 236]);
+                                utils.check_fixtures_used(api, [41, 51, 54, 67, 171, 236]);
                             })
                             .run();
                         });
