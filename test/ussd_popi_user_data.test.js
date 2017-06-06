@@ -688,6 +688,8 @@ describe('app', function() {
                                     'from MomConnect in the next [X] days.'
                                 ].join('\n')
                             })
+                            .check.user.answer("operator", null)
+                            .check.user.answer("msisdn", null)
                             .check(function(api) {
                                 utils.check_fixtures_used(api, [51, 54, 67, 171, 236]);
                             })
