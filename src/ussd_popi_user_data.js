@@ -320,9 +320,7 @@ go.app = function() {
                     new Choice('ven_ZA', 'Tshivenda'),
                     new Choice('nbl_ZA', 'isiNdebele'),
                 ],
-                next: function(choice) {
-                    return 'state_switch_lang';
-                },
+                next: 'state_switch_lang',
             });
         });
 
@@ -371,9 +369,7 @@ go.app = function() {
                         return $("Invalid ID number. Please re-enter");
                     }
                 },
-                next: function(content) {
-                    return 'state_create_identification_change';
-                }
+                next: 'state_create_identification_change'
             });
         });
 
@@ -389,9 +385,7 @@ go.app = function() {
                     new Choice('so', $('Somalia')),
                     new Choice('other', $('Other'))
                 ],
-                next: function(choice) {
-                    return 'state_passport_no';
-                }
+                next: 'state_passport_no'
             });
         });
 
@@ -447,9 +441,7 @@ go.app = function() {
                         return $("Invalid phone number. Please re-enter (with no spaces)");
                     }
                 },
-                next: function(content) {
-                    return 'state_check_msisdn_available';
-                }
+                next: 'state_check_msisdn_available'
             });
         });
         
