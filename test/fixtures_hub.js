@@ -873,10 +873,10 @@ module.exports = function() {
                     "action": "momconnect_change_msisdn",
                     "data": {
                         "msisdn": "+27820001001"
-                    }
-                }
-            },
-            'response': {}
+                      }
+                  }
+              },
+              'response': {}
         },
 
         // 38:
@@ -890,10 +890,10 @@ module.exports = function() {
                     "action": "momconnect_change_msisdn",
                     "data": {
                         "msisdn": "+27820001004"
-                    }
-                }
-            },
-            'response': {}
+                      }
+                  }
+              },
+              'response': {}
         },
 
         // 39:
@@ -949,18 +949,37 @@ module.exports = function() {
 
         // 42:
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.change.momconnect_identification.idenitity.cb245673-aa41-4302-ac47-00000001002",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001002",
+                    "action": "momconnect_change_identification",
+                    "data": {
+                      "id_type": "passport",
+                      "passport_origin": "ng",
+                      "passport_no": "12345"
+                    }
+                }
             },
             'response': {}
         },
 
         // 43:
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            'key': "post.hub.change.momconnect_identification.idenitity.cb245673-aa41-4302-ac47-00000001002",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001002",
+                    "action": "momconnect_change_identification",
+                    "data": {
+                      "id_type": "sa_id",
+                      "sa_id_no": "8805100273098"
+                    }
+                }
             },
             'response': {}
         },
