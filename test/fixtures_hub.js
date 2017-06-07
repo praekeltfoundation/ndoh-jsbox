@@ -930,18 +930,17 @@ module.exports = function() {
             'response': {}
         },
 
-        // 41:
+        // 41: post momconnect_nonloss_optout change for cb245673-aa41-4302-ac47-00000001002
         {
-            "key": "post.hub.change.momconnect_identification.idenitity.cb245673-aa41-4302-ac47-00000001002",
+            "key": "post.hub.change.momconnect_nonloss_optout.idenitity.cb245673-aa41-4302-ac47-00000001002",
             "request": {
                 "url": 'http://hub/api/v1/change/',
                 "method": 'POST',
                 "data": {
                     "registrant_id": "cb245673-aa41-4302-ac47-00000001002",
-                    "action": "momconnect_change_identification",
+                    "action": "momconnect_nonloss_optout",
                     "data": {
-                      "id_type": "sa_id",
-                      "sa_id_no": "8805100273098"
+                        "reason": "unknown"
                     }
                 }
             },
@@ -969,9 +968,18 @@ module.exports = function() {
 
         // 43:
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            'key': "post.hub.change.momconnect_identification.idenitity.cb245673-aa41-4302-ac47-00000001002",
+            "request": {
+                "url": 'http://hub/api/v1/change/',
+                "method": 'POST',
+                "data": {
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001002",
+                    "action": "momconnect_change_identification",
+                    "data": {
+                      "id_type": "sa_id",
+                      "sa_id_no": "8805100273098"
+                    }
+                }
             },
             'response': {}
         },

@@ -232,7 +232,7 @@ go.app = function() {
                     new Choice('state_view', $('See my personal info')),
                     new Choice('state_view_sms', $('Send my personal info as sms')),
                     new Choice('state_change_data', $('Change my info')),
-                    new Choice('state_delete_data', $('Request to delete my info')),
+                    new Choice('state_confirm_delete', $('Request to delete my info')),
                 ],
                 next: function(choice) {
                     if (choice.value === 'state_view_sms') {
@@ -286,7 +286,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_delete_data', function(name) {
+        self.add('state_confirm_delete', function(name) {
             return new ChoiceState(name, {
                 question: $('MomConnect will automatically delete your ' +
                     'personal information 7 years and 9 months after you ' +
@@ -297,9 +297,7 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (choice.value === 'yes') {
-                        self.im.user.set_answer("operator", null);
-                        self.im.user.set_answer("msisdn", null);
-                        return 'state_info_deleted';
+                        return 'state_optout';
                     } else {
                         return 'state_info_not_deleted';
                     }
@@ -541,6 +539,36 @@ go.app = function() {
                 text: $('Your personal information stored on MomConnect has ' +
                         'not been removed.'),
                 next: 'state_start'
+            });
+        });
+
+        self.add('state_optout', function(name) {
+            return hub
+            .create_change(
+                {
+                    "registrant_id": self.im.user.answers.operator.id,
+                    "action": "momconnect_nonloss_optout",
+                    "data": {
+                        "reason": "unknown"
+                    }
+                }
+            )
+            .then(function() {
+                var optout_info = {
+                    "optout_type": "forget",
+                    "identity": self.im.user.answers.operator.id,
+                    "reason": "unknown",
+                    "address_type": "msisdn",
+                    "address": self.im.user.answers.operator_msisdn,
+                    "request_source": self.im.config.name || "ussd_popi_user_data"
+                };
+                return is
+                .optout(optout_info)
+                .then(function() {
+                    self.im.user.set_answer("operator", null);
+                    self.im.user.set_answer("msisdn", null);
+                    return self.states.create('state_info_deleted');
+                });
             });
         });
 
