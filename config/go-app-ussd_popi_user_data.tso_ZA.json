@@ -1,0 +1,234 @@
+{
+    "": {
+        "pot-creation-date": "2017-06-07 03:46:+0000",
+        "project-id-version": "POPI_USER_DATA",
+        "language-team": "Tsonga <LL@li.org>",
+        "language": "ts",
+        "mime-version": "1.0",
+        "content-type": "text/plain; charset=UTF-8",
+        "content-transfer-encoding": "8bit",
+        "po-revision-date": "2017-06-08 16:51+0200",
+        "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
+        "x-generator": "Poedit 1.5.4"
+    },
+    "Personal info:\nPhone Number: {{msisdn}}\nID Number: {{id}}\nDate of Birth: {{dob}}\nLanguage: {{lang}}": [
+        null,
+        ""
+    ],
+    "Personal info:\nPhone Number: {{msisdn}}\nOrigin of Passport: {{passport_or}}\nPassport: {{passport_num}}\nDate of Birth: {{dob}}\nLanguage: {{lang}}": [
+        null,
+        ""
+    ],
+    "{{first}}\nMessage set: {{mset}}": [
+        null,
+        ""
+    ],
+    "Welcome back. Please select an option:": [
+        null,
+        "Wa amukeriwa nakambe. Hlawula opuxini:"
+    ],
+    "Main menu": [
+        null,
+        "Menyunkulu"
+    ],
+    "What would you like to do?": [
+        null,
+        "U lava ku endla yini?"
+    ],
+    "See my personal info": [
+        null,
+        "Ku vona vuxokoxoko bya mina n'wini"
+    ],
+    "Send my personal info by sms": [
+        null,
+        ""
+    ],
+    "Change my info": [
+        null,
+        "Ku cinca vuxokoxoko bya mina"
+    ],
+    "Request to delete my info": [
+        null,
+        "Ku kombela ku sula vuxokoxoko bya mina"
+    ],
+    "More": [
+        null,
+        ""
+    ],
+    "Back": [
+        null,
+        "Vuyela endzhaku"
+    ],
+    "Exit": [
+        null,
+        ""
+    ],
+    "An SMS has been sent to your number containing your personal information stored by MomConnect.": [
+        null,
+        ""
+    ],
+    "What would you like to change? To change your due date, visit a clinic": [
+        null,
+        "U lava ku cinca yini? Ku cinca siku ro ya, yana etliliniki"
+    ],
+    "Update my language choice": [
+        null,
+        "Ku cinca ririmi ra mina"
+    ],
+    "Update my identification": [
+        null,
+        "Ku cinca vutitivisi bya mina"
+    ],
+    "Use a different phone number": [
+        null,
+        "Ku tirhisa nomboro yin'wana ya riqingho"
+    ],
+    "MomConnect will automatically delete your personal information 7 years and 9 months after you registered. Do you want us to delete it now?": [
+        null,
+        "MomConnect yi ta sula xikan'wekan'we vuxokoxoko lebyi 7 wa malembe na 9 wa tin'hweti endzhaku ka loko u tsarisile. Kumbe u lava ku byi sula sweswi?"
+    ],
+    "Yes": [
+        null,
+        "Ina"
+    ],
+    "No": [
+        null,
+        "E-e"
+    ],
+    "Choose a language for your messages:": [
+        null,
+        "Hlawula ririmi ra swihungwana swa wena:"
+    ],
+    "isiZulu": [
+        null,
+        "Xizulu"
+    ],
+    "isiXhosa": [
+        null,
+        "Xiqhoza"
+    ],
+    "Afrikaans": [
+        null,
+        "Xibunu"
+    ],
+    "English": [
+        null,
+        "Xinghezi"
+    ],
+    "Sesotho sa Leboa": [
+        null,
+        "Xisuthu xa le N'walungwini"
+    ],
+    "Setswana": [
+        null,
+        "Xitswana"
+    ],
+    "Sesotho": [
+        null,
+        "Xisuthu"
+    ],
+    "Xitsonga": [
+        null,
+        ""
+    ],
+    "siSwati": [
+        null,
+        "Xiswazi"
+    ],
+    "Tshivenda": [
+        null,
+        "Xivhenda"
+    ],
+    "isiNdebele": [
+        null,
+        "Xindhevele"
+    ],
+    "What kind of identification do you have?": [
+        null,
+        "U na muxaka wihi wa vutitivisi?"
+    ],
+    "South African ID": [
+        null,
+        "Pasi ra Afrika-Dzonga"
+    ],
+    "Passport": [
+        null,
+        "Phasipoto"
+    ],
+    "Thank you. Please enter your ID number. eg. 8805100273098": [
+        null,
+        "Ha khensa. Hi kombela u nghenisa nomboro ya wena ya Pasi (xik. 8805100273098)"
+    ],
+    "Invalid ID number. Please re-enter": [
+        null,
+        ""
+    ],
+    "What is the country of origin of the passport?": [
+        null,
+        "Hi rihi tiko leri phasipoto ya wena yi humaka eka rona?"
+    ],
+    "Zimbabwe": [
+        null,
+        ""
+    ],
+    "Mozambique": [
+        null,
+        ""
+    ],
+    "Malawi": [
+        null,
+        ""
+    ],
+    "Nigeria": [
+        null,
+        ""
+    ],
+    "DRC": [
+        null,
+        ""
+    ],
+    "Somalia": [
+        null,
+        ""
+    ],
+    "Other": [
+        null,
+        "Rin'wana"
+    ],
+    "There was an error in your entry. Please carefully enter the passport number again.": [
+        null,
+        ""
+    ],
+    "Please enter the passport number:": [
+        null,
+        "Ha khensa. Hi kombela u nghenisa nomboro ya wena ya phasipoto."
+    ],
+    "Please enter the new phone number we should use to send you messages eg. 0813547654": [
+        null,
+        "Hi kombela u nghenisa nomboro leyintshwa ya riqingho leyi hi faneleke ku yi tirhisa ku ku rhumela swihungwana xik. 0813547654"
+    ],
+    "Invalid phone number. Please re-enter (with no spaces)": [
+        null,
+        ""
+    ],
+    "Sorry, the number you are trying to move to already has an active registration. To manage that registration, please redial from that number.": [
+        null,
+        ""
+    ],
+    "Thank you. Your info has been updated.": [
+        null,
+        "Ha khensa. Vuxokoxoko bya wena byi cinciwile."
+    ],
+    "Your personal information stored on MomConnect has not been removed.": [
+        null,
+        ""
+    ],
+    "Thank you. All your information will be deleted from MomConnect in the next [X] days.": [
+        null,
+        "Ha khensa. Vuxokoxoko bya wena hinkwabyo byi ta suriwa kusuka eka MomConnect eka masiku ya [X] lama landzelaka."
+    ],
+    "Sorry, that number is not recognised. Dial in with the number you used to register for MomConnect. To update number, dial *134*550*5# or register at a clinic": [
+        null,
+        "Hi khomele, nomboro leyi a yi tiveki. Dayila nomboro leyi u rhangeke u tsarisa yona. Ku cinca nomboro, dayila *134*550*5# kumbe tsarisa nakambe etliliniki."
+    ]
+}
