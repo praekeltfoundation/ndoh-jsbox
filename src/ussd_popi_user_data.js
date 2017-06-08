@@ -8,6 +8,7 @@ go.app = function() {
     var ChoiceState = vumigo.states.ChoiceState;
     var Choice = vumigo.states.Choice;
     var PaginatedState = vumigo.states.PaginatedState;
+    var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
     var FreeText = vumigo.states.FreeText;
     var JsonApi = vumigo.http.api.JsonApi;
 
@@ -227,7 +228,7 @@ go.app = function() {
                 question: $('What would you like to do?'),
                 choices: [
                     new Choice('state_view', $('See my personal info')),
-                    new Choice('state_view_sms', $('Send my personal info as sms')),
+                    new Choice('state_view_sms', $('Send my personal info by sms')),
                     new Choice('state_change_data', $('Change my info')),
                     new Choice('state_confirm_delete', $('Request to delete my info')),
                 ],
@@ -271,7 +272,7 @@ go.app = function() {
 
         self.add('state_change_data', function(name) {
             return new ChoiceState(name, {
-                question: $('What would you like to change?'),
+                question: $('What would you like to change? To change your due date, visit a clinic'),
                 choices: [
                     new Choice('state_select_language', $('Update my language choice')),
                     new Choice('state_change_identity', $('Update my identification')),
@@ -303,20 +304,21 @@ go.app = function() {
         });
 
         self.add('state_select_language', function(name) {
-            return new ChoiceState(name, {
-                question: 'Choose language:',
+            return new PaginatedChoiceState(name, {
+                question: $('Choose a language for your messages:'),
+                options_per_page: null,
                 choices: [
-                    new Choice('zul_ZA', 'isiZulu'),
-                    new Choice('xho_ZA', 'isiXhosa'),
-                    new Choice('afr_ZA', 'Afrikaans'),
-                    new Choice('eng_ZA', 'English'),
-                    new Choice('nso_ZA', 'Sesotho sa Leboa'),
-                    new Choice('tsn_ZA', 'Setswana'),
-                    new Choice('sot_ZA', 'Sesotho'),
-                    new Choice('tso_ZA', 'Xitsonga'),
-                    new Choice('ssw_ZA', 'siSwati'),
-                    new Choice('ven_ZA', 'Tshivenda'),
-                    new Choice('nbl_ZA', 'isiNdebele'),
+                    new Choice('zul_ZA', $('isiZulu')),
+                    new Choice('xho_ZA', $('isiXhosa')),
+                    new Choice('afr_ZA', $('Afrikaans')),
+                    new Choice('eng_ZA', $('English')),
+                    new Choice('nso_ZA', $('Sesotho sa Leboa')),
+                    new Choice('tsn_ZA', $('Setswana')),
+                    new Choice('sot_ZA', $('Sesotho')),
+                    new Choice('tso_ZA', $('Xitsonga')),
+                    new Choice('ssw_ZA', $('siSwati')),
+                    new Choice('ven_ZA', $('Tshivenda')),
+                    new Choice('nbl_ZA', $('isiNdebele')),
                 ],
                 next: 'state_switch_lang',
             });
