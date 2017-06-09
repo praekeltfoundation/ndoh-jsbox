@@ -119,14 +119,15 @@ go.app = function() {
                 options_per_page: null,
                 characters_per_page: 160,
                 choices: [
-                    new Choice('state_question_1', 'What is MomConnect?'),
-                    new Choice('state_question_2', 'Why does MC need my personal info?'),
-                    new Choice('state_question_3', 'What personal info is collected?'),
-                    new Choice('state_question_4', 'Who can see my personal info?'),
-                    new Choice('state_question_5', 'How can I see, change or delete my personal info?'),
-                    new Choice('state_question_6', 'How long does MC keep my info?')
+                    new Choice('state_question_1', $('What is MomConnect?')),
+                    new Choice('state_question_2', $('Why does MC need my personal info?')),
+                    new Choice('state_question_3', $('What personal info is collected?')),
+                    new Choice('state_question_4', $('Who can see my personal info?')),
+                    new Choice('state_question_5', $('How can I see, change or delete my personal info?')),
+                    new Choice('state_question_6', $('How long does MC keep my info?'))
                 ],
                 more: $('Next'),
+                back: $('Back'),
                 next: function(choice) {
                     return choice.value;
                 }
