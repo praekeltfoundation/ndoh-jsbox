@@ -203,7 +203,7 @@ go.app = function() {
                         'information by dialing *134*550*7#'),
                 characters_per_page: 160,
                 exit: $('Menu'),
-                more: $('More'),
+                more: $('Next'),
                 next: function(choice) {
                     return {name: 'state_all_questions_view'};
                 }
@@ -217,7 +217,7 @@ go.app = function() {
                         'after you registered.'),
                 characters_per_page: 160,
                 exit: $('Menu'),
-                more: $('More'),
+                more: $('Next'),
                 next: function(choice) {
                     return {name: 'state_all_questions_view'};
                 }
