@@ -96,7 +96,7 @@ describe('app', function() {
                         reply: [
                             'What would you like to do?',
                             '1. See my personal info',
-                            '2. Send my personal info as sms',
+                            '2. Send my personal info by sms',
                             '3. Change my info',
                             '4. Request to delete my info'
                         ].join('\n')
@@ -194,7 +194,7 @@ describe('app', function() {
                         .check.interaction({
                             state: 'state_change_data',
                             reply: [
-                                'What would you like to change?',
+                                'What would you like to change? To change your due date, visit a clinic',
                                 '1. Update my language choice',
                                 '2. Update my identification',
                                 '3. Use a different phone number'
@@ -218,7 +218,7 @@ describe('app', function() {
                             .check.interaction({
                                 state: 'state_select_language',
                                 reply: [
-                                    'Choose language:',
+                                    'Choose a language for your messages:',
                                     '1. isiZulu',
                                     '2. isiXhosa',
                                     '3. Afrikaans',
@@ -228,8 +228,7 @@ describe('app', function() {
                                     '7. Sesotho',
                                     '8. Xitsonga',
                                     '9. siSwati',
-                                    '10. Tshivenda',
-                                    '11. isiNdebele'
+                                    '10. More'
                                 ].join('\n')
                             })
                             .check(function(api) {
@@ -733,7 +732,7 @@ describe('app', function() {
                             reply: [
                                 'What would you like to do?',
                                 '1. See my personal info',
-                                '2. Send my personal info as sms',
+                                '2. Send my personal info by sms',
                                 '3. Change my info',
                                 '4. Request to delete my info'
                             ].join('\n')
@@ -811,7 +810,7 @@ describe('app', function() {
                                 reply: [
                                     'What would you like to do?',
                                     '1. See my personal info',
-                                    '2. Send my personal info as sms',
+                                    '2. Send my personal info by sms',
                                     '3. Change my info',
                                     '4. Request to delete my info'
                                 ].join('\n')

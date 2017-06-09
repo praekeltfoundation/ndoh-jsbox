@@ -1,0 +1,234 @@
+{
+    "": {
+        "pot-creation-date": "2017-06-07 03:46:+0000",
+        "project-id-version": "POPI_USER_DATA",
+        "language-team": "Northern Sotho <LL@li.org>",
+        "language": "nso",
+        "mime-version": "1.0",
+        "content-type": "text/plain; charset=UTF-8",
+        "content-transfer-encoding": "8bit",
+        "po-revision-date": "2017-06-08 14:37+0200",
+        "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
+        "x-generator": "Poedit 1.5.4"
+    },
+    "Personal info:\nPhone Number: {{msisdn}}\nID Number: {{id}}\nDate of Birth: {{dob}}\nLanguage: {{lang}}": [
+        null,
+        ""
+    ],
+    "Personal info:\nPhone Number: {{msisdn}}\nOrigin of Passport: {{passport_or}}\nPassport: {{passport_num}}\nDate of Birth: {{dob}}\nLanguage: {{lang}}": [
+        null,
+        ""
+    ],
+    "{{first}}\nMessage set: {{mset}}": [
+        null,
+        ""
+    ],
+    "Welcome back. Please select an option:": [
+        null,
+        "O amogetswe gape. Hle kgetha:"
+    ],
+    "Main menu": [
+        null,
+        ""
+    ],
+    "What would you like to do?": [
+        null,
+        "O nyaka go dira eng?"
+    ],
+    "See my personal info": [
+        null,
+        "Bona tshedimošo ya ka"
+    ],
+    "Send my personal info by sms": [
+        null,
+        ""
+    ],
+    "Change my info": [
+        null,
+        "Fetoša tshedimšo ya ka"
+    ],
+    "Request to delete my info": [
+        null,
+        "Kgopela tlošotshedimšo"
+    ],
+    "More": [
+        null,
+        ""
+    ],
+    "Back": [
+        null,
+        "Morago"
+    ],
+    "Exit": [
+        null,
+        ""
+    ],
+    "An SMS has been sent to your number containing your personal information stored by MomConnect.": [
+        null,
+        ""
+    ],
+    "What would you like to change? To change your due date, visit a clinic": [
+        null,
+        "O nyaka go fetoša eng? Go fetoša tšatši, etela kliniki"
+    ],
+    "Update my language choice": [
+        null,
+        "Dira kgethopolelo ya ka"
+    ],
+    "Update my identification": [
+        null,
+        "Dira boitsebišo bja ka"
+    ],
+    "Use a different phone number": [
+        null,
+        "Šomiša nomoromogala ye nngwe"
+    ],
+    "MomConnect will automatically delete your personal information 7 years and 9 months after you registered. Do you want us to delete it now?": [
+        null,
+        "MomConnect e tla tloša tshedimošo ya gago mengwaga e 7 le dikgwedi tše 9 morago ga ngwadišo. Goba o nyaka re e tloša gonabjale?"
+    ],
+    "Yes": [
+        null,
+        "Ee"
+    ],
+    "No": [
+        null,
+        "Aowa"
+    ],
+    "Choose a language for your messages:": [
+        null,
+        "Kgetha polelo ya melaetša ya gago:"
+    ],
+    "isiZulu": [
+        null,
+        "Zulu"
+    ],
+    "isiXhosa": [
+        null,
+        "Sethosa"
+    ],
+    "Afrikaans": [
+        null,
+        "Afrikanse"
+    ],
+    "English": [
+        null,
+        "Seisemane"
+    ],
+    "Sesotho sa Leboa": [
+        null,
+        ""
+    ],
+    "Setswana": [
+        null,
+        ""
+    ],
+    "Sesotho": [
+        null,
+        ""
+    ],
+    "Xitsonga": [
+        null,
+        "Setsonga"
+    ],
+    "siSwati": [
+        null,
+        "Seswatse"
+    ],
+    "Tshivenda": [
+        null,
+        "Sevenda"
+    ],
+    "isiNdebele": [
+        null,
+        "Setebele"
+    ],
+    "What kind of identification do you have?": [
+        null,
+        "O na le boitsebišo bofe?"
+    ],
+    "South African ID": [
+        null,
+        "ID ya Afrika Borwa"
+    ],
+    "Passport": [
+        null,
+        "Phasepote"
+    ],
+    "Thank you. Please enter your ID number. eg. 8805100273098": [
+        null,
+        "Malebo. Tsenya nomoro ya ID ya gago (mohl, 8805100273098)"
+    ],
+    "Invalid ID number. Please re-enter": [
+        null,
+        ""
+    ],
+    "What is the country of origin of the passport?": [
+        null,
+        "Phasepote ya gago ke ya naga efe?"
+    ],
+    "Zimbabwe": [
+        null,
+        ""
+    ],
+    "Mozambique": [
+        null,
+        ""
+    ],
+    "Malawi": [
+        null,
+        ""
+    ],
+    "Nigeria": [
+        null,
+        ""
+    ],
+    "DRC": [
+        null,
+        ""
+    ],
+    "Somalia": [
+        null,
+        ""
+    ],
+    "Other": [
+        null,
+        "E nngwe"
+    ],
+    "There was an error in your entry. Please carefully enter the passport number again.": [
+        null,
+        ""
+    ],
+    "Please enter the passport number:": [
+        null,
+        "Malebo. Hle tsenya nomorophasepote ya gago."
+    ],
+    "Please enter the new phone number we should use to send you messages eg. 0813547654": [
+        null,
+        "Hle tsenya nomoromogala e mpsha re tla e šomiša go romela melaetša, mohl. 0813547654"
+    ],
+    "Invalid phone number. Please re-enter (with no spaces)": [
+        null,
+        ""
+    ],
+    "Sorry, the number you are trying to move to already has an active registration. To manage that registration, please redial from that number.": [
+        null,
+        ""
+    ],
+    "Thank you. Your info has been updated.": [
+        null,
+        "Malebo. Tshedimošo yago dirilwe gape."
+    ],
+    "Your personal information stored on MomConnect has not been removed.": [
+        null,
+        ""
+    ],
+    "Thank you. All your information will be deleted from MomConnect in the next [X] days.": [
+        null,
+        "Malebo. Tshedimošo ya gago ka moka e tla lošwa go MomConnect mo matšatšing a [X]."
+    ],
+    "Sorry, that number is not recognised. Dial in with the number you used to register for MomConnect. To update number, dial *134*550*5# or register at a clinic": [
+        null,
+        "Tshwarelo, nomoro yeo ga e tsebje. Taela ka nomoro ye e šomilego pele go ngwadiša. Go mpshafatša nomoro ya gago, taela *134*550*5# goba ngwadiša gape kliniking"
+    ]
+}

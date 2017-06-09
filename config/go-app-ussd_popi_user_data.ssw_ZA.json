@@ -1,0 +1,234 @@
+{
+    "": {
+        "pot-creation-date": "2017-06-07 03:46:+0000",
+        "project-id-version": "POPI_USER_DATA",
+        "language-team": "Siswati <LL@li.org>",
+        "mime-version": "1.0",
+        "content-type": "text/plain; charset=UTF-8",
+        "content-transfer-encoding": "8bit",
+        "po-revision-date": "2017-06-08 16:19+0200",
+        "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
+        "x-generator": "Poedit 1.5.4",
+        "language": "ssw"
+    },
+    "Personal info:\nPhone Number: {{msisdn}}\nID Number: {{id}}\nDate of Birth: {{dob}}\nLanguage: {{lang}}": [
+        null,
+        ""
+    ],
+    "Personal info:\nPhone Number: {{msisdn}}\nOrigin of Passport: {{passport_or}}\nPassport: {{passport_num}}\nDate of Birth: {{dob}}\nLanguage: {{lang}}": [
+        null,
+        ""
+    ],
+    "{{first}}\nMessage set: {{mset}}": [
+        null,
+        ""
+    ],
+    "Welcome back. Please select an option:": [
+        null,
+        "Siyakwemukela futsi. Sicela ukhetse lokufunako:"
+    ],
+    "Main menu": [
+        null,
+        "Imenyu lenkhulu"
+    ],
+    "What would you like to do?": [
+        null,
+        "Ufuna kwenta ini?"
+    ],
+    "See my personal info": [
+        null,
+        "Kubona imininingwane yami"
+    ],
+    "Send my personal info by sms": [
+        null,
+        ""
+    ],
+    "Change my info": [
+        null,
+        "Kuntjintja imininingwane yami"
+    ],
+    "Request to delete my info": [
+        null,
+        "Kucela kususa imininingwane yami"
+    ],
+    "More": [
+        null,
+        ""
+    ],
+    "Back": [
+        null,
+        "Emuva"
+    ],
+    "Exit": [
+        null,
+        ""
+    ],
+    "An SMS has been sent to your number containing your personal information stored by MomConnect.": [
+        null,
+        ""
+    ],
+    "What would you like to change? To change your due date, visit a clinic": [
+        null,
+        "Untjintja ini? Kuntjintja lusuku lwakho lwekuta, vakashela emtfolamphilo"
+    ],
+    "Update my language choice": [
+        null,
+        "Lulwimi lengilufunako"
+    ],
+    "Update my identification": [
+        null,
+        "Kutatisa kwami"
+    ],
+    "Use a different phone number": [
+        null,
+        "Kusebentisa inombolo yelucingo lehlukile"
+    ],
+    "MomConnect will automatically delete your personal information 7 years and 9 months after you registered. Do you want us to delete it now?": [
+        null,
+        "IMomConnect itawuvele nje iyisuse imininingwane yakho eminyakeni le-7 netinyanga leti-9 ngemuva kwekubhalisa. Noma ufuna silususe manje?"
+    ],
+    "Yes": [
+        null,
+        "Yebo"
+    ],
+    "No": [
+        null,
+        "Cha"
+    ],
+    "Choose a language for your messages:": [
+        null,
+        "Khetsa lulwimi lwemilayeto yakho:"
+    ],
+    "isiZulu": [
+        null,
+        "Sizulu"
+    ],
+    "isiXhosa": [
+        null,
+        "Sichosa"
+    ],
+    "Afrikaans": [
+        null,
+        "Sibhunu"
+    ],
+    "English": [
+        null,
+        "Singisi"
+    ],
+    "Sesotho sa Leboa": [
+        null,
+        "Sisutfu saseLeboa"
+    ],
+    "Setswana": [
+        null,
+        "Sitswana "
+    ],
+    "Sesotho": [
+        null,
+        "Sisutfu"
+    ],
+    "Xitsonga": [
+        null,
+        "Sitsonga"
+    ],
+    "siSwati": [
+        null,
+        ""
+    ],
+    "Tshivenda": [
+        null,
+        "Sivenda"
+    ],
+    "isiNdebele": [
+        null,
+        "Sindebele"
+    ],
+    "What kind of identification do you have?": [
+        null,
+        "Unaluphi luhlobo lwekutatisa?"
+    ],
+    "South African ID": [
+        null,
+        "I-ID yaseNingizimu Afrika"
+    ],
+    "Passport": [
+        null,
+        "Ipasipoti"
+    ],
+    "Thank you. Please enter your ID number. eg. 8805100273098": [
+        null,
+        "Ngiyabonga. Ngicela kutsi ufake inombolo ye-ID yakho (sib. 8805100273098)"
+    ],
+    "Invalid ID number. Please re-enter": [
+        null,
+        ""
+    ],
+    "What is the country of origin of the passport?": [
+        null,
+        "Ipasipoti yakho yakuliphi live?"
+    ],
+    "Zimbabwe": [
+        null,
+        ""
+    ],
+    "Mozambique": [
+        null,
+        ""
+    ],
+    "Malawi": [
+        null,
+        ""
+    ],
+    "Nigeria": [
+        null,
+        ""
+    ],
+    "DRC": [
+        null,
+        ""
+    ],
+    "Somalia": [
+        null,
+        ""
+    ],
+    "Other": [
+        null,
+        "Lokunye"
+    ],
+    "There was an error in your entry. Please carefully enter the passport number again.": [
+        null,
+        ""
+    ],
+    "Please enter the passport number:": [
+        null,
+        "Ngiyabonga. Ngicela kutsi ufake inombolo yepasipoti yakho."
+    ],
+    "Please enter the new phone number we should use to send you messages eg. 0813547654": [
+        null,
+        "Ngicela ufake inombolo yakho yelucingo lensha lesitakutfumelela kuyo imibiko sib. 0813547654"
+    ],
+    "Invalid phone number. Please re-enter (with no spaces)": [
+        null,
+        ""
+    ],
+    "Sorry, the number you are trying to move to already has an active registration. To manage that registration, please redial from that number.": [
+        null,
+        ""
+    ],
+    "Thank you. Your info has been updated.": [
+        null,
+        "Ngiyabonga. Imininingwane yakho seyilungisiwe."
+    ],
+    "Your personal information stored on MomConnect has not been removed.": [
+        null,
+        ""
+    ],
+    "Thank you. All your information will be deleted from MomConnect in the next [X] days.": [
+        null,
+        "Ngiyabonga. Yonkhe imininingwane yakho itawususwa kuMomConnect emalangeni la[x] lalandzelako."
+    ],
+    "Sorry, that number is not recognised. Dial in with the number you used to register for MomConnect. To update number, dial *134*550*5# or register at a clinic": [
+        null,
+        "Ncesi, lenombolo ayatiwa. Shaya ngenombolo lowayibhalisa. Lungisa inombolo yakho, shaya *134*550*5# noma uphindze futsi ubhalise emtfolamphilo."
+    ]
+}
