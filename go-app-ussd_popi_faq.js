@@ -115,17 +115,19 @@ go.app = function() {
 
         self.add('state_all_questions_view', function(name) {
             return new PaginatedChoiceState(name, {
-                question: $('Choose a question about MomConnect:'),
+                question: $('Choose a question about MomConnect (MC):'),
                 options_per_page: null,
                 characters_per_page: 160,
                 choices: [
-                    new Choice('state_question_1', 'What is MomConnect (MC)?'),
-                    new Choice('state_question_2', 'Why does MomConnect (MC) need my personal info?'),
-                    new Choice('state_question_3', 'What personal info is collected?'),
-                    new Choice('state_question_4', 'Who can view my personal info?'),
-                    new Choice('state_question_5', 'How can I view, delete or change my personal info?'),
-                    new Choice('state_question_6', 'How long does MomConnect keep my info?')
+                    new Choice('state_question_1', $('What is MomConnect?')),
+                    new Choice('state_question_2', $('Why does MC need my personal info?')),
+                    new Choice('state_question_3', $('What personal info is collected?')),
+                    new Choice('state_question_4', $('Who can see my personal info?')),
+                    new Choice('state_question_5', $('How can I see, change or delete my personal info?')),
+                    new Choice('state_question_6', $('How long does MC keep my info?'))
                 ],
+                more: $('Next'),
+                back: $('Back'),
                 next: function(choice) {
                     return choice.value;
                 }
@@ -136,12 +138,12 @@ go.app = function() {
 
         self.add('state_question_1', function(name) {
             return new PaginatedState(name, {
-                text: $('MomConnect is a NDoH project which delivers ' +
-                        'SMSs about you & your baby. To view, update ' +
-                        'or delete your info dial *134*550*5#'),
+                text: $('MC is a Health Department programme. It sends SMS ' +
+                        'messages for you & your baby. To see, change ' +
+                        'or delete your info dial *134*550*7#'),
                 characters_per_page: 160,
-                exit: $('Main Menu'),
-                more: $('More'),
+                exit: $('Menu'),
+                more: $('Next'),
                 next: function(choice) {
                     return {name: 'state_all_questions_view'};
                 }
@@ -153,16 +155,16 @@ go.app = function() {
             return new PaginatedState(name, {
                 text: $('MomConnect needs your personal info to send ' +
                         'you messages that are relevant to your ' +
-                        'pregnancy progress or your baby\'s age. ' +
-                        'Info on the clinic where you registered ' +
-                        'for MomConnect is used to ensure that the ' +
-                        'service is offered to women at all clinics. ' +
-                        'Your clinic info can also help the health ' +
-                        'department address compliments or complaints ' +
-                        'that you send to MomConnect.'),
-                characters_per_page: 132,
-                exit: $('Main Menu'),
-                more: $('More'),
+                        'pregnancy stage or your baby\'s age. ' +
+                        'By knowing where you registered for MC, ' +
+                        'the Health Department can make sure that the ' +
+                        'service is being offered to women at your clinic. ' +
+                        'Knowing where you registered helps the Health ' +
+                        'Department act on the compliments or complaints ' +
+                        'you may send to MomConnect about your clinic experience.'),
+                characters_per_page: 160,
+                exit: $('Menu'),
+                more: $('Next'),
                 next: function() {
                     return {name: 'state_all_questions_view'};
                 }
@@ -171,12 +173,12 @@ go.app = function() {
 
         self.add('state_question_3', function(name) {
             return new PaginatedState(name, {
-                text: $('We collect your phone and ID numbers, clinic ' +
-                        'location, and information about your pregnancy ' +
-                        'progress.'),
-                characters_per_page: 140,
-                exit: $('Main Menu'),
-                more: $('More'),
+                text: $('MomConnect collects your phone and ID numbers, clinic ' +
+                        'location, and information about how your pregnancy ' +
+                        'is progressing.'),
+                characters_per_page: 160,
+                exit: $('Menu'),
+                more: $('Next'),
                 next: function(choice) {
                     return {name: 'state_all_questions_view'};
                 }
@@ -185,14 +187,13 @@ go.app = function() {
 
         self.add('state_question_4', function(name) {
             return new PaginatedState(name, {
-                text: $('The MomConnect service is owned and run by ' +
-                        'the National Department of Health (NDoH). ' +
-                        'Partners who collect & process your data on ' +
-                        'behalf of the NDoH are Vodacom, Cell C, ' +
-                        'Telkom, Praekelt, Jembi and HISP.'),
-                characters_per_page: 140,
-                exit: $('Main Menu'),
-                more: $('More'),
+                text: $('MomConnect is owned and run by ' +
+                        'the Health Department. MTN, Cell C, Telkom, ' +
+                        'Praekelt, Jembi and HISP collect and process your ' +
+                        'data on their behalf.'),
+                characters_per_page: 160,
+                exit: $('Menu'),
+                more: $('Next'),
                 next: function(choice) {
                     return {name: 'state_all_questions_view'};
                 }
@@ -201,11 +202,11 @@ go.app = function() {
 
         self.add('state_question_5', function(name) {
             return new PaginatedState(name, {
-                text: $('You can view, change, or ask to delete your ' +
-                        'information by dialing *134*550*5#'),
-                characters_per_page: 140,
-                exit: $('Main Menu'),
-                more: $('More'),
+                text: $('You can see, change, or ask us to delete your ' +
+                        'information by dialing *134*550*7#'),
+                characters_per_page: 160,
+                exit: $('Menu'),
+                more: $('Next'),
                 next: function(choice) {
                     return {name: 'state_all_questions_view'};
                 }
@@ -217,9 +218,9 @@ go.app = function() {
                 text: $('MomConnect will automatically delete your ' +
                         'personal information 7 years and 9 months ' +
                         'after you registered.'),
-                characters_per_page: 140,
-                exit: $('Main Menu'),
-                more: $('More'),
+                characters_per_page: 160,
+                exit: $('Menu'),
+                more: $('Next'),
                 next: function(choice) {
                     return {name: 'state_all_questions_view'};
                 }
@@ -228,10 +229,10 @@ go.app = function() {
 
         self.add('state_not_registered', function(name) {
             return new EndState(name, {
-                text: $('Number not recognised. Dial in with the number ' +
-                        'you used to register for MomConnect. To use a ' +
-                        'different number, dial *134*550*5#. To re-register ' +
-                        'dial *134*550#.'),
+                text: $('Sorry, that number is not recognised. Dial in with ' +
+                        'the number you first used to register. To update ' +
+                        'your number, dial *134*550*7# or register again at ' +
+                        'a clinic.'),
                 next: 'start_state'
             });
         });

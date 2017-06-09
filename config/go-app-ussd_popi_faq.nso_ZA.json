@@ -1,0 +1,94 @@
+{
+    "": {
+        "pot-creation-date": "2017-06-09 06:45:+0000",
+        "project-id-version": "POPI_FAQ",
+        "language-team": "Northern Sotho <LL@li.org>",
+        "language": "nso",
+        "mime-version": "1.0",
+        "content-type": "text/plain; charset=UTF-8",
+        "content-transfer-encoding": "8bit",
+        "po-revision-date": "2017-06-09 08:51+0200",
+        "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
+        "x-generator": "Poedit 1.5.4"
+    },
+    "Welcome back. Please select an option:": [
+        null,
+        ""
+    ],
+    "Continue viewing FAQ": [
+        null,
+        ""
+    ],
+    "Main menu": [
+        null,
+        ""
+    ],
+    "Choose a question about MomConnect (MC):": [
+        null,
+        "Kgetha potšišo ka ga MomConnect (MC):"
+    ],
+    "What is MomConnect?": [
+        null,
+        "MomConnect ke eng?"
+    ],
+    "Why does MC need my personal info?": [
+        null,
+        "Goreng MC e nyaka tshedimošo ya ka?"
+    ],
+    "What personal info is collected?": [
+        null,
+        "Go tšewa tshedimošo efe?"
+    ],
+    "Who can see my personal info?": [
+        null,
+        "Ke ofe a bonago dintlha tša ka?"
+    ],
+    "How can I see, change or delete my personal info?": [
+        null,
+        "Nka bona bjang,fetoša,tloša dintlha tša ka?"
+    ],
+    "How long does MC keep my info?": [
+        null,
+        "MC e bea tshedimošo nako efe?"
+    ],
+    "Next": [
+        null,
+        "Latela"
+    ],
+    "Back": [
+        null,
+        "Morago"
+    ],
+    "MC is a Health Department programme. It sends SMS messages for you & your baby. To see, change or delete your info dial *134*550*7#": [
+        null,
+        "MC ke lenaneo la Kgoro ya Maphelo. E romela SMS go wena & lesea. Go bona, fetoša, goba tloša tshedimošo ya gago, taela *134*550*7#"
+    ],
+    "Menu": [
+        null,
+        "Menyu"
+    ],
+    "MomConnect needs your personal info to send you messages that are relevant to your pregnancy stage or your baby's age. By knowing where you registered for MC, the Health Department can make sure that the service is being offered to women at your clinic. Knowing where you registered helps the Health Department act on the compliments or complaints you may send to MomConnect about your clinic experience.": [
+        null,
+        "MomConnect e nyaka tshedimošo yago go romela melaetša ya maleba le seemo sa boimana goba mengwaga ya lesea la gago. Go tseba fao o ingwadišeditšego MomConnect, KgoroMaphelo e ka netefatša gore tirelo e fiwa basadi kliniking ya geno. Go tseba fao o ingwadišeditšego go thuša KgoroMaphelo go šoma ka ditebogo le dipelaelo tše o di tlišago go MomConnect ka ga maitemogelo a klinking."
+    ],
+    "MomConnect collects your phone and ID numbers, clinic location, and information about how your pregnancy is progressing.": [
+        null,
+        "MomConnect e tšea nomoro ya mogala le ya ID, lefelo la kliniki, le tshedimošo ka ga kgolo ya boimana bja gago."
+    ],
+    "MomConnect is owned and run by the Health Department. MTN, Cell C, Telkom, Praekelt, Jembi and HISP collect and process your data on their behalf.": [
+        null,
+        "MomConnect e sepetšwa ebile ke ya Kgoro ya Maphelo. MTN,Cell C,Telkom, Praekelt, Jembi le HISP di kgoboketša le go šoma data legatong la tšona."
+    ],
+    "You can see, change, or ask us to delete your information by dialing *134*550*7#": [
+        null,
+        "O ka bona, fetoša goba kgopela re tloše tshedimošo yago wa taela *134*550*7#"
+    ],
+    "MomConnect will automatically delete your personal information 7 years and 9 months after you registered.": [
+        null,
+        "MomConnect e tloša tshedimošo ya gago ka maitirišo mengwaga e 7 le dikgwedi tše 9 morago ga ngwadišo."
+    ],
+    "Sorry, that number is not recognised. Dial in with the number you first used to register. To update your number, dial *134*550*7# or register again at a clinic.": [
+        null,
+        "Tshwarelo, nomoro yeo ga e tsebje. Taela ka nomoro ye e šomilego pele go ngwadiša. Go mpshafatša nomoro ya gago, taela *134*550*7# goba ngwadiša gape kliniking"
+    ]
+}

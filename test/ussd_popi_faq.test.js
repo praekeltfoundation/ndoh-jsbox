@@ -26,7 +26,7 @@ describe("app", function() {
                     testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',
                     logging: "off",
                     no_timeout_redirects: ["state_start"],
-                    channel: "*134*550*5#",
+                    channel: "*134*550*7#",
                     services: {
                         identity_store: {
                             url: 'http://is/api/v1/',
@@ -114,10 +114,10 @@ describe("app", function() {
                     .check.interaction({
                         state: "state_not_registered",
                         reply: [
-                            "Number not recognised. Dial in with the number " +
-                            "you used to register for MomConnect. To use a " +
-                            "different number, dial *134*550*5#. To re-register " +
-                            "dial *134*550#."
+                            "Sorry, that number is not recognised. Dial in with " +
+                            "the number you first used to register. To update " +
+                            "your number, dial *134*550*7# or register again at " +
+                            "a clinic."
                         ].join('\n')
                     })
                     .check(function(api) {
@@ -137,11 +137,11 @@ describe("app", function() {
                     .check.interaction({
                         state: "state_all_questions_view",
                         reply: [
-                            "Choose a question about MomConnect:",
-                            "1. What is MomConnect (MC)?",
-                            "2. Why does MomConnect (MC) need my personal info?",
+                            "Choose a question about MomConnect (MC):",
+                            "1. What is MomConnect?",
+                            "2. Why does MC need my personal info?",
                             "3. What personal info is collected?",
-                            "4. More"
+                            "4. Next"
                         ].join('\n')
                     })
                     .check(function(api) {
@@ -161,10 +161,10 @@ describe("app", function() {
                         .check.interaction({
                             state: "state_question_1",
                             reply: [
-                                "MomConnect is a NDoH project which delivers " +
-                                "SMSs about you & your baby. To view, update " +
-                                "or delete your info dial *134*550*5#",
-                                "1. Main Menu"
+                                "MC is a Health Department programme. It sends SMS " +
+                                "messages for you & your baby. To see, change " +
+                                "or delete your info dial *134*550*7#",
+                                "1. Menu"
                             ].join('\n')
                         })
                         .check(function(api) {
@@ -172,23 +172,24 @@ describe("app", function() {
                         })
                         .run();
                     });
-                    describe("user selects Main Menu from state_question_1", function() {
-                        it("should go to state_question_1", function() {
+
+                    describe("user selects Menu from state_question_1", function() {
+                        it("should go to state_all_questions_view", function() {
                             return tester
                             .setup.user.addr("27820001002")
                             .inputs(
                                 {session_event: "new"}
                                 , "1" // pick question 1
-                                , "1" // select Main Menu
+                                , "1" // select Menu
                             )
                             .check.interaction({
                                 state: "state_all_questions_view",
                                 reply: [
-                                    "Choose a question about MomConnect:",
-                                    "1. What is MomConnect (MC)?",
-                                    "2. Why does MomConnect (MC) need my personal info?",
+                                    "Choose a question about MomConnect (MC):",
+                                    "1. What is MomConnect?",
+                                    "2. Why does MC need my personal info?",
                                     "3. What personal info is collected?",
-                                    "4. More"
+                                    "4. Next"
                                 ].join('\n')
                             })
                             .check(function(api) {
@@ -212,9 +213,9 @@ describe("app", function() {
                             reply: [
                                 "MomConnect needs your personal info to send " +
                                 "you messages that are relevant to your " +
-                                "pregnancy progress",
-                                "1. More",
-                                "2. Main Menu"
+                                "pregnancy stage or your baby\'s age. By knowing where",
+                                "1. Next",
+                                "2. Menu"
                             ].join('\n')
                         })
                         .check(function(api) {
@@ -222,7 +223,7 @@ describe("app", function() {
                         })
                         .run();
                     });
-                    describe("if user selects more", function() {
+                    describe("if user selects Next", function() {
                         it("should show the next screen of state_question_2 text", function() {
                             return tester
                             .setup.user.addr("27820001002")
@@ -234,12 +235,13 @@ describe("app", function() {
                             .check.interaction({
                                 state: "state_question_2",
                                 reply: [
-                                    "or your baby\'s age. Info on the clinic " +
-                                    "where you registered for MomConnect is " +
-                                    "used to ensure that the",
-                                    "1. More",
+                                    "you registered for MC, the Health "+
+                                    "Department can make sure that the " +
+                                    "service is being offered to women at " +
+                                    "your clinic. Knowing where you",
+                                    "1. Next",
                                     "2. Back",
-                                    "3. Main Menu"
+                                    "3. Menu"
                                 ].join('\n')
                             })
                             .check(function(api) {
@@ -247,7 +249,7 @@ describe("app", function() {
                             })
                             .run();
                         });
-                        describe("if user selects more again", function() {
+                        describe("if user selects Next again", function() {
                             it("should show the next screen of state_question_2 text", function() {
                                 return tester
                                 .setup.user.addr("27820001002")
@@ -260,12 +262,11 @@ describe("app", function() {
                                 .check.interaction({
                                     state: "state_question_2",
                                     reply: [
-                                        "service is offered to women at all " +
-                                        "clinics. Your clinic info can " +
-                                        "also help the health department",
-                                        "1. More",
-                                        "2. Back",
-                                        "3. Main Menu"
+                                        "registered helps the Health Department " +
+                                        "act on the compliments or complaints " +
+                                        "you may send to MomConnect about your clinic experience.",
+                                        "1. Back",
+                                        "2. Menu"
                                     ].join('\n')
                                 })
                                 .check(function(api) {
@@ -273,7 +274,7 @@ describe("app", function() {
                                 })
                                 .run();
                             });
-                        }); 
+                        });
                     }); 
                 }); 
 
@@ -288,10 +289,10 @@ describe("app", function() {
                         .check.interaction({
                             state: "state_question_3",
                             reply: [
-                                "We collect your phone and ID numbers, clinic " +
-                                "location, and information about your pregnancy " +
-                                "progress.",
-                                "1. Main Menu"
+                                "MomConnect collects your phone and ID numbers, clinic " +
+                                "location, and information about how your pregnancy " +
+                                "is progressing.",
+                                "1. Menu"
                             ].join('\n')
                         })
                         .check(function(api) {
@@ -312,10 +313,10 @@ describe("app", function() {
                         .check.interaction({
                             state: "state_all_questions_view",
                             reply: [
-                                "Choose a question about MomConnect:",
-                                "1. Who can view my personal info?",
-                                "2. How can I view, delete or change my personal info?",
-                                "3. More",
+                                "Choose a question about MomConnect (MC):",
+                                "1. Who can see my personal info?",
+                                "2. How can I see, change or delete my personal info?",
+                                "3. Next",
                                 "4. Back"
                             ].join('\n')
                         })
@@ -338,11 +339,11 @@ describe("app", function() {
                         .check.interaction({
                             state: "state_question_4",
                             reply: [
-                                "The MomConnect service is owned and run by " +
-                                "the National Department of Health (NDoH). " +
-                                "Partners who collect &",
-                                "1. More",
-                                "2. Main Menu"
+                                "MomConnect is owned and run by the Health " +
+                                "Department. MTN, Cell C, Telkom, Praekelt, " +
+                                "Jembi and HISP collect and process your data on",
+                                "1. Next",
+                                "2. Menu"
                             ].join('\n')
                         })
                         .check(function(api) {
@@ -363,11 +364,9 @@ describe("app", function() {
                             .check.interaction({
                                 state: "state_question_4",
                                 reply: [
-                                    "process your data on behalf of " +
-                                    "the NDoH are Vodacom, Cell C, " +
-                                    "Telkom, Praekelt, Jembi and HISP.",
+                                    "their behalf.",
                                     "1. Back",
-                                    "2. Main Menu"
+                                    "2. Menu"
                                 ].join('\n')
                             })
                             .check(function(api) {
@@ -376,7 +375,7 @@ describe("app", function() {
                             .run();
                         });
                     });
-                    describe("user selects Main Menu", function() {
+                    describe("user selects Menu", function() {
                         it("should go back to state_all_questions_view", function() {
                             return tester
                             .setup.user.addr("27820001002")
@@ -390,11 +389,11 @@ describe("app", function() {
                             .check.interaction({
                                 state: "state_all_questions_view",
                                 reply: [
-                                    "Choose a question about MomConnect:",
-                                    "1. What is MomConnect (MC)?",
-                                    "2. Why does MomConnect (MC) need my personal info?",
+                                    "Choose a question about MomConnect (MC):",
+                                    "1. What is MomConnect?",
+                                    "2. Why does MC need my personal info?",
                                     "3. What personal info is collected?",
-                                    "4. More"
+                                    "4. Next"
                                 ].join('\n')
                             })
                             .check(function(api) {
@@ -416,9 +415,9 @@ describe("app", function() {
                         .check.interaction({
                             state: "state_question_5",
                             reply: [
-                                "You can view, change, or ask to delete your " +
-                                "information by dialing *134*550*5#",
-                                "1. Main Menu"
+                                "You can see, change, or ask us to delete your " +
+                                "information by dialing *134*550*7#",
+                                "1. Menu"
                             ].join('\n')
                         })
                         .check(function(api) {
@@ -439,8 +438,8 @@ describe("app", function() {
                         .check.interaction({
                             state: "state_all_questions_view",
                             reply: [
-                                "Choose a question about MomConnect:",
-                                "1. How long does MomConnect keep my info?",
+                                "Choose a question about MomConnect (MC):",
+                                "1. How long does MC keep my info?",
                                 "2. Back"
                             ].join('\n')
                         })
@@ -466,7 +465,7 @@ describe("app", function() {
                                 "MomConnect will automatically delete your " +
                                 "personal information 7 years and 9 months " +
                                 "after you registered.",
-                                "1. Main Menu"
+                                "1. Menu"
                             ].join('\n')
                         })
                         .check(function(api) {
@@ -488,11 +487,11 @@ describe("app", function() {
                             .check.interaction({
                                 state: "state_all_questions_view",
                                 reply: [
-                                    "Choose a question about MomConnect:",
-                                    "1. What is MomConnect (MC)?",
-                                    "2. Why does MomConnect (MC) need my personal info?",
+                                    "Choose a question about MomConnect (MC):",
+                                    "1. What is MomConnect?",
+                                    "2. Why does MC need my personal info?",
                                     "3. What personal info is collected?",
-                                    "4. More"
+                                    "4. Next"
                                 ].join('\n')
                             })
                             .check(function(api) {
@@ -514,11 +513,11 @@ describe("app", function() {
                     .check.interaction({
                         state: "state_all_questions_view",
                         reply: [
-                            "Choose a question about MomConnect:",
-                            "1. What is MomConnect (MC)?",
-                            "2. Why does MomConnect (MC) need my personal info?",
+                            "Choose a question about MomConnect (MC):",
+                            "1. What is MomConnect?",
+                            "2. Why does MC need my personal info?",
                             "3. What personal info is collected?",
-                            "4. More"
+                            "4. Next"
                         ].join('\n')
                     })
                     .check(function(api) {
