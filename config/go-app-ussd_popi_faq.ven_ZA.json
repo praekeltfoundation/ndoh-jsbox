@@ -1,0 +1,94 @@
+{
+    "": {
+        "pot-creation-date": "2017-06-09 06:45:+0000",
+        "project-id-version": "POPI_FAQ",
+        "language-team": "Tshivenda <LL@li.org>",
+        "language": "ven",
+        "mime-version": "1.0",
+        "content-type": "text/plain; charset=UTF-8",
+        "content-transfer-encoding": "8bit",
+        "po-revision-date": "2017-06-09 13:14+0200",
+        "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
+        "x-generator": "Poedit 1.5.4"
+    },
+    "Welcome back. Please select an option:": [
+        null,
+        ""
+    ],
+    "Continue viewing FAQ": [
+        null,
+        ""
+    ],
+    "Main menu": [
+        null,
+        ""
+    ],
+    "Choose a question about MomConnect (MC):": [
+        null,
+        "Kha vha nange mbudziso nga ha MomConnect (MC):"
+    ],
+    "What is MomConnect?": [
+        null,
+        "MomConnect ndi mini? "
+    ],
+    "Why does MC need my personal info?": [
+        null,
+        "Ndi ngani MC i khou ṱoḓa zwidodombedzwa?"
+    ],
+    "What personal info is collected?": [
+        null,
+        "Ndi zwifhio?"
+    ],
+    "Who can see my personal info?": [
+        null,
+        "Ndi nnyi ane a zwi vhona?"
+    ],
+    "How can I see, change or delete my personal info?": [
+        null,
+        "Ndi zwi vhona hani, u shandukisa kana u thutha?"
+    ],
+    "How long does MC keep my info?": [
+        null,
+        "MC i zwi vhea u swika lini?"
+    ],
+    "Next": [
+        null,
+        "I tevhelaho"
+    ],
+    "Back": [
+        null,
+        "Huma"
+    ],
+    "MC is a Health Department programme. It sends SMS messages for you & your baby. To see, change or delete your info dial *134*550*7#": [
+        null,
+        "MC ndi Mbekanyamushumo ya Muhasho wa Mutakalo. I rumela SMS dza vhone na ṅwana. U vhona, u shandukisa kana u thutha, vha founele*134*550*7#"
+    ],
+    "Menu": [
+        null,
+        "Menyu"
+    ],
+    "MomConnect needs your personal info to send you messages that are relevant to your pregnancy stage or your baby's age. By knowing where you registered for MC, the Health Department can make sure that the service is being offered to women at your clinic. Knowing where you registered helps the Health Department act on the compliments or complaints you may send to MomConnect about your clinic experience.": [
+        null,
+        "MomConnect i ṱoḓa  zwidodombedzwa zwavho uri i vha rumele SMS dzo teaho kha vhuimana havho kana vhukale ha ṅwana. Nga u divha hune vha ṅwalisa hone kha MomConnect, Muhasho wa Mutakalo u nga vhona uri tshumelo iyi i khou ṋekedza kha vhafumakadzi kiliniki. U divha hune vha ṅwalisa hone zwi thusa Muhasho u tevhedza maitele kana mbilael dzine vha rumela kha  MomConnect nga ha tshumelo kiḽiniki."
+    ],
+    "MomConnect collects your phone and ID numbers, clinic location, and information about how your pregnancy is progressing.": [
+        null,
+        "MomConnect i dzhia founu na nomboro dza ID, hune kiḽiniki ya vha hone na mafhungo a vhuimana havho."
+    ],
+    "MomConnect is owned and run by the Health Department. MTN, Cell C, Telkom, Praekelt, Jembi and HISP collect and process your data on their behalf.": [
+        null,
+        "MomConnect ndi ya Muhasho wa Mutakalo. MTN, Cell C, Telkom, Praekelt, Jembi na HISP vha kuvhanganya na u shumana na data u itela vhone. "
+    ],
+    "You can see, change, or ask us to delete your information by dialing *134*550*7#": [
+        null,
+        "Vha nga vhona, u shandukisa kana u humbela u thuthiwa kha  *134*550*7#"
+    ],
+    "MomConnect will automatically delete your personal information 7 years and 9 months after you registered.": [
+        null,
+        "MomConnect i thutha zwidodombedzwa nga murahu ha miṅwaha ya 7 na miṅwedzi ya 9 nga murahu ha u ṅwalisa."
+    ],
+    "Sorry, that number is not recognised. Dial in with the number you first used to register. To update your number, dial *134*550*7# or register again at a clinic.": [
+        null,
+        "Pfarelo, nomboro iyi a i tsha shuma. Kha vha founele nomboro ye vha thoma u ṅwalisa yone. U shandukisa vha founele *134*550*7# kana u ṅwalisa hafhu kiḽiniki."
+    ]
+}

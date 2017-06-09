@@ -1,0 +1,94 @@
+{
+    "": {
+        "pot-creation-date": "2017-06-09 06:45:+0000",
+        "project-id-version": "POPI_FAQ",
+        "language-team": "Tsonga <LL@li.org>",
+        "language": "tso",
+        "mime-version": "1.0",
+        "content-type": "text/plain; charset=UTF-8",
+        "content-transfer-encoding": "8bit",
+        "po-revision-date": "2017-06-09 13:22+0200",
+        "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
+        "x-generator": "Poedit 1.5.4"
+    },
+    "Welcome back. Please select an option:": [
+        null,
+        ""
+    ],
+    "Continue viewing FAQ": [
+        null,
+        ""
+    ],
+    "Main menu": [
+        null,
+        ""
+    ],
+    "Choose a question about MomConnect (MC):": [
+        null,
+        "Hlawula xivutiso xa MomConnect (MC):"
+    ],
+    "What is MomConnect?": [
+        null,
+        "MC i yini? "
+    ],
+    "Why does MC need my personal info?": [
+        null,
+        "Hikwalahokayini MC yi lava vuxokoxoko bya mina?"
+    ],
+    "What personal info is collected?": [
+        null,
+        "Hi byihi vuxokoxoko lebyi hlengeletiwaka?"
+    ],
+    "Who can see my personal info?": [
+        null,
+        "I mani a vonaka vuxokoxoko lebyi?"
+    ],
+    "How can I see, change or delete my personal info?": [
+        null,
+        "Ndzi byi vona njhani, ku cinca/ku sula?"
+    ],
+    "How long does MC keep my info?": [
+        null,
+        "MC yi byi hlayisa nkarhi wo tanihi kwihi?"
+    ],
+    "Next": [
+        null,
+        "Leswi landzelaka"
+    ],
+    "Back": [
+        null,
+        "Vuyela endzhaku"
+    ],
+    "MC is a Health Department programme. It sends SMS messages for you & your baby. To see, change or delete your info dial *134*550*7#": [
+        null,
+        "MC i nongonoko wa Ndzawulo ya Rihanyu. Yi rhumela wena & ricece swihungwana swa SMS. Ku vona, ku cinca/ku cinca vuxokoxoko lebyi, dayila *134*550*7#"
+    ],
+    "Menu": [
+        null,
+        "Menyu"
+    ],
+    "MomConnect needs your personal info to send you messages that are relevant to your pregnancy stage or your baby's age. By knowing where you registered for MC, the Health Department can make sure that the service is being offered to women at your clinic. Knowing where you registered helps the Health Department act on the compliments or complaints you may send to MomConnect about your clinic experience.": [
+        null,
+        "MomConnect yi lava vuxokoxoko bya wena ku ku rhumela swihungwana leswi fambelanaka na xiyimo xa vuyimani bya wena kumbe vukhale bya ricece ra wena. Hi ku tiva laha u tsariseke MomConnect kona, Ndzawulo yi nga tiyisisa leswaku vavasati va nyikiwa vukorhokeri etliliniki ya ka n'wina. Ku tiva laha u tsariseke kona swi pfuna Ndzawulo ku tirhana na swihoyozelo/swivilelo eka MomConnect mayelana na ntokoto wa wena wa le tliliniki."
+    ],
+    "MomConnect collects your phone and ID numbers, clinic location, and information about how your pregnancy is progressing.": [
+        null,
+        "MomConnect yi teka tinomboro ta wena ta riqingho & ta Pasi, ndhawu ya tliliniki & vuxokoxoko mayelana na hilaha vuyimani bya wena byi fambaka hakona."
+    ],
+    "MomConnect is owned and run by the Health Department. MTN, Cell C, Telkom, Praekelt, Jembi and HISP collect and process your data on their behalf.": [
+        null,
+        "Ndzawulo ya Rihanyu i n'wini & mufambisi wa MomConnect. MTN, Cell C, Telkom, Praekelt, Jembi & HISP va hlengeleta no hlela data hi ku yimela yona. "
+    ],
+    "You can see, change, or ask us to delete your information by dialing *134*550*7#": [
+        null,
+        "U nga vona, u cinca kumbe u hi kombela ku sula vuxokoxoko bya wena hi ku dayila *134*550*7#"
+    ],
+    "MomConnect will automatically delete your personal information 7 years and 9 months after you registered.": [
+        null,
+        "MomConnect yi ta sula xikan'wekan'we vuxokoxoko lebyi 7 wa malembe na 9 wa tin'hweti endzhaku ka loko u tsarisile."
+    ],
+    "Sorry, that number is not recognised. Dial in with the number you first used to register. To update your number, dial *134*550*7# or register again at a clinic.": [
+        null,
+        "Hi khomele, nomboro leyi a yi tiveki. Dayila nomboro leyi u rhangeke u tsarisa yona. Ku cinca nomboro, dayila *134*550*7# kumbe u tsarisa nakambe etliliniki."
+    ]
+}

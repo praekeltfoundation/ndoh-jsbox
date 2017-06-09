@@ -1,0 +1,94 @@
+{
+    "": {
+        "pot-creation-date": "2017-06-09 06:25:+0000",
+        "project-id-version": "POPI_FAQ",
+        "language-team": "IsiNdebele <LL@li.org>",
+        "language": "nr",
+        "mime-version": "1.0",
+        "content-type": "text/plain; charset=UTF-8",
+        "content-transfer-encoding": "8bit",
+        "po-revision-date": "2017-06-09 08:37+0200",
+        "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
+        "x-generator": "Poedit 1.5.4"
+    },
+    "Welcome back. Please select an option:": [
+        null,
+        ""
+    ],
+    "Continue viewing FAQ": [
+        null,
+        ""
+    ],
+    "Main menu": [
+        null,
+        ""
+    ],
+    "Choose a question about MomConnect (MC):": [
+        null,
+        "Khetha umbuzo ngeMomConnect (MC):"
+    ],
+    "What is MomConnect?": [
+        null,
+        "Yini iMomConnect? "
+    ],
+    "Why does MC need my personal info?": [
+        null,
+        "Kubayini i-MC ifuna ilwazi okungelami?"
+    ],
+    "What personal info is collected?": [
+        null,
+        "Ngiliphi ilwazi lakho elibuthelelweko?"
+    ],
+    "Who can see my personal info?": [
+        null,
+        "Ubani ongabona ilwazlami?"
+    ],
+    "How can I see, change or delete my personal info?": [
+        null,
+        "Ngingabona  ngingatjhugulula nanyana ngingalsusa njani ilwazlami?"
+    ],
+    "How long does MC keep my info?": [
+        null,
+        "IMC ilbeka isikhathi esngangani  ilwaz?"
+    ],
+    "Next": [
+        null,
+        "Okulandelako"
+    ],
+    "Back": [
+        null,
+        "Emva"
+    ],
+    "MC is a Health Department programme. It sends SMS messages for you & your baby. To see, change or delete your info dial *134*550*7#": [
+        null,
+        "IMC lihlelo lomNyango wezamaPhilo. Ithumela amaSMS wakho nomntwanakho. Ukubona itjhuguluko nanyana ukususa ilwazi lakho, bethela *134*550*7#"
+    ],
+    "Menu": [
+        null,
+        "Imenyu"
+    ],
+    "MomConnect needs your personal info to send you messages that are relevant to your pregnancy stage or your baby's age. By knowing where you registered for MC, the Health Department can make sure that the service is being offered to women at your clinic. Knowing where you registered helps the Health Department act on the compliments or complaints you may send to MomConnect about your clinic experience.": [
+        null,
+        "IMomConnect ifuna ilwazi lakho ukuze ikuthumele imlayezo ekhambisana nesigaba sokuba sidisi nanyana iminyaka yesana lakho. Ngokwazi bona uyirejistarephi iMomConnect, UmNyango wezamaPhilo ungenza isiqiniseko ukobana imisebenzi inikelwe abafazi etlinigi yakho. Ukwazi bona urejistarephi kusiza umNyango wezamaPhilo bona utjheje ukubonga nanyana iinlilo ongazithumela kuMomConnect ngelemuko lakho ngetlinigi."
+    ],
+    "MomConnect collects your phone and ID numbers, clinic location, and information about how your pregnancy is progressing.": [
+        null,
+        "IMomConnect ithatha umtato neenomboro ze-ID yakho, indawo  lapha itlinigi ikhona nelwazi ngendlela ukuba sidisi kwakho okuraga ngakhona."
+    ],
+    "MomConnect is owned and run by the Health Department. MTN, Cell C, Telkom, Praekelt, Jembi and HISP collect and process your data on their behalf.": [
+        null,
+        "IMomConnect ilawulwa  mNyango wezamaPhilo. IMTN, Cell C, Telkom, Praekelt, iJembi ne HISP zibasiza ngokubabuthelelela nokukhambisa idatha yakho. "
+    ],
+    "You can see, change, or ask us to delete your information by dialing *134*550*7#": [
+        null,
+        "Ungabona, utjhugulule nanyana usibawe sisuse ilwazi lakho ngokubethel *134*550*7#"
+    ],
+    "MomConnect will automatically delete your personal information 7 years and 9 months after you registered.": [
+        null,
+        "IMomConnect  yona izazisulela ilwazi lakho emnyakeni eli-7 neenyanga ezili-9 ngemva kobana urejistare. "
+    ],
+    "Sorry, that number is not recognised. Dial in with the number you first used to register. To update your number, dial *134*550*7# or register again at a clinic.": [
+        null,
+        "Ncancabe, inombor leyo ayaziwa. Betha ngenomborwakho yekthomeni nawrejistarako. Ukkhwezelela inomborwakho, bethel *134*550*7#  nanyana urejistare etlinigi godu."
+    ]
+}

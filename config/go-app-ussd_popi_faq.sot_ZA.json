@@ -1,0 +1,94 @@
+{
+    "": {
+        "pot-creation-date": "2017-06-09 06:45:+0000",
+        "project-id-version": "POPI_FAQ",
+        "language-team": "SeSotho <LL@li.org>",
+        "mime-version": "1.0",
+        "content-type": "text/plain; charset=UTF-8",
+        "content-transfer-encoding": "8bit",
+        "po-revision-date": "2017-06-09 08:55+0200",
+        "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
+        "x-generator": "Poedit 1.5.4",
+        "language": "sot"
+    },
+    "Welcome back. Please select an option:": [
+        null,
+        ""
+    ],
+    "Continue viewing FAQ": [
+        null,
+        ""
+    ],
+    "Main menu": [
+        null,
+        ""
+    ],
+    "Choose a question about MomConnect (MC):": [
+        null,
+        "Kgetha potso mabapi le MomConnect (MC):"
+    ],
+    "What is MomConnect?": [
+        null,
+        "MomConnect keng?"
+    ],
+    "Why does MC need my personal info?": [
+        null,
+        "Keng ha MC e hloka lesedi la hao la botho?"
+    ],
+    "What personal info is collected?": [
+        null,
+        "Ke lesedi lefe la botho le bokellwang?"
+    ],
+    "Who can see my personal info?": [
+        null,
+        "Ke mang ya ka bonang sedi la ka la botho?"
+    ],
+    "How can I see, change or delete my personal info?": [
+        null,
+        "Nka le bona,ka le fetola ka le tima jwang sedi la botho?"
+    ],
+    "How long does MC keep my info?": [
+        null,
+        "MC e boloka lesedi nako e kae?"
+    ],
+    "Next": [
+        null,
+        "E latelang"
+    ],
+    "Back": [
+        null,
+        "Morao"
+    ],
+    "MC is a Health Department programme. It sends SMS messages for you & your baby. To see, change or delete your info dial *134*550*7#": [
+        null,
+        "MC ke naneo la Fapha la Bophelo.E romela melaetsa ya hao le lesea ka SMS.Ho bona,ho fetola kapa ho tima sedi la hao la botho,letsetsa*134*550*7#"
+    ],
+    "Menu": [
+        null,
+        "Dintlha"
+    ],
+    "MomConnect needs your personal info to send you messages that are relevant to your pregnancy stage or your baby's age. By knowing where you registered for MC, the Health Department can make sure that the service is being offered to women at your clinic. Knowing where you registered helps the Health Department act on the compliments or complaints you may send to MomConnect about your clinic experience.": [
+        null,
+        "MomConnect e hloka dintlha tsa hao tsa botho ho romela melaetsa e nepaneng le boemo ba hao ba boimana kapa boholo ba lesea la hao. Ka ho tseba hore o ngodiseditse MomConnect kae, Lefapha la Bophelo le ka etsa bonnete hore bomme ba sebeletswa tleleniking ya hao. Ho tseba moo o  ngodiseditseng ho thusa Lefapha la Bophelo ho amohela thoholetso kapa tletlebo tseo di romelang MomConnect ka tleleniki ya hao."
+    ],
+    "MomConnect collects your phone and ID numbers, clinic location, and information about how your pregnancy is progressing.": [
+        null,
+        "MomConnect e bokella dinomoro  tsa hao tsa fono le ID, sebaka sa tleleniki, le lesedi mabapi le hore boimana ba hao bo tswela pele jwang."
+    ],
+    "MomConnect is owned and run by the Health Department. MTN, Cell C, Telkom, Praekelt, Jembi and HISP collect and process your data on their behalf.": [
+        null,
+        "Lefapha la Bophelo ke monga le molaodi wa MomConnect.MTN,Cell C,Telkom,Praekelt,Jembi le HISP ba bokella le ho hlophisa data lebitsong la bona."
+    ],
+    "You can see, change, or ask us to delete your information by dialing *134*550*7#": [
+        null,
+        "O ka bona, wa fetola kapa wa re kopa ho tima lesedi la hao ka ho letsetsa *134*550*7#"
+    ],
+    "MomConnect will automatically delete your personal information 7 years and 9 months after you registered.": [
+        null,
+        "MomConnect ka ho iketsahalla e tla tima lesedi la hao la botho dilemo tse 7 le dikgwedi tse 9 ka mora ho ngodisa."
+    ],
+    "Sorry, that number is not recognised. Dial in with the number you first used to register. To update your number, dial *134*550*7# or register again at a clinic.": [
+        null,
+        "Tshwarelo, nomoro ha e tsejwe.Tobetsa nomoro o e sebedisitseng pele ho ngodisa. Ho ntjhafatsa nomoro ya hao, letsetsa *134*550*7# kapa ngodisa hape tleleniking."
+    ]
+}
