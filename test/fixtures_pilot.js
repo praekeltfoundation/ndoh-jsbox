@@ -6,6 +6,10 @@ module.exports = function() {
             'repeatable': true,
             'request': {
                 'method': 'GET',
+                'headers': {
+                    'Authorization': ['Token api-token'],
+                    'Content-Type': ['application/json']
+                },
                 'url': 'http://pilot.example.org/check/',
                 'params': {
                     'wait': 'true',
