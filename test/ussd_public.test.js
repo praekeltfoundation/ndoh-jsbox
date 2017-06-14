@@ -742,7 +742,10 @@ describe("app", function() {
                 })
                 .setup(function(api) {
                     // add fixtures for services used
-                    fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
+
+                    // NOTE:    Skipping the hub fixtures are I'm adding them
+                    //          explicity as part of each testers setup
+                    // // fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
                     fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
                     fixtures_ServiceRating().forEach(api.http.fixtures.add); // 150 - 169
@@ -754,7 +757,7 @@ describe("app", function() {
         it('should trigger the pilot when hitting the threshold', function() {
             return tester
                 .setup(function(api) {
-                    // white list the number we're using to trigger the pilot functionality
+                    // force the threshold to accept everyone
                     pilot_config = api.config.store.config.pilot
                     pilot_config.randomisation_threshold = 1.0;
                     api.http.fixtures.add(
@@ -781,11 +784,17 @@ describe("app", function() {
         it('should not trigger the pilot when number check returns false', function() {
             return tester
                 .setup(function(api) {
-                    // white list the number we're using to trigger the pilot functionality
+                    // randomisation will always returns True but the check API will deny it
+                    // before it gets there
                     pilot_config = api.config.store.config.pilot
                     pilot_config.randomisation_threshold = 1.0;
                     api.http.fixtures.add(
                         fixtures_Pilot().not_exists('27820001001'));
+                    api.http.fixtures.add(fixtures_Pilot().registration({
+                            address: '27820001001',
+                            reg_type: 'momconnect_prebirth',
+                            language: 'zul_ZA',
+                        }));
                 })
                 .setup.user.addr("27820001001")
                 .inputs(
@@ -862,6 +871,12 @@ describe("app", function() {
                     // white list the number we're using to trigger the pilot functionality
                     pilot_config = api.config.store.config.pilot
                     pilot_config.whitelist = ['+27820001001'];
+                    api.http.fixtures.add(fixtures_Pilot().registration({
+                            address: '27820001001',
+                            reg_type: 'momconnect_prebirth',
+                            language: 'zul_ZA',
+
+                        }));
                 })
                 .setup.user.addr("27820001001")
                 .inputs(
