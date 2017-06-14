@@ -368,7 +368,10 @@ go.app = function() {
             };
 
             var registration_info = {
-                "reg_type": "momconnect_prebirth",
+                "reg_type": (
+                    self.im.user.answers.state_pilot == 'whatsapp'
+                    ? "whatsapp_prebirth"
+                    : "momconnect_prebirth"),
                 "registrant_id": self.im.user.answers.registrant.id,
                 "data": reg_details
             };
