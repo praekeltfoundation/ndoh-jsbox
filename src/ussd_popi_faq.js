@@ -93,6 +93,7 @@ go.app = function() {
             .then(function(identity) {
                 self.im.user.set_answer("operator", identity);
                 self.im.user.set_answer("msisdn", msisdn);
+                self.im.set_lang(self.im.user.answers.operator.details.lang_code);
 
 
                 return sbm
