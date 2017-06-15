@@ -8,6 +8,7 @@ var fixtures_MessageSender = require('./fixtures_message_sender');
 var fixtures_Hub = require('./fixtures_hub');
 var fixtures_Jembi = require('./fixtures_jembi');
 var fixtures_ServiceRating = require('./fixtures_service_rating');
+var fixtures_Pilot = require('./fixtures_pilot');
 
 var utils = require('seed-jsbox-utils').utils;
 
@@ -687,5 +688,210 @@ describe("app", function() {
             });
         });
 
+    });
+
+    describe('with pilot opt-in config', function () {
+        var app;
+        var tester;
+
+        beforeEach(function() {
+            app = new go.app.GoNDOH();
+
+            tester = new AppTester(app);
+
+            tester
+                .setup.config.app({
+                    name: 'ussd_public',
+                    env: 'test',
+                    metric_store: 'test_metric_store',
+                    testing_today: "2014-04-04 07:07:07",
+                    testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',
+                    logging: "off",
+                    no_timeout_redirects: [
+                        "state_start", "state_end_not_pregnant", "state_end_consent_refused",
+                        "state_end_success", "state_registered_full", "state_registered_not_full",
+                        "state_end_compliment", "state_end_complaint", "state_end_go_clinic"],
+                    channel: "*120*550#",
+                    services: {
+                        identity_store: {
+                            url: 'http://is/api/v1/',
+                            token: 'test IdentityStore'
+                        },
+                        stage_based_messaging: {
+                            url: 'http://sbm/api/v1/',
+                            token: 'test StageBasedMessaging'
+                        },
+                        hub: {
+                            url: 'http://hub/api/v1/',
+                            token: 'test Hub'
+                        },
+                        message_sender: {
+                            url: 'http://ms/api/v1/',
+                            token: 'test MessageSender'
+                        }
+                    },
+                    pilot: {
+                        whitelist: [],
+                        randomisation_treshold: 0.5,
+                        api_url: 'http://pilot.example.org/check/',
+                        api_token: 'api-token',
+                    }
+                })
+                .setup(function(api) {
+                    api.metrics.stores = {'test_metric_store': {}};
+                })
+                .setup(function(api) {
+                    // add fixtures for services used
+
+                    // NOTE:    Skipping the hub fixtures are I'm adding them
+                    //          explicity as part of each testers setup
+                    // // fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
+                    fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
+                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
+                    fixtures_ServiceRating().forEach(api.http.fixtures.add); // 150 - 169
+                    fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 - 246
+                });
+        });
+
+        it('should trigger the pilot when hitting the threshold', function() {
+            return tester
+                .setup(function(api) {
+                    // force the threshold to accept everyone
+                    pilot_config = api.config.store.config.pilot
+                    pilot_config.randomisation_threshold = 1.0;
+                    api.http.fixtures.add(
+                        fixtures_Pilot().exists('27820001001'));
+                })
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: "new"}
+                    , "1"  // state_language - zul_ZA
+                    , "1"  // state_suspect_pregnancy - yes
+                    , "1"  // state_consent - yes
+                )
+                .check.interaction({
+                    state: "state_pilot",
+                    reply: [
+                        'How would you like to receive messages about you and your baby?',
+                        '1. WhatsApp',
+                        '2. SMS'
+                    ].join('\n')
+                })
+                .run();
+        });
+
+        it('should not trigger the pilot when number check returns false', function() {
+            return tester
+                .setup(function(api) {
+                    // randomisation will always returns True but the check API will deny it
+                    // before it gets there
+                    pilot_config = api.config.store.config.pilot
+                    pilot_config.randomisation_threshold = 1.0;
+                    api.http.fixtures.add(
+                        fixtures_Pilot().not_exists('27820001001'));
+                    api.http.fixtures.add(fixtures_Pilot().registration({
+                            address: '27820001001',
+                            reg_type: 'momconnect_prebirth',
+                            language: 'zul_ZA',
+                        }));
+                })
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: "new"}
+                    , "1"  // state_language - zul_ZA
+                    , "1"  // state_suspect_pregnancy - yes
+                    , "1"  // state_consent - yes
+                )
+                .check.interaction({
+                    state: "state_end_success",
+                    reply: /Congratulations on your pregnancy./
+                })
+                .check.reply.ends_session()
+                .run();
+        });
+
+        it('should trigger the pilot for whitelisted numbers', function () {
+            return tester
+                .setup(function(api) {
+                    // white list the number we're using to trigger the pilot functionality
+                    pilot_config = api.config.store.config.pilot
+                    pilot_config.whitelist = ['+27820001001'];
+                })
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: "new"}
+                    , "1"  // state_language - zul_ZA
+                    , "1"  // state_suspect_pregnancy - yes
+                    , "1"  // state_consent - yes
+                )
+                .check.interaction({
+                    state: "state_pilot",
+                    reply: [
+                        'How would you like to receive messages about you and your baby?',
+                        '1. WhatsApp',
+                        '2. SMS'
+                    ].join('\n')
+                })
+                .run();
+        });
+
+        it('should submit pilot reg_type if participating in the pilot', function () {
+            return tester
+                .setup(function(api) {
+                    // white list the number we're using to trigger the pilot functionality
+                    pilot_config = api.config.store.config.pilot
+                    pilot_config.whitelist = ['+27820001001'];
+                    api.http.fixtures.add(fixtures_Pilot().registration({
+                            address: '27820001001',
+                            reg_type: 'whatsapp_prebirth',
+                            language: 'zul_ZA',
+
+                        }));
+                })
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: "new"}
+                    , "1"  // state_language - zul_ZA
+                    , "1"  // state_suspect_pregnancy - yes
+                    , "1"  // state_consent - yes
+                    , "1"  // state_pilot - whatsapp
+                )
+                .check.interaction({
+                    state: "state_end_success",
+                    reply: /Congratulations on your pregnancy/
+                })
+                .check.reply.ends_session()
+                .run();
+        });
+
+        it('should submit momconnect_prebirth reg_type if not participating in the pilot', function () {
+            return tester
+                .setup(function(api) {
+                    // white list the number we're using to trigger the pilot functionality
+                    pilot_config = api.config.store.config.pilot
+                    pilot_config.whitelist = ['+27820001001'];
+                    api.http.fixtures.add(fixtures_Pilot().registration({
+                            address: '27820001001',
+                            reg_type: 'momconnect_prebirth',
+                            language: 'zul_ZA',
+
+                        }));
+                })
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: "new"}
+                    , "1"  // state_language - zul_ZA
+                    , "1"  // state_suspect_pregnancy - yes
+                    , "1"  // state_consent - yes
+                    , "2"  // state_pilot - SMS
+                )
+                .check.interaction({
+                    state: "state_end_success",
+                    reply: /Congratulations on your pregnancy/
+                })
+                .check.reply.ends_session()
+                .run();
+        });
     });
 });

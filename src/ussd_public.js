@@ -218,7 +218,10 @@ go.app = function() {
             };
 
             var registration_info = {
-                "reg_type": "momconnect_prebirth",
+                "reg_type": (
+                    self.im.user.answers.state_pilot == 'whatsapp'
+                    ? "whatsapp_prebirth"
+                    : "momconnect_prebirth"),
                 "registrant_id": self.im.user.answers.registrant.id,
                 "data": reg_details
             };
@@ -405,7 +408,7 @@ go.app = function() {
                         var opted_out = self.number_opted_out(
                             self.im.user.answers.registrant,
                             self.im.user.answers.registrant_msisdn);
-                        return opted_out ? 'state_opt_in' : 'state_save_subscription';
+                        return opted_out ? 'state_opt_in' : 'state_pilot_randomisation';
                     } else {
                         return 'state_end_consent_refused';
                     }
@@ -449,7 +452,7 @@ go.app = function() {
                         return is
                         .optin(optin_info)
                         .then(function() {
-                            return 'state_save_subscription';
+                            return 'state_pilot_randomisation';
                         });
                     } else {
                         return 'state_stay_out';
@@ -465,6 +468,62 @@ go.app = function() {
                     new Choice('main_menu', $('Main Menu'))
                 ],
                 next: 'state_start'
+            });
+        });
+
+        self.add('state_pilot_randomisation', function(name) {  // interstitial state
+            return self
+                .can_participate_in_pilot()
+                .then(function(yes_or_no) {
+                    return yes_or_no
+                        ? self.states.create('state_pilot')
+                        : self.states.create('state_save_subscription');
+                });
+        });
+
+        self.can_participate_in_pilot = function () {
+            if(_.isEmpty(self.im.config.pilot)) {
+                // If unconfigured return false
+                return Q(false);
+            }
+
+            var pilot_config = self.im.config.pilot || {};
+            var whitelist = pilot_config.whitelist || [];
+            var randomisation_threshold = pilot_config.randomisation_threshold || 0.0;
+            var api_url = pilot_config.api_url;
+            var api_token = pilot_config.api_token;
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
+            // Always allow people on the whitelist
+            if(whitelist.indexOf(msisdn) > -1) {
+                return Q(true);
+            }
+            // Otherwise check the API
+            return new JsonApi(self.im, {'Authorization': 'Token ' + api_token})
+                .get(api_url, {
+                    params: {
+                        address: msisdn,
+                        wait: true,
+                    }})
+                .then(function(response) {
+                    existing = _.filter(response.data, function(obj) { return obj.exists === true; });
+                    if(_.isEmpty(existing)) {
+                        // If they're not eligible then return false
+                        return false;
+                    } else {
+                        // Otherwise roll the dice
+                        return Math.random() < randomisation_threshold;
+                    }
+                });
+        };
+
+        self.add('state_pilot', function(name) {
+            return new ChoiceState(name, {
+                question: $('How would you like to receive messages about you and your baby?'),
+                choices: [
+                    new Choice('whatsapp', $('WhatsApp')),
+                    new Choice('sms', $('SMS')),
+                ],
+                next: 'state_save_subscription'
             });
         });
 
