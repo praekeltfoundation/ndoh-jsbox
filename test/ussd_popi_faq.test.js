@@ -128,6 +128,16 @@ describe("app", function() {
             });
 
             describe("user registered on momconnect", function() {
+                it("should set the user's language", function() {
+                    return tester
+                    .setup.user.addr("27820001002")
+                    .inputs(
+                        {session_event: "new"}
+                    )
+                    .check.user.lang('eng_ZA')
+                    .run();
+                });
+
                 it("should go to state_all_questions_view", function() {
                     return tester
                     .setup.user.addr("27820001002")
