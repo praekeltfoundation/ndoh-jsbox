@@ -498,7 +498,10 @@ go.app = function() {
                 return Q(true);
             }
             // Otherwise check the API
-            return new JsonApi(self.im, {'Authorization': 'Token ' + api_token})
+            return new JsonApi(self.im, {
+                headers: {
+                    'Authorization': ['Token ' + api_token]
+                }})
                 .get(api_url, {
                     params: {
                         address: msisdn,
