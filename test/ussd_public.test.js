@@ -134,7 +134,7 @@ describe("app", function() {
                         assert.deepEqual(metrics['test.ussd_public.avg.sessions_to_register'].values, [2]);
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [17, 117, 180, 183, 198]);
+                        utils.check_fixtures_used(api, [17, 50, 117, 180, 183, 198]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -233,7 +233,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [125, 180, 183]);
+                    utils.check_fixtures_used(api, [50, 125, 180, 183]);
                 })
                 .run();
             });
@@ -278,7 +278,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", false)  // session closed on non-dialback state
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [17, 117, 180, 183, 198]);
+                    utils.check_fixtures_used(api, [17, 50, 117, 180, 183, 198]);
                 })
                 .run();
             });
@@ -296,7 +296,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)  // session closed on dialback state
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [17, 117, 125, 180, 183, 208]);
+                    utils.check_fixtures_used(api, [17, 50, 117, 125, 180, 183, 208]);
                 })
                 .run();
             });
@@ -522,7 +522,7 @@ describe("app", function() {
                             assert.deepEqual(metrics['test.ussd_public.avg.sessions_to_register'].values, [1]);
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [17, 117, 180, 183, 198]);
+                            utils.check_fixtures_used(api, [17, 50, 117, 180, 183, 198]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -591,7 +591,7 @@ describe("app", function() {
                         state: "state_end_success"
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [18, 118, 184, 199, 238]);
+                        utils.check_fixtures_used(api, [18, 55, 118, 184, 199, 238]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -735,6 +735,7 @@ describe("app", function() {
                         randomisation_treshold: 0.5,
                         api_url: 'http://pilot.example.org/check/',
                         api_token: 'api-token',
+                        channel: 'pilot-channel',
                     }
                 })
                 .setup(function(api) {
