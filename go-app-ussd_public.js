@@ -398,7 +398,7 @@ go.app = function() {
             return registration_info;
         };
 
-        self.send_registration_thanks = function(channel) {
+        self.send_registration_thanks = function() {
             return self
                 .get_channel()
                 .then(function(channel) {
@@ -409,13 +409,13 @@ go.app = function() {
                             self.im.user.i18n($(
                                 "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. " +
                                 "You can register for the full set of FREE helpful messages at a clinic."
-                            ), {
+                            )), {
                                 channel: channel
-                            }));
+                            });
                 });
         };
 
-        self.send_compliment_instructions = function(channel) {
+        self.send_compliment_instructions = function() {
             return self
                 .get_channel()
                 .then(function(channel) {
@@ -427,13 +427,13 @@ go.app = function() {
                                 "Please reply to this message with your compliment. If it " +
                                 "relates to the service at the clinic, include the clinic or " +
                                 "clinic worker name. Standard rates apply."
-                            ), {
+                            )), {
                                 channel: channel
-                            }));
+                            });
                 });
         };
 
-        self.send_complaint_instructions = function(channel) {
+        self.send_complaint_instructions = function() {
             return self
                 .get_channel()
                 .then(function(channel) {
@@ -445,9 +445,9 @@ go.app = function() {
                                 "Please reply to this message with your complaint. If it " +
                                 "relates to the service at the clinic, include the clinic or " +
                                 "clinic worker name. Standard rates apply."
-                            ), {
+                            )), {
                                 channel: channel
-                            }));
+                            });
                 });
         };
 
@@ -725,9 +725,7 @@ go.app = function() {
             return Q.all([
                 is.update_identity(self.im.user.answers.registrant.id, registrant_info),
                 hub.create_registration(registration_info),
-                self.send_registration_thanks({
-                    channel: self.get_channel(self.im)
-                })
+                self.send_registration_thanks()
             ])
             .then(function() {
                 return self.states.create('state_end_success');
@@ -757,17 +755,13 @@ go.app = function() {
                 next: function(choice) {
                     if (choice.value === "compliment") {
                         return self
-                        .send_compliment_instructions({
-                            channel: self.get_channel(self.im)
-                        })
+                        .send_compliment_instructions()
                         .then(function() {
                             return 'state_end_compliment';
                         });
                     } else if (choice.value === "complaint") {
                         return self
-                        .send_complaint_instructions({
-                            channel: self.get_channel(self.im)
-                        })
+                        .send_complaint_instructions()
                         .then(function() {
                             return 'state_end_complaint';
                         });
