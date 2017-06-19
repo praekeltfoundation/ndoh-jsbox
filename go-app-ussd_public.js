@@ -247,15 +247,41 @@ go.app = function() {
         };
 
         self.get_channel = function() {
-            return sbm
-                .is_identity_subscribed(self.im.user.answers.registrant.id, [/whatsapp/])
-                .then(function(confirmed) {
-                    if(confirmed) {
-                        var pilot_config = self.im.config.pilot || {};
+            var pilot_config = self.im.config.pilot || {};
+            return Q()
+                .then(function() {
+                    return self.im.log([
+                        'pilot_state: ' + self.im.user.answers.state_pilot,
+                        'pilot config: ' + JSON.stringify(pilot_config),
+                    ].join('\n'));
+                })
+                .then(function () {
+                    // NOTE:
+                    //      If we're able to tell from local state what channel is supposed to be
+                    //      used then use that rather than the HTTP call.
+                    //      Because of how Seed's services work using asynchronous webhooks there
+                    //      can be a race condition if we check the subscriptions too soon after
+                    //      creating a new registration
+                    if(self.im.user.answers.state_pilot == 'whatsapp') {
                         return pilot_config.channel;
-                    } else {
-                        return self.im.config.services.message_sender.channel;
                     }
+
+                    return sbm
+                        .is_identity_subscribed(self.im.user.answers.registrant.id, [/whatsapp/])
+                        .then(function(confirmed) {
+                            if(confirmed) {
+                                return pilot_config.channel;
+                            } else {
+                                return self.im.config.services.message_sender.channel;
+                            }
+                        });
+                })
+                .then(function(channel) {
+                    return self.im
+                        .log('Returning channel ' + channel + ' for ' + self.im.user.addr)
+                        .then(function() {
+                            return channel;
+                        });
                 });
         };
 
@@ -386,7 +412,6 @@ go.app = function() {
                 "language": self.im.user.answers.state_language,
                 "consent": self.im.user.answers.state_consent === "yes" ? true : null
             };
-
             var registration_info = {
                 "reg_type": (
                     self.im.user.answers.state_pilot == 'whatsapp'

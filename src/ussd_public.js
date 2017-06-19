@@ -99,6 +99,12 @@ go.app = function() {
         self.get_channel = function() {
             var pilot_config = self.im.config.pilot || {};
             return Q()
+                .then(function() {
+                    return self.im.log([
+                        'pilot_state: ' + self.im.user.answers.state_pilot,
+                        'pilot config: ' + JSON.stringify(pilot_config),
+                    ].join('\n'));
+                })
                 .then(function () {
                     // NOTE:
                     //      If we're able to tell from local state what channel is supposed to be
@@ -118,6 +124,13 @@ go.app = function() {
                             } else {
                                 return self.im.config.services.message_sender.channel;
                             }
+                        });
+                })
+                .then(function(channel) {
+                    return self.im
+                        .log('Returning channel ' + channel + ' for ' + self.im.user.addr)
+                        .then(function() {
+                            return channel;
                         });
                 });
         };
