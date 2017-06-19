@@ -62,8 +62,6 @@ module.exports = function() {
             }
         },
         post_outbound_message: function(params) {
-            // defaulting to this identity + address as its used in many
-            // fixtures
             params = params || {};
             var identity = params.identity;
             var address = params.address;
