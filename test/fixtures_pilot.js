@@ -2,7 +2,6 @@ module.exports = function() {
     _ = require('lodash');
     function make_check_fixture(address, exists) {
         return {
-            'key': 'pilot.check.+' + address,
             'repeatable': true,
             'request': {
                 'method': 'GET',
@@ -35,15 +34,12 @@ module.exports = function() {
         not_exists: function(address) {
             return make_check_fixture(address, false);
         },
-        registration: function(params) {
-            // defaulting to this identity + address as its used in many
-            // fixtures
-            var identity = params.identity || 'cb245673-aa41-4302-ac47-00000001001';
-            var address = params.address || '27820001001';
+        post_registration: function(params) {
+            var identity = params.identity;
+            var address = params.address;
             var language = params.language || 'zul_ZA';
             var reg_type = params.reg_type || 'momconnect_prebirth';
             return {
-                "key": "post.hub.register.identity." + identity,
                 "request": {
                     "url": 'http://hub/api/v1/registration/',
                     "method": 'POST',
@@ -64,6 +60,79 @@ module.exports = function() {
                     "data": {}
                 }
             }
-        }
+        },
+        post_outbound_message: function(params) {
+            params = params || {};
+            var identity = params.identity;
+            var address = params.address;
+            var content = params.content || 'default content';
+            var metadata = params.metadata || {};
+            var channel = params.channel;
+
+            return {
+                "request": {
+                    "url": 'http://ms/api/v1/outbound/',
+                    "method": 'POST',
+                    "data": {
+                        "to_identity": identity,
+                        "to_addr": address,
+                        "content": content,
+                        "metadata": metadata,
+                        "channel": channel
+                    }
+                },
+                "response": {
+                    "code": 201,
+                    "data": {}
+                }
+            };
+        },
+
+        subscribe_id_to: function(params) {
+            params = params || {};
+            identity = params.identity || 'cb245673-aa41-4302-ac47-00000001001';
+            messagesets = params.messagesets || [];
+            language = params.language || 'eng_ZA';
+
+            return {
+                "repeatable": true,
+                "request": {
+                    "url": 'http://sbm/api/v1/subscriptions/',
+                    "method": 'GET',
+                    "params": {
+                        "identity": identity,
+                        "active": 'True'
+                    }
+                },
+                "response": {
+                    "code": 200,
+                    "data": {
+                        "count": messagesets.length,
+                        "next": null,
+                        "previous": null,
+                        "results": _.map(messagesets, function(messageset) {
+                            return {
+                                'url': 'http://sbm/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-1005',
+                                'id': '51fcca25-2e85-4c44-subscription-1005',
+                                'version': 1,
+                                'identity': identity,
+                                'messageset': messageset,
+                                'next_sequence_number': 1,
+                                'lang': language,
+                                'active': true,
+                                'completed': false,
+                                'schedule': 1,
+                                'process_status': 0,
+                                'metadata': {},
+                                'created_at': "2016-08-12T06:13:29.693272Z",
+                                'updated_at': "2016-08-12T06:13:29.693272Z"
+                            }
+                        })
+                    }
+                }
+            };
+        },
+
+        "silly": "javascript commas"
     }
 }

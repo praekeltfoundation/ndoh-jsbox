@@ -11,6 +11,24 @@ var fixtures_ServiceRating = require('./fixtures_service_rating');
 var fixtures_Pilot = require('./fixtures_pilot');
 
 var utils = require('seed-jsbox-utils').utils;
+var _ = require('lodash');
+
+
+var only_use_fixtures = function(api, params) {
+    params = params || {}
+    // either use an explicit source or read from what's already
+    // loaded during the test harnass setup
+    original_fixtures = params.source || api.http.fixtures.fixtures;
+    numbers = params.numbers || [];
+
+    // clear any previously loaded fixtures during tester setup
+    api.http.fixtures.fixtures = [];
+
+    // load the explicit numbers
+    _.forEach(numbers, function(number) {
+        api.http.fixtures.add(original_fixtures[number]);
+    });
+}
 
 describe("app", function() {
     describe("for ussd_public use", function() {
@@ -134,7 +152,7 @@ describe("app", function() {
                         assert.deepEqual(metrics['test.ussd_public.avg.sessions_to_register'].values, [2]);
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [17, 117, 180, 183, 198]);
+                        utils.check_fixtures_used(api, [17, 50, 117, 180, 183, 198]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -233,7 +251,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [125, 180, 183]);
+                    utils.check_fixtures_used(api, [50, 125, 180, 183]);
                 })
                 .run();
             });
@@ -278,7 +296,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", false)  // session closed on non-dialback state
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [17, 117, 180, 183, 198]);
+                    utils.check_fixtures_used(api, [17, 50, 117, 180, 183, 198]);
                 })
                 .run();
             });
@@ -296,7 +314,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)  // session closed on dialback state
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [17, 117, 125, 180, 183, 208]);
+                    utils.check_fixtures_used(api, [17, 50, 117, 125, 180, 183, 208]);
                 })
                 .run();
             });
@@ -522,7 +540,7 @@ describe("app", function() {
                             assert.deepEqual(metrics['test.ussd_public.avg.sessions_to_register'].values, [1]);
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [17, 117, 180, 183, 198]);
+                            utils.check_fixtures_used(api, [17, 50, 117, 180, 183, 198]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -591,7 +609,7 @@ describe("app", function() {
                         state: "state_end_success"
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [18, 118, 184, 199, 238]);
+                        utils.check_fixtures_used(api, [18, 55, 118, 184, 199, 238]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -727,7 +745,8 @@ describe("app", function() {
                         },
                         message_sender: {
                             url: 'http://ms/api/v1/',
-                            token: 'test MessageSender'
+                            token: 'test MessageSender',
+                            channel: 'default-channel',
                         }
                     },
                     pilot: {
@@ -735,6 +754,7 @@ describe("app", function() {
                         randomisation_treshold: 0.5,
                         api_url: 'http://pilot.example.org/check/',
                         api_token: 'api-token',
+                        channel: 'pilot-channel'
                     }
                 })
                 .setup(function(api) {
@@ -745,7 +765,7 @@ describe("app", function() {
 
                     // NOTE:    Skipping the hub fixtures are I'm adding them
                     //          explicity as part of each testers setup
-                    // // fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
+                    fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
                     fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
                     fixtures_ServiceRating().forEach(api.http.fixtures.add); // 150 - 169
@@ -788,13 +808,29 @@ describe("app", function() {
                     // before it gets there
                     pilot_config = api.config.store.config.pilot
                     pilot_config.randomisation_threshold = 1.0;
+                    only_use_fixtures(api, {
+                        numbers: [
+                            180, // 'get.is.msisdn.27820001001'
+                            183, // 'post.is.msisdn.27820001001'
+                            198, // 'patch.is.identity.cb245673-aa41-4302-ac47-00000001001'
+                            50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
+                            117, // 'post.ms.outbound.27820001001'
+                        ],
+                    });
                     api.http.fixtures.add(
                         fixtures_Pilot().not_exists('27820001001'));
-                    api.http.fixtures.add(fixtures_Pilot().registration({
-                            address: '27820001001',
-                            reg_type: 'momconnect_prebirth',
-                            language: 'zul_ZA',
-                        }));
+                    api.http.fixtures.add(fixtures_Pilot().post_registration({
+                        identity: 'cb245673-aa41-4302-ac47-00000001001',
+                        address: '27820001001',
+                        reg_type: 'momconnect_prebirth',
+                        language: 'zul_ZA',
+                    }));
+                    api.http.fixtures.add(fixtures_Pilot().post_outbound_message({
+                        identity: 'cb245673-aa41-4302-ac47-00000001001',
+                        address: '+27820001001',
+                        channel: 'default-channel',
+                        content: 'Congratulations on your pregnancy. You will now get free SMSs about MomConnect. You can register for the full set of FREE helpful messages at a clinic.'
+                    }));
                 })
                 .setup.user.addr("27820001001")
                 .inputs(
@@ -842,12 +878,35 @@ describe("app", function() {
                     // white list the number we're using to trigger the pilot functionality
                     pilot_config = api.config.store.config.pilot
                     pilot_config.whitelist = ['+27820001001'];
-                    api.http.fixtures.add(fixtures_Pilot().registration({
-                            address: '27820001001',
-                            reg_type: 'whatsapp_prebirth',
-                            language: 'zul_ZA',
-
-                        }));
+                    only_use_fixtures(api, {
+                        numbers: [
+                            180, // 'get.is.msisdn.27820001001'
+                            183, // 'post.is.msisdn.27820001001'
+                            198, // 'patch.is.identity.cb245673-aa41-4302-ac47-00000001001'
+                            54, //  "get.sbm.messageset.all"
+                            117, // 'post.ms.outbound.27820001001'
+                        ],
+                    });
+                    // subscribe to the whatsapp_prebirth message set so the pilot
+                    // channel is returned
+                    api.http.fixtures.add(fixtures_Pilot().subscribe_id_to({
+                        identity: 'cb245673-aa41-4302-ac47-00000001001',
+                        messagesets: [
+                            62, // whatsapp_prebirth.patient.1,
+                        ]
+                    }))
+                    api.http.fixtures.add(fixtures_Pilot().post_registration({
+                        identity: 'cb245673-aa41-4302-ac47-00000001001',
+                        address: '27820001001',
+                        reg_type: 'whatsapp_prebirth',
+                        language: 'zul_ZA',
+                    }));
+                    api.http.fixtures.add(fixtures_Pilot().post_outbound_message({
+                        identity: 'cb245673-aa41-4302-ac47-00000001001',
+                        address: '+27820001001',
+                        channel: 'pilot-channel',
+                        content: 'Congratulations on your pregnancy. You will now get free SMSs about MomConnect. You can register for the full set of FREE helpful messages at a clinic.'
+                    }));
                 })
                 .setup.user.addr("27820001001")
                 .inputs(
@@ -871,12 +930,27 @@ describe("app", function() {
                     // white list the number we're using to trigger the pilot functionality
                     pilot_config = api.config.store.config.pilot
                     pilot_config.whitelist = ['+27820001001'];
-                    api.http.fixtures.add(fixtures_Pilot().registration({
-                            address: '27820001001',
-                            reg_type: 'momconnect_prebirth',
-                            language: 'zul_ZA',
+                    only_use_fixtures(api, {
+                        numbers: [
+                            180, // 'get.is.msisdn.27820001001'
+                            183, // 'post.is.msisdn.27820001001'
+                            198, // 'patch.is.identity.cb245673-aa41-4302-ac47-00000001001'
+                            50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
+                        ],
+                    });
+                    api.http.fixtures.add(fixtures_Pilot().post_registration({
+                        identity: 'cb245673-aa41-4302-ac47-00000001001',
+                        address: '27820001001',
+                        reg_type: 'momconnect_prebirth',
+                        language: 'zul_ZA',
 
-                        }));
+                    }));
+                    api.http.fixtures.add(fixtures_Pilot().post_outbound_message({
+                        identity: 'cb245673-aa41-4302-ac47-00000001001',
+                        address: '+27820001001',
+                        channel: 'default-channel',
+                        content: 'Congratulations on your pregnancy. You will now get free SMSs about MomConnect. You can register for the full set of FREE helpful messages at a clinic.'
+                    }));
                 })
                 .setup.user.addr("27820001001")
                 .inputs(
@@ -892,6 +966,88 @@ describe("app", function() {
                 })
                 .check.reply.ends_session()
                 .run();
+        });
+
+        it("should use the correct channel when going to state_end_compliment", function() {
+            return tester
+            .setup.user.addr("27820001002")
+            .setup(function(api) {
+                only_use_fixtures(api, {
+                    numbers: [
+                        54, // "get.sbm.messageset.all"
+                        119, // "post.ms.outbound.27820001002"
+                        181, // "get.is.msisdn.27820001002"
+                    ],
+                });
+
+                // subscribe to the whatsapp_prebirth message set so the pilot
+                // channel is returned
+                api.http.fixtures.add(fixtures_Pilot().subscribe_id_to({
+                    identity: 'cb245673-aa41-4302-ac47-00000001002',
+                    messagesets: [
+                        62, // whatsapp_prebirth.patient.1,
+                    ]
+                }))
+                api.http.fixtures.add(fixtures_Pilot().post_outbound_message({
+                    identity: 'cb245673-aa41-4302-ac47-00000001002',
+                    address: '+27820001002',
+                    channel: 'pilot-channel',
+                    content: 'Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.'
+                }));
+            })
+            .inputs(
+                {session_event: "new"}
+                , "1"  // state_registered_full - compliment
+            )
+            .check.interaction({
+                state: "state_end_compliment",
+                reply: 'Thank you. We will send you a message ' +
+                    'shortly with instructions on how to send us ' +
+                    'your compliment.'
+            })
+            .check.reply.ends_session()
+            .run();
+        });
+
+        it("should use the correct channel when going to state_end_complaint", function() {
+            return tester
+            .setup.user.addr("27820001002")
+            .setup(function(api) {
+                only_use_fixtures(api, {
+                    numbers: [
+                        54, // "get.sbm.messageset.all"
+                        120, // "post.ms.outbound.27820001002"
+                        181, // "get.is.msisdn.27820001002"
+                    ],
+                });
+                // subscribe to the whatsapp_prebirth message set so the pilot
+                // channel is returned
+                api.http.fixtures.add(fixtures_Pilot().subscribe_id_to({
+                    identity: 'cb245673-aa41-4302-ac47-00000001002',
+                    messagesets: [
+                        62, // whatsapp_prebirth.patient.1,
+                    ]
+                }))
+                api.http.fixtures.add(fixtures_Pilot().post_outbound_message({
+                    identity: 'cb245673-aa41-4302-ac47-00000001002',
+                    address: '+27820001002',
+                    channel: 'pilot-channel',
+                    content: 'Please reply to this message with your complaint. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.'
+                }));
+
+            })
+            .inputs(
+                {session_event: "new"}
+                , "2"  // state_registered_full - complaint
+            )
+            .check.interaction({
+                state: "state_end_complaint",
+                reply: 'Thank you. We will send you a message ' +
+                    'shortly with instructions on how to send us ' +
+                    'your complaint.'
+            })
+            .check.reply.ends_session()
+            .run();
         });
     });
 });

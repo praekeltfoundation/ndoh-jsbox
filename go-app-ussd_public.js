@@ -246,6 +246,19 @@ go.app = function() {
             });
         };
 
+        self.get_channel = function() {
+            return sbm
+                .is_identity_subscribed(self.im.user.answers.registrant.id, [/whatsapp/])
+                .then(function(confirmed) {
+                    if(confirmed) {
+                        var pilot_config = self.im.config.pilot || {};
+                        return pilot_config.channel;
+                    } else {
+                        return self.im.config.services.message_sender.channel;
+                    }
+                });
+        };
+
         self.attach_session_length_helper = function(im) {
             // If we have transport metadata then attach the session length
             // helper to this app
@@ -314,16 +327,23 @@ go.app = function() {
         };
 
         self.send_redial_sms = function() {
-            return ms.
-            create_outbound_message(
-                self.im.user.answers.registrant.id,
-                self.im.user.answers.registrant_msisdn,
-                self.im.user.i18n($(
-                    "Please dial back in to {{ USSD_number }} to complete the pregnancy registration."
-                ).context({
-                    USSD_number: self.im.config.channel
-                }))
-            );
+            return self
+                .get_channel()
+                .then(function(channel) {
+                    return ms.
+                        create_outbound(
+                            self.im.user.answers.registrant.id,
+                            self.im.user.answers.registrant_msisdn,
+                            self.im.user.i18n($(
+                                "Please dial back in to {{ USSD_number }} to complete the pregnancy registration."
+                            ).context({
+                                USSD_number: self.im.config.channel
+                            })),
+                            {
+                                channel: channel
+                            }
+                        );
+                });
         };
 
         self.number_opted_out = function(identity, msisdn) {
@@ -379,41 +399,56 @@ go.app = function() {
         };
 
         self.send_registration_thanks = function() {
-            return ms.
-            create_outbound_message(
-                self.im.user.answers.registrant.id,
-                self.im.user.answers.registrant_msisdn,
-                self.im.user.i18n($(
-                    "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. " +
-                    "You can register for the full set of FREE helpful messages at a clinic."
-                ))
-            );
+            return self
+                .get_channel()
+                .then(function(channel) {
+                    return ms.
+                        create_outbound(
+                            self.im.user.answers.registrant.id,
+                            self.im.user.answers.registrant_msisdn,
+                            self.im.user.i18n($(
+                                "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. " +
+                                "You can register for the full set of FREE helpful messages at a clinic."
+                            )), {
+                                channel: channel
+                            });
+                });
         };
 
         self.send_compliment_instructions = function() {
-            return ms.
-            create_outbound_message(
-                self.im.user.answers.registrant.id,
-                self.im.user.answers.registrant_msisdn,
-                self.im.user.i18n($(
-                    "Please reply to this message with your compliment. If it " +
-                    "relates to the service at the clinic, include the clinic or " +
-                    "clinic worker name. Standard rates apply."
-                ))
-            );
+            return self
+                .get_channel()
+                .then(function(channel) {
+                    return ms.
+                        create_outbound(
+                            self.im.user.answers.registrant.id,
+                            self.im.user.answers.registrant_msisdn,
+                            self.im.user.i18n($(
+                                "Please reply to this message with your compliment. If it " +
+                                "relates to the service at the clinic, include the clinic or " +
+                                "clinic worker name. Standard rates apply."
+                            )), {
+                                channel: channel
+                            });
+                });
         };
 
         self.send_complaint_instructions = function() {
-            return ms.
-            create_outbound_message(
-                self.im.user.answers.registrant.id,
-                self.im.user.answers.registrant_msisdn,
-                self.im.user.i18n($(
-                    "Please reply to this message with your complaint. If it " +
-                    "relates to the service at the clinic, include the clinic or " +
-                    "clinic worker name. Standard rates apply."
-                ))
-            );
+            return self
+                .get_channel()
+                .then(function(channel) {
+                    return ms.
+                        create_outbound(
+                            self.im.user.answers.registrant.id,
+                            self.im.user.answers.registrant_msisdn,
+                            self.im.user.i18n($(
+                                "Please reply to this message with your complaint. If it " +
+                                "relates to the service at the clinic, include the clinic or " +
+                                "clinic worker name. Standard rates apply."
+                            )), {
+                                channel: channel
+                            });
+                });
         };
 
         self.add = function(name, creator) {
@@ -466,7 +501,10 @@ go.app = function() {
                     .set_lang(self.im.user.answers.registrant.details.lang_code)
                     .then(function() {
                         return sbm
-                        .check_identity_subscribed(self.im.user.answers.registrant.id, "momconnect")
+                        .is_identity_subscribed(self.im.user.answers.registrant.id, [
+                            /^momconnect/,
+                            /^whatsapp/,
+                        ])
                         .then(function(identity_subscribed_to_momconnect) {
                             if (identity_subscribed_to_momconnect) {
                                 return self.states.create('state_registered_full');

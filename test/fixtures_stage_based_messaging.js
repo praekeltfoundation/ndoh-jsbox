@@ -349,6 +349,16 @@ module.exports = function() {
                             "content_type": 'text',
                             "created_at": '2016-06-22T06:13:29.693272Z',
                             "updated_at": '2016-06-22T06:13:29.693272Z'
+                        },
+                        {
+                            "id": 62,
+                            "short_name": 'whatsapp_prebirth.patient.1',
+                            "notes": null,
+                            "next_set": null,  // inaccurate
+                            "default_schedule": 111,
+                            "content_type": 'text',
+                            "created_at": '2016-06-22T06:13:29.693272Z',
+                            "updated_at": '2016-06-22T06:13:29.693272Z'
                         }
                     ]
                 }
