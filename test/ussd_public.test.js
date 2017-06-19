@@ -887,14 +887,10 @@ describe("app", function() {
                             117, // 'post.ms.outbound.27820001001'
                         ],
                     });
-                    // subscribe to the whatsapp_prebirth message set so the pilot
-                    // channel is returned
-                    api.http.fixtures.add(fixtures_Pilot().subscribe_id_to({
-                        identity: 'cb245673-aa41-4302-ac47-00000001001',
-                        messagesets: [
-                            62, // whatsapp_prebirth.patient.1,
-                        ]
-                    }))
+
+                    // NOTE:    we're not providing a fixture for the whatsapp_prebirth message set
+                    //          it should be inferred from the local state
+
                     api.http.fixtures.add(fixtures_Pilot().post_registration({
                         identity: 'cb245673-aa41-4302-ac47-00000001001',
                         address: '27820001001',
@@ -921,6 +917,43 @@ describe("app", function() {
                     reply: /Congratulations on your pregnancy/
                 })
                 .check.reply.ends_session()
+                .run();
+        });
+
+        it('should check the subscriptions if local state isnt enough to determine pilot channel', function () {
+            return tester
+                .setup(function(api) {
+
+                    only_use_fixtures(api, {
+                        numbers: [
+                            180, // 'get.is.msisdn.27820001001'
+                            183, // 'post.is.msisdn.27820001001'
+                            54, //  "get.sbm.messageset.all"
+                        ],
+                    });
+
+                    // subscribe to the whatsapp_prebirth message set so the pilot
+                    // channel is returned
+                    api.http.fixtures.add(fixtures_Pilot().subscribe_id_to({
+                        identity: 'cb245673-aa41-4302-ac47-00000001001',
+                        messagesets: [
+                            62, // whatsapp_prebirth.patient.1,
+                        ]
+                    }))
+                })
+                .setup.user.addr('27820001001')
+                .setup.user.answers({
+                    registration: {
+                        id: 'cb245673-aa41-4302-ac47-00000001001'
+                    }
+                })
+                .check(function () {
+                    return app
+                        .get_channel()
+                        .then(function(channel) {
+                            assert.equal(channel, 'pilot-channel');
+                        });
+                })
                 .run();
         });
 
