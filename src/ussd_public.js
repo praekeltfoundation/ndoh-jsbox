@@ -249,7 +249,6 @@ go.app = function() {
                 "language": self.im.user.answers.state_language,
                 "consent": self.im.user.answers.state_consent === "yes" ? true : null
             };
-
             var registration_info = {
                 "reg_type": (
                     self.im.user.answers.state_pilot == 'whatsapp'
