@@ -6,14 +6,14 @@
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2017-06-09 08:55+0200",
+        "po-revision-date": "2017-06-27 12:03+0200",
         "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
         "x-generator": "Poedit 1.5.4",
         "language": "sot"
     },
     "Welcome back. Please select an option:": [
         null,
-        ""
+        "Dumela hape. Kgetha ka kopo:"
     ],
     "Continue viewing FAQ": [
         null,
@@ -21,7 +21,7 @@
     ],
     "Main menu": [
         null,
-        ""
+        "Menu ya Sehlooho"
     ],
     "Choose a question about MomConnect (MC):": [
         null,

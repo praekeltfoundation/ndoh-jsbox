@@ -2,7 +2,7 @@
     "": {
         "project-id-version": "POPI_FAQ",
         "pot-creation-date": "2017-06-09 06:25:+0000",
-        "po-revision-date": "2017-06-09 08:38+0200",
+        "po-revision-date": "2017-06-27 12:09+0200",
         "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
         "language-team": "Afrikaans <LL@li.org>",
         "language": "af",
@@ -13,7 +13,7 @@
     },
     "Welcome back. Please select an option:": [
         null,
-        ""
+        "Welkom terug. Kies asb 'n opsie."
     ],
     "Continue viewing FAQ": [
         null,
@@ -21,7 +21,7 @@
     ],
     "Main menu": [
         null,
-        ""
+        "Hoof Spyskaart"
     ],
     "Choose a question about MomConnect (MC):": [
         null,

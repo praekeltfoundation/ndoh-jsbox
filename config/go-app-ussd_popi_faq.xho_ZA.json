@@ -7,13 +7,13 @@
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2017-06-09 08:45+0200",
+        "po-revision-date": "2017-06-27 11:52+0200",
         "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
         "x-generator": "Poedit 1.5.4"
     },
     "Welcome back. Please select an option:": [
         null,
-        ""
+        "Wamkelekile kwakhona. Khetha:"
     ],
     "Continue viewing FAQ": [
         null,
@@ -21,7 +21,7 @@
     ],
     "Main menu": [
         null,
-        ""
+        "Imenyu enguNdoqo"
     ],
     "Choose a question about MomConnect (MC):": [
         null,
@@ -65,7 +65,7 @@
     ],
     "Menu": [
         null,
-        ""
+        "Imenyu"
     ],
     "MomConnect needs your personal info to send you messages that are relevant to your pregnancy stage or your baby's age. By knowing where you registered for MC, the Health Department can make sure that the service is being offered to women at your clinic. Knowing where you registered helps the Health Department act on the compliments or complaints you may send to MomConnect about your clinic experience.": [
         null,
