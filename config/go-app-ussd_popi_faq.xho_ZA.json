@@ -7,7 +7,7 @@
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2017-06-27 11:52+0200",
+        "po-revision-date": "2017-06-27 12:33+0200",
         "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
         "x-generator": "Poedit 1.5.4"
     },
@@ -17,7 +17,7 @@
     ],
     "Continue viewing FAQ": [
         null,
-        ""
+        "Umva"
     ],
     "Main menu": [
         null,
