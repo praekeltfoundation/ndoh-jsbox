@@ -1,0 +1,133 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2017-06-28 09:49:+0000\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+
+#: ./go-app-ussd_public.js:363
+msgid ""
+"Please dial back in to {{ USSD_number }} to complete the pregnancy "
+"registration."
+msgstr ""
+
+#: ./go-app-ussd_public.js:434 ./go-app-ussd_public.js:762
+msgid ""
+"Congratulations on your pregnancy. You will now get free SMSs about "
+"MomConnect. You can register for the full set of FREE helpful messages at a "
+"clinic."
+msgstr ""
+
+#: ./go-app-ussd_public.js:451
+msgid ""
+"Please reply to this message with your compliment. If it relates to the "
+"service at the clinic, include the clinic or clinic worker name. Standard "
+"rates apply."
+msgstr ""
+
+#: ./go-app-ussd_public.js:469
+msgid ""
+"Please reply to this message with your complaint. If it relates to the "
+"service at the clinic, include the clinic or clinic worker name. Standard "
+"rates apply."
+msgstr ""
+
+#: ./go-app-ussd_public.js:493
+msgid "Welcome back. Please select an option:"
+msgstr ""
+
+#: ./go-app-ussd_public.js:495
+msgid "Continue signing up for messages"
+msgstr ""
+
+#: ./go-app-ussd_public.js:496
+msgid "Main menu"
+msgstr ""
+
+#: ./go-app-ussd_public.js:597
+msgid ""
+"MomConnect sends free support SMSs to pregnant mothers. Are you or do you "
+"suspect that you are pregnant?"
+msgstr ""
+
+#: ./go-app-ussd_public.js:601 ./go-app-ussd_public.js:616 ./go-app-ussd_public.js:653
+msgid "Yes"
+msgstr ""
+
+#: ./go-app-ussd_public.js:602 ./go-app-ussd_public.js:617 ./go-app-ussd_public.js:654
+msgid "No"
+msgstr ""
+
+#: ./go-app-ussd_public.js:612
+msgid ""
+"To register we need to collect, store & use your info. You may get messages "
+"on public holidays & weekends. Do you consent?"
+msgstr ""
+
+#: ./go-app-ussd_public.js:634 ./go-app-ussd_public.js:679
+msgid "You have chosen not to receive MomConnect SMSs"
+msgstr ""
+
+#: ./go-app-ussd_public.js:649
+msgid ""
+"You have previously opted out of MomConnect SMSs. Please confirm that you "
+"would like to opt in to receive messages again?"
+msgstr ""
+
+#: ./go-app-ussd_public.js:681
+msgid "Main Menu"
+msgstr ""
+
+#: ./go-app-ussd_public.js:737
+msgid "How would you like to receive messages about you and your baby?"
+msgstr ""
+
+#: ./go-app-ussd_public.js:739
+msgid "WhatsApp"
+msgstr ""
+
+#: ./go-app-ussd_public.js:740
+msgid "SMS"
+msgstr ""
+
+#: ./go-app-ussd_public.js:772
+msgid "Welcome to the Department of Health's MomConnect. Please choose an option:"
+msgstr ""
+
+#: ./go-app-ussd_public.js:777
+msgid "Send us a compliment"
+msgstr ""
+
+#: ./go-app-ussd_public.js:778
+msgid "Send us a complaint"
+msgstr ""
+
+#: ./go-app-ussd_public.js:800
+msgid ""
+"Thank you. We will send you a message shortly with instructions on how to "
+"send us your compliment."
+msgstr ""
+
+#: ./go-app-ussd_public.js:809
+msgid ""
+"Thank you. We will send you a message shortly with instructions on how to "
+"send us your complaint."
+msgstr ""
+
+#: ./go-app-ussd_public.js:818
+msgid "Welcome to the Department of Health's MomConnect. Choose an option:"
+msgstr ""
+
+#: ./go-app-ussd_public.js:821
+msgid "Get the full set of messages"
+msgstr ""
+
+#: ./go-app-ussd_public.js:829
+msgid ""
+"To register for the full set of MomConnect messages, please visit your "
+"nearest clinic."
+msgstr ""
