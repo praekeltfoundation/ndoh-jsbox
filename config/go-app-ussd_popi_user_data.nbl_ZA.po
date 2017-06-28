@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: POPI_USER_DATA\n"
 "POT-Creation-Date: 2017-06-07 03:31:+0000\n"
-"PO-Revision-Date: 2017-06-07 17:45+0200\n"
+"PO-Revision-Date: 2017-06-28 17:44+0200\n"
 "Last-Translator: Kaitlyn Crawford <kaitlyn@praekelt.org>\n"
 "Language-Team: NDEBELE <LL@li.org>\n"
 "Language: nr\n"
@@ -19,6 +19,11 @@ msgid ""
 "Date of Birth: {{dob}}\n"
 "Language: {{lang}}"
 msgstr ""
+"Imininingwanakho:\n"
+"Inomboro yomtato: {{msisdn}}\n"
+"Inomboro ye-ID: {{id}}\n"
+"Ilanga lamabeletho: {{dob}}\n"
+"Ilimi: {{lang}}"
 
 #: go-app-ussd_popi_user_data.js:106
 msgid ""
@@ -29,20 +34,28 @@ msgid ""
 "Date of Birth: {{dob}}\n"
 "Language: {{lang}}"
 msgstr ""
+"Imininingwanakho:\n"
+"Inomboro yomtato: {{msisdn}}\n"
+"Ngeyakuphi iphasipoti: {{passport_or}}\n"
+"Iphasipoti: {{passport_num}}\n"
+"Ilanga lamabeletho: {{dob}}\n"
+"Ilimi: {{lang}}"
 
 #: go-app-ussd_popi_user_data.js:121
 msgid ""
 "{{first}}\n"
 "Message set: {{mset}}"
 msgstr ""
+"{{first}}\n"
+"Umlayezo wesiqhema: {{mset}}"
 
 #: go-app-ussd_popi_user_data.js:173
 msgid "Welcome back. Please select an option:"
-msgstr "Nawubhalisa, bonesi  bebanemusa futsi bakusita?"
+msgstr "Siyanamukela godu. Sibawa nikhethe:"
 
 #: go-app-ussd_popi_user_data.js:175
 msgid "Main menu"
-msgstr ""
+msgstr "Imenyu Lenkhulu"
 
 #: go-app-ussd_popi_user_data.js:231
 msgid "What would you like to do?"
@@ -54,7 +67,7 @@ msgstr "Qala ilwazi okungelami"
 
 #: go-app-ussd_popi_user_data.js:234
 msgid "Send my personal info by sms"
-msgstr ""
+msgstr "Thumela imininingwanami nge-sms"
 
 #: go-app-ussd_popi_user_data.js:235
 msgid "Change my info"
@@ -81,6 +94,8 @@ msgid ""
 "An SMS has been sent to your number containing your personal information "
 "stored by MomConnect."
 msgstr ""
+"I-SMS ithunyelwe enomborwenenu ephethe imininingwana yenu ebekwe "
+"yiMomConnect."
 
 #: go-app-ussd_popi_user_data.js:278
 msgid "What would you like to change? To change your due date, visit a clinic"
@@ -181,7 +196,7 @@ msgstr "Ngiyathokoza.  Ngibawufake inomboro ye ID  (isib. 8805100273098)"
 
 #: go-app-ussd_popi_user_data.js:372
 msgid "Invalid ID number. Please re-enter"
-msgstr ""
+msgstr "Inomboro ye-ID ayisisemthethweni. Sibawa uyifake godu"
 
 #: go-app-ussd_popi_user_data.js:381
 msgid "What is the country of origin of the passport?"
@@ -220,6 +235,8 @@ msgid ""
 "There was an error in your entry. Please carefully enter the passport number "
 "again."
 msgstr ""
+"Kube nobutjhapha nawufakako. Sibawa ngokuyelela okukhulu ufake inomborwakho "
+"yephasipoti godu."
 
 #: go-app-ussd_popi_user_data.js:398
 msgid "Please enter the passport number:"
@@ -236,12 +253,16 @@ msgstr ""
 #: go-app-ussd_popi_user_data.js:444
 msgid "Invalid phone number. Please re-enter (with no spaces)"
 msgstr ""
+"Inomboro yomtato ayisisemthethweni. Sibawa uyifake godu (kungabikhona "
+"iinkhala)"
 
 #: go-app-ussd_popi_user_data.js:497
 msgid ""
 "Sorry, the number you are trying to move to already has an active "
 "registration. To manage that registration, please redial from that number."
 msgstr ""
+"Ncancabe, inomboro ozama ukuya kiyo seyinerejistretjheni esebenzako. "
+"Ukulawula irejistretjheni leyo, sibawa ubethele  godu kiyo inomboro leyo."
 
 #: go-app-ussd_popi_user_data.js:534
 msgid "Thank you. Your info has been updated."
@@ -249,7 +270,7 @@ msgstr "Ngiyathokoza. Ilwazi lakho selikhwezelelwe."
 
 #: go-app-ussd_popi_user_data.js:541
 msgid "Your personal information stored on MomConnect has not been removed."
-msgstr ""
+msgstr "Imininingwanakho efakwe kuMomConnect ayikasuswa."
 
 #: go-app-ussd_popi_user_data.js:579
 msgid ""

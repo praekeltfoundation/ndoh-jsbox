@@ -7,25 +7,25 @@
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2017-06-08 16:27+0200",
+        "po-revision-date": "2017-06-28 16:06+0200",
         "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
         "x-generator": "Poedit 1.5.4"
     },
     "Personal info:\nPhone Number: {{msisdn}}\nID Number: {{id}}\nDate of Birth: {{dob}}\nLanguage: {{lang}}": [
         null,
-        ""
+        "Zwidodombedzwa:\nLuṱingo: {{msisdn}}\nNomborondaula: {{id}}\nDatumu ya Mabebo: {{dob}}\nLuambo: {{lang}}"
     ],
     "Personal info:\nPhone Number: {{msisdn}}\nOrigin of Passport: {{passport_or}}\nPassport: {{passport_num}}\nDate of Birth: {{dob}}\nLanguage: {{lang}}": [
         null,
-        ""
+        "Zwidodombedzwa:\nLuṱingo: {{msisdn}}\nVhubvo ha phasiphoto: {{passport_or}}\nPhasipoto: {{passport_num}}\nDatumu ya Mabebo: {{dob}}\nLuambo: {{lang}}"
     ],
     "{{first}}\nMessage set: {{mset}}": [
         null,
-        ""
+        "{{first}}\nTshigwada tsha mulaedza: {{mset}}"
     ],
     "Welcome back. Please select an option:": [
         null,
-        "Vho tanganedzwa kha MomConnect ya Muhasho wa Mutakalo.Vha nanga:"
+        "Vho ṱanganedzwa. Kha vha khethe:"
     ],
     "Main menu": [
         null,
@@ -41,7 +41,7 @@
     ],
     "Send my personal info by sms": [
         null,
-        ""
+        "U rumela zwidodombedzwa nga sms"
     ],
     "Change my info": [
         null,
@@ -65,7 +65,7 @@
     ],
     "An SMS has been sent to your number containing your personal information stored by MomConnect.": [
         null,
-        ""
+        "Ho rumelwa SMS kha nomboro yavho ire na zwidodombedzwa zwavho zwo vhulungwaho nga MomConnect."
     ],
     "What would you like to change? To change your due date, visit a clinic": [
         null,
@@ -161,7 +161,7 @@
     ],
     "Invalid ID number. Please re-enter": [
         null,
-        ""
+        "Nomboro a si yone. Kha vha dovhe."
     ],
     "What is the country of origin of the passport?": [
         null,
@@ -197,7 +197,7 @@
     ],
     "There was an error in your entry. Please carefully enter the passport number again.": [
         null,
-        ""
+        "Ho vha hu na vhukhakhi. Kha vha dzhenise nomboro ya phasipoto."
     ],
     "Please enter the passport number:": [
         null,
@@ -209,11 +209,11 @@
     ],
     "Invalid phone number. Please re-enter (with no spaces)": [
         null,
-        ""
+        "Nomboro a si yone.  Kha vha dovhe (hu na zwikhala)"
     ],
     "Sorry, the number you are trying to move to already has an active registration. To manage that registration, please redial from that number.": [
         null,
-        ""
+        "Pfarelo, nomboro ine vha khou lingedza u ya khayo yo no ṅwaliswa. U langa u ṅwaliswa, kha vha lidzele hafhu u bva kha iyo nomboro."
     ],
     "Thank you. Your info has been updated.": [
         null,
@@ -221,7 +221,7 @@
     ],
     "Your personal information stored on MomConnect has not been removed.": [
         null,
-        ""
+        "Zwidodombedzwa zwavho zwi re kha MomConnect a zwo ngo bviswa."
     ],
     "Thank you. All your information will be deleted from MomConnect in the next [X] days.": [
         null,

@@ -7,25 +7,25 @@
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2017-06-08 14:05+0200",
+        "po-revision-date": "2017-06-28 15:54+0200",
         "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
         "x-generator": "Poedit 1.5.4"
     },
     "Personal info:\nPhone Number: {{msisdn}}\nID Number: {{id}}\nDate of Birth: {{dob}}\nLanguage: {{lang}}": [
         null,
-        ""
+        "Iinkcukacha zokobuqu:\nInombolo yeFowuni: {{msisdn}}\nInombolo yeSazisi: {{id}}\nUmhla wokuzalwa: {{dob}}\nUlwimi: {{lang}}"
     ],
     "Personal info:\nPhone Number: {{msisdn}}\nOrigin of Passport: {{passport_or}}\nPassport: {{passport_num}}\nDate of Birth: {{dob}}\nLanguage: {{lang}}": [
         null,
-        ""
+        "Iinkcukacha zokobuqu:\nInombolo yeFowuni: {{msisdn}}\nIlizwe ekukhutshwe kuyo iPaspoti: {{passport_or}}\nIPaspoti: {{passport_num}}\nUmhla wokuzalwa: {{dob}}\nUlwimi: {{lang}}"
     ],
     "{{first}}\nMessage set: {{mset}}": [
         null,
-        ""
+        "{{first}}\nIqela lemiyaleza: {{mset}}"
     ],
     "Welcome back. Please select an option:": [
         null,
-        ""
+        "Wamkelekile kwakhona. Khetha:"
     ],
     "Main menu": [
         null,
@@ -41,7 +41,7 @@
     ],
     "Send my personal info by sms": [
         null,
-        ""
+        "Thumela iinkcukacha zam nge-sms"
     ],
     "Change my info": [
         null,
@@ -65,7 +65,7 @@
     ],
     "An SMS has been sent to your number containing your personal information stored by MomConnect.": [
         null,
-        ""
+        "I-SMS ithunyelwe kwinombolo yakho iqulethe iinkcukacha zakho zokobuqu ezigcinwe yiMomConnect."
     ],
     "What would you like to change? To change your due date, visit a clinic": [
         null,
@@ -101,11 +101,11 @@
     ],
     "isiZulu": [
         null,
-        ""
+        "isiZulu"
     ],
     "isiXhosa": [
         null,
-        ""
+        "isiXhosa"
     ],
     "Afrikaans": [
         null,
@@ -157,11 +157,11 @@
     ],
     "Thank you. Please enter your ID number. eg. 8805100273098": [
         null,
-        "Enkosi. Nceda ufake inombolo yakho yeSazisi umz. 8805100273098)"
+        "Enkosi. Nceda ufake inombolo yakho yeSazisi umz. 8805100273098"
     ],
     "Invalid ID number. Please re-enter": [
         null,
-        ""
+        "Inombolo ayisebenzi: Yifake kwakhona"
     ],
     "What is the country of origin of the passport?": [
         null,
@@ -197,7 +197,7 @@
     ],
     "There was an error in your entry. Please carefully enter the passport number again.": [
         null,
-        ""
+        "kubekho impazamo xa ubufaka. Nceda uyifake kwakhona ngononophelo inombolo yakho yepaspoti."
     ],
     "Please enter the passport number:": [
         null,
@@ -209,11 +209,11 @@
     ],
     "Invalid phone number. Please re-enter (with no spaces)": [
         null,
-        ""
+        "Inombolo yefowuni ayisebenzi. Nceda uyifake kwakhona (kungabikho zithuba)"
     ],
     "Sorry, the number you are trying to move to already has an active registration. To manage that registration, please redial from that number.": [
         null,
-        ""
+        "Uxolo, inombolo ozama ukutshintshela kuyo iyasetyenziswa. Ukulungisa ubhaliso, nceda usebenzise enye inombolo."
     ],
     "Thank you. Your info has been updated.": [
         null,
@@ -221,7 +221,7 @@
     ],
     "Your personal information stored on MomConnect has not been removed.": [
         null,
-        ""
+        "Iinkcukacha zokobuqu ezigcinwe yiMomConnect azikasuswa. "
     ],
     "Thank you. All your information will be deleted from MomConnect in the next [X] days.": [
         null,
