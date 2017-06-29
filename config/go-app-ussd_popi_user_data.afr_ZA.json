@@ -2,7 +2,7 @@
     "": {
         "project-id-version": "POPI_USER_DATA",
         "pot-creation-date": "2017-06-07 03:46:+0000",
-        "po-revision-date": "2017-06-08 13:51+0200",
+        "po-revision-date": "2017-06-29 11:27+0200",
         "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
         "language-team": "LANGUAGE <LL@li.org>",
         "language": "Language: af",
@@ -13,19 +13,19 @@
     },
     "Personal info:\nPhone Number: {{msisdn}}\nID Number: {{id}}\nDate of Birth: {{dob}}\nLanguage: {{lang}}": [
         null,
-        "Persoonlike info:\nFoonnommer: {{msisdn}}\nID-nommer: {{id}}\nGeboortedatum: {{dob}}\nTaal: {{lang}}"
+        "Persoonlike info:\nSelnommer: {{msisdn}}\nID-nommer: {{id}}\nGeboortedatum: {{dob}}\nTaal: {{lang}}"
     ],
     "Personal info:\nPhone Number: {{msisdn}}\nOrigin of Passport: {{passport_or}}\nPassport: {{passport_num}}\nDate of Birth: {{dob}}\nLanguage: {{lang}}": [
         null,
-        "Persoonlike info:\nFoonnommer: {{msisdn}}\nPaspoort  land van oorsprong: {{passport_or}}\nPaspoortnommer: {{passport_num}}\nGeboortedatum: {{dob}}\nTaal: {{lang}}"
+        "Persoonlike info:\nSelnommer: {{msisdn}}\nOorsprong van paspoort: {{passport_or}}\nPaspoort: {{passport_num}}\nGeboortedatum: {{dob}}\nTaal: {{lang}}"
     ],
     "{{first}}\nMessage set: {{mset}}": [
         null,
-        "{{first}}\nBoodskap stel: {{mset}}"
+        "{{first}}\nBoodskapgroep: {{mset}}"
     ],
     "Welcome back. Please select an option:": [
         null,
-        "Welkom terug. Kies asb n opsie:"
+        "Welkom terug. Kies asb 'n opsie:"
     ],
     "Main menu": [
         null,
@@ -41,7 +41,7 @@
     ],
     "Send my personal info by sms": [
         null,
-        "Stuur my persoonlike info per sms"
+        "Stuur my persoonlike info met 'n SMS"
     ],
     "Change my info": [
         null,
@@ -65,7 +65,7 @@
     ],
     "An SMS has been sent to your number containing your personal information stored by MomConnect.": [
         null,
-        ""
+        " 'n SMS is aan jou foonnommer gestuur met jou persoonlike info wat deur MomConnect gestoor is "
     ],
     "What would you like to change? To change your due date, visit a clinic": [
         null,
@@ -109,7 +109,7 @@
     ],
     "Afrikaans": [
         null,
-        ""
+        "Afrikaans"
     ],
     "English": [
         null,
@@ -161,7 +161,7 @@
     ],
     "Invalid ID number. Please re-enter": [
         null,
-        "Jammer, jou ID-nommer is nie geldig nie.  Tik jou SA ID-nommer weer in:"
+        "Ongeldige ID-nommer. Tik asb weer in"
     ],
     "What is the country of origin of the passport?": [
         null,
@@ -169,7 +169,7 @@
     ],
     "Zimbabwe": [
         null,
-        ""
+        "Zimbabwe"
     ],
     "Mozambique": [
         null,
@@ -197,7 +197,7 @@
     ],
     "There was an error in your entry. Please carefully enter the passport number again.": [
         null,
-        "Jy het 'n fout gemaak. Tik asb jou paspoortnommer in"
+        "Daar was 'n fout met die info wat jy ingetik het. Tik asb weer jou paspoortnommer in"
     ],
     "Please enter the passport number:": [
         null,
@@ -209,11 +209,11 @@
     ],
     "Invalid phone number. Please re-enter (with no spaces)": [
         null,
-        ""
+        "Ongeldige selnommer. Tik asb weer in"
     ],
     "Sorry, the number you are trying to move to already has an active registration. To manage that registration, please redial from that number.": [
         null,
-        ""
+        "Jammer, die nommer wat jy nou wil gebruik het reeds 'n aktiewe registrasie. Om daardie registrasie te bestuur moet jy met daardie nommer bel"
     ],
     "Thank you. Your info has been updated.": [
         null,
@@ -221,7 +221,7 @@
     ],
     "Your personal information stored on MomConnect has not been removed.": [
         null,
-        ""
+        "Jou persoonlike info wat op MomConnect gestoor is, is nie verwyder"
     ],
     "Thank you. All your information will be deleted from MomConnect in the next [X] days.": [
         null,

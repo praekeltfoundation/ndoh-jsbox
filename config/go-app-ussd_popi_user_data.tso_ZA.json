@@ -7,25 +7,25 @@
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2017-06-08 16:51+0200",
+        "po-revision-date": "2017-06-28 17:10+0200",
         "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
         "x-generator": "Poedit 1.5.4"
     },
     "Personal info:\nPhone Number: {{msisdn}}\nID Number: {{id}}\nDate of Birth: {{dob}}\nLanguage: {{lang}}": [
         null,
-        ""
+        "Vuxokoxoko bya wena n'wini:\nNomboro ya Riqingho: {{msisdn}}\nNomboro ya pasi: {{id}}\nSiku ra ku Velekiwa: {{dob}}\nRirimi: {{lang}}"
     ],
     "Personal info:\nPhone Number: {{msisdn}}\nOrigin of Passport: {{passport_or}}\nPassport: {{passport_num}}\nDate of Birth: {{dob}}\nLanguage: {{lang}}": [
         null,
-        ""
+        "Vuxokoxoko bya wena n'wini:\nNomboro ya Riqingho: {{msisdn}}\nTiko leri Phasipoto yi humaka eka rona: {{passport_or}}\nPhasipoto: {{passport_num}}\nSiku ra ku Velekiwa: {{dob}}\nRirimi: {{lang}}"
     ],
     "{{first}}\nMessage set: {{mset}}": [
         null,
-        ""
+        "{{first}}\nXikatsa xa swihungwana: {{mset}}"
     ],
     "Welcome back. Please select an option:": [
         null,
-        "Wa amukeriwa nakambe. Hlawula opuxini:"
+        "Ha ku amukela nakambe. Hi kombela u hlawula xihlawuriwa:"
     ],
     "Main menu": [
         null,
@@ -41,7 +41,7 @@
     ],
     "Send my personal info by sms": [
         null,
-        ""
+        "Rhumela vuxokoxoko bya mina n'wini hi sms"
     ],
     "Change my info": [
         null,
@@ -65,7 +65,7 @@
     ],
     "An SMS has been sent to your number containing your personal information stored by MomConnect.": [
         null,
-        ""
+        "SMS yi rhumeriwile eka nomboro ya wena leyi nga na vuxokoxoko bya wena n'wini lebyi hlayisiweke hi MomConnect."
     ],
     "What would you like to change? To change your due date, visit a clinic": [
         null,
@@ -161,7 +161,7 @@
     ],
     "Invalid ID number. Please re-enter": [
         null,
-        ""
+        "Nomboro ya pasi leyi nga amukelekiki. Hi kombela u nghenisa nakambe."
     ],
     "What is the country of origin of the passport?": [
         null,
@@ -197,7 +197,7 @@
     ],
     "There was an error in your entry. Please carefully enter the passport number again.": [
         null,
-        ""
+        "Nomboro ya pasi leyi nga amukelekiki. Hi kombela u nghenisa nakambe."
     ],
     "Please enter the passport number:": [
         null,
@@ -209,11 +209,11 @@
     ],
     "Invalid phone number. Please re-enter (with no spaces)": [
         null,
-        ""
+        "Nomboro ya riqingho leyi nga amukelekiki. Hi kombela u nghenisa nakambe (ku ri hava swivandla)"
     ],
     "Sorry, the number you are trying to move to already has an active registration. To manage that registration, please redial from that number.": [
         null,
-        ""
+        "Hi khomele, nomboro leyi u ringetaka ku ya eka yona se yi na ntsariso lowu nga eku tirheni. Ku lawula ntsariso wolowo, dayila nakambe kusuka eka nomboro yaleyo."
     ],
     "Thank you. Your info has been updated.": [
         null,
@@ -221,7 +221,7 @@
     ],
     "Your personal information stored on MomConnect has not been removed.": [
         null,
-        ""
+        "Vuxokoxoko bya wena n'wini lebyi hlayisiweke eka MomConnect byi susiwile."
     ],
     "Thank you. All your information will be deleted from MomConnect in the next [X] days.": [
         null,

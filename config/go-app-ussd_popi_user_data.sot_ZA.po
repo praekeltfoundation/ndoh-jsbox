@@ -7,7 +7,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-06-08 15:58+0200\n"
+"PO-Revision-Date: 2017-06-28 17:30+0200\n"
 "Last-Translator: Kaitlyn Crawford <kaitlyn@praekelt.org>\n"
 "X-Generator: Poedit 1.5.4\n"
 
@@ -19,6 +19,11 @@ msgid ""
 "Date of Birth: {{dob}}\n"
 "Language: {{lang}}"
 msgstr ""
+"Dintlha tsa hao:\n"
+"Nomoro founu: {{msisdn}}\n"
+"ID Nomoro: {{id}}\n"
+"Letsatsi la tswalo: {{dob}}\n"
+"Puo: {{lang}}"
 
 #: go-app-ussd_popi_user_data.js:106
 msgid ""
@@ -29,16 +34,24 @@ msgid ""
 "Date of Birth: {{dob}}\n"
 "Language: {{lang}}"
 msgstr ""
+"Dintlha tsa hao:\n"
+"Nomoro founu: {{msisdn}}\n"
+"Qalo ya Phasepoto: {{passport_or}}\n"
+"Phasepoto: {{passport_num}}\n"
+"Letsatsi la tswalo: {{dob}}\n"
+"Puo: {{lang}}"
 
 #: go-app-ussd_popi_user_data.js:121
 msgid ""
 "{{first}}\n"
 "Message set: {{mset}}"
 msgstr ""
+"{{first}}\n"
+"Melaetsa sehlopha: {{mset}}"
 
 #: go-app-ussd_popi_user_data.js:173
 msgid "Welcome back. Please select an option:"
-msgstr ""
+msgstr "Dumela hape. Kgetha ka kopo:"
 
 #: go-app-ussd_popi_user_data.js:175
 msgid "Main menu"
@@ -54,7 +67,7 @@ msgstr "Ho bona lesedi la ka"
 
 #: go-app-ussd_popi_user_data.js:234
 msgid "Send my personal info by sms"
-msgstr ""
+msgstr "Romela dintlha tsa ka ka sms"
 
 #: go-app-ussd_popi_user_data.js:235
 msgid "Change my info"
@@ -81,6 +94,8 @@ msgid ""
 "An SMS has been sent to your number containing your personal information "
 "stored by MomConnect."
 msgstr ""
+"SMS rometswe nomorong e nang le dintlha tsa hao tsa botho tse bolokilweng ke "
+"MomConnect."
 
 #: go-app-ussd_popi_user_data.js:278
 msgid "What would you like to change? To change your due date, visit a clinic"
@@ -180,7 +195,7 @@ msgstr "Diteboho. Ka kopo kenya nomoro ya hao ya-ID (mohl. 8805100273098)"
 
 #: go-app-ussd_popi_user_data.js:372
 msgid "Invalid ID number. Please re-enter"
-msgstr ""
+msgstr "Nomoro ID fosahetse. Kenya hape"
 
 #: go-app-ussd_popi_user_data.js:381
 msgid "What is the country of origin of the passport?"
@@ -219,6 +234,7 @@ msgid ""
 "There was an error in your entry. Please carefully enter the passport number "
 "again."
 msgstr ""
+"Ho bile le phoso ha o qala.  Kenya nomoro ya phasepoto ya hao hape ka hloko."
 
 #: go-app-ussd_popi_user_data.js:398
 msgid "Please enter the passport number:"
@@ -234,13 +250,15 @@ msgstr ""
 
 #: go-app-ussd_popi_user_data.js:444
 msgid "Invalid phone number. Please re-enter (with no spaces)"
-msgstr ""
+msgstr "Nomoro ya fono fosahetse. Kenya hape (ho se be dikgeo)"
 
 #: go-app-ussd_popi_user_data.js:497
 msgid ""
 "Sorry, the number you are trying to move to already has an active "
 "registration. To manage that registration, please redial from that number."
 msgstr ""
+"Tshwarelo, nomoro eo o e letsetsang e se e ntse e ngodisitswe.  Ho fihlella "
+"ngodiso eo, letsa hape ho tswa hona nomorong eo."
 
 #: go-app-ussd_popi_user_data.js:534
 msgid "Thank you. Your info has been updated."
@@ -248,7 +266,7 @@ msgstr "Diteboho. Lesedi la hao le ntjhafaditswe."
 
 #: go-app-ussd_popi_user_data.js:541
 msgid "Your personal information stored on MomConnect has not been removed."
-msgstr ""
+msgstr "Dintlha tsa hao tse bolokilweng ho MomConnect ha di so tloswe."
 
 #: go-app-ussd_popi_user_data.js:579
 msgid ""
