@@ -625,7 +625,9 @@ go.app = function() {
                 hub.create_registration(registration_info),
                 self.send_registration_thanks(),
                 self.annotate_pilot({
-                    language: self.im.user.answers.state_language,
+                    language: (
+                        self.im.user.answers.state_language ||
+                        self.im.user.answers.registrant.details.lang_code),
                     pilot_choice: self.im.user.answers.state_pilot || null,
                 }),
             ])
