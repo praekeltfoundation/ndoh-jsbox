@@ -2,7 +2,7 @@
     "": {
         "project-id-version": "POPI_USER_DATA",
         "pot-creation-date": "2017-06-07 03:46:+0000",
-        "po-revision-date": "2017-06-28 15:58+0200",
+        "po-revision-date": "2017-06-29 11:27+0200",
         "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
         "language-team": "LANGUAGE <LL@li.org>",
         "language": "Language: af",
@@ -213,7 +213,7 @@
     ],
     "Sorry, the number you are trying to move to already has an active registration. To manage that registration, please redial from that number.": [
         null,
-        "Jammer, die nommer wat jy nou wil gebruik het reeds 'n aktiewe registrasie. Om daardie registrasie te bestuur moet jy weer daardie nommer bel"
+        "Jammer, die nommer wat jy nou wil gebruik het reeds 'n aktiewe registrasie. Om daardie registrasie te bestuur moet jy met daardie nommer bel"
     ],
     "Thank you. Your info has been updated.": [
         null,
@@ -221,7 +221,7 @@
     ],
     "Your personal information stored on MomConnect has not been removed.": [
         null,
-        "Jou persoonlike info wat op MomConnect gestoor is, is verwyder"
+        "Jou persoonlike info wat op MomConnect gestoor is, is nie verwyder"
     ],
     "Thank you. All your information will be deleted from MomConnect in the next [X] days.": [
         null,

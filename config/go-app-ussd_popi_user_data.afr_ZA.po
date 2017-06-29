@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: POPI_USER_DATA\n"
 "POT-Creation-Date: 2017-06-07 03:46:+0000\n"
-"PO-Revision-Date: 2017-06-28 15:58+0200\n"
+"PO-Revision-Date: 2017-06-29 11:27+0200\n"
 "Last-Translator: Kaitlyn Crawford <kaitlyn@praekelt.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: Language: af\n"
@@ -261,7 +261,7 @@ msgid ""
 "registration. To manage that registration, please redial from that number."
 msgstr ""
 "Jammer, die nommer wat jy nou wil gebruik het reeds 'n aktiewe registrasie. "
-"Om daardie registrasie te bestuur moet jy weer daardie nommer bel"
+"Om daardie registrasie te bestuur moet jy met daardie nommer bel"
 
 #: go-app-ussd_popi_user_data.js:534
 msgid "Thank you. Your info has been updated."
@@ -269,7 +269,7 @@ msgstr "Baie dankie. Jou info is bygewerk."
 
 #: go-app-ussd_popi_user_data.js:541
 msgid "Your personal information stored on MomConnect has not been removed."
-msgstr "Jou persoonlike info wat op MomConnect gestoor is, is verwyder"
+msgstr "Jou persoonlike info wat op MomConnect gestoor is, is nie verwyder"
 
 #: go-app-ussd_popi_user_data.js:579
 msgid ""
