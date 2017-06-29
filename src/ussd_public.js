@@ -273,6 +273,29 @@ go.app = function() {
             return registration_info;
         };
 
+        self.annotate_pilot = function (metadata) {
+            var pilot_config = self.im.config.pilot || {};
+            var api_token = pilot_config.api_token;
+            var api_number = pilot_config.api_number;
+            var annotation_url = pilot_config.annotation_url;
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
+
+            // If unconfigured, do nothing
+            if(_.isEmpty(annotation_url))
+                return Q();
+
+            return new JsonApi(self.im, {
+                headers: {
+                    'Authorization': ['Token ' + api_token]
+                }})
+                .post(annotation_url, {
+                    data: {
+                        address: msisdn,
+                        number: api_number,
+                        metadata: metadata,
+                    }});
+        };
+
         self.send_registration_thanks = function() {
             return self
                 .get_channel()
@@ -600,7 +623,11 @@ go.app = function() {
             return Q.all([
                 is.update_identity(self.im.user.answers.registrant.id, registrant_info),
                 hub.create_registration(registration_info),
-                self.send_registration_thanks()
+                self.send_registration_thanks(),
+                self.annotate_pilot({
+                    language: self.im.user.answers.state_language,
+                    pilot_choice: self.im.user.answers.state_pilot || null,
+                }),
             ])
             .then(function() {
                 return self.states.create('state_end_success');

@@ -754,7 +754,9 @@ describe("app", function() {
                         randomisation_treshold: 0.5,
                         api_url: 'http://pilot.example.org/check/',
                         api_token: 'api-token',
-                        channel: 'pilot-channel'
+                        api_number: '+27123456789',
+                        annotation_url: 'http://pilot.example.org/annotate/',
+                        channel: 'pilot-channel',
                     }
                 })
                 .setup(function(api) {
@@ -819,6 +821,15 @@ describe("app", function() {
                     });
                     api.http.fixtures.add(
                         fixtures_Pilot().not_exists('27820001001'));
+                    api.http.fixtures.add(
+                        fixtures_Pilot().annotate({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            metadata: {
+                                language: 'zul_ZA',
+                                pilot_choice: null,
+                            }
+                    }));
                     api.http.fixtures.add(fixtures_Pilot().post_registration({
                         identity: 'cb245673-aa41-4302-ac47-00000001001',
                         address: '27820001001',
@@ -891,6 +902,15 @@ describe("app", function() {
                     // NOTE:    we're not providing a fixture for the whatsapp_prebirth message set
                     //          it should be inferred from the local state
 
+                    api.http.fixtures.add(
+                        fixtures_Pilot().annotate({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            metadata: {
+                                language: 'zul_ZA',
+                                pilot_choice: 'whatsapp',
+                            }
+                    }));
                     api.http.fixtures.add(fixtures_Pilot().post_registration({
                         identity: 'cb245673-aa41-4302-ac47-00000001001',
                         address: '27820001001',
@@ -971,6 +991,15 @@ describe("app", function() {
                             50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
                         ],
                     });
+                    api.http.fixtures.add(
+                        fixtures_Pilot().annotate({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            metadata: {
+                                language: 'zul_ZA',
+                                pilot_choice: 'sms',
+                            }
+                    }));
                     api.http.fixtures.add(fixtures_Pilot().post_registration({
                         identity: 'cb245673-aa41-4302-ac47-00000001001',
                         address: '27820001001',
