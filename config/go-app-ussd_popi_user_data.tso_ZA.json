@@ -7,7 +7,7 @@
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2017-06-28 17:10+0200",
+        "po-revision-date": "2017-06-30 13:19+0200",
         "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
         "x-generator": "Poedit 1.5.4"
     },
@@ -197,7 +197,7 @@
     ],
     "There was an error in your entry. Please carefully enter the passport number again.": [
         null,
-        "Nomboro ya pasi leyi nga amukelekiki. Hi kombela u nghenisa nakambe."
+        "A ku ri na xihoxo eka xinghenisiwa xa wena. Hi kombela u nghenisa hi vukheta nomboro ya wena ya phasipoto nakambe."
     ],
     "Please enter the passport number:": [
         null,
@@ -221,7 +221,7 @@
     ],
     "Your personal information stored on MomConnect has not been removed.": [
         null,
-        "Vuxokoxoko bya wena n'wini lebyi hlayisiweke eka MomConnect byi susiwile."
+        "Vuxokoxoko bya wena n'wini lebyi hlayisiweke eka MomConnect a byi susiwangi."
     ],
     "Thank you. All your information will be deleted from MomConnect in the next [X] days.": [
         null,
