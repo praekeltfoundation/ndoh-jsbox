@@ -803,6 +803,35 @@ describe("app", function() {
                 .run();
         });
 
+
+        it('should trigger the pilots eng_ZA text variations when hitting the threshold', function() {
+            return tester
+                .setup(function(api) {
+                    // force the threshold to accept everyone
+                    pilot_config = api.config.store.config.pilot
+                    pilot_config.randomisation_threshold = 1.0;
+                    pilot_config.nudge_threshold = 1.0;
+                    api.http.fixtures.add(
+                        fixtures_Pilot().exists('27820001001'));
+                })
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: "new"}
+                    , "4"  // state_language - eng_ZA
+                    , "1"  // state_suspect_pregnancy - yes
+                    , "1"  // state_consent - yes
+                )
+                .check.interaction({
+                    state: "state_pilot",
+                    reply: [
+                        'Would you prefer to receive messages about you and your baby via WhatsApp?',
+                        '1. Yes',
+                        '2. No'
+                    ].join('\n')
+                })
+                .run();
+        });
+
         it('should not trigger the pilot when number check returns false', function() {
             return tester
                 .setup(function(api) {
@@ -828,6 +857,8 @@ describe("app", function() {
                             metadata: {
                                 language: 'zul_ZA',
                                 pilot_choice: null,
+                                pilot_question: null,
+                                pilot_source: 'ussd_public',
                             }
                     }));
                     api.http.fixtures.add(fixtures_Pilot().post_registration({
@@ -909,6 +940,8 @@ describe("app", function() {
                             metadata: {
                                 language: 'zul_ZA',
                                 pilot_choice: 'whatsapp',
+                                pilot_question: 'How would you like to receive messages about you and your baby?',
+                                pilot_source: 'ussd_public',
                             }
                     }));
                     api.http.fixtures.add(fixtures_Pilot().post_registration({
@@ -998,6 +1031,8 @@ describe("app", function() {
                             metadata: {
                                 language: 'zul_ZA',
                                 pilot_choice: 'sms',
+                                pilot_question: 'How would you like to receive messages about you and your baby?',
+                                pilot_source: 'ussd_public',
                             }
                     }));
                     api.http.fixtures.add(fixtures_Pilot().post_registration({

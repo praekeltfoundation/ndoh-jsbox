@@ -606,11 +606,24 @@ go.app = function() {
         };
 
         self.add('state_pilot', function(name) {
+            var pilot_config = self.im.config.pilot || {};
+            var nudge_threshold = pilot_config.nudge_threshold || 0.0;
+            var question = 'How would you like to receive messages about you and your baby?';
+            var whatsapp_label = 'WhatsApp';
+            var sms_label = 'SMS';
+
+            if(self.im.user.answers.state_language == 'eng_ZA' && Math.random() < nudge_threshold) {
+                question = "Would you prefer to receive messages about you and your baby via WhatsApp?";
+                whatsapp_label = 'Yes';
+                sms_label = 'No';
+            }
+
+            self.im.user.set_answer("state_pilot_question", question);
             return new ChoiceState(name, {
-                question: $('How would you like to receive messages about you and your baby?'),
+                question: $(question),
                 choices: [
-                    new Choice('whatsapp', $('WhatsApp')),
-                    new Choice('sms', $('SMS')),
+                    new Choice('whatsapp', $(whatsapp_label)),
+                    new Choice('sms', $(sms_label)),
                 ],
                 next: 'state_save_subscription'
             });
@@ -629,6 +642,8 @@ go.app = function() {
                         self.im.user.answers.state_language ||
                         self.im.user.answers.registrant.details.lang_code),
                     pilot_choice: self.im.user.answers.state_pilot || null,
+                    pilot_question: self.im.user.answers.state_pilot_question || null,
+                    pilot_source: 'ussd_public',
                 }),
             ])
             .then(function() {
