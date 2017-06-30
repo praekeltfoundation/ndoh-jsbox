@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: POPI_USER_DATA\n"
 "POT-Creation-Date: 2017-06-07 03:46:+0000\n"
-"PO-Revision-Date: 2017-06-29 11:27+0200\n"
+"PO-Revision-Date: 2017-06-30 13:09+0200\n"
 "Last-Translator: Kaitlyn Crawford <kaitlyn@praekelt.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: Language: af\n"
@@ -253,7 +253,7 @@ msgstr ""
 
 #: go-app-ussd_popi_user_data.js:444
 msgid "Invalid phone number. Please re-enter (with no spaces)"
-msgstr "Ongeldige selnommer. Tik asb weer in"
+msgstr "Ongeldige selnommer. Tik asb weer in (met geen spasies)"
 
 #: go-app-ussd_popi_user_data.js:497
 msgid ""
@@ -269,7 +269,8 @@ msgstr "Baie dankie. Jou info is bygewerk."
 
 #: go-app-ussd_popi_user_data.js:541
 msgid "Your personal information stored on MomConnect has not been removed."
-msgstr "Jou persoonlike info wat op MomConnect gestoor is, is nie verwyder"
+msgstr ""
+"Jou persoonlike info wat op MomConnect gestoor is, is nie verwyder nie."
 
 #: go-app-ussd_popi_user_data.js:579
 msgid ""

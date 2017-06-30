@@ -6,7 +6,7 @@
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2017-06-28 17:19+0200",
+        "po-revision-date": "2017-06-30 13:13+0200",
         "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
         "x-generator": "Poedit 1.5.4",
         "language": "ssw"
@@ -213,7 +213,7 @@
     ],
     "Sorry, the number you are trying to move to already has an active registration. To manage that registration, please redial from that number.": [
         null,
-        "Ncesi, lenombolo lotama kuya kuyo seyivele ibhalisiwe, ucelwa kutsi ushaye kuleyo nombolo."
+        "Ncesi, lenombolo lotama kuya kuyo seyivele ibhalisiwe. Kute ulawule lokubhalisa, ucelwa kutsi uphindze futsi ushaye kuleyo nombolo."
     ],
     "Thank you. Your info has been updated.": [
         null,

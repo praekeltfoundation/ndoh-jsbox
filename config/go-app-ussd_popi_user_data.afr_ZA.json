@@ -2,7 +2,7 @@
     "": {
         "project-id-version": "POPI_USER_DATA",
         "pot-creation-date": "2017-06-07 03:46:+0000",
-        "po-revision-date": "2017-06-29 11:27+0200",
+        "po-revision-date": "2017-06-30 13:09+0200",
         "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
         "language-team": "LANGUAGE <LL@li.org>",
         "language": "Language: af",
@@ -209,7 +209,7 @@
     ],
     "Invalid phone number. Please re-enter (with no spaces)": [
         null,
-        "Ongeldige selnommer. Tik asb weer in"
+        "Ongeldige selnommer. Tik asb weer in (met geen spasies)"
     ],
     "Sorry, the number you are trying to move to already has an active registration. To manage that registration, please redial from that number.": [
         null,
@@ -221,7 +221,7 @@
     ],
     "Your personal information stored on MomConnect has not been removed.": [
         null,
-        "Jou persoonlike info wat op MomConnect gestoor is, is nie verwyder"
+        "Jou persoonlike info wat op MomConnect gestoor is, is nie verwyder nie."
     ],
     "Thank you. All your information will be deleted from MomConnect in the next [X] days.": [
         null,
