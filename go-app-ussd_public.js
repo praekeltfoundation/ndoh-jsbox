@@ -747,10 +747,20 @@ go.app = function() {
                     existing = _.filter(response.data, function(obj) { return obj.exists === true; });
                     if(_.isEmpty(existing)) {
                         // If they're not eligible then return false
-                        return false;
+                        return self.im
+                            .log(msisdn + ' is not whatsappable')
+                            .then(function() {
+                                return false;
+                            });
                     } else {
                         // Otherwise roll the dice
-                        return Math.random() < randomisation_threshold;
+                        var can_participate = Math.random() < randomisation_threshold;
+                        return self.im
+                            .log(msisdn + ' is whatsappable, randomisation selected: ' + can_participate)
+                            .then(function() {
+                                return can_participate;
+                            });
+
                     }
                 });
         };
