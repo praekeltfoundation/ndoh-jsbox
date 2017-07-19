@@ -477,7 +477,16 @@ go.app = function() {
             var whitelist = pilot_config.facilitycode_whitelist || [];
             // NOTE: returning a promise as this may be an API call
             //       in the future
-            return Q(whitelist.indexOf(parseInt(facilitycode, 10)) > -1);
+            return self.im
+                .log('Checking ' + facilitycode + ' against whitelist: ' + JSON.stringify(whitelist))
+                .then(function() {
+                    var allowed = whitelist.indexOf(parseInt(facilitycode, 10)) > -1;
+                    return self.im
+                        .log('Returning: ' + allowed + ' for ' + facilitycode)
+                        .then(function () {
+                            return allowed;
+                        });
+                });
         };
 
         self.get_channel = function() {
