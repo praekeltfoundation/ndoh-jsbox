@@ -760,7 +760,6 @@ go.app = function() {
                             .then(function() {
                                 return can_participate;
                             });
-
                     }
                 });
         };

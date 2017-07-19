@@ -1,6 +1,6 @@
 module.exports = function() {
     _ = require('lodash');
-    function make_check_fixture(address, exists) {
+    function make_check_fixture(params, exists) {
         return {
             'repeatable': true,
             'request': {
@@ -11,28 +11,28 @@ module.exports = function() {
                 },
                 'url': 'http://pilot.example.org/check/',
                 'params': {
-                    'wait': 'true',
-                    'address': '+'+address,
-                }
+                    'wait': '' + params.wait, // force to string type for fixture lookups to work
+                    'address': params.address,
+                },
             },
             'response': {
                 'code': 200,
                 'data': {
                     '+27000000000': {
                         'exists': exists,
-                        'username': address,
+                        'username': params.address,
                     }
                 }
             }
-        }
+        };
     }
 
     return {
-        exists: function(address) {
-            return make_check_fixture(address, true);
+        exists: function(params) {
+            return make_check_fixture(params, true);
         },
-        not_exists: function(address) {
-            return make_check_fixture(address, false);
+        not_exists: function(params) {
+            return make_check_fixture(params, false);
         },
         annotate: function(params) {
             return {
@@ -60,6 +60,16 @@ module.exports = function() {
             var address = params.address;
             var language = params.language || 'zul_ZA';
             var reg_type = params.reg_type || 'momconnect_prebirth';
+            var data = params.data || {};
+
+            var default_data = {
+                "operator_id": identity,
+                "msisdn_registrant": "+" + address,
+                "msisdn_device": "+" + address,
+                "language": language,
+                "consent": true,
+            };
+
             return {
                 "request": {
                     "url": 'http://hub/api/v1/registration/',
@@ -67,19 +77,51 @@ module.exports = function() {
                     "data": {
                         "reg_type": reg_type,
                         "registrant_id": identity,
-                        "data": {
-                            "operator_id": identity,
-                            "msisdn_registrant": "+" + address,
-                            "msisdn_device": "+" + address,
-                            "language": language,
-                            "consent": true,
-                        }
+                        "data": _.merge(default_data, data),
                     }
                 },
                 "response": {
                     "code": 201,
                     "data": {}
                 }
+            }
+        },
+        patch_identity: function(params) {
+            var identity = params.identity;
+            var address = params.address;
+            var language = params.language || 'zul_ZA';
+            var details = params.details || {};
+
+            address_obj = {};
+            address_obj[address] = {"default": true};
+
+            default_details = {
+                "default_addr_type": "msisdn",
+                "addresses": {
+                    "msisdn": address_obj,
+                },
+                "lang_code": language,
+                "consent": true,
+                "mom_dob": "1981-01-14",
+                "source": "clinic",
+                "last_mc_reg_on": "clinic",
+                "last_edd": "2014-05-10"
+            }
+
+            return {
+                "request": {
+                    "method": 'PATCH',
+                    "url": 'http://is/api/v1/identities/' + identity + '/',
+                    "data": {
+                        "url": 'http://is/api/v1/identities/' + identity + '/',
+                        "id": identity,
+                        "version": 1,
+                        "details": _.merge(default_details, details),
+                        "created_at": "2016-08-05T06:13:29.693272Z",
+                        "updated_at": "2016-08-05T06:13:29.693298Z"
+                    }
+                },
+                "response": {}
             }
         },
         post_outbound_message: function(params) {
