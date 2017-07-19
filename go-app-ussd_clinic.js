@@ -666,7 +666,12 @@ go.app = function() {
                 })
                 .then(function(response) {
                     existing = _.filter(response.data, function(obj) { return obj.exists === true; });
-                    return !_.isEmpty(existing);
+                    var allowed = !_.isEmpty(existing);
+                    return self.im
+                        .log('valid pilot recipient returning ' + allowed + ' for ' + JSON.stringify(params))
+                        .then(function () {
+                            return allowed;
+                        });
                 });
         };
 
