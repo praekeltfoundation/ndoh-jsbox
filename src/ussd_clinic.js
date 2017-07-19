@@ -265,7 +265,10 @@ go.app = function() {
             }
 
             var registration_info = {
-                "reg_type": "momconnect_prebirth",
+                "reg_type": (
+                    self.im.user.answers.state_pilot == 'whatsapp'
+                    ? "whatsapp_prebirth"
+                    : "momconnect_prebirth"),
                 "registrant_id": self.im.user.answers.registrant.id,
                 "data": reg_details
             };
@@ -459,6 +462,55 @@ go.app = function() {
             });
         });
 
+        self.can_participate_in_pilot = function (facilitycode) {
+            var pilot_config = self.im.config.pilot || {};
+            var whitelist = pilot_config.facilitycode_whitelist || [];
+            // NOTE: returning a promise as this may be an API call
+            //       in the future
+            return Q(whitelist.indexOf(parseInt(facilitycode, 10)) > -1);
+        };
+
+        self.is_valid_recipient_for_pilot = function (params) {
+            var pilot_config = self.im.config.pilot || {};
+            var api_url = pilot_config.api_url;
+            var api_token = pilot_config.api_token;
+
+            // Otherwise check the API
+            return new JsonApi(self.im, {
+                headers: {
+                    'Authorization': ['Token ' + api_token]
+                }})
+                .get(api_url, {
+                    params: params,
+                })
+                .then(function(response) {
+                    existing = _.filter(response.data, function(obj) { return obj.exists === true; });
+                    return !_.isEmpty(existing);
+                });
+        };
+
+        self.annotate_pilot = function (msisdn, metadata) {
+            var pilot_config = self.im.config.pilot || {};
+            var api_token = pilot_config.api_token;
+            var api_number = pilot_config.api_number;
+            var annotation_url = pilot_config.annotation_url;
+
+            // If unconfigured, do nothing
+            if(_.isEmpty(annotation_url))
+                return Q();
+
+            return new JsonApi(self.im, {
+                headers: {
+                    'Authorization': ['Token ' + api_token]
+                }})
+                .post(annotation_url, {
+                    data: {
+                        address: msisdn,
+                        number: api_number,
+                        metadata: metadata,
+                    }});
+        };
+
         self.add('state_clinic_code', function(name) {
             var error = $('Sorry, the clinic number did not validate. ' +
                           'Please reenter the clinic number:');
@@ -473,7 +525,31 @@ go.app = function() {
                         if (!valid_clinic_code) {
                             return error;
                         } else {
-                            return null;  // vumi expects null or undefined if check passes
+                            return self
+                                .can_participate_in_pilot(valid_clinic_code)
+                                .then(function(confirmed) {
+                                    // If not a participating clinic then
+                                    // return immediately
+                                    if(!confirmed)
+                                        return;
+
+                                    // NOTE:    We're making the API call here but not telling
+                                    //          it to wait nor are we doing anything with the
+                                    //          result.
+                                    //
+                                    //          The idea is that the check continues
+                                    //          to happen in the background and will be ready
+                                    //          when we need it. This way we minimise any timeout
+                                    //          penalty during the registration.
+                                    var address = self.im.user.answers.registrant_msisdn;
+                                    return self
+                                        .is_valid_recipient_for_pilot({
+                                            address: address,
+                                        });
+                                })
+                                .then(function () {
+                                    return null;  // vumi expects null or undefined if check passes
+                                });
                         }
                     });
                 },
@@ -674,7 +750,7 @@ go.app = function() {
                                utils.double_digit_number(content));
                     self.im.user.set_answer("mom_dob", dob);
                     if (utils.is_valid_date(dob, 'YYYY-MM-DD')) {
-                        return 'state_language';
+                        return 'state_pilot_randomisation';
                     } else {
                         return 'state_invalid_dob';
                     }
@@ -692,6 +768,56 @@ go.app = function() {
                     new Choice('continue', $('Continue'))
                 ],
                 next: 'state_birth_year'
+            });
+        });
+
+        self.add('state_pilot_randomisation', function(name) {  // interstitial state
+            var facilitycode = self.im.user.answers.state_clinic_code;
+            var address = self.im.user.answers.registrant_msisdn;
+            return self
+                .can_participate_in_pilot(facilitycode)
+                .then(function(confirmed) {
+                    if(confirmed) {
+                        // NOTE:    Here we run the same check again but instead
+                        //          tell it to wait for the result but this should
+                        //          now be quick as it's already completed
+                        //          at the gateway level
+                        return self.is_valid_recipient_for_pilot({
+                            address: address,
+                            wait: true,
+                        });
+                    } else {
+                        return false;
+                    }
+                })
+                .then(function(confirmed) {
+                    return confirmed
+                        ? self.states.create('state_pilot')
+                        : self.states.create('state_language');
+                });
+        });
+
+        self.add('state_pilot', function(name) {
+            var pilot_config = self.im.config.pilot || {};
+            var nudge_threshold = pilot_config.nudge_threshold || 0.0;
+            var question = 'How would the pregnant mother like to receive the messages?';
+            var whatsapp_label = 'WhatsApp';
+            var sms_label = 'SMS';
+
+            if(self.im.user.answers.state_language == 'eng_ZA' && Math.random() < nudge_threshold) {
+                question = "Would the pregnant mother prefer to receive messages via WhatsApp?";
+                whatsapp_label = 'Yes';
+                sms_label = 'No';
+            }
+
+            self.im.user.set_answer("state_pilot_question", question);
+            return new ChoiceState(name, {
+                question: $(question),
+                choices: [
+                    new Choice('whatsapp', $(whatsapp_label)),
+                    new Choice('sms', $(sms_label)),
+                ],
+                next: 'state_language'
             });
         });
 
@@ -724,7 +850,17 @@ go.app = function() {
             return Q.all([
                 is.update_identity(self.im.user.answers.registrant.id, registrant_info),
                 hub.create_registration(registration_info),
-                self.send_registration_thanks()
+                self.send_registration_thanks(),
+                self.annotate_pilot(
+                    self.im.user.answers.registrant_msisdn,
+                    {
+                        language: (
+                            self.im.user.answers.state_language ||
+                            self.im.user.answers.registrant.details.lang_code),
+                        pilot_choice: self.im.user.answers.state_pilot || null,
+                        pilot_question: self.im.user.answers.state_pilot_question || null,
+                        pilot_source: 'ussd_clinic',
+                    }),
             ])
             .then(function(response) {
                 return self.states.create('state_end_success');
