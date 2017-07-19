@@ -144,16 +144,21 @@ go.app = function() {
         };
 
         self.send_redial_sms = function() {
-            return ms.
-            create_outbound_message(
-                self.im.user.answers.operator.id,
-                self.im.user.answers.operator_msisdn,
-                self.im.user.i18n($(
-                    "Please dial back in to {{ USSD_number }} to complete the pregnancy registration."
-                ).context({
-                    USSD_number: self.im.config.channel
-                }))
-            );
+            return self
+                .get_channel()
+                .then(function(channel) {
+                    return ms.
+                        create_outbound(
+                            self.im.user.answers.operator.id,
+                            self.im.user.answers.operator_msisdn,
+                            self.im.user.i18n($(
+                                "Please dial back in to {{ USSD_number }} to complete the pregnancy registration."
+                            ).context({
+                                USSD_number: self.im.config.channel
+                            })), {
+                                channel: channel
+                            });
+                });
         };
 
         self.number_opted_out = function(identity, msisdn) {
@@ -276,19 +281,24 @@ go.app = function() {
         };
 
         self.send_registration_thanks = function() {
-            return ms.
-            create_outbound_message(
-                self.im.user.answers.registrant.id,
-                self.im.user.answers.registrant_msisdn,
-                self.im.user.i18n($(
-                    "Welcome. To stop getting SMSs dial {{optout_channel}} or for more " +
-                    "services dial {{public_channel}} (No Cost). Standard rates apply " +
-                    "when replying to any SMS from MomConnect."
-                ).context({
-                    public_channel: self.im.config.public_channel,
-                    optout_channel: self.im.config.optout_channel
-                }))
-            );
+            return self
+                .get_channel()
+                .then(function(channel) {
+                    return ms.
+                        create_outbound(
+                            self.im.user.answers.registrant.id,
+                            self.im.user.answers.registrant_msisdn,
+                            self.im.user.i18n($(
+                                "Welcome. To stop getting SMSs dial {{optout_channel}} or for more " +
+                                "services dial {{public_channel}} (No Cost). Standard rates apply " +
+                                "when replying to any SMS from MomConnect."
+                            ).context({
+                                public_channel: self.im.config.public_channel,
+                                optout_channel: self.im.config.optout_channel
+                            })), {
+                                channel: channel
+                            });
+                });
         };
 
         self.add = function(name, creator) {
@@ -470,6 +480,18 @@ go.app = function() {
             return Q(whitelist.indexOf(parseInt(facilitycode, 10)) > -1);
         };
 
+        self.get_channel = function() {
+            var pilot_config = self.im.config.pilot || {};
+            return Q()
+                .then(function () {
+                    if(self.im.user.answers.state_pilot == 'whatsapp') {
+                        return pilot_config.channel;
+                    }
+
+                    return self.im.config.services.message_sender.channel;
+                });
+        };
+
         self.is_valid_recipient_for_pilot = function (params) {
             var pilot_config = self.im.config.pilot || {};
             var api_url = pilot_config.api_url;
@@ -525,8 +547,12 @@ go.app = function() {
                         if (!valid_clinic_code) {
                             return error;
                         } else {
+                            // NOTE:    The valid_clinic_code we get back from
+                            //          validate_clinic_code is a string from Jembi
+                            //          but we're whitelisting on the actual numeric
+                            //          code supplied
                             return self
-                                .can_participate_in_pilot(valid_clinic_code)
+                                .can_participate_in_pilot(content)
                                 .then(function(confirmed) {
                                     // If not a participating clinic then
                                     // return immediately
@@ -545,6 +571,7 @@ go.app = function() {
                                     return self
                                         .is_valid_recipient_for_pilot({
                                             address: address,
+                                            wait: false,
                                         });
                                 })
                                 .then(function () {
@@ -665,7 +692,7 @@ go.app = function() {
                 next: function(content) {
                     var mom_dob = utils.extract_za_id_dob(content);
                     self.im.user.set_answer("mom_dob", mom_dob);
-                    return 'state_language';
+                    return 'state_pilot_randomisation';
                 }
             });
         });
@@ -699,7 +726,7 @@ go.app = function() {
                         return error;
                     }
                 },
-                next: 'state_language'
+                next: 'state_pilot_randomisation'
             });
         });
 

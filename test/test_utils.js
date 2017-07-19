@@ -1,4 +1,6 @@
-module.exports = {
+var _ = require('lodash');
+
+    module.exports = {
     only_use_fixtures: function(api, params) {
         params = params || {}
         // either use an explicit source or read from what's already

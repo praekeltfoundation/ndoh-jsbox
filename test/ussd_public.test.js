@@ -764,7 +764,10 @@ describe("app", function() {
                     pilot_config = api.config.store.config.pilot
                     pilot_config.randomisation_threshold = 1.0;
                     api.http.fixtures.add(
-                        fixtures_Pilot().exists('27820001001'));
+                        fixtures_Pilot().exists({
+                            address: '+27820001001',
+                            wait: true,
+                        }));
                 })
                 .setup.user.addr("27820001001")
                 .inputs(
@@ -793,7 +796,10 @@ describe("app", function() {
                     pilot_config.randomisation_threshold = 1.0;
                     pilot_config.nudge_threshold = 1.0;
                     api.http.fixtures.add(
-                        fixtures_Pilot().exists('27820001001'));
+                        fixtures_Pilot().exists({
+                            address: '+27820001001',
+                            wait: true,
+                        }));
                 })
                 .setup.user.addr("27820001001")
                 .inputs(
@@ -830,7 +836,10 @@ describe("app", function() {
                         ],
                     });
                     api.http.fixtures.add(
-                        fixtures_Pilot().not_exists('27820001001'));
+                        fixtures_Pilot().not_exists({
+                            address: '+27820001001',
+                            wait: true,
+                        }));
                     api.http.fixtures.add(
                         fixtures_Pilot().annotate({
                             number: '+27123456789',
