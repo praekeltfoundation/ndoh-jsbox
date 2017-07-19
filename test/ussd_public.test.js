@@ -11,24 +11,8 @@ var fixtures_ServiceRating = require('./fixtures_service_rating');
 var fixtures_Pilot = require('./fixtures_pilot');
 
 var utils = require('seed-jsbox-utils').utils;
+var test_utils = require('./test_utils');
 var _ = require('lodash');
-
-
-var only_use_fixtures = function(api, params) {
-    params = params || {}
-    // either use an explicit source or read from what's already
-    // loaded during the test harnass setup
-    original_fixtures = params.source || api.http.fixtures.fixtures;
-    numbers = params.numbers || [];
-
-    // clear any previously loaded fixtures during tester setup
-    api.http.fixtures.fixtures = [];
-
-    // load the explicit numbers
-    _.forEach(numbers, function(number) {
-        api.http.fixtures.add(original_fixtures[number]);
-    });
-}
 
 describe("app", function() {
     describe("for ussd_public use", function() {
@@ -839,7 +823,7 @@ describe("app", function() {
                     // before it gets there
                     pilot_config = api.config.store.config.pilot
                     pilot_config.randomisation_threshold = 1.0;
-                    only_use_fixtures(api, {
+                    test_utils.only_use_fixtures(api, {
                         numbers: [
                             180, // 'get.is.msisdn.27820001001'
                             183, // 'post.is.msisdn.27820001001'
@@ -920,7 +904,7 @@ describe("app", function() {
                     // white list the number we're using to trigger the pilot functionality
                     pilot_config = api.config.store.config.pilot
                     pilot_config.whitelist = ['+27820001001'];
-                    only_use_fixtures(api, {
+                    test_utils.only_use_fixtures(api, {
                         numbers: [
                             180, // 'get.is.msisdn.27820001001'
                             183, // 'post.is.msisdn.27820001001'
@@ -977,7 +961,7 @@ describe("app", function() {
             return tester
                 .setup(function(api) {
 
-                    only_use_fixtures(api, {
+                    test_utils.only_use_fixtures(api, {
                         numbers: [
                             180, // 'get.is.msisdn.27820001001'
                             183, // 'post.is.msisdn.27820001001'
@@ -1016,7 +1000,7 @@ describe("app", function() {
                     // white list the number we're using to trigger the pilot functionality
                     pilot_config = api.config.store.config.pilot
                     pilot_config.whitelist = ['+27820001001'];
-                    only_use_fixtures(api, {
+                    test_utils.only_use_fixtures(api, {
                         numbers: [
                             180, // 'get.is.msisdn.27820001001'
                             183, // 'post.is.msisdn.27820001001'
@@ -1069,7 +1053,7 @@ describe("app", function() {
             return tester
             .setup.user.addr("27820001002")
             .setup(function(api) {
-                only_use_fixtures(api, {
+                test_utils.only_use_fixtures(api, {
                     numbers: [
                         54, // "get.sbm.messageset.all"
                         119, // "post.ms.outbound.27820001002"
@@ -1110,7 +1094,7 @@ describe("app", function() {
             return tester
             .setup.user.addr("27820001002")
             .setup(function(api) {
-                only_use_fixtures(api, {
+                test_utils.only_use_fixtures(api, {
                     numbers: [
                         54, // "get.sbm.messageset.all"
                         120, // "post.ms.outbound.27820001002"

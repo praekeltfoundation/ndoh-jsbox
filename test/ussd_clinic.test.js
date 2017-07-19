@@ -8,6 +8,8 @@ var fixtures_MessageSender = require('./fixtures_message_sender');
 var fixtures_Hub = require('./fixtures_hub');
 var fixtures_Jembi = require('./fixtures_jembi');
 var fixtures_ServiceRating = require('./fixtures_service_rating');
+var fixtures_Pilot = require('./fixtures_pilot');
+var test_utils = require('./test_utils');
 
 var utils = require('seed-jsbox-utils').utils;
 

@@ -639,6 +639,28 @@ go.app = function() {
                 });
         };
 
+        self.annotate_pilot = function (msisdn, metadata) {
+            var pilot_config = self.im.config.pilot || {};
+            var api_token = pilot_config.api_token;
+            var api_number = pilot_config.api_number;
+            var annotation_url = pilot_config.annotation_url;
+
+            // If unconfigured, do nothing
+            if(_.isEmpty(annotation_url))
+                return Q();
+
+            return new JsonApi(self.im, {
+                headers: {
+                    'Authorization': ['Token ' + api_token]
+                }})
+                .post(annotation_url, {
+                    data: {
+                        address: msisdn,
+                        number: api_number,
+                        metadata: metadata,
+                    }});
+        };
+
         self.add('state_clinic_code', function(name) {
             var error = $('Sorry, the clinic number did not validate. ' +
                           'Please reenter the clinic number:');
@@ -656,7 +678,11 @@ go.app = function() {
                             return self
                                 .can_participate_in_pilot(valid_clinic_code)
                                 .then(function(confirmed) {
-                                    var address = self.im.user.answers.registrant_msisdn;
+                                    // If not a participating clinic then
+                                    // return immediately
+                                    if(!confirmed)
+                                        return;
+
                                     // NOTE:    We're making the API call here but not telling
                                     //          it to wait nor are we doing anything with the
                                     //          result.
@@ -665,6 +691,7 @@ go.app = function() {
                                     //          to happen in the background and will be ready
                                     //          when we need it. This way we minimise any timeout
                                     //          penalty during the registration.
+                                    var address = self.im.user.answers.registrant_msisdn;
                                     return self
                                         .is_valid_recipient_for_pilot({
                                             address: address,
@@ -974,14 +1001,16 @@ go.app = function() {
                 is.update_identity(self.im.user.answers.registrant.id, registrant_info),
                 hub.create_registration(registration_info),
                 self.send_registration_thanks(),
-                self.annotate_pilot({
-                    language: (
-                        self.im.user.answers.state_language ||
-                        self.im.user.answers.registrant.details.lang_code),
-                    pilot_choice: self.im.user.answers.state_pilot || null,
-                    pilot_question: self.im.user.answers.state_pilot_question || null,
-                    pilot_source: 'ussd_clinic',
-                }),
+                self.annotate_pilot(
+                    self.im.user.answers.registrant_msisdn,
+                    {
+                        language: (
+                            self.im.user.answers.state_language ||
+                            self.im.user.answers.registrant.details.lang_code),
+                        pilot_choice: self.im.user.answers.state_pilot || null,
+                        pilot_question: self.im.user.answers.state_pilot_question || null,
+                        pilot_source: 'ussd_clinic',
+                    }),
             ])
             .then(function(response) {
                 return self.states.create('state_end_success');
