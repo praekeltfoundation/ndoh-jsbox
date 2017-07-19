@@ -748,9 +748,6 @@ describe("app", function() {
                 })
                 .setup(function(api) {
                     // add fixtures for services used
-
-                    // NOTE:    Skipping the hub fixtures are I'm adding them
-                    //          explicity as part of each testers setup
                     fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
                     fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
