@@ -561,7 +561,7 @@ go.app = function() {
                                 .im.metrics.fire.inc(
                                         ([self.metric_prefix, "registrations_started"].join('.')))
                                 .then(function() {
-                                    return self.states.create('state_suspect_pregnancy');
+                                    return self.states.create('state_language');
                                 });
                             }
                         });

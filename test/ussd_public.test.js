@@ -369,18 +369,23 @@ describe("app", function() {
                     });
                 });
                 describe("doesn't have active momconnect subscription", function() {
-                    it("should go to state_suspect_pregnancy", function() {
+                    it("should go to state_language", function() {
                         return tester
                         .setup.user.addr("27820001006")
                         .inputs(
                             {session_event: "new"}
                         )
                         .check.interaction({
-                            state: "state_suspect_pregnancy",
+                            state: "state_language",
                             reply: [
-                                "MomConnect sends free support SMSs to pregnant mothers. Are you or do you suspect that you are pregnant?",
-                                "1. Yes",
-                                "2. No"
+                                "Welcome to the Department of Health\'s MomConnect. Choose your language:",
+                                '1. isiZulu',
+                                '2. isiXhosa',
+                                '3. Afrikaans',
+                                '4. English',
+                                '5. Sesotho sa Leboa',
+                                '6. Setswana',
+                                '7. More',
                             ].join('\n')
                         })
                         .check(function(api) {
