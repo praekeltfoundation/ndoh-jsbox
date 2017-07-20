@@ -1860,6 +1860,7 @@ describe("app", function() {
                                     pilot_choice: 'whatsapp',
                                     pilot_question: 'How would the pregnant mother like to receive the messages?',
                                     pilot_source: 'ussd_clinic',
+                                    pilot_facility_code: '123456',
                                 }
                         })),
                         api.http.fixtures.add(

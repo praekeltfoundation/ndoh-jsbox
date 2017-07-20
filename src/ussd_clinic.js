@@ -901,6 +901,7 @@ go.app = function() {
                         pilot_choice: self.im.user.answers.state_pilot || null,
                         pilot_question: self.im.user.answers.state_pilot_question || null,
                         pilot_source: 'ussd_clinic',
+                        pilot_facility_code: self.im.user.answers.state_clinic_code || null,
                     }),
             ])
             .then(function(response) {
