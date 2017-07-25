@@ -213,7 +213,7 @@ go.app = function() {
                             self.im.user.i18n($(
                                 "Please dial back in to {{ USSD_number }} to complete the pregnancy registration."
                             ).context({
-                                USSD_number: self.im.config.channel
+                                USSD_number: self.format_ussd_code(channel, self.im.config.channel)
                             })),
                             {
                                 channel: channel
@@ -294,6 +294,15 @@ go.app = function() {
                         number: api_number,
                         metadata: metadata,
                     }});
+        };
+
+        self.format_ussd_code = function (channel, ussd_code) {
+            // Prevent *123*345# from getting printed as bold text
+            // in the phone client
+            if(channel == "WHATSAPP") {
+                return "```" + ussd_code + "```";
+            }
+            return ussd_code;
         };
 
         self.send_registration_thanks = function() {
