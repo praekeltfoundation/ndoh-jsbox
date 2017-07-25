@@ -304,7 +304,7 @@ go.app = function() {
                             self.im.user.i18n($(
                                 "Please dial back in to {{ USSD_number }} to complete the pregnancy registration."
                             ).context({
-                                USSD_number: self.im.config.channel
+                                USSD_number: self.format_ussd_code(channel, self.im.config.channel)
                             })), {
                                 channel: channel
                             });
@@ -430,6 +430,15 @@ go.app = function() {
             return registration_info;
         };
 
+        self.format_ussd_code = function (channel, ussd_code) {
+            // Prevent *123*345# from getting printed as bold text
+            // in the phone client
+            if(channel == "WHATSAPP") {
+                return "```" + ussd_code + "```";
+            }
+            return ussd_code;
+        };
+
         self.send_registration_thanks = function() {
             return self
                 .get_channel()
@@ -443,8 +452,8 @@ go.app = function() {
                                 "services dial {{public_channel}} (No Cost). Standard rates apply " +
                                 "when replying to any SMS from MomConnect."
                             ).context({
-                                public_channel: self.im.config.public_channel,
-                                optout_channel: self.im.config.optout_channel
+                                public_channel: self.format_ussd_code(channel, self.im.config.public_channel),
+                                optout_channel: self.format_ussd_code(channel, self.im.config.optout_channel),
                             })), {
                                 channel: channel
                             });
