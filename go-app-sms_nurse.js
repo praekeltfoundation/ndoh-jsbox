@@ -125,7 +125,7 @@ go.app = function() {
                 self.im.user.set_answer("operator", identity);
 
                 return sbm
-                .check_identity_subscribed(self.im.user.answers.operator.id, "nurseconnect")
+                .is_identity_subscribed(self.im.user.answers.operator.id, [/nurseconnect/])
                 .then(function(identity_subscribed_to_nurseconnect) {
                     if (identity_subscribed_to_nurseconnect) {
                         // check if message contains a ussd code
