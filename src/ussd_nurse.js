@@ -234,7 +234,7 @@ go.app = function() {
                     }
 
                     return sbm
-                    .check_identity_subscribed(self.im.user.answers.operator.id, "nurseconnect")
+                    .is_identity_subscribed(self.im.user.answers.operator.id, [/nurseconnect/])
                     .then(function(identity_subscribed_to_nurseconnect) {
                         if (identity_subscribed_to_nurseconnect) {
                             return self.states.create('state_subscribed');
@@ -893,7 +893,7 @@ go.app = function() {
                     .then(function(identities_found) {
                         if (identities_found.results.length > 0) {
                             return sbm
-                            .check_identity_subscribed(identities_found.results[0].id, "nurseconnect")
+                            .is_identity_subscribed(identities_found.results[0].id, [/nurseconnect/])
                             .then(function(identity_subscribed_to_nurseconnect) {
                                 if (identity_subscribed_to_nurseconnect) {
                                     self.im.user.set_answer("old_msisdn", old_msisdn);

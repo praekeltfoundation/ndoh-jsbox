@@ -402,7 +402,7 @@ go.app = function() {
             .then(function(identity) {
                 self.im.user.set_answer("identity", identity);
                 return sbm
-                .check_identity_subscribed(identity.id, "pmtct")
+                .is_identity_subscribed(identity.id, [/pmtct/])
                 .then(function(identity_subscribed_to_pmtct) {
                     if (identity_subscribed_to_pmtct) {
                         return self.im.user
