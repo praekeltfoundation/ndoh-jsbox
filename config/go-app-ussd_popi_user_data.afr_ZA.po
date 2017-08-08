@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: POPI_USER_DATA\n"
-"POT-Creation-Date: 2017-08-08 02:42:+0000\n"
-"PO-Revision-Date: 2017-08-08 16:45+0200\n"
+"POT-Creation-Date: 2017-08-08 03:34:+0000\n"
+"PO-Revision-Date: 2017-08-08 17:40+0200\n"
 "Last-Translator: Kaitlyn Crawford <kaitlyn@praekelt.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: Language: af\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: go-app-ussd_popi_user_data.js:78
+#: go-app-ussd_popi_user_data.js:94
 msgid ""
 "Personal info:\n"
 "Phone Number: {{msisdn}}\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Geboortedatum: {{dob}}\n"
 "Taal: {{lang}}"
 
-#: go-app-ussd_popi_user_data.js:90
+#: go-app-ussd_popi_user_data.js:106
 msgid ""
 "Personal info:\n"
 "Phone Number: {{msisdn}}\n"
@@ -41,7 +41,7 @@ msgstr ""
 "Geboortedatum: {{dob}}\n"
 "Taal: {{lang}}"
 
-#: go-app-ussd_popi_user_data.js:105
+#: go-app-ussd_popi_user_data.js:121
 msgid ""
 "{{first}}\n"
 "Message set: {{mset}}"
@@ -49,61 +49,73 @@ msgstr ""
 "{{first}}\n"
 "Boodskapgroep: {{mset}}"
 
-#: go-app-ussd_popi_user_data.js:157
+#: go-app-ussd_popi_user_data.js:173
 msgid "Welcome back. Please select an option:"
 msgstr "Welkom terug. Kies asb 'n opsie:"
 
-#: go-app-ussd_popi_user_data.js:159
+#: go-app-ussd_popi_user_data.js:175
 msgid "Main menu"
 msgstr "Hoof Spyskaart"
 
-#: go-app-ussd_popi_user_data.js:215
+#: go-app-ussd_popi_user_data.js:231
 msgid "What would you like to do?"
 msgstr "Wat wil jy graag doen?"
 
-#: go-app-ussd_popi_user_data.js:217
+#: go-app-ussd_popi_user_data.js:233
 msgid "See my personal info"
 msgstr "Sien my persoonlike info"
 
-#: go-app-ussd_popi_user_data.js:218
+#: go-app-ussd_popi_user_data.js:234
+msgid "Send my personal info by sms"
+msgstr "Stuur my persoonlike info met 'n SMS"
+
+#: go-app-ussd_popi_user_data.js:235
 msgid "Change my info"
 msgstr "Verander my info"
 
-#: go-app-ussd_popi_user_data.js:219
+#: go-app-ussd_popi_user_data.js:236
 msgid "Request to delete my info"
 msgstr "Vra hulp om my info te skrap"
 
-#: go-app-ussd_popi_user_data.js:233
+#: go-app-ussd_popi_user_data.js:258
 msgid "More"
 msgstr "Meer"
 
-#: go-app-ussd_popi_user_data.js:234
+#: go-app-ussd_popi_user_data.js:259
 msgid "Back"
 msgstr "Terug"
 
-#: go-app-ussd_popi_user_data.js:235
+#: go-app-ussd_popi_user_data.js:260
 msgid "Exit"
 msgstr ""
 
-#: go-app-ussd_popi_user_data.js:244
+#: go-app-ussd_popi_user_data.js:270
+msgid ""
+"An SMS has been sent to your number containing your personal information "
+"stored by MomConnect."
+msgstr ""
+" 'n SMS is aan jou foonnommer gestuur met jou persoonlike info wat deur "
+"MomConnect gestoor is "
+
+#: go-app-ussd_popi_user_data.js:278
 msgid "What would you like to change? To change your due date, visit a clinic"
 msgstr ""
 "Wat wil jy graag verander? Om jou verwagte datum te verander, gaan na 'n "
 "kliniek"
 
-#: go-app-ussd_popi_user_data.js:246
+#: go-app-ussd_popi_user_data.js:280
 msgid "Update my language choice"
 msgstr "My taalkeuse bywerk"
 
-#: go-app-ussd_popi_user_data.js:247
+#: go-app-ussd_popi_user_data.js:281
 msgid "Update my identification"
 msgstr "My identifikasie bywerk"
 
-#: go-app-ussd_popi_user_data.js:248
+#: go-app-ussd_popi_user_data.js:282
 msgid "Use a different phone number"
 msgstr "'n Ander foonnommer gebruik"
 
-#: go-app-ussd_popi_user_data.js:258
+#: go-app-ussd_popi_user_data.js:292
 msgid ""
 "MomConnect will automatically delete your personal information 7 years and 9 "
 "months after you registered. Do you want us to delete it now?"
@@ -111,115 +123,115 @@ msgstr ""
 "MomConnect sal outomaties jou persoonlike info skrap 7 jaar en 9 maande na "
 "registrasie. Of wil jy dit nou skrap?"
 
-#: go-app-ussd_popi_user_data.js:262
+#: go-app-ussd_popi_user_data.js:296
 msgid "Yes"
 msgstr "Ja"
 
-#: go-app-ussd_popi_user_data.js:263
+#: go-app-ussd_popi_user_data.js:297
 msgid "No"
 msgstr "Nee"
 
-#: go-app-ussd_popi_user_data.js:277
+#: go-app-ussd_popi_user_data.js:311
 msgid "Choose a language for your messages:"
 msgstr "Kies 'n taal vir jou boodskappe:"
 
-#: go-app-ussd_popi_user_data.js:280
+#: go-app-ussd_popi_user_data.js:314
 msgid "isiZulu"
 msgstr "Zulu"
 
-#: go-app-ussd_popi_user_data.js:281
+#: go-app-ussd_popi_user_data.js:315
 msgid "isiXhosa"
 msgstr "Xhosa"
 
-#: go-app-ussd_popi_user_data.js:282
+#: go-app-ussd_popi_user_data.js:316
 msgid "Afrikaans"
 msgstr "Afrikaans"
 
-#: go-app-ussd_popi_user_data.js:283
+#: go-app-ussd_popi_user_data.js:317
 msgid "English"
 msgstr "Engels"
 
-#: go-app-ussd_popi_user_data.js:284
+#: go-app-ussd_popi_user_data.js:318
 msgid "Sesotho sa Leboa"
 msgstr "Noord-Sotho"
 
-#: go-app-ussd_popi_user_data.js:285
+#: go-app-ussd_popi_user_data.js:319
 msgid "Setswana"
 msgstr "Tswana"
 
-#: go-app-ussd_popi_user_data.js:286
+#: go-app-ussd_popi_user_data.js:320
 msgid "Sesotho"
 msgstr "Sotho"
 
-#: go-app-ussd_popi_user_data.js:287
+#: go-app-ussd_popi_user_data.js:321
 msgid "Xitsonga"
 msgstr "Tsonga"
 
-#: go-app-ussd_popi_user_data.js:288
+#: go-app-ussd_popi_user_data.js:322
 msgid "siSwati"
 msgstr "Swati"
 
-#: go-app-ussd_popi_user_data.js:289
+#: go-app-ussd_popi_user_data.js:323
 msgid "Tshivenda"
 msgstr "Venda"
 
-#: go-app-ussd_popi_user_data.js:290
+#: go-app-ussd_popi_user_data.js:324
 msgid "isiNdebele"
 msgstr "Ndebele"
 
-#: go-app-ussd_popi_user_data.js:319
+#: go-app-ussd_popi_user_data.js:353
 msgid "What kind of identification do you have?"
 msgstr "Watter soort ID het jy?"
 
-#: go-app-ussd_popi_user_data.js:321
+#: go-app-ussd_popi_user_data.js:355
 msgid "South African ID"
 msgstr "Suid-Afrikaanse ID"
 
-#: go-app-ussd_popi_user_data.js:322
+#: go-app-ussd_popi_user_data.js:356
 msgid "Passport"
 msgstr "Paspoort"
 
-#: go-app-ussd_popi_user_data.js:332
+#: go-app-ussd_popi_user_data.js:366
 msgid "Thank you. Please enter your ID number. eg. 8805100273098"
 msgstr "Baie dankie. Tik jou ID-nommer in ( bv. 8805100273098)"
 
-#: go-app-ussd_popi_user_data.js:338
+#: go-app-ussd_popi_user_data.js:372
 msgid "Invalid ID number. Please re-enter"
 msgstr "Ongeldige ID-nommer. Tik asb weer in"
 
-#: go-app-ussd_popi_user_data.js:347
+#: go-app-ussd_popi_user_data.js:381
 msgid "What is the country of origin of the passport?"
 msgstr "Watter land het jou paspoort uitgereik?"
 
-#: go-app-ussd_popi_user_data.js:349
+#: go-app-ussd_popi_user_data.js:383
 msgid "Zimbabwe"
 msgstr "Zimbabwe"
 
-#: go-app-ussd_popi_user_data.js:350
+#: go-app-ussd_popi_user_data.js:384
 msgid "Mozambique"
 msgstr "Mosambiek"
 
-#: go-app-ussd_popi_user_data.js:351
+#: go-app-ussd_popi_user_data.js:385
 msgid "Malawi"
 msgstr "Malawië"
 
-#: go-app-ussd_popi_user_data.js:352
+#: go-app-ussd_popi_user_data.js:386
 msgid "Nigeria"
 msgstr "Nigerië"
 
-#: go-app-ussd_popi_user_data.js:353
+#: go-app-ussd_popi_user_data.js:387
 msgid "DRC"
 msgstr "DRK"
 
-#: go-app-ussd_popi_user_data.js:354
+#: go-app-ussd_popi_user_data.js:388
 msgid "Somalia"
 msgstr "Somalië"
 
-#: go-app-ussd_popi_user_data.js:355
+#: go-app-ussd_popi_user_data.js:389
 msgid "Other"
 msgstr "Ander"
 
-#: go-app-ussd_popi_user_data.js:362
+#: go-app-ussd_popi_user_data.js:396
 msgid ""
 "There was an error in your entry. Please carefully enter the passport number "
 "again."
@@ -227,11 +239,11 @@ msgstr ""
 "Daar was 'n fout met die info wat jy ingetik het. Tik asb weer jou "
 "paspoortnommer in"
 
-#: go-app-ussd_popi_user_data.js:364
+#: go-app-ussd_popi_user_data.js:398
 msgid "Please enter the passport number:"
 msgstr "Tik asb jou paspoortnommer in:"
 
-#: go-app-ussd_popi_user_data.js:404
+#: go-app-ussd_popi_user_data.js:438
 msgid ""
 "Please enter the new phone number we should use to send you messages eg. "
 "0813547654"
@@ -239,11 +251,11 @@ msgstr ""
 "Tik asb die nuwe foonnommer in wat ons vir jou boodskappe moet gebruik, bv.  "
 "0813547654"
 
-#: go-app-ussd_popi_user_data.js:410
+#: go-app-ussd_popi_user_data.js:444
 msgid "Invalid phone number. Please re-enter (with no spaces)"
 msgstr "Ongeldige selnommer. Tik asb weer in (met geen spasies)"
 
-#: go-app-ussd_popi_user_data.js:463
+#: go-app-ussd_popi_user_data.js:497
 msgid ""
 "Sorry, the number you are trying to move to already has an active "
 "registration. To manage that registration, please redial from that number."
@@ -251,16 +263,16 @@ msgstr ""
 "Jammer, die nommer wat jy nou wil gebruik het reeds 'n aktiewe registrasie. "
 "Om daardie registrasie te bestuur moet jy met daardie nommer bel"
 
-#: go-app-ussd_popi_user_data.js:500
+#: go-app-ussd_popi_user_data.js:534
 msgid "Thank you. Your info has been updated."
 msgstr "Baie dankie. Jou info is bygewerk."
 
-#: go-app-ussd_popi_user_data.js:507
+#: go-app-ussd_popi_user_data.js:541
 msgid "Your personal information stored on MomConnect has not been removed."
 msgstr ""
 "Jou persoonlike info wat op MomConnect gestoor is, is nie verwyder nie."
 
-#: go-app-ussd_popi_user_data.js:545
+#: go-app-ussd_popi_user_data.js:579
 msgid ""
 "Thank you. All your information will be deleted from MomConnect in the next "
 "3 days."
@@ -268,7 +280,7 @@ msgstr ""
 "Baie dankie, Al jou persoonlike info sal uit  MomConnect geskrap word binne "
 "die volgende 3 dae."
 
-#: go-app-ussd_popi_user_data.js:554
+#: go-app-ussd_popi_user_data.js:588
 msgid ""
 "Sorry, that number is not recognised. Dial in with the number you used to "
 "register for MomConnect. To update number, dial *134*550*5# or register at a "
@@ -277,13 +289,3 @@ msgstr ""
 "Jammer nommer bestaan nie.  Gebruik selfde nommer waarmee jy geregistreer "
 "het. Skakel *134*550*5# of registreer weer by 'n kliniek om jou nommer by te "
 "werk."
-
-#~ msgid "Send my personal info by sms"
-#~ msgstr "Stuur my persoonlike info met 'n SMS"
-
-#~ msgid ""
-#~ "An SMS has been sent to your number containing your personal information "
-#~ "stored by MomConnect."
-#~ msgstr ""
-#~ " 'n SMS is aan jou foonnommer gestuur met jou persoonlike info wat deur "
-#~ "MomConnect gestoor is "
