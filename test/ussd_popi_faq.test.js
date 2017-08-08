@@ -23,9 +23,7 @@ describe("app", function() {
                     env: 'test',
                     metric_store: 'test_metric_store',
                     testing_today: "2014-04-04 07:07:07",
-                    testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',
                     logging: "off",
-                    no_timeout_redirects: ["state_start"],
                     channel: "*134*550*7#",
                     services: {
                         identity_store: {
@@ -47,60 +45,6 @@ describe("app", function() {
                     fixtures_ServiceRating().forEach(api.http.fixtures.add); // 50 - 69
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 70 ->
                 });
-        });
-
-        describe("timeout testing", function() {
-            describe("when you timeout and dial back in", function() {
-                it("should restart, not go state_timed_out", function() {
-                    return tester
-                    .setup.user.addr("27820001002")
-                    .inputs(
-                        {session_event: "new"}
-                        , {session_event: "close"}
-                        , {session_event: "new"}
-                    )
-                    .check.interaction({
-                        state: "state_timed_out",
-                    })
-                    .run();
-                });
-            });
-            describe("when you've reached state_timed_out", function() {
-                describe("choosing to continue", function() {
-                    it("should go back to the state you were on", function() {
-                        return tester
-                        .setup.user.addr("27820001002")
-                        .inputs(
-                            {session_event: "new"}
-                            , "1" // pick question 1
-                            , {session_event: "close"}
-                            , {session_event: "new"}
-                            , "1"  // state_timed_out - choose continue
-                        )
-                        .check.interaction({
-                            state: "state_question_1",
-                        })
-                        .run();
-                    });
-                });
-
-                describe("choosing to abort", function() {
-                    it("should restart", function() {
-                        return tester
-                        .setup.user.addr("27820001002")
-                        .inputs(
-                            {session_event: "new"}
-                            , {session_event: "close"}
-                            , {session_event: "new"}
-                            , "2"  // state_timed_out - main menu
-                        )
-                        .check.interaction({
-                            state: "state_all_questions_view",
-                        })
-                        .run();
-                    });
-                });
-            });
         });
 
         describe("state_start", function() {
