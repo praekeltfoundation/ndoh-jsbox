@@ -25,7 +25,6 @@ go.app = function() {
         var is;
         var sbm;
         var hub;
-        var ms;
 
         self.init = function() {
             // initialise services
@@ -43,12 +42,6 @@ go.app = function() {
                 new JsonApi(self.im, {}),
                 self.im.config.services.hub.token,
                 self.im.config.services.hub.url
-            );
-            ms = new SeedJsboxUtils.MessageSender(
-                new JsonApi(self.im, {}),
-                self.im.config.services.message_sender.token,
-                self.im.config.services.message_sender.url,
-                self.im.config.services.message_sender.channel
             );
 
             self.env = self.im.config.env;
@@ -77,15 +70,6 @@ go.app = function() {
                 // as well as <env>.sum.sessions.transient 'sum' metric
                 .add.total_sessions([self.env, 'sum', 'sessions'].join('.'))
             ;
-        };
-
-        self.send_data_as_sms = function() {
-            return ms.
-            create_outbound_message(
-                self.im.user.answers.operator.id,
-                self.im.user.answers.msisdn,
-                self.im.user.i18n(self.return_user_data())
-            );
         };
 
         self.return_user_data = function(){
@@ -231,20 +215,11 @@ go.app = function() {
                 question: $('What would you like to do?'),
                 choices: [
                     new Choice('state_view', $('See my personal info')),
-                    new Choice('state_view_sms', $('Send my personal info by sms')),
                     new Choice('state_change_data', $('Change my info')),
                     new Choice('state_confirm_delete', $('Request to delete my info')),
                 ],
                 next: function(choice) {
-                    if (choice.value === 'state_view_sms') {
-                        return self
-                        .send_data_as_sms()
-                        .then(function() {
-                            return 'state_view_sms';
-                        });
-                    }else{
-                        return choice.value;
-                    }
+                    return choice.value;
                 }
             });
         });
@@ -263,15 +238,6 @@ go.app = function() {
                 }
             });
         });
-
-
-        self.add('state_view_sms', function(name) {
-            return new EndState(name, {
-                text: $('An SMS has been sent to your number containing your ' +
-                        'personal information stored by MomConnect.'),
-                next: 'state_start'
-            });
-        }); 
 
         self.add('state_change_data', function(name) {
             return new ChoiceState(name, {
