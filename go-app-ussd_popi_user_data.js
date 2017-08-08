@@ -18,7 +18,6 @@ go.app = function() {
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_start");
         var $ = self.$;
-        var interrupt = true;
         var utils = SeedJsboxUtils.utils;
 
         // variables for services
@@ -139,33 +138,7 @@ go.app = function() {
                 }
         };
 
-        // override normal state adding
-        self.add = function(name, creator) {
-            self.states.add(name, function(name, opts) {
-                if (!interrupt || !utils.timed_out(self.im))
-                    return creator(name, opts);
-
-                interrupt = false;
-                var timeout_opts = opts || {};
-                timeout_opts.name = name;
-                return self.states.create('state_timed_out', timeout_opts);
-            });
-        };
-
-        self.states.add('state_timed_out', function(name, creator_opts) {
-            return new ChoiceState(name, {
-                question: $('Welcome back. Please select an option:'),
-                choices: [
-                    new Choice('state_start', $('Main menu'))
-                ],
-                next: function(choice) {
-                    return choice.value;
-                }
-            });
-        });
-
-
-        self.add("state_start", function(name) {
+        self.states.add("state_start", function(name) {
             self.im.user.set_answers = {};
             var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
             self.im.user.set_answer("operator_msisdn", msisdn);
@@ -210,7 +183,7 @@ go.app = function() {
         });
 
         // OPTIONS MENU
-        self.add('state_all_options_view', function(name) {
+        self.states.add('state_all_options_view', function(name) {
             return new ChoiceState(name, {
                 question: $('What would you like to do?'),
                 choices: [
@@ -226,7 +199,7 @@ go.app = function() {
 
         // OPTIONS
 
-        self.add('state_view', function(name) {
+        self.states.add('state_view', function(name) {
             return new PaginatedState(name, {
                 text: self.return_user_data(),
                 characters_per_page: 140,
@@ -239,7 +212,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_change_data', function(name) {
+        self.states.add('state_change_data', function(name) {
             return new ChoiceState(name, {
                 question: $('What would you like to change? To change your due date, visit a clinic'),
                 choices: [
@@ -253,7 +226,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_confirm_delete', function(name) {
+        self.states.add('state_confirm_delete', function(name) {
             return new ChoiceState(name, {
                 question: $('MomConnect will automatically delete your ' +
                     'personal information 7 years and 9 months after you ' +
@@ -272,7 +245,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_select_language', function(name) {
+        self.states.add('state_select_language', function(name) {
             return new PaginatedChoiceState(name, {
                 question: $('Choose a language for your messages:'),
                 options_per_page: null,
@@ -293,7 +266,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_switch_lang', function(name) {
+        self.states.add('state_switch_lang', function(name) {
             var change_info = {
                 "registrant_id": self.im.user.answers.operator.id,
                 "action": "momconnect_change_language",
@@ -314,7 +287,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_change_identity', function(name) {
+        self.states.add('state_change_identity', function(name) {
             return new ChoiceState(name, {
                 question: $('What kind of identification do you have?'),
                 choices: [
@@ -327,7 +300,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_change_sa_id', function(name) {
+        self.states.add('state_change_sa_id', function(name) {
             return new FreeText(name, {
                 question: $('Thank you. Please enter your ID number. eg. ' +
                             '8805100273098'),
@@ -342,7 +315,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_passport_origin', function(name) {
+        self.states.add('state_passport_origin', function(name) {
             return new ChoiceState(name, {
                 question: $('What is the country of origin of the passport?'),
                 choices: [
@@ -358,7 +331,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_passport_no', function(name) {
+        self.states.add('state_passport_no', function(name) {
             var error = $('There was an error in your entry. Please ' +
                         'carefully enter the passport number again.');
             var question = $('Please enter the passport number:');
@@ -373,7 +346,7 @@ go.app = function() {
             });
         });
         
-        self.add('state_create_identification_change', function(name) {
+        self.states.add('state_create_identification_change', function(name) {
             var data = {};
             if (self.im.user.answers.state_change_identity == 'state_change_sa_id') {
                 data = {
@@ -399,7 +372,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_new_msisdn', function(name) {
+        self.states.add('state_new_msisdn', function(name) {
             return new FreeText(name, {
                 question: $('Please enter the new phone number we should use ' +
                             'to send you messages eg. 0813547654'),
@@ -414,7 +387,7 @@ go.app = function() {
             });
         });
         
-        self.add('state_check_msisdn_available', function(name) {
+        self.states.add('state_check_msisdn_available', function(name) {
             var new_msisdn = utils.normalize_msisdn(self.im.user.answers.state_new_msisdn, '27');
             self.im.user.set_answer("new_msisdn", new_msisdn);
 
@@ -458,14 +431,14 @@ go.app = function() {
             });
         });
 
-        self.add('state_msisdn_change_fail', function(name) {
+        self.states.add('state_msisdn_change_fail', function(name) {
             return new EndState(name, {
                 text: $("Sorry, the number you are trying to move to already has an active registration. To manage that registration, please redial from that number."),
                 next: 'state_start'
             });
         });
 
-        self.add('state_create_msisdn_change', function(name) {
+        self.states.add('state_create_msisdn_change', function(name) {
             var change_info = {
                 "registrant_id": self.im.user.answers.operator.id,
                 "action": "momconnect_change_msisdn",
@@ -495,14 +468,14 @@ go.app = function() {
             });
         });
 
-        self.add('state_updated', function(name) {
+        self.states.add('state_updated', function(name) {
             return new EndState(name, {
                 text: $('Thank you. Your info has been updated.'),
                 next: 'state_start'
             });
         });
 
-        self.add('state_info_not_deleted', function(name) {
+        self.states.add('state_info_not_deleted', function(name) {
             return new EndState(name, {
                 text: $('Your personal information stored on MomConnect has ' +
                         'not been removed.'),
@@ -510,7 +483,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_optout', function(name) {
+        self.states.add('state_optout', function(name) {
             return hub
             .create_change(
                 {
@@ -540,7 +513,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_info_deleted', function(name) {
+        self.states.add('state_info_deleted', function(name) {
             return new EndState(name, {
                 text: $('Thank you. All your information will be deleted ' +
                         'from MomConnect in the next [X] days.'),
@@ -549,7 +522,7 @@ go.app = function() {
         });
 
 
-        self.add('state_not_registered', function(name) {
+        self.states.add('state_not_registered', function(name) {
             return new EndState(name, {
                 text: $('Sorry, that number is not recognised. Dial in with the number ' +
                         'you used to register for MomConnect. To update ' +
