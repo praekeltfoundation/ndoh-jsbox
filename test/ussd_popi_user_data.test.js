@@ -23,7 +23,9 @@ describe('app', function() {
                     env: 'test',
                     metric_store: 'test_metric_store',
                     testing_today: '2014-04-04 07:07:07',
+                    testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',
                     logging: 'off',
+                    no_timeout_redirects: ['state_start'],
                     channel: '*134*550*5#',
                     services: {
                         identity_store: {
