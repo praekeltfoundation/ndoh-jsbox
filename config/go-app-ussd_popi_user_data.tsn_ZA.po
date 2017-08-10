@@ -1,14 +1,14 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2017-06-07 03:46:+0000\n"
 "Project-Id-Version: POPI_USER_DATA\n"
+"POT-Creation-Date: 2017-08-08 03:34:+0000\n"
+"PO-Revision-Date: 2017-08-08 17:39+0200\n"
+"Last-Translator: Kaitlyn Crawford <kaitlyn@praekelt.org>\n"
 "Language-Team: Setswana <LL@li.org>\n"
 "Language: tsn\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-06-28 17:15+0200\n"
-"Last-Translator: Kaitlyn Crawford <kaitlyn@praekelt.org>\n"
 "X-Generator: Poedit 1.5.4\n"
 
 #: go-app-ussd_popi_user_data.js:94
@@ -274,10 +274,10 @@ msgstr ""
 #: go-app-ussd_popi_user_data.js:579
 msgid ""
 "Thank you. All your information will be deleted from MomConnect in the next "
-"[X] days."
+"3 days."
 msgstr ""
 "Re a leboga. Dintlha tsa gago tsotlhe di tla phimolwa mo go MomConnect mo "
-"matsatsing a le [X] a a latelang."
+"matsatsing a le 3 a a latelang."
 
 #: go-app-ussd_popi_user_data.js:588
 msgid ""

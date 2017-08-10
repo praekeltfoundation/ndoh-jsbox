@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: POPI_USER_DATA\n"
-"POT-Creation-Date: 2017-06-07 03:31:+0000\n"
-"PO-Revision-Date: 2017-06-28 17:44+0200\n"
+"POT-Creation-Date: 2017-08-08 03:34:+0000\n"
+"PO-Revision-Date: 2017-08-08 17:38+0200\n"
 "Last-Translator: Kaitlyn Crawford <kaitlyn@praekelt.org>\n"
 "Language-Team: NDEBELE <LL@li.org>\n"
 "Language: nr\n"
@@ -275,10 +275,10 @@ msgstr "Imininingwanakho efakwe kuMomConnect ayikasuswa."
 #: go-app-ussd_popi_user_data.js:579
 msgid ""
 "Thank you. All your information will be deleted from MomConnect in the next "
-"[X] days."
+"3 days."
 msgstr ""
 "Ngiyathokoza. Loke ilwazi okungelakho lizakusulwa kuMomConnect emalangeni "
-"ali [X] azako."
+"ali 3 azako."
 
 #: go-app-ussd_popi_user_data.js:588
 msgid ""
