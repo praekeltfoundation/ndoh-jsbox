@@ -98,7 +98,8 @@ go.app = function() {
 
                 return sbm
                 // check if registered
-                .is_identity_subscribed(self.im.user.answers.operator.id, [/momconnect/])
+                .is_identity_subscribed(self.im.user.answers.operator.id,
+                                        [/^momconnect/, /^whatsapp/])
                 .then(function(identity_subscribed_to_momconnect) {
                     if (identity_subscribed_to_momconnect) {
                         return self.states.create('state_all_questions_view');
