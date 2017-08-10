@@ -4,6 +4,7 @@ go.app = function() {
     var MetricsHelper = require('go-jsbox-metrics-helper');
     var App = vumigo.App;
     var EndState = vumigo.states.EndState;
+    var ChoiceState = vumigo.states.ChoiceState;
     var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
     var PaginatedState = vumigo.states.PaginatedState;
     var Choice = vumigo.states.Choice;
@@ -12,6 +13,7 @@ go.app = function() {
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_start");
         var $ = self.$;
+        var interrupt = true;
         var utils = SeedJsboxUtils.utils;
 
         var is;
@@ -58,7 +60,32 @@ go.app = function() {
             ;
         };
 
-        self.states.add("state_start", function(name) {
+        self.add = function(name, creator) {
+            self.states.add(name, function(name, opts) {
+                if (!interrupt || !utils.timed_out(self.im))
+                    return creator(name, opts);
+
+                interrupt = false;
+                var timeout_opts = opts || {};
+                timeout_opts.name = name;
+                return self.states.create('state_timed_out', timeout_opts);
+            });
+        };
+
+        self.states.add('state_timed_out', function(name, creator_opts) {
+            return new ChoiceState(name, {
+                question: $('Welcome back. Please select an option:'),
+                choices: [
+                    new Choice(creator_opts.name, $('Continue viewing FAQ')),
+                    new Choice('state_start', $('Main menu'))
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+        self.add("state_start", function(name) {
             self.im.user.set_answers = {};
             var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
             return is
@@ -84,7 +111,7 @@ go.app = function() {
 
         // QUESTION MENU
 
-        self.states.add('state_all_questions_view', function(name) {
+        self.add('state_all_questions_view', function(name) {
             return new PaginatedChoiceState(name, {
                 question: $('Choose a question about MomConnect (MC):'),
                 options_per_page: null,
@@ -107,7 +134,7 @@ go.app = function() {
 
         // ANSWERS
 
-        self.states.add('state_question_1', function(name) {
+        self.add('state_question_1', function(name) {
             return new PaginatedState(name, {
                 text: $('MC is a Health Department programme. It sends SMS ' +
                         'messages for you & your baby. To see, change ' +
@@ -122,7 +149,7 @@ go.app = function() {
         });
 
 
-        self.states.add('state_question_2', function(name) {
+        self.add('state_question_2', function(name) {
             return new PaginatedState(name, {
                 text: $('MomConnect needs your personal info to send ' +
                         'you messages that are relevant to your ' +
@@ -142,7 +169,7 @@ go.app = function() {
             });
         }); 
 
-        self.states.add('state_question_3', function(name) {
+        self.add('state_question_3', function(name) {
             return new PaginatedState(name, {
                 text: $('MomConnect collects your phone and ID numbers, clinic ' +
                         'location, and information about how your pregnancy ' +
@@ -156,7 +183,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_question_4', function(name) {
+        self.add('state_question_4', function(name) {
             return new PaginatedState(name, {
                 text: $('MomConnect is owned and run by ' +
                         'the Health Department. MTN, Cell C, Telkom, ' +
@@ -171,7 +198,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_question_5', function(name) {
+        self.add('state_question_5', function(name) {
             return new PaginatedState(name, {
                 text: $('You can see, change, or ask us to delete your ' +
                         'information by dialing *134*550*7#'),
@@ -184,7 +211,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_question_6', function(name) {
+        self.add('state_question_6', function(name) {
             return new PaginatedState(name, {
                 text: $('MomConnect will automatically delete your ' +
                         'personal information 7 years and 9 months ' +
@@ -198,7 +225,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_not_registered', function(name) {
+        self.add('state_not_registered', function(name) {
             return new EndState(name, {
                 text: $('Sorry, that number is not recognised. Dial in with ' +
                         'the number you first used to register. To update ' +
