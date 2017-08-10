@@ -181,7 +181,8 @@ go.app = function() {
                 
                 return sbm
                 // check that user is registered on momconnect   
-                .is_identity_subscribed(self.im.user.answers.operator.id, [/momconnect/])
+                .is_identity_subscribed(self.im.user.answers.operator.id,
+                                        [/^momconnect/, /^whatsapp/])
                 .then(function(identity_subscribed_to_momconnect) {
                     if (identity_subscribed_to_momconnect) {
                         var promises = [];
