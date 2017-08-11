@@ -60,45 +60,9 @@ describe("app", function() {
                         , {session_event: "new"}
                     )
                     .check.interaction({
-                        state: "state_timed_out",
+                        state: "state_all_questions_view",
                     })
                     .run();
-                });
-            });
-            describe("when you've reached state_timed_out", function() {
-                describe("choosing to continue", function() {
-                    it("should go back to the state you were on", function() {
-                        return tester
-                        .setup.user.addr("27820001002")
-                        .inputs(
-                            {session_event: "new"}
-                            , "1" // pick question 1
-                            , {session_event: "close"}
-                            , {session_event: "new"}
-                            , "1"  // state_timed_out - choose continue
-                        )
-                        .check.interaction({
-                            state: "state_question_1",
-                        })
-                        .run();
-                    });
-                });
-
-                describe("choosing to abort", function() {
-                    it("should restart", function() {
-                        return tester
-                        .setup.user.addr("27820001002")
-                        .inputs(
-                            {session_event: "new"}
-                            , {session_event: "close"}
-                            , {session_event: "new"}
-                            , "2"  // state_timed_out - main menu
-                        )
-                        .check.interaction({
-                            state: "state_all_questions_view",
-                        })
-                        .run();
-                    });
                 });
             });
         });

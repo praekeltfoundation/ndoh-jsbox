@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: POPI_USER_DATA\n"
-"POT-Creation-Date: 2017-08-08 03:34:+0000\n"
-"PO-Revision-Date: 2017-08-08 17:39+0200\n"
+"POT-Creation-Date: 2017-08-11 11:07:+0000\n"
+"PO-Revision-Date: 2017-08-11 13:11+0200\n"
 "Last-Translator: Kaitlyn Crawford <kaitlyn@praekelt.org>\n"
 "Language-Team: SeSotho <LL@li.org>\n"
 "Language: sot\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: go-app-ussd_popi_user_data.js:94
+#: go-app-ussd_popi_user_data.js:79
 msgid ""
 "Personal info:\n"
 "Phone Number: {{msisdn}}\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Letsatsi la tswalo: {{dob}}\n"
 "Puo: {{lang}}"
 
-#: go-app-ussd_popi_user_data.js:106
+#: go-app-ussd_popi_user_data.js:91
 msgid ""
 "Personal info:\n"
 "Phone Number: {{msisdn}}\n"
@@ -41,7 +41,7 @@ msgstr ""
 "Letsatsi la tswalo: {{dob}}\n"
 "Puo: {{lang}}"
 
-#: go-app-ussd_popi_user_data.js:121
+#: go-app-ussd_popi_user_data.js:106
 msgid ""
 "{{first}}\n"
 "Message set: {{mset}}"
@@ -49,71 +49,51 @@ msgstr ""
 "{{first}}\n"
 "Melaetsa sehlopha: {{mset}}"
 
-#: go-app-ussd_popi_user_data.js:173
-msgid "Welcome back. Please select an option:"
-msgstr "Dumela hape. Kgetha ka kopo:"
-
-#: go-app-ussd_popi_user_data.js:175
-msgid "Main menu"
-msgstr "Menu ya Sehlooho"
-
-#: go-app-ussd_popi_user_data.js:231
+#: go-app-ussd_popi_user_data.js:210
 msgid "What would you like to do?"
 msgstr "O ka rata ho etsang?"
 
-#: go-app-ussd_popi_user_data.js:233
+#: go-app-ussd_popi_user_data.js:212
 msgid "See my personal info"
 msgstr "Ho bona lesedi la ka"
 
-#: go-app-ussd_popi_user_data.js:234
-msgid "Send my personal info by sms"
-msgstr "Romela dintlha tsa ka ka sms"
-
-#: go-app-ussd_popi_user_data.js:235
+#: go-app-ussd_popi_user_data.js:213
 msgid "Change my info"
 msgstr "Ho fetola lesedi la ka"
 
-#: go-app-ussd_popi_user_data.js:236
+#: go-app-ussd_popi_user_data.js:214
 msgid "Request to delete my info"
 msgstr "Ho kopa ho tima lesedi la ka"
 
-#: go-app-ussd_popi_user_data.js:258
+#: go-app-ussd_popi_user_data.js:225
 msgid "More"
 msgstr ""
 
-#: go-app-ussd_popi_user_data.js:259
+#: go-app-ussd_popi_user_data.js:226
 msgid "Back"
 msgstr "Kgutlela morao"
 
-#: go-app-ussd_popi_user_data.js:260
+#: go-app-ussd_popi_user_data.js:227
 msgid "Exit"
 msgstr ""
 
-#: go-app-ussd_popi_user_data.js:270
-msgid ""
-"An SMS has been sent to your number containing your personal information "
-"stored by MomConnect."
-msgstr ""
-"SMS rometswe nomorong e nang le dintlha tsa hao tsa botho tse bolokilweng ke "
-"MomConnect."
-
-#: go-app-ussd_popi_user_data.js:278
+#: go-app-ussd_popi_user_data.js:236
 msgid "What would you like to change? To change your due date, visit a clinic"
 msgstr "O rata ho fetohe eng? Ho fetola letsatsi la ketelo, etela tleleniki "
 
-#: go-app-ussd_popi_user_data.js:280
+#: go-app-ussd_popi_user_data.js:238
 msgid "Update my language choice"
 msgstr "Ntjhafatsa kgetho ya puo"
 
-#: go-app-ussd_popi_user_data.js:281
+#: go-app-ussd_popi_user_data.js:239
 msgid "Update my identification"
 msgstr "Ntjhafatsa boitsebiso ba ka"
 
-#: go-app-ussd_popi_user_data.js:282
+#: go-app-ussd_popi_user_data.js:240
 msgid "Use a different phone number"
 msgstr "Sedisa nomoro ya fono e fapaneng"
 
-#: go-app-ussd_popi_user_data.js:292
+#: go-app-ussd_popi_user_data.js:250
 msgid ""
 "MomConnect will automatically delete your personal information 7 years and 9 "
 "months after you registered. Do you want us to delete it now?"
@@ -121,126 +101,126 @@ msgstr ""
 "MomConnect ka ho iketsahalla e tla tima lesedi la hao la botho dilemo tse 7 "
 "le dikgwedi tse 9 ka mora ho ngodisa. Kapa o batla re le time hona jwale?"
 
-#: go-app-ussd_popi_user_data.js:296
+#: go-app-ussd_popi_user_data.js:254
 msgid "Yes"
 msgstr "E"
 
-#: go-app-ussd_popi_user_data.js:297
+#: go-app-ussd_popi_user_data.js:255
 msgid "No"
 msgstr "Tjhe"
 
-#: go-app-ussd_popi_user_data.js:311
+#: go-app-ussd_popi_user_data.js:269
 msgid "Choose a language for your messages:"
 msgstr "Kgetha puo ya melaetsa ya hao:"
 
-#: go-app-ussd_popi_user_data.js:314
+#: go-app-ussd_popi_user_data.js:272
 msgid "isiZulu"
 msgstr "Sezulu"
 
-#: go-app-ussd_popi_user_data.js:315
+#: go-app-ussd_popi_user_data.js:273
 msgid "isiXhosa"
 msgstr "Sexhosa"
 
-#: go-app-ussd_popi_user_data.js:316
+#: go-app-ussd_popi_user_data.js:274
 msgid "Afrikaans"
 msgstr ""
 
-#: go-app-ussd_popi_user_data.js:317
+#: go-app-ussd_popi_user_data.js:275
 msgid "English"
 msgstr ""
 
-#: go-app-ussd_popi_user_data.js:318
+#: go-app-ussd_popi_user_data.js:276
 msgid "Sesotho sa Leboa"
 msgstr "Sepedi"
 
-#: go-app-ussd_popi_user_data.js:319
+#: go-app-ussd_popi_user_data.js:277
 msgid "Setswana"
 msgstr ""
 
-#: go-app-ussd_popi_user_data.js:320
+#: go-app-ussd_popi_user_data.js:278
 msgid "Sesotho"
 msgstr ""
 
-#: go-app-ussd_popi_user_data.js:321
+#: go-app-ussd_popi_user_data.js:279
 msgid "Xitsonga"
 msgstr ""
 
-#: go-app-ussd_popi_user_data.js:322
+#: go-app-ussd_popi_user_data.js:280
 msgid "siSwati"
 msgstr "SiSwati"
 
-#: go-app-ussd_popi_user_data.js:323
+#: go-app-ussd_popi_user_data.js:281
 msgid "Tshivenda"
 msgstr ""
 
-#: go-app-ussd_popi_user_data.js:324
+#: go-app-ussd_popi_user_data.js:282
 msgid "isiNdebele"
 msgstr ""
 
-#: go-app-ussd_popi_user_data.js:353
+#: go-app-ussd_popi_user_data.js:311
 msgid "What kind of identification do you have?"
 msgstr "Ke mofuta ofe wa boitsebiso o nang le wona?"
 
-#: go-app-ussd_popi_user_data.js:355
+#: go-app-ussd_popi_user_data.js:313
 msgid "South African ID"
 msgstr "ID ya Afrika Borwa"
 
-#: go-app-ussd_popi_user_data.js:356
+#: go-app-ussd_popi_user_data.js:314
 msgid "Passport"
 msgstr "Phasepoto"
 
-#: go-app-ussd_popi_user_data.js:366
+#: go-app-ussd_popi_user_data.js:324
 msgid "Thank you. Please enter your ID number. eg. 8805100273098"
 msgstr "Diteboho. Ka kopo kenya nomoro ya hao ya-ID (mohl. 8805100273098)"
 
-#: go-app-ussd_popi_user_data.js:372
+#: go-app-ussd_popi_user_data.js:330
 msgid "Invalid ID number. Please re-enter"
 msgstr "Nomoro ID fosahetse. Kenya hape"
 
-#: go-app-ussd_popi_user_data.js:381
+#: go-app-ussd_popi_user_data.js:339
 msgid "What is the country of origin of the passport?"
 msgstr "Ke efe naha ya mathomo ya phasepoto ya hao?"
 
-#: go-app-ussd_popi_user_data.js:383
+#: go-app-ussd_popi_user_data.js:341
 msgid "Zimbabwe"
 msgstr ""
 
-#: go-app-ussd_popi_user_data.js:384
+#: go-app-ussd_popi_user_data.js:342
 msgid "Mozambique"
 msgstr ""
 
-#: go-app-ussd_popi_user_data.js:385
+#: go-app-ussd_popi_user_data.js:343
 msgid "Malawi"
 msgstr ""
 
-#: go-app-ussd_popi_user_data.js:386
+#: go-app-ussd_popi_user_data.js:344
 msgid "Nigeria"
 msgstr ""
 
-#: go-app-ussd_popi_user_data.js:387
+#: go-app-ussd_popi_user_data.js:345
 msgid "DRC"
 msgstr ""
 
-#: go-app-ussd_popi_user_data.js:388
+#: go-app-ussd_popi_user_data.js:346
 msgid "Somalia"
 msgstr ""
 
-#: go-app-ussd_popi_user_data.js:389
+#: go-app-ussd_popi_user_data.js:347
 msgid "Other"
 msgstr "E nngwe"
 
-#: go-app-ussd_popi_user_data.js:396
+#: go-app-ussd_popi_user_data.js:354
 msgid ""
 "There was an error in your entry. Please carefully enter the passport number "
 "again."
 msgstr ""
 "Ho bile le phoso ha o qala.  Kenya nomoro ya phasepoto ya hao hape ka hloko."
 
-#: go-app-ussd_popi_user_data.js:398
+#: go-app-ussd_popi_user_data.js:356
 msgid "Please enter the passport number:"
 msgstr "Diteboho. Ka kopo kenya nomoro ya phasepoto ya hao."
 
-#: go-app-ussd_popi_user_data.js:438
+#: go-app-ussd_popi_user_data.js:396
 msgid ""
 "Please enter the new phone number we should use to send you messages eg. "
 "0813547654"
@@ -248,11 +228,11 @@ msgstr ""
 "Ka kopo kenya nomoro e ntjha ya fono e re tla e sebedisa ho o romella "
 "melaetsa mohl. 0813547654"
 
-#: go-app-ussd_popi_user_data.js:444
+#: go-app-ussd_popi_user_data.js:402
 msgid "Invalid phone number. Please re-enter (with no spaces)"
 msgstr "Nomoro ya fono fosahetse. Kenya hape (ho se be dikgeo)"
 
-#: go-app-ussd_popi_user_data.js:497
+#: go-app-ussd_popi_user_data.js:455
 msgid ""
 "Sorry, the number you are trying to move to already has an active "
 "registration. To manage that registration, please redial from that number."
@@ -260,15 +240,15 @@ msgstr ""
 "Tshwarelo, nomoro eo o e letsetsang e se e ntse e ngodisitswe.  Ho fihlella "
 "ngodiso eo, letsa hape ho tswa hona nomorong eo."
 
-#: go-app-ussd_popi_user_data.js:534
+#: go-app-ussd_popi_user_data.js:492
 msgid "Thank you. Your info has been updated."
 msgstr "Diteboho. Lesedi la hao le ntjhafaditswe."
 
-#: go-app-ussd_popi_user_data.js:541
+#: go-app-ussd_popi_user_data.js:499
 msgid "Your personal information stored on MomConnect has not been removed."
 msgstr "Dintlha tsa hao tse bolokilweng ho MomConnect ha di so tloswe."
 
-#: go-app-ussd_popi_user_data.js:579
+#: go-app-ussd_popi_user_data.js:537
 msgid ""
 "Thank you. All your information will be deleted from MomConnect in the next "
 "3 days."
@@ -276,7 +256,7 @@ msgstr ""
 "Diteboho. Lesedi lohle la hao la botho le tla tinngwa ho MomConnect "
 "matsatsing a latelang a 3."
 
-#: go-app-ussd_popi_user_data.js:588
+#: go-app-ussd_popi_user_data.js:546
 msgid ""
 "Sorry, that number is not recognised. Dial in with the number you used to "
 "register for MomConnect. To update number, dial *134*550*5# or register at a "
@@ -285,3 +265,19 @@ msgstr ""
 "Tshwarelo, nomoro ha e tsejwe.Tobetsa nomoro o e sebedisitseng pele ho "
 "ngodisa. Ho ntjhafatsa nomoro ya hao, letsetsa *134*550*5# kapa ngodisa hape "
 "tleleniking."
+
+#~ msgid "Welcome back. Please select an option:"
+#~ msgstr "Dumela hape. Kgetha ka kopo:"
+
+#~ msgid "Main menu"
+#~ msgstr "Menu ya Sehlooho"
+
+#~ msgid "Send my personal info by sms"
+#~ msgstr "Romela dintlha tsa ka ka sms"
+
+#~ msgid ""
+#~ "An SMS has been sent to your number containing your personal information "
+#~ "stored by MomConnect."
+#~ msgstr ""
+#~ "SMS rometswe nomorong e nang le dintlha tsa hao tsa botho tse bolokilweng "
+#~ "ke MomConnect."

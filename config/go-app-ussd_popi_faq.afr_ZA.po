@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: POPI_FAQ\n"
-"POT-Creation-Date: 2017-06-09 06:25:+0000\n"
-"PO-Revision-Date: 2017-06-27 12:37+0200\n"
+"POT-Creation-Date: 2017-08-11 11:20:+0000\n"
+"PO-Revision-Date: 2017-08-11 13:24+0200\n"
 "Last-Translator: Kaitlyn Crawford <kaitlyn@praekelt.org>\n"
 "Language-Team: Afrikaans <LL@li.org>\n"
 "Language: af\n"
@@ -11,58 +11,46 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: go-app-ussd_popi_faq.js:80
-msgid "Welcome back. Please select an option:"
-msgstr "Welkom terug. Kies asb 'n opsie."
-
-#: go-app-ussd_popi_faq.js:82
-msgid "Continue viewing FAQ"
-msgstr "Terug na vraag"
-
-#: go-app-ussd_popi_faq.js:83
-msgid "Main menu"
-msgstr "Hoof Spyskaart"
-
-#: go-app-ussd_popi_faq.js:118
+#: go-app-ussd_popi_faq.js:111
 msgid "Choose a question about MomConnect (MC):"
 msgstr "Kies 'n vraag oor MomConnect (MC):"
 
-#: go-app-ussd_popi_faq.js:122
+#: go-app-ussd_popi_faq.js:115
 msgid "What is MomConnect?"
 msgstr "Wat is MomConnect?"
 
-#: go-app-ussd_popi_faq.js:123
+#: go-app-ussd_popi_faq.js:116
 msgid "Why does MC need my personal info?"
 msgstr "Hoekom benodig MC my persoonlike info?"
 
-#: go-app-ussd_popi_faq.js:124
+#: go-app-ussd_popi_faq.js:117
 msgid "What personal info is collected?"
 msgstr "Watter persoonlike info word  versamel?"
 
-#: go-app-ussd_popi_faq.js:125
+#: go-app-ussd_popi_faq.js:118
 msgid "Who can see my personal info?"
 msgstr "Wie kan my persoonlike info sien?"
 
-#: go-app-ussd_popi_faq.js:126
+#: go-app-ussd_popi_faq.js:119
 msgid "How can I see, change or delete my personal info?"
 msgstr "Hoe kan ek my persoonlike info sien, verander of skrap?"
 
-#: go-app-ussd_popi_faq.js:127
+#: go-app-ussd_popi_faq.js:120
 msgid "How long does MC keep my info?"
 msgstr "Vir hoe lank sal MC my info bewaar?"
 
-#: go-app-ussd_popi_faq.js:129 go-app-ussd_popi_faq.js:146
-#: go-app-ussd_popi_faq.js:167 go-app-ussd_popi_faq.js:181
-#: go-app-ussd_popi_faq.js:196 go-app-ussd_popi_faq.js:209
-#: go-app-ussd_popi_faq.js:223
+#: go-app-ussd_popi_faq.js:122 go-app-ussd_popi_faq.js:139
+#: go-app-ussd_popi_faq.js:160 go-app-ussd_popi_faq.js:174
+#: go-app-ussd_popi_faq.js:189 go-app-ussd_popi_faq.js:202
+#: go-app-ussd_popi_faq.js:216
 msgid "Next"
 msgstr "Volgende"
 
-#: go-app-ussd_popi_faq.js:130
+#: go-app-ussd_popi_faq.js:123
 msgid "Back"
 msgstr "Terug"
 
-#: go-app-ussd_popi_faq.js:141
+#: go-app-ussd_popi_faq.js:134
 msgid ""
 "MC is a Health Department programme. It sends SMS messages for you & your "
 "baby. To see, change or delete your info dial *134*550*7#"
@@ -70,13 +58,13 @@ msgstr ""
 "MC behoort aan die Dept v. Gesondheid. Dit stuur SMSse uit vir jou & jou "
 "baba. Bel *134*550*7# om jou pers. info te sien, verander of skrap"
 
-#: go-app-ussd_popi_faq.js:145 go-app-ussd_popi_faq.js:166
-#: go-app-ussd_popi_faq.js:180 go-app-ussd_popi_faq.js:195
-#: go-app-ussd_popi_faq.js:208 go-app-ussd_popi_faq.js:222
+#: go-app-ussd_popi_faq.js:138 go-app-ussd_popi_faq.js:159
+#: go-app-ussd_popi_faq.js:173 go-app-ussd_popi_faq.js:188
+#: go-app-ussd_popi_faq.js:201 go-app-ussd_popi_faq.js:215
 msgid "Menu"
 msgstr "Spyskaart"
 
-#: go-app-ussd_popi_faq.js:156
+#: go-app-ussd_popi_faq.js:149
 msgid ""
 "MomConnect needs your personal info to send you messages that are relevant "
 "to your pregnancy stage or your baby's age. By knowing where you registered "
@@ -92,7 +80,7 @@ msgstr ""
 "Gesondheid weet waar jy vir MC geregistreer het, kan hulle reageer op "
 "klagtes/komplimente oor jou  ervaring by jou kliniek"
 
-#: go-app-ussd_popi_faq.js:176
+#: go-app-ussd_popi_faq.js:169
 msgid ""
 "MomConnect collects your phone and ID numbers, clinic location, and "
 "information about how your pregnancy is progressing."
@@ -100,7 +88,7 @@ msgstr ""
 "MomConnect benodig jou foon- en ID-nommer, die naam van jou kliniek en hoe "
 "jou swangerskap vorder."
 
-#: go-app-ussd_popi_faq.js:190
+#: go-app-ussd_popi_faq.js:183
 msgid ""
 "MomConnect is owned and run by the Health Department. MTN, Cell C, Telkom, "
 "Praekelt, Jembi and HISP collect and process your data on their behalf."
@@ -108,7 +96,7 @@ msgstr ""
 "MomConnect behoort aan&word bestuur deur DvGesondh., MTN, Cell C, Telkom, "
 "Praekelt, Jembi & HISP &  versamel&verwerk alle data namens hulle"
 
-#: go-app-ussd_popi_faq.js:205
+#: go-app-ussd_popi_faq.js:198
 msgid ""
 "You can see, change, or ask us to delete your information by dialing "
 "*134*550*7#"
@@ -116,7 +104,7 @@ msgstr ""
 "Jy kan jou inligting sien,  verander of vra dat ons dit skrap deur "
 "*134*550*7# te skakel"
 
-#: go-app-ussd_popi_faq.js:218
+#: go-app-ussd_popi_faq.js:211
 msgid ""
 "MomConnect will automatically delete your personal information 7 years and 9 "
 "months after you registered."
@@ -124,7 +112,7 @@ msgstr ""
 "MomConnect sal outomaties al jou persoonlike info skrap 7  jaar en 9 maande "
 "nadat jy vir die diens geregistreer het."
 
-#: go-app-ussd_popi_faq.js:232
+#: go-app-ussd_popi_faq.js:225
 msgid ""
 "Sorry, that number is not recognised. Dial in with the number you first used "
 "to register. To update your number, dial *134*550*7# or register again at a "
@@ -133,3 +121,12 @@ msgstr ""
 "Jammer nommer bestaan nie.  Gebruik selfde nommer waarmee jy geregistreer "
 "het. Skakel *134*550*7# of registreer weer by 'n kliniek om jou nommer by te "
 "werk."
+
+#~ msgid "Welcome back. Please select an option:"
+#~ msgstr "Welkom terug. Kies asb 'n opsie."
+
+#~ msgid "Continue viewing FAQ"
+#~ msgstr "Terug na vraag"
+
+#~ msgid "Main menu"
+#~ msgstr "Hoof Spyskaart"

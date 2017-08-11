@@ -1,68 +1,56 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2017-06-09 06:45:+0000\n"
 "Project-Id-Version: POPI_FAQ\n"
+"POT-Creation-Date: 2017-08-11 11:20:+0000\n"
+"PO-Revision-Date: 2017-08-11 13:23+0200\n"
+"Last-Translator: Kaitlyn Crawford <kaitlyn@praekelt.org>\n"
 "Language-Team: SeSotho <LL@li.org>\n"
+"Language: sot\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-06-27 12:34+0200\n"
-"Last-Translator: Kaitlyn Crawford <kaitlyn@praekelt.org>\n"
 "X-Generator: Poedit 1.5.4\n"
-"Language: sot\n"
 
-#: go-app-ussd_popi_faq.js:80
-msgid "Welcome back. Please select an option:"
-msgstr "Dumela hape. Kgetha ka kopo:"
-
-#: go-app-ussd_popi_faq.js:82
-msgid "Continue viewing FAQ"
-msgstr "Morao"
-
-#: go-app-ussd_popi_faq.js:83
-msgid "Main menu"
-msgstr "Menu ya Sehlooho"
-
-#: go-app-ussd_popi_faq.js:118
+#: go-app-ussd_popi_faq.js:111
 msgid "Choose a question about MomConnect (MC):"
 msgstr "Kgetha potso mabapi le MomConnect (MC):"
 
-#: go-app-ussd_popi_faq.js:122
+#: go-app-ussd_popi_faq.js:115
 msgid "What is MomConnect?"
 msgstr "MomConnect keng?"
 
-#: go-app-ussd_popi_faq.js:123
+#: go-app-ussd_popi_faq.js:116
 msgid "Why does MC need my personal info?"
 msgstr "Keng ha MC e hloka lesedi la hao la botho?"
 
-#: go-app-ussd_popi_faq.js:124
+#: go-app-ussd_popi_faq.js:117
 msgid "What personal info is collected?"
 msgstr "Ke lesedi lefe la botho le bokellwang?"
 
-#: go-app-ussd_popi_faq.js:125
+#: go-app-ussd_popi_faq.js:118
 msgid "Who can see my personal info?"
 msgstr "Ke mang ya ka bonang sedi la ka la botho?"
 
-#: go-app-ussd_popi_faq.js:126
+#: go-app-ussd_popi_faq.js:119
 msgid "How can I see, change or delete my personal info?"
 msgstr "Nka le bona,ka le fetola ka le tima jwang sedi la botho?"
 
-#: go-app-ussd_popi_faq.js:127
+#: go-app-ussd_popi_faq.js:120
 msgid "How long does MC keep my info?"
 msgstr "MC e boloka lesedi nako e kae?"
 
-#: go-app-ussd_popi_faq.js:129 go-app-ussd_popi_faq.js:146
-#: go-app-ussd_popi_faq.js:167 go-app-ussd_popi_faq.js:181
-#: go-app-ussd_popi_faq.js:196 go-app-ussd_popi_faq.js:209
-#: go-app-ussd_popi_faq.js:223
+#: go-app-ussd_popi_faq.js:122 go-app-ussd_popi_faq.js:139
+#: go-app-ussd_popi_faq.js:160 go-app-ussd_popi_faq.js:174
+#: go-app-ussd_popi_faq.js:189 go-app-ussd_popi_faq.js:202
+#: go-app-ussd_popi_faq.js:216
 msgid "Next"
 msgstr "E latelang"
 
-#: go-app-ussd_popi_faq.js:130
+#: go-app-ussd_popi_faq.js:123
 msgid "Back"
 msgstr "Morao"
 
-#: go-app-ussd_popi_faq.js:141
+#: go-app-ussd_popi_faq.js:134
 msgid ""
 "MC is a Health Department programme. It sends SMS messages for you & your "
 "baby. To see, change or delete your info dial *134*550*7#"
@@ -70,13 +58,13 @@ msgstr ""
 "MC ke naneo la Fapha la Bophelo.E romela melaetsa ya hao le lesea ka SMS.Ho "
 "bona,ho fetola kapa ho tima sedi la hao la botho,letsetsa*134*550*7#"
 
-#: go-app-ussd_popi_faq.js:145 go-app-ussd_popi_faq.js:166
-#: go-app-ussd_popi_faq.js:180 go-app-ussd_popi_faq.js:195
-#: go-app-ussd_popi_faq.js:208 go-app-ussd_popi_faq.js:222
+#: go-app-ussd_popi_faq.js:138 go-app-ussd_popi_faq.js:159
+#: go-app-ussd_popi_faq.js:173 go-app-ussd_popi_faq.js:188
+#: go-app-ussd_popi_faq.js:201 go-app-ussd_popi_faq.js:215
 msgid "Menu"
 msgstr "Dintlha"
 
-#: go-app-ussd_popi_faq.js:156
+#: go-app-ussd_popi_faq.js:149
 msgid ""
 "MomConnect needs your personal info to send you messages that are relevant "
 "to your pregnancy stage or your baby's age. By knowing where you registered "
@@ -92,7 +80,7 @@ msgstr ""
 "thusa Lefapha la Bophelo ho amohela thoholetso kapa tletlebo tseo di "
 "romelang MomConnect ka tleleniki ya hao."
 
-#: go-app-ussd_popi_faq.js:176
+#: go-app-ussd_popi_faq.js:169
 msgid ""
 "MomConnect collects your phone and ID numbers, clinic location, and "
 "information about how your pregnancy is progressing."
@@ -100,7 +88,7 @@ msgstr ""
 "MomConnect e bokella dinomoro  tsa hao tsa fono le ID, sebaka sa tleleniki, "
 "le lesedi mabapi le hore boimana ba hao bo tswela pele jwang."
 
-#: go-app-ussd_popi_faq.js:190
+#: go-app-ussd_popi_faq.js:183
 msgid ""
 "MomConnect is owned and run by the Health Department. MTN, Cell C, Telkom, "
 "Praekelt, Jembi and HISP collect and process your data on their behalf."
@@ -108,7 +96,7 @@ msgstr ""
 "Lefapha la Bophelo ke monga le molaodi wa MomConnect.MTN,Cell C,Telkom,"
 "Praekelt,Jembi le HISP ba bokella le ho hlophisa data lebitsong la bona."
 
-#: go-app-ussd_popi_faq.js:205
+#: go-app-ussd_popi_faq.js:198
 msgid ""
 "You can see, change, or ask us to delete your information by dialing "
 "*134*550*7#"
@@ -116,7 +104,7 @@ msgstr ""
 "O ka bona, wa fetola kapa wa re kopa ho tima lesedi la hao ka ho letsetsa "
 "*134*550*7#"
 
-#: go-app-ussd_popi_faq.js:218
+#: go-app-ussd_popi_faq.js:211
 msgid ""
 "MomConnect will automatically delete your personal information 7 years and 9 "
 "months after you registered."
@@ -124,7 +112,7 @@ msgstr ""
 "MomConnect ka ho iketsahalla e tla tima lesedi la hao la botho dilemo tse 7 "
 "le dikgwedi tse 9 ka mora ho ngodisa."
 
-#: go-app-ussd_popi_faq.js:232
+#: go-app-ussd_popi_faq.js:225
 msgid ""
 "Sorry, that number is not recognised. Dial in with the number you first used "
 "to register. To update your number, dial *134*550*7# or register again at a "
@@ -133,3 +121,12 @@ msgstr ""
 "Tshwarelo, nomoro ha e tsejwe.Tobetsa nomoro o e sebedisitseng pele ho "
 "ngodisa. Ho ntjhafatsa nomoro ya hao, letsetsa *134*550*7# kapa ngodisa hape "
 "tleleniking."
+
+#~ msgid "Welcome back. Please select an option:"
+#~ msgstr "Dumela hape. Kgetha ka kopo:"
+
+#~ msgid "Continue viewing FAQ"
+#~ msgstr "Morao"
+
+#~ msgid "Main menu"
+#~ msgstr "Menu ya Sehlooho"

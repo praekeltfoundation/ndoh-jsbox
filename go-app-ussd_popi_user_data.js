@@ -9,6 +9,7 @@ go.app = function() {
     var App = vumigo.App;
     var EndState = vumigo.states.EndState;
     var ChoiceState = vumigo.states.ChoiceState;
+    var MenuState = vumigo.states.MenuState;
     var Choice = vumigo.states.Choice;
     var PaginatedState = vumigo.states.PaginatedState;
     var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
@@ -25,7 +26,6 @@ go.app = function() {
         var is;
         var sbm;
         var hub;
-        var ms;
 
         self.init = function() {
             // initialise services
@@ -43,12 +43,6 @@ go.app = function() {
                 new JsonApi(self.im, {}),
                 self.im.config.services.hub.token,
                 self.im.config.services.hub.url
-            );
-            ms = new SeedJsboxUtils.MessageSender(
-                new JsonApi(self.im, {}),
-                self.im.config.services.message_sender.token,
-                self.im.config.services.message_sender.url,
-                self.im.config.services.message_sender.channel
             );
 
             self.env = self.im.config.env;
@@ -77,15 +71,6 @@ go.app = function() {
                 // as well as <env>.sum.sessions.transient 'sum' metric
                 .add.total_sessions([self.env, 'sum', 'sessions'].join('.'))
             ;
-        };
-
-        self.send_data_as_sms = function() {
-            return ms.
-            create_outbound_message(
-                self.im.user.answers.operator.id,
-                self.im.user.answers.msisdn,
-                self.im.user.i18n(self.return_user_data())
-            );
         };
 
         self.return_user_data = function(){
@@ -169,15 +154,8 @@ go.app = function() {
         };
 
         self.states.add('state_timed_out', function(name, creator_opts) {
-            return new ChoiceState(name, {
-                question: $('Welcome back. Please select an option:'),
-                choices: [
-                    new Choice('state_start', $('Main menu'))
-                ],
-                next: function(choice) {
-                    return choice.value;
-                }
-            });
+            // Take them to the main menu if they timed out
+            return self.states.create('state_start');
         });
 
 
@@ -197,7 +175,8 @@ go.app = function() {
                 
                 return sbm
                 // check that user is registered on momconnect   
-                .is_identity_subscribed(self.im.user.answers.operator.id, [/momconnect/])
+                .is_identity_subscribed(self.im.user.answers.operator.id,
+                                        [/^momconnect/, /^whatsapp/])
                 .then(function(identity_subscribed_to_momconnect) {
                     if (identity_subscribed_to_momconnect) {
                         var promises = [];
@@ -227,25 +206,13 @@ go.app = function() {
 
         // OPTIONS MENU
         self.add('state_all_options_view', function(name) {
-            return new ChoiceState(name, {
+            return new MenuState(name, {
                 question: $('What would you like to do?'),
                 choices: [
                     new Choice('state_view', $('See my personal info')),
-                    new Choice('state_view_sms', $('Send my personal info by sms')),
                     new Choice('state_change_data', $('Change my info')),
                     new Choice('state_confirm_delete', $('Request to delete my info')),
                 ],
-                next: function(choice) {
-                    if (choice.value === 'state_view_sms') {
-                        return self
-                        .send_data_as_sms()
-                        .then(function() {
-                            return 'state_view_sms';
-                        });
-                    }else{
-                        return choice.value;
-                    }
-                }
             });
         });
 
@@ -263,15 +230,6 @@ go.app = function() {
                 }
             });
         });
-
-
-        self.add('state_view_sms', function(name) {
-            return new EndState(name, {
-                text: $('An SMS has been sent to your number containing your ' +
-                        'personal information stored by MomConnect.'),
-                next: 'state_start'
-            });
-        }); 
 
         self.add('state_change_data', function(name) {
             return new ChoiceState(name, {
