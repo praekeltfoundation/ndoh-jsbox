@@ -158,6 +158,7 @@ go.app = function() {
     var FreeText = vumigo.states.FreeText;
     var EndState = vumigo.states.EndState;
     var ChoiceState = vumigo.states.ChoiceState;
+    var MenuState = vumigo.states.MenuState;
     var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
     var Choice = vumigo.states.Choice;
     var JsonApi = vumigo.http.api.JsonApi;
@@ -172,6 +173,7 @@ go.app = function() {
         var is;
         var hub;
         var ms;
+        var sbm;
 
         self.init = function() {
             // initialise services
@@ -190,6 +192,11 @@ go.app = function() {
                 self.im.config.services.message_sender.token,
                 self.im.config.services.message_sender.url,
                 self.im.config.services.message_sender.channel
+            );
+            sbm = new SeedJsboxUtils.StageBasedMessaging(
+                new JsonApi(self.im, {}),
+                self.im.config.services.stage_based_messaging.token,
+                self.im.config.services.stage_based_messaging.url
             );
 
             self.env = self.im.config.env;
@@ -501,6 +508,11 @@ go.app = function() {
                 self.im.user.set_answer("operator", identity);
                 self.im.user.set_answer("operator_msisdn", operator_msisdn);
 
+                return sbm.is_identity_subscribed(identity.id, [/prebirth/]);
+            })
+            .then(function(has_active_subscription) {
+                self.im.user.set_answer("has_active_subscription", has_active_subscription);
+
                 return new ChoiceState(name, {
                     question: $(
                         'Welcome to The Department of Health\'s ' +
@@ -514,13 +526,18 @@ go.app = function() {
                     next: function(choice) {
                         if (choice.value === 'yes') {
                             // init redial_sms_sent
-                            if (identity.details.clinic) {
-                                self.im.user.set_answer("redial_sms_sent", identity.details.clinic.redial_sms_sent || false);
+                            if (self.im.user.answers.operator.details.clinic) {
+                                self.im.user.set_answer("redial_sms_sent",
+                                    self.im.user.answers.operator.details.clinic.redial_sms_sent || false);
                             } else {
                                 self.im.user.set_answer("redial_sms_sent", false);
                             }
-                            self.im.user.set_answer("registrant", identity);
+                            self.im.user.set_answer("registrant", self.im.user.answers.operator);
                             self.im.user.set_answer("registrant_msisdn", operator_msisdn);
+
+                            if (self.im.user.answers.has_active_subscription) {
+                                return 'state_already_subscribed';
+                            }
 
                             var opted_out = self.number_opted_out(
                                 self.im.user.answers.registrant,
@@ -532,6 +549,22 @@ go.app = function() {
                         }
                     }
                 });
+            });
+        });
+
+        self.add('state_already_subscribed', function(name) {
+            var country_code = '27',
+                operator_msisdn = utils.normalize_msisdn(self.im.user.addr, country_code),
+                readable_number = utils.readable_msisdn(operator_msisdn, country_code);
+
+            return new MenuState(name, {
+                question: $(
+                    'The number {{ num }} already has an active subscription to MomConnect. ' +
+                    'Would you like to use a different number?').context({num: readable_number}),
+                choices: [
+                    new Choice('state_mobile_no', $('Use a different number')),
+                    new Choice('state_start', $('End registration'))
+                ]
             });
         });
 
@@ -608,18 +641,29 @@ go.app = function() {
                 },
                 next: function(content) {
                     var registrant_msisdn = utils.normalize_msisdn(content, '27');
+
                     return is
                     .get_or_create_identity({"msisdn": registrant_msisdn})
                     .then(function(identity) {
+                        self.im.user.set_answer("registrant", identity);
+                        self.im.user.set_answer("registrant_msisdn", registrant_msisdn);
+
+                        return sbm.is_identity_subscribed(identity.id, [/prebirth/]);
+                    })
+                    .then(function(has_active_subscription) {
+                        self.im.user.set_answer("has_active_subscription", has_active_subscription);
+
                         // init redial_sms_sent
-                        if (identity.details.clinic) {
-                            self.im.user.set_answer("redial_sms_sent", identity.details.clinic.redial_sms_sent || false);
+                        if (self.im.user.answers.registrant.details.clinic) {
+                            self.im.user.set_answer("redial_sms_sent",
+                                self.im.user.answers.registrant.details.clinic.redial_sms_sent || false);
                         } else {
                             self.im.user.set_answer("redial_sms_sent", false);
                         }
 
-                        self.im.user.set_answer("registrant", identity);
-                        self.im.user.set_answer("registrant_msisdn", registrant_msisdn);
+                        if (self.im.user.answers.has_active_subscription) {
+                            return 'state_already_subscribed';
+                        }
 
                         var opted_out = self.number_opted_out(
                             self.im.user.answers.registrant,
