@@ -7,7 +7,6 @@ go.app = function() {
     var MetricsHelper = require('go-jsbox-metrics-helper');
     var App = vumigo.App;
     var EndState = vumigo.states.EndState;
-    var ChoiceState = vumigo.states.ChoiceState;
     var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
     var PaginatedState = vumigo.states.PaginatedState;
     var Choice = vumigo.states.Choice;
@@ -76,16 +75,8 @@ go.app = function() {
         };
 
         self.states.add('state_timed_out', function(name, creator_opts) {
-            return new ChoiceState(name, {
-                question: $('Welcome back. Please select an option:'),
-                choices: [
-                    new Choice(creator_opts.name, $('Continue viewing FAQ')),
-                    new Choice('state_start', $('Main menu'))
-                ],
-                next: function(choice) {
-                    return choice.value;
-                }
-            });
+            // Take them to the main menu if they timed out
+            return self.states.create('state_start');
         });
 
         self.add("state_start", function(name) {

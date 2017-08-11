@@ -54,6 +54,24 @@ describe('app', function() {
                 });
         });
 
+        describe("timeout testing", function() {
+            describe("when you timeout and dial back in", function() {
+                it("should restart, not go state_timed_out", function() {
+                    return tester
+                    .setup.user.addr("27820001002")
+                    .inputs(
+                        {session_event: "new"}
+                        , {session_event: "close"}
+                        , {session_event: "new"}
+                    )
+                    .check.interaction({
+                        state: "state_all_options_view",
+                    })
+                    .run();
+                });
+            });
+        });
+
         describe('state_start', function() {
             describe('user not registered on momconnect', function() {
                 it('should go to state_not_registered', function() {

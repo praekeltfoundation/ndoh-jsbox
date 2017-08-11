@@ -150,15 +150,8 @@ go.app = function() {
         };
 
         self.states.add('state_timed_out', function(name, creator_opts) {
-            return new ChoiceState(name, {
-                question: $('Welcome back. Please select an option:'),
-                choices: [
-                    new Choice('state_start', $('Main menu'))
-                ],
-                next: function(choice) {
-                    return choice.value;
-                }
-            });
+            // Take them to the main menu if they timed out
+            return self.states.create('state_start');
         });
 
 
