@@ -1,68 +1,56 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2017-06-09 06:45:+0000\n"
 "Project-Id-Version: POPI_FAQ\n"
+"POT-Creation-Date: 2017-08-11 11:20:+0000\n"
+"PO-Revision-Date: 2017-08-11 13:21+0200\n"
+"Last-Translator: Kaitlyn Crawford <kaitlyn@praekelt.org>\n"
 "Language-Team: Zulu <LL@li.org>\n"
 "Language: zul\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-06-27 12:32+0200\n"
-"Last-Translator: Kaitlyn Crawford <kaitlyn@praekelt.org>\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: go-app-ussd_popi_faq.js:80
-msgid "Welcome back. Please select an option:"
-msgstr "Siyakwamukela futhi. Sicela ukhethe:"
-
-#: go-app-ussd_popi_faq.js:82
-msgid "Continue viewing FAQ"
-msgstr "Emuva"
-
-#: go-app-ussd_popi_faq.js:83
-msgid "Main menu"
-msgstr "Imenu Enkulu"
-
-#: go-app-ussd_popi_faq.js:118
+#: go-app-ussd_popi_faq.js:111
 msgid "Choose a question about MomConnect (MC):"
 msgstr "Khetha umbuzo ngeMomConnect (MC):"
 
-#: go-app-ussd_popi_faq.js:122
+#: go-app-ussd_popi_faq.js:115
 msgid "What is MomConnect?"
 msgstr "Yini iMomConnect? "
 
-#: go-app-ussd_popi_faq.js:123
+#: go-app-ussd_popi_faq.js:116
 msgid "Why does MC need my personal info?"
 msgstr "Ifunani olwazini lwami i-MC?"
 
-#: go-app-ussd_popi_faq.js:124
+#: go-app-ussd_popi_faq.js:117
 msgid "What personal info is collected?"
 msgstr "Ifuna luphi ulwazi lwami?"
 
-#: go-app-ussd_popi_faq.js:125
+#: go-app-ussd_popi_faq.js:118
 msgid "Who can see my personal info?"
 msgstr "Ubani obona ulwazi lwami?"
 
-#: go-app-ussd_popi_faq.js:126
+#: go-app-ussd_popi_faq.js:119
 msgid "How can I see, change or delete my personal info?"
 msgstr "Ngenzani ukubona, ukushintsha, ukusula ulwazi lwami?"
 
-#: go-app-ussd_popi_faq.js:127
+#: go-app-ussd_popi_faq.js:120
 msgid "How long does MC keep my info?"
 msgstr "I-MC ilugcina kuze kube nini ulwazi lwami?"
 
-#: go-app-ussd_popi_faq.js:129 go-app-ussd_popi_faq.js:146
-#: go-app-ussd_popi_faq.js:167 go-app-ussd_popi_faq.js:181
-#: go-app-ussd_popi_faq.js:196 go-app-ussd_popi_faq.js:209
-#: go-app-ussd_popi_faq.js:223
+#: go-app-ussd_popi_faq.js:122 go-app-ussd_popi_faq.js:139
+#: go-app-ussd_popi_faq.js:160 go-app-ussd_popi_faq.js:174
+#: go-app-ussd_popi_faq.js:189 go-app-ussd_popi_faq.js:202
+#: go-app-ussd_popi_faq.js:216
 msgid "Next"
 msgstr "Okulandelayo"
 
-#: go-app-ussd_popi_faq.js:130
+#: go-app-ussd_popi_faq.js:123
 msgid "Back"
 msgstr "Emuva"
 
-#: go-app-ussd_popi_faq.js:141
+#: go-app-ussd_popi_faq.js:134
 msgid ""
 "MC is a Health Department programme. It sends SMS messages for you & your "
 "baby. To see, change or delete your info dial *134*550*7#"
@@ -70,13 +58,13 @@ msgstr ""
 "I-MC uhlelo loMnyango Wezempilo. Luthumela i-SMS ngawe nengane yakho. "
 "Ukubona, ukushintsha, ukusula ulwazi lwakho, shaya *134*550*7#"
 
-#: go-app-ussd_popi_faq.js:145 go-app-ussd_popi_faq.js:166
-#: go-app-ussd_popi_faq.js:180 go-app-ussd_popi_faq.js:195
-#: go-app-ussd_popi_faq.js:208 go-app-ussd_popi_faq.js:222
+#: go-app-ussd_popi_faq.js:138 go-app-ussd_popi_faq.js:159
+#: go-app-ussd_popi_faq.js:173 go-app-ussd_popi_faq.js:188
+#: go-app-ussd_popi_faq.js:201 go-app-ussd_popi_faq.js:215
 msgid "Menu"
 msgstr "Okuqukethwe"
 
-#: go-app-ussd_popi_faq.js:156
+#: go-app-ussd_popi_faq.js:149
 msgid ""
 "MomConnect needs your personal info to send you messages that are relevant "
 "to your pregnancy stage or your baby's age. By knowing where you registered "
@@ -91,7 +79,7 @@ msgstr ""
 "lakho. Ukwazi ukuthi ubhalisaphi kusiza uMnyango Wezempilo usebenze "
 "ngezincomo noma izikhalo ongazithumelela i-MomConnect ngeklinikhi lakho."
 
-#: go-app-ussd_popi_faq.js:176
+#: go-app-ussd_popi_faq.js:169
 msgid ""
 "MomConnect collects your phone and ID numbers, clinic location, and "
 "information about how your pregnancy is progressing."
@@ -99,7 +87,7 @@ msgstr ""
 "I-MomConnect iqoqa izinombolo zakho zefoni neze-ID, indawo yeklinikhi, "
 "nolwazi ngokukhulelwa kwakho."
 
-#: go-app-ussd_popi_faq.js:190
+#: go-app-ussd_popi_faq.js:183
 msgid ""
 "MomConnect is owned and run by the Health Department. MTN, Cell C, Telkom, "
 "Praekelt, Jembi and HISP collect and process your data on their behalf."
@@ -107,14 +95,14 @@ msgstr ""
 "I-MomConnect eyoMnyango Wezempilo. U-MTN, Cell C, Telkom, Praekelt, Jembi ne-"
 "HISP baqoqela futhi bawuqhubele ulwazi lwakho. "
 
-#: go-app-ussd_popi_faq.js:205
+#: go-app-ussd_popi_faq.js:198
 msgid ""
 "You can see, change, or ask us to delete your information by dialing "
 "*134*550*7#"
 msgstr ""
 "Ungabona, ushintshe noma ucele sisule ulwazi lwakho ngokushaya *134*550*7#"
 
-#: go-app-ussd_popi_faq.js:218
+#: go-app-ussd_popi_faq.js:211
 msgid ""
 "MomConnect will automatically delete your personal information 7 years and 9 "
 "months after you registered."
@@ -122,7 +110,7 @@ msgstr ""
 "I-MomConnect izozisulela ulwazi lakho emuva kweminyaka ewu-7 nezinyanga "
 "eziwu-9 ubhalisile. "
 
-#: go-app-ussd_popi_faq.js:232
+#: go-app-ussd_popi_faq.js:225
 msgid ""
 "Sorry, that number is not recognised. Dial in with the number you first used "
 "to register. To update your number, dial *134*550*7# or register again at a "
@@ -131,3 +119,12 @@ msgstr ""
 "Uxolo, leyo nombolo ayaziwa. Faka inombolo owayisebenzisa mhla uqala "
 "ukubhalisa. Ukubukeza inombolo yakho, shayela *134*550*7# noma uphinde "
 "ubhalise eklinikhi"
+
+#~ msgid "Welcome back. Please select an option:"
+#~ msgstr "Siyakwamukela futhi. Sicela ukhethe:"
+
+#~ msgid "Continue viewing FAQ"
+#~ msgstr "Emuva"
+
+#~ msgid "Main menu"
+#~ msgstr "Imenu Enkulu"
