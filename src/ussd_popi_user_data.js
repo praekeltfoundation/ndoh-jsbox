@@ -6,6 +6,7 @@ go.app = function() {
     var App = vumigo.App;
     var EndState = vumigo.states.EndState;
     var ChoiceState = vumigo.states.ChoiceState;
+    var MenuState = vumigo.states.MenuState;
     var Choice = vumigo.states.Choice;
     var PaginatedState = vumigo.states.PaginatedState;
     var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
@@ -202,16 +203,13 @@ go.app = function() {
 
         // OPTIONS MENU
         self.add('state_all_options_view', function(name) {
-            return new ChoiceState(name, {
+            return new MenuState(name, {
                 question: $('What would you like to do?'),
                 choices: [
                     new Choice('state_view', $('See my personal info')),
                     new Choice('state_change_data', $('Change my info')),
                     new Choice('state_confirm_delete', $('Request to delete my info')),
                 ],
-                next: function(choice) {
-                    return choice.value;
-                }
             });
         });
 
