@@ -255,10 +255,10 @@ msgstr "Iinkcukacha zokobuqu ezigcinwe yiMomConnect azikasuswa. "
 #: go-app-ussd_popi_user_data.js:537
 msgid ""
 "Thank you. All your information will be deleted from MomConnect in the next "
-"[X] days."
+"3 days."
 msgstr ""
 "Enkosi. Zonke iinkcukacha zakho zokobuqu zizakucinywa kwiMomConnect kwezi "
-"ntsuku zi-[X] zilandelayo."
+"ntsuku zi-3 zilandelayo."
 
 #: go-app-ussd_popi_user_data.js:546
 msgid ""

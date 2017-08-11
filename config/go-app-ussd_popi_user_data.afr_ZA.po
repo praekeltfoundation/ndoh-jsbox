@@ -255,10 +255,10 @@ msgstr ""
 #: go-app-ussd_popi_user_data.js:537
 msgid ""
 "Thank you. All your information will be deleted from MomConnect in the next "
-"[X] days."
+"3 days."
 msgstr ""
 "Baie dankie, Al jou persoonlike info sal uit  MomConnect geskrap word binne "
-"die volgende [X] dae."
+"die volgende 3 dae."
 
 #: go-app-ussd_popi_user_data.js:546
 msgid ""

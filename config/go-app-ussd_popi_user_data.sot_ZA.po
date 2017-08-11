@@ -251,10 +251,10 @@ msgstr "Dintlha tsa hao tse bolokilweng ho MomConnect ha di so tloswe."
 #: go-app-ussd_popi_user_data.js:537
 msgid ""
 "Thank you. All your information will be deleted from MomConnect in the next "
-"[X] days."
+"3 days."
 msgstr ""
 "Diteboho. Lesedi lohle la hao la botho le tla tinngwa ho MomConnect "
-"matsatsing a latelang a [X]."
+"matsatsing a latelang a 3."
 
 #: go-app-ussd_popi_user_data.js:546
 msgid ""

@@ -253,9 +253,9 @@ msgstr "Ulwazi oluqondene nawe olugcinwe iMomConnect alukasuswa."
 #: go-app-ussd_popi_user_data.js:537
 msgid ""
 "Thank you. All your information will be deleted from MomConnect in the next "
-"[X] days."
+"3 days."
 msgstr ""
-"Siyabonga. Lonke ulwazi lwakho luzosulwa i-MomConnect ezinsukwini ezingu [X] "
+"Siyabonga. Lonke ulwazi lwakho luzosulwa i-MomConnect ezinsukwini ezingu 3 "
 "ezizayo."
 
 #: go-app-ussd_popi_user_data.js:546

@@ -535,7 +535,7 @@ go.app = function() {
         self.add('state_info_deleted', function(name) {
             return new EndState(name, {
                 text: $('Thank you. All your information will be deleted ' +
-                        'from MomConnect in the next [X] days.'),
+                        'from MomConnect in the next 3 days.'),
                 next: 'state_start'
             });
         });

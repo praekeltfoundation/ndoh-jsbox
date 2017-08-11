@@ -250,10 +250,9 @@ msgstr "Zwidodombedzwa zwavho zwi re kha MomConnect a zwo ngo bviswa."
 #: go-app-ussd_popi_user_data.js:537
 msgid ""
 "Thank you. All your information will be deleted from MomConnect in the next "
-"[X] days."
+"3 days."
 msgstr ""
-"Ro livhuwa. Mafhungo avho a ḓo thuthwa kha MomConnect kha maḓuvha a (X) a "
-"daho."
+"Ro livhuwa. Mafhungo avho a ḓo thuthwa kha MomConnect kha maḓuvha a 3 a daho."
 
 #: go-app-ussd_popi_user_data.js:546
 msgid ""

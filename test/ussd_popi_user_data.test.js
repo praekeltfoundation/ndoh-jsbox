@@ -672,7 +672,7 @@ describe('app', function() {
                                 state: 'state_info_deleted',
                                 reply: [
                                     'Thank you. All your information will be deleted ' +
-                                    'from MomConnect in the next [X] days.'
+                                    'from MomConnect in the next 3 days.'
                                 ].join('\n')
                             })
                             .check.user.answer("operator", null)

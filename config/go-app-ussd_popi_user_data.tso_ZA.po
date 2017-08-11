@@ -257,10 +257,10 @@ msgstr ""
 #: go-app-ussd_popi_user_data.js:537
 msgid ""
 "Thank you. All your information will be deleted from MomConnect in the next "
-"[X] days."
+"3 days."
 msgstr ""
 "Ha khensa. Vuxokoxoko bya wena hinkwabyo byi ta suriwa kusuka eka MomConnect "
-"eka masiku ya [X] lama landzelaka."
+"eka masiku ya 3 lama landzelaka."
 
 #: go-app-ussd_popi_user_data.js:546
 msgid ""

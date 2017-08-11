@@ -257,10 +257,10 @@ msgstr "Imininingwane yakho yebuwena legcinwe kuMomConnect ayikasuswa."
 #: go-app-ussd_popi_user_data.js:537
 msgid ""
 "Thank you. All your information will be deleted from MomConnect in the next "
-"[X] days."
+"3 days."
 msgstr ""
-"Ngiyabonga. Yonkhe imininingwane yakho itawususwa kuMomConnect emalangeni "
-"la[x] lalandzelako."
+"Ngiyabonga. Yonkhe imininingwane yakho itawususwa kuMomConnect emalangeni la "
+"3 lalandzelako."
 
 #: go-app-ussd_popi_user_data.js:546
 msgid ""
