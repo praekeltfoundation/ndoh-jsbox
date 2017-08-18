@@ -918,7 +918,7 @@ describe("app", function() {
                 it("should go to state_sa_id", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs.apply(this, setupInputs.concat('1'))
+                    .inputs.apply(this, setupInputs.concat('1')) // Add to the inputs for 'state_id_type - sa_id'
                     .check.interaction({
                         state: "state_sa_id"
                     })
@@ -929,7 +929,7 @@ describe("app", function() {
                 it("should go to state_passport_origin", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs.apply(this, setupInputs.concat('2'))
+                    .inputs.apply(this, setupInputs.concat('2')) // Add to the inputs for 'state_id_type - passport'
                     .check.interaction({
                         state: "state_passport_origin"
                     })
@@ -940,7 +940,7 @@ describe("app", function() {
                 it("should go to state_birth_year", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs.apply(this, setupInputs.concat('3'))
+                    .inputs.apply(this, setupInputs.concat('3')) // Add to the inputs for 'state_id_type - none'
                     .check.interaction({
                         state: "state_birth_year"
                     })
@@ -964,7 +964,7 @@ describe("app", function() {
                 it("should ask for sa_id again", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs.apply(this, setupInputs.concat('1234'))
+                    .inputs.apply(this, setupInputs.concat('1234')) // Add to the inputs for 'state_sa_id'
                     .check.interaction({
                         state: "state_sa_id"
                     })
@@ -975,7 +975,7 @@ describe("app", function() {
                 it("should go to state_language", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs.apply(this, setupInputs.concat('5101015009088'))
+                    .inputs.apply(this, setupInputs.concat('5101015009088')) // Add to the inputs for 'state_sa_id'
                     .check.interaction({
                         state: "state_language"
                     })
@@ -1021,7 +1021,7 @@ describe("app", function() {
                 it("should ask for number again", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs.apply(this, setupInputs.concat(['1234']))
+                    .inputs.apply(this, setupInputs.concat(['1234'])) // Add to the inputs for 'state_passport_no'
                     .check.interaction({
                         state: "state_passport_no"
                     })
@@ -1032,7 +1032,7 @@ describe("app", function() {
                 it("should ask for number again", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs.apply(this, setupInputs.concat(['1234 5678']))
+                    .inputs.apply(this, setupInputs.concat(['1234 5678'])) // Add to the inputs for 'state_passport_no'
                     .check.interaction({
                         state: "state_passport_no"
                     })
@@ -1043,7 +1043,7 @@ describe("app", function() {
                 it("should go to state_language", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs.apply(this, setupInputs.concat(['12345']))
+                    .inputs.apply(this, setupInputs.concat(['12345'])) // Add to the inputs for 'state_passport_no'
                     .check.interaction({
                         state: "state_language"
                     })
@@ -1067,6 +1067,8 @@ describe("app", function() {
                 it("should ask for birth year again", function() {
                     return tester
                     .setup.user.addr("27820001001")
+                    // Add to the inputs for 'state_birth_year', somebody born in
+                    // 2013 is too young to give birth
                     .inputs.apply(this, setupInputs.concat('2013'))
                     .check.interaction({
                         state: "state_birth_year"
@@ -1078,7 +1080,7 @@ describe("app", function() {
                 it("should go to state_birth_month", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs.apply(this, setupInputs.concat('1981'))
+                    .inputs.apply(this, setupInputs.concat('1981')) // Add to the inputs for 'state_birth_year'
                     .check.interaction({
                         state: "state_birth_month",
                         reply: [
