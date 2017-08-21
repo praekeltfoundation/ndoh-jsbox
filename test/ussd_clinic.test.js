@@ -187,17 +187,27 @@ describe("app", function() {
             });
 
             describe("state_due_date_month", function() {
+                var basicSetupInputs = [
+                    {session_event: 'new'}  // dial in
+                    , '1'  // state_start
+                    , '1'  // state_consent
+                    , '123456'  // state_clinic_code
+                ];
+
+                var timeoutInputs = basicSetupInputs.concat([
+                    {session_event: 'close'}
+                ]);
+
+                var redialInputs = timeoutInputs.concat([
+                    {session_event: 'new'}
+                ]);
+
                 // This idea applies to all states except state_start and end states, for which measuring
                 // dropoffs is not a real thing
                 it("entering once", function() {
                     return tester
                         .setup.user.addr('27820001001')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_start
-                            , '1'  // state_consent
-                            , '123456'  // state_clinic_code
-                        )
+                        .inputs.apply(this, basicSetupInputs)
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
                             assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete'].values, [1]);
@@ -213,13 +223,7 @@ describe("app", function() {
                 it("entering once, timing out", function() {
                     return tester
                         .setup.user.addr('27820001001')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_start
-                            , '1'  // state_consent
-                            , '123456'  // state_clinic_code
-                            , {session_event: 'close'}  // state_due_date_month
-                        )
+                        .inputs.apply(this, timeoutInputs)
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
                             assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete'].values, [1]);
@@ -235,14 +239,7 @@ describe("app", function() {
                 it("entering once, timing out, redialing (session:close detected)", function() {
                     return tester
                         .setup.user.addr('27820001001')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_start
-                            , '1'  // state_consent
-                            , '123456'  // state_clinic_code
-                            , {session_event: 'close'}  // state_due_date_month
-                            , {session_event: 'new'}  // redial
-                        )
+                        .inputs.apply(this, redialInputs)
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
                             assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete'].values, [1]);
@@ -256,15 +253,12 @@ describe("app", function() {
                 });
 
                 it("entering once, timing out, redialing (session:close not detected)", function() {
+                    // Add a redial to the setup inputs
+                    var testInputs = basicSetupInputs.concat([{session_event: 'new'}])
+
                     return tester
                         .setup.user.addr('27820001001')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_start
-                            , '1'  // state_consent
-                            , '123456'  // state_clinic_code
-                            , {session_event: 'new'}  // redial
-                        )
+                        .inputs.apply(this, testInputs)
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
                             assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete'].values, [1]);
@@ -278,17 +272,12 @@ describe("app", function() {
                 });
 
                 it("entering once, timing out, redialing, abandoning registration", function() {
+                    // Add state_timed_out to the redial inputs
+                    var testInputs = redialInputs.concat(['2'])
+
                     return tester
                         .setup.user.addr('27820001001')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_start
-                            , '1'  // state_consent
-                            , '123456'  // state_clinic_code
-                            , {session_event: 'close'}  // state_due_date_month
-                            , {session_event: 'new'}  // redial
-                            , '2'  // state_timed_out
-                        )
+                        .inputs.apply(this, testInputs)
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
                             assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete'].values, [1]);
@@ -304,17 +293,12 @@ describe("app", function() {
                 });
 
                 it("entering once, timing out, redialing, continuing registration", function() {
+                    // Add state_timed_out to the redial inputs
+                    var testInputs = redialInputs.concat(['1'])
+
                     return tester
                         .setup.user.addr('27820001001')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_start
-                            , '1'  // state_consent
-                            , '123456'  // state_clinic_code
-                            , {session_event: 'close'}  // state_due_date_month
-                            , {session_event: 'new'}  // redial
-                            , '1'  // state_timed_out
-                        )
+                        .inputs.apply(this, testInputs)
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
                             assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete'].values, [1]);
@@ -330,18 +314,12 @@ describe("app", function() {
                 });
 
                 it("entering once, timing out, redialing, continuing registration, exiting", function() {
+                    // Add state_timed_out, state_due_date_month to the redial inputs
+                    var testInputs = redialInputs.concat(['1', '5'])
+
                     return tester
                         .setup.user.addr('27820001001')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_start
-                            , '1'  // state_consent
-                            , '123456'  // state_clinic_code
-                            , {session_event: 'close'}  // state_due_date_month
-                            , {session_event: 'new'}  // redial
-                            , '1'  // state_timed_out
-                            , '5'  // state_due_date_month
-                        )
+                        .inputs.apply(this, testInputs)
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
                             assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete'].values, [1]);
@@ -459,23 +437,26 @@ describe("app", function() {
             });
 
             describe("when you've reached state_timed_out", function() {
+                var setupInputs = [
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_start - yes
+                    , "1"  // state_consent - yes
+                    , "123456"  // state_clinic_code
+                    , "2"  // state_due_date_month - may
+                    , "10"  // state_due_date_day
+                    , {session_event: 'close'}
+                    , {session_event: 'new'}
+                ];
+
                 describe("choosing to continue", function() {
                     it("should go back to the state you were on", function() {
                         return tester
                         .setup.user.addr("27820001001")
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , "1"  // state_start - yes
-                            , "1"  // state_consent - yes
-                            , "123456"  // state_clinic_code
-                            , "2"  // state_due_date_month - may
-                            , "10"  // state_due_date_day
-                            , {session_event: 'close'}
-                            , {session_event: 'new'}
-                            , {session_event: 'close'}
+                        .inputs.apply(this, setupInputs.concat([
+                            {session_event: 'close'}
                             , {session_event: 'new'}
                             , "1"  // state_timed_out - continue
-                        )
+                        ]))
                         .check.interaction({
                             state: "state_id_type",
                         })
@@ -486,17 +467,7 @@ describe("app", function() {
                     it("should go back to state_start", function() {
                         return tester
                         .setup.user.addr("27820001001")
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , "1"  // state_start - yes
-                            , "1"  // state_consent - yes
-                            , "123456"  // state_clinic_code
-                            , "2"  // state_due_date_month - may
-                            , "10"  // state_due_date_day
-                            , {session_event: 'close'}
-                            , {session_event: 'new'}
-                            , "2"  // state_timed_out - start new registration
-                        )
+                        .inputs.apply(this, setupInputs.concat('2')) // state_timed_out - start new registration
                         .check.interaction({
                             state: "state_start",
                         })
@@ -507,15 +478,17 @@ describe("app", function() {
         });
 
         describe("dialback sms testing", function() {
+            var setupInputs = [
+                {session_event: 'new'}  // dial in
+                , "1"  // state_start - yes
+                , "1"  // state_consent - yes
+                , {session_event: 'close'}
+            ];
+
             it("send if redial sms not yet sent (identity loads without redial_sms_sent defined)", function() {
                 return tester
                 .setup.user.addr("27820001001")
-                .inputs(
-                    {session_event: 'new'}  // dial in
-                    , "1"  // state_start - yes
-                    , "1"  // state_consent - yes
-                    , {session_event: 'close'}
-                )
+                .inputs.apply(this, JSON.parse(JSON.stringify(setupInputs)))
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
                     utils.check_fixtures_used(api, [123, 180, 183]);
@@ -525,12 +498,7 @@ describe("app", function() {
             it("don't send if redial sms already sent (identity loads with redial_sms_sent set as 'true')", function() {
                 return tester
                 .setup.user.addr("27820001009")
-                .inputs(
-                    {session_event: 'new'}  // dial in
-                    , "1"  // state_start - yes
-                    , "1"  // state_consent - yes
-                    , {session_event: 'close'}
-                )
+                .inputs.apply(this, JSON.parse(JSON.stringify(setupInputs)))
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
                     utils.check_fixtures_used(api, [203]);
@@ -540,12 +508,7 @@ describe("app", function() {
             it("send if redial sms not yet sent (identity loads with redial_sms_sent set as 'false')", function() {
                 return tester
                 .setup.user.addr("27820001008")
-                .inputs(
-                    {session_event: 'new'}  // dial in
-                    , "1"  // state_start - yes
-                    , "1"  // state_consent - yes
-                    , {session_event: 'close'}
-                )
+                .inputs.apply(this, JSON.parse(JSON.stringify(setupInputs)))
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
                     utils.check_fixtures_used(api, [131, 202]);
@@ -553,14 +516,8 @@ describe("app", function() {
                 .run();
             });
             it("don't send when timeout occurs on a non-dialback state", function() {
-                return tester
-                .setup.user.addr("27820001001")
-                .inputs(
-                    {session_event: 'new'}  // dial in
-                    , "1"  // state_start - yes
-                    , "1"  // state_consent - yes
-                    , {session_event: 'close'}
-                    , {session_event: 'new'}
+                var complexInputs = setupInputs.concat([
+                    {session_event: 'new'}
                     , "1"  // state_timed_out - continue
                     , "123456"  // state_clinic_code
                     , "2"  // state_due_date_month - may
@@ -570,7 +527,11 @@ describe("app", function() {
                     , "1"  // state_birth_month - january
                     , "14"  // state_birth_day
                     , "4"  // state_language - english
-                )
+                ]);
+
+                return tester
+                .setup.user.addr("27820001001")
+                .inputs.apply(this, JSON.parse(JSON.stringify(complexInputs)))
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
                     utils.check_fixtures_used(api, [4, 116, 123, 174, 180, 183, 204]);
@@ -873,18 +834,19 @@ describe("app", function() {
         });
 
         describe("state_due_date_day", function() {
+            var setupInputs = [
+                {session_event: 'new'}  // dial in
+                , "1"  // state_start - yes
+                , "1"  // state_consent - yes
+                , "123456"  // state_clinic_code
+            ];
+
             describe("day out of range", function() {
                 it("should ask for the day again", function() {
+                    // 32 May is invalid
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "1"  // state_consent - yes
-                        , "123456"  // state_clinic_code
-                        , "2"  // state_due_date_month - may
-                        , "32"  // state_due_date_day
-                    )
+                    .inputs.apply(this, setupInputs.concat(['2', '32']))
                     .check.interaction({
                         state: "state_due_date_day"
                     })
@@ -893,16 +855,10 @@ describe("app", function() {
             });
             describe("date is invalid", function() {
                 it("should tell them the date is invalid", function() {
+                    // 31 Nov is invalid
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "1"  // state_consent - yes
-                        , "123456"  // state_clinic_code
-                        , "8"  // state_due_date_month - nov
-                        , "31"  // state_due_date_day
-                    )
+                    .inputs.apply(this, setupInputs.concat(['8', '31']))
                     .check.interaction({
                         state: "state_invalid_edd",
                         reply: [
@@ -916,16 +872,10 @@ describe("app", function() {
             });
             describe("date is valid", function() {
                 it("should ask for id_type", function() {
+                    // 10 May is valid
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "1"  // state_consent - yes
-                        , "123456"  // state_clinic_code
-                        , "2"  // state_due_date_month - may
-                        , "10"  // state_due_date_day
-                    )
+                    .inputs.apply(this, setupInputs.concat(['2', '10']))
                     .check.interaction({
                         state: "state_id_type"
                     })
@@ -955,19 +905,20 @@ describe("app", function() {
         });
 
         describe("state_id_type", function() {
+            var setupInputs = [
+                {session_event: 'new'}  // dial in
+                , "1"  // state_start - yes
+                , "1"  // state_consent - yes
+                , "123456"  // state_clinic_code
+                , "2"  // state_due_date_month - may
+                , "10"  // state_due_date_day
+            ];
+
             describe("choosing sa_id", function() {
                 it("should go to state_sa_id", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "1"  // state_consent - yes
-                        , "123456"  // state_clinic_code
-                        , "2"  // state_due_date_month - may
-                        , "10"  // state_due_date_day
-                        , "1"  // state_id_type - sa_id
-                    )
+                    .inputs.apply(this, setupInputs.concat('1')) // Add to the inputs for 'state_id_type - sa_id'
                     .check.interaction({
                         state: "state_sa_id"
                     })
@@ -978,15 +929,7 @@ describe("app", function() {
                 it("should go to state_passport_origin", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "1"  // state_consent - yes
-                        , "123456"  // state_clinic_code
-                        , "2"  // state_due_date_month - may
-                        , "10"  // state_due_date_day
-                        , "2"  // state_id_type - passport
-                    )
+                    .inputs.apply(this, setupInputs.concat('2')) // Add to the inputs for 'state_id_type - passport'
                     .check.interaction({
                         state: "state_passport_origin"
                     })
@@ -997,15 +940,7 @@ describe("app", function() {
                 it("should go to state_birth_year", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "1"  // state_consent - yes
-                        , "123456"  // state_clinic_code
-                        , "2"  // state_due_date_month - may
-                        , "10"  // state_due_date_day
-                        , "3"  // state_id_type - none
-                    )
+                    .inputs.apply(this, setupInputs.concat('3')) // Add to the inputs for 'state_id_type - none'
                     .check.interaction({
                         state: "state_birth_year"
                     })
@@ -1015,20 +950,21 @@ describe("app", function() {
         });
 
         describe("state_sa_id", function() {
+            var setupInputs = [
+                {session_event: 'new'}  // dial in
+                , "1"  // state_start - yes
+                , "1"  // state_consent - yes
+                , "123456"  // state_clinic_code
+                , "2"  // state_due_date_month - may
+                , "10"  // state_due_date_day
+                , "1"  // state_id_type - sa_id
+            ];
+
             describe("invalid sa_id", function() {
                 it("should ask for sa_id again", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "1"  // state_consent - yes
-                        , "123456"  // state_clinic_code
-                        , "2"  // state_due_date_month - may
-                        , "10"  // state_due_date_day
-                        , "1"  // state_id_type - sa_id
-                        , "1234"  // state_sa_id
-                    )
+                    .inputs.apply(this, setupInputs.concat('1234')) // Add to the inputs for 'state_sa_id'
                     .check.interaction({
                         state: "state_sa_id"
                     })
@@ -1039,16 +975,7 @@ describe("app", function() {
                 it("should go to state_language", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "1"  // state_consent - yes
-                        , "123456"  // state_clinic_code
-                        , "2"  // state_due_date_month - may
-                        , "10"  // state_due_date_day
-                        , "1"  // state_id_type - sa_id
-                        , "5101015009088"  // state_sa_id
-                    )
+                    .inputs.apply(this, setupInputs.concat('5101015009088')) // Add to the inputs for 'state_sa_id'
                     .check.interaction({
                         state: "state_language"
                     })
@@ -1079,21 +1006,22 @@ describe("app", function() {
         });
 
         describe("state_passport_no", function() {
+            var setupInputs = [
+                {session_event: 'new'}  // dial in
+                , "1"  // state_start - yes
+                , "1"  // state_consent - yes
+                , "123456"  // state_clinic_code
+                , "2"  // state_due_date_month - may
+                , "10"  // state_due_date_day
+                , "2"  // state_id_type - passport
+                , "1"  // state_passport_origin - zimbabwe
+            ];
+
             describe("number too short", function() {
                 it("should ask for number again", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "1"  // state_consent - yes
-                        , "123456"  // state_clinic_code
-                        , "2"  // state_due_date_month - may
-                        , "10"  // state_due_date_day
-                        , "2"  // state_id_type - passport
-                        , "1"  // state_passport_origin - zimbabwe
-                        , "1234"  // state_passport_no
-                    )
+                    .inputs.apply(this, setupInputs.concat(['1234'])) // Add to the inputs for 'state_passport_no'
                     .check.interaction({
                         state: "state_passport_no"
                     })
@@ -1104,17 +1032,7 @@ describe("app", function() {
                 it("should ask for number again", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "1"  // state_consent - yes
-                        , "123456"  // state_clinic_code
-                        , "2"  // state_due_date_month - may
-                        , "10"  // state_due_date_day
-                        , "2"  // state_id_type - passport
-                        , "1"  // state_passport_origin - zimbabwe
-                        , "1234 5678"  // state_passport_no
-                    )
+                    .inputs.apply(this, setupInputs.concat(['1234 5678'])) // Add to the inputs for 'state_passport_no'
                     .check.interaction({
                         state: "state_passport_no"
                     })
@@ -1125,17 +1043,7 @@ describe("app", function() {
                 it("should go to state_language", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "1"  // state_consent - yes
-                        , "123456"  // state_clinic_code
-                        , "2"  // state_due_date_month - may
-                        , "10"  // state_due_date_day
-                        , "2"  // state_id_type - passport
-                        , "1"  // state_passport_origin - zimbabwe
-                        , "12345"  // state_passport_no
-                    )
+                    .inputs.apply(this, setupInputs.concat(['12345'])) // Add to the inputs for 'state_passport_no'
                     .check.interaction({
                         state: "state_language"
                     })
@@ -1145,20 +1053,23 @@ describe("app", function() {
         });
 
         describe("state_birth_year", function() {
+            var setupInputs = [
+                {session_event: 'new'}  // dial in
+                , "1"  // state_start - yes
+                , "1"  // state_consent - yes
+                , "123456"  // state_clinic_code
+                , "2"  // state_due_date_month - may
+                , "10"  // state_due_date_day
+                , "3"  // state_id_type - none
+            ];
+
             describe("birth year too recent", function() {
                 it("should ask for birth year again", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "1"  // state_consent - yes
-                        , "123456"  // state_clinic_code
-                        , "2"  // state_due_date_month - may
-                        , "10"  // state_due_date_day
-                        , "3"  // state_id_type - none
-                        , "2013"  // state_birth_year - 1 year old
-                    )
+                    // Add to the inputs for 'state_birth_year', somebody born in
+                    // 2013 is too young to give birth
+                    .inputs.apply(this, setupInputs.concat('2013'))
                     .check.interaction({
                         state: "state_birth_year"
                     })
@@ -1169,16 +1080,7 @@ describe("app", function() {
                 it("should go to state_birth_month", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "1"  // state_consent - yes
-                        , "123456"  // state_clinic_code
-                        , "2"  // state_due_date_month - may
-                        , "10"  // state_due_date_day
-                        , "3"  // state_id_type - none
-                        , "1981"  // state_birth_year
-                    )
+                    .inputs.apply(this, setupInputs.concat('1981')) // Add to the inputs for 'state_birth_year'
                     .check.interaction({
                         state: "state_birth_month",
                         reply: [
@@ -1225,22 +1127,23 @@ describe("app", function() {
         });
 
         describe("state_birth_day", function() {
+            var setupInputs = [
+                {session_event: 'new'}  // dial in
+                , "1"  // state_start - yes
+                , "1"  // state_consent - yes
+                , "123456"  // state_clinic_code
+                , "2"  // state_due_date_month - may
+                , "10"  // state_due_date_day
+                , "3"  // state_id_type - none
+                , "1981"  // state_birth_year
+            ];
+
             describe("day out of range", function() {
                 it("should ask for the day again", function() {
+                    // 32 January 1981 is an invalid date
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "1"  // state_consent - yes
-                        , "123456"  // state_clinic_code
-                        , "2"  // state_due_date_month - may
-                        , "10"  // state_due_date_day
-                        , "3"  // state_id_type - none
-                        , "1981"  // state_birth_year
-                        , "1"  // state_birth_month - january
-                        , "32"  // state_birth_day
-                    )
+                    .inputs.apply(this, setupInputs.concat(['1', '32']))
                     .check.interaction({
                         state: "state_birth_day"
                     })
@@ -1249,20 +1152,10 @@ describe("app", function() {
             });
             describe("date is invalid", function() {
                 it("should tell them the date is invalid", function() {
+                    // 29 February 1981 is an invalid date
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "1"  // state_consent - yes
-                        , "123456"  // state_clinic_code
-                        , "2"  // state_due_date_month - may
-                        , "10"  // state_due_date_day
-                        , "3"  // state_id_type - none
-                        , "1981"  // state_birth_year
-                        , "2"  // state_birth_month - february
-                        , "29"  // state_birth_day
-                    )
+                    .inputs.apply(this, setupInputs.concat(['2', '29']))
                     .check.interaction({
                         state: "state_invalid_dob",
                         reply: [
@@ -1276,20 +1169,10 @@ describe("app", function() {
             });
             describe("date is valid", function() {
                 it("should ask for language", function() {
+                    // 14 January 1981 is a valid date
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "1"  // state_consent - yes
-                        , "123456"  // state_clinic_code
-                        , "2"  // state_due_date_month - may
-                        , "10"  // state_due_date_day
-                        , "3"  // state_id_type - none
-                        , "1981"  // state_birth_year
-                        , "1"  // state_birth_month - january
-                        , "14"  // state_birth_day
-                    )
+                    .inputs.apply(this, setupInputs.concat(['1', '14']))
                     .check.interaction({
                         state: "state_language"
                     })
@@ -1323,21 +1206,26 @@ describe("app", function() {
         });
 
         describe("state_language", function() {
+            var setupInputs = [
+                {session_event: 'new'}  // dial in
+                , "1"  // state_start - yes
+                , "1"  // state_consent - yes
+                , "123456"  // state_clinic_code
+                , "2"  // state_due_date_month - may
+                , "10"  // state_due_date_day
+            ];
+
             describe("self sa_id registration", function() {
                 it("should go to state_end_success", function() {
-                    return tester
-                    .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "1"  // state_consent - yes
-                        , "123456"  // state_clinic_code
-                        , "2"  // state_due_date_month - may
-                        , "10"  // state_due_date_day
-                        , "1"  // state_id_type - sa_id
+                    var testInputs = setupInputs.concat([
+                        "1"  // state_id_type - sa_id
                         , "5101025009086"  // state_sa_id
                         , "4"  // state_language - english
-                    )
+                    ]);
+
+                    return tester
+                    .setup.user.addr("27820001001")
+                    .inputs.apply(this, testInputs)
                     .check.interaction({
                         state: "state_end_success"
                     })
@@ -1426,21 +1314,17 @@ describe("app", function() {
             });
             describe("self none registration", function() {
                 it("should go to state_end_success", function() {
-                    return tester
-                    .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "1"  // state_consent - yes
-                        , "123456"  // state_clinic_code
-                        , "2"  // state_due_date_month - may
-                        , "10"  // state_due_date_day
-                        , "3"  // state_id_type - none
+                    var testInputs = setupInputs.concat([
+                        "3"  // state_id_type - none
                         , "1981"  // state_birth_year
                         , "1"  // state_birth_month - january
                         , "14"  // state_birth_day
                         , "4"  // state_language - english
-                    )
+                    ]);
+
+                    return tester
+                    .setup.user.addr("27820001001")
+                    .inputs.apply(this, testInputs)
                     .check.interaction({
                         state: "state_end_success"
                     })
@@ -1483,8 +1367,9 @@ describe("app", function() {
     });
 
     describe('with pilot opt-in config', function () {
-    var app;
-    var tester;
+    var app,
+        tester,
+        sessionArgs;
 
         beforeEach(function() {
 
@@ -1546,6 +1431,20 @@ describe("app", function() {
                     fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 ->
                 });
+
+            sessionArgs = [
+                {session_event: 'new'}  // dial in
+                , "1"  // state_start - yes
+                , "1"  // state_consent - yes
+                , "123456"  // state_clinic_code
+                , "2"  // state_due_date_month - may
+                , "10"  // state_due_date_day
+                , "3"  // state_id_type - none
+                , "1981"  // state_birth_year
+                , "1"  // state_birth_month - january
+                , "14"  // state_birth_day
+            ];
+
         });
 
         it('should trigger the pilot check for white listed facility codes', function() {
@@ -1687,18 +1586,7 @@ describe("app", function() {
                         }));
                 })
                 .setup.user.addr("27820001001")
-                .inputs(
-                    {session_event: 'new'}  // dial in
-                    , "1"  // state_start - yes
-                    , "1"  // state_consent - yes
-                    , "123456"  // state_clinic_code
-                    , "2"  // state_due_date_month - may
-                    , "10"  // state_due_date_day
-                    , "3"  // state_id_type - none
-                    , "1981"  // state_birth_year
-                    , "1"  // state_birth_month - january
-                    , "14"  // state_birth_day
-                )
+                .inputs.apply(this, sessionArgs)
                 .check.interaction({
                     state: "state_pilot",
                     reply: [
@@ -1745,18 +1633,7 @@ describe("app", function() {
                         }));
                 })
                 .setup.user.addr("27820001001")
-                .inputs(
-                    {session_event: 'new'}  // dial in
-                    , "1"  // state_start - yes
-                    , "1"  // state_consent - yes
-                    , "123456"  // state_clinic_code
-                    , "2"  // state_due_date_month - may
-                    , "10"  // state_due_date_day
-                    , "3"  // state_id_type - none
-                    , "1981"  // state_birth_year
-                    , "1"  // state_birth_month - january
-                    , "14"  // state_birth_day
-                )
+                .inputs.apply(this, sessionArgs)
                 .check.interaction({
                     state: "state_language"
                 })
@@ -1798,19 +1675,8 @@ describe("app", function() {
                         }));
                 })
                 .setup.user.addr("27820001001")
-                .inputs(
-                    {session_event: 'new'}  // dial in
-                    , "1"  // state_start - yes
-                    , "1"  // state_consent - yes
-                    , "123456"  // state_clinic_code
-                    , "2"  // state_due_date_month - may
-                    , "10"  // state_due_date_day
-                    , "3"  // state_id_type - none
-                    , "1981"  // state_birth_year
-                    , "1"  // state_birth_month - january
-                    , "14"  // state_birth_day
-                    , "1" // Pilot opt in
-                )
+                // Add '1' for 'state_pilot - opt in'
+                .inputs.apply(this, sessionArgs.concat(['1']))
                 .check.interaction({
                     state: "state_language"
                 })
@@ -1900,21 +1766,8 @@ describe("app", function() {
                     ]
                 })
                 .setup.user.addr("27820001001")
-                .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "1"  // state_consent - yes
-                        , "123456"  // state_clinic_code
-                        , "2"  // state_due_date_month - may
-                        , "10"  // state_due_date_day
-                        , "3"  // state_id_type - none
-                        , "1981"  // state_birth_year
-                        , "1"  // state_birth_month - january
-                        , "14"  // state_birth_day
-                        , "1" // state_pilot - opt in
-                        , "4"  // state_language - english
-
-                )
+                // Add '1' for 'state_pilot - opt in', '4' for 'state_language - english'
+                .inputs.apply(this, sessionArgs.concat(['1', '4']))
                 .check.interaction({
                     state: "state_end_success"
                 })
