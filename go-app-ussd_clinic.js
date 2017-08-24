@@ -1000,22 +1000,22 @@ go.app = function() {
         self.add('state_pilot', function(name) {
             var pilot_config = self.im.config.pilot || {};
             var nudge_threshold = pilot_config.nudge_threshold || 0.0;
-            var question = 'How would the pregnant mother like to receive the messages?';
-            var whatsapp_label = 'WhatsApp';
-            var sms_label = 'SMS';
+            var question = $('How would the pregnant mother like to receive the messages?');
+            var whatsapp_label = $('WhatsApp');
+            var sms_label = $('SMS');
 
             if(self.im.user.answers.state_language == 'eng_ZA' && Math.random() < nudge_threshold) {
-                question = "Would the pregnant mother prefer to receive messages via WhatsApp?";
-                whatsapp_label = 'Yes';
-                sms_label = 'No';
+                question = $("Would the pregnant mother prefer to receive messages via WhatsApp?");
+                whatsapp_label = $('Yes');
+                sms_label = $('No');
             }
 
-            self.im.user.set_answer("state_pilot_question", question);
+            self.im.user.set_answer("state_pilot_question", question.args[0]);
             return new ChoiceState(name, {
-                question: $(question),
+                question: question,
                 choices: [
-                    new Choice('whatsapp', $(whatsapp_label)),
-                    new Choice('sms', $(sms_label)),
+                    new Choice('whatsapp', whatsapp_label),
+                    new Choice('sms', sms_label),
                 ],
                 next: 'state_language'
             });
