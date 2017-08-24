@@ -53,6 +53,10 @@ describe("app", function() {
                         message_sender: {
                             url: 'http://ms/api/v1/',
                             token: 'test MessageSender'
+                        },
+                        stage_based_messaging: {
+                            url: 'http://sbm/api/v1/',
+                            token: 'test StageBasedMessaging'
                         }
                     },
                 })
@@ -364,7 +368,7 @@ describe("app", function() {
                         assert.deepEqual(metrics['test.ussd_clinic.avg.sessions_to_register'].values, [2]);
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [4, 116, 123, 174, 180, 183, 204]);
+                        utils.check_fixtures_used(api, [4, 50, 116, 123, 174, 180, 183, 204]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -491,7 +495,7 @@ describe("app", function() {
                 .inputs.apply(this, JSON.parse(JSON.stringify(setupInputs)))
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [123, 180, 183]);
+                    utils.check_fixtures_used(api, [50, 123, 180, 183]);
                 })
                 .run();
             });
@@ -501,7 +505,7 @@ describe("app", function() {
                 .inputs.apply(this, JSON.parse(JSON.stringify(setupInputs)))
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [203]);
+                    utils.check_fixtures_used(api, [54, 69, 203]);
                 })
                 .run();
             });
@@ -511,7 +515,7 @@ describe("app", function() {
                 .inputs.apply(this, JSON.parse(JSON.stringify(setupInputs)))
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [131, 202]);
+                    utils.check_fixtures_used(api, [54, 59, 131, 202]);
                 })
                 .run();
             });
@@ -534,7 +538,7 @@ describe("app", function() {
                 .inputs.apply(this, JSON.parse(JSON.stringify(complexInputs)))
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [4, 116, 123, 174, 180, 183, 204]);
+                    utils.check_fixtures_used(api, [4, 50, 116, 123, 174, 180, 183, 204]);
                 })
                 .run();
             });
@@ -619,6 +623,54 @@ describe("app", function() {
                     .run();
                 });
             });
+
+            describe('checking for existing subscriptions', function() {
+                it('should return state_already_subscribed if active subscription', function() {
+                    return tester
+                    .setup.user.addr('27820001002')
+                    .inputs(
+                        {session_event: 'new'} // dial in
+                        , '1' // state_start - yes
+                    )
+                    .check.interaction({
+                        state: 'state_already_subscribed'
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [51, 54, 181]);
+                    })
+                    .run();
+                });
+            });
+        });
+
+        describe('state_already_subscribed', function() {
+            var setupInputs = [{session_event: 'new'}, '1'] // dial in and 'yes' at state_start
+
+            it('should offer the choice to enter a different number', function() {
+                return tester
+                .setup.user.addr('27820001002')
+                .inputs.apply(this, setupInputs.concat('1')) // state_already_subscribed - different number
+                .check.interaction({
+                    state: 'state_mobile_no'
+                })
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [51, 54, 181]);
+                })
+                .run();
+            });
+
+            it('should offer the choice to go back to the start', function() {
+                return tester
+                .setup.user.addr('27820001002')
+                .inputs.apply(this, setupInputs.concat('2')) // state_already_subscribed - end registration
+                .check.interaction({
+                    state: 'state_start'
+                })
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [51, 54, 181]);
+                })
+                .run();
+            });
         });
 
         describe("state_consent", function() {
@@ -669,7 +721,7 @@ describe("app", function() {
                         state: "state_consent"
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [184, 186]);
+                        utils.check_fixtures_used(api, [55, 184, 186]);
                     })
                     .run();
                 });
@@ -709,6 +761,20 @@ describe("app", function() {
             });
 
             describe("valid number", function() {
+                it('should test for active subscriptions', function() {
+                    return tester
+                    .setup.user.addr("27820001001")
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , "2"  // state_start - no
+                        , "0820001002"  // state_mobile_no
+                    )
+                    .check.interaction({
+                        state: "state_already_subscribed"
+                    })
+                    .run();
+                });
+
                 describe("number is opted out", function() {
                     it("should go to state_opt_in", function() {
                         return tester
@@ -757,7 +823,7 @@ describe("app", function() {
                         state: "state_clinic_code"
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [173, 180, 183]);
+                        utils.check_fixtures_used(api, [50, 173, 180, 183]);
                     })
                     .run();
                 });
@@ -789,7 +855,7 @@ describe("app", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [174, 180, 183]);
+                        utils.check_fixtures_used(api, [50, 174, 180, 183]);
                     })
                     .run();
                 });
@@ -1231,7 +1297,7 @@ describe("app", function() {
                     })
 
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [2, 116, 174, 180, 183, 187]);
+                        utils.check_fixtures_used(api, [2, 50, 116, 174, 180, 183, 187]);
                     })
                     .check(function(api) {
                         var metrics = api.metrics.stores.test_metric_store;
@@ -1306,7 +1372,7 @@ describe("app", function() {
                         assert.deepEqual(metrics['test.ussd_clinic.avg.sessions_to_register'].values, [1]);
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [3, 116, 174, 180, 182, 183, 188]);
+                        utils.check_fixtures_used(api, [3, 50, 52, 54, 116, 174, 180, 182, 183, 188]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -1355,7 +1421,7 @@ describe("app", function() {
                         assert.deepEqual(metrics['test.ussd_clinic.avg.sessions_to_register'].values, [1]);
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [4, 116, 174, 180, 183, 189]);
+                        utils.check_fixtures_used(api, [4, 50, 116, 174, 180, 183, 189]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -1408,6 +1474,10 @@ describe("app", function() {
                             url: 'http://ms/api/v1/',
                             token: 'test MessageSender',
                             channel: 'default-channel',
+                        },
+                        stage_based_messaging: {
+                            url: 'http://sbm/api/v1/',
+                            token: 'test StageBasedMessaging'
                         }
                     },
                     pilot: {
@@ -1458,6 +1528,7 @@ describe("app", function() {
                     ];
                     test_utils.only_use_fixtures(api, {
                         numbers: [
+                            50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
                             174, // Jembi Clinic Code validation - code 123456
                             180, // 'get.is.msisdn.27820001001'
                             183, // 'post.is.msisdn.27820001001'
@@ -1512,6 +1583,7 @@ describe("app", function() {
                     pilot_config.facilitycode_whitelist = [];
                     test_utils.only_use_fixtures(api, {
                         numbers: [
+                            50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
                             174, // Jembi Clinic Code validation - code 123456
                             180, // 'get.is.msisdn.27820001001'
                             183, // 'post.is.msisdn.27820001001'
@@ -1567,6 +1639,7 @@ describe("app", function() {
                     ];
                     test_utils.only_use_fixtures(api, {
                         numbers: [
+                            50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
                             174, // Jembi Clinic Code validation - code 123456
                             180, // 'get.is.msisdn.27820001001'
                             183, // 'post.is.msisdn.27820001001'
@@ -1614,6 +1687,7 @@ describe("app", function() {
                     ];
                     test_utils.only_use_fixtures(api, {
                         numbers: [
+                            50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
                             174, // Jembi Clinic Code validation - code 123456
                             180, // 'get.is.msisdn.27820001001'
                             183, // 'post.is.msisdn.27820001001'
@@ -1656,6 +1730,7 @@ describe("app", function() {
                     ];
                     test_utils.only_use_fixtures(api, {
                         numbers: [
+                            50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
                             174, // Jembi Clinic Code validation - code 123456
                             180, // 'get.is.msisdn.27820001001'
                             183, // 'post.is.msisdn.27820001001'
@@ -1699,6 +1774,7 @@ describe("app", function() {
                     ];
                     test_utils.only_use_fixtures(api, {
                         numbers: [
+                            50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
                             174, // Jembi Clinic Code validation - code 123456
                             180, // 'get.is.msisdn.27820001001'
                             183, // 'post.is.msisdn.27820001001',
