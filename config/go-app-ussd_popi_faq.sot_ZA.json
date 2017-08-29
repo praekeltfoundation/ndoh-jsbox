@@ -1,14 +1,14 @@
 {
     "": {
-        "pot-creation-date": "2017-08-11 11:20:+0000",
+        "pot-creation-date": "2017-08-29 02:46:+0000",
         "project-id-version": "POPI_FAQ",
         "language-team": "SeSotho <LL@li.org>",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2017-08-11 13:23+0200",
-        "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
-        "x-generator": "Poedit 1.5.4",
+        "po-revision-date": "2017-08-29 16:06+0100",
+        "last-translator": "Alex Muller <alex@praekelt.org>",
+        "x-generator": "Poedit 2.0.3",
         "language": "sot"
     },
     "Choose a question about MomConnect (MC):": [
@@ -63,9 +63,9 @@
         null,
         "MomConnect e bokella dinomoro  tsa hao tsa fono le ID, sebaka sa tleleniki, le lesedi mabapi le hore boimana ba hao bo tswela pele jwang."
     ],
-    "MomConnect is owned and run by the Health Department. MTN, Cell C, Telkom, Praekelt, Jembi and HISP collect and process your data on their behalf.": [
+    "MomConnect is owned and run by the Health Department. MTN, Cell C, Telkom, Vodacom, Praekelt, Jembi and HISP collect and process your data on their behalf.": [
         null,
-        "Lefapha la Bophelo ke monga le molaodi wa MomConnect.MTN,Cell C,Telkom,Praekelt,Jembi le HISP ba bokella le ho hlophisa data lebitsong la bona."
+        "Lefapha la Bophelo ke monga le molaodi wa MomConnect.MTN,Cell C,Telkom,Vodacom,Praekelt,Jembi le HISP ba bokella le ho hlophisa data lebitsong la bona."
     ],
     "You can see, change, or ask us to delete your information by dialing *134*550*7#": [
         null,

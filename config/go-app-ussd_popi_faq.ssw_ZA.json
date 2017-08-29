@@ -1,15 +1,15 @@
 {
     "": {
-        "pot-creation-date": "2017-08-11 11:20:+0000",
+        "pot-creation-date": "2017-08-29 02:46:+0000",
         "project-id-version": "POPI_FAQ",
         "language-team": "Siswati <LL@li.org>",
         "language": "ssw",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2017-08-11 13:23+0200",
-        "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
-        "x-generator": "Poedit 1.5.4"
+        "po-revision-date": "2017-08-29 16:07+0100",
+        "last-translator": "Alex Muller <alex@praekelt.org>",
+        "x-generator": "Poedit 2.0.3"
     },
     "Choose a question about MomConnect (MC):": [
         null,
@@ -63,9 +63,9 @@
         null,
         "IMomConnect igcogca tinombolo takho telucingo ne-ID, indzawo umtfolamphilo lokuyo, nelwatiso lwenchubekelembili yekukhulelwa kwakho."
     ],
-    "MomConnect is owned and run by the Health Department. MTN, Cell C, Telkom, Praekelt, Jembi and HISP collect and process your data on their behalf.": [
+    "MomConnect is owned and run by the Health Department. MTN, Cell C, Telkom, Vodacom, Praekelt, Jembi and HISP collect and process your data on their behalf.": [
         null,
-        "IMomConnect yeLitiko Letemphilo. I-MTN, Cell C, Telkom, Praekelt, Jembi ne-HISP bayagcogca futsi bendlulise imininingwane egameli lalo. "
+        "IMomConnect yeLitiko Letemphilo. I-MTN, Cell C, Telkom, Vodacom, Praekelt, Jembi ne-HISP bayagcogca futsi bendlulise imininingwane egameli lalo. "
     ],
     "You can see, change, or ask us to delete your information by dialing *134*550*7#": [
         null,

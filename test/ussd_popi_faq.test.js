@@ -314,8 +314,8 @@ describe("app", function() {
                             state: "state_question_4",
                             reply: [
                                 "MomConnect is owned and run by the Health " +
-                                "Department. MTN, Cell C, Telkom, Praekelt, " +
-                                "Jembi and HISP collect and process your data on",
+                                "Department. MTN, Cell C, Telkom, Vodacom, Praekelt, " +
+                                "Jembi and HISP collect and process your",
                                 "1. Next",
                                 "2. Menu"
                             ].join('\n')
@@ -338,7 +338,7 @@ describe("app", function() {
                             .check.interaction({
                                 state: "state_question_4",
                                 reply: [
-                                    "their behalf.",
+                                    "data on their behalf.",
                                     "1. Back",
                                     "2. Menu"
                                 ].join('\n')
