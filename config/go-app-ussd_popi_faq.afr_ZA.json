@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "POPI_FAQ",
-        "pot-creation-date": "2017-06-09 06:25:+0000",
-        "po-revision-date": "2017-06-27 12:37+0200",
+        "pot-creation-date": "2017-08-11 11:20:+0000",
+        "po-revision-date": "2017-08-11 13:24+0200",
         "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
         "language-team": "Afrikaans <LL@li.org>",
         "language": "af",
@@ -11,18 +11,6 @@
         "content-transfer-encoding": "8bit",
         "x-generator": "Poedit 1.5.4"
     },
-    "Welcome back. Please select an option:": [
-        null,
-        "Welkom terug. Kies asb 'n opsie."
-    ],
-    "Continue viewing FAQ": [
-        null,
-        "Terug na vraag"
-    ],
-    "Main menu": [
-        null,
-        "Hoof Spyskaart"
-    ],
     "Choose a question about MomConnect (MC):": [
         null,
         "Kies 'n vraag oor MomConnect (MC):"

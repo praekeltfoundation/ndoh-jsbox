@@ -1,28 +1,16 @@
 {
     "": {
-        "pot-creation-date": "2017-06-09 06:45:+0000",
+        "pot-creation-date": "2017-08-11 11:20:+0000",
         "project-id-version": "POPI_FAQ",
         "language-team": "Tshivenda <LL@li.org>",
         "language": "ven",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2017-06-27 12:33+0200",
+        "po-revision-date": "2017-08-11 13:22+0200",
         "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
         "x-generator": "Poedit 1.5.4"
     },
-    "Welcome back. Please select an option:": [
-        null,
-        "Vho ṱanganedzwa. Kha vha khethe."
-    ],
-    "Continue viewing FAQ": [
-        null,
-        "Huma"
-    ],
-    "Main menu": [
-        null,
-        "Menumurangeli"
-    ],
     "Choose a question about MomConnect (MC):": [
         null,
         "Kha vha nange mbudziso nga ha MomConnect (MC):"
