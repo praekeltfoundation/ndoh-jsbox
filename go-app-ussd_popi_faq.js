@@ -181,7 +181,7 @@ go.app = function() {
         self.add('state_question_4', function(name) {
             return new PaginatedState(name, {
                 text: $('MomConnect is owned and run by ' +
-                        'the Health Department. MTN, Cell C, Telkom, ' +
+                        'the Health Department. MTN, Cell C, Telkom, Vodacom, ' +
                         'Praekelt, Jembi and HISP collect and process your ' +
                         'data on their behalf.'),
                 characters_per_page: 160,
