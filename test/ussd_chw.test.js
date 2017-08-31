@@ -45,6 +45,10 @@ describe("app", function() {
                         message_sender: {
                             url: 'http://ms/api/v1/',
                             token: 'test MessageSender'
+                        },
+                        stage_based_messaging: {
+                            url: 'http://sbm/api/v1/',
+                            token: 'test StageBasedMessaging'
                         }
                     },
                 })
@@ -189,11 +193,11 @@ describe("app", function() {
         describe("test avg.sessions_to_register metric", function() {
             it("should increment metric according to number of sessions", function() {
                 return tester
-                    .setup.user.addr('27820001001')
+                    .setup.user.addr('27820001002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '2'  // state_start - no
-                        , '0820001002' // state_mobile_no
+                        , '0820001001' // state_mobile_no without active subscription
                         , '1'  // state_consent - yes
                         , '2'  // state_id_type - passport
                         , {session_event: 'close'}  // timeout
@@ -215,7 +219,7 @@ describe("app", function() {
                         assert.deepEqual(metrics['test.ussd_chw.avg.sessions_to_register'].values, [2]);
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [21, 121, 124, 180, 181, 183, 241]);
+                        utils.check_fixtures_used(api, [45, 50, 51, 54, 117, 141, 180, 181, 183, 248]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -412,7 +416,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [124, 180, 183]);
+                    utils.check_fixtures_used(api, [50, 124, 180, 183]);
                 })
                 .run();
             });
@@ -427,7 +431,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [205]);
+                    utils.check_fixtures_used(api, [54, 70, 205]);
                 })
                 .run();
             });
@@ -442,7 +446,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [130, 202]);
+                    utils.check_fixtures_used(api, [54, 59, 130, 202]);
                 })
                 .run();
             });
@@ -462,7 +466,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [22, 117, 124, 180, 183, 206]);
+                    utils.check_fixtures_used(api, [22, 50, 117, 124, 180, 183, 206]);
                 })
                 .run();
             });
@@ -731,14 +735,17 @@ describe("app", function() {
         describe("after entering the pregnant woman's number", function() {
 
             describe("if the number has not opted out before", function() {
+                var setupUser = '27820001002'
+                var setupInputs = [
+                    {session_event: 'new'}  // dial in
+                    , '2'  // state_start - no
+                    , '0820001001'  // state_mobile_no with no active subscription
+                ]
+
                 it("should ask for consent", function() {
                     return tester
-                        .setup.user.addr('27820001001')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '2'  // state_start - no
-                            , '0820001002'  // state_mobile_no
-                        )
+                        .setup.user.addr(setupUser)
+                        .inputs.apply(this, setupInputs)
                         .check.interaction({
                             state: 'state_consent',
                             reply: [(
@@ -753,13 +760,8 @@ describe("app", function() {
                 });
                 it("should ask for the id type", function() {
                     return tester
-                        .setup.user.addr('27820001001')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '2'  // state_start - no
-                            , '0820001002'  // state_mobile_no
-                            , '1'  // state_consent - yes
-                        )
+                        .setup.user.addr(setupUser)
+                        .inputs.apply(this, setupInputs.concat('1')) // state_consent - yes
                         .check.interaction({
                             state: 'state_id_type',
                             reply: [
@@ -774,13 +776,8 @@ describe("app", function() {
                 });
                 it("should tell them they cannot register", function() {
                     return tester
-                        .setup.user.addr('27820001001')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '2'  // state_start - no
-                            , '0820001002'  // state_mobile_no
-                            , '2'  // state_consent - no
-                        )
+                        .setup.user.addr(setupUser)
+                        .inputs.apply(this, setupInputs.concat('2')) // state_consent - no
                         .check.interaction({
                             state: 'state_consent_refused',
                             reply: 'Unfortunately without her consent, she ' +
@@ -834,7 +831,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [180, 183, 184, 237]);
+                            utils.check_fixtures_used(api, [50, 55, 180, 183, 184, 237]);
                         })
                         .run();
                 });
@@ -952,11 +949,11 @@ describe("app", function() {
             describe("if the user is not the pregnant woman", function() {
                 it("should set id type, ask for their id number", function() {
                     return tester
-                        .setup.user.addr('27820001001')
+                        .setup.user.addr('27820001002')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '2'  // state_start - no
-                            , '0820001002' // state_mobile_no
+                            , '0820001001' // state_mobile_no without active subscription
                             , '1'  // state_consent - yes
                             , '1'  // state_id_type - sa id
                         )
@@ -1434,11 +1431,11 @@ describe("app", function() {
             describe("if the phone used is not the mom's and id type passport", function() {
                 it("should save msg language, thank them and exit", function() {
                     return tester
-                        .setup.user.addr('27820001001')
+                        .setup.user.addr('27820001003')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '2'  // state_start - no
-                            , '0820001002' // state_mobile_no
+                            , '0820001001' // state_mobile_no with no active subscription
                             , '1'  // state_consent - yes
                             , '2'  // state_id_type - passport
                             , '1'  // state_passport_origin - Zimbabwe
@@ -1470,7 +1467,7 @@ describe("app", function() {
                             assert.deepEqual(metrics['test.ussd_chw.avg.sessions_to_register'].values, [1]);
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [21, 121, 180, 181, 183, 200]);
+                            utils.check_fixtures_used(api, [44, 50, 52, 54, 117, 180, 182, 183, 247]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -1512,7 +1509,7 @@ describe("app", function() {
                             assert.deepEqual(metrics['test.ussd_chw.avg.sessions_to_register'].values, [1]);
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [22, 117, 180, 183, 201]);
+                            utils.check_fixtures_used(api, [22, 50, 117, 180, 183, 201]);
                         })
                         .check.reply.ends_session()
                         .run();

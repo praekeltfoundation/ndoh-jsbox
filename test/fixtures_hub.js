@@ -984,22 +984,58 @@ module.exports = function() {
             'response': {}
         },
 
-        // 44:
+        // 44: register cb245673-aa41-4302-ac47-00000001001 (momconnect chw)
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "url": 'http://hub/api/v1/registration/',
+                "method": 'POST',
+                "data": {
+                    "reg_type": "momconnect_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001003",
+                        "msisdn_registrant": "+27820001001",
+                        "msisdn_device": "+27820001003",
+                        "id_type": "passport",
+                        "language": "eng_ZA",
+                        "consent": true,
+                        "passport_no": "12345",
+                        "passport_origin": "zw",
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {},
+            }
         },
 
-        // 45:
+        // 45: register cb245673-aa41-4302-ac47-00000001001
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "url": 'http://hub/api/v1/registration/',
+                "method": 'POST',
+                "data": {
+                    "reg_type": "momconnect_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001002",
+                        "msisdn_registrant": "+27820001001",
+                        "msisdn_device": "+27820001002",
+                        "id_type": "passport",
+                        "language": "eng_ZA",
+                        "consent": true,
+                        "passport_no": "12345",
+                        "passport_origin": "zw"
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {},
+            }
         },
 
         // 46:

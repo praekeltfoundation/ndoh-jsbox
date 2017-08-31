@@ -941,11 +941,17 @@ module.exports = function() {
             "response": {}
         },
 
-        // 141:
+        // 141: post outbound message for cb245673-aa41-4302-ac47-00000001002
         {
             'request': {
-                'method': 'GET',
-                'url': 'http://',
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "to_addr": "+27820001002",
+                    "content": "Please dial back in to *120*550*3# to complete the pregnancy registration.",
+                    "metadata":{}
+                }
             },
             'response': {}
         },
