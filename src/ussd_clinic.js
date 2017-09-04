@@ -358,7 +358,7 @@ go.app = function() {
                 self.im.user.set_answer("operator", identity);
                 self.im.user.set_answer("operator_msisdn", operator_msisdn);
 
-                return sbm.is_identity_subscribed(identity.id, [/prebirth/]);
+                return sbm.is_identity_subscribed(identity.id, [/prebirth\.hw_full/]);
             })
             .then(function(has_active_subscription) {
                 self.im.user.set_answer("has_active_subscription", has_active_subscription);
@@ -498,7 +498,7 @@ go.app = function() {
                         self.im.user.set_answer("registrant", identity);
                         self.im.user.set_answer("registrant_msisdn", registrant_msisdn);
 
-                        return sbm.is_identity_subscribed(identity.id, [/prebirth/]);
+                        return sbm.is_identity_subscribed(identity.id, [/prebirth\.hw_full/]);
                     })
                     .then(function(has_active_subscription) {
                         self.im.user.set_answer("has_active_subscription", has_active_subscription);
