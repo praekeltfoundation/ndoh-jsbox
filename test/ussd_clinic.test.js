@@ -1517,6 +1517,60 @@ describe("app", function() {
 
         });
 
+        it('should trigger the pilot is we\'re not working with a whitelist', function() {
+            var pilot_fixture;
+            return tester
+                .setup(function(api) {
+                    // force the threshold to accept everyone
+                    pilot_config = api.config.store.config.pilot
+                    pilot_config.use_whitelist = false;
+                    test_utils.only_use_fixtures(api, {
+                        numbers: [
+                            50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
+                            174, // Jembi Clinic Code validation - code 123456
+                            180, // 'get.is.msisdn.27820001001'
+                            183, // 'post.is.msisdn.27820001001'
+                        ],
+                    });
+
+                    // API call for checking pilot readiness without
+                    // waiting for results
+                    pilot_fixture = api.http.fixtures.add(
+                        fixtures_Pilot().exists({
+                            address: '+27820001001',
+                            wait: false
+                        }));
+                })
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: 'new'}  // dial in
+                    , "1"  // state_start - yes
+                    , "1"  // state_consent - yes
+                    , "123456"  // state_clinic_code
+                )
+                .check.interaction({
+                    state: "state_due_date_month",
+                    reply: [
+                        'Please select the month when the baby is due:',
+                        '1. Apr',
+                        '2. May',
+                        '3. Jun',
+                        '4. Jul',
+                        '5. Aug',
+                        '6. Sep',
+                        '7. Oct',
+                        '8. Nov',
+                        '9. Dec',
+                        '10. Jan'
+                    ].join('\n')
+                })
+                .check(function (api, im, app) {
+                    // Make sure the pilot fixture was actually called
+                    assert.equal(pilot_fixture.uses, 1);
+                })
+                .run();
+        });
+
         it('should trigger the pilot check for white listed facility codes', function() {
             var pilot_fixture;
             return tester

@@ -528,6 +528,11 @@ go.app = function() {
         self.can_participate_in_pilot = function (facilitycode) {
             var pilot_config = self.im.config.pilot || {};
             var whitelist = pilot_config.facilitycode_whitelist || [];
+
+            if(pilot_config.use_whitelist === false) {
+                return Q(true);
+            }
+
             // NOTE: returning a promise as this may be an API call
             //       in the future
             return self.im
