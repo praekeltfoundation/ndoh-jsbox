@@ -709,10 +709,15 @@ go.app = function() {
                 });
         };
 
-        self.is_valid_recipient_for_pilot = function (params) {
+        self.is_valid_recipient_for_pilot = function (default_params) {
             var pilot_config = self.im.config.pilot || {};
             var api_url = pilot_config.api_url;
             var api_token = pilot_config.api_token;
+            var api_number = pilot_config.api_number;
+
+            var params = _.merge({
+                number: api_number,
+            }, default_params);
 
             // Otherwise check the API
             return new JsonApi(self.im, {

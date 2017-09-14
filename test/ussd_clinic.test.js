@@ -1537,6 +1537,7 @@ describe("app", function() {
                     // waiting for results
                     pilot_fixture = api.http.fixtures.add(
                         fixtures_Pilot().exists({
+                            number: '+27123456789',
                             address: '+27820001001',
                             wait: false
                         }));
@@ -1593,6 +1594,7 @@ describe("app", function() {
                     // waiting for results
                     pilot_fixture = api.http.fixtures.add(
                         fixtures_Pilot().exists({
+                            number: '+27123456789',
                             address: '+27820001001',
                             wait: false
                         }));
@@ -1648,6 +1650,7 @@ describe("app", function() {
                     // waiting for results
                     pilot_fixture = api.http.fixtures.add(
                         fixtures_Pilot().exists({
+                            number: '+27123456789',
                             address: '+27820001001',
                             wait: false
                         }));
@@ -1703,11 +1706,13 @@ describe("app", function() {
                     // API call for checking pilot readiness
                     async_pilot_fixture = api.http.fixtures.add(
                         fixtures_Pilot().exists({
+                            number: '+27123456789',
                             address: '+27820001001',
                             wait: false
                         }));
                     sync_pilot_fixture = api.http.fixtures.add(
                         fixtures_Pilot().exists({
+                            number: '+27123456789',
                             address: '+27820001001',
                             wait: true
                         }));
@@ -1751,11 +1756,13 @@ describe("app", function() {
                     // API call for checking pilot readiness
                     async_pilot_fixture = api.http.fixtures.add(
                         fixtures_Pilot().exists({
+                            number: '+27123456789',
                             address: '+27820001001',
                             wait: false
                         }));
                     sync_pilot_fixture = api.http.fixtures.add(
                         fixtures_Pilot().not_exists({
+                            number: '+27123456789',
                             address: '+27820001001',
                             wait: true
                         }));
@@ -1794,11 +1801,13 @@ describe("app", function() {
                     // API call for checking pilot readiness
                     async_pilot_fixture = api.http.fixtures.add(
                         fixtures_Pilot().exists({
+                            number: '+27123456789',
                             address: '+27820001001',
                             wait: false
                         }));
                     sync_pilot_fixture = api.http.fixtures.add(
                         fixtures_Pilot().exists({
+                            number: '+27123456789',
                             address: '+27820001001',
                             wait: true
                         }));
@@ -1839,11 +1848,13 @@ describe("app", function() {
                         // API call for checking pilot readiness
                         api.http.fixtures.add(
                             fixtures_Pilot().exists({
+                                number: '+27123456789',
                                 address: '+27820001001',
                                 wait: false
                         })),
                         api.http.fixtures.add(
                             fixtures_Pilot().exists({
+                                number: '+27123456789',
                                 address: '+27820001001',
                                 wait: true
                         })),

@@ -14,7 +14,7 @@ var utils = require('seed-jsbox-utils').utils;
 var test_utils = require('./test_utils');
 var _ = require('lodash');
 
-describe("app", function() {
+describe("ussd_public app", function() {
     describe("for ussd_public use", function() {
         var app;
         var tester;
@@ -770,6 +770,14 @@ describe("app", function() {
                     pilot_config.randomisation_threshold = 1.0;
                     api.http.fixtures.add(
                         fixtures_Pilot().exists({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            wait: false,
+                        }));
+
+                    api.http.fixtures.add(
+                        fixtures_Pilot().exists({
+                            number: '+27123456789',
                             address: '+27820001001',
                             wait: true,
                         }));
@@ -802,6 +810,13 @@ describe("app", function() {
                     pilot_config.nudge_threshold = 1.0;
                     api.http.fixtures.add(
                         fixtures_Pilot().exists({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            wait: false,
+                        }));
+                    api.http.fixtures.add(
+                        fixtures_Pilot().exists({
+                            number: '+27123456789',
                             address: '+27820001001',
                             wait: true,
                         }));
@@ -842,6 +857,14 @@ describe("app", function() {
                     });
                     api.http.fixtures.add(
                         fixtures_Pilot().not_exists({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            wait: false,
+                        }));
+
+                    api.http.fixtures.add(
+                        fixtures_Pilot().not_exists({
+                            number: '+27123456789',
                             address: '+27820001001',
                             wait: true,
                         }));
@@ -925,6 +948,13 @@ describe("app", function() {
                         ],
                     });
 
+                    api.http.fixtures.add(
+                        fixtures_Pilot().exists({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            wait: false,
+                        }));
+
                     // NOTE:    we're not providing a fixture for the whatsapp_prebirth message set
                     //          it should be inferred from the local state
 
@@ -980,7 +1010,14 @@ describe("app", function() {
                         ],
                     });
 
-                    // subscribe to the whatsapp_prebirth message set so the pilot
+                    api.http.fixtures.add(
+                        fixtures_Pilot().exists({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            wait: false,
+                        }));
+
+                        // subscribe to the whatsapp_prebirth message set so the pilot
                     // channel is returned
                     api.http.fixtures.add(fixtures_Pilot().subscribe_id_to({
                         identity: 'cb245673-aa41-4302-ac47-00000001001',
@@ -1019,6 +1056,12 @@ describe("app", function() {
                             50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
                         ],
                     });
+                    api.http.fixtures.add(
+                        fixtures_Pilot().exists({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            wait: false,
+                        }));
                     api.http.fixtures.add(
                         fixtures_Pilot().annotate({
                             number: '+27123456789',
@@ -1072,6 +1115,12 @@ describe("app", function() {
                     ],
                 });
 
+                api.http.fixtures.add(
+                    fixtures_Pilot().exists({
+                        number: '+27123456789',
+                        address: '+27820001002',
+                        wait: false,
+                    }));
                 // subscribe to the whatsapp_prebirth message set so the pilot
                 // channel is returned
                 api.http.fixtures.add(fixtures_Pilot().subscribe_id_to({
@@ -1112,6 +1161,12 @@ describe("app", function() {
                         181, // "get.is.msisdn.27820001002"
                     ],
                 });
+                api.http.fixtures.add(
+                    fixtures_Pilot().exists({
+                        number: '+27123456789',
+                        address: '+27820001002',
+                        wait: false,
+                    }));
                 // subscribe to the whatsapp_prebirth message set so the pilot
                 // channel is returned
                 api.http.fixtures.add(fixtures_Pilot().subscribe_id_to({

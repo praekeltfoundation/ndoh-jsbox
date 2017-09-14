@@ -540,6 +540,20 @@ go.app = function() {
             return is
             .get_or_create_identity({"msisdn": registrant_msisdn})
             .then(function(identity) {
+                // We're calling this in the start without waiting for the results,
+                // this is a quick call but WhatsApp in the background continues querying
+                // this contact, this means when we call it again the result will likely
+                // be available immediately when we call with with `wait` = `true`.
+                return self
+                    .can_participate_in_pilot({
+                        address: registrant_msisdn,
+                        wait: false,
+                    })
+                    .then(function(ignored_result) {
+                        return identity;
+                    });
+            })
+            .then(function(identity) {
                 self.im.user.set_answer("registrant", identity);
                 self.im.user.set_answer("registrant_msisdn", registrant_msisdn);
 
@@ -717,8 +731,12 @@ go.app = function() {
         });
 
         self.add('state_pilot_randomisation', function(name) {  // interstitial state
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
             return self
-                .can_participate_in_pilot()
+                .can_participate_in_pilot({
+                    address: msisdn,
+                    wait: true,
+                })
                 .then(function(yes_or_no) {
                     return yes_or_no
                         ? self.states.create('state_pilot')
@@ -726,7 +744,9 @@ go.app = function() {
                 });
         });
 
-        self.can_participate_in_pilot = function () {
+        self.can_participate_in_pilot = function (params) {
+            params = params || {};
+
             if(_.isEmpty(self.im.config.pilot)) {
                 // If unconfigured return false
                 return Q(false);
@@ -737,7 +757,14 @@ go.app = function() {
             var randomisation_threshold = pilot_config.randomisation_threshold || 0.0;
             var api_url = pilot_config.api_url;
             var api_token = pilot_config.api_token;
-            var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
+            var api_number = pilot_config.api_number;
+
+            var default_params = _.merge({
+                number: api_number,
+            }, params);
+
+            var msisdn = params.address;
+
             // Always allow people on the whitelist
             if(whitelist.indexOf(msisdn) > -1) {
                 return Q(true);
@@ -748,10 +775,8 @@ go.app = function() {
                     'Authorization': ['Token ' + api_token]
                 }})
                 .get(api_url, {
-                    params: {
-                        address: msisdn,
-                        wait: true,
-                    }})
+                    params: default_params,
+                })
                 .then(function(response) {
                     existing = _.filter(response.data, function(obj) { return obj.exists === true; });
                     if(_.isEmpty(existing)) {

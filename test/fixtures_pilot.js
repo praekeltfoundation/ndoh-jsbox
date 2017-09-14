@@ -11,6 +11,7 @@ module.exports = function() {
                 },
                 'url': 'http://pilot.example.org/check/',
                 'params': {
+                    'number': params.number,
                     'wait': '' + params.wait, // force to string type for fixture lookups to work
                     'address': params.address,
                 },
