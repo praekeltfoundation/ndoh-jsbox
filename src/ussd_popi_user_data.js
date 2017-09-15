@@ -542,7 +542,7 @@ go.app = function() {
             return new EndState(name, {
                 text: $('Sorry, that number is not recognised. Dial in with the number ' +
                         'you used to register for MomConnect. To update ' +
-                        'number, dial *134*550*5# or register ' +
+                        'number, dial *134*550*7# or register ' +
                         'at a clinic'),
                 next: 'state_start'
             });

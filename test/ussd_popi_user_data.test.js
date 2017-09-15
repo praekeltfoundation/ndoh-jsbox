@@ -26,7 +26,7 @@ describe('app', function() {
                     testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',
                     logging: 'off',
                     no_timeout_redirects: ['state_start'],
-                    channel: '*134*550*5#',
+                    channel: '*134*550*7#',
                     services: {
                         identity_store: {
                             url: 'http://is/api/v1/',
@@ -85,7 +85,7 @@ describe('app', function() {
                         reply: [
                             'Sorry, that number is not recognised. Dial in with the number ' +
                             'you used to register for MomConnect. To update ' +
-                            'number, dial *134*550*5# or register ' +
+                            'number, dial *134*550*7# or register ' +
                             'at a clinic'
                         ].join('\n')
                     })
