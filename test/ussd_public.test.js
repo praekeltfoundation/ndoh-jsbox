@@ -884,12 +884,13 @@ describe("ussd_public app", function() {
                         address: '27820001001',
                         reg_type: 'momconnect_prebirth',
                         language: 'zul_ZA',
+                        consent: true
                     }));
                     api.http.fixtures.add(fixtures_Pilot().post_outbound_message({
                         identity: 'cb245673-aa41-4302-ac47-00000001001',
                         address: '+27820001001',
                         channel: 'default-channel',
-                        content: 'Congratulations on your pregnancy. You will now get free SMSs about MomConnect. You can register for the full set of FREE helpful messages at a clinic.'
+                        content: 'Congratulations on your pregnancy. You will now get free SMSs about MomConnect. You can register for the full set of FREE helpful messages at a clinic.',
                     }));
                 })
                 .setup.user.addr("27820001001")
@@ -974,6 +975,7 @@ describe("ussd_public app", function() {
                         address: '27820001001',
                         reg_type: 'whatsapp_prebirth',
                         language: 'zul_ZA',
+                        consent: true
                     }));
                     api.http.fixtures.add(fixtures_Pilot().post_outbound_message({
                         identity: 'cb245673-aa41-4302-ac47-00000001001',
@@ -1078,7 +1080,7 @@ describe("ussd_public app", function() {
                         address: '27820001001',
                         reg_type: 'momconnect_prebirth',
                         language: 'zul_ZA',
-
+                        consent: true
                     }));
                     api.http.fixtures.add(fixtures_Pilot().post_outbound_message({
                         identity: 'cb245673-aa41-4302-ac47-00000001001',
