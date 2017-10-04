@@ -74,8 +74,7 @@ go.app = function() {
                     //      Because of how Seed's services work using asynchronous webhooks there
                     //      can be a race condition if we check the subscriptions too soon after
                     //      creating a new registration
-                    console.log(self.im.user.answers.state_register_pmtct);
-                    if(self.im.user.answers.state_create_pmtct_registration === 'whatsapp') {
+                    if(self.im.user.answers.state_register_pmtct === 'whatsapp') {
                         return pilot_config.channel;
                     } else {
                         return self.im.config.services.message_sender.channel;
@@ -104,7 +103,6 @@ go.app = function() {
             return self
                 .get_channel()
                 .then(function(channel) {
-                    console.log(channel);
                     this.channel = channel;
                     return ms.create_outbound(
                         self.im.user.answers.identity.id,
