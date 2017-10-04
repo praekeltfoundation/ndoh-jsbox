@@ -55,29 +55,106 @@ go.app = function() {
             );
         };
 
-        self.send_registration_thanks = function() {
-            return ms
-            .create_outbound_message(
-                self.im.user.answers.identity.id,
-                self.im.user.answers.msisdn,
-                self.im.user.i18n($(
-                    "HIV positive moms can have an HIV negative baby! You can get free " +
-                    "medicine at the clinic to protect your baby and improve your health"
-                ))
-            )
-            .then(function() {
-                return ms
-                .create_outbound_message(
-                    self.im.user.answers.identity.id,
-                    self.im.user.answers.msisdn,
-                    self.im.user.i18n($(
-                        "Recently tested HIV positive? You are not alone, many other pregnant " +
-                        "women go through this. Visit b-wise.mobi or call the AIDS Helpline " +
-                        "0800 012 322"
-                    ))
-                );
-            });
+        self.get_channel = function() {
+            var pilot_config = self.im.config.pilot || {};
+            return Q()
+                .then(function() {
+                    return self.im.log([
+                        'pilot_state: ' + self.im.user.answers.state_create_pmtct_registration,
+                        'pilot config: ' + JSON.stringify(pilot_config),
+                    ].join('\n'));
+                })
+                .then(function () {
+                    // NOTE:
+                    //      If we're able to tell from local state what channel is supposed to be
+                    //      used then use that rather than the HTTP call.
+                    //      Because of how Seed's services work using asynchronous webhooks there
+                    //      can be a race condition if we check the subscriptions too soon after
+                    //      creating a new registration
+                    if(self.im.user.answers.state_register_pmtct === 'whatsapp') {
+                        return pilot_config.channel;
+                    } else {
+                        return self.im.config.services.message_sender.channel;
+                    }
+
+                    return sbm
+                        .is_identity_subscribed(self.im.user.answers.identity.id, [/whatsapp/])
+                        .then(function(confirmed) {
+                            if(confirmed) {
+                                return pilot_config.channel;
+                            } else {
+                                return self.im.config.services.message_sender.channel;
+                            }
+                        });
+                })
+                .then(function(channel) {
+                    return self.im
+                        .log('Returning channel ' + channel + ' for ' + self.im.user.addr)
+                        .then(function() {
+                            return channel;
+                        });
+                });
         };
+
+        self.send_registration_thanks = function() {
+            return self
+                .get_channel()
+                .then(function(channel) {
+                    this.channel = channel;
+                    return ms.create_outbound(
+                        self.im.user.answers.identity.id,
+                        self.im.user.answers.msisdn,
+                        self.im.user.i18n($(
+                            "HIV positive moms can have an HIV negative baby! You can get free " +
+                            "medicine at the clinic to protect your baby and improve your health"
+                        )), {
+                            channel: this.channel
+                        }
+                    );
+                })
+                .then(function() {
+                    return ms.create_outbound(
+                        self.im.user.answers.identity.id,
+                        self.im.user.answers.msisdn,
+                        self.im.user.i18n($(
+                            "Recently tested HIV positive? You are not alone, many other pregnant " +
+                            "women go through this. Visit b-wise.mobi or call the AIDS Helpline " +
+                            "0800 012 322"
+                        )), {
+                            channel: this.channel
+                        }
+                    );
+                });
+        };
+
+        self.is_valid_recipient_for_pilot = function (default_params) {
+            var pilot_config = self.im.config.pilot || {};
+            var api_url = pilot_config.api_url;
+            var api_token = pilot_config.api_token;
+            var api_number = pilot_config.api_number;
+
+            var params = _.merge({
+                number: api_number,
+            }, default_params);
+
+            return new JsonApi(self.im, {
+                headers: {
+                    'Authorization': ['Token ' + api_token]
+                }})
+                .get(api_url, {
+                    params: params,
+                })
+                .then(function(response) {
+                    existing = _.filter(response.data, function(obj) { return obj.exists === true; });
+                    var allowed = !_.isEmpty(existing);
+                    return self.im
+                        .log('valid pilot recipient returning ' + allowed + ' for ' + JSON.stringify(params))
+                        .then(function () {
+                            return allowed;
+                        });
+                });
+        };
+
 
         // TIMEOUT HANDLING
 
@@ -110,7 +187,19 @@ go.app = function() {
 
         self.add("state_start", function(name) {
             self.im.user.answers = {};  // reset answers
-            return self.states.create("state_check_pmtct_subscription");
+            var address = utils.normalize_msisdn(self.im.user.addr, '27');
+            // NOTE:    We're making the API call here but not telling it to wait nor are we doing
+            //          anything with the result.
+            //
+            //          The idea is that the check continues to happen in the background and will be ready
+            //          when we need it. This way we minimise any timeout penalty during the registration.
+            return self
+                .is_valid_recipient_for_pilot({
+                    address: address,
+                    wait: false
+                }).then(function(res) {
+                    return self.states.create("state_check_pmtct_subscription");
+                });
         });
 
         // interstitial
@@ -156,8 +245,11 @@ go.app = function() {
 
                                 var subscribed_to_pmtct = false;
                                 var subscribed_to_momconnect = false;
+                                var subscribed_to_whatsapp = false;
                                 var momconnect_prebirth_subscription = false;
                                 var momconnect_postbirth_subscription = false;
+                                var whatsapp_prebirth_subscription = false;
+                                var whatsapp_postbirth_subscription = false;
 
                                 // see if any of the active subscriptions shortnames contain
                                 // either "pmtct" or "momconnect" in order to route appropriately
@@ -170,6 +262,7 @@ go.app = function() {
                                     }
 
                                     var momconnect_index = active_sub_shortname.indexOf("momconnect");
+
                                     if (momconnect_index > -1) {
                                         subscribed_to_momconnect = true;
                                         // if subscribed to momconnect, also check to see if
@@ -180,25 +273,37 @@ go.app = function() {
                                             momconnect_postbirth_subscription = true;
                                         }
                                     }
+
+                                    if (active_sub_shortname.indexOf("whatsapp") > -1) {
+                                        subscribed_to_whatsapp = true;
+                                        // Check to see if subscription is pre or post birth
+                                        if (active_sub_shortname.indexOf("prebirth") > -1) {
+                                            whatsapp_prebirth_subscription = true;
+                                        } else if (active_sub_shortname.indexOf("postbirth") > -1) {
+                                            whatsapp_postbirth_subscription = true;
+                                        } else {
+                                            // There could be other whatsapp messagesets that are not momconnect
+                                            // related
+                                            subscribed_to_whatsapp = false;
+                                        }
+                                    }
                                 }
 
                                 if (subscribed_to_pmtct) {
                                     return self.states.create("state_optout_reason_menu");
                                 }
 
-                                if (subscribed_to_momconnect) {
+                                if (subscribed_to_momconnect || subscribed_to_whatsapp) {
                                     self.im.user.set_answer("consent", identity.details.consent);
                                     self.im.user.set_answer("mom_dob", identity.details.mom_dob);
 
-                                    if (momconnect_prebirth_subscription && momconnect_postbirth_subscription) {
-                                        // default to prebirth in case of multiple subscriptions
-                                        self.im.user.set_answer("subscription_type", "prebirth");
-                                    } else if (momconnect_prebirth_subscription) {
-                                        self.im.user.set_answer("subscription_type", "prebirth");
-                                    } else if (momconnect_postbirth_subscription) {
+                                    if (momconnect_postbirth_subscription || whatsapp_postbirth_subscription) {
                                         self.im.user.set_answer("subscription_type", "postbirth");
                                     }
-
+                                    if (momconnect_prebirth_subscription || whatsapp_prebirth_subscription) {
+                                        // Default to prebirth if multiple subscriptions
+                                        self.im.user.set_answer("subscription_type", "prebirth");
+                                    }
                                     return self.states.create("state_route");
                                 } else {
                                     return self.states.create("state_end_not_registered");
@@ -333,12 +438,34 @@ go.app = function() {
         });
 
         self.add("state_register_pmtct", function(name) {
+            var address = utils.normalize_msisdn(self.im.user.addr, '27');
+            return self
+                .is_valid_recipient_for_pilot({
+                    address: address,
+                    wait: true
+                }).then(function(is_valid) {
+                    if (is_valid) {
+                        return new ChoiceState(name, {
+                            question: $(
+                                "Would you like to receive these messages over WhatsApp or SMS?"),
+                            choices: [
+                                new Choice('whatsapp', $("WhatsApp")),
+                                new Choice('sms', $("SMS"))
+                            ],
+                            next: 'state_create_pmtct_registration'
+                        });
+                    } else {
+                        return self.states.create('state_create_pmtct_registration');
+                    }
+                });
+        });
+
+        self.add("state_create_pmtct_registration", function(name) {
             var identity_info = self.im.user.answers.identity;
             identity_info.details.consent = self.im.user.answers.consent;
             identity_info.details.mom_dob = self.im.user.answers.mom_dob;
             identity_info.details.pmtct = {};
             identity_info.details.pmtct.lang_code = self.im.user.lang || "eng_ZA";
-
             return is
             .update_identity(self.im.user.answers.identity.id, identity_info)
             .then(function() {
@@ -367,6 +494,9 @@ go.app = function() {
                             "edd": self.im.user.answers.identity.details.last_edd
                         }
                     };
+                }
+                if (self.im.user.get_answer('state_register_pmtct') === 'whatsapp') {
+                    reg_info.reg_type = 'whatsapp_' + reg_info.reg_type;
                 }
                 return Q.all([
                     hub.create_registration(reg_info),
