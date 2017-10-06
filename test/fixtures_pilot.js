@@ -59,17 +59,24 @@ module.exports = function() {
         post_registration: function(params) {
             var identity = params.identity;
             var address = params.address;
+            var consent = params.consent;
             var language = params.language || 'zul_ZA';
             var reg_type = params.reg_type || 'momconnect_prebirth';
             var data = params.data || {};
 
             var default_data = {
                 "operator_id": identity,
-                "msisdn_registrant": "+" + address,
-                "msisdn_device": "+" + address,
                 "language": language,
-                "consent": true,
             };
+
+            if (address !== undefined) {
+                default_data.msisdn_registrant = '+' + address;
+                default_data.msisdn_device = '+' + address;
+            }
+
+            if (consent !== undefined) {
+                default_data.consent = consent;
+            }
 
             return {
                 "request": {
@@ -133,17 +140,22 @@ module.exports = function() {
             var metadata = params.metadata || {};
             var channel = params.channel;
 
+            data = {
+                to_identity: identity,
+                content: content,
+                metadata: metadata,
+                channel: channel
+            }
+
+            if (address !== undefined) {
+                data.to_addr = address;
+            }
+
             return {
                 "request": {
                     "url": 'http://ms/api/v1/outbound/',
                     "method": 'POST',
-                    "data": {
-                        "to_identity": identity,
-                        "to_addr": address,
-                        "content": content,
-                        "metadata": metadata,
-                        "channel": channel
-                    }
+                    "data": data
                 },
                 "response": {
                     "code": 201,
