@@ -46,17 +46,17 @@ go.app = function() {
 
             mh = new MetricsHelper(self.im);
             mh
-                // Total unique users for app
-                // This adds <env>.sms_nurse.sum.unique_users 'last' metric
-                // As well as <env>.sms_nurse.sum.unique_users.transient 'sum' metric
+            // Total unique users for app
+            // This adds <env>.sms_nurse.sum.unique_users 'last' metric
+            // As well as <env>.sms_nurse.sum.unique_users.transient 'sum' metric
                 .add.total_unique_users([self.metric_prefix, 'sum', 'unique_users'].join('.'))
 
-                // Total unique users for environment, across apps
-                // This adds <env>.sum.unique_users 'last' metric
-                // as well as <env>.sum.unique_users.transient 'sum' metric
-                .add.total_unique_users([self.env, 'sum', 'unique_users'].join('.'))
+            // Total unique users for environment, across apps
+            // This adds <env>.sum.unique_users 'last' metric
+            // as well as <env>.sum.unique_users.transient 'sum' metric
+            .add.total_unique_users([self.env, 'sum', 'unique_users'].join('.'))
 
-                // Note 'sessions' are not tracked as this is an sms app
+            // Note 'sessions' are not tracked as this is an sms app
             ;
 
             self.attach_session_length_helper(self.im);
@@ -66,7 +66,7 @@ go.app = function() {
             var today = utils.get_moment_date(config.testing_today, "YYYY-MM-DD hh:mm:ss");
             var today_utc = moment.utc(today);
             return today_utc.format('dddd') === 'Saturday' ||
-              today_utc.format('dddd') === 'Sunday';
+                today_utc.format('dddd') === 'Sunday';
         };
 
         self.is_public_holiday = function(config) {
@@ -85,26 +85,26 @@ go.app = function() {
             return (today_utc.hour() < opening_time || today_utc.hour() >= closing_time);
         };
 
-        self.attach_session_length_helper = function (im) {
+        self.attach_session_length_helper = function(im) {
             // If we have transport metadata then attach the session length
             // helper to this app
-            if(!im.msg.transport_metadata) {
+            if (!im.msg.transport_metadata) {
                 return;
             }
 
             var slh = new go.SessionLengthHelper(im, {
-                name: function () {
+                name: function() {
                     var metadata = im.msg.transport_metadata.aat_ussd;
                     var provider;
 
-                    if(metadata) {
+                    if (metadata) {
                         provider = (metadata.provider || 'unspecified').toLowerCase();
                     } else {
                         provider = 'unknown';
                     }
                     return [im.config.name, provider].join('.');
                 },
-                clock: function () {
+                clock: function() {
                     return utils.get_moment_date(im.config.testing_today, "YYYY-MM-DD hh:mm:ss");
                 }
             });
@@ -115,41 +115,43 @@ go.app = function() {
         self.states.add("states_start", function() {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
             self.im.user.set_answer("operator_msisdn", msisdn);
+            // Add debug statement
+            self.im.log("Begin running spaghetti...");
 
             return is
-            .get_or_create_identity({"msisdn": msisdn})
-            .then(function(identity) {
-                self.im.user.set_answer("operator", identity);
+                .get_or_create_identity({ "msisdn": msisdn })
+                .then(function(identity) {
+                    self.im.user.set_answer("operator", identity);
 
-                return sbm
-                .is_identity_subscribed(self.im.user.answers.operator.id, [/nurseconnect/])
-                .then(function(identity_subscribed_to_nurseconnect) {
-                    if (identity_subscribed_to_nurseconnect) {
-                        // check if message contains a ussd code
-                        if (self.im.msg.content.indexOf("*120*") > -1 || self.im.msg.content.indexOf("*134*") > -1) {
-                            return self.states.create("states_dial_not_sms");
-                        } else {
-                            // get the first word, remove non-alphanumerics, capitalise
-                            switch (utils.get_clean_first_word(self.im.msg.content)) {
-                                case "STOP":
-                                    return self.states.create("states_opt_out_enter");
-                                case "BLOCK":
-                                    return self.states.create("states_opt_out_enter");
-                                case "START":
-                                    return self.states.create("states_opt_in_enter");
-                                default:
-                                    return self.states.create("states_default_enter");
+                    return sbm
+                        .is_identity_subscribed(self.im.user.answers.operator.id, [/nurseconnect/])
+                        .then(function(identity_subscribed_to_nurseconnect) {
+                            if (identity_subscribed_to_nurseconnect) {
+                                // check if message contains a ussd code
+                                if (self.im.msg.content.indexOf("*120*") > -1 || self.im.msg.content.indexOf("*134*") > -1) {
+                                    return self.states.create("states_dial_not_sms");
+                                } else {
+                                    // get the first word, remove non-alphanumerics, capitalise
+                                    switch (utils.get_clean_first_word(self.im.msg.content)) {
+                                        case "STOP":
+                                            return self.states.create("states_opt_out_enter");
+                                        case "BLOCK":
+                                            return self.states.create("states_opt_out_enter");
+                                        case "START":
+                                            return self.states.create("states_opt_in_enter");
+                                        default:
+                                            return self.states.create("states_default_enter");
+                                    }
+                                }
                             }
-                        }
-                    }
+                        });
                 });
-            });
         });
 
         self.states.add("states_dial_not_sms", function(name) {
             return new EndState(name, {
                 text: $("Please use your handset's keypad to dial the number that you received, " +
-                        "rather than sending it to us in an sms."),
+                    "rather than sending it to us in an sms."),
 
                 next: "states_start",
             });
@@ -173,12 +175,12 @@ go.app = function() {
                 }
             };
             return Q.all([
-                is.optout(optout_info),
-                hub.create_change(change_info)
-            ])
-            .then(function() {
-                return self.states.create("states_opt_out");
-            });
+                    is.optout(optout_info),
+                    hub.create_change(change_info)
+                ])
+                .then(function() {
+                    return self.states.create("states_opt_out");
+                });
         });
 
         self.states.add("states_opt_out", function(name) {
@@ -197,61 +199,61 @@ go.app = function() {
                 "requestor_source_id": self.im.config.testing_message_id || self.im.msg.message_id
             };
             return is
-            .optin(optin_info)
-            .then(function() {
-                return self.states.create("states_opt_in");
-            });
+                .optin(optin_info)
+                .then(function() {
+                    return self.states.create("states_opt_in");
+                });
         });
 
         self.states.add("states_opt_in", function(name) {
             return new EndState(name, {
                 text: $("Thank you. You will now receive messages from us again. " +
-                        "If you have any medical concerns please visit your nearest clinic"),
+                    "If you have any medical concerns please visit your nearest clinic"),
 
                 next: "states_start"
             });
         });
 
         self.states.add("states_default_enter", function(name) {
-           var casepro_url = self.im.config.services.casepro.url;
+            var casepro_url = self.im.config.services.casepro.url;
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
             var http = new JsonApi(self.im, {});
             var data = {
-              from: msisdn,
-              message_id: self.im.config.testing_message_id || self.im.msg.message_id,
-              content: self.im.msg.content,
+                from: msisdn,
+                message_id: self.im.config.testing_message_id || self.im.msg.message_id,
+                content: self.im.msg.content,
             };
             return http.post(casepro_url, {
                 data: data
-              }).then(function (response) {
+            }).then(function(response) {
                 return self.im.log([
-                      'Request: POST ' + casepro_url,
-                      'Payload: ' + JSON.stringify(data),
-                      'Response: ' + JSON.stringify(response),
+                        'Request: POST ' + casepro_url,
+                        'Payload: ' + JSON.stringify(data),
+                        'Response: ' + JSON.stringify(response),
                     ].join('\n'))
-                  .then(function() {
-                    return self.states.create("states_default");
-                  });
-                });
+                    .then(function() {
+                        return self.states.create("states_default");
+                    });
+            });
         });
 
         self.states.add("states_default", function(name) {
             var out_of_hours_text =
                 $("The helpdesk operates from 8am to 4pm Mon to Fri. " +
-                  "Responses will be delayed outside of these hrs.");
+                    "Responses will be delayed outside of these hrs.");
 
             var weekend_public_holiday_text =
                 $("The helpdesk is not currently available during weekends " +
-                  "and public holidays. Responses will be delayed during this time.");
+                    "and public holidays. Responses will be delayed during this time.");
 
             var business_hours_text =
                 $("Thank you for your message, it has been captured and you will receive a " +
-                "response soon. Kind regards. NurseConnect.");
+                    "response soon. Kind regards. NurseConnect.");
 
             if (self.is_out_of_hours(self.im.config)) {
                 text = out_of_hours_text;
             } else if (self.is_weekend(self.im.config) ||
-              self.is_public_holiday(self.im.config)) {
+                self.is_public_holiday(self.im.config)) {
                 text = weekend_public_holiday_text;
             } else {
                 text = business_hours_text;
