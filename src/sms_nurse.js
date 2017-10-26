@@ -115,6 +115,8 @@ go.app = function() {
         self.states.add("states_start", function() {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
             self.im.user.set_answer("operator_msisdn", msisdn);
+            // Add debug statement to identify source of 'undefined is not a function' error
+            self.im.log("\n".join(" Entering states_start ...".join("\n")));
 
             return is
             .get_or_create_identity({"msisdn": msisdn})
@@ -145,6 +147,8 @@ go.app = function() {
                 });
             });
         });
+        // Add debug statement to identify source of 'undefined is not a function' error
+        self.im.log("\n".join(" Exiting states_start ...".join("\n")));
 
         self.states.add("states_dial_not_sms", function(name) {
             return new EndState(name, {
