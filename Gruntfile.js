@@ -65,6 +65,7 @@ module.exports = function (grunt) {
                 ],
                 sms_nurse: [
                     'src/index.js',
+                    'src/session_length_helper.js',
                     '<%= paths.src.app.sms_nurse %>',
                     'src/init.js'
                 ],
