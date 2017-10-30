@@ -141,7 +141,7 @@ describe("app", function() {
                         })
                         .run();
                 });
-                it.only("should record metrics", function() {
+                it("should record metrics", function() {
                     return tester
                         .setup.user.addr('27820001002')
                         .inputs(
