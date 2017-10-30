@@ -76,8 +76,8 @@ describe("app", function() {
                     fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
                     fixtures_ServiceRating().forEach(api.http.fixtures.add); // 150 - 169
                     fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
-                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 - 248
-                    fixtures_Casepro().forEach(api.http.fixtures.add); // 249+
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 - 249
+                    fixtures_Casepro().forEach(api.http.fixtures.add); // 250+
                 });
         });
 
@@ -228,7 +228,7 @@ describe("app", function() {
                                 'receive a response soon. Kind regards. NurseConnect.'
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [52, 54, 182, 250]);
+                            utils.check_fixtures_used(api, [52, 54, 182, 251]);
                         })
                         .run();
                 });
@@ -250,7 +250,7 @@ describe("app", function() {
                                 "Responses will be delayed outside of these hrs."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [52, 54, 182, 250]);
+                            utils.check_fixtures_used(api, [52, 54, 182, 251]);
                         })
                         .run();
                 });
@@ -272,7 +272,7 @@ describe("app", function() {
                                 "and public holidays. Responses will be delayed during this time."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [52, 54, 182, 250]);
+                            utils.check_fixtures_used(api, [52, 54, 182, 251]);
                         })
                         .run();
                 });
@@ -294,7 +294,7 @@ describe("app", function() {
                                 "and public holidays. Responses will be delayed during this time."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [52, 54, 182, 250]);
+                            utils.check_fixtures_used(api, [52, 54, 182, 251]);
                         })
                         .run();
                 });

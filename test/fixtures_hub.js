@@ -1038,11 +1038,22 @@ module.exports = function() {
             }
         },
 
-        // 46:
+        // 46: register cb245673-aa41-4302-ac47-00000001004 for NurseConnect WhatsApp
         {
             'request': {
-                'method': 'GET',
-                'url': 'http://',
+                'method': 'POST',
+                'url': 'http://hub/api/v1/registration/',
+                'data': {
+                    "reg_type": "whatsapp_nurseconnect",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001004",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001004",
+                        "msisdn_registrant":"+27820001004",
+                        "msisdn_device": "+27820001004",
+                        "faccode": "123456",
+                        "language": "eng_ZA",
+                    },
+                },
             },
             'response': {}
         },
