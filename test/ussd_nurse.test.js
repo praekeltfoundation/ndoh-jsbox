@@ -223,7 +223,7 @@ describe("app", function() {
                             reply: [
                                 "Welcome to NurseConnect",
                                 "1. Change Persal no.",
-                                "2. Stop SMS",
+                                "2. Stop messages",
                                 "3. Back"
                             ].join('\n')
                         })
@@ -717,7 +717,7 @@ describe("app", function() {
                     .check.interaction({
                         state: 'state_permission_denied',
                         reply: [
-                            "You have chosen not to receive NurseConnect SMSs on this number and so cannot complete registration.",
+                            "You have chosen not to receive NurseConnect messages on this number and so cannot complete registration.",
                             '1. Main Menu'
                         ].join('\n')
                     })
@@ -754,7 +754,7 @@ describe("app", function() {
                     .check.interaction({
                         state: 'state_permission_denied',
                         reply: [
-                            "You have chosen not to receive NurseConnect SMSs on this number and so cannot complete registration.",
+                            "You have chosen not to receive NurseConnect messages on this number and so cannot complete registration.",
                             '1. Main Menu'
                         ].join('\n')
                     })

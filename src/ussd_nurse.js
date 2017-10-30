@@ -265,7 +265,7 @@ go.app = function() {
                     new Choice('state_change_id_no', $('Change ID no.')),
                     new Choice('state_change_sanc', $('Change SANC no.')),
                     new Choice('state_change_persal', $('Change Persal no.')),
-                    new Choice('state_check_optout_optout', $('Stop SMS')),
+                    new Choice('state_check_optout_optout', $('Stop messages')),
                 ],
                 characters_per_page: 140,
                 options_per_page: null,
@@ -452,7 +452,7 @@ go.app = function() {
 
         self.add('state_permission_denied', function(name) {
             return new ChoiceState(name, {
-                question: $("You have chosen not to receive NurseConnect SMSs on this number and so cannot complete registration."),
+                question: $("You have chosen not to receive NurseConnect messages on this number and so cannot complete registration."),
                 choices: [
                     new Choice('state_route', $('Main Menu'))
                 ],
