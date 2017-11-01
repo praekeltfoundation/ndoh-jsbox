@@ -967,8 +967,14 @@ module.exports = function() {
         // 142:
         {
             'request': {
-                'method': 'GET',
-                'url': 'http://',
+                'method': 'POST',
+                'url': 'http://ms/api/v1/outbound/',
+                'data': {
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001004",
+                    "to_addr": "+27820001004",
+                    "content": "Welcome to NurseConnect. For more options or to opt out, dial *120*550*5#.",
+                    "metadata": {},
+                },
             },
             'response': {}
         },

@@ -165,6 +165,36 @@ go.app = function() {
             }
         };
 
+        self.is_whatsapp_user = function(msisdn, wait_for_response) {
+            var whatsapp_config = self.im.config.whatsapp || {};
+            var api_url = whatsapp_config.api_url;
+            var api_token = whatsapp_config.api_token;
+            var api_number = whatsapp_config.api_number;
+
+            var params = {
+                number: api_number,
+                wait: wait_for_response,
+                address: msisdn,
+            };
+
+            return new JsonApi(self.im, {
+                headers: {
+                    'Authorization': ['Token ' + api_token]
+                }})
+                .get(api_url, {
+                    params: params,
+                })
+                .then(function(response) {
+                    existing_users = _.filter(response.data, function(obj) { return obj.exists === true; });
+                    var is_user = !_.isEmpty(existing_users);
+                    return self.im
+                        .log('WhatsApp recipient ' + is_user + ' for ' + JSON.stringify(params))
+                        .then(function() {
+                            return is_user;
+                        });
+                });
+        };
+
         self.number_opted_out = function(identity, msisdn) {
             var details_msisdn = identity.details.addresses.msisdn[msisdn];
             if ("optedout" in details_msisdn) {
@@ -265,7 +295,7 @@ go.app = function() {
                     new Choice('state_change_id_no', $('Change ID no.')),
                     new Choice('state_change_sanc', $('Change SANC no.')),
                     new Choice('state_change_persal', $('Change Persal no.')),
-                    new Choice('state_check_optout_optout', $('Stop SMS')),
+                    new Choice('state_check_optout_optout', $('Stop messages')),
                 ],
                 characters_per_page: 140,
                 options_per_page: null,
@@ -401,11 +431,16 @@ go.app = function() {
             var error = $("Sorry, that code is not recognized. Please enter the 6-digit facility code again, e. 535970:");
             var question = $("Please enter {{owner}} 6-digit facility code:")
                 .context({owner: owner});
+
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
                     return self
-                    .validate_nc_clinic_code(self.im, content)
+                    // Warm cache for WhatsApp lookup without blocking
+                    .is_whatsapp_user(self.im.user.answers.registrant_msisdn, false)
+                    .then(function(is_whatsapp_user) {
+                        return self.validate_nc_clinic_code(self.im, content);
+                    })
                     .then(function(facname) {
                         if (!facname) {
                             return error;
@@ -441,7 +476,7 @@ go.app = function() {
                         facname: self.im.user.answers.registrant.details.nurseconnect.facname
                     }),
                 choices: [
-                    new Choice('state_save_nursereg', $('Confirm')),
+                    new Choice('state_registration_type', $('Confirm')),
                     new Choice('state_faccode', $('Not the right facility')),
                 ],
                 next: function(choice) {
@@ -452,7 +487,7 @@ go.app = function() {
 
         self.add('state_permission_denied', function(name) {
             return new ChoiceState(name, {
-                question: $("You have chosen not to receive NurseConnect SMSs on this number and so cannot complete registration."),
+                question: $("You have chosen not to receive NurseConnect messages on this number and so cannot complete registration."),
                 choices: [
                     new Choice('state_route', $('Main Menu'))
                 ],
@@ -462,12 +497,39 @@ go.app = function() {
             });
         });
 
+        self.add('state_registration_type', function(name) {
+            return self.is_whatsapp_user(self.im.user.answers.registrant_msisdn, true).then(function(is_whatsapp_user) {
+                var registration_types = {
+                    'sms': 'nurseconnect',
+                    'whatsapp': 'whatsapp_nurseconnect',
+                };
+
+                if (is_whatsapp_user) {
+                    var pronoun = (self.im.user.answers.operator.id === self.im.user.answers.registrant.id) ? 'you' : 'they';
+
+                    return new ChoiceState(name, {
+                        question: $("How would {{ pronoun }} like to receive messages?").context({
+                            pronoun: pronoun,
+                        }),
+                        choices: [
+                            new Choice(registration_types.whatsapp, $('WhatsApp')),
+                            new Choice(registration_types.sms, $('SMS')),
+                        ],
+                        next: 'state_save_nursereg',
+                    });
+                } else {
+                    self.im.user.answers.state_registration_type = registration_types.sms;
+                    return self.states.create('state_save_nursereg');
+                }
+            });
+        });
+
         self.add('state_save_nursereg', function(name) {
             var registrant_info = self.im.user.answers.registrant;
             registrant_info.details.nurseconnect.redial_sms_sent = self.im.user.answers.redial_sms_sent;
 
             var reg_info = {
-                "reg_type": "nurseconnect",
+                "reg_type": self.im.user.answers.state_registration_type,
                 "registrant_id": registrant_info.id,
                 "data": {
                     "operator_id": self.im.user.answers.operator.id,  // device owner id

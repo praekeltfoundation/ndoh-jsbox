@@ -7,6 +7,7 @@ var fixtures_MessageSender = require('./fixtures_message_sender');
 var fixtures_Hub = require('./fixtures_hub');
 var fixtures_Jembi = require('./fixtures_jembi');
 var fixtures_ServiceRating = require('./fixtures_service_rating');
+var fixtures_Pilot = require('./fixtures_pilot');
 
 var utils = require('seed-jsbox-utils').utils;
 
@@ -59,7 +60,12 @@ describe("app", function() {
                         'state_end_detail_changed',
                         'state_end_reg',
                         'state_block_active_subs'
-                    ]
+                    ],
+                    whatsapp: {
+                        api_url: 'http://pilot.example.org/check/',
+                        api_token: 'api-token',
+                        api_number: '+27000000000',
+                    },
                 })
                 .setup(function(api) {
                     api.metrics.stores = {'test_metric_store': {}};
@@ -71,7 +77,49 @@ describe("app", function() {
                     fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
                     fixtures_ServiceRating().forEach(api.http.fixtures.add); // 150 - 169
                     fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
-                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 ->
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 - 248
+                    api.http.fixtures.add( // 250
+                        fixtures_Pilot().not_exists({
+                            address: '+27820001001',
+                            number: '+27000000000',
+                            wait: true,
+                        })
+                    );
+                    api.http.fixtures.add( // 251
+                        fixtures_Pilot().not_exists({
+                            address: '+27820001002',
+                            number: '+27000000000',
+                            wait: true,
+                        })
+                    );
+                    api.http.fixtures.add( // 252
+                        fixtures_Pilot().exists({
+                            address: '+27820001004',
+                            number: '+27000000000',
+                            wait: true,
+                        })
+                    );
+                    api.http.fixtures.add( // 253
+                        fixtures_Pilot().exists({
+                            address: '+27820001001',
+                            number: '+27000000000',
+                            wait: false,
+                        })
+                    );
+                    api.http.fixtures.add( // 254
+                        fixtures_Pilot().exists({
+                            address: '+27820001002',
+                            number: '+27000000000',
+                            wait: false,
+                        })
+                    );
+                    api.http.fixtures.add( // 255
+                        fixtures_Pilot().exists({
+                            address: '+27820001004',
+                            number: '+27000000000',
+                            wait: false,
+                        })
+                    );
                 });
         });
 
@@ -223,7 +271,7 @@ describe("app", function() {
                             reply: [
                                 "Welcome to NurseConnect",
                                 "1. Change Persal no.",
-                                "2. Stop SMS",
+                                "2. Stop messages",
                                 "3. Back"
                             ].join('\n')
                         })
@@ -335,7 +383,7 @@ describe("app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [128, 170, 180, 183]);
+                                utils.check_fixtures_used(api, [128, 170, 180, 183, 253]);
                             })
                             .run();
                     });
@@ -362,7 +410,7 @@ describe("app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [128, 170, 180, 181, 183]);
+                                utils.check_fixtures_used(api, [128, 170, 180, 181, 183, 254]);
                             })
                             .run();
                     });
@@ -390,7 +438,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [128, 170, 180, 183]);
+                            utils.check_fixtures_used(api, [128, 170, 180, 183, 253]);
                         })
                         .run();
                 });
@@ -412,7 +460,7 @@ describe("app", function() {
                             state: 'state_not_subscribed'
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [128, 170, 180, 183]);
+                            utils.check_fixtures_used(api, [128, 170, 180, 183, 253]);
                         })
                         .run();
                 });
@@ -480,7 +528,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [13, 100, 128, 170, 180, 183, 209]);
+                    utils.check_fixtures_used(api, [13, 100, 128, 170, 180, 183, 209, 250, 253]);
                 })
                 .run();
             });
@@ -555,7 +603,7 @@ describe("app", function() {
                         , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [13, 100, 170, 180, 183, 190]);
+                        utils.check_fixtures_used(api, [13, 100, 170, 180, 183, 190, 250, 253]);
                     })
                     .run();
             });
@@ -586,7 +634,7 @@ describe("app", function() {
                         assert.deepEqual(metrics['test.ussd_nurse.registrations_started'].values, [1]);
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [14, 101, 128, 170, 180, 181, 183, 236 ]);
+                        utils.check_fixtures_used(api, [14, 101, 128, 170, 180, 181, 183, 236, 251, 254]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -622,7 +670,7 @@ describe("app", function() {
                         , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [14, 101, 170, 180, 181, 183, 191]);
+                        utils.check_fixtures_used(api, [14, 101, 170, 180, 181, 183, 191, 251, 254]);
                     })
                     .run();
             });
@@ -717,7 +765,7 @@ describe("app", function() {
                     .check.interaction({
                         state: 'state_permission_denied',
                         reply: [
-                            "You have chosen not to receive NurseConnect SMSs on this number and so cannot complete registration.",
+                            "You have chosen not to receive NurseConnect messages on this number and so cannot complete registration.",
                             '1. Main Menu'
                         ].join('\n')
                     })
@@ -754,7 +802,7 @@ describe("app", function() {
                     .check.interaction({
                         state: 'state_permission_denied',
                         reply: [
-                            "You have chosen not to receive NurseConnect SMSs on this number and so cannot complete registration.",
+                            "You have chosen not to receive NurseConnect messages on this number and so cannot complete registration.",
                             '1. Main Menu'
                         ].join('\n')
                     })
@@ -1208,6 +1256,64 @@ describe("app", function() {
                         })
                         .run();
                 });
+            });
+        });
+
+        describe("WhatsApp functionality", function() {
+            it("should offer a WhatsApp option if the user has WhatsApp", function() {
+                return tester
+                    .setup.user.addr('27820001004')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '1' // state_not_subscribed -> state_subscribe_self
+                        , '1' // state_subscribe_self -> state_check_optout_reg
+                        , '1' // state_opt_in_reg -> yes
+                        , '123456' // state_faccode
+                        , '1' // state_facname -> confirm
+                    )
+                    .check.interaction({
+                        state: 'state_registration_type',
+                        reply: 'How would you like to receive messages?\n1. WhatsApp\n2. SMS',
+                    })
+                    .run();
+            });
+
+            it("should not offer a WhatsApp option if the user doesn't have WhatsApp", function() {
+                return tester
+                    .setup.user.addr('27820001001')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '1' // state_not_subscribed -> state_subscribe_self
+                        , '1' // state_subscribe_self -> state_check_optout_reg
+                        , '123456' // state_faccode
+                        , '1' // state_facname -> confirm
+                    )
+                    .check.interaction({
+                        state: 'state_end_reg',
+                    })
+                    .run();
+            });
+
+            it("should save a registration type for WhatsApp", function() {
+                return tester
+                    .setup.user.addr('27820001004')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '1' // state_not_subscribed -> state_subscribe_self
+                        , '1' // state_subscribe_self -> state_check_optout_reg
+                        , '1' // state_opt_in_reg -> yes
+                        , '123456' // state_faccode
+                        , '1' // state_facname -> confirm
+                        , '1' // state_registration_type whatsapp
+                    )
+                    .check.interaction({
+                        state: 'state_end_reg',
+                    })
+                    .check(function(api) {
+                        // Fixture 46 ensures that the reg_type field is set correctly
+                        utils.check_fixtures_used(api, [46, 55, 142, 170, 184, 239, 249, 252, 255]);
+                    })
+                    .run();
             });
         });
 
