@@ -258,7 +258,7 @@ describe("app", function() {
 
                 it("entering once, timing out, redialing (session:close not detected)", function() {
                     // Add a redial to the setup inputs
-                    var testInputs = basicSetupInputs.concat([{session_event: 'new'}])
+                    var testInputs = basicSetupInputs.concat([{session_event: 'new'}]);
 
                     return tester
                         .setup.user.addr('27820001001')
@@ -277,7 +277,7 @@ describe("app", function() {
 
                 it("entering once, timing out, redialing, abandoning registration", function() {
                     // Add state_timed_out to the redial inputs
-                    var testInputs = redialInputs.concat(['2'])
+                    var testInputs = redialInputs.concat(['2']);
 
                     return tester
                         .setup.user.addr('27820001001')
@@ -298,7 +298,7 @@ describe("app", function() {
 
                 it("entering once, timing out, redialing, continuing registration", function() {
                     // Add state_timed_out to the redial inputs
-                    var testInputs = redialInputs.concat(['1'])
+                    var testInputs = redialInputs.concat(['1']);
 
                     return tester
                         .setup.user.addr('27820001001')
@@ -319,7 +319,7 @@ describe("app", function() {
 
                 it("entering once, timing out, redialing, continuing registration, exiting", function() {
                     // Add state_timed_out, state_due_date_month to the redial inputs
-                    var testInputs = redialInputs.concat(['1', '5'])
+                    var testInputs = redialInputs.concat(['1', '5']);
 
                     return tester
                         .setup.user.addr('27820001001')
@@ -644,7 +644,7 @@ describe("app", function() {
         });
 
         describe('state_already_subscribed', function() {
-            var setupInputs = [{session_event: 'new'}, '1'] // dial in and 'yes' at state_start
+            var setupInputs = [{session_event: 'new'}, '1']; // dial in and 'yes' at state_start
 
             it('should offer the choice to enter a different number', function() {
                 return tester
@@ -1522,7 +1522,7 @@ describe("app", function() {
             return tester
                 .setup(function(api) {
                     // force the threshold to accept everyone
-                    pilot_config = api.config.store.config.pilot
+                    pilot_config = api.config.store.config.pilot;
                     pilot_config.use_whitelist = false;
                     test_utils.only_use_fixtures(api, {
                         numbers: [
@@ -1577,7 +1577,7 @@ describe("app", function() {
             return tester
                 .setup(function(api) {
                     // force the threshold to accept everyone
-                    pilot_config = api.config.store.config.pilot
+                    pilot_config = api.config.store.config.pilot;
                     pilot_config.facilitycode_whitelist = [
                         123456,
                     ];
@@ -1634,7 +1634,7 @@ describe("app", function() {
             return tester
                 .setup(function(api) {
                     // force the threshold to accept everyone
-                    pilot_config = api.config.store.config.pilot
+                    pilot_config = api.config.store.config.pilot;
                     // Allow no one
                     pilot_config.facilitycode_whitelist = [];
                     test_utils.only_use_fixtures(api, {
@@ -1690,7 +1690,7 @@ describe("app", function() {
             return tester
                 .setup(function(api) {
                     // force the threshold to accept everyone
-                    pilot_config = api.config.store.config.pilot
+                    pilot_config = api.config.store.config.pilot;
                     pilot_config.facilitycode_whitelist = [
                         123456,
                     ];
@@ -1740,7 +1740,7 @@ describe("app", function() {
             return tester
                 .setup(function(api) {
                     // force the threshold to accept everyone
-                    pilot_config = api.config.store.config.pilot
+                    pilot_config = api.config.store.config.pilot;
                     pilot_config.facilitycode_whitelist = [
                         123456,
                     ];
@@ -1785,7 +1785,7 @@ describe("app", function() {
             return tester
                 .setup(function(api) {
                     // force the threshold to accept everyone
-                    pilot_config = api.config.store.config.pilot
+                    pilot_config = api.config.store.config.pilot;
                     pilot_config.facilitycode_whitelist = [
                         123456,
                     ];
@@ -1831,7 +1831,7 @@ describe("app", function() {
             return tester
                 .setup(function(api) {
                     // force the threshold to accept everyone
-                    pilot_config = api.config.store.config.pilot
+                    pilot_config = api.config.store.config.pilot;
                     pilot_config.facilitycode_whitelist = [
                         123456,
                     ];
@@ -1904,7 +1904,7 @@ describe("app", function() {
                                 'Standard rates apply when replying to any SMS from MomConnect.'
                             ].join('')
                         }))
-                    ]
+                    ];
                 })
                 .setup.user.addr("27820001001")
                 // Add '1' for 'state_pilot - opt in', '4' for 'state_language - english'

@@ -54,7 +54,7 @@ module.exports = function() {
                     "code": 201,
                     "data": {}
                 }
-            }
+            };
         },
         post_registration: function(params) {
             var identity = params.identity;
@@ -92,7 +92,7 @@ module.exports = function() {
                     "code": 201,
                     "data": {}
                 }
-            }
+            };
         },
         patch_identity: function(params) {
             var identity = params.identity;
@@ -114,7 +114,7 @@ module.exports = function() {
                 "source": "clinic",
                 "last_mc_reg_on": "clinic",
                 "last_edd": "2014-05-10"
-            }
+            };
 
             return {
                 "request": {
@@ -130,7 +130,7 @@ module.exports = function() {
                     }
                 },
                 "response": {}
-            }
+            };
         },
         post_outbound_message: function(params) {
             params = params || {};
@@ -145,7 +145,7 @@ module.exports = function() {
                 content: content,
                 metadata: metadata,
                 channel: channel
-            }
+            };
 
             if (address !== undefined) {
                 data.to_addr = address;
@@ -202,7 +202,7 @@ module.exports = function() {
                                 'metadata': {},
                                 'created_at': "2016-08-12T06:13:29.693272Z",
                                 'updated_at': "2016-08-12T06:13:29.693272Z"
-                            }
+                            };
                         })
                     }
                 }
@@ -210,5 +210,5 @@ module.exports = function() {
         },
 
         "silly": "javascript commas"
-    }
-}
+    };
+};

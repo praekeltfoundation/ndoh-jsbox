@@ -12,7 +12,6 @@ var fixtures_Pilot = require('./fixtures_pilot');
 
 var utils = require('seed-jsbox-utils').utils;
 var test_utils = require('./test_utils');
-var _ = require('lodash');
 
 describe("ussd_public app", function() {
     describe("for ussd_public use", function() {
@@ -766,7 +765,7 @@ describe("ussd_public app", function() {
             return tester
                 .setup(function(api) {
                     // force the threshold to accept everyone
-                    pilot_config = api.config.store.config.pilot
+                    pilot_config = api.config.store.config.pilot;
                     pilot_config.randomisation_threshold = 1.0;
                     api.http.fixtures.add(
                         fixtures_Pilot().exists({
@@ -805,7 +804,7 @@ describe("ussd_public app", function() {
             return tester
                 .setup(function(api) {
                     // force the threshold to accept everyone
-                    pilot_config = api.config.store.config.pilot
+                    pilot_config = api.config.store.config.pilot;
                     pilot_config.randomisation_threshold = 1.0;
                     pilot_config.nudge_threshold = 1.0;
                     api.http.fixtures.add(
@@ -844,7 +843,7 @@ describe("ussd_public app", function() {
                 .setup(function(api) {
                     // randomisation will always returns True but the check API will deny it
                     // before it gets there
-                    pilot_config = api.config.store.config.pilot
+                    pilot_config = api.config.store.config.pilot;
                     pilot_config.randomisation_threshold = 1.0;
                     test_utils.only_use_fixtures(api, {
                         numbers: [
@@ -912,7 +911,7 @@ describe("ussd_public app", function() {
             return tester
                 .setup(function(api) {
                     // white list the number we're using to trigger the pilot functionality
-                    pilot_config = api.config.store.config.pilot
+                    pilot_config = api.config.store.config.pilot;
                     pilot_config.whitelist = ['+27820001001'];
                 })
                 .setup.user.addr("27820001001")
@@ -937,7 +936,7 @@ describe("ussd_public app", function() {
             return tester
                 .setup(function(api) {
                     // white list the number we're using to trigger the pilot functionality
-                    pilot_config = api.config.store.config.pilot
+                    pilot_config = api.config.store.config.pilot;
                     pilot_config.whitelist = ['+27820001001'];
                     test_utils.only_use_fixtures(api, {
                         numbers: [
@@ -1026,7 +1025,7 @@ describe("ussd_public app", function() {
                         messagesets: [
                             62, // whatsapp_prebirth.patient.1,
                         ]
-                    }))
+                    }));
                 })
                 .setup.user.addr('27820001001')
                 .setup.user.answers({
@@ -1048,7 +1047,7 @@ describe("ussd_public app", function() {
             return tester
                 .setup(function(api) {
                     // white list the number we're using to trigger the pilot functionality
-                    pilot_config = api.config.store.config.pilot
+                    pilot_config = api.config.store.config.pilot;
                     pilot_config.whitelist = ['+27820001001'];
                     test_utils.only_use_fixtures(api, {
                         numbers: [
@@ -1130,7 +1129,7 @@ describe("ussd_public app", function() {
                     messagesets: [
                         62, // whatsapp_prebirth.patient.1,
                     ]
-                }))
+                }));
                 api.http.fixtures.add(fixtures_Pilot().post_outbound_message({
                     identity: 'cb245673-aa41-4302-ac47-00000001002',
                     address: '+27820001002',
@@ -1176,7 +1175,7 @@ describe("ussd_public app", function() {
                     messagesets: [
                         62, // whatsapp_prebirth.patient.1,
                     ]
-                }))
+                }));
                 api.http.fixtures.add(fixtures_Pilot().post_outbound_message({
                     identity: 'cb245673-aa41-4302-ac47-00000001002',
                     address: '+27820001002',
