@@ -38,7 +38,7 @@ go.app = function() {
             self.metric_prefix = [self.env, self.im.config.name].join('.');
             self.store_name = [self.env, self.im.config.name].join('.');
 
-            mh = new MetricsHelper(self.im);
+            var mh = new MetricsHelper(self.im);
             mh
                 // Total unique users
                 // This adds <env>.ussd_public.sum.unique_users 'last' metric
@@ -235,6 +235,8 @@ go.app = function() {
         GoNDOH: GoNDOH
     };
 }();
+
+/* globals api */
 
 go.init = function() {
     var vumigo = require('vumigo_v02');

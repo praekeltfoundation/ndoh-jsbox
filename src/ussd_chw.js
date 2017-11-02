@@ -55,7 +55,7 @@ go.app = function() {
 
             self.attach_session_length_helper(self.im);
 
-            mh = new MetricsHelper(self.im);
+            var mh = new MetricsHelper(self.im);
             mh
                 // Total unique users
                 // This adds <env>.ussd_chw.sum.unique_users 'last' metric

@@ -1,6 +1,5 @@
 var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
-var assert = require('assert');
 var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
 var fixtures_ServiceRating = require('./fixtures_service_rating');

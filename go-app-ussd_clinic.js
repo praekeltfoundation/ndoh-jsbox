@@ -204,7 +204,7 @@ go.app = function() {
 
             self.attach_session_length_helper(self.im);
 
-            mh = new MetricsHelper(self.im);
+            var mh = new MetricsHelper(self.im);
             mh
                 // Total unique users for app
                 // This adds <env>.ussd_clinic.sum.unique_users 'last' metric
@@ -728,7 +728,7 @@ go.app = function() {
                     params: params,
                 })
                 .then(function(response) {
-                    existing = _.filter(response.data, function(obj) { return obj.exists === true; });
+                    var existing = _.filter(response.data, function(obj) { return obj.exists === true; });
                     var allowed = !_.isEmpty(existing);
                     return self.im
                         .log('valid pilot recipient returning ' + allowed + ' for ' + JSON.stringify(params))
@@ -1137,6 +1137,8 @@ go.app = function() {
         GoNDOH: GoNDOH
     };
 }();
+
+/* globals api */
 
 go.init = function() {
     var vumigo = require('vumigo_v02');

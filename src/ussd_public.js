@@ -52,7 +52,7 @@ go.app = function() {
 
             self.attach_session_length_helper(self.im);
 
-            mh = new MetricsHelper(self.im);
+            var mh = new MetricsHelper(self.im);
             mh
                 // Total unique users
                 // This adds <env>.ussd_public.sum.unique_users 'last' metric
@@ -628,7 +628,7 @@ go.app = function() {
                     params: default_params,
                 })
                 .then(function(response) {
-                    existing = _.filter(response.data, function(obj) { return obj.exists === true; });
+                    var existing = _.filter(response.data, function(obj) { return obj.exists === true; });
                     if(_.isEmpty(existing)) {
                         // If they're not eligible then return false
                         return self.im

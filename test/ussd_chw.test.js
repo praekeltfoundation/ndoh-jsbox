@@ -735,12 +735,12 @@ describe("app", function() {
         describe("after entering the pregnant woman's number", function() {
 
             describe("if the number has not opted out before", function() {
-                var setupUser = '27820001002'
+                var setupUser = '27820001002';
                 var setupInputs = [
                     {session_event: 'new'}  // dial in
                     , '2'  // state_start - no
                     , '0820001001'  // state_mobile_no with no active subscription
-                ]
+                ];
 
                 it("should ask for consent", function() {
                     return tester

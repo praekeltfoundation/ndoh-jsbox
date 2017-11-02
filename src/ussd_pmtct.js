@@ -333,7 +333,7 @@ go.app = function() {
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
             /*if (!interrupt || !go.utils.timed_out(self.im))*/
-                log_mode = self.im.config.logging;
+                var log_mode = self.im.config.logging;
                 if (log_mode === 'prod') {
                     return self.im
                     .log("Running: " + name)
@@ -435,7 +435,7 @@ go.app = function() {
                         .then(function(active_subscriptions) {
                             if (active_subscriptions.length > 0) {
                                 // check that current active subscription is to momconnect
-                                subscription_type = self.get_valid_active_subscription(active_subscriptions);
+                                var subscription_type = self.get_valid_active_subscription(active_subscriptions);
                                 if (subscription_type !== false) {
                                     // save contact data (set_answer's) - lang, consent, dob, edd
                                     self.im.user.set_answer("lang_code",

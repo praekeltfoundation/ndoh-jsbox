@@ -1,5 +1,6 @@
 module.exports = function() {
-    _ = require('lodash');
+    var _ = require('lodash');
+
     function make_check_fixture(params, exists) {
         return {
             'repeatable': true,
@@ -54,7 +55,7 @@ module.exports = function() {
                     "code": 201,
                     "data": {}
                 }
-            }
+            };
         },
         post_registration: function(params) {
             var identity = params.identity;
@@ -92,7 +93,7 @@ module.exports = function() {
                     "code": 201,
                     "data": {}
                 }
-            }
+            };
         },
         patch_identity: function(params) {
             var identity = params.identity;
@@ -100,10 +101,10 @@ module.exports = function() {
             var language = params.language || 'zul_ZA';
             var details = params.details || {};
 
-            address_obj = {};
+            var address_obj = {};
             address_obj[address] = {"default": true};
 
-            default_details = {
+            var default_details = {
                 "default_addr_type": "msisdn",
                 "addresses": {
                     "msisdn": address_obj,
@@ -114,7 +115,7 @@ module.exports = function() {
                 "source": "clinic",
                 "last_mc_reg_on": "clinic",
                 "last_edd": "2014-05-10"
-            }
+            };
 
             return {
                 "request": {
@@ -130,7 +131,7 @@ module.exports = function() {
                     }
                 },
                 "response": {}
-            }
+            };
         },
         post_outbound_message: function(params) {
             params = params || {};
@@ -140,12 +141,12 @@ module.exports = function() {
             var metadata = params.metadata || {};
             var channel = params.channel;
 
-            data = {
+            var data = {
                 to_identity: identity,
                 content: content,
                 metadata: metadata,
                 channel: channel
-            }
+            };
 
             if (address !== undefined) {
                 data.to_addr = address;
@@ -166,9 +167,9 @@ module.exports = function() {
 
         subscribe_id_to: function(params) {
             params = params || {};
-            identity = params.identity || 'cb245673-aa41-4302-ac47-00000001001';
-            messagesets = params.messagesets || [];
-            language = params.language || 'eng_ZA';
+            var identity = params.identity || 'cb245673-aa41-4302-ac47-00000001001';
+            var messagesets = params.messagesets || [];
+            var language = params.language || 'eng_ZA';
 
             return {
                 "repeatable": true,
@@ -202,7 +203,7 @@ module.exports = function() {
                                 'metadata': {},
                                 'created_at': "2016-08-12T06:13:29.693272Z",
                                 'updated_at': "2016-08-12T06:13:29.693272Z"
-                            }
+                            };
                         })
                     }
                 }
@@ -210,5 +211,5 @@ module.exports = function() {
         },
 
         "silly": "javascript commas"
-    }
-}
+    };
+};
