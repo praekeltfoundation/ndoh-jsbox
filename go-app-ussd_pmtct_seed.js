@@ -149,7 +149,7 @@ go.app = function() {
                     params: params,
                 })
                 .then(function(response) {
-                    existing = _.filter(response.data, function(obj) { return obj.exists === true; });
+                    var existing = _.filter(response.data, function(obj) { return obj.exists === true; });
                     var allowed = !_.isEmpty(existing);
                     return self.im
                         .log('valid pilot recipient returning ' + allowed + ' for ' + JSON.stringify(params))
@@ -165,7 +165,7 @@ go.app = function() {
         // override normal state adding
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                log_mode = self.im.config.logging;
+                var log_mode = self.im.config.logging;
                 if (log_mode === 'prod') {
                     return self.im
                     .log("Running: " + name)
@@ -637,6 +637,8 @@ go.app = function() {
         GoNDOH: GoNDOH
     };
 }();
+
+/* globals api */
 
 go.init = function() {
     var vumigo = require('vumigo_v02');

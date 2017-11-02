@@ -765,7 +765,7 @@ describe("ussd_public app", function() {
             return tester
                 .setup(function(api) {
                     // force the threshold to accept everyone
-                    pilot_config = api.config.store.config.pilot;
+                    var pilot_config = api.config.store.config.pilot;
                     pilot_config.randomisation_threshold = 1.0;
                     api.http.fixtures.add(
                         fixtures_Pilot().exists({
@@ -804,7 +804,7 @@ describe("ussd_public app", function() {
             return tester
                 .setup(function(api) {
                     // force the threshold to accept everyone
-                    pilot_config = api.config.store.config.pilot;
+                    var pilot_config = api.config.store.config.pilot;
                     pilot_config.randomisation_threshold = 1.0;
                     pilot_config.nudge_threshold = 1.0;
                     api.http.fixtures.add(
@@ -843,7 +843,7 @@ describe("ussd_public app", function() {
                 .setup(function(api) {
                     // randomisation will always returns True but the check API will deny it
                     // before it gets there
-                    pilot_config = api.config.store.config.pilot;
+                    var pilot_config = api.config.store.config.pilot;
                     pilot_config.randomisation_threshold = 1.0;
                     test_utils.only_use_fixtures(api, {
                         numbers: [
@@ -911,7 +911,7 @@ describe("ussd_public app", function() {
             return tester
                 .setup(function(api) {
                     // white list the number we're using to trigger the pilot functionality
-                    pilot_config = api.config.store.config.pilot;
+                    var pilot_config = api.config.store.config.pilot;
                     pilot_config.whitelist = ['+27820001001'];
                 })
                 .setup.user.addr("27820001001")
@@ -936,7 +936,7 @@ describe("ussd_public app", function() {
             return tester
                 .setup(function(api) {
                     // white list the number we're using to trigger the pilot functionality
-                    pilot_config = api.config.store.config.pilot;
+                    var pilot_config = api.config.store.config.pilot;
                     pilot_config.whitelist = ['+27820001001'];
                     test_utils.only_use_fixtures(api, {
                         numbers: [
@@ -1047,7 +1047,7 @@ describe("ussd_public app", function() {
             return tester
                 .setup(function(api) {
                     // white list the number we're using to trigger the pilot functionality
-                    pilot_config = api.config.store.config.pilot;
+                    var pilot_config = api.config.store.config.pilot;
                     pilot_config.whitelist = ['+27820001001'];
                     test_utils.only_use_fixtures(api, {
                         numbers: [

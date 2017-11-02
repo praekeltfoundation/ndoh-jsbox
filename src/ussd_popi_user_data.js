@@ -46,7 +46,7 @@ go.app = function() {
             self.metric_prefix = [self.env, self.im.config.name].join('.');
             self.store_name = [self.env, self.im.config.name].join('.');
 
-            mh = new MetricsHelper(self.im);
+            var mh = new MetricsHelper(self.im);
             mh
                 // Total unique users
                 // This adds <env>.ussd_public.sum.unique_users 'last' metric
@@ -186,8 +186,8 @@ go.app = function() {
                             var sets = '';
                             return Q.all(promises)
                             .then(function(allmset){
-                                for(j = 0; j < allmset.length; j++){
-                                    message_set = allmset[j].short_name;
+                                for(var j = 0; j < allmset.length; j++){
+                                    var message_set = allmset[j].short_name;
                                     sets += " " + message_set;
                                 }
                                 self.im.user.set_answer("message_sets", sets.substring(1,sets.length));

@@ -48,7 +48,7 @@ go.app = function() {
 
             self.attach_session_length_helper(self.im);
 
-            mh = new MetricsHelper(self.im);
+            var mh = new MetricsHelper(self.im);
             mh
                 // Total unique users for app
                 // This adds <env>.sms_inbound.sum.unique_users 'last' metric
@@ -255,6 +255,8 @@ go.app = function() {
         });
 
         self.states.add("state_default", function(name) {
+            var text;
+
             var out_of_hours_text =
                 $("The helpdesk operates from 8am to 6pm Mon to Fri. " +
                   "Responses will be delayed outside of these hrs. In an " +

@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var vumigo = require("vumigo_v02");
 var assert = require('assert');
 var AppTester = vumigo.AppTester;
@@ -1522,7 +1523,7 @@ describe("app", function() {
             return tester
                 .setup(function(api) {
                     // force the threshold to accept everyone
-                    pilot_config = api.config.store.config.pilot;
+                    var pilot_config = api.config.store.config.pilot;
                     pilot_config.use_whitelist = false;
                     test_utils.only_use_fixtures(api, {
                         numbers: [
@@ -1577,7 +1578,7 @@ describe("app", function() {
             return tester
                 .setup(function(api) {
                     // force the threshold to accept everyone
-                    pilot_config = api.config.store.config.pilot;
+                    var pilot_config = api.config.store.config.pilot;
                     pilot_config.facilitycode_whitelist = [
                         123456,
                     ];
@@ -1634,7 +1635,7 @@ describe("app", function() {
             return tester
                 .setup(function(api) {
                     // force the threshold to accept everyone
-                    pilot_config = api.config.store.config.pilot;
+                    var pilot_config = api.config.store.config.pilot;
                     // Allow no one
                     pilot_config.facilitycode_whitelist = [];
                     test_utils.only_use_fixtures(api, {
@@ -1690,7 +1691,7 @@ describe("app", function() {
             return tester
                 .setup(function(api) {
                     // force the threshold to accept everyone
-                    pilot_config = api.config.store.config.pilot;
+                    var pilot_config = api.config.store.config.pilot;
                     pilot_config.facilitycode_whitelist = [
                         123456,
                     ];
@@ -1740,7 +1741,7 @@ describe("app", function() {
             return tester
                 .setup(function(api) {
                     // force the threshold to accept everyone
-                    pilot_config = api.config.store.config.pilot;
+                    var pilot_config = api.config.store.config.pilot;
                     pilot_config.facilitycode_whitelist = [
                         123456,
                     ];
@@ -1785,7 +1786,7 @@ describe("app", function() {
             return tester
                 .setup(function(api) {
                     // force the threshold to accept everyone
-                    pilot_config = api.config.store.config.pilot;
+                    var pilot_config = api.config.store.config.pilot;
                     pilot_config.facilitycode_whitelist = [
                         123456,
                     ];
@@ -1831,7 +1832,7 @@ describe("app", function() {
             return tester
                 .setup(function(api) {
                     // force the threshold to accept everyone
-                    pilot_config = api.config.store.config.pilot;
+                    var pilot_config = api.config.store.config.pilot;
                     pilot_config.facilitycode_whitelist = [
                         123456,
                     ];

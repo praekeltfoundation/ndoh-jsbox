@@ -1,4 +1,5 @@
 go.app = function() {
+    var _ = require('lodash');
     var vumigo = require("vumigo_v02");
     var moment = require('moment');
     var SeedJsboxUtils = require('seed-jsbox-utils');
@@ -51,7 +52,7 @@ go.app = function() {
             self.env = self.im.config.env;
             self.metric_prefix = [self.env, self.im.config.name].join('.');
 
-            mh = new MetricsHelper(self.im);
+            var mh = new MetricsHelper(self.im);
             mh
                 // Total unique users for app
                 // This adds <env>.ussd_nurse.sum.unique_users 'last' metric
@@ -185,7 +186,7 @@ go.app = function() {
                     params: params,
                 })
                 .then(function(response) {
-                    existing_users = _.filter(response.data, function(obj) { return obj.exists === true; });
+                    var existing_users = _.filter(response.data, function(obj) { return obj.exists === true; });
                     var is_user = !_.isEmpty(existing_users);
                     return self.im
                         .log('WhatsApp recipient ' + is_user + ' for ' + JSON.stringify(params))
