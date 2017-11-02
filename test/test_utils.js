@@ -1,6 +1,4 @@
-var _ = require('lodash');
-
-    module.exports = {
+module.exports = {
     only_use_fixtures: function(api, params) {
         params = params || {}
         // either use an explicit source or read from what's already
@@ -12,7 +10,7 @@ var _ = require('lodash');
         api.http.fixtures.fixtures = [];
 
         // load the explicit numbers
-        _.forEach(numbers, function(number) {
+        numbers.forEach(function(number) {
             api.http.fixtures.add(original_fixtures[number]);
         });
     },
