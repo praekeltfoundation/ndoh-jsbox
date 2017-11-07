@@ -9,6 +9,7 @@
   },
   "laxbreak":  true,
   "laxcomma":  true,
+  "maxcomplexity": 20,
   "nonbsp": true,
   "expr": true,
   "node": true,
