@@ -143,8 +143,9 @@ go.app = function() {
         // override normal state adding
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                if (!interrupt || !utils.timed_out(self.im))
+                if (!interrupt || !utils.timed_out(self.im)) {
                     return creator(name, opts);
+                }
 
                 interrupt = false;
                 var timeout_opts = opts || {};
@@ -324,7 +325,7 @@ go.app = function() {
                 question: $('Thank you. Please enter your ID number. eg. ' +
                             '8805100273098'),
                 check: function(content) {
-                    if (utils.check_valid_number(content) && (content.length == 13)) {
+                    if (utils.check_valid_number(content) && (content.length === 13)) {
                             return null;  // vumi expects null or undefined if check passes
                     } else {
                         return $("Invalid ID number. Please re-enter");
@@ -367,12 +368,12 @@ go.app = function() {
         
         self.add('state_create_identification_change', function(name) {
             var data = {};
-            if (self.im.user.answers.state_change_identity == 'state_change_sa_id') {
+            if (self.im.user.answers.state_change_identity === 'state_change_sa_id') {
                 data = {
                     "id_type": "sa_id",
                     "sa_id_no": self.im.user.answers.state_change_sa_id
                 };
-            } else if (self.im.user.answers.state_change_identity == 'state_passport_origin') {
+            } else if (self.im.user.answers.state_change_identity === 'state_passport_origin') {
                 data = {
                     "id_type": "passport",
                     "passport_origin": self.im.user.answers.state_passport_origin,
@@ -396,7 +397,7 @@ go.app = function() {
                 question: $('Please enter the new phone number we should use ' +
                             'to send you messages eg. 0813547654'),
                 check: function(content) {
-                    if (utils.check_valid_number(content) && (content.length == 10)) {
+                    if (utils.check_valid_number(content) && (content.length === 10)) {
                             return null;  // vumi expects null or undefined if check passes
                     } else {
                         return $("Invalid phone number. Please re-enter (with no spaces)");

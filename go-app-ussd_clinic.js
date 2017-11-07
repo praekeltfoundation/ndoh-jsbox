@@ -86,7 +86,7 @@ go.SessionLengthHelper = function () {
           key: sentinel_key_name
         })
         .then(function (result) {
-          if(result.value != self.get_today_as_string()) {
+          if(result.value !== self.get_today_as_string()) {
             return self.reset_for_today(name);
           }
         });
@@ -131,8 +131,9 @@ go.SessionLengthHelper = function () {
         .then(function (result) {
 
           // return early if we've got nothing to report
-          if(self.duration() < 0)
+          if(self.duration() < 0) {
             return;
+          }
 
           return self
             .store(name)
@@ -251,8 +252,9 @@ go.app = function() {
         self.attach_session_length_helper = function(im) {
             // If we have transport metadata then attach the session length
             // helper to this app
-            if(!im.msg.transport_metadata)
+            if(!im.msg.transport_metadata) {
                 return;
+            }
 
             var slh = new go.SessionLengthHelper(im, {
                 name: function () {
@@ -428,7 +430,7 @@ go.app = function() {
 
             var registration_info = {
                 "reg_type": (
-                    self.im.user.answers.state_pilot == 'whatsapp'
+                    self.im.user.answers.state_pilot === 'whatsapp'
                     ? "whatsapp_prebirth"
                     : "momconnect_prebirth"),
                 "registrant_id": self.im.user.answers.registrant.id,
@@ -440,7 +442,7 @@ go.app = function() {
         self.format_ussd_code = function (channel, ussd_code) {
             // Prevent *123*345# from getting printed as bold text
             // in the phone client
-            if(channel == "WHATSAPP") {
+            if(channel === "WHATSAPP") {
                 return "```" + ussd_code + "```";
             }
             return ussd_code;
@@ -469,8 +471,9 @@ go.app = function() {
 
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                if (!interrupt || !utils.timed_out(self.im))
+                if (!interrupt || !utils.timed_out(self.im)) {
                     return creator(name, opts);
+                }
 
                 interrupt = false;
                 var timeout_opts = opts || {};
@@ -701,7 +704,7 @@ go.app = function() {
             var pilot_config = self.im.config.pilot || {};
             return Q()
                 .then(function () {
-                    if(self.im.user.answers.state_pilot == 'whatsapp') {
+                    if(self.im.user.answers.state_pilot === 'whatsapp') {
                         return pilot_config.channel;
                     }
 
@@ -745,8 +748,9 @@ go.app = function() {
             var annotation_url = pilot_config.annotation_url;
 
             // If unconfigured, do nothing
-            if(_.isEmpty(annotation_url))
+            if(_.isEmpty(annotation_url)) {
                 return Q();
+            }
 
             return new JsonApi(self.im, {
                 headers: {
@@ -783,8 +787,9 @@ go.app = function() {
                                 .then(function(confirmed) {
                                     // If not a participating clinic then
                                     // return immediately
-                                    if(!confirmed)
+                                    if(!confirmed) {
                                         return;
+                                    }
 
                                     // NOTE:    We're making the API call here but not telling
                                     //          it to wait nor are we doing anything with the
@@ -1058,7 +1063,7 @@ go.app = function() {
             var whatsapp_label = $('WhatsApp');
             var sms_label = $('SMS');
 
-            if(self.im.user.answers.state_language == 'eng_ZA' && Math.random() < nudge_threshold) {
+            if(self.im.user.answers.state_language === 'eng_ZA' && Math.random() < nudge_threshold) {
                 question = $("Would the pregnant mother prefer to receive messages via WhatsApp?");
                 whatsapp_label = $('Yes');
                 sms_label = $('No');

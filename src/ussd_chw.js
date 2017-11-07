@@ -102,8 +102,9 @@ go.app = function() {
         self.attach_session_length_helper = function(im) {
             // If we have transport metadata then attach the session length
             // helper to this app
-            if(!im.msg.transport_metadata)
+            if(!im.msg.transport_metadata) {
                 return;
+            }
 
             var slh = new go.SessionLengthHelper(im, {
                 name: function () {
@@ -248,8 +249,9 @@ go.app = function() {
 
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                if (!interrupt || !utils.timed_out(self.im))
+                if (!interrupt || !utils.timed_out(self.im)) {
                     return creator(name, opts);
+                }
 
                 interrupt = false;
                 var timeout_opts = opts || {};

@@ -139,7 +139,7 @@ go.app = function() {
 
         self.get_6_lang_code = function(lang) {
             // Return the six-char code for a two or six letter language code
-            if (lang.length == 6) {
+            if (lang.length === 6) {
                 // assume it is correct code
                 return lang;
             } else {
@@ -161,7 +161,7 @@ go.app = function() {
 
         self.get_2_lang_code = function(lang) {
             // Return the two-char code for a two or six letter language code
-            if (lang.length == 2 || lang.length == 3) {
+            if (lang.length === 2 || lang.length === 3) {
                 // assume it is correct code
                 return lang;
             } else {
@@ -619,7 +619,7 @@ go.app = function() {
                     };
 
                 } else if (subscription_type === 'standard' || subscription_type === 'later'
-                           || subscription_type == 'accelerated') {
+                           || subscription_type === 'accelerated') {
                     reg_info = {
                         "reg_type": "pmtct_prebirth",
                         "registrant_id": self.im.user.answers.identity.id,

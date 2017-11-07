@@ -83,7 +83,7 @@ go.SessionLengthHelper = function () {
           key: sentinel_key_name
         })
         .then(function (result) {
-          if(result.value != self.get_today_as_string()) {
+          if(result.value !== self.get_today_as_string()) {
             return self.reset_for_today(name);
           }
         });
@@ -128,8 +128,9 @@ go.SessionLengthHelper = function () {
         .then(function (result) {
 
           // return early if we've got nothing to report
-          if(self.duration() < 0)
+          if(self.duration() < 0) {
             return;
+          }
 
           return self
             .store(name)
