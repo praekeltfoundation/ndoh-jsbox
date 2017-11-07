@@ -295,10 +295,10 @@ go.app = function() {
                 .send_redial_sms()
                 .then(function() {
                     self.im.user.answers.redial_sms_sent = true;
-                    return ;
+                    return;
                 });
             } else {
-                return ;
+                return;
             }
         };
 

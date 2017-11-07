@@ -150,8 +150,8 @@ describe("app", function() {
                     return tester
                         .setup(function(api) {
                             api.metrics.stores.test_metric_store = {
-                                'test.ussd_chw.state_birth_day.no_complete': { agg: 'last', values: [ 1 ] },
-                                'test.ussd_chw.state_birth_day.no_complete.transient': { agg: 'sum', values: [ 1 ] }
+                                'test.ussd_chw.state_birth_day.no_complete': { agg: 'last', values: [1] },
+                                'test.ussd_chw.state_birth_day.no_complete.transient': { agg: 'sum', values: [1] }
                             };
                             api.kv.store['test_metric_store.test.ussd_chw.state_birth_day.no_complete'] = 1;
                         })

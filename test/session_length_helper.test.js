@@ -98,7 +98,7 @@ describe('SessionLengthHelper', function() {
         it('should flag the end', function () {
             return timehop_tester(tester, -1000)
               .input('bar')
-              .check(function(api, im , app) {
+              .check(function(api, im, app) {
                 var slh = im.user.metadata.session_length_helper;
                 assert.equal(slh.stop, Number(default_start_time));
             })
@@ -108,7 +108,7 @@ describe('SessionLengthHelper', function() {
         it('should calculate the duration', function () {
             return timehop_tester(tester, -1000)
               .input('bar')
-              .check(function(api, im , app) {
+              .check(function(api, im, app) {
                 var slh = im.user.metadata.session_length_helper;
                 assert.equal(slh.stop, Number(default_start_time));
                 assert.equal(sessionH.duration(), 1000);  // milliseconds
@@ -119,7 +119,7 @@ describe('SessionLengthHelper', function() {
         it('should add the duration to a daily total', function () {
             return timehop_tester(tester, -1000)
               .input('bar')
-              .check(function(api, im , app) {
+              .check(function(api, im, app) {
                 var kv_store = api.kv.store;
                 assert.equal(kv_store['session_length_helper.vodacom'], 1000);
                 assert.equal(

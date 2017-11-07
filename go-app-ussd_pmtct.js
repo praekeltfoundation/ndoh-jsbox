@@ -116,7 +116,7 @@ go.app = function() {
                         // had a baby1 subscription at some point. This could be made less fragile by doing
                         // a fallback calculation for the baby_dob if the baby1 subscription is not found
                         if (subs.objects[i].message_set.match(/\d+\/$/)[0].replace('/', '') === '4') {
-                            im.user.set_answer("baby_dob", subs.objects[i].created_at.substr(0,10));
+                            im.user.set_answer("baby_dob", subs.objects[i].created_at.substr(0, 10));
                         }
                     }
                     return active_subs;
@@ -125,7 +125,7 @@ go.app = function() {
         };
 
         self.get_valid_active_subscription = function(active_subscriptions) {
-            for (var i=0; i < active_subscriptions.length; i++) {
+            for (var i = 0; i < active_subscriptions.length; i++) {
                 var messageset_id = active_subscriptions[i].message_set.match(/\d+\/$/)[0].replace('/', '');
                 var subscription_type = self.getSubscriptionType(messageset_id);
                 // check that current active subscription is to momconnect
@@ -242,7 +242,7 @@ go.app = function() {
                 im.user.set_answer("vumi_contact_key", subscriptions.objects[0].contact_key);
                 var clean = true;  // clean tracks if api call is unnecessary
 
-                for (var i=0; i<subscriptions.objects.length; i++) {
+                for (var i = 0; i < subscriptions.objects.length; i++) {
                     if (subscriptions.objects[i].active === true) {
                         subscriptions.objects[i].active = false;
                         clean = false;
@@ -564,7 +564,7 @@ go.app = function() {
                 },
                 next: function(content) {
                     self.im.user.set_answer("dob_day", content);
-                    self.im.user.set_answer("mom_dob",utils.get_entered_birth_date(
+                    self.im.user.set_answer("mom_dob", utils.get_entered_birth_date(
                         self.im.user.answers.dob_year, self.im.user.answers.dob_month, content));
 
                     return "state_hiv_messages";

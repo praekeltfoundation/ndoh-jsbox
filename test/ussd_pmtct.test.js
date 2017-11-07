@@ -997,7 +997,7 @@ describe("PMTCT app", function() {
                     .setup.user.addr("0720000111")
                     .inputs(
                         {session_event: "new"}  // dial in
-                        ,"1"  // state_optout_reason_menu - not HIV+
+                        , "1"  // state_optout_reason_menu - not HIV+
                     )
                     .check.interaction({
                         state: "state_end_optout",

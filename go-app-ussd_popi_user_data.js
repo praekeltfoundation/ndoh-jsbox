@@ -113,7 +113,7 @@ go.app = function() {
             return data;
         };
 
-        self.return_language =function(){
+        self.return_language = function(){
             switch(self.im.user.answers.operator.details.lang_code){
                 case 'zul_ZA':
                     return 'isiZulu';
@@ -169,7 +169,7 @@ go.app = function() {
             .get_or_create_identity({"msisdn": msisdn})
             .then(function(identity) {
                 self.im.user.set_answer("operator", identity);
-                self.im.user.set_answer("msisdn",msisdn);
+                self.im.user.set_answer("msisdn", msisdn);
                 
                 // display in users preferred language
                 self.im.user.set_lang(self.im.user.answers.operator.details.lang_code);
@@ -194,7 +194,7 @@ go.app = function() {
                                             var message_set = allmset[j].short_name;
                                             sets += " " + message_set;
                                         }
-                                        self.im.user.set_answer("message_sets", sets.substring(1,sets.length));
+                                        self.im.user.set_answer("message_sets", sets.substring(1, sets.length));
                                         return self.states.create('state_all_options_view');   
                                     });
                             });

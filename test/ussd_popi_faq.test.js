@@ -208,7 +208,7 @@ describe("app", function() {
                             .check.interaction({
                                 state: "state_question_2",
                                 reply: [
-                                    "you registered for MC, the Health "+
+                                    "you registered for MC, the Health " +
                                     "Department can make sure that the " +
                                     "service is being offered to women at " +
                                     "your clinic. Knowing where you",

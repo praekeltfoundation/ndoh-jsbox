@@ -89,10 +89,10 @@ go.app = function() {
                 .send_redial_sms()
                 .then(function() {
                     self.im.user.answers.redial_sms_sent = true;
-                    return ;
+                    return;
                 });
             } else {
-                return ;
+                return;
             }
         };
 
@@ -274,8 +274,7 @@ go.app = function() {
                             return self.states.create('state_not_subscribed');
                         }
                     });
-                }
-                else {
+                } else {
                     self.im.user.set_answer("operator", identity); // null
                     // init redial_sms_sent
                     self.im.user.set_answer("redial_sms_sent", false);
