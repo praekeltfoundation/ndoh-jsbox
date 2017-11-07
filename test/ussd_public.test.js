@@ -80,10 +80,10 @@ describe("ussd_public app", function() {
                         state: 'state_start',
                         addr: '27820001001',
                         metadata: {
-                          session_length_helper: {
-                            // one minute before the mocked timestamp
-                            start: Number(new Date('April 4, 2014 07:06:07'))
-                          }
+                            session_length_helper: {
+                                // one minute before the mocked timestamp
+                                start: Number(new Date('April 4, 2014 07:06:07'))
+                            }
                         }
                     })
                     .input({
@@ -877,7 +877,7 @@ describe("ussd_public app", function() {
                                 pilot_question: null,
                                 pilot_source: 'ussd_public',
                             }
-                    }));
+                        }));
                     api.http.fixtures.add(fixtures_Pilot().post_registration({
                         identity: 'cb245673-aa41-4302-ac47-00000001001',
                         address: '27820001001',
@@ -968,7 +968,7 @@ describe("ussd_public app", function() {
                                 pilot_question: 'How would you like to receive messages about you and your baby?',
                                 pilot_source: 'ussd_public',
                             }
-                    }));
+                        }));
                     api.http.fixtures.add(fixtures_Pilot().post_registration({
                         identity: 'cb245673-aa41-4302-ac47-00000001001',
                         address: '27820001001',
@@ -1018,7 +1018,7 @@ describe("ussd_public app", function() {
                             wait: false,
                         }));
 
-                        // subscribe to the whatsapp_prebirth message set so the pilot
+                    // subscribe to the whatsapp_prebirth message set so the pilot
                     // channel is returned
                     api.http.fixtures.add(fixtures_Pilot().subscribe_id_to({
                         identity: 'cb245673-aa41-4302-ac47-00000001001',
@@ -1073,7 +1073,7 @@ describe("ussd_public app", function() {
                                 pilot_question: 'How would you like to receive messages about you and your baby?',
                                 pilot_source: 'ussd_public',
                             }
-                    }));
+                        }));
                     api.http.fixtures.add(fixtures_Pilot().post_registration({
                         identity: 'cb245673-aa41-4302-ac47-00000001001',
                         address: '27820001001',

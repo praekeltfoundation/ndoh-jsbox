@@ -375,7 +375,7 @@ go.app = function() {
                 check: function(content) {
                     if (utils.check_valid_number(content)
                         && utils.check_number_in_range(content, "1900", utils.get_moment_date().year())) {
-                            return null;  // vumi expects null or undefined if check passes
+                        return null;  // vumi expects null or undefined if check passes
                     } else {
                         return $("Invalid date. Please enter the year you were born (For example 1981)");
                     }

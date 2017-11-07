@@ -309,20 +309,20 @@ go.app = function() {
 
         self.states.add("end_thanks_revisit", function(name) {
             return new EndState(name, {
-              text: $("Sorry, you've already rated service. For baby and pregnancy " +
-                      "help or if you have compliments or complaints " +
-                      "dial {{public_channel}} or reply to any of the SMSs you receive")
-                .context({
+                text: $("Sorry, you've already rated service. For baby and pregnancy " +
+                        "help or if you have compliments or complaints " +
+                        "dial {{public_channel}} or reply to any of the SMSs you receive")
+                  .context({
                     public_channel: self.im.config.public_channel
                 }),
-              next: "end_thanks_revisit"
+                next: "end_thanks_revisit"
             });
         });
 
         self.states.add("states_error", function(name) {
             return new EndState(name, {
-              text: "Sorry, something went wrong when saving the data. Please try again.",
-              next: "state_start"
+                text: "Sorry, something went wrong when saving the data. Please try again.",
+                next: "state_start"
             });
         });
 

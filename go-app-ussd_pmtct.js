@@ -103,23 +103,23 @@ go.app = function() {
             .then(function(json_result) {
                 return im.log(json_result.data)
                 .then(function(){
-                  var subs = json_result.data;
+                    var subs = json_result.data;
 
-                  var active_subs = [];
-                  for (var i = 0; i < subs.objects.length; i++) {
-                      // active_sub handling
-                      if (subs.objects[i].active === true) {
-                          active_subs.push(subs.objects[i]);
-                      }
-                      // save baby birth date while we're here
-                      // This currently assumes that the only way to get a baby2 subscription is to have
-                      // had a baby1 subscription at some point. This could be made less fragile by doing
-                      // a fallback calculation for the baby_dob if the baby1 subscription is not found
-                      if (subs.objects[i].message_set.match(/\d+\/$/)[0].replace('/', '') === '4') {
-                          im.user.set_answer("baby_dob", subs.objects[i].created_at.substr(0,10));
-                      }
-                  }
-                  return active_subs;
+                    var active_subs = [];
+                    for (var i = 0; i < subs.objects.length; i++) {
+                        // active_sub handling
+                        if (subs.objects[i].active === true) {
+                            active_subs.push(subs.objects[i]);
+                        }
+                        // save baby birth date while we're here
+                        // This currently assumes that the only way to get a baby2 subscription is to have
+                        // had a baby1 subscription at some point. This could be made less fragile by doing
+                        // a fallback calculation for the baby_dob if the baby1 subscription is not found
+                        if (subs.objects[i].message_set.match(/\d+\/$/)[0].replace('/', '') === '4') {
+                            im.user.set_answer("baby_dob", subs.objects[i].created_at.substr(0,10));
+                        }
+                    }
+                    return active_subs;
                 });
             });
         };
@@ -130,7 +130,7 @@ go.app = function() {
                 var subscription_type = self.getSubscriptionType(messageset_id);
                 // check that current active subscription is to momconnect
                 if (['baby1', 'baby2', 'standard', 'later', 'accelerated'].indexOf(subscription_type) >= 0) {
-                  return subscription_type;
+                    return subscription_type;
                 }
             }
             return false;
@@ -281,14 +281,14 @@ go.app = function() {
             };
 
             var http = new JsonApi(im, {
-              headers: {
-                'Authorization': ['ApiKey ' + username + ':' + api_key]
-              }
+                headers: {
+                    'Authorization': ['ApiKey ' + username + ':' + api_key]
+                }
             });
 
             return http.post(subscription_base_url + endpoint, {
                 data: sub_info
-                  });
+            });
         };
 
         self.optoutVumiAddress = function(im, msisdn) {
@@ -335,7 +335,7 @@ go.app = function() {
         // override normal state adding
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-            /*if (!interrupt || !go.utils.timed_out(self.im))*/
+                /*if (!interrupt || !go.utils.timed_out(self.im))*/
                 var log_mode = self.im.config.logging;
                 if (log_mode === 'prod') {
                     return self.im
@@ -527,7 +527,7 @@ go.app = function() {
                 check: function(content) {
                     if (utils.check_valid_number(content)
                         && utils.check_number_in_range(content, "1900", utils.get_moment_date().year())) {
-                            return null;  // vumi expects null or undefined if check passes
+                        return null;  // vumi expects null or undefined if check passes
                     } else {
                         return $("Invalid date. Please enter the year you were born (For example 1981)");
                     }

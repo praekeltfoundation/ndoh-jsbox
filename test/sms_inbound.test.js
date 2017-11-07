@@ -92,10 +92,10 @@ describe("app", function() {
                         state: 'state_start',
                         addr: '27820001002',
                         metadata: {
-                          session_length_helper: {
-                            // one minute before the mocked timestamp
-                            start: Number(new Date('April 4, 2014 03:06:07'))
-                          }
+                            session_length_helper: {
+                                // one minute before the mocked timestamp
+                                start: Number(new Date('April 4, 2014 03:06:07'))
+                            }
                         }
                     })
                     .input({

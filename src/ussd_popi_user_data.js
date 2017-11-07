@@ -134,7 +134,7 @@ go.app = function() {
                     return 'Tshivenda';
                 case 'nbl_ZA':
                     return 'isiNdebele';
-                }
+            }
         };
 
         // override normal state adding
@@ -181,19 +181,19 @@ go.app = function() {
                         return sbm
                         .list_active_subscriptions(self.im.user.answers.operator.id)
                         .then(function(active_subscriptions){
-                            promises = active_subscriptions.results.map(function(result){
-                                return sbm.get_messageset(result.messageset); 
-                            });
-                            var sets = '';
-                            return Q.all(promises)
-                            .then(function(allmset){
-                                for(var j = 0; j < allmset.length; j++){
-                                    var message_set = allmset[j].short_name;
-                                    sets += " " + message_set;
-                                }
-                                self.im.user.set_answer("message_sets", sets.substring(1,sets.length));
-                                return self.states.create('state_all_options_view');   
+                                promises = active_subscriptions.results.map(function(result){
+                                    return sbm.get_messageset(result.messageset); 
                                 });
+                                var sets = '';
+                                return Q.all(promises)
+                                .then(function(allmset){
+                                        for(var j = 0; j < allmset.length; j++){
+                                            var message_set = allmset[j].short_name;
+                                            sets += " " + message_set;
+                                        }
+                                        self.im.user.set_answer("message_sets", sets.substring(1,sets.length));
+                                        return self.states.create('state_all_options_view');   
+                                    });
                             });
                     } else {
                         return self.states.create('state_not_registered');
@@ -323,7 +323,7 @@ go.app = function() {
                             '8805100273098'),
                 check: function(content) {
                     if (utils.check_valid_number(content) && (content.length === 13)) {
-                            return null;  // vumi expects null or undefined if check passes
+                        return null;  // vumi expects null or undefined if check passes
                     } else {
                         return $("Invalid ID number. Please re-enter");
                     }
@@ -395,7 +395,7 @@ go.app = function() {
                             'to send you messages eg. 0813547654'),
                 check: function(content) {
                     if (utils.check_valid_number(content) && (content.length === 10)) {
-                            return null;  // vumi expects null or undefined if check passes
+                        return null;  // vumi expects null or undefined if check passes
                     } else {
                         return $("Invalid phone number. Please re-enter (with no spaces)");
                     }

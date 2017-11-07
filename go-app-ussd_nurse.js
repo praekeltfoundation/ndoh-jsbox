@@ -223,7 +223,7 @@ go.app = function() {
         };
 
 
-    // TIMEOUT STATE
+        // TIMEOUT STATE
         self.states.add('state_timed_out', function(name, creator_opts) {
             var msisdn = utils.readable_msisdn(self.im.user.answers.registrant_msisdn, '27');
             return new ChoiceState(name, {
@@ -241,7 +241,7 @@ go.app = function() {
             });
         });
 
-    // DELEGATOR START STATE
+        // DELEGATOR START STATE
 
         self.add('state_route', function(name) {
             // Reset user answers when restarting the app
@@ -288,7 +288,7 @@ go.app = function() {
             });
         });
 
-    // INITIAL STATES
+        // INITIAL STATES
 
         self.add('state_subscribed', function(name) {
             return new PaginatedChoiceState(name, {
@@ -339,7 +339,7 @@ go.app = function() {
             });
         });
 
-    // REGISTRATION STATES
+        // REGISTRATION STATES
 
         self.add('state_subscribe_self', function(name) {
             return new ChoiceState(name, {
@@ -557,7 +557,7 @@ go.app = function() {
 
         });
 
-    // CHANGE STATES
+        // CHANGE STATES
 
         self.add('state_change_num', function(name) {
             var question = $("Please enter the new number on which you want to receive messages, e.g. 0736252020:");
@@ -1072,7 +1072,7 @@ go.app = function() {
                 text: $("Thank you. Your NurseConnect details have been changed. To change any other details, please dial {{channel}} again.")
                     .context({channel: self.im.config.channel}),
                 next: 'state_route',
-             });
+            });
         });
 
         self.add('state_end_reg', function(name) {
