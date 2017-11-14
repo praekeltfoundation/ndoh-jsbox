@@ -32,6 +32,10 @@
         null,
         ""
     ],
+    "Would you like to receive these messages over WhatsApp or SMS?": [
+        null,
+        "Ingaba ungathanda ukufumana le miyaleza ngoWhatsApp okanye ngeSMS?"
+    ],
     "You need to be registered on MomConnect to receive these messages. Please visit the nearest clinic to register.": [
         null,
         "Kuzakufuneka ukuba ube ubhalisile kwiMomConnect ukuze ufumane le miyaleza. Nceda uye kwikliniki ekufuphi uyekubhalisa."

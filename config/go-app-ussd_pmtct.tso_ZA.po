@@ -44,6 +44,10 @@ msgstr "Ina"
 msgid "No, start a new registration"
 msgstr ""
 
+#: go-app-ussd_pmtct.js:451
+msgid "Would you like to receive these messages over WhatsApp or SMS?"
+msgstr "U lava ku kuma swihungwana leswi hi WhatsApp kumbe SMS?"
+
 #: go-app-ussd_pmtct.js:464
 msgid ""
 "You need to be registered on MomConnect to receive these messages. Please "

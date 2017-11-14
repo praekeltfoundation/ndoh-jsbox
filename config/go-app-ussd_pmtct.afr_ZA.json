@@ -32,6 +32,10 @@
         null,
         ""
     ],
+    "Would you like to receive these messages over WhatsApp or SMS?": [
+        null,
+        "Wil jy hierdie boodksappe oor WhatsApp of SMS ontvang?"
+    ],
     "You need to be registered on MomConnect to receive these messages. Please visit the nearest clinic to register.": [
         null,
         "Jy moet by MomConnect geregistreer wees om hierdie boodskappe te ontvang. Gaan asb na jou naaste kliniek om te registreer."

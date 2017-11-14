@@ -44,6 +44,10 @@ msgstr "Ja"
 msgid "No, start a new registration"
 msgstr ""
 
+#: go-app-ussd_pmtct.js:451
+msgid "Would you like to receive these messages over WhatsApp or SMS?"
+msgstr "Wil jy hierdie boodksappe oor WhatsApp of SMS ontvang?"
+
 #: go-app-ussd_pmtct.js:464
 msgid ""
 "You need to be registered on MomConnect to receive these messages. Please "
