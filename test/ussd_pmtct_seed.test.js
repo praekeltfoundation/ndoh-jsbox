@@ -107,7 +107,7 @@ describe("PMTCT app", function() {
                             number: '+27123456789',
                             address: '+27820000111',
                             wait: true
-                    }));
+                        }));
                 });
             });
 
@@ -260,13 +260,13 @@ describe("PMTCT app", function() {
                                 number: '+27123456789',
                                 address: '+27820000222',
                                 wait: false
-                        }));
+                            }));
                         api.http.fixtures.add(
                             fixtures_Pilot().exists({
                                 number: '+27123456789',
                                 address: '+27820000222',
                                 wait: true
-                        }));
+                            }));
                     });
                 });
                 it("to state_birth_year", function() {
@@ -385,13 +385,13 @@ describe("PMTCT app", function() {
                                 number: '+27123456789',
                                 address: '+27820000333',
                                 wait: false
-                        }));
+                            }));
                         api.http.fixtures.add(
                             fixtures_Pilot().exists({
                                 number: '+27123456789',
                                 address: '+27820000333',
                                 wait: true
-                        }));
+                            }));
                     });
                 });
 
@@ -485,13 +485,13 @@ describe("PMTCT app", function() {
                                 number: '+27123456789',
                                 address: '+27820000444',
                                 wait: false
-                        }));
+                            }));
                         api.http.fixtures.add(
                             fixtures_Pilot().exists({
                                 number: '+27123456789',
                                 address: '+27820000444',
                                 wait: true
-                        }));
+                            }));
                     });
                 });
 
@@ -554,7 +554,7 @@ describe("PMTCT app", function() {
                                     number: '+27123456789',
                                     address: '+27820000555',
                                     wait: false
-                            }));
+                                }));
                         })
                         .setup.user.addr("0820000555")
                         .inputs(
@@ -581,7 +581,7 @@ describe("PMTCT app", function() {
                                     number: '+27123456789',
                                     address: '+27820111111',
                                     wait: false
-                            }));
+                                }));
                         })
                         .setup.user.addr("0820111111")
                         .inputs(
@@ -610,13 +610,13 @@ describe("PMTCT app", function() {
                             number: '+27123456789',
                             address: '+27720000111',
                             wait: false
-                    }));
+                        }));
                     api.http.fixtures.add(
                         fixtures_Pilot().exists({
                             number: '+27123456789',
                             address: '+27720000111',
                             wait: true
-                    }));
+                        }));
                 });
             });
 
@@ -645,7 +645,7 @@ describe("PMTCT app", function() {
                     .setup.user.addr("0720000111")
                     .inputs(
                         {session_event: "new"}  // dial in
-                        ,"1"  // state_optout_reason_menu - not HIV+
+                        , "1"  // state_optout_reason_menu - not HIV+
                     )
                     .check.interaction({
                         state: "state_end_optout",

@@ -243,7 +243,7 @@ go.app = function() {
                                 //          ...
                                 //      }
                                 var short_name_map = {};
-                                for (var k=0; k < messagesets.length; k++) {
+                                for (var k = 0; k < messagesets.length; k++) {
                                     short_name_map[messagesets[k].id] = messagesets[k].short_name;
                                 }
 
@@ -257,7 +257,7 @@ go.app = function() {
 
                                 // see if any of the active subscriptions shortnames contain
                                 // either "pmtct" or "momconnect" in order to route appropriately
-                                for (var i=0; i < active_subs.length; i++) {
+                                for (var i = 0; i < active_subs.length; i++) {
                                     var active_sub_shortname = short_name_map[active_subs[i].messageset];
 
                                     var pmtct_index = active_sub_shortname.indexOf("pmtct");
@@ -375,7 +375,7 @@ go.app = function() {
                 check: function(content) {
                     if (utils.check_valid_number(content)
                         && utils.check_number_in_range(content, "1900", utils.get_moment_date().year())) {
-                            return null;  // vumi expects null or undefined if check passes
+                        return null;  // vumi expects null or undefined if check passes
                     } else {
                         return $("Invalid date. Please enter the year you were born (For example 1981)");
                     }
@@ -412,7 +412,7 @@ go.app = function() {
                 },
                 next: function(content) {
                     self.im.user.set_answer("dob_day", content);
-                    self.im.user.set_answer("mom_dob",utils.get_entered_birth_date(
+                    self.im.user.set_answer("mom_dob", utils.get_entered_birth_date(
                         self.im.user.answers.dob_year, self.im.user.answers.dob_month, content));
 
                     return "state_hiv_messages";

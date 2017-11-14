@@ -3,148 +3,149 @@ go;
 
 go.SessionLengthHelper = function () {
 
-  var vumigo = require('vumigo_v02');
-  var events = vumigo.events;
-  var Eventable = events.Eventable;
+    var vumigo = require('vumigo_v02');
+    var events = vumigo.events;
+    var Eventable = events.Eventable;
 
-  var SessionLengthHelper = Eventable.extend(function(self, im, params) {
-    /**class:SessionLengthHelper
+    var SessionLengthHelper = Eventable.extend(function(self, im, params) {
+        /**class:SessionLengthHelper
 
-    A helper for common session length calculation tasks.
+        A helper for common session length calculation tasks.
 
-    :param InteractionMachine im:
-      The interaction machine that the metrics should be run on.
-    :param object params:
-      Optional parameters:
+        :param InteractionMachine im:
+          The interaction machine that the metrics should be run on.
+        :param object params:
+          Optional parameters:
 
-      {
-        name: 'default',
-        clock: function () {
-          return new Date();
-        },
-        metrics_prefix: 'session_length_helper'
-      }
-
-    */
-    self.im = im;
-
-    self.user = im.user;
-
-    self.name = params.name || 'default';
-
-    self.now = params.clock || function () { return new Date(); };
-
-    self.metrics_prefix = params.metrics_prefix || 'session_length_helper';
-
-    self.mark = {};
-
-    self.attach = function () {
-      self.im.on('session:new', function (e) {
-        return self.mark.session_start();
-      });
-
-      self.im.on('session:close', function (e) {
-        return self.mark.session_close();
-      });
-
-      self.im.on('im:shutdown', function() {
-        return self.increment_and_fire(self.name);
-      });
-    };
-
-    self.mark.session_start = function () {
-      self.user.metadata.session_length_helper = {};
-      self.user.metadata.session_length_helper.start = Number(self.now());
-      return self;
-    };
-
-    self.mark.session_close = function () {
-      if(!self.user.metadata.session_length_helper) {
-        self.user.metadata.session_length_helper = {};
-      }
-      self.user.metadata.session_length_helper.stop = Number(self.now());
-      return self;
-    };
-
-    self.duration = function() {
-      var data = self.user.metadata.session_length_helper;
-      if(data && data.stop && data.start) {
-        return data.stop - data.start;
-      }
-      return -1;
-    };
-
-    self.get_today_as_string = function() {
-      var today_iso = self.now().toISOString();
-      return today_iso.split('T')[0];
-    };
-
-    self.ensure_today = function (name) {
-      var sentinel_key_name = [self.metrics_prefix, name, 'sentinel'].join('.');
-      return self.im
-        .api_request('kv.get', {
-          key: sentinel_key_name
-        })
-        .then(function (result) {
-          if(result.value != self.get_today_as_string()) {
-            return self.reset_for_today(name);
+          {
+            name: 'default',
+            clock: function () {
+              return new Date();
+            },
+            metrics_prefix: 'session_length_helper'
           }
-        });
-    };
 
-    self.reset_for_today = function (name) {
-      var sentinel_key_name = [self.metrics_prefix, name, 'sentinel'].join('.');
-      var key_name = [self.metrics_prefix, name].join('.');
-      return self.im
-        .api_request('kv.set', {
-          key: key_name,
-          value: 0
-        })
-        .then(function (result) {
-          return self.im.api_request('kv.set', {
-            key: sentinel_key_name,
-            value: self.get_today_as_string()
-          });
-        });
-    };
+        */
+        self.im = im;
 
-    self.store = function(name) {
-      return self.im
-        .api_request('kv.incr', {
-          key: [self.metrics_prefix, name].join('.'),
-          amount: self.duration()
-        })
-        .then(function (result){
-          return result.value;
-        });
-    };
+        self.user = im.user;
 
-    self.fire_metrics = function (name, result) {
-      var full_name = [self.metrics_prefix, name].join('.');
-      return self.im.metrics.fire.max(full_name, result / 1000);
-    };
+        self.name = params.name || 'default';
 
-    self.increment_and_fire = function (fn_or_str) {
-      var name = vumigo.utils.maybe_call(fn_or_str, self);
-      return self
-        .ensure_today(name)
-        .then(function (result) {
+        self.now = params.clock || function () { return new Date(); };
 
-          // return early if we've got nothing to report
-          if(self.duration() < 0)
-            return;
+        self.metrics_prefix = params.metrics_prefix || 'session_length_helper';
 
-          return self
-            .store(name)
-            .then(function (result) {
-              return self.fire_metrics(name, result);
+        self.mark = {};
+
+        self.attach = function () {
+            self.im.on('session:new', function (e) {
+                return self.mark.session_start();
             });
-        });
-    };
 
-  });
+            self.im.on('session:close', function (e) {
+                return self.mark.session_close();
+            });
 
-  return SessionLengthHelper;
+            self.im.on('im:shutdown', function() {
+                return self.increment_and_fire(self.name);
+            });
+        };
+
+        self.mark.session_start = function () {
+            self.user.metadata.session_length_helper = {};
+            self.user.metadata.session_length_helper.start = Number(self.now());
+            return self;
+        };
+
+        self.mark.session_close = function () {
+            if(!self.user.metadata.session_length_helper) {
+                self.user.metadata.session_length_helper = {};
+            }
+            self.user.metadata.session_length_helper.stop = Number(self.now());
+            return self;
+        };
+
+        self.duration = function() {
+            var data = self.user.metadata.session_length_helper;
+            if(data && data.stop && data.start) {
+                return data.stop - data.start;
+            }
+            return -1;
+        };
+
+        self.get_today_as_string = function() {
+            var today_iso = self.now().toISOString();
+            return today_iso.split('T')[0];
+        };
+
+        self.ensure_today = function (name) {
+            var sentinel_key_name = [self.metrics_prefix, name, 'sentinel'].join('.');
+            return self.im
+              .api_request('kv.get', {
+                key: sentinel_key_name
+            })
+              .then(function (result) {
+                if(result.value !== self.get_today_as_string()) {
+                    return self.reset_for_today(name);
+                }
+            });
+        };
+
+        self.reset_for_today = function (name) {
+            var sentinel_key_name = [self.metrics_prefix, name, 'sentinel'].join('.');
+            var key_name = [self.metrics_prefix, name].join('.');
+            return self.im
+              .api_request('kv.set', {
+                key: key_name,
+                value: 0
+            })
+              .then(function (result) {
+                return self.im.api_request('kv.set', {
+                    key: sentinel_key_name,
+                    value: self.get_today_as_string()
+                });
+            });
+        };
+
+        self.store = function(name) {
+            return self.im
+              .api_request('kv.incr', {
+                key: [self.metrics_prefix, name].join('.'),
+                amount: self.duration()
+            })
+              .then(function (result){
+                return result.value;
+            });
+        };
+
+        self.fire_metrics = function (name, result) {
+            var full_name = [self.metrics_prefix, name].join('.');
+            return self.im.metrics.fire.max(full_name, result / 1000);
+        };
+
+        self.increment_and_fire = function (fn_or_str) {
+            var name = vumigo.utils.maybe_call(fn_or_str, self);
+            return self
+              .ensure_today(name)
+              .then(function (result) {
+
+                // return early if we've got nothing to report
+                if(self.duration() < 0) {
+                    return;
+                }
+
+                return self
+                  .store(name)
+                  .then(function (result) {
+                    return self.fire_metrics(name, result);
+                });
+            });
+        };
+
+    });
+
+    return SessionLengthHelper;
 
 }();
 
@@ -262,7 +263,7 @@ go.app = function() {
                     //      Because of how Seed's services work using asynchronous webhooks there
                     //      can be a race condition if we check the subscriptions too soon after
                     //      creating a new registration
-                    if(self.im.user.answers.state_pilot == 'whatsapp') {
+                    if(self.im.user.answers.state_pilot === 'whatsapp') {
                         return pilot_config.channel;
                     }
 
@@ -288,8 +289,9 @@ go.app = function() {
         self.attach_session_length_helper = function(im) {
             // If we have transport metadata then attach the session length
             // helper to this app
-            if(!im.msg.transport_metadata)
+            if(!im.msg.transport_metadata) {
                 return;
+            }
 
             var slh = new go.SessionLengthHelper(im, {
                 name: function () {
@@ -345,10 +347,10 @@ go.app = function() {
                 .send_redial_sms()
                 .then(function() {
                     self.im.user.answers.redial_sms_sent = true;
-                    return ;
+                    return;
                 });
             } else {
-                return ;
+                return;
             }
         };
 
@@ -414,7 +416,7 @@ go.app = function() {
             };
             var registration_info = {
                 "reg_type": (
-                    self.im.user.answers.state_pilot == 'whatsapp'
+                    self.im.user.answers.state_pilot === 'whatsapp'
                     ? "whatsapp_prebirth"
                     : "momconnect_prebirth"),
                 "registrant_id": self.im.user.answers.registrant.id,
@@ -431,8 +433,9 @@ go.app = function() {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
 
             // If unconfigured, do nothing
-            if(_.isEmpty(annotation_url))
+            if(_.isEmpty(annotation_url)) {
                 return Q();
+            }
 
             return new JsonApi(self.im, {
                 headers: {
@@ -449,7 +452,7 @@ go.app = function() {
         self.format_ussd_code = function (channel, ussd_code) {
             // Prevent *123*345# from getting printed as bold text
             // in the phone client
-            if(channel == "WHATSAPP") {
+            if(channel === "WHATSAPP") {
                 return "```" + ussd_code + "```";
             }
             return ussd_code;
@@ -510,8 +513,9 @@ go.app = function() {
 
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                if (!interrupt || !utils.timed_out(self.im))
+                if (!interrupt || !utils.timed_out(self.im)) {
                     return creator(name, opts);
+                }
 
                 interrupt = false;
                 var timeout_opts = opts || {};
@@ -805,7 +809,7 @@ go.app = function() {
             var whatsapp_label = 'WhatsApp';
             var sms_label = 'SMS';
 
-            if(self.im.user.answers.state_language == 'eng_ZA' && Math.random() < nudge_threshold) {
+            if(self.im.user.answers.state_language === 'eng_ZA' && Math.random() < nudge_threshold) {
                 question = "Would you prefer to receive messages about you and your baby via WhatsApp?";
                 whatsapp_label = 'Yes';
                 sms_label = 'No';

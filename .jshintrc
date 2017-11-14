@@ -1,4 +1,6 @@
 {
+  "curly": true,
+  "eqeqeq": true,
   "globals": {
     "beforeEach": true,
     "describe": true,
@@ -7,6 +9,8 @@
   },
   "laxbreak":  true,
   "laxcomma":  true,
+  "maxcomplexity": 20,
+  "nonbsp": true,
   "expr": true,
   "node": true,
   "undef": true,

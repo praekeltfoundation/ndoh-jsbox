@@ -67,8 +67,9 @@ go.app = function() {
         self.attach_session_length_helper = function(im) {
             // If we have transport metadata then attach the session length
             // helper to this app
-            if(!im.msg.transport_metadata)
+            if(!im.msg.transport_metadata) {
                 return;
+            }
 
             var slh = new go.SessionLengthHelper(im, {
                 name: function () {
@@ -112,6 +113,16 @@ go.app = function() {
             return (today_utc.hour() < opening_time || today_utc.hour() >= closing_time);
         };
 
+        self.text_contains_ussd_code = function(text) {
+            var found_ussd_code = false;
+
+            if (text.indexOf('*120*') > -1 || text.indexOf('*134*') > -1) {
+                found_ussd_code = true;
+            }
+
+            return found_ussd_code;
+        };
+
         self.states.add("state_start", function() {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
             self.im.user.set_answer("operator_msisdn", msisdn);
@@ -125,8 +136,7 @@ go.app = function() {
                 .is_identity_subscribed(self.im.user.answers.operator.id, [/momconnect/])
                 .then(function(identity_subscribed_to_momconnect) {
                     if (identity_subscribed_to_momconnect) {
-                        // check if message contains a ussd code
-                        if (self.im.msg.content.indexOf("*120*") > -1 || self.im.msg.content.indexOf("*134*") > -1) {
+                        if (self.text_contains_ussd_code(self.im.msg.content)) {
                             return self.states.create("state_dial_not_sms");
                         } else {
                             // get the first word, remove non-alphanumerics, capitalise
@@ -236,13 +246,13 @@ go.app = function() {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
             var http = new JsonApi(self.im, {});
             var data = {
-              from: msisdn,
-              message_id: self.im.config.testing_message_id || self.im.msg.message_id,
-              content: self.im.msg.content,
+                from: msisdn,
+                message_id: self.im.config.testing_message_id || self.im.msg.message_id,
+                content: self.im.msg.content,
             };
             return http.post(casepro_url, {
                 data: data
-              }).then(function (response) {
+            }).then(function (response) {
                 return self.im.log([
                       'Request: POST ' + casepro_url,
                       'Payload: ' + JSON.stringify(data),
@@ -250,8 +260,8 @@ go.app = function() {
                     ].join('\n'))
                   .then(function() {
                     return self.states.create("state_default");
-                  });
-              });
+                });
+            });
         });
 
         self.states.add("state_default", function(name) {

@@ -3,6 +3,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-jscs');
 
     grunt.initConfig({
         paths: {
@@ -210,6 +211,17 @@ module.exports = function (grunt) {
                 '<%= paths.src.all %>',
                 'test/*.js',
             ]
+        },
+
+        jscs: {
+            src: [
+                'Gruntfile.js',
+                '<%= paths.src.all %>',
+                'test/*.js',
+            ],
+            options: {
+                config: ".jscsrc",
+            }
         },
 
         watch: {

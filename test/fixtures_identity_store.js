@@ -1,33 +1,33 @@
 // Identity Personas
 
 // NURSECONNECT
-    // (+27820001001) - new identity; no subscriptions
-    // (+27820001002) - existing identity with an active MomConnect subscription (no active NurseConnect subscription)
-    // (+27820001003) - existing identity with an active NurseConnect subscription; NurseConnect dialback sms already sent
-    // (+27820001004) - existing identity with an inactive NurseConnect subscription (opted out)
-    // (+27820001005) - existing identity; three msisdn's (opted out on 27820001003 & +27820001012)
-    // (+27820001006) - existing identity with an inactive MomConnect subscription
-    // (+27820001007) - existing identity with an active MomConnect CHW subscription
-    // (+27820001008) - existing identity with an active MomConnect Clinic subscription; completed servicerating
-    // (+27820001009) - existing identity with an active MomConnect Clinic subscription; CLINIC dialback sms already sent
-    // (+27820001010) - existing identity with an active MomConnect Clinic subscription; CHW dialback sms already sent
-    // (+27820001011) - existing identity with an active MomConnect Clinic subscription; PUBLIC dialback sms already sent
-    // (+27820001012) - old/opted_out number used before by 27820001005 (used to test changing number)
-    // (+27820001013) - existing identity with an active MomConnect subscription (no active NurseConnect subscription) and multiple messagesets
-    // (+27820001014) - existing identity; two msisdn's (other is +27820001002 not opted out)
-    // (+27820001015) - existing identity; two msisdn's (opted out on +27820001002)
+// (+27820001001) - new identity; no subscriptions
+// (+27820001002) - existing identity with an active MomConnect subscription (no active NurseConnect subscription)
+// (+27820001003) - existing identity with an active NurseConnect subscription; NurseConnect dialback sms already sent
+// (+27820001004) - existing identity with an inactive NurseConnect subscription (opted out)
+// (+27820001005) - existing identity; three msisdn's (opted out on 27820001003 & +27820001012)
+// (+27820001006) - existing identity with an inactive MomConnect subscription
+// (+27820001007) - existing identity with an active MomConnect CHW subscription
+// (+27820001008) - existing identity with an active MomConnect Clinic subscription; completed servicerating
+// (+27820001009) - existing identity with an active MomConnect Clinic subscription; CLINIC dialback sms already sent
+// (+27820001010) - existing identity with an active MomConnect Clinic subscription; CHW dialback sms already sent
+// (+27820001011) - existing identity with an active MomConnect Clinic subscription; PUBLIC dialback sms already sent
+// (+27820001012) - old/opted_out number used before by 27820001005 (used to test changing number)
+// (+27820001013) - existing identity with an active MomConnect subscription (no active NurseConnect subscription) and multiple messagesets
+// (+27820001014) - existing identity; two msisdn's (other is +27820001002 not opted out)
+// (+27820001015) - existing identity; two msisdn's (opted out on +27820001002)
 
 // PMTCT
-    // (+27820000111) active sub non-pmtct; no consent, no dob
-    // (+27820000222) active sub non-pmtct; consent, no dob
-    // (+27820000333) active sub non-pmtct; no consent, dob
-    // (+27820000444) active sub non-pmtct; consent, dob
-    // (+27820000555) no active sub
+// (+27820000111) active sub non-pmtct; no consent, no dob
+// (+27820000222) active sub non-pmtct; consent, no dob
+// (+27820000333) active sub non-pmtct; no consent, dob
+// (+27820000444) active sub non-pmtct; consent, dob
+// (+27820000555) no active sub
 
-    // (+27820111111) on neither old/new system
+// (+27820111111) on neither old/new system
 
-    // OPTOUT
-    // (+27720000111) already registered to PMTCT
+// OPTOUT
+// (+27720000111) already registered to PMTCT
 
 module.exports = function() {
     return [

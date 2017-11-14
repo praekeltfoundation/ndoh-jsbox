@@ -81,7 +81,7 @@ go.app = function() {
                     var sms_deactivated_subs = [];
                     var clean = true;  // clean tracks if api call is unnecessary
 
-                    for (var i=0; i<subscriptions.objects.length; i++) {
+                    for (var i = 0; i < subscriptions.objects.length; i++) {
                         if (subscriptions.objects[i].active === true) {
                             sms_deactivated_subs.push(subscriptions.objects[i].id);
                             subscriptions.objects[i].active = false;
@@ -142,7 +142,7 @@ go.app = function() {
                     if (identities.results.length > 0) {
                         self.im.user.set_answer('identity_id', identities.results[0].id);
                         // if (self.im.user.answers.keyword === 'stop') {
-                            return self.states.create('state_opt_out_enter');
+                        return self.states.create('state_opt_out_enter');
                         // } else if (self.im.user.answers.keyword === 'mom') {
                         //     return self.states.create('state_opt_in_momconnect');
                         // }

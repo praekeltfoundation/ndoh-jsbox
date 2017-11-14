@@ -77,10 +77,10 @@ describe("app", function() {
                         state: 'state_start',
                         addr: '27820001001',
                         metadata: {
-                          session_length_helper: {
-                            // one minute before the mocked timestamp
-                            start: Number(new Date('April 4, 2014 07:06:07'))
-                          }
+                            session_length_helper: {
+                                // one minute before the mocked timestamp
+                                start: Number(new Date('April 4, 2014 07:06:07'))
+                            }
                         }
                     })
                     .input({
@@ -150,8 +150,8 @@ describe("app", function() {
                     return tester
                         .setup(function(api) {
                             api.metrics.stores.test_metric_store = {
-                                'test.ussd_chw.state_birth_day.no_complete': { agg: 'last', values: [ 1 ] },
-                                'test.ussd_chw.state_birth_day.no_complete.transient': { agg: 'sum', values: [ 1 ] }
+                                'test.ussd_chw.state_birth_day.no_complete': { agg: 'last', values: [1] },
+                                'test.ussd_chw.state_birth_day.no_complete.transient': { agg: 'sum', values: [1] }
                             };
                             api.kv.store['test_metric_store.test.ussd_chw.state_birth_day.no_complete'] = 1;
                         })
@@ -1305,24 +1305,24 @@ describe("app", function() {
 
             describe("if the day entry is obviously wrong", function() {
                 it("should reprompt for the day", function() {
-                    return tester
-                        .setup.user.addr('27820001001')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_start - yes
-                            , '1'  // state_consent - yes
-                            , '3'  // state_id_type - none
-                            , '1981'  // state_birth_year
-                            , '2'  // state_birth_month
-                            , '32'  // state_birth_day
-                        )
-                        .check.interaction({
-                            state: 'state_birth_day',
-                            reply: 'There was an error in your entry. Please ' +
-                                'carefully enter the mother\'s day of birth again ' +
-                                '(for example: 8)'
-                        })
-                        .run();
+                        return tester
+                            .setup.user.addr('27820001001')
+                            .inputs(
+                                {session_event: 'new'}  // dial in
+                                , '1'  // state_start - yes
+                                , '1'  // state_consent - yes
+                                , '3'  // state_id_type - none
+                                , '1981'  // state_birth_year
+                                , '2'  // state_birth_month
+                                , '32'  // state_birth_day
+                            )
+                            .check.interaction({
+                                state: 'state_birth_day',
+                                reply: 'There was an error in your entry. Please ' +
+                                    'carefully enter the mother\'s day of birth again ' +
+                                    '(for example: 8)'
+                            })
+                            .run();
                     });
             });
 
