@@ -4,6 +4,7 @@ MAINTAINER Praekelt Foundation <dev@praekeltfoundation.org>
 # Install nodejs dependencies
 COPY package.json /app/package.json
 COPY config/go-app-ussd_popi*.json /app/
+COPY config/go-app-ussd_pmtct*.json /app/
 WORKDIR /app
 RUN apt-get-install.sh npm && \
     npm install --production && \
