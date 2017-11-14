@@ -43,6 +43,10 @@ msgstr "ye"
 msgid "No, start a new registration"
 msgstr ""
 
+#: go-app-ussd_pmtct.js:451
+msgid "Would you like to receive these messages over WhatsApp or SMS?"
+msgstr "Ungathanda ukuthola imilayezo le nge-WhatsApp nofana nge-SMS?"
+
 #: go-app-ussd_pmtct.js:464
 msgid ""
 "You need to be registered on MomConnect to receive these messages. Please "
