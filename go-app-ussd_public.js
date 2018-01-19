@@ -410,7 +410,8 @@ go.app = function() {
                 "msisdn_registrant": self.im.user.answers.registrant_msisdn,
                 "msisdn_device": self.im.user.answers.registrant_msisdn,
                 "language": self.im.user.answers.state_language,
-                "consent": self.im.user.answers.state_consent === "yes" ? true : null
+                "consent": self.im.user.answers.state_consent === "yes" ? true : null,
+                "registered_on_whatsapp": self.im.user.answers.registered_on_whatsapp
             };
             var registration_info = {
                 "reg_type": (
@@ -780,6 +781,7 @@ go.app = function() {
                 .then(function(response) {
                     var existing = _.filter(response.data, function(obj) { return obj.exists === true; });
                     if(_.isEmpty(existing)) {
+                        self.im.user.set_answer('registered_on_whatsapp', false);
                         // If they're not eligible then return false
                         return self.im
                             .log(msisdn + ' is not whatsappable')
@@ -788,6 +790,7 @@ go.app = function() {
                             });
                     } else {
                         // Otherwise roll the dice
+                        self.im.user.set_answer('registered_on_whatsapp', true);
                         var can_participate = Math.random() < randomisation_threshold;
                         return self.im
                             .log(msisdn + ' is whatsappable, randomisation selected: ' + can_participate)

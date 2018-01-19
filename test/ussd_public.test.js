@@ -883,7 +883,10 @@ describe("ussd_public app", function() {
                         address: '27820001001',
                         reg_type: 'momconnect_prebirth',
                         language: 'zul_ZA',
-                        consent: true
+                        consent: true,
+                        data: {
+                            registered_on_whatsapp: false
+                        }
                     }));
                     api.http.fixtures.add(fixtures_Pilot().post_outbound_message({
                         identity: 'cb245673-aa41-4302-ac47-00000001001',
@@ -898,6 +901,77 @@ describe("ussd_public app", function() {
                     , "1"  // state_language - zul_ZA
                     , "1"  // state_suspect_pregnancy - yes
                     , "1"  // state_consent - yes
+                )
+                .check.interaction({
+                    state: "state_end_success",
+                    reply: /Congratulations on your pregnancy./
+                })
+                .check.reply.ends_session()
+                .run();
+        });
+
+        it('should trigger the pilot when number check returns true', function() {
+            return tester
+                .setup(function(api) {
+                    var pilot_config = api.config.store.config.pilot;
+                    pilot_config.randomisation_threshold = 1.0;
+                    test_utils.only_use_fixtures(api, {
+                        numbers: [
+                            180, // 'get.is.msisdn.27820001001'
+                            183, // 'post.is.msisdn.27820001001'
+                            198, // 'patch.is.identity.cb245673-aa41-4302-ac47-00000001001'
+                            50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
+                            117, // 'post.ms.outbound.27820001001'
+                        ],
+                    });
+                    api.http.fixtures.add(
+                        fixtures_Pilot().exists({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            wait: false,
+                        }));
+
+                    api.http.fixtures.add(
+                        fixtures_Pilot().exists({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            wait: true,
+                        }));
+                    api.http.fixtures.add(
+                        fixtures_Pilot().annotate({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            metadata: {
+                                language: 'zul_ZA',
+                                pilot_choice: 'whatsapp',
+                                pilot_question: 'How would you like to receive messages about you and your baby?',
+                                pilot_source: 'ussd_public',
+                            }
+                    }));
+                    api.http.fixtures.add(fixtures_Pilot().post_registration({
+                        identity: 'cb245673-aa41-4302-ac47-00000001001',
+                        address: '27820001001',
+                        reg_type: 'whatsapp_prebirth',
+                        language: 'zul_ZA',
+                        consent: true,
+                        data: {
+                            registered_on_whatsapp: true
+                        }
+                    }));
+                    api.http.fixtures.add(fixtures_Pilot().post_outbound_message({
+                        identity: 'cb245673-aa41-4302-ac47-00000001001',
+                        address: '+27820001001',
+                        channel: 'pilot-channel',
+                        content: 'Congratulations on your pregnancy. You will now get free SMSs about MomConnect. You can register for the full set of FREE helpful messages at a clinic.',
+                    }));
+                })
+                .setup.user.addr("27820001001")
+                .inputs(
+                    {session_event: "new"}
+                    , "1"  // state_language - zul_ZA
+                    , "1"  // state_suspect_pregnancy - yes
+                    , "1"  // state_consent - yes
+                    , "1"  // state_pilot - whatsapp
                 )
                 .check.interaction({
                     state: "state_end_success",
