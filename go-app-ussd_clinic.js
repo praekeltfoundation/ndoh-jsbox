@@ -413,7 +413,8 @@ go.app = function() {
                 "language": self.im.user.answers.state_language,
                 "edd": self.im.user.answers.edd,
                 "faccode": self.im.user.answers.state_clinic_code,
-                "consent": self.im.user.answers.state_consent === "yes" ? true : null
+                "consent": self.im.user.answers.state_consent === "yes" ? true : null,
+                "registered_on_whatsapp": self.im.user.answers.registered_on_whatsapp
             };
 
             if (self.im.user.answers.state_id_type === "sa_id") {
@@ -1045,6 +1046,7 @@ go.app = function() {
                     }
                 })
                 .then(function(confirmed) {
+                    self.im.user.set_answer('registered_on_whatsapp', confirmed);
                     return confirmed
                         ? self.states.create('state_pilot')
                         : self.states.create('state_language');

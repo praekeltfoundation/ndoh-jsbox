@@ -62,7 +62,8 @@ module.exports = function() {
                         "faccode": "123456",
                         "consent": true,
                         "sa_id_no": "5101025009086",
-                        "mom_dob": "1951-01-02"
+                        "mom_dob": "1951-01-02",
+                        "registered_on_whatsapp": false
                     }
                 }
             },
@@ -81,7 +82,8 @@ module.exports = function() {
                         "faccode": "123456",
                         "consent": true,
                         "sa_id_no": "5101015009088",
-                        "mom_dob": "1951-01-01"
+                        "mom_dob": "1951-01-01",
+                        "registered_on_whatsapp": false
                     }
                 }
             }
@@ -106,7 +108,8 @@ module.exports = function() {
                         "faccode": "123456",
                         "consent": true,
                         "passport_no": "12345",
-                        "passport_origin": "zw"
+                        "passport_origin": "zw",
+                        "registered_on_whatsapp": false
                     }
                 }
             },
@@ -125,7 +128,8 @@ module.exports = function() {
                         "faccode": "123456",
                         "consent": true,
                         "passport_no": "12345",
-                        "passport_origin": "zw"
+                        "passport_origin": "zw",
+                        "registered_on_whatsapp": false
                     }
                 }
             }
@@ -149,7 +153,8 @@ module.exports = function() {
                         "edd": "2014-05-10",
                         "faccode": "123456",
                         "consent": true,
-                        "mom_dob": "1981-01-14"
+                        "mom_dob": "1981-01-14",
+                        "registered_on_whatsapp": false
                     }
                 }
             },
@@ -167,7 +172,8 @@ module.exports = function() {
                         "edd": "2014-05-10",
                         "faccode": "123456",
                         "consent": true,
-                        "mom_dob": "1981-01-14"
+                        "mom_dob": "1981-01-14",
+                        "registered_on_whatsapp": false
                     }
                 }
             }
