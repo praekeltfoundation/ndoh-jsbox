@@ -380,7 +380,8 @@ module.exports = function() {
                         "msisdn_registrant": "+27820001001",
                         "msisdn_device": "+27820001001",
                         "faccode": "123456",
-                        "language": "eng_ZA"
+                        "language": "eng_ZA",
+                        "registered_on_whatsapp": false
                     }
                 }
             },
@@ -406,7 +407,8 @@ module.exports = function() {
                         "msisdn_registrant": "+27820001002",
                         "msisdn_device": "+27820001001",
                         "faccode":"123456",
-                        "language": "eng_ZA"
+                        "language": "eng_ZA",
+                        "registered_on_whatsapp": false
                     }
                 }
             },
@@ -1058,6 +1060,7 @@ module.exports = function() {
                         "msisdn_device": "+27820001004",
                         "faccode": "123456",
                         "language": "eng_ZA",
+                        "registered_on_whatsapp": true
                     },
                 },
             },

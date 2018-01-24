@@ -500,6 +500,7 @@ go.app = function() {
 
         self.add('state_registration_type', function(name) {
             return self.is_whatsapp_user(self.im.user.answers.registrant_msisdn, true).then(function(is_whatsapp_user) {
+                self.im.user.set_answer('registered_on_whatsapp', is_whatsapp_user);
                 var registration_types = {
                     'sms': 'nurseconnect',
                     'whatsapp': 'whatsapp_nurseconnect',
@@ -537,7 +538,8 @@ go.app = function() {
                     "msisdn_registrant": self.im.user.answers.registrant_msisdn,  // msisdn of the registrant
                     "msisdn_device": self.im.user.answers.operator_msisdn,  // device msisdn
                     "faccode": registrant_info.details.nurseconnect.faccode,  // facility code
-                    "language": "eng_ZA"  // currently always eng_ZA for nurseconnect
+                    "language": "eng_ZA",  // currently always eng_ZA for nurseconnect
+                    "registered_on_whatsapp": self.im.user.answers.registered_on_whatsapp
                 }
             };
 
