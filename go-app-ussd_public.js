@@ -739,6 +739,7 @@ go.app = function() {
                     wait: true,
                 })
                 .then(function(yes_or_no) {
+                    self.im.user.set_answer('registered_on_whatsapp', yes_or_no);
                     return yes_or_no
                         ? self.states.create('state_pilot')
                         : self.states.create('state_save_subscription');
@@ -781,7 +782,6 @@ go.app = function() {
                 .then(function(response) {
                     var existing = _.filter(response.data, function(obj) { return obj.exists === true; });
                     if(_.isEmpty(existing)) {
-                        self.im.user.set_answer('registered_on_whatsapp', false);
                         // If they're not eligible then return false
                         return self.im
                             .log(msisdn + ' is not whatsappable')
@@ -790,7 +790,6 @@ go.app = function() {
                             });
                     } else {
                         // Otherwise roll the dice
-                        self.im.user.set_answer('registered_on_whatsapp', true);
                         var can_participate = Math.random() < randomisation_threshold;
                         return self.im
                             .log(msisdn + ' is whatsappable, randomisation selected: ' + can_participate)

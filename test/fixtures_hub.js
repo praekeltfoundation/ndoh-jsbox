@@ -467,6 +467,7 @@ module.exports = function() {
                         "msisdn_device": "+27820001001",
                         "language": "zul_ZA",
                         "consent": true,
+                        "registered_on_whatsapp": false
                     }
                 }
             },
@@ -491,6 +492,7 @@ module.exports = function() {
                         "msisdn_device": "+27820001004",
                         "language": "zul_ZA",
                         "consent": true,
+                        "registered_on_whatsapp": false
                     }
                 }
             },
