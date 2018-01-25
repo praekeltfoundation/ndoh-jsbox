@@ -260,7 +260,8 @@ go.app = function() {
                 "msisdn_registrant": self.im.user.answers.registrant_msisdn,
                 "msisdn_device": self.im.user.answers.registrant_msisdn,
                 "language": self.im.user.answers.state_language,
-                "consent": self.im.user.answers.state_consent === "yes" ? true : null
+                "consent": self.im.user.answers.state_consent === "yes" ? true : null,
+                "registered_on_whatsapp": self.im.user.answers.registered_on_whatsapp
             };
             var registration_info = {
                 "reg_type": (
@@ -588,6 +589,7 @@ go.app = function() {
                     wait: true,
                 })
                 .then(function(yes_or_no) {
+                    self.im.user.set_answer('registered_on_whatsapp', yes_or_no);
                     return yes_or_no
                         ? self.states.create('state_pilot')
                         : self.states.create('state_save_subscription');

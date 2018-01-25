@@ -1894,6 +1894,7 @@ describe("app", function() {
                                 faccode: '123456',
                                 consent: true,
                                 mom_dob: '1981-01-14',
+                                registered_on_whatsapp: true,
                             }
                         })),
                         api.http.fixtures.add(fixtures_Pilot().post_outbound_message({
