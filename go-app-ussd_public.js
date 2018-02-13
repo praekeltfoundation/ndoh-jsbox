@@ -465,7 +465,7 @@ go.app = function() {
                             self.im.user.answers.registrant.id,
                             self.im.user.answers.registrant_msisdn,
                             self.im.user.i18n($(
-                                "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. " +
+                                "Congratulations on your pregnancy. You will now get free messages about MomConnect. " +
                                 "You can register for the full set of FREE helpful messages at a clinic."
                             )), {
                                 channel: channel
@@ -604,7 +604,10 @@ go.app = function() {
         // Registration States
         self.add('state_language', function(name) {
             return new PaginatedChoiceState(name, {
-                question: 'Welcome to the Department of Health\'s MomConnect. Choose your language:',
+                question: $(
+                    'Welcome to the Department of Health\'s MomConnect. ' +
+                    'Please select your language'
+                ),
                 options_per_page: null,
                 characters_per_page: 160,
                 choices: [
@@ -641,7 +644,7 @@ go.app = function() {
 
         self.add('state_suspect_pregnancy', function(name) {
             return new ChoiceState(name, {
-                question: $('MomConnect sends free support SMSs to ' +
+                question: $('MomConnect sends free support messages to ' +
                     'pregnant mothers. Are you or do you suspect that you ' +
                     'are pregnant?'),
                 choices: [
@@ -678,15 +681,20 @@ go.app = function() {
 
         self.add('state_end_not_pregnant', function(name) {
             return new EndState(name, {
-                text: $('You have chosen not to receive MomConnect SMSs'),
+                text: $(
+                    'We are sorry but this service is only for pregnant mothers. ' +
+                    'If you have other health concerns please visit your nearest clinic.'
+                ),
                 next: 'state_start'
             });
         });
 
         self.add('state_end_consent_refused', function(name) {
             return new EndState(name, {
-                text: 'Unfortunately without your consent, you cannot register' +
-                      ' to MomConnect.',
+                text: $(
+                    'Unfortunately without your consent, you cannot register' +
+                    ' to MomConnect.'
+                ),
                 next: 'state_start'
             });
         });
@@ -694,7 +702,7 @@ go.app = function() {
         self.add('state_opt_in', function(name) {
             return new ChoiceState(name, {
                 question: $('You have previously opted out of MomConnect ' +
-                            'SMSs. Please confirm that you would like to ' +
+                            'messages. Please confirm that you would like to ' +
                             'opt in to receive messages again?'),
                 choices: [
                     new Choice('yes', $('Yes')),
@@ -723,7 +731,9 @@ go.app = function() {
 
         self.add('state_stay_out', function(name) {
             return new ChoiceState(name, {
-                question: $('You have chosen not to receive MomConnect SMSs'),
+                question: $(
+                    'You have chosen not to receive MomConnect messages and so ' +
+                    'cannot complete registration.'),
                 choices: [
                     new Choice('main_menu', $('Main Menu'))
                 ],
@@ -803,9 +813,9 @@ go.app = function() {
         self.add('state_pilot', function(name) {
             var pilot_config = self.im.config.pilot || {};
             var nudge_threshold = pilot_config.nudge_threshold || 0.0;
-            var question = 'How would you like to receive messages about you and your baby?';
-            var whatsapp_label = 'WhatsApp';
-            var sms_label = 'SMS';
+            var question = $('How would you like to receive messages about you and your baby?');
+            var whatsapp_label = $('WhatsApp');
+            var sms_label = $('SMS');
 
             if(self.im.user.answers.state_language == 'eng_ZA' && Math.random() < nudge_threshold) {
                 question = "Would you prefer to receive messages about you and your baby via WhatsApp?";
@@ -813,12 +823,12 @@ go.app = function() {
                 sms_label = 'No';
             }
 
-            self.im.user.set_answer("state_pilot_question", question);
+            self.im.user.set_answer("state_pilot_question", self.im.user.i18n(question));
             return new ChoiceState(name, {
-                question: $(question),
+                question: question,
                 choices: [
-                    new Choice('whatsapp', $(whatsapp_label)),
-                    new Choice('sms', $(sms_label)),
+                    new Choice('whatsapp', whatsapp_label),
+                    new Choice('sms', sms_label),
                 ],
                 next: 'state_save_subscription'
             });
@@ -848,7 +858,7 @@ go.app = function() {
 
         self.add('state_end_success', function(name) {
             return new EndState(name, {
-                text: $('Congratulations on your pregnancy. You will now get free SMSs ' +
+                text: $('Congratulations on your pregnancy. You will now get free messages ' +
                         'about MomConnect. You can register for the full set of FREE ' +
                         'helpful messages at a clinic.'),
                 next: 'state_start'
