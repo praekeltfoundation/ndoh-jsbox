@@ -517,8 +517,8 @@ go.app = function() {
                 return new ChoiceState(name, {
                     question: $(
                         'Welcome to The Department of Health\'s ' +
-                        'MomConnect. Tell us if this is the no. that ' +
-                        'the mother would like to get SMSs on: {{ num }}'
+                        'MomConnect programme. Is this no. {{ num }} ' +
+                        'the mobile no. of the pregnant woman to be registered?'
                     ).context({num: readable_no}),
                     choices: [
                         new Choice('yes', $('Yes')),
@@ -589,7 +589,7 @@ go.app = function() {
         self.add('state_opt_in', function(name) {
             return new ChoiceState(name, {
                 question: $('This number has previously opted out of MomConnect ' +
-                            'SMSs. Please confirm that the mom would like to ' +
+                            'messages. Please confirm that the mom would like to ' +
                             'opt in to receive messages again?'),
                 choices: [
                     new Choice('yes', $('Yes')),
@@ -618,7 +618,10 @@ go.app = function() {
 
         self.add('state_stay_out', function(name) {
             return new ChoiceState(name, {
-                question: $('You have chosen not to receive MomConnect SMSs'),
+                question: $(
+                    'You have chosen not to receive MomConnect messages and so ' +
+                    'cannot complete registration.'
+                ),
                 choices: [
                     new Choice('main_menu', $('Main Menu'))
                 ],
@@ -763,9 +766,9 @@ go.app = function() {
 
         self.add('state_clinic_code', function(name) {
             var error = $('Sorry, the clinic number did not validate. ' +
-                          'Please reenter the clinic number:');
+                          'Please reenter the clinic number.');
             var question = $('Please enter the clinic code for the facility ' +
-                            'where this pregnancy is being registered:');
+                            'where this pregnancy is being registered.');
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
@@ -851,7 +854,7 @@ go.app = function() {
                           'Please enter the estimated day that the baby ' +
                           'is due (For example 12):');
             var question = $('Please enter the estimated day that the baby ' +
-                             'is due (For example 12):');
+                             'is due (For example 12)');
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
@@ -909,7 +912,7 @@ go.app = function() {
             var error = $("Sorry, the mother's ID number did not validate. " +
                           "Please reenter the SA ID number:");
             var question = $("Please enter the pregnant mother\'s SA ID " +
-                            "number:");
+                            "number.");
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
@@ -946,7 +949,7 @@ go.app = function() {
         self.add('state_passport_no', function(name) {
             var error = $('There was an error in your entry. Please ' +
                         'carefully enter the passport number again.');
-            var question = $('Please enter the pregnant mother\'s Passport number:');
+            var question = $('Please enter the pregnant mother\'s Passport number.');
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
@@ -962,8 +965,9 @@ go.app = function() {
             var error = $('There was an error in your entry. Please ' +
                         'carefully enter the mother\'s year of birth again ' +
                         '(for example: 2001)');
-            var question = $('Please enter the year that the pregnant ' +
-                    'mother was born (for example: 1981)');
+            var question = $(
+                'Please enter the year that the ' +
+                'mother was born (for example: 1981)');
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
@@ -980,7 +984,7 @@ go.app = function() {
         self.add('state_birth_month', function(name) {
             var jan = utils.get_january(self.im.config.testing_today);
             return new ChoiceState(name, {
-                question: $('Please enter the month that the mom was born.'),
+                question: $('Please enter the month that the mother was born.'),
                 choices: utils.make_month_choices($, jan, 12, 1, "MM", "MMM"),
                 next: 'state_birth_day'
             });
@@ -990,8 +994,8 @@ go.app = function() {
             var error = $('There was an error in your entry. Please ' +
                         'carefully enter the mother\'s day of birth again ' +
                         '(for example: 8)');
-            var question = $('Please enter the day that the mother was born ' +
-                    '(for example: 14).');
+            var question = $('Please enter the day that the pregnant mother was born ' +
+                    '(For example 14).');
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
@@ -1080,7 +1084,7 @@ go.app = function() {
         self.add('state_language', function(name) {
             return new PaginatedChoiceState(name, {
                 question: $('Please select the language that the ' +
-                            'pregnant mother would like to get messages in:'),
+                            'mother would like to get messages in:'),
                 options_per_page: null,
                 choices: [
                     new Choice('zul_ZA', 'isiZulu'),

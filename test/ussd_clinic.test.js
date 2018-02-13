@@ -557,8 +557,8 @@ describe("app", function() {
                         state: "state_start",
                         reply: [
                             'Welcome to The Department of Health\'s ' +
-                            'MomConnect. Tell us if this is the no. that ' +
-                            'the mother would like to get SMSs on: 0820001001',
+                            'MomConnect programme. Is this no. 0820001001 the mobile no. ' +
+                            'of the pregnant woman to be registered?',
                             '1. Yes',
                             '2. No'
                         ].join('\n')
@@ -1151,7 +1151,7 @@ describe("app", function() {
                     .check.interaction({
                         state: "state_birth_month",
                         reply: [
-                            'Please enter the month that the mom was born.',
+                            'Please enter the month that the mother was born.',
                             '1. Jan',
                             '2. Feb',
                             '3. Mar',
