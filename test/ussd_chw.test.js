@@ -392,8 +392,8 @@ describe("app", function() {
                             state: 'state_start',
                             reply: [
                                 'Welcome to The Department of Health\'s ' +
-                                'MomConnect. Tell us if this is the no. that ' +
-                                'the mother would like to get SMSs on: 0820001001',
+                                'MomConnect. Is this no. 0820001001 the mobile no. of the ' +
+                                'pregnant woman to be registered?',
                                 '1. Yes',
                                 '2. No'
                             ].join('\n')
@@ -484,8 +484,8 @@ describe("app", function() {
                         state: 'state_start',
                         reply: [
                             'Welcome to The Department of Health\'s ' +
-                            'MomConnect. Tell us if this is the no. that ' +
-                            'the mother would like to get SMSs on: 0820001001',
+                            'MomConnect. Is this no. 0820001001 the mobile no. ' +
+                            'of the pregnant woman to be registered?',
                             '1. Yes',
                             '2. No'
                         ].join('\n')
@@ -577,7 +577,7 @@ describe("app", function() {
                             state: 'state_opt_in',
                             reply: [(
                                 'This number has previously opted out of MomConnect ' +
-                                'SMSs. Please confirm that the mom would like to ' +
+                                'messages. Please confirm that the mom would like to ' +
                                 'opt in to receive messages again?'),
                                 '1. Yes',
                                 '2. No'
@@ -659,7 +659,8 @@ describe("app", function() {
                         .check.interaction({
                             state: 'state_stay_out',
                             reply: [(
-                                'You have chosen not to receive MomConnect SMSs'),
+                                'You have chosen not to receive MomConnect messages ' +
+                                'and so cannot complete registration'),
                                 '1. Main Menu'
                             ].join('\n')
                         })
@@ -681,8 +682,8 @@ describe("app", function() {
                             state: 'state_start',
                             reply: [
                                 'Welcome to The Department of Health\'s ' +
-                                'MomConnect. Tell us if this is the no. that ' +
-                                'the mother would like to get SMSs on: 0820001004',
+                                'MomConnect. Is this no. 0820001004 the mobile no. ' +
+                                'of the pregnant woman to be registered?',
                                 '1. Yes',
                                 '2. No'
                             ].join('\n')
@@ -800,7 +801,7 @@ describe("app", function() {
                             state: 'state_opt_in',
                             reply: [(
                                 'This number has previously opted out of MomConnect ' +
-                                'SMSs. Please confirm that the mom would like to ' +
+                                'messages. Please confirm that the mom would like to ' +
                                 'opt in to receive messages again?'),
                                 '1. Yes',
                                 '2. No'
@@ -889,7 +890,8 @@ describe("app", function() {
                         .check.interaction({
                             state: 'state_stay_out',
                             reply: [(
-                                'You have chosen not to receive MomConnect SMSs'),
+                                'You have chosen not to receive MomConnect messages and so ' +
+                                'cannot complete registration'),
                                 '1. Main Menu'
                             ].join('\n')
                         })
@@ -912,8 +914,8 @@ describe("app", function() {
                             state: 'state_start',
                             reply: [
                                 'Welcome to The Department of Health\'s ' +
-                                'MomConnect. Tell us if this is the no. that ' +
-                                'the mother would like to get SMSs on: 0820001001',
+                                'MomConnect. Is this no. 0820001001 the mobile no. ' +
+                                'of the pregnant woman to be registered?',
                                 '1. Yes',
                                 '2. No'
                             ].join('\n')
@@ -1233,7 +1235,7 @@ describe("app", function() {
                     )
                     .check.interaction({
                         state: 'state_birth_month',
-                        reply: ['Please enter the month that the mom was born.',
+                        reply: ['Please enter the month that the mother was born.',
                             '1. Jan',
                             '2. Feb',
                             '3. Mar',
