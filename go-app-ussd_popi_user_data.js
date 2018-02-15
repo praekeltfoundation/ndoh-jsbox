@@ -301,8 +301,23 @@ go.app = function() {
             .then(function() {
                 return hub.create_change(change_info)
                 .then(function() {
-                    return self.states.create('state_updated');
+                    return self.states.create('state_updated_lang');
                 });
+            });
+        });
+
+        self.add('state_updated_lang', function(name) {
+            return new MenuState(name, {
+                question: $(
+                    'Thank you. Your info has been updated. ' +
+                    'You will now receive messages from ' +
+                    'MomConnect in {{language}}.'
+                ).context({
+                    language: self.return_language()
+                }),
+                choices: [
+                    new Choice('state_change_data', $('Update my other info')),
+                ]
             });
         });
 
@@ -387,7 +402,32 @@ go.app = function() {
 
             return hub.create_change(change_info)
             .then(function() {
-                return self.states.create('state_updated');
+                return self.states.create('state_updated_identification');
+            });
+        });
+
+        self.add('state_updated_identification', function(name) {
+            var identification_type, identification_number;
+            if(self.im.user.answers.state_change_identity == 'state_change_sa_id') {
+                identification_type = $('South African ID');
+                identification_number = self.im.user.answers.state_change_sa_id;
+            } else {
+                identification_type = $('Passport');
+                identification_number = self.im.user.answers.state_passport_no;
+            }
+
+            return new MenuState(name, {
+                question: $(
+                    'Thank you. Your info has been updated. ' +
+                    'Your registered identification is ' +
+                    '{{identification_type}} {{identification_number}}.'
+                ).context({
+                    identification_type: identification_type,
+                    identification_number: identification_number
+                }),
+                choices: [
+                    new Choice('state_change_data', $('Update my other info')),
+                ]
             });
         });
 
@@ -469,7 +509,7 @@ go.app = function() {
             self.im.user.set_answer("operator_msisdn", self.im.user.answers.new_msisdn);
             return hub.create_change(change_info)
             .then(function() {
-                return self.states.create('state_updated');
+                return self.states.create('state_updated_msisdn');
             });
         });
 
@@ -487,10 +527,18 @@ go.app = function() {
             });
         });
 
-        self.add('state_updated', function(name) {
-            return new EndState(name, {
-                text: $('Thank you. Your info has been updated.'),
-                next: 'state_start'
+        self.add('state_updated_msisdn', function(name) {
+            return new MenuState(name, {
+                question: $(
+                    'Thank you. Your info has been updated. ' +
+                    'You will now receive messages from MomConnect ' +
+                    'via on phone number {{msisdn}}'
+                ).context({
+                    msisdn: self.im.user.answers.new_msisdn,
+                }),
+                choices: [
+                    new Choice('state_change_data', $('Update my other info')),
+                ]
             });
         });
 
