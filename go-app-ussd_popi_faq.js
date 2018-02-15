@@ -131,7 +131,7 @@ go.app = function() {
 
         self.add('state_question_1', function(name) {
             return new PaginatedState(name, {
-                text: $('MC is a Health Department programme. It sends SMS ' +
+                text: $('MC is a Health Department programme. It sends ' +
                         'messages for you & your baby. To see, change ' +
                         'or delete your info dial *134*550*7#'),
                 characters_per_page: 160,
@@ -182,8 +182,8 @@ go.app = function() {
             return new PaginatedState(name, {
                 text: $('MomConnect is owned and run by ' +
                         'the Health Department. MTN, Cell C, Telkom, Vodacom, ' +
-                        'Praekelt, Jembi and HISP collect and process your ' +
-                        'data on their behalf.'),
+                        'Praekelt, Jembi, HISP and WhatsApp (owned by Facebook) ' +
+                        'collect and process your data on their behalf.'),
                 characters_per_page: 160,
                 exit: $('Menu'),
                 more: $('Next'),
