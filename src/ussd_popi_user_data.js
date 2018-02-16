@@ -294,12 +294,12 @@ go.app = function() {
                     new Choice('state_change_identity', $('Update my identification'))
                 ];
                 if(confirmed) {
-                    var alternate_channel = self.im.user.answers.channel == 'sms' ? $('WhatsApp') : $('SMS');
+                    var alternate_channel = self.im.user.answers.channel == 'sms' ? 'whatsapp' : 'sms';
                     choices.unshift(
                         new Choice(
                             'state_change_channel',
                             $('Receive messages over {{channel}}').context({
-                                channel: alternate_channel
+                                channel: self.map_channel(alternate_channel)
                             })
                         )
                     );
