@@ -240,7 +240,7 @@ go.app = function() {
                 self.im.user.answers.registrant.id,
                 self.im.user.answers.registrant_msisdn,
                 self.im.user.i18n($(
-                    "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. " +
+                    "Congratulations on your pregnancy. You will now get free messages about MomConnect. " +
                     "You can register for the full set of FREE helpful messages at a clinic."
                 ))
             );
@@ -294,8 +294,8 @@ go.app = function() {
                 return new ChoiceState(name, {
                     question: $(
                         "Welcome to The Department of Health's " +
-                        "MomConnect. Tell us if this is the no. that " +
-                        "the mother would like to get SMSs on: {{ num }}"
+                        "MomConnect. Is this no. {{ num }} the mobile no. " +
+                        "of the pregnant woman to be registered?"
                         ).context({num: readable_no}),
                     choices: [
                         new Choice("yes", $("Yes")),
@@ -367,7 +367,7 @@ go.app = function() {
         self.add("state_opt_in", function(name) {
             return new ChoiceState(name, {
                 question: $("This number has previously opted out of MomConnect " +
-                            "SMSs. Please confirm that the mom would like to " +
+                            "messages. Please confirm that the mom would like to " +
                             "opt in to receive messages again?"),
                 choices: [
                     new Choice("yes", $("Yes")),
@@ -396,7 +396,9 @@ go.app = function() {
 
         self.add("state_stay_out", function(name) {
             return new ChoiceState(name, {
-                question: $("You have chosen not to receive MomConnect SMSs"),
+                question: $(
+                    "You have chosen not to receive MomConnect messages " +
+                    "and so cannot complete registration"),
                 choices: [
                     new Choice("main_menu", $("Main Menu"))
                 ],
@@ -562,7 +564,7 @@ go.app = function() {
         self.add("state_birth_month", function(name) {
             var jan = utils.get_january(self.im.config.testing_today);
             return new ChoiceState(name, {
-                question: $('Please enter the month that the mom was born.'),
+                question: $('Please enter the month that the mother was born.'),
                 choices: utils.make_month_choices($, jan, 12, 1, "MM", "MMM"),
                 next: 'state_birth_day'
             });

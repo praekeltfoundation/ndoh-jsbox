@@ -227,7 +227,7 @@ describe('app', function() {
                         });
 
                         describe('user chooses to change to English', function() {
-                            it('should go to state_updated', function() {
+                            it('should go to state_updated_lang', function() {
                                 return tester
                                 .setup.user.addr('27820001002')
                                 .inputs(
@@ -237,9 +237,12 @@ describe('app', function() {
                                     , '6' // pick Setswana
                                 )
                                 .check.interaction({
-                                    state: 'state_updated',
+                                    state: 'state_updated_lang',
                                     reply: [
-                                        'Thank you. Your info has been updated.'].join('\n')
+                                        'Thank you. Your info has been updated. You will ' +
+                                        'now receive messages from MomConnect in Setswana.',
+                                        '1. Update my other info'
+                                    ].join('\n')
                                 })
                                 .check(function(api) {
                                     utils.check_fixtures_used(api, [36, 51, 54, 67, 121]);
@@ -296,7 +299,7 @@ describe('app', function() {
                             });
 
                             describe('user enters valid ID number', function() {
-                                it('should go to state_updated', function() {
+                                it('should go to state_updated_identification', function() {
                                     return tester
                                     .setup.user.addr('27820001002')
                                     .inputs(
@@ -307,9 +310,11 @@ describe('app', function() {
                                         , '8805100273098' // valid id number
                                     )
                                     .check.interaction({
-                                        state: 'state_updated',
+                                        state: 'state_updated_identification',
                                         reply: [
-                                            'Thank you. Your info has been updated.'
+                                            'Thank you. Your info has been updated. Your registered ' +
+                                            'identification is South African ID 8805100273098.',
+                                            '1. Update my other info'
                                         ].join('\n')
                                     })
                                     .check(function(api) {
@@ -342,7 +347,7 @@ describe('app', function() {
                                     .run();
                                 });
                                 describe('user then enters valid ID number', function() {
-                                    it('should go to state_updated', function() {
+                                    it('should go to state_updated_identiification', function() {
                                         return tester
                                         .setup.user.addr('27820001002')
                                         .inputs(
@@ -354,9 +359,11 @@ describe('app', function() {
                                             , '8805100273098' // valid id number
                                         )
                                         .check.interaction({
-                                            state: 'state_updated',
+                                            state: 'state_updated_identification',
                                             reply: [
-                                                'Thank you. Your info has been updated.'
+                                                'Thank you. Your info has been updated. Your registered ' +
+                                                'identification is South African ID 8805100273098.',
+                                                '1. Update my other info'
                                             ].join('\n')
                                         })
                                         .check(function(api) {
@@ -421,7 +428,7 @@ describe('app', function() {
                                 });
 
                                 describe('user enters their passport number', function() {
-                                    it('should go to state_updated', function() {
+                                    it('should go to state_updated_identification', function() {
                                         return tester
                                         .setup.user.addr('27820001002')
                                         .inputs(
@@ -433,10 +440,11 @@ describe('app', function() {
                                             , '12345'
                                         )
                                         .check.interaction({
-                                            state: 'state_updated',
+                                            state: 'state_updated_identification',
                                             reply: [
-                                                'Thank you. Your info has been ' +
-                                                'updated.'
+                                                'Thank you. Your info has been updated. Your registered ' +
+                                                'identification is Passport 12345.',
+                                                '1. Update my other info'
                                             ].join('\n')
                                         })
                                         .check(function(api) {
@@ -472,7 +480,7 @@ describe('app', function() {
                         });
 
                         describe('user enters valid, unregistered phone number', function() {
-                            it('should go to state_updated', function() {
+                            it('should go to state_updated_msisdn', function() {
                                 return tester
                                 .setup.user.addr('27820001002')
                                 .inputs(
@@ -482,9 +490,11 @@ describe('app', function() {
                                     , '0820001001' //  Number without any identities
                                 )
                                 .check.interaction({
-                                    state: 'state_updated',
+                                    state: 'state_updated_msisdn',
                                     reply: [
-                                        'Thank you. Your info has been updated.'
+                                        'Thank you. Your info has been updated. You will now receive ' +
+                                        'messages from MomConnect via on phone number +27820001001',
+                                        '1. Update my other info'
                                     ].join('\n')
                                 })
                                 .check(function(api) {
@@ -516,7 +526,7 @@ describe('app', function() {
                                 .run();
                             });
                             describe('user then enters valid, unregistered phone number', function() {
-                                it('should go to state_updated', function() {
+                                it('should go to state_updated_msisdn', function() {
                                     return tester
                                     .setup.user.addr('27820001002')
                                     .inputs(
@@ -527,9 +537,11 @@ describe('app', function() {
                                         , '0820001001' // valid number without any identities
                                     )
                                     .check.interaction({
-                                        state: 'state_updated',
+                                        state: 'state_updated_msisdn',
                                         reply: [
-                                            'Thank you. Your info has been updated.'
+                                            'Thank you. Your info has been updated. You will now receive ' +
+                                            'messages from MomConnect via on phone number +27820001001',
+                                            '1. Update my other info'
                                         ].join('\n')
                                     })
                                     .check(function(api) {
@@ -541,7 +553,7 @@ describe('app', function() {
                         });
 
                         describe('user enters valid, inactive phone number not theirs', function() {
-                            it('should go to state_updated', function() {
+                            it('should go to state_updated_msisdn', function() {
                                 return tester
                                 .setup.user.addr('27820001002')
                                 .inputs(
@@ -551,9 +563,11 @@ describe('app', function() {
                                     , '0820001004' // inactive number for different user
                                 )
                                 .check.interaction({
-                                    state: 'state_updated',
+                                    state: 'state_updated_msisdn',
                                     reply: [
-                                        'Thank you. Your info has been updated.'
+                                        'Thank you. Your info has been updated. You will now receive ' +
+                                        'messages from MomConnect via on phone number +27820001004',
+                                        '1. Update my other info'
                                     ].join('\n')
                                 })
                                 .check(function(api) {
@@ -564,7 +578,7 @@ describe('app', function() {
                         });
 
                         describe('user enters valid, active phone number theirs', function() {
-                            it('should go to state_updated', function() {
+                            it('should go to state_updated_msisdn', function() {
                                 return tester
                                 .setup.user.addr('27820001002')
                                 .inputs(
@@ -574,9 +588,11 @@ describe('app', function() {
                                     , '0820001014' // active number for same user
                                 )
                                 .check.interaction({
-                                    state: 'state_updated',
+                                    state: 'state_updated_msisdn',
                                     reply: [
-                                        'Thank you. Your info has been updated.'
+                                        'Thank you. Your info has been updated. You will now receive messages ' +
+                                        'from MomConnect via on phone number +27820001014',
+                                        '1. Update my other info'
                                     ].join('\n')
                                 })
                                 .check(function(api) {
@@ -610,7 +626,7 @@ describe('app', function() {
                         });
 
                         describe('user enters valid, inactive phone number theirs', function() {
-                            it('should go to state_updated', function() {
+                            it('should go to state_updated_msisdn', function() {
                                 return tester
                                 .setup.user.addr('27820001002')
                                 .inputs(
@@ -620,9 +636,11 @@ describe('app', function() {
                                     , '0820001015' // inactive number for same user
                                 )
                                 .check.interaction({
-                                    state: 'state_updated',
+                                    state: 'state_updated_msisdn',
                                     reply: [
-                                        'Thank you. Your info has been updated.'
+                                        'Thank you. Your info has been updated. You will now receive messages ' +
+                                        'from MomConnect via on phone number +27820001015',
+                                        '1. Update my other info'
                                     ].join('\n')
                                 })
                                 .check(function(api) {

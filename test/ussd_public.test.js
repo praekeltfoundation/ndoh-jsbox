@@ -126,7 +126,7 @@ describe("ussd_public app", function() {
                     )
                     .check.interaction({
                         state: "state_end_success",
-                        reply: 'Congratulations on your pregnancy. You will now get free SMSs ' +
+                        reply: 'Congratulations on your pregnancy. You will now get free messages ' +
                                'about MomConnect. You can register for the full set of FREE ' +
                                'helpful messages at a clinic.'
                     })
@@ -314,14 +314,13 @@ describe("ussd_public app", function() {
                     .check.interaction({
                         state: "state_language",
                         reply: [
-                            "Welcome to the Department of Health's MomConnect. Choose your language:",
+                            "Welcome to the Department of Health's MomConnect. Please select your language",
                             "1. isiZulu",
                             "2. isiXhosa",
                             "3. Afrikaans",
                             "4. English",
                             "5. Sesotho sa Leboa",
-                            "6. Setswana",
-                            "7. More"
+                            "6. More"
                         ].join('\n')
                     })
                     .check(function(api) {
@@ -377,14 +376,13 @@ describe("ussd_public app", function() {
                         .check.interaction({
                             state: "state_language",
                             reply: [
-                                "Welcome to the Department of Health\'s MomConnect. Choose your language:",
+                                "Welcome to the Department of Health\'s MomConnect. Please select your language",
                                 '1. isiZulu',
                                 '2. isiXhosa',
                                 '3. Afrikaans',
                                 '4. English',
                                 '5. Sesotho sa Leboa',
-                                '6. Setswana',
-                                '7. More',
+                                '6. More',
                             ].join('\n')
                         })
                         .check(function(api) {
@@ -467,7 +465,10 @@ describe("ussd_public app", function() {
                     )
                     .check.interaction({
                         state: "state_end_not_pregnant",
-                        reply: "You have chosen not to receive MomConnect SMSs"
+                        reply: (
+                            "We are sorry but this service is only for pregnant mothers. " +
+                            "If you have other health concerns please visit your nearest clinic."
+                        )
                     })
                     // check metrics
                     .check(function(api) {
@@ -518,7 +519,7 @@ describe("ussd_public app", function() {
                         )
                         .check.interaction({
                             state: "state_end_success",
-                            reply: 'Congratulations on your pregnancy. You will now get free SMSs ' +
+                            reply: 'Congratulations on your pregnancy. You will now get free messages ' +
                                    'about MomConnect. You can register for the full set of FREE ' +
                                    'helpful messages at a clinic.'
                         })
@@ -548,7 +549,7 @@ describe("ussd_public app", function() {
                             state: "state_opt_in",
                             reply: [
                                 'You have previously opted out of MomConnect ' +
-                                'SMSs. Please confirm that you would like to ' +
+                                'messages. Please confirm that you would like to ' +
                                 'opt in to receive messages again?',
                                 '1. Yes',
                                 '2. No'
@@ -575,7 +576,8 @@ describe("ussd_public app", function() {
                     .check.interaction({
                         state: "state_stay_out",
                         reply: [
-                            'You have chosen not to receive MomConnect SMSs',
+                            'You have chosen not to receive MomConnect messages ' +
+                            'and so cannot complete registration.',
                             '1. Main Menu'
                         ].join('\n')
                     })
@@ -892,7 +894,7 @@ describe("ussd_public app", function() {
                         identity: 'cb245673-aa41-4302-ac47-00000001001',
                         address: '+27820001001',
                         channel: 'default-channel',
-                        content: 'Congratulations on your pregnancy. You will now get free SMSs about MomConnect. You can register for the full set of FREE helpful messages at a clinic.',
+                        content: 'Congratulations on your pregnancy. You will now get free messages about MomConnect. You can register for the full set of FREE helpful messages at a clinic.',
                     }));
                 })
                 .setup.user.addr("27820001001")
@@ -986,7 +988,7 @@ describe("ussd_public app", function() {
                         identity: 'cb245673-aa41-4302-ac47-00000001001',
                         address: '+27820001001',
                         channel: 'pilot-channel',
-                        content: 'Congratulations on your pregnancy. You will now get free SMSs about MomConnect. You can register for the full set of FREE helpful messages at a clinic.'
+                        content: 'Congratulations on your pregnancy. You will now get free messages about MomConnect. You can register for the full set of FREE helpful messages at a clinic.'
                     }));
                 })
                 .setup.user.addr("27820001001")
@@ -1094,7 +1096,7 @@ describe("ussd_public app", function() {
                         identity: 'cb245673-aa41-4302-ac47-00000001001',
                         address: '+27820001001',
                         channel: 'default-channel',
-                        content: 'Congratulations on your pregnancy. You will now get free SMSs about MomConnect. You can register for the full set of FREE helpful messages at a clinic.'
+                        content: 'Congratulations on your pregnancy. You will now get free messages about MomConnect. You can register for the full set of FREE helpful messages at a clinic.'
                     }));
                 })
                 .setup.user.addr("27820001001")

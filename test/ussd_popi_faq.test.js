@@ -134,7 +134,7 @@ describe("app", function() {
                         .check.interaction({
                             state: "state_question_1",
                             reply: [
-                                "MC is a Health Department programme. It sends SMS " +
+                                "MC is a Health Department programme. It sends " +
                                 "messages for you & your baby. To see, change " +
                                 "or delete your info dial *134*550*7#",
                                 "1. Menu"
@@ -314,7 +314,7 @@ describe("app", function() {
                             reply: [
                                 "MomConnect is owned and run by the Health " +
                                 "Department. MTN, Cell C, Telkom, Vodacom, Praekelt, " +
-                                "Jembi and HISP collect and process your",
+                                "Jembi, HISP and WhatsApp (owned by",
                                 "1. Next",
                                 "2. Menu"
                             ].join('\n')
@@ -337,7 +337,7 @@ describe("app", function() {
                             .check.interaction({
                                 state: "state_question_4",
                                 reply: [
-                                    "data on their behalf.",
+                                    "Facebook) collect and process your data on their behalf.",
                                     "1. Back",
                                     "2. Menu"
                                 ].join('\n')

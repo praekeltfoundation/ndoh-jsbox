@@ -526,7 +526,7 @@ module.exports = function() {
                 "data": {
                     "to_identity": "cb245673-aa41-4302-ac47-00000001001",
                     "to_addr": "+27820001001",
-                    "content": "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. You can register for the full set of FREE helpful messages at a clinic.",
+                    "content": "Congratulations on your pregnancy. You will now get free messages about MomConnect. You can register for the full set of FREE helpful messages at a clinic.",
                     "metadata": {}
                 }
             },
@@ -545,7 +545,7 @@ module.exports = function() {
                 "data": {
                     "to_identity": "cb245673-aa41-4302-ac47-00000001004",
                     "to_addr": "+27820001004",
-                    "content": "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. You can register for the full set of FREE helpful messages at a clinic.",
+                    "content": "Congratulations on your pregnancy. You will now get free messages about MomConnect. You can register for the full set of FREE helpful messages at a clinic.",
                     "metadata": {}
                 }
             },
@@ -602,7 +602,7 @@ module.exports = function() {
                 "data": {
                     "to_identity": "cb245673-aa41-4302-ac47-00000001002",
                     "to_addr": "+27820001002",
-                    "content": "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. You can register for the full set of FREE helpful messages at a clinic.",
+                    "content": "Congratulations on your pregnancy. You will now get free messages about MomConnect. You can register for the full set of FREE helpful messages at a clinic.",
                     "metadata":{}
                 }
             },
