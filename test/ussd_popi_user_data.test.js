@@ -2,12 +2,15 @@ var vumigo = require('vumigo_v02');
 var AppTester = vumigo.AppTester;
 var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_IdentityStoreDynamic = require('./fixtures_identity_store_dynamic');
+var fixtures_Pilot = require('./fixtures_pilot');
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
 var fixtures_StageBasedMessagingDynamic = require('./fixtures_stage_based_messaging_dynamic');
 var fixtures_ServiceRating = require('./fixtures_service_rating');
 var fixtures_Hub = require('./fixtures_hub');
+var fixtures_HubDynamic = require('./fixtures_hub_dynamic');
 
 var utils = require('seed-jsbox-utils').utils;
+var _ = require('lodash');
 
 describe('app', function() {
     describe('for ussd_popi_user_data use', function() {
@@ -43,6 +46,11 @@ describe('app', function() {
                             token: 'test Hub'
                         }
                     },
+                    pilot: {
+                        api_url: 'http://pilot.example.org/check/',
+                        api_token: 'api-token',
+                        api_number: '+27123456789',
+                    }
                 })
                 .setup(function(api) {
                     api.metrics.stores = {'test_metric_store': {}};
@@ -53,6 +61,20 @@ describe('app', function() {
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
                     fixtures_ServiceRating().forEach(api.http.fixtures.add); // 100 - 119
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 120 ->                   
+                    _.map(['+27820001001', '+27820001002', '+27820001013'], function(address) {
+                        api.http.fixtures.add(
+                            fixtures_Pilot().not_exists({
+                                number: '+27123456789',
+                                address: address,
+                                wait: false
+                            }));
+                        api.http.fixtures.add(
+                            fixtures_Pilot().not_exists({
+                                number: '+27123456789',
+                                address: address,
+                                wait: true
+                            }));
+                    });
                 });
         });
 
@@ -115,7 +137,7 @@ describe('app', function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [51, 54, 67, 121]);
+                        utils.check_fixtures_used(api, [51, 54, 67, 121, 192]);
                     })
                     .run();
                 });
@@ -146,6 +168,12 @@ describe('app', function() {
                                     identity: 'identity-uuid-1002',
                                     messagesets: [0],
                                 }));
+                            api.http.fixtures.add(
+                                fixtures_Pilot().exists({
+                                    number: '+27123456789',
+                                    address: '+27820001002',
+                                    wait: false
+                                }));
                         })
                         .setup.user.addr('27820001002')
                         .inputs(
@@ -166,7 +194,7 @@ describe('app', function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [0, 1, 2, 3]);
+                            utils.check_fixtures_used(api, [0, 1, 2, 3, 4]);
                         })
                         .run();
                     });
@@ -197,6 +225,12 @@ describe('app', function() {
                                         identity: 'identity-uuid-1002',
                                         messagesets: [0],
                                     }));
+                                api.http.fixtures.add(
+                                    fixtures_Pilot().exists({
+                                        number: '+27123456789',
+                                        address: '+27820001002',
+                                        wait: false
+                                    }));
                             })
                             .setup.user.addr('27820001002')
                             .inputs(
@@ -216,7 +250,7 @@ describe('app', function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [0, 1, 2, 3]);
+                                utils.check_fixtures_used(api, [0, 1, 2, 3, 4]);
                             })
                             .run();
                         });
@@ -224,6 +258,126 @@ describe('app', function() {
                 });
 
                 describe('user selects to change their info', function() {
+                    describe('user has a whatsapp account', function() {
+                        it('should give them the option to change channel', function () {
+                            return tester
+                            .setup.user.addr('27820001002')
+                            .setup(function(api) {
+                                // Wipe the global http fixtures
+                                api.http.fixtures = new vumigo.http.dummy.HttpFixtures({default_encoding: 'json'});
+                                // Add just the test fixtures
+                                api.http.fixtures.add(
+                                    fixtures_IdentityStoreDynamic().identity_search({
+                                        msisdn: '+27820001002',
+                                        identity: 'identity-uuid-1002'
+                                    }));
+                                api.http.fixtures.add(
+                                    fixtures_StageBasedMessagingDynamic().messagesets({
+                                        short_names: ['momconnect_prebirth.hw_full.1']
+                                    }));
+                                api.http.fixtures.add(
+                                    fixtures_StageBasedMessagingDynamic().messageset({
+                                        id: 0,
+                                        short_name: 'momconnect_prebirth.hw_full.1'
+                                    }));
+                                api.http.fixtures.add(
+                                    fixtures_StageBasedMessagingDynamic().active_subscriptions({
+                                        identity: 'identity-uuid-1002',
+                                        messagesets: [0],
+                                    }));
+                                api.http.fixtures.add(
+                                    fixtures_Pilot().exists({
+                                        number: '+27123456789',
+                                        address: '+27820001002',
+                                        wait: false
+                                    }));
+                                api.http.fixtures.add(
+                                    fixtures_Pilot().exists({
+                                        number: '+27123456789',
+                                        address: '+27820001002',
+                                        wait: true
+                                    }));
+                            })
+                            .inputs(
+                                {session_event: 'new'}
+                                , '2' // pick change info
+                            )
+                            .check.interaction({
+                                state: 'state_change_data',
+                                reply: [
+                                    'What would you like to change? To change your due date, visit a clinic',
+                                    '1. Receive messages over WhatsApp',
+                                    '2. Use a different phone number',
+                                    '3. More'
+                                ].join('\n')
+                            })
+                            .run();
+                        });
+
+                        it('should change their channel', function () {
+                            return tester
+                            .setup.user.addr('27820001002')
+                            .setup(function(api) {
+                                // Wipe the global http fixtures
+                                api.http.fixtures = new vumigo.http.dummy.HttpFixtures({default_encoding: 'json'});
+                                // Add just the test fixtures
+                                api.http.fixtures.add(
+                                    fixtures_IdentityStoreDynamic().identity_search({
+                                        msisdn: '+27820001002',
+                                        identity: 'identity-uuid-1002'
+                                    }));
+                                api.http.fixtures.add(
+                                    fixtures_StageBasedMessagingDynamic().messagesets({
+                                        short_names: ['momconnect_prebirth.hw_full.1']
+                                    }));
+                                api.http.fixtures.add(
+                                    fixtures_StageBasedMessagingDynamic().messageset({
+                                        id: 0,
+                                        short_name: 'momconnect_prebirth.hw_full.1'
+                                    }));
+                                api.http.fixtures.add(
+                                    fixtures_StageBasedMessagingDynamic().active_subscriptions({
+                                        identity: 'identity-uuid-1002',
+                                        messagesets: [0],
+                                    }));
+                                api.http.fixtures.add(
+                                    fixtures_Pilot().exists({
+                                        number: '+27123456789',
+                                        address: '+27820001002',
+                                        wait: false
+                                    }));
+                                api.http.fixtures.add(
+                                    fixtures_Pilot().exists({
+                                        number: '+27123456789',
+                                        address: '+27820001002',
+                                        wait: true
+                                    }));
+                                api.http.fixtures.add(
+                                    fixtures_HubDynamic().change({
+                                        identity: 'identity-uuid-1002',
+                                        action: 'switch_channel',
+                                        data: {
+                                            channel: 'whatsapp'
+                                        }
+                                    }));
+                            })
+                            .inputs(
+                                {session_event: 'new'}
+                                , '2' // pick change info
+                                , '1' // switch to whatsapp
+                            )
+                            .check.interaction({
+                                state: 'state_updated_channel',
+                                reply: [
+                                    'Thank you. Your info has been updated. You will now ' +
+                                    'receive messages from MomConnect via WhatsApp.',
+                                    '1. Update my other info'
+                                ].join('\n')
+                            })
+                            .run();
+                        });
+                    });
+
                     it('should go to state_change_data', function() {
                         return tester
                         .setup.user.addr('27820001002')
@@ -235,13 +389,13 @@ describe('app', function() {
                             state: 'state_change_data',
                             reply: [
                                 'What would you like to change? To change your due date, visit a clinic',
-                                '1. Update my language choice',
-                                '2. Update my identification',
-                                '3. Use a different phone number'
+                                '1. Use a different phone number',
+                                '2. Update my language choice',
+                                '3. Update my identification'
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 67, 121]);
+                            utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
                         })
                         .run();
                     });
@@ -253,7 +407,7 @@ describe('app', function() {
                             .inputs(
                                 {session_event: 'new'}
                                 , '2' // pick option 2
-                                , '1' // pick update language
+                                , '2' // pick update language
                             )
                             .check.interaction({
                                 state: 'state_select_language',
@@ -272,7 +426,7 @@ describe('app', function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [51, 54, 67, 121]);
+                                utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
                             })
                             .run();
                         });
@@ -284,7 +438,7 @@ describe('app', function() {
                                 .inputs(
                                     {session_event: 'new'}
                                     , '2' // pick option 2
-                                    , '1' // pick language
+                                    , '2' // pick language
                                     , '6' // pick Setswana
                                 )
                                 .check.interaction({
@@ -296,7 +450,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [36, 51, 54, 67, 121]);
+                                    utils.check_fixtures_used(api, [36, 51, 54, 67, 121, 192, 193]);
                                 })
                                 .run();
                             });
@@ -310,7 +464,7 @@ describe('app', function() {
                             .inputs(
                                 {session_event: 'new'}
                                 , '2' // pick option 2
-                                , '2' // pick identity change
+                                , '3' // pick identity change
                             )
                             .check.interaction({
                                 state: 'state_change_identity',
@@ -321,7 +475,7 @@ describe('app', function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [51, 54, 67, 121]);
+                                utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
                             })
                             .run();
                         });
@@ -333,7 +487,7 @@ describe('app', function() {
                                 .inputs(
                                     {session_event: 'new'}
                                     , '2' // pick option 2
-                                    , '2' // pick identity change
+                                    , '3' // pick identity change
                                     , '1' // pick sa id
                                 )
                                 .check.interaction({
@@ -344,7 +498,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [51, 54, 67, 121]);
+                                    utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
                                 })
                                 .run();
                             });
@@ -356,7 +510,7 @@ describe('app', function() {
                                     .inputs(
                                         {session_event: 'new'}
                                         , '2' // pick option 2
-                                        , '2' // pick identity change
+                                        , '3' // pick identity change
                                         , '1' // pick sa id
                                         , '8805100273098' // valid id number
                                     )
@@ -369,7 +523,7 @@ describe('app', function() {
                                         ].join('\n')
                                     })
                                     .check(function(api) {
-                                        utils.check_fixtures_used(api, [43, 51, 54, 67, 121]);
+                                        utils.check_fixtures_used(api, [43, 51, 54, 67, 121, 192, 193]);
                                     })
                                     .run();
                                 });
@@ -382,7 +536,7 @@ describe('app', function() {
                                     .inputs(
                                         {session_event: 'new'}
                                         , '2' // pick option 2
-                                        , '2' // pick identity change
+                                        , '3' // pick identity change
                                         , '1' // pick sa id
                                         , '88051002730981' // invalid id number
                                     )
@@ -393,7 +547,7 @@ describe('app', function() {
                                         ].join('\n')
                                     })
                                     .check(function(api) {
-                                        utils.check_fixtures_used(api, [51, 54, 67, 121]);
+                                        utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
                                     })
                                     .run();
                                 });
@@ -404,7 +558,7 @@ describe('app', function() {
                                         .inputs(
                                             {session_event: 'new'}
                                             , '2' // pick option 2
-                                            , '2' // pick identity change
+                                            , '3' // pick identity change
                                             , '1' // pick sa id
                                             , '88051002730981' // invalid id number
                                             , '8805100273098' // valid id number
@@ -418,7 +572,7 @@ describe('app', function() {
                                             ].join('\n')
                                         })
                                         .check(function(api) {
-                                            utils.check_fixtures_used(api, [43, 51, 54, 67, 121]);
+                                            utils.check_fixtures_used(api, [43, 51, 54, 67, 121, 192, 193]);
                                         })
                                         .run();
                                     });
@@ -433,7 +587,7 @@ describe('app', function() {
                                 .inputs(
                                     {session_event: 'new'}
                                     , '2' // pick option 2
-                                    , '2' // pick identity change
+                                    , '3' // pick identity change
                                     , '2' // pick passport
                                 )
                                 .check.interaction({
@@ -450,7 +604,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [51, 54, 67, 121]);
+                                    utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
                                 })
                                 .run();
                             });
@@ -462,7 +616,7 @@ describe('app', function() {
                                     .inputs(
                                         {session_event: 'new'}
                                         , '2' // pick option 2
-                                        , '2' // pick identity change
+                                        , '3' // pick identity change
                                         , '2' // pick passport
                                         , '4' // pick Nigeria
                                     )
@@ -473,7 +627,7 @@ describe('app', function() {
                                         ].join('\n')
                                     })
                                     .check(function(api) {
-                                        utils.check_fixtures_used(api, [51, 54, 67, 121]);
+                                        utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
                                     })
                                     .run();
                                 });
@@ -485,7 +639,7 @@ describe('app', function() {
                                         .inputs(
                                             {session_event: 'new'}
                                             , '2' // pick option 2
-                                            , '2' // pick identity change
+                                            , '3' // pick identity change
                                             , '2' // pick passport
                                             , '4' // pick Nigeria
                                             , '12345'
@@ -499,7 +653,7 @@ describe('app', function() {
                                             ].join('\n')
                                         })
                                         .check(function(api) {
-                                            utils.check_fixtures_used(api, [42, 51, 54, 67, 121]);
+                                            utils.check_fixtures_used(api, [42, 51, 54, 67, 121, 192, 193]);
                                         })
                                         .run();
                                     });
@@ -515,7 +669,7 @@ describe('app', function() {
                             .inputs(
                                 {session_event: 'new'}
                                 , '2' // pick option 2
-                                , '3' // pick msisdn
+                                , '1' // pick msisdn
                             )
                             .check.interaction({
                                 state: 'state_new_msisdn',
@@ -525,7 +679,7 @@ describe('app', function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [51, 54, 67, 121]);
+                                utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
                             })
                             .run();
                         });
@@ -537,7 +691,7 @@ describe('app', function() {
                                 .inputs(
                                     {session_event: 'new'}
                                     , '2' // pick option 2
-                                    , '3' // pick msisdn
+                                    , '1' // pick msisdn
                                     , '0820001001' //  Number without any identities
                                 )
                                 .check.interaction({
@@ -549,7 +703,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [37, 51, 54, 67, 120, 121]);
+                                    utils.check_fixtures_used(api, [37, 51, 54, 67, 120, 121, 192, 193]);
                                 })
                                 .run();
                             });
@@ -562,7 +716,7 @@ describe('app', function() {
                                 .inputs(
                                     {session_event: 'new'}
                                     , '2' // pick option 2
-                                    , '3' // pick msisdn
+                                    , '1' // pick msisdn
                                     , '081354765p' // invalid phone number
                                 )
                                 .check.interaction({
@@ -572,7 +726,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [51, 54, 67, 121]);
+                                    utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
                                 })
                                 .run();
                             });
@@ -583,7 +737,7 @@ describe('app', function() {
                                     .inputs(
                                         {session_event: 'new'}
                                         , '2' // pick option 2
-                                        , '3' // pick msisdn
+                                        , '1' // pick msisdn
                                         , '081354765p' // invalid phone number
                                         , '0820001001' // valid number without any identities
                                     )
@@ -596,7 +750,7 @@ describe('app', function() {
                                         ].join('\n')
                                     })
                                     .check(function(api) {
-                                        utils.check_fixtures_used(api, [37, 51, 54, 67, 120, 121]);
+                                        utils.check_fixtures_used(api, [37, 51, 54, 67, 120, 121, 192, 193]);
                                     })
                                     .run();
                                 });
@@ -610,7 +764,7 @@ describe('app', function() {
                                 .inputs(
                                     {session_event: 'new'}
                                     , '2' // pick option 2
-                                    , '3' // pick msisdn
+                                    , '1' // pick msisdn
                                     , '0820001004' // inactive number for different user
                                 )
                                 .check.interaction({
@@ -622,7 +776,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [38, 51, 54, 67, 121, 124]);
+                                    utils.check_fixtures_used(api, [38, 51, 54, 67, 121, 124, 192, 193]);
                                 })
                                 .run();
                             });
@@ -635,7 +789,7 @@ describe('app', function() {
                                 .inputs(
                                     {session_event: 'new'}
                                     , '2' // pick option 2
-                                    , '3' // pick msisdn
+                                    , '1' // pick msisdn
                                     , '0820001014' // active number for same user
                                 )
                                 .check.interaction({
@@ -647,7 +801,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [39, 51, 54, 67, 121, 183]);
+                                    utils.check_fixtures_used(api, [39, 51, 54, 67, 121, 183, 192, 193]);
                                 })
                                 .run();
                             });
@@ -660,7 +814,7 @@ describe('app', function() {
                                 .inputs(
                                     {session_event: 'new'}
                                     , '2' // pick option 2
-                                    , '3' // pick msisdn
+                                    , '1' // pick msisdn
                                     , '0820001003' // active number for different user
                                 )
                                 .check.interaction({
@@ -670,7 +824,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [51, 54, 67, 121, 122]);
+                                    utils.check_fixtures_used(api, [51, 54, 67, 121, 122, 192, 193]);
                                 })
                                 .run();
                             });
@@ -683,7 +837,7 @@ describe('app', function() {
                                 .inputs(
                                     {session_event: 'new'}
                                     , '2' // pick option 2
-                                    , '3' // pick msisdn
+                                    , '1' // pick msisdn
                                     , '0820001015' // inactive number for same user
                                 )
                                 .check.interaction({
@@ -695,7 +849,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [40, 51, 54, 67, 121, 184, 185]);
+                                    utils.check_fixtures_used(api, [40, 51, 54, 67, 121, 184, 185, 192, 193]);
                                 })
                                 .run();
                             });
@@ -722,7 +876,7 @@ describe('app', function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 67, 121]);
+                            utils.check_fixtures_used(api, [51, 54, 67, 121, 192]);
                         })
                         .run();
                     });
@@ -747,7 +901,7 @@ describe('app', function() {
                             .check.user.answer("operator", null)
                             .check.user.answer("msisdn", null)
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [41, 51, 54, 67, 121, 186]);
+                                utils.check_fixtures_used(api, [41, 51, 54, 67, 121, 186, 192]);
                             })
                             .run();
                         });
@@ -770,7 +924,7 @@ describe('app', function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [51, 54, 67, 121]);
+                                utils.check_fixtures_used(api, [51, 54, 67, 121, 192]);
                             })
                             .run();
                         });
@@ -795,7 +949,7 @@ describe('app', function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 67, 121]);
+                            utils.check_fixtures_used(api, [51, 54, 67, 121, 192]);
                         })
                         .run();
                     });
@@ -824,7 +978,7 @@ describe('app', function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [54, 66, 67, 68, 182]);
+                        utils.check_fixtures_used(api, [54, 66, 67, 68, 182, 194]);
                     })
                     .run();
                 });
@@ -848,7 +1002,7 @@ describe('app', function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [54, 66, 67, 68, 182]);
+                            utils.check_fixtures_used(api, [54, 66, 67, 68, 182, 194]);
                         })
                         .run();
                     });
@@ -873,7 +1027,7 @@ describe('app', function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [54, 66, 67, 68, 182]);
+                                utils.check_fixtures_used(api, [54, 66, 67, 68, 182, 194]);
                             })
                             .run();
                         });

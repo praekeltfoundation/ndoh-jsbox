@@ -6,6 +6,7 @@ go.app = function() {
     var SeedJsboxUtils = require('seed-jsbox-utils');
     var MetricsHelper = require('go-jsbox-metrics-helper');
     var Q = require('q');
+    var _ = require('lodash');
     var App = vumigo.App;
     var EndState = vumigo.states.EndState;
     var ChoiceState = vumigo.states.ChoiceState;
@@ -86,7 +87,7 @@ go.app = function() {
                     msisdn: self.im.user.answers.msisdn,
                     id: self.im.user.answers.operator.details.sa_id_no,
                     dob: self.im.user.answers.operator.details.mom_dob,
-                    channel: self.im.user.answers.channel,
+                    channel: self.map_channel(self.im.user.answers.channel),
                     lang: self.return_language()
                 });
             }else{
@@ -102,7 +103,7 @@ go.app = function() {
                     passport_or: self.im.user.answers.operator.details.passport_origin,
                     passport_num: self.im.user.answers.operator.details.passport_no,
                     dob: self.im.user.answers.operator.details.mom_dob,
-                    channel: self.im.user.answers.channel,
+                    channel: self.map_channel(self.im.user.answers.channel),
                     lang: self.return_language()
                 });
             }
@@ -115,6 +116,15 @@ go.app = function() {
                 return message;
             }
             return data;
+        };
+
+        self.map_channel = function(channel) {
+            switch(channel) {
+                case 'sms':
+                    return $('SMS');
+                case 'whatsapp': 
+                    return $('WhatsApp');
+            }
         };
 
         self.return_language =function(){
@@ -142,6 +152,35 @@ go.app = function() {
                 case 'nbl_ZA':
                     return 'isiNdebele';
                 }
+        };
+
+        self.is_valid_recipient_for_pilot = function (default_params) {
+            var pilot_config = self.im.config.pilot || {};
+            var api_url = pilot_config.api_url;
+            var api_token = pilot_config.api_token;
+            var api_number = pilot_config.api_number;
+
+            var params = _.merge({
+                number: api_number,
+            }, default_params);
+
+            // Otherwise check the API
+            return new JsonApi(self.im, {
+                headers: {
+                    'Authorization': ['Token ' + api_token]
+                }})
+                .get(api_url, {
+                    params: params,
+                })
+                .then(function(response) {
+                    var existing = _.filter(response.data, function(obj) { return obj.exists === true; });
+                    var allowed = !_.isEmpty(existing);
+                    return self.im
+                        .log('valid pilot recipient returning ' + allowed + ' for ' + JSON.stringify(params))
+                        .then(function () {
+                            return allowed;
+                        });
+                });
         };
 
         // override normal state adding
@@ -193,16 +232,22 @@ go.app = function() {
                         })
                         .then(function(allmset){
                             var sets = '';
-                            var channel = $('SMS');
+                            var channel = 'sms';
                             for(var j = 0; j < allmset.length; j++){
                                 var message_set = allmset[j].short_name;
                                 sets += " " + message_set;
                                 if(message_set.match(/whatsapp/)){
-                                    channel = $('WhatsApp');
+                                    channel = 'whatsapp';
                                 }
                             }
                             self.im.user.set_answer("message_sets", sets.substring(1,sets.length));
                             self.im.user.set_answer("channel", channel);
+                        })
+                        .then(function() {
+                            return self.is_valid_recipient_for_pilot({
+                                address: msisdn,
+                                wait: false,
+                            });
                         })
                         .then(function() {
                             return self.states.create('state_all_options_view');   
@@ -242,16 +287,34 @@ go.app = function() {
         });
 
         self.add('state_change_data', function(name) {
-            return new ChoiceState(name, {
-                question: $('What would you like to change? To change your due date, visit a clinic'),
-                choices: [
+            return self.is_valid_recipient_for_pilot({
+                address: self.im.user.answers.msisdn,
+                wait: true,
+            }).then(function(confirmed) {
+                var choices = [
+                    new Choice('state_new_msisdn', $('Use a different phone number')),
                     new Choice('state_select_language', $('Update my language choice')),
-                    new Choice('state_change_identity', $('Update my identification')),
-                    new Choice('state_new_msisdn', $('Use a different phone number'))
-                ],
-                next: function(choice) {
-                    return choice.value;
+                    new Choice('state_change_identity', $('Update my identification'))
+                ];
+                if(confirmed) {
+                    var alternate_channel = self.im.user.answers.channel == 'sms' ? $('WhatsApp') : $('SMS');
+                    choices.unshift(
+                        new Choice(
+                            'state_change_channel',
+                            $('Receive messages over {{channel}}').context({
+                                channel: alternate_channel
+                            })
+                        )
+                    );
                 }
+                return new PaginatedChoiceState(name, {
+                    question: $('What would you like to change? To change your due date, visit a clinic'),
+                    choices: choices,
+                    options_per_page: null,
+                    next: function(choice) {
+                        return choice.value;
+                    }
+                });
             });
         });
 
@@ -271,6 +334,37 @@ go.app = function() {
                         return 'state_info_not_deleted';
                     }
                 }
+            });
+        });
+
+        self.add('state_change_channel', function(name) {
+            var current_channel = self.im.user.answers.channel;
+            var new_channel = current_channel == 'sms' ? 'whatsapp' : 'sms';
+            var change_info = {
+                registrant_id: self.im.user.answers.operator.id,
+                action: 'switch_channel',
+                data: {
+                    channel: new_channel
+                }
+            };
+            return hub.create_change(change_info)
+                .then(function () {
+                    self.im.user.set_answer('channel', new_channel);
+                    return self.states.create('state_updated_channel');
+                });
+        });
+
+        self.add('state_updated_channel', function(name) {
+            return new MenuState(name, {
+                question: $(
+                    'Thank you. Your info has been updated. You will now receive ' +
+                    'messages from MomConnect via {{channel}}.'
+                ).context({
+                    channel: self.map_channel(self.im.user.answers.channel)
+                }),
+                choices: [
+                    new Choice('state_change_data', $('Update my other info'))
+                ]
             });
         });
 
