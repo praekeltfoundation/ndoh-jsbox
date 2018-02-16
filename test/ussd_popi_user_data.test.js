@@ -1,7 +1,9 @@
 var vumigo = require('vumigo_v02');
 var AppTester = vumigo.AppTester;
 var fixtures_IdentityStore = require('./fixtures_identity_store');
+var fixtures_IdentityStoreDynamic = require('./fixtures_identity_store_dynamic');
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
+var fixtures_StageBasedMessagingDynamic = require('./fixtures_stage_based_messaging_dynamic');
 var fixtures_ServiceRating = require('./fixtures_service_rating');
 var fixtures_Hub = require('./fixtures_hub');
 
@@ -121,6 +123,30 @@ describe('app', function() {
                 describe('user selects to view details', function() {
                     it('should go to state_view', function() {
                         return tester
+                        .setup(function(api) {
+                            // Wipe the global http fixtures
+                            api.http.fixtures = new vumigo.http.dummy.HttpFixtures({default_encoding: 'json'});
+                            // Add just the test fixtures
+                            api.http.fixtures.add(
+                                fixtures_IdentityStoreDynamic().identity_search({
+                                    msisdn: '+27820001002',
+                                    identity: 'identity-uuid-1002'
+                                }));
+                            api.http.fixtures.add(
+                                fixtures_StageBasedMessagingDynamic().messagesets({
+                                    short_names: ['whatsapp_prebirth.hw_full.1']
+                                }));
+                            api.http.fixtures.add(
+                                fixtures_StageBasedMessagingDynamic().messageset({
+                                    id: 0,
+                                    short_name: 'whatsapp_prebirth.hw_full.1'
+                                }));
+                            api.http.fixtures.add(
+                                fixtures_StageBasedMessagingDynamic().active_subscriptions({
+                                    identity: 'identity-uuid-1002',
+                                    messagesets: [0],
+                                }));
+                        })
                         .setup.user.addr('27820001002')
                         .inputs(
                             {session_event: 'new'}
@@ -134,13 +160,13 @@ describe('app', function() {
                                 'Phone Number: +27820001002',
                                 'ID Number: 5101025009086',
                                 'Date of Birth: 1951-01-02',
-                                'Language:',
+                                'Channel:',
                                 '1. More',
                                 '2. Exit',
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 67, 121]);
+                            utils.check_fixtures_used(api, [0, 1, 2, 3]);
                         })
                         .run();
                     });
@@ -148,6 +174,30 @@ describe('app', function() {
                     describe('user selects to view more details', function() {
                         it('should go to state_view', function() {
                             return tester
+                            .setup(function(api) {
+                                // Wipe the global http fixtures
+                                api.http.fixtures = new vumigo.http.dummy.HttpFixtures({default_encoding: 'json'});
+                                // Add just the test fixtures
+                                api.http.fixtures.add(
+                                    fixtures_IdentityStoreDynamic().identity_search({
+                                        msisdn: '+27820001002',
+                                        identity: 'identity-uuid-1002'
+                                    }));
+                                api.http.fixtures.add(
+                                    fixtures_StageBasedMessagingDynamic().messagesets({
+                                        short_names: ['whatsapp_prebirth.hw_full.1']
+                                    }));
+                                api.http.fixtures.add(
+                                    fixtures_StageBasedMessagingDynamic().messageset({
+                                        id: 0,
+                                        short_name: 'whatsapp_prebirth.hw_full.1'
+                                    }));
+                                api.http.fixtures.add(
+                                    fixtures_StageBasedMessagingDynamic().active_subscriptions({
+                                        identity: 'identity-uuid-1002',
+                                        messagesets: [0],
+                                    }));
+                            })
                             .setup.user.addr('27820001002')
                             .inputs(
                                 {session_event: 'new'}
@@ -158,14 +208,15 @@ describe('app', function() {
                             .check.interaction({
                                 state: 'state_view',
                                 reply: [
-                                    'English',
-                                    'Message set: momconnect_prebirth.hw_full.1',
+                                    'WhatsApp',
+                                    'Language: English',
+                                    'Message set: whatsapp_prebirth.hw_full.1',
                                     '1. Back',
                                     '2. Exit',
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [51, 54, 67, 121]);
+                                utils.check_fixtures_used(api, [0, 1, 2, 3]);
                             })
                             .run();
                         });
@@ -766,6 +817,7 @@ describe('app', function() {
                             'Phone Number: +27820001013',
                             'ID Number: 5101025009086',
                             'Date of Birth: 1951-01-02',
+                            'Channel: SMS',
                             'Language:',
                             '1. More',
                             '2. Exit'

@@ -77,11 +77,13 @@ go.app = function() {
                 "Phone Number: {{msisdn}}\n" +
                 "ID Number: {{id}}\n" +
                 "Date of Birth: {{dob}}\n" +
+                "Channel: {{channel}}\n" +
                 "Language: {{lang}}")
                 .context({
                     msisdn: self.im.user.answers.msisdn,
                     id: self.im.user.answers.operator.details.sa_id_no,
                     dob: self.im.user.answers.operator.details.mom_dob,
+                    channel: self.im.user.answers.channel,
                     lang: self.return_language()
                 });
             }else{
@@ -90,12 +92,14 @@ go.app = function() {
                 "Origin of Passport: {{passport_or}}\n" +
                 "Passport: {{passport_num}}\n" +
                 "Date of Birth: {{dob}}\n" +
+                "Channel: {{channel}}\n" +
                 "Language: {{lang}}"
                 ).context({
                     msisdn: self.im.user.answers.msisdn,
                     passport_or: self.im.user.answers.operator.details.passport_origin,
                     passport_num: self.im.user.answers.operator.details.passport_no,
                     dob: self.im.user.answers.operator.details.mom_dob,
+                    channel: self.im.user.answers.channel,
                     lang: self.return_language()
                 });
             }
@@ -176,24 +180,30 @@ go.app = function() {
                                         [/^momconnect/, /^whatsapp/])
                 .then(function(identity_subscribed_to_momconnect) {
                     if (identity_subscribed_to_momconnect) {
-                        var promises = [];
                         return sbm
                         .list_active_subscriptions(self.im.user.answers.operator.id)
                         .then(function(active_subscriptions){
-                            promises = active_subscriptions.results.map(function(result){
+                            var promises = active_subscriptions.results.map(function(result){
                                 return sbm.get_messageset(result.messageset); 
                             });
+                            return Q.all(promises);
+                        })
+                        .then(function(allmset){
                             var sets = '';
-                            return Q.all(promises)
-                            .then(function(allmset){
-                                for(var j = 0; j < allmset.length; j++){
-                                    var message_set = allmset[j].short_name;
-                                    sets += " " + message_set;
+                            var channel = $('SMS');
+                            for(var j = 0; j < allmset.length; j++){
+                                var message_set = allmset[j].short_name;
+                                sets += " " + message_set;
+                                if(message_set.match(/whatsapp/)){
+                                    channel = $('WhatsApp');
                                 }
-                                self.im.user.set_answer("message_sets", sets.substring(1,sets.length));
-                                return self.states.create('state_all_options_view');   
-                                });
-                            });
+                            }
+                            self.im.user.set_answer("message_sets", sets.substring(1,sets.length));
+                            self.im.user.set_answer("channel", channel);
+                        })
+                        .then(function() {
+                            return self.states.create('state_all_options_view');   
+                        });
                     } else {
                         return self.states.create('state_not_registered');
                     }
