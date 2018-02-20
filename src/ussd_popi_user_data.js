@@ -276,7 +276,7 @@ go.app = function() {
                 characters_per_page: 140,
                 more: $('More'),
                 back: $('Back'),
-                exit: $('Exit'),
+                exit: $('Main Menu'),
                 next: function() {
                     return {name: 'state_all_options_view'};
                 }

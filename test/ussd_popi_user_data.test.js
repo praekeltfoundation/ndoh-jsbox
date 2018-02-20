@@ -190,7 +190,7 @@ describe('app', function() {
                                 'Date of Birth: 1951-01-02',
                                 'Channel:',
                                 '1. More',
-                                '2. Exit',
+                                '2. Main Menu',
                             ].join('\n')
                         })
                         .check(function(api) {
@@ -246,7 +246,7 @@ describe('app', function() {
                                     'Language: English',
                                     'Message set: whatsapp_prebirth.hw_full.1',
                                     '1. Back',
-                                    '2. Exit',
+                                    '2. Main Menu',
                                 ].join('\n')
                             })
                             .check(function(api) {
@@ -971,10 +971,9 @@ describe('app', function() {
                             'Phone Number: +27820001013',
                             'ID Number: 5101025009086',
                             'Date of Birth: 1951-01-02',
-                            'Channel: SMS',
-                            'Language:',
+                            'Channel:',
                             '1. More',
-                            '2. Exit'
+                            '2. Main Menu'
                         ].join('\n')
                     })
                     .check(function(api) {
@@ -995,10 +994,11 @@ describe('app', function() {
                         .check.interaction({
                             state: 'state_view',
                             reply: [
-                                'English',
+                                'SMS',
+                                'Language: English',
                                 'Message set: momconnect_prebirth.hw_full.1 momconnect_prebirth.hw_full.2',
                                 '1. Back',
-                                '2. Exit'
+                                '2. Main Menu'
                             ].join('\n')
                         })
                         .check(function(api) {
