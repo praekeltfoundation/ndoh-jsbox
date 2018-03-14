@@ -264,7 +264,7 @@ describe("app", function() {
             it("STOP - should set their opt out status", function() {
                 return tester
                     .setup.user.addr('27820001002')
-                    .inputs('"stop" in the name of love')
+                    .inputs('"stop"')
                     .check.interaction({
                         state: 'state_opt_out',
                         reply:
@@ -375,7 +375,7 @@ describe("app", function() {
             it("should switch their subscription to baby protocol", function() {
                 return tester
                     .setup.user.addr('27820001002')
-                    .inputs('baBy has been born, bub')
+                    .inputs('baBy')
                     .check.interaction({
                         state: 'state_baby',
                         reply:
@@ -390,7 +390,7 @@ describe("app", function() {
             it("using 'baby' keyword 'usana'", function() {
                 return tester
                     .setup.user.addr('27820001002')
-                    .inputs('usana has been born, bub')
+                    .inputs('usana')
                     .check.interaction({
                         state: 'state_baby',
                         reply:
@@ -405,7 +405,7 @@ describe("app", function() {
             it("using 'baby' keyword 'sana'", function() {
                 return tester
                     .setup.user.addr('27820001002')
-                    .inputs('sana has been born, bub')
+                    .inputs('sana')
                     .check.interaction({
                         state: 'state_baby',
                         reply:
@@ -420,7 +420,7 @@ describe("app", function() {
             it("using 'baby' keyword 'baba'", function() {
                 return tester
                     .setup.user.addr('27820001002')
-                    .inputs('baba has been born, bub')
+                    .inputs('baba')
                     .check.interaction({
                         state: 'state_baby',
                         reply:
@@ -435,7 +435,7 @@ describe("app", function() {
             it("using 'baby' keyword 'babby'", function() {
                 return tester
                     .setup.user.addr('27820001002')
-                    .inputs('babby has been born, bub')
+                    .inputs('babby')
                     .check.interaction({
                         state: 'state_baby',
                         reply:
@@ -450,7 +450,7 @@ describe("app", function() {
             it("using 'baby' keyword 'lesea'", function() {
                 return tester
                     .setup.user.addr('27820001002')
-                    .inputs('lesea has been born, bub')
+                    .inputs('lesea')
                     .check.interaction({
                         state: 'state_baby',
                         reply:
@@ -465,7 +465,7 @@ describe("app", function() {
             it("using 'baby' keyword 'bby'", function() {
                 return tester
                     .setup.user.addr('27820001002')
-                    .inputs('bby has been born, bub')
+                    .inputs('bby.')
                     .check.interaction({
                         state: 'state_baby',
                         reply:
@@ -480,7 +480,7 @@ describe("app", function() {
             it("using 'baby' keyword 'babya'", function() {
                 return tester
                     .setup.user.addr('27820001002')
-                    .inputs('babya has been born, bub')
+                    .inputs('babya ')
                     .check.interaction({
                         state: 'state_baby',
                         reply:
@@ -495,7 +495,7 @@ describe("app", function() {
             it("using 'baby' keyword 'obaby'", function() {
                 return tester
                     .setup.user.addr('27820001002')
-                    .inputs('obaby has been born, bub')
+                    .inputs('obaby ')
                     .check.interaction({
                         state: 'state_baby',
                         reply:
@@ -510,7 +510,7 @@ describe("app", function() {
             it("using 'baby' keyword 'ngwana'", function() {
                 return tester
                     .setup.user.addr('27820001002')
-                    .inputs('Ngwana has been born, bub')
+                    .inputs('Ngwana ')
                     .check.interaction({
                         state: 'state_baby',
                         reply:
@@ -561,7 +561,7 @@ describe("app", function() {
                     // Don't care about character limit for this SMS
                     .setup.char_limit(320)
                     .setup.user.addr('27820001002')
-                    .inputs('sms please')
+                    .inputs('sms')
                     .check.interaction({
                         state: 'state_channel_switch',
                         reply: 
@@ -608,7 +608,7 @@ describe("app", function() {
                     // Don't care about character limit for this SMS
                     .setup.char_limit(320)
                     .setup.user.addr('27820001002')
-                    .inputs('watsapp pls')
+                    .inputs('watsapp')
                     .check.interaction({
                         state: 'state_channel_switch',
                         reply: 
