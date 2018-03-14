@@ -290,6 +290,16 @@ go.app = function() {
                                 case "BABBY": case "LESEA": case "BBY": case "BABYA":
                                 case "OBABY": case "NGWANA":
                                     return self.states.create("state_baby_enter");
+                                case "WA": case "WHATSAPP": case "WHATSUP":
+                                case "WASSUP": case "WATSAPP": case "WHATSAP":
+                                case "WATSAP":
+                                    return self.states.create("state_channel_switch", {
+                                        channel: "whatsapp"
+                                    });
+                                case "SMS":
+                                    return self.states.create("state_channel_switch", {
+                                        channel: "sms"
+                                    });
                                 default: // Logs a support ticket
                                     return self.states.create("state_default_enter");
                             }
@@ -433,6 +443,35 @@ go.app = function() {
             return new EndState(name, {
                 text: text,
                 next: "state_start"
+            });
+        });
+
+        self.states.add("state_channel_switch", function(name, opts) {
+            var whatsapp_response = $(
+                "Thank you. You will get messages on WhatsApp. To change how " +
+                "you get messages, dial *134*550*7#, then choose 2. Or reply " +
+                "to any message with 'SMS' to get them via SMS, or 'WA' for " +
+                "WhatsApp.");
+            var sms_response = $(
+                "Thank you. You will get messages on SMS. To change how you " +
+                "get messages, dial *134*550*7#, then choose 2. Or reply to " +
+                "any message with 'SMS' to get them via SMS, or 'WA' for " +
+                "WhatsApp.");
+            var change_info = {
+                "registrant_id": self.im.user.answers.operator.id,
+                "action": "switch_channel",
+                "data": {
+                    channel: opts.channel
+                }
+            };
+
+            return hub
+            .create_change(change_info)
+            .then(function() {
+                return new EndState(name, {
+                    text: opts.channel == 'sms' ? sms_response : whatsapp_response,
+                    next: 'state_start'
+                });
             });
         });
 
