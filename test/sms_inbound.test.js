@@ -3,9 +3,12 @@ var AppTester = vumigo.AppTester;
 var assert = require('assert');
 
 var fixtures_IdentityStore = require('./fixtures_identity_store');
+var fixtures_IdentityStoreDynamic = require('./fixtures_identity_store_dynamic');
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
+var fixtures_StageBasedMessagingDynamic = require('./fixtures_stage_based_messaging_dynamic');
 var fixtures_MessageSender = require('./fixtures_message_sender');
 var fixtures_Hub = require('./fixtures_hub');
+var fixtures_HubDynamic = require('./fixtures_hub_dynamic');
 var fixtures_Jembi = require('./fixtures_jembi');
 var fixtures_Casepro = require('./fixtures_casepro');
 var fixtures_ServiceRating = require('./fixtures_service_rating');
@@ -516,6 +519,103 @@ describe("app", function() {
                     })
                     .check(function(api) {
                         utils.check_fixtures_used(api, [16, 51, 54, 181]);
+                    })
+                    .run();
+            });
+        });
+
+        describe("When the user sends a channel switch message", function() {
+            it("using 'SMS' keyword", function() {
+                return tester
+                    .setup(function(api) {
+                        // Wipe the global http fixtures
+                        api.http.fixtures = new vumigo.http.dummy.HttpFixtures({
+                            default_encoding: 'json'});
+
+                        api.http.fixtures.add(
+                            fixtures_IdentityStoreDynamic().identity_search({
+                                msisdn: '+27820001002',
+                                identity: 'identity-uuid-1002'
+                            }));
+
+                        api.http.fixtures.add(
+                            fixtures_StageBasedMessagingDynamic().active_subscriptions({
+                                identity: 'identity-uuid-1002',
+                                messagesets: [0],
+                            }));
+
+                        api.http.fixtures.add(
+                            fixtures_StageBasedMessagingDynamic().messagesets({
+                                short_names: ['momconnect_prebirth.hw_full.1']
+                            }));
+
+                        api.http.fixtures.add(
+                            fixtures_HubDynamic().change({
+                                identity: 'identity-uuid-1002',
+                                action: 'switch_channel',
+                                data: {
+                                    channel: 'sms'
+                                }
+                            }));
+                    })
+                    // Don't care about character limit for this SMS
+                    .setup.char_limit(320)
+                    .setup.user.addr('27820001002')
+                    .inputs('sms please')
+                    .check.interaction({
+                        state: 'state_channel_switch',
+                        reply: 
+                            'Thank you. You will get messages on SMS. To change ' +
+                            'how you get messages, dial *134*550*7#, then choose ' +
+                            '2. Or reply to any message with \'SMS\' to get them ' +
+                            'via SMS, or \'WA\' for WhatsApp.'
+                    })
+                    .run();
+            });
+            it("using 'WHATSAPP' keyword", function() {
+                return tester
+                    .setup(function(api) {
+                        // Wipe the global http fixtures
+                        api.http.fixtures = new vumigo.http.dummy.HttpFixtures({
+                            default_encoding: 'json'});
+
+                        api.http.fixtures.add(
+                            fixtures_IdentityStoreDynamic().identity_search({
+                                msisdn: '+27820001002',
+                                identity: 'identity-uuid-1002'
+                            }));
+
+                        api.http.fixtures.add(
+                            fixtures_StageBasedMessagingDynamic().active_subscriptions({
+                                identity: 'identity-uuid-1002',
+                                messagesets: [0],
+                            }));
+
+                        api.http.fixtures.add(
+                            fixtures_StageBasedMessagingDynamic().messagesets({
+                                short_names: ['momconnect_prebirth.hw_full.1']
+                            }));
+
+                        api.http.fixtures.add(
+                            fixtures_HubDynamic().change({
+                                identity: 'identity-uuid-1002',
+                                action: 'switch_channel',
+                                data: {
+                                    channel: 'whatsapp'
+                                }
+                            }));
+                    })
+                    // Don't care about character limit for this SMS
+                    .setup.char_limit(320)
+                    .setup.user.addr('27820001002')
+                    .inputs('watsapp pls')
+                    .check.interaction({
+                        state: 'state_channel_switch',
+                        reply: 
+                            'Thank you. You will get messages on WhatsApp. To change ' +
+                            'how you get messages, dial *134*550*7#, then choose ' +
+                            '2. Or reply to any message with \'SMS\' to get them ' +
+                            'via SMS, or \'WA\' for WhatsApp.'
                     })
                     .run();
             });
