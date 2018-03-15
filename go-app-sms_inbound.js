@@ -262,6 +262,16 @@ go.app = function() {
             return (today_utc.hour() < opening_time || today_utc.hour() >= closing_time);
         };
 
+        self.get_keyword = function(text) {
+            // Cleans the input and capitalizes it for comparison to keyword
+            // list
+            return text
+                .replace(/\W/g, '')     // Remove non-letters
+                .trim()                 // Remove whitespace
+                .toUpperCase()          // Capitalize
+                ;
+        };
+
         self.states.add("state_start", function() {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
             self.im.user.set_answer("operator_msisdn", msisdn);
@@ -280,7 +290,7 @@ go.app = function() {
                             return self.states.create("state_dial_not_sms");
                         } else {
                             // get the first word, remove non-alphanumerics, capitalise
-                            switch (utils.get_clean_first_word(self.im.msg.content)) {
+                            switch (self.get_keyword(self.im.msg.content)) {
                                 case "STOP": case "END": case "CANCEL": case "UNSUBSCRIBE":
                                 case "QUIT": case "BLOCK":
                                     return self.states.create("state_opt_out_enter");
@@ -288,7 +298,8 @@ go.app = function() {
                                     return self.states.create("state_opt_in_enter");
                                 case "BABY": case "USANA": case "SANA": case "BABA":
                                 case "BABBY": case "LESEA": case "BBY": case "BABYA":
-                                case "OBABY": case "NGWANA":
+                                case "OBABY": case "NGWANA": case "BABY BOY":
+                                case "BABY GIRL":
                                     return self.states.create("state_baby_enter");
                                 case "WA": case "WHATSAPP": case "WHATSUP":
                                 case "WASSUP": case "WATSAPP": case "WHATSAP":
