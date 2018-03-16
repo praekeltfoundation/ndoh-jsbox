@@ -154,11 +154,11 @@ go.app = function() {
                                 case "WA": case "WHATSAPP": case "WHATSUP":
                                 case "WASSUP": case "WATSAPP": case "WHATSAP":
                                 case "WATSAP":
-                                    return self.states.create("state_channel_switch", {
+                                    return self.states.create("state_channel_switch_enter", {
                                         channel: "whatsapp"
                                     });
                                 case "SMS":
-                                    return self.states.create("state_channel_switch", {
+                                    return self.states.create("state_channel_switch_enter", {
                                         channel: "sms"
                                     });
                                 default: // Logs a support ticket
@@ -307,17 +307,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_channel_switch", function(name, opts) {
-            var whatsapp_response = $(
-                "Thank you. You will get messages on WhatsApp. To change how " +
-                "you get messages, dial *134*550*7#, then choose 2. Or reply " +
-                "to any message with 'SMS' to get them via SMS, or 'WA' for " +
-                "WhatsApp.");
-            var sms_response = $(
-                "Thank you. You will get messages on SMS. To change how you " +
-                "get messages, dial *134*550*7#, then choose 2. Or reply to " +
-                "any message with 'SMS' to get them via SMS, or 'WA' for " +
-                "WhatsApp.");
+        self.states.add("state_channel_switch_enter", function(name, opts) {
             var change_info = {
                 "registrant_id": self.im.user.answers.operator.id,
                 "action": "switch_channel",
@@ -329,10 +319,25 @@ go.app = function() {
             return hub
             .create_change(change_info)
             .then(function() {
-                return new EndState(name, {
-                    text: opts.channel == 'sms' ? sms_response : whatsapp_response,
-                    next: 'state_start'
-                });
+                return self.states.create('state_channel_switch', opts);
+            });
+        });
+
+        self.states.add("state_channel_switch", function(name, opts) {
+            var whatsapp_response = $(
+                "Thank you. You will get messages on WhatsApp. To change how " +
+                "you get messages, dial *134*550*7#, then choose 2. Or reply " +
+                "to any message with 'SMS' to get them via SMS, or 'WA' for " +
+                "WhatsApp.");
+            var sms_response = $(
+                "Thank you. You will get messages on SMS. To change how you " +
+                "get messages, dial *134*550*7#, then choose 2. Or reply to " +
+                "any message with 'SMS' to get them via SMS, or 'WA' for " +
+                "WhatsApp.");
+
+            return new EndState(name, {
+                text: opts.channel == 'sms' ? sms_response : whatsapp_response,
+                next: 'state_start'
             });
         });
 
