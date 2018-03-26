@@ -280,6 +280,7 @@ go.app = function() {
             .get_or_create_identity({"msisdn": msisdn})
             .then(function(identity) {
                 self.im.user.set_answer("operator", identity);
+                self.im.user.set_lang(identity.details.lang_code || "eng_ZA");
 
                 return sbm
                 .is_identity_subscribed(self.im.user.answers.operator.id, [/momconnect/])

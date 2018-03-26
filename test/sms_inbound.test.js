@@ -83,6 +83,16 @@ describe("app", function() {
                 });
         });
 
+        describe("user registered on momconnect", function() {
+            it("should set the user's language", function() {
+                return tester
+                    .setup.user.addr('27820001002')
+                    .inputs('start')
+                    .check.user.lang('eng_ZA')
+                    .run();
+            });
+        });
+
         describe('using the session length helper', function () {
             it('should publish metrics', function () {
 
@@ -564,7 +574,7 @@ describe("app", function() {
                     .inputs('sms')
                     .check.interaction({
                         state: 'state_channel_switch',
-                        reply: 
+                        reply:
                             'Thank you. You will get messages on SMS. To change ' +
                             'how you get messages, dial *134*550*7#, then choose ' +
                             '2. Or reply to any message with \'SMS\' to get them ' +
@@ -611,7 +621,7 @@ describe("app", function() {
                     .inputs('watsapp')
                     .check.interaction({
                         state: 'state_channel_switch',
-                        reply: 
+                        reply:
                             'Thank you. You will get messages on WhatsApp. To change ' +
                             'how you get messages, dial *134*550*7#, then choose ' +
                             '2. Or reply to any message with \'SMS\' to get them ' +
