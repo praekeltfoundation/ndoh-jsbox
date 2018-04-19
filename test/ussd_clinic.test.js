@@ -1902,7 +1902,7 @@ describe("app", function() {
                             address: '+27820001001',
                             channel: 'pilot-channel',
                             content: [
-                                'Welcome. To stop getting SMSs dial *120*550*1# or for more services dial *120*550# (No Cost). ',
+                                'Welcome. To stop getting messages dial *120*550*1# or for more services dial *120*550# (No Cost). ',
                                 'Standard rates apply when replying to any SMS from MomConnect.'
                             ].join('')
                         }))
