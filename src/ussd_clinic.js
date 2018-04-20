@@ -306,7 +306,7 @@ go.app = function() {
                             self.im.user.answers.registrant.id,
                             self.im.user.answers.registrant_msisdn,
                             self.im.user.i18n($(
-                                "Welcome. To stop getting SMSs dial {{optout_channel}} or for more " +
+                                "Welcome. To stop getting messages dial {{optout_channel}} or for more " +
                                 "services dial {{public_channel}} (No Cost). Standard rates apply " +
                                 "when replying to any SMS from MomConnect."
                             ).context({

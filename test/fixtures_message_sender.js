@@ -507,7 +507,7 @@ module.exports = function() {
                 "data": {
                     "to_identity": "cb245673-aa41-4302-ac47-00000001001",
                     "to_addr": "+27820001001",
-                    "content": "Welcome. To stop getting SMSs dial *120*550*1# or for more services dial *120*550# (No Cost). Standard rates apply when replying to any SMS from MomConnect.",
+                    "content": "Welcome. To stop getting messages dial *120*550*1# or for more services dial *120*550# (No Cost). Standard rates apply when replying to any SMS from MomConnect.",
                     "metadata": {}
                 }
             },
