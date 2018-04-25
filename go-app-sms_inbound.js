@@ -299,12 +299,12 @@ go.app = function() {
                                     return self.states.create("state_opt_in_enter");
                                 case "BABY": case "USANA": case "SANA": case "BABA":
                                 case "BABBY": case "LESEA": case "BBY": case "BABYA":
-                                case "OBABY": case "NGWANA": case "BABY BOY":
-                                case "BABY GIRL":
+                                case "OBABY": case "NGWANA": case "BABYBOY":
+                                case "BABYGIRL":
                                     return self.states.create("state_baby_enter");
                                 case "WA": case "WHATSAPP": case "WHATSUP":
                                 case "WASSUP": case "WATSAPP": case "WHATSAP":
-                                case "WATSAP":
+                                case "WATSAP": case "WATOMOVEOVER":
                                     return self.states.create("state_channel_switch_enter", {
                                         channel: "whatsapp"
                                     });
