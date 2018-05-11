@@ -36,27 +36,6 @@ module.exports = function() {
         not_exists: function(params) {
             return make_check_fixture(params, false);
         },
-        annotate: function(params) {
-            return {
-                "request": {
-                    "method": 'POST',
-                    'headers': {
-                        'Authorization': ['Token api-token'],
-                        'Content-Type': ['application/json']
-                    },
-                    "url": 'http://pilot.example.org/annotate/',
-                    "data": {
-                        "address": params.address,
-                        "number": params.number,
-                        "metadata": params.metadata,
-                    }
-                },
-                "response": {
-                    "code": 201,
-                    "data": {}
-                }
-            };
-        },
         post_registration: function(params) {
             var identity = params.identity;
             var address = params.address;

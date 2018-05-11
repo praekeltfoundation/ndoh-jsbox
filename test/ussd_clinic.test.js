@@ -1486,7 +1486,6 @@ describe("app", function() {
                         api_url: 'http://pilot.example.org/check/',
                         api_token: 'api-token',
                         api_number: '+27123456789',
-                        annotation_url: 'http://pilot.example.org/annotate/',
                         channel: 'pilot-channel',
                     }
                 })
@@ -1858,18 +1857,6 @@ describe("app", function() {
                                 number: '+27123456789',
                                 address: '+27820001001',
                                 wait: true
-                        })),
-                        api.http.fixtures.add(
-                            fixtures_Pilot().annotate({
-                                number: '+27123456789',
-                                address: '+27820001001',
-                                metadata: {
-                                    language: 'eng_ZA',
-                                    pilot_choice: 'whatsapp',
-                                    pilot_question: 'How would the pregnant mother like to receive the messages?',
-                                    pilot_source: 'ussd_clinic',
-                                    pilot_facility_code: '123456',
-                                }
                         })),
                         api.http.fixtures.add(
                             fixtures_Pilot().patch_identity({

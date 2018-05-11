@@ -592,28 +592,6 @@ go.app = function() {
                 });
         };
 
-        self.annotate_pilot = function (msisdn, metadata) {
-            var pilot_config = self.im.config.pilot || {};
-            var api_token = pilot_config.api_token;
-            var api_number = pilot_config.api_number;
-            var annotation_url = pilot_config.annotation_url;
-
-            // If unconfigured, do nothing
-            if(_.isEmpty(annotation_url))
-                return Q();
-
-            return new JsonApi(self.im, {
-                headers: {
-                    'Authorization': ['Token ' + api_token]
-                }})
-                .post(annotation_url, {
-                    data: {
-                        address: msisdn,
-                        number: api_number,
-                        metadata: metadata,
-                    }});
-        };
-
         self.add('state_clinic_code', function(name) {
             var error = $('Sorry, the clinic number did not validate. ' +
                           'Please reenter the clinic number.');
@@ -961,17 +939,6 @@ go.app = function() {
                 is.update_identity(self.im.user.answers.registrant.id, registrant_info),
                 hub.create_registration(registration_info),
                 self.send_registration_thanks(),
-                self.annotate_pilot(
-                    self.im.user.answers.registrant_msisdn,
-                    {
-                        language: (
-                            self.im.user.answers.state_language ||
-                            self.im.user.answers.registrant.details.lang_code),
-                        pilot_choice: self.im.user.answers.state_pilot || null,
-                        pilot_question: self.im.user.answers.state_pilot_question || null,
-                        pilot_source: 'ussd_clinic',
-                        pilot_facility_code: self.im.user.answers.state_clinic_code || null,
-                    }),
             ])
             .then(function(response) {
                 return self.states.create('state_end_success');
