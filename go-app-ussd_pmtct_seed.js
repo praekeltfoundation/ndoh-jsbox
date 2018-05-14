@@ -137,22 +137,22 @@ go.app = function() {
             var api_token = pilot_config.api_token;
             var api_number = pilot_config.api_number;
 
-            var params = _.merge({
-                number: api_number,
-            }, default_params);
-
             return new JsonApi(self.im, {
                 headers: {
                     'Authorization': ['Token ' + api_token]
                 }})
-                .get(api_url, {
-                    params: params,
+                .post(api_url, {
+                    data: {
+                        number: api_number,
+                        msisdns: [default_params.address],
+                        wait: default_params.wait,
+                    },
                 })
                 .then(function(response) {
-                    var existing = _.filter(response.data, function(obj) { return obj.exists === true; });
+                    var existing = _.filter(response.data, function(obj) { return obj.status === "valid"; });
                     var allowed = !_.isEmpty(existing);
                     return self.im
-                        .log('valid pilot recipient returning ' + allowed + ' for ' + JSON.stringify(params))
+                        .log('valid pilot recipient returning ' + allowed + ' for ' + JSON.stringify(default_params))
                         .then(function () {
                             return allowed;
                         });

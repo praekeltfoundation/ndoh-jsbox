@@ -1,40 +1,40 @@
 module.exports = function() {
     var _ = require('lodash');
 
-    function make_check_fixture(params, exists) {
+    function make_lookups_fixture(params, exists) {
         return {
             'repeatable': true,
             'request': {
-                'method': 'GET',
+                'method': 'POST',
                 'headers': {
                     'Authorization': ['Token api-token'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://pilot.example.org/check/',
-                'params': {
+                'url': 'http://pilot.example.org/api/v1/lookups/',
+                'body': JSON.stringify({
                     'number': params.number,
-                    'wait': '' + params.wait, // force to string type for fixture lookups to work
-                    'address': params.address,
-                },
+                    'msisdns': [params.address],
+                    'wait': params.wait,
+                }),
             },
             'response': {
                 'code': 200,
-                'data': {
-                    '+27000000000': {
-                        'exists': exists,
-                        'username': params.address,
-                    }
-                }
+                'data': [{
+                    "msisdn": params.address,
+                    "wa_exists": exists,
+                    "status": exists ? "valid" : "invalid",
+                    "wa_username": params.address,
+                }]
             }
         };
     }
 
     return {
         exists: function(params) {
-            return make_check_fixture(params, true);
+            return make_lookups_fixture(params, true);
         },
         not_exists: function(params) {
-            return make_check_fixture(params, false);
+            return make_lookups_fixture(params, false);
         },
         post_registration: function(params) {
             var identity = params.identity;

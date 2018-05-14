@@ -47,7 +47,7 @@ describe('app', function() {
                         }
                     },
                     pilot: {
-                        api_url: 'http://pilot.example.org/check/',
+                        api_url: 'http://pilot.example.org/api/v1/lookups/',
                         api_token: 'api-token',
                         api_number: '+27123456789',
                     }
@@ -60,7 +60,7 @@ describe('app', function() {
                     fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
                     fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
                     fixtures_ServiceRating().forEach(api.http.fixtures.add); // 100 - 119
-                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 120 ->                   
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 120 ->
                     _.map(['+27820001001', '+27820001002', '+27820001013'], function(address) {
                         api.http.fixtures.add(
                             fixtures_Pilot().not_exists({
@@ -528,7 +528,7 @@ describe('app', function() {
                                     .run();
                                 });
                             });
-                            
+
                             describe('user enters invalid ID number', function() {
                                 it('should go to state_change_sa_id', function() {
                                     return tester
@@ -890,7 +890,7 @@ describe('app', function() {
                                 , '3' // pick option 3
                                 , '1' // pick yes
                             )
-                           
+
                             .check.interaction({
                                 state: 'state_info_deleted',
                                 reply: [
@@ -957,7 +957,7 @@ describe('app', function() {
             });
             describe('test user with multiple messagesets', function() {
                 it('should show multiple messagesets in state_view', function() {
-                    
+
                     return tester
                     .setup.user.addr('27820001013')
                     .inputs(
@@ -983,7 +983,7 @@ describe('app', function() {
                 });
                 describe('user selects view more', function() {
                     it('should show multiple messagesets in state_view', function() {
-                        
+
                         return tester
                         .setup.user.addr('27820001013')
                         .inputs(
@@ -1008,7 +1008,7 @@ describe('app', function() {
                     });
                     describe('user selects exit', function() {
                         it('return to state_all_options_view', function() {
-                            
+
                             return tester
                             .setup.user.addr('27820001013')
                             .inputs(

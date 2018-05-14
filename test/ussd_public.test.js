@@ -742,7 +742,7 @@ describe("ussd_public app", function() {
                     pilot: {
                         whitelist: [],
                         randomisation_treshold: 0.5,
-                        api_url: 'http://pilot.example.org/check/',
+                        api_url: 'http://pilot.example.org/api/v1/lookups/',
                         api_token: 'api-token',
                         api_number: '+27123456789',
                         channel: 'pilot-channel',

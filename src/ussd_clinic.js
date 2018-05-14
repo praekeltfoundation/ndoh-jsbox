@@ -578,11 +578,11 @@ go.app = function() {
                 headers: {
                     'Authorization': ['Token ' + api_token]
                 }})
-                .get(api_url, {
-                    params: params,
+                .post(api_url, {
+                    data: params,
                 })
                 .then(function(response) {
-                    var existing = _.filter(response.data, function(obj) { return obj.exists === true; });
+                    var existing = _.filter(response.data, function(obj) { return obj.status === "valid"; });
                     var allowed = !_.isEmpty(existing);
                     return self.im
                         .log('valid pilot recipient returning ' + allowed + ' for ' + JSON.stringify(params))
@@ -629,7 +629,7 @@ go.app = function() {
                                     var address = self.im.user.answers.registrant_msisdn;
                                     return self
                                         .is_valid_recipient_for_pilot({
-                                            address: address,
+                                            msisdns: [address],
                                             wait: false,
                                         });
                                 })
@@ -870,7 +870,7 @@ go.app = function() {
                         //          now be quick as it's already completed
                         //          at the gateway level
                         return self.is_valid_recipient_for_pilot({
-                            address: address,
+                            msisdns: [address],
                             wait: true,
                         });
                     } else {
