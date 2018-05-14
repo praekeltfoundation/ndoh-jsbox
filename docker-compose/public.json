@@ -1,0 +1,31 @@
+{
+    "name": "mcza-ussd-public-qa",
+    "env": "qa",
+    "metric_store": "ndoh_qa",
+    "logging": "prod",
+    "no_timeout_redirects": [
+        "state_start", "state_end_not_pregnant", "state_end_consent_refused",
+        "state_end_success", "state_registered_full", "state_registered_not_full",
+        "state_end_compliment", "state_end_complaint", "state_end_go_clinic"
+    ],
+    "channel": "*120*1234#",
+    "services": {
+        "hub": {
+            "token": "b229801c76c68fb5b70075d08182bf1de681bb87",
+            "url": "http://hub:8000/api/v1/"
+        },
+        "identity_store": {
+            "token": "b229801c76c68fb5b70075d08182bf1de681bb87",
+            "url": "http://identitystore:8000/api/v1/"
+        },
+        "stage_based_messaging": {
+            "token": "b229801c76c68fb5b70075d08182bf1de681bb87",
+            "url": "http://sbm:8000/api/v1/"
+        },
+        "message_sender": {
+            "token": "b229801c76c68fb5b70075d08182bf1de681bb87",
+            "url": "http://messagesender:8000/api/v1/"
+        }
+    },
+    "pilot": null
+}
