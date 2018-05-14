@@ -62,7 +62,7 @@ describe("app", function() {
                         'state_block_active_subs'
                     ],
                     whatsapp: {
-                        api_url: 'http://pilot.example.org/check/',
+                        api_url: 'http://pilot.example.org/api/v1/lookups/',
                         api_token: 'api-token',
                         api_number: '+27000000000',
                     },

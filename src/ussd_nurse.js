@@ -174,19 +174,19 @@ go.app = function() {
 
             var params = {
                 number: api_number,
+                msisdns: [msisdn],
                 wait: wait_for_response,
-                address: msisdn,
             };
 
             return new JsonApi(self.im, {
                 headers: {
                     'Authorization': ['Token ' + api_token]
                 }})
-                .get(api_url, {
-                    params: params,
+                .post(api_url, {
+                    data: params,
                 })
                 .then(function(response) {
-                    var existing_users = _.filter(response.data, function(obj) { return obj.exists === true; });
+                    var existing_users = _.filter(response.data, function(obj) { return obj.status === "valid"; });
                     var is_user = !_.isEmpty(existing_users);
                     return self.im
                         .log('WhatsApp recipient ' + is_user + ' for ' + JSON.stringify(params))

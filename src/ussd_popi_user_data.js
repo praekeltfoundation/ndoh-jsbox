@@ -105,7 +105,7 @@ go.app = function() {
                 });
             }
             if(self.im.user.answers.message_sets !== ''){
-                var message = $("{{first}}\nMessage set: {{mset}}") 
+                var message = $("{{first}}\nMessage set: {{mset}}")
                         .context({
                             first: data,
                             mset: self.im.user.answers.message_sets
@@ -119,7 +119,7 @@ go.app = function() {
             switch(channel) {
                 case 'sms':
                     return $('SMS');
-                case 'whatsapp': 
+                case 'whatsapp':
                     return $('WhatsApp');
             }
         };
@@ -157,23 +157,23 @@ go.app = function() {
             var api_token = pilot_config.api_token;
             var api_number = pilot_config.api_number;
 
-            var params = _.merge({
-                number: api_number,
-            }, default_params);
-
             // Otherwise check the API
             return new JsonApi(self.im, {
                 headers: {
                     'Authorization': ['Token ' + api_token]
                 }})
-                .get(api_url, {
-                    params: params,
+                .post(api_url, {
+                    data: {
+                        number: api_number,
+                        msisdns: [default_params.address],
+                        wait: default_params.wait,
+                    },
                 })
                 .then(function(response) {
-                    var existing = _.filter(response.data, function(obj) { return obj.exists === true; });
+                    var existing = _.filter(response.data, function(obj) { return obj.status === "valid"; });
                     var allowed = !_.isEmpty(existing);
                     return self.im
-                        .log('valid pilot recipient returning ' + allowed + ' for ' + JSON.stringify(params))
+                        .log('valid pilot recipient returning ' + allowed + ' for ' + JSON.stringify(default_params))
                         .then(function () {
                             return allowed;
                         });
@@ -209,12 +209,12 @@ go.app = function() {
             .then(function(identity) {
                 self.im.user.set_answer("operator", identity);
                 self.im.user.set_answer("msisdn",msisdn);
-                
+
                 // display in users preferred language
                 self.im.user.set_lang(self.im.user.answers.operator.details.lang_code);
-                
+
                 return sbm
-                // check that user is registered on momconnect   
+                // check that user is registered on momconnect
                 .is_identity_subscribed(self.im.user.answers.operator.id,
                                         [/^momconnect/, /^whatsapp/])
                 .then(function(identity_subscribed_to_momconnect) {
@@ -223,7 +223,7 @@ go.app = function() {
                         .list_active_subscriptions(self.im.user.answers.operator.id)
                         .then(function(active_subscriptions){
                             var promises = active_subscriptions.results.map(function(result){
-                                return sbm.get_messageset(result.messageset); 
+                                return sbm.get_messageset(result.messageset);
                             });
                             return Q.all(promises);
                         })
@@ -247,7 +247,7 @@ go.app = function() {
                             });
                         })
                         .then(function() {
-                            return self.states.create('state_all_options_view');   
+                            return self.states.create('state_all_options_view');
                         });
                     } else {
                         return self.states.create('state_not_registered');
@@ -395,8 +395,8 @@ go.app = function() {
                     "old_language": self.im.user.answers.operator.details.lang_code
                 }
             };
-            
-            
+
+
             self.im.user.answers.operator.details.lang_code = self.im.user.answers.state_select_language;
             return self.im.user.set_lang(self.im.user.answers.state_select_language)
             .then(function() {
@@ -480,7 +480,7 @@ go.app = function() {
                 next: 'state_create_identification_change'
             });
         });
-        
+
         self.add('state_create_identification_change', function(name) {
             var data = {};
             if (self.im.user.answers.state_change_identity == 'state_change_sa_id') {
@@ -546,7 +546,7 @@ go.app = function() {
                 next: 'state_check_msisdn_available'
             });
         });
-        
+
         self.add('state_check_msisdn_available', function(name) {
             var new_msisdn = utils.normalize_msisdn(self.im.user.answers.state_new_msisdn, '27');
             self.im.user.set_answer("new_msisdn", new_msisdn);

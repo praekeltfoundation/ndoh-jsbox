@@ -748,9 +748,9 @@ go.app = function() {
             var api_token = pilot_config.api_token;
             var api_number = pilot_config.api_number;
 
-            var default_params = _.merge({
-                number: api_number,
-            }, params);
+            // var default_params = _.merge({
+            //     number: api_number,
+            // }, params);
 
             var msisdn = params.address;
 
@@ -763,11 +763,15 @@ go.app = function() {
                 headers: {
                     'Authorization': ['Token ' + api_token]
                 }})
-                .get(api_url, {
-                    params: default_params,
+                .post(api_url, {
+                    data: {
+                        number: api_number,
+                        msisdns: [msisdn],
+                        wait: params.wait,
+                    },
                 })
                 .then(function(response) {
-                    var existing = _.filter(response.data, function(obj) { return obj.exists === true; });
+                    var existing = _.filter(response.data, function(obj) { return obj.status === "valid"; });
                     if(_.isEmpty(existing)) {
                         // If they're not eligible then return false
                         return self.im
