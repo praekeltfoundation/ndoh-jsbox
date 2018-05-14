@@ -1,0 +1,82 @@
+version: '3'
+services:
+  junebug:
+    image: praekeltfoundation/junebug:alpine
+    ports:
+      - '80:80'
+      - '9001:9001'
+    links:
+      - rabbitmq
+      - redis
+    environment:
+      - AMQP_HOST=rabbitmq
+      - AMQP_VHOST=/
+      - REDIS_HOST=redis
+    command: jb --channel 'telnet_addr:vumi.transports.telnet.AddressedTelnetServerTransport'
+    restart: always
+
+  public_ussd:
+    build: ../
+    volumes:
+      - ./:/config
+    environment:
+      - AMQP_HOST=rabbitmq
+      - CONFIG_FILE=/config/public.yaml
+    links:
+      - identitystore
+      - hub
+      - sbm
+      - messagesender
+      - redis
+      - rabbitmq
+    restart: always
+  
+  redis:
+    image: redis:alpine
+    restart: always
+
+  rabbitmq:
+    image: rabbitmq:alpine
+    restart: always
+
+  postgres:
+    image: postgres:alpine
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    restart: always
+
+  identitystore:
+    image: praekeltfoundation/seed-identity-store
+    links:
+      - postgres
+    environment:
+      - IDENTITIES_DATABASE=postgres://postgres:postgres@postgres/postgres
+      - BROKER_URL=amqp://guest:guest@rabbitmq//
+    restart: always
+
+  hub:
+    image: praekeltfoundation/ndoh-hub
+    links:
+      - postgres
+    environment:
+      - HUB_DATABASE=postgres://postgres:postgres@postgres/postgres
+      - BROKER_URL=amqp://guest:guest@rabbitmq//
+    restart: always
+
+  sbm:
+    image: praekeltfoundation/seed-stage-based-messaging
+    links:
+      - postgres
+    environment:
+      - STAGE_BASED_MESSAGING_DATABASE=postgres://postgres:postgres@postgres/postgres
+      - BROKER_URL=amqp://guest:guest@rabbitmq//
+    restart: always
+
+  messagesender:
+    image: praekeltfoundation/seed-message-sender
+    links:
+      - postgres
+    environment:
+      - MESSAGE_SENDER_DATABASE=postgres://postgres:postgres@postgres/postgres
+      - BROKER_URL=amqp://guest:guest@rabbitmq//
+    restart: always
