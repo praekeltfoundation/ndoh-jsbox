@@ -708,7 +708,16 @@ go.app = function() {
                 ]
             });
         });
+
+        self.add('state_exit', function(name){
+          return new EndState(name, {
+            text: $("Thank you for using MomConnect. Dial *134*550*7# to see, " +
+                    "change or delete the your MomConnect information."),
+            next: "state_start"
+          });
+        });
     });
+
 
     return {
         GoNDOH: GoNDOH

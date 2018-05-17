@@ -121,6 +121,23 @@ describe('app', function() {
                 });
             });
 
+          describe('user chooses to exit', function(){
+            it('should exit', function(){
+              return tester
+              .setup.user.addr('27820001001')
+              .inputs(
+                {session_event: 'new'},
+                "2"
+              )
+              .check.interaction({
+                state: "state_exit",
+                reply: "Thank you for using MomConnect. Dial *134*550*7# to see, " +
+                        "change or delete the your MomConnect information."
+              })
+              .run();
+            });
+          });
+
             describe('user registered on momconnect', function() {
                 it('should go to state_all_questions_view', function() {
                     return tester
