@@ -176,6 +176,61 @@ describe('app', function() {
             });
           });
 
+          describe('user enters valid old number', function(){
+            describe('if user registered with SA ID', function(){
+              it('should ask user to enter SA ID number', function(){
+                return tester
+                .setup.user.addr('27820001001')
+                .inputs(
+                  {session_event: 'new'},
+                  "1",
+                  "0820001002"
+                )
+                .check.interaction({
+                  state: 'state_get_sa_id',
+                  reply: "Thank you. To change your mobile number we first " +
+                          "need to verify your identity. Please enter your SA ID number now."
+                })
+                .run();
+              });
+            });
+            describe('if user registered with Passport', function(){
+              it ('should ask user to enter passport number', function(){
+                return tester
+                .setup.user.addr('27820001001')
+                .inputs(
+                  {session_event: 'new'},
+                  "1",
+                  "0820001016"
+                )
+                .check.interaction({
+                  state: 'state_get_passport_no',
+                  reply: "Thank you. To change your mobile number we first " +
+                          "need to verify your identity. Please enter your passport number now."
+                })
+                .run();
+              });
+            });
+            describe('if user registered using date of birth', function(){
+              it ('should ask user to enter date of birth', function(){
+                return tester
+                .setup.user.addr('27820001001')
+                .inputs(
+                  {session_event: 'new'},
+                  "1",
+                  "0820001017"
+                )
+                .check.interaction({
+                  state: 'state_get_date_of_birth',
+                  reply: "Thank you. To change your mobile number we first " +
+                          "need to verify your identity. " +
+                          "Please enter your date of birth in the following format: dd/mm/yyyy"
+                })
+                .run();
+              });
+            });
+          });
+
             describe('user registered on momconnect', function() {
                 it('should go to state_all_questions_view', function() {
                     return tester
@@ -193,7 +248,7 @@ describe('app', function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [51, 54, 67, 121, 192]);
+                        utils.check_fixtures_used(api, [51, 54, 67, 121, 194]);
                     })
                     .run();
                 });
@@ -451,7 +506,7 @@ describe('app', function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
+                            utils.check_fixtures_used(api, [51, 54, 67, 121, 194, 195]);
                         })
                         .run();
                     });
@@ -482,7 +537,7 @@ describe('app', function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
+                                utils.check_fixtures_used(api, [51, 54, 67, 121, 194, 195]);
                             })
                             .run();
                         });
@@ -506,7 +561,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [36, 51, 54, 67, 121, 192, 193]);
+                                    utils.check_fixtures_used(api, [36, 51, 54, 67, 121, 194, 195]);
                                 })
                                 .run();
                             });
@@ -531,7 +586,7 @@ describe('app', function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
+                                utils.check_fixtures_used(api, [51, 54, 67, 121, 194, 195]);
                             })
                             .run();
                         });
@@ -554,7 +609,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
+                                    utils.check_fixtures_used(api, [51, 54, 67, 121, 194, 195]);
                                 })
                                 .run();
                             });
@@ -579,7 +634,7 @@ describe('app', function() {
                                         ].join('\n')
                                     })
                                     .check(function(api) {
-                                        utils.check_fixtures_used(api, [43, 51, 54, 67, 121, 192, 193]);
+                                        utils.check_fixtures_used(api, [43, 51, 54, 67, 121, 194, 195]);
                                     })
                                     .run();
                                 });
@@ -603,7 +658,7 @@ describe('app', function() {
                                         ].join('\n')
                                     })
                                     .check(function(api) {
-                                        utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
+                                        utils.check_fixtures_used(api, [51, 54, 67, 121, 194, 195]);
                                     })
                                     .run();
                                 });
@@ -628,7 +683,7 @@ describe('app', function() {
                                             ].join('\n')
                                         })
                                         .check(function(api) {
-                                            utils.check_fixtures_used(api, [43, 51, 54, 67, 121, 192, 193]);
+                                            utils.check_fixtures_used(api, [43, 51, 54, 67, 121, 194, 195]);
                                         })
                                         .run();
                                     });
@@ -660,7 +715,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
+                                    utils.check_fixtures_used(api, [51, 54, 67, 121, 194, 195]);
                                 })
                                 .run();
                             });
@@ -683,7 +738,7 @@ describe('app', function() {
                                         ].join('\n')
                                     })
                                     .check(function(api) {
-                                        utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
+                                        utils.check_fixtures_used(api, [51, 54, 67, 121, 194, 195]);
                                     })
                                     .run();
                                 });
@@ -709,7 +764,7 @@ describe('app', function() {
                                             ].join('\n')
                                         })
                                         .check(function(api) {
-                                            utils.check_fixtures_used(api, [42, 51, 54, 67, 121, 192, 193]);
+                                            utils.check_fixtures_used(api, [42, 51, 54, 67, 121, 194, 195]);
                                         })
                                         .run();
                                     });
@@ -735,7 +790,7 @@ describe('app', function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
+                                utils.check_fixtures_used(api, [51, 54, 67, 121, 194, 195]);
                             })
                             .run();
                         });
@@ -759,7 +814,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [37, 51, 54, 67, 120, 121, 192, 193]);
+                                    utils.check_fixtures_used(api, [37, 51, 54, 67, 120, 121, 194, 195]);
                                 })
                                 .run();
                             });
@@ -782,7 +837,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
+                                    utils.check_fixtures_used(api, [51, 54, 67, 121, 194, 195]);
                                 })
                                 .run();
                             });
@@ -806,7 +861,7 @@ describe('app', function() {
                                         ].join('\n')
                                     })
                                     .check(function(api) {
-                                        utils.check_fixtures_used(api, [37, 51, 54, 67, 120, 121, 192, 193]);
+                                        utils.check_fixtures_used(api, [37, 51, 54, 67, 120, 121, 194, 195]);
                                     })
                                     .run();
                                 });
@@ -832,7 +887,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [38, 51, 54, 67, 121, 124, 192, 193]);
+                                    utils.check_fixtures_used(api, [38, 51, 54, 67, 121, 124, 194, 195]);
                                 })
                                 .run();
                             });
@@ -857,7 +912,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [39, 51, 54, 67, 121, 183, 192, 193]);
+                                    utils.check_fixtures_used(api, [39, 51, 54, 67, 121, 183, 194, 195]);
                                 })
                                 .run();
                             });
@@ -880,7 +935,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [51, 54, 67, 121, 122, 192, 193]);
+                                    utils.check_fixtures_used(api, [51, 54, 67, 121, 122, 194, 195]);
                                 })
                                 .run();
                             });
@@ -905,7 +960,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [40, 51, 54, 67, 121, 184, 185, 192, 193]);
+                                    utils.check_fixtures_used(api, [40, 51, 54, 67, 121, 184, 185, 194, 195]);
                                 })
                                 .run();
                             });
@@ -932,7 +987,7 @@ describe('app', function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 67, 121, 192]);
+                            utils.check_fixtures_used(api, [51, 54, 67, 121, 194]);
                         })
                         .run();
                     });
@@ -957,7 +1012,7 @@ describe('app', function() {
                             .check.user.answer("operator", null)
                             .check.user.answer("msisdn", null)
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [41, 51, 54, 67, 121, 186, 192]);
+                                utils.check_fixtures_used(api, [41, 51, 54, 67, 121, 186, 194]);
                             })
                             .run();
                         });
@@ -980,7 +1035,7 @@ describe('app', function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [51, 54, 67, 121, 192]);
+                                utils.check_fixtures_used(api, [51, 54, 67, 121, 194]);
                             })
                             .run();
                         });
@@ -1005,7 +1060,7 @@ describe('app', function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 67, 121, 192]);
+                            utils.check_fixtures_used(api, [51, 54, 67, 121, 194]);
                         })
                         .run();
                     });
@@ -1033,7 +1088,7 @@ describe('app', function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [54, 66, 67, 68, 182, 194]);
+                        utils.check_fixtures_used(api, [54, 66, 67, 68, 182, 196]);
                     })
                     .run();
                 });
@@ -1058,7 +1113,7 @@ describe('app', function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [54, 66, 67, 68, 182, 194]);
+                            utils.check_fixtures_used(api, [54, 66, 67, 68, 182, 196]);
                         })
                         .run();
                     });
@@ -1083,7 +1138,7 @@ describe('app', function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [54, 66, 67, 68, 182, 194]);
+                                utils.check_fixtures_used(api, [54, 66, 67, 68, 182, 196]);
                             })
                             .run();
                         });

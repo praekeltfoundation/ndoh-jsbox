@@ -730,6 +730,15 @@ go.app = function() {
             if (identity === null){
               return self.states.create('state_invalid_old_number');
             }
+            else if (!!identity.details.sa_id_no) {
+              return self.states.create('state_get_sa_id')
+            }
+            else if (!!identity.details.passport_no) {
+              return self.states.create('state_get_passport_no')
+            }
+            else if (!!identity.details.mom_dob) {
+              return self.states.create('state_get_date_of_birth')
+            }
           });
         });
 
@@ -745,7 +754,32 @@ go.app = function() {
             ]
           });
         });
+
+        self.add('state_get_sa_id', function(name){
+          return new FreeText(name, {
+            question: $("Thank you. To change your mobile number we first need to " +
+                      "verify your identity. Please enter your SA ID number now."),
+            next: 'state_get_langauge'
+          });
+        });
+
+        self.add('state_get_passport_no', function(name){
+          return new FreeText(name, {
+            question: $("Thank you. To change your mobile number we first need to " +
+                      "verify your identity. Please enter your passport number now."),
+            next: 'state_get_langauge'
+          });
+        });
+
+        self.add('state_get_date_of_birth', function(name){
+          return new FreeText(name, {
+            question: $("Thank you. To change your mobile number we first need to " +
+                      "verify your identity. Please enter your date of birth in the following format: dd/mm/yyyy"),
+            next: 'state_get_langauge'
+          });
+        });
     });
+
     return {
         GoNDOH: GoNDOH
     };
