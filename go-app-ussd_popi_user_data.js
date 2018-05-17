@@ -716,9 +716,14 @@ go.app = function() {
             next: "state_start"
           });
         });
+
+        self.add('state_old_number', function(name){
+          return new FreeText(name, {
+            question: $("Please enter the number you receive MomConnect messages on."),
+            next: 'state_find_identity'
+          })
+        })
     });
-
-
     return {
         GoNDOH: GoNDOH
     };

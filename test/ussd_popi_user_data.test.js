@@ -121,6 +121,22 @@ describe('app', function() {
                 });
             });
 
+          describe('user does not have SIM', function(){
+            it("should ask for user's old SIM number", function(){
+              return tester
+              .setup.user.addr('27820001001')
+              .inputs(
+                  {session_event: 'new'},
+                  "1"
+              )
+              .check.interaction({
+                state: 'state_old_number',
+                reply: "Please enter the number you receive MomConnect messages on."
+              })
+              .run();
+            });
+          });
+
           describe('user chooses to exit', function(){
             it('should exit', function(){
               return tester
