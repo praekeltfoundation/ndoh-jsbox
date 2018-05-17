@@ -107,10 +107,11 @@ describe('app', function() {
                     .check.interaction({
                         state: 'state_not_registered',
                         reply: [
-                            'Sorry, that number is not recognised. Dial in with the number ' +
-                            'you used to register for MomConnect. To update ' +
-                            'number, dial *134*550*7# or register ' +
-                            'at a clinic'
+                            "Sorry, the number you dialled with is not recognised. " +
+                            "Dial in with the number you use for MomConnect to change " +
+                            "your details",
+                            "1. I don't have that SIM",
+                            "2. Exit"
                         ].join('\n')
                     })
                     .check(function(api) {

@@ -691,12 +691,18 @@ go.app = function() {
 
 
         self.add('state_not_registered', function(name) {
-            return new EndState(name, {
-                text: $('Sorry, that number is not recognised. Dial in with the number ' +
-                        'you used to register for MomConnect. To update ' +
-                        'number, dial *134*550*7# or register ' +
-                        'at a clinic'),
-                next: 'state_start'
+            return new MenuState(name, {
+                question: $(
+                    "Sorry, the number you dialled with is not recognised. " +
+                    "Dial in with the number you use for MomConnect to change " +
+                    "your details"
+                ),
+                choices: [
+                    new Choice(
+                        'state_old_number',
+                        $("I don't have that SIM")),
+                    new Choice('state_exit', $("Exit"))
+                ]
             });
         });
     });
