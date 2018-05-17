@@ -154,6 +154,28 @@ describe('app', function() {
             });
           });
 
+          describe('user enters invalid old number', function() {
+            it('should ask user to try again or exit', function(){
+              return tester
+              .setup.user.addr('27820001001')
+              .inputs(
+                {session_event: 'new'},
+                "1",
+                "0820111111"
+              )
+              .check.interaction({
+                state: 'state_invalid_old_number',
+                reply: [
+                  "Sorry we do not recognise that number. New to MomConnect?" +
+                  "Please visit a clinic to register. Made a mistake?",
+                  "1. Try again",
+                  "2. Exit"
+                ].join('\n')
+              })
+              .run();
+            });
+          });
+
             describe('user registered on momconnect', function() {
                 it('should go to state_all_questions_view', function() {
                     return tester

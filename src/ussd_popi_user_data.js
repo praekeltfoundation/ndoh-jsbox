@@ -720,6 +720,31 @@ go.app = function() {
             next: 'state_find_identity'
           })
         })
+
+        self.add('state_find_identity', function(name){
+          var msisdn = utils.normalize_msisdn(self.im.user.get_answer('state_old_number'), "27")
+          return is.get_identity_by_address({
+            msisdn: msisdn
+          })
+          .then(function(identity){
+            if (identity === null){
+              return self.states.create('state_invalid_old_number');
+            }
+          });
+        });
+
+        self.add('state_invalid_old_number', function(name){
+          return new MenuState(name, {
+            question: $("Sorry we do not recognise that number. New to MomConnect?" +
+                        "Please visit a clinic to register. Made a mistake?"),
+            choices: [
+                new Choice(
+                    'state_old_number',
+                    $("Try again")),
+                new Choice('state_exit', $("Exit"))
+            ]
+          });
+        });
     });
     return {
         GoNDOH: GoNDOH
