@@ -335,6 +335,83 @@ describe('app', function() {
             });
           });
 
+          describe('user answered security question incorrectly', function(){
+            it('should display error message if SA ID number incorrect', function(){
+              return tester
+              .setup.user.addr('27820001001')
+              .inputs(
+                {session_event: 'new'},
+                "1",
+                "0820001002",
+                "77777",
+                "4"
+              )
+              .check.interaction({
+                state: 'state_incorrect_security_answers',
+                reply: "Sorry one or more of the answers you provided are incorrect. "+
+                "We are not able to change your mobile number. Please visit the clinic "+
+                "to register your new number."
+              })
+              .run();
+            });
+
+            it('should display error message if pasport number incorrect', function(){
+              return tester
+              .setup.user.addr('27820001001')
+              .inputs(
+                {session_event: 'new'},
+                "1",
+                "0820001016",
+                "AAAA1",
+                "4"
+              )
+              .check.interaction({
+                state: 'state_incorrect_security_answers',
+                reply: "Sorry one or more of the answers you provided are incorrect. "+
+                "We are not able to change your mobile number. Please visit the clinic "+
+                "to register your new number."
+              })
+              .run();
+            });
+
+            it('should display error message if date of birth incorrect', function(){
+              return tester
+              .setup.user.addr('27820001001')
+              .inputs(
+                {session_event: 'new'},
+                "1",
+                "0820001017",
+                "17/01/2001",
+                "4"
+              )
+              .check.interaction({
+                state: 'state_incorrect_security_answers',
+                reply: "Sorry one or more of the answers you provided are incorrect. "+
+                "We are not able to change your mobile number. Please visit the clinic "+
+                "to register your new number."
+              })
+              .run();
+            });
+
+            it('should display error message if incorrect language selected', function(){
+              return tester
+              .setup.user.addr('27820001001')
+              .inputs(
+                {session_event: 'new'},
+                "1",
+                "0820001002",
+                "5101025009086",
+                "5"
+              )
+              .check.interaction({
+                state: 'state_incorrect_security_answers',
+                reply: "Sorry one or more of the answers you provided are incorrect. "+
+                "We are not able to change your mobile number. Please visit the clinic "+
+                "to register your new number."
+              })
+              .run();
+            });
+          });
 
             describe('user registered on momconnect', function() {
                 it('should go to state_all_questions_view', function() {

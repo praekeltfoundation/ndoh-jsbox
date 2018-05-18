@@ -728,6 +728,7 @@ go.app = function() {
             msisdn: msisdn
           })
           .then(function(identity){
+            self.im.user.set_answer('user_identity', identity);
             if (identity === null){
               return self.states.create('state_invalid_old_number');
             }
@@ -739,6 +740,9 @@ go.app = function() {
             }
             else if (!!identity.details.mom_dob) {
               return self.states.create('state_get_date_of_birth')
+            }
+            else {
+              return self.states.create('state_invalid_old_number');
             }
           });
         });
@@ -811,6 +815,41 @@ go.app = function() {
               new Choice('nbl_ZA', $('isiNdebele')),
           ],
           next: 'state_verify_identification',
+        });
+      });
+
+      self.add('state_verify_identification', function(name){
+        var identity = self.im.user.get_answer('user_identity');
+        var language = self.im.user.get_answer('state_get_language');
+        if (identity.details.lang_code !== language){
+          return self.states.create('state_incorrect_security_answers');
+        }
+        var sa_id = self.im.user.get_answer('state_get_sa_id');
+        var passport_no = self.im.user.get_answer('state_get_passport_no');
+        var date_of_birth = self.im.user.get_answer('state_get_date_of_birth');
+        if(sa_id !== undefined){
+          if (identity.details.sa_id_no !== sa_id){
+            return self.states.create('state_incorrect_security_answers');
+          }
+        }
+        if(passport_no !== undefined){
+          if (identity.details.passport_no !== passport_no){
+            return self.states.create('state_incorrect_security_answers');
+          }
+        }
+        if(date_of_birth !== undefined){
+          if (identity.details.mom_dob !== date_of_birth){
+            return self.states.create('state_incorrect_security_answers');
+          }
+        }
+      });
+
+      self.add('state_incorrect_security_answers', function(name){
+        return new EndState(name, {
+          text: $("Sorry one or more of the answers you provided are incorrect. "+
+          "We are not able to change your mobile number. Please visit the clinic "+
+          "to register your new number."),
+          next: 'state_start'
         });
       });
     });
