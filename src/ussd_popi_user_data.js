@@ -792,6 +792,27 @@ go.app = function() {
             }
           });
         });
+
+      self.add('state_get_language', function(name){
+        return new PaginatedChoiceState(name, {
+          question: $("Thank you. Please select the language you receive message in:"),
+          options_per_page: null,
+          choices: [
+              new Choice('zul_ZA', $('isiZulu')),
+              new Choice('xho_ZA', $('isiXhosa')),
+              new Choice('afr_ZA', $('Afrikaans')),
+              new Choice('eng_ZA', $('English')),
+              new Choice('nso_ZA', $('Sesotho sa Leboa')),
+              new Choice('tsn_ZA', $('Setswana')),
+              new Choice('sot_ZA', $('Sesotho')),
+              new Choice('tso_ZA', $('Xitsonga')),
+              new Choice('ssw_ZA', $('siSwati')),
+              new Choice('ven_ZA', $('Tshivenda')),
+              new Choice('nbl_ZA', $('isiNdebele')),
+          ],
+          next: 'state_verify_identification',
+        });
+      });
     });
 
     return {

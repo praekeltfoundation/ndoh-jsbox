@@ -193,7 +193,35 @@ describe('app', function() {
                 })
                 .run();
               });
+
+              describe('after user enters ID number', function(){
+                it('should lits the language options', function(){
+                  return tester
+                  .setup.user.addr('27820001001')
+                  .inputs(
+                    {session_event: 'new'},
+                    "1",
+                    "0820001002",
+                    "9501010345647"
+                  )
+                  .check.interaction({
+                    state: 'state_get_language',
+                    reply: [
+                            "Thank you. Please select the language you receive message in:",
+                            "1. isiZulu",
+                            "2. isiXhosa",
+                            "3. Afrikaans",
+                            "4. English",
+                            "5. Sesotho sa Leboa",
+                            "6. Setswana",
+                            "7. More"
+                    ].join('\n')
+                  })
+                  .run();
+                });
+              });
             });
+
             describe('if user registered with Passport', function(){
               it ('should ask user to enter passport number', function(){
                 return tester
@@ -210,7 +238,35 @@ describe('app', function() {
                 })
                 .run();
               });
+
+              describe('after user enters passport number', function(){
+                it('should lits the language options', function(){
+                  return tester
+                  .setup.user.addr('27820001001')
+                  .inputs(
+                    {session_event: 'new'},
+                    "1",
+                    "0820001016",
+                    "AA95010938"
+                  )
+                  .check.interaction({
+                    state: 'state_get_language',
+                    reply: [
+                            "Thank you. Please select the language you receive message in:",
+                            "1. isiZulu",
+                            "2. isiXhosa",
+                            "3. Afrikaans",
+                            "4. English",
+                            "5. Sesotho sa Leboa",
+                            "6. Setswana",
+                            "7. More"
+                    ].join('\n')
+                  })
+                  .run();
+                });
+              });
             });
+
             describe('if user registered using date of birth', function(){
               it ('should ask user to enter date of birth', function(){
                 return tester
@@ -241,15 +297,44 @@ describe('app', function() {
                     )
                     .check.interaction({
                       state: 'state_get_date_of_birth',
-                      reply: 
+                      reply:
                         'Sorry that is not the correct format. Please enter your date of ' +
                         'birth in the following format: dd/mm/yyyy. For example 19/05/1990'
                     })
                     .run();
                 });
               });
+
+              describe('after user enters date of birth', function(){
+                it('should lits the language options', function(){
+                  return tester
+                  .setup.user.addr('27820001001')
+                  .inputs(
+                    {session_event: 'new'},
+                    "1",
+                    "0820001017",
+                    "08/08/1997"
+                  )
+                  .check.interaction({
+                    state: 'state_get_language',
+                    reply: [
+                            "Thank you. Please select the language you receive message in:",
+                            "1. isiZulu",
+                            "2. isiXhosa",
+                            "3. Afrikaans",
+                            "4. English",
+                            "5. Sesotho sa Leboa",
+                            "6. Setswana",
+                            "7. More"
+                    ].join('\n')
+                  })
+                  .run();
+                });
+              });
+
             });
           });
+
 
             describe('user registered on momconnect', function() {
                 it('should go to state_all_questions_view', function() {
