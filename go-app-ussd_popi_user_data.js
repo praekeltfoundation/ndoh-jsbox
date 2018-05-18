@@ -7,6 +7,7 @@ go.app = function() {
     var MetricsHelper = require('go-jsbox-metrics-helper');
     var Q = require('q');
     var _ = require('lodash');
+    var moment = require('moment');
     var App = vumigo.App;
     var EndState = vumigo.states.EndState;
     var ChoiceState = vumigo.states.ChoiceState;
@@ -762,7 +763,7 @@ go.app = function() {
           return new FreeText(name, {
             question: $("Thank you. To change your mobile number we first need to " +
                       "verify your identity. Please enter your SA ID number now."),
-            next: 'state_get_langauge'
+            next: 'state_get_language'
           });
         });
 
@@ -770,7 +771,7 @@ go.app = function() {
           return new FreeText(name, {
             question: $("Thank you. To change your mobile number we first need to " +
                       "verify your identity. Please enter your passport number now."),
-            next: 'state_get_langauge'
+            next: 'state_get_language'
           });
         });
 
@@ -778,7 +779,20 @@ go.app = function() {
           return new FreeText(name, {
             question: $("Thank you. To change your mobile number we first need to " +
                       "verify your identity. Please enter your date of birth in the following format: dd/mm/yyyy"),
-            next: 'state_get_langauge'
+            next: 'state_get_language',
+            check: function(content) {
+                content = content.trim();
+                if(content.match(/^\d{2}\/\d{2}\/\d{4}$/) !== null) {
+                    date = moment(content, "DD/MM/YYYY")
+                    if(date.isValid()) {
+                        return null; // valid date format
+                    }
+                }
+                return $(
+                    "Sorry that is not the correct format. Please enter your date of " +
+                    "birth in the following format: dd/mm/yyyy. For example 19/05/1990"
+                );
+            }
           });
         });
     });

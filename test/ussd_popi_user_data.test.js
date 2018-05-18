@@ -228,6 +228,26 @@ describe('app', function() {
                 })
                 .run();
               });
+
+              describe('if the user enters an invalid format for date of birth', function() {
+                it('should notify the user and ask them to retry', function() {
+                  return tester
+                    .setup.user.addr('27820001001')
+                    .inputs(
+                      {session_event: 'new'},
+                      "1",
+                      "0820001017",
+                      "1990/05/19"
+                    )
+                    .check.interaction({
+                      state: 'state_get_date_of_birth',
+                      reply: 
+                        'Sorry that is not the correct format. Please enter your date of ' +
+                        'birth in the following format: dd/mm/yyyy. For example 19/05/1990'
+                    })
+                    .run();
+                });
+              });
             });
           });
 
