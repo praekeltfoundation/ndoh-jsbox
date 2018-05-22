@@ -857,7 +857,21 @@ go.app = function() {
       self.add('state_enter_new_phone_number', function(name){
         return new FreeText(name, {
             question: $("Thank you. Please enter the new number you would like to use to receive messages from MomConnect."),
-            next: 'state_check_new_number'
+            next: 'state_verify_new_number'
+        });
+      });
+
+      self.add('state_verify_new_number', function(name){
+        var new_number = self.im.user.get_answer("state_enter_new_phone_number");
+        return new ChoiceState(name, {
+          question: $("You have entered {{new_number}} as the new number you would like " +
+                      "to receive MomConnect messages on. Is this number correct?").context({new_number : new_number}),
+          choices: [
+              new Choice(
+                  'state_verify_new_number_in_database',
+                  $("Yes")),
+              new Choice('state_enter_new_phone_number', $("No - enter again"))
+          ]
         });
       });
     });

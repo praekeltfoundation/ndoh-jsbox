@@ -432,6 +432,31 @@ describe('app', function() {
             });
           });
 
+          describe('user enters new phone number', function(){
+            it('it should ask if new number is correct', function(){
+              return tester
+              .setup.user.addr('27820001001')
+              .inputs(
+                  {session_event: 'new'},
+                  "1",
+                  "0820001002",
+                  "5101025009086",
+                  "4",
+                  "27820001001"
+              )
+              .check.interaction({
+                state: 'state_verify_new_number',
+                reply:[
+                        "You have entered 27820001001 as the new number you would like " +
+                        "to receive MomConnect messages on. Is this number correct?",
+                        "1. Yes",
+                        "2. No - enter again"
+                      ].join("\n")
+              })
+              .run();
+            });
+          });
+
             describe('user registered on momconnect', function() {
                 it('should go to state_all_questions_view', function() {
                     return tester
