@@ -903,6 +903,18 @@ go.app = function() {
           ]
         });
       });
+
+      self.add('state_new_number_channel', function(name) {
+          return new ChoiceState(name, {
+              question: $('Thank you. How would you like to receive messages about you and your baby?'),
+              choices: [
+                  new Choice('whatsapp', $('WhatsApp')),
+                  new Choice('sms', $('SMS'))
+              ],
+              next: 'state_switch_number'
+          });
+      });
+
     });
 
     return {

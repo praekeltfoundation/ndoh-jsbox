@@ -483,6 +483,31 @@ describe('app', function() {
             });
           });
 
+          describe('user enters number not in database', function(){
+            it('should ask what channel user prefers to use', function(){
+              return tester
+              .setup.user.addr('27820001001')
+              .inputs(
+                  {session_event: 'new'},
+                  "1",
+                  "0820001002",
+                  "5101025009086",
+                  "4",
+                  "27820001001",
+                  "1"
+              )
+              .check.interaction({
+                state: "state_new_number_channel",
+                reply:[
+                      "Thank you. How would you like to receive messages about you and your baby?",
+                      "1. WhatsApp",
+                      "2. SMS"
+                      ].join("\n")
+              })
+              .run();
+            });
+          });
+
             describe('user registered on momconnect', function() {
                 it('should go to state_all_questions_view', function() {
                     return tester
