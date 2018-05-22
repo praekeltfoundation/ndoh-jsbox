@@ -845,6 +845,7 @@ go.app = function() {
             return self.states.create('state_incorrect_security_answers');
           }
         }
+      return self.states.create('state_enter_new_phone_number');
       });
 
       self.add('state_incorrect_security_answers', function(name){
@@ -853,6 +854,13 @@ go.app = function() {
           "We are not able to change your mobile number. Please visit the clinic "+
           "to register your new number."),
           next: 'state_start'
+        });
+      });
+
+      self.add('state_enter_new_phone_number', function(name){
+        return new FreeText(name, {
+            question: $("Thank you. Please enter the new number you would like to use to receive messages from MomConnect."),
+            next: 'state_check_new_number'
         });
       });
     });

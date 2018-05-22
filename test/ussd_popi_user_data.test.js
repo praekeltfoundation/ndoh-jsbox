@@ -413,6 +413,25 @@ describe('app', function() {
             });
           });
 
+          describe('user answered security questions correctly', function(){
+            it ('should ask user to enter new phone number', function(){
+              return tester
+              .setup.user.addr('27820001001')
+              .inputs(
+                  {session_event: 'new'},
+                  "1",
+                  "0820001002",
+                  "5101025009086",
+                  "4"
+              )
+              .check.interaction({
+                state: 'state_enter_new_phone_number',
+                reply: "Thank you. Please enter the new number you would like to use to receive messages from MomConnect."
+              })
+              .run();
+            });
+          });
+
             describe('user registered on momconnect', function() {
                 it('should go to state_all_questions_view', function() {
                     return tester
