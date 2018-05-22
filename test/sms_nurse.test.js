@@ -48,7 +48,7 @@ describe("app", function() {
                     },
                     logging: "off",
                     env: 'test',
-                    metric_store: 'test_metric_store',             
+                    metric_store: 'test_metric_store',
                     public_holidays: [
                         "2015-01-01",  // new year's day
                         "2015-03-21",  // human rights day
@@ -211,7 +211,7 @@ describe("app", function() {
             });
         });
 
-        describe("when the user sends a different message", function() {            
+        describe("when the user sends a different message", function() {
             describe("when the message is received between 08:00 and 16:00", function() {
                 it("should log a support ticket", function() {
                     return tester
@@ -228,7 +228,7 @@ describe("app", function() {
                                 'receive a response soon. Kind regards. NurseConnect.'
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [52, 54, 182, 251]);
+                            utils.check_fixtures_used(api, [52, 54, 182, 253]);
                         })
                         .run();
                 });
@@ -250,7 +250,7 @@ describe("app", function() {
                                 "Responses will be delayed outside of these hrs."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [52, 54, 182, 251]);
+                            utils.check_fixtures_used(api, [52, 54, 182, 253]);
                         })
                         .run();
                 });
@@ -272,7 +272,7 @@ describe("app", function() {
                                 "and public holidays. Responses will be delayed during this time."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [52, 54, 182, 251]);
+                            utils.check_fixtures_used(api, [52, 54, 182, 253]);
                         })
                         .run();
                 });
@@ -294,7 +294,7 @@ describe("app", function() {
                                 "and public holidays. Responses will be delayed during this time."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [52, 54, 182, 251]);
+                            utils.check_fixtures_used(api, [52, 54, 182, 253]);
                         })
                         .run();
                 });

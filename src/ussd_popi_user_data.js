@@ -719,11 +719,11 @@ go.app = function() {
           return new FreeText(name, {
             question: $("Please enter the number you receive MomConnect messages on."),
             next: 'state_find_identity'
-          })
-        })
+          });
+        });
 
         self.add('state_find_identity', function(name){
-          var msisdn = utils.normalize_msisdn(self.im.user.get_answer('state_old_number'), "27")
+          var msisdn = utils.normalize_msisdn(self.im.user.get_answer('state_old_number'), "27");
           return is.get_identity_by_address({
             msisdn: msisdn
           })
@@ -733,13 +733,13 @@ go.app = function() {
               return self.states.create('state_invalid_old_number');
             }
             else if (!!identity.details.sa_id_no) {
-              return self.states.create('state_get_sa_id')
+              return self.states.create('state_get_sa_id');
             }
             else if (!!identity.details.passport_no) {
-              return self.states.create('state_get_passport_no')
+              return self.states.create('state_get_passport_no');
             }
             else if (!!identity.details.mom_dob) {
-              return self.states.create('state_get_date_of_birth')
+              return self.states.create('state_get_date_of_birth');
             }
             else {
               return self.states.create('state_invalid_old_number');
@@ -784,7 +784,7 @@ go.app = function() {
             check: function(content) {
                 content = content.trim();
                 if(content.match(/^\d{2}\/\d{2}\/\d{4}$/) !== null) {
-                    date = moment(content, "DD/MM/YYYY")
+                    var date = moment(content, "DD/MM/YYYY");
                     if(date.isValid()) {
                         return null; // valid date format
                     }
@@ -875,11 +875,11 @@ go.app = function() {
         });
       });
       self.add('state_verify_new_number_in_database', function(){
-        var msisdn = utils.normalize_msisdn(self.im.user.get_answer('state_enter_new_phone_number'), "27")
+        var msisdn = utils.normalize_msisdn(self.im.user.get_answer('state_enter_new_phone_number'), "27");
         return is.get_or_create_identity({
           msisdn: msisdn
         }).then(function(identity){
-          return sbm.is_identity_subscribed(identity.id, [/^momconnect/, /^whatsapp/])
+          return sbm.is_identity_subscribed(identity.id, [/^momconnect/, /^whatsapp/]);
         }).then(function(subscribed){
           if (subscribed){
             return self.states.create("state_new_number_already_exists");
@@ -941,10 +941,10 @@ go.app = function() {
         var msisdn = self.im.user.get_answer('state_enter_new_phone_number');
         var channel = self.im.user.get_answer('state_new_number_channel');
         if (channel === 'whatsapp'){
-          channel = $('WhatsApp')
+          channel = $('WhatsApp');
         }
         else if (channel === 'sms'){
-          channel = $('SMS')
+          channel = $('SMS');
         }
         return new EndState(name, {
           text: $("Your number has been changed successfully to {{msisdn}}. " +
