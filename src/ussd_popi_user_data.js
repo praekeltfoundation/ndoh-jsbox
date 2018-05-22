@@ -915,6 +915,45 @@ go.app = function() {
           });
       });
 
+      self.add('state_switch_number', function(name){
+        var msisdn = utils.normalize_msisdn(self.im.user.get_answer('state_enter_new_phone_number'), "27");
+        var channel = self.im.user.get_answer('state_new_number_channel');
+        return hub.create_change({
+          "registrant_id": self.im.user.get_answer('user_identity').id,
+          "action": "momconnect_change_msisdn",
+          "data": {
+                    "msisdn": msisdn
+                  }
+        }).then(function(){
+          return hub.create_change({
+            "registrant_id" :self.im.user.get_answer('user_identity').id,
+            "action": 'switch_channel',
+            "data": {
+                      "channel": channel
+                    }
+          });
+        }).then(function(){
+          return self.states.create("state_successful_number_change");
+        });
+      });
+
+      self.add("state_successful_number_change", function(name){
+        var msisdn = self.im.user.get_answer('state_enter_new_phone_number');
+        var channel = self.im.user.get_answer('state_new_number_channel');
+        if (channel === 'whatsapp'){
+          channel = $('WhatsApp')
+        }
+        else if (channel === 'sms'){
+          channel = $('SMS')
+        }
+        return new EndState(name, {
+          text: $("Your number has been changed successfully to {{msisdn}}. " +
+                "You will receive messages on {{channel}}. "+
+                "Thank you for using MomConnect!").context({ msisdn : msisdn,
+                                                             channel : channel}),
+          next: "state_start"
+        });
+      });
     });
 
     return {

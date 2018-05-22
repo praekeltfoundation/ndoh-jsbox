@@ -508,6 +508,41 @@ describe('app', function() {
             });
           });
 
+          describe('user successfully changes number', function(){
+            it('should display successful message', function(){
+              return tester
+              .setup.user.addr('27820001001')
+              .setup(function(api){
+                      api.http.fixtures.add(
+                      fixtures_HubDynamic().change({
+                      identity: 'cb245673-aa41-4302-ac47-00000001002',
+                      action: 'switch_channel',
+                      data: {
+                          channel: 'whatsapp'
+                      }
+                  }));
+                })
+              .inputs(
+                  {session_event: 'new'},
+                  "1",
+                  "0820001002",
+                  "5101025009086",
+                  "4",
+                  "27820001001",
+                  "1",
+                  "1"
+              )
+              .check.interaction({
+                state: "state_successful_number_change",
+                reply:
+                      "Your number has been changed successfully to 27820001001. "+
+                      "You will receive messages on WhatsApp. "+
+                      "Thank you for using MomConnect!"
+              })
+              .run();
+            });
+          });
+
             describe('user registered on momconnect', function() {
                 it('should go to state_all_questions_view', function() {
                     return tester
