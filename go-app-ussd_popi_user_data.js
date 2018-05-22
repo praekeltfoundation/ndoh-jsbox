@@ -866,7 +866,7 @@ go.app = function() {
 
       self.add('state_verify_new_number', function(name){
         var new_number = self.im.user.get_answer("state_enter_new_phone_number");
-        return new ChoiceState(name, {
+        return new MenuState(name, {
           question: $("You have entered {{new_number}} as the new number you would like " +
                       "to receive MomConnect messages on. Is this number correct?").context({new_number : new_number}),
           choices: [
@@ -874,6 +874,35 @@ go.app = function() {
                   'state_verify_new_number_in_database',
                   $("Yes")),
               new Choice('state_enter_new_phone_number', $("No - enter again"))
+          ]
+        });
+      });
+      self.add('state_verify_new_number_in_database', function(){
+        var msisdn = utils.normalize_msisdn(self.im.user.get_answer('state_enter_new_phone_number'), "27")
+        return is.get_or_create_identity({
+          msisdn: msisdn
+        }).then(function(identity){
+          return sbm.is_identity_subscribed(identity.id, [/^momconnect/, /^whatsapp/])
+        }).then(function(subscribed){
+          if (subscribed){
+            return self.states.create("state_new_number_already_exists");
+          }
+          else{
+            return self.states.create("state_new_number_channel");
+          }
+        }
+      );
+      });
+
+      self.add("state_new_number_already_exists", function(name){
+        return new MenuState(name, {
+          question: $("Sorry the number you have entered is already associated with a "+
+                      "MomConnect account. Please try another number."),
+          choices: [
+              new Choice(
+                  'state_enter_new_phone_number',
+                  $("Try again")),
+              new Choice('state_exit', $("Exit"))
           ]
         });
       });

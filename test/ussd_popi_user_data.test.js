@@ -457,6 +457,32 @@ describe('app', function() {
             });
           });
 
+          describe('user enters new phone number that is in database', function(){
+            it('it should ask if user wants to try again', function(){
+              return tester
+              .setup.user.addr('27820001001')
+              .inputs(
+                  {session_event: 'new'},
+                  "1",
+                  "0820001002",
+                  "5101025009086",
+                  "4",
+                  "27820001002",
+                  "1"
+              )
+              .check.interaction({
+                state: 'state_new_number_already_exists',
+                reply:[
+                      "Sorry the number you have entered is already associated with a MomConnect account. "+
+                      "Please try another number.",
+                      "1. Try again",
+                      "2. Exit"
+                      ].join("\n")
+              })
+              .run();
+            });
+          });
+
             describe('user registered on momconnect', function() {
                 it('should go to state_all_questions_view', function() {
                     return tester
