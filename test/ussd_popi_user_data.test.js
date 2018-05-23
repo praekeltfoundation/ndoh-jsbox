@@ -195,7 +195,7 @@ describe('app', function() {
               });
 
               describe('after user enters ID number', function(){
-                it('should lits the language options', function(){
+                it('should list the language options', function(){
                   return tester
                   .setup.user.addr('27820001001')
                   .inputs(
@@ -240,7 +240,7 @@ describe('app', function() {
               });
 
               describe('after user enters passport number', function(){
-                it('should lits the language options', function(){
+                it('should list the language options', function(){
                   return tester
                   .setup.user.addr('27820001001')
                   .inputs(
@@ -306,7 +306,7 @@ describe('app', function() {
               });
 
               describe('after user enters date of birth', function(){
-                it('should lits the language options', function(){
+                it('should list the language options', function(){
                   return tester
                   .setup.user.addr('27820001001')
                   .inputs(
