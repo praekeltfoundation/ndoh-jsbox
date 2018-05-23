@@ -874,7 +874,7 @@ go.app = function() {
                     self.im.user.set_answer('state_pilot', confirmed ? 'whatsapp' : 'sms');
                     return self.states.create('state_language');
                 });
-        })
+        });
 
         self.add('state_language', function(name) {
             return new PaginatedChoiceState(name, {

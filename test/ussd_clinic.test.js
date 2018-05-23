@@ -364,7 +364,7 @@ describe("app", function() {
                                 183, // 'post.is.msisdn.27820001001'
                                 204, // update identity cb245673-aa41-4302-ac47-00000001001
                             ]
-                        })
+                        });
                         // dynamic fixture
                         api.http.fixtures.add(fixtures_Pilot().not_exists({
                             number: '+27123456789',
@@ -572,7 +572,7 @@ describe("app", function() {
                             183, // 'post.is.msisdn.27820001001'
                             204, // update identity cb245673-aa41-4302-ac47-00000001001
                         ]
-                    })
+                    });
                     // dynamic fixture
                     api.http.fixtures.add(fixtures_Pilot().not_exists({
                         number: '+27123456789',
@@ -1094,7 +1094,7 @@ describe("app", function() {
                                 180, // 'get.is.msisdn.27820001001'
                                 183, // 'post.is.msisdn.27820001001'
                             ]
-                        })
+                        });
                         // dynamic fixture
                         api.http.fixtures.add(fixtures_Pilot().not_exists({
                             number: '+27123456789',
@@ -1181,7 +1181,7 @@ describe("app", function() {
                                 180, // 'get.is.msisdn.27820001001'
                                 183, // 'post.is.msisdn.27820001001'
                             ]
-                        })
+                        });
                         // dynamic fixture
                         api.http.fixtures.add(fixtures_Pilot().not_exists({
                             number: '+27123456789',
@@ -1329,7 +1329,7 @@ describe("app", function() {
                                 180, // 'get.is.msisdn.27820001001'
                                 183, // 'post.is.msisdn.27820001001'
                             ]
-                        })
+                        });
                         // dynamic fixture
                         api.http.fixtures.add(fixtures_Pilot().not_exists({
                             number: '+27123456789',
@@ -1401,7 +1401,7 @@ describe("app", function() {
                                 183, // 'post.is.msisdn.27820001001'
                                 187, // update identity cb245673-aa41-4302-ac47-00000001001
                             ]
-                        })
+                        });
                         // dynamic fixture
                         api.http.fixtures.add(fixtures_Pilot().not_exists({
                             number: '+27123456789',
@@ -1456,7 +1456,7 @@ describe("app", function() {
                                 183, // 'post.is.msisdn.27820001001'
                                 188, // update identity cb245673-aa41-4302-ac47-00000001001
                             ]
-                        })
+                        });
                         // dynamic fixture
                         api.http.fixtures.add(fixtures_Pilot().not_exists({
                             number: '+27123456789',
@@ -1534,7 +1534,7 @@ describe("app", function() {
                                 183, // 'post.is.msisdn.27820001001'
                                 189, // update identity cb245673-aa41-4302-ac47-00000001001
                             ]
-                        })
+                        });
                         // dynamic fixture
                         api.http.fixtures.add(fixtures_Pilot().not_exists({
                             number: '+27123456789',

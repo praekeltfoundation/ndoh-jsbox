@@ -748,10 +748,6 @@ go.app = function() {
             var api_token = pilot_config.api_token;
             var api_number = pilot_config.api_number;
 
-            // var default_params = _.merge({
-            //     number: api_number,
-            // }, params);
-
             var msisdn = params.address;
 
             // Always allow people on the whitelist
