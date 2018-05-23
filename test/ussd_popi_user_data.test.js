@@ -280,7 +280,7 @@ describe('app', function() {
                   state: 'state_get_date_of_birth',
                   reply: "Thank you. To change your mobile number we first " +
                           "need to verify your identity. " +
-                          "Please enter your date of birth in the following format: dd/mm/yyyy"
+                          "Please enter your date of birth in the following format: dd*mm*yyyy"
                 })
                 .run();
               });
@@ -293,13 +293,13 @@ describe('app', function() {
                       {session_event: 'new'},
                       "1",
                       "0820001017",
-                      "1990/05/19"
+                      "1990*05*19"
                     )
                     .check.interaction({
                       state: 'state_get_date_of_birth',
                       reply:
                         'Sorry that is not the correct format. Please enter your date of ' +
-                        'birth in the following format: dd/mm/yyyy. For example 19/05/1990'
+                        'birth in the following format: dd*mm*yyyy. For example 19*05*1990'
                     })
                     .run();
                 });
@@ -313,7 +313,7 @@ describe('app', function() {
                     {session_event: 'new'},
                     "1",
                     "0820001017",
-                    "08/08/1997"
+                    "08*08*1997"
                   )
                   .check.interaction({
                     state: 'state_get_language',
@@ -381,7 +381,7 @@ describe('app', function() {
                 {session_event: 'new'},
                 "1",
                 "0820001017",
-                "17/01/2001",
+                "17*01*2001",
                 "4"
               )
               .check.interaction({

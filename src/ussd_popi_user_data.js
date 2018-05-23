@@ -779,19 +779,19 @@ go.app = function() {
         self.add('state_get_date_of_birth', function(name){
           return new FreeText(name, {
             question: $("Thank you. To change your mobile number we first need to " +
-                      "verify your identity. Please enter your date of birth in the following format: dd/mm/yyyy"),
+                      "verify your identity. Please enter your date of birth in the following format: dd*mm*yyyy"),
             next: 'state_get_language',
             check: function(content) {
                 content = content.trim();
-                if(content.match(/^\d{2}\/\d{2}\/\d{4}$/) !== null) {
-                    var date = moment(content, "DD/MM/YYYY");
+                if(content.match(/^\d{2}\*\d{2}\*\d{4}$/) !== null) {
+                    var date = moment(content, "DD*MM*YYYY");
                     if(date.isValid()) {
                         return null; // valid date format
                     }
                 }
                 return $(
                     "Sorry that is not the correct format. Please enter your date of " +
-                    "birth in the following format: dd/mm/yyyy. For example 19/05/1990"
+                    "birth in the following format: dd*mm*yyyy. For example 19*05*1990"
                 );
             }
           });
@@ -827,6 +827,7 @@ go.app = function() {
         var sa_id = self.im.user.get_answer('state_get_sa_id');
         var passport_no = self.im.user.get_answer('state_get_passport_no');
         var date_of_birth = self.im.user.get_answer('state_get_date_of_birth');
+
         if(sa_id !== undefined){
           if (identity.details.sa_id_no !== sa_id){
             return self.states.create('state_incorrect_security_answers');
@@ -838,6 +839,7 @@ go.app = function() {
           }
         }
         if(date_of_birth !== undefined){
+          date_of_birth = moment(date_of_birth, "DD*MM*YYYY").format("YYYY-MM-DD");
           if (identity.details.mom_dob !== date_of_birth){
             return self.states.create('state_incorrect_security_answers');
           }
