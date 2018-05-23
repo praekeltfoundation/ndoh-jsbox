@@ -845,7 +845,7 @@ go.app = function() {
             return self.states.create('state_incorrect_security_answers');
           }
         }
-      return self.states.create('state_enter_new_phone_number');
+        return self.states.create('state_enter_new_phone_number');
       });
 
       self.add('state_incorrect_security_answers', function(name){
