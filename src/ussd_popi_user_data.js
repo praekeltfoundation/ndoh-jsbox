@@ -925,13 +925,32 @@ go.app = function() {
                     "msisdn": msisdn
                   }
         }).then(function(){
-          return hub.create_change({
-            "registrant_id" :self.im.user.get_answer('user_identity').id,
-            "action": 'switch_channel',
-            "data": {
-                      "channel": channel
-                    }
+          return sbm.list_active_subscriptions(self.im.user.get_answer('user_identity').id);
+        }).then(function(active_subscriptions){
+          // Get the list of channels that they're currently receiving messages on
+          var promises = active_subscriptions.results.map(function(result){
+              return sbm.get_messageset(result.messageset);
           });
+          return Q.all(promises);
+        })
+        .then(function(allmset){
+          var channels = allmset.map(function(mset) {
+            return mset.short_name.match(/whatsapp/) ? 'whatsapp' : 'sms';
+          });
+          var non_matching = _.filter(channels, function(c){
+            return c !== channel;
+          });
+          // If they have a channel that doesn't match their channel selection,
+          // do a channel switch
+          if(!_.isEmpty(non_matching)) {
+            return hub.create_change({
+              "registrant_id" :self.im.user.get_answer('user_identity').id,
+              "action": 'switch_channel',
+              "data": {
+                        "channel": channel
+                      }
+            });
+          }
         }).then(function(){
           return self.states.create("state_successful_number_change");
         });
