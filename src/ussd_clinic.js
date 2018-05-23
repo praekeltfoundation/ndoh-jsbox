@@ -423,8 +423,8 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $(
                     'We need to collect, store & use her info. She ' +
-                    'may get messages on public holidays & weekends. ' +
-                    'Does she consent?'),
+                    'may get WhatsApp or SMS messages on public ' +
+                    'holidays & weekends. Does she consent?'),
                 choices: [
                     new Choice('yes', $('Yes')),
                     new Choice('no', $('No')),
@@ -879,34 +879,9 @@ go.app = function() {
                 })
                 .then(function(confirmed) {
                     self.im.user.set_answer('registered_on_whatsapp', confirmed);
-                    return confirmed
-                        ? self.states.create('state_pilot')
-                        : self.states.create('state_language');
+                    self.im.user.set_answer('state_pilot', confirmed ? 'whatsapp' : 'sms');
+                    return self.states.create('state_language');
                 });
-        });
-
-        self.add('state_pilot', function(name) {
-            var pilot_config = self.im.config.pilot || {};
-            var nudge_threshold = pilot_config.nudge_threshold || 0.0;
-            var question = $('How would the pregnant mother like to receive the messages?');
-            var whatsapp_label = $('WhatsApp');
-            var sms_label = $('SMS');
-
-            if(self.im.user.answers.state_language == 'eng_ZA' && Math.random() < nudge_threshold) {
-                question = $("Would the pregnant mother prefer to receive messages via WhatsApp?");
-                whatsapp_label = $('Yes');
-                sms_label = $('No');
-            }
-
-            self.im.user.set_answer("state_pilot_question", question.args[0]);
-            return new ChoiceState(name, {
-                question: question,
-                choices: [
-                    new Choice('whatsapp', whatsapp_label),
-                    new Choice('sms', sms_label),
-                ],
-                next: 'state_language'
-            });
         });
 
         self.add('state_language', function(name) {

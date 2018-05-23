@@ -1720,11 +1720,15 @@ describe("app", function() {
                 .setup.user.addr("27820001001")
                 .inputs.apply(this, sessionArgs)
                 .check.interaction({
-                    state: "state_pilot",
+                    state: "state_language",
                     reply: [
-                        'How would the pregnant mother like to receive the messages?',
-                        '1. WhatsApp',
-                        '2. SMS',
+                        'Please select the language that the mother would like to get messages in:',
+                        '1. isiZulu',
+                        '2. isiXhosa',
+                        '3. Afrikaans',
+                        '4. English',
+                        '5. Sesotho sa Leboa',
+                        '6. More'
                     ].join('\n')
                 })
                 .check(function (api, im, app) {
@@ -1813,8 +1817,7 @@ describe("app", function() {
                         }));
                 })
                 .setup.user.addr("27820001001")
-                // Add '1' for 'state_pilot - opt in'
-                .inputs.apply(this, sessionArgs.concat(['1']))
+                .inputs.apply(this, sessionArgs)
                 .check.interaction({
                     state: "state_language"
                 })
@@ -1858,18 +1861,16 @@ describe("app", function() {
                                 address: '+27820001001',
                                 wait: true
                         })),
-                        api.http.fixtures.add(
-                            fixtures_Pilot().patch_identity({
-                                identity: 'cb245673-aa41-4302-ac47-00000001001',
-                                address: '+27820001001',
-                                language: 'eng_ZA',
-                                details: {
-                                    clinic: {
-                                        redial_sms_sent: false
-                                    }
+                        api.http.fixtures.add(fixtures_Pilot().patch_identity({
+                            identity: 'cb245673-aa41-4302-ac47-00000001001',
+                            address: '+27820001001',
+                            language: 'eng_ZA',
+                            details: {
+                                clinic: {
+                                    redial_sms_sent: false
                                 }
                             }
-                        )),
+                        })),
                         api.http.fixtures.add(fixtures_Pilot().post_registration({
                             identity: 'cb245673-aa41-4302-ac47-00000001001',
                             address: '27820001001',
@@ -1896,8 +1897,8 @@ describe("app", function() {
                     ];
                 })
                 .setup.user.addr("27820001001")
-                // Add '1' for 'state_pilot - opt in', '4' for 'state_language - english'
-                .inputs.apply(this, sessionArgs.concat(['1', '4']))
+                // Add '4' for 'state_language - english'
+                .inputs.apply(this, sessionArgs.concat(['4']))
                 .check.interaction({
                     state: "state_end_success"
                 })
