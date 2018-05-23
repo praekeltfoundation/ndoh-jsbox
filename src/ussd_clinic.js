@@ -751,7 +751,7 @@ go.app = function() {
                 next: function(content) {
                     var mom_dob = utils.extract_za_id_dob(content);
                     self.im.user.set_answer("mom_dob", mom_dob);
-                    return 'state_pilot_randomisation';
+                    return 'state_pilot_check';
                 }
             });
         });
@@ -785,7 +785,7 @@ go.app = function() {
                         return error;
                     }
                 },
-                next: 'state_pilot_randomisation'
+                next: 'state_pilot_check'
             });
         });
 
@@ -837,7 +837,7 @@ go.app = function() {
                                utils.double_digit_number(content));
                     self.im.user.set_answer("mom_dob", dob);
                     if (utils.is_valid_date(dob, 'YYYY-MM-DD')) {
-                        return 'state_pilot_randomisation';
+                        return 'state_pilot_check';
                     } else {
                         return 'state_invalid_dob';
                     }
@@ -858,31 +858,23 @@ go.app = function() {
             });
         });
 
-        self.add('state_pilot_randomisation', function(name) {  // interstitial state
-            var facilitycode = self.im.user.answers.state_clinic_code;
+        self.add('state_pilot_check', function (name) {   // interstitial state
             var address = self.im.user.answers.registrant_msisdn;
             return self
-                .can_participate_in_pilot(facilitycode)
-                .then(function(confirmed) {
-                    if(confirmed) {
-                        // NOTE:    Here we run the same check again but instead
-                        //          tell it to wait for the result but this should
-                        //          now be quick as it's already completed
-                        //          at the gateway level
-                        return self.is_valid_recipient_for_pilot({
-                            msisdns: [address],
-                            wait: true,
-                        });
-                    } else {
-                        return false;
-                    }
+                // NOTE:    Here we run the same check again but instead
+                //          tell it to wait for the result but this should
+                //          now be quick as it's already completed
+                //          at the gateway level
+                .is_valid_recipient_for_pilot({
+                    msisdns: [address],
+                    wait: true,
                 })
                 .then(function(confirmed) {
                     self.im.user.set_answer('registered_on_whatsapp', confirmed);
                     self.im.user.set_answer('state_pilot', confirmed ? 'whatsapp' : 'sms');
                     return self.states.create('state_language');
                 });
-        });
+        })
 
         self.add('state_language', function(name) {
             return new PaginatedChoiceState(name, {
