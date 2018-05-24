@@ -175,7 +175,7 @@ describe("app", function() {
                                 'receive a response soon. Kind regards. MomConnect.'
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 181, 250]);
+                            utils.check_fixtures_used(api, [51, 54, 181, 252]);
                         })
                         .run();
                 });
@@ -198,7 +198,7 @@ describe("app", function() {
                                 "emergency please go to your health provider immediately."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 181, 250]);
+                            utils.check_fixtures_used(api, [51, 54, 181, 252]);
                         })
                         .run();
                 });
@@ -221,7 +221,7 @@ describe("app", function() {
                                 "health provider immediately."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 181, 250]);
+                            utils.check_fixtures_used(api, [51, 54, 181, 252]);
                         })
                         .run();
                 });
@@ -244,7 +244,7 @@ describe("app", function() {
                                 "health provider immediately."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 181, 250]);
+                            utils.check_fixtures_used(api, [51, 54, 181, 252]);
                         })
                         .run();
                 });

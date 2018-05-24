@@ -16,6 +16,8 @@
     // (+27820001013) - existing identity with an active MomConnect subscription (no active NurseConnect subscription) and multiple messagesets
     // (+27820001014) - existing identity; two msisdn's (other is +27820001002 not opted out)
     // (+27820001015) - existing identity; two msisdn's (opted out on +27820001002)
+    // (+27820001016) - existing identity; registered with passport
+    // (+27820001017) - existing identity; registered with date of birth
 
 // PMTCT
     // (+27820000111) active sub non-pmtct; no consent, no dob
@@ -2163,7 +2165,7 @@ module.exports = function() {
             "response": {}
         },
 
-        
+
 
         // 242: get identity by msisdn +27820001013
         {
@@ -2439,6 +2441,95 @@ module.exports = function() {
                 }
             },
             "response": {}
+        },
+
+        // 250: get identity by msisdn +27820001016
+        {
+            "key": "get.is.msisdn.27820001016",
+            "repeatable": true,
+            "request": {
+                "url": 'http://is/api/v1/identities/search/',
+                "method": 'GET',
+                "params": {
+                    "details__addresses__msisdn": '+27820001016',
+                    "include_inactive": "False"
+                }
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001016/",
+                            "id": "cb245673-aa41-4302-ac47-00000001016",
+                            "version": 1,
+                            "details": {
+                                "default_addr_type": "msisdn",
+                                "addresses": {
+                                    "msisdn": {
+                                        "+27820001016": {"default": true}
+                                    }
+                                },
+                                "lang_code": "eng_ZA",
+                                "consent": true,
+                                "passport_no": "AA510102500",
+                                "mom_dob": "1951-01-02",
+                                "source": "clinic",
+                                "last_mc_reg_on": "clinic"
+                            },
+                            "created_at": "2016-08-05T06:13:29.693272Z",
+                            "updated_at": "2016-08-05T06:13:29.693298Z"
+                        }
+                    ]
+                }
+            }
+        },
+
+        // 251: get identity by msisdn +27820001017
+        {
+            "key": "get.is.msisdn.27820001017",
+            "repeatable": true,
+            "request": {
+                "url": 'http://is/api/v1/identities/search/',
+                "method": 'GET',
+                "params": {
+                    "details__addresses__msisdn": '+27820001017',
+                    "include_inactive": "False"
+                }
+            },
+            "response": {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            "url": "http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000001017/",
+                            "id": "cb245673-aa41-4302-ac47-00000001017",
+                            "version": 1,
+                            "details": {
+                                "default_addr_type": "msisdn",
+                                "addresses": {
+                                    "msisdn": {
+                                        "+27820001017": {"default": true}
+                                    }
+                                },
+                                "lang_code": "eng_ZA",
+                                "consent": true,
+                                "mom_dob": "1951-01-02",
+                                "source": "clinic",
+                                "last_mc_reg_on": "clinic"
+                            },
+                            "created_at": "2016-08-05T06:13:29.693272Z",
+                            "updated_at": "2016-08-05T06:13:29.693298Z"
+                        }
+                    ]
+                }
+            }
         },
     ];
 };

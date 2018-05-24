@@ -107,10 +107,11 @@ describe('app', function() {
                     .check.interaction({
                         state: 'state_not_registered',
                         reply: [
-                            'Sorry, that number is not recognised. Dial in with the number ' +
-                            'you used to register for MomConnect. To update ' +
-                            'number, dial *134*550*7# or register ' +
-                            'at a clinic'
+                            "Sorry, the number you dialled with is not recognised. " +
+                            "Dial in with the number you use for MomConnect to change " +
+                            "your details",
+                            "1. I don't have that SIM",
+                            "2. Exit"
                         ].join('\n')
                     })
                     .check(function(api) {
@@ -119,6 +120,428 @@ describe('app', function() {
                     .run();
                 });
             });
+
+          describe('user does not have SIM', function(){
+            it("should ask for user's old SIM number", function(){
+              return tester
+              .setup.user.addr('27820001001')
+              .inputs(
+                  {session_event: 'new'},
+                  "1"
+              )
+              .check.interaction({
+                state: 'state_old_number',
+                reply: "Please enter the number you receive MomConnect messages on."
+              })
+              .run();
+            });
+          });
+
+          describe('user chooses to exit', function(){
+            it('should exit', function(){
+              return tester
+              .setup.user.addr('27820001001')
+              .inputs(
+                {session_event: 'new'},
+                "2"
+              )
+              .check.interaction({
+                state: "state_exit",
+                reply: "Thank you for using MomConnect. Dial *134*550*7# to see, " +
+                        "change or delete the your MomConnect information."
+              })
+              .run();
+            });
+          });
+
+          describe('user enters invalid old number', function() {
+            it('should ask user to try again or exit', function(){
+              return tester
+              .setup.user.addr('27820001001')
+              .inputs(
+                {session_event: 'new'},
+                "1",
+                "0820111111"
+              )
+              .check.interaction({
+                state: 'state_invalid_old_number',
+                reply: [
+                  "Sorry we do not recognise that number. New to MomConnect?" +
+                  "Please visit a clinic to register. Made a mistake?",
+                  "1. Try again",
+                  "2. Exit"
+                ].join('\n')
+              })
+              .run();
+            });
+          });
+
+          describe('user enters valid old number', function(){
+            describe('if user registered with SA ID', function(){
+              it('should ask user to enter SA ID number', function(){
+                return tester
+                .setup.user.addr('27820001001')
+                .inputs(
+                  {session_event: 'new'},
+                  "1",
+                  "0820001002"
+                )
+                .check.interaction({
+                  state: 'state_get_sa_id',
+                  reply: "Thank you. To change your mobile number we first " +
+                          "need to verify your identity. Please enter your SA ID number now."
+                })
+                .run();
+              });
+
+              describe('after user enters ID number', function(){
+                it('should list the language options', function(){
+                  return tester
+                  .setup.user.addr('27820001001')
+                  .inputs(
+                    {session_event: 'new'},
+                    "1",
+                    "0820001002",
+                    "9501010345647"
+                  )
+                  .check.interaction({
+                    state: 'state_get_language',
+                    reply: [
+                            "Thank you. Please select the language you receive message in:",
+                            "1. isiZulu",
+                            "2. isiXhosa",
+                            "3. Afrikaans",
+                            "4. English",
+                            "5. Sesotho sa Leboa",
+                            "6. Setswana",
+                            "7. More"
+                    ].join('\n')
+                  })
+                  .run();
+                });
+              });
+            });
+
+            describe('if user registered with Passport', function(){
+              it ('should ask user to enter passport number', function(){
+                return tester
+                .setup.user.addr('27820001001')
+                .inputs(
+                  {session_event: 'new'},
+                  "1",
+                  "0820001016"
+                )
+                .check.interaction({
+                  state: 'state_get_passport_no',
+                  reply: "Thank you. To change your mobile number we first " +
+                          "need to verify your identity. Please enter your passport number now."
+                })
+                .run();
+              });
+
+              describe('after user enters passport number', function(){
+                it('should list the language options', function(){
+                  return tester
+                  .setup.user.addr('27820001001')
+                  .inputs(
+                    {session_event: 'new'},
+                    "1",
+                    "0820001016",
+                    "AA95010938"
+                  )
+                  .check.interaction({
+                    state: 'state_get_language',
+                    reply: [
+                            "Thank you. Please select the language you receive message in:",
+                            "1. isiZulu",
+                            "2. isiXhosa",
+                            "3. Afrikaans",
+                            "4. English",
+                            "5. Sesotho sa Leboa",
+                            "6. Setswana",
+                            "7. More"
+                    ].join('\n')
+                  })
+                  .run();
+                });
+              });
+            });
+
+            describe('if user registered using date of birth', function(){
+              it ('should ask user to enter date of birth', function(){
+                return tester
+                .setup.user.addr('27820001001')
+                .inputs(
+                  {session_event: 'new'},
+                  "1",
+                  "0820001017"
+                )
+                .check.interaction({
+                  state: 'state_get_date_of_birth',
+                  reply: "Thank you. To change your mobile number we first " +
+                          "need to verify your identity. " +
+                          "Please enter your date of birth in the following format: dd*mm*yyyy"
+                })
+                .run();
+              });
+
+              describe('if the user enters an invalid format for date of birth', function() {
+                it('should notify the user and ask them to retry', function() {
+                  return tester
+                    .setup.user.addr('27820001001')
+                    .inputs(
+                      {session_event: 'new'},
+                      "1",
+                      "0820001017",
+                      "1990*05*19"
+                    )
+                    .check.interaction({
+                      state: 'state_get_date_of_birth',
+                      reply:
+                        'Sorry that is not the correct format. Please enter your date of ' +
+                        'birth in the following format: dd*mm*yyyy. For example 19*05*1990'
+                    })
+                    .run();
+                });
+              });
+
+              describe('after user enters date of birth', function(){
+                it('should list the language options', function(){
+                  return tester
+                  .setup.user.addr('27820001001')
+                  .inputs(
+                    {session_event: 'new'},
+                    "1",
+                    "0820001017",
+                    "08*08*1997"
+                  )
+                  .check.interaction({
+                    state: 'state_get_language',
+                    reply: [
+                            "Thank you. Please select the language you receive message in:",
+                            "1. isiZulu",
+                            "2. isiXhosa",
+                            "3. Afrikaans",
+                            "4. English",
+                            "5. Sesotho sa Leboa",
+                            "6. Setswana",
+                            "7. More"
+                    ].join('\n')
+                  })
+                  .run();
+                });
+              });
+
+            });
+          });
+
+          describe('user answered security question incorrectly', function(){
+            it('should display error message if SA ID number incorrect', function(){
+              return tester
+              .setup.user.addr('27820001001')
+              .inputs(
+                {session_event: 'new'},
+                "1",
+                "0820001002",
+                "77777",
+                "4"
+              )
+              .check.interaction({
+                state: 'state_incorrect_security_answers',
+                reply: "Sorry one or more of the answers you provided are incorrect. "+
+                "We are not able to change your mobile number. Please visit the clinic "+
+                "to register your new number."
+              })
+              .run();
+            });
+
+            it('should display error message if pasport number incorrect', function(){
+              return tester
+              .setup.user.addr('27820001001')
+              .inputs(
+                {session_event: 'new'},
+                "1",
+                "0820001016",
+                "AAAA1",
+                "4"
+              )
+              .check.interaction({
+                state: 'state_incorrect_security_answers',
+                reply: "Sorry one or more of the answers you provided are incorrect. "+
+                "We are not able to change your mobile number. Please visit the clinic "+
+                "to register your new number."
+              })
+              .run();
+            });
+
+            it('should display error message if date of birth incorrect', function(){
+              return tester
+              .setup.user.addr('27820001001')
+              .inputs(
+                {session_event: 'new'},
+                "1",
+                "0820001017",
+                "17*01*2001",
+                "4"
+              )
+              .check.interaction({
+                state: 'state_incorrect_security_answers',
+                reply: "Sorry one or more of the answers you provided are incorrect. "+
+                "We are not able to change your mobile number. Please visit the clinic "+
+                "to register your new number."
+              })
+              .run();
+            });
+
+            it('should display error message if incorrect language selected', function(){
+              return tester
+              .setup.user.addr('27820001001')
+              .inputs(
+                {session_event: 'new'},
+                "1",
+                "0820001002",
+                "5101025009086",
+                "5"
+              )
+              .check.interaction({
+                state: 'state_incorrect_security_answers',
+                reply: "Sorry one or more of the answers you provided are incorrect. "+
+                "We are not able to change your mobile number. Please visit the clinic "+
+                "to register your new number."
+              })
+              .run();
+            });
+          });
+
+          describe('user answered security questions correctly', function(){
+            it ('should ask user to enter new phone number', function(){
+              return tester
+              .setup.user.addr('27820001001')
+              .inputs(
+                  {session_event: 'new'},
+                  "1",
+                  "0820001002",
+                  "5101025009086",
+                  "4"
+              )
+              .check.interaction({
+                state: 'state_enter_new_phone_number',
+                reply: "Thank you. Please enter the new number you would like to use to receive messages from MomConnect."
+              })
+              .run();
+            });
+          });
+
+          describe('user enters new phone number', function(){
+            it('it should ask if new number is correct', function(){
+              return tester
+              .setup.user.addr('27820001001')
+              .inputs(
+                  {session_event: 'new'},
+                  "1",
+                  "0820001002",
+                  "5101025009086",
+                  "4",
+                  "27820001001"
+              )
+              .check.interaction({
+                state: 'state_verify_new_number',
+                reply:[
+                        "You have entered 27820001001 as the new number you would like " +
+                        "to receive MomConnect messages on. Is this number correct?",
+                        "1. Yes",
+                        "2. No - enter again"
+                      ].join("\n")
+              })
+              .run();
+            });
+          });
+
+          describe('user enters new phone number that is in database', function(){
+            it('it should ask if user wants to try again', function(){
+              return tester
+              .setup.user.addr('27820001001')
+              .inputs(
+                  {session_event: 'new'},
+                  "1",
+                  "0820001002",
+                  "5101025009086",
+                  "4",
+                  "27820001002",
+                  "1"
+              )
+              .check.interaction({
+                state: 'state_new_number_already_exists',
+                reply:[
+                      "Sorry the number you have entered is already associated with a MomConnect account. "+
+                      "Please try another number.",
+                      "1. Try again",
+                      "2. Exit"
+                      ].join("\n")
+              })
+              .run();
+            });
+          });
+
+          describe('user enters number not in database', function(){
+            it('should ask what channel user prefers to use', function(){
+              return tester
+              .setup.user.addr('27820001001')
+              .inputs(
+                  {session_event: 'new'},
+                  "1",
+                  "0820001002",
+                  "5101025009086",
+                  "4",
+                  "27820001001",
+                  "1"
+              )
+              .check.interaction({
+                state: "state_new_number_channel",
+                reply:[
+                      "Thank you. How would you like to receive messages about you and your baby?",
+                      "1. WhatsApp",
+                      "2. SMS"
+                      ].join("\n")
+              })
+              .run();
+            });
+          });
+
+          describe('user successfully changes number', function(){
+            it('should display successful message', function(){
+              return tester
+              .setup.user.addr('27820001001')
+              .setup(function(api){
+                      api.http.fixtures.add(
+                      fixtures_HubDynamic().change({
+                      identity: 'cb245673-aa41-4302-ac47-00000001002',
+                      action: 'switch_channel',
+                      data: {
+                          channel: 'whatsapp'
+                      }
+                  }));
+                })
+              .inputs(
+                  {session_event: 'new'},
+                  "1",
+                  "0820001002",
+                  "5101025009086",
+                  "4",
+                  "27820001001",
+                  "1",
+                  "1"
+              )
+              .check.interaction({
+                state: "state_successful_number_change",
+                reply:
+                      "Your number has been changed successfully to 27820001001. "+
+                      "You will receive messages on WhatsApp. "+
+                      "Thank you for using MomConnect!"
+              })
+              .run();
+            });
+          });
 
             describe('user registered on momconnect', function() {
                 it('should go to state_all_questions_view', function() {
@@ -137,7 +560,7 @@ describe('app', function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [51, 54, 67, 121, 192]);
+                        utils.check_fixtures_used(api, [51, 54, 67, 121, 194]);
                     })
                     .run();
                 });
@@ -395,7 +818,7 @@ describe('app', function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
+                            utils.check_fixtures_used(api, [51, 54, 67, 121, 194, 195]);
                         })
                         .run();
                     });
@@ -426,7 +849,7 @@ describe('app', function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
+                                utils.check_fixtures_used(api, [51, 54, 67, 121, 194, 195]);
                             })
                             .run();
                         });
@@ -450,7 +873,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [36, 51, 54, 67, 121, 192, 193]);
+                                    utils.check_fixtures_used(api, [36, 51, 54, 67, 121, 194, 195]);
                                 })
                                 .run();
                             });
@@ -475,7 +898,7 @@ describe('app', function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
+                                utils.check_fixtures_used(api, [51, 54, 67, 121, 194, 195]);
                             })
                             .run();
                         });
@@ -498,7 +921,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
+                                    utils.check_fixtures_used(api, [51, 54, 67, 121, 194, 195]);
                                 })
                                 .run();
                             });
@@ -523,7 +946,7 @@ describe('app', function() {
                                         ].join('\n')
                                     })
                                     .check(function(api) {
-                                        utils.check_fixtures_used(api, [43, 51, 54, 67, 121, 192, 193]);
+                                        utils.check_fixtures_used(api, [43, 51, 54, 67, 121, 194, 195]);
                                     })
                                     .run();
                                 });
@@ -547,7 +970,7 @@ describe('app', function() {
                                         ].join('\n')
                                     })
                                     .check(function(api) {
-                                        utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
+                                        utils.check_fixtures_used(api, [51, 54, 67, 121, 194, 195]);
                                     })
                                     .run();
                                 });
@@ -572,7 +995,7 @@ describe('app', function() {
                                             ].join('\n')
                                         })
                                         .check(function(api) {
-                                            utils.check_fixtures_used(api, [43, 51, 54, 67, 121, 192, 193]);
+                                            utils.check_fixtures_used(api, [43, 51, 54, 67, 121, 194, 195]);
                                         })
                                         .run();
                                     });
@@ -604,7 +1027,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
+                                    utils.check_fixtures_used(api, [51, 54, 67, 121, 194, 195]);
                                 })
                                 .run();
                             });
@@ -627,7 +1050,7 @@ describe('app', function() {
                                         ].join('\n')
                                     })
                                     .check(function(api) {
-                                        utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
+                                        utils.check_fixtures_used(api, [51, 54, 67, 121, 194, 195]);
                                     })
                                     .run();
                                 });
@@ -653,7 +1076,7 @@ describe('app', function() {
                                             ].join('\n')
                                         })
                                         .check(function(api) {
-                                            utils.check_fixtures_used(api, [42, 51, 54, 67, 121, 192, 193]);
+                                            utils.check_fixtures_used(api, [42, 51, 54, 67, 121, 194, 195]);
                                         })
                                         .run();
                                     });
@@ -679,7 +1102,7 @@ describe('app', function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
+                                utils.check_fixtures_used(api, [51, 54, 67, 121, 194, 195]);
                             })
                             .run();
                         });
@@ -703,7 +1126,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [37, 51, 54, 67, 120, 121, 192, 193]);
+                                    utils.check_fixtures_used(api, [37, 51, 54, 67, 120, 121, 194, 195]);
                                 })
                                 .run();
                             });
@@ -726,7 +1149,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [51, 54, 67, 121, 192, 193]);
+                                    utils.check_fixtures_used(api, [51, 54, 67, 121, 194, 195]);
                                 })
                                 .run();
                             });
@@ -750,7 +1173,7 @@ describe('app', function() {
                                         ].join('\n')
                                     })
                                     .check(function(api) {
-                                        utils.check_fixtures_used(api, [37, 51, 54, 67, 120, 121, 192, 193]);
+                                        utils.check_fixtures_used(api, [37, 51, 54, 67, 120, 121, 194, 195]);
                                     })
                                     .run();
                                 });
@@ -776,7 +1199,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [38, 51, 54, 67, 121, 124, 192, 193]);
+                                    utils.check_fixtures_used(api, [38, 51, 54, 67, 121, 124, 194, 195]);
                                 })
                                 .run();
                             });
@@ -801,7 +1224,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [39, 51, 54, 67, 121, 183, 192, 193]);
+                                    utils.check_fixtures_used(api, [39, 51, 54, 67, 121, 183, 194, 195]);
                                 })
                                 .run();
                             });
@@ -824,7 +1247,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [51, 54, 67, 121, 122, 192, 193]);
+                                    utils.check_fixtures_used(api, [51, 54, 67, 121, 122, 194, 195]);
                                 })
                                 .run();
                             });
@@ -849,7 +1272,7 @@ describe('app', function() {
                                     ].join('\n')
                                 })
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [40, 51, 54, 67, 121, 184, 185, 192, 193]);
+                                    utils.check_fixtures_used(api, [40, 51, 54, 67, 121, 184, 185, 194, 195]);
                                 })
                                 .run();
                             });
@@ -876,7 +1299,7 @@ describe('app', function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 67, 121, 192]);
+                            utils.check_fixtures_used(api, [51, 54, 67, 121, 194]);
                         })
                         .run();
                     });
@@ -901,7 +1324,7 @@ describe('app', function() {
                             .check.user.answer("operator", null)
                             .check.user.answer("msisdn", null)
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [41, 51, 54, 67, 121, 186, 192]);
+                                utils.check_fixtures_used(api, [41, 51, 54, 67, 121, 186, 194]);
                             })
                             .run();
                         });
@@ -924,7 +1347,7 @@ describe('app', function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [51, 54, 67, 121, 192]);
+                                utils.check_fixtures_used(api, [51, 54, 67, 121, 194]);
                             })
                             .run();
                         });
@@ -949,7 +1372,7 @@ describe('app', function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 67, 121, 192]);
+                            utils.check_fixtures_used(api, [51, 54, 67, 121, 194]);
                         })
                         .run();
                     });
@@ -977,7 +1400,7 @@ describe('app', function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [54, 66, 67, 68, 182, 194]);
+                        utils.check_fixtures_used(api, [54, 66, 67, 68, 182, 196]);
                     })
                     .run();
                 });
@@ -1002,7 +1425,7 @@ describe('app', function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [54, 66, 67, 68, 182, 194]);
+                            utils.check_fixtures_used(api, [54, 66, 67, 68, 182, 196]);
                         })
                         .run();
                     });
@@ -1027,7 +1450,7 @@ describe('app', function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [54, 66, 67, 68, 182, 194]);
+                                utils.check_fixtures_used(api, [54, 66, 67, 68, 182, 196]);
                             })
                             .run();
                         });

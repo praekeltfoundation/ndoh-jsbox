@@ -383,7 +383,7 @@ describe("app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [128, 170, 180, 183, 253]);
+                                utils.check_fixtures_used(api, [128, 170, 180, 183, 255]);
                             })
                             .run();
                     });
@@ -410,7 +410,7 @@ describe("app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [128, 170, 180, 181, 183, 254]);
+                                utils.check_fixtures_used(api, [128, 170, 180, 181, 183, 256]);
                             })
                             .run();
                     });
@@ -438,7 +438,7 @@ describe("app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [128, 170, 180, 183, 253]);
+                            utils.check_fixtures_used(api, [128, 170, 180, 183, 255]);
                         })
                         .run();
                 });
@@ -460,7 +460,7 @@ describe("app", function() {
                             state: 'state_not_subscribed'
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [128, 170, 180, 183, 253]);
+                            utils.check_fixtures_used(api, [128, 170, 180, 183, 255]);
                         })
                         .run();
                 });
@@ -528,7 +528,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [13, 100, 128, 170, 180, 183, 209, 250, 253]);
+                    utils.check_fixtures_used(api, [13, 100, 128, 170, 180, 183, 209, 252, 255]);
                 })
                 .run();
             });
@@ -603,7 +603,7 @@ describe("app", function() {
                         , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [13, 100, 170, 180, 183, 190, 250, 253]);
+                        utils.check_fixtures_used(api, [13, 100, 170, 180, 183, 190, 252, 255]);
                     })
                     .run();
             });
@@ -634,7 +634,7 @@ describe("app", function() {
                         assert.deepEqual(metrics['test.ussd_nurse.registrations_started'].values, [1]);
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [14, 101, 128, 170, 180, 181, 183, 236, 251, 254]);
+                        utils.check_fixtures_used(api, [14, 101, 128, 170, 180, 181, 183, 236, 253, 256]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -670,7 +670,7 @@ describe("app", function() {
                         , '1'  // state_facname - confirm
                     )
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [14, 101, 170, 180, 181, 183, 191, 251, 254]);
+                        utils.check_fixtures_used(api, [14, 101, 170, 180, 181, 183, 191, 253, 256]);
                     })
                     .run();
             });
@@ -1311,7 +1311,7 @@ describe("app", function() {
                     })
                     .check(function(api) {
                         // Fixture 46 ensures that the reg_type field is set correctly
-                        utils.check_fixtures_used(api, [46, 55, 142, 170, 184, 239, 249, 252, 255]);
+                        utils.check_fixtures_used(api, [46, 55, 142, 170, 184, 239, 249, 254, 257]);
                     })
                     .run();
             });

@@ -4,6 +4,7 @@ go.app = function() {
     var MetricsHelper = require('go-jsbox-metrics-helper');
     var Q = require('q');
     var _ = require('lodash');
+    var moment = require('moment');
     var App = vumigo.App;
     var EndState = vumigo.states.EndState;
     var ChoiceState = vumigo.states.ChoiceState;
@@ -691,14 +692,289 @@ go.app = function() {
 
 
         self.add('state_not_registered', function(name) {
-            return new EndState(name, {
-                text: $('Sorry, that number is not recognised. Dial in with the number ' +
-                        'you used to register for MomConnect. To update ' +
-                        'number, dial *134*550*7# or register ' +
-                        'at a clinic'),
-                next: 'state_start'
+            return new MenuState(name, {
+                question: $(
+                    "Sorry, the number you dialled with is not recognised. " +
+                    "Dial in with the number you use for MomConnect to change " +
+                    "your details"
+                ),
+                choices: [
+                    new Choice(
+                        'state_old_number',
+                        $("I don't have that SIM")),
+                    new Choice('state_exit', $("Exit"))
+                ]
             });
         });
+
+        self.add('state_exit', function(name){
+          return new EndState(name, {
+            text: $("Thank you for using MomConnect. Dial *134*550*7# to see, " +
+                    "change or delete the your MomConnect information."),
+            next: "state_start"
+          });
+        });
+
+        self.add('state_old_number', function(name){
+          return new FreeText(name, {
+            question: $("Please enter the number you receive MomConnect messages on."),
+            next: 'state_find_identity'
+          });
+        });
+
+        self.add('state_find_identity', function(name){
+          var msisdn = utils.normalize_msisdn(self.im.user.get_answer('state_old_number'), "27");
+          return is.get_identity_by_address({
+            msisdn: msisdn
+          })
+          .then(function(identity){
+            self.im.user.set_answer('user_identity', identity);
+            if (identity === null){
+              return self.states.create('state_invalid_old_number');
+            }
+            else if (!!identity.details.sa_id_no) {
+              return self.states.create('state_get_sa_id');
+            }
+            else if (!!identity.details.passport_no) {
+              return self.states.create('state_get_passport_no');
+            }
+            else if (!!identity.details.mom_dob) {
+              return self.states.create('state_get_date_of_birth');
+            }
+            else {
+              return self.states.create('state_invalid_old_number');
+            }
+          });
+        });
+
+        self.add('state_invalid_old_number', function(name){
+          return new MenuState(name, {
+            question: $("Sorry we do not recognise that number. New to MomConnect?" +
+                        "Please visit a clinic to register. Made a mistake?"),
+            choices: [
+                new Choice(
+                    'state_old_number',
+                    $("Try again")),
+                new Choice('state_exit', $("Exit"))
+            ]
+          });
+        });
+
+        self.add('state_get_sa_id', function(name){
+          return new FreeText(name, {
+            question: $("Thank you. To change your mobile number we first need to " +
+                      "verify your identity. Please enter your SA ID number now."),
+            next: 'state_get_language'
+          });
+        });
+
+        self.add('state_get_passport_no', function(name){
+          return new FreeText(name, {
+            question: $("Thank you. To change your mobile number we first need to " +
+                      "verify your identity. Please enter your passport number now."),
+            next: 'state_get_language'
+          });
+        });
+
+        self.add('state_get_date_of_birth', function(name){
+          return new FreeText(name, {
+            question: $("Thank you. To change your mobile number we first need to " +
+                      "verify your identity. Please enter your date of birth in the following format: dd*mm*yyyy"),
+            next: 'state_get_language',
+            check: function(content) {
+                content = content.trim();
+                if(content.match(/^\d{2}\*\d{2}\*\d{4}$/) !== null) {
+                    var date = moment(content, "DD*MM*YYYY");
+                    if(date.isValid()) {
+                        return null; // valid date format
+                    }
+                }
+                return $(
+                    "Sorry that is not the correct format. Please enter your date of " +
+                    "birth in the following format: dd*mm*yyyy. For example 19*05*1990"
+                );
+            }
+          });
+        });
+
+      self.add('state_get_language', function(name){
+        return new PaginatedChoiceState(name, {
+          question: $("Thank you. Please select the language you receive message in:"),
+          options_per_page: null,
+          choices: [
+              new Choice('zul_ZA', $('isiZulu')),
+              new Choice('xho_ZA', $('isiXhosa')),
+              new Choice('afr_ZA', $('Afrikaans')),
+              new Choice('eng_ZA', $('English')),
+              new Choice('nso_ZA', $('Sesotho sa Leboa')),
+              new Choice('tsn_ZA', $('Setswana')),
+              new Choice('sot_ZA', $('Sesotho')),
+              new Choice('tso_ZA', $('Xitsonga')),
+              new Choice('ssw_ZA', $('siSwati')),
+              new Choice('ven_ZA', $('Tshivenda')),
+              new Choice('nbl_ZA', $('isiNdebele')),
+          ],
+          next: 'state_verify_identification',
+        });
+      });
+
+      self.add('state_verify_identification', function(name){
+        var identity = self.im.user.get_answer('user_identity');
+        var language = self.im.user.get_answer('state_get_language');
+        if (identity.details.lang_code !== language){
+          return self.states.create('state_incorrect_security_answers');
+        }
+        var sa_id = self.im.user.get_answer('state_get_sa_id');
+        var passport_no = self.im.user.get_answer('state_get_passport_no');
+        var date_of_birth = self.im.user.get_answer('state_get_date_of_birth');
+
+        if(sa_id !== undefined){
+          if (identity.details.sa_id_no !== sa_id){
+            return self.states.create('state_incorrect_security_answers');
+          }
+        }
+        if(passport_no !== undefined){
+          if (identity.details.passport_no !== passport_no){
+            return self.states.create('state_incorrect_security_answers');
+          }
+        }
+        if(date_of_birth !== undefined){
+          date_of_birth = moment(date_of_birth, "DD*MM*YYYY").format("YYYY-MM-DD");
+          if (identity.details.mom_dob !== date_of_birth){
+            return self.states.create('state_incorrect_security_answers');
+          }
+        }
+        return self.states.create('state_enter_new_phone_number');
+      });
+
+      self.add('state_incorrect_security_answers', function(name){
+        return new EndState(name, {
+          text: $("Sorry one or more of the answers you provided are incorrect. "+
+          "We are not able to change your mobile number. Please visit the clinic "+
+          "to register your new number."),
+          next: 'state_start'
+        });
+      });
+
+      self.add('state_enter_new_phone_number', function(name){
+        return new FreeText(name, {
+            question: $("Thank you. Please enter the new number you would like to use to receive messages from MomConnect."),
+            next: 'state_verify_new_number'
+        });
+      });
+
+      self.add('state_verify_new_number', function(name){
+        var new_number = self.im.user.get_answer("state_enter_new_phone_number");
+        return new MenuState(name, {
+          question: $("You have entered {{new_number}} as the new number you would like " +
+                      "to receive MomConnect messages on. Is this number correct?").context({new_number : new_number}),
+          choices: [
+              new Choice(
+                  'state_verify_new_number_in_database',
+                  $("Yes")),
+              new Choice('state_enter_new_phone_number', $("No - enter again"))
+          ]
+        });
+      });
+      self.add('state_verify_new_number_in_database', function(){
+        var msisdn = utils.normalize_msisdn(self.im.user.get_answer('state_enter_new_phone_number'), "27");
+        return is.get_or_create_identity({
+          msisdn: msisdn
+        }).then(function(identity){
+          return sbm.is_identity_subscribed(identity.id, [/^momconnect/, /^whatsapp/]);
+        }).then(function(subscribed){
+          if (subscribed){
+            return self.states.create("state_new_number_already_exists");
+          }
+          else{
+            return self.states.create("state_new_number_channel");
+          }
+        }
+      );
+      });
+
+      self.add("state_new_number_already_exists", function(name){
+        return new MenuState(name, {
+          question: $("Sorry the number you have entered is already associated with a "+
+                      "MomConnect account. Please try another number."),
+          choices: [
+              new Choice(
+                  'state_enter_new_phone_number',
+                  $("Try again")),
+              new Choice('state_exit', $("Exit"))
+          ]
+        });
+      });
+
+      self.add('state_new_number_channel', function(name) {
+          return new ChoiceState(name, {
+              question: $('Thank you. How would you like to receive messages about you and your baby?'),
+              choices: [
+                  new Choice('whatsapp', $('WhatsApp')),
+                  new Choice('sms', $('SMS'))
+              ],
+              next: 'state_switch_number'
+          });
+      });
+
+      self.add('state_switch_number', function(name){
+        var msisdn = utils.normalize_msisdn(self.im.user.get_answer('state_enter_new_phone_number'), "27");
+        var channel = self.im.user.get_answer('state_new_number_channel');
+        return hub.create_change({
+          "registrant_id": self.im.user.get_answer('user_identity').id,
+          "action": "momconnect_change_msisdn",
+          "data": {
+                    "msisdn": msisdn
+                  }
+        }).then(function(){
+          return sbm.list_active_subscriptions(self.im.user.get_answer('user_identity').id);
+        }).then(function(active_subscriptions){
+          // Get the list of channels that they're currently receiving messages on
+          var promises = active_subscriptions.results.map(function(result){
+              return sbm.get_messageset(result.messageset);
+          });
+          return Q.all(promises);
+        })
+        .then(function(allmset){
+          var channels = allmset.map(function(mset) {
+            return mset.short_name.match(/whatsapp/) ? 'whatsapp' : 'sms';
+          });
+          var non_matching = _.filter(channels, function(c){
+            return c !== channel;
+          });
+          // If they have a channel that doesn't match their channel selection,
+          // do a channel switch
+          if(!_.isEmpty(non_matching)) {
+            return hub.create_change({
+              "registrant_id" :self.im.user.get_answer('user_identity').id,
+              "action": 'switch_channel',
+              "data": {
+                        "channel": channel
+                      }
+            });
+          }
+        }).then(function(){
+          return self.states.create("state_successful_number_change");
+        });
+      });
+
+      self.add("state_successful_number_change", function(name){
+        var msisdn = self.im.user.get_answer('state_enter_new_phone_number');
+        var channel = self.im.user.get_answer('state_new_number_channel');
+        if (channel === 'whatsapp'){
+          channel = $('WhatsApp');
+        }
+        else if (channel === 'sms'){
+          channel = $('SMS');
+        }
+        return new EndState(name, {
+          text: $("Your number has been changed successfully to {{msisdn}}. " +
+                "You will receive messages on {{channel}}. "+
+                "Thank you for using MomConnect!").context({ msisdn : msisdn,
+                                                             channel : channel}),
+          next: "state_start"
+        });
+      });
     });
 
     return {
