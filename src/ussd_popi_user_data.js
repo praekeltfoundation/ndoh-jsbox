@@ -69,6 +69,24 @@ go.app = function() {
                 // This adds <env>.sum.sessions 'last' metric
                 // as well as <env>.sum.sessions.transient 'sum' metric
                 .add.total_sessions([self.env, 'sum', 'sessions'].join('.'))
+
+                // Correct security questions
+                .add.total_state_actions(
+                    {
+                        state: 'state_enter_new_phone_number',
+                        action: 'enter'
+                    },
+                    [self.metric_prefix, 'valid_security_questions'].join('.')
+                )
+
+                // Incorrect security questions
+                .add.total_state_actions(
+                    {
+                        state: 'state_incorrect_security_answers',
+                        action: 'enter'
+                    },
+                    [self.metric_prefix, 'invalid_security_questions'].join('.')
+                )
             ;
         };
 
