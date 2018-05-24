@@ -37,6 +37,7 @@ initial setup of all the services:
 
 Then, you can use telnet to access the various USSD lines:
  - Public USSD: `telnet localhost 9001`
+ - POPI User Data USSD: `telnet localhost 9002`
 
 Currently, only the English language is set up and working. Any other language
 selections will result in an error
