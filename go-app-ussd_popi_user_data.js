@@ -72,6 +72,24 @@ go.app = function() {
                 // This adds <env>.sum.sessions 'last' metric
                 // as well as <env>.sum.sessions.transient 'sum' metric
                 .add.total_sessions([self.env, 'sum', 'sessions'].join('.'))
+
+                // Correct security questions
+                .add.total_state_actions(
+                    {
+                        state: 'state_enter_new_phone_number',
+                        action: 'enter'
+                    },
+                    [self.metric_prefix, 'valid_security_questions'].join('.')
+                )
+
+                // Incorrect security questions
+                .add.total_state_actions(
+                    {
+                        state: 'state_incorrect_security_answers',
+                        action: 'enter'
+                    },
+                    [self.metric_prefix, 'invalid_security_questions'].join('.')
+                )
             ;
         };
 
@@ -789,13 +807,25 @@ go.app = function() {
                 if(content.match(/^\d{2}\*\d{2}\*\d{4}$/) !== null) {
                     var date = moment(content, "DD*MM*YYYY");
                     if(date.isValid()) {
-                        return null; // valid date format
+                        // Number of corrent date entries
+                        return self.im.metrics.fire(
+                            [self.metric_prefix, 'valid_date_entry'].join('.'),
+                            1.0, 'sum'
+                        ).then(function() {
+                            return null; // valid date format
+                        });
                     }
                 }
-                return $(
-                    "Sorry that is not the correct format. Please enter your date of " +
-                    "birth in the following format: dd*mm*yyyy. For example 19*05*1990"
-                );
+                // Number of failed date entry attempts
+                return self.im.metrics.fire(
+                    [self.metric_prefix, 'invalid_date_entry'].join('.'),
+                    1.0, 'sum'
+                ).then(function() {
+                    return $(
+                        "Sorry that is not the correct format. Please enter your date of " +
+                        "birth in the following format: dd*mm*yyyy. For example 19*05*1990"
+                    );
+                });
             }
           });
         });
