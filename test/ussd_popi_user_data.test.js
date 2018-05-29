@@ -433,6 +433,24 @@ describe('app', function() {
           });
 
           describe('user enters new phone number', function(){
+            it('should validate if number is entered in a correct format', function(){
+              return tester
+              .setup.user.addr('27820001001')
+              .inputs(
+                  {session_event: 'new'},
+                  "1",
+                  "0820001002",
+                  "5101025009086",
+                  "4",
+                  "aaaabbbbb"
+              )
+              .check.interaction({
+                state: "state_enter_new_phone_number",
+                reply: "Sorry the number you have entered is not valid. Please re-enter the mobile number."
+              })
+              .run();
+            });
+
             it('it should ask if new number is correct', function(){
               return tester
               .setup.user.addr('27820001001')
@@ -442,12 +460,12 @@ describe('app', function() {
                   "0820001002",
                   "5101025009086",
                   "4",
-                  "27820001001"
+                  "0820001001"
               )
               .check.interaction({
                 state: 'state_verify_new_number',
                 reply:[
-                        "You have entered 27820001001 as the new number you would like " +
+                        "You have entered 0820001001 as the new number you would like " +
                         "to receive MomConnect messages on. Is this number correct?",
                         "1. Yes",
                         "2. No - enter again"
@@ -467,7 +485,7 @@ describe('app', function() {
                   "0820001002",
                   "5101025009086",
                   "4",
-                  "27820001002",
+                  "0820001002",
                   "1"
               )
               .check.interaction({
@@ -493,7 +511,7 @@ describe('app', function() {
                   "0820001002",
                   "5101025009086",
                   "4",
-                  "27820001001",
+                  "0820001001",
                   "1"
               )
               .check.interaction({
@@ -528,14 +546,14 @@ describe('app', function() {
                   "0820001002",
                   "5101025009086",
                   "4",
-                  "27820001001",
+                  "0820001001",
                   "1",
                   "1"
               )
               .check.interaction({
                 state: "state_successful_number_change",
                 reply:
-                      "Your number has been changed successfully to 27820001001. "+
+                      "Your number has been changed successfully to 0820001001. "+
                       "You will receive messages on WhatsApp. "+
                       "Thank you for using MomConnect!"
               })
