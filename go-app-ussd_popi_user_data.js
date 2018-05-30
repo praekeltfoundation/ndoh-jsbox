@@ -892,7 +892,14 @@ go.app = function() {
       self.add('state_enter_new_phone_number', function(name){
         return new FreeText(name, {
             question: $("Thank you. Please enter the new number you would like to use to receive messages from MomConnect."),
-            next: 'state_verify_new_number'
+            next: 'state_verify_new_number',
+            check: function(content) {
+                if (utils.check_valid_number(content) && (content.length == 10)) {
+                    return null;  // vumi expects null or undefined if check passes
+                } else {
+                    return $("Sorry the number you have entered is not valid. Please re-enter the mobile number.");
+                }
+            },
         });
       });
 
