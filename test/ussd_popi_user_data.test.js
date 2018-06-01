@@ -115,7 +115,7 @@ describe('app', function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [50, 120, 123]);
+                        utils.check_fixtures_used(api, [120]);
                     })
                     .run();
                 });
