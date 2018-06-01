@@ -227,8 +227,12 @@ go.app = function() {
             self.im.user.set_answer("operator_msisdn", msisdn);
 
             return is
-            .get_or_create_identity({"msisdn": msisdn})
+            .get_identity_by_address({"msisdn": msisdn})
             .then(function(identity) {
+                if (identity === null) {
+                    return self.states.create('state_not_registered');
+                }
+
                 self.im.user.set_answer("operator", identity);
                 self.im.user.set_answer("msisdn",msisdn);
 
