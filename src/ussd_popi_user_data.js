@@ -919,9 +919,13 @@ go.app = function() {
       });
       self.add('state_verify_new_number_in_database', function(){
         var msisdn = utils.normalize_msisdn(self.im.user.get_answer('state_enter_new_phone_number'), "27");
-        return is.get_or_create_identity({
+        return is.get_identity_by_address({
           msisdn: msisdn
         }).then(function(identity){
+          if (identity === null) {
+            // If identity doesn't exist, it's not subscribed
+            return false;
+          }
           return sbm.is_identity_subscribed(identity.id, [/^momconnect/, /^whatsapp/]);
         }).then(function(subscribed){
           if (subscribed){
