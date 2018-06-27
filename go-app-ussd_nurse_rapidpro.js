@@ -74,7 +74,8 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (choice.value === 'yes') {
-                        return 'state_agree_to_register';
+                        self.im.user.set_answer("friend_registration", false);
+                        return 'state_check_optout';
                     } else {
                         return 'state_no_registration';
                     }
@@ -92,7 +93,8 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (choice.value === 'yes') {
-                        return 'state_agree_to_register';
+                        self.im.user.set_answer("friend_registration", true);
+                        return 'state_enter_friend_no';
                     } else {
                         return 'state_no_registration';
                     }
