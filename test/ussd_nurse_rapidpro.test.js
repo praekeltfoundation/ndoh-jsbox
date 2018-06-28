@@ -30,17 +30,17 @@ describe('app', function() {
                 .setup(function(api) {
                     // add fixtures for services used
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 120 ->
-                    _.map(['+27820001001', '+27820001003'], function(address) {
+                    _.map(['27820001001', '27820001003', '27820001004'], function(address) {
                         api.http.fixtures.add(
                             fixtures_Pilot().not_exists({
-                                number: '+27123456789',
+                                number: '+27820001004',
                                 address: address,
                                 wait: false
                             }));
                         api.http.fixtures.add(
                             fixtures_Pilot().not_exists({
-                                number: '+27123456789',
-                                address: address,
+                                number: '+27820001004',
+                                address: address, 
                                 wait: true
                             }));
                     });
@@ -129,6 +129,24 @@ describe('app', function() {
                             .run();
                         });
                     });
+
+                    describe('user agrees to registration terms', function(){
+                        it("should go to state_enter_msisdn", function(){
+                            return tester
+                            .setup.user.addr('27820001001')
+                            .inputs(
+                                {session_event: 'new'},
+                                "1", //chooses to start nurse connect
+                                "1",  // chooses to sign up for weekly messages
+                                "1" //chooses yes
+                            )
+                            .check.interaction({
+                                state: 'state_enter_msisdn',
+                                reply: 'Please enter the number you would like to register, e.g. 0726252020:'
+                            })
+                            .run();
+                        });
+                    });
                 });
 
                 describe('user wants to help a friend register', function(){
@@ -151,6 +169,24 @@ describe('app', function() {
                         .run();
                     });
 
+                    describe('user agrees to registration terms', function(){
+                        it('should go to state_enter_msisdn', function(){
+                            return tester
+                            .setup.user.addr('27820001001')
+                            .inputs(
+                                {session_event: 'new'},
+                                "1", //chooses to start nurse connect
+                                "3",  // chooses to sign up for a friend
+                                "1" //chooses yes
+                            )
+                            .check.interaction({
+                                state: 'state_enter_msisdn',
+                                reply: 'Please enter the number you would like to register, e.g. 0726252020:'
+                            })
+                            .run();
+                        });
+                    });
+
                     describe('user disagrees to registration terms', function(){
                         it("should go to state_no_registration", function(){
                             return tester
@@ -158,7 +194,7 @@ describe('app', function() {
                             .inputs(
                                 {session_event: 'new'},
                                 "1", //chooses to start nurse connect
-                                "1",  // chooses to sign up for weekly messages
+                                "3",  // chooses to sign up for a friend
                                 "2" //chooses no
                             )
                             .check.interaction({
@@ -172,6 +208,50 @@ describe('app', function() {
                         });
                     });
                 });
+
+                describe('user enters msisdn', function(){
+                    //for msisdn that has opted out
+                    it('should ask to opt in again', function(){
+                        return tester
+                        .setup.user.addr('0000000000') //should be 27820001004 in fixtures
+                        .inputs(
+                            {session_event: 'new'}  
+                            ,'1' //chooses to start nurse connect
+                            ,'1'  // chooses to sign up
+                            ,'1' //chooses yes to subscribe
+                            ,'0000000000'  // state_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_has_opted_out',
+                            reply: [
+                                "This number previously opted out of NurseConnect messages. Are <you/they> sure <you/they> want to sign up again?",
+                                '1. Yes',
+                                '2. No'
+                            ].join('\n')
+                        })
+                        .run();
+                    });
+
+                    //for msisdn that has not opted out
+                    it('should ask for facility code when confirmed not opted out', function(){
+                        return tester
+                        .setup.user.addr('27820001003')
+                        .inputs(
+                            {session_event: 'new'}  
+                            ,'1' //chooses to start nurse connect
+                            ,'1'  // chooses to sign up
+                            ,'1' //chooses yes to subscribe
+                            ,'0820001003'  // state_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_faccode',
+                            reply: 'Please enter <your/their> 6-digit facility code:'
+                        })
+                        .run();
+                    });
+                    
+                });
+
               }); //end of start NurseConnect
                  
         }); //end of state_start
