@@ -65,6 +65,7 @@ go.app = function() {
         });
 
         self.states.add('state_weekly_messages', function(name) {
+            self.im.user.set_answer("friend_registration", false);
             return new ChoiceState(name, {
                 question: ("To register, your info needs to be collected, stored and used. " +
                            "You might also receive messages on public holidays. Do you agree?"),
@@ -73,10 +74,10 @@ go.app = function() {
                     new Choice('no', ('No')),
                 ],
                 next: function(choice) {
-                    if (choice.value === 'yes') {
-                        self.im.user.set_answer("friend_registration", false);
-                        return 'state_check_optout';
-                    } else {
+                    if (choice.value === 'yes'){
+                        return 'state_enter_msisdn';
+                    }
+                    else if (choice.value === 'no'){
                         return 'state_no_registration';
                     }
                 }
@@ -84,6 +85,7 @@ go.app = function() {
         });
 
         self.states.add('state_friend_register', function(name) {
+            self.im.user.set_answer("friend_registration", true);
             return new ChoiceState(name, {
                 question: ("To register, your friend's info needs to be collected, stored and used. "+
                             "They may receive messages on public holidays. Do they agree?"),
@@ -92,10 +94,10 @@ go.app = function() {
                     new Choice('no', ('No')),
                 ],
                 next: function(choice) {
-                    if (choice.value === 'yes') {
-                        self.im.user.set_answer("friend_registration", true);
-                        return 'state_enter_friend_no';
-                    } else {
+                    if (choice.value === 'yes'){
+                        return 'state_enter_msisdn';
+                    }
+                    else if (choice.value === 'no'){
                         return 'state_no_registration';
                     }
                 }
@@ -109,6 +111,88 @@ go.app = function() {
                 choices: [
                     new Choice('state_nurse_connect_options', ('Main Menu')),
                 ],
+            });
+        });
+
+        self.states.add('state_enter_msisdn', function(name){
+            var error = ("Sorry, the format of the mobile number is not correct. Please enter the mobile number again, e.g. 0726252020");
+            var question = ("Please enter the number you would like to register, e.g. 0726252020:");
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    if (!utils.is_valid_msisdn(content, 0, 10)) {
+                        return error;
+                    }
+                },
+                next: function(content) {
+                    //add function to normalize msisdn
+                    self.im.user.set_answer("registrant_msisdn", content);
+                    //add function to add msisdn to identity, then
+                    return self.states.create('state_check_optout'); 
+                }
+            });
+        });
+
+        self.states.add('state_check_optout', function(name) {
+            //declare msisdn
+            //if number has opted out previously, go to state_has_opted_out
+            //else, go to state_confirm_faccode
+            var registrant_msisdn = self.im.user.answers.registrant_msisdn;
+            if (registrant_msisdn !== '0000000000' ) { //replace with statement checking if identity has opted out or not
+                return self.states.create('state_faccode');
+            } else {
+                return self.states.create('state_has_opted_out');
+            }
+        });
+
+        self.states.add('state_has_opted_out', function(name) {
+            return new ChoiceState(name, {
+                question: ("This number previously opted out of NurseConnect messages. Are <you/they> sure <you/they> want to sign up again?"),
+                choices: [
+                    new Choice('yes', ('Yes')),
+                    new Choice('no', ('No'))
+                ],
+                next: function(choice) {
+                    if (choice.value === 'yes') {
+                        var optin_info = {
+                            "request_source": self.im.config.name || "ussd_nurse",
+                            "address_type": "msisdn"
+                            //identity will be set here
+                            //address will be set here
+                        };
+                        return is
+                        .optin(optin_info)
+                        .then(function() {
+                            return 'state_faccode';
+                        });
+                    }else {
+                        return self.states.create('state_no_subscription');
+                    }
+                }
+            });
+        });
+
+        self.states.add('state_faccode', function(name) {
+            var error = ("Sorry, we don't recognise that code. Please enter the 6- digit facility code again, e.g. 535970:");
+            var question = ("Please enter <your/their> 6-digit facility code:");
+
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    return self
+                    // check if whatsapp user as well here
+                    .then(function(facname) {
+                        if (!facname) {
+                            return error;
+                        } else {
+                            /*
+                                set the facility name and code against the nurse identity here
+                            */
+                            return null; //null or undefined if check passes
+                        }
+                    });
+                },
+                next: 'state_facname',
             });
         });
 
