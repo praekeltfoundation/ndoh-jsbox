@@ -131,9 +131,11 @@ go.app = function() {
         });
 
         self.states.add('state_check_optout', function(name) {
-            //declare msisdn
-            //if number has opted out previously, go to state_has_opted_out
-            //else, go to state_faccode
+            /*  declare msisdn
+                if number has opted out previously, go to state_has_opted_out
+                else, go to state_faccode
+            */
+
             var registrant_msisdn = self.im.user.answers.registrant_msisdn;
             if (registrant_msisdn !== '0820001004' ) { //replace with statement checking if identity has opted out or not
                 return self.states.create('state_faccode');
@@ -152,10 +154,11 @@ go.app = function() {
                 next: function(choice) {
                     if (choice.value === 'yes') {
 
-                            //identity will be set here
-                            //address will be set here
-                            //address type will be set here
-                            //config name will be set here
+                            /*  identity will be set here
+                                address will be set here
+                                address type will be set here
+                                config name will be set here 
+                            */
 
                         return 'state_faccode';
                     }
