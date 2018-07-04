@@ -40,14 +40,14 @@ describe('app', function() {
                         api.http.fixtures.add(
                             fixtures_Pilot().not_exists({
                                 number: '+27820001004',
-                                address: address, 
+                                address: address,
                                 wait: true
                             }));
                     });
                 });
 
         });
-  
+
 
         describe('state_start', function() {
 
@@ -210,16 +210,35 @@ describe('app', function() {
                 });
 
                 describe('user enters msisdn', function(){
+
+                  //for msisdn that has not opted out
+                  it('should go to state_faccode', function(){
+                      return tester
+                      .setup.user.addr('27820001003')
+                      .inputs(
+                          {session_event: 'new'}
+                          ,'1' //chooses to start nurse connect
+                          ,'1' //chooses to sign up
+                          ,'1' //chooses yes to subscribe
+                          ,'0820001003'  // state_msisdn
+                      )
+                      .check.interaction({
+                        state: 'state_faccode',
+                        reply: 'Please enter <your/their> 6-digit facility code:'
+                      })
+                      .run();
+                  });
+
                     //for msisdn that has opted out
                     it('should ask to opt in again', function(){
                         return tester
-                        .setup.user.addr('0000000000') //should be 27820001004 in fixtures
+                        .setup.user.addr('27820001004') //should be 27820001004 in fixtures
                         .inputs(
-                            {session_event: 'new'}  
+                            {session_event: 'new'}
                             ,'1' //chooses to start nurse connect
-                            ,'1'  // chooses to sign up
+                            ,'1' //chooses to sign up
                             ,'1' //chooses yes to subscribe
-                            ,'0000000000'  // state_msisdn
+                            ,'0820001004'  // state_msisdn
                         )
                         .check.interaction({
                             state: 'state_has_opted_out',
@@ -232,12 +251,54 @@ describe('app', function() {
                         .run();
                     });
 
+                    //for msisdn that has opted out and agrees to opt in again
+                    it('should go to state_faccode if user agrees to opt in again', function(){
+                      return tester
+                      .setup.user.addr('27820001004') //should be 27820001004 in fixtures
+                      .inputs(
+                          {session_event: 'new'}
+                          ,'1' //chooses to start nurse connect
+                          ,'1'  // chooses to sign up
+                          ,'1' //chooses yes to subscribe
+                          ,'0820001004'  // state_msisdn
+                          ,'1' //chooses yes to opt in
+                      )
+                      .check.interaction({
+                          state: 'state_faccode',
+                          reply: 'Please enter <your/their> 6-digit facility code:'
+                      })
+                      .run();
+                    });
+
+                    //for msisdn that has opted out, but disagrees to opt in
+                    it('should go to state_no_subscription if user disagrees to opt in ', function(){
+                      return tester
+                      .setup.user.addr('27820001004') //should be 27820001004 in fixtures
+                      .inputs(
+                          {session_event: 'new'}
+                          ,'1' //chooses to start nurse connect
+                          ,'1'  // chooses to sign up
+                          ,'1' //chooses yes to subscribe
+                          ,'0820001004'  // state_msisdn
+                          ,'2' //chooses no to opt in
+                      )
+                      .check.interaction({
+                          state: 'state_no_subscription',
+                          reply: [
+                                  'You have chosen not to receive NurseConnect ' +
+                                  'messages on this number.',
+                                  '1. Main Menu'
+                          ].join('\n')
+                      })
+                      .run();
+                    });
+
                     //for msisdn that has not opted out
                     it('should ask for facility code when confirmed not opted out', function(){
                         return tester
                         .setup.user.addr('27820001003')
                         .inputs(
-                            {session_event: 'new'}  
+                            {session_event: 'new'}
                             ,'1' //chooses to start nurse connect
                             ,'1'  // chooses to sign up
                             ,'1' //chooses yes to subscribe
@@ -249,14 +310,13 @@ describe('app', function() {
                         })
                         .run();
                     });
-                    
+
                 });
 
               }); //end of start NurseConnect
-                 
+
         }); //end of state_start
-    
-    
+
+
     });
 });
-        

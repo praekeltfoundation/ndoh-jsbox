@@ -8,7 +8,7 @@ go.app = function() {
     var IdentityStore = SeedJsboxUtils.IdentityStore;
     var JsonApi = vumigo.http.api.JsonApi;
     var App = vumigo.App;
-    
+
     var GoNDOH = App.extend(function(self) {
         App.call(self, 'state_start');
         var utils = SeedJsboxUtils.utils;
@@ -38,7 +38,7 @@ go.app = function() {
                 else state_not_registered
             */
             return self.states.create('state_not_registered');
-        
+
         });
 
         self.states.add('state_not_registered', function(name){
@@ -125,17 +125,19 @@ go.app = function() {
                     //add function to normalize msisdn
                     self.im.user.set_answer("registrant_msisdn", content);
                     //add function to add msisdn to identity, then
-                    return self.states.create('state_check_optout'); 
+                    return self.states.create('state_check_optout');
                 }
             });
         });
 
         self.states.add('state_check_optout', function(name) {
-            //declare msisdn
-            //if number has opted out previously, go to state_has_opted_out
-            //else, go to state_confirm_faccode
+            /*  declare msisdn
+                if number has opted out previously, go to state_has_opted_out
+                else, go to state_faccode
+            */
+
             var registrant_msisdn = self.im.user.answers.registrant_msisdn;
-            if (registrant_msisdn !== '0000000000' ) { //replace with statement checking if identity has opted out or not
+            if (registrant_msisdn !== '0820001004' ) { //replace with statement checking if identity has opted out or not
                 return self.states.create('state_faccode');
             } else {
                 return self.states.create('state_has_opted_out');
@@ -147,23 +149,21 @@ go.app = function() {
                 question: ("This number previously opted out of NurseConnect messages. Are <you/they> sure <you/they> want to sign up again?"),
                 choices: [
                     new Choice('yes', ('Yes')),
-                    new Choice('no', ('No'))
+                    new Choice('state_no_subscription', ('No'))
                 ],
                 next: function(choice) {
                     if (choice.value === 'yes') {
-                        var optin_info = {
-                            "request_source": self.im.config.name || "ussd_nurse",
-                            "address_type": "msisdn"
-                            //identity will be set here
-                            //address will be set here
-                        };
-                        return is
-                        .optin(optin_info)
-                        .then(function() {
-                            return 'state_faccode';
-                        });
-                    }else {
-                        return self.states.create('state_no_subscription');
+
+                            /*  identity will be set here
+                                address will be set here
+                                address type will be set here
+                                config name will be set here 
+                            */
+
+                        return 'state_faccode';
+                    }
+                    else{
+                      return choice.value;
                     }
                 }
             });
@@ -190,6 +190,15 @@ go.app = function() {
                     });
                 },
                 next: 'state_facname',
+            });
+        });
+
+        self.states.add('state_no_subscription', function(name) {
+            return new MenuState(name, {
+                question: ("You have chosen not to receive NurseConnect messages on this number."),
+                choices: [
+                    new Choice('state_nurse_connect_options', ('Main Menu')),
+                ],
             });
         });
 
