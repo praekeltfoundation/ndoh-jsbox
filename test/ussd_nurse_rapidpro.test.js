@@ -218,8 +218,8 @@ describe('app', function() {
                       .inputs(
                           {session_event: 'new'}
                           ,'1' //chooses to start nurse connect
-                          ,'1'
-                          ,'1'
+                          ,'1' //chooses to sign up
+                          ,'1' //chooses yes to subscribe
                           ,'0820001003'  // state_msisdn
                       )
                       .check.interaction({
@@ -236,8 +236,8 @@ describe('app', function() {
                         .inputs(
                             {session_event: 'new'}
                             ,'1' //chooses to start nurse connect
-                            ,'1'
-                            ,'1'
+                            ,'1' //chooses to sign up
+                            ,'1' //chooses yes to subscribe
                             ,'0820001004'  // state_msisdn
                         )
                         .check.interaction({
