@@ -1,6 +1,5 @@
 var vumigo = require('vumigo_v02');
 var AppTester = vumigo.AppTester;
-// var utils = require('seed-jsbox-utils').utils;
 var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_Pilot = require('./fixtures_pilot');
 var _ = require('lodash');
@@ -21,6 +20,7 @@ describe('app', function() {
                     no_timeout_redirects: ['state_start'],
                     channel: '*134*550*5#',
                     services: {
+                        //will be replaced
                         identity_store: {
                             url: 'http://is/api/v1/',
                             token: 'test IdentityStore'
@@ -29,7 +29,7 @@ describe('app', function() {
                 })
                 .setup(function(api) {
                     // add fixtures for services used
-                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 120 ->
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add);
                     _.map(['27820001001', '27820001003', '27820001004'], function(address) {
                         api.http.fixtures.add(
                             fixtures_Pilot().not_exists({
@@ -51,12 +51,75 @@ describe('app', function() {
 
         describe('state_start', function() {
 
+            describe('user registered on nurseconnect', function(){
+                it('should go to state_registered_menu', function(){
+                    return tester
+                    .setup.user.addr('27820001003')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                    )
+                    .check.interaction({
+                        state: 'state_registered_1',
+                        reply: [
+                                "Welcome back to NurseConnect. Do you want to:",
+                                "1. Help a friend sign up",
+                                "2. Change your number",
+                                "3. Opt out",
+                                "4. More",
+                        ].join('\n')
+                    })
+                    .run();
+                });
+
+                it("should give 3 options when user selects more", function() {
+                    return tester
+                        .setup.user.addr('27820001003')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '4'  // 'state_registered' - more options
+                        )
+                        .check.interaction({
+                            state: 'state_registered_2',
+                            reply: [
+                                    "Welcome back to NurseConnect. Do you want to:",
+                                    "1. Change facility code",
+                                    "2. Change ID no.",
+                                    "3. Change SANC no.",
+                                    "4. Change Persal no.",
+                                    "5. Back",
+                            ].join('\n')
+                        })
+                        .run();
+                });
+
+                it("should give the first 3 options when user selects back", function() {
+                    return tester
+                        .setup.user.addr('27820001003')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '4'  // 'state_registered' - more options
+                            , '5'  // 'state_registered' - back to first set of options
+                        )
+                        .check.interaction({
+                            state: 'state_registered_1',
+                            reply: [
+                                "Welcome back to NurseConnect. Do you want to:",
+                                "1. Help a friend sign up",
+                                "2. Change your number",
+                                "3. Opt out",
+                                "4. More",
+                            ].join('\n')
+                        })
+                        .run();
+                });
+            }); //end of registered state
+
             describe('user not registered on nurseconnect', function() {
                 it('should go to state_not_registered', function() {
                     return tester
                     .setup.user.addr('27820001001')
                     .inputs(
-                        {session_event: 'new'}
+                        {session_event: 'new'} // dial in
                     )
                     .check.interaction({
                         state: 'state_not_registered',
@@ -69,16 +132,16 @@ describe('app', function() {
                 });
             });
 
-            describe('user chooses to start NurseConnect', function(){
-                it("give NurseConnect options", function(){
+            describe('non-subscribed user chooses to start NurseConnect', function(){
+                it("give registration options", function(){
                   return tester
                   .setup.user.addr('27820001001')
                   .inputs(
-                      {session_event: 'new'},
-                      "1"
+                      {session_event: 'new'}, //dial in
+                      "1" //state_not_registered - start nurseconnect
                   )
                   .check.interaction({
-                    state: 'state_nurse_connect_options',
+                    state: 'state_not_registered_menu',
                     reply: [
                         "Do you want to:",
                         "1. Sign up for weekly messages",
@@ -94,8 +157,8 @@ describe('app', function() {
                         return tester
                         .setup.user.addr('27820001001')
                         .inputs(
-                            {session_event: 'new'},
-                            "1", //chooses to start nurse connect
+                            {session_event: 'new'}, //dial in
+                            "1", //state_not_registered - chooses to start nurse connect
                             "1"  // chooses to sign up for weekly messages
                         )
                         .check.interaction({
@@ -114,9 +177,9 @@ describe('app', function() {
                             return tester
                             .setup.user.addr('27820001001')
                             .inputs(
-                                {session_event: 'new'},
-                                "1", //chooses to start nurse connect
-                                "1",  // chooses to sign up for weekly messages
+                                {session_event: 'new'}, //dial in
+                                "1", //state_not_registered - chooses to start nurse connect
+                                "1", // chooses to sign up for weekly messages
                                 "2" //chooses no
                             )
                             .check.interaction({
@@ -135,8 +198,8 @@ describe('app', function() {
                             return tester
                             .setup.user.addr('27820001001')
                             .inputs(
-                                {session_event: 'new'},
-                                "1", //chooses to start nurse connect
+                                {session_event: 'new'}, //dial in
+                                "1", //state_not_registered - chooses to start nurse connect
                                 "1",  // chooses to sign up for weekly messages
                                 "1" //chooses yes
                             )
@@ -147,15 +210,15 @@ describe('app', function() {
                             .run();
                         });
                     });
-                });
+                }); //end of self registration
 
                 describe('user wants to help a friend register', function(){
                     it("should state_friend_register", function(){
                         return tester
                         .setup.user.addr('27820001001')
                         .inputs(
-                            {session_event: 'new'},
-                            "1", //chooses to start nurse connect
+                            {session_event: 'new'}, //dial in
+                            "1", //state_not_registered - chooses to start nurse connect
                             "3"  // chooses to help a friend register
                         )
                         .check.interaction({
@@ -174,9 +237,9 @@ describe('app', function() {
                             return tester
                             .setup.user.addr('27820001001')
                             .inputs(
-                                {session_event: 'new'},
-                                "1", //chooses to start nurse connect
-                                "3",  // chooses to sign up for a friend
+                                {session_event: 'new'}, //dial in
+                                "1", //state_not_registered - chooses to start nurse connect
+                                "3",  //chooses to sign up for a friend
                                 "1" //chooses yes
                             )
                             .check.interaction({
@@ -192,8 +255,8 @@ describe('app', function() {
                             return tester
                             .setup.user.addr('27820001001')
                             .inputs(
-                                {session_event: 'new'},
-                                "1", //chooses to start nurse connect
+                                {session_event: 'new'}, //dial in
+                                "1", //state_not_registered - chooses to start nurse connect
                                 "3",  // chooses to sign up for a friend
                                 "2" //chooses no
                             )
@@ -207,16 +270,17 @@ describe('app', function() {
                             .run();
                         });
                     });
-                });
+                }); //end of friend registration
+            });
 
-                describe('user enters msisdn', function(){
+            describe('user enters msisdn', function(){
 
                   //for msisdn that has not opted out
                   it('should go to state_faccode', function(){
                       return tester
-                      .setup.user.addr('27820001003')
+                      .setup.user.addr('27820001004')
                       .inputs(
-                          {session_event: 'new'}
+                          {session_event: 'new'} //dial in
                           ,'1' //chooses to start nurse connect
                           ,'1' //chooses to sign up
                           ,'1' //chooses yes to subscribe
@@ -296,7 +360,7 @@ describe('app', function() {
                     //for msisdn that has not opted out
                     it('should ask for facility code when confirmed not opted out', function(){
                         return tester
-                        .setup.user.addr('27820001003')
+                        .setup.user.addr('27820001004')
                         .inputs(
                             {session_event: 'new'}
                             ,'1' //chooses to start nurse connect
@@ -310,8 +374,6 @@ describe('app', function() {
                         })
                         .run();
                     });
-
-                });
 
               }); //end of start NurseConnect
 
