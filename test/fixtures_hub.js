@@ -955,8 +955,8 @@ module.exports = function() {
                             "optout_type":"forget",
                             "identity":"cb245673-aa41-4302-ac47-00000001002",
                             "reason":"unknown",
-                            "address_type":"msisdn",
-                            "address":"+27820001002",
+                            "address_type":"",
+                            "address":"",
                             "request_source":"ussd_popi_user_data"
                         }
                     }

@@ -679,8 +679,8 @@ go.app = function() {
                 "optout_type": "forget",
                 "identity": self.im.user.answers.operator.id,
                 "reason": "unknown",
-                "address_type": "msisdn",
-                "address": self.im.user.answers.operator_msisdn,
+                "address_type": "",
+                "address": "",
                 "request_source": self.im.config.name || "ussd_popi_user_data"
             };
 
