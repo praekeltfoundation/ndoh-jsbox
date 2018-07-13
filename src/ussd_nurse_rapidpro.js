@@ -226,6 +226,22 @@ go.app = function() {
             });
         });
 
+        self.states.add('state_change_faccode', function(name) {
+            var question = ("Please enter the 6-digit facility code for your new facility, e.g. 456789:");
+            var error = ("Sorry, that code is not recognized. Please enter the 6-digit facility code again, e. 535970:");
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    /*
+                        validates code to see if exists
+                        if yes, changes facility code with given identity
+                        else, returns error message
+                        vumi expects null or undefined if check passes
+                    */
+                }
+            });
+        });
+
         self.states.add('state_no_subscription', function(name) {
             return new MenuState(name, {
                 question: ("You have chosen not to receive NurseConnect messages on this number."),
