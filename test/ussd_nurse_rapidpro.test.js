@@ -55,38 +55,40 @@ describe('app', function() {
                 it('should go to state_registered_menu', function(){
                     return tester
                     .setup.user.addr('27820001003')
+                    .setup.char_limit(140)  // limit first state chars
                     .inputs(
                         {session_event: 'new'}  // dial in
                     )
                     .check.interaction({
-                        state: 'state_registered_1',
+                        state: 'state_registered',
                         reply: [
                                 "Welcome back to NurseConnect. Do you want to:",
                                 "1. Help a friend sign up",
                                 "2. Change your number",
                                 "3. Opt out",
-                                "4. More",
+                                "4. Change facility code",
+                                "5. More"
                         ].join('\n')
                     })
                     .run();
                 });
 
-                it("should give 3 options when user selects more", function() {
+                it("should give more options when user selects more", function() {
                     return tester
                         .setup.user.addr('27820001003')
+                        .setup.char_limit(140)  // limit first state chars
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'  // 'state_registered' - more options
+                            , '5'  // 'state_registered' - more options
                         )
                         .check.interaction({
-                            state: 'state_registered_2',
+                            state: 'state_registered',
                             reply: [
                                     "Welcome back to NurseConnect. Do you want to:",
-                                    "1. Change facility code",
-                                    "2. Change ID no.",
-                                    "3. Change SANC no.",
-                                    "4. Change Persal no.",
-                                    "5. Back",
+                                    "1. Change ID no.",
+                                    "2. Change SANC no.",
+                                    "3. Change Persal no.",
+                                    "4. Back",
                             ].join('\n')
                         })
                         .run();
@@ -95,19 +97,21 @@ describe('app', function() {
                 it("should give the first 3 options when user selects back", function() {
                     return tester
                         .setup.user.addr('27820001003')
+                        .setup.char_limit(140)  // limit first state chars
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'  // 'state_registered' - more options
-                            , '5'  // 'state_registered' - back to first set of options
+                            , '5'  // 'state_registered' - more options
+                            , '4'  // 'state_registered' - back to first set of options
                         )
                         .check.interaction({
-                            state: 'state_registered_1',
+                            state: 'state_registered',
                             reply: [
                                 "Welcome back to NurseConnect. Do you want to:",
                                 "1. Help a friend sign up",
                                 "2. Change your number",
                                 "3. Opt out",
-                                "4. More",
+                                "4. Change facility code",
+                                "5. More",
                             ].join('\n')
                         })
                         .run();
