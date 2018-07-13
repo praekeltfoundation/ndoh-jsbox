@@ -2,6 +2,7 @@ go.app = function() {
     var vumigo = require('vumigo_v02');
     var MenuState = vumigo.states.MenuState;
     var ChoiceState = vumigo.states.ChoiceState;
+    var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
     var FreeText = vumigo.states.FreeText;
     var Choice = vumigo.states.Choice;
     var SeedJsboxUtils = require('seed-jsbox-utils');
@@ -40,7 +41,7 @@ go.app = function() {
                 else state_not_registered
             */
             if(msisdn === "+27820001003"){ 
-                return self.states.create('state_registered_1');
+                return self.states.create('state_registered');
             } else {
                 return self.states.create('state_not_registered');
             }
@@ -54,28 +55,25 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_registered_1', function(name) {
-            return new MenuState(name, {
+        self.states.add('state_registered', function(name) {
+            return new PaginatedChoiceState(name, {
                 question: ("Welcome back to NurseConnect. Do you want to:"),
                 choices: [
                     new Choice('state_friend_registration', ('Help a friend sign up')),
                     new Choice('state_change_num', ('Change your number')),
                     new Choice('state_check_optout_optout', ('Opt out')),
-                    new Choice('state_registered_2', ('More')),
-                ],
-            });
-        });
-
-        self.states.add('state_registered_2', function(name) {
-            return new MenuState(name, {
-                question: ("Welcome back to NurseConnect. Do you want to:"),
-                choices: [
                     new Choice('state_change_faccode', ('Change facility code')),
                     new Choice('state_change_id_no', ('Change ID no.')),
                     new Choice('state_change_sanc', ('Change SANC no.')),
                     new Choice('state_change_persal', ('Change Persal no.')),
-                    new Choice('state_registered_1', ('Back')),
                 ],
+                characters_per_page: 140,
+                options_per_page: null,
+                more: ('More'),
+                back: ('Back'),
+                next: function(choice) {
+                    return choice.value;
+                }
             });
         });
 
