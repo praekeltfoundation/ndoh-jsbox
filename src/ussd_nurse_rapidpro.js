@@ -2,6 +2,7 @@ go.app = function() {
     var vumigo = require('vumigo_v02');
     var MenuState = vumigo.states.MenuState;
     var ChoiceState = vumigo.states.ChoiceState;
+    var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
     var FreeText = vumigo.states.FreeText;
     var Choice = vumigo.states.Choice;
     var SeedJsboxUtils = require('seed-jsbox-utils');
@@ -11,13 +12,14 @@ go.app = function() {
 
     var GoNDOH = App.extend(function(self) {
         App.call(self, 'state_start');
-        var utils = SeedJsboxUtils.utils;
+        var utils = SeedJsboxUtils.utils; //replace with utils not in Seed
 
         //variables for services
         var is;
 
         self.init = function() {
             // initialise services
+            //replace identity store
             is = new IdentityStore(
                 new JsonApi(self.im, {}),
                 self.im.config.services.identity_store.token,
@@ -33,24 +35,51 @@ go.app = function() {
 
             /*
                 find identity & check subscription using CompanionApp
-
+                use temporary fixture to differentiate non_subscribers and subscribers
+                this will be replaced with method that checks subscriptions
                 will go to state_registered if found,
                 else state_not_registered
             */
-            return self.states.create('state_not_registered');
-
+            if(msisdn === "+27820001003"){ 
+                return self.states.create('state_registered');
+            } else {
+                return self.states.create('state_not_registered');
+            }
         });
 
         self.states.add('state_not_registered', function(name){
             return new FreeText(name, {
                 question: ("Welcome to NurseConnect, where you can stay up to date with "+
                 "maternal & child health. Reply '1' to start."),
-                next: 'state_nurse_connect_options'
+                next: 'state_not_registered_menu'
             });
-          });
+        });
+
+        self.states.add('state_registered', function(name) {
+            return new PaginatedChoiceState(name, {
+                question: ("Welcome back to NurseConnect. Do you want to:"),
+                choices: [
+                    new Choice('state_friend_registration', ('Help a friend sign up')),
+                    new Choice('state_change_num', ('Change your number')),
+                    new Choice('state_check_optout_optout', ('Opt out')),
+                    new Choice('state_change_faccode', ('Change facility code')),
+                    new Choice('state_change_id_no', ('Change ID no.')),
+                    new Choice('state_change_sanc', ('Change SANC no.')),
+                    new Choice('state_change_persal', ('Change Persal no.')),
+                ],
+                characters_per_page: 140,
+                options_per_page: null,
+                more: ('More'),
+                back: ('Back'),
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
 
           // OPTIONS MENU
-        self.states.add('state_nurse_connect_options', function(name) {
+        self.states.add('state_not_registered_menu', function(name) {
             return new MenuState(name, {
                 question: ('Do you want to:'),
                 choices: [
@@ -61,8 +90,9 @@ go.app = function() {
             });
         });
 
+        //self registration
         self.states.add('state_weekly_messages', function(name) {
-            self.im.user.set_answer("friend_registration", false);
+            self.im.user.set_answer("friend_registration", false); 
             return new ChoiceState(name, {
                 question: ("To register, your info needs to be collected, stored and used. " +
                            "You might also receive messages on public holidays. Do you agree?"),
@@ -71,6 +101,8 @@ go.app = function() {
                     new Choice('no', ('No')),
                 ],
                 next: function(choice) {
+                    self.im.user.set_answer("registrant", self.im.user.answers.operator);
+                    self.im.user.set_answer("registrant_msisdn", self.im.user.answers.operator_msisdn);
                     if (choice.value === 'yes'){
                         return 'state_enter_msisdn';
                     }
@@ -81,6 +113,7 @@ go.app = function() {
             });
         });
 
+        //friend registration
         self.states.add('state_friend_register', function(name) {
             self.im.user.set_answer("friend_registration", true);
             return new ChoiceState(name, {
@@ -106,7 +139,7 @@ go.app = function() {
                 question: ("If you/they don't agree to share info, we can't send NurseConnect messages. " +
                            "Reply '1' if you/they change your/their mind and would like to sign up."),
                 choices: [
-                    new Choice('state_nurse_connect_options', ('Main Menu')),
+                    new Choice('state_not_registered_menu', ('Main Menu')),
                 ],
             });
         });
@@ -197,7 +230,7 @@ go.app = function() {
             return new MenuState(name, {
                 question: ("You have chosen not to receive NurseConnect messages on this number."),
                 choices: [
-                    new Choice('state_nurse_connect_options', ('Main Menu')),
+                    new Choice('state_not_registered_menu', ('Main Menu')),
                 ],
             });
         });
