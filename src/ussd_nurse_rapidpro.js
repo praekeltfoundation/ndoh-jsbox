@@ -4,6 +4,7 @@ go.app = function() {
     var ChoiceState = vumigo.states.ChoiceState;
     var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
     var FreeText = vumigo.states.FreeText;
+    var EndState = vumigo.states.EndState;
     var Choice = vumigo.states.Choice;
     var SeedJsboxUtils = require('seed-jsbox-utils');
     var IdentityStore = SeedJsboxUtils.IdentityStore;
@@ -234,6 +235,48 @@ go.app = function() {
                 ],
             });
         });
+
+        self.states.add('state_check_optout_optout', function(name) {
+            /*
+                checks if user has opted out previously
+                if user has not, gives options for opting out
+            */
+
+            return self.states.create('state_optout');
+        });
+
+        self.states.add('state_optout', function(name) {
+            var question = ("Why do you want to stop getting messages?");
+            return new ChoiceState(name, {
+                question: question,
+                choices: [
+                    new Choice('job_change', ("I'm not a nurse or midwife")),
+                    new Choice('number_owner_change', ("I've taken over another number")),
+                    new Choice('not_useful', ("The messages aren't useful")),
+                    new Choice('other', ("Other")),
+                    new Choice('main_menu', ("Main Menu"))
+                ],
+                next: function(choice) {
+                    if (choice.value === 'main_menu') {
+                        return 'state_start';
+                    } else {
+                        /*
+                            record reason for opt out as choice.value
+                        */
+                       return 'state_opted_out';
+                    }
+                }
+            });
+        });
+
+        self.states.add('state_opted_out', function(name) {
+            return new EndState(name, {
+                text: ("Thank you for your feedback. You'll no longer receive NurseConnect messages." +
+                        "If you change your mind, please dial *134*550*5#. For more, go to nurseconnect.org."),
+                next: 'state_start',
+             });
+        });
+
 
 
     });

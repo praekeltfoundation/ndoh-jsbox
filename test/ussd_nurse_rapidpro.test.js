@@ -118,6 +118,66 @@ describe('app', function() {
                 });
             }); //end of registered state
 
+            //registered -- opt out
+            describe("opt out for registered user", function() {
+                describe("registered user - not opted out", function() {
+                    describe("should reach state_optout", function() {
+                        it("should ask optout reason", function() {
+                            return tester
+                                .setup.user.addr('27820001003')
+                                .inputs(
+                                    {session_event: 'new'}  // dial in
+                                    , '3'  // state_registered - choose opt out
+                                )
+                                .check.interaction({
+                                    state: 'state_optout',
+                                    reply: [
+                                        "Why do you want to stop getting messages?",
+                                        "1. I'm not a nurse or midwife",
+                                        "2. I've taken over another number",
+                                        "3. The messages aren't useful",
+                                        "4. Other",
+                                        "5. Main Menu",
+                                    ].join("\n")
+                                })
+                                .run();
+                        });
+                    });
+    
+                    describe("should reach state_opted_out", function() {
+                        it("should thank them", function() {
+                            return tester
+                                .setup.user.addr('27820001003')
+                                .inputs(
+                                    {session_event: 'new'}  // dial in
+                                    , '3'  // state_registered - choose opt out
+                                    , '1'  // state_optout - not a nurse
+                                )
+                                .check.interaction({
+                                    state: 'state_opted_out',
+                                })
+                                .run();
+                        });
+                    });
+
+                    describe("chooses main menu", function() {
+                        it("should go to state_registered", function() {
+                            return tester
+                                .setup.user.addr('27820001003')
+                                .inputs(
+                                    {session_event: 'new'}  // dial in
+                                    , '3'  // state_registered - opt out
+                                    , '5'  // state_optout - main menu
+                                )
+                                .check.interaction({
+                                    state: 'state_registered',
+                                })
+                                .run();
+                        });
+                });
+            });
+            });
+
             describe('user not registered on nurseconnect', function() {
                 it('should go to state_not_registered', function() {
                     return tester
