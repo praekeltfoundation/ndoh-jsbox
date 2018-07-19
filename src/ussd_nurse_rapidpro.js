@@ -1,5 +1,7 @@
 go.app = function() {
+    var _ = require('lodash');
     var vumigo = require('vumigo_v02');
+    var Q = require('q');
     var MenuState = vumigo.states.MenuState;
     var ChoiceState = vumigo.states.ChoiceState;
     var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
@@ -7,25 +9,92 @@ go.app = function() {
     var EndState = vumigo.states.EndState;
     var Choice = vumigo.states.Choice;
     var SeedJsboxUtils = require('seed-jsbox-utils');
-    var IdentityStore = SeedJsboxUtils.IdentityStore;
     var JsonApi = vumigo.http.api.JsonApi;
+    var utils = SeedJsboxUtils.utils;
     var App = vumigo.App;
 
     var GoNDOH = App.extend(function(self) {
         App.call(self, 'state_start');
-        var utils = SeedJsboxUtils.utils; //replace with utils not in Seed
 
         //variables for services
-        var is;
-
         self.init = function() {
             // initialise services
             //replace identity store
-            is = new IdentityStore(
-                new JsonApi(self.im, {}),
-                self.im.config.services.identity_store.token,
-                self.im.config.services.identity_store.url
-            );
+            self.env = self.im.config.env;
+        };
+
+        self.jembi_nc_clinic_validate = function (im, clinic_code) {
+            var params = {
+                'criteria': 'value:' + clinic_code
+            };
+            return self
+            .jembi_json_api_call('get', params, null, 'NCfacilityCheck', im);
+        };
+
+        self.validate_nc_clinic_code = function(im, clinic_code) {
+            if (!utils.check_valid_number(clinic_code) ||
+                clinic_code.length !== 6) {
+                return Q()
+                    .then(function() {
+                        return false;
+                    });
+            } else {
+                return self
+                .jembi_nc_clinic_validate(im, clinic_code)
+                .then(function(json_result) {
+                    var rows = json_result.data.rows;
+                    if (rows.length === 0) {
+                        return false;
+                    } else {
+                        return rows[0][2];
+                    }
+                });
+            }
+        };
+
+        self.jembi_json_api_call = function(method, params, payload, endpoint, im) {
+            var http = new JsonApi(im, {
+                auth: {
+                    username: im.config.jembi.username,
+                    password: im.config.jembi.password
+                }
+            });
+            switch(method) {
+                case "get":
+                    return http.get(im.config.jembi.url_json + endpoint, {
+                        params: params
+                    });
+            }
+        };
+
+       self.is_whatsapp_user = function(msisdn, wait_for_response) {
+            var whatsapp_config = self.im.config.whatsapp || {};
+            var api_url = whatsapp_config.api_url;
+            var api_token = whatsapp_config.api_token;
+            var api_number = whatsapp_config.api_number;
+
+            var params = {
+                number: api_number,
+                msisdns: [msisdn],
+                wait: wait_for_response,
+            };
+
+            return new JsonApi(self.im, {
+                headers: {
+                    'Authorization': ['Token ' + api_token]
+                }})
+                .post(api_url, {
+                    data: params,
+                })
+                .then(function(response) {
+                    var existing_users = _.filter(response.data, function(obj) { return obj.status === "valid"; });
+                    var is_user = !_.isEmpty(existing_users);
+                    return self.im
+                        .log('WhatsApp recipient ' + is_user + ' for ' + JSON.stringify(params))
+                        .then(function() {
+                            return is_user;
+                        });
+                });
         };
 
         self.states.add("state_start", function(name) {
@@ -68,6 +137,11 @@ go.app = function() {
                     new Choice('state_change_sanc', ('Change SANC no.')),
                     new Choice('state_change_persal', ('Change Persal no.')),
                 ],
+                check: function(content) {
+                    return self
+                    // Warm cache for WhatsApp lookup without blocking using operator_msisdn
+                    .is_whatsapp_user(self.im.user.answers.operator_msisdn, false);
+                },
                 characters_per_page: 140,
                 options_per_page: null,
                 more: ('More'),
@@ -150,15 +224,17 @@ go.app = function() {
             var question = ("Please enter the number you would like to register, e.g. 0726252020:");
             return new FreeText(name, {
                 question: question,
+                
                 check: function(content) {
                     if (!utils.is_valid_msisdn(content, 0, 10)) {
                         return error;
                     }
                 },
                 next: function(content) {
-                    //add function to normalize msisdn
-                    self.im.user.set_answer("registrant_msisdn", content);
-                    //add function to add msisdn to identity, then
+                    //get_or_create_identity from rapid pro here
+                    var msisdn = utils.normalize_msisdn(content, '27');
+                    //set identity here from rapid pro
+                    self.im.user.set_answer("registrant_msisdn", msisdn);
                     return self.states.create('state_check_optout');
                 }
             });
@@ -169,9 +245,8 @@ go.app = function() {
                 if number has opted out previously, go to state_has_opted_out
                 else, go to state_faccode
             */
-
             var registrant_msisdn = self.im.user.answers.registrant_msisdn;
-            if (registrant_msisdn !== '0820001004' ) { //replace with statement checking if identity has opted out or not
+            if (registrant_msisdn !== '+27820001004' ) { //replace with statement checking if identity has opted out or not
                 return self.states.create('state_faccode');
             } else {
                 return self.states.create('state_has_opted_out');
@@ -209,18 +284,25 @@ go.app = function() {
 
             return new FreeText(name, {
                 question: question,
-                check: function(content) {
-                    return self
+                 check: function(content) {
+                     return self
                     // check if whatsapp user as well here
-                    .then(function(facname) {
-                        if (!facname) {
-                            return error;
-                        } else {
-                            /*
+                    .is_whatsapp_user(self.im.user.answers.registrant_msisdn, false)
+                    .then(function(is_whatsapp_user) {
+                        return self.validate_nc_clinic_code(self.im, content);
+                    })
+                     .then(function(facname) {
+                         if (!facname) {
+                             return error;
+                         } else {
+                             /*
                                 set the facility name and code against the nurse identity here
-                            */
-                            return null; //null or undefined if check passes
-                        }
+                                set the empty nurse connect details againts registrant
+                                set facility name in the registrant details to the facname
+                                set the faccode in the registrant details to the content
+                             */
+                             return null; //null or undefined if check passes
+                         }
                     });
                 },
                 next: 'state_facname',
