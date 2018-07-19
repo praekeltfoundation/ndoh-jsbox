@@ -20,17 +20,9 @@ go.app = function() {
         App.call(self, 'state_start');
 
         //variables for services
-        /*var is;*/
-
         self.init = function() {
             // initialise services
             //replace identity store
-            /*is = new IdentityStore(
-                new JsonApi(self.im, {}),
-                self.im.config.services.identity_store.token,
-                self.im.config.services.identity_store.url
-            );*/
-
             self.env = self.im.config.env;
         };
 
@@ -279,7 +271,6 @@ go.app = function() {
                                 address type will be set here
                                 config name will be set here 
                             */
-
                         return 'state_faccode';
                     }
                     else{
@@ -295,30 +286,42 @@ go.app = function() {
 
             return new FreeText(name, {
                 question: question,
-                 check: function(content) {
-                     return self
-                    // check if whatsapp user as well here
-                    .is_whatsapp_user(self.im.user.answers.registrant_msisdn, false)
-                    .then(function(is_whatsapp_user) {
-                        return self.validate_nc_clinic_code(self.im, content);
-                    })
+                check: function(content) {
+                    return self.validate_nc_clinic_code(self.im, content)
                      .then(function(facname) {
                          if (!facname) {
                              return error;
                          } else {
-                             /*
-                                set the facility name and code against the nurse identity here
-                                set the empty nurse connect details againts registrant
-                                set facility name in the registrant details to the facname
-                                set the faccode in the registrant details to the content
-                             */
-                             return null; //null or undefined if check passes
+                            self.im.user.answers.registrant.details.nurseconnect = {};
+                            self.im.user.answers.registrant.details.nurseconnect.facname = facname;
+                            self.im.user.answers.registrant.details.nurseconnect.faccode = content;
+                            return null; //null or undefined if check passes
                          }
                     });
                 },
                 next: 'state_facname',
             });
         });
+
+        self.states.add('state_facname', function(name) {
+            var owner = self.im.user.answers.operator.id === self.im.user.answers.registrant.id
+                ? 'your' : 'their';
+            return new ChoiceState(name, {
+                question: ("Please confirm {{owner}} facility: {{facname}}")
+                    .context({
+                        owner: owner,
+                        facname: self.im.user.answers.registrant.details.nurseconnect.facname
+                    }),
+                choices: [
+                    new Choice('state_registration_type', ('Confirm')),
+                    new Choice('state_faccode', ('Not the right facility')),
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
 
         self.states.add('state_no_subscription', function(name) {
             return new MenuState(name, {
@@ -369,6 +372,7 @@ go.app = function() {
                 next: 'state_start',
              });
         });
+
 
 
 
