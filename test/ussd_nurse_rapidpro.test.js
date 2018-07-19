@@ -2,7 +2,9 @@ var vumigo = require('vumigo_v02');
 var AppTester = vumigo.AppTester;
 var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_Pilot = require('./fixtures_pilot');
+var fixtures_Jembi = require('./fixtures_jembi');
 var _ = require('lodash');
+
 
 describe('app', function() {
     describe('for ussd_nurse_rapidpro use', function() {
@@ -17,8 +19,20 @@ describe('app', function() {
                 .setup.config.app({
                     name: 'ussd_nurse_rapidpro',
                     env: 'test',
+                    testing_today: 'July 1, 2018 07:07:07',
+                    testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',
                     no_timeout_redirects: ['state_start'],
                     channel: '*134*550*5#',
+                    jembi: {
+                        username: 'foo',
+                        password: 'bar',
+                        url_json: 'http://test/v2/json/'
+                    },
+                    whatsapp: {
+                        api_url: 'http://pilot.example.org/api/v1/lookups/',
+                        api_token: 'api-token',
+                        api_number: '+27000000000',
+                    },
                     services: {
                         //will be replaced
                         identity_store: {
@@ -29,6 +43,7 @@ describe('app', function() {
                 })
                 .setup(function(api) {
                     // add fixtures for services used
+                    fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
                     fixtures_IdentityStore().forEach(api.http.fixtures.add);
                     _.map(['27820001001', '27820001003', '27820001004'], function(address) {
                         api.http.fixtures.add(
@@ -439,7 +454,90 @@ describe('app', function() {
                         .run();
                     });
 
-              }); //end of start NurseConnect
+            }); //end of enter msisdn
+
+            // Faccode Validation
+            describe("faccode entry", function() {
+                describe("contains letter", function() {
+                    it("should loop back without api call", function() {
+                        return tester
+                            .setup.user.addr('27820001004')
+                            .inputs(
+                                {session_event: 'new'}
+                                ,'1' //chooses to start nurse connect
+                                ,'1'  // chooses to sign up
+                                ,'1' //chooses yes to subscribe
+                                ,'0820001004'  // state_msisdn
+                                ,'1' //chooses yes to opt in
+                                ,'12345A'  // state_faccode
+                            )
+                            .check.interaction({
+                                state: 'state_faccode',
+                                reply: "Sorry, we don't recognise that code. Please enter the 6- digit facility code again, e.g. 535970:"
+                            })
+                            .run();
+                    });
+                });
+
+                describe("is not 6-char number", function() {
+                    it("should loop back without api call", function() {
+                        return tester
+                            .setup.user.addr('27820001001')
+                            .inputs(
+                                {session_event: 'new'}
+                                ,'1' //chooses to start nurse connect
+                                ,'1'  // chooses to sign up
+                                ,'1' //chooses yes to subscribe
+                                ,'0820001004'  // state_msisdn
+                                ,'1' //chooses yes to opt in
+                                ,'12345'  // state_faccode
+                            )
+                            .check.interaction({
+                                state: 'state_faccode',
+                                reply: "Sorry, we don't recognise that code. Please enter the 6- digit facility code again, e.g. 535970:"
+                            })
+                            .run();
+                    });
+                });
+
+                describe("is not on jembi system", function() {
+                    it("should loop back", function() {
+                        return tester
+                            .setup.user.addr('27820001001')
+                            .inputs(
+                                {session_event: 'new'}
+                                ,'1' //chooses to start nurse connect
+                                ,'1'  // chooses to sign up
+                                ,'1' //chooses yes to subscribe
+                                ,'0820001004'  // state_msisdn
+                                ,'1' //chooses yes to opt in
+                                ,'888888'  // state_faccode
+                            )
+                            .check.interaction({
+                                state: 'state_faccode',
+                                reply: "Sorry, we don't recognise that code. Please enter the 6- digit facility code again, e.g. 535970:"
+                            })
+                            .run();
+                    });
+                });
+            });
+
+                describe("unregistered user enters facility code", function(){
+                    it("should go to state_faccname", function() {
+                        return tester
+                            .setup.user.addr('27820001004')
+                            .inputs(
+                                {session_event: 'new'}
+                                ,'1' //chooses to start nurse connect
+                                ,'1'  // chooses to sign up
+                                ,'1' //chooses yes to subscribe
+                                ,'0820001004'  // state_msisdn
+                                ,'1' //chooses yes to opt in
+                                ,'12345' //enters facility code
+                            )
+                            .run();
+                    });
+                });
 
         }); //end of state_start
 
