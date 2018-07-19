@@ -17,17 +17,9 @@ go.app = function() {
         App.call(self, 'state_start');
 
         //variables for services
-        /*var is;*/
-
         self.init = function() {
             // initialise services
             //replace identity store
-            /*is = new IdentityStore(
-                new JsonApi(self.im, {}),
-                self.im.config.services.identity_store.token,
-                self.im.config.services.identity_store.url
-            );*/
-
             self.env = self.im.config.env;
         };
 
