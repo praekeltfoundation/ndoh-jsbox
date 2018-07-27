@@ -112,7 +112,7 @@ go.app = function() {
                 } else {
                     return self.states.create('state_not_registered');
                 }
-            })
+            });
         });
 
         self.states.add('state_not_registered', function(name){

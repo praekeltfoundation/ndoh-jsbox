@@ -14,7 +14,7 @@ go.RapidPro = function() {
 
         self.get_contact = function(filters) {
             filters = filters || {};
-            url = self.base_url + "/api/v2/contacts.json";
+            var url = self.base_url + "/api/v2/contacts.json";
 
             return self.json_api.get(url, {params: filters})
                 .then(function(response){
@@ -26,7 +26,7 @@ go.RapidPro = function() {
                         return null;
                     }
                 });
-        }
+        };
     });
 
     return RapidPro;
@@ -146,7 +146,7 @@ go.app = function() {
                 } else {
                     return self.states.create('state_not_registered');
                 }
-            })
+            });
         });
 
         self.states.add('state_not_registered', function(name){

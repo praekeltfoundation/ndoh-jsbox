@@ -1,9 +1,7 @@
 var vumigo = require('vumigo_v02');
 var AppTester = vumigo.AppTester;
-var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_Pilot = require('./fixtures_pilot');
 var fixtures_RapidPro = require('./fixtures_rapidpro');
-var _ = require('lodash');
 var utils = require('seed-jsbox-utils').utils;
 
 describe('app', function() {
@@ -68,7 +66,7 @@ describe('app', function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [0])
+                        utils.check_fixtures_used(api, [0]);
                     })
                     .run();
                 });
@@ -197,7 +195,7 @@ describe('app', function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [0])
+                        utils.check_fixtures_used(api, [0]);
                     })
                     .run();
                 });
@@ -280,7 +278,7 @@ describe('app', function() {
                                 reply: 'Please enter <your/their> 6-digit facility code:'
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [0])
+                                utils.check_fixtures_used(api, [0]);
                             })
                             .run();
                         });
@@ -363,7 +361,7 @@ describe('app', function() {
                         reply: 'Please enter <your/their> 6-digit facility code:'
                       })
                       .check(function(api) {
-                        utils.check_fixtures_used(api, [0])
+                        utils.check_fixtures_used(api, [0]);
                       })
                       .run();
                   });
@@ -393,7 +391,7 @@ describe('app', function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [0])
+                            utils.check_fixtures_used(api, [0]);
                         })
                         .run();
                     });
@@ -434,6 +432,7 @@ describe('app', function() {
                     it('should ask for facility code when confirmed not opted out', function(){
                         return tester
                         .setup(function(api) {
+                            // Background whatsapp check
                             api.http.fixtures.add(
                                 fixtures_Pilot().not_exists({
                                     address: '+27820001003',
@@ -451,7 +450,7 @@ describe('app', function() {
                             reply: 'Please enter <your/their> 6-digit facility code:'
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [0])
+                            utils.check_fixtures_used(api, [0]);
                         })
                         .run();
                     });

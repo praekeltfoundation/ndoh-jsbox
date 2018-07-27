@@ -11,7 +11,7 @@ go.RapidPro = function() {
 
         self.get_contact = function(filters) {
             filters = filters || {};
-            url = self.base_url + "/api/v2/contacts.json";
+            var url = self.base_url + "/api/v2/contacts.json";
 
             return self.json_api.get(url, {params: filters})
                 .then(function(response){
@@ -23,7 +23,7 @@ go.RapidPro = function() {
                         return null;
                     }
                 });
-        }
+        };
     });
 
     return RapidPro;
