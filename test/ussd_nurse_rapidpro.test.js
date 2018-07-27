@@ -19,8 +19,6 @@ describe('app', function() {
                 .setup.config.app({
                     name: 'ussd_nurse_rapidpro',
                     env: 'test',
-                    testing_today: 'July 1, 2018 07:07:07',
-                    testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',
                     no_timeout_redirects: ['state_start'],
                     channel: '*134*550*5#',
                     jembi: {
