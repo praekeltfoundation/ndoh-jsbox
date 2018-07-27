@@ -46,6 +46,7 @@ describe('app', function() {
                         api.http.fixtures.add(
                             fixtures_RapidPro.get_contact({
                                 urn: 'tel:+27820001003',
+                                groups: ["nurseconnect-whatsapp"],
                                 exists: true,
                             })
                         );
@@ -260,7 +261,7 @@ describe('app', function() {
                     describe('user agrees to registration terms', function(){
                         it("should run the whatsapp check in the background and ask them for their facility code", function(){
                             return tester
-                            .setup.user.answer('operator', 'owner')
+                            .setup.user.answer('registrant', 'operator')
                             .setup.user.answer('operator_msisdn', '+27820001001')
                             .setup(function(api) {
                                 api.http.fixtures.add(
@@ -353,9 +354,15 @@ describe('app', function() {
                                 wait: false,
                             })
                         );
+                        api.http.fixtures.add(
+                            fixtures_RapidPro.get_contact({
+                                exists: true,
+                                urn: 'tel:+27820001003'
+                            })
+                        );
                       })
                       .setup.user.state('state_enter_msisdn')
-                      .setup.user.answer('operator', 'other')
+                      .setup.user.answer('registrant', 'friend')
                       .input(
                           '0820001003'  // state_enter_msisdn
                       )
@@ -364,7 +371,7 @@ describe('app', function() {
                         reply: 'Please enter their 6-digit facility code:'
                       })
                       .check(function(api) {
-                        utils.check_fixtures_used(api, [0]);
+                        utils.check_fixtures_used(api, [0, 1]);
                       })
                       .run();
                   });
@@ -380,9 +387,16 @@ describe('app', function() {
                                     wait: false,
                                 })
                             );
+                            api.http.fixtures.add(
+                                fixtures_RapidPro.get_contact({
+                                    exists: true,
+                                    urn: 'tel:+27820001004',
+                                    groups: ['opted-out']
+                                })
+                            );
                         })
                         .setup.user.state('state_enter_msisdn')
-                        .setup.user.answer('operator', 'owner')
+                        .setup.user.answer('registrant', 'operator')
                         .input(
                             '0820001004'  // state_enter_msisdn
                         )
@@ -395,7 +409,7 @@ describe('app', function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [0]);
+                            utils.check_fixtures_used(api, [0, 1]);
                         })
                         .run();
                     });
@@ -404,7 +418,7 @@ describe('app', function() {
                     it('should go to state_faccode if user agrees to opt in again', function(){
                       return tester
                       .setup.user.state('state_has_opted_out')
-                      .setup.user.answer('operator', 'owner')
+                      .setup.user.answer('registrant', 'operator')
                       .input(
                           '1' // state_has_opted_out - chooses yes to opt in
                       )
@@ -445,6 +459,12 @@ describe('app', function() {
                                     wait: false,
                                 })
                             );
+                            api.http.fixtures.add(
+                                fixtures_RapidPro.get_contact({
+                                    exists: false,
+                                    urn: 'tel:+27820001003'
+                                })
+                            );
                         })
                         .setup.user.state('state_enter_msisdn')
                         .input(
@@ -455,7 +475,7 @@ describe('app', function() {
                             reply: 'Please enter their 6-digit facility code:'
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [0]);
+                            utils.check_fixtures_used(api, [0, 1]);
                         })
                         .run();
                     });
@@ -527,7 +547,7 @@ describe('app', function() {
                                 );
                             })
                             .setup.user.state('state_faccode')
-                            .setup.user.answer('operator', 'owner')
+                            .setup.user.answer('registrant', 'operator')
                             .input(
                                 '123456' // state_faccode - enters facility code
                             )

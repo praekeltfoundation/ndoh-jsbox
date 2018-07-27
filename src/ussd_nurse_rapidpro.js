@@ -70,6 +70,12 @@ go.app = function() {
             }
         };
 
+        self.is_contact_in_group = function(contact, group) {
+            return contact.groups.filter(function(value) {
+                return value.name === group;
+            }).length !== 0;
+        };
+
        self.is_whatsapp_user = function(msisdn, wait_for_response) {
             var whatsapp_config = self.im.config.services.whatsapp || {};
             var api_url = whatsapp_config.api_url;
@@ -107,11 +113,18 @@ go.app = function() {
             self.im.user.set_answer("operator_msisdn", msisdn);
 
             return self.rapidpro.get_contact({urn: 'tel:' + msisdn}).then(function(contact) {
+
                 if(contact !== null){ 
-                    return self.states.create('state_registered');
-                } else {
-                    return self.states.create('state_not_registered');
+                    self.im.user.set_answer('operator_contact', contact);
+
+                    if (
+                            self.is_contact_in_group(contact, 'nurseconnect-sms') ||
+                            self.is_contact_in_group(contact, 'nurseconnect-whatsapp')
+                       ) {
+                        return self.states.create('state_registered');
+                    }
                 }
+                return self.states.create('state_not_registered');
             });
         });
 
@@ -127,9 +140,9 @@ go.app = function() {
             return new PaginatedChoiceState(name, {
                 question: $("Welcome back to NurseConnect. Do you want to:"),
                 choices: [
-                    new Choice('state_friend_registration', $('Help a friend sign up')),
+                    new Choice('state_friend_register', $('Help a friend sign up')),
                     new Choice('state_change_num', $('Change your number')),
-                    new Choice('state_check_optout_optout', $('Opt out')),
+                    new Choice('state_optout', $('Opt out')),
                     new Choice('state_change_faccode', $('Change facility code')),
                     new Choice('state_change_id_no', $('Change ID no.')),
                     new Choice('state_change_sanc', $('Change SANC no.')),
@@ -160,8 +173,10 @@ go.app = function() {
 
         //self registration
         self.states.add('state_weekly_messages', function(name) {
-            self.im.user.set_answer("operator", "owner");
-            self.im.user.set_answer("friend_registration", false); 
+            self.im.user.set_answer("registrant", "operator");
+            self.im.user.set_answer("registrant_msisdn", self.im.user.answers.operator_msisdn);
+            self.im.user.set_answer("registrant_contact", self.im.user.answers.opertor_contact);
+
             return new ChoiceState(name, {
                 question: $("To register, your info needs to be collected, stored and used. " +
                            "You might also receive messages on public holidays. Do you agree?"),
@@ -170,8 +185,6 @@ go.app = function() {
                     new Choice('no', $('No')),
                 ],
                 next: function(choice) {
-                    self.im.user.set_answer("registrant", self.im.user.answers.operator);
-                    self.im.user.set_answer("registrant_msisdn", self.im.user.answers.operator_msisdn);
                     if (choice.value === 'yes'){
                         return self
                         // Warm cache for WhatsApp lookup without blocking using operator_msisdn
@@ -189,31 +202,21 @@ go.app = function() {
 
         //friend registration
         self.states.add('state_friend_register', function(name) {
-            self.im.user.set_answer("friend_registration", true);
-            return new ChoiceState(name, {
+            self.im.user.set_answer("registrant", "friend");
+            return new MenuState(name, {
                 question: $("To register, your friend's info needs to be collected, stored and used. "+
                             "They may receive messages on public holidays. Do they agree?"),
                 choices: [
-                    new Choice('yes', $('Yes')),
-                    new Choice('no', $('No')),
-                ],
-                next: function(choice) {
-                    self.im.user.set_answer("registrant", self.im.user.answers.operator);
-                    self.im.user.set_answer("registrant_msisdn", self.im.user.answers.operator_msisdn);
-                    if (choice.value === 'yes'){
-                        return 'state_enter_msisdn';
-                    }
-                    else if (choice.value === 'no'){
-                        return 'state_no_registration';
-                    }
-                }
+                    new Choice('state_enter_msisdn', $('Yes')),
+                    new Choice('state_no_registration', $('No')),
+                ]
             });
         });
 
         self.states.add('state_no_registration', function(name) {
-            var pronoun = self.im.user.answers.operator === "owner"
+            var pronoun = self.im.user.answers.registrant === "operator"
             ? 'you' : 'they';
-            var owner = self.im.user.answers.operator === "owner"
+            var owner = self.im.user.answers.registrant === "operator"
             ? 'your' : 'their';
             return new MenuState(name, {
                 question: $("If {{pronoun}} don't agree to share info, we can't send NurseConnect messages. " +
@@ -221,7 +224,7 @@ go.app = function() {
                            .context({owner: owner,
                                      pronoun: pronoun}),
                 choices: [
-                    new Choice('state_not_registered_menu', $('Main Menu')),
+                    new Choice('state_start', $('Main Menu')),
                 ],
             });
         });
@@ -238,13 +241,19 @@ go.app = function() {
                     }
                 },
                 next: function(content) {
-                    //get_or_create_identity from rapid pro here
                     var msisdn = utils.normalize_msisdn(content, '27');
-                    //set identity here from rapid pro
                     self.im.user.set_answer("registrant_msisdn", msisdn);
-                    return self
-                    // Warm cache for WhatsApp lookup without blocking using operator_msisdn
-                    .is_whatsapp_user(self.im.user.answers.registrant_msisdn, false)
+                    return self.rapidpro.get_contact({urn: 'tel:' + msisdn})
+                    .then(function(contact) {
+                        // If we find a contact, store it, otherwise we'll create it at the end
+                        if(contact !== null) {
+                            self.im.user.set_answer("registrant_contact", contact);
+                        }
+                    })
+                    .then(function() {
+                        // Warm cache for WhatsApp lookup without blocking using operator_msisdn
+                        return self.is_whatsapp_user(self.im.user.answers.registrant_msisdn, false);
+                    })
                     .then(function() {
                         return 'state_check_optout';
                     });
@@ -253,47 +262,29 @@ go.app = function() {
         });
 
         self.states.add('state_check_optout', function(name) {
-            /*  declare msisdn
-                if number has opted out previously, go to state_has_opted_out
-                else, go to state_faccode
-            */
-            var registrant_msisdn = self.im.user.answers.registrant_msisdn;
-            if (registrant_msisdn !== '+27820001004' ) { //replace with statement checking if identity has opted out or not
-                return self.states.create('state_faccode');
-            } else {
+            // If the contact exists and is in the opt out group, then it's opted out, otherwise not
+            var contact = self.im.user.answers.registrant_contact;
+            if(contact && self.is_contact_in_group(contact, 'opted-out')){
                 return self.states.create('state_has_opted_out');
             }
+            return self.states.create('state_faccode');
         });
 
         self.states.add('state_has_opted_out', function(name) {
-            var pronoun = self.im.user.answers.operator === "owner"
+            var pronoun = self.im.user.answers.registrant === "operator"
             ? 'you' : 'they';
-            return new ChoiceState(name, {
+            return new MenuState(name, {
                 question: $("This number previously opted out of NurseConnect messages. Are {{pronoun}} sure {{pronoun}} want to sign up again?")
                 .context({pronoun: pronoun}),
                 choices: [
-                    new Choice('yes', $('Yes')),
+                    new Choice('state_faccode', $('Yes')),
                     new Choice('state_no_subscription', $('No'))
-                ],
-                next: function(choice) {
-                    if (choice.value === 'yes') {
-
-                            /*  identity will be set here
-                                address will be set here
-                                address type will be set here
-                                config name will be set here 
-                            */
-                        return 'state_faccode';
-                    }
-                    else{
-                      return choice.value;
-                    }
-                }
+                ]
             });
         });
 
         self.states.add('state_faccode', function(name) {
-            var owner = self.im.user.answers.operator === "owner"
+            var owner = self.im.user.answers.registrant === "operator"
             ? 'your' : 'their';
             var error = $("Sorry, we don't recognise that code. Please enter the 6- digit facility code again, e.g. 535970:");
             var question = $("Please enter {{owner}} 6-digit facility code:")
@@ -307,9 +298,7 @@ go.app = function() {
                          if (!facname) {
                              return error;
                          } else {
-                            self.im.user.set_answer("details", {});
                             self.im.user.set_answer("facname", facname);
-                            self.im.user.set_answer("faccode", content);
                             return null; //null or undefined if check passes
                          }
                     });
@@ -319,7 +308,7 @@ go.app = function() {
         });
 
         self.states.add('state_facname', function(name) {
-            var owner = self.im.user.answers.operator === "owner"
+            var owner = self.im.user.answers.registrant === "operator"
             ? 'your' : 'their';
             return new ChoiceState(name, {
                 question: $("Please confirm {{owner}} facility: {{facname}}")
@@ -342,22 +331,18 @@ go.app = function() {
             return new MenuState(name, {
                 question: $("You have chosen not to receive NurseConnect messages on this number."),
                 choices: [
-                    new Choice('state_not_registered_menu', $('Main Menu')),
+                    new Choice('state_start', $('Main Menu')),
                 ],
             });
         });
 
-        self.states.add('state_check_optout_optout', function(name) {
-            /*
-                checks if user has opted out previously
-                if user has not, gives options for opting out
-            */
-
-            return self.states.create('state_optout');
-        });
-
         self.states.add('state_optout', function(name) {
+            var contact = self.im.user.answers.operator_contact;
             var question = $("Why do you want to stop getting messages?");
+            if(contact && self.is_contact_in_group(contact, 'opted-out')){
+                question = $("You previously opted out of receiving messages. Please tell us why:");
+            }
+
             return new ChoiceState(name, {
                 question: question,
                 choices: [
