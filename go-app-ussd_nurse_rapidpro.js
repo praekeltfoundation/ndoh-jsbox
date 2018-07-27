@@ -1,6 +1,37 @@
 var go = {};
 go;
 
+go.RapidPro = function() {
+    var vumigo = require('vumigo_v02');
+    var events = vumigo.events;
+    var Eventable = events.Eventable;
+
+    var RapidPro = Eventable.extend(function(self, json_api, base_url, auth_token) {
+        self.json_api = json_api;
+        self.base_url = base_url;
+        self.auth_token = auth_token;
+        self.json_api.defaults.headers.Authorization = ['Token ' + self.auth_token];
+
+        self.get_contact = function(filters) {
+            filters = filters || {};
+            var url = self.base_url + "/api/v2/contacts.json";
+
+            return self.json_api.get(url, {params: filters})
+                .then(function(response){
+                    var contacts = response.data.results;
+                    if(contacts.length > 0){
+                        return contacts[0];
+                    }
+                    else {
+                        return null;
+                    }
+                });
+        };
+    });
+
+    return RapidPro;
+}();
+
 go.app = function() {
     var _ = require('lodash');
     var vumigo = require('vumigo_v02');
@@ -22,9 +53,11 @@ go.app = function() {
 
         //variables for services
         self.init = function() {
-            // initialise services
-            //replace identity store
-            self.env = self.im.config.env;
+            self.rapidpro = new go.RapidPro(
+                new JsonApi(self.im, {}),
+                self.im.config.services.rapidpro.base_url,
+                self.im.config.services.rapidpro.token
+            );
         };
 
         self.jembi_nc_clinic_validate = function (im, clinic_code) {
@@ -59,20 +92,20 @@ go.app = function() {
         self.jembi_json_api_call = function(method, params, payload, endpoint, im) {
             var http = new JsonApi(im, {
                 auth: {
-                    username: im.config.jembi.username,
-                    password: im.config.jembi.password
+                    username: im.config.services.jembi.username,
+                    password: im.config.services.jembi.password
                 }
             });
             switch(method) {
                 case "get":
-                    return http.get(im.config.jembi.url_json + endpoint, {
+                    return http.get(im.config.services.jembi.url_json + endpoint, {
                         params: params
                     });
             }
         };
 
        self.is_whatsapp_user = function(msisdn, wait_for_response) {
-            var whatsapp_config = self.im.config.whatsapp || {};
+            var whatsapp_config = self.im.config.services.whatsapp || {};
             var api_url = whatsapp_config.api_url;
             var api_token = whatsapp_config.api_token;
             var api_number = whatsapp_config.api_number;
@@ -107,20 +140,13 @@ go.app = function() {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
             self.im.user.set_answer("operator_msisdn", msisdn);
 
-            /*
-                find identity & check subscription using CompanionApp
-                use temporary fixture to differentiate non_subscribers and subscribers
-                this will be replaced with method that checks subscriptions
-                will go to state_registered if found,
-                else state_not_registered
-            */
-            if(msisdn === "+27820001003"){ 
-                self.im.user.set_answer("operator", "owner");
-                return self.states.create('state_registered');
-            } else {
-                self.im.user.set_answer("operator", "other");
-                return self.states.create('state_not_registered');
-            }
+            return self.rapidpro.get_contact({urn: 'tel:' + msisdn}).then(function(contact) {
+                if(contact !== null){ 
+                    return self.states.create('state_registered');
+                } else {
+                    return self.states.create('state_not_registered');
+                }
+            });
         });
 
         self.states.add('state_not_registered', function(name){
@@ -143,11 +169,6 @@ go.app = function() {
                     new Choice('state_change_sanc', $('Change SANC no.')),
                     new Choice('state_change_persal', $('Change Persal no.')),
                 ],
-                check: function(content) {
-                    return self
-                    // Warm cache for WhatsApp lookup without blocking using operator_msisdn
-                    .is_whatsapp_user(self.im.user.answers.operator_msisdn, false);
-                },
                 characters_per_page: 140,
                 options_per_page: null,
                 more: $('More'),
@@ -186,7 +207,12 @@ go.app = function() {
                     self.im.user.set_answer("registrant", self.im.user.answers.operator);
                     self.im.user.set_answer("registrant_msisdn", self.im.user.answers.operator_msisdn);
                     if (choice.value === 'yes'){
-                        return 'state_enter_msisdn';
+                        return self
+                        // Warm cache for WhatsApp lookup without blocking using operator_msisdn
+                        .is_whatsapp_user(self.im.user.answers.registrant_msisdn, false)
+                        .then(function() {
+                            return 'state_check_optout';
+                        });
                     }
                     else if (choice.value === 'no'){
                         return 'state_no_registration';
@@ -250,7 +276,12 @@ go.app = function() {
                     var msisdn = utils.normalize_msisdn(content, '27');
                     //set identity here from rapid pro
                     self.im.user.set_answer("registrant_msisdn", msisdn);
-                    return self.states.create('state_check_optout');
+                    return self
+                    // Warm cache for WhatsApp lookup without blocking using operator_msisdn
+                    .is_whatsapp_user(self.im.user.answers.registrant_msisdn, false)
+                    .then(function() {
+                        return 'state_check_optout';
+                    });
                 }
             });
         });
@@ -372,11 +403,8 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if (choice.value === 'main_menu') {
-                        return 'state_start';
+                        return 'state_registered';
                     } else {
-                        /*
-                            record reason for opt out as choice.value
-                        */
                        return 'state_opted_out';
                     }
                 }
