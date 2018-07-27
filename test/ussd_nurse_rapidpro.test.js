@@ -2,7 +2,9 @@ var vumigo = require('vumigo_v02');
 var AppTester = vumigo.AppTester;
 var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_Pilot = require('./fixtures_pilot');
+var fixtures_Jembi = require('./fixtures_jembi');
 var _ = require('lodash');
+
 
 describe('app', function() {
     describe('for ussd_nurse_rapidpro use', function() {
@@ -19,6 +21,16 @@ describe('app', function() {
                     env: 'test',
                     no_timeout_redirects: ['state_start'],
                     channel: '*134*550*5#',
+                    jembi: {
+                        username: 'foo',
+                        password: 'bar',
+                        url_json: 'http://test/v2/json/'
+                    },
+                    whatsapp: {
+                        api_url: 'http://pilot.example.org/api/v1/lookups/',
+                        api_token: 'api-token',
+                        api_number: '+27000000000',
+                    },
                     services: {
                         //will be replaced
                         identity_store: {
@@ -29,6 +41,7 @@ describe('app', function() {
                 })
                 .setup(function(api) {
                     // add fixtures for services used
+                    fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
                     fixtures_IdentityStore().forEach(api.http.fixtures.add);
                     _.map(['27820001001', '27820001003', '27820001004'], function(address) {
                         api.http.fixtures.add(
@@ -248,8 +261,8 @@ describe('app', function() {
                             )
                             .check.interaction({
                                 state: 'state_no_registration',
-                                reply: ["If you/they don't agree to share info, we can't send NurseConnect messages. " +
-                                        "Reply '1' if you/they change your/their mind and would like to sign up.",
+                                reply: ["If you don't agree to share info, we can't send NurseConnect messages. " +
+                                        "Reply '1' if you change your mind and would like to sign up.",
                                         "1. Main Menu"
                                 ].join('\n')
                             })
@@ -326,8 +339,8 @@ describe('app', function() {
                             )
                             .check.interaction({
                                 state: 'state_no_registration',
-                                reply: ["If you/they don't agree to share info, we can't send NurseConnect messages. " +
-                                        "Reply '1' if you/they change your/their mind and would like to sign up.",
+                                reply: ["If they don't agree to share info, we can't send NurseConnect messages. " +
+                                        "Reply '1' if they change their mind and would like to sign up.",
                                         "1. Main Menu"
                                 ].join('\n')
                             })
@@ -352,7 +365,7 @@ describe('app', function() {
                       )
                       .check.interaction({
                         state: 'state_faccode',
-                        reply: 'Please enter <your/their> 6-digit facility code:'
+                        reply: 'Please enter your 6-digit facility code:'
                       })
                       .run();
                   });
@@ -371,7 +384,7 @@ describe('app', function() {
                         .check.interaction({
                             state: 'state_has_opted_out',
                             reply: [
-                                "This number previously opted out of NurseConnect messages. Are <you/they> sure <you/they> want to sign up again?",
+                                "This number previously opted out of NurseConnect messages. Are you sure you want to sign up again?",
                                 '1. Yes',
                                 '2. No'
                             ].join('\n')
@@ -393,7 +406,7 @@ describe('app', function() {
                       )
                       .check.interaction({
                           state: 'state_faccode',
-                          reply: 'Please enter <your/their> 6-digit facility code:'
+                          reply: 'Please enter your 6-digit facility code:'
                       })
                       .run();
                     });
@@ -428,18 +441,109 @@ describe('app', function() {
                         .inputs(
                             {session_event: 'new'}
                             ,'1' //chooses to start nurse connect
-                            ,'1'  // chooses to sign up
+                            ,'3'  // chooses to sign up friend
                             ,'1' //chooses yes to subscribe
                             ,'0820001003'  // state_msisdn
                         )
                         .check.interaction({
                             state: 'state_faccode',
-                            reply: 'Please enter <your/their> 6-digit facility code:'
+                            reply: 'Please enter their 6-digit facility code:'
                         })
                         .run();
                     });
 
-              }); //end of start NurseConnect
+            }); //end of enter msisdn
+
+            // Faccode Validation
+            describe("faccode entry", function() {
+                describe("contains letter", function() {
+                    it("should loop back without api call", function() {
+                        return tester
+                            .setup.user.addr('27820001004')
+                            .inputs(
+                                {session_event: 'new'}
+                                ,'1' //chooses to start nurse connect
+                                ,'1'  // chooses to sign up
+                                ,'1' //chooses yes to subscribe
+                                ,'0820001004'  // state_msisdn
+                                ,'1' //chooses yes to opt in
+                                ,'12345A'  // state_faccode
+                            )
+                            .check.interaction({
+                                state: 'state_faccode',
+                                reply: "Sorry, we don't recognise that code. Please enter the 6- digit facility code again, e.g. 535970:"
+                            })
+                            .run();
+                    });
+                });
+
+                describe("is not 6-char number", function() {
+                    it("should loop back without api call", function() {
+                        return tester
+                            .setup.user.addr('27820001001')
+                            .inputs(
+                                {session_event: 'new'}
+                                ,'1' //chooses to start nurse connect
+                                ,'1'  // chooses to sign up
+                                ,'1' //chooses yes to subscribe
+                                ,'0820001004'  // state_msisdn
+                                ,'1' //chooses yes to opt in
+                                ,'12345'  // state_faccode
+                            )
+                            .check.interaction({
+                                state: 'state_faccode',
+                                reply: "Sorry, we don't recognise that code. Please enter the 6- digit facility code again, e.g. 535970:"
+                            })
+                            .run();
+                    });
+                });
+
+                describe("is not on jembi system", function() {
+                    it("should loop back", function() {
+                        return tester
+                            .setup.user.addr('27820001001')
+                            .inputs(
+                                {session_event: 'new'}
+                                ,'1' //chooses to start nurse connect
+                                ,'1'  // chooses to sign up
+                                ,'1' //chooses yes to subscribe
+                                ,'0820001004'  // state_msisdn
+                                ,'1' //chooses yes to opt in
+                                ,'888888'  // state_faccode
+                            )
+                            .check.interaction({
+                                state: 'state_faccode',
+                                reply: "Sorry, we don't recognise that code. Please enter the 6- digit facility code again, e.g. 535970:"
+                            })
+                            .run();
+                    });
+                });
+            });
+
+                describe("unregistered user enters facility code", function(){
+                    it("should go to state_faccname", function() {
+                        return tester
+                            .setup.user.addr('27820001004')
+                            .inputs(
+                                {session_event: 'new'}
+                                ,'1' //chooses to start nurse connect
+                                ,'1'  // chooses to sign up
+                                ,'1' //chooses yes to subscribe
+                                ,'0820001004'  // state_msisdn
+                                ,'1' //chooses yes to opt in
+                                ,'123456' //enters facility code
+                            )
+                            .check.interaction({
+                                state: 'state_facname',
+                                reply: ['Please confirm your facility: WCL clinic',
+                                        '1. Confirm',
+                                        '2. Not the right facility'
+                                ].join('\n')
+                                
+                            })
+                            .run();
+                    });
+                });
 
         }); //end of state_start
 
