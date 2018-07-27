@@ -1,7 +1,8 @@
 var vumigo = require('vumigo_v02');
 var AppTester = vumigo.AppTester;
 var fixtures_Pilot = require('./fixtures_pilot');
-var fixtures_RapidPro = require('./fixtures_rapidpro');
+var fixtures_RapidPro = require('./fixtures_rapidpro')();
+var fixtures_Jembi = require('./fixtures_jembi_dynamic')();
 var utils = require('seed-jsbox-utils').utils;
 
 describe('app', function() {
@@ -43,7 +44,7 @@ describe('app', function() {
                     return tester
                     .setup(function(api) {
                         api.http.fixtures.add(
-                            fixtures_RapidPro().get_contact({
+                            fixtures_RapidPro.get_contact({
                                 urn: 'tel:+27820001003',
                                 exists: true,
                             })
@@ -177,7 +178,7 @@ describe('app', function() {
                     return tester
                     .setup(function(api) {
                         api.http.fixtures.add(
-                            fixtures_RapidPro().get_contact({
+                            fixtures_RapidPro.get_contact({
                                 urn: 'tel:+27820001001',
                                 exists: false,
                             })
@@ -247,8 +248,8 @@ describe('app', function() {
                             )
                             .check.interaction({
                                 state: 'state_no_registration',
-                                reply: ["If you/they don't agree to share info, we can't send NurseConnect messages. " +
-                                        "Reply '1' if you/they change your/their mind and would like to sign up.",
+                                reply: ["If you don't agree to share info, we can't send NurseConnect messages. " +
+                                        "Reply '1' if you change your mind and would like to sign up.",
                                         "1. Main Menu"
                                 ].join('\n')
                             })
@@ -259,6 +260,7 @@ describe('app', function() {
                     describe('user agrees to registration terms', function(){
                         it("should run the whatsapp check in the background and ask them for their facility code", function(){
                             return tester
+                            .setup.user.answer('operator', 'owner')
                             .setup.user.answer('operator_msisdn', '+27820001001')
                             .setup(function(api) {
                                 api.http.fixtures.add(
@@ -275,7 +277,7 @@ describe('app', function() {
                             )
                             .check.interaction({
                                 state: 'state_faccode',
-                                reply: 'Please enter <your/their> 6-digit facility code:'
+                                reply: 'Please enter your 6-digit facility code:'
                             })
                             .check(function(api) {
                                 utils.check_fixtures_used(api, [0]);
@@ -327,8 +329,8 @@ describe('app', function() {
                             )
                             .check.interaction({
                                 state: 'state_no_registration',
-                                reply: ["If you/they don't agree to share info, we can't send NurseConnect messages. " +
-                                        "Reply '1' if you/they change your/their mind and would like to sign up.",
+                                reply: ["If they don't agree to share info, we can't send NurseConnect messages. " +
+                                        "Reply '1' if they change their mind and would like to sign up.",
                                         "1. Main Menu"
                                 ].join('\n')
                             })
@@ -353,12 +355,13 @@ describe('app', function() {
                         );
                       })
                       .setup.user.state('state_enter_msisdn')
+                      .setup.user.answer('operator', 'other')
                       .input(
                           '0820001003'  // state_enter_msisdn
                       )
                       .check.interaction({
                         state: 'state_faccode',
-                        reply: 'Please enter <your/their> 6-digit facility code:'
+                        reply: 'Please enter their 6-digit facility code:'
                       })
                       .check(function(api) {
                         utils.check_fixtures_used(api, [0]);
@@ -379,13 +382,14 @@ describe('app', function() {
                             );
                         })
                         .setup.user.state('state_enter_msisdn')
+                        .setup.user.answer('operator', 'owner')
                         .input(
                             '0820001004'  // state_enter_msisdn
                         )
                         .check.interaction({
                             state: 'state_has_opted_out',
                             reply: [
-                                "This number previously opted out of NurseConnect messages. Are <you/they> sure <you/they> want to sign up again?",
+                                "This number previously opted out of NurseConnect messages. Are you sure you want to sign up again?",
                                 '1. Yes',
                                 '2. No'
                             ].join('\n')
@@ -400,12 +404,13 @@ describe('app', function() {
                     it('should go to state_faccode if user agrees to opt in again', function(){
                       return tester
                       .setup.user.state('state_has_opted_out')
+                      .setup.user.answer('operator', 'owner')
                       .input(
                           '1' // state_has_opted_out - chooses yes to opt in
                       )
                       .check.interaction({
                           state: 'state_faccode',
-                          reply: 'Please enter <your/their> 6-digit facility code:'
+                          reply: 'Please enter your 6-digit facility code:'
                       })
                       .run();
                     });
@@ -447,7 +452,7 @@ describe('app', function() {
                         )
                         .check.interaction({
                             state: 'state_faccode',
-                            reply: 'Please enter <your/their> 6-digit facility code:'
+                            reply: 'Please enter their 6-digit facility code:'
                         })
                         .check(function(api) {
                             utils.check_fixtures_used(api, [0]);
@@ -455,7 +460,87 @@ describe('app', function() {
                         .run();
                     });
 
-              }); //end of start NurseConnect
+            }); //end of enter msisdn
+
+            // Faccode Validation
+            describe("faccode entry", function() {
+                describe("contains letter", function() {
+                    it("should loop back without api call", function() {
+                        return tester
+                            .setup.user.state('state_faccode')
+                            .inputs(
+                                '12345A'  // state_faccode
+                            )
+                            .check.interaction({
+                                state: 'state_faccode',
+                                reply: "Sorry, we don't recognise that code. Please enter the 6- digit facility code again, e.g. 535970:"
+                            })
+                            .run();
+                    });
+                });
+
+                describe("is not 6-char number", function() {
+                    it("should loop back without api call", function() {
+                        return tester
+                            .setup.user.state('state_faccode')
+                            .input(
+                                '12345'  // state_faccode
+                            )
+                            .check.interaction({
+                                state: 'state_faccode',
+                                reply: "Sorry, we don't recognise that code. Please enter the 6- digit facility code again, e.g. 535970:"
+                            })
+                            .check(function(api) {
+                                utils.check_fixtures_used(api, []);
+                            })
+                            .run();
+                    });
+                });
+
+                describe("is not on jembi system", function() {
+                    it("should loop back", function() {
+                        return tester
+                            .setup.user.state('state_faccode')
+                            .setup(function(api) {
+                                api.http.fixtures.add(
+                                    fixtures_Jembi.not_exists('888888')
+                                );
+                            })
+                            .input(
+                                '888888'  // state_faccode
+                            )
+                            .check.interaction({
+                                state: 'state_faccode',
+                                reply: "Sorry, we don't recognise that code. Please enter the 6- digit facility code again, e.g. 535970:"
+                            })
+                            .run();
+                    });
+                });
+            });
+
+                describe("unregistered user enters facility code", function(){
+                    it("should go to state_faccname", function() {
+                        return tester
+                            .setup(function(api) {
+                                api.http.fixtures.add(
+                                    fixtures_Jembi.exists('123456', 'WCL clinic')
+                                );
+                            })
+                            .setup.user.state('state_faccode')
+                            .setup.user.answer('operator', 'owner')
+                            .input(
+                                '123456' // state_faccode - enters facility code
+                            )
+                            .check.interaction({
+                                state: 'state_facname',
+                                reply: ['Please confirm your facility: WCL clinic',
+                                        '1. Confirm',
+                                        '2. Not the right facility'
+                                ].join('\n')
+                            })
+                            .run();
+                    });
+                });
 
         }); //end of state_start
 
