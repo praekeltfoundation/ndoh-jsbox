@@ -263,8 +263,8 @@ describe('app', function() {
                             )
                             .check.interaction({
                                 state: 'state_no_registration',
-                                reply: ["If you/they don't agree to share info, we can't send NurseConnect messages. " +
-                                        "Reply '1' if you/they change your/their mind and would like to sign up.",
+                                reply: ["If you don't agree to share info, we can't send NurseConnect messages. " +
+                                        "Reply '1' if you change your mind and would like to sign up.",
                                         "1. Main Menu"
                                 ].join('\n')
                             })
@@ -341,8 +341,8 @@ describe('app', function() {
                             )
                             .check.interaction({
                                 state: 'state_no_registration',
-                                reply: ["If you/they don't agree to share info, we can't send NurseConnect messages. " +
-                                        "Reply '1' if you/they change your/their mind and would like to sign up.",
+                                reply: ["If they don't agree to share info, we can't send NurseConnect messages. " +
+                                        "Reply '1' if they change their mind and would like to sign up.",
                                         "1. Main Menu"
                                 ].join('\n')
                             })
@@ -367,7 +367,7 @@ describe('app', function() {
                       )
                       .check.interaction({
                         state: 'state_faccode',
-                        reply: 'Please enter <your/their> 6-digit facility code:'
+                        reply: 'Please enter your 6-digit facility code:'
                       })
                       .run();
                   });
@@ -386,7 +386,7 @@ describe('app', function() {
                         .check.interaction({
                             state: 'state_has_opted_out',
                             reply: [
-                                "This number previously opted out of NurseConnect messages. Are <you/they> sure <you/they> want to sign up again?",
+                                "This number previously opted out of NurseConnect messages. Are you sure you want to sign up again?",
                                 '1. Yes',
                                 '2. No'
                             ].join('\n')
@@ -408,7 +408,7 @@ describe('app', function() {
                       )
                       .check.interaction({
                           state: 'state_faccode',
-                          reply: 'Please enter <your/their> 6-digit facility code:'
+                          reply: 'Please enter your 6-digit facility code:'
                       })
                       .run();
                     });
@@ -443,13 +443,13 @@ describe('app', function() {
                         .inputs(
                             {session_event: 'new'}
                             ,'1' //chooses to start nurse connect
-                            ,'1'  // chooses to sign up
+                            ,'3'  // chooses to sign up friend
                             ,'1' //chooses yes to subscribe
                             ,'0820001003'  // state_msisdn
                         )
                         .check.interaction({
                             state: 'state_faccode',
-                            reply: 'Please enter <your/their> 6-digit facility code:'
+                            reply: 'Please enter their 6-digit facility code:'
                         })
                         .run();
                     });
@@ -533,8 +533,16 @@ describe('app', function() {
                                 ,'1' //chooses yes to subscribe
                                 ,'0820001004'  // state_msisdn
                                 ,'1' //chooses yes to opt in
-                                ,'12345' //enters facility code
+                                ,'123456' //enters facility code
                             )
+                            .check.interaction({
+                                state: 'state_facname',
+                                reply: ['Please confirm your facility: WCL clinic',
+                                        '1. Confirm',
+                                        '2. Not the right facility'
+                                ].join('\n')
+                                
+                            })
                             .run();
                     });
                 });
