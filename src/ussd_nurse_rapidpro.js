@@ -55,7 +55,6 @@ go.app = function() {
         };
 
         self.jembi_json_api_call = function(method, params, payload, endpoint, im) {
-            console.log(im.config.services.jembi);
             var http = new JsonApi(im, {
                 auth: {
                     username: im.config.services.jembi.username,
