@@ -44,6 +44,88 @@ module.exports = function() {
                 }
             };
         },
+        update_contact: function(filter, result, contact_uuid) {
+            filter = filter || {};
+            result = result || {};
+            contact_uuid = contact_uuid || "contact-uuid";
+
+            return {
+                "repeatable": true,
+                "request": {
+                    "url": 'https://rapidpro/api/v2/contacts.json',
+                    "method": 'POST',
+                    "params": filter,
+                    "data": result
+                },
+                "response": {
+                    "code": 200,
+                    "data": {
+                        uuid: contact_uuid,
+                        fields: result.fields,
+                        urns: result.urns
+                    }
+                }
+            };
+        },
+        create_contact: function(result, uuid) {
+            result = result || {};
+            uuid = uuid || "contact-uuid";
+
+            return {
+                "repeatable": true,
+                "request": {
+                    "url": 'https://rapidpro/api/v2/contacts.json',
+                    "method": 'POST',
+                    "data": result
+                },
+                "response": {
+                    "code": 200,
+                    "data": {
+                        uuid: uuid,
+                        fields: result.fields,
+                        urns: result.urns
+                    }
+                }
+            };
+        },
+        get_flows: function(flows, filter) {
+            flows = flows || [];
+            filter = filter || {};
+
+            return {
+                "repeatable": true,
+                "request": {
+                    "url": 'https://rapidpro/api/v2/flows.json',
+                    "method": 'GET',
+                    "params": filter
+                },
+                "response": {
+                    "code": 200,
+                    "data": {
+                        next: null,
+                        previous: null,
+                        results: flows
+                    }
+                }
+            };
+        },
+        start_flow: function(flow_uuid, contact_uuid) {
+            return {
+                "repeatable": true,
+                "request": {
+                    "url": 'https://rapidpro/api/v2/flow_starts.json',
+                    "method": 'POST',
+                    "data": {
+                        flow: flow_uuid,
+                        contacts: [contact_uuid]
+                    }
+                },
+                "response": {
+                    "code": 200,
+                    "data": {}
+                }
+            };
+        },
 
         javascript: "commas"
     };

@@ -3,6 +3,7 @@ go;
 
 go.RapidPro = function() {
     var vumigo = require('vumigo_v02');
+    var url_utils = require('url');
     var events = vumigo.events;
     var Eventable = events.Eventable;
 
@@ -26,6 +27,66 @@ go.RapidPro = function() {
                         return null;
                     }
                 });
+        };
+
+        self.update_contact = function(filter, details) {
+            var url = self.base_url + "/api/v2/contacts.json";
+            return self.json_api.post(url, {params: filter, data: details})
+                .then(function(response) {
+                    return response.data;
+                });
+        };
+
+        self.create_contact = function(details) {
+            var url = self.base_url + "/api/v2/contacts.json";
+            return self.json_api.post(url, {data: details})
+                .then(function(response) {
+                    return response.data;
+                });
+        };
+
+        self._get_paginated_response = function(url, params) {
+            /* Gets all the pages of a paginated response */
+            return self.json_api.get(url, {params: params})
+                .then(function(response){
+                    var results = response.data.results;
+                    if(response.data.next === null) {
+                        return results;
+                    }
+
+                    var query = url_utils.parse(response.data.next).query;
+                    return self._get_paginated_response(url, query)
+                        .then(function(response) {
+                            return results.concat(response);
+                        });
+                });
+        };
+
+        self.get_flows = function(filter) {
+            var url = self.base_url + "/api/v2/flows.json";
+            return self._get_paginated_response(url, filter);
+        };
+
+        self.get_flow_by_name = function(name) {
+            name = name.toLowerCase().trim();
+            return self.get_flows().then(function(flows){
+                flows = flows.filter(function(flow) {
+                    return flow.name.toLowerCase().trim() === name;
+                });
+                if(flows.length > 0) {
+                    return flows[0];
+                } else {
+                    return null;
+                }
+            });
+        };
+
+        self.start_flow = function(flow_uuid, contact_uuid) {
+            var url = self.base_url + "/api/v2/flow_starts.json";
+            return self.json_api.post(url, {data: {
+                flow: flow_uuid,
+                contacts: [contact_uuid]
+            }});
         };
     });
 
@@ -175,7 +236,7 @@ go.app = function() {
                 question: $("Welcome back to NurseConnect. Do you want to:"),
                 choices: [
                     new Choice('state_friend_register', $('Help a friend sign up')),
-                    new Choice('state_change_num', $('Change your number')),
+                    new Choice('state_change_number', $('Change your number')),
                     new Choice('state_optout', $('Opt out')),
                     new Choice('state_change_faccode', $('Change facility code')),
                     new Choice('state_change_id_no', $('Change ID no.')),
@@ -209,7 +270,7 @@ go.app = function() {
         self.states.add('state_weekly_messages', function(name) {
             self.im.user.set_answer("registrant", "operator");
             self.im.user.set_answer("registrant_msisdn", self.im.user.answers.operator_msisdn);
-            self.im.user.set_answer("registrant_contact", self.im.user.answers.opertor_contact);
+            self.im.user.set_answer("registrant_contact", self.im.user.answers.operator_contact);
 
             return new ChoiceState(name, {
                 question: $("To register, your info needs to be collected, stored and used. " +
@@ -351,7 +412,7 @@ go.app = function() {
                         facname: self.im.user.answers.facname
                     }),
                 choices: [
-                    new Choice('state_registration_type', $('Confirm')),
+                    new Choice('state_create_registration', $('Confirm')),
                     new Choice('state_faccode', $('Not the right facility')),
                 ],
                 next: function(choice) {
@@ -360,6 +421,58 @@ go.app = function() {
             });
         });
 
+        self.states.add('state_create_registration', function(name) {
+
+            return self
+                // Get whatsapp registration status
+                .is_whatsapp_user(self.im.user.answers.registrant_msisdn, true)
+                // Create or update contact on rapidpro
+                .then(function(is_whatsapp) {
+                    var preferred_channel = is_whatsapp ? "whatsapp" : "sms";
+                    self.im.user.set_answer("preferred_channel", preferred_channel);
+                    var contact_data = {
+                        preferred_channel: preferred_channel,
+                        registered_by: self.im.user.get_answer("operator_msisdn"),
+                        facility_code: self.im.user.get_answer("state_faccode")
+                    };
+                    var contact = self.im.user.get_answer("registrant_contact");
+                    if(!!contact) {
+                        return self.rapidpro.update_contact({uuid: contact.uuid}, {
+                            fields: contact_data
+                        });
+                    } else {
+                        return self.rapidpro.create_contact({
+                            urns: ["tel:" + self.im.user.get_answer("registrant_msisdn")],
+                            fields: contact_data
+                        });
+                    }
+                })
+                // Find the post registration flow
+                .then(function(contact) {
+                    self.im.user.set_answer("registrant_contact", contact);
+                    return self.rapidpro.get_flow_by_name("post registration");
+                })
+                // Start the post registration flow for the user
+                .then(function(flow) {
+                    var contact = self.im.user.get_answer("registrant_contact");
+                    return self.rapidpro.start_flow(flow.uuid, contact.uuid);
+                })
+                // TODO: send registration to DHIS2
+                .then(function() {
+                    return self.states.create("state_registration_complete");
+                });
+        });
+
+        self.states.add("state_registration_complete", function(name) {
+            var channel = self.im.user.get_answer("preferred_channel") === "sms" ? $("SMS") : $("WhatsApp");
+            var text = $(
+                "Thank you. You will now start receiving messages to support you in your daily work. " +
+                "You will receive 3 messages each week on {{channel}}.").context({channel: channel});
+            return new EndState(name, {
+                text: text,
+                next: "state_start"
+            });
+        });
 
         self.states.add('state_no_subscription', function(name) {
             return new MenuState(name, {
