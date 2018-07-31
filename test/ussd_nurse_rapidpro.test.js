@@ -18,6 +18,7 @@ describe('app', function() {
                 .setup.config.app({
                     name: 'ussd_nurse_rapidpro',
                     testing_today: "2014-04-04T07:07:07Z",
+                    channel: "*120*550*5#",
                     services: {
                         rapidpro: {
                             base_url: 'https://rapidpro',
@@ -562,6 +563,320 @@ describe('app', function() {
                             .run();
                     });
                 });
+            
+        // Change Details
+        describe("changing details", function() {
+            describe("change faccode", function() {
+                it("should ask for new faccode", function() {
+                    return tester
+                    .setup(function(api) {
+                        api.http.fixtures.add(
+                            fixtures_RapidPro.get_contact({
+                                urn: 'tel:+27820001003',
+                                groups: ["nurseconnect-whatsapp"],
+                                exists: true,
+                            })
+                        );
+                    })
+                    .setup.user.addr('27820001003')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '4'  // state_subscribed - change faccode
+                    )
+                    .check.interaction({
+                        state: 'state_change_faccode',
+                        reply: "Please enter the 6-digit facility code for your new facility, e.g. 456789:"
+                    })
+                    .run();
+                });
+
+                it("should reach details changed end state", function() {
+                        return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(
+                                fixtures_Jembi.exists('234567', 'OLT clinic')
+                            );
+                        })
+                        .setup.user.state('state_change_faccode')
+                        .setup.user.answer('registrant', 'operator')
+                        .input(
+                            '234567' // state_faccode - enters facility code
+                        )
+                        .check.interaction({
+                            state: 'state_end_detail_changed',
+                            reply: "Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again."
+                        })
+                        .check.reply.ends_session()
+                        .run();
+                });
+            });
+        
+            describe("change sanc", function() {
+                it("should ask for sanc", function() {
+                    return tester
+                    .setup(function(api) {
+                        api.http.fixtures.add(
+                            fixtures_RapidPro.get_contact({
+                                urn: 'tel:+27820001003',
+                                groups: ["nurseconnect-whatsapp"],
+                                exists: true,
+                            })
+                        );
+                    })
+                    .setup.user.addr('27820001003')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                            , '5' // state_subscribed - more options
+                            , '2' // state_subscribed - change sanc
+                        )
+                        .check.interaction({
+                            state: 'state_change_sanc',
+                            reply: "Please enter your 8-digit SANC registration number, e.g. 34567899:"
+                        })
+                        .run();
+                });
+                it("should loop back if non-numeric char", function() {
+                    return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(
+                                fixtures_RapidPro.get_contact({
+                                    urn: 'tel:+27820001003',
+                                    groups: ["nurseconnect-whatsapp"],
+                                    exists: true,
+                                })
+                            );
+                        })
+                        .setup.user.addr('27820001003')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '5' // state_subscribed - more options
+                            , '2' // state_subscribed - change sanc
+                            , '3456789A'  // state_change_sanc
+                        )
+                        .check.interaction({
+                            state: 'state_change_sanc',
+                            reply: "Sorry, the format of the SANC registration number is not correct. Please enter it again, e.g. 34567899:"
+                        })
+                        .run();
+                });
+                it("should loop back if not 8 chars", function() {
+                    return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(
+                                fixtures_RapidPro.get_contact({
+                                    urn: 'tel:+27820001003',
+                                    groups: ["nurseconnect-whatsapp"],
+                                    exists: true,
+                                })
+                            );
+                        })
+                        .setup.user.addr('27820001003')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '5' // state_subscribed - more options
+                            , '2' // state_subscribed - change sanc
+                            , '3456789'  // state_change_sanc
+                        )
+                        .check.interaction({
+                            state: 'state_change_sanc',
+                            reply: "Sorry, the format of the SANC registration number is not correct. Please enter it again, e.g. 34567899:"
+                        })
+                        .run();
+                });
+                it("should reach details changed end state", function() {
+                    return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(
+                                fixtures_RapidPro.get_contact({
+                                    urn: 'tel:+27820001003',
+                                    groups: ["nurseconnect-whatsapp"],
+                                    exists: true,
+                                })
+                            );
+                        })
+                        .setup.user.addr('27820001003')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '5' // state_subscribed - more options
+                            , '2' // state_subscribed - change sanc
+                            , '34567890'  // state_change_sanc
+                        )
+                        .check.interaction({
+                            state: 'state_end_detail_changed',
+                            reply: "Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again."
+                        })
+                        .run();
+                });
+            });
+
+            describe("change ID no", function() {
+                it("should ask for their ID no", function() {
+                    return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(
+                                fixtures_RapidPro.get_contact({
+                                    urn: 'tel:+27820001003',
+                                    groups: ["nurseconnect-whatsapp"],
+                                    exists: true,
+                                })
+                            );
+                        })
+                        .setup.user.addr('27820001003')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '5'  // state_subscribed - more options
+                            , '1'  // state_subscribed - change id
+                            , '1'  // state_change_id_no - RSA ID
+                        )
+                        .check.interaction({
+                            state: 'state_id_no',
+                            reply: 'Please enter your 13-digit RSA ID number:'
+                        })
+                        .run();
+                });
+                it("should tell them their details have been changed", function() {
+                    return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(
+                                fixtures_RapidPro.get_contact({
+                                    urn: 'tel:+27820001003',
+                                    groups: ["nurseconnect-whatsapp"],
+                                    exists: true,
+                                })
+                            );
+                        })
+                        .setup.user.addr('27820001003')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '5'  // state_subscribed - more options
+                            , '1'  // state_subscribed - change id
+                            , '1'  // state_change_id_no - RSA ID
+                            , '9001015087082'  // state_id_no
+                        )
+                        .check.interaction({
+                            state: 'state_end_detail_changed',
+                            reply: 'Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again.'
+                        })
+                        .run();
+                });
+            });
+
+            describe("when a user wants to change their passport no", function() {
+                it("should ask for the origin of their passport", function() {
+                    return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(
+                                fixtures_RapidPro.get_contact({
+                                    urn: 'tel:+27820001003',
+                                    groups: ["nurseconnect-whatsapp"],
+                                    exists: true,
+                                })
+                            );
+                        })
+                        .setup.user.addr('27820001003')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '5'  // state_subscribed - more options
+                            , '1'  // state_subscribed - change id
+                            , '2'  // state_change_id_no - Passport
+                        )
+                        .check.interaction({
+                            state: 'state_passport',
+                            reply: [
+                                'What is the country of origin of the passport?',
+                                '1. Namibia',
+                                '2. Botswana',
+                                '3. Mozambique',
+                                '4. Swaziland',
+                                '5. Lesotho',
+                                '6. Cuba',
+                                '7. Other'
+                            ].join('\n')
+                        })
+                        .run();
+                });
+                it("should ask for their passport no", function() {
+                    return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(
+                                fixtures_RapidPro.get_contact({
+                                    urn: 'tel:+27820001003',
+                                    groups: ["nurseconnect-whatsapp"],
+                                    exists: true,
+                                })
+                            );
+                        })
+                        .setup.user.addr('27820001003')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '5'  // state_subscribed - more options
+                            , '1'  // state_subscribed - change id
+                            , '2'  // state_change_id_no - Passport
+                            , '1'  // state_passport - namibia
+                        )
+                        .check.interaction({
+                            state: 'state_passport_no',
+                            reply: 'Please enter the passport number:'
+                        })
+                        .run();
+                });
+                it("should ask for their date of birth", function() {
+                    return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(
+                                fixtures_RapidPro.get_contact({
+                                    urn: 'tel:+27820001003',
+                                    groups: ["nurseconnect-whatsapp"],
+                                    exists: true,
+                                })
+                            );
+                        })
+                        .setup.user.addr('27820001003')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '5'  // state_subscribed - more options
+                            , '1'  // state_subscribed - change id
+                            , '2'  // state_change_id_no - Passport
+                            , '1'  // state_passport - namibia
+                            , 'Nam1234'  // state_passport_no
+                        )
+                        .check.interaction({
+                            state: 'state_passport_dob',
+                            reply: 'Please enter the date of birth, e.g. 27 May 1975 as 27051975:'
+                        })
+                        .run();
+                });
+                it("should tell them their details have been changed", function() {
+                    return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(
+                                fixtures_RapidPro.get_contact({
+                                    urn: 'tel:+27820001003',
+                                    groups: ["nurseconnect-whatsapp"],
+                                    exists: true,
+                                })
+                            );
+                        })
+                        .setup.user.addr('27820001003')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '5'  // state_subscribed - more options
+                            , '1'  // state_subscribed - change id
+                            , '2'  // state_change_id_no - Passport
+                            , '1'  // state_passport - namibia
+                            , 'Nam1234'  // state_passport_no
+                            , '07031976'  // state_dob - 7 March 1976
+                        )
+                        .check.interaction({
+                            state: 'state_end_detail_changed',
+                            reply: 'Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again.'
+                        })
+                        .run();
+                });
+            });
+
+
+        }); //end of change details
 
         }); //end of state_start
 

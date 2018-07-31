@@ -543,6 +543,154 @@ go.app = function() {
              });
         });
 
+        //USER CHANGE STATES
+        self.states.add('state_change_faccode', function(name) {
+            var question = $("Please enter the 6-digit facility code for your new facility, e.g. 456789:");
+            var error = $("Sorry, that code is not recognized. Please enter the 6-digit facility code again, e. 535970:");
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    return self
+                        .openhim.validate_nc_clinic_code(content)
+                        .then(function(facname) {
+                            if (!facname) {
+                                return error;
+                            } else {
+                                /*
+                                    add function to update info against operator id
+                                    then lead to state where user details are successfully changed
+                                */
+                                self.im.user.set_answer("facname", facname);
+                                return null;  // vumi expects null or undefined if check passes
+                            }
+                        });
+                },
+                next: 'state_end_detail_changed',
+            });
+               
+        });
+
+        self.states.add('state_change_sanc', function(name) {
+            var question = $("Please enter your 8-digit SANC registration number, e.g. 34567899:");
+            var error = $("Sorry, the format of the SANC registration number is not correct. Please enter it again, e.g. 34567899:");
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    if (!utils.check_valid_number(content)
+                        || content.length !== 8) {
+                        return error;
+                    } else {
+                        /*
+                            add function to update info against operator id
+                            send this update to RapidPro
+                            then lead to state where user details are successfully changed
+                        */
+                        return null;
+                    }
+                },
+                next: 'state_end_detail_changed',
+            });
+        });
+
+        self.states.add('state_end_detail_changed', function(name) {
+            return new EndState(name, {
+                text: $("Thank you. Your NurseConnect details have been changed. To change any other details, please dial {{channel}} again.")
+                    .context({channel: self.im.config.channel}),
+                next: 'state_start',
+             });
+        });
+
+        self.states.add('state_change_id_no', function(name) {
+            var question = $("Please select your type of identification:");
+            return new ChoiceState(name, {
+                question: question,
+                choices: [
+                    new Choice('state_id_no', $('RSA ID')),
+                    new Choice('state_passport', $('Passport'))
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+        self.states.add('state_id_no', function(name) {
+            var error = $("Sorry, the format of the ID number is not correct. Please enter your RSA ID number again, e.g. 7602095060082");
+            var question = $("Please enter your 13-digit RSA ID number:");
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    if (!utils.validate_id_za(content)) {
+                        return error;
+                    }
+                    else{
+                        /*
+                        add function to update id type info against operator id
+                        add function to update id number info against operator id
+                        add function to update date of birth info against operator id
+                        then lead to state where user details are successfully changed
+                        */
+                    }
+                },
+                next: 'state_end_detail_changed',
+            });
+        });
+
+    
+
+        self.states.add('state_passport', function(name) {
+            return new ChoiceState(name, {
+                question: $('What is the country of origin of the passport?'),
+                choices: [
+                    new Choice('na', $('Namibia')),
+                    new Choice('bw', $('Botswana')),
+                    new Choice('mz', $('Mozambique')),
+                    new Choice('sz', $('Swaziland')),
+                    new Choice('ls', $('Lesotho')),
+                    new Choice('cu', $('Cuba')),
+                    new Choice('other', $('Other')),
+                ],
+                next: 'state_passport_no'
+            });
+        });
+
+        self.states.add('state_passport_no', function(name) {
+            var error = $("Sorry, the format of the passport number is not correct. Please enter the passport number again.");
+            var question = $("Please enter the passport number:");
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    if (!utils.is_alpha_numeric_only(content) || content.length <= 4) {
+                        return error;
+                    }
+                },
+                next: 'state_passport_dob'
+            });
+        });
+
+        self.states.add('state_passport_dob', function(name) {
+            var error = $("Sorry, the format of the date of birth is not correct. Please enter it again, e.g. 27 May 1975 as 27051975:");
+            var question = $("Please enter the date of birth, e.g. 27 May 1975 as 27051975:");
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    if (!utils.is_valid_date(content, 'DDMMYYYY')) {
+                        return error;
+                    }
+                    else{
+                         /*
+                            add function to update id type info against operator id
+                            add function to update id number info against operator id
+                            add function to update date of birth info against operator id
+                            then lead to state where user details are successfully changed
+                        */
+                    }
+                },
+                next: 'state_end_detail_changed', 
+            });
+        });
+
+
     });
 
     return {
