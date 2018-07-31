@@ -70,6 +70,19 @@ module.exports = function(){
                 }
             };
         },
+        nurseconnect_subscription: function(details) {
+            return {
+                request: {
+                    method: "POST",
+                    url: "http://test/v2/json/nc/subscription",
+                    data: details
+                },
+                response: {
+                    code: 200,
+                    data: {}
+                }
+            };
+        },
         javascript: "commas"
     };
 };
