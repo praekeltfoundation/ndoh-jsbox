@@ -261,7 +261,7 @@ go.app = function() {
                     new Choice('state_optout', $('Opt out')),
                     new Choice('state_enter_faccode', $('Change facility code')),
                     new Choice('state_change_id_no', $('Change ID no.')),
-                    new Choice('state_change_sanc', $('Change SANC no.')),
+                    new Choice('state_enter_sanc', $('Change SANC no.')),
                     new Choice('state_change_persal', $('Change Persal no.')),
                 ],
                 characters_per_page: 140,
@@ -594,25 +594,28 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_change_sanc', function(name) {
+        self.states.add('state_enter_sanc', function(name) {
             var question = $("Please enter your 8-digit SANC registration number, e.g. 34567899:");
             var error = $("Sorry, the format of the SANC registration number is not correct. Please enter it again, e.g. 34567899:");
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
-                    if (!utils.check_valid_number(content)
-                        || content.length !== 8) {
+                    if (!utils.check_valid_number(content) || content.length !== 8) {
                         return error;
-                    } else {
-                        /*
-                            add function to update info against operator id
-                            send this update to RapidPro
-                            then lead to state where user details are successfully changed
-                        */
-                        return null;
                     }
                 },
-                next: 'state_end_detail_changed',
+                next: 'state_change_sanc',
+            });
+        });
+        
+        self.states.add('state_change_sanc', function(name) {
+            return self.rapidpro.update_contact({uuid: self.im.user.get_answer('operator_contact').uuid}, {
+                details: {
+                    sanc_number: self.im.user.get_answer('state_enter_sanc')
+                }
+            })
+            .then(function() {
+                return self.states.create('state_end_detail_changed');
             });
         });
 

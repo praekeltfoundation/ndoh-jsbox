@@ -648,96 +648,58 @@ describe('app', function() {
             describe("change sanc", function() {
                 it("should ask for sanc", function() {
                     return tester
-                    .setup(function(api) {
-                        api.http.fixtures.add(
-                            fixtures_RapidPro.get_contact({
-                                urn: 'tel:+27820001003',
-                                groups: ["nurseconnect-whatsapp"],
-                                exists: true,
-                            })
-                        );
-                    })
-                    .setup.user.addr('27820001003')
+                    .setup.user.state('state_registered')
                     .inputs(
-                        {session_event: 'new'}  // dial in
-                            , '5' // state_subscribed - more options
-                            , '2' // state_subscribed - change sanc
+                            '5', // state_registered - more options
+                            '2'  // state_registered - change sanc
                         )
                         .check.interaction({
-                            state: 'state_change_sanc',
+                            state: 'state_enter_sanc',
                             reply: "Please enter your 8-digit SANC registration number, e.g. 34567899:"
                         })
                         .run();
                 });
                 it("should loop back if non-numeric char", function() {
                     return tester
-                        .setup(function(api) {
-                            api.http.fixtures.add(
-                                fixtures_RapidPro.get_contact({
-                                    urn: 'tel:+27820001003',
-                                    groups: ["nurseconnect-whatsapp"],
-                                    exists: true,
-                                })
-                            );
-                        })
-                        .setup.user.addr('27820001003')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '5' // state_subscribed - more options
-                            , '2' // state_subscribed - change sanc
-                            , '3456789A'  // state_change_sanc
-                        )
+                        .setup.user.state('state_enter_sanc')
+                        .input('3456789A')
                         .check.interaction({
-                            state: 'state_change_sanc',
+                            state: 'state_enter_sanc',
                             reply: "Sorry, the format of the SANC registration number is not correct. Please enter it again, e.g. 34567899:"
                         })
                         .run();
                 });
                 it("should loop back if not 8 chars", function() {
                     return tester
-                        .setup(function(api) {
-                            api.http.fixtures.add(
-                                fixtures_RapidPro.get_contact({
-                                    urn: 'tel:+27820001003',
-                                    groups: ["nurseconnect-whatsapp"],
-                                    exists: true,
-                                })
-                            );
-                        })
-                        .setup.user.addr('27820001003')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '5' // state_subscribed - more options
-                            , '2' // state_subscribed - change sanc
-                            , '3456789'  // state_change_sanc
-                        )
+                        .setup.user.state('state_enter_sanc')
+                        .input('3456789')
                         .check.interaction({
-                            state: 'state_change_sanc',
+                            state: 'state_enter_sanc',
                             reply: "Sorry, the format of the SANC registration number is not correct. Please enter it again, e.g. 34567899:"
                         })
                         .run();
                 });
                 it("should reach details changed end state", function() {
                     return tester
+                        .setup.user.state('state_enter_sanc')
+                        .setup.user.answer('operator_contact', {uuid: "operator-contact-uuid"})
                         .setup(function(api) {
                             api.http.fixtures.add(
-                                fixtures_RapidPro.get_contact({
-                                    urn: 'tel:+27820001003',
-                                    groups: ["nurseconnect-whatsapp"],
-                                    exists: true,
+                                fixtures_RapidPro.update_contact({uuid: "operator-contact-uuid"}, {
+                                    details: {
+                                        sanc_number: "34567890"
+                                    }
                                 })
                             );
                         })
-                        .setup.user.addr('27820001003')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '5' // state_subscribed - more options
-                            , '2' // state_subscribed - change sanc
-                            , '34567890'  // state_change_sanc
-                        )
+                        .input('34567890')
                         .check.interaction({
                             state: 'state_end_detail_changed',
                             reply: "Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again."
+                        })
+                        .check.reply.ends_session()
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [0]);
                         })
                         .run();
                 });
