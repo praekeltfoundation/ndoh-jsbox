@@ -5,6 +5,7 @@ services:
     ports:
       - '80:80'
       - '9001:9001'
+      - '9002:9002'
     links:
       - rabbitmq
       - redis
@@ -22,6 +23,22 @@ services:
     environment:
       - AMQP_HOST=rabbitmq
       - CONFIG_FILE=/config/public.yaml
+    links:
+      - identitystore
+      - hub
+      - sbm
+      - messagesender
+      - redis
+      - rabbitmq
+    restart: always
+
+  popi_user_data_ussd:
+    build: ../
+    volumes:
+      - ./:/config
+    environment:
+      - AMQP_HOST=rabbitmq
+      - CONFIG_FILE=/config/popi_user_data.yaml
     links:
       - identitystore
       - hub

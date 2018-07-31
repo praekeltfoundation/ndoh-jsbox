@@ -41,3 +41,11 @@ curl -X POST -H 'Content-Type: application/json' -d '{
         "twisted_endpoint": "tcp:9001"
     }
     }' localhost/jb/channels/
+
+curl -X POST -H 'Content-Type: application/json' -d '{
+    "amqp_queue": "jsbox_popi_user_data_ussd",
+    "type": "telnet_addr",
+    "config": {
+        "twisted_endpoint": "tcp:9002"
+    }
+    }' localhost/jb/channels/
