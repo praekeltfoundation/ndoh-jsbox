@@ -647,20 +647,10 @@ go.app = function() {
                     if (!utils.validate_id_za(content)) {
                         return error;
                     }
-                    else{
-                        /*
-                        add function to update id type info against operator id
-                        add function to update id number info against operator id
-                        add function to update date of birth info against operator id
-                        then lead to state where user details are successfully changed
-                        */
-                    }
                 },
-                next: 'state_end_detail_changed',
+                next: 'state_update_identification',
             });
         });
-
-    
 
         self.states.add('state_passport', function(name) {
             return new ChoiceState(name, {
@@ -701,19 +691,30 @@ go.app = function() {
                     if (!utils.is_valid_date(content, 'DDMMYYYY')) {
                         return error;
                     }
-                    else{
-                         /*
-                            add function to update id type info against operator id
-                            add function to update id number info against operator id
-                            add function to update date of birth info against operator id
-                            then lead to state where user details are successfully changed
-                        */
-                    }
                 },
-                next: 'state_end_detail_changed', 
+                next: 'state_update_identification', 
             });
         });
 
+        self.states.add('state_update_identification', function(name) {
+            var contact = self.im.user.get_answer('operator_contact');
+            var fields = {
+                sa_id_number: self.im.user.get_answer('state_id_no'),
+                passport_country: self.im.user.get_answer('state_passport'),
+                passport_number: self.im.user.get_answer('state_passport_no')
+            };
+            if(fields.sa_id_number) {
+                fields.date_of_birth = utils.extract_za_id_dob(fields.sa_id_number);
+            }
+            else {
+                fields.date_of_birth = moment(self.im.user.get_answer('state_passport_dob'), "DDMMYYYY").format("YYYY-MM-DD");
+            }
+            return self.rapidpro
+            .update_contact({uuid: contact.uuid}, fields)
+            .then(function() {
+                return self.states.create('state_end_detail_changed');
+            });
+        });
 
     });
 

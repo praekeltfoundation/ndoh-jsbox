@@ -516,7 +516,7 @@ describe('app', function() {
                     it("should loop back without api call", function() {
                         return tester
                             .setup.user.state('state_faccode')
-                            .inputs(
+                            .input(
                                 '12345A'  // state_faccode
                             )
                             .check.interaction({
@@ -755,13 +755,8 @@ describe('app', function() {
                                 })
                             );
                         })
-                        .setup.user.addr('27820001003')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '5'  // state_subscribed - more options
-                            , '1'  // state_subscribed - change id
-                            , '1'  // state_change_id_no - RSA ID
-                        )
+                        .setup.user.state('state_change_id_no')
+                        .input('1')
                         .check.interaction({
                             state: 'state_id_no',
                             reply: 'Please enter your 13-digit RSA ID number:'
@@ -772,24 +767,22 @@ describe('app', function() {
                     return tester
                         .setup(function(api) {
                             api.http.fixtures.add(
-                                fixtures_RapidPro.get_contact({
-                                    urn: 'tel:+27820001003',
-                                    groups: ["nurseconnect-whatsapp"],
-                                    exists: true,
+                                fixtures_RapidPro.update_contact({uuid: "operator-contact-uuid"}, {
+                                    sa_id_number: "9001015087082",
+                                    date_of_birth: "1990-01-01"
                                 })
                             );
                         })
-                        .setup.user.addr('27820001003')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '5'  // state_subscribed - more options
-                            , '1'  // state_subscribed - change id
-                            , '1'  // state_change_id_no - RSA ID
-                            , '9001015087082'  // state_id_no
-                        )
+                        .setup.user.state('state_id_no')
+                        .setup.user.answer('operator_contact', {uuid: 'operator-contact-uuid'})
+                        .input('9001015087082')
                         .check.interaction({
                             state: 'state_end_detail_changed',
                             reply: 'Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again.'
+                        })
+                        .check.reply.ends_session()
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [0]);
                         })
                         .run();
                 });
@@ -798,21 +791,9 @@ describe('app', function() {
             describe("when a user wants to change their passport no", function() {
                 it("should ask for the origin of their passport", function() {
                     return tester
-                        .setup(function(api) {
-                            api.http.fixtures.add(
-                                fixtures_RapidPro.get_contact({
-                                    urn: 'tel:+27820001003',
-                                    groups: ["nurseconnect-whatsapp"],
-                                    exists: true,
-                                })
-                            );
-                        })
-                        .setup.user.addr('27820001003')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '5'  // state_subscribed - more options
-                            , '1'  // state_subscribed - change id
-                            , '2'  // state_change_id_no - Passport
+                        .setup.user.state('state_change_id_no')
+                        .input(
+                            '2'  // state_change_id_no - Passport
                         )
                         .check.interaction({
                             state: 'state_passport',
@@ -831,22 +812,9 @@ describe('app', function() {
                 });
                 it("should ask for their passport no", function() {
                     return tester
-                        .setup(function(api) {
-                            api.http.fixtures.add(
-                                fixtures_RapidPro.get_contact({
-                                    urn: 'tel:+27820001003',
-                                    groups: ["nurseconnect-whatsapp"],
-                                    exists: true,
-                                })
-                            );
-                        })
-                        .setup.user.addr('27820001003')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '5'  // state_subscribed - more options
-                            , '1'  // state_subscribed - change id
-                            , '2'  // state_change_id_no - Passport
-                            , '1'  // state_passport - namibia
+                        .setup.user.state('state_passport')
+                        .input(
+                            '1'  // state_passport - namibia
                         )
                         .check.interaction({
                             state: 'state_passport_no',
@@ -856,23 +824,9 @@ describe('app', function() {
                 });
                 it("should ask for their date of birth", function() {
                     return tester
-                        .setup(function(api) {
-                            api.http.fixtures.add(
-                                fixtures_RapidPro.get_contact({
-                                    urn: 'tel:+27820001003',
-                                    groups: ["nurseconnect-whatsapp"],
-                                    exists: true,
-                                })
-                            );
-                        })
-                        .setup.user.addr('27820001003')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '5'  // state_subscribed - more options
-                            , '1'  // state_subscribed - change id
-                            , '2'  // state_change_id_no - Passport
-                            , '1'  // state_passport - namibia
-                            , 'Nam1234'  // state_passport_no
+                        .setup.user.state('state_passport_no')
+                        .input(
+                            'Nam1234'  // state_passport_no
                         )
                         .check.interaction({
                             state: 'state_passport_dob',
@@ -882,28 +836,29 @@ describe('app', function() {
                 });
                 it("should tell them their details have been changed", function() {
                     return tester
+                        .setup.user.state('state_passport_dob')
+                        .setup.user.answer('operator_contact', {uuid: 'operator-contact-uuid'})
+                        .setup.user.answer('state_passport', 'na')
+                        .setup.user.answer('state_passport_no', 'Nam1234')
                         .setup(function(api) {
                             api.http.fixtures.add(
-                                fixtures_RapidPro.get_contact({
-                                    urn: 'tel:+27820001003',
-                                    groups: ["nurseconnect-whatsapp"],
-                                    exists: true,
+                                fixtures_RapidPro.update_contact({uuid: "operator-contact-uuid"}, {
+                                    date_of_birth: "1976-03-07",
+                                    passport_number: "Nam1234",
+                                    passport_country: "na"
                                 })
                             );
                         })
-                        .setup.user.addr('27820001003')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '5'  // state_subscribed - more options
-                            , '1'  // state_subscribed - change id
-                            , '2'  // state_change_id_no - Passport
-                            , '1'  // state_passport - namibia
-                            , 'Nam1234'  // state_passport_no
-                            , '07031976'  // state_dob - 7 March 1976
+                        .input(
+                            '07031976'  // state_passport_dob - 7 March 1976
                         )
                         .check.interaction({
                             state: 'state_end_detail_changed',
                             reply: 'Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again.'
+                        })
+                        .check.reply.ends_session()
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [0]);
                         })
                         .run();
                 });
