@@ -712,6 +712,75 @@ go.app = function() {
             });
         });
 
+        self.states.add('state_change_number', function(name) {
+            var question = $("Please enter the new number on which you want to receive messages, e.g. 0736252020:");
+            var error = $("Sorry, the format of the mobile number is not correct. Please enter the new number on which you want to receive messages, e.g. 0736252020");
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    if (!utils.is_valid_msisdn(content, 0, 10)) {
+                        return error;
+                    }
+                },
+                next: function(content) {
+                    return 'state_check_optout_change';
+                }
+            });
+        });
+
+        self.states.add('state_check_optout_change', function(name) {
+            var new_msisdn = utils.normalize_msisdn(self.im.user.answers.state_change_number, '27');
+            self.im.user.set_answer("new_msisdn", new_msisdn);
+
+            // If the contact exists and is in the opt out group, then it's opted out, otherwise not
+            var contact = self.im.user.answers.registrant_contact;
+            if(contact && self.is_contact_in_group(contact, 'opted-out')){
+                return self.states.create('state_opt_in_change');
+            }
+            return self.states.create('state_switch_new_nr');
+        });
+
+        self.states.add('state_opt_in_change', function(name) {
+            return new ChoiceState(name, {
+                question: $("This number opted out of NurseConnect messages before. Please confirm that you want to receive messages again on this number?"),
+                choices: [
+                    new Choice('yes', $('Yes')),
+                    new Choice('no', $('No'))
+                ],
+                next: function(choice) {
+                    if (choice.value === 'yes') {
+                        /*
+                            update this contact will be opted in again
+                         */
+                        return 'state_switch_new_nr';
+                    } else {
+                        return 'state_permission_denied';
+                    }
+                }
+            });
+        });
+
+        self.states.add('state_switch_new_nr', function(name) {
+            /*
+                get id of operator
+                link old number to new number
+                add that new number is default operatornumber
+             */
+                return self.states.create('state_end_detail_changed');
+        });
+
+        self.states.add('state_permission_denied', function(name) {
+            return new ChoiceState(name, {
+                question: $("You have chosen not to receive NurseConnect messages on this number and so cannot complete registration."),
+                choices: [
+                    new Choice('state_start', $('Main Menu'))
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
 
     });
 
