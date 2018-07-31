@@ -53,6 +53,9 @@ module.exports = function() {
                 for(var key in b) {
                     var value = b[key];
                     if(value !== null && typeof value === 'object'){
+                        if(a[key] === null || typeof a[key] !== 'object') {
+                            a[key] = {};
+                        }
                         merge_objects(a[key], value);
                     } else {
                         a[key] = value;
@@ -61,7 +64,6 @@ module.exports = function() {
             }
 
             merge_objects(original, updates);
-
             return {
                 "repeatable": true,
                 "request": {

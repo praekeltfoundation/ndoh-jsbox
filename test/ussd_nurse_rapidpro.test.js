@@ -579,12 +579,11 @@ describe('app', function() {
                         );
                     })
                     .setup.user.addr('27820001003')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '4'  // state_subscribed - change faccode
+                    .input(
+                        '4' // state_subscribed - change faccode
                     )
                     .check.interaction({
-                        state: 'state_change_faccode',
+                        state: 'state_enter_faccode',
                         reply: "Please enter the 6-digit facility code for your new facility, e.g. 456789:"
                     })
                     .run();
@@ -596,9 +595,18 @@ describe('app', function() {
                             api.http.fixtures.add(
                                 fixtures_Jembi.exists('234567', 'OLT clinic')
                             );
+                            api.http.fixtures.add(
+                                fixtures_RapidPro.update_contact({uuid: 'operator-contact-uuid'}, {
+                                    fields: {
+                                        facility_code: "234567"
+                                    }
+                                }, {})
+                            );
                         })
-                        .setup.user.state('state_change_faccode')
-                        .setup.user.answer('registrant', 'operator')
+                        .setup.user.answer('operator_contact', {
+                            uuid: 'operator-contact-uuid'
+                        })
+                        .setup.user.state('state_enter_faccode')
                         .input(
                             '234567' // state_faccode - enters facility code
                         )

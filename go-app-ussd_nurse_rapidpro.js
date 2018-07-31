@@ -259,7 +259,7 @@ go.app = function() {
                     new Choice('state_friend_register', $('Help a friend sign up')),
                     new Choice('state_change_number', $('Change your number')),
                     new Choice('state_optout', $('Opt out')),
-                    new Choice('state_change_faccode', $('Change facility code')),
+                    new Choice('state_enter_faccode', $('Change facility code')),
                     new Choice('state_change_id_no', $('Change ID no.')),
                     new Choice('state_change_sanc', $('Change SANC no.')),
                     new Choice('state_change_persal', $('Change Persal no.')),
@@ -544,7 +544,7 @@ go.app = function() {
         });
 
         //USER CHANGE STATES
-        self.states.add('state_change_faccode', function(name) {
+        self.states.add('state_enter_faccode', function(name) {
             var question = $("Please enter the 6-digit facility code for your new facility, e.g. 456789:");
             var error = $("Sorry, that code is not recognized. Please enter the 6-digit facility code again, e. 535970:");
             return new FreeText(name, {
@@ -556,18 +556,24 @@ go.app = function() {
                             if (!facname) {
                                 return error;
                             } else {
-                                /*
-                                    add function to update info against operator id
-                                    then lead to state where user details are successfully changed
-                                */
                                 self.im.user.set_answer("facname", facname);
                                 return null;  // vumi expects null or undefined if check passes
                             }
                         });
                 },
-                next: 'state_end_detail_changed',
+                next: 'state_change_faccode',
             });
-               
+        });
+
+        self.states.add('state_change_faccode', function(name) {
+            return self.rapidpro.update_contact({uuid: self.im.user.get_answer("operator_contact").uuid}, {
+                fields: {
+                    facility_code: self.im.user.get_answer('state_enter_faccode')
+                }
+            })
+            .then(function() {
+                return self.states.create('state_end_detail_changed');
+            });
         });
 
         self.states.add('state_change_sanc', function(name) {
