@@ -147,6 +147,28 @@ describe('app', function() {
                         it("should thank them", function() {
                             return tester
                                 .setup.user.state('state_optout')
+                                .setup.user.answer('operator_contact', {
+                                    uuid: 'operator-contact-uuid', 
+                                    groups: []
+                                })
+                                .setup(function(api) {
+                                    api.http.fixtures.add(
+                                        fixtures_RapidPro.update_contact({uuid: "operator-contact-uuid"}, {
+                                            fields: {
+                                                opt_out_reason: "job_change"
+                                            }
+                                        })
+                                    );
+                                    api.http.fixtures.add(
+                                        fixtures_RapidPro.get_flows([{
+                                            uuid: 'optout-flow-uuid',
+                                            name: "Optout"
+                                        }])
+                                    );
+                                    api.http.fixtures.add(
+                                        fixtures_RapidPro.start_flow("optout-flow-uuid", "operator-contact-uuid")
+                                    );
+                                })
                                 .input(
                                     '1'  // state_optout - not a nurse
                                 )
@@ -156,7 +178,11 @@ describe('app', function() {
                                         "Thank you for your feedback. You'll no longer receive NurseConnect messages." +
                                         "If you change your mind, please dial *134*550*5#. For more, go to nurseconnect.org."
                                     })
-                                    .run();
+                                .check.reply.ends_session()
+                                .check(function(api) {
+                                    utils.check_fixtures_used(api, [0, 1, 2]);
+                                })
+                                .run();
                         });
                     });
 

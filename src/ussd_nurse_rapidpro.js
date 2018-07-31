@@ -376,9 +376,27 @@ go.app = function() {
                     if (choice.value === 'main_menu') {
                         return 'state_registered';
                     } else {
-                       return 'state_opted_out';
+                       return 'state_create_opt_out';
                     }
                 }
+            });
+        });
+
+        self.states.add('state_create_opt_out', function(name) {
+            var contact = self.im.user.get_answer('operator_contact');
+            return self.rapidpro.update_contact({uuid: contact.uuid}, {
+                fields: {
+                    opt_out_reason: self.im.user.get_answer('state_optout')
+                }
+            })
+            .then(function() {
+                return self.rapidpro.get_flow_by_name('Optout');
+            })
+            .then(function(flow) {
+                return self.rapidpro.start_flow(flow.uuid, contact.uuid);
+            })
+            .then(function() {
+                return self.states.create("state_opted_out");
             });
         });
 
