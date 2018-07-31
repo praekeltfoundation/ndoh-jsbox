@@ -1,6 +1,5 @@
 go.app = function() {
     var _ = require('lodash');
-    var moment = require('moment');
     var vumigo = require('vumigo_v02');
     var Q = require('q');
     var MenuState = vumigo.states.MenuState;
@@ -410,9 +409,9 @@ go.app = function() {
                     } else {
                         /*
                             add function to update info against operator id
+                            send this update to RapidPro
                             then lead to state where user details are successfully changed
                         */
-                        self.im.user.set_answer("sanc_reg_no", content);
                         return null;
                     }
                 },
@@ -458,10 +457,6 @@ go.app = function() {
                         add function to update date of birth info against operator id
                         then lead to state where user details are successfully changed
                         */
-                    var date_of_birth = utils.extract_za_id_dob(content);
-                    self.im.user.set_answer("id_type", "sa_id");
-                    self.im.user.set_answer("sa_id_no", content);
-                    self.im.user.set_answer("dob", date_of_birth);
                     }
                 },
                 next: 'state_end_detail_changed',
@@ -516,11 +511,6 @@ go.app = function() {
                             add function to update date of birth info against operator id
                             then lead to state where user details are successfully changed
                         */
-                       var date_of_birth = moment(content, 'DDMMYYYY').format('YYYY-MM-DD');
-                        self.im.user.set_answer("id_type", "passport");
-                        self.im.user.set_answer("passport_no", self.im.user.answers.state_passport_no);
-                        self.im.user.set_answer("passport_origin", self.im.user.answers.state_passport);
-                        self.im.user.set_answer("dob", date_of_birth);
                     }
                 },
                 next: 'state_end_detail_changed', 
