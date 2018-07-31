@@ -439,6 +439,28 @@ go.app = function() {
             });
         });
 
+        self.states.add('state_change_persal', function(name) {
+            var question = $("Please enter your 8-digit Persal employee number, e.g. 11118888:");
+            var error = $("Sorry, the format of the Persal employee number is not correct. Please enter it again, e.g. 11118888:");
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    if (!utils.check_valid_number(content)
+                        || content.length !== 8) {
+                        return error;
+                    } else {
+                        /*
+                            add function to update info against operator id
+                            send this update to RapidPro
+                            then lead to state where user details are successfully changed
+                        */
+                        return null;
+                    }
+                },
+                next: 'state_end_detail_changed',
+            });
+        });
+
         self.states.add('state_end_detail_changed', function(name) {
             return new EndState(name, {
                 text: $("Thank you. Your NurseConnect details have been changed. To change any other details, please dial {{channel}} again.")
