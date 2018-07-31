@@ -973,6 +973,58 @@ describe('app', function() {
                 });
             });
 
+            // Change to New Number
+            describe("switch to new number", function() {
+                describe("choosing to switch to new number", function() {
+                    it("should go to state_change_num", function() {
+                        return tester
+                            .setup(function(api) {
+                                api.http.fixtures.add(
+                                    fixtures_RapidPro.get_contact({
+                                        urn: 'tel:+27820001003',
+                                        groups: ["nurseconnect-whatsapp"],
+                                        exists: true,
+                                    })
+                                );
+                            })
+                            .setup.user.addr('27820001003')
+                            .inputs(
+                                {session_event: 'new'}  // dial in
+                                , '2'  // state_subscribed - change num
+                            )
+                            .check.interaction({
+                                state: 'state_change_number',
+                                reply: "Please enter the new number on which you want to receive messages, e.g. 0736252020:"
+                            })
+                            .run();
+                    });
+                });
+                describe("entering new unused number", function() {
+                    it("should go to state_end_detail_changed", function() {
+                        return tester
+                            .setup(function(api) {
+                                api.http.fixtures.add(
+                                    fixtures_RapidPro.get_contact({
+                                        urn: 'tel:+27820001003',
+                                        groups: ["nurseconnect-whatsapp"],
+                                        exists: true,
+                                    })
+                                );
+                            })
+                            .setup.user.addr('27820001003')
+                            .inputs(
+                                {session_event: 'new'}  // dial in
+                                , '2'  // state_subscribed - change num
+                                , '0820001001'  // state_change_num
+                            )
+                            .check.interaction({
+                                state: 'state_end_detail_changed',
+                            })
+                            .run();
+                    });
+                });
+            }); //end of change number
+
 
         }); //end of change details
 
