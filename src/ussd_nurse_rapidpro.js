@@ -1,7 +1,6 @@
 go.app = function() {
     var _ = require('lodash');
     var vumigo = require('vumigo_v02');
-    var Q = require('q');
     var MenuState = vumigo.states.MenuState;
     var ChoiceState = vumigo.states.ChoiceState;
     var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
@@ -12,6 +11,7 @@ go.app = function() {
     var JsonApi = vumigo.http.api.JsonApi;
     var utils = SeedJsboxUtils.utils;
     var App = vumigo.App;
+    var moment = require('moment');
 
     var GoNDOH = App.extend(function(self) {
         App.call(self, 'state_start');
@@ -24,50 +24,13 @@ go.app = function() {
                 self.im.config.services.rapidpro.base_url,
                 self.im.config.services.rapidpro.token
             );
-        };
 
-        self.jembi_nc_clinic_validate = function (im, clinic_code) {
-            var params = {
-                'criteria': 'value:' + clinic_code
-            };
-            return self
-            .jembi_json_api_call('get', params, null, 'NCfacilityCheck', im);
-        };
-
-        self.validate_nc_clinic_code = function(im, clinic_code) {
-            if (!utils.check_valid_number(clinic_code) ||
-                clinic_code.length !== 6) {
-                return Q()
-                    .then(function() {
-                        return false;
-                    });
-            } else {
-                return self
-                .jembi_nc_clinic_validate(im, clinic_code)
-                .then(function(json_result) {
-                    var rows = json_result.data.rows;
-                    if (rows.length === 0) {
-                        return false;
-                    } else {
-                        return rows[0][2];
-                    }
-                });
-            }
-        };
-
-        self.jembi_json_api_call = function(method, params, payload, endpoint, im) {
-            var http = new JsonApi(im, {
-                auth: {
-                    username: im.config.services.jembi.username,
-                    password: im.config.services.jembi.password
-                }
-            });
-            switch(method) {
-                case "get":
-                    return http.get(im.config.services.jembi.url_json + endpoint, {
-                        params: params
-                    });
-            }
+            self.openhim = new go.OpenHIM(
+                new JsonApi(self.im, {}),
+                self.im.config.services.openhim.url_json,
+                self.im.config.services.openhim.username,
+                self.im.config.services.openhim.password
+            );
         };
 
         self.is_contact_in_group = function(contact, group) {
@@ -293,7 +256,7 @@ go.app = function() {
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
-                    return self.validate_nc_clinic_code(self.im, content)
+                    return self.openhim.validate_nc_clinic_code(content)
                      .then(function(facname) {
                          if (!facname) {
                              return error;
@@ -338,7 +301,8 @@ go.app = function() {
                     var contact_data = {
                         preferred_channel: preferred_channel,
                         registered_by: self.im.user.get_answer("operator_msisdn"),
-                        facility_code: self.im.user.get_answer("state_faccode")
+                        facility_code: self.im.user.get_answer("state_faccode"),
+                        registration_date: moment(self.im.config.testing_today).utc().format(),
                     };
                     var contact = self.im.user.get_answer("registrant_contact");
                     if(!!contact) {
@@ -362,7 +326,11 @@ go.app = function() {
                     var contact = self.im.user.get_answer("registrant_contact");
                     return self.rapidpro.start_flow(flow.uuid, contact.uuid);
                 })
-                // TODO: send registration to DHIS2
+                // Send registration to DHIS2
+                .then(function() {
+                    var contact = self.im.user.get_answer("registrant_contact");
+                    return self.openhim.submit_nc_registration(contact);
+                })
                 .then(function() {
                     return self.states.create("state_registration_complete");
                 });
@@ -421,9 +389,6 @@ go.app = function() {
                 next: 'state_start',
              });
         });
-
-
-
 
     });
 

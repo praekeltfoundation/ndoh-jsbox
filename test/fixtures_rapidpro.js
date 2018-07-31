@@ -44,10 +44,23 @@ module.exports = function() {
                 }
             };
         },
-        update_contact: function(filter, result, contact_uuid) {
+        update_contact: function(filter, updates, original) {
             filter = filter || {};
-            result = result || {};
-            contact_uuid = contact_uuid || "contact-uuid";
+            updates = updates || {};
+            original = original || {};
+
+            function merge_objects(a, b) {
+                for(var key in b) {
+                    var value = b[key];
+                    if(value !== null && typeof value === 'object'){
+                        merge_objects(a[key], value);
+                    } else {
+                        a[key] = value;
+                    }
+                }
+            }
+
+            merge_objects(original, updates);
 
             return {
                 "repeatable": true,
@@ -55,15 +68,11 @@ module.exports = function() {
                     "url": 'https://rapidpro/api/v2/contacts.json',
                     "method": 'POST',
                     "params": filter,
-                    "data": result
+                    "data": updates
                 },
                 "response": {
                     "code": 200,
-                    "data": {
-                        uuid: contact_uuid,
-                        fields: result.fields,
-                        urns: result.urns
-                    }
+                    "data": original
                 }
             };
         },

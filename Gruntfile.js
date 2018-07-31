@@ -103,6 +103,7 @@ module.exports = function (grunt) {
                 ussd_nurse_rapidpro: [
                     'src/index.js',
                     'src/rapidpro.js',
+                    'src/openhim.js',
                     '<%= paths.src.app.ussd_nurse_rapidpro %>',
                     'src/init.js'
                 ],
@@ -207,6 +208,7 @@ module.exports = function (grunt) {
                 ussd_nurse_rapidpro: [
                     'test/setup.js',
                     'src/rapidpro.js',
+                    'src/openhim.js',
                     '<%= paths.src.app.ussd_nurse_rapidpro %>',
                     'test/ussd_nurse_rapidpro.test.js'
                 ],

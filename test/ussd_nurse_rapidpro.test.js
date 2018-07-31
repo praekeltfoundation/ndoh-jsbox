@@ -17,12 +17,13 @@ describe('app', function() {
             tester
                 .setup.config.app({
                     name: 'ussd_nurse_rapidpro',
+                    testing_today: "2014-04-04T07:07:07Z",
                     services: {
                         rapidpro: {
                             base_url: 'https://rapidpro',
                             token: 'rapidprotoken'
                         },
-                        jembi: {
+                        openhim: {
                             username: 'foo',
                             password: 'bar',
                             url_json: 'http://test/v2/json/'
@@ -584,7 +585,8 @@ describe('app', function() {
                             fields: {
                                 preferred_channel: "whatsapp",
                                 registered_by: "+27820001002",
-                                facility_code: "123456"
+                                facility_code: "123456",
+                                registration_date: "2014-04-04T07:07:07Z"
                             }
                         }, "contact-uuid")
                     );
@@ -598,6 +600,22 @@ describe('app', function() {
                         fixtures_RapidPro.start_flow(
                             "post-registration-flow-uuid", "contact-uuid")
                     );
+                    api.http.fixtures.add(
+                        fixtures_Jembi.nurseconnect_subscription({
+                            mha: 1,
+                            swt: 7,
+                            type: 7,
+                            dmsisdn: "+27820001002",
+                            cmsisdn: "+27820001003",
+                            rmsisdn: null,
+                            faccode: "123456",
+                            id: "27820001003^^^ZAF^TEL",
+                            dob: null,
+                            persal: null,
+                            sanc: null,
+                            encdate: "20140404070707"
+                        })
+                    );
                 })
                 .setup.user.state("state_create_registration")
                 .start()
@@ -606,12 +624,17 @@ describe('app', function() {
                     reply: "Thank you. You will now start receiving messages to support you in your daily work. " +
                            "You will receive 3 messages each week on WhatsApp."
                 })
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [0, 1, 2, 3, 4]);
+                })
                 .run();
         });
         it("should create an sms registration if the person doesn't have whatsapp (existing contact)", function() {
             return tester
                 .setup.user.answer("registrant_msisdn", "+27820001003")
-                .setup.user.answer("registrant_contact", {uuid: "contact-uuid"})
+                .setup.user.answer("registrant_contact", {
+                    uuid: "contact-uuid",
+                })
                 .setup.user.answer("operator_msisdn", "+27820001002")
                 .setup.user.answer("state_faccode", "123456")
                 .setup(function(api) {
@@ -627,9 +650,17 @@ describe('app', function() {
                             fields: {
                                 preferred_channel: "sms",
                                 registered_by: "+27820001002",
-                                facility_code: "123456"
+                                facility_code: "123456",
+                                registration_date: "2014-04-04T07:07:07Z"
                             }
-                        }, "contact-uuid")
+                        }, {
+                            uuid: "contact-uuid",
+                            urns: ["tel:+27820001003"],
+                            fields: {
+                                persal: "persalcode",
+                                sanc: "sanccode"
+                            }
+                        })
                     );
                     api.http.fixtures.add(
                         fixtures_RapidPro.get_flows([{
@@ -641,6 +672,22 @@ describe('app', function() {
                         fixtures_RapidPro.start_flow(
                             "post-registration-flow-uuid", "contact-uuid")
                     );
+                    api.http.fixtures.add(
+                        fixtures_Jembi.nurseconnect_subscription({
+                            mha: 1,
+                            swt: 3,
+                            type: 7,
+                            dmsisdn: "+27820001002",
+                            cmsisdn: "+27820001003",
+                            rmsisdn: null,
+                            faccode: "123456",
+                            id: "27820001003^^^ZAF^TEL",
+                            dob: null,
+                            persal: "persalcode",
+                            sanc: "sanccode",
+                            encdate: "20140404070707"
+                        })
+                    );
                 })
                 .setup.user.state("state_create_registration")
                 .start()
@@ -648,6 +695,9 @@ describe('app', function() {
                     state: "state_registration_complete",
                     reply: "Thank you. You will now start receiving messages to support you in your daily work. " +
                            "You will receive 3 messages each week on SMS."
+                })
+                .check(function(api) {
+                    utils.check_fixtures_used(api, [0, 1, 2, 3, 4]);
                 })
                 .run();
         });
