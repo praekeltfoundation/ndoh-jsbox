@@ -128,7 +128,7 @@ go.app = function() {
                 question: $('Do you want to:'),
                 choices: [
                     new Choice('state_weekly_messages', $('Sign up for weekly messages')),
-                    new Choice('state_change_number', $('Change your no')),
+                    new Choice('state_old_number', $('Change your no')),
                     new Choice('state_friend_register', $('Help a friend register')),
                 ],
             });
@@ -559,6 +559,74 @@ go.app = function() {
             });
         });
 
+        self.states.add('state_old_number', function(name) {
+            var question = $("Please enter the old number on which you used to receive messages, e.g. 0736436265:");
+            var error = $("Sorry, the format of the mobile number is not correct. Please enter your old mobile number again, e.g. 0726252020");
+            return new FreeText(name, {
+                question: question,
+                check: function(content) {
+                    if (!utils.is_valid_msisdn(content, 0, 10)) {
+                        return error;
+                    }
+                },
+                next: function(content) {
+                    var old_msisdn = utils.normalize_msisdn(content, '27');
+                    return self.rapidpro.get_contact({urn: 'tel:' + old_msisdn})
+                    .then(function(contact) {
+                        // The number to move from must exist and be receiving messages
+                        if (contact) {
+                            self.im.user.set_answer('old_contact', contact);
+                            if(self.is_contact_in_group(contact, 'opted-out')){
+                                return 'state_opt_in_old_number';
+                            }
+                            else if(
+                                self.is_contact_in_group(contact, 'nurseconnect-sms') ||
+                                self.is_contact_in_group(contact, 'nurseconnect-whatsapp') 
+                            ){
+                                return 'state_switch_new_number';
+                            }
+                        }
+                        return 'state_old_number_not_found';
+                    });
+                }
+            });
+        });
+
+        self.states.add('state_opt_in_old_number', function(name) {
+            return new ChoiceState(name, {
+                question: $("This number opted out of NurseConnect messages before. Please confirm that you want to receive messages again on this number?"),
+                choices: [
+                    new Choice('state_switch_new_number', $('Yes')),
+                    new Choice('state_permission_denied', $('No'))
+                ],
+                next: function(choice) {
+                    if(choice.value === 'state_permission_denied') {
+                        return choice.value;
+                    }
+
+                    var contact = self.im.user.get_answer('old_contact');
+                    return self.rapidpro.get_flow_by_name('Optin')
+                    .then(function(flow) {
+                        return self.rapidpro.start_flow(flow.uuid, contact.uuid);
+                    })
+                    .then(function() {
+                        return choice.value;
+                    });
+                }
+            });
+        });
+
+        self.states.add('state_old_number_not_found', function(name) {
+            return new MenuState(name, {
+                question: $("The number {{msisdn}} is not currently subscribed to receive NurseConnect messages. Try again?")
+                    .context({msisdn: self.im.user.answers.state_old_number}),
+                choices: [
+                    new Choice('state_old_number', $('Yes')),
+                    new Choice('state_permission_denied', $('No')),
+                ]
+            });
+        });
+
         self.states.add('state_change_number', function(name) {
             var question = $("Please enter the new number on which you want to receive messages, e.g. 0736252020:");
             var error = $("Sorry, the format of the mobile number is not correct. Please enter the new number on which you want to receive messages, e.g. 0736252020");
@@ -569,62 +637,84 @@ go.app = function() {
                         return error;
                     }
                 },
-                next: function(content) {
-                    return 'state_check_optout_change';
-                }
+                next: 'state_check_optout_change'
             });
         });
 
         self.states.add('state_check_optout_change', function(name) {
             var new_msisdn = utils.normalize_msisdn(self.im.user.answers.state_change_number, '27');
-            self.im.user.set_answer("new_msisdn", new_msisdn);
 
-            // If the contact exists and is in the opt out group, then it's opted out, otherwise not
-            var contact = self.im.user.answers.registrant_contact;
-            if(contact && self.is_contact_in_group(contact, 'opted-out')){
-                return self.states.create('state_opt_in_change');
-            }
-            return self.states.create('state_switch_new_nr');
-        });
-
-        self.states.add('state_opt_in_change', function(name) {
-            return new ChoiceState(name, {
-                question: $("This number opted out of NurseConnect messages before. Please confirm that you want to receive messages again on this number?"),
-                choices: [
-                    new Choice('yes', $('Yes')),
-                    new Choice('no', $('No'))
-                ],
-                next: function(choice) {
-                    if (choice.value === 'yes') {
-                        /*
-                            update this contact will be opted in again
-                         */
-                        return 'state_switch_new_nr';
-                    } else {
-                        return 'state_permission_denied';
+            return self.rapidpro.get_contact({urn: 'tel:' + new_msisdn})
+            .then(function(contact) {
+                if (contact) {
+                    self.im.user.set_answer('new_contact', contact);
+                    if (self.is_contact_in_group(contact, 'opted-out')) {
+                        return self.states.create('state_opt_in_change');
+                    }
+                    if (
+                        self.is_contact_in_group(contact, 'nurseconnect-sms') ||
+                        self.is_contact_in_group(contact, 'nurseconnect-whatsapp')
+                    ) {
+                        return self.states.create('state_block_active_subs');
                     }
                 }
+                return self.states.create('state_switch_new_number');
             });
         });
 
-        self.states.add('state_switch_new_nr', function(name) {
-            /*
-                get id of operator
-                link old number to new number
-                add that new number is default operatornumber
-             */
+        self.states.add('state_opt_in_change', function(name) {
+            return new MenuState(name, {
+                question: $("This number opted out of NurseConnect messages before. Please confirm that you want to receive messages again on this number?"),
+                choices: [
+                    new Choice('state_switch_new_number', $('Yes')),
+                    new Choice('state_permission_denied', $('No'))
+                ]
+            });
+        });
+
+        self.states.add('state_block_active_subs', function(name) {
+            return new EndState(name, {
+                text: $("Sorry, the number you are trying to move to already has an active registration. To manage that registration, please redial from that number."),
+                next: 'state_start',
+            });
+        });
+
+        self.states.add('state_switch_new_number', function(name) {
+            var new_contact = self.im.user.get_answer('new_contact');
+            // Remove this number from the new number contact, so that we don't have two contacts with the same number
+            // new_contact will be set if the operator is registered and wants to switch to a number that we recognise,
+            // but is inactive, so we want to remove the link between that contact and the phone number
+            if(new_contact) {
+                self.rapidpro.update_contact({uuid: new_contact.uuid}, {urns: []});
+            }
+
+            // If the operator is registered, then we must change the address on operator_contact
+            // If the operator isn't registered, then we must change the address on old_contact
+            var contact = self.im.user.get_answer('old_contact');
+            if(!contact) {
+                contact = self.im.user.get_answer('operator_contact');
+            }
+            // If the operator is registered, then we'll have the new number in state_change_number
+            // If the operator isn't registered, then we want to change to the current number
+            var new_msisdn = self.im.user.get_answer('state_change_number');
+            if(!new_msisdn) {
+                new_msisdn = self.im.user.addr;
+            }
+            new_msisdn = utils.normalize_msisdn(new_msisdn, '27');
+            return self.rapidpro.update_contact({uuid: contact.uuid}, {
+                urns: ['tel:' + new_msisdn]
+            })
+            .then(function() {
                 return self.states.create('state_end_detail_changed');
+            });
         });
 
         self.states.add('state_permission_denied', function(name) {
-            return new ChoiceState(name, {
+            return new MenuState(name, {
                 question: $("You have chosen not to receive NurseConnect messages on this number and so cannot complete registration."),
                 choices: [
                     new Choice('state_start', $('Main Menu'))
-                ],
-                next: function(choice) {
-                    return choice.value;
-                }
+                ]
             });
         });
 

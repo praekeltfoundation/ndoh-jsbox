@@ -116,6 +116,7 @@ describe('app', function() {
                         })
                         .run();
                 });
+
             }); //end of registered state
 
             //registered -- opt out
@@ -973,59 +974,6 @@ describe('app', function() {
                 });
             });
 
-            // Change to New Number
-            describe("switch to new number", function() {
-                describe("choosing to switch to new number", function() {
-                    it("should go to state_change_num", function() {
-                        return tester
-                            .setup(function(api) {
-                                api.http.fixtures.add(
-                                    fixtures_RapidPro.get_contact({
-                                        urn: 'tel:+27820001003',
-                                        groups: ["nurseconnect-whatsapp"],
-                                        exists: true,
-                                    })
-                                );
-                            })
-                            .setup.user.addr('27820001003')
-                            .inputs(
-                                {session_event: 'new'}  // dial in
-                                , '2'  // state_subscribed - change num
-                            )
-                            .check.interaction({
-                                state: 'state_change_number',
-                                reply: "Please enter the new number on which you want to receive messages, e.g. 0736252020:"
-                            })
-                            .run();
-                    });
-                });
-                describe("entering new unused number", function() {
-                    it("should go to state_end_detail_changed", function() {
-                        return tester
-                            .setup(function(api) {
-                                api.http.fixtures.add(
-                                    fixtures_RapidPro.get_contact({
-                                        urn: 'tel:+27820001003',
-                                        groups: ["nurseconnect-whatsapp"],
-                                        exists: true,
-                                    })
-                                );
-                            })
-                            .setup.user.addr('27820001003')
-                            .inputs(
-                                {session_event: 'new'}  // dial in
-                                , '2'  // state_subscribed - change num
-                                , '0820001001'  // state_change_num
-                            )
-                            .check.interaction({
-                                state: 'state_end_detail_changed',
-                            })
-                            .run();
-                    });
-                });
-            }); //end of change number
-
-
         }); //end of change details
 
         }); //end of state_start
@@ -1165,6 +1113,393 @@ describe('app', function() {
                     utils.check_fixtures_used(api, [0, 1, 2, 3, 4]);
                 })
                 .run();
+        });
+    });
+
+    describe('state_registered', function() {
+        it('should ask the user for their new number if change number is selected', function() {
+            return tester
+            .setup.user.state('state_registered')
+            .input(
+                '2' // Change number
+            )
+            .check.interaction({
+                state: 'state_change_number',
+                reply: 'Please enter the new number on which you want to receive messages, e.g. 0736252020:'
+            })
+            .run();
+        });
+    });
+
+    describe('state_not_registered_menu', function() {
+        it('should ask the user for their old number if change number is selected', function() {
+            return tester
+            .setup.user.state('state_not_registered_menu')
+            .input(
+                '2' // Change number
+            )
+            .check.interaction({
+                state: 'state_old_number',
+                reply: 'Please enter the old number on which you used to receive messages, e.g. 0736436265:'
+            })
+            .run();
+        });
+    });
+
+    describe('state_change_number', function() {
+        it('should validate the number that in entered', function() {
+            return tester
+            .setup.user.state('state_change_number')
+            .input('0820001001111')
+            .check.interaction({
+                state: 'state_change_number',
+                reply:
+                    'Sorry, the format of the mobile number is not correct. ' +
+                    'Please enter the new number on which you want to receive messages, e.g. 0736252020'
+            })
+            .run();
+        });
+        it('should ask the user to opt in if the new number has previously opted out', function() {
+            return tester
+            .setup.user.state('state_change_number')
+            .setup(function(api) {
+                api.http.fixtures.add(
+                    fixtures_RapidPro.get_contact({
+                        exists: true,
+                        groups: ['opted-out'],
+                        urn: 'tel:+27820001001'
+                    })
+                );
+            })
+            .input('0820001001')
+            .check.interaction({
+                state: 'state_opt_in_change',
+                reply: [
+                    "This number opted out of NurseConnect messages before. " +
+                    "Please confirm that you want to receive messages again on this number?",
+                    "1. Yes",
+                    "2. No"
+                ].join('\n')
+            })
+            .check(function(api){
+                utils.check_fixtures_used(api, [0]);
+            })
+            .run();
+        });
+        it('should not allow the change if the new number already has an active NurseConnect subscription', function() {
+            return tester
+            .setup.user.state('state_change_number')
+            .setup(function(api) {
+                api.http.fixtures.add(
+                    fixtures_RapidPro.get_contact({
+                        exists: true,
+                        groups: ['nurseconnect-whatsapp'],
+                        urn: 'tel:+27820001001'
+                    })
+                );
+            })
+            .input('0820001001')
+            .check.interaction({
+                state: 'state_block_active_subs',
+                reply: 
+                    "Sorry, the number you are trying to move to already has an active registration. " +
+                    "To manage that registration, please redial from that number."
+            })
+            .check.reply.ends_session()
+            .check(function(api){
+                utils.check_fixtures_used(api, [0]);
+            })
+            .run();
+        });
+        it('should switch to the new number if the entered number is not recognised', function() {
+            return tester
+            .setup.user.state('state_change_number')
+            .setup(function(api) {
+                api.http.fixtures.add(
+                    fixtures_RapidPro.get_contact({
+                        exists: false,
+                        urn: 'tel:+27820001001'
+                    })
+                );
+                api.http.fixtures.add(
+                    fixtures_RapidPro.update_contact({uuid: 'operator-contact-uuid'}, {
+                        urns: ['tel:+27820001001']
+                    })
+                );
+            })
+            .setup.user.answer('operator_contact', {uuid: 'operator-contact-uuid'})
+            .input('0820001001')
+            .check.interaction({
+                state: 'state_end_detail_changed',
+                reply: 
+                    "Thank you. Your NurseConnect details have been changed. " +
+                    "To change any other details, please dial *120*550*5# again."
+            })
+            .check.reply.ends_session()
+            .check(function(api){
+                utils.check_fixtures_used(api, [0, 1]);
+            })
+            .run();
+        });
+        it('should switch to the new number and delink the existing contact if the entered number is recognised but inactive', function() {
+            return tester
+            .setup.user.state('state_change_number')
+            .setup(function(api) {
+                api.http.fixtures.add(
+                    fixtures_RapidPro.get_contact({
+                        exists: true,
+                        urn: 'tel:+27820001001',
+                        uuid: 'existing-contact-uuid'
+                    })
+                );
+                api.http.fixtures.add(
+                    fixtures_RapidPro.update_contact({uuid: 'existing-contact-uuid'}, {
+                        urns: []
+                    })
+                );
+                api.http.fixtures.add(
+                    fixtures_RapidPro.update_contact({uuid: 'operator-contact-uuid'}, {
+                        urns: ['tel:+27820001001']
+                    })
+                );
+            })
+            .setup.user.answer('operator_contact', {uuid: 'operator-contact-uuid'})
+            .input('0820001001')
+            .check.interaction({
+                state: 'state_end_detail_changed',
+                reply: 
+                    "Thank you. Your NurseConnect details have been changed. " +
+                    "To change any other details, please dial *120*550*5# again."
+            })
+            .check.reply.ends_session()
+            .check(function(api){
+                utils.check_fixtures_used(api, [0, 1, 2]);
+            })
+            .run();
+        });
+    });
+
+    describe('state_old_number', function() {
+        it('should validate the number input', function() {
+            return tester
+            .setup.user.state('state_old_number')
+            .input('082000100111')
+            .check.interaction({
+                state: 'state_old_number',
+                reply:
+                    'Sorry, the format of the mobile number is not correct. ' +
+                    'Please enter your old mobile number again, e.g. 0726252020'
+            })
+            .run();
+        });
+        it('should stop the switch if the old number does not have an active subscription', function() {
+            return tester
+            .setup.user.state('state_old_number')
+            .setup(function(api) {
+                api.http.fixtures.add(
+                    fixtures_RapidPro.get_contact({
+                        exists: false,
+                        urn: 'tel:+27820001001'
+                    })
+                );
+            })
+            .input('0820001001')
+            .check.interaction({
+                state: 'state_old_number_not_found',
+                reply: [
+                    "The number 0820001001 is not currently subscribed to receive NurseConnect messages. Try again?",
+                    "1. Yes",
+                    "2. No"
+                ].join('\n')
+            })
+            .check(function(api){
+                utils.check_fixtures_used(api, [0]);
+            })
+            .run();
+        });
+        it('should ask the user to opt in again if the old number was previously opted out', function() {
+            return tester
+            .setup.user.state('state_old_number')
+            .setup(function(api) {
+                api.http.fixtures.add(
+                    fixtures_RapidPro.get_contact({
+                        exists: true,
+                        groups: ['opted-out'],
+                        urn: 'tel:+27820001001'
+                    })
+                );
+            })
+            .input('0820001001')
+            .check.interaction({
+                state: 'state_opt_in_old_number',
+                reply: [
+                    "This number opted out of NurseConnect messages before. " +
+                    "Please confirm that you want to receive messages again on this number?",
+                    "1. Yes",
+                    "2. No"
+                ].join('\n')
+            })
+            .check(function(api){
+                utils.check_fixtures_used(api, [0]);
+            })
+            .run();
+        });
+        it('should perform the switch if the old number has an active subscription', function() {
+            return tester
+            .setup.user.state('state_old_number')
+            .setup.user.addr('+27820001002')
+            .setup(function(api) {
+                api.http.fixtures.add(
+                    fixtures_RapidPro.get_contact({
+                        exists: true,
+                        groups: ['nurseconnect-sms'],
+                        urn: 'tel:+27820001001',
+                        uuid: 'existing-contact-uuid'
+                    })
+                );
+                api.http.fixtures.add(
+                    fixtures_RapidPro.update_contact({uuid: 'existing-contact-uuid'}, {
+                        urns: ['tel:+27820001002']
+                    })
+                );
+            })
+            .input('0820001001')
+            .check.interaction({
+                state: 'state_end_detail_changed',
+                reply: 
+                    "Thank you. Your NurseConnect details have been changed. " +
+                    "To change any other details, please dial *120*550*5# again."
+            })
+            .check.reply.ends_session()
+            .check(function(api){
+                utils.check_fixtures_used(api, [0, 1]);
+            })
+            .run();
+        });
+    });
+
+    describe('state_old_number_not_found', function() {
+        it('selecting yes should ask the user to enter another number', function() {
+            return tester
+            .setup.user.state('state_old_number_not_found')
+            .input(
+                '1' // Yes
+            )
+            .check.interaction({
+                state: 'state_old_number',
+                reply: 'Please enter the old number on which you used to receive messages, e.g. 0736436265:'
+            })
+            .run();
+        });
+        it('selecting no should end the interaction with the user', function() {
+            return tester
+            .setup.user.state('state_old_number_not_found')
+            .input(
+                '2' // No
+            )
+            .check.interaction({
+                state: 'state_permission_denied',
+                reply: [
+                    'You have chosen not to receive NurseConnect messages on this number and so cannot complete registration.',
+                    '1. Main Menu'
+                ].join('\n')
+            })
+            .run();
+        });
+    });
+
+    describe('state_opt_in_old_number', function() {
+        it('selecting no should end the interaction with the user', function() {
+            return tester
+            .setup.user.state('state_opt_in_old_number')
+            .input(
+                '2' // No
+            )
+            .check.interaction({
+                state: 'state_permission_denied',
+                reply: [
+                    'You have chosen not to receive NurseConnect messages on this number and so cannot complete registration.',
+                    '1. Main Menu'
+                ].join('\n')
+            })
+            .run();
+        });
+        it('selecting yes should opt in the old number and then switch the number on the contact', function() {
+            return tester
+            .setup.user.state('state_opt_in_old_number')
+            .setup.user.answer('old_contact', {uuid: 'existing-contact-uuid'})
+            .setup.user.addr("0820001002")
+            .setup(function(api) {
+                api.http.fixtures.add(
+                    fixtures_RapidPro.get_flows([{
+                        uuid: "optin-flow-uuid",
+                        name: "Optin"
+                    }])
+                );
+                api.http.fixtures.add(
+                    fixtures_RapidPro.start_flow("optin-flow-uuid", "existing-contact-uuid")
+                );
+                api.http.fixtures.add(
+                    fixtures_RapidPro.update_contact({uuid: 'existing-contact-uuid'}, {
+                        urns: ['tel:+27820001002']
+                    })
+                );
+            })
+            .input(
+                '1' // Yes
+            )
+            .check.interaction({
+                state: 'state_end_detail_changed',
+                reply: 
+                    "Thank you. Your NurseConnect details have been changed. " +
+                    "To change any other details, please dial *120*550*5# again."
+            })
+            .check.reply.ends_session()
+            .check(function(api){
+                utils.check_fixtures_used(api, [0, 1, 2]);
+            })
+            .run();
+        });
+    });
+
+    describe('state_opt_in_change', function() {
+        it('should end the interaction if no is selected', function() {
+            return tester
+            .setup.user.state('state_opt_in_change')
+            .input(
+                '2' // No
+            )
+            .check.interaction({
+                state: 'state_permission_denied',
+                reply: [
+                    'You have chosen not to receive NurseConnect messages on this number and so cannot complete registration.',
+                    '1. Main Menu'
+                ].join('\n')
+            })
+            .run();
+        });
+        it('should change the number if yes is selected', function() {
+            return tester
+            .setup.user.addr('0820001001')
+            .setup(function(api) {
+                api.http.fixtures.add(
+                    fixtures_RapidPro.update_contact({uuid: 'operator-contact-uuid'}, {
+                        urns: ['tel:+27820001001']
+                    })
+                );
+            })
+            .setup.user.state('state_opt_in_change')
+            .setup.user.answer('operator_contact', {uuid: 'operator-contact-uuid'})
+            .input(
+                '1' // Yes
+            )
+            .check.interaction({
+                state: 'state_end_detail_changed',
+                reply: 
+                    'Thank you. Your NurseConnect details have been changed. ' +
+                    'To change any other details, please dial *120*550*5# again.'
+            })
+            .run();
         });
     });
 
