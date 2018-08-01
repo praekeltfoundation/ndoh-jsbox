@@ -890,8 +890,6 @@ go.app = function() {
                 return self.states.create('state_end_detail_changed');
             });
         });
-<<<<<<< HEAD
-=======
 
         self.states.add('state_permission_denied', function(name) {
             return new MenuState(name, {
@@ -902,7 +900,6 @@ go.app = function() {
             });
         });
 
->>>>>>> develop
 
     });
 
