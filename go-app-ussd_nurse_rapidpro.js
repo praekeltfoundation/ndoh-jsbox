@@ -598,19 +598,19 @@ go.app = function() {
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
-                    if (!utils.check_valid_number(content)
-                        || content.length !== 8) {
+                    if (!utils.check_valid_number(content) || content.length !== 8) {
                         return error;
-                    } else {
-                        /*
-                            add function to update info against operator id
-                            send this update to RapidPro
-                            then lead to state where user details are successfully changed
-                        */
-                        return null;
                     }
                 },
-                next: 'state_end_detail_changed',
+                next: function(content) {
+                    var contact = self.im.user.get_answer('operator_contact');
+                    return self.rapidpro.update_contact({uuid: contact.uuid}, {
+                        persal: content
+                    })
+                    .then(function() {
+                        return 'state_end_detail_changed';
+                    });
+                }
             });
         });
 

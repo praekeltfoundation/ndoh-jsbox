@@ -876,103 +876,6 @@ describe('app', function() {
                 });
             });
 
-            describe("change persal", function() {
-                it("should ask for persal", function() {
-                    return tester
-                    .setup(function(api) {
-                        api.http.fixtures.add(
-                            fixtures_RapidPro.get_contact({
-                                urn: 'tel:+27820001003',
-                                groups: ["nurseconnect-whatsapp"],
-                                exists: true,
-                            })
-                        );
-                    })
-                    .setup.user.addr('27820001003')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '5'  // state_subscribed - more options
-                        , '3'  // state_subscribed - change persal no
-                    )
-                        .check.interaction({
-                            state: 'state_change_persal',
-                            reply: "Please enter your 8-digit Persal employee number, e.g. 11118888:"
-                        })
-                        .run();
-                });
-                it("should loop back if non-numeric char", function() {
-                    return tester
-                    .setup(function(api) {
-                        api.http.fixtures.add(
-                            fixtures_RapidPro.get_contact({
-                                urn: 'tel:+27820001003',
-                                groups: ["nurseconnect-whatsapp"],
-                                exists: true,
-                            })
-                        );
-                    })
-                    .setup.user.addr('27820001003')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '5'  // state_subscribed - more options
-                        , '3'  // state_subscribed - change persal no.
-                        , '3456789A'  // state_change_persal
-                        )
-                        .check.interaction({
-                            state: 'state_change_persal',
-                            reply: "Sorry, the format of the Persal employee number is not correct. Please enter it again, e.g. 11118888:"
-                        })
-                        .run();
-                });
-                it("should loop back if not 8 chars", function() {
-                    return tester
-                    .setup(function(api) {
-                        api.http.fixtures.add(
-                            fixtures_RapidPro.get_contact({
-                                urn: 'tel:+27820001003',
-                                groups: ["nurseconnect-whatsapp"],
-                                exists: true,
-                            })
-                        );
-                    })
-                    .setup.user.addr('27820001003')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '5'  // state_subscribed - more options
-                        , '3'  // state_subscribed - change id
-                        , '3456789'  // state_change_persal
-                        )
-                        .check.interaction({
-                            state: 'state_change_persal',
-                            reply: "Sorry, the format of the Persal employee number is not correct. Please enter it again, e.g. 11118888:"
-                        })
-                        .run();
-                });
-                it("should reach details changed end state", function() {
-                    return tester
-                    .setup(function(api) {
-                        api.http.fixtures.add(
-                            fixtures_RapidPro.get_contact({
-                                urn: 'tel:+27820001003',
-                                groups: ["nurseconnect-whatsapp"],
-                                exists: true,
-                            })
-                        );
-                    })
-                    .setup.user.addr('27820001003')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '5'  // state_subscribed - more options
-                        , '3'  // state_subscribed - change persal no
-                        , '11114444'  // state_change_persal
-                        )
-                        .check.interaction({
-                            state: 'state_end_detail_changed',
-                            reply: "Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again."
-                        })
-                        .run();
-                });
-            });
 
         }); //end of change details
 
@@ -1126,6 +1029,19 @@ describe('app', function() {
             .check.interaction({
                 state: 'state_change_number',
                 reply: 'Please enter the new number on which you want to receive messages, e.g. 0736252020:'
+            })
+            .run();
+        });
+        it("should ask for persal if the option is selected", function() {
+            return tester
+            .setup.user.state('state_registered')
+            .inputs(
+                '5',  // state_subscribed - more options
+                '3'   // state_subscribed - change persal no
+            )
+            .check.interaction({
+                state: 'state_change_persal',
+                reply: "Please enter your 8-digit Persal employee number, e.g. 11118888:"
             })
             .run();
         });
@@ -1498,6 +1414,46 @@ describe('app', function() {
                 reply: 
                     'Thank you. Your NurseConnect details have been changed. ' +
                     'To change any other details, please dial *120*550*5# again.'
+            })
+            .run();
+        });
+    });
+    describe("state_change_persal", function() {
+        it("should loop back if non-numeric char", function() {
+            return tester
+            .setup.user.state('state_change_persal')
+            .input('3456789A')
+            .check.interaction({
+                state: 'state_change_persal',
+                reply: "Sorry, the format of the Persal employee number is not correct. Please enter it again, e.g. 11118888:"
+            })
+            .run();
+        });
+        it("should loop back if not 8 chars", function() {
+            return tester
+            .setup.user.state('state_change_persal')
+            .input('3456789')
+            .check.interaction({
+                state: 'state_change_persal',
+                reply: "Sorry, the format of the Persal employee number is not correct. Please enter it again, e.g. 11118888:"
+            })
+            .run();
+        });
+        it("should reach details changed end state", function() {
+            return tester
+            .setup.user.state('state_change_persal')
+            .setup.user.answer('operator_contact', {uuid: 'operator-contact-uuid'})
+            .setup(function(api) {
+                api.http.fixtures.add(
+                    fixtures_RapidPro.update_contact({uuid: 'operator-contact-uuid'}, {
+                        persal: '11114444'
+                    })
+                );
+            })
+            .input('11114444')
+            .check.interaction({
+                state: 'state_end_detail_changed',
+                reply: "Thank you. Your NurseConnect details have been changed. To change any other details, please dial *120*550*5# again."
             })
             .run();
         });
