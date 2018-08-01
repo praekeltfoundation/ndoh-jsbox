@@ -259,9 +259,9 @@ go.app = function() {
                     new Choice('state_friend_register', $('Help a friend sign up')),
                     new Choice('state_change_number', $('Change your number')),
                     new Choice('state_optout', $('Opt out')),
-                    new Choice('state_change_faccode', $('Change facility code')),
+                    new Choice('state_enter_faccode', $('Change facility code')),
                     new Choice('state_change_id_no', $('Change ID no.')),
-                    new Choice('state_change_sanc', $('Change SANC no.')),
+                    new Choice('state_enter_sanc', $('Change SANC no.')),
                     new Choice('state_change_persal', $('Change Persal no.')),
                 ],
                 characters_per_page: 140,
@@ -529,9 +529,27 @@ go.app = function() {
                     if (choice.value === 'main_menu') {
                         return 'state_registered';
                     } else {
-                       return 'state_opted_out';
+                       return 'state_create_opt_out';
                     }
                 }
+            });
+        });
+
+        self.states.add('state_create_opt_out', function(name) {
+            var contact = self.im.user.get_answer('operator_contact');
+            return self.rapidpro.update_contact({uuid: contact.uuid}, {
+                fields: {
+                    opt_out_reason: self.im.user.get_answer('state_optout')
+                }
+            })
+            .then(function() {
+                return self.rapidpro.get_flow_by_name('Optout');
+            })
+            .then(function(flow) {
+                return self.rapidpro.start_flow(flow.uuid, contact.uuid);
+            })
+            .then(function() {
+                return self.states.create("state_opted_out");
             });
         });
 
@@ -544,7 +562,7 @@ go.app = function() {
         });
 
         //USER CHANGE STATES
-        self.states.add('state_change_faccode', function(name) {
+        self.states.add('state_enter_faccode', function(name) {
             var question = $("Please enter the 6-digit facility code for your new facility, e.g. 456789:");
             var error = $("Sorry, that code is not recognized. Please enter the 6-digit facility code again, e. 535970:");
             return new FreeText(name, {
@@ -556,39 +574,48 @@ go.app = function() {
                             if (!facname) {
                                 return error;
                             } else {
-                                /*
-                                    add function to update info against operator id
-                                    then lead to state where user details are successfully changed
-                                */
                                 self.im.user.set_answer("facname", facname);
                                 return null;  // vumi expects null or undefined if check passes
                             }
                         });
                 },
-                next: 'state_end_detail_changed',
+                next: 'state_change_faccode',
             });
-               
         });
 
-        self.states.add('state_change_sanc', function(name) {
+        self.states.add('state_change_faccode', function(name) {
+            return self.rapidpro.update_contact({uuid: self.im.user.get_answer("operator_contact").uuid}, {
+                fields: {
+                    facility_code: self.im.user.get_answer('state_enter_faccode')
+                }
+            })
+            .then(function() {
+                return self.states.create('state_end_detail_changed');
+            });
+        });
+
+        self.states.add('state_enter_sanc', function(name) {
             var question = $("Please enter your 8-digit SANC registration number, e.g. 34567899:");
             var error = $("Sorry, the format of the SANC registration number is not correct. Please enter it again, e.g. 34567899:");
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
-                    if (!utils.check_valid_number(content)
-                        || content.length !== 8) {
+                    if (!utils.check_valid_number(content) || content.length !== 8) {
                         return error;
-                    } else {
-                        /*
-                            add function to update info against operator id
-                            send this update to RapidPro
-                            then lead to state where user details are successfully changed
-                        */
-                        return null;
                     }
                 },
-                next: 'state_end_detail_changed',
+                next: 'state_change_sanc',
+            });
+        });
+        
+        self.states.add('state_change_sanc', function(name) {
+            return self.rapidpro.update_contact({uuid: self.im.user.get_answer('operator_contact').uuid}, {
+                details: {
+                    sanc_number: self.im.user.get_answer('state_enter_sanc')
+                }
+            })
+            .then(function() {
+                return self.states.create('state_end_detail_changed');
             });
         });
 
@@ -645,20 +672,10 @@ go.app = function() {
                     if (!utils.validate_id_za(content)) {
                         return error;
                     }
-                    else{
-                        /*
-                        add function to update id type info against operator id
-                        add function to update id number info against operator id
-                        add function to update date of birth info against operator id
-                        then lead to state where user details are successfully changed
-                        */
-                    }
                 },
-                next: 'state_end_detail_changed',
+                next: 'state_update_identification',
             });
         });
-
-    
 
         self.states.add('state_passport', function(name) {
             return new ChoiceState(name, {
@@ -699,16 +716,28 @@ go.app = function() {
                     if (!utils.is_valid_date(content, 'DDMMYYYY')) {
                         return error;
                     }
-                    else{
-                         /*
-                            add function to update id type info against operator id
-                            add function to update id number info against operator id
-                            add function to update date of birth info against operator id
-                            then lead to state where user details are successfully changed
-                        */
-                    }
                 },
-                next: 'state_end_detail_changed', 
+                next: 'state_update_identification', 
+            });
+        });
+
+        self.states.add('state_update_identification', function(name) {
+            var contact = self.im.user.get_answer('operator_contact');
+            var fields = {
+                sa_id_number: self.im.user.get_answer('state_id_no'),
+                passport_country: self.im.user.get_answer('state_passport'),
+                passport_number: self.im.user.get_answer('state_passport_no')
+            };
+            if(fields.sa_id_number) {
+                fields.date_of_birth = utils.extract_za_id_dob(fields.sa_id_number);
+            }
+            else {
+                fields.date_of_birth = moment(self.im.user.get_answer('state_passport_dob'), "DDMMYYYY").format("YYYY-MM-DD");
+            }
+            return self.rapidpro
+            .update_contact({uuid: contact.uuid}, fields)
+            .then(function() {
+                return self.states.create('state_end_detail_changed');
             });
         });
 

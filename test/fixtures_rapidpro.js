@@ -64,7 +64,6 @@ module.exports = function() {
             }
 
             merge_objects(original, updates);
-
             return {
                 "repeatable": true,
                 "request": {
