@@ -78,8 +78,8 @@ module.exports = function(){
                     data: details
                 },
                 response: {
-                    code: 200,
-                    data: {}
+                    code: 202,
+                    data: "Accepted"
                 }
             };
         },

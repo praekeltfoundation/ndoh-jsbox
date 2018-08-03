@@ -9,6 +9,7 @@ go.app = function() {
     var Choice = vumigo.states.Choice;
     var SeedJsboxUtils = require('seed-jsbox-utils');
     var JsonApi = vumigo.http.api.JsonApi;
+    var HttpApi = vumigo.http.api.HttpApi;
     var utils = SeedJsboxUtils.utils;
     var App = vumigo.App;
     var moment = require('moment');
@@ -26,7 +27,7 @@ go.app = function() {
             );
 
             self.openhim = new go.OpenHIM(
-                new JsonApi(self.im, {}),
+                new HttpApi(self.im, {}),
                 self.im.config.services.openhim.url_json,
                 self.im.config.services.openhim.username,
                 self.im.config.services.openhim.password
