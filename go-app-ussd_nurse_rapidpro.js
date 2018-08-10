@@ -315,8 +315,8 @@ go.app = function() {
         self.states.add('state_friend_register', function(name) {
             self.im.user.set_answer("registrant", "friend");
             return new MenuState(name, {
-                question: $("To register, your friend's info needs to be collected, stored and used. "+
-                            "They may receive messages on public holidays. Do they agree?"),
+                question: $("For your friend to join NurseConnect, we need to access & store their info. "+
+                            "They may get messages on public holidays & weekends. Do they agree?"),
                 choices: [
                     new Choice('state_enter_msisdn', $('Yes')),
                     new Choice('state_no_registration', $('No')),

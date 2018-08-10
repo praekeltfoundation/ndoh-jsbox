@@ -310,8 +310,8 @@ describe('app', function() {
                         )
                         .check.interaction({
                             state: 'state_friend_register',
-                            reply: ["To register, your friend's info needs to be collected, stored and used. " +
-                                    "They may receive messages on public holidays. Do they agree?",
+                            reply: ["For your friend to join NurseConnect, we need to access & store their info. " +
+                                    "They may get messages on public holidays & weekends. Do they agree?",
                                     "1. Yes",
                                     "2. No"
                             ].join('\n')
