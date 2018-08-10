@@ -419,7 +419,47 @@ describe('app', function() {
                         .check.interaction({
                             state: 'state_has_opted_out',
                             reply: [
-                                "This number previously opted out of NurseConnect messages. Are you sure you want to sign up again?",
+                                "This number previously asked us to stop sending messages. Are you sure you want to " +
+                                "sign up again?",
+                                '1. Yes',
+                                '2. No'
+                            ].join('\n')
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [0, 1]);
+                        })
+                        .run();
+                    });
+
+                    //for msisdn that has opted out
+                    it('should ask to opt in again with correct pronoun', function(){
+                        return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(
+                                fixtures_Pilot().not_exists({
+                                    address: '+27820001004',
+                                    number: '+27000000000',
+                                    wait: false,
+                                })
+                            );
+                            api.http.fixtures.add(
+                                fixtures_RapidPro.get_contact({
+                                    exists: true,
+                                    urn: 'tel:+27820001004',
+                                    groups: ['opted-out']
+                                })
+                            );
+                        })
+                        .setup.user.state('state_enter_msisdn')
+                        .setup.user.answer('registrant', 'friend')
+                        .input(
+                            '0820001004'  // state_enter_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_has_opted_out',
+                            reply: [
+                                "This number previously asked us to stop sending messages. Are they sure they want " +
+                                "to sign up again?",
                                 '1. Yes',
                                 '2. No'
                             ].join('\n')

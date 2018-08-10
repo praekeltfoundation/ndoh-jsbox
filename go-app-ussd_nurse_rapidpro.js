@@ -386,8 +386,10 @@ go.app = function() {
             var pronoun = self.im.user.answers.registrant === "operator"
             ? 'you' : 'they';
             return new MenuState(name, {
-                question: $("This number previously opted out of NurseConnect messages. Are {{pronoun}} sure {{pronoun}} want to sign up again?")
-                .context({pronoun: pronoun}),
+                question: $(
+                    "This number previously asked us to stop sending messages. Are {{pronoun}} sure {{pronoun}} want " +
+                    "to sign up again?"
+                    ).context({pronoun: pronoun}),
                 choices: [
                     new Choice('state_faccode', $('Yes')),
                     new Choice('state_no_subscription', $('No'))
