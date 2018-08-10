@@ -222,12 +222,13 @@ describe('app', function() {
                     .check.interaction({
                         state: 'state_not_registered_menu',
                         reply: [
-                            "Welcome to NurseConnect: workplace support in the palm of your hand. Do you want to:",
-                            "1. Sign up for weekly messages",
-                            "2. Change your no",
-                            "3. Help a friend register"
+                            "Welcome to NurseConnect. Do you want to:",
+                            "1. Sign up for messages",
+                            "2. Change your no.",
+                            "3. Help a friend to register"
                         ].join('\n')
                     })
+                    .check.reply.char_limit(140)
                     .check(function(api) {
                         utils.check_fixtures_used(api, [0]);
                     })
