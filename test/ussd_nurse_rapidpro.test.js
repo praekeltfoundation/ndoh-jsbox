@@ -62,11 +62,10 @@ describe('app', function() {
                         state: 'state_registered',
                         reply: [
                                 "Welcome back to NurseConnect. Do you want to:",
-                                "1. Help a friend sign up",
-                                "2. Change your number",
-                                "3. Opt out",
-                                "4. Change facility code",
-                                "5. More"
+                                "1. Help a friend to register",
+                                "2. Update your no.",
+                                "3. Change facility code",
+                                "4. More"
                         ].join('\n')
                     })
                     .check(function(api) {
@@ -80,16 +79,17 @@ describe('app', function() {
                         .setup.user.state('state_registered')
                         .setup.char_limit(140)  // limit first state chars
                         .input(
-                            '5'  // 'state_registered' - more options
+                            '4'  // 'state_registered' - more options
                         )
                         .check.interaction({
                             state: 'state_registered',
                             reply: [
                                     "Welcome back to NurseConnect. Do you want to:",
-                                    "1. Change ID no.",
-                                    "2. Change SANC no.",
-                                    "3. Change Persal no.",
-                                    "4. Back",
+                                    "1. Stop messages",
+                                    "2. Change ID no.",
+                                    "3. Change SANC no.",
+                                    "4. Change Persal no.",
+                                    "5. Back",
                             ].join('\n')
                         })
                         .run();
@@ -100,18 +100,17 @@ describe('app', function() {
                         .setup.user.state('state_registered')
                         .setup.char_limit(140)  // limit first state chars
                         .inputs(
-                              '5'  // 'state_registered' - more options
-                            , '4'  // 'state_registered' - back to first set of options
+                              '4'  // 'state_registered' - more options
+                            , '5'  // 'state_registered' - back to first set of options
                         )
                         .check.interaction({
                             state: 'state_registered',
                             reply: [
                                 "Welcome back to NurseConnect. Do you want to:",
-                                "1. Help a friend sign up",
-                                "2. Change your number",
-                                "3. Opt out",
-                                "4. Change facility code",
-                                "5. More",
+                                "1. Help a friend to register",
+                                "2. Update your no.",
+                                "3. Change facility code",
+                                "4. More"
                             ].join('\n')
                         })
                         .run();
@@ -126,8 +125,9 @@ describe('app', function() {
                         it("should ask optout reason", function() {
                             return tester
                                 .setup.user.state('state_registered')
-                                .input(
-                                    '3'  // state_registered - choose opt out
+                                .inputs(
+                                    '4', // state_registered - more options
+                                    '1'  // state_registered - stop messages
                                 )
                                 .check.interaction({
                                     state: 'state_optout',
@@ -591,7 +591,7 @@ describe('app', function() {
                     })
                     .setup.user.addr('27820001003')
                     .input(
-                        '4' // state_subscribed - change faccode
+                        '3' // state_subscribed - change faccode
                     )
                     .check.interaction({
                         state: 'state_enter_faccode',
@@ -635,8 +635,8 @@ describe('app', function() {
                     return tester
                     .setup.user.state('state_registered')
                     .inputs(
-                            '5', // state_registered - more options
-                            '2'  // state_registered - change sanc
+                            '4', // state_registered - more options
+                            '3'  // state_registered - change sanc
                         )
                         .check.interaction({
                             state: 'state_enter_sanc',
@@ -971,8 +971,8 @@ describe('app', function() {
             return tester
             .setup.user.state('state_registered')
             .inputs(
-                '5',  // state_subscribed - more options
-                '3'   // state_subscribed - change persal no
+                '4',  // state_subscribed - more options
+                '4'   // state_subscribed - change persal no
             )
             .check.interaction({
                 state: 'state_change_persal',

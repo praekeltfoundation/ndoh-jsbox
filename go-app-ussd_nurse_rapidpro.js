@@ -251,10 +251,10 @@ go.app = function() {
             return new PaginatedChoiceState(name, {
                 question: $("Welcome back to NurseConnect. Do you want to:"),
                 choices: [
-                    new Choice('state_friend_register', $('Help a friend sign up')),
-                    new Choice('state_change_number', $('Change your number')),
-                    new Choice('state_optout', $('Opt out')),
+                    new Choice('state_friend_register', $('Help a friend to register')),
+                    new Choice('state_change_number', $('Update your no.')),
                     new Choice('state_enter_faccode', $('Change facility code')),
+                    new Choice('state_optout', $('Stop messages')),
                     new Choice('state_change_id_no', $('Change ID no.')),
                     new Choice('state_enter_sanc', $('Change SANC no.')),
                     new Choice('state_change_persal', $('Change Persal no.')),
