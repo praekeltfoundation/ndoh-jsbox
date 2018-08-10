@@ -134,8 +134,8 @@ go.app = function() {
             self.im.user.set_answer("registrant_contact", self.im.user.answers.operator_contact);
 
             return new ChoiceState(name, {
-                question: $("To register, your info needs to be collected, stored and used. " +
-                           "You might also receive messages on public holidays. Do you agree?"),
+                question: $("We want to make NurseConnect better, so we need to access & store your info. " +
+                            "You may get messages on public holidays & weekends. Do you agree?"),
                 choices: [
                     new Choice('yes', $('Yes')),
                     new Choice('no', $('No')),
