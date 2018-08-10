@@ -136,7 +136,7 @@ describe('app', function() {
                                         "Why do you want to stop getting messages?",
                                         "1. I'm not a nurse or midwife",
                                         "2. I've taken over another number",
-                                        "3. The messages aren't useful",
+                                        "3. Messages aren't useful",
                                         "4. Other",
                                         "5. Main Menu",
                                     ].join("\n")
@@ -177,8 +177,8 @@ describe('app', function() {
                                 .check.interaction({
                                     state: 'state_opted_out',
                                     reply: 
-                                        "Thank you for your feedback. You'll no longer receive NurseConnect messages." +
-                                        "If you change your mind, please dial *134*550*5#. For more, go to nurseconnect.org."
+                                        "Thank you for your feedback. You'll no longer receive NurseConnect messages. " +
+                                        "If you change your mind, please dial *120*550*5#. For more, go to nurseconnect.org."
                                     })
                                 .check.reply.ends_session()
                                 .check(function(api) {

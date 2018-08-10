@@ -355,7 +355,7 @@ go.app = function() {
             var contact = self.im.user.answers.operator_contact;
             var question = $("Why do you want to stop getting messages?");
             if(contact && self.is_contact_in_group(contact, 'opted-out')){
-                question = $("You previously opted out of receiving messages. Please tell us why:");
+                question = $("You've stopped messages before. Please tell us why:");
             }
 
             return new ChoiceState(name, {
@@ -363,7 +363,7 @@ go.app = function() {
                 choices: [
                     new Choice('job_change', $("I'm not a nurse or midwife")),
                     new Choice('number_owner_change', $("I've taken over another number")),
-                    new Choice('not_useful', $("The messages aren't useful")),
+                    new Choice('not_useful', $("Messages aren't useful")),
                     new Choice('other', $("Other")),
                     new Choice('main_menu', $("Main Menu"))
                 ],
@@ -397,8 +397,10 @@ go.app = function() {
 
         self.states.add('state_opted_out', function(name) {
             return new EndState(name, {
-                text: $("Thank you for your feedback. You'll no longer receive NurseConnect messages." +
-                        "If you change your mind, please dial *134*550*5#. For more, go to nurseconnect.org."),
+                text: $(
+                    "Thank you for your feedback. You'll no longer receive NurseConnect messages. " +
+                    "If you change your mind, please dial {{channel}}. For more, go to nurseconnect.org."
+                    ).context({channel: self.im.config.channel}),
                 next: 'state_start',
              });
         });
