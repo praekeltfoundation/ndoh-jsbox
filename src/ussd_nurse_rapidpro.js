@@ -332,8 +332,8 @@ go.app = function() {
         self.states.add("state_registration_complete", function(name) {
             var channel = self.im.user.get_answer("preferred_channel") === "sms" ? $("SMS") : $("WhatsApp");
             var text = $(
-                "Thank you. You will now start receiving messages to support you in your daily work. " +
-                "You will receive 3 messages each week on {{channel}}.").context({channel: channel});
+                "Thank you. You will now get {{channel}} messages with helpful clinical info & work tips. " +
+                "You will receive 3 messages per week.").context({channel: channel});
             return new EndState(name, {
                 text: text,
                 next: "state_start"
