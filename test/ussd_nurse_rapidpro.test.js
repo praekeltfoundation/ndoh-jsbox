@@ -609,9 +609,30 @@ describe('app', function() {
                             )
                             .check.interaction({
                                 state: 'state_facname',
-                                reply: ['Please confirm your facility: WCL clinic',
-                                        '1. Confirm',
-                                        '2. Not the right facility'
+                                reply: ['Is this your facility: WCL clinic',
+                                        '1. Yes',
+                                        "2. No, it's not the right facility"
+                                ].join('\n')
+                            })
+                            .run();
+                    });
+                    it("should go to state_faccname with correct pronoun", function() {
+                        return tester
+                            .setup(function(api) {
+                                api.http.fixtures.add(
+                                    fixtures_Jembi.exists('123456', 'WCL clinic')
+                                );
+                            })
+                            .setup.user.state('state_faccode')
+                            .setup.user.answer('registrant', 'friend')
+                            .input(
+                                '123456' // state_faccode - enters facility code
+                            )
+                            .check.interaction({
+                                state: 'state_facname',
+                                reply: ['Is this their facility: WCL clinic',
+                                        '1. Yes',
+                                        "2. No, it's not the right facility"
                                 ].join('\n')
                             })
                             .run();

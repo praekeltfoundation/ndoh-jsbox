@@ -420,17 +420,16 @@ go.app = function() {
         });
 
         self.states.add('state_facname', function(name) {
-            var owner = self.im.user.answers.registrant === "operator"
-            ? 'your' : 'their';
+            var pronoun = self.im.user.answers.registrant === "operator" ? 'your' : 'their';
             return new ChoiceState(name, {
-                question: $("Please confirm {{owner}} facility: {{facname}}")
+                question: $("Is this {{pronoun}} facility: {{facname}}")
                     .context({
-                        owner: owner,
+                        pronoun: pronoun,
                         facname: self.im.user.answers.facname
                     }),
                 choices: [
-                    new Choice('state_create_registration', $('Confirm')),
-                    new Choice('state_faccode', $('Not the right facility')),
+                    new Choice('state_create_registration', $('Yes')),
+                    new Choice('state_faccode', $("No, it's not the right facility")),
                 ],
                 next: function(choice) {
                     return choice.value;
