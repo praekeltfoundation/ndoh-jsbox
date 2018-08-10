@@ -326,14 +326,11 @@ go.app = function() {
 
         self.states.add('state_no_registration', function(name) {
             var pronoun = self.im.user.answers.registrant === "operator"
-            ? 'you' : 'they';
-            var owner = self.im.user.answers.registrant === "operator"
-            ? 'your' : 'their';
+            ? 'You have' : 'Your friend has';
             return new MenuState(name, {
-                question: $("If {{pronoun}} don't agree to share info, we can't send NurseConnect messages. " +
-                           "Reply '1' if {{pronoun}} change {{owner}} mind and would like to sign up.")
-                           .context({owner: owner,
-                                     pronoun: pronoun}),
+                question: $("{{pronoun}} chosen not to receive NurseConnect messages on this number and so cannot " +
+                            "complete registration."
+                           ).context({pronoun: pronoun}),
                 choices: [
                     new Choice('state_start', $('Main Menu')),
                 ],

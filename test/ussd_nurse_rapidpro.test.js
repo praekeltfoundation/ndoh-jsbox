@@ -262,8 +262,8 @@ describe('app', function() {
                             )
                             .check.interaction({
                                 state: 'state_no_registration',
-                                reply: ["If you don't agree to share info, we can't send NurseConnect messages. " +
-                                        "Reply '1' if you change your mind and would like to sign up.",
+                                reply: ["You have chosen not to receive NurseConnect messages on this number and so " +
+                                        "cannot complete registration.",
                                         "1. Main Menu"
                                 ].join('\n')
                             })
@@ -343,8 +343,8 @@ describe('app', function() {
                             )
                             .check.interaction({
                                 state: 'state_no_registration',
-                                reply: ["If they don't agree to share info, we can't send NurseConnect messages. " +
-                                        "Reply '1' if they change their mind and would like to sign up.",
+                                reply: ["Your friend has chosen not to receive NurseConnect messages on this number " +
+                                        "and so cannot complete registration.",
                                         "1. Main Menu"
                                 ].join('\n')
                             })
