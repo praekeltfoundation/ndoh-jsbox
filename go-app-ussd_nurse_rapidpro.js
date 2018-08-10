@@ -398,11 +398,9 @@ go.app = function() {
         });
 
         self.states.add('state_faccode', function(name) {
-            var owner = self.im.user.answers.registrant === "operator"
-            ? 'your' : 'their';
+            var pronoun = self.im.user.answers.registrant === "operator" ? 'your' : 'their';
             var error = $("Sorry, we don't recognise that code. Please enter the 6- digit facility code again, e.g. 535970:");
-            var question = $("Please enter {{owner}} 6-digit facility code:")
-            .context({owner: owner});
+            var question = $("Now we need {{pronoun}} 6-digit facility code:").context({pronoun: pronoun});
 
             return new FreeText(name, {
                 question: question,

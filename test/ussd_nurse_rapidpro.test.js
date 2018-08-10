@@ -292,7 +292,7 @@ describe('app', function() {
                             )
                             .check.interaction({
                                 state: 'state_faccode',
-                                reply: 'Please enter your 6-digit facility code:'
+                                reply: 'Now we need your 6-digit facility code:'
                             })
                             .check(function(api) {
                                 utils.check_fixtures_used(api, [0]);
@@ -384,7 +384,7 @@ describe('app', function() {
                       )
                       .check.interaction({
                         state: 'state_faccode',
-                        reply: 'Please enter their 6-digit facility code:'
+                        reply: 'Now we need their 6-digit facility code:'
                       })
                       .check(function(api) {
                         utils.check_fixtures_used(api, [0, 1]);
@@ -480,7 +480,7 @@ describe('app', function() {
                       )
                       .check.interaction({
                           state: 'state_faccode',
-                          reply: 'Please enter your 6-digit facility code:'
+                          reply: 'Now we need your 6-digit facility code:'
                       })
                       .run();
                     });
@@ -528,7 +528,7 @@ describe('app', function() {
                         )
                         .check.interaction({
                             state: 'state_faccode',
-                            reply: 'Please enter their 6-digit facility code:'
+                            reply: 'Now we need their 6-digit facility code:'
                         })
                         .check(function(api) {
                             utils.check_fixtures_used(api, [0, 1]);
