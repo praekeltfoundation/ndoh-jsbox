@@ -68,6 +68,7 @@ describe('app', function() {
                                 "4. More"
                         ].join('\n')
                     })
+                    .check.reply.char_limit(140)
                     .check(function(api) {
                         utils.check_fixtures_used(api, [0]);
                     })
@@ -328,7 +329,9 @@ describe('app', function() {
                             )
                             .check.interaction({
                                 state: 'state_enter_msisdn',
-                                reply: 'Please enter the number you would like to register, e.g. 0726252020:'
+                                reply: 
+                                    'Your friend is one step closer to receiving weekly clinical and motivational ' +
+                                    'messages! Reply with the number they would like to register, e.g. 0726252020:'
                             })
                             .run();
                         });

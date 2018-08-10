@@ -183,8 +183,12 @@ go.app = function() {
         });
 
         self.states.add('state_enter_msisdn', function(name){
-            var error = $("Sorry, the format of the mobile number is not correct. Please enter the mobile number again, e.g. 0726252020");
-            var question = $("Please enter the number you would like to register, e.g. 0726252020:");
+            var error = $(
+                "Sorry, the format of the mobile number is not correct. " +
+                "Please enter the mobile number again, e.g. 0726252020");
+            var question = $(
+                "Your friend is one step closer to receiving weekly clinical and motivational messages! Reply with " +
+                "the number they would like to register, e.g. 0726252020:");
             return new FreeText(name, {
                 question: question,
                 
