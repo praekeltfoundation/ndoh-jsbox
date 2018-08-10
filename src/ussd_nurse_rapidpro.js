@@ -342,7 +342,9 @@ go.app = function() {
 
         self.states.add('state_no_subscription', function(name) {
             return new MenuState(name, {
-                question: $("You have chosen not to receive NurseConnect messages on this number."),
+                question: $(
+                    "We won't send NurseConnect messages to this number. Reply '1' if you change your mind and would " +
+                    "like to sign up."),
                 choices: [
                     new Choice('state_start', $('Main Menu')),
                 ],

@@ -495,9 +495,9 @@ describe('app', function() {
                       .check.interaction({
                           state: 'state_no_subscription',
                           reply: [
-                                  'You have chosen not to receive NurseConnect ' +
-                                  'messages on this number.',
-                                  '1. Main Menu'
+                            "We won't send NurseConnect messages to this number. " +
+                            "Reply '1' if you change your mind and would like to sign up.",
+                            '1. Main Menu'
                           ].join('\n')
                       })
                       .run();
