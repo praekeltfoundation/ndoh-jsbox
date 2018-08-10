@@ -88,15 +88,7 @@ go.app = function() {
                         return self.states.create('state_registered');
                     }
                 }
-                return self.states.create('state_not_registered');
-            });
-        });
-
-        self.states.add('state_not_registered', function(name){
-            return new FreeText(name, {
-                question: $("Welcome to NurseConnect, where you can stay up to date with " +
-                "maternal & child health. Reply '1' to start."),
-                next: 'state_not_registered_menu'
+                return self.states.create('state_not_registered_menu');
             });
         });
 
@@ -126,7 +118,7 @@ go.app = function() {
           // OPTIONS MENU
         self.states.add('state_not_registered_menu', function(name) {
             return new MenuState(name, {
-                question: $('Do you want to:'),
+                question: $('Welcome to NurseConnect: workplace support in the palm of your hand. Do you want to:'),
                 choices: [
                     new Choice('state_weekly_messages', $('Sign up for weekly messages')),
                     new Choice('state_old_number', $('Change your no')),

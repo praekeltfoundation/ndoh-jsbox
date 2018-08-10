@@ -204,7 +204,7 @@ describe('app', function() {
             });
 
             describe('user not registered on nurseconnect', function() {
-                it('should go to state_not_registered', function() {
+                it('should go to state_not_registered_menu', function() {
                     return tester
                     .setup(function(api) {
                         api.http.fixtures.add(
@@ -219,10 +219,12 @@ describe('app', function() {
                         {session_event: 'new'} // dial in
                     )
                     .check.interaction({
-                        state: 'state_not_registered',
+                        state: 'state_not_registered_menu',
                         reply: [
-                            "Welcome to NurseConnect, where you can stay up to date with maternal " +
-                            "& child health. Reply '1' to start."
+                            "Welcome to NurseConnect: workplace support in the palm of your hand. Do you want to:",
+                            "1. Sign up for weekly messages",
+                            "2. Change your no",
+                            "3. Help a friend register"
                         ].join('\n')
                     })
                     .check(function(api) {
@@ -233,24 +235,6 @@ describe('app', function() {
             });
 
             describe('non-subscribed user chooses to start NurseConnect', function(){
-                it("give registration options", function(){
-                  return tester
-                  .setup.user.state('state_not_registered')
-                  .input(
-                      "1" //state_not_registered - start nurseconnect
-                  )
-                  .check.interaction({
-                    state: 'state_not_registered_menu',
-                    reply: [
-                        "Do you want to:",
-                        "1. Sign up for weekly messages",
-                        "2. Change your no",
-                        "3. Help a friend register",
-                      ].join('\n')
-                  })
-                  .run();
-                });
-
                 describe('user wants to sign up for weekly messages', function(){
                     it("should go to state_weekly_messages", function(){
                         return tester
