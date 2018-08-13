@@ -62,13 +62,13 @@ describe('app', function() {
                         state: 'state_registered',
                         reply: [
                                 "Welcome back to NurseConnect. Do you want to:",
-                                "1. Help a friend sign up",
-                                "2. Change your number",
-                                "3. Opt out",
-                                "4. Change facility code",
-                                "5. More"
+                                "1. Help a friend to register",
+                                "2. Update your no.",
+                                "3. Change facility code",
+                                "4. More"
                         ].join('\n')
                     })
+                    .check.reply.char_limit(140)
                     .check(function(api) {
                         utils.check_fixtures_used(api, [0]);
                     })
@@ -80,16 +80,17 @@ describe('app', function() {
                         .setup.user.state('state_registered')
                         .setup.char_limit(140)  // limit first state chars
                         .input(
-                            '5'  // 'state_registered' - more options
+                            '4'  // 'state_registered' - more options
                         )
                         .check.interaction({
                             state: 'state_registered',
                             reply: [
                                     "Welcome back to NurseConnect. Do you want to:",
-                                    "1. Change ID no.",
-                                    "2. Change SANC no.",
-                                    "3. Change Persal no.",
-                                    "4. Back",
+                                    "1. Stop messages",
+                                    "2. Change ID no.",
+                                    "3. Change SANC no.",
+                                    "4. Change Persal no.",
+                                    "5. Back",
                             ].join('\n')
                         })
                         .run();
@@ -100,18 +101,17 @@ describe('app', function() {
                         .setup.user.state('state_registered')
                         .setup.char_limit(140)  // limit first state chars
                         .inputs(
-                              '5'  // 'state_registered' - more options
-                            , '4'  // 'state_registered' - back to first set of options
+                              '4'  // 'state_registered' - more options
+                            , '5'  // 'state_registered' - back to first set of options
                         )
                         .check.interaction({
                             state: 'state_registered',
                             reply: [
                                 "Welcome back to NurseConnect. Do you want to:",
-                                "1. Help a friend sign up",
-                                "2. Change your number",
-                                "3. Opt out",
-                                "4. Change facility code",
-                                "5. More",
+                                "1. Help a friend to register",
+                                "2. Update your no.",
+                                "3. Change facility code",
+                                "4. More"
                             ].join('\n')
                         })
                         .run();
@@ -126,8 +126,9 @@ describe('app', function() {
                         it("should ask optout reason", function() {
                             return tester
                                 .setup.user.state('state_registered')
-                                .input(
-                                    '3'  // state_registered - choose opt out
+                                .inputs(
+                                    '4', // state_registered - more options
+                                    '1'  // state_registered - stop messages
                                 )
                                 .check.interaction({
                                     state: 'state_optout',
@@ -135,7 +136,7 @@ describe('app', function() {
                                         "Why do you want to stop getting messages?",
                                         "1. I'm not a nurse or midwife",
                                         "2. I've taken over another number",
-                                        "3. The messages aren't useful",
+                                        "3. Messages aren't useful",
                                         "4. Other",
                                         "5. Main Menu",
                                     ].join("\n")
@@ -176,8 +177,8 @@ describe('app', function() {
                                 .check.interaction({
                                     state: 'state_opted_out',
                                     reply: 
-                                        "Thank you for your feedback. You'll no longer receive NurseConnect messages." +
-                                        "If you change your mind, please dial *134*550*5#. For more, go to nurseconnect.org."
+                                        "Thank you for your feedback. You'll no longer receive NurseConnect messages. " +
+                                        "If you change your mind, please dial *120*550*5#. For more, go to nurseconnect.org."
                                     })
                                 .check.reply.ends_session()
                                 .check(function(api) {
@@ -204,7 +205,7 @@ describe('app', function() {
             });
 
             describe('user not registered on nurseconnect', function() {
-                it('should go to state_not_registered', function() {
+                it('should go to state_not_registered_menu', function() {
                     return tester
                     .setup(function(api) {
                         api.http.fixtures.add(
@@ -219,12 +220,15 @@ describe('app', function() {
                         {session_event: 'new'} // dial in
                     )
                     .check.interaction({
-                        state: 'state_not_registered',
+                        state: 'state_not_registered_menu',
                         reply: [
-                            "Welcome to NurseConnect, where you can stay up to date with maternal " +
-                            "& child health. Reply '1' to start."
+                            "Welcome to NurseConnect. Do you want to:",
+                            "1. Sign up for messages",
+                            "2. Change your no.",
+                            "3. Help a friend to register"
                         ].join('\n')
                     })
+                    .check.reply.char_limit(140)
                     .check(function(api) {
                         utils.check_fixtures_used(api, [0]);
                     })
@@ -233,24 +237,6 @@ describe('app', function() {
             });
 
             describe('non-subscribed user chooses to start NurseConnect', function(){
-                it("give registration options", function(){
-                  return tester
-                  .setup.user.state('state_not_registered')
-                  .input(
-                      "1" //state_not_registered - start nurseconnect
-                  )
-                  .check.interaction({
-                    state: 'state_not_registered_menu',
-                    reply: [
-                        "Do you want to:",
-                        "1. Sign up for weekly messages",
-                        "2. Change your no",
-                        "3. Help a friend register",
-                      ].join('\n')
-                  })
-                  .run();
-                });
-
                 describe('user wants to sign up for weekly messages', function(){
                     it("should go to state_weekly_messages", function(){
                         return tester
@@ -260,8 +246,8 @@ describe('app', function() {
                         )
                         .check.interaction({
                             state: 'state_weekly_messages',
-                            reply: ["To register, your info needs to be collected, stored and used. " +
-                                    "You might also receive messages on public holidays. Do you agree?",
+                            reply: ["We want to make NurseConnect better, so we need to access & store your info. " +
+                                    "You may get messages on public holidays & weekends. Do you agree?",
                                     "1. Yes",
                                     "2. No"
                             ].join('\n')
@@ -278,8 +264,8 @@ describe('app', function() {
                             )
                             .check.interaction({
                                 state: 'state_no_registration',
-                                reply: ["If you don't agree to share info, we can't send NurseConnect messages. " +
-                                        "Reply '1' if you change your mind and would like to sign up.",
+                                reply: ["You have chosen not to receive NurseConnect messages on this number and so " +
+                                        "cannot complete registration.",
                                         "1. Main Menu"
                                 ].join('\n')
                             })
@@ -307,7 +293,7 @@ describe('app', function() {
                             )
                             .check.interaction({
                                 state: 'state_faccode',
-                                reply: 'Please enter your 6-digit facility code:'
+                                reply: 'Now we need your 6-digit facility code:'
                             })
                             .check(function(api) {
                                 utils.check_fixtures_used(api, [0]);
@@ -326,8 +312,8 @@ describe('app', function() {
                         )
                         .check.interaction({
                             state: 'state_friend_register',
-                            reply: ["To register, your friend's info needs to be collected, stored and used. " +
-                                    "They may receive messages on public holidays. Do they agree?",
+                            reply: ["For your friend to join NurseConnect, we need to access & store their info. " +
+                                    "They may get messages on public holidays & weekends. Do they agree?",
                                     "1. Yes",
                                     "2. No"
                             ].join('\n')
@@ -344,7 +330,9 @@ describe('app', function() {
                             )
                             .check.interaction({
                                 state: 'state_enter_msisdn',
-                                reply: 'Please enter the number you would like to register, e.g. 0726252020:'
+                                reply: 
+                                    'Your friend is one step closer to receiving weekly clinical and motivational ' +
+                                    'messages! Reply with the number they would like to register, e.g. 0726252020:'
                             })
                             .run();
                         });
@@ -359,8 +347,8 @@ describe('app', function() {
                             )
                             .check.interaction({
                                 state: 'state_no_registration',
-                                reply: ["If they don't agree to share info, we can't send NurseConnect messages. " +
-                                        "Reply '1' if they change their mind and would like to sign up.",
+                                reply: ["Your friend has chosen not to receive NurseConnect messages on this number " +
+                                        "and so cannot complete registration.",
                                         "1. Main Menu"
                                 ].join('\n')
                             })
@@ -397,7 +385,7 @@ describe('app', function() {
                       )
                       .check.interaction({
                         state: 'state_faccode',
-                        reply: 'Please enter their 6-digit facility code:'
+                        reply: 'Now we need their 6-digit facility code:'
                       })
                       .check(function(api) {
                         utils.check_fixtures_used(api, [0, 1]);
@@ -432,7 +420,47 @@ describe('app', function() {
                         .check.interaction({
                             state: 'state_has_opted_out',
                             reply: [
-                                "This number previously opted out of NurseConnect messages. Are you sure you want to sign up again?",
+                                "This number previously asked us to stop sending messages. Are you sure you want to " +
+                                "sign up again?",
+                                '1. Yes',
+                                '2. No'
+                            ].join('\n')
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [0, 1]);
+                        })
+                        .run();
+                    });
+
+                    //for msisdn that has opted out
+                    it('should ask to opt in again with correct pronoun', function(){
+                        return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(
+                                fixtures_Pilot().not_exists({
+                                    address: '+27820001004',
+                                    number: '+27000000000',
+                                    wait: false,
+                                })
+                            );
+                            api.http.fixtures.add(
+                                fixtures_RapidPro.get_contact({
+                                    exists: true,
+                                    urn: 'tel:+27820001004',
+                                    groups: ['opted-out']
+                                })
+                            );
+                        })
+                        .setup.user.state('state_enter_msisdn')
+                        .setup.user.answer('registrant', 'friend')
+                        .input(
+                            '0820001004'  // state_enter_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_has_opted_out',
+                            reply: [
+                                "This number previously asked us to stop sending messages. Are they sure they want " +
+                                "to sign up again?",
                                 '1. Yes',
                                 '2. No'
                             ].join('\n')
@@ -453,7 +481,7 @@ describe('app', function() {
                       )
                       .check.interaction({
                           state: 'state_faccode',
-                          reply: 'Please enter your 6-digit facility code:'
+                          reply: 'Now we need your 6-digit facility code:'
                       })
                       .run();
                     });
@@ -468,9 +496,9 @@ describe('app', function() {
                       .check.interaction({
                           state: 'state_no_subscription',
                           reply: [
-                                  'You have chosen not to receive NurseConnect ' +
-                                  'messages on this number.',
-                                  '1. Main Menu'
+                            "We won't send NurseConnect messages to this number. " +
+                            "Reply '1' if you change your mind and would like to sign up.",
+                            '1. Main Menu'
                           ].join('\n')
                       })
                       .run();
@@ -501,7 +529,7 @@ describe('app', function() {
                         )
                         .check.interaction({
                             state: 'state_faccode',
-                            reply: 'Please enter their 6-digit facility code:'
+                            reply: 'Now we need their 6-digit facility code:'
                         })
                         .check(function(api) {
                             utils.check_fixtures_used(api, [0, 1]);
@@ -582,9 +610,30 @@ describe('app', function() {
                             )
                             .check.interaction({
                                 state: 'state_facname',
-                                reply: ['Please confirm your facility: WCL clinic',
-                                        '1. Confirm',
-                                        '2. Not the right facility'
+                                reply: ['Is this your facility: WCL clinic',
+                                        '1. Yes',
+                                        "2. No, it's not the right facility"
+                                ].join('\n')
+                            })
+                            .run();
+                    });
+                    it("should go to state_faccname with correct pronoun", function() {
+                        return tester
+                            .setup(function(api) {
+                                api.http.fixtures.add(
+                                    fixtures_Jembi.exists('123456', 'WCL clinic')
+                                );
+                            })
+                            .setup.user.state('state_faccode')
+                            .setup.user.answer('registrant', 'friend')
+                            .input(
+                                '123456' // state_faccode - enters facility code
+                            )
+                            .check.interaction({
+                                state: 'state_facname',
+                                reply: ['Is this their facility: WCL clinic',
+                                        '1. Yes',
+                                        "2. No, it's not the right facility"
                                 ].join('\n')
                             })
                             .run();
@@ -607,7 +656,7 @@ describe('app', function() {
                     })
                     .setup.user.addr('27820001003')
                     .input(
-                        '4' // state_subscribed - change faccode
+                        '3' // state_subscribed - change faccode
                     )
                     .check.interaction({
                         state: 'state_enter_faccode',
@@ -651,8 +700,8 @@ describe('app', function() {
                     return tester
                     .setup.user.state('state_registered')
                     .inputs(
-                            '5', // state_registered - more options
-                            '2'  // state_registered - change sanc
+                            '4', // state_registered - more options
+                            '3'  // state_registered - change sanc
                         )
                         .check.interaction({
                             state: 'state_enter_sanc',
@@ -888,8 +937,8 @@ describe('app', function() {
                 .start()
                 .check.interaction({
                     state: "state_registration_complete",
-                    reply: "Thank you. You will now start receiving messages to support you in your daily work. " +
-                           "You will receive 3 messages each week on WhatsApp."
+                    reply: "Thank you. You will now get WhatsApp messages with helpful clinical info & work tips. " +
+                           "You will receive 3 messages per week."
                 })
                 .check(function(api) {
                     utils.check_fixtures_used(api, [0, 1, 2, 3, 4]);
@@ -960,8 +1009,8 @@ describe('app', function() {
                 .start()
                 .check.interaction({
                     state: "state_registration_complete",
-                    reply: "Thank you. You will now start receiving messages to support you in your daily work. " +
-                           "You will receive 3 messages each week on SMS."
+                    reply: "Thank you. You will now get SMS messages with helpful clinical info & work tips. " +
+                           "You will receive 3 messages per week."
                 })
                 .check(function(api) {
                     utils.check_fixtures_used(api, [0, 1, 2, 3, 4]);
@@ -987,8 +1036,8 @@ describe('app', function() {
             return tester
             .setup.user.state('state_registered')
             .inputs(
-                '5',  // state_subscribed - more options
-                '3'   // state_subscribed - change persal no
+                '4',  // state_subscribed - more options
+                '4'   // state_subscribed - change persal no
             )
             .check.interaction({
                 state: 'state_change_persal',

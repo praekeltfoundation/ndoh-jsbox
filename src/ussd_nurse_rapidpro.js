@@ -88,15 +88,7 @@ go.app = function() {
                         return self.states.create('state_registered');
                     }
                 }
-                return self.states.create('state_not_registered');
-            });
-        });
-
-        self.states.add('state_not_registered', function(name){
-            return new FreeText(name, {
-                question: $("Welcome to NurseConnect, where you can stay up to date with " +
-                "maternal & child health. Reply '1' to start."),
-                next: 'state_not_registered_menu'
+                return self.states.create('state_not_registered_menu');
             });
         });
 
@@ -104,10 +96,10 @@ go.app = function() {
             return new PaginatedChoiceState(name, {
                 question: $("Welcome back to NurseConnect. Do you want to:"),
                 choices: [
-                    new Choice('state_friend_register', $('Help a friend sign up')),
-                    new Choice('state_change_number', $('Change your number')),
-                    new Choice('state_optout', $('Opt out')),
+                    new Choice('state_friend_register', $('Help a friend to register')),
+                    new Choice('state_change_number', $('Update your no.')),
                     new Choice('state_enter_faccode', $('Change facility code')),
+                    new Choice('state_optout', $('Stop messages')),
                     new Choice('state_change_id_no', $('Change ID no.')),
                     new Choice('state_enter_sanc', $('Change SANC no.')),
                     new Choice('state_change_persal', $('Change Persal no.')),
@@ -126,11 +118,11 @@ go.app = function() {
           // OPTIONS MENU
         self.states.add('state_not_registered_menu', function(name) {
             return new MenuState(name, {
-                question: $('Do you want to:'),
+                question: $('Welcome to NurseConnect. Do you want to:'),
                 choices: [
-                    new Choice('state_weekly_messages', $('Sign up for weekly messages')),
-                    new Choice('state_old_number', $('Change your no')),
-                    new Choice('state_friend_register', $('Help a friend register')),
+                    new Choice('state_weekly_messages', $('Sign up for messages')),
+                    new Choice('state_old_number', $('Change your no.')),
+                    new Choice('state_friend_register', $('Help a friend to register')),
                 ],
             });
         });
@@ -142,8 +134,8 @@ go.app = function() {
             self.im.user.set_answer("registrant_contact", self.im.user.answers.operator_contact);
 
             return new ChoiceState(name, {
-                question: $("To register, your info needs to be collected, stored and used. " +
-                           "You might also receive messages on public holidays. Do you agree?"),
+                question: $("We want to make NurseConnect better, so we need to access & store your info. " +
+                            "You may get messages on public holidays & weekends. Do you agree?"),
                 choices: [
                     new Choice('yes', $('Yes')),
                     new Choice('no', $('No')),
@@ -168,8 +160,8 @@ go.app = function() {
         self.states.add('state_friend_register', function(name) {
             self.im.user.set_answer("registrant", "friend");
             return new MenuState(name, {
-                question: $("To register, your friend's info needs to be collected, stored and used. "+
-                            "They may receive messages on public holidays. Do they agree?"),
+                question: $("For your friend to join NurseConnect, we need to access & store their info. "+
+                            "They may get messages on public holidays & weekends. Do they agree?"),
                 choices: [
                     new Choice('state_enter_msisdn', $('Yes')),
                     new Choice('state_no_registration', $('No')),
@@ -179,14 +171,11 @@ go.app = function() {
 
         self.states.add('state_no_registration', function(name) {
             var pronoun = self.im.user.answers.registrant === "operator"
-            ? 'you' : 'they';
-            var owner = self.im.user.answers.registrant === "operator"
-            ? 'your' : 'their';
+            ? 'You have' : 'Your friend has';
             return new MenuState(name, {
-                question: $("If {{pronoun}} don't agree to share info, we can't send NurseConnect messages. " +
-                           "Reply '1' if {{pronoun}} change {{owner}} mind and would like to sign up.")
-                           .context({owner: owner,
-                                     pronoun: pronoun}),
+                question: $("{{pronoun}} chosen not to receive NurseConnect messages on this number and so cannot " +
+                            "complete registration."
+                           ).context({pronoun: pronoun}),
                 choices: [
                     new Choice('state_start', $('Main Menu')),
                 ],
@@ -194,8 +183,12 @@ go.app = function() {
         });
 
         self.states.add('state_enter_msisdn', function(name){
-            var error = $("Sorry, the format of the mobile number is not correct. Please enter the mobile number again, e.g. 0726252020");
-            var question = $("Please enter the number you would like to register, e.g. 0726252020:");
+            var error = $(
+                "Sorry, the format of the mobile number is not correct. " +
+                "Please enter the mobile number again, e.g. 0726252020");
+            var question = $(
+                "Your friend is one step closer to receiving weekly clinical and motivational messages! Reply with " +
+                "the number they would like to register, e.g. 0726252020:");
             return new FreeText(name, {
                 question: question,
                 
@@ -238,8 +231,10 @@ go.app = function() {
             var pronoun = self.im.user.answers.registrant === "operator"
             ? 'you' : 'they';
             return new MenuState(name, {
-                question: $("This number previously opted out of NurseConnect messages. Are {{pronoun}} sure {{pronoun}} want to sign up again?")
-                .context({pronoun: pronoun}),
+                question: $(
+                    "This number previously asked us to stop sending messages. Are {{pronoun}} sure {{pronoun}} want " +
+                    "to sign up again?"
+                    ).context({pronoun: pronoun}),
                 choices: [
                     new Choice('state_faccode', $('Yes')),
                     new Choice('state_no_subscription', $('No'))
@@ -248,11 +243,9 @@ go.app = function() {
         });
 
         self.states.add('state_faccode', function(name) {
-            var owner = self.im.user.answers.registrant === "operator"
-            ? 'your' : 'their';
+            var pronoun = self.im.user.answers.registrant === "operator" ? 'your' : 'their';
             var error = $("Sorry, we don't recognise that code. Please enter the 6- digit facility code again, e.g. 535970:");
-            var question = $("Please enter {{owner}} 6-digit facility code:")
-            .context({owner: owner});
+            var question = $("Now we need {{pronoun}} 6-digit facility code:").context({pronoun: pronoun});
 
             return new FreeText(name, {
                 question: question,
@@ -272,17 +265,16 @@ go.app = function() {
         });
 
         self.states.add('state_facname', function(name) {
-            var owner = self.im.user.answers.registrant === "operator"
-            ? 'your' : 'their';
+            var pronoun = self.im.user.answers.registrant === "operator" ? 'your' : 'their';
             return new ChoiceState(name, {
-                question: $("Please confirm {{owner}} facility: {{facname}}")
+                question: $("Is this {{pronoun}} facility: {{facname}}")
                     .context({
-                        owner: owner,
+                        pronoun: pronoun,
                         facname: self.im.user.answers.facname
                     }),
                 choices: [
-                    new Choice('state_create_registration', $('Confirm')),
-                    new Choice('state_faccode', $('Not the right facility')),
+                    new Choice('state_create_registration', $('Yes')),
+                    new Choice('state_faccode', $("No, it's not the right facility")),
                 ],
                 next: function(choice) {
                     return choice.value;
@@ -340,8 +332,8 @@ go.app = function() {
         self.states.add("state_registration_complete", function(name) {
             var channel = self.im.user.get_answer("preferred_channel") === "sms" ? $("SMS") : $("WhatsApp");
             var text = $(
-                "Thank you. You will now start receiving messages to support you in your daily work. " +
-                "You will receive 3 messages each week on {{channel}}.").context({channel: channel});
+                "Thank you. You will now get {{channel}} messages with helpful clinical info & work tips. " +
+                "You will receive 3 messages per week.").context({channel: channel});
             return new EndState(name, {
                 text: text,
                 next: "state_start"
@@ -350,7 +342,9 @@ go.app = function() {
 
         self.states.add('state_no_subscription', function(name) {
             return new MenuState(name, {
-                question: $("You have chosen not to receive NurseConnect messages on this number."),
+                question: $(
+                    "We won't send NurseConnect messages to this number. Reply '1' if you change your mind and would " +
+                    "like to sign up."),
                 choices: [
                     new Choice('state_start', $('Main Menu')),
                 ],
@@ -361,7 +355,7 @@ go.app = function() {
             var contact = self.im.user.answers.operator_contact;
             var question = $("Why do you want to stop getting messages?");
             if(contact && self.is_contact_in_group(contact, 'opted-out')){
-                question = $("You previously opted out of receiving messages. Please tell us why:");
+                question = $("You've stopped messages before. Please tell us why:");
             }
 
             return new ChoiceState(name, {
@@ -369,7 +363,7 @@ go.app = function() {
                 choices: [
                     new Choice('job_change', $("I'm not a nurse or midwife")),
                     new Choice('number_owner_change', $("I've taken over another number")),
-                    new Choice('not_useful', $("The messages aren't useful")),
+                    new Choice('not_useful', $("Messages aren't useful")),
                     new Choice('other', $("Other")),
                     new Choice('main_menu', $("Main Menu"))
                 ],
@@ -403,8 +397,10 @@ go.app = function() {
 
         self.states.add('state_opted_out', function(name) {
             return new EndState(name, {
-                text: $("Thank you for your feedback. You'll no longer receive NurseConnect messages." +
-                        "If you change your mind, please dial *134*550*5#. For more, go to nurseconnect.org."),
+                text: $(
+                    "Thank you for your feedback. You'll no longer receive NurseConnect messages. " +
+                    "If you change your mind, please dial {{channel}}. For more, go to nurseconnect.org."
+                    ).context({channel: self.im.config.channel}),
                 next: 'state_start',
              });
         });
