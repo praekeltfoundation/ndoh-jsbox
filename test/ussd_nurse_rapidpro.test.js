@@ -897,7 +897,7 @@ describe('app', function() {
                     );
                     api.http.fixtures.add(
                         fixtures_RapidPro.create_contact({
-                            urns: ["tel:+27820001003"],
+                            urns: ["tel:+27820001003", "whatsapp:27820001003"],
                             fields: {
                                 preferred_channel: "whatsapp",
                                 registered_by: "+27820001002",
@@ -971,7 +971,7 @@ describe('app', function() {
                             }
                         }, {
                             uuid: "contact-uuid",
-                            urns: ["tel:+27820001003"],
+                            urns: ["whatsapp:27820001003", "tel:+27820001003"],
                             fields: {
                                 persal: "persalcode",
                                 sanc: "sanccode"
@@ -1139,7 +1139,7 @@ describe('app', function() {
                 );
                 api.http.fixtures.add(
                     fixtures_RapidPro.update_contact({uuid: 'operator-contact-uuid'}, {
-                        urns: ['tel:+27820001001']
+                        urns: ['tel:+27820001001', 'whatsapp:27820001001']
                     })
                 );
             })
@@ -1175,7 +1175,7 @@ describe('app', function() {
                 );
                 api.http.fixtures.add(
                     fixtures_RapidPro.update_contact({uuid: 'operator-contact-uuid'}, {
-                        urns: ['tel:+27820001001']
+                        urns: ['tel:+27820001001', 'whatsapp:27820001001']
                     })
                 );
             })
@@ -1275,7 +1275,7 @@ describe('app', function() {
                 );
                 api.http.fixtures.add(
                     fixtures_RapidPro.update_contact({uuid: 'existing-contact-uuid'}, {
-                        urns: ['tel:+27820001002']
+                        urns: ['tel:+27820001002', 'whatsapp:27820001002']
                     })
                 );
             })
@@ -1357,7 +1357,7 @@ describe('app', function() {
                 );
                 api.http.fixtures.add(
                     fixtures_RapidPro.update_contact({uuid: 'existing-contact-uuid'}, {
-                        urns: ['tel:+27820001002']
+                        urns: ['tel:+27820001002', 'whatsapp:27820001002']
                     })
                 );
             })
@@ -1400,7 +1400,7 @@ describe('app', function() {
             .setup(function(api) {
                 api.http.fixtures.add(
                     fixtures_RapidPro.update_contact({uuid: 'operator-contact-uuid'}, {
-                        urns: ['tel:+27820001001']
+                        urns: ['tel:+27820001001', 'whatsapp:27820001001']
                     })
                 );
             })
