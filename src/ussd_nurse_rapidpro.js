@@ -304,7 +304,10 @@ go.app = function() {
                         });
                     } else {
                         return self.rapidpro.create_contact({
-                            urns: ["tel:" + self.im.user.get_answer("registrant_msisdn")],
+                            urns: [
+                                "tel:" + self.im.user.get_answer("registrant_msisdn"),
+                                "whatsapp:" + self.im.user.get_answer("registrant_msisdn").replace("+", "")
+                            ],
                             fields: contact_data
                         });
                     }
@@ -728,7 +731,10 @@ go.app = function() {
             }
             new_msisdn = utils.normalize_msisdn(new_msisdn, '27');
             return self.rapidpro.update_contact({uuid: contact.uuid}, {
-                urns: ['tel:' + new_msisdn]
+                urns: [
+                    'tel:' + new_msisdn,
+                    'whatsapp:' + new_msisdn.replace("+", "")
+                ]
             })
             .then(function() {
                 return self.states.create('state_end_detail_changed');

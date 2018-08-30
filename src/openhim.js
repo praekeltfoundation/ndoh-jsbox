@@ -38,15 +38,19 @@ go.OpenHIM = function() {
 
         self.submit_nc_registration = function(contact) {
             var url = self.base_url + "nc/subscription";
+            var msisdn = contact.urns.filter(function(urn) {
+                // Starts with tel:
+                return urn.search('tel:') == 0;
+            })[0].replace("tel:", "");
             return self.http_api.post(url, {data: JSON.stringify({
                 mha: 1,
                 swt: contact.fields.preferred_channel === "whatsapp" ? 7 : 3,
                 type: 7,
                 dmsisdn: contact.fields.registered_by,
-                cmsisdn: contact.urns[0].replace("tel:", ""),
+                cmsisdn: msisdn,
                 rmsisdn: null,
                 faccode: contact.fields.facility_code,
-                id: contact.urns[0].replace("tel:+", "") + "^^^ZAF^TEL",
+                id: msisdn.replace("+", "") + "^^^ZAF^TEL",
                 dob: null,
                 persal: contact.fields.persal || null,
                 sanc: contact.fields.sanc || null,
