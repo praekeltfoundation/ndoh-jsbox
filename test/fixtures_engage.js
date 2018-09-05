@@ -37,6 +37,25 @@ module.exports = function() {
             return make_lookups_fixture(params, false);
         },
 
+        login: function() {
+            return {
+                'repeatable': true,
+                'request': {
+                    'method': 'POST',
+                    'url': 'https://engage.example.org/v1/users/login',
+                },
+                'response': {
+                    'code': 200,
+                    'data': {
+                       "users": [{
+                          "token": "supersecrettoken",
+                          "expires_after": "2018-03-01 15:29:26+00:00"
+                       }]
+                    }
+                }
+            };
+        },
+
         "silly": "javascript commas"
     };
 };
