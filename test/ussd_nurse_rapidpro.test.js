@@ -1,6 +1,6 @@
 var vumigo = require('vumigo_v02');
 var AppTester = vumigo.AppTester;
-var fixtures_Pilot = require('./fixtures_pilot');
+var fixtures_Engage = require('./fixtures_engage');
 var fixtures_RapidPro = require('./fixtures_rapidpro')();
 var fixtures_Jembi = require('./fixtures_jembi_dynamic')();
 var utils = require('seed-jsbox-utils').utils;
@@ -29,10 +29,9 @@ describe('app', function() {
                             password: 'bar',
                             url_json: 'http://test/v2/json/'
                         },
-                        whatsapp: {
-                            api_url: 'http://pilot.example.org/api/v1/lookups/',
+                        engage: {
+                            api_url: 'https://engage.example.org/v1/contacts',
                             api_token: 'api-token',
-                            api_number: '+27000000000',
                         }
                     },
                 });
@@ -144,13 +143,13 @@ describe('app', function() {
                                 .run();
                         });
                     });
-    
+
                     describe("should reach state_opted_out", function() {
                         it("should thank them", function() {
                             return tester
                                 .setup.user.state('state_optout')
                                 .setup.user.answer('operator_contact', {
-                                    uuid: 'operator-contact-uuid', 
+                                    uuid: 'operator-contact-uuid',
                                     groups: []
                                 })
                                 .setup(function(api) {
@@ -176,7 +175,7 @@ describe('app', function() {
                                 )
                                 .check.interaction({
                                     state: 'state_opted_out',
-                                    reply: 
+                                    reply:
                                         "Thank you for your feedback. You'll no longer receive NurseConnect messages. " +
                                         "If you change your mind, please dial *120*550*5#. For more, go to nurseconnect.org."
                                     })
@@ -280,9 +279,8 @@ describe('app', function() {
                             .setup.user.answer('operator_msisdn', '+27820001001')
                             .setup(function(api) {
                                 api.http.fixtures.add(
-                                    fixtures_Pilot().not_exists({
+                                    fixtures_Engage().not_exists({
                                         address: '+27820001001',
-                                        number: '+27000000000',
                                         wait: false,
                                     })
                                 );
@@ -330,7 +328,7 @@ describe('app', function() {
                             )
                             .check.interaction({
                                 state: 'state_enter_msisdn',
-                                reply: 
+                                reply:
                                     'Your friend is one step closer to receiving weekly clinical and motivational ' +
                                     'messages! Reply with the number they would like to register, e.g. 0726252020:'
                             })
@@ -365,9 +363,8 @@ describe('app', function() {
                       return tester
                       .setup(function(api) {
                         api.http.fixtures.add(
-                            fixtures_Pilot().not_exists({
+                            fixtures_Engage().not_exists({
                                 address: '+27820001003',
-                                number: '+27000000000',
                                 wait: false,
                             })
                         );
@@ -398,9 +395,8 @@ describe('app', function() {
                         return tester
                         .setup(function(api) {
                             api.http.fixtures.add(
-                                fixtures_Pilot().not_exists({
+                                fixtures_Engage().not_exists({
                                     address: '+27820001004',
-                                    number: '+27000000000',
                                     wait: false,
                                 })
                             );
@@ -437,9 +433,8 @@ describe('app', function() {
                         return tester
                         .setup(function(api) {
                             api.http.fixtures.add(
-                                fixtures_Pilot().not_exists({
+                                fixtures_Engage().not_exists({
                                     address: '+27820001004',
-                                    number: '+27000000000',
                                     wait: false,
                                 })
                             );
@@ -510,9 +505,8 @@ describe('app', function() {
                         .setup(function(api) {
                             // Background whatsapp check
                             api.http.fixtures.add(
-                                fixtures_Pilot().not_exists({
+                                fixtures_Engage().not_exists({
                                     address: '+27820001003',
-                                    number: '+27000000000',
                                     wait: false,
                                 })
                             );
@@ -639,7 +633,7 @@ describe('app', function() {
                             .run();
                     });
                 });
-            
+
         // Change Details
         describe("changing details", function() {
             describe("change faccode", function() {
@@ -694,7 +688,7 @@ describe('app', function() {
                         .run();
                 });
             });
-        
+
             describe("change sanc", function() {
                 it("should ask for sanc", function() {
                     return tester
@@ -889,9 +883,8 @@ describe('app', function() {
                 .setup.user.answer("state_faccode", "123456")
                 .setup(function(api) {
                     api.http.fixtures.add(
-                        fixtures_Pilot().exists({
+                        fixtures_Engage().exists({
                             address: '+27820001003',
-                            number: '+27000000000',
                             wait: true,
                         })
                     );
@@ -955,9 +948,8 @@ describe('app', function() {
                 .setup.user.answer("state_faccode", "123456")
                 .setup(function(api) {
                     api.http.fixtures.add(
-                        fixtures_Pilot().not_exists({
+                        fixtures_Engage().not_exists({
                             address: '+27820001003',
-                            number: '+27000000000',
                             wait: true,
                         })
                     );
@@ -1117,7 +1109,7 @@ describe('app', function() {
             .input('0820001001')
             .check.interaction({
                 state: 'state_block_active_subs',
-                reply: 
+                reply:
                     "Sorry, the number you are trying to move to already has an active registration. " +
                     "To manage that registration, please redial from that number."
             })
@@ -1147,7 +1139,7 @@ describe('app', function() {
             .input('0820001001')
             .check.interaction({
                 state: 'state_end_detail_changed',
-                reply: 
+                reply:
                     "Thank you. Your NurseConnect details have been changed. " +
                     "To change any other details, please dial *120*550*5# again."
             })
@@ -1183,7 +1175,7 @@ describe('app', function() {
             .input('0820001001')
             .check.interaction({
                 state: 'state_end_detail_changed',
-                reply: 
+                reply:
                     "Thank you. Your NurseConnect details have been changed. " +
                     "To change any other details, please dial *120*550*5# again."
             })
@@ -1282,7 +1274,7 @@ describe('app', function() {
             .input('0820001001')
             .check.interaction({
                 state: 'state_end_detail_changed',
-                reply: 
+                reply:
                     "Thank you. Your NurseConnect details have been changed. " +
                     "To change any other details, please dial *120*550*5# again."
             })
@@ -1366,7 +1358,7 @@ describe('app', function() {
             )
             .check.interaction({
                 state: 'state_end_detail_changed',
-                reply: 
+                reply:
                     "Thank you. Your NurseConnect details have been changed. " +
                     "To change any other details, please dial *120*550*5# again."
             })
@@ -1411,7 +1403,7 @@ describe('app', function() {
             )
             .check.interaction({
                 state: 'state_end_detail_changed',
-                reply: 
+                reply:
                     'Thank you. Your NurseConnect details have been changed. ' +
                     'To change any other details, please dial *120*550*5# again.'
             })
