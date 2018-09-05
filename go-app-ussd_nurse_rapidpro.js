@@ -200,27 +200,30 @@ go.app = function() {
         };
 
        self.is_whatsapp_user = function(msisdn, wait_for_response) {
-            var whatsapp_config = self.im.config.services.whatsapp || {};
-            var api_url = whatsapp_config.api_url;
-            var api_token = whatsapp_config.api_token;
-            var api_number = whatsapp_config.api_number;
+            var engage_config = self.im.config.services.engage || {};
+            var api_url = engage_config.api_url;
+            var api_token = engage_config.api_token;
 
             var params = {
-                number: api_number,
-                msisdns: [msisdn],
-                wait: wait_for_response,
+                "contacts": [msisdn],
+                "blocking": wait_for_response ? "wait" : "no_wait"
             };
 
             return new JsonApi(self.im, {
                 headers: {
-                    'Authorization': ['Token ' + api_token]
+                    'Authorization': ['Bearer ' + api_token]
                 }})
                 .post(api_url, {
                     data: params,
                 })
                 .then(function(response) {
-                    var existing_users = _.filter(response.data, function(obj) { return obj.status === "valid"; });
+                    var existing_users = _.filter(response.data.contacts, function(obj) {return obj.status === "valid";});
                     var is_user = !_.isEmpty(existing_users);
+
+                    if (is_user) {
+                        self.im.user.set_answer("registrant_wa_id", existing_users[0].wa_id);
+                    }
+
                     return self.im
                         .log('WhatsApp recipient ' + is_user + ' for ' + JSON.stringify(params))
                         .then(function() {
@@ -237,7 +240,7 @@ go.app = function() {
 
             return self.rapidpro.get_contact({urn: 'tel:' + msisdn}).then(function(contact) {
 
-                if(contact !== null){ 
+                if(contact !== null){
                     self.im.user.set_answer('operator_contact', contact);
 
                     if (
@@ -350,7 +353,7 @@ go.app = function() {
                 "the number they would like to register, e.g. 0726252020:");
             return new FreeText(name, {
                 question: question,
-                
+
                 check: function(content) {
                     if (!utils.is_valid_msisdn(content, 0, 10)) {
                         return error;
@@ -457,6 +460,7 @@ go.app = function() {
                         registration_date: moment(self.im.config.testing_today).utc().format(),
                     };
                     var contact = self.im.user.get_answer("registrant_contact");
+
                     if(!!contact) {
                         return self.rapidpro.update_contact({uuid: contact.uuid}, {
                             fields: contact_data
@@ -465,7 +469,7 @@ go.app = function() {
                         return self.rapidpro.create_contact({
                             urns: [
                                 "tel:" + self.im.user.get_answer("registrant_msisdn"),
-                                "whatsapp:" + self.im.user.get_answer("registrant_msisdn").replace("+", "")
+                                "whatsapp:" + self.im.user.get_answer("registrant_wa_id")
                             ],
                             fields: contact_data
                         });
@@ -613,7 +617,7 @@ go.app = function() {
                 next: 'state_change_sanc',
             });
         });
-        
+
         self.states.add('state_change_sanc', function(name) {
             return self.rapidpro.update_contact({uuid: self.im.user.get_answer('operator_contact').uuid}, {
                 details: {
@@ -723,7 +727,7 @@ go.app = function() {
                         return error;
                     }
                 },
-                next: 'state_update_identification', 
+                next: 'state_update_identification',
             });
         });
 
@@ -769,7 +773,7 @@ go.app = function() {
                             }
                             else if(
                                 self.is_contact_in_group(contact, 'nurseconnect-sms') ||
-                                self.is_contact_in_group(contact, 'nurseconnect-whatsapp') 
+                                self.is_contact_in_group(contact, 'nurseconnect-whatsapp')
                             ){
                                 return 'state_switch_new_number';
                             }
