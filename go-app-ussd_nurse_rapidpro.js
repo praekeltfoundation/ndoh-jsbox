@@ -199,35 +199,45 @@ go.app = function() {
             }).length !== 0;
         };
 
-       self.is_whatsapp_user = function(msisdn, wait_for_response) {
+        self.is_whatsapp_user = function(msisdn, wait_for_response) {
             var engage_config = self.im.config.services.engage || {};
             var api_url = engage_config.api_url;
-            var api_token = engage_config.api_token;
-
-            var params = {
-                "contacts": [msisdn],
-                "blocking": wait_for_response ? "wait" : "no_wait"
-            };
+            var api_user = engage_config.username;
+            var api_pass = engage_config.password;
 
             return new JsonApi(self.im, {
-                headers: {
-                    'Authorization': ['Bearer ' + api_token]
+                auth: {
+                    'username': api_user,
+                    'password': api_pass
                 }})
-                .post(api_url, {
-                    data: params,
-                })
+                .post(api_url + '/v1/users/login', {})
                 .then(function(response) {
-                    var existing_users = _.filter(response.data.contacts, function(obj) {return obj.status === "valid";});
-                    var is_user = !_.isEmpty(existing_users);
+                    var token = response.data.users[0].token;
+                    var params = {
+                        "contacts": [msisdn],
+                        "blocking": wait_for_response ? "wait" : "no_wait"
+                    };
 
-                    if (is_user) {
-                        self.im.user.set_answer("registrant_wa_id", existing_users[0].wa_id);
-                    }
+                    return new JsonApi(self.im, {
+                        headers: {
+                            'Authorization': ['Bearer ' + token]
+                        }})
+                        .post(api_url + '/v1/contacts', {
+                            data: params,
+                        })
+                        .then(function(response) {
+                            var existing_users = _.filter(response.data.contacts, function(obj) {return obj.status === "valid";});
+                            var is_user = !_.isEmpty(existing_users);
 
-                    return self.im
-                        .log('WhatsApp recipient ' + is_user + ' for ' + JSON.stringify(params))
-                        .then(function() {
-                            return is_user;
+                            if (is_user) {
+                                self.im.user.set_answer("registrant_wa_id", existing_users[0].wa_id);
+                            }
+
+                            return self.im
+                                .log('WhatsApp recipient ' + is_user + ' for ' + JSON.stringify(params))
+                                .then(function() {
+                                    return is_user;
+                                });
                         });
                 });
         };
