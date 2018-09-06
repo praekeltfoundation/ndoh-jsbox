@@ -205,14 +205,14 @@ go.app = function() {
             var api_user = engage_config.username;
             var api_pass = engage_config.password;
 
-            return new HttpApi(self.im, {
+            return new JsonApi(self.im, {
                 auth: {
                     'username': api_user,
                     'password': api_pass
                 }})
                 .post(api_url + '/v1/users/login', {})
                 .then(function(response) {
-                    var token = JSON.parse(response.data).users[0].token;
+                    var token = response.data.users[0].token;
                     var params = {
                         "contacts": [msisdn],
                         "blocking": wait_for_response ? "wait" : "no_wait"
