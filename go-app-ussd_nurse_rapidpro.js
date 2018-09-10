@@ -476,11 +476,18 @@ go.app = function() {
                             fields: contact_data
                         });
                     } else {
+
+                        var urns = ["tel:" + self.im.user.get_answer("registrant_msisdn")];
+
+                        if (is_whatsapp){
+                            urns.push("whatsapp:" + self.im.user.get_answer("registrant_wa_id"));
+                        }
+                        else{
+                            urns.push("whatsapp:" + self.im.user.get_answer("registrant_msisdn").replace("+", ""));
+                        }
+
                         return self.rapidpro.create_contact({
-                            urns: [
-                                "tel:" + self.im.user.get_answer("registrant_msisdn"),
-                                "whatsapp:" + self.im.user.get_answer("registrant_wa_id")
-                            ],
+                            urns: urns,
                             fields: contact_data
                         });
                     }
