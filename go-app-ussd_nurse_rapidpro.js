@@ -482,6 +482,9 @@ go.app = function() {
                         if (is_whatsapp){
                             urns.push("whatsapp:" + self.im.user.get_answer("registrant_wa_id"));
                         }
+                        else{
+                            urns.push("whatsapp:" + self.im.user.get_answer("registrant_msisdn").replace("+", ""));
+                        }
 
                         return self.rapidpro.create_contact({
                             urns: urns,
