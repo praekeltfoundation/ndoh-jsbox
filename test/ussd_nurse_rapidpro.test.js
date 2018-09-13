@@ -930,8 +930,8 @@ describe('app', function() {
                 .start()
                 .check.interaction({
                     state: "state_registration_complete",
-                    reply: "Thank you. You will now get WhatsApp messages with helpful clinical info & work tips. " +
-                           "You will receive 3 messages per week."
+                    reply: "Thanks for signing up! NurseConnect will send you WhatsApp messages with helpful clinical info & work tips. " +
+                           "You'll get 3 messages every week."
                 })
                 .check(function(api) {
                     utils.check_fixtures_used(api, [0, 1, 2, 3, 4]);
@@ -992,8 +992,8 @@ describe('app', function() {
                 .start()
                 .check.interaction({
                     state: "state_registration_complete",
-                    reply: "Thank you. You will now get SMS messages with helpful clinical info & work tips. " +
-                           "You will receive 3 messages per week."
+                    reply: "Thanks for signing up! NurseConnect will send you SMS messages with helpful clinical info & work tips. " +
+                           "You'll get 3 messages every week."
                 })
                 .check(function(api) {
                     utils.check_fixtures_used(api, [0, 1, 2, 3, 4]);
@@ -1063,8 +1063,8 @@ describe('app', function() {
                 .start()
                 .check.interaction({
                     state: "state_registration_complete",
-                    reply: "Thank you. You will now get SMS messages with helpful clinical info & work tips. " +
-                           "You will receive 3 messages per week."
+                    reply: "Thanks for signing up! NurseConnect will send you SMS messages with helpful clinical info & work tips. " +
+                           "You'll get 3 messages every week."
                 })
                 .check(function(api) {
                     utils.check_fixtures_used(api, [0, 1, 2, 3, 4]);
