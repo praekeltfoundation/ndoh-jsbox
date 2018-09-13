@@ -31,8 +31,7 @@ describe('app', function() {
                         },
                         engage: {
                             api_url: 'https://engage.example.org',
-                            username: 'ncengage',
-                            password: 'somethingsecret'
+                            token: 'somethingsecret'
                         }
                     },
                 });
@@ -280,9 +279,6 @@ describe('app', function() {
                             .setup.user.answer('operator_msisdn', '+27820001001')
                             .setup(function(api) {
                                 api.http.fixtures.add(
-                                    fixtures_Engage.login()
-                                );
-                                api.http.fixtures.add(
                                     fixtures_Engage.not_exists({
                                         address: '+27820001001',
                                         wait: false,
@@ -298,7 +294,7 @@ describe('app', function() {
                                 reply: 'Now we need your 6-digit facility code:'
                             })
                             .check(function(api) {
-                                utils.check_fixtures_used(api, [0, 1]);
+                                utils.check_fixtures_used(api, [0]);
                             })
                             .run();
                         });
@@ -367,9 +363,6 @@ describe('app', function() {
                       return tester
                       .setup(function(api) {
                         api.http.fixtures.add(
-                          fixtures_Engage.login()
-                        );
-                        api.http.fixtures.add(
                             fixtures_Engage.not_exists({
                                 address: '+27820001003',
                                 wait: false,
@@ -392,7 +385,7 @@ describe('app', function() {
                         reply: 'Now we need their 6-digit facility code:'
                       })
                       .check(function(api) {
-                        utils.check_fixtures_used(api, [0, 1, 2]);
+                        utils.check_fixtures_used(api, [0, 1]);
                       })
                       .run();
                   });
@@ -401,9 +394,6 @@ describe('app', function() {
                     it('should ask to opt in again', function(){
                         return tester
                         .setup(function(api) {
-                            api.http.fixtures.add(
-                                fixtures_Engage.login()
-                            );
                             api.http.fixtures.add(
                                 fixtures_Engage.not_exists({
                                     address: '+27820001004',
@@ -433,7 +423,7 @@ describe('app', function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [0, 1, 2]);
+                            utils.check_fixtures_used(api, [0, 1]);
                         })
                         .run();
                     });
@@ -442,9 +432,6 @@ describe('app', function() {
                     it('should ask to opt in again with correct pronoun', function(){
                         return tester
                         .setup(function(api) {
-                            api.http.fixtures.add(
-                                fixtures_Engage.login()
-                            );
                             api.http.fixtures.add(
                                 fixtures_Engage.not_exists({
                                     address: '+27820001004',
@@ -474,7 +461,7 @@ describe('app', function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [0, 1, 2]);
+                            utils.check_fixtures_used(api, [0, 1]);
                         })
                         .run();
                     });
@@ -518,9 +505,6 @@ describe('app', function() {
                         .setup(function(api) {
                             // Background whatsapp check
                             api.http.fixtures.add(
-                                fixtures_Engage.login()
-                            );
-                            api.http.fixtures.add(
                                 fixtures_Engage.not_exists({
                                     address: '+27820001003',
                                     wait: false,
@@ -542,7 +526,7 @@ describe('app', function() {
                             reply: 'Now we need their 6-digit facility code:'
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [0, 1, 2]);
+                            utils.check_fixtures_used(api, [0, 1]);
                         })
                         .run();
                     });
@@ -899,9 +883,6 @@ describe('app', function() {
                 .setup.user.answer("state_faccode", "123456")
                 .setup(function(api) {
                     api.http.fixtures.add(
-                        fixtures_Engage.login()
-                    );
-                    api.http.fixtures.add(
                         fixtures_Engage.exists({
                             address: '+27820001003',
                             wait: true,
@@ -953,7 +934,7 @@ describe('app', function() {
                            "You will receive 3 messages per week."
                 })
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [0, 1, 2, 3, 4, 5]);
+                    utils.check_fixtures_used(api, [0, 1, 2, 3, 4]);
                 })
                 .run();
         });
@@ -963,9 +944,6 @@ describe('app', function() {
                 .setup.user.answer("operator_msisdn", "+27820001002")
                 .setup.user.answer("state_faccode", "123456")
                 .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_Engage.login()
-                    );
                     api.http.fixtures.add(
                         fixtures_Engage.not_exists({
                             address: '+27820001003',
@@ -1018,7 +996,7 @@ describe('app', function() {
                            "You will receive 3 messages per week."
                 })
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [0, 1, 2, 3, 4, 5]);
+                    utils.check_fixtures_used(api, [0, 1, 2, 3, 4]);
                 })
                 .run();
         });
@@ -1031,9 +1009,6 @@ describe('app', function() {
                 .setup.user.answer("operator_msisdn", "+27820001002")
                 .setup.user.answer("state_faccode", "123456")
                 .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_Engage.login()
-                    );
                     api.http.fixtures.add(
                         fixtures_Engage.not_exists({
                             address: '+27820001003',
@@ -1092,7 +1067,7 @@ describe('app', function() {
                            "You will receive 3 messages per week."
                 })
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [0, 1, 2, 3, 4, 5]);
+                    utils.check_fixtures_used(api, [0, 1, 2, 3, 4]);
                 })
                 .run();
         });
