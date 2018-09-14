@@ -820,11 +820,11 @@ go.app = function() {
                     new Choice('ven_ZA', 'Tshivenda'),
                     new Choice('nbl_ZA', 'isiNdebele'),
                 ],
-                next: "state_save_subscription"
+                next: "state_set_registration_type"
             });
         });
 
-        self.add("state_check_whatsapp_registration", function(name){
+        self.add("state_set_registration_type", function(name){
             var registration_types = {
                 'sms': 'SMS',
                 'whatsapp': 'WhatsApp',
@@ -834,11 +834,11 @@ go.app = function() {
                 self.im.user.set_answer('registered_on_whatsapp', is_whatsapp_user);
 
                 if (is_whatsapp_user) {
-                    self.im.user.answers.state_check_whatsapp_registration = registration_types.whatsapp;
+                    self.im.user.answers.state_set_registration_type = registration_types.whatsapp;
                     return self.states.create('state_save_subscription');
                 }
                 else{
-                    self.im.user.answers.state_check_whatsapp_registration = registration_types.sms;
+                    self.im.user.answers.state_set_registration_type = registration_types.sms;
                     return self.states.create('state_save_subscription');
                 }  
             });
