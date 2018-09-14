@@ -258,6 +258,36 @@ go.app = function() {
             );
         };
 
+        self.is_whatsapp_user = function(msisdn, wait_for_response) {
+            var whatsapp_config = self.im.config.whatsapp || {};
+            var api_url = whatsapp_config.api_url;
+            var api_token = whatsapp_config.api_token;
+            var api_number = whatsapp_config.api_number;
+
+            var params = {
+                number: api_number,
+                msisdns: [msisdn],
+                wait: wait_for_response,
+            };
+
+            return new JsonApi(self.im, {
+                headers: {
+                    'Authorization': ['Token ' + api_token]
+                }})
+                .post(api_url, {
+                    data: params,
+                })
+                .then(function(response) {
+                    var existing_users = _.filter(response.data, function(obj) { return obj.status === "valid"; });
+                    var is_user = !_.isEmpty(existing_users);
+                    return self.im
+                        .log('WhatsApp recipient ' + is_user + ' for ' + JSON.stringify(params))
+                        .then(function() {
+                            return is_user;
+                        });
+                });
+        };
+
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
                 if (!interrupt || !utils.timed_out(self.im))
