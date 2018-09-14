@@ -246,6 +246,18 @@ go.app = function() {
             );
         };
 
+        self.send_whatsapp_registration_thanks = function() {
+            return ms.
+            create_outbound_message(
+                self.im.user.answers.registrant.id,
+                self.im.user.answers.registrant_msisdn,
+                self.im.user.i18n($(
+                    "Congrats on your pregnancy! MomConnect will send helpful WhatsApp msgs. " +
+                    "To stop dial *134*550*1# (Free). To get msgs via SMS, reply 'SMS' (std rates apply)."
+                ))
+            );
+        };
+
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
                 if (!interrupt || !utils.timed_out(self.im))
