@@ -234,14 +234,14 @@ go.app = function() {
             return registration_info;
         };
 
-        self.send_registration_thanks = function() {
+        self.send_sms_registration_thanks = function() {
             return ms.
             create_outbound_message(
                 self.im.user.answers.registrant.id,
                 self.im.user.answers.registrant_msisdn,
                 self.im.user.i18n($(
-                    "Congratulations on your pregnancy. You will now get free messages about MomConnect. " +
-                    "You can register for the full set of FREE helpful messages at a clinic."
+                    "Congratulations on your pregnancy! MomConnect will send helpful SMS msgs. " +
+                    "To stop dial *134*550*1#, for more dial *134*550*7# (Free)."
                 ))
             );
         };
