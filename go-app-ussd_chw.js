@@ -384,16 +384,58 @@ go.app = function() {
             return registration_info;
         };
 
-        self.send_registration_thanks = function() {
+        self.send_sms_registration_thanks = function() {
             return ms.
             create_outbound_message(
                 self.im.user.answers.registrant.id,
                 self.im.user.answers.registrant_msisdn,
                 self.im.user.i18n($(
-                    "Congratulations on your pregnancy. You will now get free messages about MomConnect. " +
-                    "You can register for the full set of FREE helpful messages at a clinic."
+                    "Congratulations on your pregnancy! MomConnect will send helpful SMS msgs. " +
+                    "To stop dial *134*550*1#, for more dial *134*550*7# (Free)."
                 ))
             );
+        };
+
+        self.send_whatsapp_registration_thanks = function() {
+            return ms.
+            create_outbound_message(
+                self.im.user.answers.registrant.id,
+                self.im.user.answers.registrant_msisdn,
+                self.im.user.i18n($(
+                    "Congrats on your pregnancy! MomConnect will send helpful WhatsApp msgs. " +
+                    "To stop dial *134*550*1# (Free). To get msgs via SMS, reply 'SMS' (std rates apply)."
+                ))
+            );
+        };
+
+        self.is_whatsapp_user = function(msisdn, wait_for_response) {
+            var whatsapp_config = self.im.config.whatsapp || {};
+            var api_url = whatsapp_config.api_url;
+            var api_token = whatsapp_config.api_token;
+            var api_number = whatsapp_config.api_number;
+
+            var params = {
+                number: api_number,
+                msisdns: [msisdn],
+                wait: wait_for_response,
+            };
+
+            return new JsonApi(self.im, {
+                headers: {
+                    'Authorization': ['Token ' + api_token]
+                }})
+                .post(api_url, {
+                    data: params,
+                })
+                .then(function(response) {
+                    var existing_users = _.filter(response.data, function(obj) { return obj.status === "valid"; });
+                    var is_user = !_.isEmpty(existing_users);
+                    return self.im
+                        .log('WhatsApp recipient ' + is_user + ' for ' + JSON.stringify(params))
+                        .then(function() {
+                            return is_user;
+                        });
+                });
         };
 
         self.add = function(name, creator) {
