@@ -674,6 +674,26 @@ go.app = function() {
             });
         });
 
+        self.add("state_check_whatsapp_registration", function(name){
+            var registration_types = {
+                'sms': 'SMS',
+                'whatsapp': 'WhatsApp',
+            };
+    
+            return self.is_whatsapp_user(self.im.user.answers.registrant_msisdn, true).then(function(is_whatsapp_user) {
+                self.im.user.set_answer('registered_on_whatsapp', is_whatsapp_user);
+
+                if (is_whatsapp_user) {
+                    self.im.user.answers.state_check_whatsapp_registration = registration_types.whatsapp;
+                    return self.states.create('state_save_subscription');
+                }
+                else{
+                    self.im.user.answers.state_check_whatsapp_registration = registration_types.sms;
+                    return self.states.create('state_save_subscription');
+                }  
+            });
+        });
+
         self.add("state_save_subscription", function(name) {  // interstitial state
             var registration_info = self.compile_registration_info();
             var registrant_info = self.compile_registrant_info();
