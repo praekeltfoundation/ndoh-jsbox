@@ -1077,11 +1077,23 @@ module.exports = function() {
             'response': {}
         },
 
-        // 47:
+        // 47: register cb245673-aa41-4302-ac47-00000001004 for WhatsApp
         {
             'request': {
-                'method': 'GET',
-                'url': 'http://',
+                'method': 'POST',
+                'url': 'http://hub/api/v1/registration/',
+                'data': {
+                    "reg_type": "WhatsApp",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001004",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001004",
+                        "msisdn_registrant":"+27820001001",
+                        "msisdn_device": "+27820001001",
+                        "faccode": "123456",
+                        "language": "eng_ZA",
+                        "registered_on_whatsapp": true
+                    },
+                },
             },
             'response': {}
         },
