@@ -68,7 +68,7 @@ describe("app", function() {
                     fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
                     fixtures_ServiceRating().forEach(api.http.fixtures.add); // 150 - 169
                     fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
-                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 ->
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 - 248
                     api.http.fixtures.add( // 250
                         fixtures_Pilot().not_exists({
                             address: '+27820001001',
