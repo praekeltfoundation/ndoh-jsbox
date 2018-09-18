@@ -8,6 +8,7 @@ var fixtures_MessageSender = require('./fixtures_message_sender');
 var fixtures_ServiceRating = require('./fixtures_service_rating');
 var fixtures_Hub = require('./fixtures_hub');
 var fixtures_Jembi = require('./fixtures_jembi');
+var fixtures_Pilot = require('./fixtures_pilot');
 var utils = require('seed-jsbox-utils').utils;
 
 describe("app", function() {
@@ -51,6 +52,11 @@ describe("app", function() {
                             token: 'test StageBasedMessaging'
                         }
                     },
+                    whatsapp: {
+                        api_url: 'http://pilot.example.org/api/v1/lookups/',
+                        api_token: 'api-token',
+                        api_number: '+27000000000',
+                    },
                 })
                 .setup(function(api) {
                     api.metrics.stores = {'test_metric_store': {}};
@@ -63,6 +69,48 @@ describe("app", function() {
                     fixtures_ServiceRating().forEach(api.http.fixtures.add); // 150 - 169
                     fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 ->
+                    api.http.fixtures.add( // 250
+                        fixtures_Pilot().not_exists({
+                            address: '+27820001001',
+                            number: '+27000000000',
+                            wait: true,
+                        })
+                    );
+                    api.http.fixtures.add( // 251
+                        fixtures_Pilot().not_exists({
+                            address: '+27820001002',
+                            number: '+27000000000',
+                            wait: true,
+                        })
+                    );
+                    api.http.fixtures.add( // 252
+                        fixtures_Pilot().exists({
+                            address: '+27820001004',
+                            number: '+27000000000',
+                            wait: true,
+                        })
+                    );
+                    api.http.fixtures.add( // 253
+                        fixtures_Pilot().exists({
+                            address: '+27820001001',
+                            number: '+27000000000',
+                            wait: false,
+                        })
+                    );
+                    api.http.fixtures.add( // 254
+                        fixtures_Pilot().exists({
+                            address: '+27820001002',
+                            number: '+27000000000',
+                            wait: false,
+                        })
+                    );
+                    api.http.fixtures.add( // 255
+                        fixtures_Pilot().exists({
+                            address: '+27820001004',
+                            number: '+27000000000',
+                            wait: false,
+                        })
+                    );
                 });
         });
 
@@ -180,6 +228,7 @@ describe("app", function() {
                             , '1'  // state_id_type - sa id
                             , '5101015009088'  // state_sa_id
                             , '4'  // state_language - english
+                            , '1' // state_set_registration_type
                         )
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
@@ -206,6 +255,7 @@ describe("app", function() {
                         , '1'  // state_passport_origin - Zimbabwe
                         , '12345'  // state_passport_no
                         , '4'  // state_language - english
+                        , '1' // state_set_registration_type
                     )
                     .check.interaction({
                         state: 'state_end_success',
