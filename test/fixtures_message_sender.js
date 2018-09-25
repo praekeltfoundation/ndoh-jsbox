@@ -979,22 +979,42 @@ module.exports = function() {
             'response': {}
         },
 
-        // 143:
+        // 143: create outbound message for cb245673-aa41-4302-ac47-00000001001 SMS channel
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820001001",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001001",
+                    "to_addr": "+27820001001",
+                    "content": "Welcome! MomConnect will send msgs on SMS for 3 wks. Visit a clinic for more msgs. To stop dial *134*550*1#.",
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {}
+            }
         },
 
-        // 144:
+        // 144: create outbound message for cb245673-aa41-4302-ac47-00000001001 WhatsApp channel
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820001001",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001001",
+                    "to_addr": "+27820001001",
+                    "content": 'Welcome! MomConnect sends msgs on WhatsApp for 3 wks. Visit a clinic for more msgs. To stop dial *134*550*1#. To get msgs on SMS, reply "SMS" (std rates apply)',
+                    "metadata": {}
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {}
+            }
         },
 
         // 145:
