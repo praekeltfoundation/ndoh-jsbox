@@ -69,42 +69,42 @@ describe("app", function() {
                     fixtures_ServiceRating().forEach(api.http.fixtures.add); // 150 - 169
                     fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 - 248
-                    api.http.fixtures.add( // 250
+                    api.http.fixtures.add( // 252
                         fixtures_Pilot().not_exists({
                             address: '+27820001001',
                             number: '+27000000000',
                             wait: true,
                         })
                     );
-                    api.http.fixtures.add( // 251
+                    api.http.fixtures.add( // 253
                         fixtures_Pilot().not_exists({
                             address: '+27820001002',
                             number: '+27000000000',
                             wait: true,
                         })
                     );
-                    api.http.fixtures.add( // 252
+                    api.http.fixtures.add( // 254
                         fixtures_Pilot().exists({
                             address: '+27820001004',
                             number: '+27000000000',
                             wait: true,
                         })
                     );
-                    api.http.fixtures.add( // 253
+                    api.http.fixtures.add( // 255
                         fixtures_Pilot().exists({
                             address: '+27820001001',
                             number: '+27000000000',
                             wait: false,
                         })
                     );
-                    api.http.fixtures.add( // 254
+                    api.http.fixtures.add( // 256
                         fixtures_Pilot().exists({
                             address: '+27820001002',
                             number: '+27000000000',
                             wait: false,
                         })
                     );
-                    api.http.fixtures.add( // 255
+                    api.http.fixtures.add( // 257
                         fixtures_Pilot().exists({
                             address: '+27820001004',
                             number: '+27000000000',
@@ -228,7 +228,6 @@ describe("app", function() {
                             , '1'  // state_id_type - sa id
                             , '5101015009088'  // state_sa_id
                             , '4'  // state_language - english
-                            , '1' // state_set_registration_type
                         )
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
@@ -255,21 +254,18 @@ describe("app", function() {
                         , '1'  // state_passport_origin - Zimbabwe
                         , '12345'  // state_passport_no
                         , '4'  // state_language - english
-                        , '1' // state_set_registration_type
                     )
                     .check.interaction({
                         state: 'state_end_success',
-                        reply: ('Thank you, registration is complete. The ' +
-                        'pregnant woman will now receive messages to ' +
-                        'encourage her to register at her nearest ' +
-                        'clinic.')
+                        reply: ("You're done! This number +27820001001 will get helpful messages from MomConnect on SMS. " +
+                                "For the full set of FREE messages, register at a clinic")
                     })
                     .check(function(api) {
                         var metrics = api.metrics.stores.test_metric_store;
                         assert.deepEqual(metrics['test.ussd_chw.avg.sessions_to_register'].values, [2]);
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [45, 50, 51, 54, 117, 141, 180, 181, 183, 248]);
+                        utils.check_fixtures_used(api, [45, 50, 51, 54, 141, 143, 180, 181, 183, 248, 252]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -516,7 +512,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [22, 50, 117, 124, 180, 183, 206]);
+                    utils.check_fixtures_used(api, [22, 50, 124, 143, 180, 183, 206, 252]);
                 })
                 .run();
             });
@@ -1496,10 +1492,8 @@ describe("app", function() {
                         )
                         .check.interaction({
                             state: 'state_end_success',
-                            reply: ('Thank you, registration is complete. The ' +
-                            'pregnant woman will now receive messages to ' +
-                            'encourage her to register at her nearest ' +
-                            'clinic.')
+                            reply: ("You're done! This number +27820001001 will get helpful messages from MomConnect on SMS. " +
+                                    "For the full set of FREE messages, register at a clinic")
                         })
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
@@ -1519,7 +1513,7 @@ describe("app", function() {
                             assert.deepEqual(metrics['test.ussd_chw.avg.sessions_to_register'].values, [1]);
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [44, 50, 52, 54, 117, 180, 182, 183, 247]);
+                            utils.check_fixtures_used(api, [44, 50, 52, 54, 143, 180, 182, 183, 247, 252]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -1540,10 +1534,8 @@ describe("app", function() {
                         )
                         .check.interaction({
                             state: 'state_end_success',
-                            reply: ('Thank you, registration is complete. The ' +
-                            'pregnant woman will now receive messages to ' +
-                            'encourage her to register at her nearest ' +
-                            'clinic.')
+                            reply: ("You're done! This number +27820001001 will get helpful messages from MomConnect on SMS. " +
+                            "For the full set of FREE messages, register at a clinic")
                         })
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
@@ -1561,7 +1553,7 @@ describe("app", function() {
                             assert.deepEqual(metrics['test.ussd_chw.avg.sessions_to_register'].values, [1]);
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [22, 50, 117, 180, 183, 201]);
+                            utils.check_fixtures_used(api, [22, 50, 143, 180, 183, 201, 252]);
                         })
                         .check.reply.ends_session()
                         .run();
