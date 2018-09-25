@@ -240,8 +240,8 @@ go.app = function() {
                 self.im.user.answers.registrant.id,
                 self.im.user.answers.registrant_msisdn,
                 self.im.user.i18n($(
-                    "Congratulations on your pregnancy! MomConnect will send helpful SMS msgs. " +
-                    "To stop dial *134*550*1#, for more dial *134*550*7# (Free)."
+                    "Welcome! MomConnect will send msgs on SMS for 3 wks. Visit a clinic " +
+                    "for more msgs. To stop dial *134*550*1#."
                 ))
             );
         };
@@ -252,8 +252,8 @@ go.app = function() {
                 self.im.user.answers.registrant.id,
                 self.im.user.answers.registrant_msisdn,
                 self.im.user.i18n($(
-                    "Congrats on your pregnancy! MomConnect will send helpful WhatsApp msgs. " +
-                    "To stop dial *134*550*1# (Free). To get msgs via SMS, reply 'SMS' (std rates apply)."
+                    'Welcome! MomConnect sends msgs on WhatsApp for 3 wks. Visit a clinic for more ' +
+                    'msgs. To stop dial *134*550*1#. To get msgs on SMS, reply "SMS" (std rates apply)'
                 ))
             );
         };
@@ -675,20 +675,20 @@ go.app = function() {
         });
 
         self.add("state_set_registration_type", function(name){
-            var registration_types = {
+            /*var registration_types = {
                 'sms': 'SMS',
                 'whatsapp': 'WhatsApp',
-            };
+            };*/
     
             return self.is_whatsapp_user(self.im.user.answers.registrant_msisdn, true).then(function(is_whatsapp_user) {
                 self.im.user.set_answer('registered_on_whatsapp', is_whatsapp_user);
 
                 if (is_whatsapp_user) {
-                    self.im.user.answers.state_set_registration_type = registration_types.whatsapp;
+                    self.im.user.set_answer('registration_type', 'WhatsApp');
                     return self.states.create('state_save_subscription');
                 }
                 else{
-                    self.im.user.answers.state_set_registration_type = registration_types.sms;
+                    self.im.user.set_answer('registration_type', 'SMS');
                     return self.states.create('state_save_subscription');
                 }  
             });
@@ -697,22 +697,38 @@ go.app = function() {
         self.add("state_save_subscription", function(name) {  // interstitial state
             var registration_info = self.compile_registration_info();
             var registrant_info = self.compile_registrant_info();
-
-            return Q.all([
-                is.update_identity(self.im.user.answers.registrant.id, registrant_info),
-                hub.create_registration(registration_info),
-                self.send_registration_thanks()
-            ])
-            .then(function() {
-                return self.states.create("state_end_success");
-            });
+            if (self.im.user.answers.registration_type == 'WhatsApp'){
+                return Q.all([
+                    is.update_identity(self.im.user.answers.registrant.id, registrant_info),
+                    hub.create_registration(registration_info),
+                    self.send_whatsapp_registration_thanks()
+                ])
+                .then(function() {
+                    return self.states.create("state_end_success");
+                });
+            }
+            else{
+                return Q.all([
+                    is.update_identity(self.im.user.answers.registrant.id, registrant_info),
+                    hub.create_registration(registration_info),
+                    self.send_sms_registration_thanks()
+                ])
+                .then(function() {
+                    return self.states.create("state_end_success");
+                });
+            }
+            
         });
 
         self.add("state_end_success", function(name) {
+            var messages = self.im.user.answers.registration_type === "WhatsApp" ? 'messages' : 'FREE messages';
+        
             return new EndState(name, {
-                text: $("Thank you, registration is complete. The pregnant " +
-                        "woman will now receive messages to encourage her " +
-                        "to register at her nearest clinic."),
+                text: $("You're done! This number {{MSISDN}} will get helpful messages from MomConnect on {{channel}}. For the full set of {{messages}}, register at a clinic")
+                .context({MSISDN: self.im.user.answers.registrant_msisdn,
+                         channel: self.im.user.answers.registration_type,
+                         messages: messages
+                }),
                 next: "state_start"
             });
         });
