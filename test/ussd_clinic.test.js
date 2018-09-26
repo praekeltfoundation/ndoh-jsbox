@@ -4,15 +4,19 @@ var assert = require('assert');
 var AppTester = vumigo.AppTester;
 
 var fixtures_IdentityStore = require('./fixtures_identity_store');
+var fixtures_IdentityStoreDynamic = require('./fixtures_identity_store_dynamic')();
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
+var fixtures_StageBasedMessagingDynamic = require('./fixtures_stage_based_messaging_dynamic')();
 var fixtures_MessageSender = require('./fixtures_message_sender');
+var fixtures_MessageSenderDynamic = require('./fixtures_message_sender_dynamic')();
 var fixtures_Hub = require('./fixtures_hub');
+var fixtures_HubDynamic = require('./fixtures_hub_dynamic')();
 var fixtures_Jembi = require('./fixtures_jembi');
+var fixtures_JembiDynamic = require('./fixtures_jembi_dynamic')();
 var fixtures_ServiceRating = require('./fixtures_service_rating');
 var fixtures_Pilot = require('./fixtures_pilot');
 var test_utils = require('./test_utils');
 
-var utils = require('seed-jsbox-utils').utils;
 
 describe("app", function() {
     describe("for ussd_clinic use", function() {
@@ -25,7 +29,7 @@ describe("app", function() {
             tester = new AppTester(app);
 
             tester
-                .setup.char_limit(183)
+                .setup.char_limit(182)
                 .setup.config.app({
                     name: 'ussd_clinic',
                     env: 'test',
@@ -63,21 +67,22 @@ describe("app", function() {
                 })
                 .setup(function(api) {
                     api.metrics.stores = {'test_metric_store': {}};
-                })
-                .setup(function(api) {
-                    // add fixtures for services used
-                    fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
-                    fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
-                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
-                    fixtures_ServiceRating().forEach(api.http.fixtures.add); // 150 - 169
-                    fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
-                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 ->
                 });
         });
 
         describe('using the session length helper', function () {
             it('should publish metrics', function () {
                 return tester
+                    .setup(function(api) {
+                        api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                            'msisdn': '+27820001001'
+                        }));
+                        api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
+                        api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                            to_identity: "cb245673-aa41-4302-ac47-00000001002",
+                            content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
+                        }));
+                    })
                     .setup(function(api, im) {
                         api.kv.store['session_length_helper.' + api.config.app.name + '.foodacom.sentinel'] = '2000-12-12';
                         api.kv.store['session_length_helper.' + api.config.app.name + '.foodacom'] = 42;
@@ -123,10 +128,14 @@ describe("app", function() {
             describe("state_start", function() {
                 it("entering once", function() {
                     return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                                'msisdn': '+27820001001'
+                            }));
+                            api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
+                        })
                         .setup.user.addr('27820001001')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                        )
+                        .input.session_event('new')
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
                             assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete'], undefined);
@@ -137,6 +146,16 @@ describe("app", function() {
 
                 it("entering, timing out, redialing (session:close detected), restart", function() {
                     return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                                'msisdn': '+27820001001'
+                            }));
+                            api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
+                            api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                                to_identity: "cb245673-aa41-4302-ac47-00000001002",
+                                content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
+                            }));
+                        })
                         .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
@@ -160,6 +179,12 @@ describe("app", function() {
 
                 it("entering once, timing out, redialing (session:close not detected)", function() {
                     return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                                'msisdn': '+27820001001'
+                            }));
+                            api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
+                        })
                         .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
@@ -175,6 +200,16 @@ describe("app", function() {
 
                 it("entering once, timing out, redialing, exiting", function() {
                     return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                                'msisdn': '+27820001001'
+                            }));
+                            api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
+                            api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                                to_identity: "cb245673-aa41-4302-ac47-00000001002",
+                                content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
+                            }));
+                        })
                         .setup.user.addr('27820001001')
                         .inputs(
                             {session_event: 'new'}  // dial in
@@ -211,6 +246,17 @@ describe("app", function() {
                 // dropoffs is not a real thing
                 it("entering once", function() {
                     return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                                'msisdn': '+27820001001'
+                            }));
+                            api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
+                            api.http.fixtures.add(fixtures_JembiDynamic.momconnect_exists("123456", "test clinic"));
+                            api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                                to_identity: "cb245673-aa41-4302-ac47-00000001002",
+                                content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
+                            }));
+                        })
                         .setup.user.addr('27820001001')
                         .inputs.apply(this, basicSetupInputs)
                         .check(function(api) {
@@ -227,6 +273,17 @@ describe("app", function() {
 
                 it("entering once, timing out", function() {
                     return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                                'msisdn': '+27820001001'
+                            }));
+                            api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
+                            api.http.fixtures.add(fixtures_JembiDynamic.momconnect_exists("123456", "test clinic"));
+                            api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                                to_identity: "cb245673-aa41-4302-ac47-00000001002",
+                                content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
+                            }));
+                        })
                         .setup.user.addr('27820001001')
                         .inputs.apply(this, timeoutInputs)
                         .check(function(api) {
@@ -243,6 +300,17 @@ describe("app", function() {
 
                 it("entering once, timing out, redialing (session:close detected)", function() {
                     return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                                'msisdn': '+27820001001'
+                            }));
+                            api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
+                            api.http.fixtures.add(fixtures_JembiDynamic.momconnect_exists("123456", "test clinic"));
+                            api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                                to_identity: "cb245673-aa41-4302-ac47-00000001002",
+                                content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
+                            }));
+                        })
                         .setup.user.addr('27820001001')
                         .inputs.apply(this, redialInputs)
                         .check(function(api) {
@@ -262,6 +330,13 @@ describe("app", function() {
                     var testInputs = basicSetupInputs.concat([{session_event: 'new'}]);
 
                     return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                                'msisdn': '+27820001001'
+                            }));
+                            api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
+                            api.http.fixtures.add(fixtures_JembiDynamic.momconnect_exists("123456", "test clinic"));
+                        })
                         .setup.user.addr('27820001001')
                         .inputs.apply(this, testInputs)
                         .check(function(api) {
@@ -281,6 +356,17 @@ describe("app", function() {
                     var testInputs = redialInputs.concat(['2']);
 
                     return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                                'msisdn': '+27820001001'
+                            }));
+                            api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
+                            api.http.fixtures.add(fixtures_JembiDynamic.momconnect_exists("123456", "test clinic"));
+                            api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                                to_identity: "cb245673-aa41-4302-ac47-00000001002",
+                                content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
+                            }));
+                        })
                         .setup.user.addr('27820001001')
                         .inputs.apply(this, testInputs)
                         .check(function(api) {
@@ -302,6 +388,17 @@ describe("app", function() {
                     var testInputs = redialInputs.concat(['1']);
 
                     return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                                'msisdn': '+27820001001'
+                            }));
+                            api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
+                            api.http.fixtures.add(fixtures_JembiDynamic.momconnect_exists("123456", "test clinic"));
+                            api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                                to_identity: "cb245673-aa41-4302-ac47-00000001002",
+                                content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
+                            }));
+                        })
                         .setup.user.addr('27820001001')
                         .inputs.apply(this, testInputs)
                         .check(function(api) {
@@ -323,6 +420,17 @@ describe("app", function() {
                     var testInputs = redialInputs.concat(['1', '5']);
 
                     return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                                'msisdn': '+27820001001'
+                            }));
+                            api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
+                            api.http.fixtures.add(fixtures_JembiDynamic.momconnect_exists("123456", "test clinic"));
+                            api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                                to_identity: "cb245673-aa41-4302-ac47-00000001002",
+                                content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
+                            }));
+                        })
                         .setup.user.addr('27820001001')
                         .inputs.apply(this, testInputs)
                         .check(function(api) {
@@ -344,6 +452,54 @@ describe("app", function() {
         describe("test avg.sessions_to_register metric", function() {
             it("should increment metric according to number of sessions", function() {
                 return tester
+                    .setup(function(api) {
+                        api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                            'msisdn': '+27820001001'
+                        }));
+                        api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
+                        api.http.fixtures.add(fixtures_JembiDynamic.momconnect_exists("123456", "test clinic"));
+                        api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                            to_identity: "cb245673-aa41-4302-ac47-00000001002",
+                            content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
+                        }));
+                        api.http.fixtures.add(fixtures_IdentityStoreDynamic.update({
+                            details: {
+                                default_addr_type: "msisdn",
+                                addresses: {
+                                    msisdn: {
+                                        "+27820001001": {default: true, optedout: false}
+                                    }
+                                },
+                                lang_code: "eng_ZA",
+                                consent: true,
+                                sa_id_no: "5101025009086",
+                                mom_dob: "1981-01-14",
+                                source: "clinic",
+                                last_mc_reg_on: "clinic",
+                                clinic: {redial_sms_sent: true},
+                                last_edd: "2014-05-10"
+                            }
+                        }));
+                        api.http.fixtures.add(fixtures_HubDynamic.registration({
+                            data: {
+                                operator_id: "cb245673-aa41-4302-ac47-00000001002",
+                                msisdn_registrant: "+27820001001",
+                                msisdn_device: "+27820001001",
+                                id_type: "none",
+                                language: "eng_ZA",
+                                edd: "2014-05-10",
+                                faccode: "123456",
+                                consent: true,
+                                registered_on_whatsapp: false,
+                                mom_dob: "1981-01-14"
+                            }
+                        }));
+                        api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                            to_identity: "cb245673-aa41-4302-ac47-00000001002",
+                            to_addr: "+27820001001",
+                            content: "Welcome. To stop getting messages dial *120*550*1# or for more services dial *120*550# (No Cost). Standard rates apply when replying to any SMS from MomConnect."
+                        }));
+                    })
                     .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: 'new'}  // dial in
@@ -368,9 +524,6 @@ describe("app", function() {
                         var metrics = api.metrics.stores.test_metric_store;
                         assert.deepEqual(metrics['test.ussd_clinic.avg.sessions_to_register'].values, [2]);
                     })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [4, 50, 116, 123, 174, 180, 183, 204]);
-                    })
                     .check.reply.ends_session()
                     .run();
             });
@@ -380,16 +533,18 @@ describe("app", function() {
             describe("when you timeout and dial back in", function() {
                 describe("when on a normal state", function() {
                     it("should go to state_timed_out", function() {
-                        return tester
+                        return tester 
+                        .setup(function(api) {
+                            api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                                content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
+                            }));
+                        })
                         .setup.user.addr("27820001001")
+                        .setup.user.answer('operator', {'id': 'operator-id'})
+                        .setup.user.answer('operator_msisdn', '+27820001001')
+                        .setup.user.state("state_due_date_day")
                         .inputs(
-                            {session_event: 'new'}  // dial in
-                            , "1"  // state_start - yes
-                            , "1"  // state_consent - yes
-                            , "123456"  // state_clinic_code
-                            , "2"  // state_due_date_month - may
-                            , "10"  // state_due_date_day
-                            , {session_event: 'close'}
+                            {session_event: 'close'}
                             , {session_event: 'new'}
                         )
                         .check.interaction({
@@ -406,11 +561,17 @@ describe("app", function() {
                 describe("when on state_mobile_no", function() {
                     it("should go to state_timed_out", function() {
                         return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                                content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
+                            }));
+                        })
+                        .setup.user.answer('operator', {'id': 'operator-id'})
+                        .setup.user.answer('operator_msisdn', '+27820001001')
                         .setup.user.addr("27820001001")
+                        .setup.user.state('state_mobile_no')
                         .inputs(
-                            {session_event: 'new'}  // dial in
-                            , "2"  // state_start - no
-                            , {session_event: 'close'}
+                            {session_event: 'close'}
                             , {session_event: 'new'}
                         )
                         .check.interaction({
@@ -427,6 +588,16 @@ describe("app", function() {
                 describe("when on state_start", function() {
                     it("should go to state_start, not state_timed_out", function() {
                         return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                                msisdn: "+27820001001"
+                            }));
+                            api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
+                            api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                                to_identity: "cb245673-aa41-4302-ac47-00000001002",
+                                content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
+                            }));
+                        })
                         .setup.user.addr("27820001001")
                         .inputs(
                             {session_event: 'new'}  // dial in
@@ -456,6 +627,17 @@ describe("app", function() {
                 describe("choosing to continue", function() {
                     it("should go back to the state you were on", function() {
                         return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                                msisdn: "+27820001001"
+                            }));
+                            api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
+                            api.http.fixtures.add(fixtures_JembiDynamic.momconnect_exists("123456", "test clinic"));
+                            api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                                to_identity: "cb245673-aa41-4302-ac47-00000001002",
+                                content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
+                            }));
+                        })
                         .setup.user.addr("27820001001")
                         .inputs.apply(this, setupInputs.concat([
                             {session_event: 'close'}
@@ -471,6 +653,17 @@ describe("app", function() {
                 describe("choosing to abort", function() {
                     it("should go back to state_start", function() {
                         return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                                msisdn: "+27820001001"
+                            }));
+                            api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
+                            api.http.fixtures.add(fixtures_JembiDynamic.momconnect_exists("123456", "test clinic"));
+                            api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                                to_identity: "cb245673-aa41-4302-ac47-00000001002",
+                                content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
+                            }));
+                        })
                         .setup.user.addr("27820001001")
                         .inputs.apply(this, setupInputs.concat('2')) // state_timed_out - start new registration
                         .check.interaction({
@@ -492,32 +685,55 @@ describe("app", function() {
 
             it("send if redial sms not yet sent (identity loads without redial_sms_sent defined)", function() {
                 return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                        msisdn: "+27820001001"
+                    }));
+                    api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
+                    api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                        to_identity: "cb245673-aa41-4302-ac47-00000001002",
+                        content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
+                    }));
+                })
                 .setup.user.addr("27820001001")
                 .inputs.apply(this, JSON.parse(JSON.stringify(setupInputs)))
                 .check.user.answer("redial_sms_sent", true)
-                .check(function(api) {
-                    utils.check_fixtures_used(api, [50, 123, 180, 183]);
-                })
                 .run();
             });
             it("don't send if redial sms already sent (identity loads with redial_sms_sent set as 'true')", function() {
                 return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                        msisdn: "+27820001009"
+                    }));
+                    api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
+                    api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                        to_identity: "cb245673-aa41-4302-ac47-00000001002",
+                        to_addr: "+27820001009",
+                        content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
+                    }));
+                })
                 .setup.user.addr("27820001009")
                 .inputs.apply(this, JSON.parse(JSON.stringify(setupInputs)))
                 .check.user.answer("redial_sms_sent", true)
-                .check(function(api) {
-                    utils.check_fixtures_used(api, [54, 69, 203]);
-                })
                 .run();
             });
             it("send if redial sms not yet sent (identity loads with redial_sms_sent set as 'false')", function() {
                 return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                        msisdn: "+27820001008"
+                    }));
+                    api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
+                    api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                        to_identity: "cb245673-aa41-4302-ac47-00000001002",
+                        to_addr: "+27820001008",
+                        content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
+                    }));
+                })
                 .setup.user.addr("27820001008")
                 .inputs.apply(this, JSON.parse(JSON.stringify(setupInputs)))
                 .check.user.answer("redial_sms_sent", true)
-                .check(function(api) {
-                    utils.check_fixtures_used(api, [54, 59, 131, 202]);
-                })
                 .run();
             });
             it("don't send when timeout occurs on a non-dialback state", function() {
@@ -536,11 +752,56 @@ describe("app", function() {
 
                 return tester
                 .setup.user.addr("27820001001")
+                .setup(function(api) {
+                    api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                        msisdn: "+27820001001"
+                    }));
+                    api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
+                    api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                        to_identity: "cb245673-aa41-4302-ac47-00000001002",
+                        content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
+                    }));
+                    api.http.fixtures.add(fixtures_JembiDynamic.momconnect_exists("123456", "test clinic"));
+                    api.http.fixtures.add(fixtures_IdentityStoreDynamic.update({
+                        details: {
+                            default_addr_type: "msisdn",
+                            addresses: {
+                                msisdn: {
+                                    "+27820001001": {default: true, optedout: false}
+                                }
+                            },
+                            lang_code: "eng_ZA",
+                            consent: true,
+                            sa_id_no: "5101025009086",
+                            mom_dob: "1981-01-14",
+                            source: "clinic",
+                            last_mc_reg_on: "clinic",
+                            clinic: {redial_sms_sent: true},
+                            last_edd: "2014-05-10"
+                        }
+                    }));
+                    api.http.fixtures.add(fixtures_HubDynamic.registration({
+                        data: {
+                            operator_id: "cb245673-aa41-4302-ac47-00000001002",
+                            msisdn_registrant: "+27820001001",
+                            msisdn_device: "+27820001001",
+                            id_type: "none",
+                            language: "eng_ZA",
+                            edd: "2014-05-10",
+                            faccode: "123456",
+                            consent: true,
+                            registered_on_whatsapp: false,
+                            mom_dob: "1981-01-14"
+                        }
+                    }));
+                    api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                        to_identity: "cb245673-aa41-4302-ac47-00000001002",
+                        to_addr: "+27820001001",
+                        content: "Welcome. To stop getting messages dial *120*550*1# or for more services dial *120*550# (No Cost). Standard rates apply when replying to any SMS from MomConnect."
+                    }));
+                })
                 .inputs.apply(this, JSON.parse(JSON.stringify(complexInputs)))
                 .check.user.answer("redial_sms_sent", true)
-                .check(function(api) {
-                    utils.check_fixtures_used(api, [4, 50, 116, 123, 174, 180, 183, 204]);
-                })
                 .run();
             });
         });
@@ -548,11 +809,15 @@ describe("app", function() {
         describe("session start", function() {
             it("should display welcome message", function () {
                 return tester
+                    .setup(function(api) {
+                        api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                            msisdn: "+27820001001"
+                        }));
+                        api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
+                    })
                     .setup.char_limit(160)  // limit first state chars
                     .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                    )
+                    .start()
                     .check.interaction({
                         state: "state_start",
                         reply: [
@@ -572,6 +837,17 @@ describe("app", function() {
                 describe("msisdn is not opted out", function() {
                     it("should prompt for consent", function() {
                         return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(
+                                fixtures_IdentityStoreDynamic.identity_search({
+                                    msisdn: "+27820001001",
+                                    opted_out: false
+                                })
+                            );
+                            api.http.fixtures.add(
+                                fixtures_StageBasedMessagingDynamic.active_subscriptions()
+                            );
+                        })
                         .setup.user.addr("27820001001")
                         .inputs(
                             {session_event: 'new'}  // dial in
@@ -597,11 +873,19 @@ describe("app", function() {
                 describe("msisdn is opted out", function() {
                     it("should prompt for opt-in", function() {
                         return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(
+                                fixtures_IdentityStoreDynamic.identity_search({
+                                    msisdn: "+27820001004",
+                                    opted_out: true
+                                })
+                            );
+                            api.http.fixtures.add(
+                                fixtures_StageBasedMessagingDynamic.active_subscriptions()
+                            );
+                        })
                         .setup.user.addr("27820001004")
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , "1"  // state_start - yes
-                        )
+                        .input("1")
                         .check.interaction({
                             state: "state_opt_in"
                         })
@@ -613,11 +897,19 @@ describe("app", function() {
             describe("indicates this is not the registrant number", function() {
                 it("should ask for the registrant number", function() {
                     return tester
+                    .setup(function(api) {
+                        api.http.fixtures.add(
+                            fixtures_IdentityStoreDynamic.identity_search({
+                                msisdn: "+27820001003",
+                                opted_out: true
+                            })
+                        );
+                        api.http.fixtures.add(
+                            fixtures_StageBasedMessagingDynamic.active_subscriptions()
+                        );
+                    })
                     .setup.user.addr("27820001003")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "2"  // state_start - no
-                    )
+                    .input("2")
                     .check.interaction({
                         state: "state_mobile_no"
                     })
@@ -629,15 +921,27 @@ describe("app", function() {
                 it('should return state_already_subscribed if active subscription', function() {
                     return tester
                     .setup.user.addr('27820001002')
-                    .inputs(
-                        {session_event: 'new'} // dial in
-                        , '1' // state_start - yes
-                    )
+                    .setup(function(api) {
+                        api.http.fixtures.add(
+                            fixtures_IdentityStoreDynamic.identity_search({
+                                msisdn: "+27820001002",
+                                opted_out: true
+                            })
+                        );
+                        api.http.fixtures.add(
+                            fixtures_StageBasedMessagingDynamic.messagesets({
+                                short_names: ['momconnect_prebirth.hw_full.1']
+                            })
+                        );
+                        api.http.fixtures.add(
+                            fixtures_StageBasedMessagingDynamic.active_subscriptions({
+                                messagesets: [0]
+                            })
+                        );
+                    })
+                    .input("1")
                     .check.interaction({
                         state: 'state_already_subscribed'
-                    })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [51, 54, 181]);
                     })
                     .run();
                 });
@@ -645,17 +949,13 @@ describe("app", function() {
         });
 
         describe('state_already_subscribed', function() {
-            var setupInputs = [{session_event: 'new'}, '1']; // dial in and 'yes' at state_start
-
             it('should offer the choice to enter a different number', function() {
                 return tester
                 .setup.user.addr('27820001002')
-                .inputs.apply(this, setupInputs.concat('1')) // state_already_subscribed - different number
+                .setup.user.state("state_already_subscribed")
+                .input("1")
                 .check.interaction({
                     state: 'state_mobile_no'
-                })
-                .check(function(api) {
-                    utils.check_fixtures_used(api, [51, 54, 181]);
                 })
                 .run();
             });
@@ -663,12 +963,21 @@ describe("app", function() {
             it('should offer the choice to go back to the start', function() {
                 return tester
                 .setup.user.addr('27820001002')
-                .inputs.apply(this, setupInputs.concat('2')) // state_already_subscribed - end registration
+                .setup.user.state("state_already_subscribed")
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_IdentityStoreDynamic.identity_search({
+                            msisdn: "+27820001002",
+                            opted_out: true
+                        })
+                    );
+                    api.http.fixtures.add(
+                        fixtures_StageBasedMessagingDynamic.active_subscriptions()
+                    );
+                })
+                .input("2")
                 .check.interaction({
                     state: 'state_start'
-                })
-                .check(function(api) {
-                    utils.check_fixtures_used(api, [51, 54, 181]);
                 })
                 .run();
             });
@@ -679,11 +988,8 @@ describe("app", function() {
                 it("should ask for clinic code", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "1"  // state_consent - yes
-                    )
+                    .setup.user.state("state_consent")
+                    .input("1")
                     .check.interaction({
                         state: "state_clinic_code"
                     })
@@ -694,11 +1000,8 @@ describe("app", function() {
                 it("should go to state_consent_refused", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "2"  // state_consent - no
-                    )
+                    .setup.user.state("state_consent")
+                    .input("2")
                     .check.interaction({
                         state: "state_consent_refused"
                     })
@@ -713,16 +1016,20 @@ describe("app", function() {
                 it("should go to state_consent", function() {
                     return tester
                     .setup.user.addr("27820001004")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "1"  // state_opt_in - yes
-                    )
+                    .setup.user.state("state_opt_in")
+                    .setup.user.answer("registrant", {"id": "registrant-uuid"})
+                    .setup.user.answer("registrant_msisdn", "+27820001005")
+                    .setup(function(api) {
+                        api.http.fixtures.add(
+                            fixtures_IdentityStoreDynamic.optin({
+                                identity: "registrant-uuid",
+                                address: "+27820001005"
+                            })
+                        );
+                    })
+                    .input("1")
                     .check.interaction({
                         state: "state_consent"
-                    })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [55, 184, 186]);
                     })
                     .run();
                 });
@@ -731,11 +1038,8 @@ describe("app", function() {
                 it("should go to state_stay_out", function() {
                     return tester
                     .setup.user.addr("27820001004")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "2"  // state_opt_in - no
-                    )
+                    .setup.user.state("state_opt_in")
+                    .input("2")
                     .check.interaction({
                         state: "state_stay_out"
                     })
@@ -749,11 +1053,8 @@ describe("app", function() {
                 it("should ask for the number again", function() {
                     return tester
                     .setup.user.addr("27820001003")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "2"  // state_start - no
-                        , "012 345 678"  // state_mobile_no
-                    )
+                    .setup.user.state("state_mobile_no")
+                    .input("012 345 678")
                     .check.interaction({
                         state: "state_mobile_no"
                     })
@@ -764,12 +1065,20 @@ describe("app", function() {
             describe("valid number", function() {
                 it('should test for active subscriptions', function() {
                     return tester
+                    .setup(function(api) {
+                        api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                            msisdn: "+27820001002"
+                        }));
+                        api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.messagesets({
+                            short_names: ["momconnect_prebirth.hw_full.1"]
+                        }));
+                        api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions({
+                            messagesets: [0]
+                        }));
+                    })
                     .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "2"  // state_start - no
-                        , "0820001002"  // state_mobile_no
-                    )
+                    .setup.user.state("state_mobile_no")
+                    .input("0820001002")
                     .check.interaction({
                         state: "state_already_subscribed"
                     })
@@ -779,12 +1088,16 @@ describe("app", function() {
                 describe("number is opted out", function() {
                     it("should go to state_opt_in", function() {
                         return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                                msisdn: "+27820001004",
+                                opted_out: true
+                            }));
+                            api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
+                        })
                         .setup.user.addr("27820001003")
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , "2"  // state_start - no
-                            , "0820001004"  // state_mobile_no
-                        )
+                        .setup.user.state("state_mobile_no")
+                        .input("0820001004")
                         .check.interaction({
                             state: "state_opt_in"
                         })
@@ -794,12 +1107,16 @@ describe("app", function() {
                 describe("number is not opted out", function() {
                     it("should go to state_consent", function() {
                         return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                                msisdn: "+27820001001",
+                                opted_out: false
+                            }));
+                            api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
+                        })
                         .setup.user.addr("27820001003")
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , "2"  // state_start - no
-                            , "0820001001"  // state_mobile_no
-                        )
+                        .setup.user.state("state_mobile_no")
+                        .input("0820001001")
                         .check.interaction({
                             state: "state_consent"
                         })
@@ -813,18 +1130,14 @@ describe("app", function() {
             describe("invalid code", function() {
                 it("should ask for the code again", function() {
                     return tester
+                    .setup(function(api) {
+                        api.http.fixtures.add(fixtures_JembiDynamic.momconnect_not_exists("888888"));
+                    })
                     .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "1"  // state_consent - yes
-                        , "888888"  // state_clinic_code
-                    )
+                    .setup.user.state("state_clinic_code")
+                    .input("888888")
                     .check.interaction({
                         state: "state_clinic_code"
-                    })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [50, 173, 180, 183]);
                     })
                     .run();
                 });
@@ -832,13 +1145,13 @@ describe("app", function() {
             describe("valid code", function() {
                 it("should go to state_due_date_month", function() {
                     return tester
+                    .setup(function(api) {
+                        api.http.fixtures.add(fixtures_JembiDynamic.momconnect_exists(
+                            "123456", "test clinic"));
+                    })
                     .setup.user.addr("27820001001")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "1"  // state_consent - yes
-                        , "123456"  // state_clinic_code
-                    )
+                    .setup.user.state('state_clinic_code')
+                    .input("123456")
                     .check.interaction({
                         state: "state_due_date_month",
                         reply: [
@@ -855,9 +1168,6 @@ describe("app", function() {
                             '10. Jan'
                         ].join('\n')
                     })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [50, 174, 180, 183]);
-                    })
                     .run();
                 });
             });
@@ -867,13 +1177,15 @@ describe("app", function() {
             describe("selecting main menu", function() {
                 it("should go to state_start", function() {
                     return tester
+                    .setup(function(api) {
+                        api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                            msisdn: "+27820001004"
+                        }));
+                        api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
+                    })
                     .setup.user.addr("27820001004")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "1"  // state_start - yes
-                        , "2"  // state_opt_in - no
-                        , "1"  // state_stay_out - main menu
-                    )
+                    .setup.user.state("state_stay_out")
+                    .input("1")
                     .check.interaction({
                         state: "state_start"
                     })
@@ -886,13 +1198,8 @@ describe("app", function() {
             it("should go to state_due_date_day", function() {
                 return tester
                 .setup.user.addr("27820001001")
-                .inputs(
-                    {session_event: 'new'}  // dial in
-                    , "1"  // state_start - yes
-                    , "1"  // state_consent - yes
-                    , "123456"  // state_clinic_code
-                    , "2"  // state_due_date_month - may
-                )
+                .setup.user.state('state_due_date_month')
+                .input('2')
                 .check.interaction({
                     state: "state_due_date_day"
                 })
@@ -901,19 +1208,13 @@ describe("app", function() {
         });
 
         describe("state_due_date_day", function() {
-            var setupInputs = [
-                {session_event: 'new'}  // dial in
-                , "1"  // state_start - yes
-                , "1"  // state_consent - yes
-                , "123456"  // state_clinic_code
-            ];
-
             describe("day out of range", function() {
                 it("should ask for the day again", function() {
                     // 32 May is invalid
                     return tester
+                    .setup.user.state('state_due_date_day')
                     .setup.user.addr("27820001001")
-                    .inputs.apply(this, setupInputs.concat(['2', '32']))
+                    .input('32')
                     .check.interaction({
                         state: "state_due_date_day"
                     })
@@ -925,7 +1226,9 @@ describe("app", function() {
                     // 31 Nov is invalid
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs.apply(this, setupInputs.concat(['8', '31']))
+                    .setup.user.state('state_due_date_day')
+                    .setup.user.answer('state_due_date_month', '2014-11')
+                    .input('31')
                     .check.interaction({
                         state: "state_invalid_edd",
                         reply: [
@@ -942,7 +1245,9 @@ describe("app", function() {
                     // 10 May is valid
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs.apply(this, setupInputs.concat(['2', '10']))
+                    .setup.user.state('state_due_date_day')
+                    .setup.user.answer('state_due_date_month', '2014-03')
+                    .input('10')
                     .check.interaction({
                         state: "state_id_type"
                     })
@@ -954,16 +1259,9 @@ describe("app", function() {
         describe("state_invalid_edd", function() {
             it("should go to state_due_date_month", function() {
                 return tester
+                .setup.user.state('state_invalid_edd')
                 .setup.user.addr("27820001001")
-                .inputs(
-                    {session_event: 'new'}  // dial in
-                    , "1"  // state_start - yes
-                    , "1"  // state_consent - yes
-                    , "123456"  // state_clinic_code
-                    , "8"  // state_due_date_month - nov
-                    , "31"  // state_due_date_day
-                    , "1"  // state_invalid_edd
-                )
+                .input('1')
                 .check.interaction({
                     state: "state_due_date_month"
                 })
@@ -972,20 +1270,12 @@ describe("app", function() {
         });
 
         describe("state_id_type", function() {
-            var setupInputs = [
-                {session_event: 'new'}  // dial in
-                , "1"  // state_start - yes
-                , "1"  // state_consent - yes
-                , "123456"  // state_clinic_code
-                , "2"  // state_due_date_month - may
-                , "10"  // state_due_date_day
-            ];
-
             describe("choosing sa_id", function() {
                 it("should go to state_sa_id", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs.apply(this, setupInputs.concat('1')) // Add to the inputs for 'state_id_type - sa_id'
+                    .setup.user.state('state_id_type')
+                    .input('1')
                     .check.interaction({
                         state: "state_sa_id"
                     })
@@ -996,7 +1286,8 @@ describe("app", function() {
                 it("should go to state_passport_origin", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs.apply(this, setupInputs.concat('2')) // Add to the inputs for 'state_id_type - passport'
+                    .setup.user.state('state_id_type')
+                    .input('2')
                     .check.interaction({
                         state: "state_passport_origin"
                     })
@@ -1007,7 +1298,8 @@ describe("app", function() {
                 it("should go to state_birth_year", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs.apply(this, setupInputs.concat('3')) // Add to the inputs for 'state_id_type - none'
+                    .setup.user.state('state_id_type')
+                    .input('3')
                     .check.interaction({
                         state: "state_birth_year"
                     })
@@ -1017,21 +1309,13 @@ describe("app", function() {
         });
 
         describe("state_sa_id", function() {
-            var setupInputs = [
-                {session_event: 'new'}  // dial in
-                , "1"  // state_start - yes
-                , "1"  // state_consent - yes
-                , "123456"  // state_clinic_code
-                , "2"  // state_due_date_month - may
-                , "10"  // state_due_date_day
-                , "1"  // state_id_type - sa_id
-            ];
 
             describe("invalid sa_id", function() {
                 it("should ask for sa_id again", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs.apply(this, setupInputs.concat('1234')) // Add to the inputs for 'state_sa_id'
+                    .setup.user.state('state_sa_id')
+                    .input('1234')
                     .check.interaction({
                         state: "state_sa_id"
                     })
@@ -1042,7 +1326,8 @@ describe("app", function() {
                 it("should go to state_language", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs.apply(this, setupInputs.concat('5101015009088')) // Add to the inputs for 'state_sa_id'
+                    .setup.user.state('state_sa_id')
+                    .input('5101015009088')
                     .check.interaction({
                         state: "state_language"
                     })
@@ -1055,16 +1340,8 @@ describe("app", function() {
             it("should go to state_passport_no", function() {
                 return tester
                 .setup.user.addr("27820001001")
-                .inputs(
-                    {session_event: 'new'}  // dial in
-                    , "1"  // state_start - yes
-                    , "1"  // state_consent - yes
-                    , "123456"  // state_clinic_code
-                    , "2"  // state_due_date_month - may
-                    , "10"  // state_due_date_day
-                    , "2"  // state_id_type - passport
-                    , "1"  // state_passport_origin - zimbabwe
-                )
+                .setup.user.state('state_passport_origin')
+                .input("1")
                 .check.interaction({
                     state: "state_passport_no"
                 })
@@ -1073,22 +1350,12 @@ describe("app", function() {
         });
 
         describe("state_passport_no", function() {
-            var setupInputs = [
-                {session_event: 'new'}  // dial in
-                , "1"  // state_start - yes
-                , "1"  // state_consent - yes
-                , "123456"  // state_clinic_code
-                , "2"  // state_due_date_month - may
-                , "10"  // state_due_date_day
-                , "2"  // state_id_type - passport
-                , "1"  // state_passport_origin - zimbabwe
-            ];
-
             describe("number too short", function() {
                 it("should ask for number again", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs.apply(this, setupInputs.concat(['1234'])) // Add to the inputs for 'state_passport_no'
+                    .setup.user.state('state_passport_no')
+                    .input('1234')
                     .check.interaction({
                         state: "state_passport_no"
                     })
@@ -1099,7 +1366,8 @@ describe("app", function() {
                 it("should ask for number again", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs.apply(this, setupInputs.concat(['1234 5678'])) // Add to the inputs for 'state_passport_no'
+                    .setup.user.state('state_passport_no')
+                    .input('1234 5678')
                     .check.interaction({
                         state: "state_passport_no"
                     })
@@ -1110,7 +1378,8 @@ describe("app", function() {
                 it("should go to state_language", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs.apply(this, setupInputs.concat(['12345'])) // Add to the inputs for 'state_passport_no'
+                    .setup.user.state('state_passport_no')
+                    .input('12345')
                     .check.interaction({
                         state: "state_language"
                     })
@@ -1120,23 +1389,13 @@ describe("app", function() {
         });
 
         describe("state_birth_year", function() {
-            var setupInputs = [
-                {session_event: 'new'}  // dial in
-                , "1"  // state_start - yes
-                , "1"  // state_consent - yes
-                , "123456"  // state_clinic_code
-                , "2"  // state_due_date_month - may
-                , "10"  // state_due_date_day
-                , "3"  // state_id_type - none
-            ];
-
             describe("birth year too recent", function() {
                 it("should ask for birth year again", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    // Add to the inputs for 'state_birth_year', somebody born in
-                    // 2013 is too young to give birth
-                    .inputs.apply(this, setupInputs.concat('2013'))
+                    .setup.user.state('state_birth_year')
+                    // somebody born in 2013 is too young to give birth
+                    .input('2013')
                     .check.interaction({
                         state: "state_birth_year"
                     })
@@ -1147,7 +1406,8 @@ describe("app", function() {
                 it("should go to state_birth_month", function() {
                     return tester
                     .setup.user.addr("27820001001")
-                    .inputs.apply(this, setupInputs.concat('1981')) // Add to the inputs for 'state_birth_year'
+                    .setup.user.state('state_birth_year')
+                    .input('1981')
                     .check.interaction({
                         state: "state_birth_month",
                         reply: [
@@ -1175,17 +1435,8 @@ describe("app", function() {
             it("should go to state_birth_day", function() {
                 return tester
                 .setup.user.addr("27820001001")
-                .inputs(
-                    {session_event: 'new'}  // dial in
-                    , "1"  // state_start - yes
-                    , "1"  // state_consent - yes
-                    , "123456"  // state_clinic_code
-                    , "2"  // state_due_date_month - may
-                    , "10"  // state_due_date_day
-                    , "3"  // state_id_type - none
-                    , "1981"  // state_birth_year
-                    , "1"  // state_birth_month - january
-                )
+                .setup.user.state('state_birth_month')
+                .input('1')
                 .check.interaction({
                     state: "state_birth_day"
                 })
@@ -1194,23 +1445,12 @@ describe("app", function() {
         });
 
         describe("state_birth_day", function() {
-            var setupInputs = [
-                {session_event: 'new'}  // dial in
-                , "1"  // state_start - yes
-                , "1"  // state_consent - yes
-                , "123456"  // state_clinic_code
-                , "2"  // state_due_date_month - may
-                , "10"  // state_due_date_day
-                , "3"  // state_id_type - none
-                , "1981"  // state_birth_year
-            ];
-
             describe("day out of range", function() {
                 it("should ask for the day again", function() {
                     // 32 January 1981 is an invalid date
                     return tester
-                    .setup.user.addr("27820001001")
-                    .inputs.apply(this, setupInputs.concat(['1', '32']))
+                    .setup.user.state('state_birth_day')
+                    .input('32')
                     .check.interaction({
                         state: "state_birth_day"
                     })
@@ -1221,8 +1461,10 @@ describe("app", function() {
                 it("should tell them the date is invalid", function() {
                     // 29 February 1981 is an invalid date
                     return tester
-                    .setup.user.addr("27820001001")
-                    .inputs.apply(this, setupInputs.concat(['2', '29']))
+                    .setup.user.state('state_birth_day')
+                    .setup.user.answer('state_birth_year', '1981')
+                    .setup.user.answer('state_birth_month', '02')
+                    .input('29')
                     .check.interaction({
                         state: "state_invalid_dob",
                         reply: [
@@ -1238,8 +1480,10 @@ describe("app", function() {
                 it("should ask for language", function() {
                     // 14 January 1981 is a valid date
                     return tester
-                    .setup.user.addr("27820001001")
-                    .inputs.apply(this, setupInputs.concat(['1', '14']))
+                    .setup.user.state('state_birth_day')
+                    .setup.user.answer('state_birth_year', '1981')
+                    .setup.user.answer('state_birth_month', '01')
+                    .input('14')
                     .check.interaction({
                         state: "state_language"
                     })
@@ -1252,19 +1496,8 @@ describe("app", function() {
             it("should go to state_birth_year", function() {
                 return tester
                 .setup.user.addr("27820001001")
-                .inputs(
-                    {session_event: 'new'}  // dial in
-                    , "1"  // state_start - yes
-                    , "1"  // state_consent - yes
-                    , "123456"  // state_clinic_code
-                    , "2"  // state_due_date_month - may
-                    , "10"  // state_due_date_day
-                    , "3"  // state_id_type - none
-                    , "1981"  // state_birth_year
-                    , "2"  // state_birth_month - february
-                    , "29"  // state_birth_day
-                    , "1"  // state_invalid_dob - continue
-                )
+                .setup.user.state('state_invalid_dob')
+                .input('1')
                 .check.interaction({
                     state: "state_birth_year"
                 })
@@ -1273,53 +1506,70 @@ describe("app", function() {
         });
 
         describe("state_language", function() {
-            var setupInputs = [
-                {session_event: 'new'}  // dial in
-                , "1"  // state_start - yes
-                , "1"  // state_consent - yes
-                , "123456"  // state_clinic_code
-                , "2"  // state_due_date_month - may
-                , "10"  // state_due_date_day
-            ];
-
             describe("self sa_id registration", function() {
                 it("should go to state_end_success", function() {
-                    var testInputs = setupInputs.concat([
-                        "1"  // state_id_type - sa_id
-                        , "5101025009086"  // state_sa_id
-                        , "4"  // state_language - english
-                    ]);
-
                     return tester
+                    .setup(function(api) {
+                        api.http.fixtures.add(fixtures_IdentityStoreDynamic.update({
+                            identity: 'registrant-id',
+                            data: {
+                                id: 'registrant-id',
+                                details: {
+                                    lang_code: "eng_ZA",
+                                    consent: true,
+                                    sa_id_no: "5101025009086",
+                                    mom_dob: "1951-01-02",
+                                    source: "clinic",
+                                    clinic: {},
+                                    last_mc_reg_on: "clinic",
+                                    last_edd: "2014-02-10"
+                                }
+                            }
+                        }));
+                        api.http.fixtures.add(fixtures_HubDynamic.registration({
+                            registrant_id: 'registrant-id',
+                            data: {
+                                operator_id: "operator-id",
+                                msisdn_registrant: "+27820001001",
+                                msisdn_device: "+27820001002",
+                                id_type: "sa_id",
+                                language: "eng_ZA",
+                                edd: "2014-02-10",
+                                faccode: "123456",
+                                consent: true,
+                                registered_on_whatsapp: true,
+                                sa_id_no: "5101025009086",
+                                mom_dob:"1951-01-02"
+                            }
+                        }));
+                        api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                            to_identity: "registrant-id",
+                            to_addr: "+27820001001",
+                            content: "Welcome. To stop getting messages dial *120*550*1# or for more services dial *120*550# (No Cost). Standard rates apply when replying to any SMS from MomConnect."
+                        }));
+                    })
                     .setup.user.addr("27820001001")
-                    .inputs.apply(this, testInputs)
+                    .setup.user.state('state_language')
+                    .setup.user.answer('operator', {id: 'operator-id'})
+                    .setup.user.answer('registrant', {id: 'registrant-id', details: {}})
+                    .setup.user.answer('registrant_msisdn', '+27820001001')
+                    .setup.user.answer('operator_msisdn', '+27820001002')
+                    .setup.user.answer('state_id_type', 'sa_id')
+                    .setup.user.answer('state_language', 'eng_ZA')
+                    .setup.user.answer('edd', '2014-02-10')
+                    .setup.user.answer('state_clinic_code', '123456')
+                    .setup.user.answer('state_consent', 'yes')
+                    .setup.user.answer('registered_on_whatsapp', true)
+                    .setup.user.answer('state_sa_id', '5101025009086')
+                    .setup.user.answer('mom_dob', '1951-01-02')
+                    .input('4')
                     .check.interaction({
                         state: "state_end_success"
                     })
-
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [2, 50, 116, 174, 180, 183, 187]);
-                    })
                     .check(function(api) {
                         var metrics = api.metrics.stores.test_metric_store;
-                        assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_consent.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_consent.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_due_date_day.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_due_date_day.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_id_type.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_id_type.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_sa_id.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_sa_id.no_complete.transient'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.registrations_started'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.avg.sessions_to_register'].values, [1]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -1328,52 +1578,67 @@ describe("app", function() {
             describe("other passport registration", function() {
                 it("should go to state_end_success", function() {
                     return tester
+                    .setup(function(api) {
+                        api.http.fixtures.add(fixtures_IdentityStoreDynamic.update({
+                            identity: 'registrant-id',
+                            data: {
+                                id: 'registrant-id',
+                                details: {
+                                    lang_code: "eng_ZA",
+                                    consent: true,
+                                    passport_no: "12345",
+                                    passport_origin: "zw",
+                                    source: "clinic",
+                                    clinic: {},
+                                    last_mc_reg_on: "clinic",
+                                    last_edd: "2014-02-10"
+                                }
+                            }
+                        }));
+                        api.http.fixtures.add(fixtures_HubDynamic.registration({
+                            registrant_id: 'registrant-id',
+                            data: {
+                                operator_id: "operator-id",
+                                msisdn_registrant: "+27820001001",
+                                msisdn_device: "+27820001003",
+                                id_type: "passport",
+                                language: "eng_ZA",
+                                edd: "2014-02-10",
+                                faccode: "123456",
+                                consent: true,
+                                registered_on_whatsapp: true,
+                                passport_no: "12345",
+                                passport_origin: "zw"
+                            }
+                        }));
+                        api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                            to_identity: "registrant-id",
+                            to_addr: "+27820001001",
+                            content: "Welcome. To stop getting messages dial *120*550*1# or for more services dial *120*550# (No Cost). Standard rates apply when replying to any SMS from MomConnect."
+                        }));
+                    })
                     .setup.user.addr("27820001003")
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , "2"  // state_start - no
-                        , "0820001001"  // state_mobile_no
-                        , "1"  // state_consent - yes
-                        , "123456"  // state_clinic_code
-                        , "2"  // state_due_date_month - may
-                        , "10"  // state_due_date_day
-                        , "2"  // state_id_type - passport
-                        , "1"  // state_passport_origin - zimbabwe
-                        , "12345"  // state_passport_no
-                        , "4"  // state_language - english
-                    )
+                    .setup.user.state('state_language')
+                    .setup.user.answer('operator', {id: 'operator-id'})
+                    .setup.user.answer('registrant', {id: 'registrant-id', details: {}})
+                    .setup.user.answer('registrant_msisdn', '+27820001001')
+                    .setup.user.answer('operator_msisdn', '+27820001003')
+                    .setup.user.answer('state_id_type', 'passport')
+                    .setup.user.answer('state_language', 'eng_ZA')
+                    .setup.user.answer('edd', '2014-02-10')
+                    .setup.user.answer('state_clinic_code', '123456')
+                    .setup.user.answer('state_consent', 'yes')
+                    .setup.user.answer('registered_on_whatsapp', true)
+                    .setup.user.answer('state_passport_no', '12345')
+                    .setup.user.answer('state_passport_origin', 'zw')
+                    .input('4')
                     .check.interaction({
                         state: "state_end_success"
                     })
                     .check(function(api) {
                         var metrics = api.metrics.stores.test_metric_store;
-                        assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_consent.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_consent.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_due_date_day.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_due_date_day.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_id_type.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_id_type.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_sa_id.no_complete'], undefined);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_sa_id.no_complete.transient'], undefined);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_passport_origin.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_passport_origin.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_passport_no.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_passport_no.no_complete.transient'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.registrations_started'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.avg.sessions_to_register'].values, [1]);
-                    })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [3, 50, 52, 54, 116, 174, 180, 182, 183, 188]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -1381,48 +1646,65 @@ describe("app", function() {
             });
             describe("self none registration", function() {
                 it("should go to state_end_success", function() {
-                    var testInputs = setupInputs.concat([
-                        "3"  // state_id_type - none
-                        , "1981"  // state_birth_year
-                        , "1"  // state_birth_month - january
-                        , "14"  // state_birth_day
-                        , "4"  // state_language - english
-                    ]);
-
                     return tester
+                    .setup(function(api) {
+                        api.http.fixtures.add(fixtures_IdentityStoreDynamic.update({
+                            identity: 'registrant-id',
+                            data: {
+                                id: 'registrant-id',
+                                details: {
+                                    lang_code: "eng_ZA",
+                                    consent: true,
+                                    mom_dob: '1981-01-14',
+                                    source: "clinic",
+                                    clinic: {},
+                                    last_mc_reg_on: "clinic",
+                                    last_edd: "2014-02-10"
+                                }
+                            }
+                        }));
+                        api.http.fixtures.add(fixtures_HubDynamic.registration({
+                            registrant_id: 'registrant-id',
+                            data: {
+                                operator_id: "operator-id",
+                                msisdn_registrant: "+27820001001",
+                                msisdn_device: "+27820001003",
+                                id_type: "none",
+                                language: "eng_ZA",
+                                edd: "2014-02-10",
+                                faccode: "123456",
+                                consent: true,
+                                registered_on_whatsapp: true,
+                                mom_dob: '1981-01-14'
+                            }
+                        }));
+                        api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                            to_identity: "registrant-id",
+                            to_addr: "+27820001001",
+                            content: "Welcome. To stop getting messages dial *120*550*1# or for more services dial *120*550# (No Cost). Standard rates apply when replying to any SMS from MomConnect."
+                        }));
+                    })
                     .setup.user.addr("27820001001")
-                    .inputs.apply(this, testInputs)
+                    .setup.user.state('state_language')
+                    .setup.user.answer('operator', {id: 'operator-id'})
+                    .setup.user.answer('registrant', {id: 'registrant-id', details: {}})
+                    .setup.user.answer('registrant_msisdn', '+27820001001')
+                    .setup.user.answer('operator_msisdn', '+27820001003')
+                    .setup.user.answer('state_id_type', 'none')
+                    .setup.user.answer('state_language', 'eng_ZA')
+                    .setup.user.answer('edd', '2014-02-10')
+                    .setup.user.answer('state_clinic_code', '123456')
+                    .setup.user.answer('state_consent', 'yes')
+                    .setup.user.answer('registered_on_whatsapp', true)
+                    .setup.user.answer('mom_dob', '1981-01-14')
+                    .input('4')
                     .check.interaction({
                         state: "state_end_success"
                     })
                     .check(function(api) {
                         var metrics = api.metrics.stores.test_metric_store;
-                        assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_start.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_consent.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_consent.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_clinic_code.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_due_date_month.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_due_date_day.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_due_date_day.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_id_type.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_id_type.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_sa_id.no_complete'], undefined);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_birth_year.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_birth_year.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_birth_month.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_birth_month.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_birth_day.no_complete'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.state_birth_day.no_complete.transient'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete.transient'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.registrations_started'].values, [1]);
-                        assert.deepEqual(metrics['test.ussd_clinic.avg.sessions_to_register'].values, [1]);
-                    })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [4, 50, 116, 174, 180, 183, 189]);
                     })
                     .check.reply.ends_session()
                     .run();

@@ -70,6 +70,76 @@ module.exports = function(){
                 }
             };
         },
+        momconnect_not_exists: function(code) {
+            return {
+                "request": {
+                    "method": "GET",
+                    "url": "http://test/v2/json/facilityCheck",
+                    "params": {
+                        "criteria": "code:" + code
+                    }
+                },
+                "response": {
+                    "code": 200,
+                    "data": {
+                        "title": "Facility Check MomConnect",
+                        "headers": [],
+                        "rows": [],
+                        "width": 0,
+                        "height": 0
+                    }
+                }
+            };
+        },
+        momconnect_exists: function(code, name) {
+            return {
+                "request": {
+                    "method": "GET",
+                    "url": "http://test/v2/json/facilityCheck",
+                    "params": {
+                        "criteria": "code:" + code
+                    }
+                },
+                "response": {
+                    "code": 200,
+                    "data": {
+                        "title": "Facility Check MomConnect",
+                        "headers": [
+                            {
+                            "name": "value",
+                            "column": "value",
+                            "type": "java.lang.String",
+                            "hidden": false,
+                            "meta": false
+                            },
+                            {
+                            "name": "uid",
+                            "column": "uid",
+                            "type": "java.lang.String",
+                            "hidden": false,
+                            "meta": false
+                            },
+                            {
+                            "name": "name",
+                            "column": "name",
+                            "type": "java.lang.String",
+                            "hidden": false,
+                            "meta": false
+                            }
+                        ],
+                        "rows": [
+                            [
+                            code,
+                            "asdf7a803",
+                            name
+                            ]
+                        ],
+                        "width": 3,
+                        "height": 1
+                    }
+                }
+            };
+        },
         nurseconnect_subscription: function(details) {
             return {
                 request: {
