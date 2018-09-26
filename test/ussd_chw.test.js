@@ -111,6 +111,20 @@ describe("app", function() {
                             wait: false,
                         })
                     );
+                    api.http.fixtures.add( // 258
+                        fixtures_Pilot().exists({
+                            address: '+27820001003',
+                            number: '+27000000000',
+                            wait: true,
+                        })
+                    );
+                    api.http.fixtures.add( // 259
+                        fixtures_Pilot().exists({
+                            address: '+27820001003',
+                            number: '+27000000000',
+                            wait: false,
+                        })
+                    );
                 });
         });
 
