@@ -31,7 +31,7 @@ describe("app", function() {
                     logging: "off",
                     no_timeout_redirects: ["state_start"],
                     channel: "*120*550*2#",
-                    public_channel: "*120*550#",
+                    popi_channel: "*120*550*7#",
                     optout_channel: "*120*550*1#",
                     jembi: {
                         username: 'foo',
@@ -530,7 +530,7 @@ describe("app", function() {
                         api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
                             to_identity: "cb245673-aa41-4302-ac47-00000001002",
                             to_addr: "+27820001001",
-                            content: "Welcome. To stop getting messages dial *120*550*1# or for more services dial *120*550# (No Cost). Standard rates apply when replying to any SMS from MomConnect."
+                            content: "Congratulations on your pregnancy! MomConnect will send helpful SMS msgs. To stop dial *120*550*1#, for more dial *120*550*7# (Free)."
                         }));
                         api.http.fixtures.add(fixtures_Pilot().not_exists({
                             number: '+27123456789',
@@ -850,7 +850,7 @@ describe("app", function() {
                     api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
                         to_identity: "cb245673-aa41-4302-ac47-00000001002",
                         to_addr: "+27820001001",
-                        content: "Welcome. To stop getting messages dial *120*550*1# or for more services dial *120*550# (No Cost). Standard rates apply when replying to any SMS from MomConnect."
+                        content: "Congratulations on your pregnancy! MomConnect will send helpful SMS msgs. To stop dial *120*550*1#, for more dial *120*550*7# (Free)."
                     }));
                     api.http.fixtures.add(fixtures_Pilot().not_exists({
                         number: '+27123456789',
@@ -1614,7 +1614,7 @@ describe("app", function() {
                         api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
                             to_identity: "registrant-id",
                             to_addr: "+27820001001",
-                            content: "Welcome. To stop getting messages dial *120*550*1# or for more services dial *120*550# (No Cost). Standard rates apply when replying to any SMS from MomConnect."
+                            content: "Congratulations on your pregnancy! MomConnect will send helpful SMS msgs. To stop dial *120*550*1#, for more dial *120*550*7# (Free)."
                         }));
                         api.http.fixtures.add(fixtures_Pilot().not_exists({
                             number: '+27123456789',
@@ -1690,8 +1690,7 @@ describe("app", function() {
                         api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
                             to_identity: "registrant-id",
                             to_addr: "+27820001001",
-                            content: "Welcome. To stop getting messages dial *120*550*1# or for more services dial *120*550# (No Cost). Standard rates apply when replying to any SMS from MomConnect.",
-                            channel: 'pilot-channel'
+                            content: 'Congrats on your pregnancy! MomConnect will send helpful WhatsApp msgs. To stop dial *120*550*1# (Free). To get msgs via SMS, reply "SMS" (std rates apply).'
                         }));
                         api.http.fixtures.add(fixtures_Pilot().exists({
                             number: '+27123456789',
@@ -1767,7 +1766,7 @@ describe("app", function() {
                         api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
                             to_identity: "registrant-id",
                             to_addr: "+27820001001",
-                            content: "Welcome. To stop getting messages dial *120*550*1# or for more services dial *120*550# (No Cost). Standard rates apply when replying to any SMS from MomConnect."
+                            content: "Congratulations on your pregnancy! MomConnect will send helpful SMS msgs. To stop dial *120*550*1#, for more dial *120*550*7# (Free)."
                         }));
                         api.http.fixtures.add(fixtures_Pilot().not_exists({
                             number: '+27123456789',
@@ -1838,7 +1837,7 @@ describe("app", function() {
                         api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
                             to_identity: "registrant-id",
                             to_addr: "+27820001001",
-                            content: "Welcome. To stop getting messages dial *120*550*1# or for more services dial *120*550# (No Cost). Standard rates apply when replying to any SMS from MomConnect."
+                            content: "Congratulations on your pregnancy! MomConnect will send helpful SMS msgs. To stop dial *120*550*1#, for more dial *120*550*7# (Free)."
                         }));
                         api.http.fixtures.add(fixtures_Pilot().not_exists({
                             number: '+27123456789',

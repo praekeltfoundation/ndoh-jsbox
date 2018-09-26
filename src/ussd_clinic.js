@@ -151,21 +151,15 @@ go.app = function() {
         };
 
         self.send_redial_sms = function() {
-            return self
-                .get_channel()
-                .then(function(channel) {
-                    return ms.
-                        create_outbound(
-                            self.im.user.answers.operator.id,
-                            self.im.user.answers.operator_msisdn,
-                            self.im.user.i18n($(
-                                "Please dial back in to {{ USSD_number }} to complete the pregnancy registration."
-                            ).context({
-                                USSD_number: self.format_ussd_code(channel, self.im.config.channel)
-                            })), {
-                                channel: channel
-                            });
-                });
+            return ms.create_outbound(
+                self.im.user.answers.operator.id,
+                self.im.user.answers.operator_msisdn,
+                self.im.user.i18n($(
+                    "Please dial back in to {{ USSD_number }} to complete the pregnancy registration."
+                ).context({
+                    USSD_number: self.im.config.channel
+                }))
+            );
         };
 
         self.number_opted_out = function(identity, msisdn) {
@@ -288,34 +282,25 @@ go.app = function() {
             return registration_info;
         };
 
-        self.format_ussd_code = function (channel, ussd_code) {
-            // Prevent *123*345# from getting printed as bold text
-            // in the phone client
-            if(channel == "WHATSAPP") {
-                return "```" + ussd_code + "```";
-            }
-            return ussd_code;
-        };
-
         self.send_registration_thanks = function() {
-            return self
-                .get_channel()
-                .then(function(channel) {
-                    return ms.
-                        create_outbound(
-                            self.im.user.answers.registrant.id,
-                            self.im.user.answers.registrant_msisdn,
-                            self.im.user.i18n($(
-                                "Welcome. To stop getting messages dial {{optout_channel}} or for more " +
-                                "services dial {{public_channel}} (No Cost). Standard rates apply " +
-                                "when replying to any SMS from MomConnect."
-                            ).context({
-                                public_channel: self.format_ussd_code(channel, self.im.config.public_channel),
-                                optout_channel: self.format_ussd_code(channel, self.im.config.optout_channel),
-                            })), {
-                                channel: channel
-                            });
-                });
+            var whatsapp_content = self.im.user.i18n($(
+                "Congrats on your pregnancy! MomConnect will send helpful WhatsApp msgs. " +
+                'To stop dial {{optout_channel}} (Free). To get msgs via SMS, reply "SMS" (std rates apply).'
+            ).context({
+                optout_channel: self.im.config.optout_channel
+            }));
+            var sms_content = self.im.user.i18n($(
+                "Congratulations on your pregnancy! MomConnect will send helpful SMS msgs. " +
+                "To stop dial {{optout_channel}}, for more dial {{popi_channel}} (Free)."
+            ).context({
+                optout_channel: self.im.config.optout_channel,
+                popi_channel: self.im.config.popi_channel
+            }));
+            return ms.create_outbound(
+                self.im.user.answers.registrant.id,
+                self.im.user.answers.registrant_msisdn,
+                self.im.user.answers.registered_on_whatsapp ? whatsapp_content : sms_content
+            );
         };
 
         self.add = function(name, creator) {
@@ -528,18 +513,6 @@ go.app = function() {
                 }
             });
         });
-
-        self.get_channel = function() {
-            var pilot_config = self.im.config.pilot || {};
-            return Q()
-                .then(function () {
-                    if(self.im.user.answers.registered_on_whatsapp) {
-                        return pilot_config.channel;
-                    }
-
-                    return self.im.config.services.message_sender.channel;
-                });
-        };
 
         self.is_valid_recipient_for_pilot = function (default_params) {
             var pilot_config = self.im.config.pilot || {};
