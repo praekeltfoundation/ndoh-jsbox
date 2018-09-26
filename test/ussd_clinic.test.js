@@ -1638,7 +1638,10 @@ describe("app", function() {
                     .setup.user.answer('mom_dob', '1951-01-02')
                     .input('4')
                     .check.interaction({
-                        state: "state_end_success"
+                        state: "state_end_success",
+                        reply: (
+                            "You're done! This number 0820001001 will now get helpful messages about her pregnancy on " +
+                            "SMS. Thanks for signing up to MomConnect.")
                     })
                     .check(function(api) {
                         var metrics = api.metrics.stores.test_metric_store;
@@ -1711,7 +1714,10 @@ describe("app", function() {
                     .setup.user.answer('mom_dob', '1951-01-02')
                     .input('4')
                     .check.interaction({
-                        state: "state_end_success"
+                        state: "state_end_success",
+                        reply: (
+                            "You're done! This number 0820001001 will now get helpful messages about her pregnancy on " +
+                            "WhatsApp. Thanks for signing up to MomConnect.")
                     })
                     .check(function(api) {
                         var metrics = api.metrics.stores.test_metric_store;

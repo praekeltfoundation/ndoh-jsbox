@@ -1023,10 +1023,14 @@ go.app = function() {
         });
 
         self.add('state_end_success', function(name) {
+            var content = $(
+                "You're done! This number {{msisdn}} will now get helpful messages about her pregnancy on " +
+                "{{channel}}. Thanks for signing up to MomConnect.").context({
+                    msisdn: self.im.user.answers.registrant_msisdn.replace('+27', '0'),
+                    channel: self.im.user.answers.registered_on_whatsapp ? "WhatsApp" : "SMS"
+                });
             return new EndState(name, {
-                text: $('Thank you. The pregnant woman will now ' +
-                        'receive weekly messages about her pregnancy ' +
-                        'from MomConnect.'),
+                text: content,
                 next: 'state_start',
             });
         });
