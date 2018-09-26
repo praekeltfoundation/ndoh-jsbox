@@ -1,21 +1,13 @@
-var _ = require('lodash');
 var vumigo = require("vumigo_v02");
 var assert = require('assert');
 var AppTester = vumigo.AppTester;
 
-var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_IdentityStoreDynamic = require('./fixtures_identity_store_dynamic')();
-var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
 var fixtures_StageBasedMessagingDynamic = require('./fixtures_stage_based_messaging_dynamic')();
-var fixtures_MessageSender = require('./fixtures_message_sender');
 var fixtures_MessageSenderDynamic = require('./fixtures_message_sender_dynamic')();
-var fixtures_Hub = require('./fixtures_hub');
 var fixtures_HubDynamic = require('./fixtures_hub_dynamic')();
-var fixtures_Jembi = require('./fixtures_jembi');
 var fixtures_JembiDynamic = require('./fixtures_jembi_dynamic')();
-var fixtures_ServiceRating = require('./fixtures_service_rating');
 var fixtures_Pilot = require('./fixtures_pilot');
-var test_utils = require('./test_utils');
 
 
 describe("app", function() {
@@ -64,6 +56,12 @@ describe("app", function() {
                             token: 'test StageBasedMessaging'
                         }
                     },
+                    pilot: {
+                        api_url: 'http://pilot.example.org/api/v1/lookups/',
+                        api_token: 'api-token',
+                        api_number: '+27123456789',
+                        channel: 'pilot-channel',
+                    }
                 })
                 .setup(function(api) {
                     api.metrics.stores = {'test_metric_store': {}};
@@ -256,6 +254,11 @@ describe("app", function() {
                                 to_identity: "cb245673-aa41-4302-ac47-00000001002",
                                 content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
                             }));
+                            api.http.fixtures.add(fixtures_Pilot().exists({
+                                number: '+27123456789',
+                                address: '+27820001001',
+                                wait: false
+                            }));
                         })
                         .setup.user.addr('27820001001')
                         .inputs.apply(this, basicSetupInputs)
@@ -282,6 +285,11 @@ describe("app", function() {
                             api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
                                 to_identity: "cb245673-aa41-4302-ac47-00000001002",
                                 content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
+                            }));
+                            api.http.fixtures.add(fixtures_Pilot().exists({
+                                number: '+27123456789',
+                                address: '+27820001001',
+                                wait: false
                             }));
                         })
                         .setup.user.addr('27820001001')
@@ -310,6 +318,11 @@ describe("app", function() {
                                 to_identity: "cb245673-aa41-4302-ac47-00000001002",
                                 content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
                             }));
+                            api.http.fixtures.add(fixtures_Pilot().exists({
+                                number: '+27123456789',
+                                address: '+27820001001',
+                                wait: false
+                            }));
                         })
                         .setup.user.addr('27820001001')
                         .inputs.apply(this, redialInputs)
@@ -336,6 +349,11 @@ describe("app", function() {
                             }));
                             api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
                             api.http.fixtures.add(fixtures_JembiDynamic.momconnect_exists("123456", "test clinic"));
+                            api.http.fixtures.add(fixtures_Pilot().exists({
+                                number: '+27123456789',
+                                address: '+27820001001',
+                                wait: false
+                            }));
                         })
                         .setup.user.addr('27820001001')
                         .inputs.apply(this, testInputs)
@@ -365,6 +383,11 @@ describe("app", function() {
                             api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
                                 to_identity: "cb245673-aa41-4302-ac47-00000001002",
                                 content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
+                            }));
+                            api.http.fixtures.add(fixtures_Pilot().exists({
+                                number: '+27123456789',
+                                address: '+27820001001',
+                                wait: false
                             }));
                         })
                         .setup.user.addr('27820001001')
@@ -398,6 +421,11 @@ describe("app", function() {
                                 to_identity: "cb245673-aa41-4302-ac47-00000001002",
                                 content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
                             }));
+                            api.http.fixtures.add(fixtures_Pilot().exists({
+                                number: '+27123456789',
+                                address: '+27820001001',
+                                wait: false
+                            }));
                         })
                         .setup.user.addr('27820001001')
                         .inputs.apply(this, testInputs)
@@ -429,6 +457,11 @@ describe("app", function() {
                             api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
                                 to_identity: "cb245673-aa41-4302-ac47-00000001002",
                                 content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
+                            }));
+                            api.http.fixtures.add(fixtures_Pilot().exists({
+                                number: '+27123456789',
+                                address: '+27820001001',
+                                wait: false
                             }));
                         })
                         .setup.user.addr('27820001001')
@@ -498,6 +531,16 @@ describe("app", function() {
                             to_identity: "cb245673-aa41-4302-ac47-00000001002",
                             to_addr: "+27820001001",
                             content: "Welcome. To stop getting messages dial *120*550*1# or for more services dial *120*550# (No Cost). Standard rates apply when replying to any SMS from MomConnect."
+                        }));
+                        api.http.fixtures.add(fixtures_Pilot().not_exists({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            wait: false
+                        }));
+                        api.http.fixtures.add(fixtures_Pilot().not_exists({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            wait: true
                         }));
                     })
                     .setup.user.addr('27820001001')
@@ -637,6 +680,11 @@ describe("app", function() {
                                 to_identity: "cb245673-aa41-4302-ac47-00000001002",
                                 content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
                             }));
+                            api.http.fixtures.add(fixtures_Pilot().exists({
+                                number: '+27123456789',
+                                address: '+27820001001',
+                                wait: false
+                            }));
                         })
                         .setup.user.addr("27820001001")
                         .inputs.apply(this, setupInputs.concat([
@@ -662,6 +710,11 @@ describe("app", function() {
                             api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
                                 to_identity: "cb245673-aa41-4302-ac47-00000001002",
                                 content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
+                            }));
+                            api.http.fixtures.add(fixtures_Pilot().exists({
+                                number: '+27123456789',
+                                address: '+27820001001',
+                                wait: false
                             }));
                         })
                         .setup.user.addr("27820001001")
@@ -798,6 +851,16 @@ describe("app", function() {
                         to_identity: "cb245673-aa41-4302-ac47-00000001002",
                         to_addr: "+27820001001",
                         content: "Welcome. To stop getting messages dial *120*550*1# or for more services dial *120*550# (No Cost). Standard rates apply when replying to any SMS from MomConnect."
+                    }));
+                    api.http.fixtures.add(fixtures_Pilot().not_exists({
+                        number: '+27123456789',
+                        address: '+27820001001',
+                        wait: false
+                    }));
+                    api.http.fixtures.add(fixtures_Pilot().not_exists({
+                        number: '+27123456789',
+                        address: '+27820001001',
+                        wait: true
                     }));
                 })
                 .inputs.apply(this, JSON.parse(JSON.stringify(complexInputs)))
@@ -1148,9 +1211,15 @@ describe("app", function() {
                     .setup(function(api) {
                         api.http.fixtures.add(fixtures_JembiDynamic.momconnect_exists(
                             "123456", "test clinic"));
+                        api.http.fixtures.add(fixtures_Pilot().not_exists({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            wait: false
+                        }));
                     })
                     .setup.user.addr("27820001001")
                     .setup.user.state('state_clinic_code')
+                    .setup.user.answer('registrant_msisdn', '+27820001001')
                     .input("123456")
                     .check.interaction({
                         state: "state_due_date_month",
@@ -1537,7 +1606,7 @@ describe("app", function() {
                                 edd: "2014-02-10",
                                 faccode: "123456",
                                 consent: true,
-                                registered_on_whatsapp: true,
+                                registered_on_whatsapp: false,
                                 sa_id_no: "5101025009086",
                                 mom_dob:"1951-01-02"
                             }
@@ -1546,6 +1615,11 @@ describe("app", function() {
                             to_identity: "registrant-id",
                             to_addr: "+27820001001",
                             content: "Welcome. To stop getting messages dial *120*550*1# or for more services dial *120*550# (No Cost). Standard rates apply when replying to any SMS from MomConnect."
+                        }));
+                        api.http.fixtures.add(fixtures_Pilot().not_exists({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            wait: true
                         }));
                     })
                     .setup.user.addr("27820001001")
@@ -1560,6 +1634,79 @@ describe("app", function() {
                     .setup.user.answer('state_clinic_code', '123456')
                     .setup.user.answer('state_consent', 'yes')
                     .setup.user.answer('registered_on_whatsapp', true)
+                    .setup.user.answer('state_sa_id', '5101025009086')
+                    .setup.user.answer('mom_dob', '1951-01-02')
+                    .input('4')
+                    .check.interaction({
+                        state: "state_end_success"
+                    })
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_metric_store;
+                        assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete.transient'].values, [1]);
+                    })
+                    .check.reply.ends_session()
+                    .run();
+                });
+                it("should do a whatsapp registration for whatsapp users", function() {
+                    return tester
+                    .setup(function(api) {
+                        api.http.fixtures.add(fixtures_IdentityStoreDynamic.update({
+                            identity: 'registrant-id',
+                            data: {
+                                id: 'registrant-id',
+                                details: {
+                                    lang_code: "eng_ZA",
+                                    consent: true,
+                                    sa_id_no: "5101025009086",
+                                    mom_dob: "1951-01-02",
+                                    source: "clinic",
+                                    clinic: {},
+                                    last_mc_reg_on: "clinic",
+                                    last_edd: "2014-02-10"
+                                }
+                            }
+                        }));
+                        api.http.fixtures.add(fixtures_HubDynamic.registration({
+                            reg_type: 'whatsapp_prebirth',
+                            registrant_id: 'registrant-id',
+                            data: {
+                                operator_id: "operator-id",
+                                msisdn_registrant: "+27820001001",
+                                msisdn_device: "+27820001002",
+                                id_type: "sa_id",
+                                language: "eng_ZA",
+                                edd: "2014-02-10",
+                                faccode: "123456",
+                                consent: true,
+                                registered_on_whatsapp: true,
+                                sa_id_no: "5101025009086",
+                                mom_dob:"1951-01-02"
+                            }
+                        }));
+                        api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                            to_identity: "registrant-id",
+                            to_addr: "+27820001001",
+                            content: "Welcome. To stop getting messages dial *120*550*1# or for more services dial *120*550# (No Cost). Standard rates apply when replying to any SMS from MomConnect.",
+                            channel: 'pilot-channel'
+                        }));
+                        api.http.fixtures.add(fixtures_Pilot().exists({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            wait: true
+                        }));
+                    })
+                    .setup.user.addr("27820001001")
+                    .setup.user.state('state_language')
+                    .setup.user.answer('operator', {id: 'operator-id'})
+                    .setup.user.answer('registrant', {id: 'registrant-id', details: {}})
+                    .setup.user.answer('registrant_msisdn', '+27820001001')
+                    .setup.user.answer('operator_msisdn', '+27820001002')
+                    .setup.user.answer('state_id_type', 'sa_id')
+                    .setup.user.answer('state_language', 'eng_ZA')
+                    .setup.user.answer('edd', '2014-02-10')
+                    .setup.user.answer('state_clinic_code', '123456')
+                    .setup.user.answer('state_consent', 'yes')
                     .setup.user.answer('state_sa_id', '5101025009086')
                     .setup.user.answer('mom_dob', '1951-01-02')
                     .input('4')
@@ -1606,7 +1753,7 @@ describe("app", function() {
                                 edd: "2014-02-10",
                                 faccode: "123456",
                                 consent: true,
-                                registered_on_whatsapp: true,
+                                registered_on_whatsapp: false,
                                 passport_no: "12345",
                                 passport_origin: "zw"
                             }
@@ -1615,6 +1762,11 @@ describe("app", function() {
                             to_identity: "registrant-id",
                             to_addr: "+27820001001",
                             content: "Welcome. To stop getting messages dial *120*550*1# or for more services dial *120*550# (No Cost). Standard rates apply when replying to any SMS from MomConnect."
+                        }));
+                        api.http.fixtures.add(fixtures_Pilot().not_exists({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            wait: true
                         }));
                     })
                     .setup.user.addr("27820001003")
@@ -1628,7 +1780,6 @@ describe("app", function() {
                     .setup.user.answer('edd', '2014-02-10')
                     .setup.user.answer('state_clinic_code', '123456')
                     .setup.user.answer('state_consent', 'yes')
-                    .setup.user.answer('registered_on_whatsapp', true)
                     .setup.user.answer('state_passport_no', '12345')
                     .setup.user.answer('state_passport_origin', 'zw')
                     .input('4')
@@ -1674,7 +1825,7 @@ describe("app", function() {
                                 edd: "2014-02-10",
                                 faccode: "123456",
                                 consent: true,
-                                registered_on_whatsapp: true,
+                                registered_on_whatsapp: false,
                                 mom_dob: '1981-01-14'
                             }
                         }));
@@ -1682,6 +1833,11 @@ describe("app", function() {
                             to_identity: "registrant-id",
                             to_addr: "+27820001001",
                             content: "Welcome. To stop getting messages dial *120*550*1# or for more services dial *120*550# (No Cost). Standard rates apply when replying to any SMS from MomConnect."
+                        }));
+                        api.http.fixtures.add(fixtures_Pilot().not_exists({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            wait: true
                         }));
                     })
                     .setup.user.addr("27820001001")
@@ -1695,7 +1851,6 @@ describe("app", function() {
                     .setup.user.answer('edd', '2014-02-10')
                     .setup.user.answer('state_clinic_code', '123456')
                     .setup.user.answer('state_consent', 'yes')
-                    .setup.user.answer('registered_on_whatsapp', true)
                     .setup.user.answer('mom_dob', '1981-01-14')
                     .input('4')
                     .check.interaction({
@@ -1713,484 +1868,5 @@ describe("app", function() {
 
         });
 
-    });
-
-    describe('with pilot opt-in config', function () {
-    var app,
-        tester,
-        sessionArgs;
-
-        beforeEach(function() {
-
-            app = new go.app.GoNDOH();
-
-            tester = new AppTester(app);
-
-            tester
-                .setup.char_limit(183)
-                .setup.config.app({
-                    name: 'ussd_clinic',
-                    env: 'test',
-                    metric_store: 'test_metric_store',
-                    testing_today: "2014-04-04 07:07:07",
-                    testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',
-                    logging: "off",
-                    no_timeout_redirects: ["state_start"],
-                    channel: "*120*550*2#",
-                    public_channel: "*120*550#",
-                    optout_channel: "*120*550*1#",
-                    jembi: {
-                        username: 'foo',
-                        password: 'bar',
-                        url_json: 'http://test/v2/json/'
-                    },
-                    services: {
-                        identity_store: {
-                            url: 'http://is/api/v1/',
-                            token: 'test IdentityStore'
-                        },
-                        hub: {
-                            url: 'http://hub/api/v1/',
-                            token: 'test Hub'
-                        },
-                        message_sender: {
-                            url: 'http://ms/api/v1/',
-                            token: 'test MessageSender',
-                            channel: 'default-channel',
-                        },
-                        stage_based_messaging: {
-                            url: 'http://sbm/api/v1/',
-                            token: 'test StageBasedMessaging'
-                        }
-                    },
-                    pilot: {
-                        facilitycode_whitelist: [],
-                        api_url: 'http://pilot.example.org/api/v1/lookups/',
-                        api_token: 'api-token',
-                        api_number: '+27123456789',
-                        channel: 'pilot-channel',
-                    }
-                })
-                .setup(function(api) {
-                    api.metrics.stores = {'test_metric_store': {}};
-                })
-                .setup(function(api) {
-                    // add fixtures for services used
-                    fixtures_Hub().forEach(api.http.fixtures.add); // fixtures 0 - 49
-                    fixtures_StageBasedMessaging().forEach(api.http.fixtures.add); // 50 - 99
-                    fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
-                    fixtures_ServiceRating().forEach(api.http.fixtures.add); // 150 - 169
-                    fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
-                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 ->
-                });
-
-            sessionArgs = [
-                {session_event: 'new'}  // dial in
-                , "1"  // state_start - yes
-                , "1"  // state_consent - yes
-                , "123456"  // state_clinic_code
-                , "2"  // state_due_date_month - may
-                , "10"  // state_due_date_day
-                , "3"  // state_id_type - none
-                , "1981"  // state_birth_year
-                , "1"  // state_birth_month - january
-                , "14"  // state_birth_day
-            ];
-
-        });
-
-        it('should trigger the pilot is we\'re not working with a whitelist', function() {
-            var pilot_fixture;
-            return tester
-                .setup(function(api) {
-                    // force the threshold to accept everyone
-                    var pilot_config = api.config.store.config.pilot;
-                    pilot_config.use_whitelist = false;
-                    test_utils.only_use_fixtures(api, {
-                        numbers: [
-                            50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
-                            174, // Jembi Clinic Code validation - code 123456
-                            180, // 'get.is.msisdn.27820001001'
-                            183, // 'post.is.msisdn.27820001001'
-                        ],
-                    });
-
-                    // API call for checking pilot readiness without
-                    // waiting for results
-                    pilot_fixture = api.http.fixtures.add(
-                        fixtures_Pilot().exists({
-                            number: '+27123456789',
-                            address: '+27820001001',
-                            wait: false
-                        }));
-                })
-                .setup.user.addr("27820001001")
-                .inputs(
-                    {session_event: 'new'}  // dial in
-                    , "1"  // state_start - yes
-                    , "1"  // state_consent - yes
-                    , "123456"  // state_clinic_code
-                )
-                .check.interaction({
-                    state: "state_due_date_month",
-                    reply: [
-                        'Please select the month when the baby is due:',
-                        '1. Apr',
-                        '2. May',
-                        '3. Jun',
-                        '4. Jul',
-                        '5. Aug',
-                        '6. Sep',
-                        '7. Oct',
-                        '8. Nov',
-                        '9. Dec',
-                        '10. Jan'
-                    ].join('\n')
-                })
-                .check(function (api, im, app) {
-                    // Make sure the pilot fixture was actually called
-                    assert.equal(pilot_fixture.uses, 1);
-                })
-                .run();
-        });
-
-        it('should trigger the pilot check for white listed facility codes', function() {
-            var pilot_fixture;
-            return tester
-                .setup(function(api) {
-                    // force the threshold to accept everyone
-                    var pilot_config = api.config.store.config.pilot;
-                    pilot_config.facilitycode_whitelist = [
-                        123456,
-                    ];
-                    test_utils.only_use_fixtures(api, {
-                        numbers: [
-                            50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
-                            174, // Jembi Clinic Code validation - code 123456
-                            180, // 'get.is.msisdn.27820001001'
-                            183, // 'post.is.msisdn.27820001001'
-                        ],
-                    });
-
-                    // API call for checking pilot readiness without
-                    // waiting for results
-                    pilot_fixture = api.http.fixtures.add(
-                        fixtures_Pilot().exists({
-                            number: '+27123456789',
-                            address: '+27820001001',
-                            wait: false
-                        }));
-                })
-                .setup.user.addr("27820001001")
-                .inputs(
-                    {session_event: 'new'}  // dial in
-                    , "1"  // state_start - yes
-                    , "1"  // state_consent - yes
-                    , "123456"  // state_clinic_code
-                )
-                .check.interaction({
-                    state: "state_due_date_month",
-                    reply: [
-                        'Please select the month when the baby is due:',
-                        '1. Apr',
-                        '2. May',
-                        '3. Jun',
-                        '4. Jul',
-                        '5. Aug',
-                        '6. Sep',
-                        '7. Oct',
-                        '8. Nov',
-                        '9. Dec',
-                        '10. Jan'
-                    ].join('\n')
-                })
-                .check(function (api, im, app) {
-                    // Make sure the pilot fixture was actually called
-                    assert.equal(pilot_fixture.uses, 1);
-                })
-                .run();
-        });
-
-        it('should not trigger the pilot check for facility codes that are not white listed', function() {
-            var pilot_fixture;
-            return tester
-                .setup(function(api) {
-                    // force the threshold to accept everyone
-                    var pilot_config = api.config.store.config.pilot;
-                    // Allow no one
-                    pilot_config.facilitycode_whitelist = [];
-                    test_utils.only_use_fixtures(api, {
-                        numbers: [
-                            50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
-                            174, // Jembi Clinic Code validation - code 123456
-                            180, // 'get.is.msisdn.27820001001'
-                            183, // 'post.is.msisdn.27820001001'
-                        ],
-                    });
-
-                    // API call for checking pilot readiness without
-                    // waiting for results
-                    pilot_fixture = api.http.fixtures.add(
-                        fixtures_Pilot().exists({
-                            number: '+27123456789',
-                            address: '+27820001001',
-                            wait: false
-                        }));
-                })
-                .setup.user.addr("27820001001")
-                .inputs(
-                    {session_event: 'new'}  // dial in
-                    , "1"  // state_start - yes
-                    , "1"  // state_consent - yes
-                    , "123456"  // state_clinic_code
-                )
-                .check.interaction({
-                    state: "state_due_date_month",
-                    reply: [
-                        'Please select the month when the baby is due:',
-                        '1. Apr',
-                        '2. May',
-                        '3. Jun',
-                        '4. Jul',
-                        '5. Aug',
-                        '6. Sep',
-                        '7. Oct',
-                        '8. Nov',
-                        '9. Dec',
-                        '10. Jan'
-                    ].join('\n')
-                })
-                .check(function (api, im, app) {
-                    // Make sure the pilot fixture was not called
-                    assert.equal(pilot_fixture.uses, 0);
-                })
-                .run();
-        });
-
-        it('should trigger the pilot check for people acceptable for the pilot', function() {
-            var async_pilot_fixture, sync_pilot_fixture;
-            return tester
-                .setup(function(api) {
-                    // force the threshold to accept everyone
-                    var pilot_config = api.config.store.config.pilot;
-                    pilot_config.facilitycode_whitelist = [
-                        123456,
-                    ];
-                    test_utils.only_use_fixtures(api, {
-                        numbers: [
-                            50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
-                            174, // Jembi Clinic Code validation - code 123456
-                            180, // 'get.is.msisdn.27820001001'
-                            183, // 'post.is.msisdn.27820001001'
-                        ],
-                    });
-
-                    // API call for checking pilot readiness
-                    async_pilot_fixture = api.http.fixtures.add(
-                        fixtures_Pilot().exists({
-                            number: '+27123456789',
-                            address: '+27820001001',
-                            wait: false
-                        }));
-                    sync_pilot_fixture = api.http.fixtures.add(
-                        fixtures_Pilot().exists({
-                            number: '+27123456789',
-                            address: '+27820001001',
-                            wait: true
-                        }));
-                })
-                .setup.user.addr("27820001001")
-                .inputs.apply(this, sessionArgs)
-                .check.interaction({
-                    state: "state_pilot",
-                    reply: [
-                        'How would the pregnant mother like to receive the messages?',
-                        '1. WhatsApp',
-                        '2. SMS',
-                    ].join('\n')
-                })
-                .check(function (api, im, app) {
-                    // Make sure the pilot fixture was called
-                    assert.equal(async_pilot_fixture.uses, 1);
-                    assert.equal(sync_pilot_fixture.uses, 1);
-                })
-                .run();
-        });
-
-        it('should not trigger the pilot check for people acceptable for the pilot', function() {
-            var async_pilot_fixture, sync_pilot_fixture;
-            return tester
-                .setup(function(api) {
-                    // force the threshold to accept everyone
-                    var pilot_config = api.config.store.config.pilot;
-                    pilot_config.facilitycode_whitelist = [
-                        123456,
-                    ];
-                    test_utils.only_use_fixtures(api, {
-                        numbers: [
-                            50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
-                            174, // Jembi Clinic Code validation - code 123456
-                            180, // 'get.is.msisdn.27820001001'
-                            183, // 'post.is.msisdn.27820001001'
-                        ],
-                    });
-
-                    // API call for checking pilot readiness
-                    async_pilot_fixture = api.http.fixtures.add(
-                        fixtures_Pilot().exists({
-                            number: '+27123456789',
-                            address: '+27820001001',
-                            wait: false
-                        }));
-                    sync_pilot_fixture = api.http.fixtures.add(
-                        fixtures_Pilot().not_exists({
-                            number: '+27123456789',
-                            address: '+27820001001',
-                            wait: true
-                        }));
-                })
-                .setup.user.addr("27820001001")
-                .inputs.apply(this, sessionArgs)
-                .check.interaction({
-                    state: "state_language"
-                })
-                .check(function (api, im, app) {
-                    // Make sure the pilot fixture was called
-                    assert.equal(async_pilot_fixture.uses, 1);
-                    assert.equal(sync_pilot_fixture.uses, 1);
-                })
-                .run();
-        });
-
-        it('should continue to language for people acceptable for the pilot', function() {
-            var async_pilot_fixture, sync_pilot_fixture;
-            return tester
-                .setup(function(api) {
-                    // force the threshold to accept everyone
-                    var pilot_config = api.config.store.config.pilot;
-                    pilot_config.facilitycode_whitelist = [
-                        123456,
-                    ];
-                    test_utils.only_use_fixtures(api, {
-                        numbers: [
-                            50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
-                            174, // Jembi Clinic Code validation - code 123456
-                            180, // 'get.is.msisdn.27820001001'
-                            183, // 'post.is.msisdn.27820001001'
-                        ],
-                    });
-
-                    // API call for checking pilot readiness
-                    async_pilot_fixture = api.http.fixtures.add(
-                        fixtures_Pilot().exists({
-                            number: '+27123456789',
-                            address: '+27820001001',
-                            wait: false
-                        }));
-                    sync_pilot_fixture = api.http.fixtures.add(
-                        fixtures_Pilot().exists({
-                            number: '+27123456789',
-                            address: '+27820001001',
-                            wait: true
-                        }));
-                })
-                .setup.user.addr("27820001001")
-                // Add '1' for 'state_pilot - opt in'
-                .inputs.apply(this, sessionArgs.concat(['1']))
-                .check.interaction({
-                    state: "state_language"
-                })
-                .check(function (api, im, app) {
-                    // Make sure the pilot fixture was called
-                    assert.equal(async_pilot_fixture.uses, 1);
-                    assert.equal(sync_pilot_fixture.uses, 1);
-                })
-                .run();
-        });
-
-        it("should submit the correct reg-type when selecting the pilot", function() {
-            var explicit_fixtures = [];
-            return tester
-                .setup(function(api) {
-                    // force the threshold to accept everyone
-                    var pilot_config = api.config.store.config.pilot;
-                    pilot_config.facilitycode_whitelist = [
-                        123456,
-                    ];
-                    test_utils.only_use_fixtures(api, {
-                        numbers: [
-                            50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
-                            174, // Jembi Clinic Code validation - code 123456
-                            180, // 'get.is.msisdn.27820001001'
-                            183, // 'post.is.msisdn.27820001001',
-                        ],
-                    });
-
-                    explicit_fixtures = [
-                        // API call for checking pilot readiness
-                        api.http.fixtures.add(
-                            fixtures_Pilot().exists({
-                                number: '+27123456789',
-                                address: '+27820001001',
-                                wait: false
-                        })),
-                        api.http.fixtures.add(
-                            fixtures_Pilot().exists({
-                                number: '+27123456789',
-                                address: '+27820001001',
-                                wait: true
-                        })),
-                        api.http.fixtures.add(
-                            fixtures_Pilot().patch_identity({
-                                identity: 'cb245673-aa41-4302-ac47-00000001001',
-                                address: '+27820001001',
-                                language: 'eng_ZA',
-                                details: {
-                                    clinic: {
-                                        redial_sms_sent: false
-                                    }
-                                }
-                            }
-                        )),
-                        api.http.fixtures.add(fixtures_Pilot().post_registration({
-                            identity: 'cb245673-aa41-4302-ac47-00000001001',
-                            address: '27820001001',
-                            reg_type: 'whatsapp_prebirth',
-                            language: 'eng_ZA',
-                            data: {
-                                id_type: 'none',
-                                edd: '2014-05-10',
-                                faccode: '123456',
-                                consent: true,
-                                mom_dob: '1981-01-14',
-                                registered_on_whatsapp: true,
-                            }
-                        })),
-                        api.http.fixtures.add(fixtures_Pilot().post_outbound_message({
-                            identity: 'cb245673-aa41-4302-ac47-00000001001',
-                            address: '+27820001001',
-                            channel: 'pilot-channel',
-                            content: [
-                                'Welcome. To stop getting messages dial *120*550*1# or for more services dial *120*550# (No Cost). ',
-                                'Standard rates apply when replying to any SMS from MomConnect.'
-                            ].join('')
-                        }))
-                    ];
-                })
-                .setup.user.addr("27820001001")
-                // Add '1' for 'state_pilot - opt in', '4' for 'state_language - english'
-                .inputs.apply(this, sessionArgs.concat(['1', '4']))
-                .check.interaction({
-                    state: "state_end_success"
-                })
-                .check.reply.ends_session()
-                .check(function(api, im, app) {
-                    // Make sure we're using all fixtures we're expecting to use
-                    _.forEach(explicit_fixtures, function(fixture) {
-                        assert.ok(fixture.uses > 0);
-                    });
-                })
-                .run();
-            });
     });
 });
