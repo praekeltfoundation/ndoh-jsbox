@@ -60,6 +60,13 @@ describe("app", function() {
                             token: 'test StageBasedMessaging'
                         }
                     },
+                    pilot: {
+                        facilitycode_whitelist: [],
+                        api_url: 'http://pilot.example.org/api/v1/lookups/',
+                        api_token: 'api-token',
+                        api_number: '+27123456789',
+                        channel: 'pilot-channel',
+                    }
                 })
                 .setup(function(api) {
                     api.metrics.stores = {'test_metric_store': {}};
@@ -345,6 +352,26 @@ describe("app", function() {
             it("should increment metric according to number of sessions", function() {
                 return tester
                     .setup.user.addr('27820001001')
+                    .setup(function(api) {
+                        test_utils.only_use_fixtures(api, {
+                            numbers: [
+                                4, // register cb245673-aa41-4302-ac47-00000001001
+                                50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
+                                116, // 116: create outbound message for cb245673-aa41-4302-ac47-00000001001
+                                123, // create outbound message (clinic dialback)
+                                174, // Jembi Clinic Code validation - code 123456
+                                180, // 'get.is.msisdn.27820001001'
+                                183, // 'post.is.msisdn.27820001001'
+                                204, // update identity cb245673-aa41-4302-ac47-00000001001
+                            ]
+                        });
+                        // dynamic fixture
+                        api.http.fixtures.add(fixtures_Pilot().not_exists({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            wait: true
+                        }));
+                    })
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , "1"  // state_start - yes
@@ -367,9 +394,6 @@ describe("app", function() {
                     .check(function(api) {
                         var metrics = api.metrics.stores.test_metric_store;
                         assert.deepEqual(metrics['test.ussd_clinic.avg.sessions_to_register'].values, [2]);
-                    })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [4, 50, 116, 123, 174, 180, 183, 204]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -536,11 +560,28 @@ describe("app", function() {
 
                 return tester
                 .setup.user.addr("27820001001")
+                .setup(function(api) {
+                    test_utils.only_use_fixtures(api, {
+                        numbers: [
+                            4, // register cb245673-aa41-4302-ac47-00000001001
+                            50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
+                            116, // 116: create outbound message for cb245673-aa41-4302-ac47-00000001001
+                            123, // create outbound message (clinic dialback)
+                            174, // Jembi Clinic Code validation - code 123456
+                            180, // 'get.is.msisdn.27820001001'
+                            183, // 'post.is.msisdn.27820001001'
+                            204, // update identity cb245673-aa41-4302-ac47-00000001001
+                        ]
+                    });
+                    // dynamic fixture
+                    api.http.fixtures.add(fixtures_Pilot().not_exists({
+                        number: '+27123456789',
+                        address: '+27820001001',
+                        wait: true
+                    }));
+                })
                 .inputs.apply(this, JSON.parse(JSON.stringify(complexInputs)))
                 .check.user.answer("redial_sms_sent", true)
-                .check(function(api) {
-                    utils.check_fixtures_used(api, [4, 50, 116, 123, 174, 180, 183, 204]);
-                })
                 .run();
             });
         });
@@ -1042,6 +1083,25 @@ describe("app", function() {
                 it("should go to state_language", function() {
                     return tester
                     .setup.user.addr("27820001001")
+                    .setup(function(api) {
+                        test_utils.only_use_fixtures(api, {
+                            numbers: [
+                                4, // register cb245673-aa41-4302-ac47-00000001001
+                                50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
+                                116, // 116: create outbound message for cb245673-aa41-4302-ac47-00000001001
+                                123, // create outbound message (clinic dialback)
+                                174, // Jembi Clinic Code validation - code 123456
+                                180, // 'get.is.msisdn.27820001001'
+                                183, // 'post.is.msisdn.27820001001'
+                            ]
+                        });
+                        // dynamic fixture
+                        api.http.fixtures.add(fixtures_Pilot().not_exists({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            wait: true
+                        }));
+                    })
                     .inputs.apply(this, setupInputs.concat('5101015009088')) // Add to the inputs for 'state_sa_id'
                     .check.interaction({
                         state: "state_language"
@@ -1110,6 +1170,25 @@ describe("app", function() {
                 it("should go to state_language", function() {
                     return tester
                     .setup.user.addr("27820001001")
+                    .setup(function(api) {
+                        test_utils.only_use_fixtures(api, {
+                            numbers: [
+                                4, // register cb245673-aa41-4302-ac47-00000001001
+                                50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
+                                116, // 116: create outbound message for cb245673-aa41-4302-ac47-00000001001
+                                123, // create outbound message (clinic dialback)
+                                174, // Jembi Clinic Code validation - code 123456
+                                180, // 'get.is.msisdn.27820001001'
+                                183, // 'post.is.msisdn.27820001001'
+                            ]
+                        });
+                        // dynamic fixture
+                        api.http.fixtures.add(fixtures_Pilot().not_exists({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            wait: true
+                        }));
+                    })
                     .inputs.apply(this, setupInputs.concat(['12345'])) // Add to the inputs for 'state_passport_no'
                     .check.interaction({
                         state: "state_language"
@@ -1239,6 +1318,25 @@ describe("app", function() {
                     // 14 January 1981 is a valid date
                     return tester
                     .setup.user.addr("27820001001")
+                    .setup(function(api) {
+                        test_utils.only_use_fixtures(api, {
+                            numbers: [
+                                4, // register cb245673-aa41-4302-ac47-00000001001
+                                50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
+                                116, // 116: create outbound message for cb245673-aa41-4302-ac47-00000001001
+                                123, // create outbound message (clinic dialback)
+                                174, // Jembi Clinic Code validation - code 123456
+                                180, // 'get.is.msisdn.27820001001'
+                                183, // 'post.is.msisdn.27820001001'
+                            ]
+                        });
+                        // dynamic fixture
+                        api.http.fixtures.add(fixtures_Pilot().not_exists({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            wait: true
+                        }));
+                    })
                     .inputs.apply(this, setupInputs.concat(['1', '14']))
                     .check.interaction({
                         state: "state_language"
@@ -1292,13 +1390,28 @@ describe("app", function() {
 
                     return tester
                     .setup.user.addr("27820001001")
+                    .setup(function(api) {
+                        test_utils.only_use_fixtures(api, {
+                            numbers: [
+                                2, // register cb245673-aa41-4302-ac47-00000001001
+                                50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
+                                116, // 116: create outbound message for cb245673-aa41-4302-ac47-00000001001
+                                174, // Jembi Clinic Code validation - code 123456
+                                180, // 'get.is.msisdn.27820001001'
+                                183, // 'post.is.msisdn.27820001001'
+                                187, // update identity cb245673-aa41-4302-ac47-00000001001
+                            ]
+                        });
+                        // dynamic fixture
+                        api.http.fixtures.add(fixtures_Pilot().not_exists({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            wait: true
+                        }));
+                    })
                     .inputs.apply(this, testInputs)
                     .check.interaction({
                         state: "state_end_success"
-                    })
-
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [2, 50, 116, 174, 180, 183, 187]);
                     })
                     .check(function(api) {
                         var metrics = api.metrics.stores.test_metric_store;
@@ -1329,6 +1442,28 @@ describe("app", function() {
                 it("should go to state_end_success", function() {
                     return tester
                     .setup.user.addr("27820001003")
+                    .setup(function(api) {
+                        test_utils.only_use_fixtures(api, {
+                            numbers: [
+                                3, // register cb245673-aa41-4302-ac47-00000001001
+                                50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
+                                52, // get active subscriptions for cb245673-aa41-4302-ac47-00000001003
+                                54, // get messagesets
+                                116, // 116: create outbound message for cb245673-aa41-4302-ac47-00000001001
+                                174, // Jembi Clinic Code validation - code 123456
+                                180, // 'get.is.msisdn.27820001001'
+                                182, // get identity by msisdn +27820001003
+                                183, // 'post.is.msisdn.27820001001'
+                                188, // update identity cb245673-aa41-4302-ac47-00000001001
+                            ]
+                        });
+                        // dynamic fixture
+                        api.http.fixtures.add(fixtures_Pilot().not_exists({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            wait: true
+                        }));
+                    })
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , "2"  // state_start - no
@@ -1372,9 +1507,6 @@ describe("app", function() {
                         assert.deepEqual(metrics['test.ussd_clinic.registrations_started'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_clinic.avg.sessions_to_register'].values, [1]);
                     })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [3, 50, 52, 54, 116, 174, 180, 182, 183, 188]);
-                    })
                     .check.reply.ends_session()
                     .run();
                 });
@@ -1391,6 +1523,25 @@ describe("app", function() {
 
                     return tester
                     .setup.user.addr("27820001001")
+                    .setup(function(api) {
+                        test_utils.only_use_fixtures(api, {
+                            numbers: [
+                                4, // register cb245673-aa41-4302-ac47-00000001001
+                                50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
+                                116, // 116: create outbound message for cb245673-aa41-4302-ac47-00000001001
+                                174, // Jembi Clinic Code validation - code 123456
+                                180, // 'get.is.msisdn.27820001001'
+                                183, // 'post.is.msisdn.27820001001'
+                                189, // update identity cb245673-aa41-4302-ac47-00000001001
+                            ]
+                        });
+                        // dynamic fixture
+                        api.http.fixtures.add(fixtures_Pilot().not_exists({
+                            number: '+27123456789',
+                            address: '+27820001001',
+                            wait: true
+                        }));
+                    })
                     .inputs.apply(this, testInputs)
                     .check.interaction({
                         state: "state_end_success"
@@ -1420,9 +1571,6 @@ describe("app", function() {
                         assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete.transient'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_clinic.registrations_started'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_clinic.avg.sessions_to_register'].values, [1]);
-                    })
-                    .check(function(api) {
-                        utils.check_fixtures_used(api, [4, 50, 116, 174, 180, 183, 189]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -1720,11 +1868,15 @@ describe("app", function() {
                 .setup.user.addr("27820001001")
                 .inputs.apply(this, sessionArgs)
                 .check.interaction({
-                    state: "state_pilot",
+                    state: "state_language",
                     reply: [
-                        'How would the pregnant mother like to receive the messages?',
-                        '1. WhatsApp',
-                        '2. SMS',
+                        'Please select the language that the mother would like to get messages in:',
+                        '1. isiZulu',
+                        '2. isiXhosa',
+                        '3. Afrikaans',
+                        '4. English',
+                        '5. Sesotho sa Leboa',
+                        '6. More'
                     ].join('\n')
                 })
                 .check(function (api, im, app) {
@@ -1813,8 +1965,7 @@ describe("app", function() {
                         }));
                 })
                 .setup.user.addr("27820001001")
-                // Add '1' for 'state_pilot - opt in'
-                .inputs.apply(this, sessionArgs.concat(['1']))
+                .inputs.apply(this, sessionArgs)
                 .check.interaction({
                     state: "state_language"
                 })
@@ -1858,18 +2009,16 @@ describe("app", function() {
                                 address: '+27820001001',
                                 wait: true
                         })),
-                        api.http.fixtures.add(
-                            fixtures_Pilot().patch_identity({
-                                identity: 'cb245673-aa41-4302-ac47-00000001001',
-                                address: '+27820001001',
-                                language: 'eng_ZA',
-                                details: {
-                                    clinic: {
-                                        redial_sms_sent: false
-                                    }
+                        api.http.fixtures.add(fixtures_Pilot().patch_identity({
+                            identity: 'cb245673-aa41-4302-ac47-00000001001',
+                            address: '+27820001001',
+                            language: 'eng_ZA',
+                            details: {
+                                clinic: {
+                                    redial_sms_sent: false
                                 }
                             }
-                        )),
+                        })),
                         api.http.fixtures.add(fixtures_Pilot().post_registration({
                             identity: 'cb245673-aa41-4302-ac47-00000001001',
                             address: '27820001001',
@@ -1896,8 +2045,8 @@ describe("app", function() {
                     ];
                 })
                 .setup.user.addr("27820001001")
-                // Add '1' for 'state_pilot - opt in', '4' for 'state_language - english'
-                .inputs.apply(this, sessionArgs.concat(['1', '4']))
+                // Add '4' for 'state_language - english'
+                .inputs.apply(this, sessionArgs.concat(['4']))
                 .check.interaction({
                     state: "state_end_success"
                 })
