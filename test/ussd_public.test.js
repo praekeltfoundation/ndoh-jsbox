@@ -3,9 +3,11 @@ var AppTester = vumigo.AppTester;
 var assert = require('assert');
 
 var fixtures_IdentityStore = require('./fixtures_identity_store');
+var fixtures_IdentityStoreDynamic = require('./fixtures_identity_store_dynamic')();
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
 var fixtures_MessageSender = require('./fixtures_message_sender');
 var fixtures_Hub = require('./fixtures_hub');
+var fixtures_HubDynamic = require('./fixtures_hub_dynamic')();
 var fixtures_Jembi = require('./fixtures_jembi');
 var fixtures_ServiceRating = require('./fixtures_service_rating');
 var fixtures_Pilot = require('./fixtures_pilot');
@@ -135,7 +137,7 @@ describe("ussd_public app", function() {
                         assert.deepEqual(metrics['test.ussd_public.avg.sessions_to_register'].values, [2]);
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [17, 50, 117, 180, 183, 198]);
+                        utils.check_fixtures_used(api, [17, 117, 180, 183, 198]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -279,7 +281,7 @@ describe("ussd_public app", function() {
                 )
                 .check.user.answer("redial_sms_sent", false)  // session closed on non-dialback state
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [17, 50, 117, 180, 183, 198]);
+                    utils.check_fixtures_used(api, [17, 117, 180, 183, 198]);
                 })
                 .run();
             });
@@ -529,7 +531,7 @@ describe("ussd_public app", function() {
                             assert.deepEqual(metrics['test.ussd_public.avg.sessions_to_register'].values, [1]);
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [17, 50, 117, 180, 183, 198]);
+                            utils.check_fixtures_used(api, [17, 117, 180, 183, 198]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -599,7 +601,7 @@ describe("ussd_public app", function() {
                         state: "state_end_success"
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [18, 55, 118, 184, 199, 238]);
+                        utils.check_fixtures_used(api, [18, 118, 184, 199, 238]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -762,83 +764,6 @@ describe("ussd_public app", function() {
                 });
         });
 
-        it('should trigger the pilot when hitting the threshold', function() {
-            return tester
-                .setup(function(api) {
-                    // force the threshold to accept everyone
-                    var pilot_config = api.config.store.config.pilot;
-                    pilot_config.randomisation_threshold = 1.0;
-                    api.http.fixtures.add(
-                        fixtures_Pilot().exists({
-                            number: '+27123456789',
-                            address: '+27820001001',
-                            wait: false,
-                        }));
-
-                    api.http.fixtures.add(
-                        fixtures_Pilot().exists({
-                            number: '+27123456789',
-                            address: '+27820001001',
-                            wait: true,
-                        }));
-                })
-                .setup.user.addr("27820001001")
-                .inputs(
-                    {session_event: "new"}
-                    , "1"  // state_language - zul_ZA
-                    , "1"  // state_suspect_pregnancy - yes
-                    , "1"  // state_consent - yes
-                )
-                .check.interaction({
-                    state: "state_pilot",
-                    reply: [
-                        'How would you like to receive messages about you and your baby?',
-                        '1. WhatsApp',
-                        '2. SMS'
-                    ].join('\n')
-                })
-                .run();
-        });
-
-
-        it('should trigger the pilots eng_ZA text variations when hitting the threshold', function() {
-            return tester
-                .setup(function(api) {
-                    // force the threshold to accept everyone
-                    var pilot_config = api.config.store.config.pilot;
-                    pilot_config.randomisation_threshold = 1.0;
-                    pilot_config.nudge_threshold = 1.0;
-                    api.http.fixtures.add(
-                        fixtures_Pilot().exists({
-                            number: '+27123456789',
-                            address: '+27820001001',
-                            wait: false,
-                        }));
-                    api.http.fixtures.add(
-                        fixtures_Pilot().exists({
-                            number: '+27123456789',
-                            address: '+27820001001',
-                            wait: true,
-                        }));
-                })
-                .setup.user.addr("27820001001")
-                .inputs(
-                    {session_event: "new"}
-                    , "4"  // state_language - eng_ZA
-                    , "1"  // state_suspect_pregnancy - yes
-                    , "1"  // state_consent - yes
-                )
-                .check.interaction({
-                    state: "state_pilot",
-                    reply: [
-                        'Would you prefer to receive messages about you and your baby via WhatsApp?',
-                        '1. Yes',
-                        '2. No'
-                    ].join('\n')
-                })
-                .run();
-        });
-
         it('should not trigger the pilot when number check returns false', function() {
             return tester
                 .setup(function(api) {
@@ -900,67 +825,46 @@ describe("ussd_public app", function() {
                 .run();
         });
 
-        it('should trigger the pilot for whitelisted numbers', function () {
-            return tester
-                .setup(function(api) {
-                    // white list the number we're using to trigger the pilot functionality
-                    var pilot_config = api.config.store.config.pilot;
-                    pilot_config.whitelist = ['+27820001001'];
-                })
-                .setup.user.addr("27820001001")
-                .inputs(
-                    {session_event: "new"}
-                    , "1"  // state_language - zul_ZA
-                    , "1"  // state_suspect_pregnancy - yes
-                    , "1"  // state_consent - yes
-                )
-                .check.interaction({
-                    state: "state_pilot",
-                    reply: [
-                        'How would you like to receive messages about you and your baby?',
-                        '1. WhatsApp',
-                        '2. SMS'
-                    ].join('\n')
-                })
-                .run();
-        });
-
         it('should submit pilot reg_type if participating in the pilot', function () {
             return tester
                 .setup(function(api) {
-                    // white list the number we're using to trigger the pilot functionality
-                    var pilot_config = api.config.store.config.pilot;
-                    pilot_config.whitelist = ['+27820001001'];
-                    test_utils.only_use_fixtures(api, {
-                        numbers: [
-                            180, // 'get.is.msisdn.27820001001'
-                            183, // 'post.is.msisdn.27820001001'
-                            198, // 'patch.is.identity.cb245673-aa41-4302-ac47-00000001001'
-                            54, //  "get.sbm.messageset.all"
-                            117, // 'post.ms.outbound.27820001001'
-                        ],
-                    });
+                    api.http.fixtures.fixtures = [];
 
                     api.http.fixtures.add(
                         fixtures_Pilot().exists({
                             number: '+27123456789',
                             address: '+27820001001',
-                            wait: false,
+                            wait: true,
                         }));
 
-                    // NOTE:    we're not providing a fixture for the whatsapp_prebirth message set
-                    //          it should be inferred from the local state
+                    api.http.fixtures.add(
+                        fixtures_IdentityStoreDynamic.update({
+                            identity: "cb245673-aa41-4302-ac47-00000001001",
+                            data: {
+                                id: 'cb245673-aa41-4302-ac47-00000001001',
+                                details: {
+                                    addresses: {msisdn: {"+27820001001": {default: true}}},
+                                    consent: true,
+                                    source: 'public',
+                                    public: {},
+                                    last_mc_reg_on: 'public'
+                                }
+                            }
+                        })
+                    );
 
-                    api.http.fixtures.add(fixtures_Pilot().post_registration({
-                        identity: 'cb245673-aa41-4302-ac47-00000001001',
-                        address: '27820001001',
+                    api.http.fixtures.add(fixtures_HubDynamic.registration({
                         reg_type: 'whatsapp_prebirth',
-                        language: 'zul_ZA',
-                        consent: true,
+                        registrant_id: 'cb245673-aa41-4302-ac47-00000001001',
                         data: {
+                            operator_id: 'cb245673-aa41-4302-ac47-00000001001',
+                            msisdn_registrant: '+27820001001',
+                            msisdn_device: '+27820001001',
+                            consent: true,
                             registered_on_whatsapp: true
                         }
                     }));
+
                     api.http.fixtures.add(fixtures_Pilot().post_outbound_message({
                         identity: 'cb245673-aa41-4302-ac47-00000001001',
                         address: '+27820001001',
@@ -969,13 +873,19 @@ describe("ussd_public app", function() {
                     }));
                 })
                 .setup.user.addr("27820001001")
-                .inputs(
-                    {session_event: "new"}
-                    , "1"  // state_language - zul_ZA
-                    , "1"  // state_suspect_pregnancy - yes
-                    , "1"  // state_consent - yes
-                    , "1"  // state_pilot - whatsapp
-                )
+                .setup.user.answer('registrant', {
+                    id: 'cb245673-aa41-4302-ac47-00000001001',
+                    details: {
+                        addresses: {
+                            msisdn: {
+                                '+27820001001': {default: true}
+                            }
+                        }
+                    }
+                })
+                .setup.user.answer('registrant_msisdn', '+27820001001')
+                .setup.user.state('state_consent')
+                .input('1')
                 .check.interaction({
                     state: "state_end_success",
                     reply: /Congratulations on your pregnancy/
@@ -1031,31 +941,39 @@ describe("ussd_public app", function() {
         it('should submit momconnect_prebirth reg_type if not participating in the pilot', function () {
             return tester
                 .setup(function(api) {
-                    // white list the number we're using to trigger the pilot functionality
-                    var pilot_config = api.config.store.config.pilot;
-                    pilot_config.whitelist = ['+27820001001'];
-                    test_utils.only_use_fixtures(api, {
-                        numbers: [
-                            180, // 'get.is.msisdn.27820001001'
-                            183, // 'post.is.msisdn.27820001001'
-                            198, // 'patch.is.identity.cb245673-aa41-4302-ac47-00000001001'
-                            50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
-                        ],
-                    });
-                    api.http.fixtures.add(
-                        fixtures_Pilot().exists({
-                            number: '+27123456789',
-                            address: '+27820001001',
-                            wait: false,
-                        }));
-                    api.http.fixtures.add(fixtures_Pilot().post_registration({
+                    api.http.fixtures.fixtures = [];
+
+                    api.http.fixtures.add(fixtures_Pilot().not_exists({
+                        number: '+27123456789',
+                        address: '+27820001001',
+                        wait: true,
+                    }));
+                    api.http.fixtures.add(fixtures_IdentityStoreDynamic.update({
                         identity: 'cb245673-aa41-4302-ac47-00000001001',
-                        address: '27820001001',
-                        reg_type: 'momconnect_prebirth',
-                        language: 'zul_ZA',
-                        consent: true,
                         data: {
-                            registered_on_whatsapp: true
+                            id: 'cb245673-aa41-4302-ac47-00000001001',
+                            details: {
+                                addresses: {
+                                    msisdn: {
+                                        '+27820001001': {default: true}
+                                    }
+                                },
+                                consent: true,
+                                source: 'public',
+                                public: {},
+                                last_mc_reg_on: 'public'
+                            }
+                        }
+                    }));
+                    api.http.fixtures.add(fixtures_HubDynamic.registration({
+                        reg_type: 'momconnect_prebirth',
+                        registrant_id: 'cb245673-aa41-4302-ac47-00000001001',
+                        data: {
+                            operator_id: 'cb245673-aa41-4302-ac47-00000001001',
+                            msisdn_registrant: '+27820001001',
+                            msisdn_device: '+27820001001',
+                            consent: true,
+                            registered_on_whatsapp: false
                         }
                     }));
                     api.http.fixtures.add(fixtures_Pilot().post_outbound_message({
@@ -1066,13 +984,19 @@ describe("ussd_public app", function() {
                     }));
                 })
                 .setup.user.addr("27820001001")
-                .inputs(
-                    {session_event: "new"}
-                    , "1"  // state_language - zul_ZA
-                    , "1"  // state_suspect_pregnancy - yes
-                    , "1"  // state_consent - yes
-                    , "2"  // state_pilot - SMS
-                )
+                .setup.user.answer('registrant', {
+                    id: 'cb245673-aa41-4302-ac47-00000001001',
+                    details: {
+                        addresses: {
+                            msisdn: {
+                                '+27820001001': {default: true}
+                            }
+                        }
+                    }
+                })
+                .setup.user.answer('registrant_msisdn', '+27820001001')
+                .setup.user.state('state_consent')
+                .input('1')
                 .check.interaction({
                     state: "state_end_success",
                     reply: /Congratulations on your pregnancy/
