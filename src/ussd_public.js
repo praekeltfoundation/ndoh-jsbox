@@ -645,10 +645,19 @@ go.app = function() {
         });
 
         self.add('state_end_success', function(name) {
+            var msisdn = self.im.user.answers.registrant_msisdn.replace("+27", "0");
+            var whatsapp_content = $(
+                "You're done! This number {{msisdn}} will get helpful messages from MomConnect on WhatsApp. " +
+                "For the full set of messages, register at a clinic.").context({
+                    msisdn: msisdn
+                });
+            var sms_content = $(
+                "You're done! This number {{msisdn}} will get helpful messages from MomConnect on SMS. " +
+                "You can register for the full set of FREE messages at a clinic.").context({
+                    msisdn: msisdn
+                });
             return new EndState(name, {
-                text: $('Congratulations on your pregnancy. You will now get free messages ' +
-                        'about MomConnect. You can register for the full set of FREE ' +
-                        'helpful messages at a clinic.'),
+                text: self.im.user.answers.registered_on_whatsapp ? whatsapp_content : sms_content,
                 next: 'state_start'
             });
         });

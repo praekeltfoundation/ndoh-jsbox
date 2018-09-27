@@ -128,9 +128,6 @@ describe("ussd_public app", function() {
                     )
                     .check.interaction({
                         state: "state_end_success",
-                        reply: 'Congratulations on your pregnancy. You will now get free messages ' +
-                               'about MomConnect. You can register for the full set of FREE ' +
-                               'helpful messages at a clinic.'
                     })
                     .check(function(api) {
                         var metrics = api.metrics.stores.test_metric_store;
@@ -521,9 +518,6 @@ describe("ussd_public app", function() {
                         )
                         .check.interaction({
                             state: "state_end_success",
-                            reply: 'Congratulations on your pregnancy. You will now get free messages ' +
-                                   'about MomConnect. You can register for the full set of FREE ' +
-                                   'helpful messages at a clinic.'
                         })
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
@@ -764,67 +758,6 @@ describe("ussd_public app", function() {
                 });
         });
 
-        it('should not trigger the pilot when number check returns false', function() {
-            return tester
-                .setup(function(api) {
-                    // randomisation will always returns True but the check API will deny it
-                    // before it gets there
-                    var pilot_config = api.config.store.config.pilot;
-                    pilot_config.randomisation_threshold = 1.0;
-                    test_utils.only_use_fixtures(api, {
-                        numbers: [
-                            180, // 'get.is.msisdn.27820001001'
-                            183, // 'post.is.msisdn.27820001001'
-                            198, // 'patch.is.identity.cb245673-aa41-4302-ac47-00000001001'
-                            50, // 'get.sbm.identity.cb245673-aa41-4302-ac47-00000001001'
-                            117, // 'post.ms.outbound.27820001001'
-                        ],
-                    });
-                    api.http.fixtures.add(
-                        fixtures_Pilot().not_exists({
-                            number: '+27123456789',
-                            address: '+27820001001',
-                            wait: false,
-                        }));
-
-                    api.http.fixtures.add(
-                        fixtures_Pilot().not_exists({
-                            number: '+27123456789',
-                            address: '+27820001001',
-                            wait: true,
-                        }));
-                    api.http.fixtures.add(fixtures_Pilot().post_registration({
-                        identity: 'cb245673-aa41-4302-ac47-00000001001',
-                        address: '27820001001',
-                        reg_type: 'momconnect_prebirth',
-                        language: 'zul_ZA',
-                        consent: true,
-                        data: {
-                            registered_on_whatsapp: false
-                        }
-                    }));
-                    api.http.fixtures.add(fixtures_Pilot().post_outbound_message({
-                        identity: 'cb245673-aa41-4302-ac47-00000001001',
-                        address: '+27820001001',
-                        channel: 'default-channel',
-                        content: 'Congratulations on your pregnancy. You will now get free messages about MomConnect. You can register for the full set of FREE helpful messages at a clinic.',
-                    }));
-                })
-                .setup.user.addr("27820001001")
-                .inputs(
-                    {session_event: "new"}
-                    , "1"  // state_language - zul_ZA
-                    , "1"  // state_suspect_pregnancy - yes
-                    , "1"  // state_consent - yes
-                )
-                .check.interaction({
-                    state: "state_end_success",
-                    reply: /Congratulations on your pregnancy./
-                })
-                .check.reply.ends_session()
-                .run();
-        });
-
         it('should submit pilot reg_type if participating in the pilot', function () {
             return tester
                 .setup(function(api) {
@@ -888,7 +821,10 @@ describe("ussd_public app", function() {
                 .input('1')
                 .check.interaction({
                     state: "state_end_success",
-                    reply: /Congratulations on your pregnancy/
+                    reply: (
+                        "You're done! This number 0820001001 will get helpful messages from MomConnect on WhatsApp. " +
+                        "For the full set of messages, register at a clinic."
+                    )
                 })
                 .check.reply.ends_session()
                 .run();
@@ -999,7 +935,10 @@ describe("ussd_public app", function() {
                 .input('1')
                 .check.interaction({
                     state: "state_end_success",
-                    reply: /Congratulations on your pregnancy/
+                    reply: (
+                        "You're done! This number 0820001001 will get helpful messages from MomConnect on SMS. " +
+                        "You can register for the full set of FREE messages at a clinic."
+                    )
                 })
                 .check.reply.ends_session()
                 .run();
