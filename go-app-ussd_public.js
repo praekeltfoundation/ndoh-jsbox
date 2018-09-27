@@ -436,20 +436,23 @@ go.app = function() {
         };
 
         self.send_registration_thanks = function() {
-            return self
-                .get_channel()
-                .then(function(channel) {
-                    return ms.
-                        create_outbound(
-                            self.im.user.answers.registrant.id,
-                            self.im.user.answers.registrant_msisdn,
-                            self.im.user.i18n($(
-                                "Congratulations on your pregnancy. You will now get free messages about MomConnect. " +
-                                "You can register for the full set of FREE helpful messages at a clinic."
-                            )), {
-                                channel: channel
-                            });
-                });
+            var whatsapp_content = self.im.user.i18n($(
+                "Welcome! MomConnect sends msgs on WhatsApp for 3 wks. Visit a clinic for more msgs. " +
+                'To stop dial {{optout_channel}}. To get msgs in SMS, reply "SMS" (std rates apply)'
+            ).context({
+                optout_channel: self.im.config.optout_channel
+            }));
+            var sms_content = self.im.user.i18n($(
+                "Welcome! MomConnect will send msgs on SMS for 3 wks. Visit a clinic for more msgs. " +
+                "To stop dial {{optout_channel}}."
+            ).context({
+                optout_channel: self.im.config.optout_channel
+            }));
+            return ms.create_outbound(
+                self.im.user.answers.registrant.id,
+                self.im.user.answers.registrant_msisdn,
+                self.im.user.answers.registered_on_whatsapp ? whatsapp_content : sms_content
+            );
         };
 
         self.send_compliment_instructions = function() {

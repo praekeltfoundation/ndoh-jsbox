@@ -6,6 +6,7 @@ var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_IdentityStoreDynamic = require('./fixtures_identity_store_dynamic')();
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
 var fixtures_MessageSender = require('./fixtures_message_sender');
+var fixtures_MessageSenderDynamic = require('./fixtures_message_sender_dynamic')();
 var fixtures_Hub = require('./fixtures_hub');
 var fixtures_HubDynamic = require('./fixtures_hub_dynamic')();
 var fixtures_Jembi = require('./fixtures_jembi');
@@ -38,6 +39,7 @@ describe("ussd_public app", function() {
                         "state_end_success", "state_registered_full", "state_registered_not_full",
                         "state_end_compliment", "state_end_complaint", "state_end_go_clinic"],
                     channel: "*120*550#",
+                    optout_channel: "*120*550*1#",
                     services: {
                         identity_store: {
                             url: 'http://is/api/v1/',
@@ -116,6 +118,16 @@ describe("ussd_public app", function() {
         describe("test avg.sessions_to_register metric", function() {
             it("should increment metric according to number of sessions", function() {
                 return tester
+                    .setup(function(api){
+                        api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                            to_identity: 'cb245673-aa41-4302-ac47-00000001001',
+                            to_addr: '+27820001001',
+                            content: (
+                                "Welcome! MomConnect will send msgs on SMS for 3 wks. " +
+                                "Visit a clinic for more msgs. To stop dial *120*550*1#."
+                            )
+                        }));
+                    })
                     .setup.user.addr('27820001001')
                     .inputs(
                         {session_event: "new"}
@@ -134,7 +146,7 @@ describe("ussd_public app", function() {
                         assert.deepEqual(metrics['test.ussd_public.avg.sessions_to_register'].values, [2]);
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [17, 117, 180, 183, 198]);
+                        utils.check_fixtures_used(api, [17, 180, 183, 198, 252]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -266,6 +278,16 @@ describe("ussd_public app", function() {
             });
             it("don't send when timeout occurs on a non-dialback state", function() {
                 return tester
+                .setup(function(api){
+                    api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                        to_identity: 'cb245673-aa41-4302-ac47-00000001001',
+                        to_addr: '+27820001001',
+                        content: (
+                            "Welcome! MomConnect will send msgs on SMS for 3 wks. " +
+                            "Visit a clinic for more msgs. To stop dial *120*550*1#."
+                        )
+                    }));
+                })
                 .setup.user.addr("27820001001")
                 .inputs(
                     {session_event: 'new'}  // dial in
@@ -278,12 +300,22 @@ describe("ussd_public app", function() {
                 )
                 .check.user.answer("redial_sms_sent", false)  // session closed on non-dialback state
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [17, 117, 180, 183, 198]);
+                    utils.check_fixtures_used(api, [17, 180, 183, 198, 252]);
                 })
                 .run();
             });
             it("updates identity with redial_sms_sent 'true'", function() {
                 return tester
+                .setup(function(api){
+                    api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                        to_identity: 'cb245673-aa41-4302-ac47-00000001001',
+                        to_addr: '+27820001001',
+                        content: (
+                            "Welcome! MomConnect will send msgs on SMS for 3 wks. " +
+                            "Visit a clinic for more msgs. To stop dial *120*550*1#."
+                        )
+                    }));
+                })
                 .setup.user.addr("27820001001")
                 .inputs(
                     {session_event: 'new'}  // dial in
@@ -296,7 +328,7 @@ describe("ussd_public app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)  // session closed on dialback state
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [17, 50, 117, 125, 180, 183, 208]);
+                    utils.check_fixtures_used(api, [17, 50, 125, 180, 183, 208, 252]);
                 })
                 .run();
             });
@@ -509,6 +541,16 @@ describe("ussd_public app", function() {
                 describe("if the number was not opted out", function() {
                     it("should go to state_end_success", function() {
                         return tester
+                        .setup(function(api){
+                            api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                                to_identity: 'cb245673-aa41-4302-ac47-00000001001',
+                                to_addr: '+27820001001',
+                                content: (
+                                    "Welcome! MomConnect will send msgs on SMS for 3 wks. " +
+                                    "Visit a clinic for more msgs. To stop dial *120*550*1#."
+                                )
+                            }));
+                        })
                         .setup.user.addr("27820001001")
                         .inputs(
                             {session_event: "new"}
@@ -525,7 +567,7 @@ describe("ussd_public app", function() {
                             assert.deepEqual(metrics['test.ussd_public.avg.sessions_to_register'].values, [1]);
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [17, 117, 180, 183, 198]);
+                            utils.check_fixtures_used(api, [17, 180, 183, 198, 252]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -583,6 +625,16 @@ describe("ussd_public app", function() {
             describe("choosing to opt in", function() {
                 it("should go to state_end_success", function() {
                     return tester
+                    .setup(function(api){
+                        api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                            to_identity: 'cb245673-aa41-4302-ac47-00000001004',
+                            to_addr: '+27820001004',
+                            content: (
+                                "Welcome! MomConnect will send msgs on SMS for 3 wks. " +
+                                "Visit a clinic for more msgs. To stop dial *120*550*1#."
+                            )
+                        }));
+                    })
                     .setup.user.addr("27820001004")
                     .inputs(
                         {session_event: "new"}
@@ -595,7 +647,7 @@ describe("ussd_public app", function() {
                         state: "state_end_success"
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [18, 118, 184, 199, 238]);
+                        utils.check_fixtures_used(api, [18, 184, 199, 238, 252]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -716,6 +768,7 @@ describe("ussd_public app", function() {
                         "state_end_success", "state_registered_full", "state_registered_not_full",
                         "state_end_compliment", "state_end_complaint", "state_end_go_clinic"],
                     channel: "*120*550#",
+                    optout_channel: "*120*550*1#",
                     services: {
                         identity_store: {
                             url: 'http://is/api/v1/',
@@ -801,8 +854,11 @@ describe("ussd_public app", function() {
                     api.http.fixtures.add(fixtures_Pilot().post_outbound_message({
                         identity: 'cb245673-aa41-4302-ac47-00000001001',
                         address: '+27820001001',
-                        channel: 'pilot-channel',
-                        content: 'Congratulations on your pregnancy. You will now get free messages about MomConnect. You can register for the full set of FREE helpful messages at a clinic.'
+                        channel: 'default-channel',
+                        content: (
+                            "Welcome! MomConnect sends msgs on WhatsApp for 3 wks. Visit a clinic for more msgs. " +
+                            'To stop dial *120*550*1#. To get msgs in SMS, reply "SMS" (std rates apply)'
+                        )
                     }));
                 })
                 .setup.user.addr("27820001001")
@@ -916,7 +972,10 @@ describe("ussd_public app", function() {
                         identity: 'cb245673-aa41-4302-ac47-00000001001',
                         address: '+27820001001',
                         channel: 'default-channel',
-                        content: 'Congratulations on your pregnancy. You will now get free messages about MomConnect. You can register for the full set of FREE helpful messages at a clinic.'
+                        content: (
+                            "Welcome! MomConnect will send msgs on SMS for 3 wks. " +
+                            "Visit a clinic for more msgs. To stop dial *120*550*1#."
+                        )
                     }));
                 })
                 .setup.user.addr("27820001001")
