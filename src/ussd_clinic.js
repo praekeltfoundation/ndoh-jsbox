@@ -814,7 +814,12 @@ go.app = function() {
                     new Choice('ven_ZA', 'Tshivenda'),
                     new Choice('nbl_ZA', 'isiNdebele'),
                 ],
-                next: 'state_channel_select'
+                next: function(choice) {
+                    return self.im.user.set_lang(choice.value)
+                    .then(function() {
+                        return 'state_channel_select';
+                    });
+                }
             });
         });
 
