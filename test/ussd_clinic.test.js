@@ -8,6 +8,7 @@ var fixtures_MessageSenderDynamic = require('./fixtures_message_sender_dynamic')
 var fixtures_HubDynamic = require('./fixtures_hub_dynamic')();
 var fixtures_JembiDynamic = require('./fixtures_jembi_dynamic')();
 var fixtures_Pilot = require('./fixtures_pilot');
+var afr_translation = require('../config/go-app-ussd-clinic.afr_ZA.json');
 
 
 describe("app", function() {
@@ -22,6 +23,9 @@ describe("app", function() {
 
             tester
                 .setup.char_limit(182)
+                .setup.config({
+                    "translation.afr_ZA": afr_translation
+                })
                 .setup.config.app({
                     name: 'ussd_clinic',
                     env: 'test',
@@ -1659,7 +1663,7 @@ describe("app", function() {
                             data: {
                                 id: 'registrant-id',
                                 details: {
-                                    lang_code: "eng_ZA",
+                                    lang_code: "afr_ZA",
                                     consent: true,
                                     sa_id_no: "5101025009086",
                                     mom_dob: "1951-01-02",
@@ -1678,7 +1682,7 @@ describe("app", function() {
                                 msisdn_registrant: "+27820001001",
                                 msisdn_device: "+27820001002",
                                 id_type: "sa_id",
-                                language: "eng_ZA",
+                                language: "afr_ZA",
                                 edd: "2014-02-10",
                                 faccode: "123456",
                                 consent: true,
@@ -1690,7 +1694,10 @@ describe("app", function() {
                         api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
                             to_identity: "registrant-id",
                             to_addr: "+27820001001",
-                            content: 'Congrats on your pregnancy! MomConnect will send helpful WhatsApp msgs. To stop dial *120*550*1# (Free). To get msgs via SMS, reply "SMS" (std rates apply).'
+                            content: (
+                                'Welkom! MomConnect sal nuttige boodskappe aan jou via WhatsApp stuur. ' +
+                                'Om te stop skakel *120*550*1#. Vir boodskappe liewers via SMS, antw "SMS" (std fooie).'
+                            )
                         }));
                         api.http.fixtures.add(fixtures_Pilot().exists({
                             number: '+27123456789',
@@ -1705,13 +1712,12 @@ describe("app", function() {
                     .setup.user.answer('registrant_msisdn', '+27820001001')
                     .setup.user.answer('operator_msisdn', '+27820001002')
                     .setup.user.answer('state_id_type', 'sa_id')
-                    .setup.user.answer('state_language', 'eng_ZA')
                     .setup.user.answer('edd', '2014-02-10')
                     .setup.user.answer('state_clinic_code', '123456')
                     .setup.user.answer('state_consent', 'yes')
                     .setup.user.answer('state_sa_id', '5101025009086')
                     .setup.user.answer('mom_dob', '1951-01-02')
-                    .input('4')
+                    .input('3')
                     .check.interaction({
                         state: "state_end_success",
                         reply: (
@@ -1724,6 +1730,7 @@ describe("app", function() {
                         assert.deepEqual(metrics['test.ussd_clinic.state_language.no_complete.transient'].values, [1]);
                     })
                     .check.reply.ends_session()
+                    .check.user.lang('afr_ZA')
                     .run();
                 });
             });
