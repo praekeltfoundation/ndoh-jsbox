@@ -262,8 +262,10 @@ go.app = function() {
                     //      Because of how Seed's services work using asynchronous webhooks there
                     //      can be a race condition if we check the subscriptions too soon after
                     //      creating a new registration
-                    if(self.im.user.answers.state_pilot == 'whatsapp') {
+                    if(self.im.user.answers.registered_on_whatsapp === true) {
                         return pilot_config.channel;
+                    } else if(self.im.user.answers.registered_on_whatsapp === false) {
+                        return self.im.config.services.message_sender.channel;
                     }
 
                     return sbm
@@ -415,7 +417,7 @@ go.app = function() {
             };
             var registration_info = {
                 "reg_type": (
-                    self.im.user.answers.state_pilot == 'whatsapp'
+                    self.im.user.answers.registered_on_whatsapp
                     ? "whatsapp_prebirth"
                     : "momconnect_prebirth"),
                 "registrant_id": self.im.user.answers.registrant.id,
@@ -434,20 +436,23 @@ go.app = function() {
         };
 
         self.send_registration_thanks = function() {
-            return self
-                .get_channel()
-                .then(function(channel) {
-                    return ms.
-                        create_outbound(
-                            self.im.user.answers.registrant.id,
-                            self.im.user.answers.registrant_msisdn,
-                            self.im.user.i18n($(
-                                "Congratulations on your pregnancy. You will now get free messages about MomConnect. " +
-                                "You can register for the full set of FREE helpful messages at a clinic."
-                            )), {
-                                channel: channel
-                            });
-                });
+            var whatsapp_content = self.im.user.i18n($(
+                "Welcome! MomConnect sends msgs on WhatsApp for 3 wks. Visit a clinic for more msgs. " +
+                'To stop dial {{optout_channel}}. To get msgs in SMS, reply "SMS" (std rates apply)'
+            ).context({
+                optout_channel: self.im.config.optout_channel
+            }));
+            var sms_content = self.im.user.i18n($(
+                "Welcome! MomConnect will send msgs on SMS for 3 wks. Visit a clinic for more msgs. " +
+                "To stop dial {{optout_channel}}."
+            ).context({
+                optout_channel: self.im.config.optout_channel
+            }));
+            return ms.create_outbound(
+                self.im.user.answers.registrant.id,
+                self.im.user.answers.registrant_msisdn,
+                self.im.user.answers.registered_on_whatsapp ? whatsapp_content : sms_content
+            );
         };
 
         self.send_compliment_instructions = function() {
@@ -727,9 +732,7 @@ go.app = function() {
                 })
                 .then(function(yes_or_no) {
                     self.im.user.set_answer('registered_on_whatsapp', yes_or_no);
-                    return yes_or_no
-                        ? self.states.create('state_pilot')
-                        : self.states.create('state_save_subscription');
+                    return self.states.create('state_save_subscription');
                 });
         });
 
@@ -742,18 +745,12 @@ go.app = function() {
             }
 
             var pilot_config = self.im.config.pilot || {};
-            var whitelist = pilot_config.whitelist || [];
-            var randomisation_threshold = pilot_config.randomisation_threshold || 0.0;
             var api_url = pilot_config.api_url;
             var api_token = pilot_config.api_token;
             var api_number = pilot_config.api_number;
 
             var msisdn = params.address;
 
-            // Always allow people on the whitelist
-            if(whitelist.indexOf(msisdn) > -1) {
-                return Q(true);
-            }
             // Otherwise check the API
             return new JsonApi(self.im, {
                 headers: {
@@ -776,40 +773,15 @@ go.app = function() {
                                 return false;
                             });
                     } else {
-                        // Otherwise roll the dice
-                        var can_participate = Math.random() < randomisation_threshold;
+                        // Otherwise return true
                         return self.im
-                            .log(msisdn + ' is whatsappable, randomisation selected: ' + can_participate)
+                            .log(msisdn + ' is whatsappable')
                             .then(function() {
-                                return can_participate;
+                                return true;
                             });
                     }
                 });
         };
-
-        self.add('state_pilot', function(name) {
-            var pilot_config = self.im.config.pilot || {};
-            var nudge_threshold = pilot_config.nudge_threshold || 0.0;
-            var question = $('How would you like to receive messages about you and your baby?');
-            var whatsapp_label = $('WhatsApp');
-            var sms_label = $('SMS');
-
-            if(self.im.user.answers.state_language == 'eng_ZA' && Math.random() < nudge_threshold) {
-                question = "Would you prefer to receive messages about you and your baby via WhatsApp?";
-                whatsapp_label = 'Yes';
-                sms_label = 'No';
-            }
-
-            self.im.user.set_answer("state_pilot_question", self.im.user.i18n(question));
-            return new ChoiceState(name, {
-                question: question,
-                choices: [
-                    new Choice('whatsapp', whatsapp_label),
-                    new Choice('sms', sms_label),
-                ],
-                next: 'state_save_subscription'
-            });
-        });
 
         self.add('state_save_subscription', function(name) {  // interstitial state
             var registration_info = self.compile_registration_info();
@@ -826,10 +798,19 @@ go.app = function() {
         });
 
         self.add('state_end_success', function(name) {
+            var msisdn = self.im.user.answers.registrant_msisdn.replace("+27", "0");
+            var whatsapp_content = $(
+                "You're done! This number {{msisdn}} will get helpful messages from MomConnect on WhatsApp. " +
+                "For the full set of messages, register at a clinic.").context({
+                    msisdn: msisdn
+                });
+            var sms_content = $(
+                "You're done! This number {{msisdn}} will get helpful messages from MomConnect on SMS. " +
+                "You can register for the full set of FREE messages at a clinic.").context({
+                    msisdn: msisdn
+                });
             return new EndState(name, {
-                text: $('Congratulations on your pregnancy. You will now get free messages ' +
-                        'about MomConnect. You can register for the full set of FREE ' +
-                        'helpful messages at a clinic.'),
+                text: self.im.user.answers.registered_on_whatsapp ? whatsapp_content : sms_content,
                 next: 'state_start'
             });
         });
