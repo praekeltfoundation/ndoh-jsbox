@@ -1,277 +1,247 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2015-03-26 11:30:+0200\n"
-"Project-Id-Version: MomConnect\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: af_ZA\n"
+"POT-Creation-Date: 2018-09-27 02:11:+0000\n"
+"Project-Id-Version: \n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-03-26 12:02+0200\n"
+"PO-Revision-Date: 2018-09-27 16:21+0200\n"
+"X-Generator: Poedit 2.1.1\n"
 "Last-Translator: \n"
-"X-Generator: Poedit 1.6.4\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: af\n"
 
-#: go-app-clinic.js:27
-msgid "Jan"
-msgstr ""
-
-#: go-app-clinic.js:28
-msgid "Feb"
-msgstr ""
-
-#: go-app-clinic.js:29
-msgid "Mar"
-msgstr ""
-
-#: go-app-clinic.js:30
-msgid "Apr"
-msgstr ""
-
-#: go-app-clinic.js:31
-msgid "May"
-msgstr ""
-
-#: go-app-clinic.js:32
-msgid "Jun"
-msgstr ""
-
-#: go-app-clinic.js:33
-msgid "Jul"
-msgstr ""
-
-#: go-app-clinic.js:34
-msgid "Aug"
-msgstr ""
-
-#: go-app-clinic.js:35
-msgid "Sep"
-msgstr ""
-
-#: go-app-clinic.js:36
-msgid "Oct"
-msgstr ""
-
-#: go-app-clinic.js:37
-msgid "Nov"
-msgstr ""
-
-#: go-app-clinic.js:38
-msgid "Dec"
-msgstr ""
-
-#: go-app-clinic.js:1708
+#: go-app-ussd_clinic.js:307
 msgid ""
 "Please dial back in to {{ USSD_number }} to complete the pregnancy "
 "registration."
 msgstr ""
 
-#: go-app-clinic.js:1725
+#: go-app-ussd_clinic.js:436
 msgid ""
-"Welcome. To stop getting SMSs dial {{optout_channel}} or for more services "
-"dial {{public_channel}} (No Cost). Standard rates apply when replying to any "
-"SMS from MomConnect."
+"Congrats on your pregnancy! MomConnect will send helpful WhatsApp msgs. To "
+"stop dial {{optout_channel}} (Free). To get msgs via SMS, reply \"SMS\" (std "
+"rates apply)."
 msgstr ""
-"Welkom. Om hd SMSse te stop skakel {{optout_channel}} of vir meer dienste "
-"skakel {{public_channel}} (gratis). Standaard SMS-tariewe geld vir antwoorde "
-"op SMSse van MomConnect."
+"Welkom! MomConnect sal nuttige boodskappe aan jou via WhatsApp stuur. Om te "
+"stop skakel {{optout_channel}}. Vir boodskappe liewers via SMS, antw \"SMS"
+"\" (std fooie)."
 
-#: go-app-clinic.js:1751
+#: go-app-ussd_clinic.js:442
+msgid ""
+"Congratulations on your pregnancy! MomConnect will send helpful SMS msgs. To "
+"stop dial {{optout_channel}}, for more dial {{popi_channel}} (Free)."
+msgstr ""
+"Welkom! MomConnect sal nuttige boodskappe via SMS aan jou stuur. Om te stop "
+"skakel {{optout_channel}}, vir meer skakel {{popi_channel}} (Gratis)."
+
+#: go-app-ussd_clinic.js:473
 msgid "Would you like to complete pregnancy registration for {{ num }}?"
 msgstr ""
 
-#: go-app-clinic.js:1756 go-app-clinic.js:1788 go-app-clinic.js:1817
+#: go-app-ussd_clinic.js:477 go-app-ussd_clinic.js:509
+#: go-app-ussd_clinic.js:564 go-app-ussd_clinic.js:580
 msgid "Yes"
 msgstr ""
 
-#: go-app-clinic.js:1757
+#: go-app-ussd_clinic.js:478
 msgid "Start new registration"
 msgstr ""
 
-#: go-app-clinic.js:1782
+#: go-app-ussd_clinic.js:503
 msgid ""
-"Welcome to The Department of Health's MomConnect. Tell us if this is the no. "
-"that the mother would like to get SMSs on: {{ num }}"
+"Welcome to The Department of Health's MomConnect programme. Is this no. "
+"{{ num }} the mobile no. of the pregnant woman to be registered?"
 msgstr ""
 
-#: go-app-clinic.js:1789 go-app-clinic.js:1818
+#: go-app-ussd_clinic.js:510 go-app-ussd_clinic.js:565
+#: go-app-ussd_clinic.js:581
 msgid "No"
 msgstr ""
 
-#: go-app-clinic.js:1812
+#: go-app-ussd_clinic.js:547
 msgid ""
-"This number has previously opted out of MomConnect SMSs. Please confirm that "
-"the mom would like to opt in to receive messages again?"
+"The number {{ num }} already has an active subscription to MomConnect. Would "
+"you like to use a different number?"
 msgstr ""
 
-#: go-app-clinic.js:1846
+#: go-app-ussd_clinic.js:551
+msgid "Use a different number"
+msgstr ""
+
+#: go-app-ussd_clinic.js:552
+msgid "End registration"
+msgstr ""
+
+#: go-app-ussd_clinic.js:559
 msgid ""
-"You have chosen not to receive MomConnect SMSs and so cannot complete "
+"We need to collect, store & use her info. She may get messages on public "
+"holidays & weekends. Does she consent?"
+msgstr ""
+
+#: go-app-ussd_clinic.js:576
+msgid ""
+"This number has previously opted out of MomConnect messages. Please confirm "
+"that the mom would like to opt in to receive messages again?"
+msgstr ""
+
+#: go-app-ussd_clinic.js:606
+msgid ""
+"You have chosen not to receive MomConnect messages and so cannot complete "
 "registration."
 msgstr ""
 
-#: go-app-clinic.js:1850
+#: go-app-ussd_clinic.js:611
 msgid "Main Menu"
 msgstr ""
 
-#: go-app-clinic.js:1860
-msgid ""
-"Sorry, the clinic number did not validate. Please reenter the clinic number:"
-msgstr ""
-
-#: go-app-clinic.js:1862
-msgid ""
-"Please enter the clinic code for the facility where this pregnancy is being "
-"registered:"
-msgstr ""
-
-#: go-app-clinic.js:1908
+#: go-app-ussd_clinic.js:620
 msgid ""
 "Sorry, the mobile number did not validate. Please reenter the mobile number:"
 msgstr ""
 
-#: go-app-clinic.js:1911
+#: go-app-ussd_clinic.js:622
 msgid "Please input the mobile number of the pregnant woman to be registered:"
 msgstr ""
 
-#: go-app-clinic.js:1950
+#: go-app-ussd_clinic.js:697
+msgid ""
+"Sorry, the clinic number did not validate. Please reenter the clinic number."
+msgstr ""
+
+#: go-app-ussd_clinic.js:699
+msgid ""
+"Please enter the clinic code for the facility where this pregnancy is being "
+"registered."
+msgstr ""
+
+#: go-app-ussd_clinic.js:758
 msgid "Please select the month when the baby is due:"
 msgstr ""
 
-#: go-app-clinic.js:1969
+#: go-app-ussd_clinic.js:769
 msgid ""
 "Sorry, the number did not validate. Please enter the estimated day that the "
 "baby is due (For example 12):"
 msgstr ""
 
-#: go-app-clinic.js:1973
-msgid "Please enter the estimated day that the baby is due (For example 12):"
+#: go-app-ussd_clinic.js:772
+msgid "Please enter the estimated day that the baby is due (For example 12)"
 msgstr ""
 
-#: go-app-clinic.js:2001
+#: go-app-ussd_clinic.js:797
+msgid "The date you entered ({{ edd }}) is not a real date. Please try again."
+msgstr ""
+
+#: go-app-ussd_clinic.js:802 go-app-ussd_clinic.js:943
+msgid "Continue"
+msgstr ""
+
+#: go-app-ussd_clinic.js:810
 msgid "What kind of identification does the pregnant mother have?"
 msgstr ""
 
-#: go-app-clinic.js:2005
+#: go-app-ussd_clinic.js:813
 msgid "SA ID"
 msgstr ""
 
-#: go-app-clinic.js:2006
+#: go-app-ussd_clinic.js:814
 msgid "Passport"
 msgstr ""
 
-#: go-app-clinic.js:2007
+#: go-app-ussd_clinic.js:815
 msgid "None"
 msgstr ""
 
-#: go-app-clinic.js:2027
+#: go-app-ussd_clinic.js:828
 msgid ""
 "Sorry, the mother's ID number did not validate. Please reenter the SA ID "
 "number:"
 msgstr ""
 
-#: go-app-clinic.js:2030
-msgid "Please enter the pregnant mother's SA ID number:"
+#: go-app-ussd_clinic.js:830
+msgid "Please enter the pregnant mother's SA ID number."
 msgstr ""
 
-#: go-app-clinic.js:2064
+#: go-app-ussd_clinic.js:849
 msgid "What is the country of origin of the passport?"
 msgstr ""
 
-#: go-app-clinic.js:2067
+#: go-app-ussd_clinic.js:851
 msgid "Zimbabwe"
 msgstr ""
 
-#: go-app-clinic.js:2068
+#: go-app-ussd_clinic.js:852
 msgid "Mozambique"
 msgstr ""
 
-#: go-app-clinic.js:2069
+#: go-app-ussd_clinic.js:853
 msgid "Malawi"
 msgstr ""
 
-#: go-app-clinic.js:2070
+#: go-app-ussd_clinic.js:854
 msgid "Nigeria"
 msgstr ""
 
-#: go-app-clinic.js:2071
+#: go-app-ussd_clinic.js:855
 msgid "DRC"
 msgstr ""
 
-#: go-app-clinic.js:2072
+#: go-app-ussd_clinic.js:856
 msgid "Somalia"
 msgstr ""
 
-#: go-app-clinic.js:2073
+#: go-app-ussd_clinic.js:857
 msgid "Other"
 msgstr ""
 
-#: go-app-clinic.js:2091
+#: go-app-ussd_clinic.js:866
 msgid ""
 "There was an error in your entry. Please carefully enter the passport number "
 "again."
 msgstr ""
 
-#: go-app-clinic.js:2093
-msgid "Please enter the pregnant mother's Passport number:"
+#: go-app-ussd_clinic.js:868
+msgid "Please enter the pregnant mother's Passport number."
 msgstr ""
 
-#: go-app-clinic.js:2119
+#: go-app-ussd_clinic.js:881
 msgid ""
 "There was an error in your entry. Please carefully enter the mother's year "
 "of birth again (for example: 2001)"
 msgstr ""
 
-#: go-app-clinic.js:2123
-msgid ""
-"Please enter the year that the pregnant mother was born (for example: 1981)"
+#: go-app-ussd_clinic.js:884
+msgid "Please enter the year that the mother was born (for example: 1981)"
 msgstr ""
 
-#: go-app-clinic.js:2151
-msgid "Please enter the month that the mom was born."
+#: go-app-ussd_clinic.js:903
+msgid "Please enter the month that the mother was born."
 msgstr ""
 
-#: go-app-clinic.js:2171
+#: go-app-ussd_clinic.js:910
 msgid ""
 "There was an error in your entry. Please carefully enter the mother's day of "
 "birth again (for example: 8)"
 msgstr ""
 
-#: go-app-clinic.js:2175
-msgid "Please enter the day that the mother was born (for example: 14)."
-msgstr ""
-
-#: go-app-clinic.js:2205
+#: go-app-ussd_clinic.js:913
 msgid ""
-"Please select the language that the pregnant mother would like to get "
-"messages in:"
+"Please enter the day that the pregnant mother was born (For example 14)."
 msgstr ""
 
-#: go-app-clinic.js:2209
-msgid "English"
+#: go-app-ussd_clinic.js:938
+msgid "The date you entered ({{ dob }}) is not a real date. Please try again."
 msgstr ""
 
-#: go-app-clinic.js:2210
-msgid "Afrikaans"
-msgstr ""
-
-#: go-app-clinic.js:2211
-msgid "Zulu"
-msgstr ""
-
-#: go-app-clinic.js:2212
-msgid "Xhosa"
-msgstr ""
-
-#: go-app-clinic.js:2213
-msgid "Sotho"
-msgstr ""
-
-#: go-app-clinic.js:2214
-msgid "Setswana"
-msgstr ""
-
-#: go-app-clinic.js:2291
+#: go-app-ussd_clinic.js:951
 msgid ""
-"Thank you. The pregnant woman will now receive weekly messages about her "
-"pregnancy from MomConnect."
+"Please select the language that the mother would like to get messages in:"
+msgstr ""
+
+#: go-app-ussd_clinic.js:999
+msgid ""
+"You're done! This number {{msisdn}} will now get helpful messages about her "
+"pregnancy on {{channel}}. Thanks for signing up to MomConnect."
 msgstr ""

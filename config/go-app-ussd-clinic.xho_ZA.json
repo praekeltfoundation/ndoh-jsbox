@@ -1,72 +1,28 @@
 {
     "": {
-        "pot-creation-date": "2015-03-26 11:30:+0200",
         "project-id-version": "",
-        "language-team": "LANGUAGE <LL@li.org>",
+        "pot-creation-date": "2018-09-27 02:11:+0000",
+        "po-revision-date": "2018-09-27 16:42+0200",
+        "last-translator": "",
+        "language-team": "",
+        "language": "xh",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2015-03-26 15:47+0200",
-        "last-translator": "",
-        "x-generator": "Poedit 1.6.4",
-        "plural-forms": "nplurals=2; plural=(n != 1);",
-        "language": "xh"
+        "x-generator": "Poedit 2.1.1",
+        "plural-forms": "nplurals=2; plural=(n != 1);"
     },
-    "Jan": [
-        null,
-        ""
-    ],
-    "Feb": [
-        null,
-        ""
-    ],
-    "Mar": [
-        null,
-        ""
-    ],
-    "Apr": [
-        null,
-        ""
-    ],
-    "May": [
-        null,
-        ""
-    ],
-    "Jun": [
-        null,
-        ""
-    ],
-    "Jul": [
-        null,
-        ""
-    ],
-    "Aug": [
-        null,
-        ""
-    ],
-    "Sep": [
-        null,
-        ""
-    ],
-    "Oct": [
-        null,
-        ""
-    ],
-    "Nov": [
-        null,
-        ""
-    ],
-    "Dec": [
-        null,
-        ""
-    ],
     "Please dial back in to {{ USSD_number }} to complete the pregnancy registration.": [
         null,
         ""
     ],
-    "Welcome. To stop getting SMSs dial {{optout_channel}} or for more services dial {{public_channel}} (No Cost). Standard rates apply when replying to any SMS from MomConnect.": [
+    "Congrats on your pregnancy! MomConnect will send helpful WhatsApp msgs. To stop dial {{optout_channel}} (Free). To get msgs via SMS, reply \"SMS\" (std rates apply).": [
         null,
-        "Wamkelekile. Ukuyekisa ii-SMS dayala {{optout_channel}} kwezinye iisevisi {{public_channel}} (mahala). Ubhatala ngokuqhelekileyo ekuphenduleni ii-SMS zakwa-MomConnect."
+        "Wamkelekile! MomConnect uya kuthumela imiyalezo eluncedo ngo-WhatsApp. Ukyeka dayala {{optout_channel}}. Ukufumana imiyalezo nge-SMS, phendula \"SMS\" (imirhumo iyafana)"
+    ],
+    "Congratulations on your pregnancy! MomConnect will send helpful SMS msgs. To stop dial {{optout_channel}}, for more dial {{popi_channel}} (Free).": [
+        null,
+        "Wamkelekile! MomConnect uya kuthumela imiyalezo eluncedo nge-SMS. Ukuyeka dayala {{popi_channel}} (Mahala)."
     ],
     "Would you like to complete pregnancy registration for {{ num }}?": [
         null,
@@ -80,7 +36,7 @@
         null,
         ""
     ],
-    "Welcome to The Department of Health's MomConnect. Tell us if this is the no. that the mother would like to get SMSs on: {{ num }}": [
+    "Welcome to The Department of Health's MomConnect programme. Is this no. {{ num }} the mobile no. of the pregnant woman to be registered?": [
         null,
         ""
     ],
@@ -88,23 +44,31 @@
         null,
         ""
     ],
-    "This number has previously opted out of MomConnect SMSs. Please confirm that the mom would like to opt in to receive messages again?": [
+    "The number {{ num }} already has an active subscription to MomConnect. Would you like to use a different number?": [
         null,
         ""
     ],
-    "You have chosen not to receive MomConnect SMSs and so cannot complete registration.": [
+    "Use a different number": [
+        null,
+        ""
+    ],
+    "End registration": [
+        null,
+        ""
+    ],
+    "We need to collect, store & use her info. She may get messages on public holidays & weekends. Does she consent?": [
+        null,
+        ""
+    ],
+    "This number has previously opted out of MomConnect messages. Please confirm that the mom would like to opt in to receive messages again?": [
+        null,
+        ""
+    ],
+    "You have chosen not to receive MomConnect messages and so cannot complete registration.": [
         null,
         ""
     ],
     "Main Menu": [
-        null,
-        ""
-    ],
-    "Sorry, the clinic number did not validate. Please reenter the clinic number:": [
-        null,
-        ""
-    ],
-    "Please enter the clinic code for the facility where this pregnancy is being registered:": [
         null,
         ""
     ],
@@ -116,6 +80,14 @@
         null,
         ""
     ],
+    "Sorry, the clinic number did not validate. Please reenter the clinic number.": [
+        null,
+        ""
+    ],
+    "Please enter the clinic code for the facility where this pregnancy is being registered.": [
+        null,
+        ""
+    ],
     "Please select the month when the baby is due:": [
         null,
         ""
@@ -124,7 +96,15 @@
         null,
         ""
     ],
-    "Please enter the estimated day that the baby is due (For example 12):": [
+    "Please enter the estimated day that the baby is due (For example 12)": [
+        null,
+        ""
+    ],
+    "The date you entered ({{ edd }}) is not a real date. Please try again.": [
+        null,
+        ""
+    ],
+    "Continue": [
         null,
         ""
     ],
@@ -148,7 +128,7 @@
         null,
         ""
     ],
-    "Please enter the pregnant mother's SA ID number:": [
+    "Please enter the pregnant mother's SA ID number.": [
         null,
         ""
     ],
@@ -188,7 +168,7 @@
         null,
         ""
     ],
-    "Please enter the pregnant mother's Passport number:": [
+    "Please enter the pregnant mother's Passport number.": [
         null,
         ""
     ],
@@ -196,11 +176,11 @@
         null,
         ""
     ],
-    "Please enter the year that the pregnant mother was born (for example: 1981)": [
+    "Please enter the year that the mother was born (for example: 1981)": [
         null,
         ""
     ],
-    "Please enter the month that the mom was born.": [
+    "Please enter the month that the mother was born.": [
         null,
         ""
     ],
@@ -208,39 +188,19 @@
         null,
         ""
     ],
-    "Please enter the day that the mother was born (for example: 14).": [
+    "Please enter the day that the pregnant mother was born (For example 14).": [
         null,
         ""
     ],
-    "Please select the language that the pregnant mother would like to get messages in:": [
+    "The date you entered ({{ dob }}) is not a real date. Please try again.": [
         null,
         ""
     ],
-    "English": [
+    "Please select the language that the mother would like to get messages in:": [
         null,
         ""
     ],
-    "Afrikaans": [
-        null,
-        ""
-    ],
-    "Zulu": [
-        null,
-        ""
-    ],
-    "Xhosa": [
-        null,
-        ""
-    ],
-    "Sotho": [
-        null,
-        ""
-    ],
-    "Setswana": [
-        null,
-        ""
-    ],
-    "Thank you. The pregnant woman will now receive weekly messages about her pregnancy from MomConnect.": [
+    "You're done! This number {{msisdn}} will now get helpful messages about her pregnancy on {{channel}}. Thanks for signing up to MomConnect.": [
         null,
         ""
     ]
