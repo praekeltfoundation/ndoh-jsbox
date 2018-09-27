@@ -151,21 +151,15 @@ go.app = function() {
         };
 
         self.send_redial_sms = function() {
-            return self
-                .get_channel()
-                .then(function(channel) {
-                    return ms.
-                        create_outbound(
-                            self.im.user.answers.operator.id,
-                            self.im.user.answers.operator_msisdn,
-                            self.im.user.i18n($(
-                                "Please dial back in to {{ USSD_number }} to complete the pregnancy registration."
-                            ).context({
-                                USSD_number: self.format_ussd_code(channel, self.im.config.channel)
-                            })), {
-                                channel: channel
-                            });
-                });
+            return ms.create_outbound(
+                self.im.user.answers.operator.id,
+                self.im.user.answers.operator_msisdn,
+                self.im.user.i18n($(
+                    "Please dial back in to {{ USSD_number }} to complete the pregnancy registration."
+                ).context({
+                    USSD_number: self.im.config.channel
+                }))
+            );
         };
 
         self.number_opted_out = function(identity, msisdn) {
@@ -279,7 +273,7 @@ go.app = function() {
 
             var registration_info = {
                 "reg_type": (
-                    self.im.user.answers.state_pilot == 'whatsapp'
+                    self.im.user.answers.registered_on_whatsapp
                     ? "whatsapp_prebirth"
                     : "momconnect_prebirth"),
                 "registrant_id": self.im.user.answers.registrant.id,
@@ -288,34 +282,25 @@ go.app = function() {
             return registration_info;
         };
 
-        self.format_ussd_code = function (channel, ussd_code) {
-            // Prevent *123*345# from getting printed as bold text
-            // in the phone client
-            if(channel == "WHATSAPP") {
-                return "```" + ussd_code + "```";
-            }
-            return ussd_code;
-        };
-
         self.send_registration_thanks = function() {
-            return self
-                .get_channel()
-                .then(function(channel) {
-                    return ms.
-                        create_outbound(
-                            self.im.user.answers.registrant.id,
-                            self.im.user.answers.registrant_msisdn,
-                            self.im.user.i18n($(
-                                "Welcome. To stop getting messages dial {{optout_channel}} or for more " +
-                                "services dial {{public_channel}} (No Cost). Standard rates apply " +
-                                "when replying to any SMS from MomConnect."
-                            ).context({
-                                public_channel: self.format_ussd_code(channel, self.im.config.public_channel),
-                                optout_channel: self.format_ussd_code(channel, self.im.config.optout_channel),
-                            })), {
-                                channel: channel
-                            });
-                });
+            var whatsapp_content = self.im.user.i18n($(
+                "Congrats on your pregnancy! MomConnect will send helpful WhatsApp msgs. " +
+                'To stop dial {{optout_channel}} (Free). To get msgs via SMS, reply "SMS" (std rates apply).'
+            ).context({
+                optout_channel: self.im.config.optout_channel
+            }));
+            var sms_content = self.im.user.i18n($(
+                "Congratulations on your pregnancy! MomConnect will send helpful SMS msgs. " +
+                "To stop dial {{optout_channel}}, for more dial {{popi_channel}} (Free)."
+            ).context({
+                optout_channel: self.im.config.optout_channel,
+                popi_channel: self.im.config.popi_channel
+            }));
+            return ms.create_outbound(
+                self.im.user.answers.registrant.id,
+                self.im.user.answers.registrant_msisdn,
+                self.im.user.answers.registered_on_whatsapp ? whatsapp_content : sms_content
+            );
         };
 
         self.add = function(name, creator) {
@@ -529,40 +514,6 @@ go.app = function() {
             });
         });
 
-        self.can_participate_in_pilot = function (facilitycode) {
-            var pilot_config = self.im.config.pilot || {};
-            var whitelist = pilot_config.facilitycode_whitelist || [];
-
-            if(pilot_config.use_whitelist === false) {
-                return Q(true);
-            }
-
-            // NOTE: returning a promise as this may be an API call
-            //       in the future
-            return self.im
-                .log('Checking ' + facilitycode + ' against whitelist: ' + JSON.stringify(whitelist))
-                .then(function() {
-                    var allowed = whitelist.indexOf(parseInt(facilitycode, 10)) > -1;
-                    return self.im
-                        .log('Returning: ' + allowed + ' for ' + facilitycode)
-                        .then(function () {
-                            return allowed;
-                        });
-                });
-        };
-
-        self.get_channel = function() {
-            var pilot_config = self.im.config.pilot || {};
-            return Q()
-                .then(function () {
-                    if(self.im.user.answers.state_pilot == 'whatsapp') {
-                        return pilot_config.channel;
-                    }
-
-                    return self.im.config.services.message_sender.channel;
-                });
-        };
-
         self.is_valid_recipient_for_pilot = function (default_params) {
             var pilot_config = self.im.config.pilot || {};
             var api_url = pilot_config.api_url;
@@ -606,32 +557,19 @@ go.app = function() {
                         if (!valid_clinic_code) {
                             return error;
                         } else {
-                            // NOTE:    The valid_clinic_code we get back from
-                            //          validate_clinic_code is a string from Jembi
-                            //          but we're whitelisting on the actual numeric
-                            //          code supplied
+                            var address = self.im.user.answers.registrant_msisdn;
                             return self
-                                .can_participate_in_pilot(content)
-                                .then(function(confirmed) {
-                                    // If not a participating clinic then
-                                    // return immediately
-                                    if(!confirmed)
-                                        return;
-
-                                    // NOTE:    We're making the API call here but not telling
-                                    //          it to wait nor are we doing anything with the
-                                    //          result.
-                                    //
-                                    //          The idea is that the check continues
-                                    //          to happen in the background and will be ready
-                                    //          when we need it. This way we minimise any timeout
-                                    //          penalty during the registration.
-                                    var address = self.im.user.answers.registrant_msisdn;
-                                    return self
-                                        .is_valid_recipient_for_pilot({
-                                            msisdns: [address],
-                                            wait: false,
-                                        });
+                                // NOTE:    We're making the API call here but not telling
+                                //          it to wait nor are we doing anything with the
+                                //          result.
+                                //
+                                //          The idea is that the check continues
+                                //          to happen in the background and will be ready
+                                //          when we need it. This way we minimise any timeout
+                                //          penalty during the registration.
+                                .is_valid_recipient_for_pilot({
+                                    msisdns: [address],
+                                    wait: false
                                 })
                                 .then(function () {
                                     return null;  // vumi expects null or undefined if check passes
@@ -751,7 +689,7 @@ go.app = function() {
                 next: function(content) {
                     var mom_dob = utils.extract_za_id_dob(content);
                     self.im.user.set_answer("mom_dob", mom_dob);
-                    return 'state_pilot_randomisation';
+                    return 'state_language';
                 }
             });
         });
@@ -785,7 +723,7 @@ go.app = function() {
                         return error;
                     }
                 },
-                next: 'state_pilot_randomisation'
+                next: 'state_language'
             });
         });
 
@@ -837,7 +775,7 @@ go.app = function() {
                                utils.double_digit_number(content));
                     self.im.user.set_answer("mom_dob", dob);
                     if (utils.is_valid_date(dob, 'YYYY-MM-DD')) {
-                        return 'state_pilot_randomisation';
+                        return 'state_language';
                     } else {
                         return 'state_invalid_dob';
                     }
@@ -855,57 +793,6 @@ go.app = function() {
                     new Choice('continue', $('Continue'))
                 ],
                 next: 'state_birth_year'
-            });
-        });
-
-        self.add('state_pilot_randomisation', function(name) {  // interstitial state
-            var facilitycode = self.im.user.answers.state_clinic_code;
-            var address = self.im.user.answers.registrant_msisdn;
-            return self
-                .can_participate_in_pilot(facilitycode)
-                .then(function(confirmed) {
-                    if(confirmed) {
-                        // NOTE:    Here we run the same check again but instead
-                        //          tell it to wait for the result but this should
-                        //          now be quick as it's already completed
-                        //          at the gateway level
-                        return self.is_valid_recipient_for_pilot({
-                            msisdns: [address],
-                            wait: true,
-                        });
-                    } else {
-                        return false;
-                    }
-                })
-                .then(function(confirmed) {
-                    self.im.user.set_answer('registered_on_whatsapp', confirmed);
-                    return confirmed
-                        ? self.states.create('state_pilot')
-                        : self.states.create('state_language');
-                });
-        });
-
-        self.add('state_pilot', function(name) {
-            var pilot_config = self.im.config.pilot || {};
-            var nudge_threshold = pilot_config.nudge_threshold || 0.0;
-            var question = $('How would the pregnant mother like to receive the messages?');
-            var whatsapp_label = $('WhatsApp');
-            var sms_label = $('SMS');
-
-            if(self.im.user.answers.state_language == 'eng_ZA' && Math.random() < nudge_threshold) {
-                question = $("Would the pregnant mother prefer to receive messages via WhatsApp?");
-                whatsapp_label = $('Yes');
-                sms_label = $('No');
-            }
-
-            self.im.user.set_answer("state_pilot_question", question.args[0]);
-            return new ChoiceState(name, {
-                question: question,
-                choices: [
-                    new Choice('whatsapp', whatsapp_label),
-                    new Choice('sms', sms_label),
-                ],
-                next: 'state_language'
             });
         });
 
@@ -927,8 +814,21 @@ go.app = function() {
                     new Choice('ven_ZA', 'Tshivenda'),
                     new Choice('nbl_ZA', 'isiNdebele'),
                 ],
-                next: 'state_save_subscription'
+                next: 'state_channel_select'
             });
+        });
+
+        self.add('state_channel_select', function(name) {  // interstitial state
+            var address = self.im.user.answers.registrant_msisdn;
+            return self
+                .is_valid_recipient_for_pilot({
+                    msisdns: [address],
+                    wait: true
+                })
+                .then(function(confirmed) {
+                    self.im.user.set_answer('registered_on_whatsapp', confirmed);
+                    return self.states.create('state_save_subscription');
+                });
         });
 
         self.add('state_save_subscription', function(name) {  // interstitial state
@@ -946,10 +846,14 @@ go.app = function() {
         });
 
         self.add('state_end_success', function(name) {
+            var content = $(
+                "You're done! This number {{msisdn}} will now get helpful messages about her pregnancy on " +
+                "{{channel}}. Thanks for signing up to MomConnect.").context({
+                    msisdn: self.im.user.answers.registrant_msisdn.replace('+27', '0'),
+                    channel: self.im.user.answers.registered_on_whatsapp ? "WhatsApp" : "SMS"
+                });
             return new EndState(name, {
-                text: $('Thank you. The pregnant woman will now ' +
-                        'receive weekly messages about her pregnancy ' +
-                        'from MomConnect.'),
+                text: content,
                 next: 'state_start',
             });
         });
