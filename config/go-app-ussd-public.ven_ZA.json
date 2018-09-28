@@ -1,28 +1,36 @@
 {
     "": {
         "project-id-version": "Personal",
-        "pot-creation-date": "2017-06-28 12:22+0200",
-        "po-revision-date": "2017-06-28 12:23+0200",
+        "pot-creation-date": "2018-09-28 07:58:+0000",
+        "po-revision-date": "2018-09-28 14:39+0200",
         "last-translator": "",
         "language-team": "Venda <LL@li.org>",
         "language": "ve",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 2.0.2",
+        "x-generator": "Poedit 2.1.1",
         "plural-forms": "nplurals=2; plural=(n != 1);"
     },
-    "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. You can register for the full set of FREE helpful messages at a clinic.": [
+    "Please dial back in to {{ USSD_number }} to complete the pregnancy registration.": [
         null,
-        "Ri a takala vho dihwala. Vha do rumelwa dziSMS dza mahala dza MomConnect. Vha nga ya kiliniki vha dinwalisela sethe ya milaedza ya MAHALA i no do vha thusa."
+        "Tshifhinga tsho fhela. Kha vha founele {{ USSD_number }} vha fhedzise u nwala data u itela u wana milaedza."
+    ],
+    "Welcome! MomConnect sends msgs on WhatsApp for 3 wks. Visit a clinic for more msgs. To stop dial {{optout_channel}}. To get msgs in SMS, reply \"SMS\" (std rates apply)": [
+        null,
+        "Vho ṱanganedzwa kha MomConnect! Vha ye kiḽiniki u wana sethe yoṱhe ya milaedza. U bva ndi{{optout_channel}}. U wana nga SMS, vha fhindule \"SMS\" (mitengo ndi yo tiwaho)"
+    ],
+    "Welcome! MomConnect will send msgs on SMS for 3 wks. Visit a clinic for more msgs. To stop dial {{optout_channel}}.": [
+        null,
+        "Vho ṱanganedzwa kha MomConnect! Vha ye kiḽiniki u wana sethe yoṱhe ya milaedza. U bva vha lidzele {{optout_channel}}."
     ],
     "Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.": [
         null,
-        "Kha vha fhindule mesedzhi  na mbilaelo yavho. Tshumelo kiliniki, kha vha dzhenise kiliniki kana dzina la mushumi wa kiliniki. Hu do shuma mitengo yo tiwaho."
+        "Kha vha fhindule mesedzhi na mbilaelo yavho. Tshumelo kiliniki, kha vha dzhenise kiliniki kana dzina la mushumi wa kiliniki. Hu do shuma mitengo yo tiwaho."
     ],
     "Please reply to this message with your complaint. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.": [
         null,
-        "Kha vha fhindule mesedzhi  na mbilaelo yavho. Tshumelo kiliniki, kha vha dzhenise kiliniki kana dzina la mushumi wa kiliniki. Hu do shuma mitengo yo tiwaho. "
+        "Kha vha fhindule mesedzhi na mbilaelo yavho. Tshumelo kiliniki, kha vha dzhenise kiliniki kana dzina la mushumi wa kiliniki. Hu do shuma mitengo yo tiwaho."
     ],
     "Welcome back. Please select an option:": [
         null,
@@ -36,7 +44,11 @@
         null,
         "Menumurangeli"
     ],
-    "MomConnect sends free support SMSs to pregnant mothers. Are you or do you suspect that you are pregnant?": [
+    "Welcome to the Department of Health's MomConnect. Please select your language": [
+        null,
+        "Welcome to the Department of Health's MomConnect. Please select your language"
+    ],
+    "MomConnect sends free support messages to pregnant mothers. Are you or do you suspect that you are pregnant?": [
         null,
         "MomConnect i rumela vhathu vho dihwalaho dziSMS dza thikhedzo dza mahala. Vho dihwala vha vhona u nga vho dihwala?"
     ],
@@ -52,33 +64,41 @@
         null,
         ""
     ],
-    "You have previously opted out of MomConnect SMSs. Please confirm that you would like to opt in to receive messages again?": [
+    "We are sorry but this service is only for pregnant mothers. If you have other health concerns please visit your nearest clinic.": [
+        null,
+        "Vha ri farele. Heyi tshumelo ndi ya vhathu vho dihwalaho fhedzi. Arali vha tshi toda thusho ya zwinwe-vho zwa mutakalo, kha vha ye kiliniki ya tsini navho."
+    ],
+    "Unfortunately without your consent, you cannot register to MomConnect.": [
+        null,
+        ""
+    ],
+    "You have previously opted out of MomConnect messages. Please confirm that you would like to opt in to receive messages again?": [
         null,
         "Tshifhingani tsho fhiraho vho vha vha si tsha toda dziSMS dza MomConnect. Kha vha bule uri vha vho dzi toda hafhu naa?"
+    ],
+    "You have chosen not to receive MomConnect messages and so cannot complete registration.": [
+        null,
+        "Vho khetha u sa rumelwa dziSMS dza MomConnect dza tsivhudzo kha zwe vha vhudzisa."
     ],
     "Main Menu": [
         null,
         "Menumurangi"
     ],
-    "How would you like to receive messages about you and your baby?": [
+    "Congratulations on your pregnancy! You will get msgs from MomConnect on WhatsApp for 3 wks. For the full set of msgs, register at a clinic.": [
         null,
-        "Vha tama u wana hani milaedza nga ha vhone na kubebwa kwavho?"
+        "Ri a vha fululedza kha vhuimana havho! Vha ḓo wana milaedza u bva MomConnect nga WhatsApp vhege dza 3. U itela sethe yo yoṱhe ya milaedza, vha ṅwalise kiḽiniki."
     ],
-    "WhatsApp": [
+    "Congratulations on your pregnancy! You will get msgs from MomConnect on SMS for 3 wks. For the full set of FREE messages, register at a clinic.": [
         null,
-        "WhatsApp"
-    ],
-    "SMS": [
-        null,
-        "SMS"
+        "Ri a vha fululedza kha vhuimana havho! Vha ḓo wana milaedza u bva MomConnect nga SMS vhege dza 3. U itela sethe yo yoṱhe ya MAHALA, vha ṅwalise kiḽiniki."
     ],
     "Welcome to the Department of Health's MomConnect. Please choose an option:": [
         null,
-        "Vho tanganedzwa kha MomConnect ya Muhasho wa Mutakalo.Vha nanga: "
+        "Vho tanganedzwa kha MomConnect ya Muhasho wa Mutakalo. Vha nanga:"
     ],
     "Send us a compliment": [
         null,
-        "U rumela thuthuwedzo."
+        "U rumela thuthuwedzo"
     ],
     "Send us a complaint": [
         null,
@@ -94,11 +114,11 @@
     ],
     "Welcome to the Department of Health's MomConnect. Choose an option:": [
         null,
-        "Vho tanganedzwa kha MomConnect ya Muhasho wa Mutakalo. Kha vha nange: "
+        "Vho tanganedzwa kha MomConnect ya Muhasho wa Mutakalo. Kha vha nange:"
     ],
     "Get the full set of messages": [
         null,
-        "Sethe yo fhelelaho ya milaedza."
+        "Sethe yo fhelelaho ya milaedza"
     ],
     "To register for the full set of MomConnect messages, please visit your nearest clinic.": [
         null,

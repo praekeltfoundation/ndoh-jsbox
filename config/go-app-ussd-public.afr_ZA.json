@@ -1,20 +1,28 @@
 {
     "": {
         "project-id-version": "public",
-        "pot-creation-date": "2017-06-28 11:55+0200",
-        "po-revision-date": "2017-06-28 11:56+0200",
+        "pot-creation-date": "2018-09-28 07:58:+0000",
+        "po-revision-date": "2018-09-28 12:03+0200",
         "last-translator": "Lieze <lieze@praekelt.com>",
         "language-team": "Language <LL@li.org>",
         "language": "af",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 2.0.2",
+        "x-generator": "Poedit 2.1.1",
         "plural-forms": "nplurals=2; plural=(n != 1);"
     },
-    "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. You can register for the full set of FREE helpful messages at a clinic.": [
+    "Please dial back in to {{ USSD_number }} to complete the pregnancy registration.": [
         null,
-        "Geluk met jou swangerskap. Jy sal jou gratis SMSe van  MomConnect ontvang. Jy kan registreer vir die volle stel GRATIS & nuttige SMSe by 'n kliniek."
+        "Tyd is verstreke. Skakel {{USSD_number}} terug en maak voltooi jou data sodat jy boodskappe kan ontvang."
+    ],
+    "Welcome! MomConnect sends msgs on WhatsApp for 3 wks. Visit a clinic for more msgs. To stop dial {{optout_channel}}. To get msgs in SMS, reply \"SMS\" (std rates apply)": [
+        null,
+        "Welkom to MomConnect! Gaan na 'n kliniek vir die hele stel boodskappe. Om te stop skakel {{optout_channel}}. Vir boodskappe liewers via SMS antw \"SMS\" (std tariewe)."
+    ],
+    "Welcome! MomConnect will send msgs on SMS for 3 wks. Visit a clinic for more msgs. To stop dial {{optout_channel}}.": [
+        null,
+        "Welkom by MomConnect. Gaan na 'n kliniek vir die hele stel boodskappe. Om te stop skakel {{optout_channel}}."
     ],
     "Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.": [
         null,
@@ -28,11 +36,19 @@
         null,
         "Welkom terug. Kies asb n opsie:"
     ],
+    "Continue signing up for messages": [
+        null,
+        "Registreer vir boodskappe"
+    ],
     "Main menu": [
         null,
         "Hoof Spyskaart"
     ],
-    "MomConnect sends free support SMSs to pregnant mothers. Are you or do you suspect that you are pregnant?": [
+    "Welcome to the Department of Health's MomConnect. Please select your language": [
+        null,
+        "Welcome to the Department of Health's MomConnect. Please select your language"
+    ],
+    "MomConnect sends free support messages to pregnant mothers. Are you or do you suspect that you are pregnant?": [
         null,
         "MomConnect stuur gratis SMSe uit om swanger moeders te ondersteun. Is jy of vermoed jy dat jy swanger is?"
     ],
@@ -48,25 +64,33 @@
         null,
         ""
     ],
-    "You have previously opted out of MomConnect SMSs. Please confirm that you would like to opt in to receive messages again?": [
+    "We are sorry but this service is only for pregnant mothers. If you have other health concerns please visit your nearest clinic.": [
+        null,
+        "Jammer maar hierdie diens is slegs vir swanger moeders. As jy ander kwellings oor jou gesondheid het, gaan na jou naaste kliniek."
+    ],
+    "Unfortunately without your consent, you cannot register to MomConnect.": [
+        null,
+        ""
+    ],
+    "You have previously opted out of MomConnect messages. Please confirm that you would like to opt in to receive messages again?": [
         null,
         "Jy het jouself voorheen onttrek aan MomConnect se SMSe. Bevestig asb dat jy nou weer die boodskappe wil ontvang."
+    ],
+    "You have chosen not to receive MomConnect messages and so cannot complete registration.": [
+        null,
+        ""
     ],
     "Main Menu": [
         null,
         "Hoof Spyskaart"
     ],
-    "How would you like to receive messages about you and your baby?": [
+    "Congratulations on your pregnancy! You will get msgs from MomConnect on WhatsApp for 3 wks. For the full set of msgs, register at a clinic.": [
         null,
-        "Hoe wil jy graag boodskappe oor jou en jou baba ontvang?"
+        "Geluk met jou swangerskap! Jy sal boodskappe van MomConnect vir 3 weke via WhatsApp kry. Registreer by 'n kliniek vir die hele stel boodskappe."
     ],
-    "WhatsApp": [
+    "Congratulations on your pregnancy! You will get msgs from MomConnect on SMS for 3 wks. For the full set of FREE messages, register at a clinic.": [
         null,
-        "WhatsApp"
-    ],
-    "SMS": [
-        null,
-        "SMS"
+        "Geluk met jou swangerskap! Jy sal boodskappe van MomConnect vir 3 weke via SMSkry. Registreer by 'n kliniek vir die hele stel GRATIS boodskappe."
     ],
     "Welcome to the Department of Health's MomConnect. Please choose an option:": [
         null,

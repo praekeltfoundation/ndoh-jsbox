@@ -1,19 +1,27 @@
 {
     "": {
         "project-id-version": "Personal",
-        "pot-creation-date": "2017-06-28 12:22+0200",
-        "po-revision-date": "2017-06-28 12:22+0200",
+        "pot-creation-date": "2018-09-28 07:58:+0000",
+        "po-revision-date": "2018-09-28 14:40+0200",
         "last-translator": "",
         "language-team": "Tsonga <LL@li.org>",
         "language": "ts",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 2.0.2"
+        "x-generator": "Poedit 2.1.1"
     },
-    "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. You can register for the full set of FREE helpful messages at a clinic.": [
+    "Please dial back in to {{ USSD_number }} to complete the pregnancy registration.": [
         null,
-        ""
+        "Nkarhi wa wena wu herile. Tshikelela {{ USSD_number }} ku va u hetisa ku nghenisa vuxokoxoko bya wena leswaku u ta kota ku kuma mahungu."
+    ],
+    "Welcome! MomConnect sends msgs on WhatsApp for 3 wks. Visit a clinic for more msgs. To stop dial {{optout_channel}}. To get msgs in SMS, reply \"SMS\" (std rates apply)": [
+        null,
+        "Ha ku amukela eka MomConnect! Yana etliliniki ku kuma swihungwana hinkwaswo. Ku tshika {{optout_channel}}. Swihungwana hi SMS, hlamula \"SMS\". (Tihakelo ta ntolovelo)."
+    ],
+    "Welcome! MomConnect will send msgs on SMS for 3 wks. Visit a clinic for more msgs. To stop dial {{optout_channel}}.": [
+        null,
+        "Ha ku amukela eka MomConnect! Yana etliliniki ku kuma swihungwana hinkwaswo. Ku tshika dayila {{optout_channel}}."
     ],
     "Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.": [
         null,
@@ -35,13 +43,17 @@
         null,
         "Menyunkulu"
     ],
-    "MomConnect sends free support SMSs to pregnant mothers. Are you or do you suspect that you are pregnant?": [
+    "Welcome to the Department of Health's MomConnect. Please select your language": [
+        null,
+        "Welcome to the Department of Health's MomConnect. Please select your language"
+    ],
+    "MomConnect sends free support messages to pregnant mothers. Are you or do you suspect that you are pregnant?": [
         null,
         "MomConnect yi rhumela tiSMS ta mahala to seketela eka vavasati lava nga vayimani.U muyimani kumbe u ehleketelela leswaku u nga va u ri muyimani?"
     ],
     "Yes": [
         null,
-        " Ina "
+        "Ina"
     ],
     "No": [
         null,
@@ -51,25 +63,33 @@
         null,
         ""
     ],
-    "You have previously opted out of MomConnect SMSs. Please confirm that you would like to opt in to receive messages again?": [
+    "We are sorry but this service is only for pregnant mothers. If you have other health concerns please visit your nearest clinic.": [
+        null,
+        "U ta hi khomela, vukorhokeri lebyi i bya vavasati lava nga vayimani ntsena.Loko u ri na swivilelo swin'wana swa rihanyo endzela tliliniki ya le kusuhi na wena."
+    ],
+    "Unfortunately without your consent, you cannot register to MomConnect.": [
+        null,
+        ""
+    ],
+    "You have previously opted out of MomConnect messages. Please confirm that you would like to opt in to receive messages again?": [
         null,
         "Nkarhi lowu hundzeke u komberile ku ka u nga ha rhumeriwi tiSMS ta MomConnect. Xana u lava ku rhumeriwa mahungu nakambe?"
+    ],
+    "You have chosen not to receive MomConnect messages and so cannot complete registration.": [
+        null,
+        "U hlawurile ku ka u nga rhumeriwi tiSMS ta MomConnect kutani u wu fanelanga ku tsarisa."
     ],
     "Main Menu": [
         null,
         "Menyunkulu"
     ],
-    "How would you like to receive messages about you and your baby?": [
+    "Congratulations on your pregnancy! You will get msgs from MomConnect on WhatsApp for 3 wks. For the full set of msgs, register at a clinic.": [
         null,
-        "Xana u ta tsakela ku kuma njhani swihungwana hi mayelana na wena na ricece ra wena"
+        "Hoyohoyo eka vuyimani bya wena! U ta kuma swihungwana kusuka eka MomConnect eka WhatsApp swa mavhiki ma3. Ku kuma swihungwana hinkwaswo, tsarisa etliliniki."
     ],
-    "WhatsApp": [
+    "Congratulations on your pregnancy! You will get msgs from MomConnect on SMS for 3 wks. For the full set of FREE messages, register at a clinic.": [
         null,
-        "WhatsApp"
-    ],
-    "SMS": [
-        null,
-        "SMS"
+        "Hoyohoyo eka vuyimani bya wena! U ta kuma swihungwana kusuka eka MomConnect hi SMS swa mavhiki ma3. Tsarisa etliliniki ku kuma swihungwana hinkwaswo swa MAHALA."
     ],
     "Welcome to the Department of Health's MomConnect. Please choose an option:": [
         null,

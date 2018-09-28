@@ -2,7 +2,7 @@
     "": {
         "project-id-version": "Clinic",
         "pot-creation-date": "2018-09-27 02:11:+0000",
-        "po-revision-date": "2018-09-27 16:43+0200",
+        "po-revision-date": "2018-09-28 14:54+0200",
         "last-translator": "",
         "language-team": "Venda <LL@li.org>",
         "language": "ve",
@@ -22,7 +22,7 @@
     ],
     "Congratulations on your pregnancy! MomConnect will send helpful SMS msgs. To stop dial {{optout_channel}}, for more dial {{popi_channel}} (Free).": [
         null,
-        ""
+        "Vho ṱanganedzwa! MomConnect i ḓo vha rumela milaedza ya SMS i thusaho. U bva ndi {{optout_channel}}, U itela zwinzhi vha lidzele {{popi_channel}} (Mahala)."
     ],
     "Would you like to complete pregnancy registration for {{ num }}?": [
         null,

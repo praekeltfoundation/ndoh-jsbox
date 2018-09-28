@@ -1,39 +1,44 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: public\n"
-"POT-Creation-Date: 2017-06-28 11:55+0200\n"
-"PO-Revision-Date: 2017-06-28 11:56+0200\n"
+"POT-Creation-Date: 2018-09-28 07:58:+0000\n"
+"PO-Revision-Date: 2018-09-28 12:03+0200\n"
 "Last-Translator: Lieze <lieze@praekelt.com>\n"
 "Language-Team: Language <LL@li.org>\n"
 "Language: af\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.2\n"
+"X-Generator: Poedit 2.1.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: go-app-ussd_public.js:363
-#, fuzzy
-#| msgid ""
-#| "Your session timed out. Please dial back in to {{USSD_number}} to "
-#| "complete the pregnancy registration so that you can receive messages."
+#: go-app-ussd_public.js:365
 msgid ""
 "Please dial back in to {{ USSD_number }} to complete the pregnancy "
 "registration."
 msgstr ""
-"Tyd is verstreke. Skakel  {{USSD_number}} terug en maak voltooi jou data "
+"Tyd is verstreke. Skakel {{USSD_number}} terug en maak voltooi jou data "
 "sodat jy boodskappe kan ontvang."
 
-#: go-app-ussd_public.js:434 go-app-ussd_public.js:762
+#: go-app-ussd_public.js:439
 msgid ""
-"Congratulations on your pregnancy. You will now get free SMSs about "
-"MomConnect. You can register for the full set of FREE helpful messages at a "
-"clinic."
+"Welcome! MomConnect sends msgs on WhatsApp for 3 wks. Visit a clinic for "
+"more msgs. To stop dial {{optout_channel}}. To get msgs in SMS, reply \"SMS"
+"\" (std rates apply)"
 msgstr ""
-"Geluk met jou swangerskap. Jy sal jou gratis SMSe van  MomConnect ontvang. "
-"Jy kan registreer vir die volle stel GRATIS & nuttige SMSe by 'n kliniek."
+"Welkom to MomConnect! Gaan na 'n kliniek vir die hele stel boodskappe. Om te "
+"stop skakel {{optout_channel}}. Vir boodskappe liewers via SMS antw \"SMS"
+"\" (std tariewe)."
 
-#: go-app-ussd_public.js:451
+#: go-app-ussd_public.js:445
+msgid ""
+"Welcome! MomConnect will send msgs on SMS for 3 wks. Visit a clinic for more "
+"msgs. To stop dial {{optout_channel}}."
+msgstr ""
+"Welkom by MomConnect. Gaan na 'n kliniek vir die hele stel boodskappe. Om te "
+"stop skakel {{optout_channel}}."
+
+#: go-app-ussd_public.js:466
 msgid ""
 "Please reply to this message with your compliment. If it relates to the "
 "service at the clinic, include the clinic or clinic worker name. Standard "
@@ -42,7 +47,7 @@ msgstr ""
 "Antw asb op hierdie boodskap met jou kompliment. As dit gaan oor diens by "
 "die kliniek gee die kliniek of kliniekwerker se naam. Standaardtariewe geld."
 
-#: go-app-ussd_public.js:469
+#: go-app-ussd_public.js:484
 msgid ""
 "Please reply to this message with your complaint. If it relates to the "
 "service at the clinic, include the clinic or clinic worker name. Standard "
@@ -51,91 +56,108 @@ msgstr ""
 "Antw asb op hierdie boodskap met jou klagte. As dit gaan oor diens by die "
 "kliniek gee die kliniek of kliniekwerker se naam. Standaardtariewe geld."
 
-#: go-app-ussd_public.js:493
+#: go-app-ussd_public.js:508
 msgid "Welcome back. Please select an option:"
 msgstr "Welkom terug. Kies asb n opsie:"
 
-#: go-app-ussd_public.js:495
-#, fuzzy
+#: go-app-ussd_public.js:510
 msgid "Continue signing up for messages"
 msgstr "Registreer vir boodskappe"
 
-#: go-app-ussd_public.js:496
+#: go-app-ussd_public.js:511
 msgid "Main menu"
 msgstr "Hoof Spyskaart"
 
-#: go-app-ussd_public.js:597
+#: go-app-ussd_public.js:589
 msgid ""
-"MomConnect sends free support SMSs to pregnant mothers. Are you or do you "
-"suspect that you are pregnant?"
+"Welcome to the Department of Health's MomConnect. Please select your language"
+msgstr ""
+"Welcome to the Department of Health's MomConnect. Please select your language"
+
+#: go-app-ussd_public.js:629
+msgid ""
+"MomConnect sends free support messages to pregnant mothers. Are you or do "
+"you suspect that you are pregnant?"
 msgstr ""
 "MomConnect stuur gratis SMSe uit om swanger moeders te ondersteun. Is jy of "
 "vermoed jy dat jy swanger is?"
 
-#: go-app-ussd_public.js:601 go-app-ussd_public.js:616
-#: go-app-ussd_public.js:653
+#: go-app-ussd_public.js:633 go-app-ussd_public.js:648
+#: go-app-ussd_public.js:690
 msgid "Yes"
 msgstr "Ja"
 
-#: go-app-ussd_public.js:602 go-app-ussd_public.js:617
-#: go-app-ussd_public.js:654
+#: go-app-ussd_public.js:634 go-app-ussd_public.js:649
+#: go-app-ussd_public.js:691
 msgid "No"
 msgstr "Nee"
 
-#: go-app-ussd_public.js:612
+#: go-app-ussd_public.js:644
 msgid ""
 "To register we need to collect, store & use your info. You may get messages "
 "on public holidays & weekends. Do you consent?"
 msgstr ""
 
-#: go-app-ussd_public.js:634 go-app-ussd_public.js:679
-#, fuzzy
-#| msgid ""
-#| "You have chosen not to receive MomConnect SMSs and so cannot complete "
-#| "registration."
-msgid "You have chosen not to receive MomConnect SMSs"
-msgstr ""
-"Jy het gekies om nie die  MomConnect SMSe te ontvang nie en kan nie die "
-"registrasie voltooi nie."
-
-#: go-app-ussd_public.js:649
+#: go-app-ussd_public.js:666
 msgid ""
-"You have previously opted out of MomConnect SMSs. Please confirm that you "
-"would like to opt in to receive messages again?"
+"We are sorry but this service is only for pregnant mothers. If you have "
+"other health concerns please visit your nearest clinic."
+msgstr ""
+"Jammer maar hierdie diens is slegs vir swanger moeders. As jy ander "
+"kwellings oor jou gesondheid het, gaan na jou naaste kliniek."
+
+#: go-app-ussd_public.js:676
+msgid "Unfortunately without your consent, you cannot register to MomConnect."
+msgstr ""
+
+#: go-app-ussd_public.js:686
+msgid ""
+"You have previously opted out of MomConnect messages. Please confirm that "
+"you would like to opt in to receive messages again?"
 msgstr ""
 "Jy het jouself voorheen onttrek aan MomConnect se SMSe. Bevestig asb dat jy "
 "nou weer die boodskappe wil ontvang."
 
-#: go-app-ussd_public.js:681
+#: go-app-ussd_public.js:716
+msgid ""
+"You have chosen not to receive MomConnect messages and so cannot complete "
+"registration."
+msgstr ""
+
+#: go-app-ussd_public.js:720
 msgid "Main Menu"
 msgstr "Hoof Spyskaart"
 
-#: go-app-ussd_public.js:737
-msgid "How would you like to receive messages about you and your baby?"
-msgstr "Hoe wil jy graag boodskappe oor jou en jou baba ontvang?"
+#: go-app-ussd_public.js:801
+msgid ""
+"Congratulations on your pregnancy! You will get msgs from MomConnect on "
+"WhatsApp for 3 wks. For the full set of msgs, register at a clinic."
+msgstr ""
+"Geluk met jou swangerskap! Jy sal boodskappe van MomConnect vir 3 weke via "
+"WhatsApp kry. Registreer by 'n kliniek vir die hele stel boodskappe."
 
-#: go-app-ussd_public.js:739
-msgid "WhatsApp"
-msgstr "WhatsApp"
+#: go-app-ussd_public.js:805
+msgid ""
+"Congratulations on your pregnancy! You will get msgs from MomConnect on SMS "
+"for 3 wks. For the full set of FREE messages, register at a clinic."
+msgstr ""
+"Geluk met jou swangerskap! Jy sal boodskappe van MomConnect vir 3 weke via "
+"SMSkry. Registreer by 'n kliniek vir die hele stel GRATIS boodskappe."
 
-#: go-app-ussd_public.js:740
-msgid "SMS"
-msgstr "SMS"
-
-#: go-app-ussd_public.js:772
+#: go-app-ussd_public.js:818
 msgid ""
 "Welcome to the Department of Health's MomConnect. Please choose an option:"
 msgstr "Welkom by die Dep Gesondheid se MomConnect. Kies asseblief:"
 
-#: go-app-ussd_public.js:777
+#: go-app-ussd_public.js:823
 msgid "Send us a compliment"
 msgstr "Stuur vir ons 'n kompliment"
 
-#: go-app-ussd_public.js:778
+#: go-app-ussd_public.js:824
 msgid "Send us a complaint"
 msgstr "Le 'n klagte"
 
-#: go-app-ussd_public.js:800
+#: go-app-ussd_public.js:846
 msgid ""
 "Thank you. We will send you a message shortly with instructions on how to "
 "send us your compliment."
@@ -143,7 +165,7 @@ msgstr ""
 "Dankie. Ons sal binnekort vir jou 'n boodskap stuur met instruksies oor hoe "
 "om vir ons 'n kompliment te stuur."
 
-#: go-app-ussd_public.js:809
+#: go-app-ussd_public.js:855
 msgid ""
 "Thank you. We will send you a message shortly with instructions on how to "
 "send us your complaint."
@@ -151,21 +173,62 @@ msgstr ""
 "Dankie. Ons sal binnekort vir jou 'n boodskap stuur met instruksies oor hoe "
 "om vir ons 'n klagte stuur."
 
-#: go-app-ussd_public.js:818
+#: go-app-ussd_public.js:864
 msgid "Welcome to the Department of Health's MomConnect. Choose an option:"
 msgstr "Welkom by die Dep Gesondheid se MomConnect. Kies 'n opsie:"
 
-#: go-app-ussd_public.js:821
+#: go-app-ussd_public.js:867
 msgid "Get the full set of messages"
 msgstr "Kry die hele stel boodskappe"
 
-#: go-app-ussd_public.js:829
+#: go-app-ussd_public.js:875
 msgid ""
 "To register for the full set of MomConnect messages, please visit your "
 "nearest clinic."
 msgstr ""
 "Besoek asb jou naaste kliniek om te registreer vir die hele stel MomConnect-"
 "boodskappe."
+
+#~ msgid ""
+#~ "Congratulations on your pregnancy. You will now get free SMSs about "
+#~ "MomConnect. You can register for the full set of FREE helpful messages at "
+#~ "a clinic."
+#~ msgstr ""
+#~ "Geluk met jou swangerskap. Jy sal jou gratis SMSe van  MomConnect "
+#~ "ontvang. Jy kan registreer vir die volle stel GRATIS & nuttige SMSe by 'n "
+#~ "kliniek."
+
+#~ msgid ""
+#~ "MomConnect sends free support SMSs to pregnant mothers. Are you or do you "
+#~ "suspect that you are pregnant?"
+#~ msgstr ""
+#~ "MomConnect stuur gratis SMSe uit om swanger moeders te ondersteun. Is jy "
+#~ "of vermoed jy dat jy swanger is?"
+
+#, fuzzy
+#~| msgid ""
+#~| "You have chosen not to receive MomConnect SMSs and so cannot complete "
+#~| "registration."
+#~ msgid "You have chosen not to receive MomConnect SMSs"
+#~ msgstr ""
+#~ "Jy het gekies om nie die  MomConnect SMSe te ontvang nie en kan nie die "
+#~ "registrasie voltooi nie."
+
+#~ msgid ""
+#~ "You have previously opted out of MomConnect SMSs. Please confirm that you "
+#~ "would like to opt in to receive messages again?"
+#~ msgstr ""
+#~ "Jy het jouself voorheen onttrek aan MomConnect se SMSe. Bevestig asb dat "
+#~ "jy nou weer die boodskappe wil ontvang."
+
+#~ msgid "How would you like to receive messages about you and your baby?"
+#~ msgstr "Hoe wil jy graag boodskappe oor jou en jou baba ontvang?"
+
+#~ msgid "WhatsApp"
+#~ msgstr "WhatsApp"
+
+#~ msgid "SMS"
+#~ msgstr "SMS"
 
 #~ msgid "Jan"
 #~ msgstr "Jan"
@@ -240,13 +303,6 @@ msgstr ""
 
 #~ msgid "Baby and Pregnancy info (English only)"
 #~ msgstr "Baba en Swangerskap info (slegs in Engels)"
-
-#~ msgid ""
-#~ "We are sorry but this service is only for pregnant mothers. If you have "
-#~ "other health concerns please visit your nearest clinic."
-#~ msgstr ""
-#~ "Jammer maar hierdie diens is slegs vir swanger moeders. As jy ander "
-#~ "kwellings oor jou gesondheid het, gaan na jou naaste kliniek."
 
 #~ msgid ""
 #~ "We need some info to message you. This is private and will only be used "

@@ -1,28 +1,36 @@
 {
     "": {
         "project-id-version": "personal",
-        "pot-creation-date": "2017-06-28 12:01+0200",
-        "po-revision-date": "2017-06-28 12:01+0200",
+        "pot-creation-date": "2018-09-28 07:58:+0000",
+        "po-revision-date": "2018-09-28 14:49+0200",
         "last-translator": "",
         "language-team": "Ndebele <LL@li.org>",
         "language": "nr",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 2.0.2",
+        "x-generator": "Poedit 2.1.1",
         "plural-forms": "nplurals=1; plural=0;"
     },
-    "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. You can register for the full set of FREE helpful messages at a clinic.": [
+    "Please dial back in to {{ USSD_number }} to complete the pregnancy registration.": [
         null,
-        "Halala! ngekukhulelwa kwakho. Sewutawutfola ema-SMS e-MomConnect amahhala. Bhalisela kutfola isethi lephelele yemilayeto lelusito yaMAHHALA emtfolamphilo"
+        "Sikhatsi sakho sesiphelile. Sicela kutsi ushayele: {{ USSD_number }} kute ubuyele emuva ucedzele kufaka idatha (lwatiso) kute kutsi ukwati kutfola imilayeto."
+    ],
+    "Welcome! MomConnect sends msgs on WhatsApp for 3 wks. Visit a clinic for more msgs. To stop dial {{optout_channel}}. To get msgs in SMS, reply \"SMS\" (std rates apply)": [
+        null,
+        "Uyamukelwa kuMomConnect! Iya etlinigi ukuthola isede ezeleko yemilayezo. Ukulisa dayela{{optout_channel}}. Ukuthola amaSMS phendula ngo\"SMS\" (Ubhadela ivama)"
+    ],
+    "Welcome! MomConnect will send msgs on SMS for 3 wks. Visit a clinic for more msgs. To stop dial {{optout_channel}}.": [
+        null,
+        "Uyamukelwa kuMomConnect! Iya etlinigi ukuthola isede ezeleko yemilayezo. Ukulisa dayela {{optout_channel}}."
     ],
     "Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.": [
         null,
-        "Sibawa upendule umlayezo ngokuthokoza kwakh. Nangabe uphathelene nomseb wetlinig, fak ibiz letlinig nanyan ibiz lomsebenz wetlinig. Amanani azakusebenza"
+        "Sibawa upendule umlayezo ngokuthokoza kwakh. Nangabe uphathelene nomseb wetlinig, fak ibiz letlinig nanyan ibiz lomsebenz wetlinig. Amanani azakusebenza."
     ],
     "Please reply to this message with your complaint. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.": [
         null,
-        "Sibawa upendule umlayezo nomrarwakho. Nangabe uphathelene nomseb wetlinig, fak ibiz letlinig nanyan ibiz lomsebenz wetlinig. Amanani azakusebenza"
+        "Sibawa upendule umlayezo nomrarwakho. Nangabe uphathelene nomseb wetlinig, fak ibiz letlinig nanyan ibiz lomsebenz wetlinig. Amanani azakusebenza."
     ],
     "Welcome back. Please select an option:": [
         null,
@@ -36,7 +44,11 @@
         null,
         "Imenyu Lenkhulu"
     ],
-    "MomConnect sends free support SMSs to pregnant mothers. Are you or do you suspect that you are pregnant?": [
+    "Welcome to the Department of Health's MomConnect. Please select your language": [
+        null,
+        "Welcome to the Department of Health's MomConnect. Please select your language"
+    ],
+    "MomConnect sends free support messages to pregnant mothers. Are you or do you suspect that you are pregnant?": [
         null,
         "I-MomConnect itfumelela bomake labakhulelwe ema-SMS amahhala. Ingabe ukhulelwe noma usola kutsi ukhulelwe?"
     ],
@@ -52,25 +64,33 @@
         null,
         ""
     ],
-    "You have previously opted out of MomConnect SMSs. Please confirm that you would like to opt in to receive messages again?": [
+    "We are sorry but this service is only for pregnant mothers. If you have other health concerns please visit your nearest clinic.": [
+        null,
+        "Siyacolisa kutsi lensita yabomake labakhulelwe kuphela. Nangabe unanoma ngabe ngukuphi kukhatsateka kwetemphilo sicela uvakashele umtfolamphilo lodvute nawe."
+    ],
+    "Unfortunately without your consent, you cannot register to MomConnect.": [
+        null,
+        ""
+    ],
+    "You have previously opted out of MomConnect messages. Please confirm that you would like to opt in to receive messages again?": [
         null,
         "Phambilini ukhetse kungatfoli ema-SMS e-MomConnect. Ucelwa ucinisekise kutsi sewutfola kutfola imilayeto futsi?"
+    ],
+    "You have chosen not to receive MomConnect messages and so cannot complete registration.": [
+        null,
+        "Ukhetse kungatfoli ema-SMS ku-MomConnect mayelana nalolwatiso lolucelile."
     ],
     "Main Menu": [
         null,
         "Imenyu Lenkhulu"
     ],
-    "How would you like to receive messages about you and your baby?": [
+    "Congratulations on your pregnancy! You will get msgs from MomConnect on WhatsApp for 3 wks. For the full set of msgs, register at a clinic.": [
         null,
-        "Ungathabela ukuyithola njani imilayezo emayelana nawe nomntwanakho?"
+        "Siyakuthokozisa ngesidisi sakho! Uzakuthola imilayezo enesizo yakwaMomConnect kuWhatsApp iimveke ezi-3. Ukuthola isede ezeleko yemilayezo, zitlolise etlinigi."
     ],
-    "WhatsApp": [
+    "Congratulations on your pregnancy! You will get msgs from MomConnect on SMS for 3 wks. For the full set of FREE messages, register at a clinic.": [
         null,
-        "WhatsApp"
-    ],
-    "SMS": [
-        null,
-        "SMS"
+        "Siyakuthokozisa ngesidisi sakho! Uzakuthola imilayezo yakwaMomConnect ngeSMS iimveke ezi-3. Ukuthola isede ezeleko yemilayezo YASIMAHLA, zitlolise etlinigi."
     ],
     "Welcome to the Department of Health's MomConnect. Please choose an option:": [
         null,
@@ -78,11 +98,11 @@
     ],
     "Send us a compliment": [
         null,
-        ""
+        "Sitfumelele kuncoma"
     ],
     "Send us a complaint": [
         null,
-        ""
+        "Faka sikhalo"
     ],
     "Thank you. We will send you a message shortly with instructions on how to send us your compliment.": [
         null,

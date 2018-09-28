@@ -1,20 +1,28 @@
 {
     "": {
         "project-id-version": "public",
-        "pot-creation-date": "2017-06-28 12:24+0200",
-        "po-revision-date": "2017-06-28 12:25+0200",
+        "pot-creation-date": "2018-09-28 07:58:+0000",
+        "po-revision-date": "2018-09-28 10:12+0200",
         "last-translator": "Lieze <lieze@praekelt.com>",
         "language-team": "Language <LL@li.org>",
         "language": "zu",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 2.0.2",
+        "x-generator": "Poedit 2.1.1",
         "plural-forms": "nplurals=2; plural=(n != 1);"
     },
-    "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. You can register for the full set of FREE helpful messages at a clinic.": [
+    "Please dial back in to {{ USSD_number }} to complete the pregnancy registration.": [
         null,
-        "Halala ngokukhulelwa. Manjena-ke, usuzothola ama-SMS amahhala akwaMomConnect. Ungabhalisa ekliniki ukuze uthole iqoqo eliphelele LAMAHHALA lemiyalezo."
+        "Usuphelelwe isikhathi. Siza udayale {{ USSD_number }} emuva ukuze uqedele ukufaka imininingwane yakho khona uthole imiyalezo."
+    ],
+    "Welcome! MomConnect sends msgs on WhatsApp for 3 wks. Visit a clinic for more msgs. To stop dial {{optout_channel}}. To get msgs in SMS, reply \"SMS\" (std rates apply)": [
+        null,
+        "Siyakwamukela kuMomConnect! Iya eklinikhi uthole yonke imiyalezo. Ukuphuma dayela {{optout_channel}}. Ukuthola amaSMS phendula uthi \"SMS\". (Izindleko ezijwayelekile)"
+    ],
+    "Welcome! MomConnect will send msgs on SMS for 3 wks. Visit a clinic for more msgs. To stop dial {{optout_channel}}.": [
+        null,
+        "Siyakwamukela kuMomConnect! Iya eklinikhi uthole yonke imiyalezo. Ukuphuma dayela {{optout_channel}}."
     ],
     "Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.": [
         null,
@@ -24,11 +32,23 @@
         null,
         "Phendula lo myalezo nesikhalazo sakho. Masiphathelene nesivisi yasekliniki, ulifake igama lekliniki noma losebenzayo. Kusebenza izindleko ezejwayelekile."
     ],
+    "Welcome back. Please select an option:": [
+        null,
+        ""
+    ],
+    "Continue signing up for messages": [
+        null,
+        ""
+    ],
     "Main menu": [
         null,
         "Imenu Enkulu"
     ],
-    "MomConnect sends free support SMSs to pregnant mothers. Are you or do you suspect that you are pregnant?": [
+    "Welcome to the Department of Health's MomConnect. Please select your language": [
+        null,
+        "Welcome to the Department of Health's MomConnect. Please select your language"
+    ],
+    "MomConnect sends free support messages to pregnant mothers. Are you or do you suspect that you are pregnant?": [
         null,
         "uMomConnect uthumelela omame abakhulelwe ama-sms okubeseka mahhala. Ukhulelwe noma usola ukuthi ukhulelwe?"
     ],
@@ -44,25 +64,33 @@
         null,
         ""
     ],
-    "You have previously opted out of MomConnect SMSs. Please confirm that you would like to opt in to receive messages again?": [
+    "We are sorry but this service is only for pregnant mothers. If you have other health concerns please visit your nearest clinic.": [
+        null,
+        "Siyaxolisa, lolu hlelo olwabomame abakhulelwe kuphela. Uma kukhona okunye okukukhathazayo ngempilo iya ekliniki eliseduze nawe."
+    ],
+    "Unfortunately without your consent, you cannot register to MomConnect.": [
+        null,
+        ""
+    ],
+    "You have previously opted out of MomConnect messages. Please confirm that you would like to opt in to receive messages again?": [
         null,
         "Usuke wahoxa phambilini kuma-sms kaMomConnect. Siza uqinisekise ukuthi uyafuna ukungena ukuze uphinde uthole ama-sms futhi?"
+    ],
+    "You have chosen not to receive MomConnect messages and so cannot complete registration.": [
+        null,
+        ""
     ],
     "Main Menu": [
         null,
         "Imenu Enkulu"
     ],
-    "How would you like to receive messages about you and your baby?": [
+    "Congratulations on your pregnancy! You will get msgs from MomConnect on WhatsApp for 3 wks. For the full set of msgs, register at a clinic.": [
         null,
-        "Ungathanda ukuyithola kanjani imiyalezo emayelana nawe nengane?"
+        "Halala ngokukhulelwa! Uzothola imiyalezo yeMomConnect ngeWhatsApp amaviki ama3. Bhalisa eklinikhi uthole yonke imiyalezo."
     ],
-    "WhatsApp": [
+    "Congratulations on your pregnancy! You will get msgs from MomConnect on SMS for 3 wks. For the full set of FREE messages, register at a clinic.": [
         null,
-        "WhatsApp"
-    ],
-    "SMS": [
-        null,
-        "SMS"
+        "Halala ngokukhulelwa! Uzothola imiyalezo evela kuMomConnect nge-SMS amaviki ama3. Bhalisela yonke imiyalezo YAMAHHALA eklinikhi."
     ],
     "Welcome to the Department of Health's MomConnect. Please choose an option:": [
         null,
