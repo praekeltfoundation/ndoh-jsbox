@@ -1,19 +1,27 @@
 {
     "": {
         "project-id-version": "public",
-        "pot-creation-date": "2017-06-28 12:21+0200",
-        "po-revision-date": "2017-06-28 12:21+0200",
+        "pot-creation-date": "2018-09-28 07:58:+0000",
+        "po-revision-date": "2018-09-28 11:21+0200",
         "last-translator": "Lieze <lieze@praekelt.com>",
         "language-team": "Language <LL@li.org>",
         "language": "tn",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 2.0.2"
+        "x-generator": "Poedit 2.1.1"
     },
-    "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. You can register for the full set of FREE helpful messages at a clinic.": [
+    "Please dial back in to {{ USSD_number }} to complete the pregnancy registration.": [
         null,
-        "Re a go lebogisa ka go ima. O tla amogela diSMS tsa mahala go tswa go MomConnect. O ka ikwadisetsa sete e e tletseng ya melaetsa ya MAHALA kwa tliliniking."
+        "Nako ya gago e fedile. Tsweetsweee leletsa {{USSD_number}} gape go fetsa go tsenya tshedimosetso ya gago le go amogela melaetsa."
+    ],
+    "Welcome! MomConnect sends msgs on WhatsApp for 3 wks. Visit a clinic for more msgs. To stop dial {{optout_channel}}. To get msgs in SMS, reply \"SMS\" (std rates apply)": [
+        null,
+        "O amogetswe go MomConnect! Etela tleliniki go bona melaetsa ka botlalo. Go e emisa tobetsa {{optout_channel}}. Go amogela SMS, araba \"SMS\" (seelo sa ka gale)"
+    ],
+    "Welcome! MomConnect will send msgs on SMS for 3 wks. Visit a clinic for more msgs. To stop dial {{optout_channel}}.": [
+        null,
+        "O amogetswe go MomConnect! Etela tleliniki go bona melaetsa ka botlalo. Go e emisa tobetsa {{optout_channel}}."
     ],
     "Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.": [
         null,
@@ -23,11 +31,23 @@
         null,
         "Tsweetswee araba molaetsa o ka ngongorego ya gago. Fa e amana le tirelo ya tleliniki, akaretsa leina la tleliniki kgotsa la modiri. Go dira melawana."
     ],
+    "Welcome back. Please select an option:": [
+        null,
+        ""
+    ],
+    "Continue signing up for messages": [
+        null,
+        "Go ikwadisetsa melaetsa"
+    ],
     "Main menu": [
         null,
         "Lenanelegolo"
     ],
-    "MomConnect sends free support SMSs to pregnant mothers. Are you or do you suspect that you are pregnant?": [
+    "Welcome to the Department of Health's MomConnect. Please select your language": [
+        null,
+        "Welcome to the Department of Health's MomConnect. Please select your language"
+    ],
+    "MomConnect sends free support messages to pregnant mothers. Are you or do you suspect that you are pregnant?": [
         null,
         "MomConnect e romelela diSMS tsa tshegetso tsa mahala go baimana.A o imile kgotsa o belaela jalo?"
     ],
@@ -43,25 +63,33 @@
         null,
         ""
     ],
-    "You have previously opted out of MomConnect SMSs. Please confirm that you would like to opt in to receive messages again?": [
+    "We are sorry but this service is only for pregnant mothers. If you have other health concerns please visit your nearest clinic.": [
+        null,
+        "Re maswabi. Tirelo eno ke ya baimana fela.Fa o na le matshwenyego a mangwe a boitekanelo tsweetswee etela tliliniki e e gaufi nao."
+    ],
+    "Unfortunately without your consent, you cannot register to MomConnect.": [
+        null,
+        ""
+    ],
+    "You have previously opted out of MomConnect messages. Please confirm that you would like to opt in to receive messages again?": [
         null,
         "Mo nakong e e fetileng o itlhophetse go tswa go diSMS tsa MomConnet. Tsweetswee netefatsa gore o rata go amogela diSMS gape."
+    ],
+    "You have chosen not to receive MomConnect messages and so cannot complete registration.": [
+        null,
+        ""
     ],
     "Main Menu": [
         null,
         "Lenanelegolo"
     ],
-    "How would you like to receive messages about you and your baby?": [
+    "Congratulations on your pregnancy! You will get msgs from MomConnect on WhatsApp for 3 wks. For the full set of msgs, register at a clinic.": [
         null,
-        "O rata go ka amogela melaetsa ka ga gago le lesea la gago jang?"
+        "Re a go lebogisa ga o imile! O ile go amogela melaetsa go tswa MomConnect ka WhatsApp dibeke di le 3. Go bona melaetsa ka botlalo, ikwadise kwa tleliniking."
     ],
-    "WhatsApp": [
+    "Congratulations on your pregnancy! You will get msgs from MomConnect on SMS for 3 wks. For the full set of FREE messages, register at a clinic.": [
         null,
-        "WhatsApp"
-    ],
-    "SMS": [
-        null,
-        "SMS"
+        "Re a go lebogisa ga o imile! O ile go amogela melaetsa go tswa MomConnect ka SMS dibeke di le 3. Go bona melaetsa ya MAHALA, ikwadise kwa tleliniking."
     ],
     "Welcome to the Department of Health's MomConnect. Please choose an option:": [
         null,
@@ -89,7 +117,7 @@
     ],
     "Get the full set of messages": [
         null,
-        "Bona melaetsa yotlhe ka botlalo."
+        "Bona melaetsa yotlhe ka botlalo"
     ],
     "To register for the full set of MomConnect messages, please visit your nearest clinic.": [
         null,

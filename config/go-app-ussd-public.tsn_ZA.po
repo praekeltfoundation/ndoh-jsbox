@@ -1,39 +1,43 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: public\n"
-"POT-Creation-Date: 2017-06-28 12:21+0200\n"
-"PO-Revision-Date: 2017-06-28 12:21+0200\n"
+"POT-Creation-Date: 2018-09-28 07:58:+0000\n"
+"PO-Revision-Date: 2018-09-28 11:21+0200\n"
 "Last-Translator: Lieze <lieze@praekelt.com>\n"
 "Language-Team: Language <LL@li.org>\n"
 "Language: tn\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.2\n"
+"X-Generator: Poedit 2.1.1\n"
 
-#: go-app-ussd_public.js:363
-#, fuzzy
-#| msgid ""
-#| "Your session timed out. Please dial back in to {{USSD_number}} to "
-#| "complete the pregnancy registration so that you can receive messages."
+#: go-app-ussd_public.js:365
 msgid ""
 "Please dial back in to {{ USSD_number }} to complete the pregnancy "
 "registration."
 msgstr ""
 "Nako ya gago e fedile. Tsweetsweee leletsa {{USSD_number}} gape go fetsa go "
-"tsenya tshedimosetso ya gago le go amogela melaetsa. "
+"tsenya tshedimosetso ya gago le go amogela melaetsa."
 
-#: go-app-ussd_public.js:434 go-app-ussd_public.js:762
+#: go-app-ussd_public.js:439
 msgid ""
-"Congratulations on your pregnancy. You will now get free SMSs about "
-"MomConnect. You can register for the full set of FREE helpful messages at a "
-"clinic."
+"Welcome! MomConnect sends msgs on WhatsApp for 3 wks. Visit a clinic for "
+"more msgs. To stop dial {{optout_channel}}. To get msgs in SMS, reply \"SMS"
+"\" (std rates apply)"
 msgstr ""
-"Re a go lebogisa ka go ima. O tla amogela diSMS tsa mahala go tswa go "
-"MomConnect. O ka ikwadisetsa sete e e tletseng ya melaetsa ya MAHALA kwa "
-"tliliniking."
+"O amogetswe go MomConnect! Etela tleliniki go bona melaetsa ka botlalo. Go e "
+"emisa tobetsa {{optout_channel}}. Go amogela SMS, araba \"SMS\" (seelo sa ka "
+"gale)"
 
-#: go-app-ussd_public.js:451
+#: go-app-ussd_public.js:445
+msgid ""
+"Welcome! MomConnect will send msgs on SMS for 3 wks. Visit a clinic for more "
+"msgs. To stop dial {{optout_channel}}."
+msgstr ""
+"O amogetswe go MomConnect! Etela tleliniki go bona melaetsa ka botlalo. Go e "
+"emisa tobetsa {{optout_channel}}."
+
+#: go-app-ussd_public.js:466
 msgid ""
 "Please reply to this message with your compliment. If it relates to the "
 "service at the clinic, include the clinic or clinic worker name. Standard "
@@ -42,7 +46,7 @@ msgstr ""
 "Tsweetswee araba molaetsa o ka kgakolo ya gago. Fa e amana le tirelo ya "
 "tleliniki, akaretsa leina la tleliniki kgotsa la modiri. Go dira melawana."
 
-#: go-app-ussd_public.js:469
+#: go-app-ussd_public.js:484
 msgid ""
 "Please reply to this message with your complaint. If it relates to the "
 "service at the clinic, include the clinic or clinic worker name. Standard "
@@ -51,92 +55,109 @@ msgstr ""
 "Tsweetswee araba molaetsa o ka ngongorego ya gago. Fa e amana le tirelo ya "
 "tleliniki, akaretsa leina la tleliniki kgotsa la modiri. Go dira melawana."
 
-#: go-app-ussd_public.js:493
-#, fuzzy
+#: go-app-ussd_public.js:508
 msgid "Welcome back. Please select an option:"
-msgstr "Please select one:"
+msgstr ""
 
-#: go-app-ussd_public.js:495
-#, fuzzy
+#: go-app-ussd_public.js:510
 msgid "Continue signing up for messages"
 msgstr "Go ikwadisetsa melaetsa"
 
-#: go-app-ussd_public.js:496
+#: go-app-ussd_public.js:511
 msgid "Main menu"
 msgstr "Lenanelegolo"
 
-#: go-app-ussd_public.js:597
+#: go-app-ussd_public.js:589
 msgid ""
-"MomConnect sends free support SMSs to pregnant mothers. Are you or do you "
-"suspect that you are pregnant?"
+"Welcome to the Department of Health's MomConnect. Please select your language"
+msgstr ""
+"Welcome to the Department of Health's MomConnect. Please select your language"
+
+#: go-app-ussd_public.js:629
+msgid ""
+"MomConnect sends free support messages to pregnant mothers. Are you or do "
+"you suspect that you are pregnant?"
 msgstr ""
 "MomConnect e romelela diSMS tsa tshegetso tsa mahala go baimana.A o imile "
 "kgotsa o belaela jalo?"
 
-#: go-app-ussd_public.js:601 go-app-ussd_public.js:616
-#: go-app-ussd_public.js:653
+#: go-app-ussd_public.js:633 go-app-ussd_public.js:648
+#: go-app-ussd_public.js:690
 msgid "Yes"
 msgstr "Ee"
 
-#: go-app-ussd_public.js:602 go-app-ussd_public.js:617
-#: go-app-ussd_public.js:654
+#: go-app-ussd_public.js:634 go-app-ussd_public.js:649
+#: go-app-ussd_public.js:691
 msgid "No"
 msgstr "Nnyaa"
 
-#: go-app-ussd_public.js:612
+#: go-app-ussd_public.js:644
 msgid ""
 "To register we need to collect, store & use your info. You may get messages "
 "on public holidays & weekends. Do you consent?"
 msgstr ""
 
-#: go-app-ussd_public.js:634 go-app-ussd_public.js:679
-#, fuzzy
-#| msgid ""
-#| "You have chosen not to receive MomConnect SMSs and so cannot complete "
-#| "registration."
-msgid "You have chosen not to receive MomConnect SMSs"
-msgstr ""
-"O tlhophile go se amogela diSMS tsa MomConnect mme ka jalo gankitla o kgona "
-"go ikwadisa. "
-
-#: go-app-ussd_public.js:649
+#: go-app-ussd_public.js:666
 msgid ""
-"You have previously opted out of MomConnect SMSs. Please confirm that you "
-"would like to opt in to receive messages again?"
+"We are sorry but this service is only for pregnant mothers. If you have "
+"other health concerns please visit your nearest clinic."
+msgstr ""
+"Re maswabi. Tirelo eno ke ya baimana fela.Fa o na le matshwenyego a mangwe a "
+"boitekanelo tsweetswee etela tliliniki e e gaufi nao."
+
+#: go-app-ussd_public.js:676
+msgid "Unfortunately without your consent, you cannot register to MomConnect."
+msgstr ""
+
+#: go-app-ussd_public.js:686
+msgid ""
+"You have previously opted out of MomConnect messages. Please confirm that "
+"you would like to opt in to receive messages again?"
 msgstr ""
 "Mo nakong e e fetileng o itlhophetse go tswa go diSMS tsa MomConnet. "
 "Tsweetswee netefatsa gore o rata go amogela diSMS gape."
 
-#: go-app-ussd_public.js:681
+#: go-app-ussd_public.js:716
+msgid ""
+"You have chosen not to receive MomConnect messages and so cannot complete "
+"registration."
+msgstr ""
+
+#: go-app-ussd_public.js:720
 msgid "Main Menu"
 msgstr "Lenanelegolo"
 
-#: go-app-ussd_public.js:737
-msgid "How would you like to receive messages about you and your baby?"
-msgstr "O rata go ka amogela melaetsa ka ga gago le lesea la gago jang?"
+#: go-app-ussd_public.js:801
+msgid ""
+"Congratulations on your pregnancy! You will get msgs from MomConnect on "
+"WhatsApp for 3 wks. For the full set of msgs, register at a clinic."
+msgstr ""
+"Re a go lebogisa ga o imile! O ile go amogela melaetsa go tswa MomConnect ka "
+"WhatsApp dibeke di le 3. Go bona melaetsa ka botlalo, ikwadise kwa "
+"tleliniking."
 
-#: go-app-ussd_public.js:739
-msgid "WhatsApp"
-msgstr "WhatsApp"
+#: go-app-ussd_public.js:805
+msgid ""
+"Congratulations on your pregnancy! You will get msgs from MomConnect on SMS "
+"for 3 wks. For the full set of FREE messages, register at a clinic."
+msgstr ""
+"Re a go lebogisa ga o imile! O ile go amogela melaetsa go tswa MomConnect ka "
+"SMS dibeke di le 3. Go bona melaetsa ya MAHALA, ikwadise kwa tleliniking."
 
-#: go-app-ussd_public.js:740
-msgid "SMS"
-msgstr "SMS"
-
-#: go-app-ussd_public.js:772
+#: go-app-ussd_public.js:818
 msgid ""
 "Welcome to the Department of Health's MomConnect. Please choose an option:"
 msgstr "O amogetswe go Mom Connect ya Lefapha la Boitekanelo. Tlhopha:"
 
-#: go-app-ussd_public.js:777
+#: go-app-ussd_public.js:823
 msgid "Send us a compliment"
 msgstr "Romela kakgolo"
 
-#: go-app-ussd_public.js:778
+#: go-app-ussd_public.js:824
 msgid "Send us a complaint"
 msgstr "Kwadisa ngongorego"
 
-#: go-app-ussd_public.js:800
+#: go-app-ussd_public.js:846
 msgid ""
 "Thank you. We will send you a message shortly with instructions on how to "
 "send us your compliment."
@@ -144,7 +165,7 @@ msgstr ""
 "Re a leboga. Re tla go romelela melaetsa fa gautshwane le ditaelo tsa go "
 "romela kakgolo."
 
-#: go-app-ussd_public.js:809
+#: go-app-ussd_public.js:855
 msgid ""
 "Thank you. We will send you a message shortly with instructions on how to "
 "send us your complaint."
@@ -152,21 +173,62 @@ msgstr ""
 "Re a leboga. Re tla go romelela melaetsa fa gautshwane le ditaelo tsa go "
 "kwadisa ngongorego."
 
-#: go-app-ussd_public.js:818
+#: go-app-ussd_public.js:864
 msgid "Welcome to the Department of Health's MomConnect. Choose an option:"
 msgstr "O amogetswe go Mom Connect ya Lefapha la Boitekanelo. Tlhopha"
 
-#: go-app-ussd_public.js:821
+#: go-app-ussd_public.js:867
 msgid "Get the full set of messages"
-msgstr "Bona melaetsa yotlhe ka botlalo."
+msgstr "Bona melaetsa yotlhe ka botlalo"
 
-#: go-app-ussd_public.js:829
+#: go-app-ussd_public.js:875
 msgid ""
 "To register for the full set of MomConnect messages, please visit your "
 "nearest clinic."
 msgstr ""
 "Go ikwadisetsa melaetsa ka botlalo ya MomConnect, etela tliliniki e e gaufi "
 "nao."
+
+#~ msgid ""
+#~ "Congratulations on your pregnancy. You will now get free SMSs about "
+#~ "MomConnect. You can register for the full set of FREE helpful messages at "
+#~ "a clinic."
+#~ msgstr ""
+#~ "Re a go lebogisa ka go ima. O tla amogela diSMS tsa mahala go tswa go "
+#~ "MomConnect. O ka ikwadisetsa sete e e tletseng ya melaetsa ya MAHALA kwa "
+#~ "tliliniking."
+
+#~ msgid ""
+#~ "MomConnect sends free support SMSs to pregnant mothers. Are you or do you "
+#~ "suspect that you are pregnant?"
+#~ msgstr ""
+#~ "MomConnect e romelela diSMS tsa tshegetso tsa mahala go baimana.A o imile "
+#~ "kgotsa o belaela jalo?"
+
+#, fuzzy
+#~| msgid ""
+#~| "You have chosen not to receive MomConnect SMSs and so cannot complete "
+#~| "registration."
+#~ msgid "You have chosen not to receive MomConnect SMSs"
+#~ msgstr ""
+#~ "O tlhophile go se amogela diSMS tsa MomConnect mme ka jalo gankitla o "
+#~ "kgona go ikwadisa. "
+
+#~ msgid ""
+#~ "You have previously opted out of MomConnect SMSs. Please confirm that you "
+#~ "would like to opt in to receive messages again?"
+#~ msgstr ""
+#~ "Mo nakong e e fetileng o itlhophetse go tswa go diSMS tsa MomConnet. "
+#~ "Tsweetswee netefatsa gore o rata go amogela diSMS gape."
+
+#~ msgid "How would you like to receive messages about you and your baby?"
+#~ msgstr "O rata go ka amogela melaetsa ka ga gago le lesea la gago jang?"
+
+#~ msgid "WhatsApp"
+#~ msgstr "WhatsApp"
+
+#~ msgid "SMS"
+#~ msgstr "SMS"
 
 #~ msgid "Jan"
 #~ msgstr "Jan"
@@ -241,13 +303,6 @@ msgstr ""
 
 #~ msgid "Baby and Pregnancy info (English only)"
 #~ msgstr "Tshedimosetso ya Lesea le Boimana(Ka Sekgowa fela)"
-
-#~ msgid ""
-#~ "We are sorry but this service is only for pregnant mothers. If you have "
-#~ "other health concerns please visit your nearest clinic."
-#~ msgstr ""
-#~ "Re maswabi. Tirelo eno ke ya baimana fela.Fa o na le matshwenyego a "
-#~ "mangwe a boitekanelo tsweetswee etela tliliniki e e gaufi nao."
 
 #~ msgid ""
 #~ "We need some info to message you. This is private and will only be used "

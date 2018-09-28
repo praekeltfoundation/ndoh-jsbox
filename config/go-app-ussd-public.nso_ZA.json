@@ -1,20 +1,28 @@
 {
     "": {
         "project-id-version": "Personal",
-        "pot-creation-date": "2017-06-28 12:18+0200",
-        "po-revision-date": "2017-06-28 12:18+0200",
+        "pot-creation-date": "2018-09-28 07:58:+0000",
+        "po-revision-date": "2018-09-28 14:45+0200",
         "last-translator": "",
         "language-team": "Northern Sotho <LL@li.org>",
         "language": "nso",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 2.0.2",
+        "x-generator": "Poedit 2.1.1",
         "plural-forms": "nplurals=2; plural=(n > 1);"
     },
-    "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. You can register for the full set of FREE helpful messages at a clinic.": [
+    "Please dial back in to {{ USSD_number }} to complete the pregnancy registration.": [
         null,
-        "Re a go lebogisa ge o imile. O tla hwetsa di-SMS tsa mahala go MomConnect. O ka ingwadisetsa melaetsa ya mohola ya MAHALA ka kliniking."
+        "Poledisano ya gago e fedile. O kgopelwa go taela{{ USSD_number }} gape go fetsa go tsenya tshedimoso gore o hwetse melaetsa."
+    ],
+    "Welcome! MomConnect sends msgs on WhatsApp for 3 wks. Visit a clinic for more msgs. To stop dial {{optout_channel}}. To get msgs in SMS, reply \"SMS\" (std rates apply)": [
+        null,
+        "Amogetšwe go MomConnect! Eya kliniki go fiwa melaetša. Emiša ka {{optout_channel}}. Go hwetša melaetša ka SMS, fetola \"SMS\" (ditefo tša tlwaelo)"
+    ],
+    "Welcome! MomConnect will send msgs on SMS for 3 wks. Visit a clinic for more msgs. To stop dial {{optout_channel}}.": [
+        null,
+        "Amogetšwe go MomConnect! Eya kliniki go fiwa melaetša. Emiša ka {{optout_channel}}."
     ],
     "Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.": [
         null,
@@ -34,9 +42,13 @@
     ],
     "Main menu": [
         null,
-        ""
+        "Menyu o Mogolo"
     ],
-    "MomConnect sends free support SMSs to pregnant mothers. Are you or do you suspect that you are pregnant?": [
+    "Welcome to the Department of Health's MomConnect. Please select your language": [
+        null,
+        "Welcome to the Department of Health's MomConnect. Please select your language"
+    ],
+    "MomConnect sends free support messages to pregnant mothers. Are you or do you suspect that you are pregnant?": [
         null,
         "MomConnect e romela di-SMS tsa thekgo tsa mahala go bomma bao ba imilego. O imile goba o belaela gore o imile?"
     ],
@@ -52,53 +64,61 @@
         null,
         ""
     ],
-    "You have previously opted out of MomConnect SMSs. Please confirm that you would like to opt in to receive messages again?": [
+    "We are sorry but this service is only for pregnant mothers. If you have other health concerns please visit your nearest clinic.": [
+        null,
+        "Re maswabi eupsa tirelo ye ke ya bomma bao ba imilego fela. Ge o na le mathata a mangwe a maphelo o kgopelwa go etela kliniking ya kgauswi."
+    ],
+    "Unfortunately without your consent, you cannot register to MomConnect.": [
+        null,
+        ""
+    ],
+    "You have previously opted out of MomConnect messages. Please confirm that you would like to opt in to receive messages again?": [
         null,
         "Nakong ye fetilego o kgopetse go tswa go di-SMS tsa MomConnect. Hle tiisetsa gore o nyaka go tsena go hwetsa melaetsa gape?"
+    ],
+    "You have chosen not to receive MomConnect messages and so cannot complete registration.": [
+        null,
+        "O kgethile go se hwetše di-SMS go MomConnect ka ga tshedimošo ye kgopetšwego."
     ],
     "Main Menu": [
         null,
         "Menyu o Mogolo"
     ],
-    "How would you like to receive messages about you and your baby?": [
+    "Congratulations on your pregnancy! You will get msgs from MomConnect on WhatsApp for 3 wks. For the full set of msgs, register at a clinic.": [
         null,
-        "O nyaka go hwetsa bjang melaetsa ka ga wena le lesea la gago?"
+        "Malebo ge o imile! O tla hwetša melaetša go MomConnect ka WhatsApp beke tše 3. Go hwetša melaetša ka botlalo, ingwadiše kliniking."
     ],
-    "WhatsApp": [
+    "Congratulations on your pregnancy! You will get msgs from MomConnect on SMS for 3 wks. For the full set of FREE messages, register at a clinic.": [
         null,
-        "WhatsApp"
-    ],
-    "SMS": [
-        null,
-        "SMS"
+        "Malebo ge o imile! O tla hwetša melaetša ya mohola go MomConnect ka SMS beke tše 3. Go hwetša melaetša ya MAHALA, ingwadiše kliniking."
     ],
     "Welcome to the Department of Health's MomConnect. Please choose an option:": [
         null,
-        ""
+        "O amogetšwe go MomConnect ya Kgoro ya Maphelo. Kgetha kgetho:"
     ],
     "Send us a compliment": [
         null,
-        ""
+        "Romela tebogo"
     ],
     "Send us a complaint": [
         null,
-        ""
+        "Tliša pelaelo"
     ],
     "Thank you. We will send you a message shortly with instructions on how to send us your compliment.": [
         null,
-        "Re a leboga. Re tla go romela molaetsa e se kgale wo o nago le ditaelo ka ga ka fao o ka re romelago tebogiso ya gago"
+        "Re a leboga. Re tla go romela molaetsa e se kgale wo o nago le ditaelo ka ga ka fao o ka re romelago tebogiso ya gago."
     ],
     "Thank you. We will send you a message shortly with instructions on how to send us your complaint.": [
         null,
-        ""
+        "Re tla go romela molaetša e se kgale wo o nago le ditaelo ka ga ka fao o ka re romelago pelaelo ya gago."
     ],
     "Welcome to the Department of Health's MomConnect. Choose an option:": [
         null,
-        ""
+        "O amogetswe gape. Hle kgetha:"
     ],
     "Get the full set of messages": [
         null,
-        ""
+        "Hwetša melaetša ka botlalo"
     ],
     "To register for the full set of MomConnect messages, please visit your nearest clinic.": [
         null,

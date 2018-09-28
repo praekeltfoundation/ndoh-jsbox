@@ -878,8 +878,8 @@ describe("ussd_public app", function() {
                 .check.interaction({
                     state: "state_end_success",
                     reply: (
-                        "You're done! This number 0820001001 will get helpful messages from MomConnect on WhatsApp. " +
-                        "For the full set of messages, register at a clinic."
+                        "Congratulations on your pregnancy! You will get msgs from MomConnect on WhatsApp for 3 wks. " +
+                        "For the full set of msgs, register at a clinic."
                     )
                 })
                 .check.reply.ends_session()
@@ -995,8 +995,8 @@ describe("ussd_public app", function() {
                 .check.interaction({
                     state: "state_end_success",
                     reply: (
-                        "You're done! This number 0820001001 will get helpful messages from MomConnect on SMS. " +
-                        "You can register for the full set of FREE messages at a clinic."
+                        "Congratulations on your pregnancy! You will get msgs from MomConnect on SMS for 3 wks. " +
+                        "For the full set of FREE messages, register at a clinic."
                     )
                 })
                 .check.reply.ends_session()
