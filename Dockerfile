@@ -17,5 +17,6 @@ RUN mv ./node_modules /usr/local/lib/
 
 # Copy in the app Javascript
 COPY go-*.js /app/
+COPY config /app/config
 
 RUN pip install raven==3.5.2
