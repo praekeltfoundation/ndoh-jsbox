@@ -851,7 +851,7 @@ go.app = function() {
         self.add("state_save_subscription", function(name) {  // interstitial state
             var registration_info = self.compile_registration_info();
             var registrant_info = self.compile_registrant_info();
-            if (self.im.user.answers.registration_type == 'WhatsApp'){
+            if (self.im.user.answers.registered_on_whatsapp){
                 return Q.all([
                     is.update_identity(self.im.user.answers.registrant.id, registrant_info),
                     hub.create_registration(registration_info),

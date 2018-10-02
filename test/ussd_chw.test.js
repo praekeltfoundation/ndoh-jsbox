@@ -6,6 +6,7 @@ var fixtures_IdentityStore = require('./fixtures_identity_store');
 var fixtures_IdentityStoreDynamic = require('./fixtures_identity_store_dynamic')();
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
 var fixtures_MessageSender = require('./fixtures_message_sender');
+var fixtures_MessageSenderDynamic = require('./fixtures_message_sender_dynamic')();
 var fixtures_ServiceRating = require('./fixtures_service_rating');
 var fixtures_Hub = require('./fixtures_hub');
 var fixtures_HubDynamic = require('./fixtures_hub_dynamic')();
@@ -1587,6 +1588,12 @@ describe("app", function() {
                 it("should save registration type as whatsapp, thank them and exit", function() {
                     return tester
                         .setup(function(api) {
+                            api.http.fixtures.fixtures = [];
+                            api.http.fixtures.add(fixtures_Pilot().exists({
+                                address: '+27820001001',
+                                number: '+27000000000',
+                                wait: true
+                            }));
                             api.http.fixtures.add( //261
                                 fixtures_IdentityStoreDynamic.update({
                                     identity: 'registrant-id',
@@ -1595,6 +1602,8 @@ describe("app", function() {
                                         details: {
                                             lang_code: "eng_ZA",
                                             consent: true,
+                                            sa_id_no: "5101015009088",
+                                            mom_dob: "1951-01-01",
                                             source: 'chw',
                                             chw: {},
                                             last_mc_reg_on: 'chw'
@@ -1602,7 +1611,6 @@ describe("app", function() {
                                     }
                                 })
                             );
-
                             api.http.fixtures.add(fixtures_HubDynamic.registration({ //262
                                 reg_type: 'whatsapp_prebirth',
                                 registrant_id: 'registrant-id',
@@ -1618,6 +1626,15 @@ describe("app", function() {
                                     registered_on_whatsapp: true
                                 }
                             }));
+                            api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                                to_identity: 'registrant-id',
+                                to_addr: '+27820001001',
+                                content: (
+                                    "Welcome! MomConnect sends msgs on WhatsApp for 3 wks. " +
+                                    "Visit a clinic for more msgs. To stop dial *134*550*1#. " +
+                                    'To get msgs on SMS, reply "SMS" (std rates apply)'
+                                )
+                            }));
 
                         })
                         .setup.user.addr("27820001001")
@@ -1628,9 +1645,9 @@ describe("app", function() {
                         .setup.user.answer('operator_msisdn', '+27820001001')
                         .setup.user.answer('state_consent', 'yes')
                         .setup.user.answer('state_id_type', 'sa_id')
-                        .setup.user.answer('sa_id_no', '5101015009088')
+                        .setup.user.answer('state_sa_id', '5101015009088')
+                        .setup.user.answer('mom_dob', '1951-01-01')
                         .setup.user.answer('state_language','eng_ZA')
-                        .setup.user.answer('registered_on_whatsapp', true)
                         .input('4')
                     .check.interaction({
                         state: "state_end_success",
