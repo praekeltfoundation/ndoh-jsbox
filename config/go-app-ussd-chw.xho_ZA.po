@@ -1,237 +1,228 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2015-10-14 06:27:+0000\n"
 "Project-Id-Version: CHW\n"
+"POT-Creation-Date: 2018-10-02 10:06:+0000\n"
+"PO-Revision-Date: 2018-10-02 12:11+0200\n"
+"Last-Translator: \n"
 "Language-Team: Xh <LL@li.org>\n"
+"Language: xh\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-10-16 11:24+0200\n"
-"Last-Translator: \n"
-"X-Generator: Poedit 1.6.7\n"
+"X-Generator: Poedit 2.1.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: xh\n"
 
-#: go-app-chw.js:24
-msgid "Jan"
-msgstr ""
-
-#: go-app-chw.js:25
-msgid "Feb"
-msgstr ""
-
-#: go-app-chw.js:26
-msgid "Mar"
-msgstr ""
-
-#: go-app-chw.js:27
-msgid "Apr"
-msgstr ""
-
-#: go-app-chw.js:28
-msgid "May"
-msgstr ""
-
-#: go-app-chw.js:29
-msgid "Jun"
-msgstr ""
-
-#: go-app-chw.js:30
-msgid "Jul"
-msgstr ""
-
-#: go-app-chw.js:31
-msgid "Aug"
-msgstr ""
-
-#: go-app-chw.js:32
-msgid "Sep"
-msgstr ""
-
-#: go-app-chw.js:33
-msgid "Oct"
-msgstr ""
-
-#: go-app-chw.js:34
-msgid "Nov"
-msgstr ""
-
-#: go-app-chw.js:35
-msgid "Dec"
-msgstr ""
-
-#: go-app-chw.js:1252
+#: go-app-ussd_chw.js:309
 msgid ""
 "Please dial back in to {{ USSD_number }} to complete the pregnancy "
 "registration."
 msgstr ""
 
-#: go-app-chw.js:1281
+#: go-app-ussd_chw.js:395
+msgid ""
+"Welcome! MomConnect will send msgs on SMS for 3 wks. Visit a clinic for more "
+"msgs. To stop dial *134*550*1#."
+msgstr ""
+"Wamkelekile ku-MomConnect! Yiya eklinikhi ukufumana isethi iyonke "
+"yemiyalezo. Ukuyeka dayala *134*550*1# ."
+
+#: go-app-ussd_chw.js:407
+msgid ""
+"Welcome! MomConnect sends msgs on WhatsApp for 3 wks. Visit a clinic for "
+"more msgs. To stop dial *134*550*1#. To get msgs on SMS, reply \"SMS\" (std "
+"rates apply)"
+msgstr ""
+"Wamkelekile ku-MomConnect! Yiya eklinikhi ukufumana isethi iyonke "
+"yemiyalezo. Ukuyeka dayala *134*550*1# . Ukufumana SMS miylz, phdula \"SMS"
+"\" (imirhumo iyafana)."
+
+#: go-app-ussd_chw.js:460
 msgid "Would you like to complete pregnancy registration for {{ num }}?"
 msgstr ""
 
-#: go-app-chw.js:1286 go-app-chw.js:1317 go-app-chw.js:1345
+#: go-app-ussd_chw.js:464 go-app-ussd_chw.js:496 go-app-ussd_chw.js:552
+#: go-app-ussd_chw.js:577
 msgid "Yes"
 msgstr ""
 
-#: go-app-chw.js:1287
+#: go-app-ussd_chw.js:465
 msgid "Start new registration"
 msgstr ""
 
-#: go-app-chw.js:1311
+#: go-app-ussd_chw.js:490
 msgid ""
-"Welcome to The Department of Health's MomConnect. Tell us if this is the no. "
-"that the mother would like to get SMSs on: {{ num }}"
+"Welcome to The Department of Health's MomConnect. Is this no. {{ num }} the "
+"mobile no. of the pregnant woman to be registered?"
 msgstr ""
 
-#: go-app-chw.js:1318 go-app-chw.js:1346
+#: go-app-ussd_chw.js:497 go-app-ussd_chw.js:553 go-app-ussd_chw.js:578
 msgid "No"
 msgstr ""
 
-#: go-app-chw.js:1340
+#: go-app-ussd_chw.js:535
 msgid ""
-"This number has previously opted out of MomConnect SMSs. Please confirm that "
-"the mom would like to opt in to receive messages again?"
+"The number {{ num }} already has an active subscription to MomConnect. Would "
+"you like to use a different number?"
 msgstr ""
 
-#: go-app-chw.js:1374
-msgid ""
-"You have chosen not to receive MomConnect SMSs and so cannot complete "
-"registration."
+#: go-app-ussd_chw.js:539
+msgid "Use a different number"
 msgstr ""
 
-#: go-app-chw.js:1378
+#: go-app-ussd_chw.js:540
+msgid "End registration"
+msgstr ""
+
+#: go-app-ussd_chw.js:547
+msgid ""
+"We need to collect, store & use her info. She may get messages on public "
+"holidays & weekends. Does she consent?"
+msgstr ""
+
+#: go-app-ussd_chw.js:573
+msgid ""
+"This number has previously opted out of MomConnect messages. Please confirm "
+"that the mom would like to opt in to receive messages again?"
+msgstr ""
+
+#: go-app-ussd_chw.js:603
+msgid ""
+"You have chosen not to receive MomConnect messages and so cannot complete "
+"registration"
+msgstr ""
+
+#: go-app-ussd_chw.js:607
 msgid "Main Menu"
 msgstr ""
 
-#: go-app-chw.js:1388
+#: go-app-ussd_chw.js:616
 msgid ""
 "Sorry, the mobile number did not validate. Please reenter the mobile number:"
 msgstr ""
 
-#: go-app-chw.js:1391
+#: go-app-ussd_chw.js:618
 msgid "Please input the mobile number of the pregnant woman to be registered:"
 msgstr ""
 
-#: go-app-chw.js:1425
+#: go-app-ussd_chw.js:670
 msgid "What kind of identification does the pregnant mother have?"
 msgstr ""
 
-#: go-app-chw.js:1429
+#: go-app-ussd_chw.js:673
 msgid "SA ID"
 msgstr ""
 
-#: go-app-chw.js:1430
+#: go-app-ussd_chw.js:674
 msgid "Passport"
 msgstr ""
 
-#: go-app-chw.js:1431
+#: go-app-ussd_chw.js:675
 msgid "None"
 msgstr ""
 
-#: go-app-chw.js:1463
+#: go-app-ussd_chw.js:697
 msgid ""
 "Sorry, the mother's ID number did not validate. Please reenter the SA ID "
 "number:"
 msgstr ""
 
-#: go-app-chw.js:1466
+#: go-app-ussd_chw.js:699
 msgid "Please enter the pregnant mother's SA ID number:"
 msgstr ""
 
-#: go-app-chw.js:1500
+#: go-app-ussd_chw.js:718
 msgid "What is the country of origin of the passport?"
 msgstr ""
 
-#: go-app-chw.js:1503
+#: go-app-ussd_chw.js:720
 msgid "Zimbabwe"
 msgstr ""
 
-#: go-app-chw.js:1504
+#: go-app-ussd_chw.js:721
 msgid "Mozambique"
 msgstr ""
 
-#: go-app-chw.js:1505
+#: go-app-ussd_chw.js:722
 msgid "Malawi"
 msgstr ""
 
-#: go-app-chw.js:1506
+#: go-app-ussd_chw.js:723
 msgid "Nigeria"
 msgstr ""
 
-#: go-app-chw.js:1507
+#: go-app-ussd_chw.js:724
 msgid "DRC"
 msgstr ""
 
-#: go-app-chw.js:1508
+#: go-app-ussd_chw.js:725
 msgid "Somalia"
 msgstr ""
 
-#: go-app-chw.js:1509
+#: go-app-ussd_chw.js:726
 msgid "Other"
 msgstr ""
 
-#: go-app-chw.js:1527
+#: go-app-ussd_chw.js:735
 msgid ""
 "There was an error in your entry. Please carefully enter the passport number "
 "again."
 msgstr ""
 
-#: go-app-chw.js:1529
+#: go-app-ussd_chw.js:737
 msgid "Please enter the pregnant mother's Passport number:"
 msgstr ""
 
-#: go-app-chw.js:1555
+#: go-app-ussd_chw.js:750
 msgid ""
 "There was an error in your entry. Please carefully enter the mother's year "
 "of birth again (for example: 2001)"
 msgstr ""
 
-#: go-app-chw.js:1559
+#: go-app-ussd_chw.js:753
 msgid ""
 "Please enter the year that the pregnant mother was born (for example: 1981)"
 msgstr ""
 
-#: go-app-chw.js:1589
-msgid "Please enter the month that you were born."
+#: go-app-ussd_chw.js:771
+msgid "Please enter the month that the mother was born."
 msgstr ""
 
-#: go-app-chw.js:1608
+#: go-app-ussd_chw.js:778
 msgid ""
 "There was an error in your entry. Please carefully enter the mother's day of "
 "birth again (for example: 8)"
 msgstr ""
 
-#: go-app-chw.js:1612
+#: go-app-ussd_chw.js:781
 msgid "Please enter the day that the mother was born (for example: 14)."
 msgstr ""
 
-#: go-app-chw.js:1652
+#: go-app-ussd_chw.js:806
 msgid "The date you entered ({{ dob }}) is not a real date. Please try again."
 msgstr ""
 
-#: go-app-chw.js:1657
+#: go-app-ussd_chw.js:811
 msgid "Continue"
 msgstr ""
 
-#: go-app-chw.js:1666
+#: go-app-ussd_chw.js:819
 msgid ""
 "Please select the language that the pregnant mother would like to get "
 "messages in:"
 msgstr ""
 
-#: go-app-chw.js:1727
+#: go-app-ussd_chw.js:882
 msgid ""
-"Congratulations on your pregnancy. You will now get free SMSs about "
-"MomConnect. You can register for the full set of FREE helpful messages at a "
-"clinic."
+"You're done! This number {{MSISDN}} will get helpful messages from "
+"MomConnect on {{channel}}. For the full set of {{messages}}, register at a "
+"clinic"
 msgstr ""
-"Sivuyisana nawe ngomitho lwakho. Uza kufumana iiSMS zasimahla malunga "
-"neMomConnect. Ungabhalisela iseti epheleleyo yemiyalezo eluncedo SIMAHLA "
-"ekliniki."
 
-#: go-app-chw.js:1739
-msgid ""
-"Thank you, registration is complete. The pregnant woman will now receive "
-"messages to encourage her to register at her nearest clinic."
-msgstr ""
+#~ msgid ""
+#~ "Congratulations on your pregnancy. You will now get free SMSs about "
+#~ "MomConnect. You can register for the full set of FREE helpful messages at "
+#~ "a clinic."
+#~ msgstr ""
+#~ "Sivuyisana nawe ngomitho lwakho. Uza kufumana iiSMS zasimahla malunga "
+#~ "neMomConnect. Ungabhalisela iseti epheleleyo yemiyalezo eluncedo SIMAHLA "
+#~ "ekliniki."
