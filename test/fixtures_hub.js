@@ -584,7 +584,6 @@ module.exports = function() {
                 "data": {
                     "reg_type": "momconnect_prebirth",
                     "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
-                    "registration_type" : "SMS",
                     "data": {
                         "operator_id": "cb245673-aa41-4302-ac47-00000001001",
                         "msisdn_registrant": "+27820001001",
@@ -593,7 +592,8 @@ module.exports = function() {
                         "language": "eng_ZA",
                         "consent": true,
                         "sa_id_no": "5101015009088",
-                        "mom_dob":"1951-01-01"
+                        "mom_dob":"1951-01-01",
+                        "registered_on_whatsapp":false
                     }
                 }
             },
@@ -1012,7 +1012,6 @@ module.exports = function() {
                 "data": {
                     "reg_type": "momconnect_prebirth",
                     "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
-                    "registration_type" : "SMS",
                     "data": {
                         "operator_id": "cb245673-aa41-4302-ac47-00000001003",
                         "msisdn_registrant": "+27820001001",
@@ -1022,6 +1021,7 @@ module.exports = function() {
                         "consent": true,
                         "passport_no": "12345",
                         "passport_origin": "zw",
+                        "registered_on_whatsapp":false
                     }
                 }
             },
@@ -1040,7 +1040,6 @@ module.exports = function() {
                 "data": {
                     "reg_type": "momconnect_prebirth",
                     "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
-                    "registration_type" : "SMS",
                     "data": {
                         "operator_id": "cb245673-aa41-4302-ac47-00000001002",
                         "msisdn_registrant": "+27820001001",
@@ -1049,7 +1048,8 @@ module.exports = function() {
                         "language": "eng_ZA",
                         "consent": true,
                         "passport_no": "12345",
-                        "passport_origin": "zw"
+                        "passport_origin": "zw",
+                        "registered_on_whatsapp":false
                     }
                 }
             },
@@ -1087,24 +1087,26 @@ module.exports = function() {
                 "url": 'http://hub/api/v1/registration/',
                 "method": 'POST',
                 "data": {
-                    "reg_type": "momconnect_prebirth",
+                    "reg_type": "whatsapp_prebirth",
                     "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
-                    "registration_type" : "WhatsApp",
                     "data": {
                         "operator_id": "cb245673-aa41-4302-ac47-00000001001",
                         "msisdn_registrant": "+27820001001",
                         "msisdn_device": "+27820001001",
-                        "id_type": "SA ID",
-                        "sa_id_no": "9011050130088",
+                        "id_type": "sa_id",
                         "language": "eng_ZA",
                         "consent": true,
+                        "sa_id_no": "5101015009088",
+                        "mom_dob":"951-01-01",
                         "registered_on_whatsapp": true,
                     }
                 }
             },
             "response": {
                 "code": 201,
-                "data": {},
+                "data": {
+                    "accepted": true
+                }
             }
         },
 
