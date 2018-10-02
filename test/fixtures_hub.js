@@ -592,7 +592,8 @@ module.exports = function() {
                         "language": "eng_ZA",
                         "consent": true,
                         "sa_id_no": "5101015009088",
-                        "mom_dob":"1951-01-01"
+                        "mom_dob":"1951-01-01",
+                        "registered_on_whatsapp":false
                     }
                 }
             },
@@ -1020,6 +1021,7 @@ module.exports = function() {
                         "consent": true,
                         "passport_no": "12345",
                         "passport_origin": "zw",
+                        "registered_on_whatsapp":false
                     }
                 }
             },
@@ -1046,7 +1048,8 @@ module.exports = function() {
                         "language": "eng_ZA",
                         "consent": true,
                         "passport_no": "12345",
-                        "passport_origin": "zw"
+                        "passport_origin": "zw",
+                        "registered_on_whatsapp":false
                     }
                 }
             },
@@ -1077,13 +1080,34 @@ module.exports = function() {
             'response': {}
         },
 
-        // 47:
+        // 47: register cb245673-aa41-4302-ac47-00000001001 (momconnect chw whatsapp registration)
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.hub.register.identity.cb245673-aa41-4302-ac47-00000001001",
+            "request": {
+                "url": 'http://hub/api/v1/registration/',
+                "method": 'POST',
+                "data": {
+                    "reg_type": "whatsapp_prebirth",
+                    "registrant_id": "cb245673-aa41-4302-ac47-00000001001",
+                    "data": {
+                        "operator_id": "cb245673-aa41-4302-ac47-00000001001",
+                        "msisdn_registrant": "+27820001001",
+                        "msisdn_device": "+27820001001",
+                        "id_type": "sa_id",
+                        "language": "eng_ZA",
+                        "consent": true,
+                        "sa_id_no": "5101015009088",
+                        "mom_dob":"951-01-01",
+                        "registered_on_whatsapp": true,
+                    }
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {
+                    "accepted": true
+                }
+            }
         },
 
         // 48:
