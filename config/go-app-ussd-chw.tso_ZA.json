@@ -1,67 +1,27 @@
 {
     "": {
-        "pot-creation-date": "2015-10-14 06:27:+0000",
         "project-id-version": "chw",
+        "pot-creation-date": "2018-10-02 10:06:+0000",
+        "po-revision-date": "2018-10-02 12:13+0200",
+        "last-translator": "",
         "language-team": "Tsonga <LL@li.org>",
+        "language": "ts",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2015-10-16 09:26+0200",
-        "last-translator": "",
-        "x-generator": "Poedit 1.6.7",
-        "language": "ts"
+        "x-generator": "Poedit 2.1.1"
     },
-    "Jan": [
-        null,
-        ""
-    ],
-    "Feb": [
-        null,
-        ""
-    ],
-    "Mar": [
-        null,
-        ""
-    ],
-    "Apr": [
-        null,
-        ""
-    ],
-    "May": [
-        null,
-        ""
-    ],
-    "Jun": [
-        null,
-        ""
-    ],
-    "Jul": [
-        null,
-        ""
-    ],
-    "Aug": [
-        null,
-        ""
-    ],
-    "Sep": [
-        null,
-        ""
-    ],
-    "Oct": [
-        null,
-        ""
-    ],
-    "Nov": [
-        null,
-        ""
-    ],
-    "Dec": [
-        null,
-        ""
-    ],
     "Please dial back in to {{ USSD_number }} to complete the pregnancy registration.": [
         null,
         ""
+    ],
+    "Welcome! MomConnect will send msgs on SMS for 3 wks. Visit a clinic for more msgs. To stop dial *134*550*1#.": [
+        null,
+        "Ha ku amukela eka MomConnect! Yana etliliniki ku kuma swihungwana hinkwaswo. Ku tshika dayila *134*550*1#."
+    ],
+    "Welcome! MomConnect sends msgs on WhatsApp for 3 wks. Visit a clinic for more msgs. To stop dial *134*550*1#. To get msgs on SMS, reply \"SMS\" (std rates apply)": [
+        null,
+        "Ha ku amukela eka MomConnect! Yana etliliniki ku kuma swihungwana hinkwaswo. Ku tshika *1344*550*1#. Swihungwana hi SMS, hlamula \"SMS\". (Tihakelo ta ntolovelo)."
     ],
     "Would you like to complete pregnancy registration for {{ num }}?": [
         null,
@@ -75,7 +35,7 @@
         null,
         ""
     ],
-    "Welcome to The Department of Health's MomConnect. Tell us if this is the no. that the mother would like to get SMSs on: {{ num }}": [
+    "Welcome to The Department of Health's MomConnect. Is this no. {{ num }} the mobile no. of the pregnant woman to be registered?": [
         null,
         ""
     ],
@@ -83,11 +43,27 @@
         null,
         ""
     ],
-    "This number has previously opted out of MomConnect SMSs. Please confirm that the mom would like to opt in to receive messages again?": [
+    "The number {{ num }} already has an active subscription to MomConnect. Would you like to use a different number?": [
         null,
         ""
     ],
-    "You have chosen not to receive MomConnect SMSs and so cannot complete registration.": [
+    "Use a different number": [
+        null,
+        ""
+    ],
+    "End registration": [
+        null,
+        ""
+    ],
+    "We need to collect, store & use her info. She may get messages on public holidays & weekends. Does she consent?": [
+        null,
+        ""
+    ],
+    "This number has previously opted out of MomConnect messages. Please confirm that the mom would like to opt in to receive messages again?": [
+        null,
+        ""
+    ],
+    "You have chosen not to receive MomConnect messages and so cannot complete registration": [
         null,
         ""
     ],
@@ -175,7 +151,7 @@
         null,
         ""
     ],
-    "Please enter the month that you were born.": [
+    "Please enter the month that the mother was born.": [
         null,
         ""
     ],
@@ -199,11 +175,7 @@
         null,
         ""
     ],
-    "Congratulations on your pregnancy. You will now get free SMSs about MomConnect. You can register for the full set of FREE helpful messages at a clinic.": [
-        null,
-        "Hoyohoyo eka vuyimani bya wena. Se u ta kuma tiSMS ta mahala to huma eka MomConnect. Titsariseli etliliniki ku kuma mahungu lama nga ku pfunaka MAHALA"
-    ],
-    "Thank you, registration is complete. The pregnant woman will now receive messages to encourage her to register at her nearest clinic.": [
+    "You're done! This number {{MSISDN}} will get helpful messages from MomConnect on {{channel}}. For the full set of {{messages}}, register at a clinic": [
         null,
         ""
     ]
