@@ -3,10 +3,12 @@ var AppTester = vumigo.AppTester;
 var assert = require('assert');
 
 var fixtures_IdentityStore = require('./fixtures_identity_store');
+var fixtures_IdentityStoreDynamic = require('./fixtures_identity_store_dynamic')();
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
 var fixtures_MessageSender = require('./fixtures_message_sender');
 var fixtures_ServiceRating = require('./fixtures_service_rating');
 var fixtures_Hub = require('./fixtures_hub');
+var fixtures_HubDynamic = require('./fixtures_hub_dynamic')();
 var fixtures_Jembi = require('./fixtures_jembi');
 var fixtures_Pilot = require('./fixtures_pilot');
 var utils = require('seed-jsbox-utils').utils;
@@ -119,6 +121,13 @@ describe("app", function() {
                         })
                     );
                     api.http.fixtures.add( // 259
+                        fixtures_Pilot().exists({
+                            address: '+27820001003',
+                            number: '+27000000000',
+                            wait: false,
+                        })
+                    );
+                    api.http.fixtures.add( // 260
                         fixtures_Pilot().exists({
                             address: '+27820001003',
                             number: '+27000000000',
@@ -279,7 +288,7 @@ describe("app", function() {
                         assert.deepEqual(metrics['test.ussd_chw.avg.sessions_to_register'].values, [2]);
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [45, 50, 51, 54, 141, 143, 180, 181, 183, 248, 252]);
+                        utils.check_fixtures_used(api, [45, 50, 51, 54, 141, 143, 180, 181, 183, 248, 252, 255]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -476,7 +485,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [50, 124, 180, 183]);
+                    utils.check_fixtures_used(api, [50, 124, 180, 183, 255]);
                 })
                 .run();
             });
@@ -526,7 +535,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [22, 50, 124, 143, 180, 183, 206, 252]);
+                    utils.check_fixtures_used(api, [22, 50, 124, 143, 180, 183, 206, 252, 255]);
                 })
                 .run();
             });
@@ -1527,7 +1536,7 @@ describe("app", function() {
                             assert.deepEqual(metrics['test.ussd_chw.avg.sessions_to_register'].values, [1]);
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [44, 50, 52, 54, 143, 180, 182, 183, 247, 252]);
+                            utils.check_fixtures_used(api, [44, 50, 52, 54, 143, 180, 182, 183, 247, 252, 255]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -1567,13 +1576,73 @@ describe("app", function() {
                             assert.deepEqual(metrics['test.ussd_chw.avg.sessions_to_register'].values, [1]);
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [22, 50, 143, 180, 183, 201, 252]);
+                            utils.check_fixtures_used(api, [22, 50, 143, 180, 183, 201, 252, 255]);
                         })
                         .check.reply.ends_session()
                         .run();
                 });
             });
 
+            describe("if the phone used is the mom's and id type sa id", function() {
+                it("should save registration type as whatsapp, thank them and exit", function() {
+                    return tester
+                        .setup(function(api) {
+                            api.http.fixtures.add( //261
+                                fixtures_IdentityStoreDynamic.update({
+                                    identity: 'registrant-id',
+                                    data: {
+                                        id: 'registrant-id',
+                                        details: {
+                                            lang_code: "eng_ZA",
+                                            consent: true,
+                                            source: 'chw',
+                                            chw: {},
+                                            last_mc_reg_on: 'chw'
+                                        }
+                                    }
+                                })
+                            );
+
+                            api.http.fixtures.add(fixtures_HubDynamic.registration({ //262
+                                reg_type: 'whatsapp_prebirth',
+                                registrant_id: 'registrant-id',
+                                data: {
+                                    operator_id: "operator-id",
+                                    msisdn_registrant: '+27820001001',
+                                    msisdn_device: '+27820001001',
+                                    id_type: 'sa_id',
+                                    language: 'eng_ZA',
+                                    consent: true,
+                                    sa_id_no: '5101015009088',
+                                    mom_dob: '1951-01-01',
+                                    registered_on_whatsapp: true
+                                }
+                            }));
+
+                        })
+                        .setup.user.addr("27820001001")
+                        .setup.user.state('state_language')
+                        .setup.user.answer('operator', {id: 'operator-id'})
+                        .setup.user.answer('registrant', {id: 'registrant-id', details: {}})
+                        .setup.user.answer('registrant_msisdn', '+27820001001')
+                        .setup.user.answer('operator_msisdn', '+27820001001')
+                        .setup.user.answer('state_consent', 'yes')
+                        .setup.user.answer('state_id_type', 'sa_id')
+                        .setup.user.answer('sa_id_no', '5101015009088')
+                        .setup.user.answer('state_language','eng_ZA')
+                        .setup.user.answer('registered_on_whatsapp', true)
+                        .input('4')
+                    .check.interaction({
+                        state: "state_end_success",
+                        reply: (
+                            "You're done! This number +27820001001 will get helpful messages from MomConnect on WhatsApp. " +
+                            "For the full set of messages, register at a clinic"
+                        )
+                    })
+                    .check.reply.ends_session()
+                    .run();
+                    });
+            });
         });
 
     });
