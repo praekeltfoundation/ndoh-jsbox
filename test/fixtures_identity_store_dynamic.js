@@ -48,6 +48,33 @@ module.exports = function() {
             res.response.data.results[0].details.addresses.msisdn[msisdn] = {"default": true};
             return res;
         },
+        update: function(params) {
+            params = params || {};
+            var identity = params.identity || 'cb245673-aa41-4302-ac47-00000001002';
+            var details = params.details || {};
+            var data = {
+                url: 'http://is/api/v1/identities/' + identity + '/',
+                id: identity,
+                version: 1,
+                details: details,
+                created_at: '2016-08-05T06:13:29.693272Z',
+                updated_at: '2016-08-05T06:13:29.693298Z'
+            };
+            data = params.data || data;
+
+            return{
+                repeatable: true,
+                request: {
+                    url: 'http://is/api/v1/identities/' + identity + '/',
+                    method: "PATCH",
+                    data: data
+                },
+                response: {
+                    code: 200,
+                    data: data
+                }
+            };
+        },
         javascript: "commas"
     };
 };
