@@ -238,14 +238,13 @@ describe("PMTCT app", function() {
                             , "4"  // state_birth_month
                             , "26"  // state_birth_day
                             , "1"  // state_hiv_messages - yes
-                            , "2"  // state_register_pmtct - sms
                         )
                         .check.interaction({
                             state: "state_end_hiv_messages_confirm",
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [27, 54, 60, 133, 134, 210, 215, 252, 253]);
+                            utils.check_fixtures_used(api, [27, 54, 60, 133, 134, 210, 215]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -363,14 +362,13 @@ describe("PMTCT app", function() {
                             , "4"  // state_birth_month - apr
                             , "26"  // state_birth_day
                             , "1"  // state_hiv_messages - yes
-                            , "2"  // state_register_pmtct - sms
                         )
                         .check.interaction({
                             state: "state_end_hiv_messages_confirm",
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [28, 54, 61, 135, 136, 211, 216, 254, 255]);
+                            utils.check_fixtures_used(api, [28, 54, 61, 135, 136, 211, 216]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -463,14 +461,13 @@ describe("PMTCT app", function() {
                             {session_event: "new"}  // dial in
                             , "1"  // state_consent - yes
                             , "1"  // state_hiv_messages - yes
-                            , "2"  // state_register_pmtct - sms
                         )
                         .check.interaction({
                             state: "state_end_hiv_messages_confirm",
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [29, 54, 62, 137, 138, 212, 217, 254, 255]);
+                            utils.check_fixtures_used(api, [29, 54, 62, 137, 138, 212, 217]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -531,14 +528,13 @@ describe("PMTCT app", function() {
                         .inputs(
                             {session_event: "new"}  // dial in
                             , "1"  // state_hiv_messages - yes
-                            , "2"  // state_register_pmtct - sms
                         )
                         .check.interaction({
                             state: "state_end_hiv_messages_confirm",
                             reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [30, 54, 63, 139, 140, 213, 218, 254, 255]);
+                            utils.check_fixtures_used(api, [30, 54, 63, 139, 140, 213, 218]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -565,7 +561,7 @@ describe("PMTCT app", function() {
                             reply: "You need to be registered on MomConnect to receive these messages. Please visit the nearest clinic to register."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [64, 214, 254]);
+                            utils.check_fixtures_used(api, [64, 214]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -592,7 +588,7 @@ describe("PMTCT app", function() {
                             reply: "You need to be registered on MomConnect to receive these messages. Please visit the nearest clinic to register."
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [219, 254]);
+                            utils.check_fixtures_used(api, [219]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -652,7 +648,7 @@ describe("PMTCT app", function() {
                         reply: "You will not receive SMSs about keeping your baby HIV negative. You will still receive MomConnect SMSs. To stop receiving these SMSs, dial *134*550*1#"
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [32, 54, 65, 220, 252]);
+                        utils.check_fixtures_used(api, [32, 54, 65, 220]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -695,7 +691,7 @@ describe("PMTCT app", function() {
                         reply: "Thank you. You will no longer receive any messages from MomConnect. If you have any medical concerns, please visit your nearest clinic."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [31, 54, 65, 220, 252]);
+                        utils.check_fixtures_used(api, [31, 54, 65, 220]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -713,113 +709,17 @@ describe("PMTCT app", function() {
                         reply: "Thank you. You will receive support messages from MomConnect in the coming weeks."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [33, 54, 65, 220, 252]);
+                        utils.check_fixtures_used(api, [33, 54, 65, 220]);
                     })
                     .check.reply.ends_session()
                     .run();
             });
         });
         describe("PMTCT messages over pilot", function() {
-            it("user should not be given choice if they are not a valid recipient", function() {
+            it("user should be subscribed to the whatsapp message set if they are already on WhatsApp", function() {
                 return tester
                     .setup(function(api) {
                         api.http.fixtures.fixtures = [];
-                        api.http.fixtures.add(fixtures_Pilot().not_exists({
-                            number: '+27123456789',
-                            address: '+27820000111',
-                            wait: true
-                        }));
-                        api.http.fixtures.add(fixtures_Pilot().patch_identity({
-                            identity: 'cb245673-aa41-4302-ac47-00000000001',
-                            address: '+27820000111',
-                            language: 'eng_ZA',
-                            details: {
-                                pmtct: {
-                                    lang_code: 'eng_ZA'
-                                }
-                            }
-                        }));
-                        api.http.fixtures.add(fixtures_Pilot().post_registration({
-                            identity: 'cb245673-aa41-4302-ac47-00000000001',
-                            language: 'eng_ZA',
-                            reg_type: 'pmtct_prebirth',
-                            data: {
-                                'mom_dob': '1981-01-14',
-                                'edd': '2014-05-10'
-                            }
-                        }));
-                        api.http.fixtures.add(fixtures_Pilot().post_outbound_message({
-                            identity: 'cb245673-aa41-4302-ac47-00000000001',
-                            content: 'HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health',
-                            channel: 'default-channel'
-                        }));
-                        api.http.fixtures.add(fixtures_Pilot().post_outbound_message({
-                            identity: 'cb245673-aa41-4302-ac47-00000000001',
-                            content: 'Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322',
-                            channel: 'default-channel'
-                        }));
-                    })
-                    .setup.user.answer('identity', {
-                        url: 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/',
-                        id: 'cb245673-aa41-4302-ac47-00000000001',
-                        version: 1,
-                        details: {
-                            default_addr_type: 'msisdn',
-                            addresses: {
-                                msisdn: {
-                                    '+27820000111': {default: true}
-                                }
-                            },
-                            lang_code: 'eng_ZA',
-                            source: 'clinic',
-                            last_mc_reg_on: 'clinic',
-                            last_edd: '2014-05-10'
-                        },
-                        created_at: "2016-08-05T06:13:29.693272Z",
-                        updated_at: "2016-08-05T06:13:29.693298Z"
-                    })
-                    .setup.user.answer('mom_dob', '1981-01-14')
-                    .setup.user.answer('consent', true)
-                    .setup.user.answer('subscription_type', 'prebirth')
-                    .setup.user.addr('0820000111')
-                    .setup.user.state('state_register_pmtct')
-                    .check.interaction({
-                        state: 'state_end_hiv_messages_confirm'
-                    })
-                    .run();
-            });
-
-            it("user should be given choice if they are a valid recipient", function() {
-                return tester
-                    .setup(function(api) {
-                        api.http.fixtures.fixtures = [];
-                        api.http.fixtures.add(fixtures_Pilot().exists({
-                            number: '+27123456789',
-                            address: '+27820000111',
-                            wait: true
-                        }));
-                    })
-                    .setup.user.addr('0820000111')
-                    .setup.user.state('state_register_pmtct')
-                    .check.interaction({
-                        state: 'state_register_pmtct',
-                        reply: [
-                            'Would you like to receive these messages over WhatsApp or SMS?',
-                            '1. WhatsApp',
-                            '2. SMS'].join('\n')
-                    })
-                    .run();
-            });
-
-            it("user should be subscribed to the pilot message set if they select that option", function() {
-                return tester
-                    .setup(function(api) {
-                        api.http.fixtures.fixtures = [];
-                        api.http.fixtures.add(fixtures_Pilot().exists({
-                            number: '+27123456789',
-                            address: '+27820000111',
-                            wait: true
-                        }));
                         api.http.fixtures.add(fixtures_Pilot().patch_identity({
                             identity: 'cb245673-aa41-4302-ac47-00000000001',
                             address: '+27820000111',
@@ -872,9 +772,10 @@ describe("PMTCT app", function() {
                     .setup.user.answer('mom_dob', '1981-01-14')
                     .setup.user.answer('consent', true)
                     .setup.user.answer('subscription_type', 'prebirth')
+                    .setup.user.answer('channel', 'whatsapp')
                     .setup.user.addr('0820000111')
-                    .setup.user.state('state_register_pmtct')
-                    .input('1')
+                    .setup.user.state('state_create_pmtct_registration')
+                    .start()
                     .check.interaction({
                         state: 'state_end_hiv_messages_confirm'
                     })

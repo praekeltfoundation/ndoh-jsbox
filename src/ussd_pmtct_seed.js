@@ -59,12 +59,6 @@ go.app = function() {
         self.get_channel = function() {
             var pilot_config = self.im.config.pilot || {};
             return Q()
-                .then(function() {
-                    return self.im.log([
-                        'pilot_state: ' + self.im.user.answers.state_create_pmtct_registration,
-                        'pilot config: ' + JSON.stringify(pilot_config),
-                    ].join('\n'));
-                })
                 .then(function () {
                     // NOTE:
                     //      If we're able to tell from local state what channel is supposed to be
@@ -72,21 +66,11 @@ go.app = function() {
                     //      Because of how Seed's services work using asynchronous webhooks there
                     //      can be a race condition if we check the subscriptions too soon after
                     //      creating a new registration
-                    if(self.im.user.answers.state_register_pmtct === 'whatsapp') {
+                    if(self.im.user.answers.channel === 'whatsapp') {
                         return pilot_config.channel;
                     } else {
                         return self.im.config.services.message_sender.channel;
                     }
-
-                    return sbm
-                        .is_identity_subscribed(self.im.user.answers.identity.id, [/whatsapp/])
-                        .then(function(confirmed) {
-                            if(confirmed) {
-                                return pilot_config.channel;
-                            } else {
-                                return self.im.config.services.message_sender.channel;
-                            }
-                        });
                 })
                 .then(function(channel) {
                     return self.im
@@ -172,7 +156,6 @@ go.app = function() {
                 } else if (log_mode === 'test') {
                     return Q()
                     .then(function() {
-                        console.log("Running: " + name);
                         return creator(name, opts);
                     });
                 } else if (log_mode === 'off' || null) {
@@ -188,19 +171,7 @@ go.app = function() {
 
         self.add("state_start", function(name) {
             self.im.user.answers = {};  // reset answers
-            var address = utils.normalize_msisdn(self.im.user.addr, '27');
-            // NOTE:    We're making the API call here but not telling it to wait nor are we doing
-            //          anything with the result.
-            //
-            //          The idea is that the check continues to happen in the background and will be ready
-            //          when we need it. This way we minimise any timeout penalty during the registration.
-            return self
-                .is_valid_recipient_for_pilot({
-                    address: address,
-                    wait: false
-                }).then(function(res) {
-                    return self.states.create("state_check_pmtct_subscription");
-                });
+            return self.states.create("state_check_pmtct_subscription");
         });
 
         // interstitial
@@ -218,7 +189,7 @@ go.app = function() {
                 self.im.user.set_answer("identity", identity);
                 return self.im.user
                 .set_lang(self.im.user.answers.identity.details.lang_code || "eng_ZA")
-                .then(function(lang_set_response) {
+                .then(function() {
                     return sbm
                     .list_active_subscriptions(identity.id)
                     .then(function(active_subs_response) {
@@ -305,6 +276,13 @@ go.app = function() {
                                         // Default to prebirth if multiple subscriptions
                                         self.im.user.set_answer("subscription_type", "prebirth");
                                     }
+
+                                    if (whatsapp_postbirth_subscription || whatsapp_prebirth_subscription) {
+                                        self.im.user.set_answer("channel", "whatsapp");
+                                    } else {
+                                        self.im.user.set_answer("channel", "sms");
+                                    }
+
                                     return self.states.create("state_route");
                                 } else {
                                     return self.states.create("state_end_not_registered");
@@ -429,36 +407,13 @@ go.app = function() {
                 next: function(choice) {
                     if (choice.value === "yes") {
                         self.im.user.set_answer("hiv_opt_in", "true");
-                        return "state_register_pmtct";
+                        return "state_create_pmtct_registration";
                     } else {
                         self.im.user.set_answer("hiv_opt_in", "false");
                         return "state_end_hiv_messages_declined";
                     }
                 }
             });
-        });
-
-        self.add("state_register_pmtct", function(name) {
-            var address = utils.normalize_msisdn(self.im.user.addr, '27');
-            return self
-                .is_valid_recipient_for_pilot({
-                    address: address,
-                    wait: true
-                }).then(function(is_valid) {
-                    if (is_valid) {
-                        return new ChoiceState(name, {
-                            question: $(
-                                "Would you like to receive these messages over WhatsApp or SMS?"),
-                            choices: [
-                                new Choice('whatsapp', $("WhatsApp")),
-                                new Choice('sms', $("SMS"))
-                            ],
-                            next: 'state_create_pmtct_registration'
-                        });
-                    } else {
-                        return self.states.create('state_create_pmtct_registration');
-                    }
-                });
         });
 
         self.add("state_create_pmtct_registration", function(name) {
@@ -496,7 +451,7 @@ go.app = function() {
                         }
                     };
                 }
-                if (self.im.user.get_answer('state_register_pmtct') === 'whatsapp') {
+                if (self.im.user.get_answer('channel') === 'whatsapp') {
                     reg_info.reg_type = 'whatsapp_' + reg_info.reg_type;
                 }
                 return Q.all([
