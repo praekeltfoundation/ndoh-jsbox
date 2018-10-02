@@ -3,11 +3,15 @@ var AppTester = vumigo.AppTester;
 var assert = require('assert');
 
 var fixtures_IdentityStore = require('./fixtures_identity_store');
+var fixtures_IdentityStoreDynamic = require('./fixtures_identity_store_dynamic')();
 var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
 var fixtures_MessageSender = require('./fixtures_message_sender');
+var fixtures_MessageSenderDynamic = require('./fixtures_message_sender_dynamic')();
 var fixtures_ServiceRating = require('./fixtures_service_rating');
 var fixtures_Hub = require('./fixtures_hub');
+var fixtures_HubDynamic = require('./fixtures_hub_dynamic')();
 var fixtures_Jembi = require('./fixtures_jembi');
+var fixtures_Pilot = require('./fixtures_pilot');
 var utils = require('seed-jsbox-utils').utils;
 
 describe("app", function() {
@@ -51,6 +55,11 @@ describe("app", function() {
                             token: 'test StageBasedMessaging'
                         }
                     },
+                    whatsapp: {
+                        api_url: 'http://pilot.example.org/api/v1/lookups/',
+                        api_token: 'api-token',
+                        api_number: '+27000000000',
+                    },
                 })
                 .setup(function(api) {
                     api.metrics.stores = {'test_metric_store': {}};
@@ -62,7 +71,70 @@ describe("app", function() {
                     fixtures_MessageSender().forEach(api.http.fixtures.add); // 100 - 149
                     fixtures_ServiceRating().forEach(api.http.fixtures.add); // 150 - 169
                     fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
-                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 ->
+                    fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 - 248
+                    api.http.fixtures.add( // 252
+                        fixtures_Pilot().not_exists({
+                            address: '+27820001001',
+                            number: '+27000000000',
+                            wait: true,
+                        })
+                    );
+                    api.http.fixtures.add( // 253
+                        fixtures_Pilot().not_exists({
+                            address: '+27820001002',
+                            number: '+27000000000',
+                            wait: true,
+                        })
+                    );
+                    api.http.fixtures.add( // 254
+                        fixtures_Pilot().exists({
+                            address: '+27820001004',
+                            number: '+27000000000',
+                            wait: true,
+                        })
+                    );
+                    api.http.fixtures.add( // 255
+                        fixtures_Pilot().exists({
+                            address: '+27820001001',
+                            number: '+27000000000',
+                            wait: false,
+                        })
+                    );
+                    api.http.fixtures.add( // 256
+                        fixtures_Pilot().exists({
+                            address: '+27820001002',
+                            number: '+27000000000',
+                            wait: false,
+                        })
+                    );
+                    api.http.fixtures.add( // 257
+                        fixtures_Pilot().exists({
+                            address: '+27820001004',
+                            number: '+27000000000',
+                            wait: false,
+                        })
+                    );
+                    api.http.fixtures.add( // 258
+                        fixtures_Pilot().exists({
+                            address: '+27820001003',
+                            number: '+27000000000',
+                            wait: true,
+                        })
+                    );
+                    api.http.fixtures.add( // 259
+                        fixtures_Pilot().exists({
+                            address: '+27820001003',
+                            number: '+27000000000',
+                            wait: false,
+                        })
+                    );
+                    api.http.fixtures.add( // 260
+                        fixtures_Pilot().exists({
+                            address: '+27820001003',
+                            number: '+27000000000',
+                            wait: false,
+                        })
+                    );
                 });
         });
 
@@ -209,17 +281,15 @@ describe("app", function() {
                     )
                     .check.interaction({
                         state: 'state_end_success',
-                        reply: ('Thank you, registration is complete. The ' +
-                        'pregnant woman will now receive messages to ' +
-                        'encourage her to register at her nearest ' +
-                        'clinic.')
+                        reply: ("You're done! This number +27820001001 will get helpful messages from MomConnect on SMS. " +
+                                "For the full set of FREE messages, register at a clinic")
                     })
                     .check(function(api) {
                         var metrics = api.metrics.stores.test_metric_store;
                         assert.deepEqual(metrics['test.ussd_chw.avg.sessions_to_register'].values, [2]);
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [45, 50, 51, 54, 117, 141, 180, 181, 183, 248]);
+                        utils.check_fixtures_used(api, [45, 50, 51, 54, 141, 143, 180, 181, 183, 248, 252, 255]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -416,7 +486,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [50, 124, 180, 183]);
+                    utils.check_fixtures_used(api, [50, 124, 180, 183, 255]);
                 })
                 .run();
             });
@@ -466,7 +536,7 @@ describe("app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [22, 50, 117, 124, 180, 183, 206]);
+                    utils.check_fixtures_used(api, [22, 50, 124, 143, 180, 183, 206, 252, 255]);
                 })
                 .run();
             });
@@ -1446,10 +1516,8 @@ describe("app", function() {
                         )
                         .check.interaction({
                             state: 'state_end_success',
-                            reply: ('Thank you, registration is complete. The ' +
-                            'pregnant woman will now receive messages to ' +
-                            'encourage her to register at her nearest ' +
-                            'clinic.')
+                            reply: ("You're done! This number +27820001001 will get helpful messages from MomConnect on SMS. " +
+                                    "For the full set of FREE messages, register at a clinic")
                         })
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
@@ -1469,7 +1537,7 @@ describe("app", function() {
                             assert.deepEqual(metrics['test.ussd_chw.avg.sessions_to_register'].values, [1]);
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [44, 50, 52, 54, 117, 180, 182, 183, 247]);
+                            utils.check_fixtures_used(api, [44, 50, 52, 54, 143, 180, 182, 183, 247, 252, 255]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -1490,10 +1558,8 @@ describe("app", function() {
                         )
                         .check.interaction({
                             state: 'state_end_success',
-                            reply: ('Thank you, registration is complete. The ' +
-                            'pregnant woman will now receive messages to ' +
-                            'encourage her to register at her nearest ' +
-                            'clinic.')
+                            reply: ("You're done! This number +27820001001 will get helpful messages from MomConnect on SMS. " +
+                            "For the full set of FREE messages, register at a clinic")
                         })
                         .check(function(api) {
                             var metrics = api.metrics.stores.test_metric_store;
@@ -1511,13 +1577,89 @@ describe("app", function() {
                             assert.deepEqual(metrics['test.ussd_chw.avg.sessions_to_register'].values, [1]);
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [22, 50, 117, 180, 183, 201]);
+                            utils.check_fixtures_used(api, [22, 50, 143, 180, 183, 201, 252, 255]);
                         })
                         .check.reply.ends_session()
                         .run();
                 });
             });
 
+            describe("if the phone used is the mom's and id type sa id", function() {
+                it("should save registration type as whatsapp, thank them and exit", function() {
+                    return tester
+                        .setup(function(api) {
+                            api.http.fixtures.fixtures = [];
+                            api.http.fixtures.add(fixtures_Pilot().exists({
+                                address: '+27820001001',
+                                number: '+27000000000',
+                                wait: true
+                            }));
+                            api.http.fixtures.add( //261
+                                fixtures_IdentityStoreDynamic.update({
+                                    identity: 'registrant-id',
+                                    data: {
+                                        id: 'registrant-id',
+                                        details: {
+                                            lang_code: "eng_ZA",
+                                            consent: true,
+                                            sa_id_no: "5101015009088",
+                                            mom_dob: "1951-01-01",
+                                            source: 'chw',
+                                            chw: {},
+                                            last_mc_reg_on: 'chw'
+                                        }
+                                    }
+                                })
+                            );
+                            api.http.fixtures.add(fixtures_HubDynamic.registration({ //262
+                                reg_type: 'whatsapp_prebirth',
+                                registrant_id: 'registrant-id',
+                                data: {
+                                    operator_id: "operator-id",
+                                    msisdn_registrant: '+27820001001',
+                                    msisdn_device: '+27820001001',
+                                    id_type: 'sa_id',
+                                    language: 'eng_ZA',
+                                    consent: true,
+                                    sa_id_no: '5101015009088',
+                                    mom_dob: '1951-01-01',
+                                    registered_on_whatsapp: true
+                                }
+                            }));
+                            api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                                to_identity: 'registrant-id',
+                                to_addr: '+27820001001',
+                                content: (
+                                    "Welcome! MomConnect sends msgs on WhatsApp for 3 wks. " +
+                                    "Visit a clinic for more msgs. To stop dial *134*550*1#. " +
+                                    'To get msgs on SMS, reply "SMS" (std rates apply)'
+                                )
+                            }));
+
+                        })
+                        .setup.user.addr("27820001001")
+                        .setup.user.state('state_language')
+                        .setup.user.answer('operator', {id: 'operator-id'})
+                        .setup.user.answer('registrant', {id: 'registrant-id', details: {}})
+                        .setup.user.answer('registrant_msisdn', '+27820001001')
+                        .setup.user.answer('operator_msisdn', '+27820001001')
+                        .setup.user.answer('state_consent', 'yes')
+                        .setup.user.answer('state_id_type', 'sa_id')
+                        .setup.user.answer('state_sa_id', '5101015009088')
+                        .setup.user.answer('mom_dob', '1951-01-01')
+                        .setup.user.answer('state_language','eng_ZA')
+                        .input('4')
+                    .check.interaction({
+                        state: "state_end_success",
+                        reply: (
+                            "You're done! This number +27820001001 will get helpful messages from MomConnect on WhatsApp. " +
+                            "For the full set of messages, register at a clinic"
+                        )
+                    })
+                    .check.reply.ends_session()
+                    .run();
+                    });
+            });
         });
 
     });
