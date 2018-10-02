@@ -213,7 +213,8 @@ go.app = function() {
                 "msisdn_device": self.im.user.answers.operator_msisdn,
                 "id_type": self.im.user.answers.state_id_type,
                 "language": self.im.user.answers.state_language,
-                "consent": self.im.user.answers.state_consent === "yes" ? true : null
+                "consent": self.im.user.answers.state_consent === "yes" ? true : null,
+                "registered_on_whatsapp": self.im.user.answers.registered_on_whatsapp
             };
 
             if (self.im.user.answers.state_id_type === "sa_id") {
@@ -225,11 +226,12 @@ go.app = function() {
             } else {
                 reg_details.mom_dob = self.im.user.answers.mom_dob;
             }
-
             var registration_info = {
-                "reg_type": "momconnect_prebirth",
+                "reg_type": (
+                    self.im.user.answers.registered_on_whatsapp
+                    ? "whatsapp_prebirth"
+                    : "momconnect_prebirth"),
                 "registrant_id": self.im.user.answers.registrant.id,
-                "registration_type" : self.im.user.answers.registration_type,
                 "data": reg_details
             };
             return registration_info;
@@ -401,8 +403,17 @@ go.app = function() {
                     new Choice("no", $("No")),
                 ],
                 next: function(choice) {
-                    return choice.value === "yes" ? "state_id_type"
-                                                  : "state_consent_refused";
+                    if (choice.value === 'yes'){
+                        return self
+                        // Warm cache for WhatsApp lookup without blocking using operator_msisdn
+                        .is_whatsapp_user(self.im.user.answers.registrant_msisdn, false)
+                        .then(function() {
+                            return 'state_id_type';
+                        });
+                    }
+                    else if (choice.value === 'no'){
+                        return 'state_consent_refused';
+                    }
                 }
             });
         });
@@ -675,24 +686,16 @@ go.app = function() {
             });
         });
 
-        self.add("state_set_registration_type", function(name){
-            /*var registration_types = {
-                'sms': 'SMS',
-                'whatsapp': 'WhatsApp',
-            };*/
-    
-            return self.is_whatsapp_user(self.im.user.answers.registrant_msisdn, true).then(function(is_whatsapp_user) {
-                self.im.user.set_answer('registered_on_whatsapp', is_whatsapp_user);
-
-                if (is_whatsapp_user) {
-                    self.im.user.set_answer('registration_type', 'WhatsApp');
+        self.add("state_set_registration_type", function(name){   
+            return self
+                // Get whatsapp registration status
+                .is_whatsapp_user(self.im.user.answers.registrant_msisdn, true)
+                // Create or update contact on rapidpro
+                .then(function(is_whatsapp) {
+                    var registered_on_whatsapp = is_whatsapp ? true : false;
+                    self.im.user.set_answer("registered_on_whatsapp", registered_on_whatsapp);
                     return self.states.create('state_save_subscription');
-                }
-                else{
-                    self.im.user.set_answer('registration_type', 'SMS');
-                    return self.states.create('state_save_subscription');
-                }  
-            });
+                });
         });
 
         self.add("state_save_subscription", function(name) {  // interstitial state
@@ -722,12 +725,13 @@ go.app = function() {
         });
 
         self.add("state_end_success", function(name) {
-            var messages = self.im.user.answers.registration_type === "WhatsApp" ? 'messages' : 'FREE messages';
+            var messages = self.im.user.answers.registered_on_whatsapp ? 'messages' : 'FREE messages';
+            var channel = self.im.user.answers.registered_on_whatsapp ? "WhatsApp" : "SMS";
         
             return new EndState(name, {
                 text: $("You're done! This number {{MSISDN}} will get helpful messages from MomConnect on {{channel}}. For the full set of {{messages}}, register at a clinic")
                 .context({MSISDN: self.im.user.answers.registrant_msisdn,
-                         channel: self.im.user.answers.registration_type,
+                         channel: channel,
                          messages: messages
                 }),
                 next: "state_start"
