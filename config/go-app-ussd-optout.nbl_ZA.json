@@ -1,72 +1,24 @@
 {
     "": {
-        "pot-creation-date": "2015-09-23 09:01:+0000",
         "project-id-version": "Opt out",
+        "pot-creation-date": "2018-10-03 10:13:+0000",
+        "po-revision-date": "2018-10-03 12:15+0200",
+        "last-translator": "",
         "language-team": "Southern Ndebele <LL@li.org>",
+        "language": "nr",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2015-09-28 14:59+0200",
-        "last-translator": "",
-        "x-generator": "Poedit 1.6.7",
-        "plural-forms": "nplurals=1; plural=0;",
-        "language": "nr"
+        "x-generator": "Poedit 2.1.1",
+        "plural-forms": "nplurals=1; plural=0;"
     },
-    "Jan": [
+    "Please tell us why you previously opted out of messages": [
         null,
-        "Bhi"
-    ],
-    "Feb": [
-        null,
-        "Indlovlenc"
-    ],
-    "Mar": [
-        null,
-        "Indlovlenkh"
-    ],
-    "Apr": [
-        null,
-        "Maba"
-    ],
-    "May": [
-        null,
-        "Inkhw"
-    ],
-    "Jun": [
-        null,
-        "Inhla"
-    ],
-    "Jul": [
-        null,
-        "Kholw"
-    ],
-    "Aug": [
-        null,
-        "Ingci"
-    ],
-    "Sep": [
-        null,
-        "Inyoni"
-    ],
-    "Oct": [
-        null,
-        "Imph"
-    ],
-    "Nov": [
-        null,
-        "Lweti"
-    ],
-    "Dec": [
-        null,
-        "Ingo"
+        ""
     ],
     "Please let us know why you do not want MomConnect messages": [
         null,
         "Awusayifuni leni imilayeto yeMomConnect"
-    ],
-    "Please tell us why you previously opted out of messages": [
-        null,
-        "Please tell us why you previously opted out of messages"
     ],
     "Miscarriage": [
         null,

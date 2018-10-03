@@ -1,64 +1,20 @@
 {
     "": {
         "project-id-version": "opt_out_XH",
-        "pot-creation-date": "2014-08-20 10:49:+0000",
-        "po-revision-date": "2014-08-26 10:21-0000",
+        "pot-creation-date": "2018-10-03 10:13:+0000",
+        "po-revision-date": "2018-10-03 12:16+0200",
         "last-translator": "Lieze <lieze@praekelt.com>",
         "language-team": "Language <LL@li.org>",
         "language": "xh",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 1.6.8",
+        "x-generator": "Poedit 2.1.1",
         "plural-forms": "nplurals=2; plural=(n != 1);"
     },
-    "Jan": [
+    "Please tell us why you previously opted out of messages": [
         null,
-        "Jan"
-    ],
-    "Feb": [
-        null,
-        "Feb"
-    ],
-    "Mar": [
-        null,
-        "March"
-    ],
-    "Apr": [
-        null,
-        "April"
-    ],
-    "May": [
-        null,
-        "May"
-    ],
-    "Jun": [
-        null,
-        "June"
-    ],
-    "Jul": [
-        null,
-        "July"
-    ],
-    "Aug": [
-        null,
-        "August"
-    ],
-    "Sep": [
-        null,
-        "Sept"
-    ],
-    "Oct": [
-        null,
-        "Oct"
-    ],
-    "Nov": [
-        null,
-        "Nov"
-    ],
-    "Dec": [
-        null,
-        "Dec"
+        ""
     ],
     "Please let us know why you do not want MomConnect messages": [
         null,
