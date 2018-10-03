@@ -52,6 +52,7 @@ go.app = function() {
 
             return new JsonApi(self.im, {
                 headers: {
+                    'User-Agent': 'NDoH-JSBox/NurseRapidPro',
                     'Authorization': ['Bearer ' + token]
                 }})
                 .post(api_url + '/v1/contacts', {

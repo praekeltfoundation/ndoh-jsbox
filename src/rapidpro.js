@@ -9,6 +9,7 @@ go.RapidPro = function() {
         self.base_url = base_url;
         self.auth_token = auth_token;
         self.json_api.defaults.headers.Authorization = ['Token ' + self.auth_token];
+        self.json_api.defaults.headers['User-Agent'] = ['NDoH-JSBox/RapidPro'];
 
         self.get_contact = function(filters) {
             filters = filters || {};
