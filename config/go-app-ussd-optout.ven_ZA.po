@@ -1,94 +1,46 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2015-09-23 09:01:+0000\n"
 "Project-Id-Version: Opt out\n"
+"POT-Creation-Date: 2018-10-03 10:13:+0000\n"
+"PO-Revision-Date: 2018-10-03 12:16+0200\n"
+"Last-Translator: \n"
 "Language-Team: Venda <LL@li.org>\n"
+"Language: ve\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-09-28 14:52+0200\n"
-"Last-Translator: \n"
-"X-Generator: Poedit 1.6.7\n"
+"X-Generator: Poedit 2.1.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: ve\n"
 
-#: go-app-optout.js:24
-msgid "Jan"
-msgstr "Phnd"
+#: go-app-ussd_optout.js:102
+msgid "Please tell us why you previously opted out of messages"
+msgstr ""
 
-#: go-app-optout.js:25
-msgid "Feb"
-msgstr "Luh"
-
-#: go-app-optout.js:26
-msgid "Mar"
-msgstr "Thf  "
-
-#: go-app-optout.js:27
-msgid "Apr"
-msgstr "Lmb "
-
-#: go-app-optout.js:28
-msgid "May"
-msgstr "Shnd"
-
-#: go-app-optout.js:29
-msgid "Jun"
-msgstr "Flw"
-
-#: go-app-optout.js:30
-msgid "Jul"
-msgstr "Flwn"
-
-#: go-app-optout.js:31
-msgid "Aug"
-msgstr "Thng"
-
-#: go-app-optout.js:32
-msgid "Sep"
-msgstr "Khbv"
-
-#: go-app-optout.js:33
-msgid "Oct"
-msgstr "Tshm"
-
-#: go-app-optout.js:34
-msgid "Nov"
-msgstr "Lr "
-
-#: go-app-optout.js:35
-msgid "Dec"
-msgstr "Nynd"
-
-#: go-app-optout.js:1162
+#: go-app-ussd_optout.js:103
 msgid "Please let us know why you do not want MomConnect messages"
 msgstr "Milaedza ya MomConnect a yo ngo tea ngauri"
 
-#: go-app-optout.js:1164
-msgid "Please tell us why you previously opted out of messages"
-msgstr "Please tell us why you previously opted out of messages"
-
-#: go-app-optout.js:1171
+#: go-app-ussd_optout.js:109
 msgid "Miscarriage"
 msgstr "Ndo tshinyalelwa"
 
-#: go-app-optout.js:1172
+#: go-app-ussd_optout.js:110
 msgid "Baby was stillborn"
 msgstr "Nwana o lovhela thumbuni"
 
-#: go-app-optout.js:1173
+#: go-app-ussd_optout.js:111
 msgid "Baby died"
 msgstr "Nwana o lovha"
 
-#: go-app-optout.js:1174
+#: go-app-ussd_optout.js:112
 msgid "Messages not useful"
 msgstr "Milaedza a i thusi"
 
-#: go-app-optout.js:1175
+#: go-app-ussd_optout.js:113
 msgid "Other"
 msgstr "Zwinwe"
 
-#: go-app-optout.js:1193
+#: go-app-ussd_optout.js:129
 msgid ""
 "We are sorry for your loss. Would you like to receive a small set of free "
 "messages to help you in this difficult time?"
@@ -96,15 +48,15 @@ msgstr ""
 "U tshinyalelwa havho ho ri vhaisa. Vha a takalela u rumelwa sethe pfufhi dza "
 "milaedza ya mahala i no ḓo vha khuthadza?"
 
-#: go-app-optout.js:1198
+#: go-app-ussd_optout.js:134
 msgid "Yes"
 msgstr "Ee"
 
-#: go-app-optout.js:1199
+#: go-app-ussd_optout.js:135
 msgid "No"
 msgstr "Hai"
 
-#: go-app-optout.js:1243
+#: go-app-ussd_optout.js:190
 msgid ""
 "Thank you. You will no longer receive messages from us. If you have any "
 "medical concerns please visit your nearest clinic."
@@ -112,10 +64,46 @@ msgstr ""
 "Ro livhuha. A ri tsha do vha rumela milaedza. Arali vhe na zwinwevho zwi no "
 "kwama mutakalo, kha vha ye kiliniki ya tsini navho."
 
-#: go-app-optout.js:1254
+#: go-app-ussd_optout.js:201
 msgid ""
 "Thank you. You will receive support messages from MomConnect in the coming "
 "weeks."
 msgstr ""
 "Ro livhuha. Vha do rumelwa milaedza ya u vha rindidza i no bva kha "
 "MomConnect vhegeni dzi daho."
+
+#~ msgid "Jan"
+#~ msgstr "Phnd"
+
+#~ msgid "Feb"
+#~ msgstr "Luh"
+
+#~ msgid "Mar"
+#~ msgstr "Thf  "
+
+#~ msgid "Apr"
+#~ msgstr "Lmb "
+
+#~ msgid "May"
+#~ msgstr "Shnd"
+
+#~ msgid "Jun"
+#~ msgstr "Flw"
+
+#~ msgid "Jul"
+#~ msgstr "Flwn"
+
+#~ msgid "Aug"
+#~ msgstr "Thng"
+
+#~ msgid "Sep"
+#~ msgstr "Khbv"
+
+#~ msgid "Oct"
+#~ msgstr "Tshm"
+
+#~ msgid "Nov"
+#~ msgstr "Lr "
+
+#~ msgid "Dec"
+#~ msgstr "Nynd"

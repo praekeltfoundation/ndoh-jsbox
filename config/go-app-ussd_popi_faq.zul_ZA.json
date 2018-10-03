@@ -1,15 +1,15 @@
 {
     "": {
-        "pot-creation-date": "2017-08-29 02:46:+0000",
         "project-id-version": "POPI_FAQ",
+        "pot-creation-date": "2018-10-03 10:00:+0000",
+        "po-revision-date": "2018-10-03 12:01+0200",
+        "last-translator": "Alex Muller <alex@praekelt.org>",
         "language-team": "Zulu <LL@li.org>",
         "language": "zul",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2017-08-29 16:09+0100",
-        "last-translator": "Alex Muller <alex@praekelt.org>",
-        "x-generator": "Poedit 2.0.3"
+        "x-generator": "Poedit 2.1.1"
     },
     "Choose a question about MomConnect (MC):": [
         null,
@@ -17,7 +17,7 @@
     ],
     "What is MomConnect?": [
         null,
-        "Yini iMomConnect? "
+        "Yini iMomConnect?"
     ],
     "Why does MC need my personal info?": [
         null,
@@ -47,9 +47,9 @@
         null,
         "Emuva"
     ],
-    "MC is a Health Department programme. It sends SMS messages for you & your baby. To see, change or delete your info dial *134*550*7#": [
+    "MC is a Health Department programme. It sends messages for you & your baby. To see, change or delete your info dial *134*550*7#": [
         null,
-        "I-MC uhlelo loMnyango Wezempilo. Luthumela i-SMS ngawe nengane yakho. Ukubona, ukushintsha, ukusula ulwazi lwakho, shaya *134*550*7#"
+        ""
     ],
     "Menu": [
         null,
@@ -63,9 +63,9 @@
         null,
         "I-MomConnect iqoqa izinombolo zakho zefoni neze-ID, indawo yeklinikhi, nolwazi ngokukhulelwa kwakho."
     ],
-    "MomConnect is owned and run by the Health Department. MTN, Cell C, Telkom, Vodacom, Praekelt, Jembi and HISP collect and process your data on their behalf.": [
+    "MomConnect is owned and run by the Health Department. MTN, Cell C, Telkom, Vodacom, Praekelt, Jembi, HISP and WhatsApp (owned by Facebook) collect and process your data on their behalf.": [
         null,
-        "I-MomConnect eyoMnyango Wezempilo. U-MTN, Cell C, Telkom, Vodacom, Praekelt, Jembi ne-HISP baqoqela futhi bawuqhubele ulwazi lwakho. "
+        ""
     ],
     "You can see, change, or ask us to delete your information by dialing *134*550*7#": [
         null,
@@ -73,10 +73,10 @@
     ],
     "MomConnect will automatically delete your personal information 7 years and 9 months after you registered.": [
         null,
-        "I-MomConnect izozisulela ulwazi lakho emuva kweminyaka ewu-7 nezinyanga eziwu-9 ubhalisile. "
+        "I-MomConnect izozisulela ulwazi lakho emuva kweminyaka ewu-7 nezinyanga eziwu-9 ubhalisile."
     ],
     "Sorry, that number is not recognised. Dial in with the number you first used to register. To update your number, dial *134*550*7# or register again at a clinic.": [
         null,
-        "Uxolo, leyo nombolo ayaziwa. Faka inombolo owayisebenzisa mhla uqala ukubhalisa. Ukubukeza inombolo yakho, shayela *134*550*7# noma uphinde ubhalise eklinikhi"
+        "Uxolo, leyo nombolo ayaziwa. Faka inombolo owayisebenzisa mhla uqala ukubhalisa. Ukubukeza inombolo yakho, shayela *134*550*7# noma uphinde ubhalise eklinikhi."
     ]
 }

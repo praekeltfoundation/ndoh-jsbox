@@ -1,18 +1,18 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2016-08-16 02:50:+0000\n"
 "Project-Id-Version: USSD PMTCT\n"
+"POT-Creation-Date: 2018-10-03 10:18:+0000\n"
+"PO-Revision-Date: 2018-10-03 12:19+0200\n"
+"Last-Translator: \n"
 "Language-Team: sepedi <LL@li.org>\n"
+"Language: nso\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-08-22 10:00+0200\n"
-"Last-Translator: \n"
-"X-Generator: Poedit 1.6.7\n"
+"X-Generator: Poedit 2.1.1\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"Language: nso\n"
 
-#: go-app-ussd_pmtct.js:331
+#: go-app-ussd_pmtct_seed.js:95
 msgid ""
 "HIV positive moms can have an HIV negative baby! You can get free medicine "
 "at the clinic to protect your baby and improve your health"
@@ -21,7 +21,7 @@ msgstr ""
 "mahala kliniking go sireletsa ngwana wa gago le go hlabolla tsa maphelo a "
 "gago"
 
-#: go-app-ussd_pmtct.js:341
+#: go-app-ussd_pmtct_seed.js:107
 msgid ""
 "Recently tested HIV positive? You are not alone, many other pregnant women "
 "go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322"
@@ -30,26 +30,7 @@ msgstr ""
 "ba diregile ka mokgwa wo. Etela b-wise.mobi goba leletsa AIDS Helpline 0800 "
 "012 322"
 
-#: go-app-ussd_pmtct.js:343
-msgid ""
-"You have an incomplete registration. Would you like to continue with this "
-"registration?"
-msgstr ""
-
-#: go-app-ussd_pmtct.js:345 go-app-ussd_pmtct.js:474 go-app-ussd_pmtct.js:556
-#: go-app-ussd_pmtct.js:688
-msgid "Yes"
-msgstr "Ee"
-
-#: go-app-ussd_pmtct.js:346
-msgid "No, start a new registration"
-msgstr ""
-
-#: go-app-ussd_pmtct.js:451
-msgid "Would you like to receive these messages over WhatsApp or SMS?"
-msgstr "O nyaka go hwetsa melaetsa ye ka WhatsApp goba ka SMS?"
-
-#: go-app-ussd_pmtct.js:464
+#: go-app-ussd_pmtct_seed.js:314
 msgid ""
 "You need to be registered on MomConnect to receive these messages. Please "
 "visit the nearest clinic to register."
@@ -57,7 +38,7 @@ msgstr ""
 "O tla swanelwa ke go ingwadisa goMomConnect go hwetsa melaetsa ye. Etela "
 "kliniki ya kgauswi go ingwadisa."
 
-#: go-app-ussd_pmtct.js:471
+#: go-app-ussd_pmtct_seed.js:321
 msgid ""
 "To sign up, we need to collect, store and use your info. You may also get "
 "messages on public holidays and weekends. Do you consent?"
@@ -65,11 +46,17 @@ msgstr ""
 "Gore o ingwadise, re nyaka go hwetsa, go boloka le go somisa tshedimoso ya "
 "gago. O ka hwetsa melaetsa ka maikhutso le mafelelo a beke. O a dumela?"
 
-#: go-app-ussd_pmtct.js:475 go-app-ussd_pmtct.js:557 go-app-ussd_pmtct.js:689
+#: go-app-ussd_pmtct_seed.js:324 go-app-ussd_pmtct_seed.js:407
+#: go-app-ussd_pmtct_seed.js:538
+msgid "Yes"
+msgstr "Ee"
+
+#: go-app-ussd_pmtct_seed.js:325 go-app-ussd_pmtct_seed.js:408
+#: go-app-ussd_pmtct_seed.js:539
 msgid "No"
 msgstr "Aowa"
 
-#: go-app-ussd_pmtct.js:495
+#: go-app-ussd_pmtct_seed.js:345
 msgid ""
 "Unfortunately without your consent, you cannot register to MomConnect. Thank "
 "you for using the MomConnect service. Goodbye."
@@ -77,37 +64,37 @@ msgstr ""
 "Ka bomadimabe, ntle le tumelelo ya gago, o ka se kgone go ingwadisa "
 "goMomConnect. Re leboga ge o somisa tirelo ya MomConnect. sala gabotse."
 
-#: go-app-ussd_pmtct.js:502
+#: go-app-ussd_pmtct_seed.js:352
 msgid "Please enter the year you were born (For example 1981)"
 msgstr "o kgopelwa go tsenya ngwaga wo o belegwego ka ona (Go fa mohlala 1981)"
 
-#: go-app-ussd_pmtct.js:508
+#: go-app-ussd_pmtct_seed.js:358
 msgid "Invalid date. Please enter the year you were born (For example 1981)"
 msgstr "O kgopelwa go tsenya letsatsi la matswalo (Go fa mohlala, 14)"
 
-#: go-app-ussd_pmtct.js:520
+#: go-app-ussd_pmtct_seed.js:370
 msgid "In which month were you born?"
 msgstr "O kgopelwa go tsenya kgwedi ya matswalo"
 
-#: go-app-ussd_pmtct.js:532
+#: go-app-ussd_pmtct_seed.js:382
 msgid "Please enter the date of the month you were born (For example 21)"
 msgstr "O kgopelwa go tsenya letšatši la matswalo (Go fa mohlala, 14)"
 
-#: go-app-ussd_pmtct.js:538
+#: go-app-ussd_pmtct_seed.js:388
 msgid ""
 "Invalid date. Please enter the date of the month you were born (For example "
 "21)"
 msgstr "O kgopelwa go tsenya letšatši la matswalo (Go fa mohlala, 14)"
 
-#: go-app-ussd_pmtct.js:553
+#: go-app-ussd_pmtct_seed.js:403
 msgid ""
-"Would you like to receive messages about keeping your child HIV-negative? The"
-" messages will contain words like HIV, medicine & ARVs"
+"Would you like to receive messages about keeping your child HIV-negative? "
+"The messages will contain words like HIV, medicine & ARVs"
 msgstr ""
 "Na o nyaka go hwetsa melaetsa ka ga go ba le ngwana yo a se nago HIV? "
 "Melaetsa e tla ba le mantsu a go swana le HIV, dihlare & diARV"
 
-#: go-app-ussd_pmtct.js:618
+#: go-app-ussd_pmtct_seed.js:472
 msgid ""
 "You will now start receiving messages about keeping your child HIV-negative. "
 "Thank you for using the MomConnect service. Goodbye."
@@ -115,7 +102,7 @@ msgstr ""
 "O tla thoma go hwetsa melaetsa ya gore o ka dirang gore ngwana wa gago a "
 "dule a le HIV-. Re leboga ge o somisa tirelo ya MomConnect. sala gabotse."
 
-#: go-app-ussd_pmtct.js:625
+#: go-app-ussd_pmtct_seed.js:479
 msgid ""
 "You have chosen to not receive messages about keeping your child HIV-"
 "negative. Thank you for using the MomConnect service. Goodbye."
@@ -123,43 +110,43 @@ msgstr ""
 "O kgethile go se hwetse melaetsa ka ga go hlokomela ngwana wa gago gore a se "
 "be le HIV. Re leboga ge osomisa tirelo ya MomConnect.sala gabotse."
 
-#: go-app-ussd_pmtct.js:633
+#: go-app-ussd_pmtct_seed.js:487
 msgid "Please tell us why you do not want to receive messages:"
-msgstr "Ke ka lebaka la eng o sa nyake melaetsa: "
+msgstr "Ke ka lebaka la eng o sa nyake melaetsa:"
 
-#: go-app-ussd_pmtct.js:636
+#: go-app-ussd_pmtct_seed.js:490
 msgid "More"
 msgstr ""
 
-#: go-app-ussd_pmtct.js:637
+#: go-app-ussd_pmtct_seed.js:491
 msgid "Back"
 msgstr ""
 
-#: go-app-ussd_pmtct.js:640
+#: go-app-ussd_pmtct_seed.js:493
 msgid "Not HIV-positive"
 msgstr "Ga ke HIV+"
 
-#: go-app-ussd_pmtct.js:641
+#: go-app-ussd_pmtct_seed.js:494
 msgid "Miscarriage"
-msgstr "Ke gomile tseleng "
+msgstr "Ke gomile tseleng"
 
-#: go-app-ussd_pmtct.js:642
+#: go-app-ussd_pmtct_seed.js:495
 msgid "Baby was stillborn"
 msgstr "Ngwana ebile sefolotsana"
 
-#: go-app-ussd_pmtct.js:643
+#: go-app-ussd_pmtct_seed.js:496
 msgid "Baby died"
-msgstr "Ngwana o hlokofetse "
+msgstr "Ngwana o hlokofetse"
 
-#: go-app-ussd_pmtct.js:644
+#: go-app-ussd_pmtct_seed.js:497
 msgid "Messages not useful"
 msgstr "Ga go thuse"
 
-#: go-app-ussd_pmtct.js:645
+#: go-app-ussd_pmtct_seed.js:498
 msgid "Other"
 msgstr "Yenngwe"
 
-#: go-app-ussd_pmtct.js:674
+#: go-app-ussd_pmtct_seed.js:525
 msgid ""
 "You will not receive SMSs about keeping your baby HIV negative. You will "
 "still receive MomConnect SMSs. To stop receiving these SMSs, dial "
@@ -169,7 +156,7 @@ msgstr ""
 "tswela pele go hwetsa diSMS tsaMomConnect. Go emisa go hwetsa diSMS, "
 "leletsa*134*550*1#"
 
-#: go-app-ussd_pmtct.js:685
+#: go-app-ussd_pmtct_seed.js:536
 msgid ""
 "We are sorry for your loss. Would you like to receive a small set of free "
 "messages from MomConnect that could help you in this difficult time?"
@@ -177,7 +164,7 @@ msgstr ""
 "Re manyami ka tobo ya gago. O nyaka go hwetsa sete ye nnyane ya melaetsa ya "
 "mahala go tswa goMomConnect yeo e kago go thusa mo nakong ya mahloko?"
 
-#: go-app-ussd_pmtct.js:747
+#: go-app-ussd_pmtct_seed.js:576
 msgid ""
 "Thank you. You will no longer receive any messages from MomConnect. If you "
 "have any medical concerns, please visit your nearest clinic."
@@ -185,10 +172,13 @@ msgstr ""
 "Re a leboga. O ka se sa hwetsa melaetsa go tswa goMomConnect. Ge e ba o na "
 "le dipelaelo ka tsa maphelo, etela kliniki ya gago ya kgauswi."
 
-#: go-app-ussd_pmtct.js:755
+#: go-app-ussd_pmtct_seed.js:584
 msgid ""
 "Thank you. You will receive support messages from MomConnect in the coming "
 "weeks."
 msgstr ""
 "Re a leboga. O tla hwetsa melaetsa ya thekgo go tswa go MomConnect dibeke "
 "tse di tlang."
+
+#~ msgid "Would you like to receive these messages over WhatsApp or SMS?"
+#~ msgstr "O nyaka go hwetsa melaetsa ye ka WhatsApp goba ka SMS?"

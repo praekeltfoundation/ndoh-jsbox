@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: POPI_FAQ\n"
-"POT-Creation-Date: 2017-08-29 02:46:+0000\n"
-"PO-Revision-Date: 2017-08-29 16:06+0100\n"
+"POT-Creation-Date: 2018-10-03 10:00:+0000\n"
+"PO-Revision-Date: 2018-10-03 12:03+0200\n"
 "Last-Translator: Alex Muller <alex@praekelt.org>\n"
 "Language-Team: SeSotho <LL@li.org>\n"
 "Language: sot\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.3\n"
+"X-Generator: Poedit 2.1.1\n"
 
 #: go-app-ussd_popi_faq.js:111
 msgid "Choose a question about MomConnect (MC):"
@@ -52,11 +52,9 @@ msgstr "Morao"
 
 #: go-app-ussd_popi_faq.js:134
 msgid ""
-"MC is a Health Department programme. It sends SMS messages for you & your "
-"baby. To see, change or delete your info dial *134*550*7#"
+"MC is a Health Department programme. It sends messages for you & your baby. "
+"To see, change or delete your info dial *134*550*7#"
 msgstr ""
-"MC ke naneo la Fapha la Bophelo.E romela melaetsa ya hao le lesea ka SMS.Ho "
-"bona,ho fetola kapa ho tima sedi la hao la botho,letsetsa*134*550*7#"
 
 #: go-app-ussd_popi_faq.js:138 go-app-ussd_popi_faq.js:159
 #: go-app-ussd_popi_faq.js:173 go-app-ussd_popi_faq.js:188
@@ -91,12 +89,9 @@ msgstr ""
 #: go-app-ussd_popi_faq.js:183
 msgid ""
 "MomConnect is owned and run by the Health Department. MTN, Cell C, Telkom, "
-"Vodacom, Praekelt, Jembi and HISP collect and process your data on their "
-"behalf."
+"Vodacom, Praekelt, Jembi, HISP and WhatsApp (owned by Facebook) collect and "
+"process your data on their behalf."
 msgstr ""
-"Lefapha la Bophelo ke monga le molaodi wa MomConnect.MTN,Cell C,Telkom,"
-"Vodacom,Praekelt,Jembi le HISP ba bokella le ho hlophisa data lebitsong la "
-"bona."
 
 #: go-app-ussd_popi_faq.js:198
 msgid ""
@@ -123,6 +118,22 @@ msgstr ""
 "Tshwarelo, nomoro ha e tsejwe.Tobetsa nomoro o e sebedisitseng pele ho "
 "ngodisa. Ho ntjhafatsa nomoro ya hao, letsetsa *134*550*7# kapa ngodisa hape "
 "tleleniking."
+
+#~ msgid ""
+#~ "MC is a Health Department programme. It sends SMS messages for you & your "
+#~ "baby. To see, change or delete your info dial *134*550*7#"
+#~ msgstr ""
+#~ "MC ke naneo la Fapha la Bophelo.E romela melaetsa ya hao le lesea ka SMS."
+#~ "Ho bona,ho fetola kapa ho tima sedi la hao la botho,letsetsa*134*550*7#"
+
+#~ msgid ""
+#~ "MomConnect is owned and run by the Health Department. MTN, Cell C, "
+#~ "Telkom, Vodacom, Praekelt, Jembi and HISP collect and process your data "
+#~ "on their behalf."
+#~ msgstr ""
+#~ "Lefapha la Bophelo ke monga le molaodi wa MomConnect.MTN,Cell C,Telkom,"
+#~ "Vodacom,Praekelt,Jembi le HISP ba bokella le ho hlophisa data lebitsong "
+#~ "la bona."
 
 #~ msgid "Welcome back. Please select an option:"
 #~ msgstr "Dumela hape. Kgetha ka kopo:"
