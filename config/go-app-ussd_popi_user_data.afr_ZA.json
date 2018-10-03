@@ -1,35 +1,35 @@
 {
     "": {
         "project-id-version": "POPI_USER_DATA",
-        "pot-creation-date": "2017-06-07 03:46:+0000",
-        "po-revision-date": "2017-06-30 13:09+0200",
+        "pot-creation-date": "2018-10-03 10:07:+0000",
+        "po-revision-date": "2018-10-03 12:10+0200",
         "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
-        "language-team": "LANGUAGE <LL@li.org>",
-        "language": "Language: af",
+        "language-team": "",
+        "language": "za",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 1.5.4"
+        "x-generator": "Poedit 2.1.1"
     },
-    "Personal info:\nPhone Number: {{msisdn}}\nID Number: {{id}}\nDate of Birth: {{dob}}\nLanguage: {{lang}}": [
+    "Personal info:\nPhone Number: {{msisdn}}\nID Number: {{id}}\nDate of Birth: {{dob}}\nChannel: {{channel}}\nLanguage: {{lang}}": [
         null,
-        "Persoonlike info:\nSelnommer: {{msisdn}}\nID-nommer: {{id}}\nGeboortedatum: {{dob}}\nTaal: {{lang}}"
+        ""
     ],
-    "Personal info:\nPhone Number: {{msisdn}}\nOrigin of Passport: {{passport_or}}\nPassport: {{passport_num}}\nDate of Birth: {{dob}}\nLanguage: {{lang}}": [
+    "Personal info:\nPhone Number: {{msisdn}}\nOrigin of Passport: {{passport_or}}\nPassport: {{passport_num}}\nDate of Birth: {{dob}}\nChannel: {{channel}}\nLanguage: {{lang}}": [
         null,
-        "Persoonlike info:\nSelnommer: {{msisdn}}\nOorsprong van paspoort: {{passport_or}}\nPaspoort: {{passport_num}}\nGeboortedatum: {{dob}}\nTaal: {{lang}}"
+        ""
     ],
     "{{first}}\nMessage set: {{mset}}": [
         null,
         "{{first}}\nBoodskapgroep: {{mset}}"
     ],
-    "Welcome back. Please select an option:": [
+    "SMS": [
         null,
-        "Welkom terug. Kies asb 'n opsie:"
+        ""
     ],
-    "Main menu": [
+    "WhatsApp": [
         null,
-        "Hoof Spyskaart"
+        ""
     ],
     "What would you like to do?": [
         null,
@@ -38,10 +38,6 @@
     "See my personal info": [
         null,
         "Sien my persoonlike info"
-    ],
-    "Send my personal info by sms": [
-        null,
-        "Stuur my persoonlike info met 'n SMS"
     ],
     "Change my info": [
         null,
@@ -59,17 +55,13 @@
         null,
         "Terug"
     ],
-    "Exit": [
+    "Main Menu": [
         null,
         ""
     ],
-    "An SMS has been sent to your number containing your personal information stored by MomConnect.": [
+    "Use a different phone number": [
         null,
-        " 'n SMS is aan jou foonnommer gestuur met jou persoonlike info wat deur MomConnect gestoor is "
-    ],
-    "What would you like to change? To change your due date, visit a clinic": [
-        null,
-        "Wat wil jy graag verander? Om jou verwagte datum te verander, gaan na 'n kliniek"
+        "'n Ander foonnommer gebruik"
     ],
     "Update my language choice": [
         null,
@@ -79,9 +71,13 @@
         null,
         "My identifikasie bywerk"
     ],
-    "Use a different phone number": [
+    "Receive messages over {{channel}}": [
         null,
-        "'n Ander foonnommer gebruik"
+        ""
+    ],
+    "What would you like to change? To change your due date, visit a clinic": [
+        null,
+        "Wat wil jy graag verander? Om jou verwagte datum te verander, gaan na 'n kliniek"
     ],
     "MomConnect will automatically delete your personal information 7 years and 9 months after you registered. Do you want us to delete it now?": [
         null,
@@ -94,6 +90,14 @@
     "No": [
         null,
         "Nee"
+    ],
+    "Thank you. Your info has been updated. You will now receive messages from MomConnect via {{channel}}.": [
+        null,
+        ""
+    ],
+    "Update my other info": [
+        null,
+        ""
     ],
     "Choose a language for your messages:": [
         null,
@@ -142,6 +146,10 @@
     "isiNdebele": [
         null,
         "Ndebele"
+    ],
+    "Thank you. Your info has been updated. You will now receive messages from MomConnect in {{language}}.": [
+        null,
+        ""
     ],
     "What kind of identification do you have?": [
         null,
@@ -203,6 +211,10 @@
         null,
         "Tik asb jou paspoortnommer in:"
     ],
+    "Thank you. Your info has been updated. Your registered identification is {{identification_type}} {{identification_number}}.": [
+        null,
+        ""
+    ],
     "Please enter the new phone number we should use to send you messages eg. 0813547654": [
         null,
         "Tik asb die nuwe foonnommer in wat ons vir jou boodskappe moet gebruik, bv.  0813547654"
@@ -215,20 +227,96 @@
         null,
         "Jammer, die nommer wat jy nou wil gebruik het reeds 'n aktiewe registrasie. Om daardie registrasie te bestuur moet jy met daardie nommer bel"
     ],
-    "Thank you. Your info has been updated.": [
+    "Thank you. Your info has been updated. You will now receive messages from MomConnect via on phone number {{msisdn}}": [
         null,
-        "Baie dankie. Jou info is bygewerk."
+        ""
     ],
     "Your personal information stored on MomConnect has not been removed.": [
         null,
         "Jou persoonlike info wat op MomConnect gestoor is, is nie verwyder nie."
     ],
-    "Thank you. All your information will be deleted from MomConnect in the next [X] days.": [
+    "Thank you. All your information will be deleted from MomConnect in the next 3 days.": [
         null,
-        "Baie dankie, Al jou persoonlike info sal uit  MomConnect geskrap word binne die volgende [X] dae."
+        "Baie dankie, Al jou persoonlike info sal uit  MomConnect geskrap word binne die volgende 3 dae."
     ],
-    "Sorry, that number is not recognised. Dial in with the number you used to register for MomConnect. To update number, dial *134*550*5# or register at a clinic": [
+    "Sorry, the number you dialled with is not recognised. Dial in with the number you use for MomConnect to change your details": [
         null,
-        "Jammer nommer bestaan nie.  Gebruik selfde nommer waarmee jy geregistreer het. Skakel *134*550*5# of registreer weer by 'n kliniek om jou nommer by te werk."
+        ""
+    ],
+    "I don't have that SIM": [
+        null,
+        ""
+    ],
+    "Exit": [
+        null,
+        ""
+    ],
+    "Thank you for using MomConnect. Dial *134*550*7# to see, change or delete the your MomConnect information.": [
+        null,
+        ""
+    ],
+    "Please enter the number you receive MomConnect messages on.": [
+        null,
+        ""
+    ],
+    "Sorry we do not recognise that number. New to MomConnect?Please visit a clinic to register. Made a mistake?": [
+        null,
+        ""
+    ],
+    "Try again": [
+        null,
+        ""
+    ],
+    "Thank you. To change your mobile number we first need to verify your identity. Please enter your SA ID number now.": [
+        null,
+        ""
+    ],
+    "Thank you. To change your mobile number we first need to verify your identity. Please enter your passport number now.": [
+        null,
+        ""
+    ],
+    "Thank you. To change your mobile number we first need to verify your identity. Please enter your date of birth in the following format: dd*mm*yyyy": [
+        null,
+        ""
+    ],
+    "Sorry that is not the correct format. Please enter your date of birth in the following format: dd*mm*yyyy. For example 19*05*1990": [
+        null,
+        ""
+    ],
+    "Thank you. Please select the language you receive message in:": [
+        null,
+        ""
+    ],
+    "Sorry one or more of the answers you provided are incorrect. We are not able to change your mobile number. Please visit the clinic to register your new number.": [
+        null,
+        ""
+    ],
+    "Thank you. Please enter the new number you would like to use to receive messages from MomConnect.": [
+        null,
+        ""
+    ],
+    "Sorry the number you have entered is not valid. Please re-enter the mobile number.": [
+        null,
+        ""
+    ],
+    "You have entered {{new_number}} as the new number you would like to receive MomConnect messages on. Is this number correct?": [
+        null,
+        ""
+    ],
+    "No - enter again": [
+        null,
+        ""
+    ],
+    "Sorry the number you have entered is already associated with a MomConnect account. Please try another number.": [
+        null,
+        ""
+    ],
+    "Thank you. How would you like to receive messages about you and your baby?": [
+        null,
+        ""
+    ],
+    "Your number has been changed successfully to {{msisdn}}. You will receive messages on {{channel}}. Thank you for using MomConnect!": [
+        null,
+        ""
     ]
 }
