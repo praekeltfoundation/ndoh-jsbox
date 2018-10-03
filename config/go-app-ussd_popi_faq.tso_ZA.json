@@ -1,15 +1,15 @@
 {
     "": {
-        "pot-creation-date": "2017-08-29 02:46:+0000",
         "project-id-version": "POPI_FAQ",
+        "pot-creation-date": "2018-10-03 10:00:+0000",
+        "po-revision-date": "2018-10-03 12:02+0200",
+        "last-translator": "Alex Muller <alex@praekelt.org>",
         "language-team": "Tsonga <LL@li.org>",
         "language": "tso",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2017-08-29 16:08+0100",
-        "last-translator": "Alex Muller <alex@praekelt.org>",
-        "x-generator": "Poedit 2.0.3"
+        "x-generator": "Poedit 2.1.1"
     },
     "Choose a question about MomConnect (MC):": [
         null,
@@ -17,7 +17,7 @@
     ],
     "What is MomConnect?": [
         null,
-        "MC i yini? "
+        "MC i yini?"
     ],
     "Why does MC need my personal info?": [
         null,
@@ -47,9 +47,9 @@
         null,
         "Vuyela endzhaku"
     ],
-    "MC is a Health Department programme. It sends SMS messages for you & your baby. To see, change or delete your info dial *134*550*7#": [
+    "MC is a Health Department programme. It sends messages for you & your baby. To see, change or delete your info dial *134*550*7#": [
         null,
-        "MC i nongonoko wa Ndzawulo ya Rihanyu. Yi rhumela wena & ricece swihungwana swa SMS. Ku vona, ku cinca/ku cinca vuxokoxoko lebyi, dayila *134*550*7#"
+        ""
     ],
     "Menu": [
         null,
@@ -63,9 +63,9 @@
         null,
         "MomConnect yi teka tinomboro ta wena ta riqingho & ta Pasi, ndhawu ya tliliniki & vuxokoxoko mayelana na hilaha vuyimani bya wena byi fambaka hakona."
     ],
-    "MomConnect is owned and run by the Health Department. MTN, Cell C, Telkom, Vodacom, Praekelt, Jembi and HISP collect and process your data on their behalf.": [
+    "MomConnect is owned and run by the Health Department. MTN, Cell C, Telkom, Vodacom, Praekelt, Jembi, HISP and WhatsApp (owned by Facebook) collect and process your data on their behalf.": [
         null,
-        "Ndzawulo ya Rihanyu i n'wini & mufambisi wa MomConnect. MTN, Cell C, Telkom, Vodacom, Praekelt, Jembi & HISP va hlengeleta no hlela data hi ku yimela yona. "
+        ""
     ],
     "You can see, change, or ask us to delete your information by dialing *134*550*7#": [
         null,
