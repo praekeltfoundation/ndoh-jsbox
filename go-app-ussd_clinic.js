@@ -677,6 +677,7 @@ go.app = function() {
             // Otherwise check the API
             return new JsonApi(self.im, {
                 headers: {
+                    'User-Agent': 'NDoH-JSBox/Clinic',
                     'Authorization': ['Token ' + api_token]
                 }})
                 .post(api_url, {

@@ -123,6 +123,7 @@ go.app = function() {
 
             return new JsonApi(self.im, {
                 headers: {
+                    'User-Agent': 'NDoH-JSBox/USSDPmtctSeed',
                     'Authorization': ['Token ' + api_token]
                 }})
                 .post(api_url, {
