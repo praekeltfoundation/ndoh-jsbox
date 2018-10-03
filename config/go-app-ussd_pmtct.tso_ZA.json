@@ -1,15 +1,15 @@
 {
     "": {
-        "pot-creation-date": "2016-08-16 02:50:+0000",
         "project-id-version": "USSD PMTCT",
+        "pot-creation-date": "2018-10-03 10:18:+0000",
+        "po-revision-date": "2018-10-03 12:21+0200",
+        "last-translator": "",
         "language-team": "TSONGA <LL@li.org>",
+        "language": "ts",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2016-08-21 19:00+0200",
-        "last-translator": "",
-        "x-generator": "Poedit 1.6.7",
-        "language": "ts"
+        "x-generator": "Poedit 2.1.1"
     },
     "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health": [
         null,
@@ -19,22 +19,6 @@
         null,
         "Wa ha ku kamberiwa u kumeka u ri na HIV? A wu wexe, vayimani votala va na yona. Endzela b-wise.mobi kumbe u fonela Riqingho ra mfuno wa AIDS ra 0800 012 322"
     ],
-    "You have an incomplete registration. Would you like to continue with this registration?": [
-        null,
-        ""
-    ],
-    "Yes": [
-        null,
-        "Ina"
-    ],
-    "No, start a new registration": [
-        null,
-        ""
-    ],
-    "Would you like to receive these messages over WhatsApp or SMS?": [
-        null,
-        "U lava ku kuma swihungwana leswi hi WhatsApp kumbe SMS?"
-    ],
     "You need to be registered on MomConnect to receive these messages. Please visit the nearest clinic to register.": [
         null,
         "U ta fanela ku va u tsarisil eka MomConnect ku amukel swihungwn lesw. U komberiwa ku endzela tlinik ya le kusuhi ku tsarisa."
@@ -42,6 +26,10 @@
     "To sign up, we need to collect, store and use your info. You may also get messages on public holidays and weekends. Do you consent?": [
         null,
         "K tsaris hi fanel h kolek,hlayis no tiris vxokxok bya wen.U tlhe u kum swhungwn hi tholdey na mahel ya vhik.Wa pfumel xan?1.Ina 2.Ee"
+    ],
+    "Yes": [
+        null,
+        "Ina"
     ],
     "No": [
         null,
@@ -65,7 +53,7 @@
     ],
     "Please enter the date of the month you were born (For example 21)": [
         null,
-        "Nghenisa nhweti leyi u nga velekiwa hi yona "
+        "Nghenisa nhweti leyi u nga velekiwa hi yona"
     ],
     "Invalid date. Please enter the date of the month you were born (For example 21)": [
         null,
@@ -101,11 +89,11 @@
     ],
     "Miscarriage": [
         null,
-        " U onhakeriwile"
+        "U onhakeriwile"
     ],
     "Baby was stillborn": [
         null,
-        " U kumekile a lovile"
+        "U kumekile a lovile"
     ],
     "Baby died": [
         null,
@@ -117,7 +105,7 @@
     ],
     "Other": [
         null,
-        " Swinwana  "
+        "Swinwana"
     ],
     "You will not receive SMSs about keeping your baby HIV negative. You will still receive MomConnect SMSs. To stop receiving these SMSs, dial {{ mc_optout_number }}": [
         null,

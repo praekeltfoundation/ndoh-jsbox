@@ -1,15 +1,15 @@
 {
     "": {
-        "pot-creation-date": "2016-08-16 02:50:+0000",
         "project-id-version": "USSD PMTCT",
+        "pot-creation-date": "2018-10-03 10:18:+0000",
+        "po-revision-date": "2018-10-03 12:21+0200",
+        "last-translator": "",
         "language-team": "swati <LL@li.org>",
+        "language": "ss",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2016-08-22 09:37+0200",
-        "last-translator": "",
-        "x-generator": "Poedit 1.6.7",
-        "language": "ss"
+        "x-generator": "Poedit 2.1.1"
     },
     "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health": [
         null,
@@ -19,22 +19,6 @@
         null,
         "Usandza kutfola kutsi une-HIV? Awuwedvwa, banengi bomake labakhulelwe labandlula kuloku. Yani ku: b-wise.mobi/ushayele Lucingo Lwekusitwa nge-AIDS:0800 012 322"
     ],
-    "You have an incomplete registration. Would you like to continue with this registration?": [
-        null,
-        ""
-    ],
-    "Yes": [
-        null,
-        "Yebo"
-    ],
-    "No, start a new registration": [
-        null,
-        ""
-    ],
-    "Would you like to receive these messages over WhatsApp or SMS?": [
-        null,
-        "Ungatsandza kutfola lemilayeto ngeWhaApp noma nge-SMS?"
-    ],
     "You need to be registered on MomConnect to receive these messages. Please visit the nearest clinic to register.": [
         null,
         "Ufanele kutsi ubhalise kuMomConnect kute kutsi utfole lemilayeto. Ucelwa kutsi uvakashele umtfolamphilo lodvutane nawe kute ubhalise."
@@ -42,6 +26,10 @@
     "To sign up, we need to collect, store and use your info. You may also get messages on public holidays and weekends. Do you consent?": [
         null,
         "Kute sisayine, sidzinga kutfola, sigcine futsi sisebentise lwatiso lwakho. Ungatfola imilayeto ngemaholidi nangetimphelansontfo. Uyavuma?"
+    ],
+    "Yes": [
+        null,
+        "Yebo"
     ],
     "No": [
         null,
@@ -85,7 +73,7 @@
     ],
     "Please tell us why you do not want to receive messages:": [
         null,
-        "Kungani ungafuni imilayeto: "
+        "Kungani ungafuni imilayeto:"
     ],
     "More": [
         null,

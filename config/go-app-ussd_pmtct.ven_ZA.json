@@ -1,15 +1,15 @@
 {
     "": {
-        "pot-creation-date": "2016-08-16 02:50:+0000",
         "project-id-version": "USSD PMTCT",
+        "pot-creation-date": "2018-10-03 10:18:+0000",
+        "po-revision-date": "2018-10-03 12:20+0200",
+        "last-translator": "",
         "language-team": "VENDA <LL@li.org>",
+        "language": "ve",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2016-08-19 16:51+0200",
-        "last-translator": "",
-        "x-generator": "Poedit 1.6.7",
-        "language": "ve"
+        "x-generator": "Poedit 2.1.1"
     },
     "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health": [
         null,
@@ -19,22 +19,6 @@
         null,
         "Vha khou bva u wana uri vha HIV? A vha vhothe, vhaimana vhanzhi vha kha nyimele iyi. Vha dalele b-wise.mobi kana u fonela Lutingo lwa Thuso AIDS 0800 012 322"
     ],
-    "You have an incomplete registration. Would you like to continue with this registration?": [
-        null,
-        ""
-    ],
-    "Yes": [
-        null,
-        "Ee"
-    ],
-    "No, start a new registration": [
-        null,
-        ""
-    ],
-    "Would you like to receive these messages over WhatsApp or SMS?": [
-        null,
-        "Vha takalela u wana milaedza iyi nga WhatsApp kana SMS?"
-    ],
     "You need to be registered on MomConnect to receive these messages. Please visit the nearest clinic to register.": [
         null,
         "Vha do tea u nwaliswa kha MomConnect uri vha wane milaedza iyi. Vha dalele kiliniki ya tsini u nwalisa."
@@ -42,6 +26,10 @@
     "To sign up, we need to collect, store and use your info. You may also get messages on public holidays and weekends. Do you consent?": [
         null,
         "U itela u saina, ri tea u dzhia, ra vhea na u shumisa mafhungo avho. Vha nga kha di wana milaedza na nga holodei na mafhelo a vhege. Vha a tenda?"
+    ],
+    "Yes": [
+        null,
+        "Ee"
     ],
     "No": [
         null,
@@ -85,7 +73,7 @@
     ],
     "Please tell us why you do not want to receive messages:": [
         null,
-        "Please tell us why you do not want to receive messages: "
+        "Please tell us why you do not want to receive messages:"
     ],
     "More": [
         null,
@@ -113,7 +101,7 @@
     ],
     "Messages not useful": [
         null,
-        "A i thusi "
+        "A i thusi"
     ],
     "Other": [
         null,

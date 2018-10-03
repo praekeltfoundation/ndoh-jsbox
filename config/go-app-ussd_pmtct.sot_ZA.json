@@ -1,16 +1,16 @@
 {
     "": {
-        "pot-creation-date": "2016-08-16 02:50:+0000",
         "project-id-version": "USSD PMTCT",
+        "pot-creation-date": "2018-10-03 10:18:+0000",
+        "po-revision-date": "2018-10-03 12:19+0200",
+        "last-translator": "",
         "language-team": "SESOTHO <LL@li.org>",
+        "language": "st",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2016-08-22 09:50+0200",
-        "last-translator": "",
-        "x-generator": "Poedit 1.6.7",
-        "plural-forms": "nplurals=2; plural=(n != 1);",
-        "language": "st"
+        "x-generator": "Poedit 2.1.1",
+        "plural-forms": "nplurals=2; plural=(n != 1);"
     },
     "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health": [
         null,
@@ -20,22 +20,6 @@
         null,
         "O sa tswa tseba hore o na le tshwaetso ya HIV?Ha se wena feela, baimana ba bangata ba fetile moo. Etela b-wise.mobi kapa o letsetse AIDS Helpline ho 0800012322."
     ],
-    "You have an incomplete registration. Would you like to continue with this registration?": [
-        null,
-        ""
-    ],
-    "Yes": [
-        null,
-        "E"
-    ],
-    "No, start a new registration": [
-        null,
-        ""
-    ],
-    "Would you like to receive these messages over WhatsApp or SMS?": [
-        null,
-        "Na o rata ho amohela melaetsa ena ka WhatsApp kapa SMS?"
-    ],
     "You need to be registered on MomConnect to receive these messages. Please visit the nearest clinic to register.": [
         null,
         "O tshwanela ho ngodiswa ho MomConnect hore o fumane melaetsa ena. Re kopa o etele kliniki e haufi le wena ho ya ngodisa."
@@ -43,6 +27,10 @@
     "To sign up, we need to collect, store and use your info. You may also get messages on public holidays and weekends. Do you consent?": [
         null,
         "Ho ingodisa,re lokela ho bokella,ho boloka le ho sebedisa ntlha tsa hao.O ka nna wa fmana melaetsa ka matsatsi a phomolo le mafelo a beke.O wa dumela?"
+    ],
+    "Yes": [
+        null,
+        "E"
     ],
     "No": [
         null,
@@ -98,7 +86,7 @@
     ],
     "Not HIV-positive": [
         null,
-        "Ha ke na HIV "
+        "Ha ke na HIV"
     ],
     "Miscarriage": [
         null,

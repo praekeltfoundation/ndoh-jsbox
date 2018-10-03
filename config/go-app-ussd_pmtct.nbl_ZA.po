@@ -1,18 +1,18 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2016-08-16 02:50:+0000\n"
 "Project-Id-Version: USSD PMTCT\n"
+"POT-Creation-Date: 2018-10-03 10:18:+0000\n"
+"PO-Revision-Date: 2018-10-03 12:19+0200\n"
+"Last-Translator: \n"
 "Language-Team: NDEBELE <LL@li.org>\n"
+"Language: nr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-08-22 10:07+0200\n"
-"Last-Translator: \n"
-"X-Generator: Poedit 1.6.7\n"
+"X-Generator: Poedit 2.1.1\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"Language: nr\n"
 
-#: go-app-ussd_pmtct.js:331
+#: go-app-ussd_pmtct_seed.js:95
 msgid ""
 "HIV positive moms can have an HIV negative baby! You can get free medicine "
 "at the clinic to protect your baby and improve your health"
@@ -20,7 +20,7 @@ msgstr ""
 "Abomma abane-HIV bangaba nomntwana ongana-HIV! Ungathola iinhlahla "
 "zokuvikela umntwanakho zamahala etliniga nezizokwenza ngcono ipilo yakho."
 
-#: go-app-ussd_pmtct.js:341
+#: go-app-ussd_pmtct_seed.js:107
 msgid ""
 "Recently tested HIV positive? You are not alone, many other pregnant women "
 "go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322"
@@ -28,26 +28,7 @@ msgstr ""
 "Uqeda ukuzwa bona une-HIV? Awusiwedwa, abomma abanengi abasidisi banayo. "
 "Vakatjhela i- b-wise.mobi nofana thola isizo nge-AIDS ku- 0800 012 322."
 
-#: go-app-ussd_pmtct.js:343
-msgid ""
-"You have an incomplete registration. Would you like to continue with this "
-"registration?"
-msgstr ""
-
-#: go-app-ussd_pmtct.js:345 go-app-ussd_pmtct.js:474 go-app-ussd_pmtct.js:556
-#: go-app-ussd_pmtct.js:688
-msgid "Yes"
-msgstr "ye"
-
-#: go-app-ussd_pmtct.js:346
-msgid "No, start a new registration"
-msgstr ""
-
-#: go-app-ussd_pmtct.js:451
-msgid "Would you like to receive these messages over WhatsApp or SMS?"
-msgstr "Ungathanda ukuthola imilayezo le nge-WhatsApp nofana nge-SMS?"
-
-#: go-app-ussd_pmtct.js:464
+#: go-app-ussd_pmtct_seed.js:314
 msgid ""
 "You need to be registered on MomConnect to receive these messages. Please "
 "visit the nearest clinic to register."
@@ -55,19 +36,25 @@ msgstr ""
 "Ufanele ukutlolisa kwa-MomConnect ngaphambi kobanyana uthole imilayezo. "
 "Vakatjhela itliniga eseduze nawe uyozitlolisa."
 
-#: go-app-ussd_pmtct.js:471
+#: go-app-ussd_pmtct_seed.js:321
 msgid ""
 "To sign up, we need to collect, store and use your info. You may also get "
 "messages on public holidays and weekends. Do you consent?"
 msgstr ""
 "Ukukutlolisa simele sibuthelele, sibulunge besisebenzise ilwazi lakho. "
-"Ungathola imilayezo ngamaholideni womphakathi nangepelaveke. "
+"Ungathola imilayezo ngamaholideni womphakathi nangepelaveke."
 
-#: go-app-ussd_pmtct.js:475 go-app-ussd_pmtct.js:557 go-app-ussd_pmtct.js:689
+#: go-app-ussd_pmtct_seed.js:324 go-app-ussd_pmtct_seed.js:407
+#: go-app-ussd_pmtct_seed.js:538
+msgid "Yes"
+msgstr "ye"
+
+#: go-app-ussd_pmtct_seed.js:325 go-app-ussd_pmtct_seed.js:408
+#: go-app-ussd_pmtct_seed.js:539
 msgid "No"
 msgstr "Awa"
 
-#: go-app-ussd_pmtct.js:495
+#: go-app-ussd_pmtct_seed.js:345
 msgid ""
 "Unfortunately without your consent, you cannot register to MomConnect. Thank "
 "you for using the MomConnect service. Goodbye."
@@ -75,41 +62,41 @@ msgstr ""
 "Ngebhadi asikwazi ukukutlolisa kwaMom Connect ngaphandle kwemvumo yakho."
 "Siyakuthokoza ngokusebenzisa imisebenzi yakwa-MomConnect. Sala kuhle."
 
-#: go-app-ussd_pmtct.js:502
+#: go-app-ussd_pmtct_seed.js:352
 msgid "Please enter the year you were born (For example 1981)"
 msgstr ""
 "Njengoba ute matisi noma ipasipoti, sicela ufake umnyaka lowatalwa ngawo "
 "(Sibonelo 1981)"
 
-#: go-app-ussd_pmtct.js:508
+#: go-app-ussd_pmtct_seed.js:358
 msgid "Invalid date. Please enter the year you were born (For example 1981)"
 msgstr ""
 "Kubeneliphutsa nawufaka. Sicela kutsi ufake umnyaka wakho wekutalwa futsi "
 "ngekucophelela (sibonelo: 2001)"
 
-#: go-app-ussd_pmtct.js:520
+#: go-app-ussd_pmtct_seed.js:370
 msgid "In which month were you born?"
 msgstr "Ucelwa kutsi ufake inyanga lowatalwa ngayo"
 
-#: go-app-ussd_pmtct.js:532
+#: go-app-ussd_pmtct_seed.js:382
 msgid "Please enter the date of the month you were born (For example 21)"
 msgstr "Sicela kutrsi ufake lilanga lowatalwa ngalo (Sibonelo 14)"
 
-#: go-app-ussd_pmtct.js:538
+#: go-app-ussd_pmtct_seed.js:388
 msgid ""
 "Invalid date. Please enter the date of the month you were born (For example "
 "21)"
 msgstr "Sicela kutrsi ufake lilanga lowatalwa ngalo (Sibonelo 14)"
 
-#: go-app-ussd_pmtct.js:553
+#: go-app-ussd_pmtct_seed.js:403
 msgid ""
-"Would you like to receive messages about keeping your child HIV-negative? The"
-" messages will contain words like HIV, medicine & ARVs"
+"Would you like to receive messages about keeping your child HIV-negative? "
+"The messages will contain words like HIV, medicine & ARVs"
 msgstr ""
 "Ungathanda ukuthola imilayezo ngokugcina umntwanakho angana-HIV? Umlayezo "
 "uzakuba namagama afana ne-HIV, iinhlahla & ARVs"
 
-#: go-app-ussd_pmtct.js:618
+#: go-app-ussd_pmtct_seed.js:472
 msgid ""
 "You will now start receiving messages about keeping your child HIV-negative. "
 "Thank you for using the MomConnect service. Goodbye."
@@ -117,7 +104,7 @@ msgstr ""
 "Uzakuthoma ukuthola imilayezo yokugcina umntwanakho angana-HIV. Siyakthokoza "
 "ngokusebenzisa imisebenzi yakwa-MomConnect. Sala kuhle"
 
-#: go-app-ussd_pmtct.js:625
+#: go-app-ussd_pmtct_seed.js:479
 msgid ""
 "You have chosen to not receive messages about keeping your child HIV-"
 "negative. Thank you for using the MomConnect service. Goodbye."
@@ -125,43 +112,43 @@ msgstr ""
 "Ukhethe bonyana ungasatholi imilayezo yokugcina umntwanakho angana-HIV. "
 "Siyakuthokoza ngokusebenzisa imisebenzi yakwa-MomConnect. Sala kuhle"
 
-#: go-app-ussd_pmtct.js:633
+#: go-app-ussd_pmtct_seed.js:487
 msgid "Please tell us why you do not want to receive messages:"
 msgstr "Sibawa usitjele bona kubayini ungasafuni imilayezo:"
 
-#: go-app-ussd_pmtct.js:636
+#: go-app-ussd_pmtct_seed.js:490
 msgid "More"
 msgstr ""
 
-#: go-app-ussd_pmtct.js:637
+#: go-app-ussd_pmtct_seed.js:491
 msgid "Back"
 msgstr ""
 
-#: go-app-ussd_pmtct.js:640
+#: go-app-ussd_pmtct_seed.js:493
 msgid "Not HIV-positive"
 msgstr "Anginayo i-HIV"
 
-#: go-app-ussd_pmtct.js:641
+#: go-app-ussd_pmtct_seed.js:494
 msgid "Miscarriage"
 msgstr "Ngibuye endleleni"
 
-#: go-app-ussd_pmtct.js:642
+#: go-app-ussd_pmtct_seed.js:495
 msgid "Baby was stillborn"
 msgstr "Ubelethwe ahlongakele"
 
-#: go-app-ussd_pmtct.js:643
+#: go-app-ussd_pmtct_seed.js:496
 msgid "Baby died"
 msgstr "Uhlongakele"
 
-#: go-app-ussd_pmtct.js:644
+#: go-app-ussd_pmtct_seed.js:497
 msgid "Messages not useful"
 msgstr "Ayisizi"
 
-#: go-app-ussd_pmtct.js:645
+#: go-app-ussd_pmtct_seed.js:498
 msgid "Other"
 msgstr "Okhunye"
 
-#: go-app-ussd_pmtct.js:674
+#: go-app-ussd_pmtct_seed.js:525
 msgid ""
 "You will not receive SMSs about keeping your baby HIV negative. You will "
 "still receive MomConnect SMSs. To stop receiving these SMSs, dial "
@@ -171,15 +158,15 @@ msgstr ""
 "UZOWATHOLA ama-SMS wakwa-MomConnect. Ukuqintela ukuthola ama-SMS dayela "
 "*134*550*1#"
 
-#: go-app-ussd_pmtct.js:685
+#: go-app-ussd_pmtct_seed.js:536
 msgid ""
 "We are sorry for your loss. Would you like to receive a small set of free "
 "messages from MomConnect that could help you in this difficult time?"
 msgstr ""
 "Ncancabe ngokuloba kwakho. Ungathanda ukuthola isede yemilayezo emincani "
-"engakusiza kilesikhathi esibudisi? "
+"engakusiza kilesikhathi esibudisi?"
 
-#: go-app-ussd_pmtct.js:747
+#: go-app-ussd_pmtct_seed.js:576
 msgid ""
 "Thank you. You will no longer receive any messages from MomConnect. If you "
 "have any medical concerns, please visit your nearest clinic."
@@ -187,10 +174,13 @@ msgstr ""
 "Siyathokoza. Angeze usathola ama-SMS avela kwa-MomConnect. Nawunekinga "
 "ngokwelatjhwa vakatjhela etliniga eseduze."
 
-#: go-app-ussd_pmtct.js:755
+#: go-app-ussd_pmtct_seed.js:584
 msgid ""
 "Thank you. You will receive support messages from MomConnect in the coming "
 "weeks."
 msgstr ""
 "Siyathokoza. Uzakuthola imilayezo yokukusekela evela kwa-MomConnect "
 "eemvekeni ezizako."
+
+#~ msgid "Would you like to receive these messages over WhatsApp or SMS?"
+#~ msgstr "Ungathanda ukuthola imilayezo le nge-WhatsApp nofana nge-SMS?"

@@ -1,16 +1,16 @@
 {
     "": {
-        "pot-creation-date": "2016-08-16 02:50:+0000",
         "project-id-version": "USSD PMTCT",
+        "pot-creation-date": "2018-10-03 10:18:+0000",
+        "po-revision-date": "2018-10-03 12:19+0200",
+        "last-translator": "",
         "language-team": "NDEBELE <LL@li.org>",
+        "language": "nr",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2016-08-22 10:07+0200",
-        "last-translator": "",
-        "x-generator": "Poedit 1.6.7",
-        "plural-forms": "nplurals=1; plural=0;",
-        "language": "nr"
+        "x-generator": "Poedit 2.1.1",
+        "plural-forms": "nplurals=1; plural=0;"
     },
     "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health": [
         null,
@@ -20,29 +20,17 @@
         null,
         "Uqeda ukuzwa bona une-HIV? Awusiwedwa, abomma abanengi abasidisi banayo. Vakatjhela i- b-wise.mobi nofana thola isizo nge-AIDS ku- 0800 012 322."
     ],
-    "You have an incomplete registration. Would you like to continue with this registration?": [
-        null,
-        ""
-    ],
-    "Yes": [
-        null,
-        "ye"
-    ],
-    "No, start a new registration": [
-        null,
-        ""
-    ],
-    "Would you like to receive these messages over WhatsApp or SMS?": [
-        null,
-        "Ungathanda ukuthola imilayezo le nge-WhatsApp nofana nge-SMS?"
-    ],
     "You need to be registered on MomConnect to receive these messages. Please visit the nearest clinic to register.": [
         null,
         "Ufanele ukutlolisa kwa-MomConnect ngaphambi kobanyana uthole imilayezo. Vakatjhela itliniga eseduze nawe uyozitlolisa."
     ],
     "To sign up, we need to collect, store and use your info. You may also get messages on public holidays and weekends. Do you consent?": [
         null,
-        "Ukukutlolisa simele sibuthelele, sibulunge besisebenzise ilwazi lakho. Ungathola imilayezo ngamaholideni womphakathi nangepelaveke. "
+        "Ukukutlolisa simele sibuthelele, sibulunge besisebenzise ilwazi lakho. Ungathola imilayezo ngamaholideni womphakathi nangepelaveke."
+    ],
+    "Yes": [
+        null,
+        "ye"
     ],
     "No": [
         null,
@@ -126,7 +114,7 @@
     ],
     "We are sorry for your loss. Would you like to receive a small set of free messages from MomConnect that could help you in this difficult time?": [
         null,
-        "Ncancabe ngokuloba kwakho. Ungathanda ukuthola isede yemilayezo emincani engakusiza kilesikhathi esibudisi? "
+        "Ncancabe ngokuloba kwakho. Ungathanda ukuthola isede yemilayezo emincani engakusiza kilesikhathi esibudisi?"
     ],
     "Thank you. You will no longer receive any messages from MomConnect. If you have any medical concerns, please visit your nearest clinic.": [
         null,

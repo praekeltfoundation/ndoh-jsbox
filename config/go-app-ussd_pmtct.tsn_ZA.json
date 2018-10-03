@@ -1,15 +1,15 @@
 {
     "": {
-        "pot-creation-date": "2016-08-16 02:50:+0000",
         "project-id-version": "ussd pmtct",
+        "pot-creation-date": "2018-10-03 10:18:+0000",
+        "po-revision-date": "2018-10-03 12:21+0200",
+        "last-translator": "",
         "language-team": "tswana <LL@li.org>",
+        "language": "tn",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2016-08-19 17:02+0200",
-        "last-translator": "",
-        "x-generator": "Poedit 1.6.7",
-        "language": "tn"
+        "x-generator": "Poedit 2.1.1"
     },
     "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health": [
         null,
@@ -19,22 +19,6 @@
         null,
         "A o dirile diteko tsa HIV mme di supile fa o na le HIV? Go jalo le ka basadi ba bangwe ba baimana. Etela b-wise.mobi, leletsa Aids Helpline mo go 0800 012 322"
     ],
-    "You have an incomplete registration. Would you like to continue with this registration?": [
-        null,
-        ""
-    ],
-    "Yes": [
-        null,
-        "Ee"
-    ],
-    "No, start a new registration": [
-        null,
-        ""
-    ],
-    "Would you like to receive these messages over WhatsApp or SMS?": [
-        null,
-        "A o rata go amogela melaetsa e ka WhatsApp kgotsa SMS?"
-    ],
     "You need to be registered on MomConnect to receive these messages. Please visit the nearest clinic to register.": [
         null,
         "O tla tlhoka go ikwadisa mo MomConnect go amogela melaetsa e. Tsweetswee etela tliliniki e e gaufi nao go ikwadisa."
@@ -42,6 +26,10 @@
     "To sign up, we need to collect, store and use your info. You may also get messages on public holidays and weekends. Do you consent?": [
         null,
         "Go ikwadisa, re tsaya dintlha tsa gago, ra di boloka le go di dirisa. O ka amogela melaetsa ka matsatsi a boikhutso le mafelo a beke. O a dumela?"
+    ],
+    "Yes": [
+        null,
+        "Ee"
     ],
     "No": [
         null,
@@ -61,11 +49,11 @@
     ],
     "In which month were you born?": [
         null,
-        "Tsweetswee tsenya kgwedi e o belegweng ka yona "
+        "Tsweetswee tsenya kgwedi e o belegweng ka yona"
     ],
     "Please enter the date of the month you were born (For example 21)": [
         null,
-        "Tsweetswee tsenya kgwedi e o belegweng ka yona "
+        "Tsweetswee tsenya kgwedi e o belegweng ka yona"
     ],
     "Invalid date. Please enter the date of the month you were born (For example 21)": [
         null,
