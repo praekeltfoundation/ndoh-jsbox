@@ -501,63 +501,39 @@ describe('app', function() {
             });
           });
 
-          describe('user enters number not in database', function(){
-            it('should ask what channel user prefers to use', function(){
-              return tester
-              .setup.user.addr('27820001001')
-              .inputs(
-                  {session_event: 'new'},
-                  "1",
-                  "0820001002",
-                  "5101025009086",
-                  "4",
-                  "0820001001",
-                  "1"
-              )
-              .check.interaction({
-                state: "state_new_number_channel",
-                reply:[
-                      "Thank you. How would you like to receive messages about you and your baby?",
-                      "1. WhatsApp",
-                      "2. SMS"
-                      ].join("\n")
-              })
-              .run();
-            });
-          });
-
-          describe('user successfully changes number', function(){
-            it('should display successful message', function(){
-              return tester
-              .setup.user.addr('27820001001')
-              .setup(function(api){
-                      api.http.fixtures.add(
-                      fixtures_HubDynamic().change({
-                      identity: 'cb245673-aa41-4302-ac47-00000001002',
-                      action: 'switch_channel',
-                      data: {
-                          channel: 'whatsapp'
-                      }
-                  }));
-                })
-              .inputs(
-                  {session_event: 'new'},
-                  "1",
-                  "0820001002",
-                  "5101025009086",
-                  "4",
-                  "0820001001",
-                  "1",
-                  "1"
-              )
-              .check.interaction({
-                state: "state_successful_number_change",
-                reply:
-                      "Your number has been changed successfully to 0820001001. "+
-                      "You will receive messages on WhatsApp. "+
-                      "Thank you for using MomConnect!"
-              })
-              .run();
+          describe('user enters number not in database, and successfully changes number', function(){
+            describe('user has a whatsapp account', function() {
+                it('should display successful message', function(){                    
+                    return tester
+                    .setup.user.addr('27820001001')
+                    .setup(function(api){
+                        api.http.fixtures.add(
+                            fixtures_HubDynamic().change({
+                            identity: 'cb245673-aa41-4302-ac47-00000001002',
+                            action: 'switch_channel',
+                            data: {
+                                channel: 'whatsapp'
+                            }
+                        }));
+                      })
+                    .inputs(
+                        {session_event: 'new'},
+                        "1"
+                        ,"0820001002",
+                        "5101025009086",
+                        "4",
+                        "0820001001"
+                        ,"1"
+                    )
+                    .check.interaction({
+                      state: "state_successful_number_change",
+                      reply:
+                            "Your number has been changed successfully to 0820001001. "+
+                            "You will receive messages on WhatsApp. "+
+                            "Thank you for using MomConnect!"
+                    })
+                    .run();
+                  });
             });
           });
 
