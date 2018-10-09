@@ -319,7 +319,6 @@ go.app = function() {
                     new Choice('state_change_identity', $('Update my identification'))
                 ];
                 if(confirmed) {
-                    //alternate_channel = 'whatsapp';
                     alternate_channel = self.im.user.answers.channel == 'sms' ? 'whatsapp' : 'sms';
                     choices.unshift(
                         new Choice(
@@ -953,20 +952,18 @@ go.app = function() {
       });
 
       self.add('state_new_number_channel', function(name) {
-          var msisdn = utils.normalize_msisdn(self.im.user.get_answer('state_enter_new_phone_number'), "27");
-          var channel;
-          return self.is_valid_recipient_for_pilot({ // msisdn whatsappable
+        var msisdn = utils.normalize_msisdn(self.im.user.get_answer('state_enter_new_phone_number'), "27");
+        var channel;
+        return self.is_valid_recipient_for_pilot({ // msisdn whatsappable
             address: msisdn,
             wait: true,
         }).then(function(confirmed) {
             if(confirmed) {
                 channel = 'whatsapp';
-                self.map_channel(channel);
                 self.im.user.set_answer('channel', channel);
             }
             else{
                 channel = 'sms';
-                self.map_channel(channel);
                 self.im.user.set_answer('channel', channel);
             }
         }).then(function() {
