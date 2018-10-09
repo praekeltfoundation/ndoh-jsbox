@@ -936,7 +936,7 @@ go.app = function() {
             return self.states.create("state_new_number_already_exists");
           }
           else{
-            return self.states.create("state_switch_number"); //used to be state_new_number_channel
+            return self.states.create("state_new_number_channel"); 
           }
         }
       );
@@ -964,10 +964,12 @@ go.app = function() {
         }).then(function(confirmed) {
             if(confirmed) {
                 channel = 'whatsapp';
+                self.map_channel(channel);
                 self.im.user.set_answer('channel', channel);
             }
             else{
                 channel = 'sms';
+                self.map_channel(channel);
                 self.im.user.set_answer('channel', channel);
             }
         }).then(function() {
