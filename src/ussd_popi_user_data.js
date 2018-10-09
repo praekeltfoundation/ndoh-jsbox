@@ -135,6 +135,7 @@ go.app = function() {
         };
 
         self.map_channel = function(channel) {
+
             switch(channel) {
                 case 'sms':
                     return $('SMS');
@@ -308,6 +309,7 @@ go.app = function() {
         });
 
         self.add('state_change_data', function(name) {
+            var alternate_channel;
             return self.is_valid_recipient_for_pilot({
                 address: self.im.user.answers.msisdn,
                 wait: true,
@@ -318,7 +320,7 @@ go.app = function() {
                     new Choice('state_change_identity', $('Update my identification'))
                 ];
                 if(confirmed) {
-                    var alternate_channel = self.im.user.answers.channel == 'sms' ? 'whatsapp' : 'sms';
+                    alternate_channel = self.im.user.answers.channel == 'sms' ? 'whatsapp' : 'sms';
                     choices.unshift(
                         new Choice(
                             'state_change_channel',
@@ -931,7 +933,7 @@ go.app = function() {
             return self.states.create("state_new_number_already_exists");
           }
           else{
-            return self.states.create("state_new_number_channel");
+            return self.states.create("state_new_number_channel"); 
           }
         }
       );
@@ -951,25 +953,42 @@ go.app = function() {
       });
 
       self.add('state_new_number_channel', function(name) {
-          return new ChoiceState(name, {
-              question: $('Thank you. How would you like to receive messages about you and your baby?'),
-              choices: [
-                  new Choice('whatsapp', $('WhatsApp')),
-                  new Choice('sms', $('SMS'))
-              ],
-              next: 'state_switch_number'
-          });
+        var msisdn = utils.normalize_msisdn(self.im.user.get_answer('state_enter_new_phone_number'), "27");
+        var channel;
+        return self.is_valid_recipient_for_pilot({ // msisdn whatsappable
+            address: msisdn,
+            wait: true,
+        }).then(function(confirmed) {
+            if(confirmed) {
+                channel = 'whatsapp';
+                self.im.user.set_answer('channel', channel);
+            }
+            else{
+                channel = 'sms';
+                self.im.user.set_answer('channel', channel);
+            }
+        }).then(function() {
+            return hub.create_change({
+                "registrant_id" :self.im.user.get_answer('user_identity').id,
+                "action": 'switch_channel',
+                "data": {
+                          "channel": channel
+                        }
+              }); 
+        }).then(function() {
+            return self.states.create("state_switch_number");
+        });
       });
 
       self.add('state_switch_number', function(name){
         var msisdn = utils.normalize_msisdn(self.im.user.get_answer('state_enter_new_phone_number'), "27");
-        var channel = self.im.user.get_answer('state_new_number_channel');
+        var channel = self.im.user.answers.channel;
         return hub.create_change({
-          "registrant_id": self.im.user.get_answer('user_identity').id,
-          "action": "momconnect_change_msisdn",
-          "data": {
+                "registrant_id": self.im.user.get_answer('user_identity').id,
+                "action": "momconnect_change_msisdn",
+                "data": {
                     "msisdn": msisdn
-                  }
+                }
         }).then(function(){
           return sbm.list_active_subscriptions(self.im.user.get_answer('user_identity').id);
         }).then(function(active_subscriptions){
@@ -1004,7 +1023,7 @@ go.app = function() {
 
       self.add("state_successful_number_change", function(name){
         var msisdn = self.im.user.get_answer('state_enter_new_phone_number');
-        var channel = self.im.user.get_answer('state_new_number_channel');
+        var channel = self.im.user.answers.channel;
         if (channel === 'whatsapp'){
           channel = $('WhatsApp');
         }
