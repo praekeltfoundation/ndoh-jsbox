@@ -506,7 +506,18 @@ describe('app', function() {
                 it('should display successful message', function(){                    
                     return tester
                     .setup.user.addr('27820001001')
+                    .setup.user.answer('user_identity', {id: 'cb245673-aa41-4302-ac47-00000001002'})
                     .setup(function(api){
+                        api.http.fixtures.fixtures = [];
+
+                        api.http.fixtures.add(
+                            fixtures_HubDynamic().change({
+                            identity: 'cb245673-aa41-4302-ac47-00000001002',
+                            action: 'momconnect_change_msisdn',
+                            data: {
+                                msisdn: "+27820001001"
+                            }
+                        }));
                         api.http.fixtures.add(
                             fixtures_HubDynamic().change({
                             identity: 'cb245673-aa41-4302-ac47-00000001002',
@@ -515,16 +526,35 @@ describe('app', function() {
                                 channel: 'whatsapp'
                             }
                         }));
+                        api.http.fixtures.add(
+                            fixtures_Pilot().exists({
+                                number: '+27123456789',
+                                address: '+27820001001',
+                                wait: false
+                            }));
+                        api.http.fixtures.add(
+                            fixtures_Pilot().exists({
+                                number: '+27123456789',
+                                address: '+27820001001',
+                                wait: true
+                            }));
+                        api.http.fixtures.add(
+                                fixtures_IdentityStoreDynamic().identity_search({
+                                msisdn: '+27820001002',
+                                id: 'cb245673-aa41-4302-ac47-00000001002',
+                        }));
+                        api.http.fixtures.add(
+                                fixtures_IdentityStoreDynamic().identity_search({
+                                    msisdn: '+27820001001',
+                        }));
+                        api.http.fixtures.add(
+                            fixtures_StageBasedMessagingDynamic().active_subscriptions({
+                                identity: 'cb245673-aa41-4302-ac47-00000001002',
+                            }));
                       })
-                    .inputs(
-                        {session_event: 'new'},
-                        "1"
-                        ,"0820001002",
-                        "5101025009086",
-                        "4",
-                        "0820001001"
-                        ,"1"
-                    )
+                    .setup.user.state('state_verify_new_number')
+                    .setup.user.answer('state_enter_new_phone_number', '0820001001')
+                    .input('1')
                     .check.interaction({
                       state: "state_successful_number_change",
                       reply:
