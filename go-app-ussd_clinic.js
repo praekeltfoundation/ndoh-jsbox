@@ -148,6 +148,38 @@ go.SessionLengthHelper = function () {
 
 }();
 
+go.Engage = function() {
+    var vumigo = require('vumigo_v02');
+    var events = vumigo.events;
+    var Eventable = events.Eventable;
+    var _ = require('lodash');
+    var url = require('url');
+
+    var Engage = Eventable.extend(function(self, json_api, base_url, token) {
+        self.json_api = json_api;
+        self.base_url = base_url;
+        self.json_api.defaults.headers.Authorization = ['Bearer ' + token];
+        self.json_api.defaults.headers['Content-Type'] = ['application/json'];
+        self.json_api.defaults.headers['User-Agent'] = ['VumiSandbox'];
+
+        self.contact_check = function(msisdn, block) {
+            return self.json_api.post(url.resolve(self.base_url, 'v1/contacts'), {
+                data: {
+                    blocking: block ? 'wait' : 'no_wait',
+                    contacts: [msisdn]
+                }
+            }).then(function(response) {
+                var existing = _.filter(response.data.contacts, function(obj) {
+                    return obj.status === "valid";
+                });
+                return !_.isEmpty(existing);
+            });
+        };
+    });
+
+    return Engage;
+}();
+
 go.app = function() {
     var vumigo = require("vumigo_v02");
     var SeedJsboxUtils = require('seed-jsbox-utils');
@@ -174,6 +206,7 @@ go.app = function() {
         var hub;
         var ms;
         var sbm;
+        var engage;
 
         self.init = function() {
             // initialise services
@@ -197,6 +230,11 @@ go.app = function() {
                 new JsonApi(self.im, {}),
                 self.im.config.services.stage_based_messaging.token,
                 self.im.config.services.stage_based_messaging.url
+            );
+            engage = new go.Engage(
+                new JsonApi(self.im, {}),
+                self.im.config.services.engage.url,
+                self.im.config.services.engage.token
             );
 
             self.env = self.im.config.env;
@@ -664,36 +702,6 @@ go.app = function() {
             });
         });
 
-        self.is_valid_recipient_for_pilot = function (default_params) {
-            var pilot_config = self.im.config.pilot || {};
-            var api_url = pilot_config.api_url;
-            var api_token = pilot_config.api_token;
-            var api_number = pilot_config.api_number;
-
-            var params = _.merge({
-                number: api_number,
-            }, default_params);
-
-            // Otherwise check the API
-            return new JsonApi(self.im, {
-                headers: {
-                    'User-Agent': 'NDoH-JSBox/Clinic',
-                    'Authorization': ['Token ' + api_token]
-                }})
-                .post(api_url, {
-                    data: params,
-                })
-                .then(function(response) {
-                    var existing = _.filter(response.data, function(obj) { return obj.status === "valid"; });
-                    var allowed = !_.isEmpty(existing);
-                    return self.im
-                        .log('valid pilot recipient returning ' + allowed + ' for ' + JSON.stringify(params))
-                        .then(function () {
-                            return allowed;
-                        });
-                });
-        };
-
         self.add('state_clinic_code', function(name) {
             var error = $('Sorry, the clinic number did not validate. ' +
                           'Please reenter the clinic number.');
@@ -709,7 +717,7 @@ go.app = function() {
                             return error;
                         } else {
                             var address = self.im.user.answers.registrant_msisdn;
-                            return self
+                            return engage
                                 // NOTE:    We're making the API call here but not telling
                                 //          it to wait nor are we doing anything with the
                                 //          result.
@@ -718,10 +726,7 @@ go.app = function() {
                                 //          to happen in the background and will be ready
                                 //          when we need it. This way we minimise any timeout
                                 //          penalty during the registration.
-                                .is_valid_recipient_for_pilot({
-                                    msisdns: [address],
-                                    wait: false
-                                })
+                                .contact_check(address, false)
                                 .then(function () {
                                     return null;  // vumi expects null or undefined if check passes
                                 });
@@ -976,11 +981,8 @@ go.app = function() {
 
         self.add('state_channel_select', function(name) {  // interstitial state
             var address = self.im.user.answers.registrant_msisdn;
-            return self
-                .is_valid_recipient_for_pilot({
-                    msisdns: [address],
-                    wait: true
-                })
+            return engage
+                .contact_check(address, true)
                 .then(function(confirmed) {
                     self.im.user.set_answer('registered_on_whatsapp', confirmed);
                     return self.states.create('state_save_subscription');
