@@ -174,6 +174,7 @@ go.app = function() {
         var hub;
         var ms;
         var sbm;
+        var engage;
 
         self.init = function() {
             // initialising services
@@ -197,6 +198,11 @@ go.app = function() {
                 new JsonApi(self.im, {}),
                 self.im.config.services.stage_based_messaging.token,
                 self.im.config.services.stage_based_messaging.url
+            );
+            engage = new go.Engage(
+                new JsonApi(self.im, {}),
+                self.im.config.services.engage.url,
+                self.im.config.services.engage.token
             );
 
             self.env = self.im.config.env;
@@ -412,33 +418,7 @@ go.app = function() {
         };
 
         self.is_whatsapp_user = function(msisdn, wait_for_response) {
-            var whatsapp_config = self.im.config.whatsapp || {};
-            var api_url = whatsapp_config.api_url;
-            var api_token = whatsapp_config.api_token;
-            var api_number = whatsapp_config.api_number;
-
-            var params = {
-                number: api_number,
-                msisdns: [msisdn],
-                wait: wait_for_response,
-            };
-
-            return new JsonApi(self.im, {
-                headers: {
-                    'Authorization': ['Token ' + api_token]
-                }})
-                .post(api_url, {
-                    data: params,
-                })
-                .then(function(response) {
-                    var existing_users = _.filter(response.data, function(obj) { return obj.status === "valid"; });
-                    var is_user = !_.isEmpty(existing_users);
-                    return self.im
-                        .log('WhatsApp recipient ' + is_user + ' for ' + JSON.stringify(params))
-                        .then(function() {
-                            return is_user;
-                        });
-                });
+            return engage.contact_check(msisdn, wait_for_response);
         };
 
         self.add = function(name, creator) {
