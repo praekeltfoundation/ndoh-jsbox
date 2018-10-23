@@ -63,6 +63,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_nurse: [
                     'src/index.js',
+                    'src/engage.js',
                     '<%= paths.src.app.ussd_nurse %>',
                     'src/init.js'
                 ],
@@ -170,6 +171,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_nurse: [
                     'test/setup.js',
+                    'src/engage.js',
                     '<%= paths.src.app.ussd_nurse %>',
                     'test/ussd_nurse.test.js'
                 ],

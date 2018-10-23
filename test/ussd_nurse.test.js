@@ -52,6 +52,10 @@ describe("app", function() {
                         message_sender: {
                             url: 'http://ms/api/v1/',
                             token: 'test MessageSender'
+                        },
+                        engage: {
+                            url: 'http://pilot.example.org',
+                            token: 'api-token',
                         }
                     },
                     no_timeout_redirects: [
@@ -60,12 +64,7 @@ describe("app", function() {
                         'state_end_detail_changed',
                         'state_end_reg',
                         'state_block_active_subs'
-                    ],
-                    whatsapp: {
-                        api_url: 'http://pilot.example.org/api/v1/lookups/',
-                        api_token: 'api-token',
-                        api_number: '+27000000000',
-                    },
+                    ]
                 })
                 .setup(function(api) {
                     api.metrics.stores = {'test_metric_store': {}};
