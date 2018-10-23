@@ -25,23 +25,30 @@ go.app = function() {
         var is;
         var sbm;
         var hub;
+        var engage;
 
         self.init = function() {
+            var config = {headers: {'User-Agent': 'Jsbox/NDoH-POPIUserData'}};
             // initialise services
             is = new SeedJsboxUtils.IdentityStore(
-                new JsonApi(self.im, {}),
+                new JsonApi(self.im, config),
                 self.im.config.services.identity_store.token,
                 self.im.config.services.identity_store.url
             );
             sbm = new SeedJsboxUtils.StageBasedMessaging(
-                new JsonApi(self.im, {}),
+                new JsonApi(self.im, config),
                 self.im.config.services.stage_based_messaging.token,
                 self.im.config.services.stage_based_messaging.url
             );
             hub = new SeedJsboxUtils.Hub(
-                new JsonApi(self.im, {}),
+                new JsonApi(self.im, config),
                 self.im.config.services.hub.token,
                 self.im.config.services.hub.url
+            );
+            engage = new go.Engage(
+                new JsonApi(self.im, config),
+                self.im.config.services.engage.url,
+                self.im.config.services.engage.token
             );
 
             self.env = self.im.config.env;
@@ -172,33 +179,7 @@ go.app = function() {
         };
 
         self.is_valid_recipient_for_pilot = function (default_params) {
-            var pilot_config = self.im.config.pilot || {};
-            var api_url = pilot_config.api_url;
-            var api_token = pilot_config.api_token;
-            var api_number = pilot_config.api_number;
-
-            // Otherwise check the API
-            return new JsonApi(self.im, {
-                headers: {
-                    'User-Agent': 'NDoH-JSBox/USSDPopiUserData',
-                    'Authorization': ['Token ' + api_token]
-                }})
-                .post(api_url, {
-                    data: {
-                        number: api_number,
-                        msisdns: [default_params.address],
-                        wait: default_params.wait,
-                    },
-                })
-                .then(function(response) {
-                    var existing = _.filter(response.data, function(obj) { return obj.status === "valid"; });
-                    var allowed = !_.isEmpty(existing);
-                    return self.im
-                        .log('valid pilot recipient returning ' + allowed + ' for ' + JSON.stringify(default_params))
-                        .then(function () {
-                            return allowed;
-                        });
-                });
+            return engage.contact_check(default_params.address, default_params.wait);
         };
 
         // override normal state adding

@@ -100,6 +100,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_popi_user_data: [
                     'src/index.js',
+                    'src/engage.js',
                     '<%= paths.src.app.ussd_popi_user_data %>',
                     'src/init.js'
                 ],
@@ -208,6 +209,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_popi_user_data: [
                     'test/setup.js',
+                    'src/engage.js',
                     '<%= paths.src.app.ussd_popi_user_data %>',
                     'test/ussd_popi_user_data.test.js'
                 ],
