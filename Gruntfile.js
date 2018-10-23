@@ -40,6 +40,7 @@ module.exports = function (grunt) {
                 ussd_public: [
                     'src/index.js',
                     'src/session_length_helper.js',
+                    'src/engage.js',
                     '<%= paths.src.app.ussd_public %>',
                     'src/init.js'
                 ],
@@ -146,6 +147,7 @@ module.exports = function (grunt) {
                 ussd_public: [
                     'test/setup.js',
                     'src/session_length_helper.js',
+                    'src/engage.js',
                     '<%= paths.src.app.ussd_public %>',
                     'test/ussd_public.test.js'
                 ],

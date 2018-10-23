@@ -10,7 +10,6 @@ go.Engage = function() {
         self.base_url = base_url;
         self.json_api.defaults.headers.Authorization = ['Bearer ' + token];
         self.json_api.defaults.headers['Content-Type'] = ['application/json'];
-        self.json_api.defaults.headers['User-Agent'] = ['VumiSandbox'];
 
         self.contact_check = function(msisdn, block) {
             return self.json_api.post(url.resolve(self.base_url, 'v1/contacts'), {

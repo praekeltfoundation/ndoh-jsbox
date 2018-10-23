@@ -8,8 +8,7 @@ module.exports = function() {
                 'method': 'POST',
                 'headers': {
                     'Authorization': ['Bearer api-token'],
-                    'Content-Type': ['application/json'],
-                    'User-Agent': ['VumiSandbox']
+                    'Content-Type': ['application/json']
                 },
                 'url': 'http://pilot.example.org/v1/contacts',
                 'data': {
