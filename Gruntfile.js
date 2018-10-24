@@ -34,6 +34,7 @@ module.exports = function (grunt) {
                 ussd_chw: [
                     'src/index.js',
                     'src/session_length_helper.js',
+                    'src/engage.js',
                     '<%= paths.src.app.ussd_chw %>',
                     'src/init.js'
                 ],
@@ -143,6 +144,7 @@ module.exports = function (grunt) {
                 ussd_chw: [
                     'test/setup.js',
                     'src/session_length_helper.js',
+                    'src/engage.js',
                     '<%= paths.src.app.ussd_chw %>',
                     'test/ussd_chw.test.js'
                 ],
