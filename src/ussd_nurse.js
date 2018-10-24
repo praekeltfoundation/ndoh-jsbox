@@ -26,7 +26,7 @@ go.app = function() {
         var engage;
 
         self.init = function() {
-            var config = {headers: {'User-Agent': 'Jsbox/NDoH-Nurse'}};
+            var config = {headers: [{'User-Agent': 'Jsbox/NDoH-Nurse'}]};
             // initialising services
             is = new SeedJsboxUtils.IdentityStore(
                 new JsonApi(self.im, config),
