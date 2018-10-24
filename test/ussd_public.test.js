@@ -56,6 +56,11 @@ describe("ussd_public app", function() {
                         message_sender: {
                             url: 'http://ms/api/v1/',
                             token: 'test MessageSender'
+                        },
+                        engage: {
+                            url: 'http://pilot.example.org',
+                            token: 'test-token',
+                            channel: 'pilot-channel'
                         }
                     },
                 })
@@ -70,6 +75,22 @@ describe("ussd_public app", function() {
                     fixtures_ServiceRating().forEach(api.http.fixtures.add); // 150 - 169
                     fixtures_Jembi().forEach(api.http.fixtures.add);  // 170 - 179
                     fixtures_IdentityStore().forEach(api.http.fixtures.add); // 180 ->
+                    var numbers = [
+                        '+27820001001', '+27820001002', '+27820001004', '+27820001006', '+27820001007',
+                        '+27820001008', '+27820001011'
+                    ];
+                    for(var i in numbers) {
+                        api.http.fixtures.add(
+                            fixtures_Pilot().not_exists({
+                                address: numbers[i],
+                                wait: false,
+                        }));
+                        api.http.fixtures.add(
+                            fixtures_Pilot().not_exists({
+                                address: numbers[i],
+                                wait: true,
+                        }));
+                    }
                 });
         });
 
@@ -146,7 +167,7 @@ describe("ussd_public app", function() {
                         assert.deepEqual(metrics['test.ussd_public.avg.sessions_to_register'].values, [2]);
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [17, 180, 183, 198, 252]);
+                        utils.check_fixtures_used(api, [17, 180, 183, 198, 252, 253, 266]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -245,7 +266,7 @@ describe("ussd_public app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [50, 125, 180, 183]);
+                    utils.check_fixtures_used(api, [50, 125, 180, 183, 252]);
                 })
                 .run();
             });
@@ -259,7 +280,7 @@ describe("ussd_public app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [53, 54, 127, 207]);
+                    utils.check_fixtures_used(api, [53, 54, 127, 207, 264]);
                 })
                 .run();
             });
@@ -272,7 +293,7 @@ describe("ussd_public app", function() {
                     , {session_event: 'close'}
                 )
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [54, 59, 129, 202]);
+                    utils.check_fixtures_used(api, [54, 59, 129, 202, 262]);
                 })
                 .run();
             });
@@ -300,7 +321,7 @@ describe("ussd_public app", function() {
                 )
                 .check.user.answer("redial_sms_sent", false)  // session closed on non-dialback state
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [17, 180, 183, 198, 252]);
+                    utils.check_fixtures_used(api, [17, 180, 183, 198, 252, 253, 266]);
                 })
                 .run();
             });
@@ -328,7 +349,7 @@ describe("ussd_public app", function() {
                 )
                 .check.user.answer("redial_sms_sent", true)  // session closed on dialback state
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [17, 50, 125, 180, 183, 208, 252]);
+                    utils.check_fixtures_used(api, [17, 50, 125, 180, 183, 208, 252, 253, 266]);
                 })
                 .run();
             });
@@ -355,7 +376,7 @@ describe("ussd_public app", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [180, 183]);
+                        utils.check_fixtures_used(api, [180, 183, 252]);
                     })
                     // check metrics
                     .check(function(api) {
@@ -392,7 +413,7 @@ describe("ussd_public app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [51, 54, 181]);
+                            utils.check_fixtures_used(api, [51, 54, 181, 254]);
                         })
                         .run();
                     });
@@ -417,7 +438,7 @@ describe("ussd_public app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [58, 196]);
+                            utils.check_fixtures_used(api, [58, 196, 258]);
                         })
                         .run();
                     });
@@ -440,7 +461,7 @@ describe("ussd_public app", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [197]);
+                        utils.check_fixtures_used(api, [197, 260]);
                     })
                     .run();
                 });
@@ -567,7 +588,7 @@ describe("ussd_public app", function() {
                             assert.deepEqual(metrics['test.ussd_public.avg.sessions_to_register'].values, [1]);
                         })
                         .check(function(api) {
-                            utils.check_fixtures_used(api, [17, 180, 183, 198, 252]);
+                            utils.check_fixtures_used(api, [17, 180, 183, 198, 252, 253, 266]);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -647,7 +668,7 @@ describe("ussd_public app", function() {
                         state: "state_end_success"
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [18, 184, 199, 238, 252]);
+                        utils.check_fixtures_used(api, [18, 184, 199, 238, 256, 257, 266]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -692,7 +713,7 @@ describe("ussd_public app", function() {
                             'your compliment.'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [51, 54, 119, 181]);
+                        utils.check_fixtures_used(api, [51, 54, 119, 181, 254]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -713,7 +734,7 @@ describe("ussd_public app", function() {
                             'your complaint.'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [51, 54, 120, 181]);
+                        utils.check_fixtures_used(api, [51, 54, 120, 181, 254]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -736,7 +757,7 @@ describe("ussd_public app", function() {
                             'messages, please visit your nearest clinic.'
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [197]);
+                        utils.check_fixtures_used(api, [197, 260]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -786,15 +807,12 @@ describe("ussd_public app", function() {
                             url: 'http://ms/api/v1/',
                             token: 'test MessageSender',
                             channel: 'default-channel',
+                        },
+                        engage: {
+                            url: 'http://pilot.example.org',
+                            token: 'test-token',
+                            channel: 'pilot-channel'
                         }
-                    },
-                    pilot: {
-                        whitelist: [],
-                        randomisation_treshold: 0.5,
-                        api_url: 'http://pilot.example.org/api/v1/lookups/',
-                        api_token: 'api-token',
-                        api_number: '+27123456789',
-                        channel: 'pilot-channel',
                     }
                 })
                 .setup(function(api) {

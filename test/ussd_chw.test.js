@@ -53,13 +53,12 @@ describe("app", function() {
                         stage_based_messaging: {
                             url: 'http://sbm/api/v1/',
                             token: 'test StageBasedMessaging'
+                        },
+                        engage: {
+                            url: 'http://pilot.example.org',
+                            token: 'api-token'
                         }
-                    },
-                    whatsapp: {
-                        api_url: 'http://pilot.example.org/api/v1/lookups/',
-                        api_token: 'api-token',
-                        api_number: '+27000000000',
-                    },
+                    }
                 })
                 .setup(function(api) {
                     api.metrics.stores = {'test_metric_store': {}};

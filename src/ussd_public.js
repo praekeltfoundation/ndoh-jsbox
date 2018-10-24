@@ -21,29 +21,36 @@ go.app = function() {
         var sbm;
         var hub;
         var ms;
+        var engage;
 
         self.init = function() {
+            var config = {headers: {'User-Agent': 'Jsbox/NDoH-Public'}};
             // initialise services
             is = new SeedJsboxUtils.IdentityStore(
-                new JsonApi(self.im, {}),
+                new JsonApi(self.im, config),
                 self.im.config.services.identity_store.token,
                 self.im.config.services.identity_store.url
             );
             sbm = new SeedJsboxUtils.StageBasedMessaging(
-                new JsonApi(self.im, {}),
+                new JsonApi(self.im, config),
                 self.im.config.services.stage_based_messaging.token,
                 self.im.config.services.stage_based_messaging.url
             );
             hub = new SeedJsboxUtils.Hub(
-                new JsonApi(self.im, {}),
+                new JsonApi(self.im, config),
                 self.im.config.services.hub.token,
                 self.im.config.services.hub.url
             );
             ms = new SeedJsboxUtils.MessageSender(
-                new JsonApi(self.im, {}),
+                new JsonApi(self.im, config),
                 self.im.config.services.message_sender.token,
                 self.im.config.services.message_sender.url,
                 self.im.config.services.message_sender.channel
+            );
+            engage = new go.Engage(
+                new JsonApi(self.im, config),
+                self.im.config.services.engage.url,
+                self.im.config.services.engage.token
             );
 
             self.env = self.im.config.env;
@@ -97,12 +104,12 @@ go.app = function() {
         };
 
         self.get_channel = function() {
-            var pilot_config = self.im.config.pilot || {};
+            var engage_config = self.im.config.services.engage;
             return Q()
                 .then(function() {
                     return self.im.log([
                         'pilot_state: ' + self.im.user.answers.state_pilot,
-                        'pilot config: ' + JSON.stringify(pilot_config),
+                        'engage config: ' + JSON.stringify(engage_config),
                     ].join('\n'));
                 })
                 .then(function () {
@@ -113,7 +120,7 @@ go.app = function() {
                     //      can be a race condition if we check the subscriptions too soon after
                     //      creating a new registration
                     if(self.im.user.answers.registered_on_whatsapp === true) {
-                        return pilot_config.channel;
+                        return engage_config.channel;
                     } else if(self.im.user.answers.registered_on_whatsapp === false) {
                         return self.im.config.services.message_sender.channel;
                     }
@@ -122,7 +129,7 @@ go.app = function() {
                         .is_identity_subscribed(self.im.user.answers.registrant.id, [/whatsapp/])
                         .then(function(confirmed) {
                             if(confirmed) {
-                                return pilot_config.channel;
+                                return engage_config.channel;
                             } else {
                                 return self.im.config.services.message_sender.channel;
                             }
@@ -377,12 +384,9 @@ go.app = function() {
                 // this is a quick call but WhatsApp in the background continues querying
                 // this contact, this means when we call it again the result will likely
                 // be available immediately when we call with with `wait` = `true`.
-                return self
-                    .can_participate_in_pilot({
-                        address: registrant_msisdn,
-                        wait: false,
-                    })
-                    .then(function(ignored_result) {
+                return engage
+                    .contact_check(registrant_msisdn, false)
+                    .then(function(_) {
                         return identity;
                     });
             })
@@ -575,64 +579,13 @@ go.app = function() {
 
         self.add('state_pilot_randomisation', function(name) {  // interstitial state
             var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
-            return self
-                .can_participate_in_pilot({
-                    address: msisdn,
-                    wait: true,
-                })
+            return engage
+                .contact_check(msisdn, true)
                 .then(function(yes_or_no) {
                     self.im.user.set_answer('registered_on_whatsapp', yes_or_no);
                     return self.states.create('state_save_subscription');
                 });
         });
-
-        self.can_participate_in_pilot = function (params) {
-            params = params || {};
-
-            if(_.isEmpty(self.im.config.pilot)) {
-                // If unconfigured return false
-                return Q(false);
-            }
-
-            var pilot_config = self.im.config.pilot || {};
-            var api_url = pilot_config.api_url;
-            var api_token = pilot_config.api_token;
-            var api_number = pilot_config.api_number;
-
-            var msisdn = params.address;
-
-            // Otherwise check the API
-            return new JsonApi(self.im, {
-                headers: {
-                    'User-Agent': 'NDoH-JSBox/Public',
-                    'Authorization': ['Token ' + api_token]
-                }})
-                .post(api_url, {
-                    data: {
-                        number: api_number,
-                        msisdns: [msisdn],
-                        wait: params.wait,
-                    },
-                })
-                .then(function(response) {
-                    var existing = _.filter(response.data, function(obj) { return obj.status === "valid"; });
-                    if(_.isEmpty(existing)) {
-                        // If they're not eligible then return false
-                        return self.im
-                            .log(msisdn + ' is not whatsappable')
-                            .then(function() {
-                                return false;
-                            });
-                    } else {
-                        // Otherwise return true
-                        return self.im
-                            .log(msisdn + ' is whatsappable')
-                            .then(function() {
-                                return true;
-                            });
-                    }
-                });
-        };
 
         self.add('state_save_subscription', function(name) {  // interstitial state
             var registration_info = self.compile_registration_info();

@@ -44,12 +44,11 @@ describe('app', function() {
                         hub: {
                             url: 'http://hub/api/v1/',
                             token: 'test Hub'
+                        },
+                        engage: {
+                            url: 'http://pilot.example.org',
+                            token: 'api-token',
                         }
-                    },
-                    pilot: {
-                        api_url: 'http://pilot.example.org/api/v1/lookups/',
-                        api_token: 'api-token',
-                        api_number: '+27123456789',
                     }
                 })
                 .setup(function(api) {

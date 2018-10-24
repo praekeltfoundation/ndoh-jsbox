@@ -7,24 +7,23 @@ module.exports = function() {
             'request': {
                 'method': 'POST',
                 'headers': {
-                    'Authorization': ['Token api-token'],
+                    'Authorization': ['Bearer api-token'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://pilot.example.org/api/v1/lookups/',
-                'body': JSON.stringify({
-                    'number': params.number,
-                    'msisdns': [params.address],
-                    'wait': params.wait,
-                }),
+                'url': 'http://pilot.example.org/v1/contacts',
+                'data': {
+                    'blocking': params.wait ? 'wait' : 'no_wait',
+                    'contacts': [params.address],
+                },
             },
             'response': {
                 'code': 200,
-                'data': [{
-                    "msisdn": params.address,
-                    "wa_exists": exists,
-                    "status": exists ? "valid" : "invalid",
-                    "wa_username": params.address,
-                }]
+                'data': {
+                    'contacts': [{
+                        'input': params.address,
+                        'status': exists ? 'valid' : 'invalid'
+                    }]
+                }
             }
         };
     }

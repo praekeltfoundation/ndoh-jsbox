@@ -27,6 +27,7 @@ module.exports = function (grunt) {
                 ussd_clinic: [
                     'src/index.js',
                     'src/session_length_helper.js',
+                    'src/engage.js',
                     '<%= paths.src.app.ussd_clinic %>',
                     'src/init.js'
                 ],
@@ -39,6 +40,7 @@ module.exports = function (grunt) {
                 ussd_public: [
                     'src/index.js',
                     'src/session_length_helper.js',
+                    'src/engage.js',
                     '<%= paths.src.app.ussd_public %>',
                     'src/init.js'
                 ],
@@ -61,6 +63,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_nurse: [
                     'src/index.js',
+                    'src/engage.js',
                     '<%= paths.src.app.ussd_nurse %>',
                     'src/init.js'
                 ],
@@ -97,6 +100,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_popi_user_data: [
                     'src/index.js',
+                    'src/engage.js',
                     '<%= paths.src.app.ussd_popi_user_data %>',
                     'src/init.js'
                 ],
@@ -132,6 +136,7 @@ module.exports = function (grunt) {
                 ussd_clinic: [
                     'test/setup.js',
                     'src/session_length_helper.js',
+                    'src/engage.js',
                     '<%= paths.src.app.ussd_clinic %>',
                     'test/ussd_clinic.test.js'
                 ],
@@ -144,6 +149,7 @@ module.exports = function (grunt) {
                 ussd_public: [
                     'test/setup.js',
                     'src/session_length_helper.js',
+                    'src/engage.js',
                     '<%= paths.src.app.ussd_public %>',
                     'test/ussd_public.test.js'
                 ],
@@ -166,6 +172,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_nurse: [
                     'test/setup.js',
+                    'src/engage.js',
                     '<%= paths.src.app.ussd_nurse %>',
                     'test/ussd_nurse.test.js'
                 ],
@@ -202,6 +209,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_popi_user_data: [
                     'test/setup.js',
+                    'src/engage.js',
                     '<%= paths.src.app.ussd_popi_user_data %>',
                     'test/ussd_popi_user_data.test.js'
                 ],
