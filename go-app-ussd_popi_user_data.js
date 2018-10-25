@@ -62,25 +62,24 @@ go.app = function() {
         var engage;
 
         self.init = function() {
-            var config = {headers: {'User-Agent': ['Jsbox/NDoH-POPIUserData']}};
             // initialise services
             is = new SeedJsboxUtils.IdentityStore(
-                new JsonApi(self.im, config),
+                new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-POPIUserData"]}}),
                 self.im.config.services.identity_store.token,
                 self.im.config.services.identity_store.url
             );
             sbm = new SeedJsboxUtils.StageBasedMessaging(
-                new JsonApi(self.im, config),
+                new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-POPIUserData"]}}),
                 self.im.config.services.stage_based_messaging.token,
                 self.im.config.services.stage_based_messaging.url
             );
             hub = new SeedJsboxUtils.Hub(
-                new JsonApi(self.im, config),
+                new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-POPIUserData"]}}),
                 self.im.config.services.hub.token,
                 self.im.config.services.hub.url
             );
             engage = new go.Engage(
-                new JsonApi(self.im, config),
+                new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-POPIUserData"]}}),
                 self.im.config.services.engage.url,
                 self.im.config.services.engage.token
             );
