@@ -226,7 +226,7 @@ go.app = function() {
                         'the number you first used to register. To update ' +
                         'your number, dial *134*550*7# or register again at ' +
                         'a clinic.'),
-                next: 'start_state'
+                next: 'state_start'
             });
         });
     });
