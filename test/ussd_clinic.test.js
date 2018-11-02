@@ -1010,6 +1010,50 @@ describe("app", function() {
             });
 
             describe('checking for existing subscriptions', function() {
+                it('should return state_already_subscribed if active subscription for number entered', function() {
+                    return tester
+                    .setup.user.addr('27820001002')
+                    //.setup.user.answer('registrant_msisdn', '27820001008')
+                    .setup(function(api) {
+                        api.http.fixtures.add(
+                            fixtures_IdentityStoreDynamic.identity_search({
+                                msisdn: "+27820001002",
+                                opted_out: true
+                            })
+                        );
+                        api.http.fixtures.add(
+                            fixtures_IdentityStoreDynamic.identity_search({
+                                msisdn: "+27820001008",
+                                opted_out: true
+                            })
+                        );
+                        api.http.fixtures.add(
+                            fixtures_StageBasedMessagingDynamic.messagesets({
+                                short_names: ['momconnect_prebirth.hw_full.1']
+                            })
+                        );
+                        api.http.fixtures.add(
+                            fixtures_StageBasedMessagingDynamic.active_subscriptions({
+                                messagesets: [0]
+                            })
+                        );
+                    })
+                    .setup.user.state('state_mobile_no')
+                    .input('0820001008')
+                    .check.interaction({
+                        state: 'state_already_subscribed',
+                        reply: [
+                            'The number 0820001008 already has an active subscription to MomConnect. ' +
+                            'Would you like to use a different number?',
+                            '1. Use a different number',
+                            '2. End registration'
+                        ].join('\n')
+                    })
+                    .run();
+                });
+            });
+            
+            describe('checking for existing subscriptions', function() {
                 it('should return state_already_subscribed if active subscription', function() {
                     return tester
                     .setup.user.addr('27820001002')
