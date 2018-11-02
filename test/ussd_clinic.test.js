@@ -1013,7 +1013,6 @@ describe("app", function() {
                 it('should return state_already_subscribed if active subscription for number entered', function() {
                     return tester
                     .setup.user.addr('27820001002')
-                    //.setup.user.answer('registrant_msisdn', '27820001008')
                     .setup(function(api) {
                         api.http.fixtures.add(
                             fixtures_IdentityStoreDynamic.identity_search({
