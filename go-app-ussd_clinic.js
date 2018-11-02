@@ -555,6 +555,7 @@ go.app = function() {
                             } else {
                                 self.im.user.set_answer("redial_sms_sent", false);
                             }
+                            
                             self.im.user.set_answer("registrant", self.im.user.answers.operator);
                             self.im.user.set_answer("registrant_msisdn", operator_msisdn);
 
@@ -577,8 +578,8 @@ go.app = function() {
 
         self.add('state_already_subscribed', function(name) {
             var country_code = '27',
-                operator_msisdn = utils.normalize_msisdn(self.im.user.addr, country_code),
-                readable_number = utils.readable_msisdn(operator_msisdn, country_code);
+                registrant_msisdn = self.im.user.answers.registrant_msisdn,
+                readable_number = utils.readable_msisdn(registrant_msisdn, country_code);
 
             return new MenuState(name, {
                 question: $(
@@ -673,7 +674,7 @@ go.app = function() {
                     .then(function(identity) {
                         self.im.user.set_answer("registrant", identity);
                         self.im.user.set_answer("registrant_msisdn", registrant_msisdn);
-
+                
                         return sbm.is_identity_subscribed(identity.id, [/prebirth\.hw_full/]);
                     })
                     .then(function(has_active_subscription) {
