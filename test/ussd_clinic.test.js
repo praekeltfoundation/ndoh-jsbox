@@ -574,6 +574,33 @@ describe("app", function() {
             });
         });
 
+        describe("when on state_mobile_no and number has no subscription", function() {
+            it("should go to state_consent", function() {
+                return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                        'msisdn': '+27820001001'
+                    }));
+                    api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions());
+                })
+                .setup.user.answer('operator', {'id': 'operator-id'})
+                .setup.user.answer('operator_msisdn', '+27820001002')
+                .setup.user.state('state_mobile_no')
+                .input('0820001001')
+                .check.interaction({
+                    state: "state_consent",
+                    reply: [
+                            'We need to collect, store & use her info. She ' +
+                            'may get messages on public holidays & weekends. ' +
+                            'Does she consent?',
+                            '1. Yes',
+                            '2. No'
+                    ].join('\n')
+                })
+                .run();
+            });
+        });
+
         describe("timeout testing", function() {
             describe("when you timeout and dial back in", function() {
                 describe("when on a normal state", function() {
@@ -986,6 +1013,7 @@ describe("app", function() {
                 it('should return state_already_subscribed if active subscription', function() {
                     return tester
                     .setup.user.addr('27820001002')
+                    .setup.user.answer('registrant_msisdn', '27820001002')
                     .setup(function(api) {
                         api.http.fixtures.add(
                             fixtures_IdentityStoreDynamic.identity_search({
@@ -1017,6 +1045,7 @@ describe("app", function() {
             it('should offer the choice to enter a different number', function() {
                 return tester
                 .setup.user.addr('27820001002')
+                .setup.user.answer('registrant_msisdn', '27820001002')
                 .setup.user.state("state_already_subscribed")
                 .input("1")
                 .check.interaction({
@@ -1028,6 +1057,7 @@ describe("app", function() {
             it('should offer the choice to go back to the start', function() {
                 return tester
                 .setup.user.addr('27820001002')
+                .setup.user.answer('registrant_msisdn', '27820001002')
                 .setup.user.state("state_already_subscribed")
                 .setup(function(api) {
                     api.http.fixtures.add(
