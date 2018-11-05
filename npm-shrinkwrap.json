@@ -1345,9 +1345,9 @@
           "resolved": "https://registry.npmjs.org/commander/-/commander-2.0.0.tgz"
         },
         "growl": {
-          "version": "1.7.0",
-          "from": "https://registry.npmjs.org/growl/-/growl-1.7.0.tgz",
-          "resolved": "https://registry.npmjs.org/growl/-/growl-1.7.0.tgz"
+          "version": "1.10.0",
+          "from": "https://registry.npmjs.org/growl/-/growl-1.10.0.tgz",
+          "resolved": "https://registry.npmjs.org/growl/-/growl-1.10.0.tgz"
         },
         "jade": {
           "version": "0.26.3",
