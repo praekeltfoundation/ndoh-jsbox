@@ -358,8 +358,8 @@ go.app = function() {
 
         self.add('state_already_subscribed', function(name) {
             var country_code = '27',
-                operator_msisdn = utils.normalize_msisdn(self.im.user.addr, country_code),
-                readable_number = utils.readable_msisdn(operator_msisdn, country_code);
+                registrant_msisdn = self.im.user.answers.registrant_msisdn,
+                readable_number = utils.readable_msisdn(registrant_msisdn, country_code);
 
             return new MenuState(name, {
                 question: $(
