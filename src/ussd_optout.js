@@ -111,7 +111,7 @@ go.app = function() {
                     ],
 
                     next: function(choice) {
-                        if (_.contains(["not_useful", "other"], choice.value)){
+                        if (_.includes(["not_useful", "other"], choice.value)){
                             return "state_send_nonloss_optout";
                         } else {
                             return "state_subscribe_option";
