@@ -25,7 +25,11 @@
         "message_sender": {
             "token": "b229801c76c68fb5b70075d08182bf1de681bb87",
             "url": "http://messagesender:8000/api/v1/"
+        },
+        "engage": {
+            "url": "http://pilot.example.org",
+            "token": "test-token",
+            "channel": "pilot-channel"
         }
-    },
-    "pilot": null
+    }
 }

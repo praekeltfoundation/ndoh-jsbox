@@ -10,7 +10,7 @@ app_context: "{require: function(m) { if (['moment', 'url', 'querystring', 'cryp
 rlimits:
   RLIMIT_DATA: [67108864, 67108864] # 64 MB
   RLIMIT_STACK: [2097152, 2097152] # 2 MB
-  RLIMIT_AS: [268435456, 268435456] # 256 MB
+  RLIMIT_AS: [1073741824, 1073741824] # 1024 MB
 
 sandbox:
   config:

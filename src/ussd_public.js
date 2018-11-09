@@ -170,7 +170,7 @@ go.app = function() {
 
         self.fire_complete = function(name, val) {
             var ignore_states = [];
-            if (!_.contains(ignore_states, name)) {
+            if (!_.includes(ignore_states, name)) {
                 return Q.all([
                     self.im.metrics.fire.inc(
                         ([self.metric_prefix, name, "no_complete"].join('.')), {amount: val}),
@@ -198,7 +198,7 @@ go.app = function() {
 
             if (e.user_terminated
                 && !self.im.user.answers.redial_sms_sent
-                && _.contains(dial_back_states, e.im.state.name)) {
+                && _.includes(dial_back_states, e.im.state.name)) {
                 return self
                 .send_redial_sms()
                 .then(function() {

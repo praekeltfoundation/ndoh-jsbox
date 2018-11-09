@@ -313,7 +313,7 @@ go.app = function() {
 
         self.fire_complete = function(name, val) {
             var ignore_states = [];
-            if (!_.contains(ignore_states, name)) {
+            if (!_.includes(ignore_states, name)) {
                 return Q.all([
                     self.im.metrics.fire.inc(
                         ([self.metric_prefix, name, "no_complete"].join('.')), {amount: val}),
@@ -847,7 +847,7 @@ go.app = function() {
             });
         });
 
-        self.add("state_set_registration_type", function(name){   
+        self.add("state_set_registration_type", function(name){
             return self
                 // Get whatsapp registration status
                 .is_whatsapp_user(self.im.user.answers.registrant_msisdn, true)
@@ -882,13 +882,13 @@ go.app = function() {
                     return self.states.create("state_end_success");
                 });
             }
-            
+
         });
 
         self.add("state_end_success", function(name) {
             var messages = self.im.user.answers.registered_on_whatsapp ? 'messages' : 'FREE messages';
             var channel = self.im.user.answers.registered_on_whatsapp ? "WhatsApp" : "SMS";
-        
+
             return new EndState(name, {
                 text: $("You're done! This number {{MSISDN}} will get helpful messages from MomConnect on {{channel}}. For the full set of {{messages}}, register at a clinic")
                 .context({MSISDN: self.im.user.answers.registrant_msisdn,

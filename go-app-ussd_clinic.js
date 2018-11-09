@@ -312,7 +312,7 @@ go.app = function() {
 
         self.fire_complete = function(name, val) {
             var ignore_states = [];
-            if (!_.contains(ignore_states, name)) {
+            if (!_.includes(ignore_states, name)) {
                 return Q.all([
                     self.im.metrics.fire.inc(
                         ([self.metric_prefix, name, "no_complete"].join('.')), {amount: val}),
@@ -555,7 +555,7 @@ go.app = function() {
                             } else {
                                 self.im.user.set_answer("redial_sms_sent", false);
                             }
-                            
+
                             self.im.user.set_answer("registrant", self.im.user.answers.operator);
                             self.im.user.set_answer("registrant_msisdn", operator_msisdn);
 
@@ -674,7 +674,7 @@ go.app = function() {
                     .then(function(identity) {
                         self.im.user.set_answer("registrant", identity);
                         self.im.user.set_answer("registrant_msisdn", registrant_msisdn);
-                
+
                         return sbm.is_identity_subscribed(identity.id, [/prebirth\.hw_full/]);
                     })
                     .then(function(has_active_subscription) {

@@ -22,7 +22,7 @@
             "token": "b229801c76c68fb5b70075d08182bf1de681bb87",
             "url": "http://sbm:8000/api/v1/"
         },
-        "message_sender": {
+        "engage": {
             "token": "b229801c76c68fb5b70075d08182bf1de681bb87",
             "url": "http://messagesender:8000/api/v1/"
         }

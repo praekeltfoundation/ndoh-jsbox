@@ -250,7 +250,7 @@ go.app = function() {
             var today = utils.get_moment_date(config.testing_today, "YYYY-MM-DD hh:mm:ss");
             var today_utc = moment.utc(today);
             var date_as_string = today_utc.format('YYYY-MM-DD');
-            return _.contains(config.public_holidays, date_as_string);
+            return _.includes(config.public_holidays, date_as_string);
         };
 
         self.is_out_of_hours = function(config) {
