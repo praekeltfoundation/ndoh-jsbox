@@ -790,11 +790,29 @@ go.app = function() {
                     self.im.user.set_answer("edd", edd);
 
                     if (utils.is_valid_date(edd, 'YYYY-MM-DD')) {
-                        return 'state_id_type';
+                        if (utils.is_valid_edd(edd, 'YYYY-MM-DD', self.im.config, 43)) {
+                            return 'state_id_type';
+                        }
+                        else {
+                            return 'state_invalid_edd_range';
+                        }
                     } else {
                         return 'state_invalid_edd';
                     }
                 }
+            });
+        });
+
+        self.add('state_invalid_edd_range', function(name) {
+            return new ChoiceState(name, {
+                question: $(
+                    'The date you entered ({{ edd }}) is not a ' +
+                    'valid due date. Please try again.'
+                ).context({edd: self.im.user.answers.edd}),
+                choices: [
+                    new Choice('continue', $('Continue'))
+                ],
+                next: 'state_due_date_month'
             });
         });
 

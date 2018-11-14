@@ -605,7 +605,7 @@ describe("app", function() {
             describe("when you timeout and dial back in", function() {
                 describe("when on a normal state", function() {
                     it("should go to state_timed_out", function() {
-                        return tester 
+                        return tester
                         .setup(function(api) {
                             api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
                                 content: "Please dial back in to *120*550*2# to complete the pregnancy registration."
@@ -1051,7 +1051,7 @@ describe("app", function() {
                     .run();
                 });
             });
-            
+
             describe('checking for existing subscriptions', function() {
                 it('should return state_already_subscribed if active subscription', function() {
                     return tester
@@ -1384,13 +1384,32 @@ describe("app", function() {
                     .run();
                 });
             });
+            describe("date range is invalid", function() {
+                it("should tell them the date range is invalid", function() {
+                    // 2014-03 is invalid, it's before the current date
+                    return tester
+                    .setup.user.addr("27820001001")
+                    .setup.user.state('state_due_date_day')
+                    .setup.user.answer('state_due_date_month', '2014-03')
+                    .input('03')
+                    .check.interaction({
+                        state: "state_invalid_edd_range",
+                        reply: [
+                            'The date you entered (2014-03-03) is not a ' +
+                            'valid due date. Please try again.',
+                            '1. Continue'
+                        ].join('\n')
+                    })
+                    .run();
+                });
+            });
             describe("date is valid", function() {
                 it("should ask for id_type", function() {
                     // 10 May is valid
                     return tester
                     .setup.user.addr("27820001001")
                     .setup.user.state('state_due_date_day')
-                    .setup.user.answer('state_due_date_month', '2014-03')
+                    .setup.user.answer('state_due_date_month', '2014-05')
                     .input('10')
                     .check.interaction({
                         state: "state_id_type"
@@ -1404,6 +1423,19 @@ describe("app", function() {
             it("should go to state_due_date_month", function() {
                 return tester
                 .setup.user.state('state_invalid_edd')
+                .setup.user.addr("27820001001")
+                .input('1')
+                .check.interaction({
+                    state: "state_due_date_month"
+                })
+                .run();
+            });
+        });
+
+        describe("state_invalid_edd_range", function() {
+            it("should go to state_due_date_month", function() {
+                return tester
+                .setup.user.state('state_invalid_edd_range')
                 .setup.user.addr("27820001001")
                 .input('1')
                 .check.interaction({
