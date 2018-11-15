@@ -9,6 +9,8 @@ var fixtures_Hub = require('./fixtures_hub');
 var fixtures_Jembi = require('./fixtures_jembi');
 var fixtures_Pilot = require('./fixtures_pilot');
 var fixtures_ServiceRating = require('./fixtures_service_rating');
+var fixtures_IdentityStoreDynamic = require('./fixtures_identity_store_dynamic')();
+var fixtures_StageBasedMessagingDynamic = require('./fixtures_stage_based_messaging_dynamic')();
 
 var utils = require('seed-jsbox-utils').utils;
 
@@ -562,6 +564,41 @@ describe("PMTCT app", function() {
                         })
                         .check(function(api) {
                             utils.check_fixtures_used(api, [64, 214]);
+                        })
+                        .check.reply.ends_session()
+                        .run();
+                });
+            });
+
+            describe("0820009999 has active patient sub", function() {
+                it("to state_end_not_registered", function() {
+                    return tester
+                        .setup(function(api) {
+                            api.http.fixtures.fixtures = [];
+                            api.http.fixtures.add(fixtures_IdentityStoreDynamic.identity_search({
+                                'msisdn': '+27820009999',
+                                'identity': 'cb245673-aa41-4302-ac47-00000009999',
+                            }));
+                            api.http.fixtures.add(
+                                fixtures_StageBasedMessagingDynamic.messagesets({
+                                    short_names: ['momconnect_prebirth.patient.1']
+                                })
+                            );
+                            api.http.fixtures.add(fixtures_StageBasedMessagingDynamic.active_subscriptions({
+                                'identity': 'cb245673-aa41-4302-ac47-00000009999',
+                                'messagesets': [0]
+                            }));
+                        })
+                        .setup.user.addr("0820009999")
+                        .inputs(
+                            {session_event: "new"}  // dial in
+                        )
+                        .check.interaction({
+                            state: "state_end_not_registered",
+                            reply: "You need to be registered on MomConnect to receive these messages. Please visit the nearest clinic to register."
+                        })
+                        .check(function(api) {
+                            utils.check_fixtures_used(api, [0, 1, 2]);
                         })
                         .check.reply.ends_session()
                         .run();

@@ -217,6 +217,7 @@ go.app = function() {
                                 }
 
                                 var subscribed_to_pmtct = false;
+                                var subscribed_to_full_messageset = false;
                                 var subscribed_to_momconnect = false;
                                 var subscribed_to_whatsapp = false;
                                 var momconnect_prebirth_subscription = false;
@@ -232,6 +233,10 @@ go.app = function() {
                                     var pmtct_index = active_sub_shortname.indexOf("pmtct");
                                     if (pmtct_index > -1) {
                                         subscribed_to_pmtct = true;
+                                    }
+
+                                    if (active_sub_shortname.indexOf("hw_full") > -1) {
+                                        subscribed_to_full_messageset = true;
                                     }
 
                                     var momconnect_index = active_sub_shortname.indexOf("momconnect");
@@ -264,6 +269,10 @@ go.app = function() {
 
                                 if (subscribed_to_pmtct) {
                                     return self.states.create("state_optout_reason_menu");
+                                }
+
+                                if (!subscribed_to_full_messageset){
+                                    return self.states.create("state_end_not_registered");
                                 }
 
                                 if (subscribed_to_momconnect || subscribed_to_whatsapp) {
