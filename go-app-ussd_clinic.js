@@ -662,7 +662,7 @@ go.app = function() {
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
-                    if (!utils.is_valid_msisdn(content, 0, 10)) {
+                    if (!utils.is_valid_msisdn(content, 10, 10)) {
                         return error;
                     }
                 },

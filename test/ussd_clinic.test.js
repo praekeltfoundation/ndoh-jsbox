@@ -1192,9 +1192,38 @@ describe("app", function() {
                     return tester
                     .setup.user.addr("27820001003")
                     .setup.user.state("state_mobile_no")
-                    .input("012 345 678")
+                    .input("012 345 6789")
                     .check.interaction({
-                        state: "state_mobile_no"
+                        state: "state_mobile_no",
+                        reply: 'Sorry, the mobile number did not validate. Please reenter the mobile number:'
+                    })
+                    .run();
+                });
+            });
+
+            describe("number too short", function() {
+                it("should ask for the number again", function() {
+                    return tester
+                    .setup.user.addr("+27820001003")
+                    .setup.user.state("state_mobile_no")
+                    .input("083000103")
+                    .check.interaction({
+                        state: "state_mobile_no",
+                        reply: 'Sorry, the mobile number did not validate. Please reenter the mobile number:'
+                    })
+                    .run();
+                });
+            });
+
+            describe("number too long", function() {
+                it("should ask for the number again", function() {
+                    return tester
+                    .setup.user.addr("+27820001003")
+                    .setup.user.state("state_mobile_no")
+                    .input("08300010003")
+                    .check.interaction({
+                        state: "state_mobile_no",
+                        reply: 'Sorry, the mobile number did not validate. Please reenter the mobile number:'
                     })
                     .run();
                 });
