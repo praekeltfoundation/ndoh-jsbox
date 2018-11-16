@@ -4,7 +4,6 @@ go;
 go.app = function() {
     var vumigo = require("vumigo_v02");
     var Q = require('q');
-    var _ = require('lodash');
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
@@ -60,7 +59,6 @@ go.app = function() {
         };
 
         self.get_channel = function() {
-            var pilot_config = self.im.config.pilot || {};
             return Q()
                 .then(function () {
                     // NOTE:
@@ -70,7 +68,7 @@ go.app = function() {
                     //      can be a race condition if we check the subscriptions too soon after
                     //      creating a new registration
                     if(self.im.user.answers.channel === 'whatsapp') {
-                        return pilot_config.channel;
+                        return "WHATSAPP";
                     } else {
                         return self.im.config.services.message_sender.channel;
                     }
@@ -114,36 +112,6 @@ go.app = function() {
                     );
                 });
         };
-
-        self.is_valid_recipient_for_pilot = function (default_params) {
-            var pilot_config = self.im.config.pilot || {};
-            var api_url = pilot_config.api_url;
-            var api_token = pilot_config.api_token;
-            var api_number = pilot_config.api_number;
-
-            return new JsonApi(self.im, {
-                headers: {
-                    'User-Agent': 'NDoH-JSBox/USSDPmtctSeed',
-                    'Authorization': ['Token ' + api_token]
-                }})
-                .post(api_url, {
-                    data: {
-                        number: api_number,
-                        msisdns: [default_params.address],
-                        wait: default_params.wait,
-                    },
-                })
-                .then(function(response) {
-                    var existing = _.filter(response.data, function(obj) { return obj.status === "valid"; });
-                    var allowed = !_.isEmpty(existing);
-                    return self.im
-                        .log('valid pilot recipient returning ' + allowed + ' for ' + JSON.stringify(default_params))
-                        .then(function () {
-                            return allowed;
-                        });
-                });
-        };
-
 
         // TIMEOUT HANDLING
 
@@ -220,6 +188,7 @@ go.app = function() {
                                 }
 
                                 var subscribed_to_pmtct = false;
+                                var subscribed_to_full_messageset = false;
                                 var subscribed_to_momconnect = false;
                                 var subscribed_to_whatsapp = false;
                                 var momconnect_prebirth_subscription = false;
@@ -235,6 +204,10 @@ go.app = function() {
                                     var pmtct_index = active_sub_shortname.indexOf("pmtct");
                                     if (pmtct_index > -1) {
                                         subscribed_to_pmtct = true;
+                                    }
+
+                                    if (active_sub_shortname.indexOf("hw_full") > -1) {
+                                        subscribed_to_full_messageset = true;
                                     }
 
                                     var momconnect_index = active_sub_shortname.indexOf("momconnect");
@@ -267,6 +240,10 @@ go.app = function() {
 
                                 if (subscribed_to_pmtct) {
                                     return self.states.create("state_optout_reason_menu");
+                                }
+
+                                if (!subscribed_to_full_messageset){
+                                    return self.states.create("state_end_not_registered");
                                 }
 
                                 if (subscribed_to_momconnect || subscribed_to_whatsapp) {
