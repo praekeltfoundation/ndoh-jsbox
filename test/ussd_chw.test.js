@@ -802,6 +802,41 @@ describe("app", function() {
             });
         });
 
+        describe("after entering the msisdn with the incorrect length", function() {
+            it("too short - should ask for the mobile number again", function() {
+                return tester
+                    .setup.user.addr('27820001001')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '2'  // state_start - no
+                        , '082000107'  // state_mobile_no
+                    )
+                    .check.interaction({
+                        state: 'state_mobile_no',
+                        reply: (
+                            'Sorry, the mobile number did not validate. ' +
+                            'Please reenter the mobile number:')
+                    })
+                    .run();
+            });
+            it("too long - should ask for the mobile number again", function() {
+                return tester
+                    .setup.user.addr('27820001001')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '2'  // state_start - no
+                        , '08200010007'  // state_mobile_no
+                    )
+                    .check.interaction({
+                        state: 'state_mobile_no',
+                        reply: (
+                            'Sorry, the mobile number did not validate. ' +
+                            'Please reenter the mobile number:')
+                    })
+                    .run();
+            });
+        });
+
         //using chw phone, check existing subscriptions
         describe('checking for existing subscriptions', function() {
             it('should return state_already_subscribed if active subscription for number entered', function() {
@@ -847,7 +882,7 @@ describe("app", function() {
             });
         });
 
-        //check that unregistered number goes to state_consent        
+        //check that unregistered number goes to state_consent
         describe("when on state_mobile_no and number has no subscription", function() {
             it("should go to state_consent", function() {
                 return tester
