@@ -7,7 +7,6 @@ var fixtures_StageBasedMessaging = require('./fixtures_stage_based_messaging');
 var fixtures_MessageSender = require('./fixtures_message_sender');
 var fixtures_Hub = require('./fixtures_hub');
 var fixtures_Jembi = require('./fixtures_jembi');
-var fixtures_Pilot = require('./fixtures_pilot');
 var fixtures_ServiceRating = require('./fixtures_service_rating');
 var fixtures_IdentityStoreDynamic = require('./fixtures_identity_store_dynamic')();
 var fixtures_StageBasedMessagingDynamic = require('./fixtures_stage_based_messaging_dynamic')();
@@ -74,12 +73,6 @@ describe("PMTCT app", function() {
                             token: 'test MessageSender',
                             channel: 'default-channel'
                         },
-                    },
-                    pilot: {
-                        api_url: 'http://pilot.example.org/api/v1/lookups/',
-                        api_token: 'api-token',
-                        api_number: '+27123456789',
-                        channel: 'pilot-channel'
                     }
                 })
                 .setup(function(api) {
@@ -96,22 +89,6 @@ describe("PMTCT app", function() {
         // TEST PMTCT SIGN-UP FLOWS
 
         describe("Sign-up flow testing", function() {
-            beforeEach(function() {
-                tester.setup(function(api) {
-                    api.http.fixtures.add(
-                    fixtures_Pilot().exists({
-                        number: '+27123456789',
-                        address: '+27820000111',
-                        wait: false
-                    }));
-                    api.http.fixtures.add(
-                        fixtures_Pilot().exists({
-                            number: '+27123456789',
-                            address: '+27820000111',
-                            wait: true
-                    }));
-                });
-            });
 
             describe("0820000111 has active non-pmtct subscription; no consent, no dob", function() {
                 it("to state_consent", function() {
@@ -254,22 +231,6 @@ describe("PMTCT app", function() {
             });
 
             describe("0820000222 has active non-pmtct subscription; consent, no dob", function() {
-                beforeEach(function() {
-                    tester.setup(function(api) {
-                        api.http.fixtures.add(
-                            fixtures_Pilot().exists({
-                                number: '+27123456789',
-                                address: '+27820000222',
-                                wait: false
-                        }));
-                        api.http.fixtures.add(
-                            fixtures_Pilot().exists({
-                                number: '+27123456789',
-                                address: '+27820000222',
-                                wait: true
-                        }));
-                    });
-                });
                 it("to state_birth_year", function() {
                     return tester
                         .setup.user.addr("0820000222")
@@ -378,23 +339,6 @@ describe("PMTCT app", function() {
             });
 
             describe("0820000333 has active non-pmtct subscription; no consent, dob", function() {
-                beforeEach(function() {
-                    tester.setup(function(api) {
-                        api.http.fixtures.add(
-                            fixtures_Pilot().exists({
-                                number: '+27123456789',
-                                address: '+27820000333',
-                                wait: false
-                        }));
-                        api.http.fixtures.add(
-                            fixtures_Pilot().exists({
-                                number: '+27123456789',
-                                address: '+27820000333',
-                                wait: true
-                        }));
-                    });
-                });
-
                 it("to state_consent", function() {
                     return tester
                         .setup.user.addr("0820000333")
@@ -477,23 +421,6 @@ describe("PMTCT app", function() {
             });
 
             describe("0820000444 has active non-pmtct subscription; consent, dob", function() {
-                beforeEach(function() {
-                    tester.setup(function(api) {
-                        api.http.fixtures.add(
-                            fixtures_Pilot().exists({
-                                number: '+27123456789',
-                                address: '+27820000444',
-                                wait: false
-                        }));
-                        api.http.fixtures.add(
-                            fixtures_Pilot().exists({
-                                number: '+27123456789',
-                                address: '+27820000444',
-                                wait: true
-                        }));
-                    });
-                });
-
                 it("to state_hiv_messages", function() {
                     return tester
                         .setup.user.addr("0820000444")
@@ -546,14 +473,6 @@ describe("PMTCT app", function() {
             describe("0820000555 has no active sub", function() {
                 it("to state_end_not_registered", function() {
                     return tester
-                        .setup(function(api) {
-                            api.http.fixtures.add(
-                                fixtures_Pilot().exists({
-                                    number: '+27123456789',
-                                    address: '+27820000555',
-                                    wait: false
-                            }));
-                        })
                         .setup.user.addr("0820000555")
                         .inputs(
                             {session_event: "new"}  // dial in
@@ -608,14 +527,6 @@ describe("PMTCT app", function() {
             describe("0820111111 exists on neither old/new system; has no active sub", function() {
                 it("to state_end_not_registered", function() {
                     return tester
-                        .setup(function(api) {
-                            api.http.fixtures.add(
-                                fixtures_Pilot().exists({
-                                    number: '+27123456789',
-                                    address: '+27820111111',
-                                    wait: false
-                            }));
-                        })
                         .setup.user.addr("0820111111")
                         .inputs(
                             {session_event: "new"}  // dial in
@@ -636,23 +547,6 @@ describe("PMTCT app", function() {
         // TEST PMTCT OPT-OUT FLOWS
 
         describe("Opt-out flow testing", function() {
-            beforeEach(function() {
-                tester.setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_Pilot().exists({
-                            number: '+27123456789',
-                            address: '+27720000111',
-                            wait: false
-                    }));
-                    api.http.fixtures.add(
-                        fixtures_Pilot().exists({
-                            number: '+27123456789',
-                            address: '+27720000111',
-                            wait: true
-                    }));
-                });
-            });
-
             it("to state_optout_reason_menu", function() {
                 return tester
                     .setup.user.addr("0720000111")
@@ -752,73 +646,5 @@ describe("PMTCT app", function() {
                     .run();
             });
         });
-        describe("PMTCT messages over pilot", function() {
-            it("user should be subscribed to the whatsapp message set if they are already on WhatsApp", function() {
-                return tester
-                    .setup(function(api) {
-                        api.http.fixtures.fixtures = [];
-                        api.http.fixtures.add(fixtures_Pilot().patch_identity({
-                            identity: 'cb245673-aa41-4302-ac47-00000000001',
-                            address: '+27820000111',
-                            language: 'eng_ZA',
-                            details: {
-                                pmtct: {
-                                    lang_code: 'eng_ZA'
-                                }
-                            }
-                        }));
-                        api.http.fixtures.add(fixtures_Pilot().post_registration({
-                            identity: 'cb245673-aa41-4302-ac47-00000000001',
-                            language: 'eng_ZA',
-                            reg_type: 'whatsapp_pmtct_prebirth',
-                            data: {
-                                'mom_dob': '1981-01-14',
-                                'edd': '2014-05-10'
-                            }
-                        }));
-                        api.http.fixtures.add(fixtures_Pilot().post_outbound_message({
-                            identity: 'cb245673-aa41-4302-ac47-00000000001',
-                            content: 'HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health',
-                            channel: 'pilot-channel'
-                        }));
-                        api.http.fixtures.add(fixtures_Pilot().post_outbound_message({
-                            identity: 'cb245673-aa41-4302-ac47-00000000001',
-                            content: 'Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322',
-                            channel: 'pilot-channel'
-                        }));
-                    })
-                    .setup.user.answer('identity', {
-                        url: 'http://is/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/',
-                        id: 'cb245673-aa41-4302-ac47-00000000001',
-                        version: 1,
-                        details: {
-                            default_addr_type: 'msisdn',
-                            addresses: {
-                                msisdn: {
-                                    '+27820000111': {default: true}
-                                }
-                            },
-                            lang_code: 'eng_ZA',
-                            source: 'clinic',
-                            last_mc_reg_on: 'clinic',
-                            last_edd: '2014-05-10'
-                        },
-                        created_at: "2016-08-05T06:13:29.693272Z",
-                        updated_at: "2016-08-05T06:13:29.693298Z"
-                    })
-                    .setup.user.answer('mom_dob', '1981-01-14')
-                    .setup.user.answer('consent', true)
-                    .setup.user.answer('subscription_type', 'prebirth')
-                    .setup.user.answer('channel', 'whatsapp')
-                    .setup.user.addr('0820000111')
-                    .setup.user.state('state_create_pmtct_registration')
-                    .start()
-                    .check.interaction({
-                        state: 'state_end_hiv_messages_confirm'
-                    })
-                    .run();
-            });
-        });
     });
-
 });
