@@ -428,6 +428,9 @@ go.app = function() {
             .then(function() {
                 var reg_info;
                 var subscription_type = self.im.user.answers.subscription_type;
+
+                var last_edd = self.im.user.answers.identity.details.last_edd;
+                var last_baby_dob = self.im.user.answers.identity.details.last_baby_dob;
                 if (subscription_type === "postbirth") {
                     reg_info = {
                         "reg_type": "pmtct_postbirth",
@@ -436,7 +439,7 @@ go.app = function() {
                             "operator_id": self.im.user.answers.identity.id,
                             "language": self.im.user.lang || "eng_ZA",
                             "mom_dob": self.im.user.answers.mom_dob,
-                            "baby_dob": self.im.user.answers.identity.details.last_baby_dob,
+                            "baby_dob": last_baby_dob || last_edd,
                         }
                     };
 
@@ -448,7 +451,7 @@ go.app = function() {
                             "operator_id": self.im.user.answers.identity.id,
                             "language": self.im.user.lang || "eng_ZA",
                             "mom_dob": self.im.user.answers.mom_dob,
-                            "edd": self.im.user.answers.identity.details.last_edd
+                            "edd": last_edd
                         }
                     };
                 }
