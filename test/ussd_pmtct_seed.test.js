@@ -9,6 +9,8 @@ var fixtures_Jembi = require('./fixtures_jembi');
 var fixtures_ServiceRating = require('./fixtures_service_rating');
 var fixtures_IdentityStoreDynamic = require('./fixtures_identity_store_dynamic')();
 var fixtures_StageBasedMessagingDynamic = require('./fixtures_stage_based_messaging_dynamic')();
+var fixtures_HubDynamic = require('./fixtures_hub_dynamic')();
+var fixtures_MessageSenderDynamic = require('./fixtures_message_sender_dynamic')();
 
 var utils = require('seed-jsbox-utils').utils;
 
@@ -454,6 +456,88 @@ describe("PMTCT app", function() {
                         })
                         .check.reply.ends_session()
                         .run();
+                });
+            });
+
+            describe("0820001111 has active non-pmtct subscription; consent, no dob, edd", function() {
+                it("to state_end_hiv_messages_confirm (entire flow)", function() {
+                    return tester
+                    .setup.user.addr("0820001111")
+                    .setup(function(api) {
+                        api.http.fixtures.fixtures = [];
+                        api.http.fixtures.add(
+                            fixtures_IdentityStoreDynamic.identity_search({
+                                msisdn: "+27820001111",
+                                last_edd: "2016-06-03"
+                            })
+                        );
+                        api.http.fixtures.add(
+                            fixtures_IdentityStoreDynamic.update({
+                                details: {
+                                    "default_addr_type":"msisdn",
+                                    "addresses":{
+                                        "msisdn":{
+                                            "+27820001111":{
+                                                "default":true,
+                                                "optedout":false
+                                            }
+                                        }
+                                    },
+                                    "lang_code":"eng_ZA",
+                                    "consent":true,
+                                    "sa_id_no":"5101025009086",
+                                    "mom_dob":"1951-01-02",
+                                    "source":"clinic",
+                                    "last_mc_reg_on":"clinic",
+                                    "last_edd":"2016-06-03",
+                                    "pmtct":{"lang_code":"eng_ZA"}},
+                            })
+                        );
+                        api.http.fixtures.add(
+                            fixtures_StageBasedMessagingDynamic.messagesets({
+                                short_names: ['momconnect_postbirth.hw_full.1']
+                            })
+                        );
+                        api.http.fixtures.add(
+                            fixtures_StageBasedMessagingDynamic.active_subscriptions({
+                                messagesets: [0]
+                            })
+                        );
+                        api.http.fixtures.add(fixtures_HubDynamic.registration({
+                            reg_type: "pmtct_postbirth",
+                            data: {
+                                "operator_id":"cb245673-aa41-4302-ac47-00000001002",
+                                "language":"eng_ZA",
+                                "mom_dob":"1951-01-02",
+                                "baby_dob":"2016-06-03"
+                            }
+                        }));
+                        api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                            to_identity: "cb245673-aa41-4302-ac47-00000001002",
+                            to_addr: "+27820001111",
+                            content: "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                            channel: "default-channel",
+                        }));
+                        api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
+                            to_identity: "cb245673-aa41-4302-ac47-00000001002",
+                            to_addr: "+27820001111",
+                            content: "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                            channel: "default-channel",
+                        }));
+                    })
+                    .inputs(
+                        {session_event: "new"}  // dial in
+                        , "1"  // state_hiv_messages - yes
+                    )
+                    .check.interaction({
+                        state: "state_end_hiv_messages_confirm",
+                        reply: "You will now start receiving messages about keeping your child HIV-negative. Thank you for using the MomConnect service. Goodbye."
+                    })
+                    .check(function(api) {
+                        utils.check_fixtures_used(api, [0, 1, 2, 3, 4, 5, 6]);
+                    })
+                    .check.reply.ends_session()
+                    .run();
                 });
             });
 
