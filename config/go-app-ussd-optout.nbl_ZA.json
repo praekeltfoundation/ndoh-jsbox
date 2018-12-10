@@ -2,19 +2,19 @@
     "": {
         "project-id-version": "Opt out",
         "pot-creation-date": "2018-10-03 10:13:+0000",
-        "po-revision-date": "2018-10-03 12:15+0200",
+        "po-revision-date": "2018-10-26 11:44+0200",
         "last-translator": "",
         "language-team": "Southern Ndebele <LL@li.org>",
         "language": "nr",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 2.1.1",
+        "x-generator": "Poedit 2.2",
         "plural-forms": "nplurals=1; plural=0;"
     },
     "Please tell us why you previously opted out of messages": [
         null,
-        ""
+        "Sibawa usitjele bona kungani esikhathini esidlulileko uphume emilayezweni"
     ],
     "Please let us know why you do not want MomConnect messages": [
         null,

@@ -2,14 +2,14 @@
     "": {
         "project-id-version": "public",
         "pot-creation-date": "2018-09-28 07:58:+0000",
-        "po-revision-date": "2018-09-28 10:12+0200",
+        "po-revision-date": "2018-10-29 12:07+0200",
         "last-translator": "Lieze <lieze@praekelt.com>",
         "language-team": "Language <LL@li.org>",
         "language": "zu",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 2.1.1",
+        "x-generator": "Poedit 2.2",
         "plural-forms": "nplurals=2; plural=(n != 1);"
     },
     "Please dial back in to {{ USSD_number }} to complete the pregnancy registration.": [
@@ -34,11 +34,11 @@
     ],
     "Welcome back. Please select an option:": [
         null,
-        ""
+        "Siyakwamukela futhi. Sicela ukhethe: "
     ],
     "Continue signing up for messages": [
         null,
-        ""
+        "Qhubeka nokubhalisela imiyalezo"
     ],
     "Main menu": [
         null,
@@ -62,7 +62,7 @@
     ],
     "To register we need to collect, store & use your info. You may get messages on public holidays & weekends. Do you consent?": [
         null,
-        ""
+        "Ukubhalisa sidinga ukuqoqa, ukugcina nokusebenzisa imininingwane yakho. Ungathola imiyalezo ngamaholidi kahulumeni nangezimpelasonto. Uyavuma?"
     ],
     "We are sorry but this service is only for pregnant mothers. If you have other health concerns please visit your nearest clinic.": [
         null,
@@ -70,7 +70,7 @@
     ],
     "Unfortunately without your consent, you cannot register to MomConnect.": [
         null,
-        ""
+        "Ngeshwa ngaphandle kwemvume yakho, ngeke ukwazi ukubhalisa kuMomConnect."
     ],
     "You have previously opted out of MomConnect messages. Please confirm that you would like to opt in to receive messages again?": [
         null,
@@ -78,7 +78,7 @@
     ],
     "You have chosen not to receive MomConnect messages and so cannot complete registration.": [
         null,
-        ""
+        "Ukhethe ukungayitholi imiyalezo yeMomConnect ngakho angeke ukwazi ukuqedela ukubhalisa."
     ],
     "Main Menu": [
         null,

@@ -2,19 +2,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opt_out_zu\n"
 "POT-Creation-Date: 2018-10-03 10:13:+0000\n"
-"PO-Revision-Date: 2018-10-03 12:16+0200\n"
+"PO-Revision-Date: 2018-10-29 11:47+0200\n"
 "Last-Translator: Lieze <lieze@praekelt.com>\n"
 "Language-Team: Language <LL@li.org>\n"
 "Language: zu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 2.2\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: go-app-ussd_optout.js:102
 msgid "Please tell us why you previously opted out of messages"
-msgstr ""
+msgstr "Sicela usazise ukuthi kungani ukhetha ukungasayithola imiyalezo"
 
 #: go-app-ussd_optout.js:103
 msgid "Please let us know why you do not want MomConnect messages"

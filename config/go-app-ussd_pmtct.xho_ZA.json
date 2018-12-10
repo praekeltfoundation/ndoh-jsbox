@@ -2,14 +2,14 @@
     "": {
         "project-id-version": "USSD PMTCT",
         "pot-creation-date": "2018-10-03 10:18:+0000",
-        "po-revision-date": "2018-10-03 12:20+0200",
+        "po-revision-date": "2018-10-26 15:25+0200",
         "last-translator": "",
         "language-team": "XHOSA <LL@li.org>",
         "language": "xh",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 2.1.1",
+        "x-generator": "Poedit 2.2",
         "plural-forms": "nplurals=2; plural=(n != 1);"
     },
     "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health": [
@@ -78,11 +78,11 @@
     ],
     "More": [
         null,
-        ""
+        "Okunye"
     ],
     "Back": [
         null,
-        ""
+        "Emuva"
     ],
     "Not HIV-positive": [
         null,
@@ -110,7 +110,7 @@
     ],
     "You will not receive SMSs about keeping your baby HIV negative. You will still receive MomConnect SMSs. To stop receiving these SMSs, dial {{ mc_optout_number }}": [
         null,
-        "AwuSAYI kuzifumana iiSMS malunga nookugcina usana lwakho lungena-HIV. UzakuHLALA uzifumana iiSMS zeMomConnect. Ukuyekisa ukufumana ezi SMS, cofa u-*134*550*01#"
+        "AwuSAYI kuyifumana imiyaleza malunga nookugcina usana lwakho lungena-HIV. UzakuHLALA uyifumana imiyaleza yeMomConnect. Ukuyekisa ukufumana imiyaleza, cofa u-*134*550*01#"
     ],
     "We are sorry for your loss. Would you like to receive a small set of free messages from MomConnect that could help you in this difficult time?": [
         null,

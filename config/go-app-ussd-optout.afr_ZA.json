@@ -2,19 +2,19 @@
     "": {
         "project-id-version": "opt_out",
         "pot-creation-date": "2018-10-03 10:13:+0000",
-        "po-revision-date": "2018-10-03 12:15+0200",
+        "po-revision-date": "2018-10-25 15:24+0200",
         "last-translator": "Lieze <lieze@praekelt.com>",
         "language-team": "Language <LL@li.org>",
         "language": "af_ZA",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 2.1.1",
+        "x-generator": "Poedit 2.2",
         "plural-forms": "nplurals=2; plural=(n != 1);"
     },
     "Please tell us why you previously opted out of messages": [
         null,
-        ""
+        "Gee asb vir ons die rede oor waarom jy nie voorheen die boodskappe wou ontvang nie."
     ],
     "Please let us know why you do not want MomConnect messages": [
         null,

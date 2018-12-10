@@ -2,18 +2,18 @@
     "": {
         "project-id-version": "",
         "pot-creation-date": "2018-10-03 10:13:+0000",
-        "po-revision-date": "2018-10-03 12:16+0200",
+        "po-revision-date": "2018-10-26 11:02+0200",
         "last-translator": "",
         "language-team": "",
         "language": "nso_ZA",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=utf-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 2.1.1"
+        "x-generator": "Poedit 2.2"
     },
     "Please tell us why you previously opted out of messages": [
         null,
-        ""
+        "Hle re botše goreng o tšwele go melaetša nakong e fetilego"
     ],
     "Please let us know why you do not want MomConnect messages": [
         null,

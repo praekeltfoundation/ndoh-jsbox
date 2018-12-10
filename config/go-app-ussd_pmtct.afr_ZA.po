@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: USSD PMTCT\n"
 "POT-Creation-Date: 2018-10-03 10:18:+0000\n"
-"PO-Revision-Date: 2018-10-03 12:18+0200\n"
+"PO-Revision-Date: 2018-10-25 15:25+0200\n"
 "Last-Translator: \n"
 "Language-Team: AFRIKAANS <LL@li.org>\n"
 "Language: af\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 2.2\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: go-app-ussd_pmtct_seed.js:95
@@ -119,11 +119,11 @@ msgstr "Laat ons asb weet waarom jy nie meer boodskappe wil ontvang nie:"
 
 #: go-app-ussd_pmtct_seed.js:490
 msgid "More"
-msgstr ""
+msgstr "Meer"
 
 #: go-app-ussd_pmtct_seed.js:491
 msgid "Back"
-msgstr ""
+msgstr "Terug"
 
 #: go-app-ussd_pmtct_seed.js:493
 msgid "Not HIV-positive"

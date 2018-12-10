@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: POPI_FAQ\n"
 "POT-Creation-Date: 2018-10-03 10:00:+0000\n"
-"PO-Revision-Date: 2018-10-03 12:02+0200\n"
+"PO-Revision-Date: 2018-10-25 15:05+0200\n"
 "Last-Translator: Alex Muller <alex@praekelt.org>\n"
 "Language-Team: Tsonga <LL@li.org>\n"
 "Language: tso\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 2.2\n"
 
 #: go-app-ussd_popi_faq.js:111
 msgid "Choose a question about MomConnect (MC):"
@@ -55,6 +55,8 @@ msgid ""
 "MC is a Health Department programme. It sends messages for you & your baby. "
 "To see, change or delete your info dial *134*550*7#"
 msgstr ""
+"MomConnect i nongonoko wa Ndzawulo ya Rihanyu. Yi rhumela swihungwana eka "
+"wena & ricece. Ku vona, ku cinca kumbe ku sula vuxokoxoko, dayila *134*550*7#"
 
 #: go-app-ussd_popi_faq.js:138 go-app-ussd_popi_faq.js:159
 #: go-app-ussd_popi_faq.js:173 go-app-ussd_popi_faq.js:188
@@ -93,6 +95,9 @@ msgid ""
 "Vodacom, Praekelt, Jembi, HISP and WhatsApp (owned by Facebook) collect and "
 "process your data on their behalf."
 msgstr ""
+"MomConnect i ya Ndzawulo ya Rihanyu naswona yi fambisiwa hi yona. MTN, Cell "
+"C, Telkom, Vodacom, Praekelt, Jembi, HISP na WhatsApp (ya Facebook) ti "
+"hlengeleta na ku phurosesa data ya wena hi ku yimela yona."
 
 #: go-app-ussd_popi_faq.js:198
 msgid ""

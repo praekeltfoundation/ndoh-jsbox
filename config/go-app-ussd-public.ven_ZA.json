@@ -2,14 +2,14 @@
     "": {
         "project-id-version": "Personal",
         "pot-creation-date": "2018-09-28 07:58:+0000",
-        "po-revision-date": "2018-09-28 14:39+0200",
+        "po-revision-date": "2018-10-26 11:43+0200",
         "last-translator": "",
         "language-team": "Venda <LL@li.org>",
         "language": "ve",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 2.1.1",
+        "x-generator": "Poedit 2.2",
         "plural-forms": "nplurals=2; plural=(n != 1);"
     },
     "Please dial back in to {{ USSD_number }} to complete the pregnancy registration.": [
@@ -34,11 +34,11 @@
     ],
     "Welcome back. Please select an option:": [
         null,
-        "Vho tanganedzwa kha MomConnect ya Muhasho wa Mutakalo.Vha nanga:"
+        "Ri a vha ṱanganedza hafhu. Kha vha nange khetho:"
     ],
     "Continue signing up for messages": [
         null,
-        "Kha vha ise phanda na u dinwalisela milaedza"
+        "Kha vha bvelephanḓa na u ḓiṅwalisela milaedza"
     ],
     "Main menu": [
         null,
@@ -62,7 +62,7 @@
     ],
     "To register we need to collect, store & use your info. You may get messages on public holidays & weekends. Do you consent?": [
         null,
-        ""
+        "U ḓiṅwalisa ri tea u kuvhanganya, u vhulunga & u shumisa mafhungo avho. Vha nga wana milaedza nga holodei dza nnyi na nnyi & mafhelo a vhege. Vha a tenda?"
     ],
     "We are sorry but this service is only for pregnant mothers. If you have other health concerns please visit your nearest clinic.": [
         null,
@@ -70,7 +70,7 @@
     ],
     "Unfortunately without your consent, you cannot register to MomConnect.": [
         null,
-        ""
+        "Mashudumavhi, hu si na thendelo yavho vha nga si ḓiṅwalise kha MomConnect."
     ],
     "You have previously opted out of MomConnect messages. Please confirm that you would like to opt in to receive messages again?": [
         null,
@@ -78,7 +78,7 @@
     ],
     "You have chosen not to receive MomConnect messages and so cannot complete registration.": [
         null,
-        "Vho khetha u sa rumelwa dziSMS dza MomConnect dza tsivhudzo kha zwe vha vhudzisa."
+        "Vho nanga u sa wana milaedza ya MomConnect zwenezwo vha nga si kone u fhedzisa u ḓiṅwalisa."
     ],
     "Main Menu": [
         null,

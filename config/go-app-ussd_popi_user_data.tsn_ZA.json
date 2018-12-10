@@ -2,22 +2,22 @@
     "": {
         "project-id-version": "POPI_USER_DATA",
         "pot-creation-date": "2018-10-03 10:07:+0000",
-        "po-revision-date": "2018-10-03 12:09+0200",
+        "po-revision-date": "2018-10-26 11:20+0200",
         "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
         "language-team": "Setswana <LL@li.org>",
         "language": "tsn",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 2.1.1"
+        "x-generator": "Poedit 2.2"
     },
     "Personal info:\nPhone Number: {{msisdn}}\nID Number: {{id}}\nDate of Birth: {{dob}}\nChannel: {{channel}}\nLanguage: {{lang}}": [
         null,
-        ""
+        "Dintlha tsa gago:\nNomoro ya mogala: {{msisdn}}\nNomoro ya ID: {{id}}\nLetlha la botsalo: {{dob}}\nKanale: {{channel}}\nPuo: {{lang}}"
     ],
     "Personal info:\nPhone Number: {{msisdn}}\nOrigin of Passport: {{passport_or}}\nPassport: {{passport_num}}\nDate of Birth: {{dob}}\nChannel: {{channel}}\nLanguage: {{lang}}": [
         null,
-        ""
+        "Dintlha tsa gago:\nNomoro ya mogala: {{msisdn}}\nLefelo la Phasepoto: {{passport_or}}\nPhasepoto: {{passport_num}}\nLetlha la botsalo: {{dob}}\nKanale: {{channel}}\nPuo: {{lang}}"
     ],
     "{{first}}\nMessage set: {{mset}}": [
         null,
@@ -25,11 +25,11 @@
     ],
     "SMS": [
         null,
-        ""
+        "SMS"
     ],
     "WhatsApp": [
         null,
-        ""
+        "WhatsApp"
     ],
     "What would you like to do?": [
         null,
@@ -49,7 +49,7 @@
     ],
     "More": [
         null,
-        ""
+        "Tse dingwe"
     ],
     "Back": [
         null,
@@ -57,7 +57,7 @@
     ],
     "Main Menu": [
         null,
-        ""
+        "Lenaneo la Motheo"
     ],
     "Use a different phone number": [
         null,
@@ -73,7 +73,7 @@
     ],
     "Receive messages over {{channel}}": [
         null,
-        ""
+        "Amogela melaetsa ka {{channel}}"
     ],
     "What would you like to change? To change your due date, visit a clinic": [
         null,
@@ -93,11 +93,11 @@
     ],
     "Thank you. Your info has been updated. You will now receive messages from MomConnect via {{channel}}.": [
         null,
-        ""
+        "Re a leboga. Dintlha tsa gago di fetotswe. Jaanong o tla amogela melaetsa ya MomConnect ka  {{channel}}."
     ],
     "Update my other info": [
         null,
-        ""
+        "Fetola dintlha tse dingwe tsa me"
     ],
     "Choose a language for your messages:": [
         null,
@@ -105,51 +105,51 @@
     ],
     "isiZulu": [
         null,
-        ""
+        "Sezulu"
     ],
     "isiXhosa": [
         null,
-        ""
+        "Sethosa"
     ],
     "Afrikaans": [
         null,
-        ""
+        "Seburu"
     ],
     "English": [
         null,
-        ""
+        "Seesemane"
     ],
     "Sesotho sa Leboa": [
         null,
-        ""
+        "Sesotho sa Leboa"
     ],
     "Setswana": [
         null,
-        ""
+        "Setswana"
     ],
     "Sesotho": [
         null,
-        ""
+        "Sesotho"
     ],
     "Xitsonga": [
         null,
-        ""
+        "Setsonga"
     ],
     "siSwati": [
         null,
-        ""
+        "Seswati"
     ],
     "Tshivenda": [
         null,
-        ""
+        "Sevenda"
     ],
     "isiNdebele": [
         null,
-        ""
+        "Setebele"
     ],
     "Thank you. Your info has been updated. You will now receive messages from MomConnect in {{language}}.": [
         null,
-        ""
+        "Re a leboga. Dintlha tsa gago di fetotswe. Jaanong o tla amogela melaetsa ya MomConnect ka {{language}}."
     ],
     "What kind of identification do you have?": [
         null,
@@ -177,27 +177,27 @@
     ],
     "Zimbabwe": [
         null,
-        ""
+        "Zimbabwe"
     ],
     "Mozambique": [
         null,
-        ""
+        "Mozambique"
     ],
     "Malawi": [
         null,
-        ""
+        "Malawi"
     ],
     "Nigeria": [
         null,
-        ""
+        "Nigeria"
     ],
     "DRC": [
         null,
-        ""
+        "DRC"
     ],
     "Somalia": [
         null,
-        ""
+        "Somalia"
     ],
     "Other": [
         null,
@@ -213,7 +213,7 @@
     ],
     "Thank you. Your info has been updated. Your registered identification is {{identification_type}} {{identification_number}}.": [
         null,
-        ""
+        "Re a leboga. Dintlha tsa gago di fetotswe. Tsela ya gago ya boitshupo e e kwadisitsweng ke {{identification_type}} {{identification_number}}."
     ],
     "Please enter the new phone number we should use to send you messages eg. 0813547654": [
         null,
@@ -229,7 +229,7 @@
     ],
     "Thank you. Your info has been updated. You will now receive messages from MomConnect via on phone number {{msisdn}}": [
         null,
-        ""
+        "Re a leboga. Dintlha tsa gago di fetotswe. O tla amogela melaetsa ya MomConnect mo nomorong e ya mogala {{msisdn}}"
     ],
     "Your personal information stored on MomConnect has not been removed.": [
         null,
@@ -241,82 +241,82 @@
     ],
     "Sorry, the number you dialled with is not recognised. Dial in with the number you use for MomConnect to change your details": [
         null,
-        ""
+        "Tshwarelo, nomoro e o letsang ka yona ga re e itse. Letsa ka nomoro e o dirisetsang MomConnect go fetola dintlha tsa gago"
     ],
     "I don't have that SIM": [
         null,
-        ""
+        "Ga ke na SIM eo"
     ],
     "Exit": [
         null,
-        ""
+        "Tswaa"
     ],
     "Thank you for using MomConnect. Dial *134*550*7# to see, change or delete the your MomConnect information.": [
         null,
-        ""
+        "Re a leboga gore o dirisitse MomConnect. Leletsa *134*550*7# go bona, go fetola kgotsa go phimola dintlha tsa gago tsa MomConnect."
     ],
     "Please enter the number you receive MomConnect messages on.": [
         null,
-        ""
+        "Tsweetswee, tsenya nomoro e o amogelang melaetsa ya MomConnect mo go yona."
     ],
     "Sorry we do not recognise that number. New to MomConnect?Please visit a clinic to register. Made a mistake?": [
         null,
-        ""
+        "Tshwarelo, ga re itse nomoro eo. A o mošwa mo go MomConnect? Eya kwa tliliniking go ikwadisa. A o dirile phoso?"
     ],
     "Try again": [
         null,
-        ""
+        "Leka gape"
     ],
     "Thank you. To change your mobile number we first need to verify your identity. Please enter your SA ID number now.": [
         null,
-        ""
+        "Re a leboga. Go fetola nomoro ya gago ya mogala, re tshwanetse go netefatsa boitshupo ba gago pele. Tsenya nomoro ya gago ya SA ID jaanong."
     ],
     "Thank you. To change your mobile number we first need to verify your identity. Please enter your passport number now.": [
         null,
-        ""
+        "Re a leboga. Go fetola nomoro ya gago ya mogala, re tshwanetse go netefatsa boitshupo ba gago pele. Tsenya nomoro ya gago ya phasepoto jaanong."
     ],
     "Thank you. To change your mobile number we first need to verify your identity. Please enter your date of birth in the following format: dd*mm*yyyy": [
         null,
-        ""
+        "Re a leboga. Go fetola nomoro ya mogala, re tlhoka go netefatsa boitshupo ba gago pele. Tsenya letlha la gago la botsalo jaana: dd*mm*yyyy. Sekao 19*05*1990"
     ],
     "Sorry that is not the correct format. Please enter your date of birth in the following format: dd*mm*yyyy. For example 19*05*1990": [
         null,
-        ""
+        "Tshwarelo, eo ga se tsela e e nepagetseng. Ka kopo, tsenya letlha la gago la botsalo jaana: dd*mm*yyyy. For example 19*05*1990"
     ],
     "Thank you. Please select the language you receive message in:": [
         null,
-        ""
+        "Re a leboga. Tsweetswee tlhopha puo e o amogelang melaetsa ka yona:"
     ],
     "Sorry one or more of the answers you provided are incorrect. We are not able to change your mobile number. Please visit the clinic to register your new number.": [
         null,
-        ""
+        "Tshwarelo, karabo/dikarabo dingwe tsa gago di fosagetse. Re ka se kgone go fetola nomoro ya gago ya mogala. Eya kwa tliliniking go kwadisa nomoro e ntšhwa."
     ],
     "Thank you. Please enter the new number you would like to use to receive messages from MomConnect.": [
         null,
-        ""
+        "Re a leboga. Tsweetswee tsenya nomoro e ntšhwa e o ratang go e dirisa go amogela melaetsa go tswa go MomConnect."
     ],
     "Sorry the number you have entered is not valid. Please re-enter the mobile number.": [
         null,
-        ""
+        "Tshwarelo, nomoro e o e tsentseng ga e a nepagala. Tsweetswee tsenya nomoro ya mogala gape."
     ],
     "You have entered {{new_number}} as the new number you would like to receive MomConnect messages on. Is this number correct?": [
         null,
-        ""
+        "O tsentse {{new_number}} jaaka nomoro e ntšhwa e o batlang go amogela melaetsa ya MomConnect ka yona. A nomoro e e nepagetse?"
     ],
     "No - enter again": [
         null,
-        ""
+        "Nnyaa - Tobetsa gape"
     ],
     "Sorry the number you have entered is already associated with a MomConnect account. Please try another number.": [
         null,
-        ""
+        "Tshwarelo, nomoro e o e tsentseng e setse e golagane le akhaonto ya MomConnect. Leka nomoro e nngwe."
     ],
     "Thank you. How would you like to receive messages about you and your baby?": [
         null,
-        ""
+        "Re a leboga. O ka rata go amogela melaetsa ka ga wena le lesea la gago jang?"
     ],
     "Your number has been changed successfully to {{msisdn}}. You will receive messages on {{channel}}. Thank you for using MomConnect!": [
         null,
-        ""
+        "Nomoro ya gago e fetoletswe go {{msisdn}} ka katlego. O tla amogela melaetsa ka {{channel}}. Re a leboga gore o dirisa MomConnect!"
     ]
 }

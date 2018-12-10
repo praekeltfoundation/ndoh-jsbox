@@ -2,19 +2,19 @@
     "": {
         "project-id-version": "Opt out",
         "pot-creation-date": "2018-10-03 10:13:+0000",
-        "po-revision-date": "2018-10-03 12:16+0200",
+        "po-revision-date": "2018-10-25 16:20+0200",
         "last-translator": "",
         "language-team": "Venda <LL@li.org>",
         "language": "ve",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 2.1.1",
+        "x-generator": "Poedit 2.2",
         "plural-forms": "nplurals=2; plural=(n != 1);"
     },
     "Please tell us why you previously opted out of messages": [
         null,
-        ""
+        "Ri khou humbela uri vha ri vhudze uri ndi ngani vho thoma vha nanga u bva"
     ],
     "Please let us know why you do not want MomConnect messages": [
         null,

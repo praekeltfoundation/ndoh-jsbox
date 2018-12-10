@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: USSD PMTCT\n"
 "POT-Creation-Date: 2018-10-03 10:18:+0000\n"
-"PO-Revision-Date: 2018-10-03 12:19+0200\n"
+"PO-Revision-Date: 2018-10-26 11:47+0200\n"
 "Last-Translator: \n"
 "Language-Team: NDEBELE <LL@li.org>\n"
 "Language: nr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 2.2\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: go-app-ussd_pmtct_seed.js:95
@@ -47,7 +47,7 @@ msgstr ""
 #: go-app-ussd_pmtct_seed.js:324 go-app-ussd_pmtct_seed.js:407
 #: go-app-ussd_pmtct_seed.js:538
 msgid "Yes"
-msgstr "ye"
+msgstr "Ye"
 
 #: go-app-ussd_pmtct_seed.js:325 go-app-ussd_pmtct_seed.js:408
 #: go-app-ussd_pmtct_seed.js:539
@@ -118,11 +118,11 @@ msgstr "Sibawa usitjele bona kubayini ungasafuni imilayezo:"
 
 #: go-app-ussd_pmtct_seed.js:490
 msgid "More"
-msgstr ""
+msgstr "Okunengi"
 
 #: go-app-ussd_pmtct_seed.js:491
 msgid "Back"
-msgstr ""
+msgstr "Emuva"
 
 #: go-app-ussd_pmtct_seed.js:493
 msgid "Not HIV-positive"
@@ -154,8 +154,8 @@ msgid ""
 "still receive MomConnect SMSs. To stop receiving these SMSs, dial "
 "{{ mc_optout_number }}"
 msgstr ""
-"AWUZOKUTHOLA ama-SMS aphathelene nokugcina umntwanakho angana-HIV. "
-"UZOWATHOLA ama-SMS wakwa-MomConnect. Ukuqintela ukuthola ama-SMS dayela "
+"Awuzokuthola imilayezo ephathelene nokugcina umntwanakho angana-HIV. "
+"Uzothola imilayezo yakwa-MomConnect. Ukuqintela ukuthola imilayezo, dayela "
 "*134*550*1#"
 
 #: go-app-ussd_pmtct_seed.js:536
