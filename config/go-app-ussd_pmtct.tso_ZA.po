@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: USSD PMTCT\n"
 "POT-Creation-Date: 2018-10-03 10:18:+0000\n"
-"PO-Revision-Date: 2018-10-03 12:21+0200\n"
+"PO-Revision-Date: 2018-10-29 12:11+0200\n"
 "Last-Translator: \n"
 "Language-Team: TSONGA <LL@li.org>\n"
 "Language: ts\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 2.2\n"
 
 #: go-app-ussd_pmtct_seed.js:95
 msgid ""
@@ -119,11 +119,11 @@ msgstr "Hikokwalaho ka yini u nga lavi mahungu ya MomConnect"
 
 #: go-app-ussd_pmtct_seed.js:490
 msgid "More"
-msgstr ""
+msgstr "Swo tala"
 
 #: go-app-ussd_pmtct_seed.js:491
 msgid "Back"
-msgstr ""
+msgstr "Endzhaku"
 
 #: go-app-ussd_pmtct_seed.js:493
 msgid "Not HIV-positive"
@@ -163,8 +163,8 @@ msgid ""
 "We are sorry for your loss. Would you like to receive a small set of free "
 "messages from MomConnect that could help you in this difficult time?"
 msgstr ""
-"Hak chavelel eka k lahlekeriw ka wen. U nga tsakel ku amukel sete leytsong "
-"ya swihungwn swa mahal lesw ngak pfunak ka nkari low wo tika?"
+"Chaveleleka eka ku lahlekeriwa ka wena. U nga tsakela ku kuma mahungu ya "
+"mahala lama nga ta ku pfunaka hi nkarhi lowo tika?"
 
 #: go-app-ussd_pmtct_seed.js:576
 msgid ""

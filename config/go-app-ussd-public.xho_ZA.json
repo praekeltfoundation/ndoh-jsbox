@@ -2,14 +2,14 @@
     "": {
         "project-id-version": "public",
         "pot-creation-date": "2018-09-28 07:58:+0000",
-        "po-revision-date": "2018-09-28 10:15+0200",
+        "po-revision-date": "2018-10-26 16:18+0200",
         "last-translator": "Lieze <lieze@praekelt.com>",
         "language-team": "Language <LL@li.org>",
         "language": "xh",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 2.1.1",
+        "x-generator": "Poedit 2.2",
         "plural-forms": "nplurals=2; plural=(n != 1);"
     },
     "Please dial back in to {{ USSD_number }} to complete the pregnancy registration.": [
@@ -34,11 +34,11 @@
     ],
     "Welcome back. Please select an option:": [
         null,
-        ""
+        "Wamkelekile kwakhona. Nceda ukhethe okungokunye:"
     ],
     "Continue signing up for messages": [
         null,
-        ""
+        "Qhubeka ukusayinela imiyalezo"
     ],
     "Main menu": [
         null,
@@ -62,7 +62,7 @@
     ],
     "To register we need to collect, store & use your info. You may get messages on public holidays & weekends. Do you consent?": [
         null,
-        ""
+        "Ukubhalisa kufuneka siqokelele, sigcine futhi sisebenzise ulwazi ngawe. Ungafumana imiyalezo ngeeholide zikawonke-wonke neempela-veki. Uyavuma?"
     ],
     "We are sorry but this service is only for pregnant mothers. If you have other health concerns please visit your nearest clinic.": [
         null,
@@ -70,7 +70,7 @@
     ],
     "Unfortunately without your consent, you cannot register to MomConnect.": [
         null,
-        ""
+        "Ngelishwa, ngaphandle kwemvume yakho, awukwazi ukubhalisa ku-MomConnect."
     ],
     "You have previously opted out of MomConnect messages. Please confirm that you would like to opt in to receive messages again?": [
         null,
@@ -78,11 +78,11 @@
     ],
     "You have chosen not to receive MomConnect messages and so cannot complete registration.": [
         null,
-        ""
+        "Ukhethe ukungafumani imiyalezo ye-MomConnect kengoko asinokugqiba ubhaliso."
     ],
     "Main Menu": [
         null,
-        "Imenyu enguNdoqo"
+        "Imenyu eNkulu"
     ],
     "Congratulations on your pregnancy! You will get msgs from MomConnect on WhatsApp for 3 wks. For the full set of msgs, register at a clinic.": [
         null,

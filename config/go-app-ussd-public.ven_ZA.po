@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Personal\n"
 "POT-Creation-Date: 2018-09-28 07:58:+0000\n"
-"PO-Revision-Date: 2018-09-28 14:39+0200\n"
+"PO-Revision-Date: 2018-10-26 11:43+0200\n"
 "Last-Translator: \n"
 "Language-Team: Venda <LL@li.org>\n"
 "Language: ve\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 2.2\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: go-app-ussd_public.js:365
@@ -60,11 +60,11 @@ msgstr ""
 
 #: go-app-ussd_public.js:508
 msgid "Welcome back. Please select an option:"
-msgstr "Vho tanganedzwa kha MomConnect ya Muhasho wa Mutakalo.Vha nanga:"
+msgstr "Ri a vha ṱanganedza hafhu. Kha vha nange khetho:"
 
 #: go-app-ussd_public.js:510
 msgid "Continue signing up for messages"
-msgstr "Kha vha ise phanda na u dinwalisela milaedza"
+msgstr "Kha vha bvelephanḓa na u ḓiṅwalisela milaedza"
 
 #: go-app-ussd_public.js:511
 msgid "Main menu"
@@ -99,6 +99,9 @@ msgid ""
 "To register we need to collect, store & use your info. You may get messages "
 "on public holidays & weekends. Do you consent?"
 msgstr ""
+"U ḓiṅwalisa ri tea u kuvhanganya, u vhulunga & u shumisa mafhungo avho. Vha "
+"nga wana milaedza nga holodei dza nnyi na nnyi & mafhelo a vhege. Vha a "
+"tenda?"
 
 #: go-app-ussd_public.js:666
 msgid ""
@@ -112,6 +115,7 @@ msgstr ""
 #: go-app-ussd_public.js:676
 msgid "Unfortunately without your consent, you cannot register to MomConnect."
 msgstr ""
+"Mashudumavhi, hu si na thendelo yavho vha nga si ḓiṅwalise kha MomConnect."
 
 #: go-app-ussd_public.js:686
 msgid ""
@@ -126,8 +130,8 @@ msgid ""
 "You have chosen not to receive MomConnect messages and so cannot complete "
 "registration."
 msgstr ""
-"Vho khetha u sa rumelwa dziSMS dza MomConnect dza tsivhudzo kha zwe vha "
-"vhudzisa."
+"Vho nanga u sa wana milaedza ya MomConnect zwenezwo vha nga si kone u "
+"fhedzisa u ḓiṅwalisa."
 
 #: go-app-ussd_public.js:720
 msgid "Main Menu"

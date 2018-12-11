@@ -2,22 +2,22 @@
     "": {
         "project-id-version": "POPI_USER_DATA",
         "pot-creation-date": "2018-10-03 10:07:+0000",
-        "po-revision-date": "2018-10-03 12:08+0200",
+        "po-revision-date": "2018-10-25 16:34+0200",
         "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
         "language-team": "Tshivenda <LL@li.org>",
         "language": "ve",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 2.1.1"
+        "x-generator": "Poedit 2.2"
     },
     "Personal info:\nPhone Number: {{msisdn}}\nID Number: {{id}}\nDate of Birth: {{dob}}\nChannel: {{channel}}\nLanguage: {{lang}}": [
         null,
-        ""
+        "Mafhungo a vhuṋe:\nNomboroya luṱingo: {{msisdn}}\nNomboro ya Bugundaula: {{id}}\nDatumu ya Mabebo: {{dob}}\nTshaneḽe: {{channel}}\nLuambo: {{lang}}"
     ],
     "Personal info:\nPhone Number: {{msisdn}}\nOrigin of Passport: {{passport_or}}\nPassport: {{passport_num}}\nDate of Birth: {{dob}}\nChannel: {{channel}}\nLanguage: {{lang}}": [
         null,
-        ""
+        "Mafhungo a vhuṋe:\nNomboroya luṱingo: {{msisdn}}.\nVhubvo ha Phasipoto: {{passport_or}}\nPhasipoto: {{passport_num}}\nDatumu ya Mabebo: {{dob}}\nTshaneḽe: {{channel}}\nLuambo: {{lang}}"
     ],
     "{{first}}\nMessage set: {{mset}}": [
         null,
@@ -25,11 +25,11 @@
     ],
     "SMS": [
         null,
-        ""
+        "SMS"
     ],
     "WhatsApp": [
         null,
-        ""
+        "WhatsApp"
     ],
     "What would you like to do?": [
         null,
@@ -49,7 +49,7 @@
     ],
     "More": [
         null,
-        ""
+        "Zwinzhi"
     ],
     "Back": [
         null,
@@ -57,7 +57,7 @@
     ],
     "Main Menu": [
         null,
-        ""
+        "Menyu Muhulwane"
     ],
     "Use a different phone number": [
         null,
@@ -73,7 +73,7 @@
     ],
     "Receive messages over {{channel}}": [
         null,
-        ""
+        "Vha wane milaedzanga kha {{channel}}"
     ],
     "What would you like to change? To change your due date, visit a clinic": [
         null,
@@ -93,11 +93,11 @@
     ],
     "Thank you. Your info has been updated. You will now receive messages from MomConnect via {{channel}}.": [
         null,
-        ""
+        "Ri a livhuwa. Mafhungo avho o khwiṋiswa. Zwazwino vha ḓo wana milaedza u bva kha MomConnect nga kha {{channel}}."
     ],
     "Update my other info": [
         null,
-        ""
+        "Kha vha khwiṋise maṅwe mafhungo anga"
     ],
     "Choose a language for your messages:": [
         null,
@@ -105,11 +105,11 @@
     ],
     "isiZulu": [
         null,
-        ""
+        "isiZulu"
     ],
     "isiXhosa": [
         null,
-        ""
+        "isiXhosa"
     ],
     "Afrikaans": [
         null,
@@ -121,35 +121,35 @@
     ],
     "Sesotho sa Leboa": [
         null,
-        ""
+        "Sesotho sa Leboa"
     ],
     "Setswana": [
         null,
-        ""
+        "Setswana"
     ],
     "Sesotho": [
         null,
-        ""
+        "Sesotho"
     ],
     "Xitsonga": [
         null,
-        ""
+        "Xitsonga"
     ],
     "siSwati": [
         null,
-        ""
+        "siSwati"
     ],
     "Tshivenda": [
         null,
-        ""
+        "Tshivenda"
     ],
     "isiNdebele": [
         null,
-        ""
+        "isiNdebele"
     ],
     "Thank you. Your info has been updated. You will now receive messages from MomConnect in {{language}}.": [
         null,
-        ""
+        "Ri a livhuwa. Mafhungo avho o khwiṋiswa. Zwazwino vha ḓo wana milaedza u bva kha MomConnect nga {{language}}."
     ],
     "What kind of identification do you have?": [
         null,
@@ -177,27 +177,27 @@
     ],
     "Zimbabwe": [
         null,
-        ""
+        "Zimbabwe"
     ],
     "Mozambique": [
         null,
-        ""
+        "Mozambique"
     ],
     "Malawi": [
         null,
-        ""
+        "Malawi"
     ],
     "Nigeria": [
         null,
-        ""
+        "Nigeria"
     ],
     "DRC": [
         null,
-        ""
+        "DRC"
     ],
     "Somalia": [
         null,
-        ""
+        "Somalia"
     ],
     "Other": [
         null,
@@ -213,7 +213,7 @@
     ],
     "Thank you. Your info has been updated. Your registered identification is {{identification_type}} {{identification_number}}.": [
         null,
-        ""
+        "Ri a livhuwa. Mafhungo avho o khwiṋiswa. Nomborondaula yavho yo ṅwaliswaho ndi {{identification_type}} {{identification_number}}."
     ],
     "Please enter the new phone number we should use to send you messages eg. 0813547654": [
         null,
@@ -229,7 +229,7 @@
     ],
     "Thank you. Your info has been updated. You will now receive messages from MomConnect via on phone number {{msisdn}}": [
         null,
-        ""
+        "Ri a livhuwa. Mafhungo avho o khwiṋiswa. Vha ḓo wana milaedza u bva kha MomConnect kha kha nomboro ya luṱingothendeleki {{msisdn}}"
     ],
     "Your personal information stored on MomConnect has not been removed.": [
         null,
@@ -241,82 +241,82 @@
     ],
     "Sorry, the number you dialled with is not recognised. Dial in with the number you use for MomConnect to change your details": [
         null,
-        ""
+        "Pfarelo, nomboro ye vha founela ngayo a i ḓivhiwi. Kha vha founele nga nomboro ine vha i shumisa kha MomConnect u shandukisa zwidodombedzwa zwavho"
     ],
     "I don't have that SIM": [
         null,
-        ""
+        "A thi na iḽa SIM"
     ],
     "Exit": [
         null,
-        ""
+        "U bva"
     ],
     "Thank you for using MomConnect. Dial *134*550*7# to see, change or delete the your MomConnect information.": [
         null,
-        ""
+        "Ro livhuwa vho shumisa MomConnect. Kha vha founele *134*550*7# u vhona, u shandukisa kana u thutha mafhungo avho a MomConnect."
     ],
     "Please enter the number you receive MomConnect messages on.": [
         null,
-        ""
+        "Vha humbelwa u dzhenisa nomboro ine vha wana milaedza ya MomConnect khayo."
     ],
     "Sorry we do not recognise that number. New to MomConnect?Please visit a clinic to register. Made a mistake?": [
         null,
-        ""
+        "Pfarelo, nomboro iyo a ri i ḓivhi. Ndi ntswa kha MomConnect? Vha humbelwa uri vha ye kiḽiniki u ṅwalisa. Vho tou khakha?"
     ],
     "Try again": [
         null,
-        ""
+        "Kha vha lingedze hafhu"
     ],
     "Thank you. To change your mobile number we first need to verify your identity. Please enter your SA ID number now.": [
         null,
-        ""
+        "Ro livhuwa. U shandukisa nomboro yavho ya luṱingo ri tea u thoma ra khwaṱhisedza vhuṋe havho. Kha vha dzhenise nomboro ya Bugundaula yavho ya SA zwino."
     ],
     "Thank you. To change your mobile number we first need to verify your identity. Please enter your passport number now.": [
         null,
-        ""
+        "Ro livhuwa. U shandukisa nomboro yavho ya luṱingo ri tea u thoma ra khwaṱhisedza vhuṋe havho. Kha vha dzhenise nomboro yavho ya phasipoto zwino."
     ],
     "Thank you. To change your mobile number we first need to verify your identity. Please enter your date of birth in the following format: dd*mm*yyyy": [
         null,
-        ""
+        "Ro livhuwa. U shandukisa nomboro yavho ya luṱingo ri tea u thoma ra khwaṱhisedza vhuṋe havho. Kha vha dzhenise datumu yavho ya mabebo nga fomethe iyi:dd*mm*yyyy"
     ],
     "Sorry that is not the correct format. Please enter your date of birth in the following format: dd*mm*yyyy. For example 19*05*1990": [
         null,
-        ""
+        "Pfarelo fomethe a si yone. Kha vha dzhenise datumu yavho ya mabebo nga fomethe iyi: dd*mm*yyyy. Sa tsumbo 19*05*1990"
     ],
     "Thank you. Please select the language you receive message in:": [
         null,
-        ""
+        "Ro livhuwa. Vha humbelwa u khetha luambo lune vha ḓo wana mulaedza ngalo:"
     ],
     "Sorry one or more of the answers you provided are incorrect. We are not able to change your mobile number. Please visit the clinic to register your new number.": [
         null,
-        ""
+        "Pfarelo, nthihi kana vhunzhi ha phindulo dze vha dzi ṋea a si dzone. A ri koni u shandukisa nomboro ya luṱingo. Kha vha ye kiḽiniki u ṅwalisa nomboro ntswa."
     ],
     "Thank you. Please enter the new number you would like to use to receive messages from MomConnect.": [
         null,
-        ""
+        "Ro livhuwa. Kha vha dzhenise nomboro ntswa ine vha tama u I shumisa u wana milaedza u bva kha MomConnect."
     ],
     "Sorry the number you have entered is not valid. Please re-enter the mobile number.": [
         null,
-        ""
+        "Pfarelo, nomboro ye vha i dzhenisa a si yone. Vha humbelwa u dzhenisa hafhu nomboro ya luṱingo."
     ],
     "You have entered {{new_number}} as the new number you would like to receive MomConnect messages on. Is this number correct?": [
         null,
-        ""
+        "Vho dzhenisa {{new_number}}sa nomboro ntswa ine vha nga tama u wana milaedza ya  MomConnect. Nomboro iyi ndi yone?"
     ],
     "No - enter again": [
         null,
-        ""
+        "Hai - kha vha dzhenise hafhu"
     ],
     "Sorry the number you have entered is already associated with a MomConnect account. Please try another number.": [
         null,
-        ""
+        "Pfarelo, nomboro ye vha i dzhenisa  yo no vha na vhuṱumani na akhaunthu ya MomConnect. Vha humbelwa u lingedza iṅwe nomboro."
     ],
     "Thank you. How would you like to receive messages about you and your baby?": [
         null,
-        ""
+        "Ro livhuwa. Vha tama u ṱanganedza hani milaedza nga ha ṅwana wavho?"
     ],
     "Your number has been changed successfully to {{msisdn}}. You will receive messages on {{channel}}. Thank you for using MomConnect!": [
         null,
-        ""
+        "Nomboro yavho yo shandukiswa zwavhuḓi u ya kha {{msisdn}}. Vha ḓo wana milaedza kha {{channel}}. Ro livhuwa u shumisa havho MomConnect!"
     ]
 }

@@ -2,22 +2,22 @@
     "": {
         "project-id-version": "POPI_USER_DATA",
         "pot-creation-date": "2018-10-03 10:07:+0000",
-        "po-revision-date": "2018-10-03 12:07+0200",
+        "po-revision-date": "2018-10-29 12:06+0200",
         "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
         "language-team": "Zulu <LL@li.org>",
         "language": "zu",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 2.1.1"
+        "x-generator": "Poedit 2.2"
     },
     "Personal info:\nPhone Number: {{msisdn}}\nID Number: {{id}}\nDate of Birth: {{dob}}\nChannel: {{channel}}\nLanguage: {{lang}}": [
         null,
-        ""
+        "Imininingwane yakho:\nInombolo Yocingo: {{msisdn}}\nInombolo ye-ID: {{id}}\nUsuku Lokuzalwa: {{dob}}\nIshaneli: {{channel}}\nUlimi: {{lang}}"
     ],
     "Personal info:\nPhone Number: {{msisdn}}\nOrigin of Passport: {{passport_or}}\nPassport: {{passport_num}}\nDate of Birth: {{dob}}\nChannel: {{channel}}\nLanguage: {{lang}}": [
         null,
-        ""
+        "Imininingwane yakho:\nInombolo Yocingo: {{msisdn}}\nIphasiphothi Eyakuphi: {{passport_or}}\nIphasiphothi: {{passport_num}}\nUsuku Lokuzalwa: {{dob}}\nIshaneli: {{channel}}\nUlimi: {{lang}}"
     ],
     "{{first}}\nMessage set: {{mset}}": [
         null,
@@ -25,11 +25,11 @@
     ],
     "SMS": [
         null,
-        ""
+        "I-SMS"
     ],
     "WhatsApp": [
         null,
-        ""
+        "I-WhatsApp"
     ],
     "What would you like to do?": [
         null,
@@ -49,7 +49,7 @@
     ],
     "More": [
         null,
-        ""
+        "Okunye"
     ],
     "Back": [
         null,
@@ -57,7 +57,7 @@
     ],
     "Main Menu": [
         null,
-        ""
+        "Imenyu Enkulu"
     ],
     "Use a different phone number": [
         null,
@@ -73,7 +73,7 @@
     ],
     "Receive messages over {{channel}}": [
         null,
-        ""
+        "Thola imiyalezo nge {{channel}}"
     ],
     "What would you like to change? To change your due date, visit a clinic": [
         null,
@@ -93,11 +93,11 @@
     ],
     "Thank you. Your info has been updated. You will now receive messages from MomConnect via {{channel}}.": [
         null,
-        ""
+        "Siyabonga. Imininingwane yakho ibukeziwe. Sewuzothola imiyalezo evela kuMomConnect nge {{channel}}."
     ],
     "Update my other info": [
         null,
-        ""
+        "Bukeza eminye iminingwane yami"
     ],
     "Choose a language for your messages:": [
         null,
@@ -105,51 +105,51 @@
     ],
     "isiZulu": [
         null,
-        ""
+        "isiZulu"
     ],
     "isiXhosa": [
         null,
-        ""
+        "isiXhosa"
     ],
     "Afrikaans": [
         null,
-        ""
+        "isiBhunu"
     ],
     "English": [
         null,
-        ""
+        "isNgisi"
     ],
     "Sesotho sa Leboa": [
         null,
-        ""
+        "Sepedi"
     ],
     "Setswana": [
         null,
-        ""
+        "Setswana"
     ],
     "Sesotho": [
         null,
-        ""
+        "isiSuthu"
     ],
     "Xitsonga": [
         null,
-        ""
+        "Xitsonga"
     ],
     "siSwati": [
         null,
-        ""
+        "isiSwati"
     ],
     "Tshivenda": [
         null,
-        ""
+        "Tshivenda"
     ],
     "isiNdebele": [
         null,
-        ""
+        "isiNdebele"
     ],
     "Thank you. Your info has been updated. You will now receive messages from MomConnect in {{language}}.": [
         null,
-        ""
+        "Siyabonga. Imininingwane yakho ibukeziwe. Sewuzothola imiyalezo evela kuMomConnect nge {{language}}."
     ],
     "What kind of identification do you have?": [
         null,
@@ -177,27 +177,27 @@
     ],
     "Zimbabwe": [
         null,
-        ""
+        "Zimbabwe"
     ],
     "Mozambique": [
         null,
-        ""
+        "Mozambique"
     ],
     "Malawi": [
         null,
-        ""
+        "Malawi"
     ],
     "Nigeria": [
         null,
-        ""
+        "Nigeria"
     ],
     "DRC": [
         null,
-        ""
+        "DRC"
     ],
     "Somalia": [
         null,
-        ""
+        "Somalia"
     ],
     "Other": [
         null,
@@ -213,7 +213,7 @@
     ],
     "Thank you. Your info has been updated. Your registered identification is {{identification_type}} {{identification_number}}.": [
         null,
-        ""
+        "Siyabonga. Imininingwane yakho ibukeziwe. Inkomba yakho ebhalisiwe ithi {{identification_type}} {{identification_number}}."
     ],
     "Please enter the new phone number we should use to send you messages eg. 0813547654": [
         null,
@@ -229,7 +229,7 @@
     ],
     "Thank you. Your info has been updated. You will now receive messages from MomConnect via on phone number {{msisdn}}": [
         null,
-        ""
+        "Siyabonga. Imininingwane yakho ibukeziwe. Sewuzothola imiyalezo evela kuMomConnect ngenombolo yakho yocingo  {{msisdn}}"
     ],
     "Your personal information stored on MomConnect has not been removed.": [
         null,
@@ -241,82 +241,82 @@
     ],
     "Sorry, the number you dialled with is not recognised. Dial in with the number you use for MomConnect to change your details": [
         null,
-        ""
+        "Uxolo, inombolo oshaye ngayo ayaziwa. Sishayele ngenombolo oyisebenzisela iMomConnect ukushintsha imininingwane yakho"
     ],
     "I don't have that SIM": [
         null,
-        ""
+        "Anginayo leyo-SIM"
     ],
     "Exit": [
         null,
-        ""
+        "Phuma"
     ],
     "Thank you for using MomConnect. Dial *134*550*7# to see, change or delete the your MomConnect information.": [
         null,
-        ""
+        "Siyabonga ngokusebenzisa iMomConnect. Dayela *134*550*7# ukubona, ukushintsha noma ukusula imininingwane yakho yeMomConnect."
     ],
     "Please enter the number you receive MomConnect messages on.": [
         null,
-        ""
+        "Sicela ufake inombolo othola imiyalezo yeMomConnect kuyo."
     ],
     "Sorry we do not recognise that number. New to MomConnect?Please visit a clinic to register. Made a mistake?": [
         null,
-        ""
+        "Siyaxolisa asiyazi leyo nombolo. Umusha kuMomConnect? Sicela uye kobhalisa eklinikhi. Wenze iphutha?"
     ],
     "Try again": [
         null,
-        ""
+        "Zama futhi"
     ],
     "Thank you. To change your mobile number we first need to verify your identity. Please enter your SA ID number now.": [
         null,
-        ""
+        "Siyabonga. Ukushintsha inombolo yocingo yakho sidinga ukuqinisekisa ukuthi nguwena. Sicela ufake inombolo yakho ye-ID yaseNingizimu Afrika manje."
     ],
     "Thank you. To change your mobile number we first need to verify your identity. Please enter your passport number now.": [
         null,
-        ""
+        "Siyabonga. Ukushintsha inombolo yocingo yakho sidinga ukuqinisekisa ukuthi nguwena. Sicela ufake inombolo yephasiphothi yakho manje."
     ],
     "Thank you. To change your mobile number we first need to verify your identity. Please enter your date of birth in the following format: dd*mm*yyyy": [
         null,
-        ""
+        "Siyabonga. Ukushintsha inombolo yocingo yakho sidinga ukuqinisekisa ukuthi nguwena. Sicela ufake usuku lokuzalwa ngendlela elandelayo: usuku*inyanga*unyaka"
     ],
     "Sorry that is not the correct format. Please enter your date of birth in the following format: dd*mm*yyyy. For example 19*05*1990": [
         null,
-        ""
+        "Uxolo akusiyo indlela efanele leyo. Sicela ufake usuku lokuzalwa ngendlela elandelayo: usuku*inyanga*unyaka. Isibonelo 19*05*1990"
     ],
     "Thank you. Please select the language you receive message in:": [
         null,
-        ""
+        "Siyabonga. Sicela ukhethe ulimi othola imiyalezo ngalo:"
     ],
     "Sorry one or more of the answers you provided are incorrect. We are not able to change your mobile number. Please visit the clinic to register your new number.": [
         null,
-        ""
+        "Uxolo kunempendulo engalungile. Siyehluleka ukushintsha inombolo yakho yocingo. Sicela uye kobhalisa inombolo yakho entsha eklinikhi."
     ],
     "Thank you. Please enter the new number you would like to use to receive messages from MomConnect.": [
         null,
-        ""
+        "Siyabonga. Sicela ufake inombolo entsha othanda ukuthola imiyalezo yeMomConnect kuyo."
     ],
     "Sorry the number you have entered is not valid. Please re-enter the mobile number.": [
         null,
-        ""
+        "Uxolo inombolo oyifakile ayisebenzi. Sicela uyifake kabusha inombolo yocingo."
     ],
     "You have entered {{new_number}} as the new number you would like to receive MomConnect messages on. Is this number correct?": [
         null,
-        ""
+        "Sewufake {{new_number}} njengenombolo entsha ongathanda ukuthola imiyalezo yeMomConnect kuyo. Ingabe le nombolo ilungile?"
     ],
     "No - enter again": [
         null,
-        ""
+        "Cha - faka futhi"
     ],
     "Sorry the number you have entered is already associated with a MomConnect account. Please try another number.": [
         null,
-        ""
+        "Uxolo inombolo oyifakile seyiyasebenza ku-akhawunti yeMomConnect. Sicela uzame enye inombolo."
     ],
     "Thank you. How would you like to receive messages about you and your baby?": [
         null,
-        ""
+        "Siyabonga. Ungathanda ukuyithola kanjani imiyalezo ngawe nengane yakho?"
     ],
     "Your number has been changed successfully to {{msisdn}}. You will receive messages on {{channel}}. Thank you for using MomConnect!": [
         null,
-        ""
+        "Inombolo yakho ishintshekile yaba ngu {{msisdn}}. Uzothola imiyalezo ku {{channel}}. Siyabonga ngokusebenzisa iMomConnect!"
     ]
 }

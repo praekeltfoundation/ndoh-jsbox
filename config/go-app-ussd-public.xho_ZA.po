@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: public\n"
 "POT-Creation-Date: 2018-09-28 07:58:+0000\n"
-"PO-Revision-Date: 2018-09-28 10:15+0200\n"
+"PO-Revision-Date: 2018-10-26 16:18+0200\n"
 "Last-Translator: Lieze <lieze@praekelt.com>\n"
 "Language-Team: Language <LL@li.org>\n"
 "Language: xh\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 2.2\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: go-app-ussd_public.js:365
@@ -58,11 +58,11 @@ msgstr ""
 
 #: go-app-ussd_public.js:508
 msgid "Welcome back. Please select an option:"
-msgstr ""
+msgstr "Wamkelekile kwakhona. Nceda ukhethe okungokunye:"
 
 #: go-app-ussd_public.js:510
 msgid "Continue signing up for messages"
-msgstr ""
+msgstr "Qhubeka ukusayinela imiyalezo"
 
 #: go-app-ussd_public.js:511
 msgid "Main menu"
@@ -97,6 +97,8 @@ msgid ""
 "To register we need to collect, store & use your info. You may get messages "
 "on public holidays & weekends. Do you consent?"
 msgstr ""
+"Ukubhalisa kufuneka siqokelele, sigcine futhi sisebenzise ulwazi ngawe. "
+"Ungafumana imiyalezo ngeeholide zikawonke-wonke neempela-veki. Uyavuma?"
 
 #: go-app-ussd_public.js:666
 msgid ""
@@ -109,6 +111,7 @@ msgstr ""
 #: go-app-ussd_public.js:676
 msgid "Unfortunately without your consent, you cannot register to MomConnect."
 msgstr ""
+"Ngelishwa, ngaphandle kwemvume yakho, awukwazi ukubhalisa ku-MomConnect."
 
 #: go-app-ussd_public.js:686
 msgid ""
@@ -123,10 +126,11 @@ msgid ""
 "You have chosen not to receive MomConnect messages and so cannot complete "
 "registration."
 msgstr ""
+"Ukhethe ukungafumani imiyalezo ye-MomConnect kengoko asinokugqiba ubhaliso."
 
 #: go-app-ussd_public.js:720
 msgid "Main Menu"
-msgstr "Imenyu enguNdoqo"
+msgstr "Imenyu eNkulu"
 
 #: go-app-ussd_public.js:801
 msgid ""

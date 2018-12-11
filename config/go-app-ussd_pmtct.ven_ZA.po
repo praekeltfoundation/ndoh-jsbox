@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: USSD PMTCT\n"
 "POT-Creation-Date: 2018-10-03 10:18:+0000\n"
-"PO-Revision-Date: 2018-10-03 12:20+0200\n"
+"PO-Revision-Date: 2018-10-26 12:43+0200\n"
 "Last-Translator: \n"
 "Language-Team: VENDA <LL@li.org>\n"
 "Language: ve\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 2.2\n"
 
 #: go-app-ussd_pmtct_seed.js:95
 msgid ""
@@ -115,15 +115,15 @@ msgstr ""
 
 #: go-app-ussd_pmtct_seed.js:487
 msgid "Please tell us why you do not want to receive messages:"
-msgstr "Please tell us why you do not want to receive messages:"
+msgstr "Ri khou humbela uri vha ri vhudze uri ndi ngani u sa wana milaedza"
 
 #: go-app-ussd_pmtct_seed.js:490
 msgid "More"
-msgstr ""
+msgstr "Zwinzhi"
 
 #: go-app-ussd_pmtct_seed.js:491
 msgid "Back"
-msgstr ""
+msgstr "Murahu"
 
 #: go-app-ussd_pmtct_seed.js:493
 msgid "Not HIV-positive"
@@ -155,9 +155,9 @@ msgid ""
 "still receive MomConnect SMSs. To stop receiving these SMSs, dial "
 "{{ mc_optout_number }}"
 msgstr ""
-"A vha nga do wana SMS nga ha u dzudza nwana wavho a si na HIV. Vha kha di do "
-"wana SMS dza MomConnect. Uri vha sa tsha wana SMS idzi, vha lidzele "
-"*134*550*1#"
+"A vha nga do wana milaedza nga ha u dzudza nwana wavho a si na HIV. Vha kha "
+"di do wana milaedza kha MomConnect. Uri vha sa tsha wana milaedza idzi, vha "
+"lidzele *134*550*1#"
 
 #: go-app-ussd_pmtct_seed.js:536
 msgid ""
