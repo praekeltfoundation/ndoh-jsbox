@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: POPI_USER_DATA\n"
 "POT-Creation-Date: 2018-10-03 10:07:+0000\n"
-"PO-Revision-Date: 2018-10-25 14:50+0200\n"
+"PO-Revision-Date: 2019-01-10 09:01+0200\n"
 "Last-Translator: Kaitlyn Crawford <kaitlyn@praekelt.org>\n"
 "Language-Team: Tsonga <LL@li.org>\n"
 "Language: ts\n"
@@ -105,7 +105,7 @@ msgstr "Ku cinca vutitivisi bya mina"
 
 #: go-app-ussd_popi_user_data.js:327
 msgid "Receive messages over {{channel}}"
-msgstr "Kuma swihungwana hi {{chanele}}"
+msgstr "Kuma swihungwana hi {{channel}}"
 
 #: go-app-ussd_popi_user_data.js:334
 msgid "What would you like to change? To change your due date, visit a clinic"
@@ -133,7 +133,7 @@ msgid ""
 "MomConnect via {{channel}}."
 msgstr ""
 "Ha khensa. Vuxokoxoko byi pfuxetiwile. U ta kuma swihungwana swa MomConnect "
-"hi {{chanele}}"
+"hi {{channel}}"
 
 #: go-app-ussd_popi_user_data.js:389 go-app-ussd_popi_user_data.js:446
 #: go-app-ussd_popi_user_data.js:556 go-app-ussd_popi_user_data.js:667
@@ -194,7 +194,7 @@ msgid ""
 "MomConnect in {{language}}."
 msgstr ""
 "Ha khensa. Vuxokoxoko byi pfuxetiwile. U ta kuma swihungwana swa MomConnect "
-"hi {{ririmi}}"
+"hi {{language}}"
 
 #: go-app-ussd_popi_user_data.js:453
 msgid "What kind of identification do you have?"
@@ -267,7 +267,7 @@ msgid ""
 "{{identification_type}} {{identification_number}}."
 msgstr ""
 "Ha khensa. Vuxokoxoko byi pfuxetiwile. Vutitivisi bya wena lebyi tsariweke i "
-"{{muxaka_wa_vutitivisi}}                      {{nomboro _ya_pasi}}"
+"{{identification_type}} {{identification_number}}"
 
 #: go-app-ussd_popi_user_data.js:563
 msgid ""
@@ -417,16 +417,16 @@ msgid ""
 "Sorry the number you have entered is not valid. Please re-enter the mobile "
 "number."
 msgstr ""
-"Hi khomele, nomboro leyi u yi ngheniseke a yi  amukeleki. Nghenisa nomboro "
-"ya selifoni nakambe."
+"Hi khomele, nomboro leyi u yi ngheniseke a yi amukeleki. Nghenisa nomboro ya "
+"selifoni nakambe."
 
 #: go-app-ussd_popi_user_data.js:911
 msgid ""
 "You have entered {{new_number}} as the new number you would like to receive "
 "MomConnect messages on. Is this number correct?"
 msgstr ""
-"U nghenisile {{nomboro_leyintshwa}} tanihi nomboro leyi u lavaka ku kuma "
-"swihungwana swa MomConnect eka yona. Xana nomboro leyi yi lulamile?"
+"U nghenisile {{new_number}} tanihi nomboro leyi u lavaka ku kuma swihungwana "
+"swa MomConnect eka yona. Xana nomboro leyi yi lulamile?"
 
 #: go-app-ussd_popi_user_data.js:917
 msgid "No - enter again"
@@ -453,7 +453,7 @@ msgid ""
 "messages on {{channel}}. Thank you for using MomConnect!"
 msgstr ""
 "Nomboro ya wena yi cinciwile kahle eka {{msisdn}}. U ta kuma swihungwana hi "
-"{{chanele}}. Ha khensa ku va u tirhisa MomConnect!"
+"{{channel}}. Ha khensa ku va u tirhisa MomConnect!"
 
 #~ msgid ""
 #~ "Personal info:\n"
