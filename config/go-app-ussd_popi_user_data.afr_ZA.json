@@ -2,7 +2,7 @@
     "": {
         "project-id-version": "POPI_USER_DATA",
         "pot-creation-date": "2018-10-03 10:07:+0000",
-        "po-revision-date": "2018-10-25 15:53+0200",
+        "po-revision-date": "2019-01-10 11:59+0200",
         "last-translator": "Kaitlyn Crawford <kaitlyn@praekelt.org>",
         "language-team": "",
         "language": "za",
@@ -149,7 +149,7 @@
     ],
     "Thank you. Your info has been updated. You will now receive messages from MomConnect in {{language}}.": [
         null,
-        "Baie dankie. Jou info is bygewerk. Jy sal nou boodskappe van MomConnect ontvang in {{taal}}"
+        "Baie dankie. Jou info is bygewerk. Jy sal nou boodskappe van MomConnect ontvang in {{language}}"
     ],
     "What kind of identification do you have?": [
         null,
@@ -253,7 +253,7 @@
     ],
     "Thank you for using MomConnect. Dial *134*550*7# to see, change or delete the your MomConnect information.": [
         null,
-        "Baie dankie dat jy MomConnect gebruik. Skakel  *134*550*7# om jou MomConnect info te sien, te verander of te skrap."
+        "Baie dankie dat jy MomConnect gebruik. Skakel *134*550*7# om jou MomConnect info te sien, te verander of te skrap."
     ],
     "Please enter the number you receive MomConnect messages on.": [
         null,
@@ -281,7 +281,7 @@
     ],
     "Sorry that is not the correct format. Please enter your date of birth in the following format: dd*mm*yyyy. For example 19*05*1990": [
         null,
-        "Jammer, dit is nie in die regte formaat nie. Tik asb jou geboortedatum soos volg in: dd*mm*jjjj  byvoorbeeld 19*05*1990"
+        "Jammer, dit is nie in die regte formaat nie. Tik asb jou geboortedatum soos volg in: dd*mm*jjjj byvoorbeeld 19*05*1990"
     ],
     "Thank you. Please select the language you receive message in:": [
         null,
@@ -309,7 +309,7 @@
     ],
     "Sorry the number you have entered is already associated with a MomConnect account. Please try another number.": [
         null,
-        "Jammer, die selnommer wat jy ingetik het, is reeds aan ’n MomConnect rekening gekoppel. Probeer asb ’n ander nommer. "
+        "Jammer, die selnommer wat jy ingetik het, is reeds aan ’n MomConnect rekening gekoppel. Probeer asb ’n ander nommer."
     ],
     "Thank you. How would you like to receive messages about you and your baby?": [
         null,
