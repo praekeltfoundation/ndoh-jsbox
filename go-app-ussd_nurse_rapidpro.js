@@ -140,7 +140,7 @@ go.OpenHIM = function() {
             })[0].replace("tel:", "");
             return self.http_api.post(url, {data: JSON.stringify({
                 mha: 1,
-                swt: contact.fields.preferred_channel === "whatsapp" ? 7 : 3,
+                swt: contact.fields.preferred_channel === "whatsapp" ? 7 : 2,
                 type: 7,
                 dmsisdn: contact.fields.registered_by,
                 cmsisdn: msisdn,
