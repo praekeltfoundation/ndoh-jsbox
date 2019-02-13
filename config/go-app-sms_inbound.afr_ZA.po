@@ -1,0 +1,72 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2019-02-08 11:01:+0000\n"
+"Project-Id-Version: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2019-02-13 13:44+0200\n"
+"X-Generator: Poedit 2.2.1\n"
+"Last-Translator: \n"
+"Language: za\n"
+
+#: go-app-sms_inbound.js:326
+msgid ""
+"Please use your handset's keypad to dial the number that you received, "
+"rather than sending it to us in an sms."
+msgstr ""
+
+#: go-app-sms_inbound.js:352
+msgid ""
+"Thank you. You will no longer receive messages from us. If you have any "
+"medical concerns please visit your nearest clinic"
+msgstr ""
+
+#: go-app-sms_inbound.js:376
+msgid ""
+"Thank you. You will now receive messages from us again. If you have any "
+"medical concerns please visit your nearest clinic"
+msgstr ""
+
+#: go-app-sms_inbound.js:399
+msgid ""
+"Thank you. You will now receive messages related to newborn babies. If you "
+"have any medical concerns please visit your nearest clinic"
+msgstr ""
+
+#: go-app-sms_inbound.js:433
+msgid ""
+"The helpdesk operates from 8am to 6pm Mon to Fri. Responses will be delayed "
+"outside of these hrs. In an emergency please go to your health provider "
+"immediately."
+msgstr ""
+
+#: go-app-sms_inbound.js:438
+msgid ""
+"The helpdesk is not currently available during weekends and public holidays. "
+"In an emergency please go to your health provider immediately."
+msgstr ""
+
+#: go-app-sms_inbound.js:443
+msgid ""
+"Thank you for your message, it has been captured and you will receive a "
+"response soon. Kind regards. MomConnect."
+msgstr ""
+
+#: go-app-sms_inbound.js:478
+msgid ""
+"Welcome to MomConnect on WhatsApp! You will get all your helpful MomConnect "
+"messages on WhatsApp. To move back to SMS, reply \"SMS\" (std rates)."
+msgstr ""
+"Welkom by MomConnect op WhatsApp! Jy sal al die nuttige MomConnect "
+"boodskappe via WhatsApp kry. Om terug te gaan na SMS, antwoord “SMS” (std "
+"fooie)."
+
+#: go-app-sms_inbound.js:482
+msgid ""
+"You will now get your MomConnect messages on SMS. To move back to WhatsApp, "
+"reply \"WA\" (std rates apply)."
+msgstr ""
+"Jy sal nou jou MomConnect boodskappe via SMS kry. Om terug te gaan na "
+"WhatsApp, antwoord “WA” (std fooie geld)."
