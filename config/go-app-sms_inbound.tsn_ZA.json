@@ -1,0 +1,51 @@
+{
+    "": {
+        "pot-creation-date": "2018-03-26 09:18:+0000",
+        "project-id-version": "",
+        "language-team": "",
+        "mime-version": "1.0",
+        "content-type": "text/plain; charset=UTF-8",
+        "content-transfer-encoding": "8bit",
+        "po-revision-date": "2018-03-26 12:21+0200",
+        "x-generator": "Poedit 2.0.4",
+        "last-translator": "",
+        "plural-forms": "nplurals=2; plural=(n != 1);",
+        "language": "tsn_ZA"
+    },
+    "Please use your handset's keypad to dial the number that you received, rather than sending it to us in an sms.": [
+        null,
+        ""
+    ],
+    "Thank you. You will no longer receive messages from us. If you have any medical concerns please visit your nearest clinic": [
+        null,
+        ""
+    ],
+    "Thank you. You will now receive messages from us again. If you have any medical concerns please visit your nearest clinic": [
+        null,
+        ""
+    ],
+    "Thank you. You will now receive messages related to newborn babies. If you have any medical concerns please visit your nearest clinic": [
+        null,
+        ""
+    ],
+    "The helpdesk operates from 8am to 6pm Mon to Fri. Responses will be delayed outside of these hrs. In an emergency please go to your health provider immediately.": [
+        null,
+        ""
+    ],
+    "The helpdesk is not currently available during weekends and public holidays. In an emergency please go to your health provider immediately.": [
+        null,
+        ""
+    ],
+    "Thank you for your message, it has been captured and you will receive a response soon. Kind regards. MomConnect.": [
+        null,
+        ""
+    ],
+    "Welcome to MomConnect on WhatsApp! You will get all your helpful MomConnect messages on WhatsApp. To move back to SMS, reply 'SMS' (std rates).": [
+        null,
+        "O amogetswe go MomConnect ka WhatsApp! O ile go amogela melaetsa   ya MomConnect ka WhatsApp. Go boela go SMS, romela karabo “SMS“ (seelo sa ka gale)."
+    ],
+    "You will now get your MomConnect messages on SMS. To move back to WhatsApp, reply 'WA' (std rates apply).": [
+        null,
+        "O ile go amogela melaetsa ya gago ya MomConnect ka SMS. Go boela go WhatsApp, romela karabo “WA” (seelo sa ka gale)."
+    ]
+}

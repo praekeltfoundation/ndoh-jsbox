@@ -575,10 +575,8 @@ describe("app", function() {
                     .check.interaction({
                         state: 'state_channel_switch',
                         reply:
-                            'Thank you. You will get messages on SMS. To change ' +
-                            'how you get messages, dial *134*550*7#, then choose ' +
-                            '2. Or reply to any message with \'SMS\' to get them ' +
-                            'via SMS, or \'WA\' for WhatsApp.'
+                            "You will now get your MomConnect messages on SMS. " +
+                            "To move back to WhatsApp, reply 'WA' (std rates apply)."
                     })
                     .run();
             });
@@ -622,10 +620,9 @@ describe("app", function() {
                     .check.interaction({
                         state: 'state_channel_switch',
                         reply:
-                            'Thank you. You will get messages on WhatsApp. To change ' +
-                            'how you get messages, dial *134*550*7#, then choose ' +
-                            '2. Or reply to any message with \'SMS\' to get them ' +
-                            'via SMS, or \'WA\' for WhatsApp.'
+                            "Welcome to MomConnect on WhatsApp! You will get " +
+                            "all your helpful MomConnect messages on WhatsApp. "+
+                            "To move back to SMS, reply 'SMS' (std rates)."
                     })
                     .run();
             });
