@@ -174,7 +174,22 @@ go.Engage = function() {
                 return !_.isEmpty(existing);
             });
         };
+
+          self.LANG_MAP = {zul_ZA: "uz",
+                          xho_ZA: "th",
+                          afr_ZA: "af",
+                          eng_ZA: "en",
+                          nso_ZA: "sl",
+                          tsn_ZA: "bn",
+                          sot_ZA: "ta",
+                          tso_ZA: "sv",
+                          ssw_ZA: "sw",
+                          ven_ZA: "vi",
+                          nbl_ZA: "nb",
+                        };
     });
+
+
 
     return Engage;
 }();
@@ -493,6 +508,12 @@ go.app = function() {
         };
 
         self.send_compliment_instructions = function() {
+            var lang = engage.LANG_MAP[self.im.user.answers.state_language];
+            var text = self.im.user.i18n($(
+                "Please reply to this message with your compliment. If it " +
+                "relates to the service at the clinic, include the clinic or " +
+                "clinic worker name. Standard rates apply."));
+
             return self
                 .get_channel()
                 .then(function(channel) {
@@ -500,17 +521,26 @@ go.app = function() {
                         create_outbound(
                             self.im.user.answers.registrant.id,
                             self.im.user.answers.registrant_msisdn,
-                            self.im.user.i18n($(
-                                "Please reply to this message with your compliment. If it " +
-                                "relates to the service at the clinic, include the clinic or " +
-                                "clinic worker name. Standard rates apply."
-                            )), {
-                                channel: channel
+                            text,
+                            {
+                              channel: channel,
+                              metadata: {
+                                template: {
+                                  name: "important_info",
+                                  language: lang,
+                                  variables: text
+                              }},
                             });
                 });
         };
 
         self.send_complaint_instructions = function() {
+            var lang = engage.LANG_MAP[self.im.user.answers.state_language];
+            var text = self.im.user.i18n($(
+              "Please reply to this message with your complaint. If it " +
+              "relates to the service at the clinic, include the clinic or " +
+              "clinic worker name. Standard rates apply."));
+
             return self
                 .get_channel()
                 .then(function(channel) {
@@ -518,12 +548,15 @@ go.app = function() {
                         create_outbound(
                             self.im.user.answers.registrant.id,
                             self.im.user.answers.registrant_msisdn,
-                            self.im.user.i18n($(
-                                "Please reply to this message with your complaint. If it " +
-                                "relates to the service at the clinic, include the clinic or " +
-                                "clinic worker name. Standard rates apply."
-                            )), {
-                                channel: channel
+                            text,
+                            {
+                              channel: channel,
+                              metadata : {
+                                template: {
+                                  name: "important_info",
+                                  language: lang,
+                                  variables: text
+                              }}
                             });
                 });
         };

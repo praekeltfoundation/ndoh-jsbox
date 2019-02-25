@@ -29,6 +29,7 @@ go.app = function() {
         var sbm;
         var hub;
         var ms;
+        var engage;
 
         self.init = function() {
             // initialising services
@@ -56,6 +57,11 @@ go.app = function() {
                 self.im.config.services.message_sender.url,
                 self.im.config.services.message_sender.channel
             );
+            engage = new go.Engage(
+                new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-Public"]}}),
+                self.im.config.services.engage.url,
+                self.im.config.services.engage.token
+            );
         };
 
         self.get_channel = function() {
@@ -79,37 +85,6 @@ go.app = function() {
                         .then(function() {
                             return channel;
                         });
-                });
-        };
-
-        self.send_registration_thanks = function() {
-            return self
-                .get_channel()
-                .then(function(channel) {
-                    this.channel = channel;
-                    return ms.create_outbound(
-                        self.im.user.answers.identity.id,
-                        self.im.user.answers.msisdn,
-                        self.im.user.i18n($(
-                            "HIV positive moms can have an HIV negative baby! You can get free " +
-                            "medicine at the clinic to protect your baby and improve your health"
-                        )), {
-                            channel: this.channel
-                        }
-                    );
-                })
-                .then(function() {
-                    return ms.create_outbound(
-                        self.im.user.answers.identity.id,
-                        self.im.user.answers.msisdn,
-                        self.im.user.i18n($(
-                            "Recently tested HIV positive? You are not alone, many other pregnant " +
-                            "women go through this. Visit b-wise.mobi or call the AIDS Helpline " +
-                            "0800 012 322"
-                        )), {
-                            channel: this.channel
-                        }
-                    );
                 });
         };
 
@@ -566,6 +541,55 @@ go.app = function() {
                 next: "state_start"
             });
         });
+
+        self.send_registration_thanks = function() {
+            var lang_code = self.im.user.lang || "eng_ZA";
+            var lang = engage.LANG_MAP[lang_code];
+            var content = self.im.user.i18n($(
+                "HIV positive moms can have an HIV negative baby! You can get free " +
+                "medicine at the clinic to protect your baby and improve your health"
+            ));
+            var text = self.im.user.i18n($(
+                "Recently tested HIV positive? You are not alone, many other pregnant " +
+                "women go through this. Visit b-wise.mobi or call the AIDS Helpline " +
+                "0800 012 322"
+            ));
+            return self
+                .get_channel()
+                .then(function(channel) {
+                    this.channel = channel;
+                    return ms.create_outbound(
+                        self.im.user.answers.identity.id,
+                        self.im.user.answers.msisdn,
+                        content,
+                        {
+                          channel: this.channel,
+                          metadata : {
+                            template: {
+                              name: "important_info",
+                              language: lang,
+                              variables: content
+                          }},
+                        }
+                    );
+                })
+                .then(function() {
+                    return ms.create_outbound(
+                        self.im.user.answers.identity.id,
+                        self.im.user.answers.msisdn,
+                        text,
+                        {
+                          channel: this.channel,
+                          metadata: {
+                            template: {
+                              name: "important_info",
+                              language: lang,
+                              variables: text
+                          }},
+                        }
+                    );
+                });
+        };
 
     });
 

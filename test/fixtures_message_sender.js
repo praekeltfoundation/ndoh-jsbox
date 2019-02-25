@@ -565,8 +565,13 @@ module.exports = function() {
                     "to_identity": "cb245673-aa41-4302-ac47-00000001002",
                     "to_addr": "+27820001002",
                     "content": "Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.",
-                    "metadata": {}
-                }
+                    "metadata":{
+                      "template":{
+                        "name":"important_info",
+                        "variables":"Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply."
+                      }
+                    }
+                  }
             },
             "response": {
                 "code": 201,
@@ -584,7 +589,12 @@ module.exports = function() {
                     "to_identity": "cb245673-aa41-4302-ac47-00000001002",
                     "to_addr": "+27820001002",
                     "content": "Please reply to this message with your complaint. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.",
-                    "metadata": {}
+                    "metadata":{
+                      "template":{
+                        "name":"important_info",
+                        "variables":"Please reply to this message with your complaint. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.",
+                      }
+                    }
                 }
             },
             "response": {
@@ -717,7 +727,12 @@ module.exports = function() {
                     "to_identity": "cb245673-aa41-4302-ac47-00000001011",
                     "to_addr": "+27820001011",
                     "content": "Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.",
-                    "metadata": {}
+                    "metadata":{
+                      "template":{
+                        "name":"important_info",
+                        "variables":"Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply."
+                      }
+                    }
                 }
             },
             "response": {
@@ -755,7 +770,12 @@ module.exports = function() {
                     "to_identity": "cb245673-aa41-4302-ac47-00000001008",
                     "to_addr": "+27820001008",
                     "content": "Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.",
-                    "metadata": {}
+                    "metadata":{
+                      "template":{
+                        "name":"important_info",
+                        "variables":"Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply."
+                      }
+                    }
                 }
             },
             "response": {
@@ -830,8 +850,14 @@ module.exports = function() {
                     "to_identity": "cb245673-aa41-4302-ac47-00000000001",
                     "to_addr": "+27820000111",
                     "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                    "metadata":{
+                      "template":{
+                        "name":"important_info",
+                        "language":"en",
+                        "variables":"HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                        }
+                    },
                     "channel": "default-channel",
-                    "metadata":{}
                 }
             },
             "response": {}
@@ -846,8 +872,14 @@ module.exports = function() {
                     "to_identity": "cb245673-aa41-4302-ac47-00000000001",
                     "to_addr": "+27820000111",
                     "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
-                    "channel": "default-channel",
-                    "metadata":{}
+                    "metadata":{
+                      "template":{
+                        "name":"important_info",
+                        "language":"en",
+                        "variables":"Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                      }
+                    },
+                    "channel":"default-channel"
                 }
             },
             "response": {}
@@ -862,8 +894,14 @@ module.exports = function() {
                     "to_identity": "cb245673-aa41-4302-ac47-00000000002",
                     "to_addr": "+27820000222",
                     "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
-                    "channel": "default-channel",
-                    "metadata":{}
+                    "metadata":{
+                      "template":{
+                        "name":"important_info",
+                        "language":"en",
+                        "variables":"HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                        }
+                    },
+                  "channel": "default-channel",
                 }
             },
             "response": {}
@@ -878,8 +916,14 @@ module.exports = function() {
                     "to_identity": "cb245673-aa41-4302-ac47-00000000002",
                     "to_addr": "+27820000222",
                     "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
-                    "channel": "default-channel",
-                    "metadata":{}
+                    "metadata":{
+                      "template":{
+                        "name":"important_info",
+                        "language":"en",
+                        "variables":"Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                      }
+                    },
+                    "channel":"default-channel"
                 }
             },
             "response": {}
@@ -894,9 +938,15 @@ module.exports = function() {
                     "to_identity": "cb245673-aa41-4302-ac47-00000000003",
                     "to_addr": "+27820000333",
                     "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
-                    "channel": "default-channel",
-                    "metadata":{}
-                }
+                    "metadata":{
+                      "template":{
+                        "name":"important_info",
+                        "language":"en",
+                        "variables":"HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                        }
+                    },
+                  "channel": "default-channel",
+              }
             },
             "response": {}
         },
@@ -910,8 +960,14 @@ module.exports = function() {
                     "to_identity": "cb245673-aa41-4302-ac47-00000000003",
                     "to_addr": "+27820000333",
                     "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
-                    "channel": "default-channel",
-                    "metadata":{}
+                    "metadata":{
+                      "template":{
+                        "name":"important_info",
+                        "language":"en",
+                        "variables":"Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                      }
+                    },
+                    "channel":"default-channel"
                 }
             },
             "response": {}
@@ -926,8 +982,14 @@ module.exports = function() {
                     "to_identity": "cb245673-aa41-4302-ac47-00000000004",
                     "to_addr": "+27820000444",
                     "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
-                    "channel": "default-channel",
-                    "metadata":{}
+                    "metadata":{
+                      "template":{
+                        "name":"important_info",
+                        "language":"en",
+                        "variables":"HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                        }
+                    },
+                  "channel": "default-channel",
                 }
             },
             "response": {}
@@ -942,8 +1004,14 @@ module.exports = function() {
                     "to_identity": "cb245673-aa41-4302-ac47-00000000004",
                     "to_addr": "+27820000444",
                     "content": "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
-                    "channel": "default-channel",
-                    "metadata":{}
+                    "metadata":{
+                      "template":{
+                        "name":"important_info",
+                        "language":"en",
+                        "variables":"Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                      }
+                    },
+                    "channel":"default-channel"
                 }
             },
             "response": {}
@@ -1017,32 +1085,82 @@ module.exports = function() {
             }
         },
 
-        // 145:
+        // 145: create outbound message for cb245673-aa41-4302-ac47-00000001002
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820001002",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "to_addr": "+27820001002",
+                    "content": "Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.",
+                    "metadata":{
+                      "template":{
+                        "name":"important_info",
+                        "variables":"Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply."
+                      }
+                    },
+                    "channel":"pilot-channel"
+                  }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {}
+            }
         },
 
-        // 146:
+        // 146: create outbound message for cb245673-aa41-4302-ac47-00000001002
         {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
+            "key": "post.ms.outbound.27820001002",
+            "request": {
+                "url": 'http://ms/api/v1/outbound/',
+                "method": 'POST',
+                "data": {
+                    "to_identity": "cb245673-aa41-4302-ac47-00000001002",
+                    "to_addr": "+27820001002",
+                    "content": "Please reply to this message with your complaint. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.",
+                    "metadata":{
+                      "template":{
+                        "name":"important_info",
+                        "variables":"Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply."
+                      }
+                    },
+                    "channel":"pilot-channel"
+                }
             },
-            'response': {}
+            "response": {
+                "code": 201,
+                "data": {}
+            }
         },
 
-        // 147:
-        {
-            'request': {
-                'method': 'GET',
-                'url': 'http://',
-            },
-            'response': {}
-        },
+
+        // 147: post outbound message for cb245673-aa41-4302-ac47-00000000001
+          {
+              "key": "post.ms.outbound.27820001002",
+              "request": {
+                  "url": 'http://ms/api/v1/outbound/',
+                  "method": 'POST',
+                  "data": {
+                      "to_identity": "cb245673-aa41-4302-ac47-00000000002",
+                      "to_addr": "+27820000111",
+                      "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                      "metadata":{
+                        "template":{
+                          "name":"important_info",
+                          "language":"en",
+                          "variables":"HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                          }
+                      },
+                      "channel": "default-channel",
+                  }
+              },
+              "response": {
+                  "code": 201,
+                  "data": {}
+              }
+          },
 
         // 148:
         {

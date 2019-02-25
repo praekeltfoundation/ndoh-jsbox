@@ -1050,6 +1050,12 @@ describe("ussd_public app", function() {
                 api.http.fixtures.add(fixtures_Pilot().post_outbound_message({
                     identity: 'cb245673-aa41-4302-ac47-00000001002',
                     address: '+27820001002',
+                    metadata: {
+                      template:{
+                        name:"important_info",
+                        variables:"Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply."
+                      }
+                    },
                     channel: 'pilot-channel',
                     content: 'Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.'
                 }));
@@ -1075,7 +1081,7 @@ describe("ussd_public app", function() {
                 test_utils.only_use_fixtures(api, {
                     numbers: [
                         54, // "get.sbm.messageset.all"
-                        120, // "post.ms.outbound.27820001002"
+                        146, // "post.ms.outbound.27820001002"
                         181, // "get.is.msisdn.27820001002"
                     ],
                 });
@@ -1096,6 +1102,12 @@ describe("ussd_public app", function() {
                 api.http.fixtures.add(fixtures_Pilot().post_outbound_message({
                     identity: 'cb245673-aa41-4302-ac47-00000001002',
                     address: '+27820001002',
+                    metadata:{
+                      template:{
+                        name:"important_info",
+                        variables:"Please reply to this message with your complaint. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.",
+                      }
+                    },
                     channel: 'pilot-channel',
                     content: 'Please reply to this message with your complaint. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.'
                 }));

@@ -6,11 +6,12 @@ module.exports = function(){
             var to_addr = params.to_addr || '+27820001001';
             var content = params.content || 'Test message';
             var channel = params.channel || null;
+            var metadata = params.metadata || {};
             var data = {
                 to_identity: to_identity,
                 to_addr: to_addr,
                 content: content,
-                metadata: {},
+                metadata: metadata,
             };
             if(channel) {
                 data.channel = channel;
