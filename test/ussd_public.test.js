@@ -1053,6 +1053,7 @@ describe("ussd_public app", function() {
                     metadata: {
                       template:{
                         name:"important_info",
+                        language: "en",
                         variables:"Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply."
                       }
                     },
@@ -1105,6 +1106,7 @@ describe("ussd_public app", function() {
                     metadata:{
                       template:{
                         name:"important_info",
+                        language: "en",
                         variables:"Please reply to this message with your complaint. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.",
                       }
                     },
