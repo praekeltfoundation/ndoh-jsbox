@@ -542,11 +542,11 @@ go.app = function() {
         self.send_registration_thanks = function() {
             var lang_code = self.im.user.lang || "eng_ZA";
             var lang = engage.LANG_MAP[lang_code];
-            var content = self.im.user.i18n($(
+            var message1 = self.im.user.i18n($(
                 "HIV positive moms can have an HIV negative baby! You can get free " +
                 "medicine at the clinic to protect your baby and improve your health"
             ));
-            var text = self.im.user.i18n($(
+            var message2 = self.im.user.i18n($(
                 "Recently tested HIV positive? You are not alone, many other pregnant " +
                 "women go through this. Visit b-wise.mobi or call the AIDS Helpline " +
                 "0800 012 322"
@@ -558,14 +558,14 @@ go.app = function() {
                     return ms.create_outbound(
                         self.im.user.answers.identity.id,
                         self.im.user.answers.msisdn,
-                        content,
+                        message1,
                         {
                           channel: this.channel,
                           metadata : {
                             template: {
                               name: "important_info",
                               language: lang,
-                              variables: content
+                              variables: message1
                           }},
                         }
                     );
@@ -574,14 +574,14 @@ go.app = function() {
                     return ms.create_outbound(
                         self.im.user.answers.identity.id,
                         self.im.user.answers.msisdn,
-                        text,
+                        message2,
                         {
                           channel: this.channel,
                           metadata: {
                             template: {
                               name: "important_info",
                               language: lang,
-                              variables: text
+                              variables: message2
                           }},
                         }
                     );

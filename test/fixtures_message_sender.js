@@ -568,6 +568,7 @@ module.exports = function() {
                     "metadata":{
                       "template":{
                         "name":"important_info",
+                        "language":"en",
                         "variables":"Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply."
                       }
                     }
@@ -592,6 +593,7 @@ module.exports = function() {
                     "metadata":{
                       "template":{
                         "name":"important_info",
+                        "language":"en",
                         "variables":"Please reply to this message with your complaint. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.",
                       }
                     }
@@ -730,6 +732,7 @@ module.exports = function() {
                     "metadata":{
                       "template":{
                         "name":"important_info",
+                        "language":"en",
                         "variables":"Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply."
                       }
                     }
@@ -773,6 +776,7 @@ module.exports = function() {
                     "metadata":{
                       "template":{
                         "name":"important_info",
+                        "language":"en",
                         "variables":"Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply."
                       }
                     }
@@ -1098,6 +1102,7 @@ module.exports = function() {
                     "metadata":{
                       "template":{
                         "name":"important_info",
+                        "language":"en",
                         "variables":"Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply."
                       }
                     },
@@ -1123,6 +1128,7 @@ module.exports = function() {
                     "metadata":{
                       "template":{
                         "name":"important_info",
+                        "language":"en",
                         "variables":"Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply."
                       }
                     },
@@ -1138,28 +1144,11 @@ module.exports = function() {
 
         // 147: post outbound message for cb245673-aa41-4302-ac47-00000000001
           {
-              "key": "post.ms.outbound.27820001002",
-              "request": {
-                  "url": 'http://ms/api/v1/outbound/',
-                  "method": 'POST',
-                  "data": {
-                      "to_identity": "cb245673-aa41-4302-ac47-00000000002",
-                      "to_addr": "+27820000111",
-                      "content": "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
-                      "metadata":{
-                        "template":{
-                          "name":"important_info",
-                          "language":"en",
-                          "variables":"HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
-                          }
-                      },
-                      "channel": "default-channel",
-                  }
-              },
-              "response": {
-                  "code": 201,
-                  "data": {}
-              }
+                'request': {
+                    'method': 'GET',
+                    'url': 'http://',
+                },
+                'response': {}
           },
 
         // 148:
