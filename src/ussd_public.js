@@ -312,6 +312,12 @@ go.app = function() {
         };
 
         self.send_compliment_instructions = function() {
+            var lang = engage.LANG_MAP[self.im.user.answers.registrant.details.lang_code];
+            var text = self.im.user.i18n($(
+                "Please reply to this message with your compliment. If it " +
+                "relates to the service at the clinic, include the clinic or " +
+                "clinic worker name. Standard rates apply."));
+
             return self
                 .get_channel()
                 .then(function(channel) {
@@ -319,17 +325,26 @@ go.app = function() {
                         create_outbound(
                             self.im.user.answers.registrant.id,
                             self.im.user.answers.registrant_msisdn,
-                            self.im.user.i18n($(
-                                "Please reply to this message with your compliment. If it " +
-                                "relates to the service at the clinic, include the clinic or " +
-                                "clinic worker name. Standard rates apply."
-                            )), {
-                                channel: channel
+                            text,
+                            {
+                              channel: channel,
+                              metadata: {
+                                template: {
+                                  name: "important_info",
+                                  language: lang,
+                                  variables: text
+                              }},
                             });
                 });
         };
 
         self.send_complaint_instructions = function() {
+            var lang = engage.LANG_MAP[self.im.user.answers.registrant.details.lang_code];
+            var text = self.im.user.i18n($(
+              "Please reply to this message with your complaint. If it " +
+              "relates to the service at the clinic, include the clinic or " +
+              "clinic worker name. Standard rates apply."));
+
             return self
                 .get_channel()
                 .then(function(channel) {
@@ -337,12 +352,15 @@ go.app = function() {
                         create_outbound(
                             self.im.user.answers.registrant.id,
                             self.im.user.answers.registrant_msisdn,
-                            self.im.user.i18n($(
-                                "Please reply to this message with your complaint. If it " +
-                                "relates to the service at the clinic, include the clinic or " +
-                                "clinic worker name. Standard rates apply."
-                            )), {
-                                channel: channel
+                            text,
+                            {
+                              channel: channel,
+                              metadata : {
+                                template: {
+                                  name: "important_info",
+                                  language: lang,
+                                  variables: text
+                              }}
                             });
                 });
         };

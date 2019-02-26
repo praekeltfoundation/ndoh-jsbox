@@ -62,6 +62,11 @@ describe("PMTCT app", function() {
                             token: 'test MessageSender',
                             channel: 'default-channel'
                         },
+                        engage: {
+                            url: 'http://pilot.example.org',
+                            token: 'test-token',
+                            channel: 'pilot-channel'
+                        }
                     }
                 })
                 .setup(function(api) {
@@ -513,15 +518,29 @@ describe("PMTCT app", function() {
                             }
                         }));
                         api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
-                            to_identity: "cb245673-aa41-4302-ac47-00000001002",
-                            to_addr: "+27820001111",
-                            content: "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
-                            channel: "default-channel",
+                            to_identity:"cb245673-aa41-4302-ac47-00000001002",
+                            to_addr:"+27820001111",
+                            content:"HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                            metadata:{
+                              template:{
+                                name:"important_info",
+                                language:"en",
+                                variables:"HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health"
+                              }
+                            },
+                            channel:"default-channel"
                         }));
                         api.http.fixtures.add(fixtures_MessageSenderDynamic.send_message({
                             to_identity: "cb245673-aa41-4302-ac47-00000001002",
                             to_addr: "+27820001111",
                             content: "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                            metadata:{
+                              template:{
+                                name:"important_info",
+                                language:"en",
+                                variables:"Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                              }
+                            },
                             channel: "default-channel",
                         }));
                     })

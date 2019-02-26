@@ -174,7 +174,22 @@ go.Engage = function() {
                 return !_.isEmpty(existing);
             });
         };
+
+          self.LANG_MAP = {zul_ZA: "uz",
+                          xho_ZA: "th",
+                          afr_ZA: "af",
+                          eng_ZA: "en",
+                          nso_ZA: "sl",
+                          tsn_ZA: "bn",
+                          sot_ZA: "ta",
+                          tso_ZA: "sv",
+                          ssw_ZA: "sw",
+                          ven_ZA: "vi",
+                          nbl_ZA: "nb",
+                        };
     });
+
+
 
     return Engage;
 }();
