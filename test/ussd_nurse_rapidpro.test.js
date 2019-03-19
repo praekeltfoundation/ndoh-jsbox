@@ -974,7 +974,7 @@ describe('app', function() {
                     api.http.fixtures.add(
                         fixtures_Jembi.nurseconnect_subscription({
                             mha: 1,
-                            swt: 2,
+                            swt: 1,
                             type: 7,
                             dmsisdn: "+27820001002",
                             cmsisdn: "+27820001003",
@@ -1045,7 +1045,7 @@ describe('app', function() {
                     api.http.fixtures.add(
                         fixtures_Jembi.nurseconnect_subscription({
                             mha: 1,
-                            swt: 2,
+                            swt: 1,
                             type: 7,
                             dmsisdn: "+27820001002",
                             cmsisdn: "+27820001003",
