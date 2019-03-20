@@ -566,7 +566,7 @@ go.app = function() {
                           channel: this.channel,
                           metadata : {
                             template: {
-                              name: "important_info",
+                              name: "mc_important_info",
                               language: lang,
                               variables: message1
                           }},
@@ -582,7 +582,7 @@ go.app = function() {
                           channel: this.channel,
                           metadata: {
                             template: {
-                              name: "important_info",
+                              name: "mc_important_info",
                               language: lang,
                               variables: message2
                           }},

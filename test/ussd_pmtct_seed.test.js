@@ -523,7 +523,7 @@ describe("PMTCT app", function() {
                             content:"HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
                             metadata:{
                               template:{
-                                name:"important_info",
+                                name:"mc_important_info",
                                 language:"en",
                                 variables:"HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health"
                               }
@@ -536,7 +536,7 @@ describe("PMTCT app", function() {
                             content: "Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
                             metadata:{
                               template:{
-                                name:"important_info",
+                                name:"mc_important_info",
                                 language:"en",
                                 variables:"Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
                               }
