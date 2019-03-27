@@ -86,6 +86,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_pmtct_seed: [
                     'src/index.js',
+                    'src/engage.js',
                     '<%= paths.src.app.ussd_pmtct_seed %>',
                     'src/init.js'
                 ],
