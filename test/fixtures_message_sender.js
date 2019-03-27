@@ -569,7 +569,7 @@ module.exports = function() {
                       "template":{
                         "name":"mc_important_info",
                         "language":"en",
-                        "variables":"Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply."
+                        "variables": ["Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply."]
                       }
                     }
                   }
@@ -594,7 +594,7 @@ module.exports = function() {
                       "template":{
                         "name":"mc_important_info",
                         "language":"en",
-                        "variables":"Please reply to this message with your complaint. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply.",
+                        "variables": ["Please reply to this message with your complaint. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply."],
                       }
                     }
                 }
@@ -733,7 +733,7 @@ module.exports = function() {
                       "template":{
                         "name":"mc_important_info",
                         "language":"en",
-                        "variables":"Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply."
+                        "variables": ["Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply."]
                       }
                     }
                 }
@@ -777,7 +777,7 @@ module.exports = function() {
                       "template":{
                         "name":"mc_important_info",
                         "language":"en",
-                        "variables":"Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply."
+                        "variables": ["Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply."]
                       }
                     }
                 }
@@ -858,7 +858,7 @@ module.exports = function() {
                       "template":{
                         "name":"mc_important_info",
                         "language":"en",
-                        "variables":"HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                        "variables": ["HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health"],
                         }
                     },
                     "channel": "default-channel",
@@ -880,7 +880,7 @@ module.exports = function() {
                       "template":{
                         "name":"mc_important_info",
                         "language":"en",
-                        "variables":"Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                        "variables": ["Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322"],
                       }
                     },
                     "channel":"default-channel"
@@ -902,7 +902,7 @@ module.exports = function() {
                       "template":{
                         "name":"mc_important_info",
                         "language":"en",
-                        "variables":"HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                        "variables": ["HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health"],
                         }
                     },
                   "channel": "default-channel",
@@ -924,7 +924,7 @@ module.exports = function() {
                       "template":{
                         "name":"mc_important_info",
                         "language":"en",
-                        "variables":"Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                        "variables": ["Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322"],
                       }
                     },
                     "channel":"default-channel"
@@ -946,7 +946,7 @@ module.exports = function() {
                       "template":{
                         "name":"mc_important_info",
                         "language":"en",
-                        "variables":"HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                        "variables": ["HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health"],
                         }
                     },
                   "channel": "default-channel",
@@ -968,7 +968,7 @@ module.exports = function() {
                       "template":{
                         "name":"mc_important_info",
                         "language":"en",
-                        "variables":"Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                        "variables": ["Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322"],
                       }
                     },
                     "channel":"default-channel"
@@ -990,7 +990,7 @@ module.exports = function() {
                       "template":{
                         "name":"mc_important_info",
                         "language":"en",
-                        "variables":"HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health",
+                        "variables": ["HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health"],
                         }
                     },
                   "channel": "default-channel",
@@ -1012,7 +1012,7 @@ module.exports = function() {
                       "template":{
                         "name":"mc_important_info",
                         "language":"en",
-                        "variables":"Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322",
+                        "variables": ["Recently tested HIV positive? You are not alone, many other pregnant women go through this. Visit b-wise.mobi or call the AIDS Helpline 0800 012 322"],
                       }
                     },
                     "channel":"default-channel"
@@ -1103,7 +1103,7 @@ module.exports = function() {
                       "template":{
                         "name":"mc_important_info",
                         "language":"en",
-                        "variables":"Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply."
+                        "variables": ["Please reply to this message with your compliment. If it relates to the service at the clinic, include the clinic or clinic worker name. Standard rates apply."]
                       }
                     },
                     "channel":"pilot-channel"

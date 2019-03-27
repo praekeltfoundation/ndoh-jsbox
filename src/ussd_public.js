@@ -332,7 +332,7 @@ go.app = function() {
                                 template: {
                                   name: "mc_important_info",
                                   language: lang,
-                                  variables: text
+                                  variables: [text]
                               }},
                             });
                 });
@@ -359,7 +359,7 @@ go.app = function() {
                                 template: {
                                   name: "mc_important_info",
                                   language: lang,
-                                  variables: text
+                                  variables: [text]
                               }}
                             });
                 });

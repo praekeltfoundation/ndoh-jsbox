@@ -614,7 +614,7 @@ go.app = function() {
                             template: {
                               name: "mc_important_info",
                               language: lang,
-                              variables: message1
+                              variables: [message1]
                           }},
                         }
                     );
@@ -630,7 +630,7 @@ go.app = function() {
                             template: {
                               name: "mc_important_info",
                               language: lang,
-                              variables: message2
+                              variables: [message2]
                           }},
                         }
                     );
