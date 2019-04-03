@@ -175,17 +175,17 @@ go.Engage = function() {
             });
         };
 
-          self.LANG_MAP = {zul_ZA: "uz",
-                          xho_ZA: "th",
+          self.LANG_MAP = {zul_ZA: "en",
+                          xho_ZA: "en",
                           afr_ZA: "af",
                           eng_ZA: "en",
-                          nso_ZA: "sl",
-                          tsn_ZA: "bn",
-                          sot_ZA: "ta",
-                          tso_ZA: "sv",
-                          ssw_ZA: "sw",
-                          ven_ZA: "vi",
-                          nbl_ZA: "nb",
+                          nso_ZA: "en",
+                          tsn_ZA: "en",
+                          sot_ZA: "en",
+                          tso_ZA: "en",
+                          ssw_ZA: "en",
+                          ven_ZA: "en",
+                          nbl_ZA: "en",
                         };
     });
 
