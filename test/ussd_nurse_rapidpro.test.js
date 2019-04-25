@@ -224,7 +224,6 @@ describe('app', function() {
                             "Welcome to NurseConnect. Do you want to:",
                             "1. Sign up for messages",
                             "2. Change your no.",
-                            "3. Help a friend to register"
                         ].join('\n')
                     })
                     .check.reply.char_limit(140)
@@ -302,23 +301,6 @@ describe('app', function() {
                 }); //end of self registration
 
                 describe('user wants to help a friend register', function(){
-                    it("should state_friend_register", function(){
-                        return tester
-                        .setup.user.state('state_not_registered_menu')
-                        .input(
-                            "3"  // state_not_registered_menu - chooses to help a friend register
-                        )
-                        .check.interaction({
-                            state: 'state_friend_register',
-                            reply: ["For your friend to join NurseConnect, we need to access & store their info. " +
-                                    "They may get messages on public holidays & weekends. Do they agree?",
-                                    "1. Yes",
-                                    "2. No"
-                            ].join('\n')
-                        })
-                        .run();
-                    });
-
                     describe('user agrees to registration terms', function(){
                         it('should go to state_enter_msisdn', function(){
                             return tester
