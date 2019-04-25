@@ -2,14 +2,14 @@
     "": {
         "project-id-version": "USSD PMTCT",
         "pot-creation-date": "2018-10-03 10:18:+0000",
-        "po-revision-date": "2018-10-25 15:25+0200",
+        "po-revision-date": "2019-04-25 07:04+0200",
         "last-translator": "",
         "language-team": "AFRIKAANS <LL@li.org>",
         "language": "af",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 2.2",
+        "x-generator": "Poedit 2.2.1",
         "plural-forms": "nplurals=2; plural=(n != 1);"
     },
     "HIV positive moms can have an HIV negative baby! You can get free medicine at the clinic to protect your baby and improve your health": [
@@ -110,7 +110,7 @@
     ],
     "You will not receive SMSs about keeping your baby HIV negative. You will still receive MomConnect SMSs. To stop receiving these SMSs, dial {{ mc_optout_number }}": [
         null,
-        "Jy sal NIE meer SMSse ontvang oor hoe om jou baba MIV negatief te hou nie. Jy sal egter steeds MomConnect se SMSse ontvang. Om dit te stop, skakel *134*550*1#"
+        "Jy sal geen SMSse kry oor hoe om jou baba MIV-negatief te hou nie maar jy sal steeds SMSse van  MomConnect kry. Om SMSse te stop, skakel {{ mc_optout_number }}"
     ],
     "We are sorry for your loss. Would you like to receive a small set of free messages from MomConnect that could help you in this difficult time?": [
         null,
