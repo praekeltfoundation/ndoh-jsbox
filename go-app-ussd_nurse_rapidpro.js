@@ -286,7 +286,6 @@ go.app = function() {
                 choices: [
                     new Choice('state_weekly_messages', $('Sign up for messages')),
                     new Choice('state_old_number', $('Change your no.')),
-                    new Choice('state_friend_register', $('Help a friend to register')),
                 ],
             });
         });
