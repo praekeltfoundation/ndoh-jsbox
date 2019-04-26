@@ -189,6 +189,9 @@ go.app = function() {
             var error = $(
                 "Sorry, the format of the mobile number is not correct. " +
                 "Please enter the mobile number again, e.g. 0726252020");
+            var error_registered = $(
+                "Sorry, the number you entered is already registered. " +
+                "Please enter the mobile number again, e.g. 0726252020");
             var question = $(
                 "Your friend is one step closer to receiving weekly clinical and motivational messages! Reply with " +
                 "the number they would like to register, e.g. 0726252020:");
@@ -199,21 +202,27 @@ go.app = function() {
                     if (!utils.is_valid_msisdn(content, 0, 10)) {
                         return error;
                     }
+                    var msisdn = utils.normalize_msisdn(content, '27');
+                    return self.rapidpro.get_contact({urn: 'tel:' + msisdn})
+                    .then(function(contact) {
+                        if(contact !== null) {
+                            // If the contact is already registered, ask for a different number
+                            if (
+                                self.is_contact_in_group(contact, 'nurseconnect-sms') ||
+                                self.is_contact_in_group(contact, 'nurseconnect-whatsapp')
+                            ) {
+                                return error_registered;
+                            }
+                            // If we find a contact, store it, otherwise we'll create it at the end
+                            self.im.user.set_answer("registrant_contact", contact);
+                        }
+                    });
                 },
                 next: function(content) {
                     var msisdn = utils.normalize_msisdn(content, '27');
                     self.im.user.set_answer("registrant_msisdn", msisdn);
-                    return self.rapidpro.get_contact({urn: 'tel:' + msisdn})
-                    .then(function(contact) {
-                        // If we find a contact, store it, otherwise we'll create it at the end
-                        if(contact !== null) {
-                            self.im.user.set_answer("registrant_contact", contact);
-                        }
-                    })
-                    .then(function() {
-                        // Warm cache for WhatsApp lookup without blocking using operator_msisdn
-                        return self.is_whatsapp_user(self.im.user.answers.registrant_msisdn, false);
-                    })
+                    // Warm cache for WhatsApp lookup without blocking using operator_msisdn
+                    return self.is_whatsapp_user(self.im.user.answers.registrant_msisdn, false)
                     .then(function() {
                         return 'state_check_optout';
                     });

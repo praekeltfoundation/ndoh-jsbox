@@ -372,6 +372,32 @@ describe('app', function() {
                       .run();
                   });
 
+                  //for msisdn that is already registered
+                  it('should return an error asking for another number', function(){
+                      return tester
+                      .setup(function(api) {
+                        api.http.fixtures.add(
+                            fixtures_RapidPro.get_contact({
+                                exists: true,
+                                urn: 'tel:+27820001003',
+                                groups: ['nurseconnect-sms']
+                            })
+                        );
+                      })
+                      .setup.user.state('state_enter_msisdn')
+                      .setup.user.answer('registrant', 'friend')
+                      .input(
+                          '0820001003'  // state_enter_msisdn
+                      )
+                      .check.interaction({
+                        state: 'state_enter_msisdn',
+                        reply: 'Sorry, the number you entered is already registered. Please enter the mobile number again, e.g. 0726252020'
+                      })
+                      .check(function(api) {
+                        utils.check_fixtures_used(api, [0]);
+                      })
+                      .run();
+                  });
                     //for msisdn that has opted out
                     it('should ask to opt in again', function(){
                         return tester
