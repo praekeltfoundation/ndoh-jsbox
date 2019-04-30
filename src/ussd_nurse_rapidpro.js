@@ -257,11 +257,15 @@ go.app = function() {
         self.states.add('state_faccode', function(name) {
             var pronoun = self.im.user.answers.registrant === "operator" ? 'your' : 'their';
             var error = $("Sorry, we don't recognise that code. Please enter the 6- digit facility code again, e.g. 535970:");
+            var blacklist_error = $("Sorry, but you can't sign up for NurseConnect with this clinic code. It's blocked due to fraudulent activity. You can register using a different clinic code.");
             var question = $("Now we need {{pronoun}} 6-digit facility code:").context({pronoun: pronoun});
 
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
+                    if(_.includes(self.im.config.clinic_code_blacklist, content)) {
+                        return blacklist_error;
+                    }
                     return self.openhim.validate_nc_clinic_code(content)
                      .then(function(facname) {
                          if (!facname) {
