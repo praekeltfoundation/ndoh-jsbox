@@ -19,6 +19,7 @@ describe('app', function() {
                     name: 'ussd_nurse_rapidpro',
                     testing_today: "2014-04-04T07:07:07Z",
                     channel: "*120*550*5#",
+                    clinic_code_blacklist: ["123457"],
                     services: {
                         rapidpro: {
                             base_url: 'https://rapidpro',
@@ -568,6 +569,24 @@ describe('app', function() {
                             .check.interaction({
                                 state: 'state_faccode',
                                 reply: "Sorry, we don't recognise that code. Please enter the 6- digit facility code again, e.g. 535970:"
+                            })
+                            .check(function(api) {
+                                utils.check_fixtures_used(api, []);
+                            })
+                            .run();
+                    });
+                });
+
+                describe("is on blacklist", function() {
+                    it("should loop back without api call", function() {
+                        return tester
+                            .setup.user.state('state_faccode')
+                            .input(
+                                '123457'  // state_faccode
+                            )
+                            .check.interaction({
+                                state: 'state_faccode',
+                                reply: "Sorry, this clinic code has been blocked for new registrations due to fraudulent activity. Please enter a different clinic code."
                             })
                             .check(function(api) {
                                 utils.check_fixtures_used(api, []);
