@@ -586,7 +586,7 @@ describe('app', function() {
                             )
                             .check.interaction({
                                 state: 'state_faccode',
-                                reply: "Sorry, this clinic code has been blocked for new registrations due to fraudulent activity. Please enter a different clinic code."
+                                reply: "Sorry, but you can't sign up for NurseConnect with this clinic code. It's blocked due to fraudulent activity. You can register using a different clinic code."
                             })
                             .check(function(api) {
                                 utils.check_fixtures_used(api, []);
