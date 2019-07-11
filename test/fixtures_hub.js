@@ -675,7 +675,16 @@ module.exports = function() {
                     "registrant_id": "cb245673-aa41-4302-ac47-00000001002",
                     "action": "momconnect_nonloss_optout",
                     "data": {
-                        "reason": "miscarriage"
+                        "reason": "unknown",
+                        "identity_store_optout": {
+                            "optout_type": "stop",
+                            "identity": "cb245673-aa41-4302-ac47-00000001002",
+                            "reason": "unknown",
+                            "address_type": "msisdn",
+                            "address": "+27820001002",
+                            "request_source": "sms_inbound",
+                            "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                        }
                     }
                 }
             },
