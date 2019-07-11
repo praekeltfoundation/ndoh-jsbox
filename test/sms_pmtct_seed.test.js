@@ -92,7 +92,7 @@ describe("app", function() {
                             "about your pregnancy or baby."
                     })
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [0, 210, 223]);
+                        utils.check_fixtures_used(api, [0, 210]);
                     })
                     .run();
             });

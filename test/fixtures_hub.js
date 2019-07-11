@@ -12,7 +12,16 @@ module.exports = function() {
                     "registrant_id": "cb245673-aa41-4302-ac47-00000000001",
                     "action": "pmtct_nonloss_optout",
                     "data": {
-                        "reason": "unknown"
+                        "reason": "unknown",
+                        "identity_store_optout": {
+                            "optout_type": "stop",
+                            "identity": "cb245673-aa41-4302-ac47-00000000001",
+                            "reason": "unknown",
+                            "address_type": "msisdn",
+                            "address": "+27820000111",
+                            "request_source": "sms_pmtct",
+                            "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                        }
                     }
                 }
             },

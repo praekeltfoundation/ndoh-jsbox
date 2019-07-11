@@ -1572,23 +1572,13 @@ module.exports = function() {
             'response': {}
         },
 
-        // 223: optout cb245673-aa41-4302-ac47-00000000001 (sms_pmtct)
+        // 223: unused
         {
-            "key": "post.is.optout.stop.identity.cb245673-aa41-4302-ac47-00000000001",
-            "request": {
-                "url": "http://is/api/v1/optout/",
-                "method": 'POST',
-                "data": {
-                    "optout_type": "stop",
-                    "identity": "cb245673-aa41-4302-ac47-00000000001",
-                    "reason": "unknown",
-                    "address_type": "msisdn",
-                    "address": "+27820000111",
-                    "request_source": "sms_pmtct",
-                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
-                }
+            'request': {
+                'method': 'GET',
+                'url': 'http://',
             },
-            "response": {}
+            'response': {}
         },
 
         // 224: get identity by msisdn +27820001012
