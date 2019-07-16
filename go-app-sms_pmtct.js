@@ -161,13 +161,6 @@ go.app = function() {
         });
 
         self.states.add('state_opt_out_enter', function(name) {
-            var optout_change = {
-                "registrant_id": self.im.user.answers.identity_id,
-                "action": "pmtct_nonloss_optout",
-                "data": {
-                    "reason": "unknown"
-                }
-            };
             var optout_info = {
                 optout_type: "stop",  // default to "stop"
                 identity: self.im.user.answers.identity_id,
@@ -177,12 +170,16 @@ go.app = function() {
                 request_source: "sms_pmtct",
                 requestor_source_id: self.im.config.testing_message_id || self.im.msg.message_id,
             };
-            return Q
-                .all([
-                    hub.create_change(optout_change),
-                    is.optout(optout_info),
-                    // self.deactivate_store_vumi_subscriptions(self.im.user.answers.msisdn)
-                ])
+            var optout_change = {
+                "registrant_id": self.im.user.answers.identity_id,
+                "action": "pmtct_nonloss_optout",
+                "data": {
+                    "reason": "unknown",
+                    "identity_store_optout": optout_info
+                }
+            };
+            return hub
+                .create_change(optout_change)
                 .then(function() {
                     return self.states.create('state_opt_out');
                 });

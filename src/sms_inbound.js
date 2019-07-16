@@ -190,11 +190,19 @@ go.app = function() {
                 "request_source": "sms_inbound",
                 "requestor_source_id": self.im.config.testing_message_id || self.im.msg.message_id
             };
-            return is
-            .optout(optout_info)
-            .then(function() {
-                return self.states.create('state_opt_out');
-            });
+            var optout_change = {
+                "registrant_id": self.im.user.answers.operator.id,
+                "action": "momconnect_nonloss_optout",
+                "data": {
+                    "reason": "unknown",
+                    "identity_store_optout": optout_info
+                }
+            };
+            return hub
+                .create_change(optout_change)
+                .then(function() {
+                    return self.states.create('state_opt_out');
+                });
         });
 
         self.states.add("state_opt_out", function(name) {

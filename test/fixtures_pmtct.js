@@ -2974,26 +2974,19 @@ module.exports = function() {
             "response": {}
         },
 
-        // 77: optout cb245673-aa41-4302-ac47-00000000001 (sms_pmtct)
+        // 77: unused
         {
-            "key": "post.is.optout.stop.identity.cb245673-aa41-4302-ac47-00000000001",
             "request": {
-                "url": "http://is/api/v1/optout/",
                 "method": 'POST',
                 "data": {
-                    "optout_type": "stop",
-                    "identity": "cb245673-aa41-4302-ac47-00000000001",
-                    "reason": "unknown",
-                    "address_type": "msisdn",
-                    "address": "+27820000111",
-                    "request_source": "sms_pmtct",
-                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
-                }
+                    "deprecated": "fixture"
+                },
+                "url": 'http://'
             },
             "response": {}
         },
 
-        // 78:
+        // 78: optout cb245673-aa41-4302-ac47-00000000001 (sms_pmtct)
         {
             "key": "post.hub.change.pmtct_nonloss_optout.unknown.identity.cb245673-aa41-4302-ac47-00000000001",
             "request": {
@@ -3003,7 +2996,16 @@ module.exports = function() {
                     "registrant_id": "cb245673-aa41-4302-ac47-00000000001",
                     "action": "pmtct_nonloss_optout",
                     "data": {
-                        "reason": "unknown"
+                        "reason": "unknown",
+                        "identity_store_optout": {
+                            "optout_type": "stop",
+                            "identity": "cb245673-aa41-4302-ac47-00000000001",
+                            "reason": "unknown",
+                            "address_type": "msisdn",
+                            "address": "+27820000111",
+                            "request_source": "sms_pmtct",
+                            "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                        }
                     }
                 }
             },
