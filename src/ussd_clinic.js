@@ -288,27 +288,6 @@ go.app = function() {
             return registration_info;
         };
 
-        self.send_registration_thanks = function() {
-            var whatsapp_content = self.im.user.i18n($(
-                "Congrats on your pregnancy! MomConnect will send helpful WhatsApp msgs. " +
-                'To stop dial {{optout_channel}} (Free). To get msgs via SMS, reply "SMS" (std rates apply).'
-            ).context({
-                optout_channel: self.im.config.optout_channel
-            }));
-            var sms_content = self.im.user.i18n($(
-                "Congratulations on your pregnancy! MomConnect will send helpful SMS msgs. " +
-                "To stop dial {{optout_channel}}, for more dial {{popi_channel}} (Free)."
-            ).context({
-                optout_channel: self.im.config.optout_channel,
-                popi_channel: self.im.config.popi_channel
-            }));
-            return ms.create_outbound(
-                self.im.user.answers.registrant.id,
-                self.im.user.answers.registrant_msisdn,
-                self.im.user.answers.registered_on_whatsapp ? whatsapp_content : sms_content
-            );
-        };
-
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
                 if (!interrupt || !utils.timed_out(self.im))
@@ -833,7 +812,6 @@ go.app = function() {
             return Q.all([
                 is.update_identity(self.im.user.answers.registrant.id, registrant_info),
                 hub.create_registration(registration_info),
-                self.send_registration_thanks(),
             ])
             .then(function(response) {
                 return self.states.create('state_end_success');
