@@ -35,6 +35,7 @@ describe('app', function() {
                             token: 'somethingsecret'
                         }
                     },
+                    mock_eid: "mock-event-id"
                 });
         });
 
@@ -941,6 +942,8 @@ describe('app', function() {
                             mha: 1,
                             swt: 7,
                             type: 7,
+                            eid: "mock-event-id",
+                            sid: "contact-uuid",
                             dmsisdn: "+27820001002",
                             cmsisdn: "+27820001003",
                             rmsisdn: null,
@@ -1003,6 +1006,8 @@ describe('app', function() {
                             mha: 1,
                             swt: 1,
                             type: 7,
+                            eid: "mock-event-id",
+                            sid: "contact-uuid",
                             dmsisdn: "+27820001002",
                             cmsisdn: "+27820001003",
                             rmsisdn: null,
@@ -1074,6 +1079,8 @@ describe('app', function() {
                             mha: 1,
                             swt: 1,
                             type: 7,
+                            eid: "mock-event-id",
+                            sid: "contact-uuid",
                             dmsisdn: "+27820001002",
                             cmsisdn: "+27820001003",
                             rmsisdn: null,

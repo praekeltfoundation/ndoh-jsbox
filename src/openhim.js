@@ -36,16 +36,31 @@ go.OpenHIM = function() {
             }
         };
 
-        self.submit_nc_registration = function(contact) {
+        self.uuidv4 = function(mock) {
+            if(mock !== undefined) {
+                return mock;
+            }
+            // From https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+              var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+              return v.toString(16);
+            });
+        };
+
+        self.submit_nc_registration = function(contact, mock_eid) {
             var url = self.base_url + "nc/subscription";
             var msisdn = contact.urns.filter(function(urn) {
                 // Starts with tel:
                 return urn.search('tel:') == 0;
             })[0].replace("tel:", "");
+            // We don't retry this HTTP request, so we can generate a random event ID
+            var eid = self.uuidv4(mock_eid);
             return self.http_api.post(url, {data: JSON.stringify({
                 mha: 1,
                 swt: contact.fields.preferred_channel === "whatsapp" ? 7 : 1,
                 type: 7,
+                sid: contact.uuid,
+                eid: eid,
                 dmsisdn: contact.fields.registered_by,
                 cmsisdn: msisdn,
                 rmsisdn: null,
