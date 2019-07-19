@@ -349,7 +349,7 @@ go.app = function() {
                 // Send registration to DHIS2
                 .then(function() {
                     var contact = self.im.user.get_answer("registrant_contact");
-                    return self.openhim.submit_nc_registration(contact);
+                    return self.openhim.submit_nc_registration(contact, self.im.config.mock_eid);
                 })
                 .then(function() {
                     return self.states.create("state_registration_complete");
