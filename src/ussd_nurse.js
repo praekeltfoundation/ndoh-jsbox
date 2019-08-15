@@ -222,7 +222,7 @@ go.app = function() {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
 
-            var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, 'ZA');
             self.im.user.set_answer("operator_msisdn", msisdn);
 
             return is
@@ -387,12 +387,12 @@ go.app = function() {
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
-                    if (!utils.is_valid_msisdn(content, 0, 10)) {
+                    if (!utils.is_valid_msisdn(content, "ZA")) {
                         return error;
                     }
                 },
                 next: function(content) {
-                    var msisdn = utils.normalize_msisdn(content, '27');
+                    var msisdn = utils.normalize_msisdn(content, 'ZA');
 
                     return is
                     .get_or_create_identity({"msisdn": msisdn})
@@ -542,7 +542,7 @@ go.app = function() {
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
-                    if (!utils.is_valid_msisdn(content, 0, 10)) {
+                    if (!utils.is_valid_msisdn(content, "ZA")) {
                         return error;
                     }
                 },
@@ -553,7 +553,7 @@ go.app = function() {
         });
 
         self.add('state_check_optout_change', function(name) {
-            var new_msisdn = utils.normalize_msisdn(self.im.user.answers.state_change_num, '27');
+            var new_msisdn = utils.normalize_msisdn(self.im.user.answers.state_change_num, 'ZA');
             self.im.user.set_answer("new_msisdn", new_msisdn);
 
             var msisdn_on_other_identities_but_available = false;
@@ -925,12 +925,12 @@ go.app = function() {
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
-                    if (!utils.is_valid_msisdn(content, 0, 10)) {
+                    if (!utils.is_valid_msisdn(content, "ZA")) {
                         return error;
                     }
                 },
                 next: function(content) {
-                    var old_msisdn = utils.normalize_msisdn(content, '27');
+                    var old_msisdn = utils.normalize_msisdn(content, 'ZA');
 
                     return is
                     .list_by_address({msisdn: old_msisdn})

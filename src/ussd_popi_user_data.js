@@ -202,7 +202,7 @@ go.app = function() {
 
         self.add("state_start", function(name) {
             self.im.user.set_answers = {};
-            var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, 'ZA');
             self.im.user.set_answer("operator_msisdn", msisdn);
 
             return is
@@ -554,7 +554,7 @@ go.app = function() {
         });
 
         self.add('state_check_msisdn_available', function(name) {
-            var new_msisdn = utils.normalize_msisdn(self.im.user.answers.state_new_msisdn, '27');
+            var new_msisdn = utils.normalize_msisdn(self.im.user.answers.state_new_msisdn, 'ZA');
             self.im.user.set_answer("new_msisdn", new_msisdn);
 
             return is
@@ -726,7 +726,7 @@ go.app = function() {
         });
 
         self.add('state_find_identity', function(name){
-          var msisdn = utils.normalize_msisdn(self.im.user.get_answer('state_old_number'), "27");
+          var msisdn = utils.normalize_msisdn(self.im.user.get_answer('state_old_number'), "ZA");
           return is.get_identity_by_address({
             msisdn: msisdn
           })
@@ -899,7 +899,7 @@ go.app = function() {
         });
       });
       self.add('state_verify_new_number_in_database', function(){
-        var msisdn = utils.normalize_msisdn(self.im.user.get_answer('state_enter_new_phone_number'), "27");
+        var msisdn = utils.normalize_msisdn(self.im.user.get_answer('state_enter_new_phone_number'), "ZA");
         return is.get_identity_by_address({
           msisdn: msisdn
         }).then(function(identity){
@@ -933,7 +933,7 @@ go.app = function() {
       });
 
       self.add('state_new_number_channel', function(name) {
-        var msisdn = utils.normalize_msisdn(self.im.user.get_answer('state_enter_new_phone_number'), "27");
+        var msisdn = utils.normalize_msisdn(self.im.user.get_answer('state_enter_new_phone_number'), "ZA");
         var channel;
         return self.is_valid_recipient_for_pilot({ // msisdn whatsappable
             address: msisdn,
@@ -961,7 +961,7 @@ go.app = function() {
       });
 
       self.add('state_switch_number', function(name){
-        var msisdn = utils.normalize_msisdn(self.im.user.get_answer('state_enter_new_phone_number'), "27");
+        var msisdn = utils.normalize_msisdn(self.im.user.get_answer('state_enter_new_phone_number'), "ZA");
         var channel = self.im.user.answers.channel;
         return hub.create_change({
                 "registrant_id": self.im.user.get_answer('user_identity').id,

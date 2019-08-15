@@ -123,7 +123,7 @@ go.app = function() {
         };
 
         self.states.add("state_start", function() {
-            var msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             self.im.user.set_answer("operator_msisdn", msisdn);
 
             return is
@@ -263,7 +263,7 @@ go.app = function() {
 
         self.states.add("state_default_enter", function(name) {
             var casepro_url = self.im.config.services.casepro.url;
-            var msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             var http = new JsonApi(self.im, {});
             var data = {
               from: msisdn,

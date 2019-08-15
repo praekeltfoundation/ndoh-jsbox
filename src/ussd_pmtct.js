@@ -391,7 +391,7 @@ go.app = function() {
 
         // interstitial
         self.add("state_check_pmtct_subscription", function(name) {
-            var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, 'ZA');
             self.im.user.set_answer("msisdn", msisdn);
 
             return is
