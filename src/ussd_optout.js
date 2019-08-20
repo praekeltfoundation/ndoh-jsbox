@@ -82,7 +82,7 @@ go.app = function() {
         };
 
         self.states.add("state_start", function(name) {
-            var msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             self.im.user.set_answer("operator_msisdn", msisdn);
 
             return is

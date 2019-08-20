@@ -588,7 +588,7 @@ go.app = function() {
 
         self.add("state_start", function(name) {  // interstitial state
             self.im.user.set_answers = {};
-            var registrant_msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
+            var registrant_msisdn = utils.normalize_msisdn(self.im.user.addr, 'ZA');
 
             return is
             .get_or_create_identity({"msisdn": registrant_msisdn})
@@ -791,7 +791,7 @@ go.app = function() {
         });
 
         self.add('state_pilot_randomisation', function(name) {  // interstitial state
-            var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, 'ZA');
             return engage
                 .contact_check(msisdn, true)
                 .then(function(yes_or_no) {

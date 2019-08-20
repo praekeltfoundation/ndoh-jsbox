@@ -77,7 +77,7 @@ go.app = function() {
         self.states.add("state_start", function(name) {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
-            var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, 'ZA');
             self.im.user.set_answer("operator_msisdn", msisdn);
 
             return self.rapidpro.get_contact({urn: 'tel:' + msisdn}).then(function(contact) {
@@ -199,10 +199,10 @@ go.app = function() {
                 question: question,
 
                 check: function(content) {
-                    if (!utils.is_valid_msisdn(content, 0, 10)) {
+                    if (!utils.is_valid_msisdn(content, "ZA")) {
                         return error;
                     }
-                    var msisdn = utils.normalize_msisdn(content, '27');
+                    var msisdn = utils.normalize_msisdn(content, 'ZA');
                     return self.rapidpro.get_contact({urn: 'tel:' + msisdn})
                     .then(function(contact) {
                         if(contact !== null) {
@@ -219,7 +219,7 @@ go.app = function() {
                     });
                 },
                 next: function(content) {
-                    var msisdn = utils.normalize_msisdn(content, '27');
+                    var msisdn = utils.normalize_msisdn(content, 'ZA');
                     self.im.user.set_answer("registrant_msisdn", msisdn);
                     // Warm cache for WhatsApp lookup without blocking using operator_msisdn
                     return self.is_whatsapp_user(self.im.user.answers.registrant_msisdn, false)
@@ -618,12 +618,12 @@ go.app = function() {
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
-                    if (!utils.is_valid_msisdn(content, 0, 10)) {
+                    if (!utils.is_valid_msisdn(content, "ZA")) {
                         return error;
                     }
                 },
                 next: function(content) {
-                    var old_msisdn = utils.normalize_msisdn(content, '27');
+                    var old_msisdn = utils.normalize_msisdn(content, 'ZA');
                     return self.rapidpro.get_contact({urn: 'tel:' + old_msisdn})
                     .then(function(contact) {
                         // The number to move from must exist and be receiving messages
@@ -686,7 +686,7 @@ go.app = function() {
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
-                    if (!utils.is_valid_msisdn(content, 0, 10)) {
+                    if (!utils.is_valid_msisdn(content, "ZA")) {
                         return error;
                     }
                 },
@@ -695,7 +695,7 @@ go.app = function() {
         });
 
         self.states.add('state_check_optout_change', function(name) {
-            var new_msisdn = utils.normalize_msisdn(self.im.user.answers.state_change_number, '27');
+            var new_msisdn = utils.normalize_msisdn(self.im.user.answers.state_change_number, 'ZA');
 
             return self.rapidpro.get_contact({urn: 'tel:' + new_msisdn})
             .then(function(contact) {
@@ -753,7 +753,7 @@ go.app = function() {
             if(!new_msisdn) {
                 new_msisdn = self.im.user.addr;
             }
-            new_msisdn = utils.normalize_msisdn(new_msisdn, '27');
+            new_msisdn = utils.normalize_msisdn(new_msisdn, 'ZA');
             return self.rapidpro.update_contact({uuid: contact.uuid}, {
                 urns: [
                     'tel:' + new_msisdn,

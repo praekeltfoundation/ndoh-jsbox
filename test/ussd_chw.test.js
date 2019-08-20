@@ -790,7 +790,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '2'  // state_start - no
-                        , '08212345AB'  // state_mobile_no
+                        , '1'  // state_mobile_no
                     )
                     .check.interaction({
                         state: 'state_mobile_no',
@@ -809,7 +809,7 @@ describe("app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '2'  // state_start - no
-                        , '082000107'  // state_mobile_no
+                        , '107'  // state_mobile_no
                     )
                     .check.interaction({
                         state: 'state_mobile_no',

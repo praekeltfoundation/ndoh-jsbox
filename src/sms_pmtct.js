@@ -111,7 +111,7 @@ go.app = function() {
         };
 
         self.states.add('state_start', function() {
-            var msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             self.im.user.set_answer("msisdn", msisdn);
             // check if message contains a ussd code
             if (self.im.msg.content.indexOf('*120*') > -1

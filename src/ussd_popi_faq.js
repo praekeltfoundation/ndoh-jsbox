@@ -78,7 +78,7 @@ go.app = function() {
 
         self.add("state_start", function(name) {
             self.im.user.set_answers = {};
-            var msisdn = utils.normalize_msisdn(self.im.user.addr, '27');
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, 'ZA');
             return is
             .get_or_create_identity({"msisdn": msisdn})
             .then(function(identity) {

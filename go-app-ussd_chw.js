@@ -498,7 +498,7 @@ go.app = function() {
 
         self.add("state_start", function(name) {
             self.im.user.set_answers = {};
-            var operator_msisdn = utils.normalize_msisdn(self.im.user.addr, "27");
+            var operator_msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             var readable_no = utils.readable_msisdn(operator_msisdn, "27");
 
             return is
@@ -646,12 +646,12 @@ go.app = function() {
             return new FreeText(name, {
                 question: question,
                 check: function(content) {
-                    if (!utils.is_valid_msisdn(content, 10, 10)) {
+                    if (!utils.is_valid_msisdn(content, "ZA")) {
                         return error;
                     }
                 },
                 next: function(content) {
-                    var registrant_msisdn = utils.normalize_msisdn(content, '27');
+                    var registrant_msisdn = utils.normalize_msisdn(content, 'ZA');
                     return is
                     .get_or_create_identity({"msisdn": registrant_msisdn})
                     .then(function(identity) {
