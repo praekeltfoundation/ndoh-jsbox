@@ -22,7 +22,8 @@ module.exports = function (grunt) {
                     sms_pmtct_seed: 'src/sms_pmtct_seed.js',
                     ussd_popi_faq: 'src/ussd_popi_faq.js',
                     ussd_popi_user_data: 'src/ussd_popi_user_data.js',
-                    ussd_nurse_rapidpro: 'src/ussd_nurse_rapidpro.js'
+                    ussd_nurse_rapidpro: 'src/ussd_nurse_rapidpro.js',
+                    ussd_public_rapidpro: 'src/ussd_public_rapidpro.js'
                 },
                 ussd_clinic: [
                     'src/index.js',
@@ -113,6 +114,11 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.ussd_nurse_rapidpro %>',
                     'src/init.js'
                 ],
+                ussd_public_rapidpro: [
+                    'src/index.js',
+                    '<%= paths.src.app.ussd_public_rapidpro %>',
+                    'src/init.js'
+                ],
                 all: [
                     'src/**/*.js'
                 ]
@@ -132,7 +138,8 @@ module.exports = function (grunt) {
                 sms_pmtct_seed: 'go-app-sms_pmtct_seed.js',
                 ussd_popi_faq: 'go-app-ussd_popi_faq.js',
                 ussd_popi_user_data: 'go-app-ussd_popi_user_data.js',
-                ussd_nurse_rapidpro: 'go-app-ussd_nurse_rapidpro.js'
+                ussd_nurse_rapidpro: 'go-app-ussd_nurse_rapidpro.js',
+                ussd_public_rapidpro: 'go-app-ussd_public_rapidpro.js'
             },
             test: {
                 ussd_clinic: [
@@ -223,6 +230,11 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.ussd_nurse_rapidpro %>',
                     'test/ussd_nurse_rapidpro.test.js'
                 ],
+                ussd_public_rapidpro: [
+                    'test/setup.js',
+                    '<%= paths.src.app.ussd_public_rapidpro %>',
+                    'test/ussd_public_rapidpro.test.js'
+                ],
                 session_length_helper: [
                     'src/session_length_helper.js',
                     'test/session_length_helper.test.js'
@@ -306,6 +318,10 @@ module.exports = function (grunt) {
             ussd_nurse_rapidpro: {
                 src: ['<%= paths.src.ussd_nurse_rapidpro %>'],
                 dest: '<%= paths.dest.ussd_nurse_rapidpro %>'
+            },
+            ussd_public_rapidpro: {
+                src: ['<%= paths.src.ussd_public_rapidpro %>'],
+                dest: '<%= paths.dest.ussd_public_rapidpro %>'
             }
         },
 
@@ -359,6 +375,9 @@ module.exports = function (grunt) {
             },
             test_ussd_nurse_rapidpro: {
                 src: ['<%= paths.test.ussd_nurse_rapidpro %>']
+            },
+            test_ussd_public_rapidpro: {
+                src: ['<%= paths.test.ussd_public_rapidpro %>']
             },
             test_session_length_helper: {
                 src: ['<%= paths.test.session_length_helper %>']
