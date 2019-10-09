@@ -4,7 +4,7 @@ go;
 go.app = function() {
     var vumigo = require("vumigo_v02");
     var App = vumigo.App;
-    var EndState = vumigo.states.EndState;
+    var FreeText = vumigo.states.FreeText;
 
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_start");
@@ -14,12 +14,12 @@ go.app = function() {
         };
 
         self.states.add("state_start", function(name) {
-            return new EndState(name, {
-                text: $(
-                    'Hello mom! You can reply to any MomConnect message with a question, compliment or complaint and ' +
-                    'our team of experts will get back to you.'
-                ),
-                next: 'state_start'
+            self.im.user.set_answers = {};
+            return new FreeText(name, {
+                question: $(
+                    'Welcome to The Department of Health\'s ' +
+                    'MomConnect programme.'
+                )
             });
         });
     });

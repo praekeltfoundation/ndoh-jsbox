@@ -12,14 +12,14 @@ describe("ussd_public app", function() {
     });
 
     describe("state_start", function() {
-        it("should tell the user how to send a compliment or complaint", function() {
+        it("should display welcome message", function() {
             return tester
                 .start()
                 .check.interaction({
                     state: "state_start",
                     reply:
-                        'Hello mom! You can reply to any MomConnect message with a question, compliment or complaint ' +
-                        'and our team of experts will get back to you.'
+                    'Welcome to The Department of Health\'s ' +
+                    'MomConnect programme.'
                 })
                 .run();
         });
