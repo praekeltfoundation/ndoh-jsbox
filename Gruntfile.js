@@ -13,13 +13,7 @@ module.exports = function (grunt) {
                     ussd_public: 'src/ussd_public.js',
                     ussd_optout: 'src/ussd_optout.js',
                     sms_inbound: 'src/sms_inbound.js',
-                    ussd_servicerating: 'src/ussd_servicerating.js',
-                    ussd_nurse: 'src/ussd_nurse.js',
-                    sms_nurse: 'src/sms_nurse.js',
-                    ussd_pmtct: 'src/ussd_pmtct.js',
-                    sms_pmtct: 'src/sms_pmtct.js',
                     ussd_pmtct_seed: 'src/ussd_pmtct_seed.js',
-                    sms_pmtct_seed: 'src/sms_pmtct_seed.js',
                     ussd_popi_faq: 'src/ussd_popi_faq.js',
                     ussd_popi_user_data: 'src/ussd_popi_user_data.js',
                     ussd_nurse_rapidpro: 'src/ussd_nurse_rapidpro.js',
@@ -61,43 +55,10 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.sms_inbound %>',
                     'src/init.js'
                 ],
-                ussd_servicerating: [
-                    'src/index.js',
-                    'src/session_length_helper.js',
-                    '<%= paths.src.app.ussd_servicerating %>',
-                    'src/init.js'
-                ],
-                ussd_nurse: [
-                    'src/index.js',
-                    'src/engage.js',
-                    '<%= paths.src.app.ussd_nurse %>',
-                    'src/init.js'
-                ],
-                sms_nurse: [
-                    'src/index.js',
-                    'src/session_length_helper.js',
-                    '<%= paths.src.app.sms_nurse %>',
-                    'src/init.js'
-                ],
-                ussd_pmtct: [
-                    'src/index.js',
-                    '<%= paths.src.app.ussd_pmtct %>',
-                    'src/init.js'
-                ],
-                sms_pmtct: [
-                    'src/index.js',
-                    '<%= paths.src.app.sms_pmtct %>',
-                    'src/init.js'
-                ],
                 ussd_pmtct_seed: [
                     'src/index.js',
                     'src/engage.js',
                     '<%= paths.src.app.ussd_pmtct_seed %>',
-                    'src/init.js'
-                ],
-                sms_pmtct_seed: [
-                    'src/index.js',
-                    '<%= paths.src.app.sms_pmtct_seed %>',
                     'src/init.js'
                 ],
                 ussd_popi_faq: [
@@ -153,13 +114,7 @@ module.exports = function (grunt) {
                 ussd_public: 'go-app-ussd_public.js',
                 ussd_optout: 'go-app-ussd_optout.js',
                 sms_inbound: 'go-app-sms_inbound.js',
-                ussd_servicerating: 'go-app-ussd_servicerating.js',
-                ussd_nurse: 'go-app-ussd_nurse.js',
-                sms_nurse: 'go-app-sms_nurse.js',
-                ussd_pmtct: 'go-app-ussd_pmtct.js',
-                sms_pmtct: 'go-app-sms_pmtct.js',
                 ussd_pmtct_seed: 'go-app-ussd_pmtct_seed.js',
-                sms_pmtct_seed: 'go-app-sms_pmtct_seed.js',
                 ussd_popi_faq: 'go-app-ussd_popi_faq.js',
                 ussd_popi_user_data: 'go-app-ussd_popi_user_data.js',
                 ussd_nurse_rapidpro: 'go-app-ussd_nurse_rapidpro.js',
@@ -202,43 +157,10 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.sms_inbound %>',
                     'test/sms_inbound.test.js'
                 ],
-                ussd_servicerating: [
-                    'test/setup.js',
-                    'src/session_length_helper.js',
-                    '<%= paths.src.app.ussd_servicerating %>',
-                    'test/ussd_servicerating.test.js'
-                ],
-                ussd_nurse: [
-                    'test/setup.js',
-                    'src/engage.js',
-                    '<%= paths.src.app.ussd_nurse %>',
-                    'test/ussd_nurse.test.js'
-                ],
-                sms_nurse: [
-                    'test/setup.js',
-                    'src/session_length_helper.js',
-                    '<%= paths.src.app.sms_nurse %>',
-                    'test/sms_nurse.test.js'
-                ],
-                ussd_pmtct: [
-                    'test/setup.js',
-                    '<%= paths.src.app.ussd_pmtct %>',
-                    'test/ussd_pmtct.test.js'
-                ],
-                sms_pmtct: [
-                    'test/setup.js',
-                    '<%= paths.src.app.sms_pmtct %>',
-                    'test/sms_pmtct.test.js'
-                ],
                 ussd_pmtct_seed: [
                     'test/setup.js',
                     '<%= paths.src.app.ussd_pmtct_seed %>',
                     'test/ussd_pmtct_seed.test.js'
-                ],
-                sms_pmtct_seed: [
-                    'test/setup.js',
-                    '<%= paths.src.app.sms_pmtct_seed %>',
-                    'test/sms_pmtct_seed.test.js'
                 ],
                 ussd_popi_faq: [
                     'test/setup.js',
@@ -327,33 +249,9 @@ module.exports = function (grunt) {
                 src: ['<%= paths.src.sms_inbound %>'],
                 dest: '<%= paths.dest.sms_inbound %>'
             },
-            ussd_servicerating: {
-                src: ['<%= paths.src.ussd_servicerating %>'],
-                dest: '<%= paths.dest.ussd_servicerating %>'
-            },
-            ussd_nurse: {
-                src: ['<%= paths.src.ussd_nurse %>'],
-                dest: '<%= paths.dest.ussd_nurse %>'
-            },
-            sms_nurse: {
-                src: ['<%= paths.src.sms_nurse %>'],
-                dest: '<%= paths.dest.sms_nurse %>'
-            },
-            ussd_pmtct: {
-                src: ['<%= paths.src.ussd_pmtct %>'],
-                dest: '<%= paths.dest.ussd_pmtct %>'
-            },
-            sms_pmtct: {
-                src: ['<%= paths.src.sms_pmtct %>'],
-                dest: '<%= paths.dest.sms_pmtct %>'
-            },
             ussd_pmtct_seed: {
                 src: ['<%= paths.src.ussd_pmtct_seed %>'],
                 dest: '<%= paths.dest.ussd_pmtct_seed %>'
-            },
-            sms_pmtct_seed: {
-                src: ['<%= paths.src.sms_pmtct_seed %>'],
-                dest: '<%= paths.dest.sms_pmtct_seed %>'
             },
             ussd_popi_faq: {
                 src: ['<%= paths.src.ussd_popi_faq %>'],
@@ -410,26 +308,8 @@ module.exports = function (grunt) {
             test_sms_inbound: {
                 src: ['<%= paths.test.sms_inbound %>']
             },
-            test_ussd_servicerating: {
-                src: ['<%= paths.test.ussd_servicerating %>']
-            },
-            test_ussd_nurse: {
-                src: ['<%= paths.test.ussd_nurse %>']
-            },
-            test_sms_nurse: {
-                src: ['<%= paths.test.sms_nurse %>']
-            },
-            test_ussd_pmtct: {
-                src: ['<%= paths.test.ussd_pmtct %>']
-            },
-            test_sms_pmtct: {
-                src: ['<%= paths.test.sms_pmtct %>']
-            },
             test_ussd_pmtct_seed: {
                 src: ['<%= paths.test.ussd_pmtct_seed %>']
-            },
-            test_sms_pmtct_seed: {
-                src: ['<%= paths.test.sms_pmtct_seed %>']
             },
             test_ussd_popi_faq: {
                 src: ['<%= paths.test.ussd_popi_faq %>']
