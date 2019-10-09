@@ -26,7 +26,8 @@ module.exports = function (grunt) {
                     ussd_public_rapidpro: 'src/ussd_public_rapidpro.js',
                     ussd_clinic_rapidpro: 'src/ussd_clinic_rapidpro.js',
                     ussd_popi_rapidpro: 'src/ussd_popi_rapidpro.js',
-                    ussd_chw_rapidpro: 'src/ussd_chw_rapidpro.js'
+                    ussd_chw_rapidpro: 'src/ussd_chw_rapidpro.js',
+                    ussd_optout_rapidpro: 'src/ussd_optout_rapidpro.js'
                 },
                 ussd_clinic: [
                     'src/index.js',
@@ -137,6 +138,11 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.ussd_chw_rapidpro %>',
                     'src/init.js'
                 ],
+                ussd_optout_rapidpro: [
+                    'src/index.js',
+                    '<%= paths.src.app.ussd_optout_rapidpro %>',
+                    'src/init.js'
+                ],
                 all: [
                     'src/**/*.js'
                 ]
@@ -160,7 +166,8 @@ module.exports = function (grunt) {
                 ussd_public_rapidpro: 'go-app-ussd_public_rapidpro.js',
                 ussd_clinic_rapidpro: 'go-app-ussd_clinic_rapidpro.js',
                 ussd_popi_rapidpro: 'go-app-ussd_popi_rapidpro.js',
-                ussd_chw_rapidpro: 'go-app-ussd_chw_rapidpro.js'
+                ussd_chw_rapidpro: 'go-app-ussd_chw_rapidpro.js',
+                ussd_optout_rapidpro: 'go-app-ussd_optout_rapidpro.js'
             },
             test: {
                 ussd_clinic: [
@@ -271,6 +278,11 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.ussd_chw_rapidpro %>',
                     'test/ussd_chw_rapidpro.test.js'
                 ],
+                ussd_optout_rapidpro: [
+                    'test/setup.js',
+                    '<%= paths.src.app.ussd_optout_rapidpro %>',
+                    'test/ussd_optout_rapidpro.test.js'
+                ],
                 session_length_helper: [
                     'src/session_length_helper.js',
                     'test/session_length_helper.test.js'
@@ -370,6 +382,10 @@ module.exports = function (grunt) {
             ussd_chw_rapidpro: {
                 src: ['<%= paths.src.ussd_chw_rapidpro %>'],
                 dest: '<%= paths.dest.ussd_chw_rapidpro %>'
+             },
+            ussd_optout_rapidpro: {
+                src: ['<%= paths.src.ussd_optout_rapidpro %>'],
+                dest: '<%= paths.dest.ussd_optout_rapidpro %>'
             }
         },
 
@@ -435,6 +451,9 @@ module.exports = function (grunt) {
             },
             test_ussd_chw_rapidpro: {
                 src: ['<%= paths.test.ussd_chw_rapidpro %>']
+            },
+            test_ussd_optout_rapidpro: {
+                src: ['<%= paths.test.ussd_optout_rapidpro %>']
             },
             test_session_length_helper: {
                 src: ['<%= paths.test.session_length_helper %>']
