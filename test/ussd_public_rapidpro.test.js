@@ -123,15 +123,18 @@ describe("ussd_public app", function() {
             return tester
                 .setup.user.state("state_language")
                 .start()
-                .check.reply([
-                    "Welcome to the Department of Health's MomConnect. Please select your language:",
-                    "1. isiZulu",
-                    "2. isiXhosa",
-                    "3. Afrikaans",
-                    "4. English",
-                    "5. Sesotho sa Leboa",
-                    "6. More"
-                ].join("\n"))
+                .check.interaction({
+                    state: "state_language",
+                    reply: [
+                        "Welcome to the Department of Health's MomConnect. Please select your language:",
+                        "1. isiZulu",
+                        "2. isiXhosa",
+                        "3. Afrikaans",
+                        "4. English",
+                        "5. Sesotho sa Leboa",
+                        "6. More"
+                    ].join("\n")
+                })
                 .run();
         });
         it("should set the language if a language is selected", function() {
@@ -167,6 +170,58 @@ describe("ussd_public app", function() {
                 .setup.user.answer("contact", {"language": "zul"})
                 .start()
                 .check.user.state("state_pregnant")
+                .check.user.answer("state_language", "zul")
+                .run();
+        });
+    });
+    describe("state_pregnant", function() {
+        it("should display the options to the user", function() {
+            return tester
+                .setup.user.state("state_pregnant")
+                .start()
+                .check.interaction({
+                    state: "state_pregnant",
+                    reply: [
+                        "MomConnect sends free support messages to pregnant mothers. Are you or do you suspect that " +
+                        "you are pregnant?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display the error pretext if the user types an invalid choice", function() {
+            return tester
+                .setup.user.state("state_pregnant")
+                .input("foo")
+                .check.interaction({
+                    state: "state_pregnant",
+                    reply: [
+                        "Sorry, please reply with the number next to your answer. Are you or do you suspect that " +
+                        "you are pregnant?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should turn the user away if they aren't pregnant", function() {
+            return tester
+                .setup.user.state("state_pregnant")
+                .input("2")
+                .check.interaction({
+                    state: "state_pregnant_only",
+                    reply: 
+                        "We're sorry but this service is only for pregnant mothers. If you have other health " +
+                        "concerns please visit your nearest clinic."
+                })
+                .run();
+        });
+        it("should ask them for consent if they are pregnant", function() {
+            return tester
+                .setup.user.state("state_pregnant")
+                .input("1")
+                .check.user.state("state_consent")
                 .run();
         });
     });

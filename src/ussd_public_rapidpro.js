@@ -83,7 +83,9 @@ go.app = function() {
 
         self.states.add("state_language", function(name) {
             // Skip this state if we already have a language
-            if(_.isString(_.get(self.im.user.get_answer("contact"), "language"))) {
+            var language = _.get(self.im.user.get_answer("contact"), "language");
+            if(_.isString(language)) {
+                self.im.user.set_answer("state_language", language);
                 return self.states.create("state_pregnant");
             }
             // No translations are needed for this state, since we don't know the language yet
@@ -124,10 +126,42 @@ go.app = function() {
                     "MomConnect sends free support messages to pregnant mothers. Are you or do you suspect that you " +
                     "are pregnant?"
                 ),
+                error: $(
+                    "Sorry, please reply with the number next to your answer. Are you or do you suspect that you are " +
+                    "pregnant?"
+                ),
+                accept_labels: true,
+                choices: [
+                    new Choice("state_consent", $("Yes")),
+                    new Choice("state_pregnant_only", $("No"))
+                ]
+            });
+        });
+
+        self.states.add("state_pregnant_only", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "We're sorry but this service is only for pregnant mothers. If you have other health concerns " +
+                    "please visit your nearest clinic."
+                )
+            });
+        });
+
+        self.states.add("state_consent", function(name) {
+            var question = (
+                "MomConnect needs to process your personal info to send you relevant messages about your pregnancy. " +
+                "Do you agree?"
+            );
+            var error_pretext = ("Sorry, please reply with the number next to your answer. ");
+            return new MenuState(name, {
+                question: $(question),
+                error: $(error_pretext + question),
                 choices: [
                     new Choice("state_start", $("Yes")),
-                    new Choice("state_start", $("No"))
-                ]
+                    new Choice("state_start", $("No")),
+                    new Choice("state_start", $("I need more info to decide")),
+                ],
             });
         });
 
