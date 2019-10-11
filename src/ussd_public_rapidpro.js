@@ -4,6 +4,7 @@ go.app = function() {
     var utils = require("seed-jsbox-utils").utils;
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
+    var ChoiceState = vumigo.states.ChoiceState;
     var EndState = vumigo.states.EndState;
     var JsonApi = vumigo.http.api.JsonApi;
     var MenuState = vumigo.states.MenuState;
@@ -185,6 +186,7 @@ go.app = function() {
         });
 
         self.states.add("state_exit", function(name) {
+            // TODO: Proper copy
             return new EndState(name, {
                 next: "state_start",
                 text: $("Exit message")
@@ -230,6 +232,31 @@ go.app = function() {
         });
 
         self.states.add("state_research_consent", function(name) {
+            // Skip this state if we already have consent
+            var consent = _.get(self.im.user.get_answer("contact"), "fields.research_consent");
+            if(consent === "TRUE") {
+                return self.states.create("state_opt_in");
+            }
+            return new ChoiceState(name, {
+                // TODO: Proper copy
+                question: $(
+                    "We may also send you messages about ... We'll make sure not to contact you unnecessarily ... " +
+                    "Do you agree?"
+                ),
+                error: $(
+                    "Sorry, please reply with the number next to your answer. We may also send you messages about " +
+                    "... Do you agree?"
+                ),
+                accept_labels: true,
+                choices: [
+                    new Choice("yes", $("Yes")),
+                    new Choice("no", $("No, only register me for MC messages")),
+                ],
+                next: "state_opt_in"
+            });
+        });
+
+        self.states.add("state_opt_in", function(name) {
             // TODO
             return new EndState(name, {
                 text: ""

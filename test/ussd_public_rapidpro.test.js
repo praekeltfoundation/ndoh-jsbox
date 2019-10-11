@@ -419,4 +419,36 @@ describe("ussd_public app", function() {
                 .run();
         });
     });
+    describe("state_research_consent", function() {
+        it("should ask the user for consent for research", function () {
+            return tester
+                .setup.user.state("state_research_consent")
+                .start()
+                .check.interaction({
+                    state: "state_research_consent",
+                    reply: [
+                        "We may also send you messages about ... We'll make sure not to contact you unnecessarily " +
+                        "... Do you agree?",
+                        "1. Yes",
+                        "2. No, only register me for MC messages"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show the user an error if they selected the incorrect choice", function () {
+            return tester
+                .setup.user.state("state_research_consent")
+                .input("foo")
+                .check.interaction({
+                    state: "state_research_consent",
+                    reply: [
+                        "Sorry, please reply with the number next to your answer. We may also send you messages " +
+                        "about ... Do you agree?",
+                        "1. Yes",
+                        "2. No, only register me for MC messages"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
 });
