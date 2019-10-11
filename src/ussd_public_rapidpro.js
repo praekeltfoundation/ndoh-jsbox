@@ -23,8 +23,8 @@ go.app = function() {
         };
 
         self.contact_in_group = function(contact, groups){
-            var contact_groupnames = _.map(_.get(contact, "groups", []), "name");
-            return _.intersection(contact_groupnames, groups).length > 0;
+            var contact_groupids = _.map(_.get(contact, "groups", []), "uuid");
+            return _.intersection(contact_groupids, groups).length > 0;
         };
 
         self.states.add("state_start", function(name, opts) {
@@ -41,12 +41,9 @@ go.app = function() {
                 }).then(function() {
                     // Delegate to the correct state depending on group membership
                     var contact = self.im.user.get_answer("contact");
-                    var public_groups = ["Public"];
-                    var clinic_groups = ["Prebirth 1", "Prebirth 2", "Prebirth 3", "Prebirth 4", "Prebirth 5",
-                        "Prebirth 6", "Postbirth"];
-                    if(self.contact_in_group(contact, public_groups)) {
+                    if(self.contact_in_group(contact, self.im.config.public_group_ids)) {
                         return self.states.create("state_public_subscription");
-                    } else if(self.contact_in_group(contact, clinic_groups)){
+                    } else if(self.contact_in_group(contact, self.im.config.clinic_group_ids)){
                         return self.states.create("state_clinic_subscription");
                     } else {
                         return self.states.create("state_language");
@@ -86,7 +83,6 @@ go.app = function() {
             // Skip this state if we already have a language
             var language = _.get(self.im.user.get_answer("contact"), "language");
             if(_.isString(language)) {
-                self.im.user.set_answer("state_language", language);
                 return self.states.create("state_pregnant");
             }
             // No translations are needed for this state, since we don't know the language yet
@@ -257,6 +253,35 @@ go.app = function() {
         });
 
         self.states.add("state_opt_in", function(name) {
+            // Skip this state if they haven't opted out
+            if(!self.contact_in_group(self.im.user.get_answer("contact"), self.im.config.optout_group_ids)) {
+                return self.states.create("state_whatsapp_contact_check");
+            }
+            return new MenuState(name, {
+                question: $(
+                    "You previously opted out of MomConnect messages. Please confirm that you would like to opt in " +
+                    "to receive messages again."
+                ),
+                error: $(
+                    "Sorry, please reply with the number next to your answer. Please confirm that you would like to " +
+                    "opt in to receive messages again."
+                ),
+                accept_labels: true,
+                choices: [
+                    new Choice("state_whatsapp_contact_check", "Yes"),
+                    new Choice("state_opt_in_denied", "No")
+                ]
+            });
+        });
+
+        self.states.add("state_opt_in_denied", function(name) {
+            // TODO
+            return new EndState(name, {
+                text: ""
+            });
+        });
+
+        self.states.add("state_whatsapp_contact_check", function(name) {
             // TODO
             return new EndState(name, {
                 text: ""

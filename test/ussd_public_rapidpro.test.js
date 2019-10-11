@@ -16,7 +16,10 @@ describe("ussd_public app", function() {
                     base_url: "https://rapidpro",
                     token: "rapidprotoken"
                 }
-            }
+            },
+            optout_group_ids: ["id-0"],
+            public_group_ids: ["id-1"],
+            clinic_group_ids: ["id-0"]
         });
     });
 
@@ -53,7 +56,7 @@ describe("ussd_public app", function() {
                         fixtures_rapidpro.get_contact({
                             urn: "tel:+27123456789",
                             exists: true,
-                            groups: ["Public"]
+                            groups: ["other", "Public"]
                         })
                     );
                 })
@@ -170,7 +173,6 @@ describe("ussd_public app", function() {
                 .setup.user.answer("contact", {"language": "zul"})
                 .start()
                 .check.user.state("state_pregnant")
-                .check.user.answer("state_language", "zul")
                 .run();
         });
     });
@@ -446,6 +448,40 @@ describe("ussd_public app", function() {
                         "about ... Do you agree?",
                         "1. Yes",
                         "2. No, only register me for MC messages"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_opt_in", function() {
+        it("should ask the user to opt in", function() {
+            return tester
+                .setup.user.state("state_opt_in")
+                .setup.user.answer("contact", {groups: [{uuid: "id-0"}]})
+                .start()
+                .check.interaction({
+                    state: "state_opt_in", 
+                    reply: [
+                        "You previously opted out of MomConnect messages. Please confirm that you would like to opt " +
+                        "in to receive messages again.",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show the user an error if they reply with an incorrect choice", function() {
+            return tester
+                .setup.user.state("state_opt_in")
+                .setup.user.answer("contact", {groups: [{uuid: "id-0"}]})
+                .input("foo")
+                .check.interaction({
+                    state: "state_opt_in", 
+                    reply: [
+                        "Sorry, please reply with the number next to your answer. Please confirm that you would like " +
+                        "to opt in to receive messages again.",
+                        "1. Yes",
+                        "2. No"
                     ].join("\n")
                 })
                 .run();
