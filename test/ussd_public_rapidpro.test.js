@@ -374,4 +374,49 @@ describe("ussd_public app", function() {
                 .run();
         });
     });
+    describe("state_message_consent_denied", function() {
+        it("should give the user an option to go back or exit", function() {
+            return tester
+                .setup.user.state("state_message_consent_denied")
+                .start()
+                .check.interaction({
+                    state: "state_message_consent_denied",
+                    reply: [
+                        "You've chosen not to receive MomConnect messages and so cannot complete registration.",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show the user an error if they enter an incorrect choice", function() {
+            return tester
+                .setup.user.state("state_message_consent_denied")
+                .input("foo")
+                .check.interaction({
+                    state: "state_message_consent_denied",
+                    reply: [
+                        "Sorry, please reply with the number next to your answer. You've chosen not to receive " +
+                        "MomConnect messages and so cannot complete registration.",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go back if the user selects that option", function() {
+            return tester
+                .setup.user.state("state_message_consent_denied")
+                .input("1")
+                .check.user.state("state_message_consent")
+                .run();
+        });
+        it("should exit if the user selects that option", function() {
+            return tester
+                .setup.user.state("state_message_consent_denied")
+                .input("2")
+                .check.user.state("state_exit")
+                .run();
+        });
+    });
 });

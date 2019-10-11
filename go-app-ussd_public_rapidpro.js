@@ -311,9 +311,17 @@ go.app = function() {
         });
 
         self.states.add("state_message_consent_denied", function(name) {
-            // TODO
-            return new EndState(name, {
-                text: ""
+            return new MenuState(name, {
+                question: $("You've chosen not to receive MomConnect messages and so cannot complete registration."),
+                error: $(
+                    "Sorry, please reply with the number next to your answer. You've chosen not to receive " +
+                    "MomConnect messages and so cannot complete registration."
+                ),
+                accept_labels: true,
+                choices: [
+                    new Choice("state_message_consent", $("Back")),
+                    new Choice("state_exit", $("Exit")),
+                ]
             });
         });
 
