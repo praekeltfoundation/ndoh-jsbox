@@ -486,5 +486,58 @@ describe("ussd_public app", function() {
                 })
                 .run();
         });
+        it("should skip the opt in if the user hasn't opted out before", function() {
+            return tester
+                .setup.user.state("state_opt_in")
+                .start()
+                .check.user.state("state_whatsapp_contact_check")
+                .run();
+        });
+    });
+    describe("state_opt_in_denied", function() {
+        it("should give the user an option to go back or exit", function() {
+            return tester
+                .setup.user.state("state_opt_in_denied")
+                .start()
+                .check.interaction({
+                    state: "state_opt_in_denied",
+                    reply: [
+                        "You've chosen not to receive MomConnect messages and so cannot complete registration.",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show the user an error if they enter an incorrect choice", function() {
+            return tester
+                .setup.user.state("state_opt_in_denied")
+                .input("foo")
+                .check.interaction({
+                    state: "state_opt_in_denied",
+                    reply: [
+                        "Sorry, please reply with the number next to your answer. You've chosen not to receive " +
+                        "MomConnect messages and so cannot complete registration.",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go back if the user selects that option", function() {
+            return tester
+                .setup.user.state("state_opt_in_denied")
+                .setup.user.answer("contact", {groups: [{uuid: "id-0"}]})
+                .input("1")
+                .check.user.state("state_opt_in")
+                .run();
+        });
+        it("should exit if the user selects that option", function() {
+            return tester
+                .setup.user.state("state_opt_in_denied")
+                .input("2")
+                .check.user.state("state_exit")
+                .run();
+        });
     });
 });
