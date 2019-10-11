@@ -1,6 +1,52 @@
 var go = {};
 go;
 
+go.Engage = function() {
+    var vumigo = require('vumigo_v02');
+    var events = vumigo.events;
+    var Eventable = events.Eventable;
+    var _ = require('lodash');
+    var url = require('url');
+
+    var Engage = Eventable.extend(function(self, json_api, base_url, token) {
+        self.json_api = json_api;
+        self.base_url = base_url;
+        self.json_api.defaults.headers.Authorization = ['Bearer ' + token];
+        self.json_api.defaults.headers['Content-Type'] = ['application/json'];
+
+        self.contact_check = function(msisdn, block) {
+            return self.json_api.post(url.resolve(self.base_url, 'v1/contacts'), {
+                data: {
+                    blocking: block ? 'wait' : 'no_wait',
+                    contacts: [msisdn]
+                }
+            }).then(function(response) {
+                var existing = _.filter(response.data.contacts, function(obj) {
+                    return obj.status === "valid";
+                });
+                return !_.isEmpty(existing);
+            });
+        };
+
+          self.LANG_MAP = {zul_ZA: "en",
+                          xho_ZA: "en",
+                          afr_ZA: "af",
+                          eng_ZA: "en",
+                          nso_ZA: "en",
+                          tsn_ZA: "en",
+                          sot_ZA: "en",
+                          tso_ZA: "en",
+                          ssw_ZA: "en",
+                          ven_ZA: "en",
+                          nbl_ZA: "en",
+                        };
+    });
+
+
+
+    return Engage;
+}();
+
 go.RapidPro = function() {
     var vumigo = require('vumigo_v02');
     var url_utils = require('url');
@@ -112,9 +158,14 @@ go.app = function() {
 
         self.init = function() {
             self.rapidpro = new go.RapidPro(
-                new JsonApi(self.im, {}),
+                new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-Public"]}}),
                 self.im.config.services.rapidpro.base_url,
                 self.im.config.services.rapidpro.token
+            );
+            self.whatsapp = new go.Engage(
+                new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-Public"]}}),
+                self.im.config.services.whatsapp.base_url,
+                self.im.config.services.whatsapp.token
             );
         };
 
@@ -127,7 +178,11 @@ go.app = function() {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
 
-            return self.rapidpro.get_contact({urn: "tel:" + utils.normalize_msisdn(self.im.user.addr, "ZA")})
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            // Fire and forget a background whatsapp contact check
+            self.whatsapp.contact_check(msisdn, false).then(_.noop, _.noop);
+
+            return self.rapidpro.get_contact({urn: "tel:" + msisdn})
                 .then(function(contact) {
                     self.im.user.set_answer("contact", contact);
                     // Set the language if we have it
@@ -385,7 +440,24 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_whatsapp_contact_check", function(name) {
+        self.states.add("state_whatsapp_contact_check", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            return self.whatsapp.contact_check(msisdn, true)
+                .then(function(result) {
+                    self.im.user.set_answer("on_whatsapp", result);
+                    return self.states.create("state_trigger_rapidpro_flow");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: "state_whatsapp_contact_check"});
+                    }
+                    return self.states.create("state_whatsapp_contact_check", opts);
+                });
+        });
+
+        self.states.add("state_trigger_rapidpro_flow", function(name) {
             // TODO
             return new EndState(name, {
                 text: ""
@@ -399,9 +471,10 @@ go.app = function() {
             });
         });
 
-        self.states.creators.__error__ = function(name) {
+        self.states.creators.__error__ = function(name, opts) {
+            var return_state = opts.return_state || "state_start";
             return new EndState(name, {
-                next: "state_start",
+                next: return_state,
                 text: $("Sorry, something went wrong. We have been notified. Please try again later")
             });
         };

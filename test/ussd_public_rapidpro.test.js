@@ -2,6 +2,7 @@ var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
 var assert = require("assert");
 var fixtures_rapidpro = require("./fixtures_rapidpro")();
+var fixtures_whatsapp = require("./fixtures_pilot")();
 
 describe("ussd_public app", function() {
     var app;
@@ -15,6 +16,10 @@ describe("ussd_public app", function() {
                 rapidpro: {
                     base_url: "https://rapidpro",
                     token: "rapidprotoken"
+                },
+                whatsapp: {
+                    base_url: "http://pilot.example.org",
+                    token: "api-token"
                 }
             },
             optout_group_ids: ["id-0"],
@@ -488,9 +493,17 @@ describe("ussd_public app", function() {
         });
         it("should skip the opt in if the user hasn't opted out before", function() {
             return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27123456789",
+                            wait: true
+                        })
+                    );
+                })
                 .setup.user.state("state_opt_in")
                 .start()
-                .check.user.state("state_whatsapp_contact_check")
+                .check.user.state("state_trigger_rapidpro_flow")
                 .run();
         });
     });
@@ -537,6 +550,44 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_opt_in_denied")
                 .input("2")
                 .check.user.state("state_exit")
+                .run();
+        });
+    });
+    describe("state_whatsapp_contact_check", function() {
+        it("should store the result of the contact check", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27123456789",
+                            wait: true
+                        })
+                    );
+                })
+                .setup.user.state("state_whatsapp_contact_check")
+                .check.user.answer("on_whatsapp", true)
+                .run();
+        });
+        it("should retry in the case of HTTP failures", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27123456789",
+                            wait: true,
+                            fail: true
+                        })
+                    );
+                })
+                .setup.user.state("state_whatsapp_contact_check")
+                .check(function(api){
+                    assert.equal(api.http.requests.length, 3);
+                    api.http.requests.forEach(function(request){
+                        assert.equal(request.url, "http://pilot.example.org/v1/contacts");
+                    });
+                    assert.equal(api.log.error.length, 1);
+                    assert(api.log.error[0].includes("HttpResponseError"));
+                })
                 .run();
         });
     });

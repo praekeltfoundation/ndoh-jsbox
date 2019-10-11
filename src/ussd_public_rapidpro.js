@@ -16,9 +16,14 @@ go.app = function() {
 
         self.init = function() {
             self.rapidpro = new go.RapidPro(
-                new JsonApi(self.im, {}),
+                new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-Public"]}}),
                 self.im.config.services.rapidpro.base_url,
                 self.im.config.services.rapidpro.token
+            );
+            self.whatsapp = new go.Engage(
+                new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-Public"]}}),
+                self.im.config.services.whatsapp.base_url,
+                self.im.config.services.whatsapp.token
             );
         };
 
@@ -31,7 +36,11 @@ go.app = function() {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
 
-            return self.rapidpro.get_contact({urn: "tel:" + utils.normalize_msisdn(self.im.user.addr, "ZA")})
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            // Fire and forget a background whatsapp contact check
+            self.whatsapp.contact_check(msisdn, false).then(_.noop, _.noop);
+
+            return self.rapidpro.get_contact({urn: "tel:" + msisdn})
                 .then(function(contact) {
                     self.im.user.set_answer("contact", contact);
                     // Set the language if we have it
@@ -289,7 +298,24 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_whatsapp_contact_check", function(name) {
+        self.states.add("state_whatsapp_contact_check", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            return self.whatsapp.contact_check(msisdn, true)
+                .then(function(result) {
+                    self.im.user.set_answer("on_whatsapp", result);
+                    return self.states.create("state_trigger_rapidpro_flow");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: "state_whatsapp_contact_check"});
+                    }
+                    return self.states.create("state_whatsapp_contact_check", opts);
+                });
+        });
+
+        self.states.add("state_trigger_rapidpro_flow", function(name) {
             // TODO
             return new EndState(name, {
                 text: ""
@@ -303,9 +329,10 @@ go.app = function() {
             });
         });
 
-        self.states.creators.__error__ = function(name) {
+        self.states.creators.__error__ = function(name, opts) {
+            var return_state = opts.return_state || "state_start";
             return new EndState(name, {
-                next: "state_start",
+                next: return_state,
                 text: $("Sorry, something went wrong. We have been notified. Please try again later")
             });
         };
