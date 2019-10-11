@@ -287,14 +287,44 @@ go.app = function() {
             });
         });
         
-        self.states.add("state_question_menu", function(name) {
+        self.states.add("state_message_consent", function(name) {
+            // Skip this state if we already have consent
+            var consent = _.get(self.im.user.get_answer("contact"), "fields.messaging_consent");
+            if(consent === "TRUE") {
+                return self.states.create("state_research_consent");
+            }
+            return new MenuState(name, {
+                question: $(
+                    "Do you agree to receiving messages from MomConnect? This may include receiving messages on " +
+                    "public holidays and weekends."
+                ),
+                error: $(
+                    "Sorry, please reply with the number next to your answer. Do you agree to receiving messages " +
+                    "from MomConnect?"
+                ),
+                accept_labels: true,
+                choices: [
+                    new Choice("state_research_consent", $("Yes")),
+                    new Choice("state_message_consent_denied", $("No")),
+                ]
+            });
+        });
+
+        self.states.add("state_message_consent_denied", function(name) {
             // TODO
             return new EndState(name, {
                 text: ""
             });
         });
 
-        self.states.add("state_message_consent", function(name) {
+        self.states.add("state_research_consent", function(name) {
+            // TODO
+            return new EndState(name, {
+                text: ""
+            });
+        });
+
+        self.states.add("state_question_menu", function(name) {
             // TODO
             return new EndState(name, {
                 text: ""

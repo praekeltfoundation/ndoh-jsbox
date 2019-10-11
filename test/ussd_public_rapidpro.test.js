@@ -328,4 +328,50 @@ describe("ussd_public app", function() {
                 .run();
         });
     });
+    describe("state_message_consent", function() {
+        it("should ask the user for messaging consent", function () {
+            return tester
+                .setup.user.state("state_message_consent")
+                .start()
+                .check.interaction({
+                    state: "state_message_consent",
+                    reply: [
+                        "Do you agree to receiving messages from MomConnect? This may include receiving messages on " +
+                        "public holidays and weekends.",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show the user an error on invalid input", function () {
+            return tester
+                .setup.user.state("state_message_consent")
+                .input("foo")
+                .check.interaction({
+                    state: "state_message_consent",
+                    reply: [
+                        "Sorry, please reply with the number next to your answer. Do you agree to receiving messages " +
+                        "from MomConnect?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should get research consent if the user consents to messages", function () {
+            return tester
+                .setup.user.state("state_message_consent")
+                .input("1")
+                .check.user.state("state_research_consent")
+                .run();
+        });
+        it("should confirm if the user denies consent", function () {
+            return tester
+                .setup.user.state("state_message_consent")
+                .input("2")
+                .check.user.state("state_message_consent_denied")
+                .run();
+        });
+    });
 });
