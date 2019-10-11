@@ -5,6 +5,7 @@ module.exports = function() {
             var exists = params.exists || false;
             var urn = params.urn || 'tel:+27820001002';
             var results = [];
+            var status_code = params.failure ? 500 : 200;
             var groups = params.groups || [];
             groups = groups.map(function(value, index) {
                 return {
@@ -17,6 +18,7 @@ module.exports = function() {
                 results = [{
                     uuid: params.uuid || 'cb245673-aa41-4302-ac47-00000001002',
                     name: params.name || "Test 1002",
+                    language: params.language || null,
                     urns: [urn],
                     groups: groups,
                     fields: params.fields || {},
@@ -35,7 +37,7 @@ module.exports = function() {
                     "params": params.filters || {urn: urn}
                 },
                 "response": {
-                    "code": 200,
+                    "code": status_code,
                     "data": {
                         next: null,
                         previous: null,
