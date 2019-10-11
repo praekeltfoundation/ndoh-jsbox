@@ -221,7 +221,48 @@ describe("ussd_public app", function() {
             return tester
                 .setup.user.state("state_pregnant")
                 .input("1")
-                .check.user.state("state_consent")
+                .check.user.state("state_info_consent")
+                .run();
+        });
+    });
+    describe("state_info_consent", function() {
+        it("should ask the user for consent to use their info", function() {
+            return tester
+                .setup.user.state("state_info_consent")
+                .start()
+                .check.interaction({
+                    state: "state_info_consent",
+                    reply: [
+                        "MomConnect needs to process your personal info to send you relevant messages about your " +
+                        "pregnancy. Do you agree?",
+                        "1. Yes",
+                        "2. No",
+                        "3. I need more info to decide"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show an error if the user replies with an incorrect choice", function() {
+            return tester
+                .setup.user.state("state_info_consent")
+                .input("foo")
+                .check.interaction({
+                    state: "state_info_consent",
+                    reply: [
+                        "Sorry, please reply with the number next to your answer. Do you agree?",
+                        "1. Yes",
+                        "2. No",
+                        "3. I need more info to decide"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should skip the state if they have already given info consent", function() {
+            return tester
+                .setup.user.state("state_info_consent")
+                .setup.user.answer("contact", {"fields": {"info_consent": "TRUE"}})
+                .start()
+                .check.user.state("state_message_consent")
                 .run();
         });
     });

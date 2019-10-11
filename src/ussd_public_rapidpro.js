@@ -132,7 +132,7 @@ go.app = function() {
                 ),
                 accept_labels: true,
                 choices: [
-                    new Choice("state_consent", $("Yes")),
+                    new Choice("state_info_consent", $("Yes")),
                     new Choice("state_pregnant_only", $("No"))
                 ]
             });
@@ -148,20 +148,30 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_consent", function(name) {
-            var question = (
-                "MomConnect needs to process your personal info to send you relevant messages about your pregnancy. " +
-                "Do you agree?"
-            );
-            var error_pretext = ("Sorry, please reply with the number next to your answer. ");
+        self.states.add("state_info_consent", function(name) {
+            // Skip this state if we already have consent
+            var consent = _.get(self.im.user.get_answer("contact"), "fields.info_consent");
+            if(consent === "TRUE") {
+                return self.states.create("state_message_consent");
+            }
             return new MenuState(name, {
-                question: $(question),
-                error: $(error_pretext + question),
+                question: $(
+                    "MomConnect needs to process your personal info to send you relevant messages about your " +
+                    "pregnancy. Do you agree?"
+                ),
+                error: $("Sorry, please reply with the number next to your answer. Do you agree?"),
+                accept_labels: true,
                 choices: [
-                    new Choice("state_start", $("Yes")),
+                    new Choice("state_message_consent", $("Yes")),
                     new Choice("state_start", $("No")),
                     new Choice("state_start", $("I need more info to decide")),
                 ],
+            });
+        });
+        
+        self.states.add("state_message_consent", function(name) {
+            return new EndState(name, {
+                text: ""
             });
         });
 
