@@ -163,13 +163,43 @@ go.app = function() {
                 accept_labels: true,
                 choices: [
                     new Choice("state_message_consent", $("Yes")),
-                    new Choice("state_start", $("No")),
-                    new Choice("state_start", $("I need more info to decide")),
+                    new Choice("state_info_consent_denied", $("No")),
+                    new Choice("state_question_menu", $("I need more info to decide")),
                 ],
             });
         });
+
+        self.states.add("state_info_consent_denied", function(name) {
+            return new MenuState(name, {
+                question: $("Unfortunately without your consent, you can't register to MomConnect."),
+                error: $(
+                    "Sorry, please reply with the number next to your answer. Unfortunately without your consent, " +
+                    "you can't register to MomConnect."
+                ),
+                accept_labels: true,
+                choices: [
+                    new Choice("state_info_consent", $("Back")),
+                    new Choice("state_exit", $("Exit")),
+                ]
+            });
+        });
+
+        self.states.add("state_exit", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $("Exit message")
+            });
+        });
         
+        self.states.add("state_question_menu", function(name) {
+            // TODO
+            return new EndState(name, {
+                text: ""
+            });
+        });
+
         self.states.add("state_message_consent", function(name) {
+            // TODO
             return new EndState(name, {
                 text: ""
             });

@@ -265,5 +265,67 @@ describe("ussd_public app", function() {
                 .check.user.state("state_message_consent")
                 .run();
         });
+        it("should ask for message consent if they agree", function () {
+            return tester
+                .setup.user.state("state_info_consent")
+                .input("1")
+                .check.user.state("state_message_consent")
+                .run();
+        });
+        it("should give them the option to go back or exit if they don't agree", function () {
+            return tester
+                .setup.user.state("state_info_consent")
+                .input("2")
+                .check.user.state("state_info_consent_denied")
+                .run();
+        });
+    });
+    describe("state_info_consent_denied", function() {
+        it("should give the user options to go back or to exit", function () {
+            return tester
+                .setup.user.state("state_info_consent_denied")
+                .start()
+                .check.interaction({
+                    state: "state_info_consent_denied",
+                    reply: [
+                        "Unfortunately without your consent, you can't register to MomConnect.",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should give the user an error on invalid input", function () {
+            return tester
+                .setup.user.state("state_info_consent_denied")
+                .input("foo")
+                .check.interaction({
+                    state: "state_info_consent_denied",
+                    reply: [
+                        "Sorry, please reply with the number next to your answer. Unfortunately without your " +
+                        "consent, you can't register to MomConnect.",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should ask them for consent again if they choose to go back", function () {
+            return tester
+                .setup.user.state("state_info_consent_denied")
+                .input("1")
+                .check.user.state("state_info_consent")
+                .run();
+        });
+        it("should display the end screen if they choose to exit", function () {
+            return tester
+                .setup.user.state("state_info_consent_denied")
+                .input("2")
+                .check.interaction({
+                    state: "state_exit",
+                    reply: "Exit message"
+                })
+                .run();
+        });
     });
 });
