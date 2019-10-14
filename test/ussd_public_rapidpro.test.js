@@ -24,7 +24,8 @@ describe("ussd_public app", function() {
             },
             optout_group_ids: ["id-0"],
             public_group_ids: ["id-1"],
-            clinic_group_ids: ["id-0"]
+            clinic_group_ids: ["id-0"],
+            flow_uuid: "rapidpro-flow-uuid"
         });
     });
 
@@ -495,15 +496,28 @@ describe("ussd_public app", function() {
             return tester
                 .setup(function(api) {
                     api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
+                        fixtures_whatsapp.not_exists({
                             address: "+27123456789",
                             wait: true
                         })
                     );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "rapidpro-flow-uuid",
+                            null,
+                            "tel:+27123456789",
+                            {
+                                "on_whatsapp": "FALSE",
+                                "research_consent": "FALSE",
+                                "language": "zul"
+                            }
+                        )
+                    );
                 })
                 .setup.user.state("state_opt_in")
+                .setup.user.lang("zul")
                 .start()
-                .check.user.state("state_trigger_rapidpro_flow")
+                .check.user.state("state_registration_complete")
                 .run();
         });
     });
@@ -584,6 +598,63 @@ describe("ussd_public app", function() {
                     assert.equal(api.http.requests.length, 3);
                     api.http.requests.forEach(function(request){
                         assert.equal(request.url, "http://pilot.example.org/v1/contacts");
+                    });
+                    assert.equal(api.log.error.length, 1);
+                    assert(api.log.error[0].includes("HttpResponseError"));
+                })
+                .run();
+        });
+    });
+    describe("state_trigger_rapidpro_flow", function() {
+        it("should start a flow with the correct metadata", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "rapidpro-flow-uuid",
+                            null,
+                            "tel:+27123456789",
+                            {
+                                "on_whatsapp": "TRUE",
+                                "research_consent": "TRUE",
+                                "language": "xho"
+                            }
+                        )
+                    );
+                })
+                .setup.user.state("state_trigger_rapidpro_flow")
+                .setup.user.answer("on_whatsapp", true)
+                .setup.user.answer("state_research_consent", "yes")
+                .setup.user.lang("xho")
+                .start()
+                .run();
+        });
+        it("should retry in the case of HTTP failures", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "rapidpro-flow-uuid",
+                            null,
+                            "tel:+27123456789",
+                            {
+                                "on_whatsapp": "FALSE",
+                                "research_consent": "FALSE",
+                                "language": "zul"
+                            },
+                            true
+                        )
+                    );
+                })
+                .setup.user.state("state_trigger_rapidpro_flow")
+                .setup.user.answer("on_whatsapp", false)
+                .setup.user.answer("state_research_consent", "no")
+                .setup.user.lang("zul")
+                .start()
+                .check(function(api){
+                    assert.equal(api.http.requests.length, 3);
+                    api.http.requests.forEach(function(request){
+                        assert.equal(request.url, "https://rapidpro/api/v2/flow_starts.json");
                     });
                     assert.equal(api.log.error.length, 1);
                     assert(api.log.error[0].includes("HttpResponseError"));

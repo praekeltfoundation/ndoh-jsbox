@@ -128,12 +128,19 @@ go.RapidPro = function() {
             });
         };
 
-        self.start_flow = function(flow_uuid, contact_uuid) {
+        self.start_flow = function(flow_uuid, contact_uuid, contact_urn, extra) {
             var url = self.base_url + "/api/v2/flow_starts.json";
-            return self.json_api.post(url, {data: {
-                flow: flow_uuid,
-                contacts: [contact_uuid]
-            }});
+            var data = {flow: flow_uuid};
+            if(contact_uuid) {
+                data.contacts = [contact_uuid];
+            }
+            if(contact_urn) {
+                data.urns = [contact_urn];
+            }
+            if(extra) {
+                data.extra = extra;
+            }
+            return self.json_api.post(url, {data: data});
         };
     });
 
@@ -457,7 +464,26 @@ go.app = function() {
                 });
         });
 
-        self.states.add("state_trigger_rapidpro_flow", function(name) {
+        self.states.add("state_trigger_rapidpro_flow", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            return self.rapidpro.start_flow(self.im.config.flow_uuid, null, "tel:" + msisdn, {
+                on_whatsapp: self.im.user.get_answer("on_whatsapp") ? "TRUE" : "FALSE",
+                research_consent: self.im.user.get_answer("state_research_consent") === "yes" ? "TRUE" : "FALSE",
+                language: self.im.user.lang
+            }).then(function() {
+                return self.states.create("state_registration_complete");
+            }).catch(function(e) {
+                // Go to error state after 3 failed HTTP requests
+                opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                if(opts.http_error_count === 3) {
+                    self.im.log.error(e.message);
+                    return self.states.create("__error__", {return_state: "state_trigger_rapidpro_flow"});
+                }
+                return self.states.create("state_trigger_rapidpro_flow", opts);
+            });
+        });
+
+        self.states.add("state_registration_complete", function(name) {
             // TODO
             return new EndState(name, {
                 text: ""
