@@ -484,9 +484,16 @@ go.app = function() {
         });
 
         self.states.add("state_registration_complete", function(name) {
-            // TODO
+            var msisdn = utils.readable_msisdn(utils.normalize_msisdn(self.im.user.addr, "ZA"), "27");
+            var whatsapp_message = $(
+                "You're done! This number {{ msisdn }} will get helpful messages from MomConnect on WhatsApp. For " +
+                "the full set of messages, register at a clinic.").context({msisdn: msisdn});
+            var sms_message = $(
+                "You're done! This number {{ msisdn }} will get helpful messages from MomConnect on SMS. You can " +
+                "register for the full set of FREE messages at a clinic.").context({msisdn: msisdn});
             return new EndState(name, {
-                text: ""
+                next: "state_start",
+                text: self.im.user.get_answer("on_whatsapp") ? whatsapp_message : sms_message
             });
         });
 

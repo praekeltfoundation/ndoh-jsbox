@@ -662,4 +662,78 @@ describe("ussd_public app", function() {
                 .run();
         });
     });
+    describe("state_registration_complete", function() {
+        it("should show the WhatsApp message for whatsapp users", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27123456789",
+                            wait: true
+                        })
+                    );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "rapidpro-flow-uuid",
+                            null,
+                            "tel:+27123456789",
+                            {
+                                "on_whatsapp": "TRUE",
+                                "research_consent": "FALSE",
+                                "language": "zul"
+                            }
+                        )
+                    );
+                })
+                // For some reason, if we start the test on state_registration_complete, it skips to state_start,
+                // so we need to start it before
+                .setup.user.state("state_whatsapp_contact_check")
+                .setup.user.lang("zul")
+                .setup.user.answer("on_whatsapp", false)
+                .start()
+                .check.interaction({
+                    state: "state_registration_complete",
+                    reply: 
+                        "You're done! This number 0123456789 will get helpful messages from MomConnect on WhatsApp. " +
+                        "For the full set of messages, register at a clinic."
+                })
+                .run();
+        });
+        it("should show the SMS message for non whatsapp users", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.not_exists({
+                            address: "+27123456789",
+                            wait: true
+                        })
+                    );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "rapidpro-flow-uuid",
+                            null,
+                            "tel:+27123456789",
+                            {
+                                "on_whatsapp": "FALSE",
+                                "research_consent": "FALSE",
+                                "language": "zul"
+                            }
+                        )
+                    );
+                })
+                // For some reason, if we start the test on state_registration_complete, it skips to state_start,
+                // so we need to start it before
+                .setup.user.state("state_whatsapp_contact_check")
+                .setup.user.lang("zul")
+                .setup.user.answer("on_whatsapp", false)
+                .start()
+                .check.interaction({
+                    state: "state_registration_complete",
+                    reply: 
+                        "You're done! This number 0123456789 will get helpful messages from MomConnect on SMS. " +
+                        "You can register for the full set of FREE messages at a clinic."
+                })
+                .run();
+        });
+    });
 });
