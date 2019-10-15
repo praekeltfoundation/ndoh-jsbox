@@ -736,4 +736,92 @@ describe("ussd_public app", function() {
                 .run();
         });
     });
+    describe("information screens", function() {
+        it("should show the main menu", function() {
+            return tester
+                .setup.user.state("state_question_menu")
+                .start()
+                .check.interaction({
+                    state: "state_question_menu",
+                    reply: [
+                        "Choose a question you're interested in:",
+                        "1. What is MomConnect?",
+                        "2. Why does MomConnect need my info?",
+                        "3. What personal info is collected?",
+                        "4. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show what is MomConnect", function() {
+            return tester
+                .setup.user.state("state_what_is_mc")
+                .start()
+                .check.interaction({
+                    state: "state_what_is_mc",
+                    reply: [
+                        "MomConnect is a Health Department programme. It sends helpful messages for you & your baby.",
+                        "1. Menu",
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show why MomConnect needs their info", function() {
+            return tester
+                .setup.user.state("state_why_info")
+                .start()
+                .check.interaction({
+                    state: "state_why_info",
+                    reply: [
+                        "MomConnect needs your personal info to send you messages that are relevant to your " +
+                        "pregnancy or your baby's age. By knowing where you",
+                        "1. Next",
+                        "2. Menu"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show what info MomConnect collects", function() {
+            return tester
+                .setup.user.state("state_what_info")
+                .start()
+                .check.interaction({
+                    state: "state_what_info",
+                    reply: [
+                        "MomConnect collects your phone and ID numbers, clinic location, and info about how your " +
+                        "pregnancy or baby is progressing.",
+                        "1. Menu"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show who MomConnect shares info with", function() {
+            return tester
+                .setup.user.state("state_who_info")
+                .start()
+                .check.interaction({
+                    state: "state_who_info",
+                    reply: [
+                        "MomConnect is owned and run by the Health Department. MomConnect makes sure that your data " +
+                        "is protected while it is processed on their",
+                        "1. Next",
+                        "2. Menu"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should how long MomConnect keeps their info", function() {
+            return tester
+                .setup.user.state("state_how_long_info")
+                .start()
+                .check.interaction({
+                    state: "state_how_long_info",
+                    reply: [
+                        "MomConnect holds your info for historical, research & statistical reasons after you opt out.",
+                        "1. Menu"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
 });

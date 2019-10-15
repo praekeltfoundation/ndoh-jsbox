@@ -9,6 +9,7 @@ go.app = function() {
     var JsonApi = vumigo.http.api.JsonApi;
     var MenuState = vumigo.states.MenuState;
     var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
+    var PaginatedState = vumigo.states.PaginatedState;
 
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_start");
@@ -349,9 +350,82 @@ go.app = function() {
         });
 
         self.states.add("state_question_menu", function(name) {
-            // TODO
-            return new EndState(name, {
-                text: ""
+            return new PaginatedChoiceState(name, {
+                question: $("Choose a question you're interested in:"),
+                options_per_page: null,
+                characters_per_page: 160,
+                choices: [
+                    new Choice("state_what_is_mc", $("What is MomConnect?")),
+                    new Choice("state_why_info", $("Why does MomConnect need my info?")),
+                    new Choice("state_what_info", $("What personal info is collected?")),
+                    new Choice("state_who_info", $("Who can see my personal info?")),
+                    new Choice("state_how_long_info", $("How long does MC keep my info?"))
+                ],
+                more: $("Next"),
+                back: $("Back"),
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+        self.states.add("state_what_is_mc", function(name) {
+            return new PaginatedState(name, {
+                text: $("MomConnect is a Health Department programme. It sends helpful messages for you & your baby."),
+                characters_per_page: 160,
+                exit: $("Menu"),
+                more: $("Next"),
+                next: "state_question_menu"
+            });
+        });
+
+        self.states.add("state_why_info", function(name) {
+            return new PaginatedState(name, {
+                text: $(
+                    "MomConnect needs your personal info to send you messages that are relevant to your pregnancy or " +
+                    "your baby's age. By knowing where you registered for MomConnect, the Health Department can make " +
+                    "sure that the service is being offered to women at your clinic. Your info assists the Health " +
+                    "Department to improve its services, understand your needs better and provide even better " +
+                    "messaging."),
+                characters_per_page: 160,
+                exit: $("Menu"),
+                more: $("Next"),
+                next: "state_question_menu"
+            });
+        });
+
+        self.states.add("state_what_info", function(name) {
+            return new PaginatedState(name, {
+                text: $(
+                    "MomConnect collects your phone and ID numbers, clinic location, and info about how your " +
+                    "pregnancy or baby is progressing."),
+                characters_per_page: 160,
+                exit: $("Menu"),
+                more: $("Next"),
+                next: "state_question_menu"
+            });
+        });
+
+        self.states.add("state_who_info", function(name) {
+            return new PaginatedState(name, {
+                text: $(
+                    "MomConnect is owned and run by the Health Department. MomConnect makes sure that your data is " +
+                    "protected while it is processed on their behalf by MTN, Cell C, Telkom, Vodacom, Praekelt, " +
+                    "Jembi, HISP & WhatsApp."),
+                characters_per_page: 160,
+                exit: $("Menu"),
+                more: $("Next"),
+                next: "state_question_menu"
+            });
+        });
+
+        self.states.add("state_how_long_info", function(name) {
+            return new PaginatedState(name, {
+                text: $("MomConnect holds your info for historical, research & statistical reasons after you opt out."),
+                characters_per_page: 160,
+                exit: $("Menu"),
+                more: $("Next"),
+                next: "state_question_menu"
             });
         });
 
