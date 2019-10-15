@@ -17,7 +17,7 @@ module.exports = function() {
                 },
             },
             'response': {
-                'code': 200,
+                'code': params.fail ? 500 : 200,
                 'data': {
                     'contacts': [{
                         'input': params.address,

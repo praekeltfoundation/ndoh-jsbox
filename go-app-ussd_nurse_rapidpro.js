@@ -82,12 +82,19 @@ go.RapidPro = function() {
             });
         };
 
-        self.start_flow = function(flow_uuid, contact_uuid) {
+        self.start_flow = function(flow_uuid, contact_uuid, contact_urn, extra) {
             var url = self.base_url + "/api/v2/flow_starts.json";
-            return self.json_api.post(url, {data: {
-                flow: flow_uuid,
-                contacts: [contact_uuid]
-            }});
+            var data = {flow: flow_uuid};
+            if(contact_uuid) {
+                data.contacts = [contact_uuid];
+            }
+            if(contact_urn) {
+                data.urns = [contact_urn];
+            }
+            if(extra) {
+                data.extra = extra;
+            }
+            return self.json_api.post(url, {data: data});
         };
     });
 
