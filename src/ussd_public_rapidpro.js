@@ -321,7 +321,8 @@ go.app = function() {
             return self.rapidpro.start_flow(self.im.config.flow_uuid, null, "tel:" + msisdn, {
                 on_whatsapp: self.im.user.get_answer("on_whatsapp") ? "TRUE" : "FALSE",
                 research_consent: self.im.user.get_answer("state_research_consent") === "yes" ? "TRUE" : "FALSE",
-                language: self.im.user.lang
+                language: self.im.user.lang,
+                source: "Public USSD"
             }).then(function() {
                 return self.states.create("state_registration_complete");
             }).catch(function(e) {
