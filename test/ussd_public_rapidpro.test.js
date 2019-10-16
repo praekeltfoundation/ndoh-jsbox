@@ -509,7 +509,8 @@ describe("ussd_public app", function() {
                             {
                                 "on_whatsapp": "FALSE",
                                 "research_consent": "FALSE",
-                                "language": "zul"
+                                "language": "zul",
+                                "source": "Public USSD"
                             }
                         )
                     );
@@ -617,7 +618,8 @@ describe("ussd_public app", function() {
                             {
                                 "on_whatsapp": "TRUE",
                                 "research_consent": "TRUE",
-                                "language": "xho"
+                                "language": "xho",
+                                "source": "Public USSD"
                             }
                         )
                     );
@@ -627,6 +629,7 @@ describe("ussd_public app", function() {
                 .setup.user.answer("state_research_consent", "yes")
                 .setup.user.lang("xho")
                 .start()
+                .check.user.state("state_registration_complete")
                 .run();
         });
         it("should retry in the case of HTTP failures", function() {
@@ -640,7 +643,8 @@ describe("ussd_public app", function() {
                             {
                                 "on_whatsapp": "FALSE",
                                 "research_consent": "FALSE",
-                                "language": "zul"
+                                "language": "zul",
+                                "source": "Public USSD"
                             },
                             true
                         )
@@ -680,7 +684,8 @@ describe("ussd_public app", function() {
                             {
                                 "on_whatsapp": "TRUE",
                                 "research_consent": "FALSE",
-                                "language": "zul"
+                                "language": "zul",
+                                "source": "Public USSD"
                             }
                         )
                     );
@@ -716,7 +721,8 @@ describe("ussd_public app", function() {
                             {
                                 "on_whatsapp": "FALSE",
                                 "research_consent": "FALSE",
-                                "language": "zul"
+                                "language": "zul",
+                                "source": "Public USSD"
                             }
                         )
                     );
