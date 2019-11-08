@@ -35,6 +35,11 @@ describe('app', function() {
                             token: 'somethingsecret'
                         }
                     },
+                    rapidpro: {
+                        registration_flow_id: "post-registration-flow-uuid",
+                        optout_flow_id: "optout-flow-uuid",
+                        optin_flow_id: "optin-flow-uuid"
+                    },
                     mock_eid: "mock-event-id"
                 });
         });
@@ -163,12 +168,6 @@ describe('app', function() {
                                         })
                                     );
                                     api.http.fixtures.add(
-                                        fixtures_RapidPro.get_flows([{
-                                            uuid: 'optout-flow-uuid',
-                                            name: "Optout"
-                                        }])
-                                    );
-                                    api.http.fixtures.add(
                                         fixtures_RapidPro.start_flow("optout-flow-uuid", "operator-contact-uuid")
                                     );
                                 })
@@ -183,7 +182,7 @@ describe('app', function() {
                                     })
                                 .check.reply.ends_session()
                                 .check(function(api) {
-                                    utils.check_fixtures_used(api, [0, 1, 2]);
+                                    utils.check_fixtures_used(api, [0, 1]);
                                 })
                                 .run();
                         });
@@ -928,12 +927,6 @@ describe('app', function() {
                         }, "contact-uuid")
                     );
                     api.http.fixtures.add(
-                        fixtures_RapidPro.get_flows([{
-                            uuid: "post-registration-flow-uuid",
-                            name: "Post registration"
-                        }])
-                    );
-                    api.http.fixtures.add(
                         fixtures_RapidPro.start_flow(
                             "post-registration-flow-uuid", "contact-uuid")
                     );
@@ -964,7 +957,7 @@ describe('app', function() {
                            "You'll get 3 messages every week."
                 })
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [0, 1, 2, 3, 4]);
+                    utils.check_fixtures_used(api, [0, 1, 2, 3]);
                 })
                 .run();
         });
@@ -990,12 +983,6 @@ describe('app', function() {
                                 registration_date: "2014-04-04T07:07:07Z"
                             }
                         }, "contact-uuid")
-                    );
-                    api.http.fixtures.add(
-                        fixtures_RapidPro.get_flows([{
-                            uuid: "post-registration-flow-uuid",
-                            name: "Post registration"
-                        }])
                     );
                     api.http.fixtures.add(
                         fixtures_RapidPro.start_flow(
@@ -1028,7 +1015,7 @@ describe('app', function() {
                            "You'll get 3 messages every week."
                 })
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [0, 1, 2, 3, 4]);
+                    utils.check_fixtures_used(api, [0, 1, 2, 3]);
                 })
                 .run();
         });
@@ -1065,12 +1052,6 @@ describe('app', function() {
                         })
                     );
                     api.http.fixtures.add(
-                        fixtures_RapidPro.get_flows([{
-                            uuid: "post-registration-flow-uuid",
-                            name: "Post registration"
-                        }])
-                    );
-                    api.http.fixtures.add(
                         fixtures_RapidPro.start_flow(
                             "post-registration-flow-uuid", "contact-uuid")
                     );
@@ -1101,7 +1082,7 @@ describe('app', function() {
                            "You'll get 3 messages every week."
                 })
                 .check(function(api) {
-                    utils.check_fixtures_used(api, [0, 1, 2, 3, 4]);
+                    utils.check_fixtures_used(api, [0, 1, 2, 3]);
                 })
                 .run();
         });
@@ -1435,12 +1416,6 @@ describe('app', function() {
             .setup.user.addr("0820001002")
             .setup(function(api) {
                 api.http.fixtures.add(
-                    fixtures_RapidPro.get_flows([{
-                        uuid: "optin-flow-uuid",
-                        name: "Optin"
-                    }])
-                );
-                api.http.fixtures.add(
                     fixtures_RapidPro.start_flow("optin-flow-uuid", "existing-contact-uuid")
                 );
                 api.http.fixtures.add(
@@ -1460,7 +1435,7 @@ describe('app', function() {
             })
             .check.reply.ends_session()
             .check(function(api){
-                utils.check_fixtures_used(api, [0, 1, 2]);
+                utils.check_fixtures_used(api, [0, 1]);
             })
             .run();
         });
