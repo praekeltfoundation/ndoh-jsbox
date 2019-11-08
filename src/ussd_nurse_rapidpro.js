@@ -13,6 +13,7 @@ go.app = function() {
     var utils = SeedJsboxUtils.utils;
     var App = vumigo.App;
     var moment = require('moment');
+    var Q = require('q');
 
     var GoNDOH = App.extend(function(self) {
         App.call(self, 'state_start');
@@ -336,15 +337,10 @@ go.app = function() {
                         });
                     }
                 })
-                // Find the post registration flow
+                // Start the post registration flow for the user
                 .then(function(contact) {
                     self.im.user.set_answer("registrant_contact", contact);
-                    return self.rapidpro.get_flow_by_name("post registration");
-                })
-                // Start the post registration flow for the user
-                .then(function(flow) {
-                    var contact = self.im.user.get_answer("registrant_contact");
-                    return self.rapidpro.start_flow(flow.uuid, contact.uuid);
+                    return self.rapidpro.start_flow(self.im.config.rapidpro.registration_flow_id, contact.uuid);
                 })
                 // Send registration to DHIS2
                 .then(function() {
@@ -412,10 +408,7 @@ go.app = function() {
                 }
             })
             .then(function() {
-                return self.rapidpro.get_flow_by_name('Optout');
-            })
-            .then(function(flow) {
-                return self.rapidpro.start_flow(flow.uuid, contact.uuid);
+                return self.rapidpro.start_flow(self.im.config.rapidpro.optout_flow_id, contact.uuid);
             })
             .then(function() {
                 return self.states.create("state_opted_out");
@@ -658,9 +651,9 @@ go.app = function() {
                     }
 
                     var contact = self.im.user.get_answer('old_contact');
-                    return self.rapidpro.get_flow_by_name('Optin')
-                    .then(function(flow) {
-                        return self.rapidpro.start_flow(flow.uuid, contact.uuid);
+                    return Q()
+                    .then(function() {
+                        return self.rapidpro.start_flow(self.im.config.rapidpro.optin_flow_id, contact.uuid);
                     })
                     .then(function() {
                         return choice.value;
