@@ -347,7 +347,8 @@ go.app = function() {
                     new Choice("state_why_info", $("Why does MomConnect need my info?")),
                     new Choice("state_what_info", $("What personal info is collected?")),
                     new Choice("state_who_info", $("Who can see my personal info?")),
-                    new Choice("state_how_long_info", $("How long does MC keep my info?"))
+                    new Choice("state_how_long_info", $("How long does MC keep my info?")),
+                    new Choice("state_info_consent", $("Back to main menu")),
                 ],
                 more: $("Next"),
                 back: $("Back"),
