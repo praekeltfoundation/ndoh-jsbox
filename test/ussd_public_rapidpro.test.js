@@ -91,8 +91,8 @@ describe("ussd_public app", function() {
                 .check.interaction({
                     state: "state_clinic_subscription",
                     reply: 
-                        "Hello! You can reply to any MC message with a question, compliment or complaint and our " +
-                        "team will get back to you on weekdays 8am-6pm."
+                        "Hello mom! You can reply to any MomConnect message with a question, compliment or complaint. Our team " +
+                        "will get back to you as soon as they can."
                 })
                 .check.user.lang("zul")
                 .run();
@@ -135,7 +135,7 @@ describe("ussd_public app", function() {
                 .check.interaction({
                     state: "state_language",
                     reply: [
-                        "Welcome to the Department of Health's MomConnect. Please select your language:",
+                        "Welcome to the Department of Health's MomConnect (MC). Please select your language:",
                         "1. isiZulu",
                         "2. isiXhosa",
                         "3. Afrikaans",
@@ -162,7 +162,7 @@ describe("ussd_public app", function() {
                 .check.interaction({
                     state: "state_language",
                     reply: [
-                        "Welcome to the Department of Health's MomConnect. Please select your language:",
+                        "Welcome to the Department of Health's MomConnect (MC). Please select your language:",
                         "1. isiZulu",
                         "2. isiXhosa",
                         "3. Afrikaans",
@@ -190,8 +190,8 @@ describe("ussd_public app", function() {
                 .check.interaction({
                     state: "state_pregnant",
                     reply: [
-                        "MomConnect sends free support messages to pregnant mothers. Are you or do you suspect that " +
-                        "you are pregnant?",
+                        "MomConnect sends free messages to help pregnant moms and babies. Are you or do you suspect that you " +
+                        "are pregnant?",
                         "1. Yes",
                         "2. No"
                     ].join("\n")
@@ -220,8 +220,8 @@ describe("ussd_public app", function() {
                 .check.interaction({
                     state: "state_pregnant_only",
                     reply: 
-                        "We're sorry but this service is only for pregnant mothers. If you have other health " +
-                        "concerns please visit your nearest clinic."
+                        "We're sorry but this service is only for pregnant mothers. If you have other health concerns " +
+                        "please visit your nearest clinic. Have a lovely day!"
                 })
                 .run();
         });
@@ -296,9 +296,10 @@ describe("ussd_public app", function() {
                 .check.interaction({
                     state: "state_info_consent_denied",
                     reply: [
-                        "Unfortunately without your consent, you can't register to MomConnect.",
-                        "1. Back",
-                        "2. Exit"
+                        "Unfortunately, without agreeing we can't send MomConnect to you. " +
+                        "Do you agree to MomConnect processing your personal info?",
+                        "1. Yes",
+                        "2. No"
                     ].join("\n")
                 })
                 .run();
@@ -312,8 +313,8 @@ describe("ussd_public app", function() {
                     reply: [
                         "Sorry, please reply with the number next to your answer. Unfortunately without your " +
                         "consent, you can't register to MomConnect.",
-                        "1. Back",
-                        "2. Exit"
+                        "1. Yes",
+                        "2. No"
                     ].join("\n")
                 })
                 .run();
@@ -331,7 +332,7 @@ describe("ussd_public app", function() {
                 .input("2")
                 .check.interaction({
                     state: "state_exit",
-                    reply: "Exit message"
+                    reply: "Thank you for considering MomConnect. We respect your decision. Have a lovely day."
                 })
                 .run();
         });
@@ -390,9 +391,10 @@ describe("ussd_public app", function() {
                 .check.interaction({
                     state: "state_message_consent_denied",
                     reply: [
-                        "You've chosen not to receive MomConnect messages and so cannot complete registration.",
-                        "1. Back",
-                        "2. Exit"
+                        "Unfortunately, without agreeing we can't send MomConnect to you. " +
+                        "Do you want to agree to get messages from MomConnect?",
+                        "1. Yes",
+                        "2. No"
                     ].join("\n")
                 })
                 .run();
@@ -406,8 +408,8 @@ describe("ussd_public app", function() {
                     reply: [
                         "Sorry, please reply with the number next to your answer. You've chosen not to receive " +
                         "MomConnect messages and so cannot complete registration.",
-                        "1. Back",
-                        "2. Exit"
+                        "1. Yes",
+                        "2. No"
                     ].join("\n")
                 })
                 .run();
@@ -421,10 +423,13 @@ describe("ussd_public app", function() {
         });
         it("should exit if the user selects that option", function() {
             return tester
-                .setup.user.state("state_message_consent_denied")
-                .input("2")
-                .check.user.state("state_exit")
-                .run();
+            .setup.user.state("state_info_consent_denied")
+            .input("2")
+            .check.interaction({
+                state: "state_exit",
+                reply: "Thank you for considering MomConnect. We respect your decision. Have a lovely day."
+            })
+            .run();
         });
     });
     describe("state_research_consent", function() {
@@ -435,8 +440,8 @@ describe("ussd_public app", function() {
                 .check.interaction({
                     state: "state_research_consent",
                     reply: [
-                        "We may also send you messages about ... We'll make sure not to contact you unnecessarily " +
-                        "... Do you agree?",
+                        "We may occasionally send messages for historical, ... " +
+                        "We'll keep her info safe. Does she agree?",
                         "1. Yes",
                         "2. No, only register me for MC messages"
                     ].join("\n")
@@ -450,8 +455,8 @@ describe("ussd_public app", function() {
                 .check.interaction({
                     state: "state_research_consent",
                     reply: [
-                        "Sorry, please reply with the number next to your answer. We may also send you messages " +
-                        "about ... Do you agree?",
+                        "Sorry, please reply with the number next to your answer. We may occasionally send msgs for " +
+                        "... Do you agree?",
                         "1. Yes",
                         "2. No, only register me for MC messages"
                     ].join("\n")
@@ -468,11 +473,21 @@ describe("ussd_public app", function() {
                 .check.interaction({
                     state: "state_opt_in", 
                     reply: [
-                        "You previously opted out of MomConnect messages. Please confirm that you would like to opt " +
-                        "in to receive messages again.",
+                        "You previously opted out of MomConnect messages. Are you sure you want to get messages again?",
                         "1. Yes",
                         "2. No"
                     ].join("\n")
+                })
+                .run();
+        });
+        it("should display exit screen if user chooses not to opt in", function() {
+            return tester
+                .setup.user.state("state_opt_in")
+                .setup.user.answer("contact", {groups: [{uuid: "id-0"}]})
+                .input("2")
+                .check.interaction({
+                    state: "state_exit",
+                    reply: "Thank you for considering MomConnect. We respect your decision. Have a lovely day."
                 })
                 .run();
         });
@@ -519,52 +534,6 @@ describe("ussd_public app", function() {
                 .setup.user.lang("zul")
                 .start()
                 .check.user.state("state_registration_complete")
-                .run();
-        });
-    });
-    describe("state_opt_in_denied", function() {
-        it("should give the user an option to go back or exit", function() {
-            return tester
-                .setup.user.state("state_opt_in_denied")
-                .start()
-                .check.interaction({
-                    state: "state_opt_in_denied",
-                    reply: [
-                        "You've chosen not to receive MomConnect messages and so cannot complete registration.",
-                        "1. Back",
-                        "2. Exit"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should show the user an error if they enter an incorrect choice", function() {
-            return tester
-                .setup.user.state("state_opt_in_denied")
-                .input("foo")
-                .check.interaction({
-                    state: "state_opt_in_denied",
-                    reply: [
-                        "Sorry, please reply with the number next to your answer. You've chosen not to receive " +
-                        "MomConnect messages and so cannot complete registration.",
-                        "1. Back",
-                        "2. Exit"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should go back if the user selects that option", function() {
-            return tester
-                .setup.user.state("state_opt_in_denied")
-                .setup.user.answer("contact", {groups: [{uuid: "id-0"}]})
-                .input("1")
-                .check.user.state("state_opt_in")
-                .run();
-        });
-        it("should exit if the user selects that option", function() {
-            return tester
-                .setup.user.state("state_opt_in_denied")
-                .input("2")
-                .check.user.state("state_exit")
                 .run();
         });
     });
@@ -700,7 +669,7 @@ describe("ussd_public app", function() {
                     state: "state_registration_complete",
                     reply: 
                         "You're done! This number 0123456789 will get helpful messages from MomConnect on WhatsApp. " +
-                        "For the full set of messages, register at a clinic."
+                        "For the full set of messages, visit a clinic."
                 })
                 .run();
         });
@@ -808,8 +777,8 @@ describe("ussd_public app", function() {
                 .check.interaction({
                     state: "state_who_info",
                     reply: [
-                        "MomConnect is owned and run by the Health Department. MomConnect makes sure that your data " +
-                        "is protected while it is processed on their",
+                        "MomConnect is owned by the Health Department. Your data is protected. " +
+                        "It's processed by MTN, Cell C, Telkom, Vodacom, Praekelt, Jembi,",
                         "1. Next",
                         "2. Menu"
                     ].join("\n")
