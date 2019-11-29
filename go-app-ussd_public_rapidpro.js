@@ -232,8 +232,8 @@ go.app = function() {
             return new EndState(name, {
                 next: "state_start",
                 text: $(
-                    "Hello! You can reply to any MC message with a question, compliment or complaint and our team " +
-                    "will get back to you on weekdays 8am-6pm."
+                    "Hello mom! You can reply to any MomConnect message with a question, compliment or complaint. Our team " +
+                    "will get back to you as soon as they can."
                 )
             });
         });
@@ -245,7 +245,7 @@ go.app = function() {
                 return self.states.create("state_pregnant");
             }
             // No translations are needed for this state, since we don't know the language yet
-            var question = "Welcome to the Department of Health's MomConnect. Please select your language:";
+            var question = "Welcome to the Department of Health's MomConnect (MC). Please select your language:";
             // TODO: use the error pretext. There is currently a bug in the sandbox that doesn't take into account
             // the length of the error message when calculating choices
             // var error_pretext = "Sorry, please reply with the number next to your answer.";
@@ -279,7 +279,7 @@ go.app = function() {
         self.states.add("state_pregnant", function(name) {
             return new MenuState(name, {
                 question: $(
-                    "MomConnect sends free support messages to pregnant mothers. Are you or do you suspect that you " +
+                    "MomConnect sends free messages to help pregnant moms and babies. Are you or do you suspect that you " +
                     "are pregnant?"
                 ),
                 error: $(
@@ -299,7 +299,7 @@ go.app = function() {
                 next: "state_start",
                 text: $(
                     "We're sorry but this service is only for pregnant mothers. If you have other health concerns " +
-                    "please visit your nearest clinic."
+                    "please visit your nearest clinic. Have a lovely day!"
                 )
             });
         });
@@ -327,24 +327,17 @@ go.app = function() {
 
         self.states.add("state_info_consent_denied", function(name) {
             return new MenuState(name, {
-                question: $("Unfortunately without your consent, you can't register to MomConnect."),
+                question: $("Unfortunately, without agreeing we can't send MomConnect to you. " +
+                            "Do you agree to MomConnect processing your personal info?"),
                 error: $(
                     "Sorry, please reply with the number next to your answer. Unfortunately without your consent, " +
                     "you can't register to MomConnect."
                 ),
                 accept_labels: true,
                 choices: [
-                    new Choice("state_info_consent", $("Back")),
-                    new Choice("state_exit", $("Exit")),
+                    new Choice("state_info_consent", $("Yes")),
+                    new Choice("state_exit", $("No")),
                 ]
-            });
-        });
-
-        self.states.add("state_exit", function(name) {
-            // TODO: Proper copy
-            return new EndState(name, {
-                next: "state_start",
-                text: $("Exit message")
             });
         });
         
@@ -373,15 +366,16 @@ go.app = function() {
 
         self.states.add("state_message_consent_denied", function(name) {
             return new MenuState(name, {
-                question: $("You've chosen not to receive MomConnect messages and so cannot complete registration."),
+                question: $("Unfortunately, without agreeing we can't send MomConnect to you. " + 
+                            "Do you want to agree to get messages from MomConnect?"),
                 error: $(
                     "Sorry, please reply with the number next to your answer. You've chosen not to receive " +
                     "MomConnect messages and so cannot complete registration."
                 ),
                 accept_labels: true,
                 choices: [
-                    new Choice("state_message_consent", $("Back")),
-                    new Choice("state_exit", $("Exit")),
+                    new Choice("state_message_consent", $("Yes")),
+                    new Choice("state_exit", $("No")),
                 ]
             });
         });
@@ -395,11 +389,11 @@ go.app = function() {
             return new ChoiceState(name, {
                 // TODO: Proper copy
                 question: $(
-                    "We may also send you messages about ... We'll make sure not to contact you unnecessarily ... " +
-                    "Do you agree?"
+                    "We may occasionally send messages for historical, ... " +
+                    "We'll keep her info safe. Does she agree?"
                 ),
                 error: $(
-                    "Sorry, please reply with the number next to your answer. We may also send you messages about " +
+                    "Sorry, please reply with the number next to your answer. We may occasionally send msgs for " +
                     "... Do you agree?"
                 ),
                 accept_labels: true,
@@ -418,8 +412,7 @@ go.app = function() {
             }
             return new MenuState(name, {
                 question: $(
-                    "You previously opted out of MomConnect messages. Please confirm that you would like to opt in " +
-                    "to receive messages again."
+                    "You previously opted out of MomConnect messages. Are you sure you want to get messages again?"
                 ),
                 error: $(
                     "Sorry, please reply with the number next to your answer. Please confirm that you would like to " +
@@ -427,24 +420,18 @@ go.app = function() {
                 ),
                 accept_labels: true,
                 choices: [
-                    new Choice("state_whatsapp_contact_check", "Yes"),
-                    new Choice("state_opt_in_denied", "No")
+                    new Choice("state_whatsapp_contact_check", $("Yes")),
+                    new Choice("state_exit", $("No")),
                 ]
             });
         });
 
-        self.states.add("state_opt_in_denied", function(name) {
-            return new MenuState(name, {
-                question: $("You've chosen not to receive MomConnect messages and so cannot complete registration."),
-                error: $(
-                    "Sorry, please reply with the number next to your answer. You've chosen not to receive " +
-                    "MomConnect messages and so cannot complete registration."
-                ),
-                accept_labels: true,
-                choices: [
-                    new Choice("state_opt_in", $("Back")),
-                    new Choice("state_exit", $("Exit")),
-                ]
+        self.states.add("state_exit", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "Thank you for considering MomConnect. We respect your decision. Have a lovely day."
+                )
             });
         });
 
@@ -489,7 +476,7 @@ go.app = function() {
             var msisdn = utils.readable_msisdn(utils.normalize_msisdn(self.im.user.addr, "ZA"), "27");
             var whatsapp_message = $(
                 "You're done! This number {{ msisdn }} will get helpful messages from MomConnect on WhatsApp. For " +
-                "the full set of messages, register at a clinic.").context({msisdn: msisdn});
+                "the full set of messages, visit a clinic.").context({msisdn: msisdn});
             var sms_message = $(
                 "You're done! This number {{ msisdn }} will get helpful messages from MomConnect on SMS. You can " +
                 "register for the full set of FREE messages at a clinic.").context({msisdn: msisdn});
@@ -559,8 +546,8 @@ go.app = function() {
         self.states.add("state_who_info", function(name) {
             return new PaginatedState(name, {
                 text: $(
-                    "MomConnect is owned and run by the Health Department. MomConnect makes sure that your data is " +
-                    "protected while it is processed on their behalf by MTN, Cell C, Telkom, Vodacom, Praekelt, " +
+                    "MomConnect is owned by the Health Department. Your data is " +
+                    "protected. It's processed by MTN, Cell C, Telkom, Vodacom, Praekelt, " +
                     "Jembi, HISP & WhatsApp."),
                 characters_per_page: 160,
                 exit: $("Menu"),
