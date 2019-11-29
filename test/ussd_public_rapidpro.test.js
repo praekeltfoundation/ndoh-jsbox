@@ -712,7 +712,7 @@ describe("ussd_public app", function() {
         });
     });
     describe("information screens", function() {
-        it("should show the main menu", function() {
+        it("should show the first part main menu", function() {
             return tester
                 .setup.user.state("state_question_menu")
                 .start()
@@ -724,6 +724,38 @@ describe("ussd_public app", function() {
                         "2. Why does MomConnect need my info?",
                         "3. What personal info is collected?",
                         "4. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show the second part main menu", function() {
+            return tester
+                .setup.user.state("state_question_menu")
+                .input("4")
+                .check.interaction({
+                    state: "state_question_menu",
+                    reply: [
+                        "Choose a question you're interested in:",
+                        "1. Who can see my personal info?",
+                        "2. How long does MC keep my info?",
+                        "3. Back to main menu",
+                        "4. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should take the user back to registration", function() {
+            return tester
+                .setup.user.state("state_question_menu")
+                .inputs("4", "3")
+                .check.interaction({
+                    state: "state_info_consent",
+                    reply: [
+                        "MomConnect needs to process your personal info to send you relevant messages about your " +
+                        "pregnancy. Do you agree?",
+                        "1. Yes",
+                        "2. No",
+                        "3. I need more info to decide"
                     ].join("\n")
                 })
                 .run();
