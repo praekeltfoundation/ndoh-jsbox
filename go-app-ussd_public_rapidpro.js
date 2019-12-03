@@ -182,6 +182,31 @@ go.app = function() {
             return _.intersection(contact_groupids, groups).length > 0;
         };
 
+        self.add = function(name, creator) {
+            self.states.add(name, function(name, opts) {
+                if (self.im.msg.session_event !== 'new')
+                    return creator(name, opts);
+
+                var timeout_opts = opts || {};
+                timeout_opts.name = name;
+                return self.states.create('state_timed_out', timeout_opts);
+            });
+        };
+
+        self.states.add('state_timed_out', function(name, creator_opts) {
+            return new ChoiceState(name, {
+                question: $('Welcome back. Please select an option:'),
+                choices: [
+                    new Choice(creator_opts.name, $('Continue signing up for messages')),
+                    new Choice('state_start', $('Main menu'))
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+
         self.states.add("state_start", function(name, opts) {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
@@ -276,7 +301,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_pregnant", function(name) {
+        self.add("state_pregnant", function(name) {
             return new MenuState(name, {
                 question: $(
                     "MomConnect sends free messages to help pregnant moms and babies. Are you or do you suspect that you " +
@@ -294,7 +319,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_pregnant_only", function(name) {
+        self.add("state_pregnant_only", function(name) {
             return new EndState(name, {
                 next: "state_start",
                 text: $(
@@ -304,7 +329,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_info_consent", function(name) {
+        self.add("state_info_consent", function(name) {
             // Skip this state if we already have consent
             var consent = _.get(self.im.user.get_answer("contact"), "fields.info_consent");
             if(consent === "TRUE") {
@@ -325,7 +350,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_info_consent_denied", function(name) {
+        self.add("state_info_consent_denied", function(name) {
             return new MenuState(name, {
                 question: $("Unfortunately, without agreeing we can't send MomConnect to you. " +
                             "Do you agree to MomConnect processing your personal info?"),
@@ -341,7 +366,7 @@ go.app = function() {
             });
         });
         
-        self.states.add("state_message_consent", function(name) {
+        self.add("state_message_consent", function(name) {
             // Skip this state if we already have consent
             var consent = _.get(self.im.user.get_answer("contact"), "fields.messaging_consent");
             if(consent === "TRUE") {
@@ -364,7 +389,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_message_consent_denied", function(name) {
+        self.add("state_message_consent_denied", function(name) {
             return new MenuState(name, {
                 question: $("Unfortunately, without agreeing we can't send MomConnect to you. " + 
                             "Do you want to agree to get messages from MomConnect?"),
@@ -380,7 +405,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_research_consent", function(name) {
+        self.add("state_research_consent", function(name) {
             // Skip this state if we already have consent
             var consent = _.get(self.im.user.get_answer("contact"), "fields.research_consent");
             if(consent === "TRUE") {
@@ -405,7 +430,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_opt_in", function(name) {
+        self.add("state_opt_in", function(name) {
             // Skip this state if they haven't opted out
             if(!self.contact_in_group(self.im.user.get_answer("contact"), self.im.config.optout_group_ids)) {
                 return self.states.create("state_whatsapp_contact_check");
@@ -426,7 +451,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_exit", function(name) {
+        self.add("state_exit", function(name) {
             return new EndState(name, {
                 next: "state_start",
                 text: $(
@@ -435,7 +460,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_whatsapp_contact_check", function(name, opts) {
+        self.add("state_whatsapp_contact_check", function(name, opts) {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             return self.whatsapp.contact_check(msisdn, true)
                 .then(function(result) {
@@ -452,7 +477,7 @@ go.app = function() {
                 });
         });
 
-        self.states.add("state_trigger_rapidpro_flow", function(name, opts) {
+        self.add("state_trigger_rapidpro_flow", function(name, opts) {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             return self.rapidpro.start_flow(self.im.config.flow_uuid, null, "tel:" + msisdn, {
                 on_whatsapp: self.im.user.get_answer("on_whatsapp") ? "TRUE" : "FALSE",
@@ -472,7 +497,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_registration_complete", function(name) {
+        self.add("state_registration_complete", function(name) {
             var msisdn = utils.readable_msisdn(utils.normalize_msisdn(self.im.user.addr, "ZA"), "27");
             var whatsapp_message = $(
                 "You're done! This number {{ msisdn }} will get helpful messages from MomConnect on WhatsApp. For " +
@@ -486,7 +511,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_question_menu", function(name) {
+        self.add("state_question_menu", function(name) {
             return new PaginatedChoiceState(name, {
                 question: $("Choose a question you're interested in:"),
                 options_per_page: null,
@@ -507,7 +532,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_what_is_mc", function(name) {
+        self.add("state_what_is_mc", function(name) {
             return new PaginatedState(name, {
                 text: $("MomConnect is a Health Department programme. It sends helpful messages for you & your baby."),
                 characters_per_page: 160,
@@ -517,7 +542,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_why_info", function(name) {
+        self.add("state_why_info", function(name) {
             return new PaginatedState(name, {
                 text: $(
                     "MomConnect needs your personal info to send you messages that are relevant to your pregnancy or " +
@@ -532,7 +557,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_what_info", function(name) {
+        self.add("state_what_info", function(name) {
             return new PaginatedState(name, {
                 text: $(
                     "MomConnect collects your phone and ID numbers, clinic location, and info about how your " +
@@ -544,7 +569,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_who_info", function(name) {
+        self.add("state_who_info", function(name) {
             return new PaginatedState(name, {
                 text: $(
                     "MomConnect is owned by the Health Department. Your data is " +
@@ -557,7 +582,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_how_long_info", function(name) {
+        self.add("state_how_long_info", function(name) {
             return new PaginatedState(name, {
                 text: $("MomConnect holds your info for historical, research & statistical reasons after you opt out."),
                 characters_per_page: 160,

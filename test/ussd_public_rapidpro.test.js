@@ -131,7 +131,7 @@ describe("ussd_public app", function() {
         it("should display the list of languages", function() {
             return tester
                 .setup.user.state("state_language")
-                .start()
+                .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_language",
                     reply: [
@@ -177,7 +177,7 @@ describe("ussd_public app", function() {
             return tester
                 .setup.user.state("state_language")
                 .setup.user.answer("contact", {"language": "zul"})
-                .start()
+                .input({session_event: "continue"})
                 .check.user.state("state_pregnant")
                 .run();
         });
@@ -186,7 +186,7 @@ describe("ussd_public app", function() {
         it("should display the options to the user", function() {
             return tester
                 .setup.user.state("state_pregnant")
-                .start()
+                .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_pregnant",
                     reply: [
@@ -237,7 +237,7 @@ describe("ussd_public app", function() {
         it("should ask the user for consent to use their info", function() {
             return tester
                 .setup.user.state("state_info_consent")
-                .start()
+                .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_info_consent",
                     reply: [
@@ -269,7 +269,7 @@ describe("ussd_public app", function() {
             return tester
                 .setup.user.state("state_info_consent")
                 .setup.user.answer("contact", {"fields": {"info_consent": "TRUE"}})
-                .start()
+                .input({session_event: "continue"})
                 .check.user.state("state_message_consent")
                 .run();
         });
@@ -292,7 +292,7 @@ describe("ussd_public app", function() {
         it("should give the user options to go back or to exit", function () {
             return tester
                 .setup.user.state("state_info_consent_denied")
-                .start()
+                .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_info_consent_denied",
                     reply: [
@@ -341,7 +341,7 @@ describe("ussd_public app", function() {
         it("should ask the user for messaging consent", function () {
             return tester
                 .setup.user.state("state_message_consent")
-                .start()
+                .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_message_consent",
                     reply: [
@@ -387,7 +387,7 @@ describe("ussd_public app", function() {
         it("should give the user an option to go back or exit", function() {
             return tester
                 .setup.user.state("state_message_consent_denied")
-                .start()
+                .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_message_consent_denied",
                     reply: [
@@ -436,7 +436,7 @@ describe("ussd_public app", function() {
         it("should ask the user for consent for research", function () {
             return tester
                 .setup.user.state("state_research_consent")
-                .start()
+                .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_research_consent",
                     reply: [
@@ -464,12 +464,56 @@ describe("ussd_public app", function() {
                 .run();
         });
     });
+    describe("timeout testing", function() {
+        it("should go to state_timed_out", function() {
+            return tester
+                .setup.user.state("state_pregnant")
+                .inputs(
+                    {session_event: "close"}
+                    , {session_event: "new"}
+                )
+                .check.interaction({
+                    state: "state_timed_out",
+                    reply: [
+                        'Welcome back. Please select an option:',
+                        '1. Continue signing up for messages',
+                        '2. Main menu'
+                    ].join('\n')
+                })
+                .run();
+        });
+        it("should not go to state_timed_out if registration EndState", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "tel:+27123456789",
+                            exists: true,
+                            groups: ["other", "Public"]
+                        })
+                    );
+                })
+                .setup.user.state("state_registration_complete")
+                .inputs(
+                    {session_event: "continue"}
+                    ,{session_event: "close"}
+                    , {session_event: "new"}
+                )
+                .check.interaction({
+                    state: "state_public_subscription",
+                    reply: 
+                        "Hello mom! You're currently receiving a small set of MomConnect messages. To get the full " +
+                        "set, please visit your nearest clinic. To stop, dial *134*550*1#."
+                })
+                .run();
+        });
+    });
     describe("state_opt_in", function() {
         it("should ask the user to opt in", function() {
             return tester
                 .setup.user.state("state_opt_in")
                 .setup.user.answer("contact", {groups: [{uuid: "id-0"}]})
-                .start()
+                .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_opt_in", 
                     reply: [
@@ -532,7 +576,7 @@ describe("ussd_public app", function() {
                 })
                 .setup.user.state("state_opt_in")
                 .setup.user.lang("zul")
-                .start()
+                .input({session_event: "continue"})
                 .check.user.state("state_registration_complete")
                 .run();
         });
@@ -597,7 +641,7 @@ describe("ussd_public app", function() {
                 .setup.user.answer("on_whatsapp", true)
                 .setup.user.answer("state_research_consent", "yes")
                 .setup.user.lang("xho")
-                .start()
+                .input({session_event: "continue"})
                 .check.user.state("state_registration_complete")
                 .run();
         });
@@ -623,7 +667,7 @@ describe("ussd_public app", function() {
                 .setup.user.answer("on_whatsapp", false)
                 .setup.user.answer("state_research_consent", "no")
                 .setup.user.lang("zul")
-                .start()
+                .input({session_event: "continue"})
                 .check(function(api){
                     assert.equal(api.http.requests.length, 3);
                     api.http.requests.forEach(function(request){
@@ -664,7 +708,7 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_whatsapp_contact_check")
                 .setup.user.lang("zul")
                 .setup.user.answer("on_whatsapp", false)
-                .start()
+                .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_registration_complete",
                     reply: 
@@ -701,7 +745,7 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_whatsapp_contact_check")
                 .setup.user.lang("zul")
                 .setup.user.answer("on_whatsapp", false)
-                .start()
+                .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_registration_complete",
                     reply: 
@@ -715,7 +759,7 @@ describe("ussd_public app", function() {
         it("should show the first part main menu", function() {
             return tester
                 .setup.user.state("state_question_menu")
-                .start()
+                .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_question_menu",
                     reply: [
@@ -763,7 +807,7 @@ describe("ussd_public app", function() {
         it("should show what is MomConnect", function() {
             return tester
                 .setup.user.state("state_what_is_mc")
-                .start()
+                .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_what_is_mc",
                     reply: [
@@ -776,7 +820,7 @@ describe("ussd_public app", function() {
         it("should show why MomConnect needs their info", function() {
             return tester
                 .setup.user.state("state_why_info")
-                .start()
+                .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_why_info",
                     reply: [
@@ -791,7 +835,7 @@ describe("ussd_public app", function() {
         it("should show what info MomConnect collects", function() {
             return tester
                 .setup.user.state("state_what_info")
-                .start()
+                .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_what_info",
                     reply: [
@@ -805,7 +849,7 @@ describe("ussd_public app", function() {
         it("should show who MomConnect shares info with", function() {
             return tester
                 .setup.user.state("state_who_info")
-                .start()
+                .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_who_info",
                     reply: [
@@ -820,7 +864,7 @@ describe("ussd_public app", function() {
         it("should how long MomConnect keeps their info", function() {
             return tester
                 .setup.user.state("state_how_long_info")
-                .start()
+                .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_how_long_info",
                     reply: [
