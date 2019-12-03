@@ -45,15 +45,12 @@ go.app = function() {
         };
 
         self.states.add('state_timed_out', function(name, creator_opts) {
-            return new ChoiceState(name, {
+            return new MenuState(name, {
                 question: $('Welcome back. Please select an option:'),
                 choices: [
                     new Choice(creator_opts.name, $('Continue signing up for messages')),
                     new Choice('state_start', $('Main menu'))
-                ],
-                next: function(choice) {
-                    return choice.value;
-                }
+                ]
             });
         });
 
