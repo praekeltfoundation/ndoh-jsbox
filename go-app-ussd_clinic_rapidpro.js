@@ -3,8 +3,11 @@ go;
 
 go.app = function() {
     var vumigo = require("vumigo_v02");
+    var utils = require('seed-jsbox-utils').utils;
     var App = vumigo.App;
-    var FreeText = vumigo.states.FreeText;
+    var Choice = vumigo.states.Choice;
+    var MenuState = vumigo.states.MenuState;
+
 
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_start");
@@ -14,11 +17,16 @@ go.app = function() {
         };
 
         self.states.add("state_start", function(name) {
-            return new FreeText(name, {
-                question: $(
-                    'Welcome to The Department of Health\'s ' +
-                    'MomConnect programme.'
-                )
+            return new MenuState(name, {
+                question: $([
+                    "Welcome to the Department of Health's MomConnect (MC).",
+                    "",
+                    "Is {{msisdn}} the cell number of the mother who wants to sign up?"
+                    ].join("\n")).context({msisdn: utils.readable_msisdn(self.im.user.addr, "27")}),
+                choices: [
+                    new Choice("state_get_contact", "Yes"),
+                    new Choice("state_enter_msisdn", "No")
+                ]
             });
         });
     });

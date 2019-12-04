@@ -17,9 +17,13 @@ describe("ussd_public app", function() {
                 .start()
                 .check.interaction({
                     state: "state_start",
-                    reply:
-                    'Welcome to The Department of Health\'s ' +
-                    'MomConnect programme.'
+                    reply: [
+                        "Welcome to the Department of Health's MomConnect (MC).",
+                        "",
+                        "Is 0123456789 the cell number of the mother who wants to sign up?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
                 })
                 .run();
         });
