@@ -316,7 +316,7 @@ go.app = function() {
             });
         });
 
-        self.add("state_pregnant_only", function(name) {
+        self.states.add("state_pregnant_only", function(name) {
             return new EndState(name, {
                 next: "state_start",
                 text: $(
@@ -411,17 +411,17 @@ go.app = function() {
             return new ChoiceState(name, {
                 // TODO: Proper copy
                 question: $(
-                    "We may occasionally send messages for historical, ... " +
-                    "We'll keep her info safe. Does she agree?"
+                    "We may occasionally call or send msgs for historical/statistical/research reasons. " +
+                    "We’ll keep your info safe. Do you agree?"
                 ),
                 error: $(
-                    "Sorry, please reply with the number next to your answer. We may occasionally send msgs for " +
-                    "... Do you agree?"
+                    "Sorry, please reply with the number next to your answer. We may call or send " + 
+                    "msgs for reaserch reasons. Do you agree?"
                 ),
                 accept_labels: true,
                 choices: [
                     new Choice("yes", $("Yes")),
-                    new Choice("no", $("No, only register me for MC messages")),
+                    new Choice("no", $("No, only send MC msgs")),
                 ],
                 next: "state_opt_in"
             });
@@ -448,7 +448,7 @@ go.app = function() {
             });
         });
 
-        self.add("state_exit", function(name) {
+        self.states.add("state_exit", function(name) {
             return new EndState(name, {
                 next: "state_start",
                 text: $(
@@ -494,7 +494,7 @@ go.app = function() {
             });
         });
 
-        self.add("state_registration_complete", function(name) {
+        self.states.add("state_registration_complete", function(name) {
             var msisdn = utils.readable_msisdn(utils.normalize_msisdn(self.im.user.addr, "ZA"), "27");
             var whatsapp_message = $(
                 "You're done! This number {{ msisdn }} will get helpful messages from MomConnect on WhatsApp. For " +
