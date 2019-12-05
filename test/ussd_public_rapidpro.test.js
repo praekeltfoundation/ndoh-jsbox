@@ -456,7 +456,7 @@ describe("ussd_public app", function() {
                     state: "state_research_consent",
                     reply: [
                         "Sorry, please reply with the number next to your answer. We may call or send " + 
-                        "msgs for reaserch reasons. Do you agree?",
+                        "msgs for research reasons. Do you agree?",
                         "1. Yes",
                         "2. No, only send MC msgs"
                     ].join("\n")

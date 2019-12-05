@@ -416,7 +416,7 @@ go.app = function() {
                 ),
                 error: $(
                     "Sorry, please reply with the number next to your answer. We may call or send " + 
-                    "msgs for reaserch reasons. Do you agree?"
+                    "msgs for research reasons. Do you agree?"
                 ),
                 accept_labels: true,
                 choices: [
