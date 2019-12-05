@@ -1,4 +1,5 @@
 go.app = function() {
+    var _ = require("lodash");
     var vumigo = require("vumigo_v02");
     var utils = require("seed-jsbox-utils").utils;
     var App = vumigo.App;
@@ -14,6 +15,29 @@ go.app = function() {
         self.init = function() {
         };
 
+        self.add = function(name, creator) {
+            self.states.add(name, function(name, opts) {
+                if(self.im.msg.session_event == "new"){
+                    return self.states.create("state_timed_out", _.defaults({name: name}, opts));
+                }
+                return creator(name, opts);
+            });
+        };
+
+        self.states.add("state_timed_out", function(name, opts) {
+            var msisdn = self.im.user.answers.state_enter_msisdn || self.im.user.addr;
+            var readable_msisdn = utils.readable_msisdn(msisdn, "27");
+            return new MenuState(name, {
+                question: $(
+                    "Would you like to complete pregnancy registration for {{ num }}?"
+                ).context({num: readable_msisdn}),
+                choices: [
+                    new Choice(opts.name, $("Yes")),
+                    new Choice("state_start", $("Start a new registration"))
+                ]
+            });
+        });
+
         self.states.add("state_start", function(name) {
             return new MenuState(name, {
                 question: $([
@@ -28,7 +52,7 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_enter_msisdn", function(name) {
+        self.add("state_enter_msisdn", function(name) {
             return new FreeText(name, {
                 question: $(
                     "Please enter the cell number of the mother who would like to sign up to " +
@@ -48,7 +72,7 @@ go.app = function() {
                     }
                 },
                 next: "state_get_contact"
-            })
+            });
         });
     });
 

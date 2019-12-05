@@ -23,8 +23,41 @@ describe("ussd_public app", function() {
                         "Is 0123456789 the cell number of the mother who wants to sign up?",
                         "1. Yes",
                         "2. No"
-                    ].join("\n")
+                    ].join("\n"),
+                    char_limit: 140
                 })
+                .run();
+        });
+    });
+
+    describe("state_timed_out", function() {
+        it("should ask the user if they want to continue", function() {
+            return tester
+                .setup.user.state("state_enter_msisdn")
+                .input({session_event: "new"})
+                .check.interaction({
+                    state: "state_timed_out",
+                    reply: [
+                        "Would you like to complete pregnancy registration for 0123456789?",
+                        "1. Yes",
+                        "2. Start a new registration"
+                    ].join("\n"),
+                    char_limit: 140
+                })
+                .run();
+        });
+        it("should go to the user's previous state if they want to continue", function() {
+            return tester
+                .setup.user.state("state_enter_msisdn")
+                .inputs({session_event: "new"}, "1")
+                .check.user.state("state_enter_msisdn")
+                .run();
+        });
+        it("should start a new registration if they don't want to continue", function() {
+            return tester
+                .setup.user.state("state_enter_msisdn")
+                .inputs({session_event: "new"}, "2")
+                .check.user.state("state_start")
                 .run();
         });
     });
