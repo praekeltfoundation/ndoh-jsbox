@@ -440,10 +440,10 @@ describe("ussd_public app", function() {
                 .check.interaction({
                     state: "state_research_consent",
                     reply: [
-                        "We may occasionally send messages for historical, ... " +
-                        "We'll keep her info safe. Does she agree?",
+                        "We may occasionally call or send msgs for historical/statistical/research reasons. " +
+                        "We’ll keep your info safe. Do you agree?",
                         "1. Yes",
-                        "2. No, only register me for MC messages"
+                        "2. No, only send MC msgs"
                     ].join("\n")
                 })
                 .run();
@@ -455,10 +455,10 @@ describe("ussd_public app", function() {
                 .check.interaction({
                     state: "state_research_consent",
                     reply: [
-                        "Sorry, please reply with the number next to your answer. We may occasionally send msgs for " +
-                        "... Do you agree?",
+                        "Sorry, please reply with the number next to your answer. We may call or send " + 
+                        "msgs for research reasons. Do you agree?",
                         "1. Yes",
-                        "2. No, only register me for MC messages"
+                        "2. No, only send MC msgs"
                     ].join("\n")
                 })
                 .run();
@@ -494,11 +494,7 @@ describe("ussd_public app", function() {
                     );
                 })
                 .setup.user.state("state_registration_complete")
-                .inputs(
-                    {session_event: "continue"}
-                    ,{session_event: "close"}
-                    , {session_event: "new"}
-                )
+                .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_public_subscription",
                     reply: 
