@@ -7,6 +7,8 @@ go.app = function() {
     var utils = require("seed-jsbox-utils").utils;
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
+    var EndState = vumigo.states.EndState;
+    var JsonApi = vumigo.http.api.JsonApi;
     var FreeText = vumigo.states.FreeText;
     var MenuState = vumigo.states.MenuState;
 
@@ -16,6 +18,16 @@ go.app = function() {
         var $ = self.$;
 
         self.init = function() {
+            self.rapidpro = new go.RapidPro(
+                new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-Clinic"]}}),
+                self.im.config.services.rapidpro.base_url,
+                self.im.config.services.rapidpro.token
+            );
+        };
+
+        self.contact_in_group = function(contact, groups){
+            var contact_groupids = _.map(_.get(contact, "groups", []), "uuid");
+            return _.intersection(contact_groupids, groups).length > 0;
         };
 
         self.add = function(name, creator) {
@@ -28,12 +40,15 @@ go.app = function() {
         };
 
         self.states.add("state_timed_out", function(name, opts) {
-            var msisdn = self.im.user.answers.state_enter_msisdn || self.im.user.addr;
-            var readable_msisdn = utils.readable_msisdn(msisdn, "27");
+            var msisdn = _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr);
             return new MenuState(name, {
                 question: $(
                     "Would you like to complete pregnancy registration for {{ num }}?"
-                ).context({num: readable_msisdn}),
+                ).context({num: utils.readable_msisdn(msisdn, "27")}),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
                 choices: [
                     new Choice(opts.name, $("Yes")),
                     new Choice("state_start", $("Start a new registration"))
@@ -42,12 +57,17 @@ go.app = function() {
         });
 
         self.states.add("state_start", function(name) {
+            self.im.user.answers = {};
             return new MenuState(name, {
                 question: $([
                     "Welcome to the Department of Health's MomConnect (MC).",
                     "",
                     "Is {{msisdn}} the cell number of the mother who wants to sign up?"
                     ].join("\n")).context({msisdn: utils.readable_msisdn(self.im.user.addr, "27")}),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
                 choices: [
                     new Choice("state_get_contact", "Yes"),
                     new Choice("state_enter_msisdn", "No")
@@ -77,6 +97,110 @@ go.app = function() {
                 next: "state_get_contact"
             });
         });
+
+        self.add("state_get_contact", function(name, opts) {
+            // Fetches the contact from RapidPro, and delegates to the correct state
+            var msisdn = utils.normalize_msisdn(
+                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
+
+            return self.rapidpro.get_contact({urn: "tel:" + msisdn})
+                .then(function(contact) {
+                    self.im.user.answers.contact = contact;
+                    if(self.contact_in_group(contact, self.im.config.clinic_group_ids)) {
+                        return self.states.create("state_active_subscription");
+                    } else if (self.contact_in_group(contact, self.im.config.optout_group_ids)) {
+                        return self.states.create("state_opted_out");
+                    } else {
+                        return self.states.create("state_with_nurse");
+                    }
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+        self.add("state_active_subscription", function(name) {
+            var msisdn = utils.readable_msisdn(
+                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "27");
+            return new MenuState(name, {
+                question: $(
+                    "The cell number {{msisdn}} is already signed up to MomConnect. What would " +
+                    "you like to do?"
+                ).context({msisdn: msisdn}),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_enter_msisdn", $("Use a different number")),
+                    new Choice("state_add_child", $("Add another child")),
+                    new Choice("state_exit", $("Exit"))
+                ]
+            });
+        });
+
+        self.add("state_add_child", function(name) {
+            // TODO
+        });
+
+        self.states.add("state_exit", function(name) {
+            // TODO
+        });
+
+        self.add("state_opted_out", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "This number previously asked us to stop sending MomConnect messages. Is the " +
+                    "mother sure she wants to get messages from us again?"
+                ),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_with_nurse", $("Yes")),
+                    new Choice("state_no_opt_in", $("No"))
+                ]
+            });
+        });
+        
+        self.states.add("state_no_opt_in", function(name) {
+            // TODO
+        });
+
+        self.add("state_with_nurse", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "Is the mother signing up at a clinic with a nurse? A nurse has to help her " +
+                    "sign up for the full set of MomConnect messages."
+                ),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_info_consent", $("Yes")),
+                    new Choice("state_no_nurse", $("No"))
+                ]
+            });
+        });
+
+        self.states.add("state_no_nurse", function(name) {
+            // TODO
+        });
+
+        self.states.creators.__error__ = function(name, opts) {
+            var return_state = _.get(opts, "return_state", "state_start");
+            return new EndState(name, {
+                next: return_state,
+                text: $("Sorry, something went wrong. We have been notified. Please try again later")
+            });
+        };
     });
 
     return {

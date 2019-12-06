@@ -198,6 +198,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_clinic_rapidpro: [
                     'test/setup.js',
+                    'src/rapidpro.js',
                     '<%= paths.src.app.ussd_clinic_rapidpro %>',
                     'test/ussd_clinic_rapidpro.test.js'
                 ],
