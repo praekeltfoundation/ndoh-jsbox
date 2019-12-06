@@ -149,7 +149,13 @@ go.app = function() {
         });
 
         self.states.add("state_exit", function(name) {
-            // TODO
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "Thank you for using MomConnect. Dial *134*550*2# at any time to sign up. " +
+                    "Have a lovely day!"
+                )
+            });
         });
 
         self.add("state_opted_out", function(name) {
@@ -170,7 +176,13 @@ go.app = function() {
         });
         
         self.states.add("state_no_opt_in", function(name) {
-            // TODO
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "This number has chosen not to receive MomConnect messages. If she changes " +
+                    "her mind, she can dial *134*550*2# to register any time. Have a lovely day!"
+                )
+            });
         });
 
         self.add("state_with_nurse", function(name) {
@@ -191,7 +203,14 @@ go.app = function() {
         });
 
         self.states.add("state_no_nurse", function(name) {
-            // TODO
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "The mother can only register for the full set of MomConnect messages with " +
+                    "a nurse at a clinic. Dial *134*550*2# at a clinic to sign up. Have a lovely " +
+                    "day!"
+                )
+            });
         });
 
         self.states.creators.__error__ = function(name, opts) {

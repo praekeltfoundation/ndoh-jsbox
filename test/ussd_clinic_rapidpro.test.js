@@ -209,6 +209,7 @@ describe("ussd_public app", function() {
                         "Sorry, something went wrong. We have been notified. Please try again " +
                         "later"
                 })
+                .check.reply.ends_session()
                 .check(function(api){
                     assert.equal(api.http.requests.length, 3);
                     api.http.requests.forEach(function(request){
@@ -273,6 +274,20 @@ describe("ussd_public app", function() {
                 .check.user.state("state_enter_msisdn")
                 .run();
         });
+        it("should go to state_exit if that option is chosen", function() {
+            return tester
+                .setup.user.state("state_active_subscription")
+                .input("3")
+                .check.user.state("state_exit")
+                .check.interaction({
+                    state: "state_exit",
+                    reply: 
+                        "Thank you for using MomConnect. Dial *134*550*2# at any time to " +
+                        "sign up. Have a lovely day!"
+                })
+                .check.reply.ends_session()
+                .run();
+        });
     });
     describe("state_opted_out", function() {
         it("should as for opt in", function() {
@@ -309,6 +324,20 @@ describe("ussd_public app", function() {
                 .check.user.state("state_with_nurse")
                 .run();
         });
+        it("should go to state_no_opt_in if the mother doesn't opt in", function() {
+            return tester
+                .setup.user.state("state_opted_out")
+                .input("2")
+                .check.interaction({
+                    state: "state_no_opt_in",
+                    reply:
+                        "This number has chosen not to receive MomConnect messages. If she " +
+                        "changes her mind, she can dial *134*550*2# to register any time. Have a " +
+                        "lovely day!"
+                })
+                .check.reply.ends_session()
+                .run();
+        });
     });
     describe("state_with_nurse", function() {
         it("should ask the user if the nurse is with the mother", function(){
@@ -336,6 +365,20 @@ describe("ussd_public app", function() {
                         "2. No"
                     ].join("\n")
                 })
+                .run();
+        });
+        it("should go to state_no_nurse if the user isn't with a nurse", function() {
+            return tester
+                .setup.user.state("state_with_nurse")
+                .input("2")
+                .check.interaction({
+                    state: "state_no_nurse",
+                    reply: 
+                        "The mother can only register for the full set of MomConnect messages " +
+                        "with a nurse at a clinic. Dial *134*550*2# at a clinic to sign up. " +
+                        "Have a lovely day!"
+                })
+                .check.reply.ends_session()
                 .run();
         });
     });
