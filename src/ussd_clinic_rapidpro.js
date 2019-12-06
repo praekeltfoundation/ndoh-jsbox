@@ -25,12 +25,15 @@ go.app = function() {
         };
 
         self.states.add("state_timed_out", function(name, opts) {
-            var msisdn = self.im.user.answers.state_enter_msisdn || self.im.user.addr;
-            var readable_msisdn = utils.readable_msisdn(msisdn, "27");
+            var msisdn = _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr)
             return new MenuState(name, {
                 question: $(
                     "Would you like to complete pregnancy registration for {{ num }}?"
-                ).context({num: readable_msisdn}),
+                ).context({num: utils.readable_msisdn(msisdn, "27")}),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
                 choices: [
                     new Choice(opts.name, $("Yes")),
                     new Choice("state_start", $("Start a new registration"))
@@ -39,12 +42,17 @@ go.app = function() {
         });
 
         self.states.add("state_start", function(name) {
+            self.im.user.answers = {};
             return new MenuState(name, {
                 question: $([
                     "Welcome to the Department of Health's MomConnect (MC).",
                     "",
                     "Is {{msisdn}} the cell number of the mother who wants to sign up?"
                     ].join("\n")).context({msisdn: utils.readable_msisdn(self.im.user.addr, "27")}),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
                 choices: [
                     new Choice("state_get_contact", "Yes"),
                     new Choice("state_enter_msisdn", "No")

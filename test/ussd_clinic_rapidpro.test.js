@@ -28,6 +28,21 @@ describe("ussd_public app", function() {
                 })
                 .run();
         });
+        it("should display an error message on incorrect input", function() {
+            return tester
+                .input("a")
+                .check.interaction({
+                    state: "state_start",
+                    reply: [
+                        "Sorry we don't understand. Please enter the number next to the mother's " +
+                        "answer.",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n"),
+                    char_limit: 140
+                })
+                .run();
+        });
     });
 
     describe("state_timed_out", function() {
@@ -39,6 +54,22 @@ describe("ussd_public app", function() {
                     state: "state_timed_out",
                     reply: [
                         "Would you like to complete pregnancy registration for 0123456789?",
+                        "1. Yes",
+                        "2. Start a new registration"
+                    ].join("\n"),
+                    char_limit: 140
+                })
+                .run();
+        });
+        it("should display an error message on incorrect input", function() {
+            return tester
+                .setup.user.state("state_timed_out")
+                .input("a")
+                .check.interaction({
+                    state: "state_timed_out",
+                    reply: [
+                        "Sorry we don't understand. Please enter the number next to the mother's " +
+                        "answer.",
                         "1. Yes",
                         "2. Start a new registration"
                     ].join("\n"),
