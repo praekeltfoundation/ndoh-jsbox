@@ -4,6 +4,7 @@ go.app = function() {
     var utils = require("seed-jsbox-utils").utils;
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
+    var ChoiceState = vumigo.states.ChoiceState;
     var EndState = vumigo.states.EndState;
     var JsonApi = vumigo.http.api.JsonApi;
     var FreeText = vumigo.states.FreeText;
@@ -208,6 +209,107 @@ go.app = function() {
                     "day!"
                 )
             });
+        });
+
+        self.add("state_info_consent", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "We need to process the mom's personal info to send her relevant messages " +
+                    "about her pregnancy/baby. Does she agree?"
+                ),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_message_consent", $("Yes")),
+                    new Choice("state_info_consent_confirm", $("No")),
+                    new Choice("state_more_info", $("She needs more info to decide"))
+                ]
+            });
+        });
+        
+        self.add("state_info_consent_confirm", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "Unfortunately, without agreeing she can't sign up to MomConnect. Does she " +
+                    "agree to MomConnect processing her personal info?"
+                ),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_message_consent", $("Yes")),
+                    new Choice("state_no_consent", $("No"))
+                ]
+            });
+        });
+
+        self.add("state_message_consent", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "Does the mother agree to receive messages from MomConnect? This may include " +
+                    "receiving messages on public holidays and weekends."
+                ),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_research_consent", $("Yes")),
+                    new Choice("state_message_consent_confirm", $("No")),
+                ]
+            });
+        });
+        
+        self.add("state_message_consent_confirm", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "Unfortunately, without agreeing she can't sign up to MomConnect. Does she " +
+                    "agree to MomConnect processing her personal info?"
+                ),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_research_consent", $("Yes")),
+                    new Choice("state_no_consent", $("No"))
+                ]
+            });
+        });
+
+        self.states.add("state_no_consent", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "Thank you for considering MomConnect. We respect the mom's decision. " +
+                    "Have a lovely day."
+                )
+            });
+        });
+
+        self.add("state_research_consent", function(name) {
+            return new ChoiceState(name, {
+                question: $(
+                    "We may occasionally send messages for historical, statistical, or research " +
+                    "reasons. We'll keep her info safe. Does she agree?"
+                ),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("yes", $("Yes")),
+                    new Choice("no", $("No")),
+                ],
+                next: "state_clinic_code"
+            });
+        });
+
+        self.add("state_clinic_code", function() {
+            // TODO
         });
 
         self.states.creators.__error__ = function(name, opts) {

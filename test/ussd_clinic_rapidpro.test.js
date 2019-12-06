@@ -367,6 +367,13 @@ describe("ussd_public app", function() {
                 })
                 .run();
         });
+        it("should go to state_info_consent if the user is with a nurse", function() {
+            return tester
+                .setup.user.state("state_with_nurse")
+                .input("1")
+                .check.user.state("state_info_consent")
+                .run();
+        });
         it("should go to state_no_nurse if the user isn't with a nurse", function() {
             return tester
                 .setup.user.state("state_with_nurse")
@@ -380,6 +387,204 @@ describe("ussd_public app", function() {
                 })
                 .check.reply.ends_session()
                 .run();
+        });
+    });
+    describe("state_info_consent", function() {
+        it("should ask the user for consent to processing their info", function() {
+            return tester
+                .setup.user.state("state_info_consent")
+                .check.interaction({
+                    reply: [
+                        "We need to process the mom's personal info to send her relevant " +
+                        "messages about her pregnancy/baby. Does she agree?",
+                        "1. Yes",
+                        "2. No",
+                        "3. She needs more info to decide"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_info_consent")
+                .input("a")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't understand. Please enter the number next to the " +
+                        "mother's answer.",
+                        "1. Yes",
+                        "2. No",
+                        "3. She needs more info to decide"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_info_consent_confirm if they don't give consent", function() {
+            return tester
+                .setup.user.state("state_info_consent")
+                .input("2")
+                .check.user.state("state_info_consent_confirm")
+                .run();
+        });
+        it("should go to state_message_consent if they give consent", function() {
+            return tester
+                .setup.user.state("state_info_consent")
+                .input("1")
+                .check.user.state("state_message_consent")
+                .run();
+        });
+    });
+    describe("state_info_consent_confirm", function() {
+        it("should confirm if the user doesn't consent", function() {
+            return tester
+                .setup.user.state("state_info_consent_confirm")
+                .check.interaction({
+                    reply: [
+                        "Unfortunately, without agreeing she can't sign up to MomConnect. " +
+                        "Does she agree to MomConnect processing her personal info?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n"),
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_info_consent_confirm")
+                .input("a")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't understand. Please enter the number next to the " +
+                        "mother's answer.",
+                        "1. Yes",
+                        "2. No",
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_no_consent if consent isn't given", function() {
+            return tester
+                .setup.user.state("state_info_consent_confirm")
+                .input("2")
+                .check.interaction({
+                    state: "state_no_consent",
+                    reply: 
+                        "Thank you for considering MomConnect. We respect the mom's decision. " +
+                        "Have a lovely day."
+                })
+                .run();
+        });
+        it("should go to state_message_consent if consent is given", function() {
+            return tester
+                .setup.user.state("state_info_consent_confirm")
+                .input("1")
+                .check.user.state("state_message_consent")
+                .run();
+        });
+    });
+    describe("state_message_consent", function() {
+        it("should ask the user for consent to send them messages", function() {
+            return tester
+                .setup.user.state("state_message_consent")
+                .check.interaction({
+                    reply: [
+                        "Does the mother agree to receive messages from MomConnect? This may " +
+                        "include receiving messages on public holidays and weekends.",
+                        "1. Yes",
+                        "2. No",
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_message_consent")
+                .input("a")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't understand. Please enter the number next to the " +
+                        "mother's answer.",
+                        "1. Yes",
+                        "2. No",
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_message_consent_confirm if they don't give consent", function() {
+            return tester
+                .setup.user.state("state_message_consent")
+                .input("2")
+                .check.user.state("state_message_consent_confirm")
+                .run();
+        });
+        it("should go to state_research_consent if consent is given", function() {
+            return tester
+                .setup.user.state("state_message_consent")
+                .input("1")
+                .check.user.state("state_research_consent")
+                .run();
+        });
+    });
+    describe("state_message_consent_confirm", function() {
+        it("should confirm if the user doesn't consent", function() {
+            return tester
+                .setup.user.state("state_message_consent_confirm")
+                .check.interaction({
+                    reply: [
+                        "Unfortunately, without agreeing she can't sign up to MomConnect. " +
+                        "Does she agree to MomConnect processing her personal info?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n"),
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_message_consent_confirm")
+                .input("a")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't understand. Please enter the number next to the " +
+                        "mother's answer.",
+                        "1. Yes",
+                        "2. No",
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_no_consent if consent isn't given", function() {
+            return tester
+                .setup.user.state("state_message_consent_confirm")
+                .input("2")
+                .check.interaction({
+                    state: "state_no_consent",
+                    reply: 
+                        "Thank you for considering MomConnect. We respect the mom's decision. " +
+                        "Have a lovely day."
+                })
+                .run();
+        });
+        it("should go to state_research_consent if consent is given", function() {
+            return tester
+                .setup.user.state("state_message_consent_confirm")
+                .input("1")
+                .check.user.state("state_research_consent")
+                .run();
+        });
+    });
+    describe("state_research_consent", function() {
+        it("should ask the user for consent for research purposes", function() {
+            return tester
+                .setup.user.state("state_research_consent")
+                .check.interaction({
+                    reply: [
+                        "We may occasionally send messages for historical, statistical, or " +
+                        "research reasons. We'll keep her info safe. Does she agree?",
+                        "1. Yes",
+                        "2. No, only send MC msgs"
+                    ]
+                });
         });
     });
 });
