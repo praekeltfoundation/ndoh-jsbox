@@ -433,6 +433,17 @@ describe("ussd_public app", function() {
                 .check.user.state("state_message_consent")
                 .run();
         });
+        it("should skip the consent states if the user has already consented", function() {
+            return tester
+                .setup.user.state("state_info_consent")
+                .setup.user.answer("contact", {"fields": {
+                    "info_consent": "TRUE",
+                    "message_consent": "TRUE",
+                    "research_consent": "TRUE"
+                }})
+                .check.user.state("state_clinic_code")
+                .run();
+        });
     });
     describe("state_info_consent_confirm", function() {
         it("should confirm if the user doesn't consent", function() {

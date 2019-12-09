@@ -212,6 +212,11 @@ go.app = function() {
         });
 
         self.add("state_info_consent", function(name) {
+            // Skip to message consent if the user has already given info consent
+            var consent = _.get(self.im.user.answers, "contact.fields.info_consent", "");
+            if(consent.toUpperCase() === "TRUE"){
+                return self.states.create("state_message_consent");
+            }
             return new MenuState(name, {
                 question: $(
                     "We need to process the mom's personal info to send her relevant messages " +
@@ -247,6 +252,10 @@ go.app = function() {
         });
 
         self.add("state_message_consent", function(name) {
+            var consent = _.get(self.im.user.answers, "contact.fields.message_consent", "");
+            if(consent.toUpperCase() === "TRUE"){
+                return self.states.create("state_research_consent");
+            }
             return new MenuState(name, {
                 question: $(
                     "Does the mother agree to receive messages from MomConnect? This may include " +
@@ -291,6 +300,10 @@ go.app = function() {
         });
 
         self.add("state_research_consent", function(name) {
+            var consent = _.get(self.im.user.answers, "contact.fields.research_consent", "");
+            if(consent.toUpperCase() === "TRUE"){
+                return self.states.create("state_clinic_code");
+            }
             return new ChoiceState(name, {
                 question: $(
                     "We may occasionally send messages for historical, statistical, or research " +
@@ -308,8 +321,9 @@ go.app = function() {
             });
         });
 
-        self.add("state_clinic_code", function() {
+        self.add("state_clinic_code", function(name) {
             // TODO
+            return new EndState(name, {text: "TODO", next: "state_start"});
         });
 
         self.states.creators.__error__ = function(name, opts) {
