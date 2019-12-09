@@ -21,6 +21,12 @@ go.app = function() {
                 self.im.config.services.rapidpro.base_url,
                 self.im.config.services.rapidpro.token
             );
+            self.openhim = new go.OpenHIM(
+                new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-Clinic"]}}),
+                self.im.config.services.openhim.base_url,
+                self.im.config.services.openhim.username,
+                self.im.config.services.openhim.password
+            );
         };
 
         self.contact_in_group = function(contact, groups){
@@ -315,15 +321,53 @@ go.app = function() {
                 ),
                 choices: [
                     new Choice("yes", $("Yes")),
-                    new Choice("no", $("No")),
+                    new Choice("no", $("No, only send MC msgs")),
                 ],
                 next: "state_clinic_code"
             });
         });
 
-        self.add("state_clinic_code", function(name) {
+        self.add("state_clinic_code", function(name, opts) {
+            var text;
+            if(opts.error) {
+                text = $(
+                    "Sorry, the clinic number did not validate. Please reenter the clinic number."
+                );
+            } else {
+                text = $(
+                    "Please enter the 6 digit clinic code for the facility where the mother is " +
+                    "being registered, e.g. 535970."
+                );
+            }
+            return new FreeText(name, {
+                question: text,
+                next: "state_clinic_code_check"
+            });
+        });
+
+        self.add("state_clinic_code_check", function(name, opts) {
+            return self.openhim.validate_mc_clinic_code(self.im.user.answers.state_clinic_code)
+                .then(function(clinic_name) {
+                    if(!clinic_name) {
+                        return self.states.create("state_clinic_code", {error: true});
+                    }
+                    else {
+                        return self.states.create("state_message_type");
+                    }
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+        self.add("state_message_type", function(name) {
             // TODO
-            return new EndState(name, {text: "TODO", next: "state_start"});
+            return new EndState(name, {text: "TODO", next: "states_start"});
         });
 
         self.states.creators.__error__ = function(name, opts) {

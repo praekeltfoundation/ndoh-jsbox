@@ -2,6 +2,7 @@ var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
 var assert = require("assert");
 var fixtures_rapidpro = require("./fixtures_rapidpro")();
+var fixtures_openhim = require("./fixtures_jembi_dynamic")();
 
 describe("ussd_public app", function() {
     var app;
@@ -15,6 +16,11 @@ describe("ussd_public app", function() {
                 rapidpro: {
                     base_url: "https://rapidpro",
                     token: "rapidpro-token"
+                },
+                openhim: {
+                    base_url: "http://test/v2/json/",
+                    username: "openhim-user",
+                    password: "openhim-pass"
                 }
             },
             clinic_group_ids: ["id-1"],
@@ -594,8 +600,76 @@ describe("ussd_public app", function() {
                         "research reasons. We'll keep her info safe. Does she agree?",
                         "1. Yes",
                         "2. No, only send MC msgs"
-                    ]
-                });
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_clinic_code after the user selects an option", function() {
+            return tester
+                .setup.user.state("state_research_consent")
+                .input("1")
+                .check.user.state("state_clinic_code")
+                .run();
+        });
+    });
+    describe("state_clinic_code", function() {
+        it("should ask the user for a clinic code", function() {
+            return tester
+                .setup.user.state("state_clinic_code")
+                .check.interaction({
+                    reply: 
+                        "Please enter the 6 digit clinic code for the facility where the mother " +
+                        "is being registered, e.g. 535970."
+                })
+                .run();
+        });
+        it("should show the user an error if they enter an incorrect clinic code", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_openhim.not_exists("111111", "facilityCheck")
+                    );
+                })
+                .setup.user.state("state_clinic_code")
+                .input("111111")
+                .check.interaction({
+                    reply: 
+                        "Sorry, the clinic number did not validate. Please reenter the clinic " +
+                        "number.",
+                    state: "state_clinic_code"
+                })
+                .run();
+        });
+        it("should go to state_message_type if they enter a valid clinic code", function(){
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_openhim.exists("222222", "test", "facilityCheck")
+                    );
+                })
+                .setup.user.state("state_clinic_code")
+                .input("222222")
+                .check.user.state("state_message_type")
+                .run();
+        });
+        it("should retry failed HTTP requests", function(){
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_openhim.not_exists("333333", "facilityCheck", true)
+                    );
+                })
+                .setup.user.state("state_clinic_code")
+                .input("333333")
+                .check(function(api){
+                    assert.equal(api.http.requests.length, 3);
+                    api.http.requests.forEach(function(request){
+                        assert.equal(request.url, "http://test/v2/json/facilityCheck");
+                    });
+                    assert.equal(api.log.error.length, 1);
+                    assert(api.log.error[0].includes("HttpResponseError"));
+                })
+                .run();
         });
     });
 });
