@@ -558,6 +558,30 @@ go.app = function() {
         });
 
         self.add("state_message_type", function(name) {
+            return new MenuState(name, {
+                question: $("What type of messages does the mom want to get?"),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mom's answer."
+                ),
+                choices: [
+                    new Choice(
+                        "state_edd_month",
+                        $("Pregnancy (plus baby messages once baby is born)")
+                    ),
+                    new Choice(
+                        "state_birth_year",
+                        $("Baby (no pregnancy messages)")
+                    )
+                ]
+            });
+        });
+
+        self.add("state_edd_month", function(name) {
+            // TODO
+            return new EndState(name, {text: "TODO", next: "states_start"});
+        });
+
+        self.add("state_birth_year", function(name) {
             // TODO
             return new EndState(name, {text: "TODO", next: "states_start"});
         });

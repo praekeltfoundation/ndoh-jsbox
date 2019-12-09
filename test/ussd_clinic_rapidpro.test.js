@@ -672,4 +672,32 @@ describe("ussd_public app", function() {
                 .run();
         });
     });
+    describe("state_message_type", function() {
+        it("should ask the user which type of registration they want to do", function() {
+            return tester
+                .setup.user.state("state_message_type")
+                .check.interaction({
+                    reply: [
+                        "What type of messages does the mom want to get?",
+                        "1. Pregnancy (plus baby messages once baby is born)",
+                        "2. Baby (no pregnancy messages)"
+                    ].join("\n"),
+                })
+                .run();
+        });
+        it("should show the error message if the user types in an incorrect choice", function() {
+            return tester
+                .setup.user.state("state_message_type")
+                .input("a")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't understand. Please enter the number next to the mom's " +
+                        "answer.",
+                        "1. Pregnancy (plus baby messages once baby is born)",
+                        "2. Baby (no pregnancy messages)"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
 });
