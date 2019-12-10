@@ -192,15 +192,17 @@ go.OpenHIM = function() {
 
 go.app = function() {
     var _ = require("lodash");
-    var vumigo = require("vumigo_v02");
+    var moment = require("moment");
     var utils = require("seed-jsbox-utils").utils;
+    var vumigo = require("vumigo_v02");
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
     var EndState = vumigo.states.EndState;
-    var JsonApi = vumigo.http.api.JsonApi;
     var FreeText = vumigo.states.FreeText;
+    var JsonApi = vumigo.http.api.JsonApi;
     var MenuState = vumigo.states.MenuState;
+    var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
 
 
     var GoNDOH = App.extend(function(self) {
@@ -577,11 +579,63 @@ go.app = function() {
         });
 
         self.add("state_edd_month", function(name) {
+            var today = new moment(self.im.config.testing_today).startOf("day");
+            // Must be after today, but before 43 weeks in the future
+            var start_date = today.clone().add(1, "days");
+            var end_date = today.clone().add(43, "weeks").add(-1, "days");
+            return new PaginatedChoiceState(name, {
+                question: $(
+                    "What month is the baby due? Please enter the number that matches your " +
+                    "answer, e.g. 1."
+                ),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
+                choices: _.map(_.range(end_date.diff(start_date, "months") + 1), function(i) {
+                    var d = start_date.clone().add(i, "months");
+                    return new Choice(d.format("YYYY-MM"), $(d.format("MMM")));
+                }),
+                back: $("Back"),
+                more: $("Next"),
+                options_per_page: null,
+                characters_per_page: 160,
+                next: "state_edd_day"
+            });
+        });
+
+        self.add("state_edd_day", function(name){
+            return new FreeText(name, {
+                question: $(
+                    "What is the estimated day that the baby is due? Please enter the day as a " +
+                    "number, e.g. 12."
+                ),
+                check: function(content) {
+                    var date = new moment(
+                        self.im.user.answers.state_edd_month + "-" + content,
+                        "YYYY-MM-DD"
+                    );
+                    var current_date = new moment(self.im.config.testing_today).startOf("day");
+                    if(
+                        !date.isValid() || 
+                        !date.isBetween(current_date, current_date.clone().add(43, "weeks"))
+                      ) {
+                        return $(
+                            "Sorry, we don't understand. Please try again by entering the day " +
+                            "the baby was born as a number, e.g. 12."
+                        );
+                    }
+                },
+                next: "state_id_type"
+            });
+        });
+
+        self.add("state_birth_year", function(name) {
             // TODO
             return new EndState(name, {text: "TODO", next: "states_start"});
         });
 
-        self.add("state_birth_year", function(name) {
+        self.add("state_id_type", function(name) {
             // TODO
             return new EndState(name, {text: "TODO", next: "states_start"});
         });

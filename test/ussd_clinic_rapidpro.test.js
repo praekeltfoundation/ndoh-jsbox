@@ -12,6 +12,7 @@ describe("ussd_public app", function() {
         app = new go.app.GoNDOH();
         tester = new AppTester(app);
         tester.setup.config.app({
+            testing_today: "2014-04-04 07:07:07",
             services: {
                 rapidpro: {
                     base_url: "https://rapidpro",
@@ -697,6 +698,113 @@ describe("ussd_public app", function() {
                         "2. Baby (no pregnancy messages)"
                     ].join("\n")
                 })
+                .run();
+        });
+    });
+    describe("state_edd_month", function() {
+        it("should display the list of month choices", function() {
+            return tester
+                .setup.user.state("state_edd_month")
+                .check.interaction({
+                    reply: [
+                        "What month is the baby due? Please enter the number that matches your " +
+                        "answer, e.g. 1.",
+                        "1. Apr",
+                        "2. May",
+                        "3. Jun",
+                        "4. Jul",
+                        "5. Aug",
+                        "6. Sep",
+                        "7. Oct",
+                        "8. Nov",
+                        "9. Dec",
+                        "10. Jan"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error for an incorrect choice", function() {
+            return tester
+                .setup.user.state("state_edd_month")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't understand. Please enter the number next to the mother's " +
+                        "answer.",
+                        "1. Apr",
+                        "2. May",
+                        "3. Jun",
+                        "4. Jul",
+                        "5. Aug",
+                        "6. Sep",
+                        "7. Oct",
+                        "8. Nov",
+                        "9. Dec",
+                        "10. Jan"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_edd_day once a selection has been made", function() {
+            return tester
+                .setup.user.state("state_edd_month")
+                .input("1")
+                .check.user.state("state_edd_day")
+                .run();
+        });
+    });
+    describe("state_edd_month", function() {
+        it("should ask the user for the day of edd", function() {
+            return tester
+                .setup.user.state("state_edd_day")
+                .check.interaction({
+                    reply:
+                        "What is the estimated day that the baby is due? Please enter the day as " +
+                        "a number, e.g. 12."
+                })
+                .run();
+        });
+        it("should return an error for invalid days", function() {
+            return tester
+                .setup.user.state("state_edd_day")
+                .input("A")
+                .check.interaction({
+                    reply:
+                        "Sorry, we don't understand. Please try again by entering the day the " +
+                        "baby was born as a number, e.g. 12."
+                })
+                .run();
+        });
+        it("should return an error for days on or before today", function() {
+            return tester
+                .setup.user.state("state_edd_day")
+                .setup.user.answer("state_edd_month", "2014-04")
+                .input("4")
+                .check.interaction({
+                    reply:
+                        "Sorry, we don't understand. Please try again by entering the day the " +
+                        "baby was born as a number, e.g. 12."
+                })
+                .run();
+        });
+        it("should return an error for days after or on 43 weeks from now", function() {
+            return tester
+                .setup.user.state("state_edd_day")
+                .setup.user.answer("state_edd_month", "2015-01")
+                .input("30")
+                .check.interaction({
+                    reply:
+                        "Sorry, we don't understand. Please try again by entering the day the " +
+                        "baby was born as a number, e.g. 12."
+                })
+                .run();
+        });
+        it("should go to state_id_type if the date is valid", function() {
+            return tester
+                .setup.user.state("state_edd_day")
+                .setup.user.answer("state_edd_month", "2014-06")
+                .input("6")
+                .check.user.state("state_id_type")
                 .run();
         });
     });
