@@ -767,7 +767,8 @@ describe("ussd_public app", function() {
         it("should return an error for invalid days", function() {
             return tester
                 .setup.user.state("state_edd_day")
-                .input("A")
+                .setup.user.answer("state_edd_month", "2014-04")
+                .input("99")
                 .check.interaction({
                     reply:
                         "Sorry, we don't understand. Please try again by entering the day the " +
@@ -804,6 +805,227 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_edd_day")
                 .setup.user.answer("state_edd_month", "2014-06")
                 .input("6")
+                .check.user.state("state_id_type")
+                .run();
+        });
+    });
+    describe("state_birth_year", function() {
+        it("should ask the user to select a birth year", function() {
+            return tester
+                .setup.user.state("state_birth_year")
+                .check.interaction({
+                    reply: [
+                        "What year was the baby born? Please enter the number that matches your " +
+                        "answer, e.g. 1.",
+                        "1. 2014",
+                        "2. 2013",
+                        "3. 2012",
+                        "4. Older"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should give an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_birth_year")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't understand. Please enter the number next to the mother's " +
+                        "answer.",
+                        "1. 2014",
+                        "2. 2013",
+                        "3. 2012",
+                        "4. Older"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_too_old if Older is chosen", function() {
+            return tester
+                .setup.user.state("state_birth_year")
+                .input("4")
+                .check.user.state("state_too_old")
+                .run();
+        });
+        it("should go to state_birth_month if a year is chosen", function() {
+            return tester
+                .setup.user.state("state_birth_year")
+                .input("2")
+                .check.user.state("state_birth_month")
+                .run();
+        });
+    });
+    describe("state_too_old", function() {
+        it("should display the options to the user", function() {
+            return tester
+                .setup.user.state("state_too_old")
+                .check.interaction({
+                    reply: [
+                        "Unfortunately MomConnect doesn't send messages to children older than " +
+                        "2 years.",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show an error for invalid inputs", function() {
+            return tester
+                .setup.user.state("state_too_old")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't understand. Please enter the number next to the mother's " +
+                        "answer.",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go back to state_birth_year if that option is chosen", function() {
+            return tester
+                .setup.user.state("state_too_old")
+                .input("1")
+                .check.user.state("state_birth_year")
+                .run();
+        });
+        it("should go end with state_too_old_end if that option is chosen", function() {
+            return tester
+                .setup.user.state("state_too_old")
+                .input("2")
+                .check.interaction({
+                    reply: 
+                        "Unfortunately MomConnect doesn't send messages to children older than " +
+                        "2 years.",
+                    state: "state_too_old_end"
+                })
+                .check.reply.ends_session()
+                .run();
+        });
+    });
+    describe("state_birth_month", function() {
+        it("should limit the list of months to up to the current date", function() {
+            return tester
+                .setup.user.state("state_birth_month")
+                .setup.user.answer("state_birth_year", "2014")
+                .check.interaction({
+                    reply: [
+                        "What month was the baby born?",
+                        "1. Jan",
+                        "2. Feb",
+                        "3. Mar",
+                        "4. Apr"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should limit the list of months to after 2 years ago", function() {
+            return tester
+                .setup.user.state("state_birth_month")
+                .setup.user.answer("state_birth_year", "2012")
+                .check.interaction({
+                    reply: [
+                        "What month was the baby born?",
+                        "1. Apr",
+                        "2. May",
+                        "3. Jun",
+                        "4. Jul",
+                        "5. Aug",
+                        "6. Sep",
+                        "7. Oct",
+                        "8. Nov",
+                        "9. Dec"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_birth_month")
+                .setup.user.answer("state_birth_year", "2013")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't understand. Please enter the no. next to the mom's answer.",
+                        "1. Jan",
+                        "2. Feb",
+                        "3. Mar",
+                        "4. Apr",
+                        "5. May",
+                        "6. Jun",
+                        "7. Jul",
+                        "8. Aug",
+                        "9. Sep",
+                        "10. Oct",
+                        "11. Nov",
+                        "12. Dec"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_birth_day on valid input", function() {
+            return tester
+                .setup.user.state("state_birth_month")
+                .setup.user.answer("state_birth_year", "2013")
+                .input("4")
+                .check.user.state("state_birth_day")
+                .run();
+        });
+    });
+    describe("state_birth_day", function() {
+        it("should ask the user for the day of birth", function() {
+            return tester
+                .setup.user.state("state_birth_day")
+                .setup.user.answer("state_birth_month", "2013-04")
+                .check.interaction({
+                    reply:
+                        "On what day was the baby born? Please enter the day as a number, e.g. 12."
+                })
+                .run();
+        });
+        it("should give an error on invalid inputs", function() {
+            return tester
+                .setup.user.state("state_birth_day")
+                .setup.user.answer("state_birth_month", "2013-04")
+                .input("99")
+                .check.interaction({
+                    reply:
+                        "Sorry, we don't understand. Please try again by entering the day the " +
+                        "baby was born as a number, e.g. 12."
+                })
+                .run();
+        });
+        it("should give an error if the date is today or newer", function() {
+            return tester
+                .setup.user.state("state_birth_day")
+                .setup.user.answer("state_birth_month", "2014-04")
+                .input("4")
+                .check.interaction({
+                    reply:
+                        "Sorry, we don't understand. Please try again by entering the day the " +
+                        "baby was born as a number, e.g. 12."
+                })
+                .run();
+        });
+        it("should give an error if the date is two years or older", function() {
+            return tester
+                .setup.user.state("state_birth_day")
+                .setup.user.answer("state_birth_month", "2012-04")
+                .input("4")
+                .check.interaction({
+                    reply:
+                        "Sorry, we don't understand. Please try again by entering the day the " +
+                        "baby was born as a number, e.g. 12."
+                })
+                .run();
+        });
+        it("should go to state_id_type if the date is valid", function() {
+            return tester
+                .setup.user.state("state_birth_day")
+                .setup.user.answer("state_birth_month", "2013-04")
+                .input("4")
                 .check.user.state("state_id_type")
                 .run();
         });

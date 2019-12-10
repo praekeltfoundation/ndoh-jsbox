@@ -439,8 +439,111 @@ go.app = function() {
         });
 
         self.add("state_birth_year", function(name) {
-            // TODO
-            return new EndState(name, {text: "TODO", next: "states_start"});
+            var today = new moment(self.im.config.testing_today).startOf("day");
+            var choices = _.map(
+                // For this year and 2 years ago, we need 3 options
+                _.range(-3),
+                function(i) {
+                    var y = today.clone().add(i, "years").format("YYYY");
+                    return new Choice(y, $(y));
+                }
+            );
+            choices.push(new Choice("older", $("Older")));
+            return new ChoiceState(name, {
+                question: $(
+                    "What year was the baby born? Please enter the number that matches your " +
+                    "answer, e.g. 1."
+                ),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
+                choices: choices,
+                next: function(choice) {
+                    if(choice.value === "older") {
+                        return "state_too_old";
+                    }
+                    return "state_birth_month";
+                }
+            });
+        });
+
+        self.add("state_too_old", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "Unfortunately MomConnect doesn't send messages to children older than 2 " +
+                    "years."
+                ),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_birth_year", $("Back")),
+                    new Choice("state_too_old_end", $("Exit"))
+                ]
+            });
+        });
+
+        self.states.add("state_too_old_end", function(name) {
+            return new EndState(name, {
+                text: $(
+                    "Unfortunately MomConnect doesn't send messages to children older than 2 " +
+                    "years."
+                ),
+                next: "states_start"
+            });
+        });
+
+        self.add("state_birth_month", function(name) {
+            var end_date = new moment(self.im.config.testing_today).startOf("day").add(-1, "days");
+            var start_date = end_date.clone().add(-2, "years").add(1, "days");
+
+            var month_start_date = new moment(self.im.user.answers.state_birth_year, "YYYY");
+            if(month_start_date.isBefore(start_date)) { month_start_date = start_date; }
+
+            var month_end_date = month_start_date.clone().endOf("year");
+            if(month_end_date.isAfter(end_date)) { month_end_date = end_date; }
+
+            return new ChoiceState(name, {
+                question: $("What month was the baby born?"),
+                error: $(
+                    "Sorry we don't understand. Please enter the no. next to the mom's answer."
+                ),
+                choices: _.map(
+                    _.range(month_end_date.diff(month_start_date, "months") + 1),
+                    function(i) {
+                        var d = month_start_date.clone().add(i, "months");
+                        return new Choice(d.format("YYYY-MM"), $(d.format("MMM")));
+                    }
+                ),
+                next: "state_birth_day"
+            });
+        });
+
+        self.add("state_birth_day", function(name) {
+            return new FreeText(name, {
+                question: $(
+                    "On what day was the baby born? Please enter the day as a number, e.g. 12."
+                ),
+                check: function(content) {
+                    var date = new moment(
+                        self.im.user.answers.state_birth_month + "-" + content,
+                        "YYYY-MM-DD"
+                    );
+                    var current_date = new moment(self.im.config.testing_today).startOf("day");
+                    if(
+                        !date.isValid() || 
+                        !date.isBetween(current_date.clone().add(-2, "years"), current_date)
+                      ) {
+                        return $(
+                            "Sorry, we don't understand. Please try again by entering the day " +
+                            "the baby was born as a number, e.g. 12."
+                        );
+                    }
+                },
+                next: "state_id_type"
+            });
         });
 
         self.add("state_id_type", function(name) {
