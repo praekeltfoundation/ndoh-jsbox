@@ -1302,4 +1302,58 @@ describe("ussd_public app", function() {
                 .run();
         });
     });
+    describe("state_language", function() {
+        it("should ask the user for the language", function() {
+            return tester
+                .setup.user.state("state_language")
+                .check.interaction({
+                    reply: [
+                        "What language does the mother want to receive her MomConnect messages in?",
+                        "1. isiZulu",
+                        "2. isiXhosa",
+                        "3. Afrikaans",
+                        "4. English",
+                        "5. Sesotho sa Leboa",
+                        "6. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should be able to page through choices", function() {
+            return tester
+                .setup.user.state("state_language")
+                .input("6")
+                .check.interaction({
+                    reply: [
+                        "What language does the mother want to receive her MomConnect messages in?",
+                        "1. Setswana",
+                        "2. Sesotho",
+                        "3. Xitsonga",
+                        "4. siSwati",
+                        "5. Tshivenda",
+                        "6. isiNdebele",
+                        "7. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error for an incorrect choice", function() {
+            return tester
+                .setup.user.state("state_language")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't understand. Please enter the number next to the " +
+                        "mother's answer.",
+                        "1. isiZulu",
+                        "2. isiXhosa",
+                        "3. Afrikaans",
+                        "4. English",
+                        "5. Sesotho sa Leboa",
+                        "6. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
 });

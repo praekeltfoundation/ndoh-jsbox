@@ -908,6 +908,36 @@ go.app = function() {
         });
 
         self.add("state_language", function(name) {
+            return new PaginatedChoiceState(name, {
+                question: $(
+                    "What language does the mother want to receive her MomConnect messages in?"
+                ),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("zul", $("isiZulu")),
+                    new Choice("xho", $("isiXhosa")),
+                    new Choice("afr", $("Afrikaans")),
+                    new Choice("eng", $("English")),
+                    new Choice("nso", $("Sesotho sa Leboa")),
+                    new Choice("tsn", $("Setswana")),
+                    new Choice("sot", $("Sesotho")),
+                    new Choice("tso", $("Xitsonga")),
+                    new Choice("ssw", $("siSwati")),
+                    new Choice("ven", $("Tshivenda")),
+                    new Choice("nbl", $("isiNdebele"))
+                ],
+                back: $("Back"),
+                more: $("Next"),
+                options_per_page: null,
+                characters_per_page: 160,
+                next: "state_whatsapp_contact_check"
+            });
+        });
+
+        self.add("state_whatsapp_contact_check", function(name) {
             // TODO
             return new EndState(name, {text: "TODO", next: "state_start"});
         });
