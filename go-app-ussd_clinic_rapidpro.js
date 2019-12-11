@@ -739,8 +739,177 @@ go.app = function() {
         });
 
         self.add("state_id_type", function(name) {
+            return new MenuState(name, {
+                question: $("What type of identification does the mother have?"),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_sa_id_no", $("SA ID")),
+                    new Choice("state_passport_country", $("Passport")),
+                    new Choice("state_dob_year", $("None"))
+                ]
+            });
+        });
+
+        self.add("state_sa_id_no", function(name) {
+            return new FreeText(name, {
+                question: $(
+                    "Please reply with the mother's ID number as she finds it in her Identity " +
+                    "Document."
+                ),
+                check: function(content) {
+                    var match = content.match(/^(\d{6})(\d{4})(0|1)8\d$/);
+                    var today = new moment(self.im.config.testing_today).startOf("day"), dob;
+                    var validLuhn = function(content) {
+                        return content.split("").reverse().reduce(function(sum, digit, i){
+                            return sum + _.parseInt(i % 2 ? [0,2,4,6,8,1,3,5,7,9][digit] : digit);
+                        }, 0) % 10 == 0;
+                    };
+                    if(
+                        !match ||
+                        !validLuhn(content) ||
+                        !(dob = new moment(match[1], "YYMMDD")) ||
+                        !dob.isValid() || 
+                        !dob.isBetween(
+                            today.clone().add(-130, "years"),
+                            today.clone().add(-5, "years")
+                        ) ||
+                        _.parseInt(match[2]) >= 5000
+                    ) {
+                        return $(
+                            "Sorry, we don't understand. Please try again by entering the " +
+                            "mother's 13 digit South African ID number."
+                        );
+                    }
+
+                },
+                next: "state_language"
+            });
+        });
+
+        self.add("state_passport_country", function(name) {
+            return new ChoiceState(name, {
+                question: $(
+                    "What is her passport's country of origin? Enter the number matching her " +
+                    "answer e.g. 1."
+                ),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("zw", $("Zimbabwe")),
+                    new Choice("mz", $("Mozambique")),
+                    new Choice("mw", $("Malawi")),
+                    new Choice("ng", $("Nigeria")),
+                    new Choice("cd", $("DRC")),
+                    new Choice("so", $("Somalia")),
+                    new Choice("other", $("Other"))
+                ],
+                next: "state_passport_no"
+            });
+        });
+
+        self.add("state_passport_no", function(name) {
+            return new FreeText(name, {
+                question: $(
+                    "Please enter the mother's Passport number as it appears in her passport."
+                ),
+                check: function(content) {
+                    if(!content.match(/^\w+$/)){
+                        return $(
+                            "Sorry, we don't understand. Please try again by entering the " +
+                            "mother's Passport number as it appears in her passport."
+                        );
+                    }
+                },
+                next: "state_language"
+            });
+        });
+
+        self.add("state_dob_year", function(name) {
+            return new FreeText(name, {
+                question: $(
+                    "What year was the mother born? Please reply with the year as 4 digits in " +
+                    "the format YYYY."
+                ),
+                check: function(content) {
+                    var match = content.match(/^(\d{4})$/);
+                    var today = new moment(self.im.config.testing_today), dob;
+                    if(
+                        !match ||
+                        !(dob = new moment(match[1], "YYYY")) ||
+                        !dob.isBetween(
+                            today.clone().add(-130, "years"),
+                            today.clone().add(-5, "years")
+                        )
+                    ){
+                        return $(
+                            "Sorry, we don't understand. Please try again by entering the year " +
+                            "the mother was born as 4 digits in the format YYYY, e.g. 1910."
+                        );
+                    }
+                },
+                next: "state_dob_month",
+            });
+        });
+
+        self.add("state_dob_month", function(name) {
+            return new ChoiceState(name, {
+                question: $("What month was the mother born?"),
+                error: $(
+                    "Sorry we don't understand. Please enter the no. next to the mom's answer."
+                ),
+                choices: [
+                    new Choice("01", $("Jan")),
+                    new Choice("02", $("Feb")),
+                    new Choice("03", $("Mar")),
+                    new Choice("04", $("Apr")),
+                    new Choice("05", $("May")),
+                    new Choice("06", $("Jun")),
+                    new Choice("07", $("Jul")),
+                    new Choice("08", $("Aug")),
+                    new Choice("09", $("Sep")),
+                    new Choice("10", $("Oct")),
+                    new Choice("11", $("Nov")),
+                    new Choice("12", $("Dec")),
+                ],
+                next: "state_dob_day"
+            });
+        });
+
+        self.add("state_dob_day", function(name) {
+            return new FreeText(name, {
+                question: $(
+                    "On what day was the mother born? Please enter the day as a number, e.g. 12."
+                ),
+                check: function(content) {
+                    var match = content.match(/^(\d+)$/), dob;
+                    if(
+                        !match ||
+                        !(dob = new moment(
+                            self.im.user.answers.state_dob_year + 
+                            self.im.user.answers.state_dob_month + 
+                            match[1], 
+                            "YYYYMMDD")
+                        ) ||
+                        !dob.isValid()
+                    ){
+                        return $(
+                            "Sorry, we don't understand. Please try again by entering the day " +
+                            "the mother was born as a number, e.g. 12."
+                        );
+                    }
+                },
+                next: "state_language"
+            });
+        });
+
+        self.add("state_language", function(name) {
             // TODO
-            return new EndState(name, {text: "TODO", next: "states_start"});
+            return new EndState(name, {text: "TODO", next: "state_start"});
         });
 
         self.states.creators.__error__ = function(name, opts) {
