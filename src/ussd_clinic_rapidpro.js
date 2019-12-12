@@ -29,6 +29,11 @@ go.app = function() {
                 self.im.config.services.openhim.username,
                 self.im.config.services.openhim.password
             );
+            self.whatsapp = new go.Engage(
+                new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-Clinic"]}}),
+                self.im.config.services.whatsapp.base_url,
+                self.im.config.services.whatsapp.token
+            );
         };
 
         self.contact_in_group = function(contact, groups){
@@ -108,6 +113,8 @@ go.app = function() {
             // Fetches the contact from RapidPro, and delegates to the correct state
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
+            // Run a no-wait contact check in the background to populate the cache
+            self.whatsapp.contact_check(msisdn, false).then(_.noop, _.noop);
 
             return self.rapidpro.get_contact({urn: "tel:" + msisdn})
                 .then(function(contact) {
@@ -402,7 +409,7 @@ go.app = function() {
                 ),
                 choices: _.map(_.range(end_date.diff(start_date, "months") + 1), function(i) {
                     var d = start_date.clone().add(i, "months");
-                    return new Choice(d.format("YYYY-MM"), $(d.format("MMM")));
+                    return new Choice(d.format("YYYYMM"), $(d.format("MMM")));
                 }),
                 back: $("Back"),
                 more: $("Next"),
@@ -420,8 +427,8 @@ go.app = function() {
                 ),
                 check: function(content) {
                     var date = new moment(
-                        self.im.user.answers.state_edd_month + "-" + content,
-                        "YYYY-MM-DD"
+                        self.im.user.answers.state_edd_month + content,
+                        "YYYYMMDD"
                     );
                     var current_date = new moment(self.im.config.testing_today).startOf("day");
                     if(
@@ -745,9 +752,79 @@ go.app = function() {
             });
         });
 
-        self.add("state_whatsapp_contact_check", function(name) {
+        self.add("state_whatsapp_contact_check", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(
+                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
+            return self.whatsapp.contact_check(msisdn, true)
+                .then(function(result) {
+                    self.im.user.set_answer("on_whatsapp", result);
+                    return self.states.create("state_trigger_rapidpro_flow");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+        self.add("state_trigger_rapidpro_flow", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(
+                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
+            var flow_uuid =
+                self.im.user.answers.state_message_type === "state_edd_month"
+                ? self.im.config.prebirth_flow_uuid
+                : self.im.config.postbirth_flow_uuid;
+            return self.rapidpro.start_flow(flow_uuid, null, "tel:" + msisdn, {
+                research_consent:
+                    self.im.user.answers.state_research_consent === "no" ? "FALSE" : "TRUE",
+                registered_by: utils.normalize_msisdn(self.im.user.addr, "ZA"),
+                language: self.im.user.answers.state_language,
+                timestamp: new moment.utc(self.im.config.testing_today).format(),
+                source: "Clinic USSD",
+                id_type: {
+                    state_sa_id_no: "sa_id",
+                    state_passport_country: "passport",
+                    state_dob_year: "dob"
+                }[self.im.user.answers.state_id_type],
+                edd: new moment.utc(
+                    self.im.user.answers.state_edd_month +
+                    self.im.user.answers.state_edd_day,
+                    "YYYYMMDD"
+                ).format(),
+                clinic_code: self.im.user.answers.state_clinic_code,
+                sa_id_number: self.im.user.answers.state_sa_id_no,
+                dob: self.im.user.answers.state_id_type === "state_sa_id_no"
+                    ? new moment.utc(
+                        self.im.user.answers.state_sa_id_no.slice(0, 6),
+                        "YYMMDD"
+                    ).format()
+                    : new moment.utc(
+                        self.im.user.answers.state_dob_year +
+                        self.im.user.answers.state_dob_month +
+                        self.im.user.answers.state_dob_day,
+                        "YYYYMMDD"
+                    ).format(),
+                passport_origin: self.im.user.answers.state_passport_country,
+                passport_number: self.im.user.answers.state_passport_no
+            }).then(function() {
+                return self.states.create("state_registration_complete");
+            }).catch(function(e) {
+                // Go to error state after 3 failed HTTP requests
+                opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                if(opts.http_error_count === 3) {
+                    self.im.log.error(e.message);
+                    return self.states.create("__error__", {return_state: name});
+                }
+                return self.states.create(name, opts);
+            });
+        });
+
+        self.states.add("state_registration_complete", function(name) {
             // TODO
-            return new EndState(name, {text: "TODO", next: "state_start"});
+            return new EndState(name, {text: "TODO"});
         });
 
         self.states.creators.__error__ = function(name, opts) {

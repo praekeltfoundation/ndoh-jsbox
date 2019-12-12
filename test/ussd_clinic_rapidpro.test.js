@@ -1,8 +1,10 @@
+var _ = require("lodash");
 var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
 var assert = require("assert");
 var fixtures_rapidpro = require("./fixtures_rapidpro")();
 var fixtures_openhim = require("./fixtures_jembi_dynamic")();
+var fixtures_whatsapp = require("./fixtures_pilot")();
 
 describe("ussd_public app", function() {
     var app;
@@ -12,7 +14,7 @@ describe("ussd_public app", function() {
         app = new go.app.GoNDOH();
         tester = new AppTester(app);
         tester.setup.config.app({
-            testing_today: "2014-04-04 07:07:07",
+            testing_today: "2014-04-04T07:07:07",
             services: {
                 rapidpro: {
                     base_url: "https://rapidpro",
@@ -22,10 +24,16 @@ describe("ussd_public app", function() {
                     base_url: "http://test/v2/json/",
                     username: "openhim-user",
                     password: "openhim-pass"
+                },
+                whatsapp: {
+                    base_url: "http://pilot.example.org",
+                    token: "engage-token"
                 }
             },
             clinic_group_ids: ["id-1"],
-            optout_group_ids: ["id-0"]
+            optout_group_ids: ["id-0"],
+            prebirth_flow_uuid: "prebirth-flow-uuid",
+            postbirth_flow_uuid: "postbirth-flow-uuid"
         });
     });
 
@@ -1352,6 +1360,143 @@ describe("ussd_public app", function() {
                         "5. Sesotho sa Leboa",
                         "6. Next"
                     ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_whatsapp_contact_check + state_trigger_rapidpro_flow", function() {
+        it("should make a request to the WhatsApp and RapidPro APIs", function() {
+            return tester
+                .setup.user.state("state_whatsapp_contact_check")
+                .setup.user.answers({
+                    state_message_type: "state_edd_month",
+                    state_research_consent: "no",
+                    state_enter_msisdn: "0820001001",
+                    state_language: "zul",
+                    state_id_type: "state_sa_id_no",
+                    state_sa_id_no: "9001020005087",
+                    state_edd_month: "201502",
+                    state_edd_day: "13",
+                    state_clinic_code: "123456"
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27820001001",
+                            wait: true
+                        })
+                    );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "prebirth-flow-uuid", null, "tel:+27820001001", {
+                                research_consent: "FALSE",
+                                registered_by: "+27123456789",
+                                language: "zul",
+                                timestamp: "2014-04-04T07:07:07Z",
+                                source: "Clinic USSD",
+                                id_type: "sa_id",
+                                edd: "2015-02-13T00:00:00Z",
+                                clinic_code: "123456",
+                                sa_id_number: "9001020005087",
+                                dob: "1990-01-02T00:00:00Z"
+                            }
+                        )
+                    );
+                })
+                .check.user.answer("on_whatsapp", true)
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 2);
+                    var urls = _.map(api.http.requests, "url");
+                    assert.deepEqual(urls, [
+                        "http://pilot.example.org/v1/contacts",
+                        "https://rapidpro/api/v2/flow_starts.json"
+                    ]);
+                    assert.equal(api.log.error.length, 0);
+                })
+                .run();
+        });
+        it("should retry HTTP call when WhatsApp is down", function() {
+            return tester
+                .setup.user.state("state_whatsapp_contact_check")
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27123456789",
+                            wait: true,
+                            fail: true
+                        })
+                    );
+                })
+                .check.interaction({
+                    state: "__error__",
+                    reply: 
+                        "Sorry, something went wrong. We have been notified. Please try again " +
+                        "later"
+                })
+                .check.reply.ends_session()
+                .check(function(api){
+                    assert.equal(api.http.requests.length, 3);
+                    api.http.requests.forEach(function(request){
+                        assert.equal(request.url, "http://pilot.example.org/v1/contacts");
+                    });
+                    assert.equal(api.log.error.length, 1);
+                    assert(api.log.error[0].includes("HttpResponseError"));
+                })
+                .run();
+        });
+        it("should retry HTTP call when RapidPro is down", function() {
+            return tester
+                .setup.user.state("state_whatsapp_contact_check")
+                .setup.user.answers({
+                    state_message_type: "state_edd_month",
+                    state_research_consent: "no",
+                    state_enter_msisdn: "0820001001",
+                    state_language: "zul",
+                    state_id_type: "state_sa_id_no",
+                    state_sa_id_no: "9001020005087",
+                    state_edd_month: "201502",
+                    state_edd_day: "13",
+                    state_clinic_code: "123456"
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27820001001",
+                            wait: true,
+                        })
+                    );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "prebirth-flow-uuid", null, "tel:+27820001001", {
+                                research_consent: "FALSE",
+                                registered_by: "+27123456789",
+                                language: "zul",
+                                timestamp: "2014-04-04T07:07:07Z",
+                                source: "Clinic USSD",
+                                id_type: "sa_id",
+                                edd: "2015-02-13T00:00:00Z",
+                                clinic_code: "123456",
+                                sa_id_number: "9001020005087",
+                                dob: "1990-01-02T00:00:00Z"
+                            }, true
+                        )
+                    );
+                })
+                .check.interaction({
+                    state: "__error__",
+                    reply: 
+                        "Sorry, something went wrong. We have been notified. Please try again " +
+                        "later"
+                })
+                .check.reply.ends_session()
+                .check(function(api){
+                    assert.equal(api.http.requests.length, 4);
+                    assert.equal(api.http.requests[0].url, "http://pilot.example.org/v1/contacts");
+                    api.http.requests.slice(1).forEach(function(request){
+                        assert.equal(request.url, "https://rapidpro/api/v2/flow_starts.json");
+                    });
+                    assert.equal(api.log.error.length, 1);
+                    assert(api.log.error[0].includes("HttpResponseError"));
                 })
                 .run();
         });
