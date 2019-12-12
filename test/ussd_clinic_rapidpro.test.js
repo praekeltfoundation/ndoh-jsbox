@@ -1403,7 +1403,13 @@ describe("ussd_public app", function() {
                         )
                     );
                 })
-                .check.user.answer("on_whatsapp", true)
+                .check.interaction({
+                    state: "state_registration_complete",
+                    reply: 
+                        "You're done! This number 0820001001 will get helpful messages from " +
+                        "MomConnect on WhatsApp. Thanks for signing up to MomConnect!"
+                })
+                .check.reply.ends_session()
                 .check(function(api) {
                     assert.equal(api.http.requests.length, 2);
                     var urls = _.map(api.http.requests, "url");

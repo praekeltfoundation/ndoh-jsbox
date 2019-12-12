@@ -823,8 +823,16 @@ go.app = function() {
         });
 
         self.states.add("state_registration_complete", function(name) {
-            // TODO
-            return new EndState(name, {text: "TODO"});
+            var msisdn = _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr);
+            msisdn = utils.readable_msisdn(msisdn, "27");
+            var channel = self.im.user.answers.on_whatsapp ? $("WhatsApp") : $("SMS");
+            return new EndState(name, {
+                text: $(
+                    "You're done! This number {{msisdn}} will get helpful messages from " +
+                    "MomConnect on {{channel}}. Thanks for signing up to MomConnect!"
+                ).context({msisdn: msisdn, channel: channel}),
+                next: "state_start"
+            });
         });
 
         self.states.creators.__error__ = function(name, opts) {
