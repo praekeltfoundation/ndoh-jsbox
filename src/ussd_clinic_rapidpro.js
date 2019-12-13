@@ -581,7 +581,7 @@ go.app = function() {
                     _.range(month_end_date.diff(month_start_date, "months") + 1),
                     function(i) {
                         var d = month_start_date.clone().add(i, "months");
-                        return new Choice(d.format("YYYY-MM"), $(d.format("MMM")));
+                        return new Choice(d.format("YYYYMM"), $(d.format("MMM")));
                     }
                 ),
                 next: "state_birth_day"
@@ -595,8 +595,8 @@ go.app = function() {
                 ),
                 check: function(content) {
                     var date = new moment(
-                        self.im.user.answers.state_birth_month + "-" + content,
-                        "YYYY-MM-DD"
+                        self.im.user.answers.state_birth_month + content,
+                        "YYYYMMDD"
                     );
                     var current_date = new moment(self.im.config.testing_today).startOf("day");
                     if(
@@ -833,11 +833,7 @@ go.app = function() {
         self.add("state_trigger_rapidpro_flow", function(name, opts) {
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
-            var flow_uuid =
-                self.im.user.answers.state_message_type === "state_edd_month"
-                ? self.im.config.prebirth_flow_uuid
-                : self.im.config.postbirth_flow_uuid;
-            return self.rapidpro.start_flow(flow_uuid, null, "tel:" + msisdn, {
+            var data = {
                 research_consent:
                     self.im.user.answers.state_research_consent === "no" ? "FALSE" : "TRUE",
                 registered_by: utils.normalize_msisdn(self.im.user.addr, "ZA"),
@@ -849,11 +845,6 @@ go.app = function() {
                     state_passport_country: "passport",
                     state_dob_year: "dob"
                 }[self.im.user.answers.state_id_type],
-                edd: new moment.utc(
-                    self.im.user.answers.state_edd_month +
-                    self.im.user.answers.state_edd_day,
-                    "YYYYMMDD"
-                ).format(),
                 clinic_code: self.im.user.answers.state_clinic_code,
                 sa_id_number: self.im.user.answers.state_sa_id_no,
                 dob: self.im.user.answers.state_id_type === "state_sa_id_no"
@@ -869,17 +860,38 @@ go.app = function() {
                     ).format(),
                 passport_origin: self.im.user.answers.state_passport_country,
                 passport_number: self.im.user.answers.state_passport_no
-            }).then(function() {
-                return self.states.create("state_registration_complete");
-            }).catch(function(e) {
-                // Go to error state after 3 failed HTTP requests
-                opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-                if(opts.http_error_count === 3) {
-                    self.im.log.error(e.message);
-                    return self.states.create("__error__", {return_state: name});
-                }
-                return self.states.create(name, opts);
-            });
+            };
+            var flow_uuid;
+            if(self.im.user.answers.state_message_type === "state_edd_month") {
+                flow_uuid = self.im.config.prebirth_flow_uuid;
+                data.edd = new moment.utc(
+                    self.im.user.answers.state_edd_month +
+                    self.im.user.answers.state_edd_day,
+                    "YYYYMMDD"
+                ).format();
+            }
+            else {
+                flow_uuid = self.im.config.postbirth_flow_uuid;
+                data.baby_dob = new moment.utc(
+                    self.im.user.answers.state_birth_month +
+                    self.im.user.answers.state_birth_day,
+                    "YYYYMMDD"
+                ).format();
+            }
+
+            return self.rapidpro
+                .start_flow(flow_uuid, null, "tel:" + msisdn, data)
+                .then(function() {
+                    return self.states.create("state_registration_complete");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
         });
 
         self.states.add("state_registration_complete", function(name) {

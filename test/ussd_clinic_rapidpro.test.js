@@ -1412,7 +1412,7 @@ describe("ussd_public app", function() {
         });
     });
     describe("state_whatsapp_contact_check + state_trigger_rapidpro_flow", function() {
-        it("should make a request to the WhatsApp and RapidPro APIs", function() {
+        it("should make a request to the WhatsApp and RapidPro APIs for prebirth", function() {
             return tester
                 .setup.user.state("state_whatsapp_contact_check")
                 .setup.user.answers({
@@ -1443,6 +1443,62 @@ describe("ussd_public app", function() {
                                 source: "Clinic USSD",
                                 id_type: "sa_id",
                                 edd: "2015-02-13T00:00:00Z",
+                                clinic_code: "123456",
+                                sa_id_number: "9001020005087",
+                                dob: "1990-01-02T00:00:00Z"
+                            }
+                        )
+                    );
+                })
+                .check.interaction({
+                    state: "state_registration_complete",
+                    reply: 
+                        "You're done! This number 0820001001 will get helpful messages from " +
+                        "MomConnect on WhatsApp. Thanks for signing up to MomConnect!"
+                })
+                .check.reply.ends_session()
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 2);
+                    var urls = _.map(api.http.requests, "url");
+                    assert.deepEqual(urls, [
+                        "http://pilot.example.org/v1/contacts",
+                        "https://rapidpro/api/v2/flow_starts.json"
+                    ]);
+                    assert.equal(api.log.error.length, 0);
+                })
+                .run();
+        });
+        it("should make a request to the WhatsApp and RapidPro APIs for postbirth", function() {
+            return tester
+                .setup.user.state("state_whatsapp_contact_check")
+                .setup.user.answers({
+                    state_message_type: "state_birth_year",
+                    state_research_consent: "no",
+                    state_enter_msisdn: "0820001001",
+                    state_language: "zul",
+                    state_id_type: "state_sa_id_no",
+                    state_sa_id_no: "9001020005087",
+                    state_birth_month: "2014-02",
+                    state_birth_day: "13",
+                    state_clinic_code: "123456"
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27820001001",
+                            wait: true
+                        })
+                    );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "postbirth-flow-uuid", null, "tel:+27820001001", {
+                                research_consent: "FALSE",
+                                registered_by: "+27123456789",
+                                language: "zul",
+                                timestamp: "2014-04-04T07:07:07Z",
+                                source: "Clinic USSD",
+                                id_type: "sa_id",
+                                baby_dob: "2014-02-13T00:00:00Z",
                                 clinic_code: "123456",
                                 sa_id_number: "9001020005087",
                                 dob: "1990-01-02T00:00:00Z"
