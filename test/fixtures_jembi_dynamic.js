@@ -1,10 +1,11 @@
 module.exports = function(){
     return {
-        exists: function(code, name) {
+        exists: function(code, name, endpoint) {
+            endpoint = endpoint || "NCfacilityCheck";
             return {
                 "request": {
                     "method": "GET",
-                    "url": "http://test/v2/json/NCfacilityCheck",
+                    "url": "http://test/v2/json/" + endpoint,
                     "params": {
                         "criteria": "value:" + code
                     }
@@ -49,17 +50,18 @@ module.exports = function(){
                 }
             };
         },
-        not_exists: function(code) {
+        not_exists: function(code, endpoint, error) {
+            endpoint = endpoint || "NCfacilityCheck";
             return {
                 "request": {
                     "method": "GET",
-                    "url": "http://test/v2/json/NCfacilityCheck",
+                    "url": "http://test/v2/json/" + endpoint,
                     "params": {
                         "criteria": "value:" + code
                     }
                 },
                 "response": {
-                    "code": 200,
+                    "code": 500 ? error : 200,
                     "data": {
                         "title": "Facility Check Nurse Connect",
                         "headers": [],
@@ -67,7 +69,8 @@ module.exports = function(){
                         "width": 0,
                         "height": 0
                     }
-                }
+                },
+                repeatable: true
             };
         },
         momconnect_not_exists: function(code) {
