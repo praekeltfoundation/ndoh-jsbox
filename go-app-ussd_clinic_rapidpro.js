@@ -279,6 +279,25 @@ go.app = function() {
             return _.intersection(contact_groupids, groups).length > 0;
         };
 
+        self.contact_edd = function(contact) {
+            var today = new moment(self.im.config.testing_today);
+            var edd = new moment(_.get(contact, "fields.edd", null));
+            if(edd && edd.isValid() && edd.isBetween(today, today.clone().add(42, "weeks"))) {
+                return edd;
+            }
+        };
+
+        self.contact_postbirth_dobs = function(contact) {
+            var today = new moment(self.im.config.testing_today), dates = [];
+            _.forEach(["baby_dob1", "baby_dob2", "baby_dob3"], function(f) {
+                var d = new moment(_.get(contact, "fields." + f, null));
+                if(d && d.isValid() && d.isBetween(today.clone().add(-2, "years"), today)){
+                    dates.push(d);
+                }
+            });
+            return dates;
+        };
+
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
                 if(self.im.msg.session_event == "new"){
@@ -378,6 +397,13 @@ go.app = function() {
         self.add("state_active_subscription", function(name) {
             var msisdn = utils.readable_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "27");
+            var choices = [new Choice("state_enter_msisdn", $("Use a different number"))];
+            var contact = self.im.user.answers.contact;
+            if(!self.contact_edd(contact) || self.contact_postbirth_dobs(contact).length < 3){
+                choices.push(new Choice("state_child_list", $("Add another child")));
+            }
+            choices.push(new Choice("state_exit", $("Exit")));
+
             return new MenuState(name, {
                 question: $(
                     "The cell number {{msisdn}} is already signed up to MomConnect. What would " +
@@ -387,16 +413,46 @@ go.app = function() {
                     "Sorry we don't understand. Please enter the number next to the mother's " +
                     "answer."
                 ),
+                choices: choices,
+            });
+        });
+
+        self.add("state_child_list", function(name) {
+            var contact = self.im.user.answers.contact, dates = [];
+            _.forEach(self.contact_postbirth_dobs(contact), function(d) {
+                dates.push(d.format("YY-MM-DD"));
+            });
+            var edd = self.contact_edd(contact);
+            if(edd) {
+                dates.push(edd.format("YY-MM-DD"));
+            }
+
+            return new MenuState(name, {
+                question: $(
+                    "The mother is receiving messages for baby born on {{ dates }}." //+
+                ).context({dates: dates.join(" and baby born on ")}),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
                 choices: [
-                    new Choice("state_enter_msisdn", $("Use a different number")),
-                    new Choice("state_add_child", $("Add another child")),
-                    new Choice("state_exit", $("Exit"))
+                    new Choice("state_add_child", $("Continue"))
                 ]
             });
         });
 
         self.add("state_add_child", function(name) {
-            // TODO
+            return new MenuState(name, {
+                question: $("Does she want to get messages for another pregnancy or baby?"),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_clinic_code", $("Yes")),
+                    new Choice("state_active_subscription", $("No"))
+                ]
+            });
         });
 
         self.states.add("state_exit", function(name) {
@@ -613,21 +669,25 @@ go.app = function() {
         });
 
         self.add("state_message_type", function(name) {
+            var choices = [], contact = self.im.user.answers.contact;
+            if(!self.contact_edd(contact)){
+                choices.push(new Choice(
+                    "state_edd_month",
+                    $("Pregnancy (plus baby messages once baby is born)")
+                    ));
+            }
+            if(self.contact_postbirth_dobs(contact).length < 3){
+                choices.push(new Choice(
+                    "state_birth_year",
+                    $("Baby (no pregnancy messages)")
+                ));
+            }
             return new MenuState(name, {
                 question: $("What type of messages does the mom want to get?"),
                 error: $(
                     "Sorry we don't understand. Please enter the number next to the mom's answer."
                 ),
-                choices: [
-                    new Choice(
-                        "state_edd_month",
-                        $("Pregnancy (plus baby messages once baby is born)")
-                    ),
-                    new Choice(
-                        "state_birth_year",
-                        $("Baby (no pregnancy messages)")
-                    )
-                ]
+                choices: choices,
             });
         });
 

@@ -303,6 +303,25 @@ describe("ussd_public app", function() {
                 .check.reply.ends_session()
                 .run();
         });
+        it("should not display the choice for adding a child if not allowed", function(){
+            return tester
+                .setup.user.state("state_active_subscription")
+                .setup.user.answer("contact", {fields: {
+                    edd: "2014-09-10",
+                    baby_dob1: "2012-04-10",
+                    baby_dob2: "2013-01-10",
+                    baby_dob3: "2013-10-10"
+                }})
+                .check.interaction({
+                    reply: [
+                        "The cell number 0123456789 is already signed up to MomConnect. " +
+                        "What would you like to do?",
+                        "1. Use a different number",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
     });
     describe("state_opted_out", function() {
         it("should as for opt in", function() {
@@ -705,6 +724,34 @@ describe("ussd_public app", function() {
                         "1. Pregnancy (plus baby messages once baby is born)",
                         "2. Baby (no pregnancy messages)"
                     ].join("\n")
+                })
+                .run();
+        });
+        it("should not show the pregnancy option they are receiving pregnancy messages", function() {
+            return tester
+                .setup.user.state("state_message_type")
+                .setup.user.answer("contact", {fields: {edd: "2014-09-10"}})
+                .check.interaction({
+                    reply: [
+                        "What type of messages does the mom want to get?",
+                        "1. Baby (no pregnancy messages)"
+                    ].join("\n"),
+                })
+                .run();
+        });
+        it("should not show the baby option they are receiving 3 baby messages", function() {
+            return tester
+                .setup.user.state("state_message_type")
+                .setup.user.answer("contact", {fields: {
+                    baby_dob1: "2012-04-10",
+                    baby_dob2: "2013-01-10",
+                    baby_dob3: "2013-10-10"
+                }})
+                .check.interaction({
+                    reply: [
+                        "What type of messages does the mom want to get?",
+                        "1. Pregnancy (plus baby messages once baby is born)",
+                    ].join("\n"),
                 })
                 .run();
         });
@@ -1504,6 +1551,61 @@ describe("ussd_public app", function() {
                     assert.equal(api.log.error.length, 1);
                     assert(api.log.error[0].includes("HttpResponseError"));
                 })
+                .run();
+        });
+    });
+    describe("state_child_list", function() {
+        it("should ask the user if they want to add a child", function() {
+            return tester
+                .setup.user.state("state_child_list")
+                .setup.user.answer("contact", {fields: {
+                    edd: "2014-09-10",
+                    baby_dob1: "2012-04-10",
+                    baby_dob2: "2013-01-10",
+                    baby_dob3: "2013-10-10"
+                }})
+                .check.interaction({
+                    reply: [
+                        "The mother is receiving messages for baby born on 12-04-10 and baby " +
+                        "born on 13-01-10 and baby born on 13-10-10 and baby born on 14-09-10.",
+                        "1. Continue"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("continue should go to state_add_child", function() {
+            return tester
+                .setup.user.state("state_child_list")
+                .input("1")
+                .check.user.state("state_add_child")
+                .run();
+        });
+    });
+    describe("state_add_child", function() {
+        it("should ask if they want to add a child or not", function() {
+            return tester
+                .setup.user.state("state_add_child")
+                .check.interaction({
+                    reply: [
+                        "Does she want to get messages for another pregnancy or baby?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("continue should go to state_clinic_code if yes is chosen", function() {
+            return tester
+                .setup.user.state("state_add_child")
+                .input("1")
+                .check.user.state("state_clinic_code")
+                .run();
+        });
+        it("continue should go back to state_active_subscription if no is chosen", function() {
+            return tester
+                .setup.user.state("state_add_child")
+                .input("2")
+                .check.user.state("state_active_subscription")
                 .run();
         });
     });
