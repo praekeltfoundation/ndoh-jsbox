@@ -547,4 +547,195 @@ describe("ussd_chw app", function() {
                 .run();
         });
     });
+    describe("state_passport_country", function() {
+        it("should ask the user which country the passport is for", function() {
+            return tester
+                .setup.user.state("state_passport_country")
+                .check.interaction({
+                    reply: [
+                        "What is her passport's country of origin? Enter the number matching her " +
+                        "answer e.g. 1.",
+                        "1. Zimbabwe",
+                        "2. Mozambique",
+                        "3. Malawi",
+                        "4. Nigeria",
+                        "5. DRC",
+                        "6. Somalia",
+                        "7. Other"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should give an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_passport_country")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't understand. Please enter the number next to the mother's " +
+                        "answer.",
+                        "1. Zimbabwe",
+                        "2. Mozambique",
+                        "3. Malawi",
+                        "4. Nigeria",
+                        "5. DRC",
+                        "6. Somalia",
+                        "7. Other"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_passport_no on valid inputs", function() {
+            return tester
+                .setup.user.state("state_passport_country")
+                .input("3")
+                .check.user.state("state_passport_no")
+                .run();
+        });
+    });
+    describe("state_passport_no", function() {
+        it("should ask the user for their passport number", function() {
+            return tester
+                .setup.user.state("state_passport_no")
+                .check.interaction({
+                    reply: 
+                        "Please enter the mother's Passport number as it appears in her passport."
+                })
+                .run();
+        });
+        it("should show an error on invalid inputs", function() {
+            return tester
+                .setup.user.state("state_passport_no")
+                .input("$")
+                .check.interaction({
+                    reply: 
+                        "Sorry, we don't understand. Please try again by entering the mother's " +
+                        "Passport number as it appears in her passport."
+                })
+                .run();
+        });
+        it("should go to state_language on a successful input", function() {
+            return tester
+                .setup.user.state("state_passport_no")
+                .input("A1234567890")
+                .check.user.state("state_language")
+                .run();
+        });
+    });
+    describe("state_dob_year", function() {
+        it("should ask the user for the year of the date of birth", function() {
+            return tester
+                .setup.user.state("state_dob_year")
+                .check.interaction({
+                    reply:
+                        "What year was the mother born? Please reply with the year as 4 digits " +
+                        "in the format YYYY."
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_dob_year")
+                .input("22")
+                .check.interaction({
+                    reply: 
+                        "Sorry, we don't understand. Please try again by entering the year the " +
+                        "mother was born as 4 digits in the format YYYY, e.g. 1910."
+                })
+                .run();
+        });
+        it("should go to state_dob_month on valid input", function() {
+            return tester
+                .setup.user.state("state_dob_year")
+                .input("1988")
+                .check.user.state("state_dob_month")
+                .run();
+        });
+    });
+    describe("state_dob_month", function() {
+        it("should ask the user for the month of the date of birth", function() {
+            return tester
+                .setup.user.state("state_dob_month")
+                .check.interaction({
+                    reply: [
+                        "What month was the mother born?",
+                        "1. Jan",
+                        "2. Feb",
+                        "3. Mar",
+                        "4. Apr",
+                        "5. May",
+                        "6. Jun",
+                        "7. Jul",
+                        "8. Aug",
+                        "9. Sep",
+                        "10. Oct",
+                        "11. Nov",
+                        "12. Dec"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error an invalid input is given", function() {
+            return tester
+                .setup.user.state("state_dob_month")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't understand. Please enter the no. next to the mom's answer.",
+                        "1. Jan",
+                        "2. Feb",
+                        "3. Mar",
+                        "4. Apr",
+                        "5. May",
+                        "6. Jun",
+                        "7. Jul",
+                        "8. Aug",
+                        "9. Sep",
+                        "10. Oct",
+                        "11. Nov",
+                        "12. Dec"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_dob_day if the input is valid", function() {
+            return tester
+                .setup.user.state("state_dob_month")
+                .input("4")
+                .check.user.state("state_dob_day")
+                .run();
+        });
+    });
+    describe("state_dob_day", function() {
+        it("should ask the user for the day of dob", function() {
+            return tester
+                .setup.user.state("state_dob_day")
+                .check.interaction({
+                    reply:
+                        "On what day was the mother born? Please enter the day as a number, e.g. " +
+                        "12."
+                })
+                .run();
+        });
+        it("should display an error for invalid input", function() {
+            return tester
+                .setup.user.state("state_dob_day")
+                .setup.user.answers({state_dob_year: "1987", state_dob_month: "02"})
+                .input("29")
+                .check.interaction({
+                    reply:
+                        "Sorry, we don't understand. Please try again by entering the day the " +
+                        "mother was born as a number, e.g. 12."
+                })
+                .run();
+        });
+        it("should go to state_language on a valid input", function() {
+            return tester
+                .setup.user.state("state_dob_day")
+                .setup.user.answers({state_dob_year: "1987", state_dob_month: "02"})
+                .input("22")
+                .check.user.state("state_language")
+                .run();
+        });
+    });
 });
