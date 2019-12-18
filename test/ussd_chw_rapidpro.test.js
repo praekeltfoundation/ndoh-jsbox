@@ -466,4 +466,85 @@ describe("ussd_chw app", function() {
                 .run();
         });
     });
+    describe("state_id_type", function() {
+        it("should display the list of id types", function() {
+            return tester
+                .setup.user.state("state_id_type")
+                .check.interaction({
+                    reply: [
+                        "What type of identification does the mother have?",
+                        "1. SA ID",
+                        "2. Passport",
+                        "3. None"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_id_type")
+                .input("a")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't understand. Please enter the number next to the mother's " +
+                        "answer.",
+                        "1. SA ID",
+                        "2. Passport",
+                        "3. None"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_sa_id_no if SA ID is chosen", function() {
+            return tester
+                .setup.user.state("state_id_type")
+                .input("1")
+                .check.user.state("state_sa_id_no")
+                .run();
+        });
+        it("should go to state_passport_country if passport is chosen", function() {
+            return tester
+                .setup.user.state("state_id_type")
+                .input("2")
+                .check.user.state("state_passport_country")
+                .run();
+        });
+        it("should go to state_dob_year if none is chosen", function() {
+            return tester
+                .setup.user.state("state_id_type")
+                .input("3")
+                .check.user.state("state_dob_year")
+                .run();
+        });
+    });
+    describe("state_sa_id_no", function() {
+        it("should ask the user for their SA ID number", function() {
+            return tester
+                .setup.user.state("state_sa_id_no")
+                .check.interaction({
+                    reply: 
+                        "Please reply with the mother's ID number as she finds it in her " +
+                        "Identity Document."
+                })
+                .run();
+        });
+        it("should display an error on an invalid input", function() {
+            return tester
+                .setup.user.state("state_sa_id_no")
+                .input("9001020005081")
+                .check.interaction({
+                    reply:
+                        "Sorry, we don't understand. Please try again by entering the mother's " +
+                        "13 digit South African ID number."
+                })
+                .run();
+        });
+        it("should go to state_language if the ID number is valid", function() {
+            return tester
+                .setup.user.state("state_sa_id_no")
+                .input("9001020005087")
+                .check.user.state("state_language")
+                .run();
+        });
+    });
 });

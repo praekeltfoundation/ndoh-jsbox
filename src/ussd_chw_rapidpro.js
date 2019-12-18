@@ -2,6 +2,7 @@ go.app = function() {
     var vumigo = require("vumigo_v02");
     var App = vumigo.App;
     var _ = require("lodash");
+    var moment = require('moment');
     var utils = require("seed-jsbox-utils").utils;
     var JsonApi = vumigo.http.api.JsonApi;
     var Choice = vumigo.states.Choice;
@@ -121,7 +122,7 @@ go.app = function() {
                     } else if (self.contact_in_group(contact, self.im.config.optout_group_ids)) {
                         return self.states.create("state_opted_out");
                     } else {
-                        return self.states.create("state_opt_in");
+                        return self.states.create("state_pregnant");
                     }
                 }).catch(function(e) {
                     // Go to error state after 3 failed HTTP requests
@@ -174,7 +175,7 @@ go.app = function() {
                     "answer."
                 ),
                 choices: [
-                    new Choice("state_pregnant", $("Yes")),
+                    new Choice("state_info_consent", $("Yes")),
                     new Choice("state_no_opt_in", $("No"))
                 ]
             });
@@ -315,7 +316,98 @@ go.app = function() {
                     new Choice("yes", $("Yes")),
                     new Choice("no", $("No, only send MC msgs")),
                 ],
-                next: "state_opt_in"
+                next: "state_id_type"
+            });
+        });
+
+        self.add("state_id_type", function(name) {
+            return new MenuState(name, {
+                question: $("What type of identification does the mother have?"),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_sa_id_no", $("SA ID")),
+                    new Choice("state_passport_country", $("Passport")),
+                    new Choice("state_dob_year", $("None"))
+                ]
+            });
+        });
+
+        self.add("state_sa_id_no", function(name) {
+            return new FreeText(name, {
+                question: $(
+                    "Please reply with the mother's ID number as she finds it in her Identity " +
+                    "Document."
+                ),
+                check: function(content) {
+                    var match = content.match(/^(\d{6})(\d{4})(0|1)8\d$/);
+                    var today = new moment(self.im.config.testing_today).startOf("day"), dob;
+                    var validLuhn = function(content) {
+                        return content.split("").reverse().reduce(function(sum, digit, i){
+                            return sum + _.parseInt(i % 2 ? [0,2,4,6,8,1,3,5,7,9][digit] : digit);
+                        }, 0) % 10 == 0;
+                    };
+                    if(
+                        !match ||
+                        !validLuhn(content) ||
+                        !(dob = new moment(match[1], "YYMMDD")) ||
+                        !dob.isValid() || 
+                        !dob.isBetween(
+                            today.clone().add(-130, "years"),
+                            today.clone().add(-5, "years")
+                        ) ||
+                        _.parseInt(match[2]) >= 5000
+                    ) {
+                        return $(
+                            "Sorry, we don't understand. Please try again by entering the " +
+                            "mother's 13 digit South African ID number."
+                        );
+                    }
+
+                },
+                next: "state_language"
+            });
+        });
+
+        self.add("state_passport_country", function(name) {
+            return new ChoiceState(name, {
+                question: $(
+                    "What is her passport's country of origin? Enter the number matching her " +
+                    "answer e.g. 1."
+                ),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("zw", $("Zimbabwe")),
+                    new Choice("mz", $("Mozambique")),
+                    new Choice("mw", $("Malawi")),
+                    new Choice("ng", $("Nigeria")),
+                    new Choice("cd", $("DRC")),
+                    new Choice("so", $("Somalia")),
+                    new Choice("other", $("Other"))
+                ],
+                next: "state_passport_no"
+            });
+        });
+
+        self.add("state_passport_no", function(name) {
+            return new FreeText(name, {
+                question: $(
+                    "Please enter the mother's Passport number as it appears in her passport."
+                ),
+                check: function(content) {
+                    if(!content.match(/^\w+$/)){
+                        return $(
+                            "Sorry, we don't understand. Please try again by entering the " +
+                            "mother's Passport number as it appears in her passport."
+                        );
+                    }
+                },
+                next: "state_language"
             });
         });
 
