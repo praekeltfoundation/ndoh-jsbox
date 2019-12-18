@@ -411,7 +411,7 @@ go.app = function() {
                     "answer."
                 ),
                 choices: [
-                    new Choice("state_with_nurse", $("Yes")),
+                    new Choice("state_pregnant", $("Yes")),
                     new Choice("state_no_opt_in", $("No"))
                 ]
             });
@@ -423,6 +423,34 @@ go.app = function() {
                 text: $(
                     "This number has chosen not to receive MomConnect messages. If she changes " +
                     "her mind, she can dial *134*550*2# to register any time. Have a lovely day!"
+                )
+            });
+        });
+
+        self.add("state_pregnant", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "MomConnect sends free messages to help pregnant moms and babies. Are you or do you suspect that you " +
+                    "are pregnant?"
+                ),
+                error: $(
+                    "Sorry, please reply with the number next to your answer. Are you or do you suspect that you are " +
+                    "pregnant?"
+                ),
+                accept_labels: true,
+                choices: [
+                    new Choice("state_info_consent", $("Yes")),
+                    new Choice("state_pregnant_only", $("No"))
+                ]
+            });
+        });
+
+        self.states.add("state_pregnant_only", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "We're sorry but this service is only for pregnant mothers. If you have other health concerns " +
+                    "please visit your nearest clinic."
                 )
             });
         });
