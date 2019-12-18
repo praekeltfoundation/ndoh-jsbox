@@ -245,6 +245,7 @@ go.app = function() {
     var Choice = vumigo.states.Choice;
     var MenuState = vumigo.states.MenuState;
     var FreeText = vumigo.states.FreeText
+    var EndState = vumigo.states.EndState;
 
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_start");
@@ -368,8 +369,71 @@ go.app = function() {
                     }
                     return self.states.create(name, opts);
                 });
-
         });
+
+        self.add("state_active_subscription", function(name) {
+            var msisdn = utils.readable_msisdn(
+                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "27");
+            var choices = [new Choice("state_enter_msisdn", $("Use a different number"))];
+            choices.push(new Choice("state_exit", $("Exit")));
+
+            return new MenuState(name, {
+                question: $(
+                    "The cell number {{msisdn}} is already signed up to MomConnect. What would " +
+                    "you like to do?"
+                ).context({msisdn: msisdn}),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
+                choices: choices,
+            });
+        });
+
+        self.states.add("state_exit", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "Thank you for using MomConnect. Dial *134*550*2# at any time to sign up. " +
+                    "Have a lovely day!"
+                )
+            });
+        });
+
+        self.add("state_opted_out", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "This number previously asked us to stop sending MomConnect messages. Is the " +
+                    "mother sure she wants to get messages from us again?"
+                ),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_with_nurse", $("Yes")),
+                    new Choice("state_no_opt_in", $("No"))
+                ]
+            });
+        });
+        
+        self.states.add("state_no_opt_in", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "This number has chosen not to receive MomConnect messages. If she changes " +
+                    "her mind, she can dial *134*550*2# to register any time. Have a lovely day!"
+                )
+            });
+        });
+
+        self.states.creators.__error__ = function(name, opts) {
+            var return_state = _.get(opts, "return_state", "state_start");
+            return new EndState(name, {
+                next: return_state,
+                text: $("Sorry, something went wrong. We have been notified. Please try again later")
+            });
+        };
 
     });
 

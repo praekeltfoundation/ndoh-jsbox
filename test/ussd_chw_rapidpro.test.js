@@ -1,5 +1,7 @@
 var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
+var assert = require("assert");
+var fixtures_rapidpro = require("./fixtures_rapidpro")();
 
 describe("ussd_chw app", function() {
     var app;
@@ -99,6 +101,81 @@ describe("ussd_chw app", function() {
                         "We're looking for the mother's information. Please avoid entering the " +
                         "examples in the messages. Enter the mother's details."
                     )
+                })
+                .run();
+        });
+    });
+    describe("state_check_subscription", function() {
+        it("should go to state_active_subscription if there is an active subscription", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "tel:+27123456789",
+                            exists: true,
+                            groups: ["PMTCT", "Prebirth 1"]
+                        })
+                    );
+                })
+                .setup.user.state("state_check_subscription")
+                .check.user.state("state_active_subscription")
+                .run();
+        });
+        it("should go to state_opted_out if the user is opted out", function(){
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "tel:+27123456789",
+                            exists: true,
+                            groups: ["Opted Out"]
+                        })
+                    );
+                })
+                .setup.user.state("state_check_subscription")
+                .check.user.state("state_opted_out")
+                .run();
+        });
+        it("should go to state_with_nurse if the user isn't opted out or subscribed", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "tel:+27123456789",
+                            exists: true,
+                            groups: []
+                        })
+                    );
+                })
+                .setup.user.state("state_check_subscription")
+                .check.user.state("state_with_nurse")
+                .run();
+        });
+        it("should retry HTTP call when RapidPro is down", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "tel:+27123456789",
+                            failure: true
+                        })
+                    );
+                })
+                .setup.user.state("state_check_subscription")
+                .check.interaction({
+                    state: "__error__",
+                    reply: 
+                        "Sorry, something went wrong. We have been notified. Please try again " +
+                        "later"
+                })
+                .check.reply.ends_session()
+                .check(function(api){
+                    assert.equal(api.http.requests.length, 3);
+                    api.http.requests.forEach(function(request){
+                        assert.equal(request.url, "https://rapidpro/api/v2/contacts.json");
+                    });
+                    assert.equal(api.log.error.length, 1);
+                    assert(api.log.error[0].includes("HttpResponseError"));
                 })
                 .run();
         });
