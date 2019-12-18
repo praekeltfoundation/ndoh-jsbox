@@ -192,8 +192,8 @@ describe("ussd_chw app", function() {
                 .check.interaction({
                     state: "state_pregnant",
                     reply: [
-                        "MomConnect sends free messages to help pregnant moms and babies. Are you or do you suspect that you " +
-                        "are pregnant?",
+                        "MomConnect sends support messages to help pregnant moms and babies. " +
+                        "Is the mother or does she suspect that she is pregnant?",
                         "1. Yes",
                         "2. No"
                     ].join("\n")
@@ -207,8 +207,8 @@ describe("ussd_chw app", function() {
                 .check.interaction({
                     state: "state_pregnant",
                     reply: [
-                        "Sorry, please reply with the number next to your answer. Are you or do you suspect that " +
-                        "you are pregnant?",
+                        "Sorry, please reply with the number next to your answer. " +
+                        "Is the mother or does she suspect that she is pregnant?",
                         "1. Yes",
                         "2. No"
                     ].join("\n")
@@ -232,6 +232,237 @@ describe("ussd_chw app", function() {
                 .setup.user.state("state_pregnant")
                 .input("1")
                 .check.user.state("state_info_consent")
+                .run();
+        });
+    });
+    describe("state_info_consent", function() {
+        it("should ask the user for consent to use their info", function() {
+            return tester
+                .setup.user.state("state_info_consent")
+                .input({session_event: "continue"})
+                .check.interaction({
+                    state: "state_info_consent",
+                    reply: [
+                        "We need to process the mom’s personal info to send her relevant messages about " +
+                        "her pregnancy or baby. Does she agree?",
+                        "1. Yes",
+                        "2. No",
+                        "3. I need more info to decide"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show an error if the user replies with an incorrect choice", function() {
+            return tester
+                .setup.user.state("state_info_consent")
+                .input("foo")
+                .check.interaction({
+                    state: "state_info_consent",
+                    reply: [
+                        "Sorry, please reply with the number next to your answer. Does she agree?",
+                        "1. Yes",
+                        "2. No",
+                        "3. I need more info to decide"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should skip the state if they have already given info consent", function() {
+            return tester
+                .setup.user.state("state_info_consent")
+                .setup.user.answer("contact", {"fields": {"info_consent": "TRUE"}})
+                .input({session_event: "continue"})
+                .check.user.state("state_message_consent")
+                .run();
+        });
+        it("should ask for message consent if they agree", function () {
+            return tester
+                .setup.user.state("state_info_consent")
+                .input("1")
+                .check.user.state("state_message_consent")
+                .run();
+        });
+        it("should give them the option to go back or exit if they don't agree", function () {
+            return tester
+                .setup.user.state("state_info_consent")
+                .input("2")
+                .check.user.state("state_info_consent_denied")
+                .run();
+        });
+    });
+    describe("state_info_consent_denied", function() {
+        it("should give the user options to go back or to exit", function () {
+            return tester
+                .setup.user.state("state_info_consent_denied")
+                .input({session_event: "continue"})
+                .check.interaction({
+                    state: "state_info_consent_denied",
+                    reply: [
+                        "Unfortunately, without agreeing she can't sign up to MomConnect. " + 
+                        "Does she agree to MomConnect processing her personal info?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should give the user an error on invalid input", function () {
+            return tester
+                .setup.user.state("state_info_consent_denied")
+                .input("foo")
+                .check.interaction({
+                    state: "state_info_consent_denied",
+                    reply: [
+                        "Sorry, please reply with the number next to your answer. Does she agree " +
+                        "to sign up to MomConnect?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should ask them for consent again if they choose to go back", function () {
+            return tester
+                .setup.user.state("state_info_consent_denied")
+                .input("1")
+                .check.user.state("state_info_consent")
+                .run();
+        });
+        it("should display the end screen if they choose to exit", function () {
+            return tester
+                .setup.user.state("state_info_consent_denied")
+                .input("2")
+                .check.interaction({
+                    state: "state_no_consent_exit",
+                    reply: "Thank you for considering MomConnect. We respect her decision. Have a lovely day."
+                })
+                .run();
+        });
+    });
+    describe("state_message_consent", function() {
+        it("should ask the user for messaging consent", function () {
+            return tester
+                .setup.user.state("state_message_consent")
+                .input({session_event: "continue"})
+                .check.interaction({
+                    state: "state_message_consent",
+                    reply: [
+                        "Does the mother agree to receive messages from MomConnect? This may include " +
+                        "receiving messages on public holidays and weekends.",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show the user an error on invalid input", function () {
+            return tester
+                .setup.user.state("state_message_consent")
+                .input("foo")
+                .check.interaction({
+                    state: "state_message_consent",
+                    reply: [
+                        "Sorry, please reply with the number next to your answer. Does she agree to receiving messages " +
+                        "from MomConnect?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should get research consent if the user consents to messages", function () {
+            return tester
+                .setup.user.state("state_message_consent")
+                .input("1")
+                .check.user.state("state_research_consent")
+                .run();
+        });
+        it("should confirm if the user denies consent", function () {
+            return tester
+                .setup.user.state("state_message_consent")
+                .input("2")
+                .check.user.state("state_message_consent_denied")
+                .run();
+        });
+    });
+    describe("state_message_consent_denied", function() {
+        it("should give the user an option to go back or exit", function() {
+            return tester
+                .setup.user.state("state_message_consent_denied")
+                .input({session_event: "continue"})
+                .check.interaction({
+                    state: "state_message_consent_denied",
+                    reply: [
+                        "Unfortunately, without agreeing she can't sign up to MomConnect. " +
+                        "Does she agree to get messages from MomConnect?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show the user an error if they enter an incorrect choice", function() {
+            return tester
+                .setup.user.state("state_message_consent_denied")
+                .input("foo")
+                .check.interaction({
+                    state: "state_message_consent_denied",
+                    reply: [
+                        "Sorry, please reply with the number next to your answer. Does she agree " +
+                        "to get messages from MomConnect?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go back if the user selects that option", function() {
+            return tester
+                .setup.user.state("state_message_consent_denied")
+                .input("1")
+                .check.user.state("state_message_consent")
+                .run();
+        });
+        it("should exit if the user selects that option", function() {
+            return tester
+            .setup.user.state("state_info_consent_denied")
+            .input("2")
+            .check.interaction({
+                state: "state_no_consent_exit",
+                reply: "Thank you for considering MomConnect. We respect her decision. Have a lovely day."
+            })
+            .run();
+        });
+    });
+    describe("state_research_consent", function() {
+        it("should ask the user for consent for research", function () {
+            return tester
+                .setup.user.state("state_research_consent")
+                .input({session_event: "continue"})
+                .check.interaction({
+                    state: "state_research_consent",
+                    reply: [
+                        "We may occasionally call or send msgs for historical/statistical/research reasons. " +
+                        "We’ll keep her info safe. Does she agree?",
+                        "1. Yes",
+                        "2. No, only send MC msgs"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show the user an error if they selected the incorrect choice", function () {
+            return tester
+                .setup.user.state("state_research_consent")
+                .input("foo")
+                .check.interaction({
+                    state: "state_research_consent",
+                    reply: [
+                        "Sorry, please reply with the number next to your answer. We may call or send " + 
+                        "msgs for research reasons. Does she agree?",
+                        "1. Yes",
+                        "2. No, only send MC msgs"
+                    ].join("\n")
+                })
                 .run();
         });
     });

@@ -246,6 +246,7 @@ go.app = function() {
     var MenuState = vumigo.states.MenuState;
     var FreeText = vumigo.states.FreeText
     var EndState = vumigo.states.EndState;
+    var ChoiceState = vumigo.states.ChoiceState;
 
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_start");
@@ -430,12 +431,12 @@ go.app = function() {
         self.add("state_pregnant", function(name) {
             return new MenuState(name, {
                 question: $(
-                    "MomConnect sends free messages to help pregnant moms and babies. Are you or do you suspect that you " +
-                    "are pregnant?"
+                    "MomConnect sends support messages to help pregnant moms and babies. " +
+                    "Is the mother or does she suspect that she is pregnant?"
                 ),
                 error: $(
-                    "Sorry, please reply with the number next to your answer. Are you or do you suspect that you are " +
-                    "pregnant?"
+                    "Sorry, please reply with the number next to your answer. " +
+                    "Is the mother or does she suspect that she is pregnant?"
                 ),
                 accept_labels: true,
                 choices: [
@@ -451,6 +452,116 @@ go.app = function() {
                 text: $(
                     "We're sorry but this service is only for pregnant mothers. If you have other health concerns " +
                     "please visit your nearest clinic."
+                )
+            });
+        });
+
+        self.add("state_info_consent", function(name) {
+            // Skip this state if we already have consent
+            var consent = _.get(self.im.user.get_answer("contact"), "fields.info_consent");
+            if(consent === "TRUE") {
+                return self.states.create("state_message_consent");
+            }
+            return new MenuState(name, {
+                question: $(
+                    "We need to process the mom’s personal info to send her relevant messages about " +
+                    "her pregnancy or baby. Does she agree?"
+                ),
+                error: $("Sorry, please reply with the number next to your answer. Does she agree?"),
+                accept_labels: true,
+                choices: [
+                    new Choice("state_message_consent", $("Yes")),
+                    new Choice("state_info_consent_denied", $("No")),
+                    new Choice("state_question_menu", $("I need more info to decide")),
+                ],
+            });
+        });
+
+        self.add("state_info_consent_denied", function(name) {
+            return new MenuState(name, {
+                question: $("Unfortunately, without agreeing she can't sign up to MomConnect. " + 
+                            "Does she agree to MomConnect processing her personal info?"),
+                error: $(
+                    "Sorry, please reply with the number next to your answer. Does she agree " +
+                    "to sign up to MomConnect?"
+                ),
+                accept_labels: true,
+                choices: [
+                    new Choice("state_info_consent", $("Yes")),
+                    new Choice("state_no_consent_exit", $("No")),
+                ]
+            });
+        });
+        
+        self.add("state_message_consent", function(name) {
+            // Skip this state if we already have consent
+            var consent = _.get(self.im.user.get_answer("contact"), "fields.messaging_consent");
+            if(consent === "TRUE") {
+                return self.states.create("state_research_consent");
+            }
+            return new MenuState(name, {
+                question: $(
+                    "Does the mother agree to receive messages from MomConnect? This may include " +
+                    "receiving messages on public holidays and weekends."
+                ),
+                error: $(
+                    "Sorry, please reply with the number next to your answer. Does she agree to receiving messages " +
+                    "from MomConnect?"
+                ),
+                accept_labels: true,
+                choices: [
+                    new Choice("state_research_consent", $("Yes")),
+                    new Choice("state_message_consent_denied", $("No")),
+                ]
+            });
+        });
+
+        self.add("state_message_consent_denied", function(name) {
+            return new MenuState(name, {
+                question: $("Unfortunately, without agreeing she can't sign up to MomConnect. " +
+                            "Does she agree to get messages from MomConnect?"),
+                error: $(
+                    "Sorry, please reply with the number next to your answer. Does she agree " +
+                    "to get messages from MomConnect?"
+                ),
+                accept_labels: true,
+                choices: [
+                    new Choice("state_message_consent", $("Yes")),
+                    new Choice("state_no_consent_exit", $("No")),
+                ]
+            });
+        });
+
+        self.add("state_research_consent", function(name) {
+            // Skip this state if we already have consent
+            var consent = _.get(self.im.user.get_answer("contact"), "fields.research_consent");
+            if(consent === "TRUE") {
+                return self.states.create("state_opt_in");
+            }
+            return new ChoiceState(name, {
+                // TODO: Proper copy
+                question: $(
+                    "We may occasionally call or send msgs for historical/statistical/research reasons. " +
+                    "We’ll keep her info safe. Does she agree?"
+                ),
+                error: $(
+                    "Sorry, please reply with the number next to your answer. We may call or send " + 
+                    "msgs for research reasons. Does she agree?"
+                ),
+                accept_labels: true,
+                choices: [
+                    new Choice("yes", $("Yes")),
+                    new Choice("no", $("No, only send MC msgs")),
+                ],
+                next: "state_opt_in"
+            });
+        });
+
+        self.states.add("state_no_consent_exit", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "Thank you for considering MomConnect. We respect her decision. Have a lovely day."
                 )
             });
         });
