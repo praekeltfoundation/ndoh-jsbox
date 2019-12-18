@@ -1059,8 +1059,9 @@ describe("ussd_public app", function() {
                 .input("4")
                 .check.interaction({
                     reply:
-                        "Sorry, we don't understand. Please try again by entering the day the " +
-                        "baby was born as a number, e.g. 12."
+                        "Unfortunately MomConnect doesn't send messages to children older than 2 " +
+                        "years. Please try again by entering the dat the baby was born as a " +
+                        "number, e.g. 12."
                 })
                 .run();
         });
@@ -1071,8 +1072,9 @@ describe("ussd_public app", function() {
                 .input("4")
                 .check.interaction({
                     reply:
-                        "Sorry, we don't understand. Please try again by entering the day the " +
-                        "baby was born as a number, e.g. 12."
+                        "Unfortunately MomConnect doesn't send messages to children older than 2 " +
+                        "years. Please try again by entering the dat the baby was born as a " +
+                        "number, e.g. 12."
                 })
                 .run();
         });

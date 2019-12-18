@@ -837,13 +837,17 @@ go.app = function() {
                         "YYYYMMDD"
                     );
                     var current_date = new moment(self.im.config.testing_today).startOf("day");
-                    if(
-                        !date.isValid() || 
-                        !date.isBetween(current_date.clone().add(-2, "years"), current_date)
-                      ) {
+                    if(!date.isValid()) {
                         return $(
                             "Sorry, we don't understand. Please try again by entering the day " +
                             "the baby was born as a number, e.g. 12."
+                        );
+                    }
+                    if(!date.isBetween(current_date.clone().add(-2, "years"), current_date)) {
+                        return $(
+                            "Unfortunately MomConnect doesn't send messages to children older " +
+                            "than 2 years. Please try again by entering the dat the baby was " +
+                            "born as a number, e.g. 12."
                         );
                     }
                 },
