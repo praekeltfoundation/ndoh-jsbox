@@ -119,7 +119,7 @@ go.app = function() {
 
         self.init = function() {
             self.rapidpro = new go.RapidPro(
-                new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-Public"]}}),
+                new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-POPI"]}}),
                 self.im.config.services.rapidpro.base_url,
                 self.im.config.services.rapidpro.token
             );
