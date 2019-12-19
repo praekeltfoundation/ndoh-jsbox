@@ -245,9 +245,10 @@ go.app = function() {
     var JsonApi = vumigo.http.api.JsonApi;
     var Choice = vumigo.states.Choice;
     var MenuState = vumigo.states.MenuState;
-    var FreeText = vumigo.states.FreeText
+    var FreeText = vumigo.states.FreeText;
     var EndState = vumigo.states.EndState;
     var ChoiceState = vumigo.states.ChoiceState;
+    var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
 
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_start");
@@ -255,18 +256,12 @@ go.app = function() {
 
         self.init = function() {
             self.rapidpro = new go.RapidPro(
-                new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-Clinic"]}}),
+                new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-CHW"]}}),
                 self.im.config.services.rapidpro.base_url,
                 self.im.config.services.rapidpro.token
             );
-            self.openhim = new go.OpenHIM(
-                new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-Clinic"]}}),
-                self.im.config.services.openhim.base_url,
-                self.im.config.services.openhim.username,
-                self.im.config.services.openhim.password
-            );
             self.whatsapp = new go.Engage(
-                new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-Clinic"]}}),
+                new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-CHW"]}}),
                 self.im.config.services.whatsapp.base_url,
                 self.im.config.services.whatsapp.token
             );
@@ -533,6 +528,15 @@ go.app = function() {
             });
         });
 
+        self.states.add("state_no_consent_exit", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "Thank you for considering MomConnect. We respect her decision. Have a lovely day."
+                )
+            });
+        });
+
         self.add("state_research_consent", function(name) {
             // Skip this state if we already have consent
             var consent = _.get(self.im.user.get_answer("contact"), "fields.research_consent");
@@ -727,13 +731,113 @@ go.app = function() {
             });
         });
 
+        self.add("state_language", function(name) {
+            return new PaginatedChoiceState(name, {
+                question: $(
+                    "What language does the mother want to receive her MomConnect messages in?"
+                ),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("zul", $("isiZulu")),
+                    new Choice("xho", $("isiXhosa")),
+                    new Choice("afr", $("Afrikaans")),
+                    new Choice("eng", $("English")),
+                    new Choice("nso", $("Sesotho sa Leboa")),
+                    new Choice("tsn", $("Setswana")),
+                    new Choice("sot", $("Sesotho")),
+                    new Choice("tso", $("Xitsonga")),
+                    new Choice("ssw", $("siSwati")),
+                    new Choice("ven", $("Tshivenda")),
+                    new Choice("nbl", $("isiNdebele"))
+                ],
+                back: $("Back"),
+                more: $("Next"),
+                options_per_page: null,
+                characters_per_page: 160,
+                next: "state_whatsapp_contact_check"
+            });
+        });
 
-        self.states.add("state_no_consent_exit", function(name) {
+        self.add("state_whatsapp_contact_check", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(
+                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
+            return self.whatsapp.contact_check(msisdn, true)
+                .then(function(result) {
+                    self.im.user.set_answer("on_whatsapp", result);
+                    return self.states.create("state_trigger_rapidpro_flow");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+        self.add("state_trigger_rapidpro_flow", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(
+                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
+            var data = {
+                research_consent:
+                    self.im.user.answers.state_research_consent === "no" ? "FALSE" : "TRUE",
+                registered_by: utils.normalize_msisdn(self.im.user.addr, "ZA"),
+                language: self.im.user.answers.state_language,
+                timestamp: new moment.utc(self.im.config.testing_today).format(),
+                source: "CHW USSD",
+                id_type: {
+                    state_sa_id_no: "sa_id",
+                    state_passport_country: "passport",
+                    state_dob_year: "dob"
+                }[self.im.user.answers.state_id_type],
+                sa_id_number: self.im.user.answers.state_sa_id_no,
+                dob: self.im.user.answers.state_id_type === "state_sa_id_no"
+                    ? new moment.utc(
+                        self.im.user.answers.state_sa_id_no.slice(0, 6),
+                        "YYMMDD"
+                    ).format()
+                    : new moment.utc(
+                        self.im.user.answers.state_dob_year +
+                        self.im.user.answers.state_dob_month +
+                        self.im.user.answers.state_dob_day,
+                        "YYYYMMDD"
+                    ).format(),
+                passport_origin: self.im.user.answers.state_passport_country,
+                passport_number: self.im.user.answers.state_passport_no
+            };
+            return self.rapidpro
+                .start_flow(self.im.config.flow_uuid, null, "tel:" + msisdn, data)
+                .then(function() {
+                    return self.states.create("state_registration_complete");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+        self.states.add("state_registration_complete", function(name) {
+            var msisdn = utils.readable_msisdn(utils.normalize_msisdn(self.im.user.addr, "ZA"), "27");
+            var whatsapp_message = $(
+                "You're done! {{ msisdn }} will get helpful messages from MomConnect on WhatsApp. " +
+                "To sign up for the full set of messages, visit a clinic. " +
+                "Have a lovely day!").context({msisdn: msisdn});
+            var sms_message = $(
+                "You're done! {{ msisdn }} will get helpful messages from MomConnect on SMS. " +
+                "You can register for the full set of FREE messages at a clinic. " +
+                "Have a lovely day!").context({msisdn: msisdn});
+
             return new EndState(name, {
                 next: "state_start",
-                text: $(
-                    "Thank you for considering MomConnect. We respect her decision. Have a lovely day."
-                )
+                text: self.im.user.get_answer("on_whatsapp") ? whatsapp_message : sms_message
             });
         });
 

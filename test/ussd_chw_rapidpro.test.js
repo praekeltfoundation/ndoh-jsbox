@@ -1,9 +1,8 @@
 var vumigo = require("vumigo_v02");
-var _ = require("lodash");
 var AppTester = vumigo.AppTester;
 var assert = require("assert");
 var fixtures_rapidpro = require("./fixtures_rapidpro")();
-
+var fixtures_whatsapp = require("./fixtures_pilot")();
 
 describe("ussd_chw app", function() {
     var app;
@@ -19,11 +18,6 @@ describe("ussd_chw app", function() {
                     base_url: "https://rapidpro",
                     token: "rapidpro-token"
                 },
-                openhim: {
-                    base_url: "http://test/v2/json/",
-                    username: "openhim-user",
-                    password: "openhim-pass"
-                },
                 whatsapp: {
                     base_url: "http://pilot.example.org",
                     token: "engage-token"
@@ -31,8 +25,7 @@ describe("ussd_chw app", function() {
             },
             clinic_group_ids: ["id-1"],
             optout_group_ids: ["id-0"],
-            prebirth_flow_uuid: "prebirth-flow-uuid",
-            postbirth_flow_uuid: "postbirth-flow-uuid"
+            flow_uuid: "rapidpro-flow-uuid"
         });
     });
     describe("state_start", function() {
@@ -735,6 +728,240 @@ describe("ussd_chw app", function() {
                 .setup.user.answers({state_dob_year: "1987", state_dob_month: "02"})
                 .input("22")
                 .check.user.state("state_language")
+                .run();
+        });
+    });
+    describe("state_language", function() {
+        it("should ask the user for the language", function() {
+            return tester
+                .setup.user.state("state_language")
+                .check.interaction({
+                    reply: [
+                        "What language does the mother want to receive her MomConnect messages in?",
+                        "1. isiZulu",
+                        "2. isiXhosa",
+                        "3. Afrikaans",
+                        "4. English",
+                        "5. Sesotho sa Leboa",
+                        "6. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should be able to page through choices", function() {
+            return tester
+                .setup.user.state("state_language")
+                .input("6")
+                .check.interaction({
+                    reply: [
+                        "What language does the mother want to receive her MomConnect messages in?",
+                        "1. Setswana",
+                        "2. Sesotho",
+                        "3. Xitsonga",
+                        "4. siSwati",
+                        "5. Tshivenda",
+                        "6. isiNdebele",
+                        "7. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error for an incorrect choice", function() {
+            return tester
+                .setup.user.state("state_language")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't understand. Please enter the number next to the " +
+                        "mother's answer.",
+                        "1. isiZulu",
+                        "2. isiXhosa",
+                        "3. Afrikaans",
+                        "4. English",
+                        "5. Sesotho sa Leboa",
+                        "6. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_whatsapp_contact_check", function() {
+        it("should store the result of the contact check", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27123456789",
+                            wait: true
+                        })
+                    );
+                })
+                .setup.user.state("state_whatsapp_contact_check")
+                .check.user.answer("on_whatsapp", true)
+                .run();
+        });
+        it("should retry in the case of HTTP failures", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27123456789",
+                            wait: true,
+                            fail: true
+                        })
+                    );
+                })
+                .setup.user.state("state_whatsapp_contact_check")
+                .check(function(api){
+                    assert.equal(api.http.requests.length, 3);
+                    api.http.requests.forEach(function(request){
+                        assert.equal(request.url, "http://pilot.example.org/v1/contacts");
+                    });
+                    assert.equal(api.log.error.length, 1);
+                    assert(api.log.error[0].includes("HttpResponseError"));
+                })
+                .run();
+        });
+    });
+    describe("state_trigger_rapidpro_flow", function() {
+        it("should start a flow with the correct metadata", function() {
+            return tester
+                .setup.user.state("state_trigger_rapidpro_flow")
+                .setup.user.answers({
+                    state_research_consent: "no",
+                    state_enter_msisdn: "0820001001",
+                    state_language: "zul",
+                    state_id_type: "state_sa_id_no",
+                    state_sa_id_no: "9001020005087",
+                    on_whatsapp: "FALSE"
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27820001001",
+                            wait: true,
+                        })
+                    );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "rapidpro-flow-uuid",
+                            null,
+                            "tel:+27820001001",
+                            {
+                                research_consent:"FALSE",
+                                registered_by: "+27123456789",
+                                language: "zul",
+                                timestamp: "2014-04-04T07:07:07Z",
+                                source: "CHW USSD",
+                                id_type: "sa_id",
+                                sa_id_number: "9001020005087",
+                                dob: "1990-01-02T00:00:00Z",
+                            }
+                        )
+                    );
+                })
+                .input({session_event: "continue"})
+                .check.interaction({
+                    state: "state_registration_complete",
+                    reply: 
+                        "You're done! 0123456789 will get helpful messages from " +
+                        "MomConnect on WhatsApp. To sign up for the full set of messages, " +
+                        "visit a clinic. Have a lovely day!"
+                })
+                .check.reply.ends_session()
+                .run();
+        });
+        it("should go to state_registration_complete for SMS registration", function() {
+            return tester
+                .setup.user.state("state_trigger_rapidpro_flow")
+                .setup.user.answers({
+                    state_research_consent: "no",
+                    state_enter_msisdn: "0820001001",
+                    state_language: "zul",
+                    state_id_type: "state_sa_id_no",
+                    state_sa_id_no: "9001020005087"
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.not_exists({
+                            address: "+27820001001",
+                            wait: true
+                        })
+                    );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "rapidpro-flow-uuid",
+                            null,
+                            "tel:+27820001001",
+                            {
+                                research_consent:"FALSE",
+                                registered_by: "+27123456789",
+                                language: "zul",
+                                timestamp: "2014-04-04T07:07:07Z",
+                                source: "CHW USSD",
+                                id_type: "sa_id",
+                                sa_id_number: "9001020005087",
+                                dob: "1990-01-02T00:00:00Z",
+                            }
+                        )
+                    );
+                })
+                .input({session_event: "continue"})
+                .check.interaction({
+                    state: "state_registration_complete",
+                    reply: 
+                        "You're done! 0123456789 will get helpful messages from " +
+                        "MomConnect on SMS. You can register for the full set of " +
+                        "FREE messages at a clinic. Have a lovely day!"
+                })
+                .check.reply.ends_session()
+                .run();
+        });
+        it("should retry in the case of HTTP failures", function() {
+            return tester
+                .setup.user.state("state_trigger_rapidpro_flow")
+                .setup.user.answers({
+                    state_research_consent: "no",
+                    state_enter_msisdn: "0820001001",
+                    state_language: "zul",
+                    state_id_type: "state_sa_id_no",
+                    state_sa_id_no: "9001020005087",
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27820001001",
+                            wait: true,
+                        })
+                    );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "rapidpro-flow-uuid",
+                            null,
+                            "tel:+27820001001",
+                            {
+                                research_consent:"FALSE",
+                                registered_by: "+27123456789",
+                                language: "zul",
+                                timestamp: "2014-04-04T07:07:07Z",
+                                source: "CHW USSD",
+                                id_type: "sa_id",
+                                sa_id_number: "9001020005087",
+                                dob: "1990-01-02T00:00:00Z",
+                            },
+                            true
+                        )
+                    );
+                })
+                .input({session_event: "continue"})
+                .check(function(api){
+                    assert.equal(api.http.requests.length, 3);
+                    api.http.requests.forEach(function(request){
+                        assert.equal(request.url, "https://rapidpro/api/v2/flow_starts.json");
+                    });
+                    assert.equal(api.log.error.length, 1);
+                    assert(api.log.error[0].includes("HttpResponseError"));
+                })
                 .run();
         });
     });
