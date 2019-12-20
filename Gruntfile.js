@@ -104,7 +104,6 @@ module.exports = function (grunt) {
                     'src/index.js',
                     'src/engage.js',
                     'src/rapidpro.js',
-                    'src/openhim.js',
                     '<%= paths.src.app.ussd_chw_rapidpro %>',
                     'src/init.js'
                 ],
@@ -219,7 +218,6 @@ module.exports = function (grunt) {
                     'test/setup.js',
                     'src/engage.js',
                     'src/rapidpro.js',
-                    'src/openhim.js',
                     '<%= paths.src.app.ussd_chw_rapidpro %>',
                     'test/ussd_chw_rapidpro.test.js'
                 ],

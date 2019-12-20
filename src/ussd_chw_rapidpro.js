@@ -98,17 +98,14 @@ go.app = function() {
         });
 
         self.add("state_check_subscription", function(name, opts) {
-            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            var msisdn = utils.normalize_msisdn(
+                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
             // Fire and forget a background whatsapp contact check
             self.whatsapp.contact_check(msisdn, false).then(_.noop, _.noop);
 
             return self.rapidpro.get_contact({urn: "tel:" + msisdn})
                 .then(function(contact) {
                     self.im.user.set_answer("contact", contact);
-                    // Set the language if we have it
-                    if(_.isString(_.get(contact, "language"))) {
-                        return self.im.user.set_lang(contact.language);
-                    }
                 }).then(function() {
                     // Delegate to the correct state depending on group membership
                     var contact = self.im.user.get_answer("contact");
@@ -133,9 +130,6 @@ go.app = function() {
         self.add("state_active_subscription", function(name) {
             var msisdn = utils.readable_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "27");
-            var choices = [new Choice("state_enter_msisdn", $("Use a different number"))];
-            choices.push(new Choice("state_exit", $("Exit")));
-
             return new MenuState(name, {
                 question: $(
                     "The cell number {{msisdn}} is already signed up to MomConnect. What would " +
@@ -145,7 +139,10 @@ go.app = function() {
                     "Sorry we don't understand. Please enter the number next to the mother's " +
                     "answer."
                 ),
-                choices: choices,
+                choices: [
+                    new Choice("state_enter_msisdn", $("Use a different number")),
+                    new Choice("state_exit", $("Exit"))
+                ]
             });
         });
 
@@ -303,7 +300,7 @@ go.app = function() {
             // Skip this state if we already have consent
             var consent = _.get(self.im.user.get_answer("contact"), "fields.research_consent");
             if(consent === "TRUE") {
-                return self.states.create("state_opt_in");
+                return self.states.create("state_id_type");
             }
             return new ChoiceState(name, {
                 // TODO: Proper copy
