@@ -27,6 +27,24 @@ go.app = function() {
             return _.intersection(contact_groupids, groups).length > 0;
         };
 
+        self.contact_current_channel = function(contact) {
+            // Returns the current channel of the contact
+            if(_.get(contact, "fields.preferred_channel", "").toUpperCase() === "WHATSAPP") {
+                return $("WhatsApp");
+            } else {
+                return $("SMS");
+            }
+        }
+
+        self.contact_alternative_channel = function(contact) {
+            // Returns the alternative channel of the contact
+            if(_.get(contact, "fields.preferred_channel", "").toUpperCase() === "WHATSAPP") {
+                return $("SMS");
+            } else {
+                return $("WhatsApp");
+            }
+        }
+
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
                 if (self.im.msg.session_event !== 'new')
@@ -66,10 +84,10 @@ go.app = function() {
             return new MenuState(name, {
                 question: $("Welcome to MomConnect. What would you like to do?"),
                 choices: [
-                    new Choice("state_personal_info", $("See my personal info")),
-                    new Choice("state_start", $("Change my info")),
+                    new Choice("state_personal_info", $("See my info")),
+                    new Choice("state_change_info", $("Change my info")),
                     new Choice("state_start", $("Opt-out & delete info")),
-                    new Choice("state_start", $("Read about how my info is processed"))
+                    new Choice("state_start", $("How is my info processed?"))
                 ]
             });
         });
@@ -160,6 +178,28 @@ go.app = function() {
                 page: page_slice
             });
         });
+        
+        self.add("state_change_info", function(name) {
+            var contact = self.im.user.answers.contact;
+            
+            return new MenuState(name, {
+                question: $("What would you like to change?"),
+                choices: [
+                    new Choice(
+                        "state_channel_switch_confirm",
+                        $("Change from {{current_channel}} to {{alternative_channel}}").context({
+                            current_channel: self.contact_current_channel(contact),
+                            alternative_channel: self.contact_alternative_channel(contact)
+                        })
+                    ),
+                    new Choice("state_change_info", $("Cell number")),
+                    new Choice("state_change_info", $("Language")),
+                    new Choice("state_change_info", $("Identification")),
+                    new Choice("state_change_info", $("Research messages")),
+                    new Choice("state_main_menu", $("Back")),
+                ]
+            })
+        })
 
         self.states.creators.__error__ = function(name, opts) {
             var return_state = opts.return_state || "state_start";

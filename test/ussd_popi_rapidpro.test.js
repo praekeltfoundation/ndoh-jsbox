@@ -38,11 +38,12 @@ describe("ussd_popi_rapidpro app", function() {
                     state: "state_main_menu",
                     reply: [
                         "Welcome to MomConnect. What would you like to do?",
-                        "1. See my personal info",
+                        "1. See my info",
                         "2. Change my info",
                         "3. Opt-out & delete info",
-                        "4. Read about how my info is processed"
-                    ].join("\n")
+                        "4. How is my info processed?"
+                    ].join("\n"),
+                    char_limit: 140
                 })
                 .run();
         });
@@ -163,6 +164,32 @@ describe("ussd_popi_rapidpro app", function() {
                         "2. Back"
                     ].join("\n")
                 })
+                .run();
+        });
+    });
+    describe("state_change_info", function(){
+        it("should display the list of options to the user", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
+                .check.interaction({
+                    reply: [
+                        "What would you like to change?",
+                        "1. Change from WhatsApp to SMS",
+                        "2. Cell number",
+                        "3. Language",
+                        "4. Identification",
+                        "5. Research messages",
+                        "6. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_channel_switch_confirm if that option is chosen", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .input("1")
+                .check.user.state("state_channel_switch_confirm")
                 .run();
         });
     });
