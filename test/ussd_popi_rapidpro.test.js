@@ -20,6 +20,8 @@ describe("ussd_popi_rapidpro app", function() {
             public_groups: ["id-3"],
             prebirth_groups: ["id-2"],
             postbirth_groups: ["id-1"],
+            sms_switch_flow_id: "sms-switch-flow",
+            whatsapp_switch_flow_id: "whatsapp-switch-flow"
         });
     });
 
@@ -190,6 +192,69 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup.user.state("state_change_info")
                 .input("1")
                 .check.user.state("state_channel_switch_confirm")
+                .run();
+        });
+    });
+    describe("state_channel_switch_confirm", function() {
+        it("should ask the user if they want to switch channels", function() {
+            return tester
+                .setup.user.state("state_channel_switch_confirm")
+                .setup.user.answer("contact", {fields: {preferred_channel: "SMS"}})
+                .check.interaction({
+                    reply: [
+                        "Are you sure you want to get your MomConnect messages on WhatsApp?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should submit the channel switch if they choose yes", function() {
+            return tester
+                .setup.user.state("state_channel_switch_confirm")
+                .setup.user.answer("contact", {fields: {preferred_channel: "SMS"}})
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "whatsapp-switch-flow", null, "tel:+27123456789"
+                        )
+                    );
+                })
+                .input("1")
+                .check.interaction({
+                    reply: [
+                        "Thank you! We'll send your MomConnect messages to WhatsApp. What would " +
+                        "you like to do?",
+                        "1. Back to main menu",
+                        "2. Exit"
+                    ].join("\n"),
+                    state: "state_channel_switch_success"
+                })
+                .check(function(api){
+                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(
+                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
+                    );
+                })
+                .run();
+        });
+        it("should not submit the channel switch if they choose no", function() {
+            return tester
+                .setup.user.state("state_channel_switch_confirm")
+                .setup.user.answer("contact", {fields: {preferred_channel: "SMS"}})
+                .input("2")
+                .check.interaction({
+                    reply: [
+                        "You'll keep getting your messages on SMS. If you change your mind, dial " +
+                        "*134*550*7#. What would you like to do?",
+                        "1. Back to main menu",
+                        "2. Exit"
+                    ].join("\n"),
+                    state: "state_no_channel_switch"
+                })
+                .check(function(api){
+                    assert.equal(api.http.requests.length, 0);
+                })
                 .run();
         });
     });

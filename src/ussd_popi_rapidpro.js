@@ -34,7 +34,7 @@ go.app = function() {
             } else {
                 return $("SMS");
             }
-        }
+        };
 
         self.contact_alternative_channel = function(contact) {
             // Returns the alternative channel of the contact
@@ -43,7 +43,7 @@ go.app = function() {
             } else {
                 return $("WhatsApp");
             }
-        }
+        };
 
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
@@ -198,8 +198,88 @@ go.app = function() {
                     new Choice("state_change_info", $("Research messages")),
                     new Choice("state_main_menu", $("Back")),
                 ]
-            })
-        })
+            });
+        });
+
+        self.add("state_channel_switch_confirm", function(name) {
+            var contact = self.im.user.answers.contact;
+            return new MenuState(name, {
+                question: $(
+                    "Are you sure you want to get your MomConnect messages on " +
+                    "{{alternative_channel}}?"
+                    ).context({
+                        alternative_channel: self.contact_alternative_channel(contact)
+                    }),
+                choices: [
+                    new Choice("state_channel_switch", $("Yes")),
+                    new Choice("state_no_channel_switch", $("No")),
+                ]
+
+            });
+        });
+
+        self.add("state_channel_switch", function(name, opts) {
+            var contact = self.im.user.answers.contact, flow_uuid;
+            if(_.get(contact, "fields.preferred_channel", "").toUpperCase() === "WHATSAPP") {
+                flow_uuid = self.im.config.sms_switch_flow_id;
+            } else {
+                flow_uuid = self.im.config.whatsapp_switch_flow_id;
+            }
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+
+            return self.rapidpro
+                .start_flow(flow_uuid, null, "tel:" + msisdn)
+                .then(function() {
+                    return self.states.create("state_channel_switch_success");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+        self.add("state_channel_switch_success", function(name) {
+            var contact = self.im.user.answers.contact;
+            return new MenuState(name, {
+                question: $(
+                    "Thank you! We'll send your MomConnect messages to {{channel}}. What would " +
+                    "you like to do?").context({
+                        channel: self.contact_alternative_channel(contact)
+                    }),
+                choices: [
+                    new Choice("state_start", $("Back to main menu")),
+                    new Choice("state_exit", $("Exit"))
+                ]
+            });
+        });
+
+        self.states.add("state_exit", function(name) {
+            return new EndState(name, {
+                text: $(
+                    "Thanks for using MomConnect. You can dial *134*550*7# any time to manage " +
+                    "your info. Have a lovely day!"
+                ),
+                next: "state_start"
+            });
+        });
+
+        self.add("state_no_channel_switch", function(name) {
+            var contact = self.im.user.answers.contact;
+            return new MenuState(name, {
+                question: $(
+                    "You'll keep getting your messages on {{channel}}. If you change your mind, " +
+                    "dial *134*550*7#. What would you like to do?"
+                ).context({channel: self.contact_current_channel(contact)}),
+                choices: [
+                    new Choice("state_start", $("Back to main menu")),
+                    new Choice("state_exit", $("Exit"))
+                ]
+            });
+        });
 
         self.states.creators.__error__ = function(name, opts) {
             var return_state = opts.return_state || "state_start";
