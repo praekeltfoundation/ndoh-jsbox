@@ -21,7 +21,8 @@ describe("ussd_popi_rapidpro app", function() {
             prebirth_groups: ["id-2"],
             postbirth_groups: ["id-1"],
             sms_switch_flow_id: "sms-switch-flow",
-            whatsapp_switch_flow_id: "whatsapp-switch-flow"
+            whatsapp_switch_flow_id: "whatsapp-switch-flow",
+            msisdn_change_flow_id: "msisdn-change-flow"
         });
     });
 
@@ -236,6 +237,13 @@ describe("ussd_popi_rapidpro app", function() {
                 .check.user.state("state_channel_switch_confirm")
                 .run();
         });
+        it("should go to state_msisdn_change_enter if that option is chosen", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .input("2")
+                .check.user.state("state_msisdn_change_enter")
+                .run();
+        });
     });
     describe("state_channel_switch_confirm", function() {
         it("should ask the user if they want to switch channels", function() {
@@ -354,6 +362,191 @@ describe("ussd_popi_rapidpro app", function() {
                     state: "state_exit"
                 })
                 .check.reply.ends_session()
+                .run();
+        });
+    });
+    describe("state_msisdn_change_enter", function() {
+        it("should ask the user for the new msisdn", function() {
+            return tester
+                .setup.user.state("state_msisdn_change_enter")
+                .check.interaction({
+                    reply: 
+                        "Please enter the new cell number you would like to get your MomConnect " +
+                        "messages on, e.g. 0813547654"
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_msisdn_change_enter")
+                .input("A")
+                .check.interaction({
+                    reply: 
+                        "Sorry, we don't understand that cell number. Please enter 10 digit cell " +
+                        "number that you would like to get your MomConnect messages on, e.g. " +
+                        "0813547654."
+                })
+                .run();
+        });
+        it("should display an error if the user uses the example msisdn", function() {
+            return tester
+                .setup.user.state("state_msisdn_change_enter")
+                .input("0813547654")
+                .check.interaction({
+                    reply: 
+                        "We're looking for your information. Please avoid entering the examples " +
+                        "in our messages. Enter your own details."
+                })
+                .run();
+        });
+        it("should go to state_active_subscription if the MSISDN is registered", function () {
+            return tester
+                .setup.user.state("state_msisdn_change_enter")
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "tel:+27820001001",
+                            exists: true,
+                            groups: ["prebirth", "pmtct"]
+                        })
+                    );
+                })
+                .input("0820001001")
+                .check.user.state("state_active_subscription")
+                .run();
+        });
+        it("should go to state_msisdn_change_confirm if the MSISDN is not registered", function () {
+            return tester
+                .setup.user.state("state_msisdn_change_enter")
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "tel:+27820001001",
+                            exists: false,
+                        })
+                    );
+                })
+                .input("0820001001")
+                .check.user.state("state_msisdn_change_confirm")
+                .run();
+        });
+    });
+    describe("state_active_subscription", function() {
+        it("should tell the user that the number has an active subscription", function() {
+            return tester
+                .setup.user.state("state_active_subscription")
+                .check.interaction({
+                    reply: [
+                        "Sorry, the cell number you entered already gets MC msgs. To " +
+                        "manage it, dial *134*550*7# from that number. What would you like to do?",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n"),
+                })
+                .run();
+        });
+        it("should give an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_active_subscription")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n"),
+                })
+                .run();
+        });
+    });
+    describe("state_msisdn_change_confirm", function() {
+        it("should ask the user to confirm the msisdn change", function() {
+            return tester
+                .setup.user.state("state_msisdn_change_confirm")
+                .setup.user.answer("state_msisdn_change_enter", "0820001001")
+                .check.interaction({
+                    reply: [
+                        "You've entered 0820001001 as your new MomConnect number. Is this correct?",
+                        "1. Yes",
+                        "2. No, I want to try again"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_msisdn_change_confirm")
+                .setup.user.answer("state_msisdn_change_enter", "0820001001")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
+                        "1. Yes",
+                        "2. No, I want to try again"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should trigger the number change if they select yes", function() {
+            return tester
+                .setup.user.state("state_msisdn_change_confirm")
+                .setup.user.answers({
+                    state_msisdn_change_enter: "0820001001",
+                    contact: {uuid: "contact-uuid"}
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "msisdn-change-flow", null, "tel:+27820001001", {
+                                new_msisdn: "+27820001001",
+                                contact_uuid: "contact-uuid"
+                            }
+                        )
+                    );
+                })
+                .input("1")
+                .check.user.state("state_msisdn_change_success")
+                .run();
+        });
+        it("should go to state_msisdn_change_enter if they choose no", function() {
+            return tester
+                .setup.user.state("state_msisdn_change_confirm")
+                .setup.user.answer("state_msisdn_change_enter", "0820001001")
+                .input("2")
+                .check.user.state("state_msisdn_change_enter")
+                .run();
+        });
+    });
+    describe("state_msisdn_change_success", function() {
+        it("should tell the user the number change succeeded", function() {
+            return tester
+                .setup.user.state("state_msisdn_change_success")
+                .setup.user.answer("state_msisdn_change_enter", "0820001001")
+                .check.interaction({
+                    reply: [
+                        "Thanks! We sent a msg to 0820001001. Follow the instructions. Ignore " +
+                        "it to continue getting msgs on the old number. What would you like to do?",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_msisdn_change_success")
+                .setup.user.answer("state_msisdn_change_enter", "0820001001")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
                 .run();
         });
     });
