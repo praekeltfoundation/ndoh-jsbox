@@ -49,6 +49,30 @@ describe("ussd_popi_rapidpro app", function() {
                 })
                 .run();
         });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "tel:+27123456789",
+                            exists: true,
+                        })
+                    );
+                })
+                .input("A")
+                .check.interaction({
+                    state: "state_main_menu",
+                    reply: [
+                        "Sorry we don't understand. Please try again.",
+                        "1. See my info",
+                        "2. Change my info",
+                        "3. Opt-out & delete info",
+                        "4. How is my info processed?"
+                    ].join("\n"),
+                    char_limit: 140
+                })
+                .run();
+        });
         it("should retry HTTP call when RapidPro is down", function() {
             return tester
                 .setup(function(api) {
@@ -187,6 +211,24 @@ describe("ussd_popi_rapidpro app", function() {
                 })
                 .run();
         });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't understand. Please try again.",
+                        "1. Change from WhatsApp to SMS",
+                        "2. Cell number",
+                        "3. Language",
+                        "4. Identification",
+                        "5. Research messages",
+                        "6. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
         it("should go to state_channel_switch_confirm if that option is chosen", function() {
             return tester
                 .setup.user.state("state_change_info")
@@ -203,6 +245,21 @@ describe("ussd_popi_rapidpro app", function() {
                 .check.interaction({
                     reply: [
                         "Are you sure you want to get your MomConnect messages on WhatsApp?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show the user an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_channel_switch_confirm")
+                .setup.user.answer("contact", {fields: {preferred_channel: "SMS"}})
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
                         "1. Yes",
                         "2. No"
                     ].join("\n")
@@ -255,6 +312,48 @@ describe("ussd_popi_rapidpro app", function() {
                 .check(function(api){
                     assert.equal(api.http.requests.length, 0);
                 })
+                .run();
+        });
+    });
+    describe("state_channel_switch_success", function() {
+        it("should ask the user what they want to do", function() {
+            return tester
+                .setup.user.state("state_channel_switch_success")
+                .check.interaction({
+                    reply: [
+                        "Thank you! We'll send your MomConnect messages to WhatsApp. What would " +
+                        "you like to do?",
+                        "1. Back to main menu",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_channel_switch_success")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
+                        "1. Back to main menu",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should exit if the user chooses to", function() {
+            return tester
+                .setup.user.state("state_channel_switch_success")
+                .input("2")
+                .check.interaction({
+                    reply:
+                        "Thanks for using MomConnect. You can dial *134*550*7# any time to " +
+                        "manage your info. Have a lovely day!",
+                    state: "state_exit"
+                })
+                .check.reply.ends_session()
                 .run();
         });
     });

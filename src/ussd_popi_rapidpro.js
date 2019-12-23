@@ -88,7 +88,8 @@ go.app = function() {
                     new Choice("state_change_info", $("Change my info")),
                     new Choice("state_start", $("Opt-out & delete info")),
                     new Choice("state_start", $("How is my info processed?"))
-                ]
+                ],
+                error: $("Sorry we don't understand. Please try again.")
             });
         });
         
@@ -197,7 +198,8 @@ go.app = function() {
                     new Choice("state_change_info", $("Identification")),
                     new Choice("state_change_info", $("Research messages")),
                     new Choice("state_main_menu", $("Back")),
-                ]
+                ],
+                error: $("Sorry we don't understand. Please try again.")
             });
         });
 
@@ -213,8 +215,11 @@ go.app = function() {
                 choices: [
                     new Choice("state_channel_switch", $("Yes")),
                     new Choice("state_no_channel_switch", $("No")),
-                ]
-
+                ],
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                )
             });
         });
 
@@ -253,7 +258,11 @@ go.app = function() {
                 choices: [
                     new Choice("state_start", $("Back to main menu")),
                     new Choice("state_exit", $("Exit"))
-                ]
+                ],
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                )
             });
         });
 
@@ -277,7 +286,11 @@ go.app = function() {
                 choices: [
                     new Choice("state_start", $("Back to main menu")),
                     new Choice("state_exit", $("Exit"))
-                ]
+                ],
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                )
             });
         });
 
