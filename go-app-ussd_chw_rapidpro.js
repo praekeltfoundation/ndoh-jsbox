@@ -160,6 +160,7 @@ go.app = function() {
     var EndState = vumigo.states.EndState;
     var ChoiceState = vumigo.states.ChoiceState;
     var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
+    var PaginatedState = vumigo.states.PaginatedState;
 
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_start");
@@ -368,7 +369,7 @@ go.app = function() {
             }
             return new MenuState(name, {
                 question: $(
-                    "We need to process the mom’s personal info to send her relevant messages about " +
+                    "We need to process the mom's personal info to send her relevant messages about " +
                     "her pregnancy or baby. Does she agree?"
                 ),
                 error: $("Sorry, please reply with the number next to your answer. Does she agree?"),
@@ -376,7 +377,7 @@ go.app = function() {
                 choices: [
                     new Choice("state_message_consent", $("Yes")),
                     new Choice("state_info_consent_denied", $("No")),
-                    new Choice("state_question_menu", $("I need more info to decide")),
+                    new Choice("state_question_menu", $("Needs more info to decide")),
                 ],
             });
         });
@@ -455,7 +456,7 @@ go.app = function() {
                 // TODO: Proper copy
                 question: $(
                     "We may occasionally call or send msgs for historical/statistical/research reasons. " +
-                    "We’ll keep her info safe. Does she agree?"
+                    "We'll keep her info safe. Does she agree?"
                 ),
                 error: $(
                     "Sorry, please reply with the number next to your answer. We may call or send " + 
@@ -746,6 +747,87 @@ go.app = function() {
             return new EndState(name, {
                 next: "state_start",
                 text: self.im.user.get_answer("on_whatsapp") ? whatsapp_message : sms_message
+            });
+        });
+
+        self.add("state_question_menu", function(name) {
+            return new PaginatedChoiceState(name, {
+                question: $("Choose a question you're interested in:"),
+                options_per_page: null,
+                characters_per_page: 160,
+                choices: [
+                    new Choice("state_what_is_mc", $("What is MomConnect?")),
+                    new Choice("state_why_info", $("Why does MomConnect need my info?")),
+                    new Choice("state_what_info", $("What personal info is collected?")),
+                    new Choice("state_who_info", $("Who can see my personal info?")),
+                    new Choice("state_how_long_info", $("How long does MC keep my info?")),
+                    new Choice("state_info_consent", $("Back to main menu")),
+                ],
+                more: $("Next"),
+                back: $("Back"),
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+        self.add("state_what_is_mc", function(name) {
+            return new PaginatedState(name, {
+                text: $("MomConnect is a Health Department programme. It sends helpful messages for you & your baby."),
+                characters_per_page: 160,
+                exit: $("Menu"),
+                more: $("Next"),
+                next: "state_question_menu"
+            });
+        });
+
+        self.add("state_why_info", function(name) {
+            return new PaginatedState(name, {
+                text: $(
+                    "MomConnect needs your personal info to send you messages that are relevant to your pregnancy or " +
+                    "your baby's age. By knowing where you registered for MomConnect, the Health Department can make " +
+                    "sure that the service is being offered to women at your clinic. Your info assists the Health " +
+                    "Department to improve its services, understand your needs better and provide even better " +
+                    "messaging."),
+                characters_per_page: 160,
+                exit: $("Menu"),
+                more: $("Next"),
+                next: "state_question_menu"
+            });
+        });
+
+        self.add("state_what_info", function(name) {
+            return new PaginatedState(name, {
+                text: $(
+                    "MomConnect collects your phone and ID numbers, clinic location, and info about how your " +
+                    "pregnancy or baby is progressing."),
+                characters_per_page: 160,
+                exit: $("Menu"),
+                more: $("Next"),
+                next: "state_question_menu"
+            });
+        });
+
+        self.add("state_who_info", function(name) {
+            return new PaginatedState(name, {
+                text: $(
+                    "MomConnect is owned by the Health Department. Your data is " +
+                    "protected. It's processed by MTN, Cell C, Telkom, Vodacom, Praekelt, " +
+                    "Jembi, HISP & WhatsApp."),
+                characters_per_page: 160,
+                exit: $("Menu"),
+                more: $("Next"),
+                next: "state_question_menu"
+            });
+        });
+
+        self.add("state_how_long_info", function(name) {
+            return new PaginatedState(name, {
+                text: $("MomConnect holds your info for historical, research & statistical reasons after you opt out."),
+                characters_per_page: 160,
+                exit: $("Menu"),
+                more: $("Next"),
+                next: "state_question_menu"
             });
         });
 
