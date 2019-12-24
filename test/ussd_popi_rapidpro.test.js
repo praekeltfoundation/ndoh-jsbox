@@ -252,6 +252,13 @@ describe("ussd_popi_rapidpro app", function() {
                 .check.user.state("state_language_change_enter")
                 .run();
         });
+        it("should go to state_identification_change_type if that option is chosen", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .input("4")
+                .check.user.state("state_identification_change_type")
+                .run();
+        });
     });
     describe("state_channel_switch_confirm", function() {
         it("should ask the user if they want to switch channels", function() {
@@ -641,6 +648,36 @@ describe("ussd_popi_rapidpro app", function() {
                         "your answer.",
                         "1. Back to main menu",
                         "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("identification_change_type", function() {
+        it("should ask the user for the type of identification", function() {
+            return tester
+                .setup.user.state("state_identification_change_type")
+                .check.interaction({
+                    reply: [
+                        "What kind of identification do you have?",
+                        "1. South African ID",
+                        "2. Passport Number",
+                        "3. Date of Birth only"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_identification_change_type")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
+                        "1. South African ID",
+                        "2. Passport Number",
+                        "3. Date of Birth only"
                     ].join("\n")
                 })
                 .run();

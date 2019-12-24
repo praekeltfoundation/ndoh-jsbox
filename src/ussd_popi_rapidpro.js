@@ -199,7 +199,7 @@ go.app = function() {
                     ),
                     new Choice("state_msisdn_change_enter", $("Cell number")),
                     new Choice("state_language_change_enter", $("Language")),
-                    new Choice("state_change_info", $("Identification")),
+                    new Choice("state_identification_change_type", $("Identification")),
                     new Choice("state_change_info", $("Research messages")),
                     new Choice("state_main_menu", $("Back")),
                 ],
@@ -487,6 +487,21 @@ go.app = function() {
                 choices: [
                     new Choice("state_start", $("Back to main menu")),
                     new Choice("state_exit", $("Exit"))
+                ]
+            });
+        });
+        
+        self.add("state_identification_change_type", function(name) {
+            return new MenuState(name, {
+                question: $("What kind of identification do you have?"),
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_sa_id", $("South African ID")),
+                    new Choice("state_passport_country", $("Passport Number")),
+                    new Choice("state_dob_year", $("Date of Birth only"))
                 ]
             });
         });
