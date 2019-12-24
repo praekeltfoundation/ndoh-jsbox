@@ -389,7 +389,9 @@ go.app = function() {
                 .start_flow(
                     self.im.config.msisdn_change_flow_id, null, "tel:" + new_msisdn, {
                         new_msisdn: new_msisdn,
-                        contact_uuid: self.im.user.answers.contact.uuid
+                        old_msisdn: utils.normalize_msisdn(self.im.user.addr, "ZA"),
+                        contact_uuid: self.im.user.answers.contact.uuid,
+                        source: "POPI USSD"
                     }
                 )
                 .then(function() {

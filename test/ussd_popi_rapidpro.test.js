@@ -501,7 +501,9 @@ describe("ussd_popi_rapidpro app", function() {
                         fixtures_rapidpro.start_flow(
                             "msisdn-change-flow", null, "tel:+27820001001", {
                                 new_msisdn: "+27820001001",
-                                contact_uuid: "contact-uuid"
+                                old_msisdn: "+27123456789",
+                                contact_uuid: "contact-uuid",
+                                source: "POPI USSD"
                             }
                         )
                     );
