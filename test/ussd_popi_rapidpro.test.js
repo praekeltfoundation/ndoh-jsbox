@@ -22,7 +22,8 @@ describe("ussd_popi_rapidpro app", function() {
             postbirth_groups: ["id-1"],
             sms_switch_flow_id: "sms-switch-flow",
             whatsapp_switch_flow_id: "whatsapp-switch-flow",
-            msisdn_change_flow_id: "msisdn-change-flow"
+            msisdn_change_flow_id: "msisdn-change-flow",
+            language_change_flow_id: "language-change-flow"
         });
     });
 
@@ -242,6 +243,13 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup.user.state("state_change_info")
                 .input("2")
                 .check.user.state("state_msisdn_change_enter")
+                .run();
+        });
+        it("should go to state_language_change_enter if that option is chosen", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .input("3")
+                .check.user.state("state_language_change_enter")
                 .run();
         });
     });
@@ -546,6 +554,92 @@ describe("ussd_popi_rapidpro app", function() {
                         "Sorry we don't recognise that reply. Please enter the number next to " +
                         "your answer.",
                         "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_language_change_enter", function() {
+        it("should show a list of language to the user to choose", function() {
+            return tester
+                .setup.user.state("state_language_change_enter")
+                .check.interaction({
+                    reply: [
+                        "What language would you like to receive messages in? Enter the number " +
+                        "that matches your answer.",
+                        "1. isiZulu",
+                        "2. isiXhosa",
+                        "3. Afrikaans",
+                        "4. English",
+                        "5. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_language_change_enter")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
+                        "1. isiZulu",
+                        "2. isiXhosa",
+                        "3. Afrikaans",
+                        "4. English",
+                        "5. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should change the language if the user choices an option", function() {
+            return tester
+                .setup.user.state("state_language_change_enter")
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "language-change-flow", null, "tel:+27123456789", { language: "zul" }                      )
+                    );
+                })
+                .input("1")
+                .check.user.state("state_language_change_success")
+                .check.user.lang("zul")
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(
+                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
+                    );
+                })
+                .run();
+        });
+    });
+    describe("state_language_change_success", function() {
+        it("should give the user a success message", function() {
+            return tester
+                .setup.user.state("state_language_change_success")
+                .setup.user.answer("state_language_change_enter", "nso")
+                .check.interaction({
+                    reply: [
+                        "Thanks! You've changed your language. We'll send your MomConnect " +
+                        "messages in Sesotho sa Leboa. What would you like to do?",
+                        "1. Back to main menu",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should give the user an error message for invalid input", function() {
+            return tester
+                .setup.user.state("state_language_change_success")
+                .setup.user.answer("state_language_change_enter", "nso")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
+                        "1. Back to main menu",
                         "2. Exit"
                     ].join("\n")
                 })

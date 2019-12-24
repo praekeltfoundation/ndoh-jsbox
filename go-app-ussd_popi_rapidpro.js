@@ -112,11 +112,26 @@ go.app = function() {
     var FreeText = vumigo.states.FreeText;
     var JsonApi = vumigo.http.api.JsonApi;
     var MenuState = vumigo.states.MenuState;
+    var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
     var PaginatedState = vumigo.states.PaginatedState;
 
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_start");
         var $ = self.$;
+
+        self.languages = {
+            zul: $("isiZulu"),
+            xho: $("isiXhosa"),
+            afr: $("Afrikaans"),
+            eng: $("English"),
+            nso: $("Sesotho sa Leboa"),
+            tsn: $("Setswana"),
+            sot: $("Sesotho"),
+            tso: $("Xitsonga"),
+            ssw: $("siSwati"),
+            ven: $("Tshivenda"),
+            nbl: $("isiNdebele")
+        };
 
         self.init = function() {
             self.rapidpro = new go.RapidPro(
@@ -211,19 +226,7 @@ go.app = function() {
             ].join("\n")).context({
                 msisdn: utils.readable_msisdn(self.im.user.addr, "27"),
                 channel: _.get(contact, "fields.preferred_channel", $("None")),
-                language: _.get({
-                    "zul": $("isiZulu"),
-                    "xho": $("isiXhosa"),
-                    "afr": $("Afrikaans"),
-                    "eng": $("English"),
-                    "nso": $("Sesotho sa Leboa"),
-                    "tsn": $("Setswana"),
-                    "sot": $("Sesotho"),
-                    "tso": $("Xitsonga"),
-                    "ssw": $("siSwati"),
-                    "ven": $("Tshivenda"),
-                    "nbl": $("isiNdebele")
-                }, _.get(contact, "language"), $("None")),
+                language: _.get(self.languages, _.get(contact, "language"), $("None")),
                 id_type: _.get({
                     passport: $("Passport"),
                     dob: $("Date of Birth"),
@@ -298,7 +301,7 @@ go.app = function() {
                         })
                     ),
                     new Choice("state_msisdn_change_enter", $("Cell number")),
-                    new Choice("state_change_info", $("Language")),
+                    new Choice("state_language_change_enter", $("Language")),
                     new Choice("state_change_info", $("Identification")),
                     new Choice("state_change_info", $("Research messages")),
                     new Choice("state_main_menu", $("Back")),
@@ -527,6 +530,67 @@ go.app = function() {
                     "Sorry we don't recognise that reply. Please enter the number next to your " +
                     "answer."
                 )
+            });
+        });
+
+        self.add("state_language_change_enter", function(name) {
+            return new PaginatedChoiceState(name, {
+                question: $(
+                    "What language would you like to receive messages in? Enter the number that " +
+                    "matches your answer."
+                ),
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                ),
+                choices: _.map(self.languages, function(v, k){ return new Choice(k, v); }),
+                back: $("Back"),
+                more: $("Next"),
+                options_per_page: null,
+                characters_per_page: 160,
+                next: "state_language_change"
+            });
+        });
+
+        self.add("state_language_change", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            return self.rapidpro
+                .start_flow(
+                    self.im.config.language_change_flow_id, null, "tel:" + msisdn, {
+                        language: self.im.user.answers.state_language_change_enter
+                    }
+                )
+                .then(function() {
+                    return self.im.user.set_lang(self.im.user.answers.state_language_change_enter);
+                })
+                .then(function() {
+                    return self.states.create("state_language_change_success");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+        self.add("state_language_change_success", function(name) {
+            var language = self.languages[self.im.user.answers.state_language_change_enter];
+            return new MenuState(name, {
+                question: $(
+                    "Thanks! You've changed your language. We'll send your MomConnect messages " +
+                    "in {{language}}. What would you like to do?"
+                ).context({language: language}),
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_start", $("Back to main menu")),
+                    new Choice("state_exit", $("Exit"))
+                ]
             });
         });
 
