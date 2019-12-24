@@ -30,6 +30,16 @@ go.app = function() {
             nbl: $("isiNdebele")
         };
 
+        self.passport_countries = {
+            "zw": $("Zimbabwe"),
+            "mz": $("Mozambique"),
+            "mw": $("Malawi"),
+            "ng": $("Nigeria"),
+            "cd": $("DRC"),
+            "so": $("Somalia"),
+            "other": $("Other") 
+        };
+
         self.init = function() {
             self.rapidpro = new go.RapidPro(
                 new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-POPI"]}}),
@@ -133,15 +143,9 @@ go.app = function() {
                     passport:
                         $("{{passport_number}} {{passport_origin}}").context({
                             passport_number: _.get(contact, "fields.passport_number", $("None")),
-                            passport_origin: _.get({
-                                "zw": $("Zimbabwe"),
-                                "mz": $("Mozambique"),
-                                "mw": $("Malawi"),
-                                "ng": $("Nigeria"),
-                                "cd": $("DRC"),
-                                "so": $("Somalia"),
-                                "other": $("Other") 
-                            }, _.get(contact, "fields.passport_origin"), "")}),
+                            passport_origin: _.get(
+                                self.passport_countries, 
+                                _.get(contact, "fields.passport_origin"), "")}),
                     dob: _.get(contact, "fields.mother_dob", $("None")),
                     sa_id: _.get(contact, "fields.id_number", $("None"))
                 }, id_type, $("None")),
@@ -502,6 +506,107 @@ go.app = function() {
                     new Choice("state_sa_id", $("South African ID")),
                     new Choice("state_passport_country", $("Passport Number")),
                     new Choice("state_dob_year", $("Date of Birth only"))
+                ]
+            });
+        });
+
+        self.add("state_sa_id", function(name) {
+            return new FreeText(name, {
+                question: $("Please enter your ID number as you find it in your Identity Document"),
+                check: function(content) {
+                    var match = content.match(/^(\d{6})(\d{4})(0|1)8\d$/);
+                    var today = new moment(self.im.config.testing_today).startOf("day"), dob;
+                    var validLuhn = function(content) {
+                        return content.split("").reverse().reduce(function(sum, digit, i){
+                            return sum + _.parseInt(i % 2 ? [0,2,4,6,8,1,3,5,7,9][digit] : digit);
+                        }, 0) % 10 == 0;
+                    };
+                    if(
+                        !match ||
+                        !validLuhn(content) ||
+                        !(dob = new moment(match[1], "YYMMDD")) ||
+                        !dob.isValid() || 
+                        !dob.isBetween(
+                            today.clone().add(-130, "years"),
+                            today.clone().add(-5, "years")
+                        ) ||
+                        _.parseInt(match[2]) >= 5000
+                    ) {
+                        return $(
+                            "Sorry, we don't understand. Please try again by entering your " +
+                            "13 digit South African ID number."
+                        );
+                    }
+
+                },
+                next: "state_change_identification"
+            });
+        });
+
+        self.add("state_change_identification", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            var answers = self.im.user.answers;
+            return self.rapidpro
+                .start_flow(
+                    self.im.config.identification_change_flow_id, null, "tel:" + msisdn, {
+                        id_type: {
+                            state_sa_id: "sa_id",
+                            state_passport_country: "passport",
+                            state_dob_year: "dob"
+                        }[answers.state_identification_change_type],
+                        id_number: answers.state_sa_id,
+                        dob: answers.state_identification_change_type === "state_sa_id"
+                            ? new moment.utc(answers.state_sa_id.slice(0, 6), "YYMMDD").format()
+                            : new moment.utc(
+                                answers.state_dob_year +
+                                answers.state_dob_month +
+                                answers.state_dob_day,
+                                "YYYYMMDD"
+                            ).format()
+                    }
+                )
+                .then(function() {
+                    return self.states.create("state_change_identification_success");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+        self.add("state_change_identification_success", function(name) {
+            var type, number, state=self.im.user.answers.state_identification_change_type;
+            var answers = self.im.user.answers;
+            if(state === "state_sa_id") {
+                type = $("South African ID"), number = answers.state_sa_id;
+            } else if(state === "state_passport_country") {
+                type = $("Passport");
+                number = 
+                    answers.state_passport_number + " " +
+                    self.passport_countries[answers.state_passport_country];
+            } else {
+                type = $("Date of Birth");
+                number = new moment(
+                    answers.state_dob_year +
+                    answers.state_dob_month +
+                    answers.state_dob_day, "YYYYMMDD").format("YY-MM-DD");
+            }
+            return new MenuState(name, {
+                question: $(
+                    "Thanks! We've updated your info. Your registered identification is " +
+                    "{{identification_type}}: {{identification_number}}. What would you like " +
+                    "to do?").context({identification_type: type, identification_number: number}),
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_start", $("Back")),
+                    new Choice("state_exit", $("Exit"))
                 ]
             });
         });

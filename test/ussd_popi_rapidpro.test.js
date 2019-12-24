@@ -23,7 +23,8 @@ describe("ussd_popi_rapidpro app", function() {
             sms_switch_flow_id: "sms-switch-flow",
             whatsapp_switch_flow_id: "whatsapp-switch-flow",
             msisdn_change_flow_id: "msisdn-change-flow",
-            language_change_flow_id: "language-change-flow"
+            language_change_flow_id: "language-change-flow",
+            identification_change_flow_id: "identification-change-flow"
         });
     });
 
@@ -679,6 +680,58 @@ describe("ussd_popi_rapidpro app", function() {
                         "2. Passport Number",
                         "3. Date of Birth only"
                     ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_sa_id", function() {
+        it("should ask the user for their SA ID number", function() {
+            return tester
+                .setup.user.state("state_sa_id")
+                .check.interaction({
+                    reply: "Please enter your ID number as you find it in your Identity Document"
+                })
+                .run();
+        });
+        it("should show an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_sa_id")
+                .input("9001010005088")
+                .check.interaction({
+                    reply: 
+                        "Sorry, we don't understand. Please try again by entering your 13 digit " +
+                        "South African ID number."
+                })
+                .run();
+        });
+        it("should update the contact's identity on valid input", function() {
+            return tester
+                .setup.user.state("state_sa_id")
+                .setup.user.answer("state_identification_change_type", "state_sa_id")
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "identification-change-flow", null, "tel:+27123456789", {
+                                "id_type": "sa_id",
+                                "id_number": "9001010005089",
+                                "dob": "1990-01-01T00:00:00Z"
+                        })
+                    );
+                })
+                .input("9001010005089")
+                .check.interaction({
+                    reply: [
+                        "Thanks! We've updated your info. Your registered identification is " +
+                        "South African ID: 9001010005089. What would you like to do?",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(
+                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
+                    );
                 })
                 .run();
         });
