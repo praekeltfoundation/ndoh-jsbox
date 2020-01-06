@@ -835,4 +835,140 @@ describe("ussd_popi_rapidpro app", function() {
                 .run();
         });
     });
+    describe("state_dob_year", function(){
+        it("should ask the user for their year of birth", function() {
+            return tester
+                .setup.user.state("state_dob_year")
+                .check.interaction({
+                    reply:
+                        "In what year were you born? Please enter the year as 4 numbers in the " +
+                        "format YYYY."
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_dob_year")
+                .input("1")
+                .check.interaction({
+                    state: "state_dob_year",
+                    reply:
+                        "Sorry, we don't understand. Please try again by entering the year you " +
+                        "were born as 4 digits in the format YYYY, e.g. 1910."
+                })
+                .run();
+        });
+        it("should go to state_dob_month on valid input", function() {
+            return tester
+                .setup.user.state("state_dob_year")
+                .input("1990")
+                .check.user.state("state_dob_month")
+                .run();
+        });
+    });
+    describe("state_dob_month", function(){
+        it("should ask the user for their month of birth", function() {
+            return tester
+                .setup.user.state("state_dob_month")
+                .check.interaction({
+                    reply: [
+                        "In what month were you born? Please enter the number that matches " +
+                        "your answer.",
+                        "1. Jan",
+                        "2. Feb",
+                        "3. Mar",
+                        "4. Apr",
+                        "5. May",
+                        "6. Jun",
+                        "7. Jul",
+                        "8. Aug",
+                        "9. More"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_dob_month")
+                .input("A")
+                .check.interaction({
+                    state: "state_dob_month",
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
+                        "1. Jan",
+                        "2. Feb",
+                        "3. Mar",
+                        "4. Apr",
+                        "5. May",
+                        "6. Jun",
+                        "7. Jul",
+                        "8. Aug",
+                        "9. More"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_dob_day on valid input", function() {
+            return tester
+                .setup.user.state("state_dob_month")
+                .input("1")
+                .check.user.state("state_dob_day")
+                .run();
+        });
+    });
+    describe("state_dob_day", function(){
+        it("should ask the user for their day of birth", function() {
+            return tester
+                .setup.user.state("state_dob_day")
+                .check.interaction({
+                    reply: "On what day were you born? Please enter the day as a number."
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_dob_day")
+                .input("A")
+                .check.interaction({
+                    state: "state_dob_day",
+                    reply:
+                        "Sorry, we don't understand. Please try again by entering the day you " +
+                        "were born as a number, e.g. 12."
+                })
+                .run();
+        });
+        it("should go submit the change to rapidpro on valid input", function() {
+            return tester
+                .setup.user.state("state_dob_day")
+                .setup.user.answer("state_dob_year", "1990")
+                .setup.user.answer("state_dob_month", "01")
+                .setup.user.answer("state_identification_change_type", "state_dob_year")
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "identification-change-flow", null, "tel:+27123456789", {
+                                "id_type": "dob",
+                                "dob": "1990-01-01T00:00:00Z"
+                        })
+                    );
+                })
+                .input("1")
+                 .check.interaction({
+                    reply: [
+                        "Thanks! We've updated your info. Your registered identification is " +
+                        "Date of Birth: 90-01-01. What would you like to do?",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(
+                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
+                    );
+                })
+                .run();
+        });
+    });
 });

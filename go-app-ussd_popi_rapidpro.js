@@ -680,6 +680,87 @@ go.app = function() {
             });
         });
 
+        self.add("state_dob_year", function(name) {
+            return new FreeText(name, {
+                question: $(
+                    "In what year were you born? Please enter the year as 4 numbers in the " +
+                    "format YYYY."
+                ),
+                check: function(content) {
+                    var match = content.match(/^(\d{4})$/);
+                    var today = new moment(self.im.config.testing_today), dob;
+                    if(
+                        !match ||
+                        !(dob = new moment(match[1], "YYYY")) ||
+                        !dob.isBetween(
+                            today.clone().add(-130, "years"),
+                            today.clone().add(-5, "years")
+                        )
+                    ){
+                        return $(
+                            "Sorry, we don't understand. Please try again by entering the year " +
+                            "you were born as 4 digits in the format YYYY, e.g. 1910."
+                        );
+                    }
+                },
+                next: "state_dob_month",
+            });
+        });
+
+        self.add("state_dob_month", function(name) {
+            return new PaginatedChoiceState(name, {
+                question: $(
+                    "In what month were you born? Please enter the number that matches your answer."
+                ),
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("01", $("Jan")),
+                    new Choice("02", $("Feb")),
+                    new Choice("03", $("Mar")),
+                    new Choice("04", $("Apr")),
+                    new Choice("05", $("May")),
+                    new Choice("06", $("Jun")),
+                    new Choice("07", $("Jul")),
+                    new Choice("08", $("Aug")),
+                    new Choice("09", $("Sep")),
+                    new Choice("10", $("Oct")),
+                    new Choice("11", $("Nov")),
+                    new Choice("12", $("Dec")),
+                ],
+                next: "state_dob_day"
+            });
+        });
+
+        self.add("state_dob_day", function(name) {
+            return new FreeText(name, {
+                question: $(
+                    "On what day were you born? Please enter the day as a number."
+                ),
+                check: function(content) {
+                    var match = content.match(/^(\d+)$/), dob;
+                    if(
+                        !match ||
+                        !(dob = new moment(
+                            self.im.user.answers.state_dob_year + 
+                            self.im.user.answers.state_dob_month + 
+                            match[1], 
+                            "YYYYMMDD")
+                        ) ||
+                        !dob.isValid()
+                    ){
+                        return $(
+                            "Sorry, we don't understand. Please try again by entering the day " +
+                            "you were born as a number, e.g. 12."
+                        );
+                    }
+                },
+                next: "state_change_identification"
+            });
+        });
+
         self.add("state_change_identification", function(name, opts) {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             var answers = self.im.user.answers;
