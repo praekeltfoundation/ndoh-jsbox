@@ -23,7 +23,8 @@ describe("ussd_popi_rapidpro app", function() {
             sms_switch_flow_id: "sms-switch-flow",
             whatsapp_switch_flow_id: "whatsapp-switch-flow",
             msisdn_change_flow_id: "msisdn-change-flow",
-            language_change_flow_id: "language-change-flow"
+            language_change_flow_id: "language-change-flow",
+            identification_change_flow_id: "identification-change-flow"
         });
     });
 
@@ -250,6 +251,13 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup.user.state("state_change_info")
                 .input("3")
                 .check.user.state("state_language_change_enter")
+                .run();
+        });
+        it("should go to state_identification_change_type if that option is chosen", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .input("4")
+                .check.user.state("state_identification_change_type")
                 .run();
         });
     });
@@ -642,6 +650,323 @@ describe("ussd_popi_rapidpro app", function() {
                         "1. Back to main menu",
                         "2. Exit"
                     ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("identification_change_type", function() {
+        it("should ask the user for the type of identification", function() {
+            return tester
+                .setup.user.state("state_identification_change_type")
+                .check.interaction({
+                    reply: [
+                        "What kind of identification do you have?",
+                        "1. South African ID",
+                        "2. Passport Number",
+                        "3. Date of Birth only"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_identification_change_type")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
+                        "1. South African ID",
+                        "2. Passport Number",
+                        "3. Date of Birth only"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_sa_id", function() {
+        it("should ask the user for their SA ID number", function() {
+            return tester
+                .setup.user.state("state_sa_id")
+                .check.interaction({
+                    reply: "Please enter your ID number as you find it in your Identity Document"
+                })
+                .run();
+        });
+        it("should show an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_sa_id")
+                .input("9001010005088")
+                .check.interaction({
+                    reply: 
+                        "Sorry, we don't understand. Please try again by entering your 13 digit " +
+                        "South African ID number."
+                })
+                .run();
+        });
+        it("should update the contact's identity on valid input", function() {
+            return tester
+                .setup.user.state("state_sa_id")
+                .setup.user.answer("state_identification_change_type", "state_sa_id")
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "identification-change-flow", null, "tel:+27123456789", {
+                                "id_type": "sa_id",
+                                "id_number": "9001010005089",
+                                "dob": "1990-01-01T00:00:00Z"
+                        })
+                    );
+                })
+                .input("9001010005089")
+                .check.interaction({
+                    reply: [
+                        "Thanks! We've updated your info. Your registered identification is " +
+                        "South African ID: 9001010005089. What would you like to do?",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(
+                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
+                    );
+                })
+                .run();
+        });
+    });
+    describe("state_passport_country", function() {
+        it("should ask the user for the country of their passport", function(){
+            return tester
+                .setup.user.state("state_passport_country")
+                .check.interaction({
+                    reply: [
+                        "What is the country of origin of your passport? Enter the number that " +
+                        "matches your answer.",
+                        "1. Zimbabwe",
+                        "2. Mozambique",
+                        "3. Malawi",
+                        "4. Nigeria",
+                        "5. DRC",
+                        "6. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_passport_country")
+                .input("A")
+                .check.interaction({
+                    state: "state_passport_country",
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
+                        "1. Zimbabwe",
+                        "2. Mozambique",
+                        "3. Malawi",
+                        "4. Nigeria",
+                        "5. DRC",
+                        "6. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_passport_number on a valid entry", function() {
+            return tester
+                .setup.user.state("state_passport_country")
+                .input("3")
+                .check.user.state("state_passport_number")
+                .run();
+        });
+    });
+    describe("state_passport_number", function() {
+        it("should ask the user for their passport number", function() {
+            return tester
+                .setup.user.state("state_passport_number")
+                .check.interaction({
+                    reply: "Please enter your Passport number as it appears in your passport."
+                })
+                .run();
+        });
+        it("should show an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_passport_number")
+                .input("$")
+                .check.interaction({
+                    state: "state_passport_number",
+                    reply:
+                        "Sorry, we don't understand. Please try again by entering your Passport " +
+                        "number as it appears in your passport."
+                })
+                .run();
+        });
+        it("should submit the change to RapidPro on valid input", function() {
+            return tester
+                .setup.user.state("state_passport_number")
+                .setup.user.answer("state_passport_country", "mz")
+                .setup.user.answer("state_identification_change_type", "state_passport_country")
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "identification-change-flow", null, "tel:+27123456789", {
+                                "id_type": "passport",
+                                "passport_country": "mz",
+                                "passport_number": "A1234567890123"
+                        })
+                    );
+                })
+                .input("A1234567890123")
+                 .check.interaction({
+                    reply: [
+                        "Thanks! We've updated your info. Your registered identification is " +
+                        "Passport: A1234567890123 Mozambique. What would you like to do?",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(
+                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
+                    );
+                })
+                .run();
+        });
+    });
+    describe("state_dob_year", function(){
+        it("should ask the user for their year of birth", function() {
+            return tester
+                .setup.user.state("state_dob_year")
+                .check.interaction({
+                    reply:
+                        "In what year were you born? Please enter the year as 4 numbers in the " +
+                        "format YYYY."
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_dob_year")
+                .input("1")
+                .check.interaction({
+                    state: "state_dob_year",
+                    reply:
+                        "Sorry, we don't understand. Please try again by entering the year you " +
+                        "were born as 4 digits in the format YYYY, e.g. 1910."
+                })
+                .run();
+        });
+        it("should go to state_dob_month on valid input", function() {
+            return tester
+                .setup.user.state("state_dob_year")
+                .input("1990")
+                .check.user.state("state_dob_month")
+                .run();
+        });
+    });
+    describe("state_dob_month", function(){
+        it("should ask the user for their month of birth", function() {
+            return tester
+                .setup.user.state("state_dob_month")
+                .check.interaction({
+                    reply: [
+                        "In what month were you born? Please enter the number that matches " +
+                        "your answer.",
+                        "1. Jan",
+                        "2. Feb",
+                        "3. Mar",
+                        "4. Apr",
+                        "5. May",
+                        "6. Jun",
+                        "7. Jul",
+                        "8. Aug",
+                        "9. More"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_dob_month")
+                .input("A")
+                .check.interaction({
+                    state: "state_dob_month",
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
+                        "1. Jan",
+                        "2. Feb",
+                        "3. Mar",
+                        "4. Apr",
+                        "5. May",
+                        "6. Jun",
+                        "7. Jul",
+                        "8. Aug",
+                        "9. More"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_dob_day on valid input", function() {
+            return tester
+                .setup.user.state("state_dob_month")
+                .input("1")
+                .check.user.state("state_dob_day")
+                .run();
+        });
+    });
+    describe("state_dob_day", function(){
+        it("should ask the user for their day of birth", function() {
+            return tester
+                .setup.user.state("state_dob_day")
+                .check.interaction({
+                    reply: "On what day were you born? Please enter the day as a number."
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_dob_day")
+                .input("A")
+                .check.interaction({
+                    state: "state_dob_day",
+                    reply:
+                        "Sorry, we don't understand. Please try again by entering the day you " +
+                        "were born as a number, e.g. 12."
+                })
+                .run();
+        });
+        it("should go submit the change to rapidpro on valid input", function() {
+            return tester
+                .setup.user.state("state_dob_day")
+                .setup.user.answer("state_dob_year", "1990")
+                .setup.user.answer("state_dob_month", "01")
+                .setup.user.answer("state_identification_change_type", "state_dob_year")
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "identification-change-flow", null, "tel:+27123456789", {
+                                "id_type": "dob",
+                                "dob": "1990-01-01T00:00:00Z"
+                        })
+                    );
+                })
+                .input("1")
+                 .check.interaction({
+                    reply: [
+                        "Thanks! We've updated your info. Your registered identification is " +
+                        "Date of Birth: 90-01-01. What would you like to do?",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(
+                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
+                    );
                 })
                 .run();
         });
