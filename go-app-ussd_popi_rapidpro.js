@@ -646,9 +646,52 @@ go.app = function() {
             });
         });
 
+        self.add("state_passport_country", function(name) {
+            return new PaginatedChoiceState(name, {
+                question: $(
+                    "What is the country of origin of your passport? Enter the number that " +
+                    "matches your answer."
+                ),
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                ),
+                choices: _.map(self.passport_countries, function(v, k){ return new Choice(k, v); }),
+                back: $("Back"),
+                more: $("Next"),
+                options_per_page: null,
+                characters_per_page: 160,
+                next: "state_passport_number"
+            });
+        });
+
+        self.add("state_passport_number", function(name) {
+            return new FreeText(name, {
+                question: $("Please enter your Passport number as it appears in your passport."),
+                check: function(content) {
+                    if(!content.match(/^\w+$/)){
+                        return $(
+                            "Sorry, we don't understand. Please try again by entering your " +
+                            "Passport number as it appears in your passport."
+                        );
+                    }
+                },
+                next: "state_change_identification"
+            });
+        });
+
         self.add("state_change_identification", function(name, opts) {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             var answers = self.im.user.answers;
+            var dob;
+            if(answers.state_identification_change_type === "state_sa_id") {
+                dob = new moment.utc(answers.state_sa_id.slice(0, 6), "YYMMDD").format();
+            } else if (answers.state_identification_change_type === "state_dob_year") {
+                dob = new moment.utc(
+                    answers.state_dob_year + answers.state_dob_month + answers.state_dob_day,
+                    "YYYYMMDD"
+                ).format();
+            }
             return self.rapidpro
                 .start_flow(
                     self.im.config.identification_change_flow_id, null, "tel:" + msisdn, {
@@ -658,14 +701,9 @@ go.app = function() {
                             state_dob_year: "dob"
                         }[answers.state_identification_change_type],
                         id_number: answers.state_sa_id,
-                        dob: answers.state_identification_change_type === "state_sa_id"
-                            ? new moment.utc(answers.state_sa_id.slice(0, 6), "YYMMDD").format()
-                            : new moment.utc(
-                                answers.state_dob_year +
-                                answers.state_dob_month +
-                                answers.state_dob_day,
-                                "YYYYMMDD"
-                            ).format()
+                        passport_number: answers.state_passport_number,
+                        passport_country: answers.state_passport_country,
+                        dob: dob
                     }
                 )
                 .then(function() {
@@ -688,9 +726,10 @@ go.app = function() {
                 type = $("South African ID"), number = answers.state_sa_id;
             } else if(state === "state_passport_country") {
                 type = $("Passport");
-                number = 
-                    answers.state_passport_number + " " +
-                    self.passport_countries[answers.state_passport_country];
+                number = $("{{passport_number}} {{passport_country}}").context({
+                    passport_number: answers.state_passport_number,
+                    passport_country: self.passport_countries[answers.state_passport_country]
+                });
             } else {
                 type = $("Date of Birth");
                 number = new moment(

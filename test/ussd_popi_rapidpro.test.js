@@ -736,4 +736,103 @@ describe("ussd_popi_rapidpro app", function() {
                 .run();
         });
     });
+    describe("state_passport_country", function() {
+        it("should ask the user for the country of their passport", function(){
+            return tester
+                .setup.user.state("state_passport_country")
+                .check.interaction({
+                    reply: [
+                        "What is the country of origin of your passport? Enter the number that " +
+                        "matches your answer.",
+                        "1. Zimbabwe",
+                        "2. Mozambique",
+                        "3. Malawi",
+                        "4. Nigeria",
+                        "5. DRC",
+                        "6. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_passport_country")
+                .input("A")
+                .check.interaction({
+                    state: "state_passport_country",
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
+                        "1. Zimbabwe",
+                        "2. Mozambique",
+                        "3. Malawi",
+                        "4. Nigeria",
+                        "5. DRC",
+                        "6. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_passport_number on a valid entry", function() {
+            return tester
+                .setup.user.state("state_passport_country")
+                .input("3")
+                .check.user.state("state_passport_number")
+                .run();
+        });
+    });
+    describe("state_passport_number", function() {
+        it("should ask the user for their passport number", function() {
+            return tester
+                .setup.user.state("state_passport_number")
+                .check.interaction({
+                    reply: "Please enter your Passport number as it appears in your passport."
+                })
+                .run();
+        });
+        it("should show an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_passport_number")
+                .input("$")
+                .check.interaction({
+                    state: "state_passport_number",
+                    reply:
+                        "Sorry, we don't understand. Please try again by entering your Passport " +
+                        "number as it appears in your passport."
+                })
+                .run();
+        });
+        it("should submit the change to RapidPro on valid input", function() {
+            return tester
+                .setup.user.state("state_passport_number")
+                .setup.user.answer("state_passport_country", "mz")
+                .setup.user.answer("state_identification_change_type", "state_passport_country")
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "identification-change-flow", null, "tel:+27123456789", {
+                                "id_type": "passport",
+                                "passport_country": "mz",
+                                "passport_number": "A1234567890123"
+                        })
+                    );
+                })
+                .input("A1234567890123")
+                 .check.interaction({
+                    reply: [
+                        "Thanks! We've updated your info. Your registered identification is " +
+                        "Passport: A1234567890123 Mozambique. What would you like to do?",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(
+                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
+                    );
+                })
+                .run();
+        });
+    });
 });
