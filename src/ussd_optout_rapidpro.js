@@ -7,6 +7,7 @@ go.app = function() {
     var Choice = vumigo.states.Choice;
     var JsonApi = vumigo.http.api.JsonApi;
     var EndState = vumigo.states.EndState;
+    var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
 
     var GoNDOH = App.extend(function(self) {
         App.call(self, "state_start");
@@ -105,20 +106,63 @@ go.app = function() {
 
         self.add("state_delete_research_info", function(name) {
             return new MenuState(name, {
-                question: $("We hold your info for historical, research & statistical reasons after " +
+                question: $("We hold your info for historical/research/statistical reasons after " +
                             "you opt out. Do you want to delete your info after you stop getting messages?"),
                 error: $(
                     "Sorry, please reply with the number next to your answer. " +
                     "Do you want to delete your info after you stop getting messages?"
                 ),
                 choices: [
-                    new Choice("state_delete_info_plus_optout_reason", $("Yes")),
+                    new Choice("state_delete_info_and_optout_reason", $("Yes")),
                     new Choice("state_optout_reason", $("No"))
                 ],
             });
         });
 
-        self.states.add("state_check_previous_optouts", function(name) {
+        self.add("state_optout_reason", function(name) {
+            var question = "We'll stop sending msgs. Why do you want to stop your MC msgs?";
+            return new PaginatedChoiceState(name, {
+                question: $(question),
+                error: $(question),
+                accept_labels: true,
+                options_per_page: null,
+                characters_per_page: 160,
+                choices: [
+                    new Choice("state_loss_optout", $("Miscarriage")),
+                    new Choice("state_loss_optout", $("Baby was stillborn")),
+                    new Choice("state_loss_optout", $("Baby passed away")),
+                    new Choice("state_nonloss_optout", $("Msgs aren't helpful")),
+                    new Choice("state_nonloss_optout", $("Other")),
+                    new Choice("state_nonloss_optout", $("I prefer not to say"))
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+        self.add("state_delete_info_and_optout_reason", function(name) {
+            return new MenuState(name, {
+                question: $("All your info will be permanently deleted in the next 7 days. " +
+                            "We'll stop sending you messages. Please tell us why you no longer " +
+                            "want to receive messages from us:"),
+                error: $(
+                    "Sorry, please reply with the number next to your answer. " +
+                    "Please tell us why you no longer want to receive messages from us:"
+                ),
+                accept_labels: true,
+                choices: [
+                    new Choice("state_loss_optout", $("I had a miscarriage")),
+                    new Choice("state_loss_optout", $("My baby was stillborn")),
+                    new Choice("state_loss_optout", $("My baby passed away")),
+                    new Choice("sstate_nonloss_optout", $("The messages are not helpful")),
+                    new Choice("state_nonloss_optout", $("Other")),
+                    new Choice("state_nonloss_optout", $("I prefer not to say"))
+                ]
+            });
+        });
+
+        self.add("state_check_previous_optouts", function(name) {
             // Skip this state if they haven't opted out
             if(!self.contact_in_group(self.im.user.get_answer("contact"), self.im.config.optout_group_ids)) {
                 return self.states.create("state_no_previous_optout");
@@ -133,13 +177,59 @@ go.app = function() {
                 ),
                 accept_labels: true,
                 choices: [
-                    new Choice("state_miscarriage", $("I had a miscarriage")),
-                    new Choice("state_stillborn", $("My baby was stillborn")),
-                    new Choice("state_passed_away", $("My baby passed away")),
-                    new Choice("state_messages_not_helpful", $("The messages are not helpful")),
-                    new Choice("state_other", $("Other")),
-                    new Choice("state_prefer_not_to_say", $("I prefer not to say"))
+                    new Choice("state_loss_optout", $("I had a miscarriage")),
+                    new Choice("state_loss_optout", $("My baby was stillborn")),
+                    new Choice("state_loss_optout", $("My baby passed away")),
+                    new Choice("sstate_nonloss_optout", $("The messages are not helpful")),
+                    new Choice("state_nonloss_optout", $("Other")),
+                    new Choice("state_nonloss_optout", $("I prefer not to say"))
                 ]
+            });
+        });
+
+        self.add("state_loss_optout", function(name) {
+            return new MenuState(name, {
+                question: $("We’re sorry for your loss. Would you like to receive a small set of " +
+                            "MomConnect messages that could help you during this difficult time?"),
+                error: $(
+                    "Sorry, please reply with the number next to your answer. " +
+                    "Would you like to receive a small set of MomConnect messages?"
+                ),
+                choices: [
+                    new Choice("state_delete_info_plus_optout_reason", $("Yes")),
+                    new Choice("state_nonloss_optout", $("No"))
+                ],
+            });
+        });
+
+        self.states.add("state_loss_subscription", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "Thank you. You’ll no longer get messages from MomConnect. For any medical concerns, " +
+                    "please visit a clinic. Have a lovely day."
+                )
+            });
+        });
+
+        self.states.add("state_nonloss_optout", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "Thank you. You’ll no longer get messages from MomConnect. For any medical concerns, " +
+                    "please visit a clinic. Have a lovely day."
+                )
+            });
+        });
+
+        self.states.add("state_no_previous_optout", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "Welcome to the Department of Health’s MomConnect. " +
+                    "Dial *154*550*2# when you are at a clinic to sign up to " +
+                    "receive helpful messages for you and your baby."
+                )
             });
         });
 
