@@ -24,7 +24,8 @@ describe("ussd_popi_rapidpro app", function() {
             whatsapp_switch_flow_id: "whatsapp-switch-flow",
             msisdn_change_flow_id: "msisdn-change-flow",
             language_change_flow_id: "language-change-flow",
-            identification_change_flow_id: "identification-change-flow"
+            identification_change_flow_id: "identification-change-flow",
+            research_consent_change_flow_id: "research-change-flow"
         });
     });
 
@@ -959,6 +960,94 @@ describe("ussd_popi_rapidpro app", function() {
                         "Thanks! We've updated your info. Your registered identification is " +
                         "Date of Birth: 90-01-01. What would you like to do?",
                         "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(
+                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
+                    );
+                })
+                .run();
+        });
+    });
+    describe("state_change_research_confirm", function() {
+        it("should ask the user to choose research or not", function(){
+            return tester
+                .setup.user.state("state_change_research_confirm")
+                .check.interaction({
+                    reply: [
+                        "We may occasionally send msgs for historical, statistical, or research " +
+                        "reasons. We'll keep your info safe. Do you agree?",
+                        "1. Yes",
+                        "2. No, only send MC msgs"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_change_research_confirm")
+                .input("A")
+                .check.interaction({
+                    state: "state_change_research_confirm",
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
+                        "1. Yes",
+                        "2. No, only send MC msgs"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should submit the change on agreement", function() {
+            return tester
+                .setup.user.state("state_change_research_confirm")
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "research-change-flow", null, "tel:+27123456789", {
+                                "research_consent": "TRUE"
+                        })
+                    );
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_change_research_success",
+                    reply: [
+                        "Thanks! You've agreed to get research messages. What would you like to " +
+                        "do?",
+                        "1. Back to main menu",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(
+                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
+                    );
+                })
+                .run();
+        });
+        it("should submit the change on no agreement", function() {
+            return tester
+                .setup.user.state("state_change_research_confirm")
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "research-change-flow", null, "tel:+27123456789", {
+                                "research_consent": "FALSE"
+                        })
+                    );
+                })
+                .input("2")
+                .check.interaction({
+                    state: "state_change_research_success",
+                    reply: [
+                        "Thanks! You have not agreed to get research messages. What would you " +
+                        "like to do?",
+                        "1. Back to main menu",
                         "2. Exit"
                     ].join("\n")
                 })
