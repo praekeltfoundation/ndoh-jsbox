@@ -5,6 +5,7 @@ go.app = function() {
     var utils = require("seed-jsbox-utils").utils;
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
+    var ChoiceState = vumigo.states.ChoiceState;
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
     var JsonApi = vumigo.http.api.JsonApi;
@@ -204,7 +205,7 @@ go.app = function() {
                     new Choice("state_msisdn_change_enter", $("Cell number")),
                     new Choice("state_language_change_enter", $("Language")),
                     new Choice("state_identification_change_type", $("Identification")),
-                    new Choice("state_change_info", $("Research messages")),
+                    new Choice("state_change_research_confirm", $("Research messages")),
                     new Choice("state_main_menu", $("Back")),
                 ],
                 error: $("Sorry we don't understand. Please try again.")
@@ -728,6 +729,67 @@ go.app = function() {
                     new Choice("state_start", $("Back")),
                     new Choice("state_exit", $("Exit"))
                 ]
+            });
+        });
+
+        self.add("state_change_research_confirm", function(name) {
+            return new ChoiceState(name, {
+                question: $(
+                    "We may occasionally send msgs for historical, statistical, or research " +
+                    "reasons. We'll keep your info safe. Do you agree?"
+                ),
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("yes", $("Yes")),
+                    new Choice("no", $("No, only send MC msgs"))
+                ],
+                next: "state_change_research"
+            });
+        });
+
+        self.add("state_change_research", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            var research_consent = self.im.user.answers.state_change_research_confirm;
+            return self.rapidpro
+                .start_flow(
+                    self.im.config.research_consent_change_flow_id, null, "tel:" + msisdn, {
+                        research_consent: research_consent === "yes" ? "TRUE" : "FALSE"
+                    }
+                )
+                .then(function() {
+                    return self.states.create("state_change_research_success");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+        self.add("state_change_research_success", function(name) {
+            var agree = $(
+                "Thanks! You've agreed to get research messages. What would you like to do?"
+            );
+            var not_agree = $(
+                "Thanks! You have not agreed to get research messages. What would you like to do?"
+            );
+            var research_consent = self.im.user.answers.state_change_research_confirm;
+            return new MenuState(name, {
+                question: research_consent === "yes" ? agree : not_agree,
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_start", $("Back to main menu")),
+                    new Choice("state_exit", $("Exit"))
+                ],
             });
         });
 
