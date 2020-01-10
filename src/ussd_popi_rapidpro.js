@@ -113,7 +113,7 @@ go.app = function() {
                 choices: [
                     new Choice("state_personal_info", $("See my info")),
                     new Choice("state_change_info", $("Change my info")),
-                    new Choice("state_start", $("Opt-out & delete info")),
+                    new Choice("state_opt_out", $("Opt-out & delete info")),
                     new Choice("state_start", $("How is my info processed?"))
                 ],
                 error: $("Sorry we don't understand. Please try again.")
@@ -790,6 +790,192 @@ go.app = function() {
                     new Choice("state_start", $("Back to main menu")),
                     new Choice("state_exit", $("Exit"))
                 ],
+            });
+        });
+
+        self.add("state_opt_out", function(name) {
+            return new MenuState(name, {
+                question: $("Do you want to stop getting MomConnect messages?"),
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_opt_out_reason", $("Yes")),
+                    new Choice("state_no_optout", $("No"))
+                ]
+            });
+        });
+
+        self.add("state_no_optout", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "Thanks! MomConnect will continue to send helpful messages and process " +
+                    "your personal info. What would you like to do?"
+                ),
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_start", $("Back to main menu")),
+                    new Choice("state_exit", $("Exit"))
+                ]
+            });
+        });
+
+        self.add("state_opt_out_reason", function(name) {
+            return new PaginatedChoiceState(name, {
+                question: $("We'll stop sending msgs. Why do you want to stop your MC msgs?"),
+                error: $("Sorry we don't understand. Please try again."),
+                choices: [
+                    new Choice("miscarriage", $("Miscarriage")),
+                    new Choice("stillbirth", $("Baby was stillborn")),
+                    new Choice("babyloss", $("Baby passed away")),
+                    new Choice("not_useful", $("Msgs aren't helpful")),
+                    new Choice("other", $("Other")),
+                    new Choice("unknown", $("I prefer not to say"))
+                ],
+                options_per_page: null,
+                characters_per_page: 160,
+                next: function(choice) {
+                    if(_.includes(["miscarriage", "stillbirth", "babyloss"], choice.value)) {
+                        return "state_loss_messages";
+                    } else {
+                        return "state_delete_data";
+                    }
+                }
+            });
+        });
+
+        self.add("state_loss_messages", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "We're sorry for your loss. Would you like to receive a small set of " +
+                    "MomConnect messages that could help you during this difficult time?"
+                ),
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_loss_delete_data", $("Yes")),
+                    new Choice("state_delete_data", $("No"))
+                ]
+            });
+        });
+
+        self.add("state_loss_delete_data", function(name) {
+            return new ChoiceState(name, {
+                question: $(
+                    "You'll get support msgs. We hold your info for " +
+                    "historical/research/statistical reasons. Do you want us to delete it after " +
+                    "you stop getting msgs?"
+                ),
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("yes", $("Yes")),
+                    new Choice("no", $("No"))
+                ],
+                next: "state_submit_opt_out"
+            });
+        });
+
+        self.add("state_delete_data", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "We hold your info for historical/research/statistical reasons after you " +
+                    "opt out. Do you want to delete your info after you stop getting messages?"
+                ),
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_delete_confirm", $("Yes")),
+                    new Choice("state_submit_opt_out", $("No"))
+                ]
+            });
+        });
+
+        self.add("state_delete_confirm", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "All your info will be permanently deleted in the next 7 days. We'll stop " +
+                    "sending you messages. Please select Next to continue:"
+                ),
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_submit_opt_out", $("Next"))
+                ]
+            });
+        });
+
+        self.add("state_submit_opt_out", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            var answers = self.im.user.answers;
+            var forget = answers.state_delete_data === "state_delete_confirm";
+            var loss = answers.state_loss_messages === "state_loss_delete_data";
+            var loss_forget = answers.state_loss_delete_data === "yes";
+            return self.rapidpro
+                .start_flow(
+                    self.im.config.optout_flow_id, null, "tel:" + msisdn, {
+                        reason: answers.state_opt_out_reason,
+                        forget: (forget || loss_forget) ? "TRUE" : "FALSE",
+                        loss: loss ? "TRUE" : "FALSE",
+                    }
+                )
+                .then(function() {
+                    if (loss) {
+                        if (loss_forget) {
+                            return self.states.create("state_loss_forget_success");
+                        }
+                        return self.states.create("state_loss_success");
+                    }
+                    return self.states.create("state_optout_success");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+        self.states.add("state_loss_forget_success", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "Thank you. MomConnect will send helpful messages to you over the coming " +
+                    "weeks. All your info will be deleted 7 days after your last MC message."
+                )
+            });
+        });
+
+        self.states.add("state_loss_success", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "Thank you. MomConnect will send helpful messages to you over the coming weeks."
+                )
+            });
+        });
+
+        self.states.add("state_optout_success", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "Thank you. You'll no longer get messages from MomConnect. For any medical " +
+                    "concerns, please visit a clinic. Have a lovely day."
+                )
             });
         });
 
