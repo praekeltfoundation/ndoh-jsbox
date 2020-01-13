@@ -42,7 +42,7 @@ go.app = function() {
             return new MenuState(name, {
                 question: $('Welcome back. Please select an option:'),
                 choices: [
-                    new Choice(creator_opts.name, $('Continue signing up for messages')),
+                    new Choice(creator_opts.name, $('Continue opting out')),
                     new Choice('state_start', $('Main menu'))
                 ]
             });
@@ -63,12 +63,12 @@ go.app = function() {
                 }).then(function() {
                     // Delegate to the correct state depending on group membership
                     var contact = self.im.user.get_answer("contact");
-                    if(self.contact_in_group(contact, self.im.config.public_group_ids)) {
+                    if(self.contact_in_group(contact, _.concat(self.im.config.public_group_ids, self.im.config.clinic_group_ids))){
                         return self.states.create("state_opt_out");
-                    } else if(self.contact_in_group(contact, self.im.config.clinic_group_ids)){
-                        return self.states.create("state_opt_out");
+                    } else if(self.contact_in_group(contact, self.im.config.optout_group_ids && _.get(contact, "fields.optout_reason") === "")) {
+                        return self.states.create("state_get_optout_reason");
                     } else {
-                        return self.states.create("state_check_previous_optout");
+                        return self.states.create("state_no_previous_optout");
                     }
                 }).catch(function(e) {
                     // Go to error state after 3 failed HTTP requests
@@ -114,16 +114,16 @@ go.app = function() {
                 options_per_page: null,
                 characters_per_page: 160,
                 choices: [
-                    new Choice("miscarriage", $("Miscarriage")),
-                    new Choice("stillborn", $("Baby was stillborn")),
-                    new Choice("babyloss", $("Baby passed away")),
-                    new Choice("not helpful", $("Msgs aren't helpful")),
-                    new Choice("other", $("Other")),
-                    new Choice("not stated", $("I prefer not to say"))
+                    new Choice("Miscarriage", $("Miscarriage")),
+                    new Choice("Stillborn", $("Baby was stillborn")),
+                    new Choice("Babyloss", $("Baby passed away")),
+                    new Choice("Not useful", $("Msgs aren't helpful")),
+                    new Choice("Other", $("Other")),
+                    new Choice("Unknown", $("I prefer not to say"))
                 ],
                 next: function(choice) {
                     self.im.user.set_answer("optout_reason", choice.value);
-                    if(_.includes(["miscarriage", "stillborn", "babyloss"], choice.value)) {
+                    if(_.includes(["Miscarriage", "Stillborn", "Babyloss"], choice.value)) {
                         return "state_loss_optout";
                     } else {
                         return "state_delete_research_info";
@@ -186,7 +186,7 @@ go.app = function() {
                     if(choice.value === "yes") {
                         return "state_info_deleted";
                     } else {
-                        return self.states.create("state_trigger_rapidpro_flow");
+                        return "state_trigger_rapidpro_flow";
                     }
                 }
             });
@@ -208,16 +208,7 @@ go.app = function() {
         });
 
         self.states.add("state_check_previous_optout", function(name) {
-            // Skip this state if they haven't opted out
-            //Skip this state if they have an opted_out reason
-            var contact = self.im.user.get_answer("contact");
-            var optout_reason = contact.fields.optout_reason;
-            if (!self.contact_in_group(self.im.user.get_answer("contact"), self.im.config.optout_group_ids)) {
-                return self.states.create("state_no_previous_optout");
-            }
-            
-            else if((self.contact_in_group(self.im.user.get_answer("contact"), self.im.config.optout_group_ids)) && optout_reason === "") {
-                var question = "Welcome MomConnect. You've opted out of receiving messages from us. Please tell us why:";
+            var question = "Welcome MomConnect. You've opted out of receiving messages from us. Please tell us why:";
                 return new PaginatedChoiceState(name, {
                     question: $(question),
                     error: $(question),
@@ -225,23 +216,22 @@ go.app = function() {
                     options_per_page: null,
                     characters_per_page: 160,
                     choices: [
-                        new Choice("miscarriage", $("Miscarriage")),
-                        new Choice("stillborn", $("Baby was stillborn")),
-                        new Choice("babyloss", $("Baby passed away")),
-                        new Choice("no", $("Msgs aren't helpful")),
-                        new Choice("no", $("Other")),
-                        new Choice("no", $("I prefer not to say"))
+                        new Choice("Miscarriage", $("Miscarriage")),
+                        new Choice("Stillborn", $("Baby was stillborn")),
+                        new Choice("Babyloss", $("Baby passed away")),
+                        new Choice("Not useful", $("Msgs aren't helpful")),
+                        new Choice("Other", $("Other")),
+                        new Choice("Unknown", $("I prefer not to say"))
                     ],
                     next: function(choice) {
                         self.im.user.set_answer("optout_reason", choice.value);
-                        if(_.includes(["miscarriage", "stillborn", "babyloss"], choice.value)) {
+                        if(_.includes(["Miscarriage", "Stillborn", "Babyloss"], choice.value)) {
                             return "state_loss_optout";
                         } else {
                             return "state_nonloss_optout";
                         }  
                     }  
-                });
-            }
+            });
         });
 
         self.add("state_trigger_rapidpro_flow", function(name, opts) {
@@ -254,20 +244,14 @@ go.app = function() {
                 delete_info_consent: 
                         self.im.user.get_answer("state_delete_research_info") === "yes" ? "TRUE" : "FALSE",
                 optout_reason: self.im.user.get_answer("optout_reason"),
-                language: self.im.user.lang,
                 source: "Optout USSD"
             }).then(function() {
                 if (self.im.user.get_answer("state_delete_info_for_loss") === "yes"){
                     return self.states.create("state_loss_subscription_without_info_retainment");
-                }else if (self.im.user.get_answer("state_check_previous_optout") === "no"){
-                    return self.states.create("state_nonloss_optout");
                 }else if (self.im.user.get_answer("state_delete_info_for_loss") === "no"){
                     return self.states.create("state_loss_subscription_with_info_retainment");
-                }else if (self.im.user.get_answer("state_info_deleted") === "yes" ){
-                    return self.states.create("state_nonloss_optout");
-                }else if (self.im.user.get_answer("state_delete_research_info") === "no" ){
-                    return self.states.create("state_nonloss_optout");
-                } else{
+                }
+                else{
                     return self.states.create("state_nonloss_optout"); 
                 }
             }).catch(function(e) {
