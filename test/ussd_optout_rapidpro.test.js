@@ -79,7 +79,6 @@ describe("ussd_optout_rapidpro app", function() {
                         fixtures_rapidpro.get_contact({
                             urn: "tel:+27123456789",
                             exists: true,
-                            language: "zul",
                             groups: ["Prebirth 3"]
                         })
                     );
@@ -93,7 +92,6 @@ describe("ussd_optout_rapidpro app", function() {
                         "2. No"
                     ].join("\n")
                 })
-                .check.user.lang("zul")
                 .run();
         });
         it("should go to state_no_previous_optout if user hase no subscriptions and not " +
@@ -104,7 +102,6 @@ describe("ussd_optout_rapidpro app", function() {
                         fixtures_rapidpro.get_contact({
                             urn: "tel:+27123456789",
                             exists: true,
-                            language: "zul",
                             groups: []
                         })
                     );
@@ -118,7 +115,6 @@ describe("ussd_optout_rapidpro app", function() {
                         "receive helpful messages for you and your baby."
                     ].join("\n")
                 })
-                .check.user.lang("zul")
                 .run();
         });
     });
@@ -164,7 +160,7 @@ describe("ussd_optout_rapidpro app", function() {
                 })
                 .run();
         });
-        it("should go to state_delete_research_info if they choose yes", function() {
+        it("should go to state_optout_reason if they choose yes", function() {
             return tester
                 .setup.user.state("state_opt_out")
                 .input("1")
@@ -216,7 +212,6 @@ describe("ussd_optout_rapidpro app", function() {
                                 babyloss_subscription:  "FALSE",
                                 delete_info_for_babyloss: "FALSE",
                                 delete_info_consent: "FALSE",
-                                language: null,
                                 source: "Optout USSD"
                             }
                         )
@@ -288,7 +283,7 @@ describe("ussd_optout_rapidpro app", function() {
                 .check.user.state("state_delete_research_info")
                 .run();
         });
-        it("should display an error if an incorrect input is sent", function() {
+        it("should display the question if an incorrect input is sent", function() {
             return tester
                 .setup.user.state("state_optout_reason")
                 .input("foo")
@@ -408,7 +403,6 @@ describe("ussd_optout_rapidpro app", function() {
                                 babyloss_subscription:  "TRUE",
                                 delete_info_for_babyloss: "FALSE",
                                 delete_info_consent: "FALSE",
-                                language: null,
                                 source: "Optout USSD"
                             }
                         )
@@ -434,7 +428,6 @@ describe("ussd_optout_rapidpro app", function() {
                                 babyloss_subscription:  "TRUE",
                                 delete_info_for_babyloss: "TRUE",
                                 delete_info_consent: "FALSE",
-                                language: null,
                                 source: "Optout USSD"
                             }
                         )
@@ -487,7 +480,6 @@ describe("ussd_optout_rapidpro app", function() {
                                 babyloss_subscription:  "FALSE",
                                 delete_info_for_babyloss: "FALSE",
                                 delete_info_consent: "FALSE",
-                                language: null,
                                 source: "Optout USSD"
                             }
                         )
@@ -495,6 +487,48 @@ describe("ussd_optout_rapidpro app", function() {
                 })
                 .input("1")
                 .check.user.state("state_nonloss_optout")
+                .run();
+        });
+    });
+    describe("timeout testing", function() {
+        it("should go to state_timed_out", function() {
+            return tester
+                .setup.user.state("state_loss_optout")
+                .inputs(
+                    {session_event: "close"}
+                    , {session_event: "new"}
+                )
+                .check.interaction({
+                    state: "state_timed_out",
+                    reply: [
+                        'Welcome back. Please select an option:',
+                        '1. Continue opting out',
+                        '2. Main menu'
+                    ].join('\n')
+                })
+                .run();
+        });
+        it("should not go to state_timed_out if at an EndState", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "tel:+27123456789",
+                            exists: true,
+                            groups: ["Clinic", "Public"]
+                        })
+                    );
+                })
+                .setup.user.state("state_nonloss_optout")
+                .input({session_event: "continue"})
+                .check.interaction({
+                    state: "state_opt_out",
+                    reply: [
+                        "Hello mom! Do you want to stop getting MomConnect (MC) messages?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
                 .run();
         });
     });
@@ -575,7 +609,6 @@ describe("ussd_optout_rapidpro app", function() {
             "with intention to delete info after", function() {
             return tester
                 .setup.user.state("state_trigger_rapidpro_flow")
-                .setup.user.lang("zul")
                 .setup.user.answers({
                     state_loss_optout: "yes",
                     state_delete_info_for_loss: "yes",
@@ -592,7 +625,6 @@ describe("ussd_optout_rapidpro app", function() {
                                 delete_info_for_babyloss: "TRUE",
                                 delete_info_consent: "FALSE",
                                 optout_reason: "miscarriage",
-                                language: "zul",
                                 source: "Optout USSD",
                             }
                         )
@@ -612,7 +644,6 @@ describe("ussd_optout_rapidpro app", function() {
             "with intention to not delete info after", function() {
             return tester
                 .setup.user.state("state_trigger_rapidpro_flow")
-                .setup.user.lang("zul")
                 .setup.user.answers({
                     state_loss_optout: "yes",
                     state_delete_info_for_loss: "no",
@@ -629,7 +660,6 @@ describe("ussd_optout_rapidpro app", function() {
                                 delete_info_for_babyloss: "FALSE",
                                 delete_info_consent: "FALSE",
                                 optout_reason: "miscarriage",
-                                language: "zul",
                                 source: "Optout USSD",
                             }
                         )
@@ -648,7 +678,6 @@ describe("ussd_optout_rapidpro app", function() {
             "with intention to not delete info after", function() {
             return tester
                 .setup.user.state("state_trigger_rapidpro_flow")
-                .setup.user.lang("zul")
                 .setup.user.answers({
                     state_delete_research_info: "no",
                     optout_reason: "other"
@@ -664,7 +693,6 @@ describe("ussd_optout_rapidpro app", function() {
                                 delete_info_for_babyloss: "FALSE",
                                 delete_info_consent: "FALSE",
                                 optout_reason: "other",
-                                language: "zul",
                                 source: "Optout USSD",
                             }
                         )
@@ -684,7 +712,6 @@ describe("ussd_optout_rapidpro app", function() {
             "with intention to delete info after", function() {
             return tester
                 .setup.user.state("state_trigger_rapidpro_flow")
-                .setup.user.lang("zul")
                 .setup.user.answers({
                     state_delete_research_info: "yes",
                     optout_reason: "other"
@@ -700,7 +727,6 @@ describe("ussd_optout_rapidpro app", function() {
                                 delete_info_for_babyloss: "FALSE",
                                 delete_info_consent: "TRUE",
                                 optout_reason: "other",
-                                language: "zul",
                                 source: "Optout USSD",
                             }
                         )
@@ -719,7 +745,6 @@ describe("ussd_optout_rapidpro app", function() {
         it("should retry in the case of HTTP failures", function() {
             return tester
                 .setup.user.state("state_trigger_rapidpro_flow")
-                .setup.user.lang("zul")
                 .setup.user.answers({
                     state_delete_research_info: "yes",
                     optout_reason: "other"
@@ -735,7 +760,6 @@ describe("ussd_optout_rapidpro app", function() {
                             delete_info_for_babyloss: "FALSE",
                             delete_info_consent: "TRUE",
                             optout_reason: "other",
-                            language: "zul",
                             source: "Optout USSD",
                         },
                         true
