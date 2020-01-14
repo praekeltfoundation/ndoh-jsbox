@@ -217,16 +217,16 @@ go.app = function() {
                 options_per_page: null,
                 characters_per_page: 160,
                 choices: [
-                    new Choice("Miscarriage", $("Miscarriage")),
-                    new Choice("Stillborn", $("Baby was stillborn")),
-                    new Choice("Babyloss", $("Baby passed away")),
-                    new Choice("Not useful", $("Msgs aren't helpful")),
-                    new Choice("Other", $("Other")),
-                    new Choice("Unknown", $("I prefer not to say"))
+                    new Choice("miscarriage", $("Miscarriage")),
+                    new Choice("stillborn", $("Baby was stillborn")),
+                    new Choice("babyloss", $("Baby passed away")),
+                    new Choice("not_useful", $("Msgs aren't helpful")),
+                    new Choice("other", $("Other")),
+                    new Choice("unknown", $("I prefer not to say"))
                 ],
                 next: function(choice) {
                     self.im.user.set_answer("optout_reason", choice.value);
-                    if(_.includes(["Miscarriage", "Stillborn", "Babyloss"], choice.value)) {
+                    if(_.includes(["miscarriage", "stillborn", "babyloss"], choice.value)) {
                         return "state_loss_optout";
                     } else {
                         return "state_delete_research_info";
@@ -319,16 +319,16 @@ go.app = function() {
                     options_per_page: null,
                     characters_per_page: 160,
                     choices: [
-                        new Choice("Miscarriage", $("Miscarriage")),
-                        new Choice("Stillborn", $("Baby was stillborn")),
-                        new Choice("Babyloss", $("Baby passed away")),
-                        new Choice("Not useful", $("Msgs aren't helpful")),
-                        new Choice("Other", $("Other")),
-                        new Choice("Unknown", $("I prefer not to say"))
+                        new Choice("miscarriage", $("Miscarriage")),
+                        new Choice("stillborn", $("Baby was stillborn")),
+                        new Choice("babyloss", $("Baby passed away")),
+                        new Choice("not_useful", $("Msgs aren't helpful")),
+                        new Choice("other", $("Other")),
+                        new Choice("unknown", $("I prefer not to say"))
                     ],
                     next: function(choice) {
                         self.im.user.set_answer("optout_reason", choice.value);
-                        if(_.includes(["Miscarriage", "Stillborn", "Babyloss"], choice.value)) {
+                        if(_.includes(["miscarriage", "stillborn", "babyloss"], choice.value)) {
                             return "state_loss_optout";
                         } else {
                             return "state_nonloss_optout";
