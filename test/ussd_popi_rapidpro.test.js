@@ -25,7 +25,8 @@ describe("ussd_popi_rapidpro app", function() {
             msisdn_change_flow_id: "msisdn-change-flow",
             language_change_flow_id: "language-change-flow",
             identification_change_flow_id: "identification-change-flow",
-            research_consent_change_flow_id: "research-change-flow"
+            research_consent_change_flow_id: "research-change-flow",
+            optout_flow_id: "optout-flow"
         });
     });
 
@@ -1050,6 +1051,304 @@ describe("ussd_popi_rapidpro app", function() {
                         "1. Back to main menu",
                         "2. Exit"
                     ].join("\n")
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(
+                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
+                    );
+                })
+                .run();
+        });
+    });
+    describe("state_opt_out", function() {
+        it("should ask the user if they want to opt out", function() {
+            return tester
+                .setup.user.state("state_opt_out")
+                .check.interaction({
+                    reply: [
+                        "Do you want to stop getting MomConnect messages?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should not opt out if No is chosen", function(){
+            return tester
+                .setup.user.state("state_opt_out")
+                .input("2")
+                .check.interaction({
+                    state: "state_no_optout",
+                    reply: [
+                        "Thanks! MomConnect will continue to send helpful messages and process " +
+                        "your personal info. What would you like to do?",
+                        "1. Back to main menu",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_opt_out_reason", function() {
+        it("should ask the user for their opt out reason", function() {
+            return tester
+                .setup.user.state("state_opt_out_reason")
+                .check.interaction({
+                    reply: [
+                        "We'll stop sending msgs. Why do you want to stop your MC msgs?",
+                        "1. Miscarriage",
+                        "2. Baby was stillborn",
+                        "3. Baby passed away",
+                        "4. Msgs aren't helpful",
+                        "5. Other",
+                        "6. More"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show an error message on invalid input", function() {
+            return tester
+                .setup.user.state("state_opt_out_reason")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't understand. Please try again.",
+                        "1. Miscarriage",
+                        "2. Baby was stillborn",
+                        "3. Baby passed away",
+                        "4. Msgs aren't helpful",
+                        "5. Other",
+                        "6. More"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_loss_messages on loss selection", function() {
+            return tester
+                .setup.user.state("state_opt_out_reason")
+                .input("2")
+                .check.user.state("state_loss_messages")
+                .run();
+        });
+        it("should go to state_delete_data on non-loss selection", function() {
+            return tester
+                .setup.user.state("state_opt_out_reason")
+                .input("4")
+                .check.user.state("state_delete_data")
+                .run();
+        });
+    });
+    describe("state_loss_messages", function() {
+        it("should ask the user if they want to receive loss messages", function() {
+            return tester
+                .setup.user.state("state_loss_messages")
+                .check.interaction({
+                    reply: [
+                        "We're sorry for your loss. Would you like to receive a small set of " +
+                        "MomConnect messages that could help you during this difficult time?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_loss_messages")
+                .input("A")
+                .check.interaction({
+                    state: "state_loss_messages",
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_loss_delete_data", function() {
+        it("should ask the user if they want to delete after their messages complete", function() {
+            return tester
+                .setup.user.state("state_loss_delete_data")
+                .check.interaction({
+                    reply: [
+                        "You'll get support msgs. We hold your info for " +
+                        "historical/research/statistical reasons. Do you want us to delete it " +
+                        "after you stop getting msgs?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_loss_delete_data")
+                .input("A")
+                .check.interaction({
+                    state: "state_loss_delete_data",
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should submit the optout to RapidPro on delete request", function() {
+            return tester
+                .setup.user.state("state_loss_delete_data")
+                .setup.user.answers({
+                    state_opt_out_reason: "stillbirth",
+                    state_loss_messages: "state_loss_delete_data"
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "optout-flow", null, "tel:+27123456789", {
+                                "babyloss_subscription": "TRUE",
+                                "delete_info_for_babyloss": "TRUE",
+                                "delete_info_consent": "FALSE",
+                                "optout_reason": "stillbirth"
+                        })
+                    );
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_loss_forget_success",
+                    reply:
+                        "Thank you. MomConnect will send helpful messages to you over the " +
+                        "coming weeks. All your info will be deleted 7 days after your last MC " +
+                        "message."
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(
+                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
+                    );
+                })
+                .run();
+        });
+        it("should submit the optout to RapidPro on no delete request", function() {
+            return tester
+                .setup.user.state("state_loss_delete_data")
+                .setup.user.answers({
+                    state_opt_out_reason: "stillbirth",
+                    state_loss_messages: "state_loss_delete_data"
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "optout-flow", null, "tel:+27123456789", {
+                                "babyloss_subscription": "TRUE",
+                                "delete_info_for_babyloss": "FALSE",
+                                "delete_info_consent": "FALSE",
+                                "optout_reason": "stillbirth"
+                        })
+                    );
+                })
+                .input("2")
+                .check.interaction({
+                    state: "state_loss_success",
+                    reply:
+                        "Thank you. MomConnect will send helpful messages to you over the coming " +
+                        "weeks."
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(
+                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
+                    );
+                })
+                .run();
+        });
+    });
+    describe("state_delete_data", function() {
+        it("should ask the user if they want to delete their data", function() {
+            return tester
+                .setup.user.state("state_delete_data")
+                .check.interaction({
+                    reply: [
+                        "We hold your info for historical/research/statistical reasons after " +
+                        "you opt out. Do you want to delete your info after you stop getting " +
+                        "messages?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_delete_data")
+                .input("A")
+                .check.interaction({
+                    state: "state_delete_data",
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_delete_confirm", function() {
+        it("should confirm the user's deletion of data", function() {
+            return tester
+                .setup.user.state("state_delete_confirm")
+                .check.interaction({
+                    reply: [
+                        "All your info will be permanently deleted in the next 7 days. We'll " +
+                        "stop sending you messages. Please select Next to continue:",
+                        "1. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_delete_confirm")
+                .input("A")
+                .check.interaction({
+                    state: "state_delete_confirm",
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
+                        "1. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should submit the request to RapidPro on successful input", function() {
+            return tester
+                .setup.user.state("state_delete_confirm")
+                .setup.user.answers({
+                    state_opt_out_reason: "not_useful",
+                    state_delete_data: "state_delete_confirm"
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "optout-flow", null, "tel:+27123456789", {
+                                "babyloss_subscription": "FALSE",
+                                "delete_info_for_babyloss": "FALSE",
+                                "delete_info_consent": "TRUE",
+                                "optout_reason": "not_useful"
+                        })
+                    );
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_optout_success",
+                    reply:
+                        "Thank you. You'll no longer get messages from MomConnect. For any " +
+                        "medical concerns, please visit a clinic. Have a lovely day."
                 })
                 .check(function(api) {
                     assert.equal(api.http.requests.length, 1);
