@@ -1210,9 +1210,10 @@ describe("ussd_popi_rapidpro app", function() {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
                             "optout-flow", null, "tel:+27123456789", {
-                                "reason": "stillbirth",
-                                "forget": "TRUE",
-                                "loss": "TRUE"
+                                "babyloss_subscription": "TRUE",
+                                "delete_info_for_babyloss": "TRUE",
+                                "delete_info_consent": "FALSE",
+                                "optout_reason": "stillbirth"
                         })
                     );
                 })
@@ -1243,9 +1244,10 @@ describe("ussd_popi_rapidpro app", function() {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
                             "optout-flow", null, "tel:+27123456789", {
-                                "reason": "stillbirth",
-                                "forget": "FALSE",
-                                "loss": "TRUE"
+                                "babyloss_subscription": "TRUE",
+                                "delete_info_for_babyloss": "FALSE",
+                                "delete_info_consent": "FALSE",
+                                "optout_reason": "stillbirth"
                         })
                     );
                 })
@@ -1334,9 +1336,10 @@ describe("ussd_popi_rapidpro app", function() {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
                             "optout-flow", null, "tel:+27123456789", {
-                                "reason": "not_useful",
-                                "forget": "TRUE",
-                                "loss": "FALSE"
+                                "babyloss_subscription": "FALSE",
+                                "delete_info_for_babyloss": "FALSE",
+                                "delete_info_consent": "TRUE",
+                                "optout_reason": "not_useful"
                         })
                     );
                 })

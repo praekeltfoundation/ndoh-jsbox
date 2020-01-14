@@ -1029,9 +1029,10 @@ go.app = function() {
             return self.rapidpro
                 .start_flow(
                     self.im.config.optout_flow_id, null, "tel:" + msisdn, {
-                        reason: answers.state_opt_out_reason,
-                        forget: (forget || loss_forget) ? "TRUE" : "FALSE",
-                        loss: loss ? "TRUE" : "FALSE",
+                        babyloss_subscription: loss ? "TRUE" : "FALSE",
+                        delete_info_for_babyloss: loss_forget ? "TRUE" : "FALSE",
+                        delete_info_consent: forget ? "TRUE" : "FALSE",
+                        optout_reason: answers.state_opt_out_reason,
                     }
                 )
                 .then(function() {
