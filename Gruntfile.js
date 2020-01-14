@@ -110,6 +110,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_optout_rapidpro: [
                     'src/index.js',
+                    'src/rapidpro.js',
                     '<%= paths.src.app.ussd_optout_rapidpro %>',
                     'src/init.js'
                 ],
@@ -225,6 +226,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_optout_rapidpro: [
                     'test/setup.js',
+                    'src/rapidpro.js',
                     '<%= paths.src.app.ussd_optout_rapidpro %>',
                     'test/ussd_optout_rapidpro.test.js'
                 ],
