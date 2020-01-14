@@ -56,7 +56,7 @@ go.app = function() {
 
         self.contact_current_channel = function(contact) {
             // Returns the current channel of the contact
-            if(_.get(contact, "fields.preferred_channel", "").toUpperCase() === "WHATSAPP") {
+            if(_.toUpper(_.get(contact, "fields.preferred_channel", "")) === "WHATSAPP") {
                 return $("WhatsApp");
             } else {
                 return $("SMS");
@@ -65,7 +65,7 @@ go.app = function() {
 
         self.contact_alternative_channel = function(contact) {
             // Returns the alternative channel of the contact
-            if(_.get(contact, "fields.preferred_channel", "").toUpperCase() === "WHATSAPP") {
+            if(_.toUpper(_.get(contact, "fields.preferred_channel", "")) === "WHATSAPP") {
                 return $("SMS");
             } else {
                 return $("WhatsApp");
@@ -91,7 +91,7 @@ go.app = function() {
                 .then(function(contact) {
                     self.im.user.set_answer("contact", contact);
                     // Set the language if we have it
-                    if(_.isString(_.get(contact, "language"))) {
+                    if(_.get(self.languages, _.get(contact, "language"))) {
                         return self.im.user.set_lang(contact.language);
                     }
                 }).then(function() {
@@ -133,7 +133,7 @@ go.app = function() {
                 "Baby's birthday: {{dobs}}"
             ].join("\n")).context({
                 msisdn: utils.readable_msisdn(self.im.user.addr, "27"),
-                channel: _.get(contact, "fields.preferred_channel", $("None")),
+                channel: _.get(contact, "fields.preferred_channel") || $("None"),
                 language: _.get(self.languages, _.get(contact, "language"), $("None")),
                 id_type: _.get({
                     passport: $("Passport"),
@@ -159,7 +159,7 @@ go.app = function() {
                     _.get({
                         "TRUE": $("Yes"),
                         "FALSE": $("No")
-                    }, _.get(contact, "fields.research_consent", "").toUpperCase(), $("None")),
+                    }, _.toUpper(_.get(contact, "fields.research_consent")), $("None")),
                 dobs: _.map(_.filter([
                     new moment(_.get(contact, "fields.baby_dob1", null)),
                     new moment(_.get(contact, "fields.baby_dob2", null)),
@@ -234,7 +234,7 @@ go.app = function() {
 
         self.add("state_channel_switch", function(name, opts) {
             var contact = self.im.user.answers.contact, flow_uuid;
-            if(_.get(contact, "fields.preferred_channel", "").toUpperCase() === "WHATSAPP") {
+            if(_.toUpper(_.get(contact, "fields.preferred_channel")) === "WHATSAPP") {
                 flow_uuid = self.im.config.sms_switch_flow_id;
             } else {
                 flow_uuid = self.im.config.whatsapp_switch_flow_id;

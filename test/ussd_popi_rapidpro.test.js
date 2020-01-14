@@ -127,6 +127,19 @@ describe("ussd_popi_rapidpro app", function() {
         it("should handle missing contact fields", function() {
             return tester
                 .setup.user.state("state_personal_info")
+                .setup.user.answer("contact", {
+                    language: null,
+                    groups: [],
+                    fields: {
+                        preferred_channel: null,
+                        identification_type: null,
+                        research_consent: null,
+                        baby_dob1: null,
+                        baby_dob2: null,
+                        baby_dob3: null,
+                        edd: null
+                    }
+                })
                 .check.interaction({
                     reply: [
                         "Cell number: 0123456789",
