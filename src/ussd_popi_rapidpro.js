@@ -95,7 +95,16 @@ go.app = function() {
                         return self.im.user.set_lang(contact.language);
                     }
                 }).then(function() {
-                    return self.states.create("state_main_menu");
+                    var contact = self.im.user.get_answer("contact");
+                    var config = self.im.config;
+                    var groups = _.concat(
+                        config.public_groups, config.prebirth_groups, config.postbirth_groups
+                    );
+                    if(self.contact_in_group(contact, groups)){
+                        return self.states.create("state_main_menu");
+                    } else {
+                        return self.states.create("state_not_registered");
+                    }
                 }).catch(function(e) {
                     // Go to error state after 3 failed HTTP requests
                     opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
@@ -977,6 +986,387 @@ go.app = function() {
                     "Thank you. You'll no longer get messages from MomConnect. For any medical " +
                     "concerns, please visit a clinic. Have a lovely day."
                 )
+            });
+        });
+
+        self.states.add("state_not_registered", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "Sorry, we don't know this number. Please dial in with the number you get " +
+                    "your MomConnect (MC) messages on"
+                ),
+                choices: [
+                    new Choice("state_confirm_change_other", $("I don't have that SIM")),
+                    new Choice("state_exit", $("Exit"))
+                ],
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                )
+                
+            });
+        });
+
+        self.add("state_confirm_change_other", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "Do you want to change the cell number that you receive MomConnect messages " +
+                    "on?"
+                ),
+                choices: [
+                    new Choice("state_enter_origin_msisdn", $("Yes")),
+                    new Choice("state_exit", $("No"))
+                ],
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                )
+            });
+        });
+
+        self.add("state_enter_origin_msisdn", function(name) {
+            return new FreeText(name, {
+                question: $(
+                    "Please enter the cell number you currently get MomConnect messages on, " +
+                    "e.g. 0813547654"
+                ),
+                check: function(content) {
+                    if(!utils.is_valid_msisdn(content, "ZA")) {
+                        return $(
+                            "Sorry, we don't understand. Please try again by entering the 10 " +
+                            "digit cell number that you currently get your MomConnect messages " +
+                            "on, e.g. 0813547654."
+                        );
+                    }
+                    if(utils.normalize_msisdn(content, "ZA") === "+27813547654") {
+                        return $(
+                            "We're looking for your information. Please avoid entering " +
+                            "the examples in our messages. Enter your own details."
+                        );
+                    }
+                },
+                next: "state_check_origin_contact"
+            });
+        });
+
+        self.add("state_check_origin_contact", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(
+                self.im.user.answers.state_enter_origin_msisdn, "ZA"
+            );
+            var config = self.im.config;
+            var groups = _.concat(
+                config.public_groups, config.prebirth_groups, config.postbirth_groups
+            );
+            return self.rapidpro
+                .get_contact({urn: "tel:" + msisdn})
+                .then(function(contact) {
+                    if(
+                        contact &&
+                        self.contact_in_group(contact, groups) &&
+                        _.get(contact, "fields.identification_type")
+                    ){
+                        self.im.user.answers.origin_contact = contact;
+                        var id_type = contact.fields.identification_type;
+                        if(id_type === "sa_id") {
+                            return self.states.create("state_confirm_sa_id");
+                        } else if (id_type === "passport") {
+                            return self.states.create("state_confirm_passport");
+                        } else {
+                            return self.states.create("state_confirm_dob_year");
+                        }
+                    } else {
+                        return self.states.create("state_origin_no_subscriptions");
+                    }
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__");
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+        self.add("state_origin_no_subscriptions", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "Sorry, MomConnect doesn't recognise {{msisdn}}. If you are new to " +
+                    "MomConnect, please visit a clinic to register. Made a mistake?"
+                ).context({msisdn: self.im.user.answers.state_enter_origin_msisdn}),
+                choices: [
+                    new Choice("state_enter_origin_msisdn", $("Try again")),
+                    new Choice("state_exit", $("Exit"))
+                ],
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                )
+            });
+        });
+
+        self.add("state_confirm_sa_id", function(name) {
+            return new FreeText(name, {
+                question: $(
+                    "Thanks! To change your cell number we need to confirm your identity. Please " +
+                    "enter your ID number as you find it in your Identity Document."
+                ),
+                next: function(content) {
+                    var contact = self.im.user.answers.origin_contact;
+                    if(_.get(contact, "fields.id_number") === _.trim(content)){
+                        return "state_confirm_target_msisdn";
+                    } else {
+                        return "state_invalid_identification";
+                    }
+                }
+            });
+        });
+        
+        self.add("state_confirm_passport", function(name) {
+            return new FreeText(name, {
+                question: $(
+                    "Thanks! To change your cell phone number we need to confirm your identity. " +
+                    "Please enter your passport number as it appears in your passport."
+                ),
+                next: function(content) {
+                    var contact = self.im.user.answers.origin_contact;
+                    if(_.get(contact, "fields.passport_number") === _.trim(content)){
+                        return "state_confirm_target_msisdn";
+                    } else {
+                        return "state_invalid_identification";
+                    }
+                }
+            });
+        });
+
+        self.add("state_confirm_dob_year", function(name) {
+            return new FreeText(name, {
+                question: $(
+                    "Thanks! To change your cell number we need to confirm your identity. " +
+                    "Please enter the year you were born as 4 digits in the format YYYY."
+                ),
+                next: "state_confirm_dob_month"
+            });
+        });
+
+        self.add("state_confirm_dob_month", function(name) {
+            return new PaginatedChoiceState(name, {
+                question: $(
+                    "In what month were you born? Please enter the number that matches your answer."
+                ),
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("01", $("Jan")),
+                    new Choice("02", $("Feb")),
+                    new Choice("03", $("Mar")),
+                    new Choice("04", $("Apr")),
+                    new Choice("05", $("May")),
+                    new Choice("06", $("Jun")),
+                    new Choice("07", $("Jul")),
+                    new Choice("08", $("Aug")),
+                    new Choice("09", $("Sep")),
+                    new Choice("10", $("Oct")),
+                    new Choice("11", $("Nov")),
+                    new Choice("12", $("Dec")),
+                ],
+                next: "state_confirm_dob_day"
+            });
+        });
+
+        self.add("state_confirm_dob_day", function(name) {
+            return new FreeText(name, {
+                question: $(
+                    "On what day were you born? Please enter the day as a number."
+                ),
+                next: function(content) {
+                    var day = _.padStart(_.trim(content), 2, "0");
+                    var month = self.im.user.answers.state_confirm_dob_month;
+                    var year = _.trim(self.im.user.answers.state_confirm_dob_year);
+
+                    var input_dob = new moment.utc([year, month, day].join("-"), "YYYY-MM-DD");
+                    var contact_dob = new moment.utc(_.get(
+                        self.im.user.answers, "origin_contact.fields.date_of_birth", null
+                    ));
+
+                    if(input_dob.startOf("day").isSame(contact_dob.startOf("day"))) {
+                        return "state_confirm_target_msisdn";
+                    } else {
+                        return "state_invalid_identification";
+                    }
+                }
+            });
+        });
+
+        self.states.add("state_invalid_identification", function(name) {
+            var id_type = _.get(
+                {"sa_id": $("ID number"), "passport": $("passport number")},
+                self.im.user.answers.origin_contact.fields.identification_type,
+                $("date of birth")
+            );
+            return new EndState(name, {
+                text: $(
+                    "Sorry, we don't recognise that {{id_type}}. We can't change the no. you get " +
+                    "your MC msgs on. Visit the clinic to change your no. Have a lovely day!"
+                ).context({id_type: id_type}),
+                next: "state_start"
+            });
+        });
+
+        self.add("state_confirm_target_msisdn", function(name) {
+            var msisdn = utils.readable_msisdn(self.im.user.addr, "27");
+            return new MenuState(name, {
+                question: $(
+                    "Do you want to get your MomConnect messages on this number {{msisdn}}?"
+                ).context({
+                    msisdn: msisdn
+                }),
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_nosim_change_msisdn", $("Yes")),
+                    new Choice(
+                        "state_target_msisdn",
+                        $("No, I would like to get my messages on a different number")
+                    )
+                ]
+            });
+        });
+
+        self.add("state_target_msisdn", function(name) {
+            return new FreeText(name, {
+                question: $(
+                    "Please enter the new cell number you would like to get your MomConnect " +
+                    "messages on, e.g. 0813547654."
+                ),
+                check: function(content) {
+                    if(!utils.is_valid_msisdn(content, "ZA")) {
+                        return $(
+                            "Sorry, we don't understand that cell number. Please enter 10 digit " +
+                            "cell number that you would like to get your MomConnect messages on, " +
+                            "e.g. 0813547654."
+                        );
+                    }
+                    if(utils.normalize_msisdn(content, "ZA") === "+27813547654") {
+                        return $(
+                            "We're looking for your information. Please avoid entering " +
+                            "the examples in our messages. Enter your own details."
+                        );
+                    }
+                },
+                next: "state_check_target_contact"
+            });
+        });
+
+        self.add("state_check_target_contact", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(self.im.user.answers.state_target_msisdn, "ZA");
+            var config = self.im.config;
+            var groups = _.concat(
+                config.public_groups, config.prebirth_groups, config.postbirth_groups
+            );
+            return self.rapidpro
+                .get_contact({urn: "tel:" + msisdn})
+                .then(function(contact) {
+                    if(contact && self.contact_in_group(contact, groups)){
+                        return self.states.create("state_target_existing_subscriptions");
+                    } else {
+                        return self.states.create("state_target_no_subscriptions");
+                    }
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__");
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+        self.add("state_target_existing_subscriptions", function(name){
+            return new MenuState(name, {
+                question: $(
+                    "Sorry the number you want to get your msgs on already gets msgs from MC. " +
+                    "To manage it, dial *134*550*7# from that no. What would you like to do?"
+                ),
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_target_msisdn", $("Back")),
+                    new Choice("state_exit", $("Exit"))
+                ]
+            });
+        });
+
+        self.add("state_target_no_subscriptions", function(name){
+            var msisdn = utils.readable_msisdn(self.im.user.answers.state_target_msisdn, "27");
+            return new MenuState(name, {
+                question: $(
+                    "Do you want to get your MomConnect messages on this number {{msisdn}}?"
+                ).context({msisdn: msisdn}),
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_nosim_change_msisdn", $("Yes")),
+                    new Choice("state_target_msisdn", $("No, I want to try again"))
+                ]
+            });
+        });
+
+        self.add("state_nosim_change_msisdn", function(name, opts) {
+            var new_msisdn = utils.normalize_msisdn(
+                _.defaultTo(self.im.user.answers.state_target_msisdn, self.im.user.addr), "ZA"
+            );
+            var old_msisdn = utils.normalize_msisdn(
+                self.im.user.answers.state_enter_origin_msisdn, "ZA"
+            );
+            return self.rapidpro
+                .start_flow(
+                    self.im.config.msisdn_change_flow_id, null, "tel:" + new_msisdn, {
+                        new_msisdn: new_msisdn,
+                        old_msisdn: old_msisdn,
+                        contact_uuid: self.im.user.answers.origin_contact.uuid,
+                        source: "POPI USSD"
+                    }
+                )
+                .then(function() {
+                    return self.states.create("state_nosim_change_success");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+        self.add("state_nosim_change_success", function(name) {
+            var new_msisdn = utils.readable_msisdn(
+                _.defaultTo(self.im.user.answers.state_target_msisdn, self.im.user.addr), "27"
+            );
+            return new MenuState(name, {
+                question: $(
+                    "Thanks! We sent a msg to {{msisdn}}. Follow the instructions. Ignore it " +
+                    "to continue getting msgs on the old cell no. What would you like to do?"
+                ).context({msisdn: new_msisdn}),
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_start", $("Back")),
+                    new Choice("state_exit", $("Exit"))
+                ]
             });
         });
 

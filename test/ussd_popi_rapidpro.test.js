@@ -19,7 +19,7 @@ describe("ussd_popi_rapidpro app", function() {
             },
             public_groups: ["id-3"],
             prebirth_groups: ["id-2"],
-            postbirth_groups: ["id-1"],
+            postbirth_groups: ["id-0"],
             sms_switch_flow_id: "sms-switch-flow",
             whatsapp_switch_flow_id: "whatsapp-switch-flow",
             msisdn_change_flow_id: "msisdn-change-flow",
@@ -37,6 +37,7 @@ describe("ussd_popi_rapidpro app", function() {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "tel:+27123456789",
+                            groups: ["Prebirth"],
                             exists: true,
                         })
                     );
@@ -54,12 +55,60 @@ describe("ussd_popi_rapidpro app", function() {
                 })
                 .run();
         });
+        it("should give the user a number change option if they're not subscribed", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "tel:+27123456789",
+                            groups: [],
+                            exists: true,
+                        })
+                    );
+                })
+                .check.interaction({
+                    state: "state_not_registered",
+                    reply: [
+                        "Sorry, we don't know this number. Please dial in with the number you " +
+                        "get your MomConnect (MC) messages on",
+                        "1. I don't have that SIM",
+                        "2. Exit",
+                    ].join("\n"),
+                    char_limit: 140
+                })
+                .run();
+        });
+        it("should display an error on invalid input on number change option", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "tel:+27123456789",
+                            groups: [],
+                            exists: true,
+                        })
+                    );
+                })
+                .input("A")
+                .check.interaction({
+                    state: "state_not_registered",
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
+                        "1. I don't have that SIM",
+                        "2. Exit",
+                    ].join("\n"),
+                    char_limit: 140
+                })
+                .run();
+        });
         it("should display an error on invalid input", function() {
             return tester
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "tel:+27123456789",
+                            groups: ["Prebirth"],
                             exists: true,
                         })
                     );
@@ -112,6 +161,7 @@ describe("ussd_popi_rapidpro app", function() {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "tel:+27123456789",
+                            groups: ["Prebirth"],
                             exists: true,
                         })
                     );
@@ -1368,6 +1418,622 @@ describe("ussd_popi_rapidpro app", function() {
                     assert.equal(
                         api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
                     );
+                })
+                .run();
+        });
+    });
+    describe("state_confirm_change_other", function() {
+        it("should ask the user if they want to change their number", function() {
+            return tester
+                .setup.user.state("state_confirm_change_other")
+                .check.interaction({
+                    reply: [
+                        "Do you want to change the cell number that you receive MomConnect " +
+                        "messages on?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_confirm_change_other")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_enter_origin_msisdn", function() {
+        it("should ask the user for the current msisdn", function() {
+            return tester
+                .setup.user.state("state_enter_origin_msisdn")
+                .check.interaction({
+                    reply: 
+                        "Please enter the cell number you currently get MomConnect messages " +
+                        "on, e.g. 0813547654"
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_enter_origin_msisdn")
+                .input("A")
+                .check.interaction({
+                    reply: 
+                        "Sorry, we don't understand. Please try again by entering the 10 digit " +
+                        "cell number that you currently get your MomConnect messages on, e.g. " +
+                        "0813547654."
+                })
+                .run();
+        });
+        it("should display an error if the user uses the example msisdn", function() {
+            return tester
+                .setup.user.state("state_enter_origin_msisdn")
+                .input("0813547654")
+                .check.interaction({
+                    reply: 
+                        "We're looking for your information. Please avoid entering the examples " +
+                        "in our messages. Enter your own details."
+                })
+                .run();
+        });
+    });
+    describe("state_check_origin_contact", function() {
+        it("should go to state_origin_no_subscriptions if the contact isn't subscribed", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "tel:+27123456789",
+                            groups: [],
+                            exists: true,
+                        })
+                    );
+                })
+                .setup.user.answer("state_enter_origin_msisdn", "0123456789")
+                .setup.user.state("state_check_origin_contact")
+                .check.user.state("state_origin_no_subscriptions")
+                .run();
+        });
+        it("should go to state_confirm_sa_id if the identification type is sa_id", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "tel:+27123456789",
+                            fields: {identification_type: "sa_id"},
+                            groups: ["Prebirth 1"],
+                            exists: true,
+                        })
+                    );
+                })
+                .setup.user.answer("state_enter_origin_msisdn", "0123456789")
+                .setup.user.state("state_check_origin_contact")
+                .check.user.state("state_confirm_sa_id")
+                .run();
+        });
+        it("should go to state_confirm_passport if the id type is passport", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "tel:+27123456789",
+                            fields: {identification_type: "passport"},
+                            groups: ["Prebirth 1"],
+                            exists: true,
+                        })
+                    );
+                })
+                .setup.user.answer("state_enter_origin_msisdn", "0123456789")
+                .setup.user.state("state_check_origin_contact")
+                .check.user.state("state_confirm_passport")
+                .run();
+        });
+        it("should go to state_confirm_dob_year if the id type is dob", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "tel:+27123456789",
+                            fields: {identification_type: "dob"},
+                            groups: ["Prebirth 1"],
+                            exists: true,
+                        })
+                    );
+                })
+                .setup.user.answer("state_enter_origin_msisdn", "0123456789")
+                .setup.user.state("state_check_origin_contact")
+                .check.user.state("state_confirm_dob_year")
+                .run();
+        });
+        it("should retry HTTP call when RapidPro is down", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "tel:+27123456789",
+                            failure: true
+                        })
+                    );
+                })
+                .setup.user.answer("state_enter_origin_msisdn", "0123456789")
+                .setup.user.state("state_check_origin_contact")
+                .check.interaction({
+                    state: "__error__",
+                    reply: "Sorry, something went wrong. We have been notified. Please try again later"
+                })
+                .check(function(api){
+                    assert.equal(api.http.requests.length, 3);
+                    api.http.requests.forEach(function(request){
+                        assert.equal(request.url, "https://rapidpro/api/v2/contacts.json");
+                    });
+                    assert.equal(api.log.error.length, 1);
+                    assert(api.log.error[0].includes("HttpResponseError"));
+                })
+                .run();
+        });
+    });
+    describe("state_origin_no_subscriptions", function() {
+        it("should ask the user what they want to do next", function() {
+            return tester
+                .setup.user.state("state_origin_no_subscriptions")
+                .setup.user.answer("state_enter_origin_msisdn", "0820001001")
+                .check.interaction({
+                    reply: [
+                        "Sorry, MomConnect doesn't recognise 0820001001. If you are new to " +
+                        "MomConnect, please visit a clinic to register. Made a mistake?",
+                        "1. Try again",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_origin_no_subscriptions")
+                .setup.user.answer("state_enter_origin_msisdn", "0820001001")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
+                        "1. Try again",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_confirm_sa_id", function() {
+        it("should ask the user for their ID number", function () {
+            return tester
+                .setup.user.state("state_confirm_sa_id")
+                .check.interaction({
+                    reply:
+                        "Thanks! To change your cell number we need to confirm your identity. " +
+                        "Please enter your ID number as you find it in your Identity Document."
+                })
+                .run();
+        });
+        it("should go to state_invalid_identification on invalid ID number", function() {
+            return tester
+                .setup.user.state("state_confirm_sa_id")
+                .setup.user.answer("origin_contact", {
+                    fields: {
+                        identification_type: "sa_id",
+                        id_number: "9001010001088"
+                    }
+                })
+                .input("12345")
+                .check.interaction({
+                    state: "state_invalid_identification",
+                    reply:
+                        "Sorry, we don't recognise that ID number. We can't change the no. you " +
+                        "get your MC msgs on. Visit the clinic to change your no. Have a lovely " +
+                        "day!"
+                })
+                .check.reply.ends_session()
+                .run();
+        });
+        it("should go to state_confirm_target_msisdn on valid ID number", function() {
+            return tester
+                .setup.user.state("state_confirm_sa_id")
+                .setup.user.answer("origin_contact", {
+                    fields: {
+                        identification_type: "sa_id",
+                        id_number: "9001010001088"
+                    }
+                })
+                .input("9001010001088")
+                .check.user.state("state_confirm_target_msisdn")
+                .run();
+        });
+    });
+    describe("state_confirm_passport", function() {
+        it("should ask the user for their passport number", function () {
+            return tester
+                .setup.user.state("state_confirm_passport")
+                .check.interaction({
+                    reply:
+                        "Thanks! To change your cell phone number we need to confirm your " +
+                        "identity. Please enter your passport number as it appears in your " +
+                        "passport."
+                })
+                .run();
+        });
+        it("should go to state_invalid_identification on invalid passport number", function() {
+            return tester
+                .setup.user.state("state_confirm_passport")
+                .setup.user.answer("origin_contact", {
+                    fields: {
+                        identification_type: "passport",
+                        passport_number: "A12345"
+                    }
+                })
+                .input("123")
+                .check.interaction({
+                    state: "state_invalid_identification",
+                    reply:
+                        "Sorry, we don't recognise that passport number. We can't change the no. " +
+                        "you get your MC msgs on. Visit the clinic to change your no. Have a " +
+                        "lovely day!"
+                })
+                .check.reply.ends_session()
+                .run();
+        });
+        it("should go to state_confirm_target_msisdn on valid passport number", function() {
+            return tester
+                .setup.user.state("state_confirm_passport")
+                .setup.user.answer("origin_contact", {
+                    fields: {
+                        identification_type: "passport",
+                        passport_number: "A12345"
+                    }
+                })
+                .input("A12345")
+                .check.user.state("state_confirm_target_msisdn")
+                .run();
+        });
+    });
+    describe("state_confirm_dob_year", function() {
+        it("should ask the user for the year of their DoB", function() {
+            return tester
+                .setup.user.state("state_confirm_dob_year")
+                .check.interaction({
+                    reply:
+                        "Thanks! To change your cell number we need to confirm your identity. " +
+                        "Please enter the year you were born as 4 digits in the format YYYY."
+                })
+                .run();
+        });
+    });
+    describe("state_confirm_dob_month", function() {
+        it("should ask the user for the month of their DoB", function() {
+            return tester
+                .setup.user.state("state_confirm_dob_month")
+                .check.interaction({
+                    reply: [
+                        "In what month were you born? Please enter the number that matches " +
+                        "your answer.",
+                        "1. Jan",
+                        "2. Feb",
+                        "3. Mar",
+                        "4. Apr",
+                        "5. May",
+                        "6. Jun",
+                        "7. Jul",
+                        "8. Aug",
+                        "9. More"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_confirm_dob_month")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
+                        "1. Jan",
+                        "2. Feb",
+                        "3. Mar",
+                        "4. Apr",
+                        "5. May",
+                        "6. Jun",
+                        "7. Jul",
+                        "8. Aug",
+                        "9. More"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_confirm_dob_day", function() {
+        it("should ask the user for the day of their DoB", function() {
+            return tester
+                .setup.user.state("state_confirm_dob_day")
+                .check.interaction({
+                    reply: "On what day were you born? Please enter the day as a number."
+                })
+                .run();
+        });
+        it("should display an error if it doesn't match the contact", function() {
+            return tester
+                .setup.user.state("state_confirm_dob_day")
+                .setup.user.answers({
+                    state_confirm_dob_year: "1990",
+                    state_confirm_dob_month: "05",
+                    origin_contact: {
+                        fields: {
+                            date_of_birth: "1990-05-02T00:00:00.000000Z"
+                        }
+                    }
+                })
+                .input("6")
+                .check.interaction({
+                    state: "state_invalid_identification",
+                    reply: 
+                        "Sorry, we don't recognise that date of birth. We can't change the no. " +
+                        "you get your MC msgs on. Visit the clinic to change your no. Have a " +
+                        "lovely day!"
+                })
+                .run();
+        });
+        it("should go to state_confirm_target_msisdn if it does match the contact", function() {
+            return tester
+                .setup.user.state("state_confirm_dob_day")
+                .setup.user.answers({
+                    state_confirm_dob_year: "1990",
+                    state_confirm_dob_month: "05",
+                    origin_contact: {
+                        fields: {
+                            date_of_birth: "1990-05-02T00:00:00.000000Z"
+                        }
+                    }
+                })
+                .input("2")
+                .check.user.state("state_confirm_target_msisdn")
+                .run();
+        });
+    });
+    describe("state_confirm_target_msisdn", function() {
+        it("should ask the user if they want to use the current MSISDN", function() {
+            return tester
+                .setup.user.state("state_confirm_target_msisdn")
+                .check.interaction({
+                    reply: [
+                        "Do you want to get your MomConnect messages on this number 0123456789?",
+                        "1. Yes",
+                        "2. No, I would like to get my messages on a different number"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_confirm_target_msisdn")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
+                        "1. Yes",
+                        "2. No, I would like to get my messages on a different number"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should submit the msisdn change if the user chooses this msisdn", function() {
+            return tester
+                .setup.user.state("state_confirm_target_msisdn")
+                .setup.user.answers({
+                    state_enter_origin_msisdn: "0820001002",
+                    origin_contact: {uuid: "contact-uuid"}
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "msisdn-change-flow", null, "tel:+27123456789", {
+                                new_msisdn: "+27123456789",
+                                old_msisdn: "+27820001002",
+                                contact_uuid: "contact-uuid",
+                                source: "POPI USSD"
+                            }
+                        )
+                    );
+                })
+                .input("1")
+                .check.user.state("state_nosim_change_success")
+                .run();
+        });
+    });
+    describe("state_target_msisdn", function() {
+        it("should ask the user for the target msisdn", function() {
+            return tester
+                .setup.user.state("state_target_msisdn")
+                .check.interaction({
+                    reply:
+                        "Please enter the new cell number you would like to get your MomConnect " +
+                        "messages on, e.g. 0813547654."
+                })
+                .run();
+        });
+        it("should display an error on invalid msisdns", function() {
+            return tester
+                .setup.user.state("state_target_msisdn")
+                .input("A")
+                .check.interaction({
+                    reply:
+                        "Sorry, we don't understand that cell number. Please enter 10 digit " +
+                        "cell number that you would like to get your MomConnect messages on, " +
+                        "e.g. 0813547654."
+                })
+                .run();
+        });
+        it("should display an error if the user enters the example msisdnj", function() {
+            return tester
+                .setup.user.state("state_target_msisdn")
+                .input("0813547654")
+                .check.interaction({
+                    reply:
+                        "We're looking for your information. Please avoid entering the " +
+                        "examples in our messages. Enter your own details."
+                })
+                .run();
+        });
+        it("should go to state_target_existing_subscriptions for existing subs", function() {
+            return tester
+                .setup.user.state("state_target_msisdn")
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "tel:+27820001001",
+                            groups: ["Prebirth 1"],
+                            exists: true
+                        })
+                    );
+                })
+                .input("0820001001")
+                .check.user.state("state_target_existing_subscriptions")
+                .run();
+        });
+        it("should go to state_target_no_subscriptions for no existing subs", function() {
+            return tester
+                .setup.user.state("state_target_msisdn")
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "tel:+27820001001",
+                            groups: [],
+                            exists: true
+                        })
+                    );
+                })
+                .input("0820001001")
+                .check.user.state("state_target_no_subscriptions")
+                .run();
+        });
+    });
+    describe("state_target_existing_subscriptions", function() {
+        it("should tell the user they can't change to this msisdn", function() {
+            return tester
+                .setup.user.state("state_target_existing_subscriptions")
+                .check.interaction({
+                    reply: [
+                        "Sorry the number you want to get your msgs on already gets msgs from " +
+                        "MC. To manage it, dial *134*550*7# from that no. What would you like to " +
+                        "do?",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_target_existing_subscriptions")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_target_no_subscriptions", function() {
+        it("should confirm with the user that the msisdn is correctj", function() {
+            return tester
+                .setup.user.state("state_target_no_subscriptions")
+                .setup.user.answer("state_target_msisdn", "0820001001")
+                .check.interaction({
+                    reply: [
+                        "Do you want to get your MomConnect messages on this number 0820001001?",
+                        "1. Yes",
+                        "2. No, I want to try again"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_target_no_subscriptions")
+                .setup.user.answer("state_target_msisdn", "0820001001")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
+                        "1. Yes",
+                        "2. No, I want to try again"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should do the number change if the user selects it", function () {
+            return tester
+                .setup.user.state("state_target_no_subscriptions")
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "msisdn-change-flow", null, "tel:+27820001001", {
+                                new_msisdn: "+27820001001",
+                                old_msisdn: "+27820001002",
+                                contact_uuid: "contact-uuid",
+                                source: "POPI USSD"
+                            }
+                        )
+                    );
+                })
+                .setup.user.answer("state_target_msisdn")
+                .setup.user.answers({
+                    state_target_msisdn: "0820001001",
+                    state_enter_origin_msisdn: "0820001002",
+                    origin_contact: {uuid: "contact-uuid"}
+                })
+                .input("1")
+                .check.user.state("state_nosim_change_success")
+                .run();
+        });
+    });
+    describe("state_nosim_change_success", function() {
+        it("should display success to the user", function() {
+            return tester
+                .setup.user.state("state_nosim_change_success")
+                .check.interaction({
+                    reply: [
+                        "Thanks! We sent a msg to 0123456789. Follow the instructions. Ignore it " +
+                        "to continue getting msgs on the old cell no. What would you like to do?",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_nosim_change_success")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't recognise that reply. Please enter the number next to " +
+                        "your answer.",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
                 })
                 .run();
         });
