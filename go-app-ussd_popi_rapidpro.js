@@ -226,7 +226,7 @@ go.app = function() {
                     new Choice("state_personal_info", $("See my info")),
                     new Choice("state_change_info", $("Change my info")),
                     new Choice("state_opt_out", $("Opt-out & delete info")),
-                    new Choice("state_start", $("How is my info processed?"))
+                    new Choice("state_all_questions_view", $("How is my info processed?"))
                 ],
                 error: $("Sorry we don't understand. Please try again.")
             });
@@ -1470,6 +1470,103 @@ go.app = function() {
                     new Choice("state_start", $("Back")),
                     new Choice("state_exit", $("Exit"))
                 ]
+            });
+        });
+
+        self.add("state_all_questions_view", function(name) {
+            return new PaginatedChoiceState(name, {
+                question: $("Choose a question you're interested in:"),
+                options_per_page: null,
+                characters_per_page: 160,
+                choices: [
+                    new Choice("state_question_1", $("What is MomConnect?")),
+                    new Choice("state_question_2", $("Why does MomConnect need my info?")),
+                    new Choice("state_question_3", $("What personal info is collected?")),
+                    new Choice("state_question_4", $("Who can see my personal info?")),
+                    new Choice("state_question_5", $("How long does MC keep my info?")),
+                    new Choice("state_main_menu", $("Back to main menu"))
+                ],
+                more: $("Next"),
+                back: $("Previous"),
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+        self.add('state_question_1', function(name) {
+            return new PaginatedState(name, {
+                text: $(
+                    "MomConnect is a Health Department programme. It sends helpful messages for " +
+                    "you and your baby."
+                ),
+                characters_per_page: 160,
+                exit: $("Back"),
+                more: $("Next"),
+                back: $("Previous"),
+                next: "state_all_questions_view"
+            });
+        });
+
+
+        self.add('state_question_2', function(name) {
+            return new PaginatedState(name, {
+                text: $(
+                    "MomConnect needs your personal info to send you messages that are relevant " +
+                    "to your pregnancy or your baby's age. By knowing where you registered for " +
+                    "MomConnect, the Health Department can make sure that the service is being " +
+                    "offered to women at your clinic. Your info assists the Health Department to " +
+                    "improve its services, understand your needs better and provide even better " +
+                    "messaging."
+                ),
+                characters_per_page: 160,
+                exit: $("Back"),
+                more: $("Next"),
+                back: $("Previous"),
+                next: "state_all_questions_view"
+            });
+        }); 
+
+        self.add('state_question_3', function(name) {
+            return new PaginatedState(name, {
+                text: $(
+                    "MomConnect collects your cell and ID numbers, clinic location, and info " +
+                    "about how your pregnancy or baby is progressing."
+                ),
+                characters_per_page: 160,
+                exit: $("Back"),
+                more: $("Next"),
+                back: $("Previous"),
+                next: "state_all_questions_view"
+            });
+        });
+
+        self.add('state_question_4', function(name) {
+            return new PaginatedState(name, {
+                text: $(
+                    "MomConnect is owned by the Health Department. Your data is protected. It's " +
+                    "processed by MTN, Cell C, Telkom, Vodacom, Praekelt, Jembi, HISP & WhatsApp."
+                ),
+                characters_per_page: 160,
+                exit: $("Back"),
+                more: $("Next"),
+                back: $("Previous"),
+                next: "state_all_questions_view"
+            });
+        });
+
+        self.add('state_question_5', function(name) {
+            return new PaginatedState(name, {
+                text: $(
+                    "MomConnect holds your info while you're registered. If you opt out, we'll " +
+                    "use your info for historical, research & statistical reasons with your " +
+                    "consent."
+                ),
+                characters_per_page: 160,
+                exit: $("Back"),
+                more: $("Next"),
+                back: $("Previous"),
+                next: "state_all_questions_view"
             });
         });
 
