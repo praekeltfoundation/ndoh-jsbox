@@ -2038,4 +2038,163 @@ describe("ussd_popi_rapidpro app", function() {
                 .run();
         });
     });
+    describe("state_all_questions_view", function() {
+        it("should display the list of questions to the user page 1", function() {
+            return tester
+                .setup.user.state("state_all_questions_view")
+                .check.interaction({
+                    reply: [
+                        "Choose a question you're interested in:",
+                        "1. What is MomConnect?",
+                        "2. Why does MomConnect need my info?",
+                        "3. What personal info is collected?",
+                        "4. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display the list of questions to the user page 2", function() {
+            return tester
+                .setup.user.state("state_all_questions_view")
+                .input("4")
+                .check.interaction({
+                    reply: [
+                        "Choose a question you're interested in:",
+                        "1. Who can see my personal info?",
+                        "2. How long does MC keep my info?",
+                        "3. Back to main menu",
+                        "4. Previous"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_question_1", function() {
+        it("should display the info to the user", function() {
+            return tester
+                .setup.user.state("state_question_1")
+                .check.interaction({
+                    reply: [
+                        "MomConnect is a Health Department programme. It sends helpful messages " +
+                        "for you and your baby.",
+                        "1. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_question_2", function() {
+        it("should display the info to the user", function() {
+            return tester
+                .setup.user.state("state_question_2")
+                .check.interaction({
+                    reply: [
+                        "MomConnect needs your personal info to send you messages that are " +
+                        "relevant to your pregnancy or your baby's age. By knowing where",
+                        "1. Next",
+                        "2. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display the info to the user pg 2", function() {
+            return tester
+                .setup.user.state("state_question_2")
+                .input("1")
+                .check.interaction({
+                    reply: [
+                        "you registered for MomConnect, the Health Department can make sure " +
+                        "that the service is being offered to women at your clinic. Your",
+                        "1. Next",
+                        "2. Previous",
+                        "3. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display the info to the user pg 3", function() {
+            return tester
+                .setup.user.state("state_question_2")
+                .inputs("1", "1")
+                .check.interaction({
+                    reply: [
+                        "info assists the Health Department to improve its services, understand " +
+                        "your needs better and provide even better messaging.",
+                        "1. Previous",
+                        "2. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_question_3", function() {
+        it("should display the info to the user", function() {
+            return tester
+                .setup.user.state("state_question_3")
+                .check.interaction({
+                    reply: [
+                        "MomConnect collects your cell and ID numbers, clinic location, and info " +
+                        "about how your pregnancy or baby is progressing.",
+                        "1. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_question_4", function() {
+        it("should display the info to the user", function() {
+            return tester
+                .setup.user.state("state_question_4")
+                .check.interaction({
+                    reply: [
+                        "MomConnect is owned by the Health Department. Your data is protected. " +
+                        "It's processed by MTN, Cell C, Telkom, Vodacom, Praekelt,",
+                        "1. Next",
+                        "2. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display the info to the user pg 2", function() {
+            return tester
+                .setup.user.state("state_question_4")
+                .input("1")
+                .check.interaction({
+                    reply: [
+                        "Jembi, HISP & WhatsApp.",
+                        "1. Previous",
+                        "2. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_question_5", function() {
+        it("should display the info to the user", function() {
+            return tester
+                .setup.user.state("state_question_5")
+                .check.interaction({
+                    reply: [
+                        "MomConnect holds your info while you're registered. If you opt out, " +
+                        "we'll use your info for historical, research & statistical",
+                        "1. Next",
+                        "2. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display the info to the user pg 2", function() {
+            return tester
+                .setup.user.state("state_question_5")
+                .input("1")
+                .check.interaction({
+                    reply: [
+                        "reasons with your consent.",
+                        "1. Previous",
+                        "2. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
 });
