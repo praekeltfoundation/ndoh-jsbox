@@ -258,10 +258,6 @@ go.app = function() {
                     if(_.isString(_.get(contact, "language"))) {
                         return self.im.user.set_lang(contact.language);
                     }
-                    //Set the dob  if we have it
-                    if(_.isString(_.get(contact, "dob"))) {
-                        return self.im.user.set_answer(dob, contact.dob);
-                    }
                 }).then(function() {
                     // Delegate to the correct state depending on group membership
                     var contact = self.im.user.get_answer("contact");
@@ -375,6 +371,7 @@ go.app = function() {
         });
 
         self.add("state_no_pmtct_subscription", function(name) {
+            var contact = self.im.user.get_answer("contact");
             return new ChoiceState(name, {
                 question: $("Would the mother like to receive messages about keeping her baby " +
                             "HIV-negative? The messages will use words like HIV, medicine and ARVs."),
@@ -389,11 +386,11 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if(choice.value === "yes") {
-                        if(_.isString(self.im.user.get_answer("dob"))){
-                            return "state_trigger_rapidpro_flow"
+                        if(_.isString(_.get(contact, "fields.dob"))){
+                            return "state_trigger_rapidpro_flow";
                         }
                         else{
-                            return "state_dob_year"
+                            return "state_dob_year";
                         }  
                     }
                     else {
@@ -499,8 +496,22 @@ go.app = function() {
         });
 
         self.add("state_trigger_rapidpro_flow", function(name, opts) {
+            var dob;
+            var contact = self.im.user.get_answer("contact");
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            if(_.isString(_.get(contact, "fields.dob"))) {
+                dob = moment.utc(contact.fields.dob).format();
+            } 
+            else { 
+                dob = new moment.utc(
+                self.im.user.answers.state_dob_year +
+                self.im.user.answers.state_dob_month +
+                self.im.user.answers.state_dob_day,
+                "YYYYMMDD"
+            ).format();
+            }
             return self.rapidpro.start_flow(self.im.config.flow_uuid, null, "tel:" + msisdn, {
+                dob: dob,
                 source: "PMTCT USSD"
             }).then(function() {
                 return self.states.create("state_end_registration");
@@ -520,7 +531,7 @@ go.app = function() {
                 next: "state_start",
                 text: (
                     "Thank you. The mother will receive messages about keeping her baby " +
-                    "HIV-negative. Have a lovely day"
+                    "HIV-negative. Have a lovely day."
                 )
             });
         });
