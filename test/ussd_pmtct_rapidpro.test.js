@@ -23,9 +23,9 @@ describe("ussd_pmtct app", function() {
                     token: "engage-token"
                 }
             },
-            clinic_group_ids: ["id-1"],
+            clinic_group_ids: ["id-0"],
             public_group_ids: ["id-2"],
-            pmtct_group_ids: ["id-0"],
+            pmtct_group_ids: ["id-1"],
             flow_uuid: "rapidpro-flow-uuid"
         });
     });
@@ -112,8 +112,8 @@ describe("ussd_pmtct app", function() {
                         fixtures_rapidpro.get_contact({
                             urn: "tel:+27123456789",
                             exists: true,
-                            groups: [{"uuid": "id-2"},
-                                    {"uuid": "id-0"}]
+                            groups: [{"uuid": "id-0"},
+                                    {"uuid": "id-1"}]
                         })
                     );
                 })
@@ -128,14 +128,11 @@ describe("ussd_pmtct app", function() {
                         fixtures_rapidpro.get_contact({
                             urn: "tel:+27123456789",
                             exists: true,
-                            groups: [{"uuid": "id-2"}]
+                            groups: [{"uuid": "id-1"}]
                         })
                     );
                 })
                 .setup.user.state("state_check_subscription")
-                /*.setup.user.answer("contact", {
-                    groups: [{"uuid": "id-2"}]
-                })*/
                 .check.user.state("state_no_pmtct_subscription")
                 .run();
         });
@@ -358,7 +355,7 @@ describe("ussd_pmtct app", function() {
                 .run();
         });
     });
-    /*describe("state_no_pmtct_subscription", function() {
+    describe("state_no_pmtct_subscription", function() {
         it("should display the options to the user", function() {
             return tester
                 .setup.user.state("state_no_pmtct_subscription")
@@ -395,7 +392,20 @@ describe("ussd_pmtct app", function() {
                 .setup.user.state("state_no_pmtct_subscription")
                 .setup.user.answer("contact", {
                     groups: [{"uuid": "id-0"}],
-                    dob: "19900101"
+                    fields: {dob: "1990-01-01T00:00:00"}
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "rapidpro-flow-uuid",
+                            null,
+                            "tel:+27123456789",
+                            {
+                                dob:  "1990-01-01T00:00:00Z",
+                                source: "PMTCT USSD",
+                            }
+                        )
+                    );
                 })
                 .input("1")
                 .check.interaction({
@@ -412,5 +422,71 @@ describe("ussd_pmtct app", function() {
                 .check.user.state("state_dob_year")
                 .run();
         });
-    });*/
+    });
+    describe("state_trigger_rapidpro_flow", function() {
+        it("should go to state_end_registration if the dob was manually added", function() {
+            return tester
+                .setup.user.state("state_trigger_rapidpro_flow")
+                .setup.user.answers({
+                    state_dob_year: "1990",
+                    state_dob_month: "01",
+                    state_dob_day: "01"
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "rapidpro-flow-uuid",
+                            null,
+                            "tel:+27123456789",
+                            {
+                                dob:  "1990-01-01T00:00:00Z",
+                                source: "PMTCT USSD",
+                            }
+                        )
+                    );
+                })
+                .input({session_event: "continue"})
+                .check.interaction({
+                    state: "state_end_registration",
+                    reply: 
+                        "Thank you. The mother will receive messages about keeping her baby " +
+                        "HIV-negative. Have a lovely day."
+                })
+                .check.reply.ends_session()
+                .run();
+        });
+        it("should retry in the case of HTTP failures", function() {
+            return tester
+                .setup.user.state("state_trigger_rapidpro_flow")
+                .setup.user.answers({
+                    state_dob_year: "1990",
+                    state_dob_month: "01",
+                    state_dob_day: "01"
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "rapidpro-flow-uuid",
+                            null,
+                            "tel:+27123456789",
+                            {
+                                dob:  "1990-01-01T00:00:00Z",
+                                source: "PMTCT USSD",
+                            },
+                            true
+                        )
+                    );
+                })
+                .input({session_event: "continue"})
+                .check(function(api){
+                    assert.equal(api.http.requests.length, 3);
+                    api.http.requests.forEach(function(request){
+                        assert.equal(request.url, "https://rapidpro/api/v2/flow_starts.json");
+                    });
+                    assert.equal(api.log.error.length, 1);
+                    assert(api.log.error[0].includes("HttpResponseError"));
+                })
+                .run();
+        });
+    });
 });
