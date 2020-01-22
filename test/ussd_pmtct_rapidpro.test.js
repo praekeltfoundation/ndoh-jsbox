@@ -19,7 +19,6 @@ describe("ussd_pmtct app", function() {
                 }
             },
             clinic_group_ids: ["id-0"],
-            public_group_ids: ["id-2"],
             pmtct_group_ids: ["id-1"],
             flow_uuid: "rapidpro-flow-uuid"
         });
@@ -143,7 +142,14 @@ describe("ussd_pmtct app", function() {
                     );
                 })
                 .setup.user.state("state_check_subscription")
-                .check.user.state("state_no_subscription")
+                .check.interaction({
+                    state: "state_no_subscription",
+                    reply: [
+                        "Welcome to the Department of Health’s MomConnect. To get msgs " +
+                        "about keeping your baby HIV-negative, register to MomConnect by " +
+                        "dialing *154*550*2# at the clinic."
+                    ].join("\n")
+                })
                 .run();
         });
         it("should retry HTTP call when RapidPro is down", function() {
@@ -396,8 +402,10 @@ describe("ussd_pmtct app", function() {
                             null,
                             "tel:+27123456789",
                             {
-                                dob:  "1990-01-01T00:00:00Z",
-                                source: "PMTCT USSD",
+                                babyloss_subscription: "FALSE",
+                                dob: "1990-01-01T00:00:00Z",
+                                optout: "FALSE",
+                                source: "PMTCT USSD"
                             }
                         )
                     );
@@ -535,8 +543,10 @@ describe("ussd_pmtct app", function() {
                             null,
                             "tel:+27123456789",
                             {
-                                dob:  "1987-02-22T00:00:00Z",
-                                source: "PMTCT USSD",
+                                dob: "1987-02-22T00:00:00Z",
+                                babyloss_subscription: "FALSE",
+                                optout:"FALSE",
+                                source: "PMTCT USSD"
                             }
                         )
                     );
@@ -562,8 +572,10 @@ describe("ussd_pmtct app", function() {
                             null,
                             "tel:+27123456789",
                             {
-                                dob:  "1990-01-01T00:00:00Z",
-                                source: "PMTCT USSD",
+                                dob: "1990-01-01T00:00:00Z",
+                                babyloss_subscription: "FALSE",
+                                optout: "FALSE",
+                                source: "PMTCT USSD"
                             }
                         )
                     );
@@ -578,13 +590,16 @@ describe("ussd_pmtct app", function() {
                 .check.reply.ends_session()
                 .run();
         });
-        it("should retry in the case of HTTP failures", function() {
+        it("should start a flow with the correct metadata if user has opted out without a loss ", function() {
             return tester
                 .setup.user.state("state_trigger_rapidpro_flow")
                 .setup.user.answers({
-                    state_dob_year: "1990",
-                    state_dob_month: "01",
-                    state_dob_day: "01"
+                    state_optout: "yes",
+                    optout_reason: "other",
+                    contact: {
+                        groups: [{"uuid": "id-0"}],
+                        fields: {dob: "1990-01-01T00:00:00"}
+                    }
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -593,6 +608,84 @@ describe("ussd_pmtct app", function() {
                             null,
                             "tel:+27123456789",
                             {
+                                babyloss_subscription:  "FALSE",
+                                optout: "TRUE",
+                                optout_reason: "other",
+                                dob:  "1990-01-01T00:00:00Z",
+                                source: "PMTCT USSD",
+                            }
+                        )
+                    );
+                })
+                .input({session_event: "continue"})
+                .check.interaction({
+                    state: "state_opted_out",
+                    reply: 
+                        "Thank you. She will no longer receive messages from us about HIV. " +
+                        "For any medical concerns, please visit a clinic."
+                })
+                .check.reply.ends_session()
+                .run();
+        });
+        it("should start a flow with the correct metadata if user has subscribed to loss messages", function() {
+            return tester
+                .setup.user.state("state_trigger_rapidpro_flow")
+                .setup.user.answers({
+                    state_optout: "yes",
+                    state_loss_optout: "yes",
+                    optout_reason: "babyloss",
+                    contact: {
+                        groups: [{"uuid": "id-0"}],
+                        fields: {dob: "1990-01-01T00:00:00"}
+                    }
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "rapidpro-flow-uuid",
+                            null,
+                            "tel:+27123456789",
+                            {
+                                babyloss_subscription:  "TRUE",
+                                optout: "TRUE",
+                                optout_reason: "babyloss",
+                                dob:  "1990-01-01T00:00:00Z",
+                                source: "PMTCT USSD",
+                            }
+                        )
+                    );
+                })
+                .input({session_event: "continue"})
+                .check.interaction({
+                    state: "state_loss_subscription",
+                    reply: 
+                    "Thank you. She will receive messages of support from MomConnect in the coming weeks."
+                })
+                .check.reply.ends_session()
+                .run();
+        });
+        it("should retry in the case of HTTP failures", function() {
+            return tester
+                .setup.user.state("state_trigger_rapidpro_flow")
+                .setup.user.answers({
+                    state_optout: "yes",
+                    state_loss_optout: "yes",
+                    optout_reason: "babyloss",
+                    contact: {
+                        groups: [{"uuid": "id-0"}],
+                        fields: {dob: "1990-01-01T00:00:00"}
+                    }
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "rapidpro-flow-uuid",
+                            null,
+                            "tel:+27123456789",
+                            {
+                                babyloss_subscription:  "TRUE",
+                                optout: "TRUE",
+                                optout_reason: "babyloss",
                                 dob:  "1990-01-01T00:00:00Z",
                                 source: "PMTCT USSD",
                             },
