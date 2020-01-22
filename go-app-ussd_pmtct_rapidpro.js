@@ -429,7 +429,7 @@ go.app = function() {
 
         self.add("state_dob_month", function(name) {
             return new ChoiceState(name, {
-                question: $("In what month was the mother born? Please enter the number that matches the answer."),
+                question: $("What month was she born? Please enter the number that matches the answer."),
                 error: $(
                     "Sorry we don't understand. Please enter the no. next to the mom's answer."
                 ),
@@ -470,7 +470,7 @@ go.app = function() {
                     ){
                         return $(
                             "Sorry, we don't understand. Please try again by entering the day " +
-                            "the mother was born as a number, e.g. 12."
+                            "she was born as a number, e.g. 12."
                         );
                     }
                 },
