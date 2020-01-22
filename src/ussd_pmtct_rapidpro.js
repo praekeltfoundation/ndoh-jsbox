@@ -22,11 +22,6 @@ go.app = function() {
                 self.im.config.services.rapidpro.base_url,
                 self.im.config.services.rapidpro.token
             );
-            self.whatsapp = new go.Engage(
-                new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-PMTCT"]}}),
-                self.im.config.services.whatsapp.base_url,
-                self.im.config.services.whatsapp.token
-            );
         };
 
         self.contact_in_group = function(contact, groups){
@@ -99,8 +94,6 @@ go.app = function() {
         self.add("state_check_subscription", function(name, opts) {
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
-            // Fire and forget a background whatsapp contact check
-            self.whatsapp.contact_check(msisdn, false).then(_.noop, _.noop);
 
             return self.rapidpro.get_contact({urn: "tel:" + msisdn})
                 .then(function(contact) {

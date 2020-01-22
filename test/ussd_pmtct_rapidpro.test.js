@@ -2,7 +2,6 @@ var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
 var assert = require("assert");
 var fixtures_rapidpro = require("./fixtures_rapidpro")();
-//var fixtures_whatsapp = require("./fixtures_pilot")();
 
 describe("ussd_pmtct app", function() {
     var app;
@@ -17,10 +16,6 @@ describe("ussd_pmtct app", function() {
                 rapidpro: {
                     base_url: "https://rapidpro",
                     token: "rapidpro-token"
-                },
-                whatsapp: {
-                    base_url: "http://pilot.example.org",
-                    token: "engage-token"
                 }
             },
             clinic_group_ids: ["id-0"],
