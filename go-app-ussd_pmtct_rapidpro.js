@@ -208,7 +208,7 @@ go.app = function() {
                 }).then(function() {
                     // Delegate to the correct state depending on group membership
                     var contact = self.im.user.get_answer("contact");
-                    if(self.contact_in_group(contact, _.concat(self.im.config.public_group_ids, self.im.config.clinic_group_ids))){
+                    if(self.contact_in_group(contact, self.im.config.clinic_group_ids)){
                         if(self.contact_in_group(contact, self.im.config.pmtct_group_ids)){
                             return self.states.create("state_optout");
                         } else {
@@ -229,16 +229,23 @@ go.app = function() {
         });
 
         self.states.add("state_optout", function(name) {
-            return new MenuState(name, {
+            return new ChoiceState(name, {
                 question: "The mother is currently receiving messages about keeping her baby " +
                             "HIV-negative. Does she want to stop getting these messages?",
                 error:
                     "Sorry, please reply with the number next to your answer. " +
                     "Does she want to stop getting these messages?",
                 choices: [
-                    new Choice("state_optout_reason", "Yes"),
-                    new Choice("state_no_optout", "No")
+                    new Choice("yes", "Yes"),
+                    new Choice("no", "No")
                 ],
+                next: function(choice) {
+                    if(choice.value === "yes") {
+                        return "state_optout_reason";
+                    } else {
+                        return "state_no_optout";
+                    }
+                }
             });
         });
 
@@ -436,8 +443,9 @@ go.app = function() {
             return new EndState(name, {
                 next: "state_start",
                 text: $(
-                    "Thank you. The mother will receive messages about " + 
-                    "keeping her baby HIV-negative. Have a lovely day."
+                    "Welcome to the Department of Health’s MomConnect. To get msgs " +
+                    "about keeping your baby HIV-negative, register to MomConnect by " +
+                    "dialing *154*550*2# at the clinic."
                 )
             });
         });
@@ -446,6 +454,7 @@ go.app = function() {
             var dob;
             var contact = self.im.user.get_answer("contact");
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            var babyloss_subscription = self.im.user.get_answer("state_loss_optout") === "yes" ? "TRUE" : "FALSE";
             if(_.isString(_.get(contact, "fields.dob"))) {
                 dob = moment.utc(contact.fields.dob).format();
             } 
@@ -459,9 +468,20 @@ go.app = function() {
             }
             return self.rapidpro.start_flow(self.im.config.flow_uuid, null, "tel:" + msisdn, {
                 dob: dob,
-                source: "PMTCT USSD"
+                optout_reason: self.im.user.get_answer("optout_reason"),
+                babyloss_subscription: babyloss_subscription,
+                optout: 
+                    self.im.user.get_answer("state_optout") === "yes" ? "TRUE" : "FALSE",
+                source: "PMTCT USSD",
             }).then(function() {
-                return self.states.create("state_end_registration");
+                if ((self.im.user.get_answer("state_optout") === "yes") && babyloss_subscription === "FALSE"){
+                    return self.states.create("state_opted_out");
+                }else if (self.im.user.get_answer("state_loss_optout") === "yes"){
+                    return self.states.create("state_loss_subscription");
+                }
+                else{
+                    return self.states.create("state_end_registration"); 
+                }
             }).catch(function(e) {
                 // Go to error state after 3 failed HTTP requests
                 opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
