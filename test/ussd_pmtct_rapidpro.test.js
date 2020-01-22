@@ -423,6 +423,134 @@ describe("ussd_pmtct app", function() {
                 .run();
         });
     });
+    describe("state_dob_year", function() {
+        it("should ask the user for the year of the date of birth", function() {
+            return tester
+                .setup.user.state("state_dob_year")
+                .check.interaction({
+                    reply:
+                        "In what year was she born? Please enter the year as 4 digits in " +
+                        "the format YYYY."
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_dob_year")
+                .input("22")
+                .check.interaction({
+                    reply: 
+                        "Sorry, we don't understand. Please try again by entering the year " +
+                        "she was born as 4 digits in the format YYYY, e.g. 1910."
+                })
+                .run();
+        });
+        it("should go to state_dob_month on valid input", function() {
+            return tester
+                .setup.user.state("state_dob_year")
+                .input("1988")
+                .check.user.state("state_dob_month")
+                .run();
+        });
+    });
+    describe("state_dob_month", function() {
+        it("should ask the user for the month of the date of birth", function() {
+            return tester
+                .setup.user.state("state_dob_month")
+                .check.interaction({
+                    reply: [
+                        "What month was she born? Please enter the number that matches the answer.",
+                        "1. Jan",
+                        "2. Feb",
+                        "3. Mar",
+                        "4. Apr",
+                        "5. May",
+                        "6. Jun",
+                        "7. Jul",
+                        "8. Aug",
+                        "9. Sep",
+                        "10. Oct",
+                        "11. Nov",
+                        "12. Dec"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error an invalid input is given", function() {
+            return tester
+                .setup.user.state("state_dob_month")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't understand. Please enter the no. next to the mom's answer.",
+                        "1. Jan",
+                        "2. Feb",
+                        "3. Mar",
+                        "4. Apr",
+                        "5. May",
+                        "6. Jun",
+                        "7. Jul",
+                        "8. Aug",
+                        "9. Sep",
+                        "10. Oct",
+                        "11. Nov",
+                        "12. Dec"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_dob_day if the input is valid", function() {
+            return tester
+                .setup.user.state("state_dob_month")
+                .input("4")
+                .check.user.state("state_dob_day")
+                .run();
+        });
+    });
+    describe("state_dob_day", function() {
+        it("should ask the user for the day of dob", function() {
+            return tester
+                .setup.user.state("state_dob_day")
+                .check.interaction({
+                    reply:
+                        "On what day was she born? Please enter the day as a number, e.g. 12."
+                })
+                .run();
+        });
+        it("should display an error for invalid input", function() {
+            return tester
+                .setup.user.state("state_dob_day")
+                .setup.user.answers({state_dob_year: "1987", state_dob_month: "02"})
+                .input("29")
+                .check.interaction({
+                    reply:
+                        "Sorry, we don't understand. Please try again by entering the day she " +
+                        "was born as a number, e.g. 12."
+                })
+                .run();
+        });
+        it("should go to state_end_registration on a valid input", function() {
+            return tester
+                .setup.user.state("state_dob_day")
+                .setup.user.answers({state_dob_year: "1987", state_dob_month: "02"})
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "rapidpro-flow-uuid",
+                            null,
+                            "tel:+27123456789",
+                            {
+                                dob:  "1987-02-22T00:00:00Z",
+                                source: "PMTCT USSD",
+                            }
+                        )
+                    );
+                })
+                .input("22")
+                .check.user.state("state_end_registration")
+                .run();
+        });
+    });
     describe("state_trigger_rapidpro_flow", function() {
         it("should go to state_end_registration if the dob was manually added", function() {
             return tester
