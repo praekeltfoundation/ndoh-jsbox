@@ -276,6 +276,29 @@ describe("ussd_pmtct app", function() {
         it("should go to state_opted_out if any of the nonloss options are chosen", function() {
             return tester
                 .setup.user.state("state_optout_reason")
+                .setup.user.answers({
+                    state_optout: "yes",
+                    contact: {
+                        groups: [{"uuid": "id-0"}],
+                        fields: {dob: "1990-01-01T00:00:00"}
+                    }
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "rapidpro-flow-uuid",
+                            null,
+                            "tel:+27123456789",
+                            {
+                                babyloss_subscription: "FALSE",
+                                optout: "TRUE",
+                                optout_reason: "not_useful",
+                                dob:  "1990-01-01T00:00:00Z",
+                                source: "PMTCT USSD",
+                            }
+                        )
+                    );
+                })
                 .input("5")
                 .check.interaction({
                     state: "state_opted_out",
@@ -337,6 +360,28 @@ describe("ussd_pmtct app", function() {
         it("should go to state_opted_out if they choose no", function() {
             return tester
                 .setup.user.state("state_loss_optout")
+                .setup.user.answers({
+                    state_optout: "yes",
+                    contact: {
+                        groups: [{"uuid": "id-0"}],
+                        fields: {dob: "1990-01-01T00:00:00"}
+                    }
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "rapidpro-flow-uuid",
+                            null,
+                            "tel:+27123456789",
+                            {
+                                babyloss_subscription: "FALSE",
+                                optout: "TRUE",
+                                dob:  "1990-01-01T00:00:00Z",
+                                source: "PMTCT USSD",
+                            }
+                        )
+                    );
+                })
                 .input("2")
                 .check.interaction({
                     state: "state_opted_out",
@@ -348,6 +393,30 @@ describe("ussd_pmtct app", function() {
         it("should go to state_loss_subscription if they choose yes", function() {
             return tester
                 .setup.user.state("state_loss_optout")
+                .setup.user.answers({
+                    state_optout: "yes",
+                    state_optout_reason: "babyloss",
+                    contact: {
+                        groups: [{"uuid": "id-0"}],
+                        fields: {dob: "1990-01-01T00:00:00"}
+                    }
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "rapidpro-flow-uuid",
+                            null,
+                            "tel:+27123456789",
+                            {
+                                babyloss_subscription: "TRUE",
+                                optout_reason: "babyloss",
+                                optout: "TRUE",
+                                dob:  "1990-01-01T00:00:00Z",
+                                source: "PMTCT USSD",
+                            }
+                        )
+                    );
+                })
                 .input("1")
                 .check.interaction({
                     state: "state_loss_subscription",
@@ -563,7 +632,7 @@ describe("ussd_pmtct app", function() {
                 .setup.user.answers({
                     state_dob_year: "1990",
                     state_dob_month: "01",
-                    state_dob_day: "01"
+                    state_dob_day: "01",
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -595,7 +664,7 @@ describe("ussd_pmtct app", function() {
                 .setup.user.state("state_trigger_rapidpro_flow")
                 .setup.user.answers({
                     state_optout: "yes",
-                    optout_reason: "other",
+                    state_optout_reason: "other",
                     contact: {
                         groups: [{"uuid": "id-0"}],
                         fields: {dob: "1990-01-01T00:00:00"}
@@ -633,7 +702,7 @@ describe("ussd_pmtct app", function() {
                 .setup.user.answers({
                     state_optout: "yes",
                     state_loss_optout: "yes",
-                    optout_reason: "babyloss",
+                    state_optout_reason: "babyloss",
                     contact: {
                         groups: [{"uuid": "id-0"}],
                         fields: {dob: "1990-01-01T00:00:00"}
@@ -670,7 +739,7 @@ describe("ussd_pmtct app", function() {
                 .setup.user.answers({
                     state_optout: "yes",
                     state_loss_optout: "yes",
-                    optout_reason: "babyloss",
+                    state_optout_reason: "babyloss",
                     contact: {
                         groups: [{"uuid": "id-0"}],
                         fields: {dob: "1990-01-01T00:00:00"}

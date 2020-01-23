@@ -276,11 +276,10 @@ go.app = function() {
                     new Choice("unknown", "I prefer not to say")
                 ],
                 next: function(choice) {
-                    self.im.user.set_answer("optout_reason", choice.value);
                     if(_.includes(["miscarriage", "stillborn", "babyloss"], choice.value)) {
                         return "state_loss_optout";
                     } else {
-                        return "state_opted_out";
+                        return "state_trigger_rapidpro_flow";
                       }  
                 }
             });
@@ -306,13 +305,7 @@ go.app = function() {
                     new Choice("yes", "Yes"),
                     new Choice("no", "No")
                 ],
-                next: function(choice) {
-                    if(choice.value === "yes") {
-                        return "state_loss_subscription";
-                    } else {
-                        return "state_opted_out";
-                    }
-                }
+                next: "state_trigger_rapidpro_flow"
             });
         });
 
@@ -468,7 +461,7 @@ go.app = function() {
             }
             return self.rapidpro.start_flow(self.im.config.flow_uuid, null, "tel:" + msisdn, {
                 dob: dob,
-                optout_reason: self.im.user.get_answer("optout_reason"),
+                optout_reason: self.im.user.get_answer("state_optout_reason"),
                 babyloss_subscription: babyloss_subscription,
                 optout: 
                     self.im.user.get_answer("state_optout") === "yes" ? "TRUE" : "FALSE",
