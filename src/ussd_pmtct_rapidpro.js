@@ -127,14 +127,14 @@ go.app = function() {
 
         self.states.add("state_optout", function(name) {
             return new ChoiceState(name, {
-                question: "The mother is currently receiving messages about keeping her baby " +
-                            "HIV-negative. Does she want to stop getting these messages?",
+                question: $("The mother is currently receiving messages about keeping her baby " +
+                            "HIV-negative. Does she want to stop getting these messages?"),
                 error:
-                    "Sorry, please reply with the number next to your answer. " +
-                    "Does she want to stop getting these messages?",
+                    $("Sorry, please reply with the number next to your answer. " +
+                    "Does she want to stop getting these messages?"),
                 choices: [
-                    new Choice("yes", "Yes"),
-                    new Choice("no", "No")
+                    new Choice("yes", $("Yes")),
+                    new Choice("no", $("No"))
                 ],
                 next: function(choice) {
                     if(choice.value === "yes") {
@@ -150,13 +150,13 @@ go.app = function() {
             return new EndState(name, {
                 next: "state_start",
                 text:
-                    "Thanks! MomConnect will continue to send HER helpful messages and process your " +
-                    "personal info."
+                    $("Thanks! MomConnect will continue to send HER helpful messages and process your " +
+                    "personal info.")
             });
         });
 
         self.add("state_optout_reason", function(name) {
-            var question = "Please tell us why she no longer wants to get msgs:";
+            var question = $("Please tell us why she no longer wants to get msgs:");
             return new PaginatedChoiceState(name, {
                 question: question,
                 error: question,
@@ -164,13 +164,13 @@ go.app = function() {
                 options_per_page: null,
                 characters_per_page: 160,
                 choices: [
-                    new Choice("not_hiv_positive", "She's not HIV+"),
-                    new Choice("miscarriage", "Miscarriage"),
-                    new Choice("stillborn", "Baby was stillborn"),
-                    new Choice("babyloss", "Baby passed away"),
-                    new Choice("not_useful", "Msgs aren't helpful"),
-                    new Choice("other", "Other"),
-                    new Choice("unknown", "I prefer not to say")
+                    new Choice("not_hiv_positive", $("She's not HIV+")),
+                    new Choice("miscarriage", $("Miscarriage")),
+                    new Choice("stillborn", $("Baby was stillborn")),
+                    new Choice("babyloss", $("Baby passed away")),
+                    new Choice("not_useful", $("Msgs aren't helpful")),
+                    new Choice("other", $("Other")),
+                    new Choice("unknown", $("I prefer not to say"))
                 ],
                 next: function(choice) {
                     if(_.includes(["miscarriage", "stillborn", "babyloss"], choice.value)) {
@@ -186,21 +186,21 @@ go.app = function() {
             return new EndState(name, {
                 next: "state_start",
                 text:
-                    "Thank you. She will no longer receive messages from us about HIV. " +
-                    "For any medical concerns, please visit a clinic."
+                    $("Thank you. She will no longer receive messages from us about HIV. " +
+                    "For any medical concerns, please visit a clinic.")
             });
         });
 
         self.add("state_loss_optout", function(name) {
             return new ChoiceState(name, {
-                question: "We're sorry for your loss. Would she like to receive a small set of " +
-                            "MomConnect messages that could help you during this difficult time?",
+                question: $("We're sorry for your loss. Would she like to receive a small set of " +
+                            "MomConnect messages that could help you during this difficult time?"),
                 error:
-                    "Sorry, please reply with the number next to your answer. " +
-                    "Would she like to receive a small set of MomConnect messages?",
+                    $("Sorry, please reply with the number next to your answer. " +
+                    "Would she like to receive a small set of MomConnect messages?"),
                 choices: [
-                    new Choice("yes", "Yes"),
-                    new Choice("no", "No")
+                    new Choice("yes", $("Yes")),
+                    new Choice("no", $("No"))
                 ],
                 next: "state_trigger_rapidpro_flow"
             });
@@ -210,7 +210,7 @@ go.app = function() {
             return new EndState(name, {
                 next: "state_start",
                 text:
-                    "Thank you. She will receive messages of support from MomConnect in the coming weeks."
+                    $("Thank you. She will receive messages of support from MomConnect in the coming weeks.")
             });
         });
 
@@ -386,7 +386,7 @@ go.app = function() {
         self.states.add("state_end_registration", function(name) {
             return new EndState(name, {
                 next: "state_start",
-                text: (
+                text: $(
                     "Thank you. The mother will receive messages about keeping her baby " +
                     "HIV-negative. Have a lovely day."
                 )
