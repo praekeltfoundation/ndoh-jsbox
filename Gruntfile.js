@@ -116,6 +116,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_pmtct_rapidpro: [
                     'src/index.js',
+                    'src/rapidpro.js',
                     '<%= paths.src.app.ussd_pmtct_rapidpro %>',
                     'src/init.js'
                 ],
@@ -232,6 +233,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_pmtct_rapidpro: [
                     'test/setup.js',
+                    'src/rapidpro.js',
                     '<%= paths.src.app.ussd_pmtct_rapidpro %>',
                     'test/ussd_pmtct_rapidpro.test.js'
                 ],
