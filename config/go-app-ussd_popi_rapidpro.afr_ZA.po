@@ -1,0 +1,679 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2020-01-30 03:39:+0000\n"
+"PO-Revision-Date: 2020-01-30 17:39+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: af\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.4\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/ussd_popi_rapidpro.js:35
+msgid "Zimbabwe"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:36
+msgid "Mozambique"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:37
+msgid "Malawi"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:38
+msgid "Nigeria"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:39
+msgid "DRC"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:40
+msgid "Somalia"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:41 src/ussd_popi_rapidpro.js:845
+msgid "Other"
+msgstr "Ander"
+
+#: src/ussd_popi_rapidpro.js:60 src/ussd_popi_rapidpro.js:71
+msgid "WhatsApp"
+msgstr "WhatsApp"
+
+#: src/ussd_popi_rapidpro.js:62 src/ussd_popi_rapidpro.js:69
+msgid "SMS"
+msgstr "SMS"
+
+#: src/ussd_popi_rapidpro.js:121
+msgid "Welcome to MomConnect. What would you like to do?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:123
+msgid "See my info"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:124
+msgid "Change my info"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:125
+msgid "Opt-out & delete info"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:126
+msgid "How is my info processed?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:128 src/ussd_popi_rapidpro.js:220
+#: src/ussd_popi_rapidpro.js:839
+msgid "Sorry we don't understand. Please try again."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:135
+msgid ""
+"Cell number: {{msisdn}}\n"
+"Channel: {{channel}}\n"
+"Language: {{language}}\n"
+"{{id_type}}: {{id_details}}\n"
+"Type: {{message_type}}\n"
+"Research messages: {{research}}\n"
+"Baby's birthday: {{dobs}}"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:145 src/ussd_popi_rapidpro.js:146
+#: src/ussd_popi_rapidpro.js:151 src/ussd_popi_rapidpro.js:154
+#: src/ussd_popi_rapidpro.js:159 src/ussd_popi_rapidpro.js:160
+#: src/ussd_popi_rapidpro.js:161 src/ussd_popi_rapidpro.js:166
+#: src/ussd_popi_rapidpro.js:171 src/ussd_popi_rapidpro.js:177
+msgid "None"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:148 src/ussd_popi_rapidpro.js:716
+msgid "Passport"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:149 src/ussd_popi_rapidpro.js:722
+msgid "Date of Birth"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:150
+msgid "SA ID"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:163
+msgid "Public"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:164
+msgid "Pregnancy"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:165
+msgid "Baby"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:169 src/ussd_popi_rapidpro.js:234
+#: src/ussd_popi_rapidpro.js:391 src/ussd_popi_rapidpro.js:755
+#: src/ussd_popi_rapidpro.js:813 src/ussd_popi_rapidpro.js:871
+#: src/ussd_popi_rapidpro.js:889 src/ussd_popi_rapidpro.js:907
+#: src/ussd_popi_rapidpro.js:1017 src/ussd_popi_rapidpro.js:1231
+#: src/ussd_popi_rapidpro.js:1318
+msgid "Yes"
+msgstr "Ja"
+
+#: src/ussd_popi_rapidpro.js:170 src/ussd_popi_rapidpro.js:235
+#: src/ussd_popi_rapidpro.js:814 src/ussd_popi_rapidpro.js:872
+#: src/ussd_popi_rapidpro.js:890 src/ussd_popi_rapidpro.js:908
+#: src/ussd_popi_rapidpro.js:1018
+msgid "No"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:193 src/ussd_popi_rapidpro.js:1387
+#: src/ussd_popi_rapidpro.js:1403 src/ussd_popi_rapidpro.js:1422
+#: src/ussd_popi_rapidpro.js:1436 src/ussd_popi_rapidpro.js:1450
+#: src/ussd_popi_rapidpro.js:1465
+msgid "Previous"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:194 src/ussd_popi_rapidpro.js:459
+#: src/ussd_popi_rapidpro.js:568 src/ussd_popi_rapidpro.js:924
+#: src/ussd_popi_rapidpro.js:1386 src/ussd_popi_rapidpro.js:1402
+#: src/ussd_popi_rapidpro.js:1421 src/ussd_popi_rapidpro.js:1435
+#: src/ussd_popi_rapidpro.js:1449 src/ussd_popi_rapidpro.js:1464
+msgid "Next"
+msgstr "Volgende"
+
+#: src/ussd_popi_rapidpro.js:195 src/ussd_popi_rapidpro.js:218
+#: src/ussd_popi_rapidpro.js:372 src/ussd_popi_rapidpro.js:437
+#: src/ussd_popi_rapidpro.js:458 src/ussd_popi_rapidpro.js:567
+#: src/ussd_popi_rapidpro.js:738 src/ussd_popi_rapidpro.js:1301
+#: src/ussd_popi_rapidpro.js:1367 src/ussd_popi_rapidpro.js:1401
+#: src/ussd_popi_rapidpro.js:1420 src/ussd_popi_rapidpro.js:1434
+#: src/ussd_popi_rapidpro.js:1448 src/ussd_popi_rapidpro.js:1463
+msgid "Back"
+msgstr "Terug"
+
+#: src/ussd_popi_rapidpro.js:205
+msgid "What would you like to change?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:209
+msgid "Change from {{current_channel}} to {{alternative_channel}}"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:214
+msgid "Cell number"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:215
+msgid "Language"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:216
+msgid "Identification"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:217
+msgid "Research messages"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:227
+msgid ""
+"Are you sure you want to get your MomConnect messages on "
+"{{alternative_channel}}?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:237 src/ussd_popi_rapidpro.js:280
+#: src/ussd_popi_rapidpro.js:308 src/ussd_popi_rapidpro.js:375
+#: src/ussd_popi_rapidpro.js:394 src/ussd_popi_rapidpro.js:440
+#: src/ussd_popi_rapidpro.js:453 src/ussd_popi_rapidpro.js:497
+#: src/ussd_popi_rapidpro.js:511 src/ussd_popi_rapidpro.js:562
+#: src/ussd_popi_rapidpro.js:622 src/ussd_popi_rapidpro.js:733
+#: src/ussd_popi_rapidpro.js:750 src/ussd_popi_rapidpro.js:794
+#: src/ussd_popi_rapidpro.js:808 src/ussd_popi_rapidpro.js:825
+#: src/ussd_popi_rapidpro.js:866 src/ussd_popi_rapidpro.js:884
+#: src/ussd_popi_rapidpro.js:902 src/ussd_popi_rapidpro.js:919
+#: src/ussd_popi_rapidpro.js:1002 src/ussd_popi_rapidpro.js:1020
+#: src/ussd_popi_rapidpro.js:1101 src/ussd_popi_rapidpro.js:1157
+#: src/ussd_popi_rapidpro.js:1226 src/ussd_popi_rapidpro.js:1296
+#: src/ussd_popi_rapidpro.js:1313 src/ussd_popi_rapidpro.js:1362
+msgid ""
+"Sorry we don't recognise that reply. Please enter the number next to your "
+"answer."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:271
+msgid ""
+"Thank you! We'll send your MomConnect messages to {{channel}}. What would "
+"you like to do?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:277 src/ussd_popi_rapidpro.js:305
+#: src/ussd_popi_rapidpro.js:502 src/ussd_popi_rapidpro.js:799
+#: src/ussd_popi_rapidpro.js:830 src/ussd_popi_rapidpro.js:1384
+msgid "Back to main menu"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:278 src/ussd_popi_rapidpro.js:306
+#: src/ussd_popi_rapidpro.js:373 src/ussd_popi_rapidpro.js:438
+#: src/ussd_popi_rapidpro.js:503 src/ussd_popi_rapidpro.js:739
+#: src/ussd_popi_rapidpro.js:800 src/ussd_popi_rapidpro.js:831
+#: src/ussd_popi_rapidpro.js:1000 src/ussd_popi_rapidpro.js:1099
+#: src/ussd_popi_rapidpro.js:1302 src/ussd_popi_rapidpro.js:1368
+msgid "Exit"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:289
+msgid ""
+"Thanks for using MomConnect. You can dial *134*550*7# any time to manage "
+"your info. Have a lovely day!"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:300
+msgid ""
+"You'll keep getting your messages on {{channel}}. If you change your mind, "
+"dial *134*550*7#. What would you like to do?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:317
+msgid ""
+"Please enter the new cell number you would like to get your MomConnect "
+"messages on, e.g. 0813547654"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:323 src/ussd_popi_rapidpro.js:1248
+msgid ""
+"Sorry, we don't understand that cell number. Please enter 10 digit cell "
+"number that you would like to get your MomConnect messages on, e.g. "
+"0813547654."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:329 src/ussd_popi_rapidpro.js:1042
+#: src/ussd_popi_rapidpro.js:1255
+msgid ""
+"We're looking for your information. Please avoid entering the examples in "
+"our messages. Enter your own details."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:367
+msgid ""
+"Sorry, the cell number you entered already gets MC msgs. To manage it, dial "
+"*134*550*7# from that number. What would you like to do?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:387
+msgid ""
+"You've entered {{msisdn}} as your new MomConnect number. Is this correct?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:392 src/ussd_popi_rapidpro.js:1319
+msgid "No, I want to try again"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:432
+msgid ""
+"Thanks! We sent a msg to {{msisdn}}. Follow the instructions. Ignore it to "
+"continue getting msgs on the old number. What would you like to do?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:449
+msgid ""
+"What language would you like to receive messages in? Enter the number that "
+"matches your answer."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:493
+msgid ""
+"Thanks! You've changed your language. We'll send your MomConnect messages in "
+"{{language}}. What would you like to do?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:510
+msgid "What kind of identification do you have?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:516 src/ussd_popi_rapidpro.js:714
+msgid "South African ID"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:517
+msgid "Passport Number"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:518
+msgid "Date of Birth only"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:525
+msgid "Please enter your ID number as you find it in your Identity Document"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:545
+msgid ""
+"Sorry, we don't understand. Please try again by entering your 13 digit South "
+"African ID number."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:558
+msgid ""
+"What is the country of origin of your passport? Enter the number that "
+"matches your answer."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:577
+msgid "Please enter your Passport number as it appears in your passport."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:580
+msgid ""
+"Sorry, we don't understand. Please try again by entering your Passport "
+"number as it appears in your passport."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:592
+msgid ""
+"In what year were you born? Please enter the year as 4 numbers in the format "
+"YYYY."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:607
+msgid ""
+"Sorry, we don't understand. Please try again by entering the year you were "
+"born as 4 digits in the format YYYY, e.g. 1910."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:619 src/ussd_popi_rapidpro.js:1154
+msgid ""
+"In what month were you born? Please enter the number that matches your "
+"answer."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:627 src/ussd_popi_rapidpro.js:1162
+msgid "Jan"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:628 src/ussd_popi_rapidpro.js:1163
+msgid "Feb"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:629 src/ussd_popi_rapidpro.js:1164
+msgid "Mar"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:630 src/ussd_popi_rapidpro.js:1165
+msgid "Apr"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:631 src/ussd_popi_rapidpro.js:1166
+msgid "May"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:632 src/ussd_popi_rapidpro.js:1167
+msgid "Jun"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:633 src/ussd_popi_rapidpro.js:1168
+msgid "Jul"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:634 src/ussd_popi_rapidpro.js:1169
+msgid "Aug"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:635 src/ussd_popi_rapidpro.js:1170
+msgid "Sep"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:636 src/ussd_popi_rapidpro.js:1171
+msgid "Oct"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:637 src/ussd_popi_rapidpro.js:1172
+msgid "Nov"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:638 src/ussd_popi_rapidpro.js:1173
+msgid "Dec"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:646 src/ussd_popi_rapidpro.js:1181
+msgid "On what day were you born? Please enter the day as a number."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:661
+msgid ""
+"Sorry, we don't understand. Please try again by entering the day you were "
+"born as a number, e.g. 12."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:729
+msgid ""
+"Thanks! We've updated your info. Your registered identification is "
+"{{identification_type}}: {{identification_number}}. What would you like to "
+"do?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:746
+msgid ""
+"We may occasionally send msgs for historical, statistical, or research "
+"reasons. We'll keep your info safe. Do you agree?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:756
+msgid "No, only send MC msgs"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:785
+msgid ""
+"Thanks! You've agreed to get research messages. What would you like to do?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:788
+msgid ""
+"Thanks! You have not agreed to get research messages. What would you like to "
+"do?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:807
+msgid "Do you want to stop getting MomConnect messages?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:821
+msgid ""
+"Thanks! MomConnect will continue to send helpful messages and process your "
+"personal info. What would you like to do?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:838
+msgid "We'll stop sending msgs. Why do you want to stop your MC msgs?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:841
+msgid "Miscarriage"
+msgstr "Miskraam"
+
+#: src/ussd_popi_rapidpro.js:842
+msgid "Baby was stillborn"
+msgstr "Baba doodgebore"
+
+#: src/ussd_popi_rapidpro.js:843
+msgid "Baby passed away"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:844
+msgid "Msgs aren't helpful"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:846
+msgid "I prefer not to say"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:862
+msgid ""
+"We're sorry for your loss. Would you like to receive a small set of "
+"MomConnect messages that could help you during this difficult time?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:879
+msgid ""
+"You'll get support msgs. We hold your info for historical/research/"
+"statistical reasons. Do you want us to delete it after you stop getting msgs?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:898
+msgid ""
+"We hold your info for historical/research/statistical reasons after you opt "
+"out. Do you want to delete your info after you stop getting messages?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:915
+msgid ""
+"All your info will be permanently deleted in the next 7 days. We'll stop "
+"sending you messages. Please select Next to continue:"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:966
+msgid ""
+"Thank you. MomConnect will send helpful messages to you over the coming "
+"weeks. All your info will be deleted 7 days after your last MC message."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:976
+msgid ""
+"Thank you. MomConnect will send helpful messages to you over the coming "
+"weeks."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:985
+msgid ""
+"Thank you. You'll no longer get messages from MomConnect. For any medical "
+"concerns, please visit a clinic. Have a lovely day."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:994
+msgid ""
+"Sorry, we don't know this number. Please dial in with the number you get "
+"your MomConnect (MC) messages on"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:999
+msgid "I don't have that SIM"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:1012
+msgid ""
+"Do you want to change the cell number that you receive MomConnect messages "
+"on?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:1029
+msgid ""
+"Please enter the cell number you currently get MomConnect messages on, e.g. "
+"0813547654"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:1035
+msgid ""
+"Sorry, we don't understand. Please try again by entering the 10 digit cell "
+"number that you currently get your MomConnect messages on, e.g. 0813547654."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:1093
+msgid ""
+"Sorry, MomConnect doesn't recognise {{msisdn}}. If you are new to "
+"MomConnect, please visit a clinic to register. Made a mistake?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:1098
+msgid "Try again"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:1110
+msgid ""
+"Thanks! To change your cell number we need to confirm your identity. Please "
+"enter your ID number as you find it in your Identity Document."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:1127
+msgid ""
+"Thanks! To change your cell phone number we need to confirm your identity. "
+"Please enter your passport number as it appears in your passport."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:1144
+msgid ""
+"Thanks! To change your cell number we need to confirm your identity. Please "
+"enter the year you were born as 4 digits in the format YYYY."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:1205
+msgid "ID number"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:1205
+msgid "passport number"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:1207
+msgid "date of birth"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:1210
+msgid ""
+"Sorry, we don't recognise that {{id_type}}. We can't change the no. you get "
+"your MC msgs on. Visit the clinic to change your no. Have a lovely day!"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:1221 src/ussd_popi_rapidpro.js:1310
+msgid "Do you want to get your MomConnect messages on this number {{msisdn}}?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:1234
+msgid "No, I would like to get my messages on a different number"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:1242
+msgid ""
+"Please enter the new cell number you would like to get your MomConnect "
+"messages on, e.g. 0813547654."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:1292
+msgid ""
+"Sorry the number you want to get your msgs on already gets msgs from MC. To "
+"manage it, dial *134*550*7# from that no. What would you like to do?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:1358
+msgid ""
+"Thanks! We sent a msg to {{msisdn}}. Follow the instructions. Ignore it to "
+"continue getting msgs on the old cell no. What would you like to do?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:1375
+msgid "Choose a question you're interested in:"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:1379
+msgid "What is MomConnect?"
+msgstr "Wat is MomConnect?"
+
+#: src/ussd_popi_rapidpro.js:1380
+msgid "Why does MomConnect need my info?"
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:1381
+msgid "What personal info is collected?"
+msgstr "Watter persoonlike info word  versamel?"
+
+#: src/ussd_popi_rapidpro.js:1382
+msgid "Who can see my personal info?"
+msgstr "Wie kan my persoonlike info sien?"
+
+#: src/ussd_popi_rapidpro.js:1383
+msgid "How long does MC keep my info?"
+msgstr "Vir hoe lank sal MC my info bewaar?"
+
+#: src/ussd_popi_rapidpro.js:1396
+msgid ""
+"MomConnect is a Health Department programme. It sends helpful messages for "
+"you and your baby."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:1411
+msgid ""
+"MomConnect needs your personal info to send you messages that are relevant "
+"to your pregnancy or your baby's age. By knowing where you registered for "
+"MomConnect, the Health Department can make sure that the service is being "
+"offered to women at your clinic. Your info assists the Health Department to "
+"improve its services, understand your needs better and provide even better "
+"messaging."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:1429
+msgid ""
+"MomConnect collects your cell and ID numbers, clinic location, and info "
+"about how your pregnancy or baby is progressing."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:1443
+msgid ""
+"MomConnect is owned by the Health Department. Your data is protected. It's "
+"processed by MTN, Cell C, Telkom, Vodacom, Praekelt, Jembi, HISP & WhatsApp."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:1457
+msgid ""
+"MomConnect holds your info while you're registered. If you opt out, we'll "
+"use your info for historical, research & statistical reasons with your "
+"consent."
+msgstr ""
+
+#: src/ussd_popi_rapidpro.js:1474
+msgid ""
+"Sorry, something went wrong. We have been notified. Please try again later"
+msgstr ""

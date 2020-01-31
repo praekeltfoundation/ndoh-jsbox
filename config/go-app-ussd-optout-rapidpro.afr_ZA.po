@@ -1,0 +1,166 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2020-01-30 03:06:+0000\n"
+"Project-Id-Version: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2020-01-30 17:11+0200\n"
+"X-Generator: Poedit 2.2.4\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: af\n"
+
+#: src/ussd_optout_rapidpro.js:43
+msgid "Welcome back. Please select an option:"
+msgstr "Welkom terug. Kies asb n opsie:"
+
+#: src/ussd_optout_rapidpro.js:45
+msgid "Continue opting out"
+msgstr ""
+
+#: src/ussd_optout_rapidpro.js:46
+msgid "Main menu"
+msgstr ""
+
+#: src/ussd_optout_rapidpro.js:86
+msgid "Hello mom! Do you want to stop getting MomConnect (MC) messages?"
+msgstr ""
+
+#: src/ussd_optout_rapidpro.js:87
+msgid ""
+"Sorry, please reply with the number next to your answer. Do you want to stop "
+"getting MomConnect (MC) messages?"
+msgstr ""
+
+#: src/ussd_optout_rapidpro.js:92 src/ussd_optout_rapidpro.js:144
+#: src/ussd_optout_rapidpro.js:166 src/ussd_optout_rapidpro.js:182
+msgid "Yes"
+msgstr "Ja"
+
+#: src/ussd_optout_rapidpro.js:93 src/ussd_optout_rapidpro.js:145
+#: src/ussd_optout_rapidpro.js:167 src/ussd_optout_rapidpro.js:183
+msgid "No"
+msgstr ""
+
+#: src/ussd_optout_rapidpro.js:101
+msgid ""
+"Thanks! MomConnect will continue to send you helpful messages and process "
+"your personal info. Have a lovely day!"
+msgstr ""
+
+#: src/ussd_optout_rapidpro.js:109
+msgid "We'll stop sending msgs. Why do you want to stop your MC msgs?"
+msgstr ""
+
+#: src/ussd_optout_rapidpro.js:117 src/ussd_optout_rapidpro.js:222
+msgid "Miscarriage"
+msgstr "Miskraam"
+
+#: src/ussd_optout_rapidpro.js:118 src/ussd_optout_rapidpro.js:223
+msgid "Baby was stillborn"
+msgstr "Baba doodgebore"
+
+#: src/ussd_optout_rapidpro.js:119 src/ussd_optout_rapidpro.js:224
+msgid "Baby passed away"
+msgstr ""
+
+#: src/ussd_optout_rapidpro.js:120 src/ussd_optout_rapidpro.js:225
+msgid "Msgs aren't helpful"
+msgstr ""
+
+#: src/ussd_optout_rapidpro.js:121 src/ussd_optout_rapidpro.js:226
+msgid "Other"
+msgstr "Ander"
+
+#: src/ussd_optout_rapidpro.js:122 src/ussd_optout_rapidpro.js:227
+msgid "I prefer not to say"
+msgstr ""
+
+#: src/ussd_optout_rapidpro.js:137
+msgid ""
+"We're sorry for your loss. Would you like to receive a small set of "
+"MomConnect messages that could help you during this difficult time?"
+msgstr ""
+
+#: src/ussd_optout_rapidpro.js:139
+msgid ""
+"Sorry, please reply with the number next to your answer. Would you like to "
+"receive a small set of MomConnect messages?"
+msgstr ""
+
+#: src/ussd_optout_rapidpro.js:159
+msgid ""
+"You'll get support msgs. We hold your info for historical/research/"
+"statistical reasons. Do you want us to delete it after you stop getting msgs?"
+msgstr ""
+
+#: src/ussd_optout_rapidpro.js:161
+msgid ""
+"Sorry, please reply with the number next to your answer. Do you want us to "
+"delete it after you stop getting msgs?"
+msgstr ""
+
+#: src/ussd_optout_rapidpro.js:175
+msgid ""
+"We hold your info for historical/research/statistical reasons after you opt "
+"out. Do you want to delete your info after you stop getting messages?"
+msgstr ""
+
+#: src/ussd_optout_rapidpro.js:177
+msgid ""
+"Sorry, please reply with the number next to your answer. Do you want to "
+"delete your info after you stop getting messages?"
+msgstr ""
+
+#: src/ussd_optout_rapidpro.js:197
+msgid ""
+"All your info will be permanently deleted in the next 7 days. We'll stop "
+"sending messages. Please select Next to continue:"
+msgstr ""
+
+#: src/ussd_optout_rapidpro.js:199
+msgid ""
+"Sorry, please reply with the number next to your answer. Please select Next "
+"to continue:"
+msgstr ""
+
+#: src/ussd_optout_rapidpro.js:204
+msgid "Next"
+msgstr "Volgende"
+
+#: src/ussd_optout_rapidpro.js:211
+msgid ""
+"Welcome MomConnect. You've opted out of receiving messages from us. Please "
+"tell us why:"
+msgstr ""
+
+#: src/ussd_optout_rapidpro.js:274
+msgid ""
+"Thank you. You'll receive messages of support from MomConnect in the coming "
+"weeks."
+msgstr ""
+
+#: src/ussd_optout_rapidpro.js:283
+msgid ""
+"Thank you. MomConnect will send helpful messages to you over the coming "
+"weeks. All your info will be deleted 7 days after your last MC message."
+msgstr ""
+
+#: src/ussd_optout_rapidpro.js:293
+msgid ""
+"Thank you. You'll no longer get messages from MomConnect. For any medical "
+"concerns, please visit a clinic. Have a lovely day."
+msgstr ""
+
+#: src/ussd_optout_rapidpro.js:303
+msgid ""
+"Welcome to the Department of Health's MomConnect. Dial *154*550*2# when you "
+"are at a clinic to sign up to receive helpful messages for you and your baby."
+msgstr ""
+
+#: src/ussd_optout_rapidpro.js:315
+msgid ""
+"Sorry, something went wrong. We have been notified. Please try again later"
+msgstr ""

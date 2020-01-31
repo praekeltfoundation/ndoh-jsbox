@@ -1,0 +1,249 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2020-01-30 03:11:+0000\n"
+"Project-Id-Version: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2020-01-30 17:21+0200\n"
+"X-Generator: Poedit 2.2.4\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: af\n"
+
+#: src/ussd_public_rapidpro.js:49
+msgid "Welcome back. Please select an option:"
+msgstr "Welkom terug. Kies asb n opsie:"
+
+#: src/ussd_public_rapidpro.js:51
+msgid "Continue signing up for messages"
+msgstr "Registreer vir boodskappe"
+
+#: src/ussd_public_rapidpro.js:52
+msgid "Main menu"
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:97
+msgid ""
+"Hello mom! You're currently receiving a small set of MomConnect messages. To "
+"get the full set, please visit your nearest clinic. To stop, dial "
+"*134*550*1#."
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:107
+msgid ""
+"Hello mom! You can reply to any MomConnect message with a question, "
+"compliment or complaint. Our team will get back to you as soon as they can."
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:154
+msgid ""
+"MomConnect sends free messages to help pregnant moms and babies. Are you or "
+"do you suspect that you are pregnant?"
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:158
+msgid ""
+"Sorry, please reply with the number next to your answer. Are you or do you "
+"suspect that you are pregnant?"
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:164 src/ussd_public_rapidpro.js:194
+#: src/ussd_public_rapidpro.js:211 src/ussd_public_rapidpro.js:234
+#: src/ussd_public_rapidpro.js:250 src/ussd_public_rapidpro.js:274
+#: src/ussd_public_rapidpro.js:296
+msgid "Yes"
+msgstr "Ja"
+
+#: src/ussd_public_rapidpro.js:165 src/ussd_public_rapidpro.js:195
+#: src/ussd_public_rapidpro.js:212 src/ussd_public_rapidpro.js:235
+#: src/ussd_public_rapidpro.js:251 src/ussd_public_rapidpro.js:297
+msgid "No"
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:173
+msgid ""
+"We're sorry but this service is only for pregnant mothers. If you have other "
+"health concerns please visit your nearest clinic. Have a lovely day!"
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:187
+msgid ""
+"MomConnect needs to process your personal info to send you relevant messages "
+"about your pregnancy. Do you agree?"
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:191
+msgid "Sorry, please reply with the number next to your answer. Do you agree?"
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:196
+msgid "I need more info to decide"
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:203
+msgid ""
+"Unfortunately, without agreeing we can't send MomConnect to you. Do you "
+"agree to MomConnect processing your personal info?"
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:205
+msgid ""
+"Sorry, please reply with the number next to your answer. Unfortunately "
+"without your consent, you can't register to MomConnect."
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:224
+msgid ""
+"Do you agree to receiving messages from MomConnect? This may include "
+"receiving messages on public holidays and weekends."
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:228
+msgid ""
+"Sorry, please reply with the number next to your answer. Do you agree to "
+"receiving messages from MomConnect?"
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:242
+msgid ""
+"Unfortunately, without agreeing we can't send MomConnect to you. Do you want "
+"to agree to get messages from MomConnect?"
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:244
+msgid ""
+"Sorry, please reply with the number next to your answer. You've chosen not "
+"to receive MomConnect messages and so cannot complete registration."
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:264
+msgid ""
+"We may occasionally call or send msgs for historical/statistical/research "
+"reasons. We’ll keep your info safe. Do you agree?"
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:268
+msgid ""
+"Sorry, please reply with the number next to your answer. We may call or send "
+"msgs for research reasons. Do you agree?"
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:275
+msgid "No, only send MC msgs"
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:287
+msgid ""
+"You previously opted out of MomConnect messages. Are you sure you want to "
+"get messages again?"
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:290
+msgid ""
+"Sorry, please reply with the number next to your answer. Please confirm that "
+"you would like to opt in to receive messages again."
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:305
+msgid ""
+"Thank you for considering MomConnect. We respect your decision. Have a "
+"lovely day."
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:350
+msgid ""
+"You're done! This number {{ msisdn }} will get helpful messages from "
+"MomConnect on WhatsApp. For the full set of messages, visit a clinic."
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:353
+msgid ""
+"You're done! This number {{ msisdn }} will get helpful messages from "
+"MomConnect on SMS. You can register for the full set of FREE messages at a "
+"clinic."
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:364
+msgid "Choose a question you're interested in:"
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:368
+msgid "What is MomConnect?"
+msgstr "Wat is MomConnect?"
+
+#: src/ussd_public_rapidpro.js:369
+msgid "Why does MomConnect need my info?"
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:370
+msgid "What personal info is collected?"
+msgstr "Watter persoonlike info word  versamel?"
+
+#: src/ussd_public_rapidpro.js:371
+msgid "Who can see my personal info?"
+msgstr "Wie kan my persoonlike info sien?"
+
+#: src/ussd_public_rapidpro.js:372
+msgid "How long does MC keep my info?"
+msgstr "Vir hoe lank sal MC my info bewaar?"
+
+#: src/ussd_public_rapidpro.js:373
+msgid "Back to main menu"
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:375 src/ussd_public_rapidpro.js:388
+#: src/ussd_public_rapidpro.js:403 src/ussd_public_rapidpro.js:415
+#: src/ussd_public_rapidpro.js:428 src/ussd_public_rapidpro.js:438
+msgid "Next"
+msgstr "Volgende"
+
+#: src/ussd_public_rapidpro.js:376
+msgid "Back"
+msgstr "Terug"
+
+#: src/ussd_public_rapidpro.js:385
+msgid ""
+"MomConnect is a Health Department programme. It sends helpful messages for "
+"you & your baby."
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:387 src/ussd_public_rapidpro.js:402
+#: src/ussd_public_rapidpro.js:414 src/ussd_public_rapidpro.js:427
+#: src/ussd_public_rapidpro.js:437
+msgid "Menu"
+msgstr "Spyskaart"
+
+#: src/ussd_public_rapidpro.js:395
+msgid ""
+"MomConnect needs your personal info to send you messages that are relevant "
+"to your pregnancy or your baby's age. By knowing where you registered for "
+"MomConnect, the Health Department can make sure that the service is being "
+"offered to women at your clinic. Your info assists the Health Department to "
+"improve its services, understand your needs better and provide even better "
+"messaging."
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:410
+msgid ""
+"MomConnect collects your phone and ID numbers, clinic location, and info "
+"about how your pregnancy or baby is progressing."
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:422
+msgid ""
+"MomConnect is owned by the Health Department. Your data is protected. It's "
+"processed by MTN, Cell C, Telkom, Vodacom, Praekelt, Jembi, HISP & WhatsApp."
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:435
+msgid ""
+"MomConnect holds your info for historical, research & statistical reasons "
+"after you opt out."
+msgstr ""
+
+#: src/ussd_public_rapidpro.js:447
+msgid ""
+"Sorry, something went wrong. We have been notified. Please try again later"
+msgstr ""
