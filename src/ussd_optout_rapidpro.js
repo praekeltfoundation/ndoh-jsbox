@@ -106,10 +106,10 @@ go.app = function() {
         });
 
         self.add("state_optout_reason", function(name) {
-            var question = "We'll stop sending msgs. Why do you want to stop your MC msgs?";
+            var question = $("We'll stop sending msgs. Why do you want to stop your MC msgs?");
             return new PaginatedChoiceState(name, {
-                question: $(question),
-                error: $(question),
+                question: question,
+                error: question,
                 accept_labels: true,
                 options_per_page: null,
                 characters_per_page: 160,
@@ -208,29 +208,32 @@ go.app = function() {
         });
 
         self.states.add("state_check_previous_optout", function(name) {
-            var question = "Welcome MomConnect. You've opted out of receiving messages from us. Please tell us why:";
-                return new PaginatedChoiceState(name, {
-                    question: $(question),
-                    error: $(question),
-                    accept_labels: true,
-                    options_per_page: null,
-                    characters_per_page: 160,
-                    choices: [
-                        new Choice("miscarriage", $("Miscarriage")),
-                        new Choice("stillborn", $("Baby was stillborn")),
-                        new Choice("babyloss", $("Baby passed away")),
-                        new Choice("not_useful", $("Msgs aren't helpful")),
-                        new Choice("other", $("Other")),
-                        new Choice("unknown", $("I prefer not to say"))
-                    ],
-                    next: function(choice) {
-                        self.im.user.set_answer("optout_reason", choice.value);
-                        if(_.includes(["miscarriage", "stillborn", "babyloss"], choice.value)) {
-                            return "state_loss_optout";
-                        } else {
-                            return "state_nonloss_optout";
-                        }  
+            var question = $(
+                "Welcome MomConnect. You've opted out of receiving messages from us. Please tell " +
+                "us why:"
+            );
+            return new PaginatedChoiceState(name, {
+                question: question,
+                error: question,
+                accept_labels: true,
+                options_per_page: null,
+                characters_per_page: 160,
+                choices: [
+                    new Choice("miscarriage", $("Miscarriage")),
+                    new Choice("stillborn", $("Baby was stillborn")),
+                    new Choice("babyloss", $("Baby passed away")),
+                    new Choice("not_useful", $("Msgs aren't helpful")),
+                    new Choice("other", $("Other")),
+                    new Choice("unknown", $("I prefer not to say"))
+                ],
+                next: function(choice) {
+                    self.im.user.set_answer("optout_reason", choice.value);
+                    if(_.includes(["miscarriage", "stillborn", "babyloss"], choice.value)) {
+                        return "state_loss_optout";
+                    } else {
+                        return "state_nonloss_optout";
                     }  
+                }  
             });
         });
 

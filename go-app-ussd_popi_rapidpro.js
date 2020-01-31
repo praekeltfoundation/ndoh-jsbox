@@ -121,17 +121,17 @@ go.app = function() {
         var $ = self.$;
 
         self.languages = {
-            zul: $("isiZulu"),
-            xho: $("isiXhosa"),
-            afr: $("Afrikaans"),
-            eng: $("English"),
-            nso: $("Sesotho sa Leboa"),
-            tsn: $("Setswana"),
-            sot: $("Sesotho"),
-            tso: $("Xitsonga"),
-            ssw: $("siSwati"),
-            ven: $("Tshivenda"),
-            nbl: $("isiNdebele")
+            zul: "isiZulu",
+            xho: "isiXhosa",
+            afr: "Afrikaans",
+            eng: "English",
+            nso: "Sesotho sa Leboa",
+            tsn: "Setswana",
+            sot: "Sesotho",
+            tso: "Xitsonga",
+            ssw: "siSwati",
+            ven: "Tshivenda",
+            nbl: "isiNdebele"
         };
 
         self.passport_countries = {
