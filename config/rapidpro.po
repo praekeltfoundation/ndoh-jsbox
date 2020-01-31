@@ -1,0 +1,623 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-01-31 12:19+0200\n"
+"PO-Revision-Date: 2020-01-31 12:22+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: af\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.4\n"
+"X-Poedit-Basepath: ../../../Downloads\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: translation\n"
+
+#: translation:2
+msgid "Add another child"
+msgstr ""
+
+#: translation:4
+msgid ""
+"An error has occurred. We will retry automatically in 1 minute. Reply to "
+"this message to retry immediately."
+msgstr ""
+
+#: translation:6
+msgid "April"
+msgstr ""
+
+#: translation:8
+msgid ""
+"Are you at a clinic with a nurse? A nurse has to help you sign up for the "
+"full set of MomConnect messages. Reply with the number that matches your "
+"answer, e.g. 1."
+msgstr ""
+
+#: translation:10
+msgid "August"
+msgstr ""
+
+#: translation:12
+msgid "Baby messages (this excludes pregnancy messages)"
+msgstr ""
+
+#: translation:14
+msgid "Back"
+msgstr "Terug"
+
+#: translation:16
+msgid ""
+"Congratulations on your pregnancy! MomConnect will send you helpful WhatsApp "
+"messages. To stop, dial *134*550*1# (Free). To get msgs via SMS, reply "
+"“SMS” (std rates apply)."
+msgstr ""
+
+#: translation:18
+msgid "DRC"
+msgstr ""
+
+#: translation:20
+msgid "December"
+msgstr ""
+
+#: translation:22
+msgid ""
+"Do you agree to receiving messages from MomConnect? This may include "
+"receiving messages on public holidays and weekends."
+msgstr ""
+
+#: translation:24
+msgid "Does she want to receive messages for another pregnancy or baby?"
+msgstr ""
+
+#: translation:26
+msgid ""
+"Does the mother agree to receive messages from MomConnect? This may include "
+"receiving messages on public holidays & weekends. "
+msgstr ""
+
+#: translation:28
+msgid "End conversation"
+msgstr ""
+
+#: translation:30
+msgid "Exit "
+msgstr ""
+
+#: translation:32
+msgid "February"
+msgstr ""
+
+#: translation:34
+msgid ""
+"Hello from MomConnect! This number has been registered to receive MomConnect "
+"msgs. Reply YES if you wish to receive these msgs. Ignore if you don’t."
+msgstr ""
+
+#: translation:36
+msgid ""
+"Hello from MomConnect! We received a request to change your cell number. If "
+"you would like to get your MomConnect messages on this number, reply \"Yes\"."
+msgstr ""
+
+#: translation:38
+msgid ""
+"How can we help you? Reply with the number that matches your answer, e.g. 1."
+msgstr ""
+
+#: translation:40
+msgid "I have a child under 2 years old"
+msgstr ""
+
+#: translation:42
+msgid "I think I’m pregnant"
+msgstr ""
+
+#: translation:44
+msgid ""
+"Is the mother signing up at a clinic with a nurse? A nurse has to help her "
+"sign up for the full set of MomConnect messages."
+msgstr ""
+
+#: translation:46
+msgid ""
+"Is this the number {{msisdn}} of the woman who wants to sign up to "
+"MomConnect? Reply with the number that matches your answer, e.g. 1"
+msgstr ""
+
+#: translation:48
+msgid "January"
+msgstr ""
+
+#: translation:50
+msgid "July"
+msgstr ""
+
+#: translation:52
+msgid "June"
+msgstr ""
+
+#: translation:54
+msgid "Malawi"
+msgstr ""
+
+#: translation:56
+msgid "March"
+msgstr ""
+
+#: translation:58
+msgid "May"
+msgstr ""
+
+#: translation:60
+msgid ""
+"MomConnect needs to process your personal info to send you relevant messages "
+"about your pregnancy. Do you agree?"
+msgstr ""
+
+#: translation:62
+msgid "MomConnect sends free messages of support to mothers."
+msgstr ""
+
+#: translation:64
+msgid "Mozambique"
+msgstr ""
+
+#: translation:66
+msgid "Nigeria"
+msgstr ""
+
+#: translation:68
+msgid "No"
+msgstr ""
+
+#: translation:70
+msgid "No, only register me for MC messages"
+msgstr ""
+
+#: translation:72
+msgid "None"
+msgstr ""
+
+#: translation:74
+msgid "None of the above"
+msgstr ""
+
+#: translation:76
+msgid "November"
+msgstr ""
+
+#: translation:78
+msgid "October"
+msgstr ""
+
+#: translation:80
+msgid ""
+"On what day was the baby born? Please reply with the day as a number, e.g. "
+"12. "
+msgstr ""
+
+#: translation:82
+msgid ""
+"On what day was the mother born? Please reply with the day as a number, e.g. "
+"12."
+msgstr ""
+
+#: translation:84
+msgid "Other"
+msgstr "Ander"
+
+#: translation:86
+msgid "Passport"
+msgstr ""
+
+#: translation:88
+msgid ""
+"Please click on the link below to consent to receiving messages from us on "
+"WhatsApp. You will see a MomConnect pop-up. Please wait for it to go away to "
+"return to our conversation."
+msgstr ""
+
+#: translation:90
+msgid ""
+"Please reply with the 6 digit clinic code for the facility where the woman "
+"is being registered, e.g. 535970. "
+msgstr ""
+
+#: translation:92
+msgid ""
+"Please reply with the cellphone number of the mother that would like to sign "
+"up to receive messages from MomConnect, e.g. 0762564733."
+msgstr ""
+
+#: translation:94
+msgid "Please reply with the mother’s ID number."
+msgstr ""
+
+#: translation:96
+msgid "Please reply with the mother’s passport number."
+msgstr ""
+
+#: translation:98
+msgid ""
+"Pregnancy messages (this will include birth messages once the baby is born)"
+msgstr ""
+
+#: translation:100
+msgid "Register a different number"
+msgstr ""
+
+#: translation:102
+msgid "SA ID"
+msgstr ""
+
+#: translation:104
+msgid "September"
+msgstr ""
+
+#: translation:106
+msgid "She needs more info to decide  "
+msgstr ""
+
+#: translation:108
+msgid ""
+"She’s chosen not to receive MomConnect messages and so cannot complete "
+"registration."
+msgstr ""
+
+#: translation:110
+msgid "Somalian"
+msgstr ""
+
+#: translation:112
+msgid ""
+"Sorry but we can't send WhatsApp msgs to this phone. We'll send your "
+"MomConnect msgs on SMS. To stop dial {{optout}}, for more dial {{popi}} "
+"(Free)."
+msgstr ""
+
+#: translation:114
+msgid ""
+"Sorry, that is not a valid SA ID number. Please reply with the mother’s ID "
+"number."
+msgstr ""
+
+#: translation:116
+msgid ""
+"Sorry, the clinic code {{faccode}} is incorrect. Please reply with the 6 "
+"digit clinic code for the facility where the woman is being registered, e.g. "
+"535970."
+msgstr ""
+
+#: translation:118
+msgid ""
+"Sorry, the date you entered {{date}} is not a valid date. Please try again."
+msgstr ""
+
+#: translation:120
+msgid ""
+"Sorry, we are unable to automatically resolve this error. Our team has been "
+"notified. Please try again later."
+msgstr ""
+
+#: translation:122
+msgid ""
+"Sorry, we don’t understand that reply. Please reply only with a number, e.g. "
+"1."
+msgstr ""
+
+#: translation:124
+msgid ""
+"Sorry, we don’t understand that reply. Please reply only with the number "
+"that matches your answer, e.g. 1."
+msgstr ""
+
+#: translation:126
+msgid ""
+"Sorry, we don’t understand that reply. Please reply only with the number "
+"that matches your answer, e.g. 1. "
+msgstr ""
+
+#: translation:128
+msgid ""
+"Sorry, we don’t understand that reply. Please reply only with the number "
+"that matches your answer, e.g. 12."
+msgstr ""
+
+#: translation:130
+msgid ""
+"Sorry, we don’t understand that reply. Please reply with your 6 digit clinic "
+"code, e.g. 535970 "
+msgstr ""
+
+#: translation:132
+msgid ""
+"Sorry, you can’t register without clicking on the link. Please click on the "
+"link to sign up to MomConnect."
+msgstr ""
+
+#: translation:134
+msgid ""
+"Thank you for using MomConnect. Reply JOIN at any time to register. Have a "
+"lovely day! "
+msgstr ""
+
+#: translation:136
+msgid ""
+"Thank you for your message, it has been captured and you will receive a "
+"response soon. Kind regards. MomConnect."
+msgstr ""
+
+#: translation:138
+msgid ""
+"Thank you. You will no longer receive messages from us. If you have any "
+"medical concerns please visit your nearest clinic"
+msgstr ""
+"Dankie. Jy sal nie meer boodskappe van ons kry nie. As jy ander mediese "
+"kwellings het gaan asb na jou naaste kliniek."
+
+#: translation:140
+msgid ""
+"Thank you. You will now receive messages related to newborn babies. If you "
+"have any medical concerns please visit your nearest clinic"
+msgstr ""
+
+#: translation:142
+msgid ""
+"That is not a valid passport number. Please reply with the mother’s passport "
+"number."
+msgstr ""
+
+#: translation:144
+msgid "The date you entered was not in the future."
+msgstr ""
+
+#: translation:146
+msgid "The date you entered was too far into the future."
+msgstr ""
+
+#: translation:148
+msgid "The day you entered is not a valid day for the month."
+msgstr ""
+
+#: translation:150
+msgid ""
+"The day you entered is not a valid day for the month. On what day was the "
+"baby born? Please reply with the day as a number, e.g. 12. "
+msgstr ""
+
+#: translation:152
+msgid ""
+"The helpdesk is not currently available during weekends and public holidays. "
+"In an emergency please go to your health provider immediately."
+msgstr ""
+
+#: translation:154
+msgid ""
+"The helpdesk operates from 8am to 6pm Mon to Fri. Responses will be delayed "
+"outside of these hrs. In an emergency please go to your health provider "
+"immediately."
+msgstr ""
+
+#: translation:156
+msgid ""
+"The mother is currently receiving messages for baby born on {{date}} and "
+"baby born on {{date}}"
+msgstr ""
+
+#: translation:158
+msgid ""
+"The number {{msisdn}} is already signed up to MomConnect. What would you "
+"like to do? Reply with the number that matches your answer, e.g. 1."
+msgstr ""
+
+#: translation:160
+msgid ""
+"There was an error in your entry. Please carefully enter the mother's year "
+"of birth again (for example: 2001)"
+msgstr ""
+
+#: translation:162
+msgid ""
+"This number has chosen not to receive MomConnect messages so they can’t "
+"register. If they change their mind, reply with JOIN at any time to "
+"register. Have a lovely day!"
+msgstr ""
+
+#: translation:164
+msgid ""
+"This number previously asked us to stop sending MomConnect messages. Is she "
+"sure she wants to get messages from us again? Reply with the number that "
+"matches her answer, e.g. 1."
+msgstr ""
+
+#: translation:166
+msgid "Tshivenda"
+msgstr ""
+
+#: translation:168
+msgid ""
+"Unfortunately MomConnect does not send messages to children older than 2 "
+"years. If you want to register a younger child or pregnancy you can reply "
+"with JOIN at any time. Have a lovely day!"
+msgstr ""
+
+#: translation:170
+msgid "Unfortunately without her consent, she can’t register to MomConnect."
+msgstr ""
+
+#: translation:172
+msgid ""
+"We may also send you messages about historical, statistical, or research "
+"purposes related to other projects. We'll make sure not to contact you "
+"unnecessarily and we'll keep your info safe. Do you agree?"
+msgstr ""
+
+#: translation:174
+msgid ""
+"We need to process the mom’s personal info to send her relevant messages "
+"about her pregnancy or baby. Does she agree?"
+msgstr ""
+
+#: translation:176
+msgid ""
+"We see that your MomConnect WhatsApp messages are not being delivered. If "
+"you would like to receive your messages over SMS, reply ‘SMS’."
+msgstr ""
+
+#: translation:178
+msgid ""
+"We won’t register you to MomConnect. If you change your mind, reply JOIN to "
+"this message. Have a lovely day!"
+msgstr ""
+
+#: translation:180
+msgid ""
+"Welcome! MomConnect will send helpful SMS messages. To stop msgs, dial "
+"*134*550*1# (Free). "
+msgstr ""
+
+#: translation:182
+msgid ""
+"Welcome to MomConnect on WhatsApp! You will get all your helpful MomConnect "
+"messages on WhatsApp. To move back to SMS, reply 'SMS' (std rates)."
+msgstr ""
+
+#: translation:184
+msgid ""
+"Welcome! MomConnect sends msgs on WhatsApp for 3 weeks. Visit a clinic for "
+"more msgs. To stop msgs dial *134*550*1#. To get msgs on SMS, reply "
+"“SMS” (std rates apply)"
+msgstr ""
+
+#: translation:186
+msgid ""
+"Welcome! MomConnect sends msgs on WhatsApp for 3 wks. Visit a clinic for "
+"more msgs. To stop msgs, dial *134*550*1#. "
+msgstr ""
+
+#: translation:188
+msgid ""
+"Welcome! MomConnect will send you helpful WhatsApp messages. To stop, dial "
+"*134*550*1# (Free). To get msgs via SMS, reply “SMS” (std rates apply)."
+msgstr ""
+
+#: translation:190
+msgid ""
+"We’re sorry but this service is only for pregnant mothers and mothers with "
+"children under the age of 2. If you have other health concerns please visit "
+"your nearest clinic. Have a lovely day!"
+msgstr ""
+
+#: translation:192
+msgid "What is the country of origin of the passport?"
+msgstr ""
+
+#: translation:194
+msgid ""
+"What is the estimated day that the baby is due? Please reply with the day as "
+"a number, e.g. 12."
+msgstr ""
+
+#: translation:196
+msgid "What kind of identification does the mother have?"
+msgstr ""
+
+#: translation:198
+msgid ""
+"What language do you want to receive your MomConnect messages in? Reply with "
+"the number that matches your answer, e.g. 1."
+msgstr ""
+
+#: translation:200
+msgid ""
+"What language does the mother want to receive her MomConnect messages in? "
+"Reply with the number that matches your answer, e.g. 1."
+msgstr ""
+
+#: translation:202
+msgid ""
+"What month is the baby due? Please reply with the number that matches your "
+"answer, e.g. 1. "
+msgstr ""
+
+#: translation:204
+msgid ""
+"What month was the baby born? Please reply with the number that matches your "
+"answer."
+msgstr ""
+
+#: translation:206
+msgid ""
+"What month was the mother born? Please reply with the number that matches "
+"your answer, e.g. 1."
+msgstr ""
+
+#: translation:208
+msgid ""
+"What type of messages does the woman want to receive? Reply with the number "
+"that matches your answer, e.g. 1."
+msgstr ""
+
+#: translation:210
+msgid ""
+"What year was the baby born? Please reply with the number that matches your "
+"answer, e.g. 1:"
+msgstr ""
+
+#: translation:212
+msgid "What year was the mother born? Please reply with the year, e.g. 1981."
+msgstr ""
+
+#: translation:214
+msgid "Without agreeing we can’t register you to MomConnect. Do you agree?"
+msgstr ""
+
+#: translation:216
+msgid "Yes"
+msgstr "Ja"
+
+#: translation:218
+msgid ""
+"You are not currently receiving messages for a pregnancy, so we cannot "
+"change you to receive messages related to newborn babies. Please reply with "
+"JOIN if you would like to register a pregnancy or baby."
+msgstr ""
+
+#: translation:220
+msgid ""
+"You can only register for the full set of MomConnect messages with a nurse "
+"at a clinic. Please reply with JOIN when you are at the clinic. Have a "
+"lovely day!"
+msgstr ""
+
+#: translation:222
+msgid ""
+"You have entered a date in the future. If you want to register a pregnancy "
+"you can reply with JOIN at any time. Have a lovely day!"
+msgstr ""
+
+#: translation:224
+msgid ""
+"You sent {{msisdn}} which does not contain a valid phone number. Please try "
+"again"
+msgstr ""
+
+#: translation:226
+msgid ""
+"You will now get your MomConnect messages on SMS. To move back to WhatsApp, "
+"reply 'WA' (std rates apply)."
+msgstr ""
+
+#: translation:228
+msgid ""
+"You’re done! This number {{msisdn}} will get helpful messages from "
+"MomConnect. Thanks for signing up to MomConnect."
+msgstr ""
+
+#: translation:230
+msgid "Zimbabwe"
+msgstr ""

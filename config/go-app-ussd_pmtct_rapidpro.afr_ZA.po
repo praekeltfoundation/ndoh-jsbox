@@ -1,0 +1,227 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2020-01-30 02:54:+0000\n"
+"Project-Id-Version: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2020-01-30 17:09+0200\n"
+"X-Generator: Poedit 2.2.4\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: af\n"
+
+#: src/ussd_pmtct_rapidpro.js:45
+msgid "Welcome back. Please select an option:"
+msgstr "Welkom terug. Kies asb n opsie:"
+
+#: src/ussd_pmtct_rapidpro.js:47
+msgid "Continue signing up for messages"
+msgstr "Registreer vir boodskappe"
+
+#: src/ussd_pmtct_rapidpro.js:48
+msgid "Main menu"
+msgstr "Hoof Spyskaart"
+
+#: src/ussd_pmtct_rapidpro.js:56
+msgid ""
+"Welcome to the Department of Health's MomConnect (MC).\n"
+"\n"
+"Is {{msisdn}} the cell number of the mother who wants to sign up to HIV-"
+"related messages?"
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:130
+msgid ""
+"The mother is currently receiving messages about keeping her baby HIV-"
+"negative. Does she want to stop getting these messages?"
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:133
+msgid ""
+"Sorry, please reply with the number next to your answer. Does she want to "
+"stop getting these messages?"
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:136 src/ussd_pmtct_rapidpro.js:202
+#: src/ussd_pmtct_rapidpro.js:228
+msgid "Yes"
+msgstr "Ja"
+
+#: src/ussd_pmtct_rapidpro.js:137 src/ussd_pmtct_rapidpro.js:203
+#: src/ussd_pmtct_rapidpro.js:229
+msgid "No"
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:153
+msgid ""
+"Thanks! MomConnect will continue to send HER helpful messages and process "
+"your personal info."
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:159
+msgid "Please tell us why she no longer wants to get msgs:"
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:167
+msgid "She's not HIV+"
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:168
+msgid "Miscarriage"
+msgstr "Miskraam"
+
+#: src/ussd_pmtct_rapidpro.js:169
+msgid "Baby was stillborn"
+msgstr "Baba doodgebore"
+
+#: src/ussd_pmtct_rapidpro.js:170
+msgid "Baby passed away"
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:171
+msgid "Msgs aren't helpful"
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:172
+msgid "Other"
+msgstr "Ander"
+
+#: src/ussd_pmtct_rapidpro.js:173
+msgid "I prefer not to say"
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:189
+msgid ""
+"Thank you. She will no longer receive messages from us about HIV. For any "
+"medical concerns, please visit a clinic."
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:196
+msgid ""
+"We're sorry for your loss. Would she like to receive a small set of "
+"MomConnect messages that could help you during this difficult time?"
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:199
+msgid ""
+"Sorry, please reply with the number next to your answer. Would she like to "
+"receive a small set of MomConnect messages?"
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:213
+msgid ""
+"Thank you. She will receive messages of support from MomConnect in the "
+"coming weeks."
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:220
+msgid ""
+"Would the mother like to receive messages about keeping her baby HIV-"
+"negative? The messages will use words like HIV, medicine and ARVs."
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:222
+msgid ""
+"Sorry, please reply with the number next to your answer. Would the mother "
+"like to get messages about keeping her baby HIV-negative?"
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:249
+msgid ""
+"In what year was she born? Please enter the year as 4 digits in the format "
+"YYYY."
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:264
+msgid ""
+"Sorry, we don't understand. Please try again by entering the year she was "
+"born as 4 digits in the format YYYY, e.g. 1910."
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:276
+msgid ""
+"What month was she born? Please enter the number that matches the answer."
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:277
+msgid ""
+"Sorry we don't understand. Please enter the no. next to the mom's answer."
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:281
+msgid "Jan"
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:282
+msgid "Feb"
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:283
+msgid "Mar"
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:284
+msgid "Apr"
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:285
+msgid "May"
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:286
+msgid "Jun"
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:287
+msgid "Jul"
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:288
+msgid "Aug"
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:289
+msgid "Sep"
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:290
+msgid "Oct"
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:291
+msgid "Nov"
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:292
+msgid "Dec"
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:300
+msgid "On what day was she born? Please enter the day as a number, e.g. 12."
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:315
+msgid ""
+"Sorry, we don't understand. Please try again by entering the day she was "
+"born as a number, e.g. 12."
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:335
+msgid ""
+"Welcome to the Department of Health’s MomConnect. To get msgs about keeping "
+"your baby HIV-negative, register to MomConnect by dialing *154*550*2# at the "
+"clinic."
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:389
+msgid ""
+"Thank you. The mother will receive messages about keeping her baby HIV-"
+"negative. Have a lovely day."
+msgstr ""
+
+#: src/ussd_pmtct_rapidpro.js:400
+msgid ""
+"Sorry, something went wrong. We have been notified. Please try again later"
+msgstr ""
