@@ -145,7 +145,7 @@ describe("ussd_pmtct app", function() {
                 .check.interaction({
                     state: "state_no_subscription",
                     reply: [
-                        "Welcome to the Department of Health’s MomConnect. To get msgs " +
+                        "Welcome to the Department of Health's MomConnect. To get msgs " +
                         "about keeping your baby HIV-negative, register to MomConnect by " +
                         "dialing *154*550*2# at the clinic."
                     ].join("\n")
