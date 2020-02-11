@@ -167,7 +167,7 @@ describe("ussd_public app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             exists: true,
                             groups: ["PMTCT", "Prebirth 1"]
                         })
@@ -182,7 +182,7 @@ describe("ussd_public app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             exists: true,
                             groups: ["Opted Out"]
                         })
@@ -197,7 +197,7 @@ describe("ussd_public app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             exists: true,
                             groups: []
                         })
@@ -212,7 +212,7 @@ describe("ussd_public app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             failure: true
                         })
                     );
@@ -1437,7 +1437,7 @@ describe("ussd_public app", function() {
                     );
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
-                            "prebirth-flow-uuid", null, "tel:+27820001001", {
+                            "prebirth-flow-uuid", null, "whatsapp:27820001001", {
                                 research_consent: "FALSE",
                                 registered_by: "+27123456789",
                                 language: "zul",
@@ -1493,7 +1493,7 @@ describe("ussd_public app", function() {
                     );
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
-                            "postbirth-flow-uuid", null, "tel:+27820001001", {
+                            "postbirth-flow-uuid", null, "whatsapp:27820001001", {
                                 research_consent: "FALSE",
                                 registered_by: "+27123456789",
                                 language: "zul",
@@ -1578,7 +1578,7 @@ describe("ussd_public app", function() {
                     );
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
-                            "prebirth-flow-uuid", null, "tel:+27820001001", {
+                            "prebirth-flow-uuid", null, "whatsapp:27820001001", {
                                 research_consent: "FALSE",
                                 registered_by: "+27123456789",
                                 language: "zul",

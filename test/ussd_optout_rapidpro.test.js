@@ -30,7 +30,7 @@ describe("ussd_optout_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             failure: true
                         })
                     );
@@ -55,7 +55,7 @@ describe("ussd_optout_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             exists: true,
                             groups: ["Clinic", "Public"]
                         })
@@ -77,7 +77,7 @@ describe("ussd_optout_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             exists: true,
                             groups: ["Prebirth 3"]
                         })
@@ -100,7 +100,7 @@ describe("ussd_optout_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             exists: true,
                             groups: []
                         })
@@ -207,7 +207,7 @@ describe("ussd_optout_rapidpro app", function() {
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
                             null,
-                            "tel:+27123456789",
+                            "whatsapp:27123456789",
                             {
                                 babyloss_subscription:  "FALSE",
                                 delete_info_for_babyloss: "FALSE",
@@ -398,7 +398,7 @@ describe("ussd_optout_rapidpro app", function() {
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
                             null,
-                            "tel:+27123456789",
+                            "whatsapp:27123456789",
                             {
                                 babyloss_subscription:  "TRUE",
                                 delete_info_for_babyloss: "FALSE",
@@ -423,7 +423,7 @@ describe("ussd_optout_rapidpro app", function() {
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
                             null,
-                            "tel:+27123456789",
+                            "whatsapp:27123456789",
                             {
                                 babyloss_subscription:  "TRUE",
                                 delete_info_for_babyloss: "TRUE",
@@ -475,7 +475,7 @@ describe("ussd_optout_rapidpro app", function() {
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
                             null,
-                            "tel:+27123456789",
+                            "whatsapp:27123456789",
                             {
                                 babyloss_subscription:  "FALSE",
                                 delete_info_for_babyloss: "FALSE",
@@ -513,7 +513,7 @@ describe("ussd_optout_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             exists: true,
                             groups: ["Clinic", "Public"]
                         })
@@ -619,7 +619,7 @@ describe("ussd_optout_rapidpro app", function() {
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
                             null,
-                            "tel:+27123456789",
+                            "whatsapp:27123456789",
                             {
                                 babyloss_subscription:  "TRUE",
                                 delete_info_for_babyloss: "TRUE",
@@ -654,7 +654,7 @@ describe("ussd_optout_rapidpro app", function() {
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
                             null,
-                            "tel:+27123456789",
+                            "whatsapp:27123456789",
                             {
                                 babyloss_subscription:  "TRUE",
                                 delete_info_for_babyloss: "FALSE",
@@ -687,7 +687,7 @@ describe("ussd_optout_rapidpro app", function() {
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
                             null,
-                            "tel:+27123456789",
+                            "whatsapp:27123456789",
                             {
                                 babyloss_subscription:  "FALSE",
                                 delete_info_for_babyloss: "FALSE",
@@ -721,7 +721,7 @@ describe("ussd_optout_rapidpro app", function() {
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
                             null,
-                            "tel:+27123456789",
+                            "whatsapp:27123456789",
                             {
                                 babyloss_subscription:  "FALSE",
                                 delete_info_for_babyloss: "FALSE",
@@ -754,7 +754,7 @@ describe("ussd_optout_rapidpro app", function() {
                     fixtures_rapidpro.start_flow(
                         "rapidpro-flow-uuid",
                         null,
-                        "tel:+27123456789",
+                        "whatsapp:27123456789",
                         {
                             babyloss_subscription:  "FALSE",
                             delete_info_for_babyloss: "FALSE",

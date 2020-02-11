@@ -373,7 +373,7 @@ go.app = function() {
             // Run a no-wait contact check in the background to populate the cache
             self.whatsapp.contact_check(msisdn, false).then(_.noop, _.noop);
 
-            return self.rapidpro.get_contact({urn: "tel:" + msisdn})
+            return self.rapidpro.get_contact({urn: "whatsapp:" + _.trim(msisdn, "+")})
                 .then(function(contact) {
                     self.im.user.answers.contact = contact;
                     if(self.contact_in_group(contact, self.im.config.clinic_group_ids)) {
@@ -1122,7 +1122,7 @@ go.app = function() {
             }
 
             return self.rapidpro
-                .start_flow(flow_uuid, null, "tel:" + msisdn, data)
+                .start_flow(flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), data)
                 .then(function() {
                     return self.states.create("state_registration_complete");
                 }).catch(function(e) {

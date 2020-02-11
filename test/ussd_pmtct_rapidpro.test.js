@@ -104,7 +104,7 @@ describe("ussd_pmtct app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             exists: true,
                             groups: [{"uuid": "id-0"},
                                     {"uuid": "id-1"}]
@@ -120,7 +120,7 @@ describe("ussd_pmtct app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             exists: true,
                             groups: [{"uuid": "id-1"}]
                         })
@@ -135,7 +135,7 @@ describe("ussd_pmtct app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             exists: true,
                             groups: []
                         })
@@ -157,7 +157,7 @@ describe("ussd_pmtct app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             failure: true
                         })
                     );
@@ -288,7 +288,7 @@ describe("ussd_pmtct app", function() {
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
                             null,
-                            "tel:+27123456789",
+                            "whatsapp:27123456789",
                             {
                                 babyloss_subscription: "FALSE",
                                 optout: "TRUE",
@@ -372,7 +372,7 @@ describe("ussd_pmtct app", function() {
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
                             null,
-                            "tel:+27123456789",
+                            "whatsapp:27123456789",
                             {
                                 babyloss_subscription: "FALSE",
                                 optout: "TRUE",
@@ -406,7 +406,7 @@ describe("ussd_pmtct app", function() {
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
                             null,
-                            "tel:+27123456789",
+                            "whatsapp:27123456789",
                             {
                                 babyloss_subscription: "TRUE",
                                 optout_reason: "babyloss",
@@ -469,7 +469,7 @@ describe("ussd_pmtct app", function() {
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
                             null,
-                            "tel:+27123456789",
+                            "whatsapp:27123456789",
                             {
                                 babyloss_subscription: "FALSE",
                                 dob: "1990-01-01T00:00:00Z",
@@ -610,7 +610,7 @@ describe("ussd_pmtct app", function() {
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
                             null,
-                            "tel:+27123456789",
+                            "whatsapp:27123456789",
                             {
                                 dob: "1987-02-22T00:00:00Z",
                                 babyloss_subscription: "FALSE",
@@ -639,7 +639,7 @@ describe("ussd_pmtct app", function() {
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
                             null,
-                            "tel:+27123456789",
+                            "whatsapp:27123456789",
                             {
                                 dob: "1990-01-01T00:00:00Z",
                                 babyloss_subscription: "FALSE",
@@ -675,7 +675,7 @@ describe("ussd_pmtct app", function() {
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
                             null,
-                            "tel:+27123456789",
+                            "whatsapp:27123456789",
                             {
                                 babyloss_subscription:  "FALSE",
                                 optout: "TRUE",
@@ -713,7 +713,7 @@ describe("ussd_pmtct app", function() {
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
                             null,
-                            "tel:+27123456789",
+                            "whatsapp:27123456789",
                             {
                                 babyloss_subscription:  "TRUE",
                                 optout: "TRUE",
@@ -750,7 +750,7 @@ describe("ussd_pmtct app", function() {
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
                             null,
-                            "tel:+27123456789",
+                            "whatsapp:27123456789",
                             {
                                 babyloss_subscription:  "TRUE",
                                 optout: "TRUE",

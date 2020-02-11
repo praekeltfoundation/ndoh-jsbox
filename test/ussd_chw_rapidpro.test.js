@@ -108,7 +108,7 @@ describe("ussd_chw app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             exists: true,
                             groups: ["PMTCT", "Prebirth 1"]
                         })
@@ -123,7 +123,7 @@ describe("ussd_chw app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             exists: true,
                             groups: ["Opted Out"]
                         })
@@ -138,7 +138,7 @@ describe("ussd_chw app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             exists: true,
                             groups: []
                         })
@@ -153,7 +153,7 @@ describe("ussd_chw app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             failure: true
                         })
                     );
@@ -846,7 +846,7 @@ describe("ussd_chw app", function() {
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
                             null,
-                            "tel:+27820001001",
+                            "whatsapp:27820001001",
                             {
                                 research_consent:"FALSE",
                                 registered_by: "+27123456789",
@@ -892,7 +892,7 @@ describe("ussd_chw app", function() {
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
                             null,
-                            "tel:+27820001001",
+                            "whatsapp:27820001001",
                             {
                                 research_consent:"FALSE",
                                 registered_by: "+27123456789",
@@ -938,7 +938,7 @@ describe("ussd_chw app", function() {
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
                             null,
-                            "tel:+27820001001",
+                            "whatsapp:27820001001",
                             {
                                 research_consent:"FALSE",
                                 registered_by: "+27123456789",
