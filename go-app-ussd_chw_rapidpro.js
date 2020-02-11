@@ -253,7 +253,7 @@ go.app = function() {
             // Fire and forget a background whatsapp contact check
             self.whatsapp.contact_check(msisdn, false).then(_.noop, _.noop);
 
-            return self.rapidpro.get_contact({urn: "tel:" + msisdn})
+            return self.rapidpro.get_contact({urn: "whatsapp:" + _.trim(msisdn, "+")})
                 .then(function(contact) {
                     self.im.user.set_answer("contact", contact);
                 }).then(function() {
@@ -719,7 +719,7 @@ go.app = function() {
                 passport_number: self.im.user.answers.state_passport_no
             };
             return self.rapidpro
-                .start_flow(self.im.config.flow_uuid, null, "tel:" + msisdn, data)
+                .start_flow(self.im.config.flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), data)
                 .then(function() {
                     return self.states.create("state_registration_complete");
                 }).catch(function(e) {

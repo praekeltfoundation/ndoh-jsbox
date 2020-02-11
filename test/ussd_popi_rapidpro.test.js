@@ -36,7 +36,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             groups: ["Prebirth"],
                             exists: true,
                         })
@@ -60,7 +60,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             groups: [],
                             exists: true,
                         })
@@ -83,7 +83,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             groups: [],
                             exists: true,
                         })
@@ -107,7 +107,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             groups: ["Prebirth"],
                             exists: true,
                         })
@@ -132,7 +132,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             failure: true
                         })
                     );
@@ -160,7 +160,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             groups: ["Prebirth"],
                             exists: true,
                         })
@@ -362,7 +362,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
-                            "whatsapp-switch-flow", null, "tel:+27123456789"
+                            "whatsapp-switch-flow", null, "whatsapp:27123456789"
                         )
                     );
                 })
@@ -486,7 +486,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27820001001",
+                            urn: "whatsapp:27820001001",
                             exists: true,
                             groups: ["prebirth", "pmtct"]
                         })
@@ -502,7 +502,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27820001001",
+                            urn: "whatsapp:27820001001",
                             exists: false,
                         })
                     );
@@ -580,7 +580,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
-                            "msisdn-change-flow", null, "tel:+27820001001", {
+                            "msisdn-change-flow", null, "whatsapp:27820001001", {
                                 new_msisdn: "+27820001001",
                                 old_msisdn: "+27123456789",
                                 contact_uuid: "contact-uuid",
@@ -673,7 +673,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
-                            "language-change-flow", null, "tel:+27123456789", { language: "zul" }                      )
+                            "language-change-flow", null, "whatsapp:27123456789", { language: "zul" }                      )
                     );
                 })
                 .input("1")
@@ -776,7 +776,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
-                            "identification-change-flow", null, "tel:+27123456789", {
+                            "identification-change-flow", null, "whatsapp:27123456789", {
                                 "id_type": "sa_id",
                                 "id_number": "9001010005089",
                                 "dob": "1990-01-01T00:00:00Z"
@@ -875,7 +875,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
-                            "identification-change-flow", null, "tel:+27123456789", {
+                            "identification-change-flow", null, "whatsapp:27123456789", {
                                 "id_type": "passport",
                                 "passport_country": "mz",
                                 "passport_number": "A1234567890123"
@@ -1012,7 +1012,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
-                            "identification-change-flow", null, "tel:+27123456789", {
+                            "identification-change-flow", null, "whatsapp:27123456789", {
                                 "id_type": "dob",
                                 "dob": "1990-01-01T00:00:00Z"
                         })
@@ -1071,7 +1071,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
-                            "research-change-flow", null, "tel:+27123456789", {
+                            "research-change-flow", null, "whatsapp:27123456789", {
                                 "research_consent": "TRUE"
                         })
                     );
@@ -1100,7 +1100,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
-                            "research-change-flow", null, "tel:+27123456789", {
+                            "research-change-flow", null, "whatsapp:27123456789", {
                                 "research_consent": "FALSE"
                         })
                     );
@@ -1272,7 +1272,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
-                            "optout-flow", null, "tel:+27123456789", {
+                            "optout-flow", null, "whatsapp:27123456789", {
                                 "babyloss_subscription": "TRUE",
                                 "delete_info_for_babyloss": "TRUE",
                                 "delete_info_consent": "FALSE",
@@ -1306,7 +1306,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
-                            "optout-flow", null, "tel:+27123456789", {
+                            "optout-flow", null, "whatsapp:27123456789", {
                                 "babyloss_subscription": "TRUE",
                                 "delete_info_for_babyloss": "FALSE",
                                 "delete_info_consent": "FALSE",
@@ -1398,7 +1398,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
-                            "optout-flow", null, "tel:+27123456789", {
+                            "optout-flow", null, "whatsapp:27123456789", {
                                 "babyloss_subscription": "FALSE",
                                 "delete_info_for_babyloss": "FALSE",
                                 "delete_info_consent": "TRUE",
@@ -1492,7 +1492,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             groups: [],
                             exists: true,
                         })
@@ -1508,7 +1508,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             fields: {identification_type: "sa_id"},
                             groups: ["Prebirth 1"],
                             exists: true,
@@ -1525,7 +1525,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             fields: {identification_type: "passport"},
                             groups: ["Prebirth 1"],
                             exists: true,
@@ -1542,7 +1542,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             fields: {identification_type: "dob"},
                             groups: ["Prebirth 1"],
                             exists: true,
@@ -1559,7 +1559,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27123456789",
+                            urn: "whatsapp:27123456789",
                             failure: true
                         })
                     );
@@ -1843,7 +1843,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
-                            "msisdn-change-flow", null, "tel:+27123456789", {
+                            "msisdn-change-flow", null, "whatsapp:27123456789", {
                                 new_msisdn: "+27123456789",
                                 old_msisdn: "+27820001002",
                                 contact_uuid: "contact-uuid",
@@ -1897,7 +1897,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27820001001",
+                            urn: "whatsapp:27820001001",
                             groups: ["Prebirth 1"],
                             exists: true
                         })
@@ -1913,7 +1913,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
-                            urn: "tel:+27820001001",
+                            urn: "whatsapp:27820001001",
                             groups: [],
                             exists: true
                         })
@@ -1989,7 +1989,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
-                            "msisdn-change-flow", null, "tel:+27820001001", {
+                            "msisdn-change-flow", null, "whatsapp:27820001001", {
                                 new_msisdn: "+27820001001",
                                 old_msisdn: "+27820001002",
                                 contact_uuid: "contact-uuid",

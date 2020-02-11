@@ -63,7 +63,7 @@ go.app = function() {
             // Fire and forget a background whatsapp contact check
             self.whatsapp.contact_check(msisdn, false).then(_.noop, _.noop);
 
-            return self.rapidpro.get_contact({urn: "tel:" + msisdn})
+            return self.rapidpro.get_contact({urn: "whatsapp:" + _.trim(msisdn, "+")})
                 .then(function(contact) {
                     self.im.user.set_answer("contact", contact);
                     // Set the language if we have it
@@ -327,7 +327,7 @@ go.app = function() {
 
         self.add("state_trigger_rapidpro_flow", function(name, opts) {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
-            return self.rapidpro.start_flow(self.im.config.flow_uuid, null, "tel:" + msisdn, {
+            return self.rapidpro.start_flow(self.im.config.flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), {
                 on_whatsapp: self.im.user.get_answer("on_whatsapp") ? "TRUE" : "FALSE",
                 research_consent: self.im.user.get_answer("state_research_consent") === "yes" ? "TRUE" : "FALSE",
                 language: self.im.user.lang,

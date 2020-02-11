@@ -190,7 +190,7 @@ go.app = function() {
             self.im.user.answers = {};
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
 
-            return self.rapidpro.get_contact({urn: "tel:" + msisdn})
+            return self.rapidpro.get_contact({urn: "whatsapp:" + _.trim(msisdn, "+")})
                 .then(function(contact) {
                     self.im.user.set_answer("contact", contact);
                     // Set the language if we have it
@@ -354,7 +354,7 @@ go.app = function() {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
 
             return self.rapidpro
-                .start_flow(flow_uuid, null, "tel:" + msisdn)
+                .start_flow(flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"))
                 .then(function() {
                     return self.states.create("state_channel_switch_success");
                 }).catch(function(e) {
@@ -444,7 +444,7 @@ go.app = function() {
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_msisdn_change_enter"), "ZA");
 
-            return self.rapidpro.get_contact({urn: "tel:" + msisdn})
+            return self.rapidpro.get_contact({urn: "whatsapp:" + _.trim(msisdn, "+")})
                 .then(function(contact) {
                     if(
                         self.contact_in_group(contact, self.im.config.public_groups) ||
@@ -507,7 +507,7 @@ go.app = function() {
             );
             return self.rapidpro
                 .start_flow(
-                    self.im.config.msisdn_change_flow_id, null, "tel:" + new_msisdn, {
+                    self.im.config.msisdn_change_flow_id, null, "whatsapp:" + _.trim(new_msisdn, "+"), {
                         new_msisdn: new_msisdn,
                         old_msisdn: utils.normalize_msisdn(self.im.user.addr, "ZA"),
                         contact_uuid: self.im.user.answers.contact.uuid,
@@ -570,7 +570,7 @@ go.app = function() {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             return self.rapidpro
                 .start_flow(
-                    self.im.config.language_change_flow_id, null, "tel:" + msisdn, {
+                    self.im.config.language_change_flow_id, null, "whatsapp:" + _.trim(msisdn, "+"), {
                         language: self.im.user.answers.state_language_change_enter
                     }
                 )
@@ -785,7 +785,7 @@ go.app = function() {
             }
             return self.rapidpro
                 .start_flow(
-                    self.im.config.identification_change_flow_id, null, "tel:" + msisdn, {
+                    self.im.config.identification_change_flow_id, null, "whatsapp:" + _.trim(msisdn, "+"), {
                         id_type: {
                             state_sa_id: "sa_id",
                             state_passport_country: "passport",
@@ -867,7 +867,7 @@ go.app = function() {
             var research_consent = self.im.user.answers.state_change_research_confirm;
             return self.rapidpro
                 .start_flow(
-                    self.im.config.research_consent_change_flow_id, null, "tel:" + msisdn, {
+                    self.im.config.research_consent_change_flow_id, null, "whatsapp:" + _.trim(msisdn, "+"), {
                         research_consent: research_consent === "yes" ? "TRUE" : "FALSE"
                     }
                 )
@@ -1037,7 +1037,7 @@ go.app = function() {
             var loss_forget = answers.state_loss_delete_data === "yes";
             return self.rapidpro
                 .start_flow(
-                    self.im.config.optout_flow_id, null, "tel:" + msisdn, {
+                    self.im.config.optout_flow_id, null, "whatsapp:" + _.trim(msisdn, "+"), {
                         babyloss_subscription: loss ? "TRUE" : "FALSE",
                         delete_info_for_babyloss: loss_forget ? "TRUE" : "FALSE",
                         delete_info_consent: forget ? "TRUE" : "FALSE",
@@ -1161,7 +1161,7 @@ go.app = function() {
                 config.public_groups, config.prebirth_groups, config.postbirth_groups
             );
             return self.rapidpro
-                .get_contact({urn: "tel:" + msisdn})
+                .get_contact({urn: "whatsapp:" + _.trim(msisdn, "+")})
                 .then(function(contact) {
                     if(
                         contact &&
@@ -1372,7 +1372,7 @@ go.app = function() {
                 config.public_groups, config.prebirth_groups, config.postbirth_groups
             );
             return self.rapidpro
-                .get_contact({urn: "tel:" + msisdn})
+                .get_contact({urn: "whatsapp:" + _.trim(msisdn, "+")})
                 .then(function(contact) {
                     if(contact && self.contact_in_group(contact, groups)){
                         return self.states.create("state_target_existing_subscriptions");
@@ -1433,7 +1433,7 @@ go.app = function() {
             );
             return self.rapidpro
                 .start_flow(
-                    self.im.config.msisdn_change_flow_id, null, "tel:" + new_msisdn, {
+                    self.im.config.msisdn_change_flow_id, null, "whatsapp:" + _.trim(new_msisdn, "+"), {
                         new_msisdn: new_msisdn,
                         old_msisdn: old_msisdn,
                         contact_uuid: self.im.user.answers.origin_contact.uuid,

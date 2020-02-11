@@ -198,7 +198,7 @@ go.app = function() {
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
 
-            return self.rapidpro.get_contact({urn: "tel:" + msisdn})
+            return self.rapidpro.get_contact({urn: "whatsapp:" + _.trim(msisdn, "+")})
                 .then(function(contact) {
                     self.im.user.set_answer("contact", contact);
                     // Set the language if we have it
@@ -459,7 +459,7 @@ go.app = function() {
                 "YYYYMMDD"
             ).format();
             }
-            return self.rapidpro.start_flow(self.im.config.flow_uuid, null, "tel:" + msisdn, {
+            return self.rapidpro.start_flow(self.im.config.flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), {
                 dob: dob,
                 optout_reason: self.im.user.get_answer("state_optout_reason"),
                 babyloss_subscription: babyloss_subscription,
