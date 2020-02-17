@@ -267,16 +267,16 @@ go.app = function() {
                 options_per_page: null,
                 characters_per_page: 160,
                 choices: [
-                    new Choice("not_hiv_positive", $("She's not HIV+")),
+                    new Choice("not_hiv_pos", $("She's not HIV+")),
                     new Choice("miscarriage", $("Miscarriage")),
-                    new Choice("stillborn", $("Baby was stillborn")),
+                    new Choice("stillbirth", $("Baby was stillborn")),
                     new Choice("babyloss", $("Baby passed away")),
                     new Choice("not_useful", $("Msgs aren't helpful")),
                     new Choice("other", $("Other")),
                     new Choice("unknown", $("I prefer not to say"))
                 ],
                 next: function(choice) {
-                    if(_.includes(["miscarriage", "stillborn", "babyloss"], choice.value)) {
+                    if(_.includes(["miscarriage", "stillbirth", "babyloss"], choice.value)) {
                         return "state_loss_optout";
                     } else {
                         return "state_trigger_rapidpro_flow";
