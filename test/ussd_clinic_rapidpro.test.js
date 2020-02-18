@@ -30,8 +30,6 @@ describe("ussd_public app", function() {
                     token: "engage-token"
                 }
             },
-            clinic_group_ids: ["id-1"],
-            optout_group_ids: ["id-0"],
             prebirth_flow_uuid: "prebirth-flow-uuid",
             postbirth_flow_uuid: "postbirth-flow-uuid"
         });
@@ -169,7 +167,7 @@ describe("ussd_public app", function() {
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27123456789",
                             exists: true,
-                            groups: ["PMTCT", "Prebirth 1"]
+                            fields: {prebirth_messaging: "1"}
                         })
                     );
                 })
@@ -184,7 +182,7 @@ describe("ussd_public app", function() {
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27123456789",
                             exists: true,
-                            groups: ["Opted Out"]
+                            fields: {opted_out: "TRUE"}
                         })
                     );
                 })
@@ -199,7 +197,6 @@ describe("ussd_public app", function() {
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27123456789",
                             exists: true,
-                            groups: []
                         })
                     );
                 })
