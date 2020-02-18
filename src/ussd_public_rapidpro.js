@@ -28,11 +28,6 @@ go.app = function() {
             );
         };
 
-        self.contact_in_group = function(contact, groups){
-            var contact_groupids = _.map(_.get(contact, "groups", []), "uuid");
-            return _.intersection(contact_groupids, groups).length > 0;
-        };
-
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
                 if (self.im.msg.session_event !== 'new')
@@ -71,11 +66,11 @@ go.app = function() {
                         return self.im.user.set_lang(contact.language);
                     }
                 }).then(function() {
-                    // Delegate to the correct state depending on group membership
+                    // Delegate to the correct state depending on contact fields
                     var contact = self.im.user.get_answer("contact");
-                    if(self.contact_in_group(contact, self.im.config.public_group_ids)) {
+                    if(_.toUpper(_.get(contact, "fields.public_messaging")) === "TRUE") {
                         return self.states.create("state_public_subscription");
-                    } else if(self.contact_in_group(contact, self.im.config.clinic_group_ids)){
+                    } else if(_.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7)) {
                         return self.states.create("state_clinic_subscription");
                     } else {
                         return self.states.create("state_language");
@@ -280,7 +275,8 @@ go.app = function() {
 
         self.add("state_opt_in", function(name) {
             // Skip this state if they haven't opted out
-            if(!self.contact_in_group(self.im.user.get_answer("contact"), self.im.config.optout_group_ids)) {
+            var contact = self.im.user.get_answer("contact");
+            if(_.toUpper(_.get(contact, "fields.opted_out")) !== "TRUE") {
                 return self.states.create("state_whatsapp_contact_check");
             }
             return new MenuState(name, {

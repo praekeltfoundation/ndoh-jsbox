@@ -30,11 +30,6 @@ go.app = function() {
             );
         };
 
-        self.contact_in_group = function(contact, groups){
-            var contact_groupids = _.map(_.get(contact, "groups", []), "uuid");
-            return _.intersection(contact_groupids, groups).length > 0;
-        };
-
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
                 if (self.im.msg.session_event !== 'new')
@@ -108,11 +103,11 @@ go.app = function() {
                 .then(function(contact) {
                     self.im.user.set_answer("contact", contact);
                 }).then(function() {
-                    // Delegate to the correct state depending on group membership
+                    // Delegate to the correct state depending on contact fields
                     var contact = self.im.user.get_answer("contact");
-                    if(self.contact_in_group(contact, self.im.config.clinic_group_ids)){
+                    if(_.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7)) {
                         return self.states.create("state_active_subscription");
-                    } else if (self.contact_in_group(contact, self.im.config.optout_group_ids)) {
+                    } else if(_.toUpper(_.get(contact, "fields.opted_out")) === "TRUE"){
                         return self.states.create("state_opted_out");
                     } else {
                         return self.states.create("state_pregnant");

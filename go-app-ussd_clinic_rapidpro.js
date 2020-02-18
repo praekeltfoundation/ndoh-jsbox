@@ -274,11 +274,6 @@ go.app = function() {
             );
         };
 
-        self.contact_in_group = function(contact, groups){
-            var contact_groupids = _.map(_.get(contact, "groups", []), "uuid");
-            return _.intersection(contact_groupids, groups).length > 0;
-        };
-
         self.contact_edd = function(contact) {
             var today = new moment(self.im.config.testing_today);
             var edd = new moment(_.get(contact, "fields.edd", null));
@@ -376,9 +371,9 @@ go.app = function() {
             return self.rapidpro.get_contact({urn: "whatsapp:" + _.trim(msisdn, "+")})
                 .then(function(contact) {
                     self.im.user.answers.contact = contact;
-                    if(self.contact_in_group(contact, self.im.config.clinic_group_ids)) {
+                    if(_.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7)) {
                         return self.states.create("state_active_subscription");
-                    } else if (self.contact_in_group(contact, self.im.config.optout_group_ids)) {
+                    } else if (_.toUpper(_.get(contact, "fields.opted_out")) === "TRUE") {
                         return self.states.create("state_opted_out");
                     } else {
                         return self.states.create("state_with_nurse");

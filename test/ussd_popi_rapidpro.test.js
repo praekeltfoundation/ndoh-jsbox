@@ -17,9 +17,6 @@ describe("ussd_popi_rapidpro app", function() {
                     token: "rapidprotoken"
                 }
             },
-            public_groups: ["id-3"],
-            prebirth_groups: ["id-2"],
-            postbirth_groups: ["id-0"],
             sms_switch_flow_id: "sms-switch-flow",
             whatsapp_switch_flow_id: "whatsapp-switch-flow",
             msisdn_change_flow_id: "msisdn-change-flow",
@@ -37,8 +34,10 @@ describe("ussd_popi_rapidpro app", function() {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27123456789",
-                            groups: ["Prebirth"],
                             exists: true,
+                            fields: {
+                                prebirth_messaging: "1"
+                            }
                         })
                     );
                 })
@@ -61,7 +60,6 @@ describe("ussd_popi_rapidpro app", function() {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27123456789",
-                            groups: [],
                             exists: true,
                         })
                     );
@@ -84,7 +82,6 @@ describe("ussd_popi_rapidpro app", function() {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27123456789",
-                            groups: [],
                             exists: true,
                         })
                     );
@@ -108,8 +105,10 @@ describe("ussd_popi_rapidpro app", function() {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27123456789",
-                            groups: ["Prebirth"],
                             exists: true,
+                            fields: {
+                                prebirth_messaging: "1"
+                            }
                         })
                     );
                 })
@@ -161,8 +160,10 @@ describe("ussd_popi_rapidpro app", function() {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27123456789",
-                            groups: ["Prebirth"],
                             exists: true,
+                            fields: {
+                                prebirth_messaging: "1"
+                            }
                         })
                     );
                 })
@@ -179,7 +180,6 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup.user.state("state_personal_info")
                 .setup.user.answer("contact", {
                     language: null,
-                    groups: [],
                     fields: {
                         preferred_channel: null,
                         identification_type: null,
@@ -217,8 +217,8 @@ describe("ussd_popi_rapidpro app", function() {
                         research_consent: "TRUE",
                         edd: "2020-06-04T00:00:00.000000Z",
                         baby_dob1: "2018-03-02T00:00:00.000000Z",
+                        prebirth_messaging: "1"
                     },
-                    groups: [{uuid: "id-2"}]
                 })
                 .check.interaction({
                     reply: [
@@ -247,8 +247,8 @@ describe("ussd_popi_rapidpro app", function() {
                         research_consent: "TRUE",
                         edd: "2020-06-04T00:00:00.000000Z",
                         baby_dob1: "2018-03-02T00:00:00.000000Z",
+                        prebirth_messaging: "1",
                     },
-                    groups: [{uuid: "id-2"}]
                 })
                 .input("1")
                 .check.interaction({
@@ -488,7 +488,9 @@ describe("ussd_popi_rapidpro app", function() {
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27820001001",
                             exists: true,
-                            groups: ["prebirth", "pmtct"]
+                            fields: {
+                                prebirth_messaging: "1"
+                            }
                         })
                     );
                 })
@@ -1493,7 +1495,6 @@ describe("ussd_popi_rapidpro app", function() {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27123456789",
-                            groups: [],
                             exists: true,
                         })
                     );
@@ -1509,8 +1510,7 @@ describe("ussd_popi_rapidpro app", function() {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27123456789",
-                            fields: {identification_type: "sa_id"},
-                            groups: ["Prebirth 1"],
+                            fields: {identification_type: "sa_id", prebirth_messaging: "1"},
                             exists: true,
                         })
                     );
@@ -1526,8 +1526,7 @@ describe("ussd_popi_rapidpro app", function() {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27123456789",
-                            fields: {identification_type: "passport"},
-                            groups: ["Prebirth 1"],
+                            fields: {identification_type: "passport", prebirth_messaging: "1"},
                             exists: true,
                         })
                     );
@@ -1543,8 +1542,7 @@ describe("ussd_popi_rapidpro app", function() {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27123456789",
-                            fields: {identification_type: "dob"},
-                            groups: ["Prebirth 1"],
+                            fields: {identification_type: "dob", prebirth_messaging: "1"},
                             exists: true,
                         })
                     );
@@ -1898,8 +1896,8 @@ describe("ussd_popi_rapidpro app", function() {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27820001001",
-                            groups: ["Prebirth 1"],
-                            exists: true
+                            exists: true,
+                            fields: {prebirth_messaging: "1"}
                         })
                     );
                 })
@@ -1914,7 +1912,6 @@ describe("ussd_popi_rapidpro app", function() {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27820001001",
-                            groups: [],
                             exists: true
                         })
                     );

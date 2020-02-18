@@ -152,11 +152,6 @@ go.app = function() {
             );
         };
 
-        self.contact_in_group = function(contact, groups){
-            var contact_groupids = _.map(_.get(contact, "groups", []), "uuid");
-            return _.intersection(contact_groupids, groups).length > 0;
-        };
-
         self.contact_current_channel = function(contact) {
             // Returns the current channel of the contact
             if(_.toUpper(_.get(contact, "fields.preferred_channel", "")) === "WHATSAPP") {
@@ -199,11 +194,11 @@ go.app = function() {
                     }
                 }).then(function() {
                     var contact = self.im.user.get_answer("contact");
-                    var config = self.im.config;
-                    var groups = _.concat(
-                        config.public_groups, config.prebirth_groups, config.postbirth_groups
-                    );
-                    if(self.contact_in_group(contact, groups)){
+                    var in_public = _.toUpper(_.get(contact, "fields.public_messaging")) === "TRUE";
+                    var in_prebirth = _.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7);
+                    var in_postbirth =
+                        _.toUpper(_.get(contact, "fields.postbirth_messaging")) === "TRUE";
+                    if(in_public || in_prebirth || in_postbirth) {
                         return self.states.create("state_main_menu");
                     } else {
                         return self.states.create("state_not_registered");
@@ -263,9 +258,9 @@ go.app = function() {
                     sa_id: _.get(contact, "fields.id_number", $("None"))
                 }, id_type, $("None")),
                 message_type: 
-                    self.contact_in_group(contact, self.im.config.public_groups) ? $("Public") :
-                    self.contact_in_group(contact, self.im.config.prebirth_groups)? $("Pregnancy") :
-                    self.contact_in_group(contact, self.im.config.postbirth_groups)? $("Baby") :
+                    _.toUpper(_.get(contact, "fields.public_messaging")) === "TRUE" ? $("Public") :
+                    _.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7) ? $("Pregnancy") :
+                    _.toUpper(_.get(contact, "fields.postbirth_messaging")) === "TRUE" ? $("Baby") :
                     $("None"),
                 research:
                     _.get({
@@ -446,10 +441,11 @@ go.app = function() {
 
             return self.rapidpro.get_contact({urn: "whatsapp:" + _.trim(msisdn, "+")})
                 .then(function(contact) {
-                    if(
-                        self.contact_in_group(contact, self.im.config.public_groups) ||
-                        self.contact_in_group(contact, self.im.config.prebirth_groups) ||
-                        self.contact_in_group(contact, self.im.config.postbirth_groups)) {
+                    var public = _.toUpper(_.get(contact, "fields.public_messaging")) === "TRUE";
+                    var prebirth = _.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7);
+                    var postbirth =
+                        _.toUpper(_.get(contact, "fields.postbirth_messaging")) === "TRUE";
+                    if(public || prebirth || postbirth) {
                         return self.states.create("state_active_subscription");
                     } else {
                         return self.states.create("state_msisdn_change_confirm");
@@ -1156,16 +1152,15 @@ go.app = function() {
             var msisdn = utils.normalize_msisdn(
                 self.im.user.answers.state_enter_origin_msisdn, "ZA"
             );
-            var config = self.im.config;
-            var groups = _.concat(
-                config.public_groups, config.prebirth_groups, config.postbirth_groups
-            );
             return self.rapidpro
                 .get_contact({urn: "whatsapp:" + _.trim(msisdn, "+")})
                 .then(function(contact) {
+                    var public = _.toUpper(_.get(contact, "fields.public_messaging")) === "TRUE";
+                    var prebirth = _.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7);
+                    var postbirth =
+                        _.toUpper(_.get(contact, "fields.postbirth_messaging")) === "TRUE";
                     if(
-                        contact &&
-                        self.contact_in_group(contact, groups) &&
+                        (public || prebirth || postbirth) &&
                         _.get(contact, "fields.identification_type")
                     ){
                         self.im.user.answers.origin_contact = contact;
@@ -1367,14 +1362,14 @@ go.app = function() {
 
         self.add("state_check_target_contact", function(name, opts) {
             var msisdn = utils.normalize_msisdn(self.im.user.answers.state_target_msisdn, "ZA");
-            var config = self.im.config;
-            var groups = _.concat(
-                config.public_groups, config.prebirth_groups, config.postbirth_groups
-            );
             return self.rapidpro
                 .get_contact({urn: "whatsapp:" + _.trim(msisdn, "+")})
                 .then(function(contact) {
-                    if(contact && self.contact_in_group(contact, groups)){
+                    var public = _.toUpper(_.get(contact, "fields.public_messaging")) === "TRUE";
+                    var prebirth = _.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7);
+                    var postbirth =
+                        _.toUpper(_.get(contact, "fields.postbirth_messaging")) === "TRUE";
+                    if(public || prebirth || postbirth){
                         return self.states.create("state_target_existing_subscriptions");
                     } else {
                         return self.states.create("state_target_no_subscriptions");

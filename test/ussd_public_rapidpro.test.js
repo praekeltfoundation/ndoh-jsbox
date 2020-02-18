@@ -22,9 +22,6 @@ describe("ussd_public app", function() {
                     token: "api-token"
                 }
             },
-            optout_group_ids: ["id-0"],
-            public_group_ids: ["id-1"],
-            clinic_group_ids: ["id-0"],
             flow_uuid: "rapidpro-flow-uuid"
         });
     });
@@ -62,7 +59,7 @@ describe("ussd_public app", function() {
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27123456789",
                             exists: true,
-                            groups: ["other", "Public"]
+                            fields: {public_messaging: "TRUE"}
                         })
                     );
                 })
@@ -83,7 +80,7 @@ describe("ussd_public app", function() {
                             urn: "whatsapp:27123456789",
                             exists: true,
                             language: "zul",
-                            groups: ["Prebirth 3"]
+                            fields: {prebirth_messaging: "3"}
                         })
                     );
                 })
@@ -104,7 +101,6 @@ describe("ussd_public app", function() {
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27123456789",
                             exists: true,
-                            groups: []
                         })
                     );
                 })
@@ -489,7 +485,7 @@ describe("ussd_public app", function() {
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27123456789",
                             exists: true,
-                            groups: ["other", "Public"]
+                            fields: {public_messaging: "TRUE"}
                         })
                     );
                 })
@@ -508,7 +504,7 @@ describe("ussd_public app", function() {
         it("should ask the user to opt in", function() {
             return tester
                 .setup.user.state("state_opt_in")
-                .setup.user.answer("contact", {groups: [{uuid: "id-0"}]})
+                .setup.user.answer("contact", {fields: {opted_out: "TRUE"}})
                 .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_opt_in", 
@@ -523,7 +519,7 @@ describe("ussd_public app", function() {
         it("should display exit screen if user chooses not to opt in", function() {
             return tester
                 .setup.user.state("state_opt_in")
-                .setup.user.answer("contact", {groups: [{uuid: "id-0"}]})
+                .setup.user.answer("contact", {fields: {opted_out: "TRUE"}})
                 .input("2")
                 .check.interaction({
                     state: "state_exit",
@@ -534,7 +530,7 @@ describe("ussd_public app", function() {
         it("should show the user an error if they reply with an incorrect choice", function() {
             return tester
                 .setup.user.state("state_opt_in")
-                .setup.user.answer("contact", {groups: [{uuid: "id-0"}]})
+                .setup.user.answer("contact", {fields: {opted_out: "TRUE"}})
                 .input("foo")
                 .check.interaction({
                     state: "state_opt_in", 

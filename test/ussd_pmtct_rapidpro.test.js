@@ -18,8 +18,6 @@ describe("ussd_pmtct app", function() {
                     token: "rapidpro-token"
                 }
             },
-            clinic_group_ids: ["id-0"],
-            pmtct_group_ids: ["id-1"],
             flow_uuid: "rapidpro-flow-uuid"
         });
     });
@@ -106,8 +104,7 @@ describe("ussd_pmtct app", function() {
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27123456789",
                             exists: true,
-                            groups: [{"uuid": "id-0"},
-                                    {"uuid": "id-1"}]
+                            fields: {prebirth_messaging: "1", pmtct_messaging: "TRUE"}
                         })
                     );
                 })
@@ -122,7 +119,7 @@ describe("ussd_pmtct app", function() {
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27123456789",
                             exists: true,
-                            groups: [{"uuid": "id-1"}]
+                            fields: {prebirth_messaging: "1"}
                         })
                     );
                 })
@@ -136,8 +133,7 @@ describe("ussd_pmtct app", function() {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27123456789",
-                            exists: true,
-                            groups: []
+                            exists: true
                         })
                     );
                 })
@@ -279,7 +275,6 @@ describe("ussd_pmtct app", function() {
                 .setup.user.answers({
                     state_optout: "yes",
                     contact: {
-                        groups: [{"uuid": "id-0"}],
                         fields: {dob: "1990-01-01T00:00:00"}
                     }
                 })
@@ -363,7 +358,6 @@ describe("ussd_pmtct app", function() {
                 .setup.user.answers({
                     state_optout: "yes",
                     contact: {
-                        groups: [{"uuid": "id-0"}],
                         fields: {dob: "1990-01-01T00:00:00"}
                     }
                 })
@@ -397,7 +391,6 @@ describe("ussd_pmtct app", function() {
                     state_optout: "yes",
                     state_optout_reason: "babyloss",
                     contact: {
-                        groups: [{"uuid": "id-0"}],
                         fields: {dob: "1990-01-01T00:00:00"}
                     }
                 })
@@ -461,7 +454,6 @@ describe("ussd_pmtct app", function() {
             return tester
                 .setup.user.state("state_no_pmtct_subscription")
                 .setup.user.answer("contact", {
-                    groups: [{"uuid": "id-0"}],
                     fields: {dob: "1990-01-01T00:00:00"}
                 })
                 .setup(function(api) {
@@ -666,7 +658,6 @@ describe("ussd_pmtct app", function() {
                     state_optout: "yes",
                     state_optout_reason: "other",
                     contact: {
-                        groups: [{"uuid": "id-0"}],
                         fields: {dob: "1990-01-01T00:00:00"}
                     }
                 })
@@ -704,7 +695,6 @@ describe("ussd_pmtct app", function() {
                     state_loss_optout: "yes",
                     state_optout_reason: "babyloss",
                     contact: {
-                        groups: [{"uuid": "id-0"}],
                         fields: {dob: "1990-01-01T00:00:00"}
                     }
                 })
@@ -741,7 +731,6 @@ describe("ussd_pmtct app", function() {
                     state_loss_optout: "yes",
                     state_optout_reason: "babyloss",
                     contact: {
-                        groups: [{"uuid": "id-0"}],
                         fields: {dob: "1990-01-01T00:00:00"}
                     }
                 })
