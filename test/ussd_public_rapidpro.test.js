@@ -12,6 +12,7 @@ describe("ussd_public app", function() {
         app = new go.app.GoNDOH();
         tester = new AppTester(app);
         tester.setup.config.app({
+            testing_today: "2014-04-04T07:07:07",
             services: {
                 rapidpro: {
                     base_url: "https://rapidpro",
@@ -66,7 +67,7 @@ describe("ussd_public app", function() {
                 .start()
                 .check.interaction({
                     state: "state_public_subscription",
-                    reply: 
+                    reply:
                         "Hello mom! You're currently receiving a small set of MomConnect messages. To get the full " +
                         "set, please visit your nearest clinic. To stop, dial *134*550*1#."
                 })
@@ -87,7 +88,7 @@ describe("ussd_public app", function() {
                 .start()
                 .check.interaction({
                     state: "state_clinic_subscription",
-                    reply: 
+                    reply:
                         "Hello mom! You can reply to any MomConnect message with a question, compliment or complaint. Our team " +
                         "will get back to you as soon as they can."
                 })
@@ -215,7 +216,7 @@ describe("ussd_public app", function() {
                 .input("2")
                 .check.interaction({
                     state: "state_pregnant_only",
-                    reply: 
+                    reply:
                         "We're sorry but this service is only for pregnant mothers. If you have other health concerns " +
                         "please visit your nearest clinic. Have a lovely day!"
                 })
@@ -451,7 +452,7 @@ describe("ussd_public app", function() {
                 .check.interaction({
                     state: "state_research_consent",
                     reply: [
-                        "Sorry, please reply with the number next to your answer. We may call or send " + 
+                        "Sorry, please reply with the number next to your answer. We may call or send " +
                         "msgs for research reasons. Do you agree?",
                         "1. Yes",
                         "2. No, only send MC msgs"
@@ -493,7 +494,7 @@ describe("ussd_public app", function() {
                 .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_public_subscription",
-                    reply: 
+                    reply:
                         "Hello mom! You're currently receiving a small set of MomConnect messages. To get the full " +
                         "set, please visit your nearest clinic. To stop, dial *134*550*1#."
                 })
@@ -507,7 +508,7 @@ describe("ussd_public app", function() {
                 .setup.user.answer("contact", {fields: {opted_out: "TRUE"}})
                 .input({session_event: "continue"})
                 .check.interaction({
-                    state: "state_opt_in", 
+                    state: "state_opt_in",
                     reply: [
                         "You previously opted out of MomConnect messages. Are you sure you want to get messages again?",
                         "1. Yes",
@@ -533,7 +534,7 @@ describe("ussd_public app", function() {
                 .setup.user.answer("contact", {fields: {opted_out: "TRUE"}})
                 .input("foo")
                 .check.interaction({
-                    state: "state_opt_in", 
+                    state: "state_opt_in",
                     reply: [
                         "Sorry, please reply with the number next to your answer. Please confirm that you would like " +
                         "to opt in to receive messages again.",
@@ -561,7 +562,11 @@ describe("ussd_public app", function() {
                                 "on_whatsapp": "FALSE",
                                 "research_consent": "FALSE",
                                 "language": "zul",
-                                "source": "Public USSD"
+                                "source": "Public USSD",
+                                "timestamp": "2014-04-04T07:07:07Z",
+                                "registered_by": "+27123456789",
+                                "mha": 6,
+                                "swt": 1
                             }
                         )
                     );
@@ -624,7 +629,11 @@ describe("ussd_public app", function() {
                                 "on_whatsapp": "TRUE",
                                 "research_consent": "TRUE",
                                 "language": "xho",
-                                "source": "Public USSD"
+                                "source": "Public USSD",
+                                "timestamp": "2014-04-04T07:07:07Z",
+                                "registered_by": "+27123456789",
+                                "mha": 6,
+                                "swt": 7
                             }
                         )
                     );
@@ -649,7 +658,11 @@ describe("ussd_public app", function() {
                                 "on_whatsapp": "FALSE",
                                 "research_consent": "FALSE",
                                 "language": "zul",
-                                "source": "Public USSD"
+                                "source": "Public USSD",
+                                "timestamp": "2014-04-04T07:07:07Z",
+                                "registered_by": "+27123456789",
+                                "mha": 6,
+                                "swt": 1
                             },
                             true
                         )
@@ -690,7 +703,11 @@ describe("ussd_public app", function() {
                                 "on_whatsapp": "TRUE",
                                 "research_consent": "FALSE",
                                 "language": "zul",
-                                "source": "Public USSD"
+                                "source": "Public USSD",
+                                "timestamp": "2014-04-04T07:07:07Z",
+                                "registered_by": "+27123456789",
+                                "mha": 6,
+                                "swt": 7
                             }
                         )
                     );
@@ -703,7 +720,7 @@ describe("ussd_public app", function() {
                 .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_registration_complete",
-                    reply: 
+                    reply:
                         "You're done! This number 0123456789 will get helpful messages from MomConnect on WhatsApp. " +
                         "For the full set of messages, visit a clinic."
                 })
@@ -727,7 +744,11 @@ describe("ussd_public app", function() {
                                 "on_whatsapp": "FALSE",
                                 "research_consent": "FALSE",
                                 "language": "zul",
-                                "source": "Public USSD"
+                                "source": "Public USSD",
+                                "timestamp": "2014-04-04T07:07:07Z",
+                                "registered_by": "+27123456789",
+                                "mha": 6,
+                                "swt": 1
                             }
                         )
                     );
@@ -740,7 +761,7 @@ describe("ussd_public app", function() {
                 .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_registration_complete",
-                    reply: 
+                    reply:
                         "You're done! This number 0123456789 will get helpful messages from MomConnect on SMS. " +
                         "You can register for the full set of FREE messages at a clinic."
                 })

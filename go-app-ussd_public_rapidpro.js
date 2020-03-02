@@ -149,6 +149,7 @@ go.RapidPro = function() {
 
 go.app = function() {
     var _ = require("lodash");
+    var moment = require('moment');
     var vumigo = require("vumigo_v02");
     var utils = require("seed-jsbox-utils").utils;
     var App = vumigo.App;
@@ -357,7 +358,7 @@ go.app = function() {
                 ]
             });
         });
-        
+
         self.add("state_message_consent", function(name) {
             // Skip this state if we already have consent
             var consent = _.get(self.im.user.get_answer("contact"), "fields.messaging_consent");
@@ -383,7 +384,7 @@ go.app = function() {
 
         self.add("state_message_consent_denied", function(name) {
             return new MenuState(name, {
-                question: $("Unfortunately, without agreeing we can't send MomConnect to you. " + 
+                question: $("Unfortunately, without agreeing we can't send MomConnect to you. " +
                             "Do you want to agree to get messages from MomConnect?"),
                 error: $(
                     "Sorry, please reply with the number next to your answer. You've chosen not to receive " +
@@ -410,7 +411,7 @@ go.app = function() {
                     "We’ll keep your info safe. Do you agree?"
                 ),
                 error: $(
-                    "Sorry, please reply with the number next to your answer. We may call or send " + 
+                    "Sorry, please reply with the number next to your answer. We may call or send " +
                     "msgs for research reasons. Do you agree?"
                 ),
                 accept_labels: true,
@@ -472,22 +473,29 @@ go.app = function() {
 
         self.add("state_trigger_rapidpro_flow", function(name, opts) {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
-            return self.rapidpro.start_flow(self.im.config.flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), {
+            var data = {
                 on_whatsapp: self.im.user.get_answer("on_whatsapp") ? "TRUE" : "FALSE",
                 research_consent: self.im.user.get_answer("state_research_consent") === "yes" ? "TRUE" : "FALSE",
                 language: self.im.user.lang,
-                source: "Public USSD"
-            }).then(function() {
-                return self.states.create("state_registration_complete");
-            }).catch(function(e) {
-                // Go to error state after 3 failed HTTP requests
-                opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-                if(opts.http_error_count === 3) {
-                    self.im.log.error(e.message);
-                    return self.states.create("__error__", {return_state: "state_trigger_rapidpro_flow"});
-                }
-                return self.states.create("state_trigger_rapidpro_flow", opts);
-            });
+                source: "Public USSD",
+                timestamp: new moment.utc(self.im.config.testing_today).format(),
+                registered_by: utils.normalize_msisdn(self.im.user.addr, "ZA"),
+                mha: 6,
+                swt: self.im.user.get_answer("on_whatsapp") ? 7 : 1
+            };
+            return self.rapidpro
+                .start_flow(self.im.config.flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), data)
+                .then(function() {
+                    return self.states.create("state_registration_complete");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: "state_trigger_rapidpro_flow"});
+                    }
+                    return self.states.create("state_trigger_rapidpro_flow", opts);
+                });
         });
 
         self.states.add("state_registration_complete", function(name) {
