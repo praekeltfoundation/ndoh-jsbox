@@ -476,7 +476,7 @@ go.app = function() {
                 ]
             });
         });
-        
+
         self.states.add("state_no_opt_in", function(name) {
             return new EndState(name, {
                 next: "state_start",
@@ -537,7 +537,7 @@ go.app = function() {
                 ]
             });
         });
-        
+
         self.add("state_info_consent_confirm", function(name) {
             return new MenuState(name, {
                 question: $(
@@ -575,7 +575,7 @@ go.app = function() {
                 ]
             });
         });
-        
+
         self.add("state_message_consent_confirm", function(name) {
             return new MenuState(name, {
                 question: $(
@@ -725,7 +725,7 @@ go.app = function() {
                     );
                     var current_date = new moment(self.im.config.testing_today).startOf("day");
                     if(
-                        !date.isValid() || 
+                        !date.isValid() ||
                         !date.isBetween(current_date, current_date.clone().add(43, "weeks"))
                       ) {
                         return $(
@@ -883,7 +883,7 @@ go.app = function() {
                         !match ||
                         !validLuhn(content) ||
                         !(dob = new moment(match[1], "YYMMDD")) ||
-                        !dob.isValid() || 
+                        !dob.isValid() ||
                         !dob.isBetween(
                             today.clone().add(-130, "years"),
                             today.clone().add(-5, "years")
@@ -1002,9 +1002,9 @@ go.app = function() {
                     if(
                         !match ||
                         !(dob = new moment(
-                            self.im.user.answers.state_dob_year + 
-                            self.im.user.answers.state_dob_month + 
-                            match[1], 
+                            self.im.user.answers.state_dob_year +
+                            self.im.user.answers.state_dob_month +
+                            match[1],
                             "YYYYMMDD")
                         ) ||
                         !dob.isValid()
