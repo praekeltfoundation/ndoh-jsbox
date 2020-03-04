@@ -517,7 +517,7 @@ go.app = function() {
 
         self.add("state_info_consent", function(name) {
             // Skip to message consent if the user has already given info consent
-            var consent = _.get(self.im.user.answers, "contact.fields.info_consent", "");
+            var consent = _.get(self.im.user.answers, "contact.fields.info_consent", "") || "";
             if(consent.toUpperCase() === "TRUE"){
                 return self.states.create("state_message_consent");
             }
@@ -556,7 +556,7 @@ go.app = function() {
         });
 
         self.add("state_message_consent", function(name) {
-            var consent = _.get(self.im.user.answers, "contact.fields.message_consent", "");
+            var consent = _.get(self.im.user.answers, "contact.fields.message_consent", "") || "";
             if(consent.toUpperCase() === "TRUE"){
                 return self.states.create("state_research_consent");
             }
@@ -604,7 +604,7 @@ go.app = function() {
         });
 
         self.add("state_research_consent", function(name) {
-            var consent = _.get(self.im.user.answers, "contact.fields.research_consent", "");
+            var consent = _.get(self.im.user.answers, "contact.fields.research_consent", "") || "";
             if(consent.toUpperCase() === "TRUE"){
                 return self.states.create("state_clinic_code");
             }
