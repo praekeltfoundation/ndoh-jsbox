@@ -31,7 +31,7 @@ describe("ussd_pmtct app", function() {
                     reply: [
                     "Welcome to the Department of Health's MomConnect (MC).",
                     "",
-                    "Is 0123456789 the cell number of the mother who wants to sign up to HIV-related messages?",
+                    "Is 0123456789 the no. of the mom who wants to sign up or opt out of HIV-related messages?",
                     "1. Yes",
                     "2. No"
                 ].join("\n"),
@@ -62,8 +62,8 @@ describe("ussd_pmtct app", function() {
                 .check.interaction({
                     state: "state_enter_msisdn",
                     reply: (
-                        "Please enter the cell number of the mother who would like to sign up to " +
-                        "receive HIV-related messages from MomConnect e.g. 0813547654."
+                        "Please enter the cell number of the mom that would like to sign up to or " +
+                        "opt out of HIV-related messages from MomConnect e.g. 0813547654."
                     )
                 })
                 .run();
@@ -75,9 +75,9 @@ describe("ussd_pmtct app", function() {
                 .check.interaction({
                     state: "state_enter_msisdn",
                     reply: (
-                        "Sorry, we don't understand that cell number. Please enter 10 digit " +
-                        "cell number that the mother would like to get HIV-related messages " +
-                        "on, e.g. 0813547654."
+                        "Sorry, we don't understand that number. Please enter 10 digit " +
+                        "cell number that the mother would like to get or opt out of HIV-related messages " +
+                        "e.g. 0813547654."
                     )
                 })
                 .run();
@@ -297,8 +297,8 @@ describe("ussd_pmtct app", function() {
                 .input("5")
                 .check.interaction({
                     state: "state_opted_out",
-                    reply: "Thank you. She will no longer receive messages from us about HIV. " +
-                            "For any medical concerns, please visit a clinic."
+                    reply: "Thank you. She will no longer receive messages from us about HIV. She will " +
+                            "get her regular MomConnect messages. For any medical concerns, please visit a clinic."
                 })
                 .run();
         });
@@ -379,8 +379,8 @@ describe("ussd_pmtct app", function() {
                 .input("2")
                 .check.interaction({
                     state: "state_opted_out",
-                    reply: "Thank you. She will no longer receive messages from us about HIV. " +
-                            "For any medical concerns, please visit a clinic."
+                    reply: "Thank you. She will no longer receive messages from us about HIV. She will " +
+                            "get her regular MomConnect messages. For any medical concerns, please visit a clinic."
                 })
                 .run();
         });
@@ -681,8 +681,8 @@ describe("ussd_pmtct app", function() {
                 .check.interaction({
                     state: "state_opted_out",
                     reply: 
-                        "Thank you. She will no longer receive messages from us about HIV. " +
-                        "For any medical concerns, please visit a clinic."
+                        "Thank you. She will no longer receive messages from us about HIV. She will " +
+                        "get her regular MomConnect messages. For any medical concerns, please visit a clinic."
                 })
                 .check.reply.ends_session()
                 .run();

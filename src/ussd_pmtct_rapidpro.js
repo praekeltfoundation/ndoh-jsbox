@@ -51,7 +51,7 @@ go.app = function() {
                 question: $([
                     "Welcome to the Department of Health's MomConnect (MC).",
                     "",
-                    "Is {{msisdn}} the cell number of the mother who wants to sign up to HIV-related messages?"
+                    "Is {{msisdn}} the no. of the mom who wants to sign up or opt out of HIV-related messages?"
                     ].join("\n")).context({msisdn: utils.readable_msisdn(self.im.user.addr, "27")}),
                 error:
                     "Sorry we don't understand. Please enter the number next to the mother's " +
@@ -66,14 +66,14 @@ go.app = function() {
         self.add("state_enter_msisdn", function(name) {
             return new FreeText(name, {
                 question:
-                    "Please enter the cell number of the mother who would like to sign up to " +
-                    "receive HIV-related messages from MomConnect e.g. 0813547654.",
+                    "Please enter the cell number of the mom that would like to sign up to or " +
+                    "opt out of HIV-related messages from MomConnect e.g. 0813547654.",
                 check: function(content) {
                     if(!utils.is_valid_msisdn(content, "ZA")) {
                         return (
-                            "Sorry, we don't understand that cell number. Please enter 10 digit " +
-                            "cell number that the mother would like to get HIV-related messages " +
-                            "on, e.g. 0813547654.");
+                            "Sorry, we don't understand that number. Please enter 10 digit " +
+                            "cell number that the mother would like to get or opt out of HIV-related messages " +
+                            "e.g. 0813547654.");
                     }
                     if(utils.normalize_msisdn(content, "ZA") === "+27813547654") {
                         return (
@@ -181,8 +181,8 @@ go.app = function() {
             return new EndState(name, {
                 next: "state_start",
                 text:
-                    $("Thank you. She will no longer receive messages from us about HIV. " +
-                    "For any medical concerns, please visit a clinic.")
+                    $("Thank you. She will no longer receive messages from us about HIV. She will " +
+                    "get her regular MomConnect messages. For any medical concerns, please visit a clinic.")
             });
         });
 
