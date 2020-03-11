@@ -1096,7 +1096,8 @@ go.app = function() {
                         "YYYYMMDD"
                     ).format(),
                 passport_origin: self.im.user.answers.state_passport_country,
-                passport_number: self.im.user.answers.state_passport_no
+                passport_number: self.im.user.answers.state_passport_no,
+                swt: self.im.user.get_answer("on_whatsapp") ? 7 : 1
             };
             var flow_uuid;
             if(self.im.user.answers.state_message_type === "state_edd_month") {

@@ -857,6 +857,7 @@ describe("ussd_chw app", function() {
                                 id_type: "sa_id",
                                 sa_id_number: "9001020005087",
                                 dob: "1990-01-02T00:00:00Z",
+                                swt: "7",
                             }
                         )
                     );
@@ -903,6 +904,7 @@ describe("ussd_chw app", function() {
                                 id_type: "sa_id",
                                 sa_id_number: "9001020005087",
                                 dob: "1990-01-02T00:00:00Z",
+                                swt: "1",
                             }
                         )
                     );
@@ -949,6 +951,7 @@ describe("ussd_chw app", function() {
                                 id_type: "sa_id",
                                 sa_id_number: "9001020005087",
                                 dob: "1990-01-02T00:00:00Z",
+                                swt: "1",
                             },
                             true
                         )
