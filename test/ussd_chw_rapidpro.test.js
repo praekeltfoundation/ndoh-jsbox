@@ -857,6 +857,7 @@ describe("ussd_chw app", function() {
                                 id_type: "sa_id",
                                 sa_id_number: "9001020005087",
                                 dob: "1990-01-02T00:00:00Z",
+                                swt: "7",
                             }
                         )
                     );
@@ -903,6 +904,7 @@ describe("ussd_chw app", function() {
                                 id_type: "sa_id",
                                 sa_id_number: "9001020005087",
                                 dob: "1990-01-02T00:00:00Z",
+                                swt: "1",
                             }
                         )
                     );
@@ -937,10 +939,7 @@ describe("ussd_chw app", function() {
                     );
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
-                            "rapidpro-flow-uuid",
-                            null,
-                            "whatsapp:27820001001",
-                            {
+                            "rapidpro-flow-uuid", null, "whatsapp:27820001001", {
                                 research_consent:"FALSE",
                                 registered_by: "+27123456789",
                                 language: "zul",
@@ -949,8 +948,8 @@ describe("ussd_chw app", function() {
                                 id_type: "sa_id",
                                 sa_id_number: "9001020005087",
                                 dob: "1990-01-02T00:00:00Z",
-                            },
-                            true
+                                swt: "1"
+                            }, true
                         )
                     );
                 })

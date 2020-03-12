@@ -1444,7 +1444,8 @@ describe("ussd_public app", function() {
                                 edd: "2015-02-13T00:00:00Z",
                                 clinic_code: "123456",
                                 sa_id_number: "9001020005087",
-                                dob: "1990-01-02T00:00:00Z"
+                                dob: "1990-01-02T00:00:00Z",
+                                swt: "7",
                             }
                         )
                     );
@@ -1500,7 +1501,8 @@ describe("ussd_public app", function() {
                                 baby_dob: "2014-02-13T00:00:00Z",
                                 clinic_code: "123456",
                                 sa_id_number: "9001020005087",
-                                dob: "1990-01-02T00:00:00Z"
+                                dob: "1990-01-02T00:00:00Z",
+                                swt: "7",
                             }
                         )
                     );
@@ -1585,7 +1587,8 @@ describe("ussd_public app", function() {
                                 edd: "2015-02-13T00:00:00Z",
                                 clinic_code: "123456",
                                 sa_id_number: "9001020005087",
-                                dob: "1990-01-02T00:00:00Z"
+                                dob: "1990-01-02T00:00:00Z",
+                                swt: "7",
                             }, true
                         )
                     );

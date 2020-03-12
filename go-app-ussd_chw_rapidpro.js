@@ -711,7 +711,8 @@ go.app = function() {
                         "YYYYMMDD"
                     ).format(),
                 passport_origin: self.im.user.answers.state_passport_country,
-                passport_number: self.im.user.answers.state_passport_no
+                passport_number: self.im.user.answers.state_passport_no,
+                swt: self.im.user.answers.on_whatsapp ? "7" : "1"
             };
             return self.rapidpro
                 .start_flow(self.im.config.flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), data)
