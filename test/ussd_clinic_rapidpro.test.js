@@ -475,6 +475,13 @@ describe("ussd_public app", function() {
                 .check.user.state("state_clinic_code")
                 .run();
         });
+        it("should go to state_more_info if the mother wants more info", function() {
+            return tester
+                .setup.user.state("state_info_consent")
+                .input("3")
+                .check.user.state("state_more_info")
+                .run();
+        });
     });
     describe("state_info_consent_confirm", function() {
         it("should confirm if the user doesn't consent", function() {
@@ -1664,6 +1671,165 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_add_child")
                 .input("2")
                 .check.user.state("state_active_subscription")
+                .run();
+        });
+    });
+    describe("state_more_info", function() {
+        it("should display the list of questions to the user page 1", function() {
+            return tester
+                .setup.user.state("state_more_info")
+                .check.interaction({
+                    reply: [
+                        "Choose a question you're interested in:",
+                        "1. What is MomConnect?",
+                        "2. Why does MomConnect need my info?",
+                        "3. What personal info is collected?",
+                        "4. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display the list of questions to the user page 2", function() {
+            return tester
+                .setup.user.state("state_more_info")
+                .input("4")
+                .check.interaction({
+                    reply: [
+                        "Choose a question you're interested in:",
+                        "1. Who can see my personal info?",
+                        "2. How long does MC keep my info?",
+                        "3. Back",
+                        "4. Previous"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_question_what", function() {
+        it("should display the info to the user", function() {
+            return tester
+                .setup.user.state("state_question_what")
+                .check.interaction({
+                    reply: [
+                        "MomConnect is a Health Department programme. It sends helpful messages " +
+                        "for you and your baby.",
+                        "1. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_question_why", function() {
+        it("should tell the user why we need their info", function() {
+            return tester
+                .setup.user.state("state_question_why")
+                .check.interaction({
+                    reply: [
+                        "MomConnect needs your personal info to send you messages that are " +
+                        "relevant to your pregnancy or your baby's age. By knowing where",
+                        "1. Next",
+                        "2. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show the second page", function() {
+            return tester
+                .setup.user.state("state_question_why")
+                .input("1")
+                .check.interaction({
+                    reply: [
+                        "you registered for MomConnect, the Health Department can make sure " +
+                        "that the service is being offered to women at your clinic. Your",
+                        "1. Next",
+                        "2. Previous",
+                        "3. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show the third page", function() {
+            return tester
+                .setup.user.state("state_question_why")
+                .inputs("1", "1")
+                .check.interaction({
+                    reply: [
+                        "info assists the Health Department to improve its services, understand " +
+                        "your needs better and provide even better messaging.",
+                        "1. Previous",
+                        "2. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_question_pi", function() {
+        it("should tell the user what personal info is collected", function() {
+            return tester
+                .setup.user.state("state_question_pi")
+                .check.interaction({
+                    reply: [
+                        "MomConnect collects your cell and ID numbers, clinic location, and info " +
+                        "about how your pregnancy or baby is progressing.",
+                        "1. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_question_who", function() {
+        it("should tell the user who processes their info", function() {
+            return tester
+                .setup.user.state("state_question_who")
+                .check.interaction({
+                    reply: [
+                        "MomConnect is owned by the Health Department. Your data is protected. " +
+                        "It's processed by MTN, Cell C, Telkom, Vodacom, Praekelt,",
+                        "1. Next",
+                        "2. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show the second page", function() {
+            return tester
+                .setup.user.state("state_question_who")
+                .input("1")
+                .check.interaction({
+                    reply: [
+                        "Jembi, HISP & WhatsApp.",
+                        "1. Previous",
+                        "2. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_question_duration", function() {
+        it("should tell the user how long we're keeping their info", function() {
+            return tester
+                .setup.user.state("state_question_duration")
+                .check.interaction({
+                    reply: [
+                        "MomConnect holds your info while you're registered. If you opt out, " +
+                        "we'll use your info for historical, research & statistical",
+                        "1. Next",
+                        "2. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show the second page", function() {
+            return tester
+                .setup.user.state("state_question_duration")
+                .input("1")
+                .check.interaction({
+                    reply: [
+                        "reasons with your consent.",
+                        "1. Previous",
+                        "2. Back"
+                    ].join("\n")
+                })
                 .run();
         });
     });
