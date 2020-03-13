@@ -248,6 +248,7 @@ go.app = function() {
     var FreeText = vumigo.states.FreeText;
     var JsonApi = vumigo.http.api.JsonApi;
     var MenuState = vumigo.states.MenuState;
+    var PaginatedState = vumigo.states.PaginatedState;
     var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
 
 
@@ -1144,6 +1145,111 @@ go.app = function() {
                 next: "state_start"
             });
         });
+
+        self.add("state_more_info", function(name) {
+            return new PaginatedChoiceState(name, {
+                question: $("Choose a question you're interested in:"),
+                options_per_page: null,
+                characters_per_page: 160,
+                choices: [
+                    new Choice("state_question_what", $("What is MomConnect?")),
+                    new Choice("state_question_why", $("Why does MomConnect need my info?")),
+                    new Choice("state_question_pi", $("What personal info is collected?")),
+                    new Choice("state_question_who", $("Who can see my personal info?")),
+                    new Choice("state_question_duration", $("How long does MC keep my info?")),
+                    new Choice("state_info_consent", $("Back"))
+                ],
+                more: $("Next"),
+                back: $("Previous"),
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+        self.add('state_question_what', function(name) {
+            return new PaginatedState(name, {
+                text: $(
+                    "MomConnect is a Health Department programme. It sends helpful messages for " +
+                    "you and your baby."
+                ),
+                characters_per_page: 160,
+                exit: $("Back"),
+                more: $("Next"),
+                back: $("Previous"),
+                next: "state_more_info"
+            });
+        });
+
+
+        self.add('state_question_why', function(name) {
+            return new PaginatedState(name, {
+                text: $(
+                    "MomConnect needs your personal info to send you messages that are relevant " +
+                    "to your pregnancy or your baby's age. By knowing where you registered for " +
+                    "MomConnect, the Health Department can make sure that the service is being " +
+                    "offered to women at your clinic. Your info assists the Health Department to " +
+                    "improve its services, understand your needs better and provide even better " +
+                    "messaging."
+                ),
+                characters_per_page: 160,
+                exit: $("Back"),
+                more: $("Next"),
+                back: $("Previous"),
+                next: "state_more_info"
+            });
+        }); 
+
+        self.add('state_question_pi', function(name) {
+            return new PaginatedState(name, {
+                text: $(
+                    "MomConnect collects your cell and ID numbers, clinic location, and info " +
+                    "about how your pregnancy or baby is progressing."
+                ),
+                characters_per_page: 160,
+                exit: $("Back"),
+                more: $("Next"),
+                back: $("Previous"),
+                next: "state_more_info"
+            });
+        });
+
+        self.add('state_question_who', function(name) {
+            return new PaginatedState(name, {
+                text: $(
+                    "MomConnect is owned by the Health Department. Your data is protected. It's " +
+                    "processed by MTN, Cell C, Telkom, Vodacom, Praekelt, Jembi, HISP & WhatsApp."
+                ),
+                characters_per_page: 160,
+                exit: $("Back"),
+                more: $("Next"),
+                back: $("Previous"),
+                next: "state_more_info"
+            });
+        });
+
+        self.add('state_question_duration', function(name) {
+            return new PaginatedState(name, {
+                text: $(
+                    "MomConnect holds your info while you're registered. If you opt out, we'll " +
+                    "use your info for historical, research & statistical reasons with your " +
+                    "consent."
+                ),
+                characters_per_page: 160,
+                exit: $("Back"),
+                more: $("Next"),
+                back: $("Previous"),
+                next: "state_more_info"
+            });
+        });
+
+        self.states.creators.__error__ = function(name, opts) {
+            var return_state = opts.return_state || "state_start";
+            return new EndState(name, {
+                next: return_state,
+                text: $("Sorry, something went wrong. We have been notified. Please try again later")
+            });
+        };
 
         self.states.creators.__error__ = function(name, opts) {
             var return_state = _.get(opts, "return_state", "state_start");
