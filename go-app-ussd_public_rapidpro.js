@@ -408,7 +408,7 @@ go.app = function() {
                 // TODO: Proper copy
                 question: $(
                     "We may occasionally call or send msgs for historical/statistical/research reasons. " +
-                    "We’ll keep your info safe. Do you agree?"
+                    "We'll keep your info safe. Do you agree?"
                 ),
                 error: $(
                     "Sorry, please reply with the number next to your answer. We may call or send " +

@@ -438,7 +438,7 @@ describe("ussd_public app", function() {
                     state: "state_research_consent",
                     reply: [
                         "We may occasionally call or send msgs for historical/statistical/research reasons. " +
-                        "We’ll keep your info safe. Do you agree?",
+                        "We'll keep your info safe. Do you agree?",
                         "1. Yes",
                         "2. No, only send MC msgs"
                     ].join("\n")
