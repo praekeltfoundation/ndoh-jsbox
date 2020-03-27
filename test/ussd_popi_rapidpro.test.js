@@ -300,6 +300,7 @@ describe("ussd_popi_rapidpro app", function() {
         it("should go to state_channel_switch_confirm if that option is chosen", function() {
             return tester
                 .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
                 .input("1")
                 .check.user.state("state_channel_switch_confirm")
                 .run();
@@ -307,22 +308,98 @@ describe("ussd_popi_rapidpro app", function() {
         it("should go to state_msisdn_change_enter if that option is chosen", function() {
             return tester
                 .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
                 .input("2")
                 .check.user.state("state_msisdn_change_enter")
                 .run();
         });
-        it("should go to state_language_change_enter if that option is chosen", function() {
+        it("should go to state_language_change_enter if that option is chosen and channel is SMS", function() {
             return tester
                 .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "SMS"}})
                 .input("3")
                 .check.user.state("state_language_change_enter")
+                .run();
+        });
+        it("should got to state_preferred_channel_language_option if WA is channel", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
+                .input("3")
+                .check.interaction({
+                    reply: [
+                        "Please switch to SMS for msgs in another language",
+                        "1. Switch to SMS (Dial *134*550*7# again when switch is done to " +
+                            "pick your language)",
+                        "2. Exit"
+                    ].join("\n"),
+                    state: "state_preferred_channel_language_option"
+                })
                 .run();
         });
         it("should go to state_identification_change_type if that option is chosen", function() {
             return tester
                 .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
                 .input("4")
                 .check.user.state("state_identification_change_type")
+                .run();
+        });
+    });
+    describe("state_preferred_channel_language_option", function() {
+        it("should ask the user what they want to do", function() {
+            return tester
+                .setup.user.state("state_preferred_channel_language_option")
+                .check.interaction({
+                    reply: [
+                        "Please switch to SMS for msgs in another language",
+                        "1. Switch to SMS (Dial *134*550*7# again when switch is done to " +
+                            "pick your language)",
+                        "2. Exit"
+                    ].join("\n"),
+                })
+                .run();
+        });
+        it("should show an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_preferred_channel_language_option")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't recognise that reply. Please try again.",
+                        "1. Switch to SMS (Dial *134*550*7# again when switch is done to " +
+                            "pick your language)",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should exit if the user chooses to", function() {
+            return tester
+                .setup.user.state("state_preferred_channel_language_option")
+                .input("2")
+                .check.interaction({
+                    reply:
+                        "Thanks for using MomConnect. You can dial *134*550*7# any time to manage " +
+                        "your info. Have a lovely day!",
+                    state: "state_exit"
+                })
+                .check.reply.ends_session()
+                .run();
+        });
+        it("should ask the user if they want to switch channels to SMS", function() {
+            return tester
+                .setup.user.state("state_preferred_channel_language_option")
+                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
+                .input("1")
+                .check.interaction({
+                    reply: [
+                        "Are you sure you want to get your MomConnect messages on SMS?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n"),
+                    state: "state_channel_switch_confirm"
+                })
                 .run();
         });
     });

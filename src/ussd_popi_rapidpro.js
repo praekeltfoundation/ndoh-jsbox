@@ -216,47 +216,29 @@ go.app = function() {
                 next: function(choice) {
                     if(choice.value === "state_language_change_enter") {
                         if(_.toUpper(_.get(contact, "fields.preferred_channel")) === "WHATSAPP"){
-                            return "state_preferred_channel_language_options";
+                            return "state_preferred_channel_language_option";
                         }
                         else {
                             return "state_language_change_enter";
                         }
+                    }
+                    else{
+                        return choice.value;
                     }
                 }
             });
         });
 
-        self.add("state_preferred_channel_language_options", function(name) {
-            var language = _.get(self.im.user.get_answer("contact"), "language");
-            console.log(language)
-            if(language === "Afrikaans" || language === "English") {
-        
-            }
-            else{ // language set is the other 9, only show option
-
-            }
-            return new ChoiceState(name, {
-                question: $("You can:"),
-                error: $("Sorry we don't recognise that reply. Please enter the number next to your " +
-                        "answer."
+        self.add("state_preferred_channel_language_option", function(name) {
+            return new MenuState(name, {
+                question: $("Please switch to SMS for msgs in another language"),
+                error: $("Sorry we don't recognise that reply. Please try again."
                 ),
                 choices: [
-                    new Choice("change", $("Get msgs in {{alternative_lang}} on WhatsApp")),
-                    new Choice("state_switch_to_sms", $("Switch to SMS for msgs in another language " +
-                                                        "(Dial *134*550*7# again when switch is done to " +
-                                                        "pick your language)"
-                    )),
-                ],
-                next: function(choice) {
-                    if(choice.value === "change") {
-                        if(_.toUpper(_.get(contact, "fields.preferred_channel")) === "WHATSAPP"){
-                            return "state_preferred_channel_language_options";
-                        }
-                        else {
-                            return "state_language_change_enter";
-                        }
-                    }
-                }
+                    new Choice("state_channel_switch_confirm", $("Switch to SMS (Dial *134*550*7# again when switch is done to " +
+                                            "pick your language)")),
+                    new Choice("state_exit", $("Exit")),
+                ]
             });
         });
 
