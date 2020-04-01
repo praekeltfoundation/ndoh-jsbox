@@ -23,7 +23,8 @@ module.exports = function (grunt) {
                     ussd_chw_rapidpro: 'src/ussd_chw_rapidpro.js',
                     ussd_optout_rapidpro: 'src/ussd_optout_rapidpro.js',
                     ussd_pmtct_rapidpro: 'src/ussd_pmtct_rapidpro.js',
-                    ussd_ccmdd_wc_address_update: "src/ussd_ccmdd_wc_address_update.js"
+                    ussd_ccmdd_wc_address_update: "src/ussd_ccmdd_wc_address_update.js",
+                    ussd_ccmdd_wc_welcome: "src/ussd_ccmdd_wc_welcome.js"
                 },
                 ussd_clinic: [
                     'src/index.js',
@@ -128,6 +129,11 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.ussd_ccmdd_wc_address_update %>',
                     'src/init.js'
                 ],
+                ussd_ccmdd_wc_welcome: [
+                    'src/index.js',
+                    '<%= paths.src.app.ussd_ccmdd_wc_welcome %>',
+                    'src/init.js'
+                ],
                 all: [
                     'src/**/*.js'
                 ]
@@ -148,7 +154,8 @@ module.exports = function (grunt) {
                 ussd_chw_rapidpro: 'go-app-ussd_chw_rapidpro.js',
                 ussd_optout_rapidpro: 'go-app-ussd_optout_rapidpro.js',
                 ussd_pmtct_rapidpro: 'go-app-ussd_pmtct_rapidpro.js',
-                ussd_ccmdd_wc_address_update: 'go-app-ussd_ccmdd_wc_address_update.js'
+                ussd_ccmdd_wc_address_update: 'go-app-ussd_ccmdd_wc_address_update.js',
+                ussd_ccmdd_wc_welcome: 'go-app-ussd_ccmdd_wc_welcome.js'
             },
             test: {
                 ussd_clinic: [
@@ -340,6 +347,10 @@ module.exports = function (grunt) {
             ussd_ccmdd_wc_address_update: {
                 src: ['<%= paths.src.ussd_ccmdd_wc_address_update %>'],
                 dest: '<%= paths.dest.ussd_ccmdd_wc_address_update %>'
+            },
+            ussd_ccmdd_wc_welcome: {
+                src: ['<%= paths.src.ussd_ccmdd_wc_welcome %>'],
+                dest: '<%= paths.dest.ussd_ccmdd_wc_welcome %>'
             }
         },
 
