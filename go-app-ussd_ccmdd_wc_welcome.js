@@ -2,9 +2,7 @@ var go = {};
 go;
 
 go.app = (function() {
-  var _ = require("lodash");
   var vumigo = require("vumigo_v02");
-  var utils = require("seed-jsbox-utils").utils;
   var App = vumigo.App;
   var Choice = vumigo.states.Choice;
   var EndState = vumigo.states.EndState;
@@ -38,32 +36,6 @@ go.app = (function() {
       // Reset user answers when restarting the app
       self.im.user.answers = {};
 
-      var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
-
-      return self.rapidpro
-        .get_contact({ urn: "whatsapp:" + _.trim(msisdn, "+") })
-        .then(function(contact) {
-          self.im.user.set_answer("contact", contact);
-          return self.states.create("state_info_consent");
-        })
-        .catch(function(e) {
-          // Go to error state after 3 failed HTTP requests
-          opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-          if (opts.http_error_count === 3) {
-            self.im.log.error(e.message);
-            return self.states.create("__error__");
-          }
-          return self.states.create("state_start", opts);
-        });
-    });
-
-    self.add("state_info_consent", function(name) {
-      // Skip to message consent if the user has already given info consent
-      var consent = _.get(self.im.user.answers, "contact.fields.info_consent", "") || "";
-
-      if(consent.toUpperCase() === "TRUE"){
-          return self.states.create("state_whatsapp_contact_check");
-      }
       return new MenuState(name, {
           question: $([
             "Welcome to the National Department of Health's COVID-19 Connect Service.",
