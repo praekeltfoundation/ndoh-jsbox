@@ -22,7 +22,8 @@ module.exports = function (grunt) {
                     ussd_popi_rapidpro: 'src/ussd_popi_rapidpro.js',
                     ussd_chw_rapidpro: 'src/ussd_chw_rapidpro.js',
                     ussd_optout_rapidpro: 'src/ussd_optout_rapidpro.js',
-                    ussd_pmtct_rapidpro: 'src/ussd_pmtct_rapidpro.js'
+                    ussd_pmtct_rapidpro: 'src/ussd_pmtct_rapidpro.js',
+                    ussd_ccmdd_wc_address_update: "src/ussd_ccmdd_wc_address_update.js"
                 },
                 ussd_clinic: [
                     'src/index.js',
@@ -120,6 +121,13 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.ussd_pmtct_rapidpro %>',
                     'src/init.js'
                 ],
+                ussd_ccmdd_wc_address_update: [
+                    'src/index.js',
+                    'src/engage.js',
+                    'src/rapidpro.js',
+                    '<%= paths.src.app.ussd_ccmdd_wc_address_update %>',
+                    'src/init.js'
+                ],
                 all: [
                     'src/**/*.js'
                 ]
@@ -139,7 +147,8 @@ module.exports = function (grunt) {
                 ussd_popi_rapidpro: 'go-app-ussd_popi_rapidpro.js',
                 ussd_chw_rapidpro: 'go-app-ussd_chw_rapidpro.js',
                 ussd_optout_rapidpro: 'go-app-ussd_optout_rapidpro.js',
-                ussd_pmtct_rapidpro: 'go-app-ussd_pmtct_rapidpro.js'
+                ussd_pmtct_rapidpro: 'go-app-ussd_pmtct_rapidpro.js',
+                ussd_ccmdd_wc_address_update: 'go-app-ussd_ccmdd_wc_address_update.js'
             },
             test: {
                 ussd_clinic: [
@@ -237,6 +246,13 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.ussd_pmtct_rapidpro %>',
                     'test/ussd_pmtct_rapidpro.test.js'
                 ],
+                ussd_ccmdd_wc_address_update: [
+                    'test/setup.js',
+                    'src/engage.js',
+                    'src/rapidpro.js',
+                    '<%= paths.src.app.ussd_ccmdd_wc_address_update %>',
+                    'test/ussd_ccmdd_wc_address_update.test.js'
+                ],
                 session_length_helper: [
                     'src/session_length_helper.js',
                     'test/session_length_helper.test.js'
@@ -320,6 +336,10 @@ module.exports = function (grunt) {
             ussd_pmtct_rapidpro: {
                 src: ['<%= paths.src.ussd_pmtct_rapidpro %>'],
                 dest: '<%= paths.dest.ussd_pmtct_rapidpro %>'
+            },
+            ussd_ccmdd_wc_address_update: {
+                src: ['<%= paths.src.ussd_ccmdd_wc_address_update %>'],
+                dest: '<%= paths.dest.ussd_ccmdd_wc_address_update %>'
             }
         },
 
@@ -373,6 +393,9 @@ module.exports = function (grunt) {
             },
             test_ussd_pmtct_rapidpro: {
                 src: ['<%= paths.test.ussd_pmtct_rapidpro %>']
+            },
+            test_ussd_ccmdd_wc_address_update: {
+                src: ['<%= paths.test.ussd_ccmdd_wc_address_update %>']
             },
             test_session_length_helper: {
                 src: ['<%= paths.test.session_length_helper %>']
