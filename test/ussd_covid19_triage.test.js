@@ -346,7 +346,8 @@ describe("ussd_covid19_triage app", function() {
                 .setup.user.state("state_tracing")
                 .setup.user.answers({
                     state_age: ">65",
-                    state_fever: true
+                    state_fever: true,
+                    state_cough: true
                 })
                 .input("1")
                 .check.interaction({

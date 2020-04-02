@@ -237,20 +237,21 @@ go.app = (function() {
     self.add("state_display_risk", function(name) {
       // TODO: Submit result to datastore
       var answers = self.im.user.answers;
-      var score = 0.0;
+      var score = 0;
 
-      if(answers.state_fever) { score += 0.2; }
-      if(answers.state_cough) { score += 0.2; }
-      if(answers.state_sore_throat) { score += 0.13; }
+      if(answers.state_fever) { score += 10; }
+      if(answers.state_cough) { score += 10; }
+      if(answers.state_sore_throat) { score += 10; }
 
-      if(answers.state_age === ">65") { score += 1; }
+      if(answers.state_age === ">65") { score += 10; }
 
-      if(answers.state_exposure === "yes") { score += 0.7; }
-      else if (answers.state_exposure === "not_sure") { score += 0.3; }
+      if(answers.state_exposure === "yes") { score += 7; }
+      else if (answers.state_exposure === "not_sure") { score += 3; }
 
       var risk = "low";
-      if (score > 0.33) { risk = "moderate"; }
-      if (score > 1.1) { risk = "high"; }
+      if (score > 20) { risk = "moderate"; }
+      if (score > 23) { risk = "high"; }
+      if (score > 30) {risk = "critical"; }
 
       var text = "";
       if(risk === "low") {
