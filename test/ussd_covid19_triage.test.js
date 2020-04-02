@@ -8,7 +8,12 @@ describe("ussd_covid19_triage app", function() {
     beforeEach(function() {
         app = new go.app.GoNDOH();
         tester = new AppTester(app);
-        tester.setup.config.app({});
+        tester.setup.config.app({
+            eventstore: {
+                url: "http://eventstore",
+                token: "testtoken"
+            }
+        });
     });
 
     describe("state_timed_out", function() {
@@ -302,6 +307,42 @@ describe("ussd_covid19_triage app", function() {
         it("should go to state_display_risk", function() {
             return tester
                 .setup.user.state("state_tracing")
+                .setup.user.answers({
+                    state_province: "ZA-WC",
+                    state_city: "Cape Town",
+                    state_age: "<18",
+                    state_fever: false,
+                    state_cough: false,
+                    state_sore_throat: false,
+                    state_exposure: "No",
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add({
+                        "request": {
+                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "method": 'POST',
+                            "data": {
+                                msisdn: "+27123456789",
+                                source: "USSD",
+                                province: "ZA-WC",
+                                city: "Cape Town",
+                                age: "<18",
+                                fever: false,
+                                cough: false,
+                                sore_throat: false,
+                                exposure: "No",
+                                tracing: true,
+                                risk: "low"
+                            }
+                        },
+                        "response": {
+                            "code": 201,
+                            "data": {
+                                "accepted": true
+                            }
+                        }
+                    });
+                })
                 .input("1")
                 .check.user.state("state_display_risk")
                 .run();
@@ -311,6 +352,42 @@ describe("ussd_covid19_triage app", function() {
         it("should display the low risk message if low risk", function() {
             return tester
                 .setup.user.state("state_tracing")
+                .setup.user.answers({
+                    state_province: "ZA-WC",
+                    state_city: "Cape Town",
+                    state_age: "<18",
+                    state_fever: false,
+                    state_cough: false,
+                    state_sore_throat: false,
+                    state_exposure: "No",
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add({
+                        "request": {
+                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "method": 'POST',
+                            "data": {
+                                msisdn: "+27123456789",
+                                source: "USSD",
+                                province: "ZA-WC",
+                                city: "Cape Town",
+                                age: "<18",
+                                fever: false,
+                                cough: false,
+                                sore_throat: false,
+                                exposure: "No",
+                                tracing: true,
+                                risk: "low"
+                            }
+                        },
+                        "response": {
+                            "code": 201,
+                            "data": {
+                                "accepted": true
+                            }
+                        }
+                    });
+                })
                 .input("1")
                 .check.interaction({
                     state: "state_display_risk",
@@ -330,7 +407,38 @@ describe("ussd_covid19_triage app", function() {
                 .setup.user.answers({
                     state_age: ">65",
                     state_fever: true,
-                    state_cough: true
+                    state_cough: true,
+                    state_province: "ZA-WC",
+                    state_city: "Cape Town",
+                    state_sore_throat: false,
+                    state_exposure: "No",
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add({
+                        "request": {
+                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "method": 'POST',
+                            "data": {
+                                msisdn: "+27123456789",
+                                source: "USSD",
+                                province: "ZA-WC",
+                                city: "Cape Town",
+                                age: ">65",
+                                fever: true,
+                                cough: true,
+                                sore_throat: false,
+                                exposure: "No",
+                                tracing: true,
+                                risk: "high"
+                            }
+                        },
+                        "response": {
+                            "code": 201,
+                            "data": {
+                                "accepted": true
+                            }
+                        }
+                    });
                 })
                 .input("1")
                 .check.interaction({
@@ -348,6 +456,42 @@ describe("ussd_covid19_triage app", function() {
         it("should display the alternate low risk message if low risk and no tracing", function() {
             return tester
                 .setup.user.state("state_tracing")
+                .setup.user.answers({
+                    state_province: "ZA-WC",
+                    state_city: "Cape Town",
+                    state_age: "<18",
+                    state_fever: false,
+                    state_cough: false,
+                    state_sore_throat: false,
+                    state_exposure: "No",
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add({
+                        "request": {
+                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "method": 'POST',
+                            "data": {
+                                msisdn: "+27123456789",
+                                source: "USSD",
+                                province: "ZA-WC",
+                                city: "Cape Town",
+                                age: "<18",
+                                fever: false,
+                                cough: false,
+                                sore_throat: false,
+                                exposure: "No",
+                                tracing: false,
+                                risk: "low"
+                            }
+                        },
+                        "response": {
+                            "code": 201,
+                            "data": {
+                                "accepted": true
+                            }
+                        }
+                    });
+                })
                 .input("2")
                 .check.interaction({
                     state: "state_display_risk",
@@ -366,7 +510,38 @@ describe("ussd_covid19_triage app", function() {
                 .setup.user.answers({
                     state_age: ">65",
                     state_fever: true,
-                    state_cough: true
+                    state_cough: true,
+                    state_province: "ZA-WC",
+                    state_city: "Cape Town",
+                    state_sore_throat: false,
+                    state_exposure: "No",
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add({
+                        "request": {
+                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "method": 'POST',
+                            "data": {
+                                msisdn: "+27123456789",
+                                source: "USSD",
+                                province: "ZA-WC",
+                                city: "Cape Town",
+                                age: ">65",
+                                fever: true,
+                                cough: true,
+                                sore_throat: false,
+                                exposure: "No",
+                                tracing: false,
+                                risk: "high"
+                            }
+                        },
+                        "response": {
+                            "code": 201,
+                            "data": {
+                                "accepted": true
+                            }
+                        }
+                    });
                 })
                 .input("2")
                 .check.interaction({
