@@ -175,7 +175,7 @@ go.app = (function() {
             )
           ) {
             return $(
-              "Sorry, we don’t understand. Please try again by entering the your 13 digit South African ID number."
+              "Sorry, we don't understand. Please try again by entering the your 13 digit South African ID number."
             );
           }
         },
@@ -190,7 +190,7 @@ go.app = (function() {
             "matching your answer."
         ),
         error: $(
-          "Sorry we don't understand. Please enter the number next to the mother's " +
+          "Sorry we don't understand. Please enter the number next to your " +
             "answer."
         ),
         choices: [
@@ -215,7 +215,7 @@ go.app = (function() {
           if (!content.match(/^\w+$/)) {
             return $(
               "Sorry, we don't understand. Please try again by entering the " +
-                "mother's Passport number as it appears in her passport."
+                "your passport number as it appears in your passport."
             );
           }
         },
@@ -241,7 +241,7 @@ go.app = (function() {
             )
           ) {
             return $(
-              "Sorry, we don’t understand. Please try again by entering the year " +
+              "Sorry, we don't understand. Please try again by entering the year " +
                 "you were born as 4 digits in the format YYYY, e.g. 1910."
             );
           }
@@ -293,7 +293,7 @@ go.app = (function() {
             !dob.isValid()
           ) {
             return $(
-              "Sorry, we don’t understand. Please try again by entering the day " +
+              "Sorry, we don't understand. Please try again by entering the day " +
                 "you were born as a number, e.g. 12."
             );
           }
@@ -312,7 +312,7 @@ go.app = (function() {
           var match = content.match(/^\d{8}$/);
           if (!match) {
             return $(
-              "Sorry, we don’t understand. Please try again by entering your folder " +
+              "Sorry, we don't understand. Please try again by entering your folder " +
                 "number as it appears on your appointment card with the format xxxxxxxx"
             );
           }
@@ -430,7 +430,7 @@ go.app = (function() {
           var match = content.match(/[a-zA-Z]{2,}/);
           if (!match) {
             return $(
-              "Sorry, we don’t understand. Please reply with the name of your " +
+              "Sorry, we don't understand. Please reply with the name of your " +
                 "suburb, e.g. Woodstock"
             );
           }
@@ -446,7 +446,7 @@ go.app = (function() {
           var match = content.match(/[a-zA-Z]{2,}/);
           if (!match) {
             return $(
-              "Sorry, we don’t understand. Please reply with the name of your " +
+              "Sorry, we don't understand. Please reply with the name of your " +
                 "street name"
             );
           }
@@ -462,7 +462,7 @@ go.app = (function() {
           var match = content.match(/^(\d{1,7}[a-zA-Z]{0,1})$/);
           if (!match) {
             return $(
-              "Sorry, we don’t understand. Please reply with your house " +
+              "Sorry, we don't understand. Please reply with your house " +
                 "number, e.g. 17."
             );
           }
