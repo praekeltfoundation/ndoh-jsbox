@@ -341,5 +341,25 @@ describe("ussd_covid19_triage app", function() {
                 .check.reply.ends_session()
                 .run();
         });
+        it("should display the high risk message if high risk", function() {
+            return tester
+                .setup.user.state("state_tracing")
+                .setup.user.answers({
+                    state_age: ">65",
+                    state_fever: true
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_display_risk",
+                    reply: [
+                        "Call NICD: 0800029999 for info on what to do & how to test. STAY HOME " +
+                        "& avoid contact with people in your house & community, if possible, " +
+                        "stay in separate room."
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .check.reply.ends_session()
+                .run();
+        });
     });
 });

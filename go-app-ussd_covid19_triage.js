@@ -243,7 +243,7 @@ go.app = (function() {
       if(answers.state_cough) { score += 0.2; }
       if(answers.state_sore_throat) { score += 0.13; }
 
-      if(answers.age === ">65") { score += 1; }
+      if(answers.state_age === ">65") { score += 1; }
 
       if(answers.state_exposure === "yes") { score += 0.7; }
       else if (answers.state_exposure === "not_sure") { score += 0.3; }
@@ -251,6 +251,7 @@ go.app = (function() {
       var risk = "low";
       if (score > 0.33) { risk = "moderate"; }
       if (score > 1.1) { risk = "high"; }
+      console.log(score, risk);
 
       var text = "";
       if(risk === "low") {
