@@ -109,7 +109,7 @@ describe("ussd_covid19_triage app", function() {
                 .check.interaction({
                     state: "state_province",
                     reply: [
-                        "In which Province do you live?",
+                        "Select your province",
                         "",
                         "Reply:",
                         "1. EASTERN CAPE",
@@ -119,25 +119,8 @@ describe("ussd_covid19_triage app", function() {
                         "5. LIMPOPO",
                         "6. MPUMALANGA",
                         "7. NORTH WEST",
-                        "8. More",
-                    ].join("\n"),
-                    char_limit: 160
-                })
-                .run();
-        });
-        it("should show the provinces pg 2", function() {
-            return tester
-                .setup.user.state("state_province")
-                .input("8")
-                .check.interaction({
-                    state: "state_province",
-                    reply: [
-                        "In which Province do you live?",
-                        "",
-                        "Reply:",
-                        "1. NORTHERN CAPE",
-                        "2. WESTERN CAPE",
-                        "3. Back",
+                        "8. NORTHERN CAPE",
+                        "9. WESTERN CAPE"
                     ].join("\n"),
                     char_limit: 160
                 })
