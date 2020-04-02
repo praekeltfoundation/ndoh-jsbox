@@ -248,7 +248,6 @@ go.app = (function() {
       var risk = "low";
       if (score > 0.33) { risk = "moderate"; }
       if (score > 1.1) { risk = "high"; }
-      console.log(score, risk);
 
       var text = "";
       if(risk === "low") {
