@@ -260,6 +260,11 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.ussd_ccmdd_wc_address_update %>',
                     'test/ussd_ccmdd_wc_address_update.test.js'
                 ],
+                ussd_covid19_triage: [
+                    'test/setup.js',
+                    '<%= paths.src.app.ussd_covid19_triage %>',
+                    'test/ussd_covid19_triage.test.js'
+                ],
                 session_length_helper: [
                     'src/session_length_helper.js',
                     'test/session_length_helper.test.js'
@@ -407,6 +412,9 @@ module.exports = function (grunt) {
             },
             test_ussd_ccmdd_wc_address_update: {
                 src: ['<%= paths.test.ussd_ccmdd_wc_address_update %>']
+            },
+            test_ussd_covid19_triage: {
+                src: ['<%= paths.test.ussd_covid19_triage %>']
             },
             test_session_length_helper: {
                 src: ['<%= paths.test.session_length_helper %>']
