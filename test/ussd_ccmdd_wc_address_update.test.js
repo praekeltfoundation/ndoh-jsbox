@@ -136,27 +136,6 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .run();
     });
   });
-  describe("state_passport_country", function() {
-    it("should ask which country the passport is from", function() {
-      return tester.setup.user
-        .state("state_passport_country")
-        .check.interaction({
-          state: "state_passport_country",
-          reply: [
-            "What is your passport's country of origin? Enter the number matching your answer.",
-            "1. Zimbabwe",
-            "2. Mozambique",
-            "3. Malawi",
-            "4. Nigeria",
-            "5. DRC",
-            "6. Somalia",
-            "7. Other"
-          ].join("\n"),
-          char_limit: 160
-        })
-        .run();
-    });
-  });
   describe("state_passport_no", function() {
     it("should ask for the passport number", function() {
       return tester.setup.user
@@ -444,7 +423,6 @@ describe("ussd_ccmdd_wc_address_update app", function() {
                 id_type: "sa_id",
                 sa_id_number: "8811115022085",
                 dob: "1988-11-11T00:00:00Z",
-                passport_origin: "so",
                 passport_number: "A123",
                 folder_number: "12345678",
                 municipality: "Cape Winelands",
@@ -462,7 +440,6 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .setup.user.answer("state_surname", "Smith")
         .setup.user.answer("state_id_type", "state_sa_id_no")
         .setup.user.answer("state_sa_id_no", "8811115022085")
-        .setup.user.answer("state_passport_country", "so")
         .setup.user.answer("state_passport_no", "A123")
         .setup.user.answer("state_folder_number", "12345678")
         .setup.user.answer("state_municipality", "Cape Winelands")
