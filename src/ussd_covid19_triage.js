@@ -1,8 +1,10 @@
 go.app = (function() {
   var vumigo = require("vumigo_v02");
+  var _ = require("lodash");
   var App = vumigo.App;
   var Choice = vumigo.states.Choice;
   var EndState = vumigo.states.EndState;
+  var JsonApi = vumigo.http.api.JsonApi;
   var MenuState = vumigo.states.MenuState;
   var FreeText = vumigo.states.FreeText;
   var ChoiceState = vumigo.states.ChoiceState;
@@ -12,6 +14,27 @@ go.app = (function() {
     App.call(self, "state_start");
     var $ = self.$;
     var catchall_number_error = $("This service works best when you select numbers from the list");
+
+    self.calculate_risk = function() {
+      var answers = self.im.user.answers;
+      var score = 0;
+
+      if(answers.state_fever) { score += 10; }
+      if(answers.state_cough) { score += 10; }
+      if(answers.state_sore_throat) { score += 10; }
+
+      if(answers.state_age === ">65") { score += 10; }
+
+      if(answers.state_exposure === "yes") { score += 7; }
+      else if (answers.state_exposure === "not_sure") { score += 3; }
+
+      var risk = "low";
+      if (score > 20) { risk = "moderate"; }
+      if (score > 23) { risk = "high"; }
+      if (score > 30) {risk = "critical"; }
+
+      return risk;
+    };
 
     self.add = function(name, creator) {
       self.states.add(name, function(name, opts) {
@@ -222,29 +245,48 @@ go.app = (function() {
           new Choice(true, $("YES")),
           new Choice(false, $("NO"))
         ],
-        next: "state_display_risk"
+        next: "state_submit_data"
       });
     });
 
-    self.states.add("state_display_risk", function(name) {
-      // TODO: Submit result to datastore
+    self.add("state_submit_data", function(name, opts) {
       var answers = self.im.user.answers;
-      var score = 0;
 
-      if(answers.state_fever) { score += 10; }
-      if(answers.state_cough) { score += 10; }
-      if(answers.state_sore_throat) { score += 10; }
+      return new JsonApi(self.im).post(
+        self.im.config.eventstore.url + "/api/v2/covid19triage/", {
+          data: {
+            msisdn: self.im.user.addr,
+            source: "USSD",
+            province: answers.state_province,
+            city: answers.state_city,
+            age: answers.state_age,
+            fever: answers.state_fever,
+            cough: answers.state_cough,
+            sore_throat: answers.state_sore_throat,
+            exposure: answers.state_exposure,
+            tracing: answers.state_tracing,
+            risk: self.calculate_risk()
+          },
+          headers: {
+            "Authorization": "Token " + self.im.config.eventstore.token,
+            "User-Agent": "Jsbox/Covid19-Triage-USSD"
+          }
+        }).then(function() {
+          return self.states.create("state_display_risk");
+        }, function(e) {
+          // Go to error state after 3 failed HTTP requests
+          opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+          if(opts.http_error_count === 3) {
+              self.im.log.error(e.message);
+              return self.states.create("__error__", {return_state: name});
+          }
+          return self.states.create(name, opts);
+        });
+    });
 
-      if(answers.state_age === ">65") { score += 10; }
-
-      if(answers.state_exposure === "yes") { score += 7; }
-      else if (answers.state_exposure === "not_sure") { score += 3; }
-
-      var risk = "low";
-      if (score > 20) { risk = "moderate"; }
-      if (score > 23) { risk = "high"; }
-      if (score > 30) {risk = "critical"; }
-
+    self.states.add("state_display_risk", function(name) {
+      var answers = self.im.user.answers;
+      var risk = self.calculate_risk();
       var text = "";
       if(answers.state_tracing) {
         if(risk === "low") {
