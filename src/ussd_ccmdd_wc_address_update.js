@@ -109,7 +109,7 @@ go.app = (function() {
         ),
         accept_labels: true,
         choices: [
-          new Choice("state_id_type", $("Yes")),
+          new Choice("state_first_name", $("Yes")),
           new Choice("state_exit", $("No"))
         ]
       });
@@ -121,6 +121,36 @@ go.app = (function() {
         text: $(
           "Unfortunately we cannot deliver your medication to your door without collecting your info."
         )
+      });
+    });
+
+    self.add("state_first_name", function(name) {
+      return new FreeText(name, {
+        question: $("What is your first name?"),
+        check: function(content) {
+          if (!content.match(/^\w+$/)) {
+            return $(
+              "Sorry, we don’t understand. Please try again by replying with " +
+                "your first name e.g. Jane."
+            );
+          }
+        },
+        next: "state_surname"
+      });
+    });
+
+    self.add("state_surname", function(name) {
+      return new FreeText(name, {
+        question: $("What is your surname?"),
+        check: function(content) {
+          if (!content.match(/^\w+$/)) {
+            return $(
+              "Sorry, we don’t understand. Please try again by replying with " +
+                "your surname e.g. Smith."
+            );
+          }
+        },
+        next: "state_id_type"
       });
     });
 
@@ -499,6 +529,8 @@ go.app = (function() {
         source: "USSD address Update",
         info_consent: "TRUE",
         on_whatsapp: self.im.user.answers.on_whatsapp ? "TRUE" : "FALSE",
+        first_name: self.im.user.answers.state_first_name,
+        surname: self.im.user.answers.state_surname,
         id_type: {
           state_sa_id_no: "sa_id",
           state_passport_country: "passport",

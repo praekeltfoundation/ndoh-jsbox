@@ -54,7 +54,6 @@ describe("ussd_ccmdd_wc_address_update app", function() {
     it("should ask consent to collect personal info", function() {
       return tester.setup.user
         .state("state_info_consent")
-        .input({ session_event: "continue" })
         .check.interaction({
           state: "state_info_consent",
           reply: [
@@ -83,11 +82,34 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .run();
     });
   });
+  describe("state_first_name", function() {
+    it("should ask for first name", function() {
+      return tester.setup.user
+        .state("state_first_name")
+        .check.interaction({
+          state: "state_first_name",
+          reply: "What is your first name?",
+          char_limit: 160
+        })
+        .run();
+    });
+  });
+  describe("state_surname", function() {
+    it("should ask for surname", function() {
+      return tester.setup.user
+        .state("state_surname")
+        .check.interaction({
+          state: "state_surname",
+          reply: "What is your surname?",
+          char_limit: 160
+        })
+        .run();
+    });
+  });
   describe("state_id_type", function() {
     it("should ask what id type is available", function() {
       return tester.setup.user
         .state("state_id_type")
-        .input({ session_event: "continue" })
         .check.interaction({
           state: "state_id_type",
           reply: [
@@ -105,7 +127,6 @@ describe("ussd_ccmdd_wc_address_update app", function() {
     it("should ask for the id number", function() {
       return tester.setup.user
         .state("state_sa_id_no")
-        .input({ session_event: "continue" })
         .check.interaction({
           state: "state_sa_id_no",
           reply:
@@ -119,7 +140,6 @@ describe("ussd_ccmdd_wc_address_update app", function() {
     it("should ask which country the passport is from", function() {
       return tester.setup.user
         .state("state_passport_country")
-        .input({ session_event: "continue" })
         .check.interaction({
           state: "state_passport_country",
           reply: [
@@ -141,7 +161,6 @@ describe("ussd_ccmdd_wc_address_update app", function() {
     it("should ask for the passport number", function() {
       return tester.setup.user
         .state("state_passport_no")
-        .input({ session_event: "continue" })
         .check.interaction({
           state: "state_passport_no",
           reply:
@@ -155,7 +174,6 @@ describe("ussd_ccmdd_wc_address_update app", function() {
     it("should ask what year the user was born", function() {
       return tester.setup.user
         .state("state_dob_year")
-        .input({ session_event: "continue" })
         .check.interaction({
           state: "state_dob_year",
           reply:
@@ -169,7 +187,6 @@ describe("ussd_ccmdd_wc_address_update app", function() {
     it("should ask which month the user was born", function() {
       return tester.setup.user
         .state("state_dob_month")
-        .input({ session_event: "continue" })
         .check.interaction({
           state: "state_dob_month",
           reply: [
@@ -196,7 +213,6 @@ describe("ussd_ccmdd_wc_address_update app", function() {
     it("should ask what ay the user was born", function() {
       return tester.setup.user
         .state("state_dob_day")
-        .input({ session_event: "continue" })
         .check.interaction({
           state: "state_dob_day",
           reply:
@@ -210,7 +226,6 @@ describe("ussd_ccmdd_wc_address_update app", function() {
     it("should ask for the folder number", function() {
       return tester.setup.user
         .state("state_folder_number")
-        .input({ session_event: "continue" })
         .check.interaction({
           state: "state_folder_number",
           reply:
@@ -224,7 +239,6 @@ describe("ussd_ccmdd_wc_address_update app", function() {
     it("should ask which municipality the user stays in", function() {
       return tester.setup.user
         .state("state_municipality")
-        .input({ session_event: "continue" })
         .check.interaction({
           state: "state_municipality",
           reply: [
@@ -266,7 +280,6 @@ describe("ussd_ccmdd_wc_address_update app", function() {
       return tester.setup.user
         .state("state_city")
         .setup.user.answer("state_municipality", "Cape Winelands")
-        .input({ session_event: "continue" })
         .check.interaction({
           state: "state_city",
           reply: [
@@ -286,7 +299,6 @@ describe("ussd_ccmdd_wc_address_update app", function() {
       return tester.setup.user
         .state("state_city")
         .setup.user.answer("state_municipality", "Central Karoo")
-        .input({ session_event: "continue" })
         .check.interaction({
           state: "state_city",
           reply: [
@@ -304,7 +316,6 @@ describe("ussd_ccmdd_wc_address_update app", function() {
       return tester.setup.user
         .state("state_city")
         .setup.user.answer("state_municipality", "Garden Route")
-        .input({ session_event: "continue" })
         .check.interaction({
           state: "state_city",
           reply: [
@@ -326,7 +337,6 @@ describe("ussd_ccmdd_wc_address_update app", function() {
       return tester.setup.user
         .state("state_city")
         .setup.user.answer("state_municipality", "Overberg")
-        .input({ session_event: "continue" })
         .check.interaction({
           state: "state_city",
           reply: [
@@ -345,7 +355,6 @@ describe("ussd_ccmdd_wc_address_update app", function() {
       return tester.setup.user
         .state("state_city")
         .setup.user.answer("state_municipality", "West Coast")
-        .input({ session_event: "continue" })
         .check.interaction({
           state: "state_city",
           reply: [
@@ -379,7 +388,6 @@ describe("ussd_ccmdd_wc_address_update app", function() {
     it("should ask for the suburb", function() {
       return tester.setup.user
         .state("state_suburb")
-        .input({ session_event: "continue" })
         .check.interaction({
           state: "state_suburb",
           reply: "Please reply with the name of your suburb.",
@@ -392,7 +400,6 @@ describe("ussd_ccmdd_wc_address_update app", function() {
     it("should ask for the street name", function() {
       return tester.setup.user
         .state("state_street_name")
-        .input({ session_event: "continue" })
         .check.interaction({
           state: "state_street_name",
           reply: "Please reply with the name of your street.",
@@ -405,7 +412,6 @@ describe("ussd_ccmdd_wc_address_update app", function() {
     it("should ask for the street number", function() {
       return tester.setup.user
         .state("state_street_number")
-        .input({ session_event: "continue" })
         .check.interaction({
           state: "state_street_number",
           reply: "Please reply with your house number, e.g. 17.",
@@ -433,6 +439,8 @@ describe("ussd_ccmdd_wc_address_update app", function() {
                 source: "USSD address Update",
                 info_consent: "TRUE",
                 on_whatsapp: "TRUE",
+                first_name: "Jane",
+                surname: "Smith",
                 id_type: "sa_id",
                 sa_id_number: "8811115022085",
                 dob: "1988-11-11T00:00:00Z",
@@ -450,6 +458,8 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         })
         .setup.user.addr("+27820001003")
         .setup.user.state("state_whatsapp_contact_check")
+        .setup.user.answer("state_first_name", "Jane")
+        .setup.user.answer("state_surname", "Smith")
         .setup.user.answer("state_id_type", "state_sa_id_no")
         .setup.user.answer("state_sa_id_no", "8811115022085")
         .setup.user.answer("state_passport_country", "so")
@@ -460,7 +470,6 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .setup.user.answer("state_suburb", "Sea Point")
         .setup.user.answer("state_street_name", "High level stree")
         .setup.user.answer("state_street_number", "167")
-        .input({ session_event: "continue" })
         .check.interaction({
           state: "state_update_complete",
           reply:
