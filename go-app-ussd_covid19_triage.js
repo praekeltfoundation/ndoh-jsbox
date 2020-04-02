@@ -229,7 +229,7 @@ go.app = (function() {
       });
     });
 
-    self.add("state_display_risk", function(name) {
+    self.states.add("state_display_risk", function(name) {
       // TODO: Submit result to datastore
       var answers = self.im.user.answers;
       var score = 0;
@@ -249,23 +249,40 @@ go.app = (function() {
       if (score > 30) {risk = "critical"; }
 
       var text = "";
-      if(risk === "low") {
-        text = $([
-          "Thank you for answering all questions.",
-          "If you think you have COVID-19 please STAY HOME, avoid contact with other people in " +
-          "your community and self-isolate."
-        ].join("\n"));
+      if(answers.state_tracing) {
+        if(risk === "low") {
+          text = $([
+            "Thank you for answering all questions.",
+            "If you think you have COVID-19 please STAY HOME, avoid contact with other people in " +
+            "your community and self-isolate."
+          ].join("\n"));
+        } else {
+          text = $(
+            "Call NICD: 0800029999 for info on what to do & how to test. STAY HOME & avoid contact " +
+            "with people in your house & community, if possible, stay in separate room."
+          );
+        }
+        return new EndState(name, {
+          next: "state_start",
+          text: text
+        });
       } else {
-        text = $(
-          "Call NICD: 0800029999 for info on what to do & how to test. STAY HOME & avoid contact " +
-          "with people in your house & community, if possible, stay in separate room."
-        );
+        if(risk === "low") {
+          text = $(
+            "You will not be contacted. If you think you have COVID-19 please STAY HOME, avoid " +
+            "contact with other people in your community and self-isolate."
+          );
+        } else {
+          text = $(
+            "You will not be contacted. Call NICD 0800029999 for info on what to do & how to " +
+            "test. STAY HOME. Avoid contact with people in your house/community"
+          );
+        }
+        return new MenuState(name, {
+          question: text,
+          choices: [new Choice("state_start", $("START OVER"))]
+        });
       }
-
-      return new EndState(name, {
-        next: "state_start",
-        text: text
-      });
     });
 
     self.states.creators.__error__ = function(name, opts) {

@@ -345,5 +345,41 @@ describe("ussd_covid19_triage app", function() {
                 .check.reply.ends_session()
                 .run();
         });
+        it("should display the alternate low risk message if low risk and no tracing", function() {
+            return tester
+                .setup.user.state("state_tracing")
+                .input("2")
+                .check.interaction({
+                    state: "state_display_risk",
+                    reply: [
+                        "You will not be contacted. If you think you have COVID-19 please STAY " +
+                        "HOME, avoid contact with other people in your community and self-isolate.",
+                        "1. START OVER"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should display the alternate high risk message if high risk and no tracing", function() {
+            return tester
+                .setup.user.state("state_tracing")
+                .setup.user.answers({
+                    state_age: ">65",
+                    state_fever: true,
+                    state_cough: true
+                })
+                .input("2")
+                .check.interaction({
+                    state: "state_display_risk",
+                    reply: [
+                        "You will not be contacted. Call NICD 0800029999 for info on what to do " +
+                        "& how to test. STAY HOME. Avoid contact with people in your house/" +
+                        "community",
+                        "1. START OVER"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
     });
 });
