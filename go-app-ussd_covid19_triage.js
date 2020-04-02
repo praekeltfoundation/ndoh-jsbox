@@ -7,7 +7,6 @@ go.app = (function() {
   var Choice = vumigo.states.Choice;
   var EndState = vumigo.states.EndState;
   var MenuState = vumigo.states.MenuState;
-  var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
   var FreeText = vumigo.states.FreeText;
   var ChoiceState = vumigo.states.ChoiceState;
 
@@ -97,9 +96,9 @@ go.app = (function() {
     });
 
     self.add("state_province", function(name) {
-      return new PaginatedChoiceState(name, {
+      return new ChoiceState(name, {
         question: $([
-          "In which Province do you live?",
+          "Select your province",
           "",
           "Reply:"
         ].join("\n")),
@@ -118,8 +117,6 @@ go.app = (function() {
           new Choice("ZA-NC", $("NORTHERN CAPE")),
           new Choice("ZA-WC", $("WESTERN CAPE")),
         ],
-        options_per_page: null,
-        characters_per_page: 160,
         next: "state_city"
       });
     });
