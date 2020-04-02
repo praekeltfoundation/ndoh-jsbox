@@ -172,8 +172,7 @@ go.app = (function() {
             !dob.isBetween(
               today.clone().add(-130, "years"),
               today.clone().add(-5, "years")
-            ) ||
-            _.parseInt(match[2]) >= 5000
+            )
           ) {
             return $(
               "Sorry, we don’t understand. Please try again by entering the your 13 digit South African ID number."
@@ -460,7 +459,7 @@ go.app = (function() {
       return new FreeText(name, {
         question: $("Please reply with your house number, e.g. 17."),
         check: function(content) {
-          var match = content.match(/^(\d{1,7})$/);
+          var match = content.match(/^(\d{1,7}[a-zA-Z]{0,1})$/);
           if (!match) {
             return $(
               "Sorry, we don’t understand. Please reply with your house " +
@@ -559,7 +558,7 @@ go.app = (function() {
         next: "state_start",
         text: $(
           "Thank you. You will receive your medication at the end of the " +
-            "month. The driver will contact you before the time.."
+            "month. The driver will contact you before the time."
         ).context({ msisdn: msisdn })
       });
     });

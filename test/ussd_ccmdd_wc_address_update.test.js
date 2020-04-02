@@ -63,7 +63,7 @@ describe("ussd_ccmdd_wc_address_update app", function() {
             "1. Yes",
             "2. No"
           ].join("\n"),
-          char_limit: 180
+          char_limit: 160
         })
         .run();
     });
@@ -464,7 +464,7 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .check.interaction({
           state: "state_update_complete",
           reply:
-            "Thank you. You will receive your medication at the end of the month. The driver will contact you before the time..",
+            "Thank you. You will receive your medication at the end of the month. The driver will contact you before the time.",
           char_limit: 160
         })
         .run();
