@@ -268,8 +268,8 @@ go.app = (function() {
             risk: self.calculate_risk()
           },
           headers: {
-            "Authorization": "Token " + self.im.config.eventstore.token,
-            "User-Agent": "Jsbox/Covid19-Triage-USSD"
+            "Authorization": ["Token " + self.im.config.eventstore.token],
+            "User-Agent": ["Jsbox/Covid19-Triage-USSD"]
           }
         }).then(function() {
           return self.states.create("state_display_risk");
