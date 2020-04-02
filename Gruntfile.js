@@ -24,7 +24,7 @@ module.exports = function (grunt) {
                     ussd_optout_rapidpro: 'src/ussd_optout_rapidpro.js',
                     ussd_pmtct_rapidpro: 'src/ussd_pmtct_rapidpro.js',
                     ussd_ccmdd_wc_address_update: "src/ussd_ccmdd_wc_address_update.js",
-                    ussd_ccmdd_wc_welcome: "src/ussd_ccmdd_wc_welcome.js"
+                    ussd_covid19_triage: "src/ussd_covid19_triage.js"
                 },
                 ussd_clinic: [
                     'src/index.js',
@@ -129,9 +129,9 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.ussd_ccmdd_wc_address_update %>',
                     'src/init.js'
                 ],
-                ussd_ccmdd_wc_welcome: [
+                ussd_covid19_triage: [
                     'src/index.js',
-                    '<%= paths.src.app.ussd_ccmdd_wc_welcome %>',
+                    '<%= paths.src.app.ussd_covid19_triage %>',
                     'src/init.js'
                 ],
                 all: [
@@ -155,7 +155,7 @@ module.exports = function (grunt) {
                 ussd_optout_rapidpro: 'go-app-ussd_optout_rapidpro.js',
                 ussd_pmtct_rapidpro: 'go-app-ussd_pmtct_rapidpro.js',
                 ussd_ccmdd_wc_address_update: 'go-app-ussd_ccmdd_wc_address_update.js',
-                ussd_ccmdd_wc_welcome: 'go-app-ussd_ccmdd_wc_welcome.js'
+                ussd_covid19_triage: 'go-app-ussd_covid19_triage.js'
             },
             test: {
                 ussd_clinic: [
@@ -260,6 +260,11 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.ussd_ccmdd_wc_address_update %>',
                     'test/ussd_ccmdd_wc_address_update.test.js'
                 ],
+                ussd_covid19_triage: [
+                    'test/setup.js',
+                    '<%= paths.src.app.ussd_covid19_triage %>',
+                    'test/ussd_covid19_triage.test.js'
+                ],
                 session_length_helper: [
                     'src/session_length_helper.js',
                     'test/session_length_helper.test.js'
@@ -348,9 +353,9 @@ module.exports = function (grunt) {
                 src: ['<%= paths.src.ussd_ccmdd_wc_address_update %>'],
                 dest: '<%= paths.dest.ussd_ccmdd_wc_address_update %>'
             },
-            ussd_ccmdd_wc_welcome: {
-                src: ['<%= paths.src.ussd_ccmdd_wc_welcome %>'],
-                dest: '<%= paths.dest.ussd_ccmdd_wc_welcome %>'
+            ussd_covid19_triage: {
+                src: ['<%= paths.src.ussd_covid19_triage %>'],
+                dest: '<%= paths.dest.ussd_covid19_triage %>'
             }
         },
 
@@ -407,6 +412,9 @@ module.exports = function (grunt) {
             },
             test_ussd_ccmdd_wc_address_update: {
                 src: ['<%= paths.test.ussd_ccmdd_wc_address_update %>']
+            },
+            test_ussd_covid19_triage: {
+                src: ['<%= paths.test.ussd_covid19_triage %>']
             },
             test_session_length_helper: {
                 src: ['<%= paths.test.session_length_helper %>']
