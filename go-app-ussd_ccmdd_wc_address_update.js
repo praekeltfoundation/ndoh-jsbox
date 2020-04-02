@@ -258,7 +258,7 @@ go.app = (function() {
         ),
         accept_labels: true,
         choices: [
-          new Choice("state_id_type", $("Yes")),
+          new Choice("state_first_name", $("Yes")),
           new Choice("state_exit", $("No"))
         ]
       });
@@ -273,6 +273,36 @@ go.app = (function() {
       });
     });
 
+    self.add("state_first_name", function(name) {
+      return new FreeText(name, {
+        question: $("What is your first name?"),
+        check: function(content) {
+          if (!content.match(/^\S{2,}$/)) {
+            return $(
+              "Sorry, we don’t understand. Please try again by replying with " +
+                "your first name e.g. Jane."
+            );
+          }
+        },
+        next: "state_surname"
+      });
+    });
+
+    self.add("state_surname", function(name) {
+      return new FreeText(name, {
+        question: $("What is your surname?"),
+        check: function(content) {
+          if (!content.match(/^\S{2,}$/)) {
+            return $(
+              "Sorry, we don’t understand. Please try again by replying with " +
+                "your surname e.g. Smith."
+            );
+          }
+        },
+        next: "state_id_type"
+      });
+    });
+
     self.add("state_id_type", function(name) {
       return new MenuState(name, {
         question: $("What type of identification do you have?"),
@@ -281,7 +311,7 @@ go.app = (function() {
         ),
         choices: [
           new Choice("state_sa_id_no", $("SA ID")),
-          new Choice("state_passport_country", $("Passport")),
+          new Choice("state_passport_no", $("Passport")),
           new Choice("state_dob_year", $("None"))
         ]
       });
@@ -329,29 +359,6 @@ go.app = (function() {
           }
         },
         next: "state_folder_number"
-      });
-    });
-
-    self.add("state_passport_country", function(name) {
-      return new ChoiceState(name, {
-        question: $(
-          "What is your passport's country of origin? Enter the number " +
-            "matching your answer."
-        ),
-        error: $(
-          "Sorry we don't understand. Please enter the number next to your " +
-            "answer."
-        ),
-        choices: [
-          new Choice("zw", $("Zimbabwe")),
-          new Choice("mz", $("Mozambique")),
-          new Choice("mw", $("Malawi")),
-          new Choice("ng", $("Nigeria")),
-          new Choice("cd", $("DRC")),
-          new Choice("so", $("Somalia")),
-          new Choice("other", $("Other"))
-        ],
-        next: "state_passport_no"
       });
     });
 
@@ -648,9 +655,11 @@ go.app = (function() {
         source: "USSD address Update",
         info_consent: "TRUE",
         on_whatsapp: self.im.user.answers.on_whatsapp ? "TRUE" : "FALSE",
+        first_name: self.im.user.answers.state_first_name,
+        surname: self.im.user.answers.state_surname,
         id_type: {
           state_sa_id_no: "sa_id",
-          state_passport_country: "passport",
+          state_passport_no: "passport",
           state_dob_year: "dob"
         }[self.im.user.answers.state_id_type],
         sa_id_number: self.im.user.answers.state_sa_id_no,
@@ -666,7 +675,6 @@ go.app = (function() {
                   self.im.user.answers.state_dob_day,
                 "YYYYMMDD"
               ).format(),
-        passport_origin: self.im.user.answers.state_passport_country,
         passport_number: self.im.user.answers.state_passport_no,
         folder_number: self.im.user.answers.state_folder_number,
         municipality: self.im.user.answers.state_municipality,
