@@ -101,8 +101,6 @@ go.app = (function() {
         ].join("\n")),
         error: catchall_number_error,
         accept_labels: true,
-        back: $("Back"),
-        more: $("More"),
         choices: [
           new Choice("ZA-EC", $("EASTERN CAPE")),
           new Choice("ZA-FS", $("FREE STATE")),
