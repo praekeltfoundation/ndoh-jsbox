@@ -126,7 +126,7 @@ go.app = (function() {
 
     self.add("state_first_name", function(name) {
       return new FreeText(name, {
-        question: $("What is your first name?"),
+        question: $("[1/10] What is your first name?"),
         check: function(content) {
           if (!content.match(/^\S{2,}$/)) {
             return $(
@@ -141,7 +141,7 @@ go.app = (function() {
 
     self.add("state_surname", function(name) {
       return new FreeText(name, {
-        question: $("What is your surname?"),
+        question: $("[2/10] What is your last name?"),
         check: function(content) {
           if (!content.match(/^\S{2,}$/)) {
             return $(
@@ -156,7 +156,7 @@ go.app = (function() {
 
     self.add("state_id_type", function(name) {
       return new MenuState(name, {
-        question: $("What type of identification do you have?"),
+        question: $("[3/10] What type of identification do you have?"),
         error: $(
           "Sorry we don't understand. Please enter the number next to your answer."
         ),
@@ -171,7 +171,7 @@ go.app = (function() {
     self.add("state_sa_id_no", function(name) {
       return new FreeText(name, {
         question: $(
-          "Please reply with your ID number as you find it in your Identity Document."
+          "[4/10] Please reply with your ID number as you find it in your Identity Document."
         ),
         check: function(content) {
           var match = content.match(/^(\d{6})(\d{4})(0|1)8\d$/);
@@ -216,7 +216,7 @@ go.app = (function() {
     self.add("state_passport_no", function(name) {
       return new FreeText(name, {
         question: $(
-          "Please enter your passport number as it appears in your passport."
+          "[4/10] Please enter your passport number as it appears in your passport."
         ),
         check: function(content) {
           if (!content.match(/^\w+$/)) {
@@ -233,7 +233,7 @@ go.app = (function() {
     self.add("state_dob_year", function(name) {
       return new FreeText(name, {
         question: $(
-          "What year were you born? Please reply with the year as 4 digits in the format YYYY."
+          "[4/10] What year were you born? Please reply with the year as 4 digits in the format YYYY."
         ),
         check: function(content) {
           var match = content.match(/^(\d{4})$/);
@@ -259,7 +259,7 @@ go.app = (function() {
 
     self.add("state_dob_month", function(name) {
       return new ChoiceState(name, {
-        question: $("What month were you born?"),
+        question: $("[4/10] What month were you born?"),
         error: $(
           "Sorry we don't understand. Please enter the no. next to your answer."
         ),
@@ -277,6 +277,7 @@ go.app = (function() {
           new Choice("11", $("Nov")),
           new Choice("12", $("Dec"))
         ],
+        accept_labels: true,
         next: "state_dob_day"
       });
     });
@@ -284,7 +285,7 @@ go.app = (function() {
     self.add("state_dob_day", function(name) {
       return new FreeText(name, {
         question: $(
-          "On what day were you born? Please enter the day as a number, e.g. 12."
+          "[4/10] On what day were you born? Please enter the day as a number, e.g. 12."
         ),
         check: function(content) {
           var match = content.match(/^(\d+)$/),
@@ -312,7 +313,7 @@ go.app = (function() {
     self.add("state_folder_number", function(name) {
       return new FreeText(name, {
         question: $(
-          "Please reply with your folder number as you find it on your " +
+          "[5/10] Please reply with your folder number as you find it on your " +
             "appointment card, e.g. 12345678"
         ),
         check: function(content) {
@@ -330,7 +331,7 @@ go.app = (function() {
 
     self.add("state_municipality", function(name) {
       return new ChoiceState(name, {
-        question: $("In which Western Cape Municipality do you stay?"),
+        question: $("[6/10] In which Municipality do you stay?"),
         error: $(
           "Sorry we don't understand. Please enter the number next to your answer."
         ),
@@ -415,7 +416,7 @@ go.app = (function() {
       );
 
       return new ChoiceState(name, {
-        question: $("In which city do you stay?"),
+        question: $("[7/10] In which city do you stay?"),
         error: $(
           "Sorry we don't understand. Please enter the number next to your answer."
         ),
@@ -432,7 +433,7 @@ go.app = (function() {
 
     self.add("state_suburb", function(name) {
       return new FreeText(name, {
-        question: $("Please reply with the name of your suburb."),
+        question: $("[8/10] Please reply with the name of your suburb."),
         check: function(content) {
           var match = content.match(/[a-zA-Z]{2,}/);
           if (!match) {
@@ -448,7 +449,7 @@ go.app = (function() {
 
     self.add("state_street_name", function(name) {
       return new FreeText(name, {
-        question: $("Please reply with the name of your street."),
+        question: $("[9/10] Please reply with the name of your street."),
         check: function(content) {
           var match = content.match(/[a-zA-Z]{2,}/);
           if (!match) {
@@ -464,7 +465,7 @@ go.app = (function() {
 
     self.add("state_street_number", function(name) {
       return new FreeText(name, {
-        question: $("Please reply with your house number, e.g. 17."),
+        question: $("[10/10] Please reply with your house number, e.g. 17."),
         check: function(content) {
           var match = content.match(/^(\d{1,7}[a-zA-Z]{0,1})$/);
           if (!match) {
@@ -565,8 +566,8 @@ go.app = (function() {
       return new EndState(name, {
         next: "state_start",
         text: $(
-          "Thank you. You will receive your medication at the end of the " +
-            "month. The driver will contact you before the time."
+          "Thank you. Your healthcare facility will be in contact with you " +
+            "soon about your medication delivery."
         ).context({ msisdn: msisdn })
       });
     });

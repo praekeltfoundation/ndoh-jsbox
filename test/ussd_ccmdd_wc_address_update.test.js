@@ -88,7 +88,7 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .state("state_first_name")
         .check.interaction({
           state: "state_first_name",
-          reply: "What is your first name?",
+          reply: "[1/10] What is your first name?",
           char_limit: 160
         })
         .run();
@@ -100,7 +100,7 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .state("state_surname")
         .check.interaction({
           state: "state_surname",
-          reply: "What is your surname?",
+          reply: "[2/10] What is your last name?",
           char_limit: 160
         })
         .run();
@@ -113,7 +113,7 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .check.interaction({
           state: "state_id_type",
           reply: [
-            "What type of identification do you have?",
+            "[3/10] What type of identification do you have?",
             "1. SA ID",
             "2. Passport",
             "3. None"
@@ -130,7 +130,7 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .check.interaction({
           state: "state_sa_id_no",
           reply:
-            "Please reply with your ID number as you find it in your Identity Document.",
+            "[4/10] Please reply with your ID number as you find it in your Identity Document.",
           char_limit: 160
         })
         .run();
@@ -143,7 +143,7 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .check.interaction({
           state: "state_passport_no",
           reply:
-            "Please enter your passport number as it appears in your passport.",
+            "[4/10] Please enter your passport number as it appears in your passport.",
           char_limit: 160
         })
         .run();
@@ -156,7 +156,7 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .check.interaction({
           state: "state_dob_year",
           reply:
-            "What year were you born? Please reply with the year as 4 digits in the format YYYY.",
+            "[4/10] What year were you born? Please reply with the year as 4 digits in the format YYYY.",
           char_limit: 160
         })
         .run();
@@ -169,7 +169,7 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .check.interaction({
           state: "state_dob_month",
           reply: [
-            "What month were you born?",
+            "[4/10] What month were you born?",
             "1. Jan",
             "2. Feb",
             "3. Mar",
@@ -187,6 +187,19 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         })
         .run();
     });
+    it("should accept a label", function() {
+      return tester.setup.user
+        .state("state_dob_month")
+        .input("jan")
+        .check.interaction({
+          state: "state_dob_day",
+          reply:
+            "[4/10] On what day were you born? Please enter the day as a number, e.g. 12.",
+          char_limit: 160
+        })
+        .check.user.answer("state_dob_month", "01")
+        .run();
+    });
   });
   describe("state_dob_day", function() {
     it("should ask what ay the user was born", function() {
@@ -195,7 +208,7 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .check.interaction({
           state: "state_dob_day",
           reply:
-            "On what day were you born? Please enter the day as a number, e.g. 12.",
+            "[4/10] On what day were you born? Please enter the day as a number, e.g. 12.",
           char_limit: 160
         })
         .run();
@@ -208,7 +221,7 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .check.interaction({
           state: "state_folder_number",
           reply:
-            "Please reply with your folder number as you find it on your appointment card, e.g. 12345678",
+            "[5/10] Please reply with your folder number as you find it on your appointment card, e.g. 12345678",
           char_limit: 160
         })
         .run();
@@ -221,7 +234,7 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .check.interaction({
           state: "state_municipality",
           reply: [
-            "In which Western Cape Municipality do you stay?",
+            "[6/10] In which Municipality do you stay?",
             "1. Cape Town",
             "2. Cape Winelands",
             "3. Central Karoo",
@@ -241,7 +254,7 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .check.interaction({
           state: "state_city",
           reply: [
-            "In which city do you stay?",
+            "[7/10] In which city do you stay?",
             "1. Breede Valley",
             "2. Drakenstein",
             "3. Langeberg",
@@ -262,7 +275,7 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .check.interaction({
           state: "state_city",
           reply: [
-            "In which city do you stay?",
+            "[7/10] In which city do you stay?",
             "1. Breede Valley",
             "2. Drakenstein",
             "3. Langeberg",
@@ -281,7 +294,7 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .check.interaction({
           state: "state_city",
           reply: [
-            "In which city do you stay?",
+            "[7/10] In which city do you stay?",
             "1. Beaufort Wes",
             "2. Laingsburg",
             "3. Prince Albert",
@@ -298,7 +311,7 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .check.interaction({
           state: "state_city",
           reply: [
-            "In which city do you stay?",
+            "[7/10] In which city do you stay?",
             "1. Bitou",
             "2. George",
             "3. Hessequa",
@@ -319,7 +332,7 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .check.interaction({
           state: "state_city",
           reply: [
-            "In which city do you stay?",
+            "[7/10] In which city do you stay?",
             "1. Cape Agulhas",
             "2. Overstrand",
             "3. Swellendam",
@@ -337,7 +350,7 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .check.interaction({
           state: "state_city",
           reply: [
-            "In which city do you stay?",
+            "[7/10] In which city do you stay?",
             "1. Bergriver",
             "2. Cederberg",
             "3. Matzikama",
@@ -356,7 +369,7 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .input("2")
         .check.interaction({
           state: "state_suburb",
-          reply: "Please reply with the name of your suburb.",
+          reply: "[8/10] Please reply with the name of your suburb.",
           char_limit: 160
         })
         .check.user.answer("state_city", "Cederberg")
@@ -369,7 +382,7 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .state("state_suburb")
         .check.interaction({
           state: "state_suburb",
-          reply: "Please reply with the name of your suburb.",
+          reply: "[8/10] Please reply with the name of your suburb.",
           char_limit: 160
         })
         .run();
@@ -381,7 +394,7 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .state("state_street_name")
         .check.interaction({
           state: "state_street_name",
-          reply: "Please reply with the name of your street.",
+          reply: "[9/10] Please reply with the name of your street.",
           char_limit: 160
         })
         .run();
@@ -393,7 +406,7 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .state("state_street_number")
         .check.interaction({
           state: "state_street_number",
-          reply: "Please reply with your house number, e.g. 17.",
+          reply: "[10/10] Please reply with your house number, e.g. 17.",
           char_limit: 160
         })
         .run();
@@ -450,7 +463,7 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .check.interaction({
           state: "state_update_complete",
           reply:
-            "Thank you. You will receive your medication at the end of the month. The driver will contact you before the time.",
+            "Thank you. Your healthcare facility will be in contact with you soon about your medication delivery.",
           char_limit: 160
         })
         .run();
