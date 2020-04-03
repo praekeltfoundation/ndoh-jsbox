@@ -290,16 +290,30 @@ go.app = (function() {
       var text = "";
       if(answers.state_tracing) {
         if(risk === "low") {
-          text = $([
-            "Thank you for answering all questions.",
-            "If you think you have COVID-19 please STAY HOME, avoid contact with other people in " +
-            "your community and self-isolate."
-          ].join("\n"));
-        } else {
           text = $(
-            "Call NICD: 0800029999 for info on what to do & how to test. STAY HOME & avoid contact " +
-            "with people in your house & community, if possible, stay in separate room."
+            "You won't need to complete this risk assessment again for 7 days UNLESS you feel " +
+            "ill or if you come into contact with someone infected with COVID-19"
           );
+        }
+        if(risk === "moderate") {
+          text = $(
+            "Self-isolate if you can. If you start feeling ill, go to a testing center or Call " +
+            "0800029999 or your healthcare practitioner for info on what to do & how to test"
+          );
+        }
+        if(risk === "high") {
+          text = $(
+            "GET TESTED to find out if you have COVID-19. Go to a testing center or Call " +
+            "0800029999 or your healthcare practitioner for info on what to do & how to test"
+          );
+        }
+        if(risk === "critical") {
+          text = $([
+            "Please seek medical care immediately at an emergency facility.",
+            "Remember to:",
+            "- Avoid contact with other people",
+            "- Put on a face mask before entering the facility",
+          ].join("\n"));
         }
         return new EndState(name, {
           next: "state_start",
