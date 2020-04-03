@@ -8,6 +8,7 @@ go.app = (function() {
   var MenuState = vumigo.states.MenuState;
   var FreeText = vumigo.states.FreeText;
   var ChoiceState = vumigo.states.ChoiceState;
+  var PaginatedState = vumigo.states.PaginatedState;
 
 
   var GoNDOH = App.extend(function(self) {
@@ -108,10 +109,20 @@ go.app = (function() {
     });
 
     self.states.add("state_more_info", function(name) {
-      // TODO: Replace with more info content
-      return new EndState(name, {
-        text: $("More info placeholder"),
-        next: "state_start"
+      return new PaginatedState(name, {
+        text: $(
+          "You confirm that you're responsible for your medical care & treatment. COVIDChecker " +
+          "only provides info. It's not a substitute for professional medical " +
+          "advice/diagnosis/treatment. Get a qualified health provider's advice about your " +
+          "medical condition/care. You confirm that you shouldn't disregard/delay seeking " +
+          "medical advice about treatment/care because of COVIDChecker. Rely on info at your " +
+          "own risk."
+        ),
+        characters_per_page: 160,
+        back: $("Back"),
+        more: $("More"),
+        exit: $("Exit"),
+        next: "state_terms"
       });
     });
 
@@ -290,16 +301,30 @@ go.app = (function() {
       var text = "";
       if(answers.state_tracing) {
         if(risk === "low") {
-          text = $([
-            "Thank you for answering all questions.",
-            "If you think you have COVID-19 please STAY HOME, avoid contact with other people in " +
-            "your community and self-isolate."
-          ].join("\n"));
-        } else {
           text = $(
-            "Call NICD: 0800029999 for info on what to do & how to test. STAY HOME & avoid contact " +
-            "with people in your house & community, if possible, stay in separate room."
+            "You won't need to complete this risk assessment again for 7 days UNLESS you feel " +
+            "ill or if you come into contact with someone infected with COVID-19"
           );
+        }
+        if(risk === "moderate") {
+          text = $(
+            "Self-isolate if you can. If u start feeling ill, go to a testing center or Call " +
+            "0800029999 or your healthcare practitioner for info on what to do & how to test"
+          );
+        }
+        if(risk === "high") {
+          text = $(
+            "GET TESTED to find out if you have COVID-19. Go to a testing center or Call " +
+            "0800029999 or your healthcare practitioner for info on what to do & how to test"
+          );
+        }
+        if(risk === "critical") {
+          text = $([
+            "Please seek medical care immediately at an emergency facility.",
+            "Remember to:",
+            "- Avoid contact with other people",
+            "- Put on a face mask before entering the facility",
+          ].join("\n"));
         }
         return new EndState(name, {
           next: "state_start",
