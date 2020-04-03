@@ -107,6 +107,72 @@ describe("ussd_covid19_triage app", function() {
                 .run();
         });
     });
+    describe("state_more_info", function() {
+        it("should display more info pg 1", function() {
+            return tester
+                .setup.user.state("state_more_info")
+                .check.interaction({
+                    state: "state_more_info",
+                    reply: [
+                        "You confirm that you're responsible for your medical care & treatment. " +
+                        "COVIDChecker only provides info. It's not a substitute for",
+                        "1. More",
+                        "2. Exit"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should display more info pg 2", function() {
+            return tester
+                .setup.user.state("state_more_info")
+                .input("1")
+                .check.interaction({
+                    state: "state_more_info",
+                    reply: [
+                        "professional medical advice/diagnosis/treatment. Always get a qualified " +
+                        "health provider's advice about your medical condition/care. You",
+                        "1. More",
+                        "2. Back",
+                        "3. Exit"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should display more info pg 3", function() {
+            return tester
+                .setup.user.state("state_more_info")
+                .inputs("1", "1")
+                .check.interaction({
+                    state: "state_more_info",
+                    reply: [
+                        "confirm that you should never disregard/delay seeking medical advice " +
+                        "about treatment/care because of info on COVIDChecker. Rely on info",
+                        "1. More",
+                        "2. Back",
+                        "3. Exit"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should display more info pg 4", function() {
+            return tester
+                .setup.user.state("state_more_info")
+                .inputs("1", "1", "1")
+                .check.interaction({
+                    state: "state_more_info",
+                    reply: [
+                        "at your own risk",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+    });
     describe("state_province", function() {
         it("should show the provinces", function() {
             return tester
