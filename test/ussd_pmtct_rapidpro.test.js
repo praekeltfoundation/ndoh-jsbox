@@ -29,13 +29,12 @@ describe("ussd_pmtct app", function() {
                 .check.interaction({
                     state: 'state_start',
                     reply: [
-                    "Welcome to the Department of Health's MomConnect (MC).",
-                    "",
-                    "Is 0123456789 the no. of the mom who wants to sign up or opt out of HIV-related messages?",
+                    "Welcome to the Dept. of Health's MomConnect (MC). Is 0123456789 the " +
+                    "no. of the mom who wants to sign up/opt out of HIV msgs?",
                     "1. Yes",
                     "2. No"
                 ].join("\n"),
-                char_limit: 160
+                char_limit: 140
             })
             .run();
         });

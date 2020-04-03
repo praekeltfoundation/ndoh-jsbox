@@ -49,9 +49,8 @@ go.app = function() {
             self.im.user.answers = {};
             return new MenuState(name, {
                 question: $([
-                    "Welcome to the Department of Health's MomConnect (MC).",
-                    "",
-                    "Is {{msisdn}} the no. of the mom who wants to sign up or opt out of HIV-related messages?"
+                    "Welcome to the Dept. of Health's MomConnect (MC). Is {{msisdn}} " +
+                    "the no. of the mom who wants to sign up/opt out of HIV msgs?"
                     ].join("\n")).context({msisdn: utils.readable_msisdn(self.im.user.addr, "27")}),
                 error:
                     "Sorry we don't understand. Please enter the number next to the mother's " +
