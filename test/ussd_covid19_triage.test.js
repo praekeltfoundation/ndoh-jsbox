@@ -509,7 +509,7 @@ describe("ussd_covid19_triage app", function() {
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
-                        "Self-isolate if you can. If you start feeling ill, go to a testing " +
+                        "Self-isolate if you can. If u start feeling ill, go to a testing " +
                         "center or Call 0800029999 or your healthcare practitioner for info on " +
                         "what to do & how to test",
                     char_limit: 160

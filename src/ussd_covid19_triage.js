@@ -308,7 +308,7 @@ go.app = (function() {
         }
         if(risk === "moderate") {
           text = $(
-            "Self-isolate if you can. If you start feeling ill, go to a testing center or Call " +
+            "Self-isolate if you can. If u start feeling ill, go to a testing center or Call " +
             "0800029999 or your healthcare practitioner for info on what to do & how to test"
           );
         }
