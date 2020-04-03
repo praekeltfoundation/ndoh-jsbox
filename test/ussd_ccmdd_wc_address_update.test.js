@@ -41,8 +41,8 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .check.interaction({
           state: "state_start",
           reply: [
-            "Welcome to the Western Cape Department of Health's Chronic Dispensing Unit.",
-            "We deliver prescription chronic meds to your door.",
+            "Welcome to the Department of Health's Medication Home Delivery Service.",
+            "We deliver prescription meds to your door.",
             "1. Continue"
           ].join("\n"),
           char_limit: 140
@@ -115,8 +115,7 @@ describe("ussd_ccmdd_wc_address_update app", function() {
           reply: [
             "[3/10] What type of identification do you have?",
             "1. SA ID",
-            "2. Passport",
-            "3. None"
+            "2. None"
           ].join("\n"),
           char_limit: 160
         })
@@ -131,19 +130,6 @@ describe("ussd_ccmdd_wc_address_update app", function() {
           state: "state_sa_id_no",
           reply:
             "[4/10] Please reply with your ID number as you find it in your Identity Document.",
-          char_limit: 160
-        })
-        .run();
-    });
-  });
-  describe("state_passport_no", function() {
-    it("should ask for the passport number", function() {
-      return tester.setup.user
-        .state("state_passport_no")
-        .check.interaction({
-          state: "state_passport_no",
-          reply:
-            "[4/10] Please enter your passport number as it appears in your passport.",
           char_limit: 160
         })
         .run();
@@ -436,7 +422,6 @@ describe("ussd_ccmdd_wc_address_update app", function() {
                 id_type: "sa_id",
                 sa_id_number: "8811115022085",
                 dob: "1988-11-11T00:00:00Z",
-                passport_number: "A123",
                 folder_number: "12345678",
                 municipality: "Cape Winelands",
                 city: "Cape Town",
@@ -453,7 +438,6 @@ describe("ussd_ccmdd_wc_address_update app", function() {
         .setup.user.answer("state_surname", "Smith")
         .setup.user.answer("state_id_type", "state_sa_id_no")
         .setup.user.answer("state_sa_id_no", "8811115022085")
-        .setup.user.answer("state_passport_no", "A123")
         .setup.user.answer("state_folder_number", "12345678")
         .setup.user.answer("state_municipality", "Cape Winelands")
         .setup.user.answer("state_city", "Cape Town")

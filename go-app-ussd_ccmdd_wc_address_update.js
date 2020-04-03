@@ -216,8 +216,8 @@ go.app = (function() {
           return new MenuState(name, {
             question: $(
               [
-                "Welcome to the Western Cape Department of Health's Chronic Dispensing Unit.",
-                "We deliver prescription chronic meds to your door."
+                "Welcome to the Department of Health's Medication Home Delivery Service.",
+                "We deliver prescription meds to your door."
               ].join("\n")
             ),
             error: $(
@@ -311,7 +311,6 @@ go.app = (function() {
         ),
         choices: [
           new Choice("state_sa_id_no", $("SA ID")),
-          new Choice("state_passport_no", $("Passport")),
           new Choice("state_dob_year", $("None"))
         ]
       });
@@ -355,23 +354,6 @@ go.app = (function() {
           ) {
             return $(
               "Sorry, we don't understand. Please try again by entering the your 13 digit South African ID number."
-            );
-          }
-        },
-        next: "state_folder_number"
-      });
-    });
-
-    self.add("state_passport_no", function(name) {
-      return new FreeText(name, {
-        question: $(
-          "[4/10] Please enter your passport number as it appears in your passport."
-        ),
-        check: function(content) {
-          if (!content.match(/^\w+$/)) {
-            return $(
-              "Sorry, we don't understand. Please try again by entering the " +
-                "your passport number as it appears in your passport."
             );
           }
         },
@@ -660,7 +642,6 @@ go.app = (function() {
         surname: self.im.user.answers.state_surname,
         id_type: {
           state_sa_id_no: "sa_id",
-          state_passport_no: "passport",
           state_dob_year: "dob"
         }[self.im.user.answers.state_id_type],
         sa_id_number: self.im.user.answers.state_sa_id_no,
@@ -676,7 +657,6 @@ go.app = (function() {
                   self.im.user.answers.state_dob_day,
                 "YYYYMMDD"
               ).format(),
-        passport_number: self.im.user.answers.state_passport_no,
         folder_number: self.im.user.answers.state_folder_number,
         municipality: self.im.user.answers.state_municipality,
         city: self.im.user.answers.state_city,
