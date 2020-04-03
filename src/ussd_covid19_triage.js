@@ -113,10 +113,10 @@ go.app = (function() {
         text: $(
           "You confirm that you're responsible for your medical care & treatment. COVIDChecker " +
           "only provides info. It's not a substitute for professional medical " +
-          "advice/diagnosis/treatment. Always get a qualified health provider's advice about " +
-          "your medical condition/care. You confirm that you should never disregard/delay " +
-          "seeking medical advice about treatment/care because of info on COVIDChecker. Rely on " +
-          "info at your own risk"
+          "advice/diagnosis/treatment. Get a qualified health provider's advice about your " +
+          "medical condition/care. You confirm that you shouldn't disregard/delay seeking " +
+          "medical advice about treatment/care because of COVIDChecker. Rely on info at your " +
+          "own risk."
         ),
         characters_per_page: 160,
         back: $("Back"),

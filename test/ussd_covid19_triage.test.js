@@ -130,8 +130,8 @@ describe("ussd_covid19_triage app", function() {
                 .check.interaction({
                     state: "state_more_info",
                     reply: [
-                        "professional medical advice/diagnosis/treatment. Always get a qualified " +
-                        "health provider's advice about your medical condition/care. You",
+                        "professional medical advice/diagnosis/treatment. Get a qualified " +
+                        "health provider's advice about your medical condition/care. You confirm",
                         "1. More",
                         "2. Back",
                         "3. Exit"
@@ -147,24 +147,8 @@ describe("ussd_covid19_triage app", function() {
                 .check.interaction({
                     state: "state_more_info",
                     reply: [
-                        "confirm that you should never disregard/delay seeking medical advice " +
-                        "about treatment/care because of info on COVIDChecker. Rely on info",
-                        "1. More",
-                        "2. Back",
-                        "3. Exit"
-                    ].join("\n"),
-                    char_limit: 160
-                })
-                .run();
-        });
-        it("should display more info pg 4", function() {
-            return tester
-                .setup.user.state("state_more_info")
-                .inputs("1", "1", "1")
-                .check.interaction({
-                    state: "state_more_info",
-                    reply: [
-                        "at your own risk",
+                        "that you shouldn't disregard/delay seeking medical advice about " +
+                        "treatment/care because of COVIDChecker. Rely on info at your own risk.",
                         "1. Back",
                         "2. Exit"
                     ].join("\n"),
