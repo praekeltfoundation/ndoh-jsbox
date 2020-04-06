@@ -115,7 +115,7 @@ describe("ussd_covid19_triage app", function() {
                     state: "state_more_info_pg1",
                     reply: [
                         "You confirm that you're responsible for your medical care & treatment. " +
-                        "COVIDChecker only provides info.",
+                        "This service only provides info.",
                         "1. Next",
                     ].join("\n"),
                     char_limit: 160
@@ -146,7 +146,7 @@ describe("ussd_covid19_triage app", function() {
                     state: "state_more_info_pg3",
                     reply: [
                         "You confirm that you shouldn't disregard/delay seeking medical advice " +
-                        "about treatment/care because of COVIDChecker. Rely on info at your own " +
+                        "about treatment/care because of this service. Rely on info at your own " +
                         "risk.",
                         "1. Next",
                     ].join("\n"),
