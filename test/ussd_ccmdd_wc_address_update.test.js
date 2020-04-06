@@ -392,7 +392,7 @@ describe("ussd_ccmdd_wc_address_update app", function () {
                 last_name: "Smith",
                 id_type: "sa_id",
                 id_number: "8811115022085",
-                date_of_birth: "1988-11-11T00:00:00Z",
+                date_of_birth: "1988-11-11",
                 folder_number: "12345678",
                 municipality: "Cape Winelands",
                 city: "Cape Town",
@@ -409,7 +409,6 @@ describe("ussd_ccmdd_wc_address_update app", function () {
             },
           });
         })
-
         .setup.user.state("state_submit_data")
         .setup.user.answer("state_first_name", "Jane")
         .setup.user.answer("state_surname", "Smith")

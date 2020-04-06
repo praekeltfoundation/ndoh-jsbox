@@ -436,13 +436,13 @@ go.app = (function () {
                 ? new moment.utc(
                     self.im.user.answers.state_sa_id_no.slice(0, 6),
                     "YYMMDD"
-                  ).format()
+                  ).format("YYYY-MM-DD")
                 : new moment.utc(
                     self.im.user.answers.state_dob_year +
                       self.im.user.answers.state_dob_month +
                       self.im.user.answers.state_dob_day,
                     "YYYYMMDD"
-                  ).format(),
+                  ).format("YYYY-MM-DD"),
             folder_number: self.im.user.answers.state_folder_number,
             municipality: self.im.user.answers.state_municipality,
             city: self.im.user.answers.state_city,
