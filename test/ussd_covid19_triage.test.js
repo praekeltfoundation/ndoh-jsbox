@@ -45,7 +45,7 @@ describe("ussd_covid19_triage app", function() {
                         "health of all citizens. Stop the spread of COVID-19",
                         "",
                         "Reply",
-                        "1. Start"
+                        "1. START"
                     ].join("\n"),
                     char_limit: 140
                 })
@@ -348,12 +348,13 @@ describe("ussd_covid19_triage app", function() {
                 .check.interaction({
                     state: "state_tracing",
                     reply: [
-                        "Please confirm that the information you shared is correct and that the " +
+                        "Please confirm that the information you shared is correct & that the " +
                         "National Department of Health can contact you if necessary?",
                         "",
                         "Reply",
                         "1. YES",
-                        "2. NO"
+                        "2. NO",
+                        "3. RESTART"
                     ].join("\n"),
                     char_limit: 160
                 })
@@ -400,6 +401,13 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .input("1")
                 .check.user.state("state_display_risk")
+                .run();
+        });
+        it("should go to start if restart is chosen", function() {
+            return tester
+                .setup.user.state("state_tracing")
+                .input("3")
+                .check.user.state("state_start")
                 .run();
         });
     });
