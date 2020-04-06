@@ -240,7 +240,7 @@ describe("ussd_covid19_triage app", function() {
                 .check.interaction({
                     state: "state_fever",
                     reply: [
-                        "Do you feel very hot or cold. Are you sweating or shivering. When you " +
+                        "Do you feel very hot or cold? Are you sweating or shivering? When you " +
                         "touch your forehead, does it feel hot?",
                         "",
                         "Reply",

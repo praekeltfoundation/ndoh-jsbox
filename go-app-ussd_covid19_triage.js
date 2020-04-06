@@ -178,7 +178,7 @@ go.app = (function() {
     self.add("state_fever", function(name) {
       return new ChoiceState(name, {
         question: $([
-          "Do you feel very hot or cold. Are you sweating or shivering. When you touch your " +
+          "Do you feel very hot or cold? Are you sweating or shivering? When you touch your " +
           "forehead, does it feel hot?",
           "",
           "Reply"
