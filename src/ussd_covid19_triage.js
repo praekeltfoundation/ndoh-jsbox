@@ -164,7 +164,7 @@ go.app = (function() {
         accept_labels: true,
         choices: [
           new Choice("<18", $("<18")),
-          new Choice("18-40", $("18-40")),
+          new Choice("18-40", $("18-39")),
           new Choice("40-65", $("40-65")),
           new Choice(">65", $(">65"))
         ],

@@ -217,7 +217,7 @@ describe("ussd_covid19_triage app", function() {
                     reply: [
                         "How old are you?",
                         "1. <18",
-                        "2. 18-40",
+                        "2. 18-39",
                         "3. 40-65",
                         "4. >65"
                     ].join("\n"),
