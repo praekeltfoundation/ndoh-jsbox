@@ -11,7 +11,6 @@ go.app = (function() {
   var MenuState = vumigo.states.MenuState;
   var FreeText = vumigo.states.FreeText;
   var ChoiceState = vumigo.states.ChoiceState;
-  var PaginatedState = vumigo.states.PaginatedState;
 
 
   var GoNDOH = App.extend(function(self) {
@@ -96,7 +95,7 @@ go.app = (function() {
         choices: [
           new Choice("state_province", $("YES")),
           new Choice("state_end", $("NO")),
-          new Choice("state_more_info", $("MORE INFO")),
+          new Choice("state_more_info_pg1", $("MORE INFO")),
         ]
       });
     });
@@ -111,21 +110,33 @@ go.app = (function() {
       });
     });
 
-    self.states.add("state_more_info", function(name) {
-      return new PaginatedState(name, {
-        text: $(
+    self.states.add("state_more_info_pg1", function(name) {
+      return new MenuState(name, {
+        question: $(
           "You confirm that you're responsible for your medical care & treatment. COVIDChecker " +
-          "only provides info. It's not a substitute for professional medical " +
-          "advice/diagnosis/treatment. Get a qualified health provider's advice about your " +
-          "medical condition/care. You confirm that you shouldn't disregard/delay seeking " +
-          "medical advice about treatment/care because of COVIDChecker. Rely on info at your " +
-          "own risk."
+          "only provides info."
         ),
-        characters_per_page: 160,
-        back: $("Back"),
-        more: $("More"),
-        exit: $("Exit"),
-        next: "state_terms"
+        choices: [new Choice("state_more_info_pg2", $("Next"))]
+      });
+    });
+
+    self.states.add("state_more_info_pg2", function(name) {
+      return new MenuState(name, {
+        question: $(
+          "It's not a substitute for professional medical advice/diagnosis/treatment. Get a " +
+          "qualified health provider's advice about your medical condition/care."
+        ),
+        choices: [new Choice("state_more_info_pg3", $("Next"))]
+      });
+    });
+
+    self.states.add("state_more_info_pg3", function(name) {
+      return new MenuState(name, {
+        question: $(
+          "You confirm that you shouldn't disregard/delay seeking medical advice about " +
+          "treatment/care because of COVIDChecker. Rely on info at your own risk."
+        ),
+        choices: [new Choice("state_terms", $("Next"))]
       });
     });
 
@@ -167,7 +178,7 @@ go.app = (function() {
         accept_labels: true,
         choices: [
           new Choice("<18", $("<18")),
-          new Choice("18-40", $("18-40")),
+          new Choice("18-40", $("18-39")),
           new Choice("40-65", $("40-65")),
           new Choice(">65", $(">65"))
         ],
@@ -178,7 +189,7 @@ go.app = (function() {
     self.add("state_fever", function(name) {
       return new ChoiceState(name, {
         question: $([
-          "Do you feel very hot or cold. Are you sweating or shivering. When you touch your " +
+          "Do you feel very hot or cold? Are you sweating or shivering? When you touch your " +
           "forehead, does it feel hot?",
           "",
           "Reply"

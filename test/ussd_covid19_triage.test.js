@@ -103,21 +103,20 @@ describe("ussd_covid19_triage app", function() {
             return tester
                 .setup.user.state("state_terms")
                 .input("3")
-                .check.user.state("state_more_info")
+                .check.user.state("state_more_info_pg1")
                 .run();
         });
     });
     describe("state_more_info", function() {
         it("should display more info pg 1", function() {
             return tester
-                .setup.user.state("state_more_info")
+                .setup.user.state("state_more_info_pg1")
                 .check.interaction({
-                    state: "state_more_info",
+                    state: "state_more_info_pg1",
                     reply: [
                         "You confirm that you're responsible for your medical care & treatment. " +
-                        "COVIDChecker only provides info. It's not a substitute for",
-                        "1. More",
-                        "2. Exit"
+                        "COVIDChecker only provides info.",
+                        "1. Next",
                     ].join("\n"),
                     char_limit: 160
                 })
@@ -125,16 +124,15 @@ describe("ussd_covid19_triage app", function() {
         });
         it("should display more info pg 2", function() {
             return tester
-                .setup.user.state("state_more_info")
+                .setup.user.state("state_more_info_pg1")
                 .input("1")
                 .check.interaction({
-                    state: "state_more_info",
+                    state: "state_more_info_pg2",
                     reply: [
-                        "professional medical advice/diagnosis/treatment. Get a qualified " +
-                        "health provider's advice about your medical condition/care. You confirm",
-                        "1. More",
-                        "2. Back",
-                        "3. Exit"
+                        "It's not a substitute for professional medical " +
+                        "advice/diagnosis/treatment. Get a qualified health provider's advice " +
+                        "about your medical condition/care.",
+                        "1. Next",
                     ].join("\n"),
                     char_limit: 160
                 })
@@ -142,18 +140,25 @@ describe("ussd_covid19_triage app", function() {
         });
         it("should display more info pg 3", function() {
             return tester
-                .setup.user.state("state_more_info")
-                .inputs("1", "1")
+                .setup.user.state("state_more_info_pg2")
+                .input("1")
                 .check.interaction({
-                    state: "state_more_info",
+                    state: "state_more_info_pg3",
                     reply: [
-                        "that you shouldn't disregard/delay seeking medical advice about " +
-                        "treatment/care because of COVIDChecker. Rely on info at your own risk.",
-                        "1. Back",
-                        "2. Exit"
+                        "You confirm that you shouldn't disregard/delay seeking medical advice " +
+                        "about treatment/care because of COVIDChecker. Rely on info at your own " +
+                        "risk.",
+                        "1. Next",
                     ].join("\n"),
                     char_limit: 160
                 })
+                .run();
+        });
+        it("should go back to state_terms when the info is finished", function() {
+            return tester
+                .setup.user.state("state_more_info_pg3")
+                .input("1")
+                .check.user.state("state_terms")
                 .run();
         });
     });
@@ -217,7 +222,7 @@ describe("ussd_covid19_triage app", function() {
                     reply: [
                         "How old are you?",
                         "1. <18",
-                        "2. 18-40",
+                        "2. 18-39",
                         "3. 40-65",
                         "4. >65"
                     ].join("\n"),
@@ -240,7 +245,7 @@ describe("ussd_covid19_triage app", function() {
                 .check.interaction({
                     state: "state_fever",
                     reply: [
-                        "Do you feel very hot or cold. Are you sweating or shivering. When you " +
+                        "Do you feel very hot or cold? Are you sweating or shivering? When you " +
                         "touch your forehead, does it feel hot?",
                         "",
                         "Reply",
