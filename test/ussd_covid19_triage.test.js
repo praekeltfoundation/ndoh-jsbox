@@ -34,6 +34,23 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
+        it("should repeat question on invalid input", function() {
+            return tester
+                .setup.user.state("state_terms")
+                .inputs({session_event: "new"}, "A")
+                .check.interaction({
+                    state: "state_timed_out",
+                    reply: [
+                        "Welcome back to The National Department of Health's COVID-19 Service",
+                        "",
+                        "Reply",
+                        "1. Continue where I left off",
+                        "2. Start over"
+                    ].join("\n"),
+                    char_limit: 140
+                })
+                .run();
+        });
     });
     describe("state_start", function() {
         it("should show the welcome message", function() {
@@ -45,6 +62,19 @@ describe("ussd_covid19_triage app", function() {
                         "health of all citizens. Stop the spread of COVID-19",
                         "",
                         "Reply",
+                        "1. START"
+                    ].join("\n"),
+                    char_limit: 140
+                })
+                .run();
+        });
+        it("should display error on invalid input", function() {
+            return tester
+                .input("A")
+                .check.interaction({
+                    state: "state_start",
+                    reply: [
+                        "This service works best when you select numbers from the list",
                         "1. START"
                     ].join("\n"),
                     char_limit: 140
@@ -72,6 +102,26 @@ describe("ussd_covid19_triage app", function() {
                         "1. YES",
                         "2. NO",
                         "3. MORE INFO",
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should display an error message on invalid input", function() {
+            return tester
+                .setup.user.state("state_terms")
+                .input("A")
+                .check.interaction({
+                    state: "state_terms",
+                    reply: [
+                        "Please use numbers from list.",
+                        "Your answers may be used for Tracing, Screening & Monitoring of " +
+                        "COVID-19's spread. Do you agree?",
+                        "",
+                        "Reply",
+                        "1. YES",
+                        "2. NO",
+                        "3. MORE INFO"
                     ].join("\n"),
                     char_limit: 160
                 })
@@ -186,6 +236,30 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
+        it("should repeat the question on invalid input", function() {
+            return tester
+                .setup.user.state("state_province")
+                .input("A")
+                .check.interaction({
+                    state: "state_province",
+                    reply: [
+                        "Select your province",
+                        "",
+                        "Reply:",
+                        "1. EASTERN CAPE",
+                        "2. FREE STATE",
+                        "3. GAUTENG",
+                        "4. KWAZULU NATAL",
+                        "5. LIMPOPO",
+                        "6. MPUMALANGA",
+                        "7. NORTH WEST",
+                        "8. NORTHERN CAPE",
+                        "9. WESTERN CAPE"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
         it("should go to state_city", function() {
             return tester
                 .setup.user.state("state_province")
@@ -230,6 +304,25 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_age")
+                .input("A")
+                .check.interaction({
+                    state: "state_age",
+                    reply: [
+                        "Please use numbers from list.",
+                        "",
+                        "How old are you?",
+                        "1. <18",
+                        "2. 18-39",
+                        "3. 40-65",
+                        "4. >65"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
         it("should go to state_fever", function() {
             return tester
                 .setup.user.state("state_age")
@@ -247,6 +340,24 @@ describe("ussd_covid19_triage app", function() {
                     reply: [
                         "Do you feel very hot or cold? Are you sweating or shivering? When you " +
                         "touch your forehead, does it feel hot?",
+                        "",
+                        "Reply",
+                        "1. YES",
+                        "2. NO"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_fever")
+                .input("A")
+                .check.interaction({
+                    state: "state_fever",
+                    reply: [
+                        "Please use numbers from list. Do you feel very hot or cold? Are you " +
+                        "sweating or shivering? When you touch your forehead, does it feel hot?",
                         "",
                         "Reply",
                         "1. YES",
@@ -281,6 +392,24 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
+        it("display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_cough")
+                .input("A")
+                .check.interaction({
+                    state: "state_cough",
+                    reply: [
+                        "Please use numbers from list.",
+                        "Do you have a cough that recently started?",
+                        "",
+                        "Reply",
+                        "1. YES",
+                        "2. NO"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
         it("should go to state_sore_throat", function() {
             return tester
                 .setup.user.state("state_cough")
@@ -296,6 +425,24 @@ describe("ussd_covid19_triage app", function() {
                 .check.interaction({
                     state: "state_sore_throat",
                     reply: [
+                        "Do you have a sore throat, or pain when swallowing?",
+                        "",
+                        "Reply",
+                        "1. YES",
+                        "2. NO"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_sore_throat")
+                .input("A")
+                .check.interaction({
+                    state: "state_sore_throat",
+                    reply: [
+                        "Please use numbers from list.",
                         "Do you have a sore throat, or pain when swallowing?",
                         "",
                         "Reply",
@@ -333,6 +480,26 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
+        it("display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_exposure")
+                .input("A")
+                .check.interaction({
+                    state: "state_exposure",
+                    reply: [
+                        "Please use numbers from list.",
+                        "Have you been in close contact to someone confirmed to be infected with " +
+                        "COVID19?",
+                        "",
+                        "Reply",
+                        "1. YES",
+                        "2. NO",
+                        "3. NOT SURE"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
         it("should go to state_tracing", function() {
             return tester
                 .setup.user.state("state_exposure")
@@ -350,6 +517,26 @@ describe("ussd_covid19_triage app", function() {
                     reply: [
                         "Please confirm that the information you shared is correct & that the " +
                         "National Department of Health can contact you if necessary?",
+                        "",
+                        "Reply",
+                        "1. YES",
+                        "2. NO",
+                        "3. RESTART"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should display the error on invalid input", function() {
+            return tester
+                .setup.user.state("state_tracing")
+                .input("A")
+                .check.interaction({
+                    state: "state_tracing",
+                    reply: [
+                        "Please reply with numbers",
+                        "Is the information you shared correct & can the National Department of " +
+                        "Health contact you if necessary?",
                         "",
                         "Reply",
                         "1. YES",
