@@ -1,4 +1,4 @@
-go.app = (function() {
+go.app = (function () {
   var _ = require("lodash");
   var moment = require("moment");
   var vumigo = require("vumigo_v02");
@@ -11,29 +11,12 @@ go.app = (function() {
   var FreeText = vumigo.states.FreeText;
   var ChoiceState = vumigo.states.ChoiceState;
 
-  var GoNDOH = App.extend(function(self) {
+  var GoNDOH = App.extend(function (self) {
     App.call(self, "state_start");
     var $ = self.$;
 
-    self.init = function() {
-      self.rapidpro = new go.RapidPro(
-        new JsonApi(self.im, {
-          headers: { "User-Agent": ["Jsbox/CCMDD-WC-Address-Update"] }
-        }),
-        self.im.config.services.rapidpro.base_url,
-        self.im.config.services.rapidpro.token
-      );
-      self.whatsapp = new go.Engage(
-        new JsonApi(self.im, {
-          headers: { "User-Agent": ["Jsbox/CCMDD-WC-Address-Update"] }
-        }),
-        self.im.config.services.whatsapp.base_url,
-        self.im.config.services.whatsapp.token
-      );
-    };
-
-    self.add = function(name, creator) {
-      self.states.add(name, function(name, opts) {
+    self.add = function (name, creator) {
+      self.states.add(name, function (name, opts) {
         if (self.im.msg.session_event !== "new") return creator(name, opts);
 
         var timeout_opts = opts || {};
@@ -42,66 +25,41 @@ go.app = (function() {
       });
     };
 
-    self.states.add("state_timed_out", function(name, creator_opts) {
+    self.states.add("state_timed_out", function (name, creator_opts) {
       return new MenuState(name, {
         question: $("Welcome back. Do you want to:"),
         choices: [
           new Choice(creator_opts.name, $("Continue where you left off")),
-          new Choice("state_start", $("Start again"))
-        ]
+          new Choice("state_start", $("Start again")),
+        ],
       });
     });
 
-    self.states.add("state_start", function(name, opts) {
+    self.states.add("state_start", function (name, opts) {
       // Reset user answers when restarting the app
       self.im.user.answers = {};
 
-      var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
-
-      return self.rapidpro
-        .get_contact({ urn: "whatsapp:" + _.trim(msisdn, "+") })
-        .then(function(contact) {
-          self.im.user.set_answer("contact", contact);
-        })
-        .then(function() {
-          return new MenuState(name, {
-            question: $(
-              [
-                "Welcome to the Department of Health's Medication Home Delivery Service.",
-                "We deliver prescription meds to your door."
-              ].join("\n")
-            ),
-            error: $(
-              "Sorry we don't understand. Please enter the number next to your answer."
-            ),
-            accept_labels: true,
-            choices: [new Choice("state_info_consent", $("Continue"))]
-          });
-        })
-        .catch(function(e) {
-          // Go to error state after 3 failed HTTP requests
-          opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-          if (opts.http_error_count === 3) {
-            self.im.log.error(e.message);
-            return self.states.create("__error__");
-          }
-          return self.states.create("state_start", opts);
-        });
+      return new MenuState(name, {
+        question: $(
+          [
+            "Welcome to the Department of Health's Medication Home Delivery Service.",
+            "We deliver prescription meds to your door.",
+          ].join("\n")
+        ),
+        error: $(
+          "Sorry we don't understand. Please enter the number next to your answer."
+        ),
+        accept_labels: true,
+        choices: [new Choice("state_info_consent", $("Continue"))],
+      });
     });
 
-    self.add("state_info_consent", function(name) {
-      // Skip to message consent if the user has already given info consent
-      var consent =
-        _.get(self.im.user.answers, "contact.fields.info_consent", "") || "";
-
-      if (consent.toUpperCase() === "TRUE") {
-        return self.states.create("state_whatsapp_contact_check");
-      }
+    self.add("state_info_consent", function (name) {
       return new MenuState(name, {
         question: $(
           [
             "To have your prescription medication delivered to your door, we need to process your personal info.",
-            "Do you want to continue?"
+            "Do you want to continue?",
           ].join("\n")
         ),
         error: $(
@@ -110,24 +68,24 @@ go.app = (function() {
         accept_labels: true,
         choices: [
           new Choice("state_first_name", $("Yes")),
-          new Choice("state_exit", $("No"))
-        ]
+          new Choice("state_exit", $("No")),
+        ],
       });
     });
 
-    self.states.add("state_exit", function(name) {
+    self.states.add("state_exit", function (name) {
       return new EndState(name, {
         next: "state_start",
         text: $(
           "Unfortunately we cannot deliver your medication to your door without collecting your info."
-        )
+        ),
       });
     });
 
-    self.add("state_first_name", function(name) {
+    self.add("state_first_name", function (name) {
       return new FreeText(name, {
         question: $("[1/10] What is your first name?"),
-        check: function(content) {
+        check: function (content) {
           if (!content.match(/^\S{2,}$/)) {
             return $(
               "Sorry, we don’t understand. Please try again by replying with " +
@@ -135,14 +93,14 @@ go.app = (function() {
             );
           }
         },
-        next: "state_surname"
+        next: "state_surname",
       });
     });
 
-    self.add("state_surname", function(name) {
+    self.add("state_surname", function (name) {
       return new FreeText(name, {
         question: $("[2/10] What is your last name?"),
-        check: function(content) {
+        check: function (content) {
           if (!content.match(/^\S{2,}$/)) {
             return $(
               "Sorry, we don’t understand. Please try again by replying with " +
@@ -150,11 +108,11 @@ go.app = (function() {
             );
           }
         },
-        next: "state_id_type"
+        next: "state_id_type",
       });
     });
 
-    self.add("state_id_type", function(name) {
+    self.add("state_id_type", function (name) {
       return new MenuState(name, {
         question: $("[3/10] What type of identification do you have?"),
         error: $(
@@ -162,26 +120,26 @@ go.app = (function() {
         ),
         choices: [
           new Choice("state_sa_id_no", $("SA ID")),
-          new Choice("state_dob_year", $("None"))
-        ]
+          new Choice("state_dob_year", $("None")),
+        ],
       });
     });
 
-    self.add("state_sa_id_no", function(name) {
+    self.add("state_sa_id_no", function (name) {
       return new FreeText(name, {
         question: $(
           "[4/10] Please reply with your ID number as you find it in your Identity Document."
         ),
-        check: function(content) {
+        check: function (content) {
           var match = content.match(/^(\d{6})(\d{4})(0|1)8\d$/);
           var today = new moment(self.im.config.testing_today).startOf("day"),
             dob;
-          var validLuhn = function(content) {
+          var validLuhn = function (content) {
             return (
               content
                 .split("")
                 .reverse()
-                .reduce(function(sum, digit, i) {
+                .reduce(function (sum, digit, i) {
                   return (
                     sum +
                     _.parseInt(
@@ -208,16 +166,16 @@ go.app = (function() {
             );
           }
         },
-        next: "state_folder_number"
+        next: "state_folder_number",
       });
     });
 
-    self.add("state_dob_year", function(name) {
+    self.add("state_dob_year", function (name) {
       return new FreeText(name, {
         question: $(
           "[4/10] What year were you born? Please reply with the year as 4 digits in the format YYYY."
         ),
-        check: function(content) {
+        check: function (content) {
           var match = content.match(/^(\d{4})$/);
           var today = new moment(self.im.config.testing_today),
             dob;
@@ -235,11 +193,11 @@ go.app = (function() {
             );
           }
         },
-        next: "state_dob_month"
+        next: "state_dob_month",
       });
     });
 
-    self.add("state_dob_month", function(name) {
+    self.add("state_dob_month", function (name) {
       return new ChoiceState(name, {
         question: $("[4/10] What month were you born?"),
         error: $(
@@ -257,19 +215,19 @@ go.app = (function() {
           new Choice("09", $("Sep")),
           new Choice("10", $("Oct")),
           new Choice("11", $("Nov")),
-          new Choice("12", $("Dec"))
+          new Choice("12", $("Dec")),
         ],
         accept_labels: true,
-        next: "state_dob_day"
+        next: "state_dob_day",
       });
     });
 
-    self.add("state_dob_day", function(name) {
+    self.add("state_dob_day", function (name) {
       return new FreeText(name, {
         question: $(
           "[4/10] On what day were you born? Please enter the day as a number, e.g. 12."
         ),
-        check: function(content) {
+        check: function (content) {
           var match = content.match(/^(\d+)$/),
             dob;
           if (
@@ -288,17 +246,17 @@ go.app = (function() {
             );
           }
         },
-        next: "state_folder_number"
+        next: "state_folder_number",
       });
     });
 
-    self.add("state_folder_number", function(name) {
+    self.add("state_folder_number", function (name) {
       return new FreeText(name, {
         question: $(
           "[5/10] Please reply with your folder number as you find it on your " +
             "appointment card, e.g. 12345678"
         ),
-        check: function(content) {
+        check: function (content) {
           var match = content.match(/^\d{8}$/);
           if (!match) {
             return $(
@@ -307,11 +265,11 @@ go.app = (function() {
             );
           }
         },
-        next: "state_municipality"
+        next: "state_municipality",
       });
     });
 
-    self.add("state_municipality", function(name) {
+    self.add("state_municipality", function (name) {
       return new ChoiceState(name, {
         question: $("[6/10] In which Municipality do you stay?"),
         error: $(
@@ -324,31 +282,32 @@ go.app = (function() {
           new Choice("Garden Route", $("Garden Route")),
           new Choice("Overberg", $("Overberg")),
           new Choice("West Coast", $("West Coast")),
-          new Choice("None of the above", $("None of the above"))
+          new Choice("None of the above", $("None of the above")),
         ],
-        next: function(choice) {
+        next: function (choice) {
           if (choice.value === "Cape Town") {
+            self.im.user.set_answer("state_city", "Cape Town");
             return "state_suburb";
           } else if (choice.value === "None of the above") {
             return "state_no_delivery";
           } else {
             return "state_city";
           }
-        }
+        },
       });
     });
 
-    self.states.add("state_no_delivery", function(name) {
+    self.states.add("state_no_delivery", function (name) {
       return new EndState(name, {
         next: "state_start",
         text: $(
           "Unfortunately we only do home medicine deliveries within the listed " +
             "municipalities and cities in the Western Cape."
-        )
+        ),
       });
     });
 
-    self.add("state_city", function(name) {
+    self.add("state_city", function (name) {
       var municipality = self.im.user.answers.state_municipality;
 
       var city_choices = [];
@@ -358,13 +317,13 @@ go.app = (function() {
           new Choice("Drakenstein", $("Drakenstein")),
           new Choice("Langeberg", $("Langeberg")),
           new Choice("Stellenbosch", $("Stellenbosch")),
-          new Choice("Witzenberg", $("Witzenberg"))
+          new Choice("Witzenberg", $("Witzenberg")),
         ];
       } else if (municipality === "Central Karoo") {
         city_choices = [
           new Choice("Beaufort Wes", $("Beaufort Wes")),
           new Choice("Laingsburg", $("Laingsburg")),
-          new Choice("Prince Albert", $("Prince Albert"))
+          new Choice("Prince Albert", $("Prince Albert")),
         ];
       } else if (municipality === "Garden Route") {
         city_choices = [
@@ -374,14 +333,14 @@ go.app = (function() {
           new Choice("Kannaland", $("Kannaland")),
           new Choice("Knysna", $("Knysna")),
           new Choice("Mosselbay", $("Mosselbay")),
-          new Choice("Oudtshoorn", $("Oudtshoorn"))
+          new Choice("Oudtshoorn", $("Oudtshoorn")),
         ];
       } else if (municipality === "Overberg") {
         city_choices = [
           new Choice("Cape Agulhas", $("Cape Agulhas")),
           new Choice("Overstrand", $("Overstrand")),
           new Choice("Swellendam", $("Swellendam")),
-          new Choice("Theewaterskloof", $("Theewaterskloof"))
+          new Choice("Theewaterskloof", $("Theewaterskloof")),
         ];
       } else if (municipality === "West Coast") {
         city_choices = [
@@ -389,7 +348,7 @@ go.app = (function() {
           new Choice("Cederberg", $("Cederberg")),
           new Choice("Matzikama", $("Matzikama")),
           new Choice("Saldanabay", $("Saldanabay")),
-          new Choice("Swartland", $("Swartland"))
+          new Choice("Swartland", $("Swartland")),
         ];
       }
 
@@ -403,20 +362,20 @@ go.app = (function() {
           "Sorry we don't understand. Please enter the number next to your answer."
         ),
         choices: city_choices,
-        next: function(choice) {
+        next: function (choice) {
           if (choice.value === "None of the above") {
             return "state_no_delivery";
           } else {
             return "state_suburb";
           }
-        }
+        },
       });
     });
 
-    self.add("state_suburb", function(name) {
+    self.add("state_suburb", function (name) {
       return new FreeText(name, {
         question: $("[8/10] Please reply with the name of your suburb."),
-        check: function(content) {
+        check: function (content) {
           var match = content.match(/[a-zA-Z]{2,}/);
           if (!match) {
             return $(
@@ -425,14 +384,14 @@ go.app = (function() {
             );
           }
         },
-        next: "state_street_name"
+        next: "state_street_name",
       });
     });
 
-    self.add("state_street_name", function(name) {
+    self.add("state_street_name", function (name) {
       return new FreeText(name, {
         question: $("[9/10] Please reply with the name of your street."),
-        check: function(content) {
+        check: function (content) {
           var match = content.match(/[a-zA-Z]{2,}/);
           if (!match) {
             return $(
@@ -441,14 +400,14 @@ go.app = (function() {
             );
           }
         },
-        next: "state_street_number"
+        next: "state_street_number",
       });
     });
 
-    self.add("state_street_number", function(name) {
+    self.add("state_street_number", function (name) {
       return new FreeText(name, {
         question: $("[10/10] Please reply with your house number, e.g. 17."),
-        check: function(content) {
+        check: function (content) {
           var match = content.match(/^(\d{1,7}[a-zA-Z]{0,1})$/);
           if (!match) {
             return $(
@@ -457,88 +416,62 @@ go.app = (function() {
             );
           }
         },
-        next: "state_whatsapp_contact_check"
+        next: "state_submit_data",
       });
     });
 
-    self.add("state_whatsapp_contact_check", function(name, opts) {
-      var msisdn = utils.normalize_msisdn(
-        _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr),
-        "ZA"
-      );
-      return self.whatsapp
-        .contact_check(msisdn, true)
-        .then(function(result) {
-          self.im.user.set_answer("on_whatsapp", result);
-          return self.states.create("state_trigger_rapidpro_flow");
-        })
-        .catch(function(e) {
-          // Go to error state after 3 failed HTTP requests
-          opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-          if (opts.http_error_count === 3) {
-            self.im.log.error(e.message);
-            return self.states.create("__error__", { return_state: name });
+    self.add("state_submit_data", function (name, opts) {
+      return new JsonApi(self.im)
+        .post(self.im.config.eventstore.url + "/api/v2/cduaddressupdate/", {
+          data: {
+            first_name: self.im.user.answers.state_first_name,
+            last_name: self.im.user.answers.state_surname,
+            id_type: {
+              state_sa_id_no: "sa_id",
+              state_dob_year: "dob",
+            }[self.im.user.answers.state_id_type],
+            id_number: self.im.user.answers.state_sa_id_no,
+            date_of_birth:
+              self.im.user.answers.state_id_type === "state_sa_id_no"
+                ? new moment.utc(
+                    self.im.user.answers.state_sa_id_no.slice(0, 6),
+                    "YYMMDD"
+                  ).format()
+                : new moment.utc(
+                    self.im.user.answers.state_dob_year +
+                      self.im.user.answers.state_dob_month +
+                      self.im.user.answers.state_dob_day,
+                    "YYYYMMDD"
+                  ).format(),
+            folder_number: self.im.user.answers.state_folder_number,
+            municipality: self.im.user.answers.state_municipality,
+            city: self.im.user.answers.state_city,
+            suburb: self.im.user.answers.state_suburb,
+            street_name: self.im.user.answers.state_street_name,
+            street_number: self.im.user.answers.state_street_number,
+          },
+          headers: {
+            "Authorization": ["Token " + self.im.config.eventstore.token],
+            "User-Agent": ["Jsbox/CDU-Address-Update-USSD"]
           }
-          return self.states.create(name, opts);
-        });
+        })
+        .then(
+          function () {
+            return self.states.create("state_update_complete");
+          },
+          function (e) {
+            // Go to error state after 3 failed HTTP requests
+            opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+            if (opts.http_error_count === 3) {
+              self.im.log.error(e.message);
+              return self.states.create("__error__", { return_state: name });
+            }
+            return self.states.create(name, opts);
+          }
+        );
     });
 
-    self.add("state_trigger_rapidpro_flow", function(name, opts) {
-      var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
-      var data = {
-        source: "USSD address Update",
-        info_consent: "TRUE",
-        on_whatsapp: self.im.user.answers.on_whatsapp ? "TRUE" : "FALSE",
-        first_name: self.im.user.answers.state_first_name,
-        surname: self.im.user.answers.state_surname,
-        id_type: {
-          state_sa_id_no: "sa_id",
-          state_dob_year: "dob"
-        }[self.im.user.answers.state_id_type],
-        sa_id_number: self.im.user.answers.state_sa_id_no,
-        dob:
-          self.im.user.answers.state_id_type === "state_sa_id_no"
-            ? new moment.utc(
-                self.im.user.answers.state_sa_id_no.slice(0, 6),
-                "YYMMDD"
-              ).format()
-            : new moment.utc(
-                self.im.user.answers.state_dob_year +
-                  self.im.user.answers.state_dob_month +
-                  self.im.user.answers.state_dob_day,
-                "YYYYMMDD"
-              ).format(),
-        folder_number: self.im.user.answers.state_folder_number,
-        municipality: self.im.user.answers.state_municipality,
-        city: self.im.user.answers.state_city,
-        suburb: self.im.user.answers.state_suburb,
-        street_name: self.im.user.answers.state_street_name,
-        street_number: self.im.user.answers.state_street_number
-      };
-      return self.rapidpro
-        .start_flow(
-          self.im.config.flow_uuid,
-          null,
-          "whatsapp:" + _.trim(msisdn, "+"),
-          data
-        )
-        .then(function() {
-          return self.states.create("state_update_complete");
-        })
-        .catch(function(e) {
-          // Go to error state after 3 failed HTTP requests
-          opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-          if (opts.http_error_count === 3) {
-            self.im.log.error(e.message);
-            return self.states.create("__error__", {
-              return_state: "state_trigger_rapidpro_flow"
-            });
-          }
-          return self.states.create("state_trigger_rapidpro_flow", opts);
-        });
-    });
-
-    self.states.add("state_update_complete", function(name) {
+    self.states.add("state_update_complete", function (name) {
       var msisdn = utils.readable_msisdn(
         utils.normalize_msisdn(self.im.user.addr, "ZA"),
         "27"
@@ -548,22 +481,22 @@ go.app = (function() {
         text: $(
           "Thank you. Your healthcare facility will be in contact with you " +
             "soon about your medication delivery."
-        ).context({ msisdn: msisdn })
+        ).context({ msisdn: msisdn }),
       });
     });
 
-    self.states.creators.__error__ = function(name, opts) {
+    self.states.creators.__error__ = function (name, opts) {
       var return_state = opts.return_state || "state_start";
       return new EndState(name, {
         next: return_state,
         text: $(
           "Sorry, something went wrong. We have been notified. Please try again later"
-        )
+        ),
       });
     };
   });
 
   return {
-    GoNDOH: GoNDOH
+    GoNDOH: GoNDOH,
   };
 })();
