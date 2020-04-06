@@ -599,6 +599,10 @@ go.app = (function () {
             street_name: self.im.user.answers.state_street_name,
             street_number: self.im.user.answers.state_street_number,
           },
+          headers: {
+            "Authorization": ["Token " + self.im.config.eventstore.token],
+            "User-Agent": ["Jsbox/CDU-Address-Update-USSD"]
+          }
         })
         .then(
           function () {
