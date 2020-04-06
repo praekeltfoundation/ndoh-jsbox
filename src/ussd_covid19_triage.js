@@ -13,7 +13,6 @@ go.app = (function() {
   var GoNDOH = App.extend(function(self) {
     App.call(self, "state_start");
     var $ = self.$;
-    var catchall_number_error = $("This service works best when you select numbers from the list");
 
     self.calculate_risk = function() {
       var answers = self.im.user.answers;
@@ -53,6 +52,7 @@ go.app = (function() {
           "",
           "Reply"
         ].join("\n")),
+        accept_labels: true,
         choices: [
           new Choice(creator_opts.name, $("Continue where I left off")),
           new Choice("state_start", $("Start over"))
@@ -71,7 +71,7 @@ go.app = (function() {
             "",
             "Reply"
           ].join("\n")),
-          error: catchall_number_error,
+          error: $("This service works best when you select numbers from the list"),
           accept_labels: true,
           choices: [
             new Choice("state_terms", $("START"))
@@ -87,7 +87,13 @@ go.app = (function() {
           "",
           "Reply"
         ].join("\n")),
-        error: catchall_number_error,
+        error: $([
+          "Please use numbers from list.",
+          "Your answers may be used for Tracing, Screening & Monitoring of COVID-19's spread. " +
+          "Do you agree?",
+          "",
+          "Reply"
+          ].join("\n")),
         accept_labels: true,
         choices: [
           new Choice("state_province", $("YES")),
@@ -113,6 +119,7 @@ go.app = (function() {
           "You confirm that you're responsible for your medical care & treatment. This service " +
           "only provides info."
         ),
+        accept_labels: true,
         choices: [new Choice("state_more_info_pg2", $("Next"))]
       });
     });
@@ -123,6 +130,7 @@ go.app = (function() {
           "It's not a substitute for professional medical advice/diagnosis/treatment. Get a " +
           "qualified health provider's advice about your medical condition/care."
         ),
+        accept_labels: true,
         choices: [new Choice("state_more_info_pg3", $("Next"))]
       });
     });
@@ -133,6 +141,7 @@ go.app = (function() {
           "You confirm that you shouldn't disregard/delay seeking medical advice about " +
           "treatment/care because of this service. Rely on info at your own risk."
         ),
+        accept_labels: true,
         choices: [new Choice("state_terms", $("Next"))]
       });
     });
@@ -144,7 +153,6 @@ go.app = (function() {
           "",
           "Reply:"
         ].join("\n")),
-        error: catchall_number_error,
         accept_labels: true,
         choices: [
           new Choice("ZA-EC", $("EASTERN CAPE")),
@@ -171,7 +179,11 @@ go.app = (function() {
     self.add("state_age", function(name) {
       return new ChoiceState(name, {
         question: $("How old are you?"),
-        error: catchall_number_error,
+        error: $([
+          "Please use numbers from list.",
+          "",
+          "How old are you?",
+        ].join("\n")),
         accept_labels: true,
         choices: [
           new Choice("<18", $("<18")),
@@ -191,7 +203,12 @@ go.app = (function() {
           "",
           "Reply"
         ].join("\n")),
-        error: catchall_number_error,
+        error: $([
+          "Please use numbers from list. Do you feel very hot or cold? Are you sweating or " +
+          "shivering? When you touch your forehead, does it feel hot?",
+          "",
+          "Reply",
+        ].join("\n")),
         accept_labels: true,
         choices: [
           new Choice(true, $("YES")),
@@ -208,7 +225,12 @@ go.app = (function() {
           "",
           "Reply"
         ].join("\n")),
-        error: catchall_number_error,
+        error: $([
+          "Please use numbers from list.",
+          "Do you have a cough that recently started?",
+          "",
+          "Reply"
+        ].join("\n")),
         accept_labels: true,
         choices: [
           new Choice(true, $("YES")),
@@ -225,7 +247,12 @@ go.app = (function() {
           "",
           "Reply"
         ].join("\n")),
-        error: catchall_number_error,
+        error: $([
+          "Please use numbers from list.",
+          "Do you have a sore throat, or pain when swallowing?",
+          "",
+          "Reply"
+        ].join("\n")),
         accept_labels: true,
         choices: [
           new Choice(true, $("YES")),
@@ -242,7 +269,12 @@ go.app = (function() {
           "",
           "Reply"
         ].join("\n")),
-        error: catchall_number_error,
+        error: $([
+          "Please use numbers from list.",
+          "Have you been in close contact to someone confirmed to be infected with COVID19?",
+          "",
+          "Reply"
+        ].join("\n")),
         accept_labels: true,
         choices: [
           new Choice("yes", $("YES")),
@@ -261,7 +293,13 @@ go.app = (function() {
           "",
           "Reply"
         ].join("\n")),
-        error: catchall_number_error,
+        error: $([
+          "Please reply with numbers",
+          "Is the information you shared correct & can the National Department of Health contact " +
+          "you if necessary?",
+          "",
+          "Reply",
+        ].join("\n")),
         accept_labels: true,
         choices: [
           new Choice(true, $("YES")),
