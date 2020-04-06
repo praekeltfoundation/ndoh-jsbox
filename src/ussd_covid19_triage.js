@@ -113,7 +113,7 @@ go.app = (function() {
       });
     });
 
-    self.states.add("state_more_info_pg1", function(name) {
+    self.add("state_more_info_pg1", function(name) {
       return new MenuState(name, {
         question: $(
           "You confirm that you're responsible for your medical care & treatment. This service " +
@@ -124,7 +124,7 @@ go.app = (function() {
       });
     });
 
-    self.states.add("state_more_info_pg2", function(name) {
+    self.add("state_more_info_pg2", function(name) {
       return new MenuState(name, {
         question: $(
           "It's not a substitute for professional medical advice/diagnosis/treatment. Get a " +
@@ -135,7 +135,7 @@ go.app = (function() {
       });
     });
 
-    self.states.add("state_more_info_pg3", function(name) {
+    self.add("state_more_info_pg3", function(name) {
       return new MenuState(name, {
         question: $(
           "You confirm that you shouldn't disregard/delay seeking medical advice about " +
