@@ -953,8 +953,7 @@ describe('app', function() {
                 .start()
                 .check.interaction({
                     state: "state_registration_complete",
-                    reply: "Thanks for signing up! NurseConnect will send you WhatsApp messages with helpful clinical info & work tips. " +
-                           "You'll get 3 messages every week."
+                    reply: "Thank you for signing up! NurseConnect will send you SMS messages with helpful clinical info & work tips."
                 })
                 .check(function(api) {
                     utils.check_fixtures_used(api, [0, 1, 2, 3]);
@@ -1011,8 +1010,7 @@ describe('app', function() {
                 .start()
                 .check.interaction({
                     state: "state_registration_complete",
-                    reply: "Thanks for signing up! NurseConnect will send you SMS messages with helpful clinical info & work tips. " +
-                           "You'll get 3 messages every week."
+                    reply: "Thank you for signing up! NurseConnect will send you SMS messages with helpful clinical info & work tips."
                 })
                 .check(function(api) {
                     utils.check_fixtures_used(api, [0, 1, 2, 3]);
@@ -1078,8 +1076,7 @@ describe('app', function() {
                 .start()
                 .check.interaction({
                     state: "state_registration_complete",
-                    reply: "Thanks for signing up! NurseConnect will send you SMS messages with helpful clinical info & work tips. " +
-                           "You'll get 3 messages every week."
+                    reply: "Thank you for signing up! NurseConnect will send you SMS messages with helpful clinical info & work tips."
                 })
                 .check(function(api) {
                     utils.check_fixtures_used(api, [0, 1, 2, 3]);
