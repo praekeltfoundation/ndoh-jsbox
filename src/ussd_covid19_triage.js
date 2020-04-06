@@ -74,7 +74,7 @@ go.app = (function() {
           error: catchall_number_error,
           accept_labels: true,
           choices: [
-            new Choice("state_terms", $("Start"))
+            new Choice("state_terms", $("START"))
           ]
       });
     });
@@ -110,7 +110,7 @@ go.app = (function() {
     self.states.add("state_more_info_pg1", function(name) {
       return new MenuState(name, {
         question: $(
-          "You confirm that you're responsible for your medical care & treatment. COVIDChecker " +
+          "You confirm that you're responsible for your medical care & treatment. This service " +
           "only provides info."
         ),
         choices: [new Choice("state_more_info_pg2", $("Next"))]
@@ -131,7 +131,7 @@ go.app = (function() {
       return new MenuState(name, {
         question: $(
           "You confirm that you shouldn't disregard/delay seeking medical advice about " +
-          "treatment/care because of COVIDChecker. Rely on info at your own risk."
+          "treatment/care because of this service. Rely on info at your own risk."
         ),
         choices: [new Choice("state_terms", $("Next"))]
       });
@@ -256,7 +256,7 @@ go.app = (function() {
     self.add("state_tracing", function(name) {
       return new ChoiceState(name, {
         question: $([
-          "Please confirm that the information you shared is correct and that the National " +
+          "Please confirm that the information you shared is correct & that the National " +
           "Department of Health can contact you if necessary?",
           "",
           "Reply"
@@ -265,9 +265,15 @@ go.app = (function() {
         accept_labels: true,
         choices: [
           new Choice(true, $("YES")),
-          new Choice(false, $("NO"))
+          new Choice(false, $("NO")),
+          new Choice(null, $("RESTART"))
         ],
-        next: "state_submit_data"
+        next: function(response) {
+          if(response.value === null) {
+            return "state_start";
+          }
+          return "state_submit_data";
+        }
       });
     });
 
