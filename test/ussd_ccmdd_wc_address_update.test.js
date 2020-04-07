@@ -193,6 +193,38 @@ describe("ussd_ccmdd_wc_address_update app", function () {
         })
         .run();
     });
+    it("should validate incorrect folder_number input", function () {
+      return tester.setup.user
+        .state("state_folder_number")
+        .input("22222222")
+        .check.interaction({
+          state: "state_folder_number",
+          reply:
+            "Sorry, invalid folder number. Please try again by entering your folder number as it appears on your appointment card",
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should validate correct folder_number input", function () {
+      return tester.setup.user
+        .state("state_folder_number")
+        .input("79927398713")
+        .check.interaction({
+          state: "state_municipality",
+          reply: [
+            "[6/10] In which Municipality do you stay?",
+            "1. Cape Town",
+            "2. Cape Winelands",
+            "3. Central Karoo",
+            "4. Garden Route",
+            "5. Overberg",
+            "6. West Coast",
+            "7. None of the above",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
   });
   describe("state_municipality", function () {
     it("should ask which municipality the user stays in", function () {
@@ -388,6 +420,7 @@ describe("ussd_ccmdd_wc_address_update app", function () {
               url: "http://eventstore/api/v2/cduaddressupdate/",
               method: "POST",
               data: {
+                msisdn: "+27123456789",
                 first_name: "Jane",
                 last_name: "Smith",
                 id_type: "sa_id",

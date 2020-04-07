@@ -257,11 +257,28 @@ go.app = (function () {
             "appointment card, e.g. 12345678"
         ),
         check: function (content) {
-          var match = content.match(/^\d{8}$/);
-          if (!match) {
+          var match = content.match(/^\d{1,}$/);
+          var validLuhn = function (content) {
+            return (
+              content
+                .split("")
+                .reverse()
+                .reduce(function (sum, digit, i) {
+                  return (
+                    sum +
+                    _.parseInt(
+                      i % 2 ? [0, 2, 4, 6, 8, 1, 3, 5, 7, 9][digit] : digit
+                    )
+                  );
+                }, 0) %
+                10 ==
+              0
+            );
+          };
+          if (!match || !validLuhn(content)) {
             return $(
-              "Sorry, we don't understand. Please try again by entering your folder " +
-                "number as it appears on your appointment card with the format xxxxxxxx"
+              "Sorry, invalid folder number. Please try again by entering your folder " +
+                "number as it appears on your appointment card"
             );
           }
         },
@@ -421,9 +438,11 @@ go.app = (function () {
     });
 
     self.add("state_submit_data", function (name, opts) {
+      var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
       return new JsonApi(self.im)
         .post(self.im.config.eventstore.url + "/api/v2/cduaddressupdate/", {
           data: {
+            msisdn: msisdn,
             first_name: self.im.user.answers.state_first_name,
             last_name: self.im.user.answers.state_surname,
             id_type: {
