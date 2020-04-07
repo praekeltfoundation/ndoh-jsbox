@@ -420,6 +420,7 @@ describe("ussd_ccmdd_wc_address_update app", function () {
               url: "http://eventstore/api/v2/cduaddressupdate/",
               method: "POST",
               data: {
+                msisdn: "+27123456789",
                 first_name: "Jane",
                 last_name: "Smith",
                 id_type: "sa_id",
