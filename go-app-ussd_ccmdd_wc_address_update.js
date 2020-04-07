@@ -587,10 +587,11 @@ go.app = (function () {
     });
 
     self.add("state_submit_data", function (name, opts) {
+      var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
       return new JsonApi(self.im)
         .post(self.im.config.eventstore.url + "/api/v2/cduaddressupdate/", {
           data: {
-            msisdn: self.im.user.addr,
+            msisdn: msisdn,
             first_name: self.im.user.answers.state_first_name,
             last_name: self.im.user.answers.state_surname,
             id_type: {
