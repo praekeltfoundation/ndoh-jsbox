@@ -159,6 +159,7 @@ go.app = (function () {
   var MenuState = vumigo.states.MenuState;
   var FreeText = vumigo.states.FreeText;
   var ChoiceState = vumigo.states.ChoiceState;
+  var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
 
   var GoNDOH = App.extend(function (self) {
     App.call(self, "state_start");
@@ -431,13 +432,13 @@ go.app = (function () {
             );
           }
         },
-        next: "state_municipality",
+        next: "state_district",
       });
     });
 
-    self.add("state_municipality", function (name) {
+    self.add("state_district", function (name) {
       return new ChoiceState(name, {
-        question: $("[6/10] In which Municipality do you stay?"),
+        question: $("[6/10] In which District do you stay?"),
         error: $(
           "Sorry we don't understand. Please enter the number next to your answer."
         ),
@@ -445,19 +446,18 @@ go.app = (function () {
           new Choice("Cape Town", $("Cape Town")),
           new Choice("Cape Winelands", $("Cape Winelands")),
           new Choice("Central Karoo", $("Central Karoo")),
-          new Choice("Garden Route", $("Garden Route")),
+          new Choice("Eden", $("Eden")),
           new Choice("Overberg", $("Overberg")),
           new Choice("West Coast", $("West Coast")),
           new Choice("None of the above", $("None of the above")),
         ],
         next: function (choice) {
           if (choice.value === "Cape Town") {
-            self.im.user.set_answer("state_city", "Cape Town");
-            return "state_suburb";
+            return "state_sub_district";
           } else if (choice.value === "None of the above") {
             return "state_no_delivery";
           } else {
-            return "state_city";
+            return "state_municipality";
           }
         },
       });
@@ -473,26 +473,61 @@ go.app = (function () {
       });
     });
 
-    self.add("state_city", function (name) {
-      var municipality = self.im.user.answers.state_municipality;
+    self.add("state_sub_district", function (name) {
+      return new PaginatedChoiceState(name, {
+        question: $("[7/10] Select your health sub-district:"),
+        error: $(
+          "Sorry we don't understand. Please enter the number next to your answer."
+        ),
+        choices: [
+          new Choice("Cape Town East", $("Cape Town East")),
+          new Choice("Cape Town North", $("Cape Town North")),
+          new Choice("Cape Town South", $("Cape Town South")),
+          new Choice("Cape Town West", $("Cape Town West")),
+          new Choice("Khayelitsha", $("Khayelitsha")),
+          new Choice("Klipfontein", $("Klipfontein")),
+          new Choice("Mitchells Plain", $("Mitchells Plain")),
+          new Choice("Tygerberg", $("Tygerberg")),
+          new Choice("Back", $("Back to district")),
+          new Choice("None of the above", $("None of the above"))
+        ],
+        back: $("Back"),
+        more: $("Next"),
+        options_per_page: null,
+        characters_per_page: 160,
+        next: function (choice) {
+          if (choice.value === "Back") {
+            return "state_district";
+          } else if (choice.value === "None of the above") {
+            return "state_no_delivery";
+          } else {
+            self.im.user.set_answer("state_municipality", choice.value);
+            return "state_suburb";
+          }
+        },
+      });
+    });
 
-      var city_choices = [];
-      if (municipality === "Cape Winelands") {
-        city_choices = [
+    self.add("state_municipality", function (name) {
+      var district = self.im.user.answers.state_district;
+
+      var municipality_choices = [];
+      if (district === "Cape Winelands") {
+        municipality_choices = [
           new Choice("Breede Valley", $("Breede Valley")),
           new Choice("Drakenstein", $("Drakenstein")),
           new Choice("Langeberg", $("Langeberg")),
           new Choice("Stellenbosch", $("Stellenbosch")),
           new Choice("Witzenberg", $("Witzenberg")),
         ];
-      } else if (municipality === "Central Karoo") {
-        city_choices = [
+      } else if (district === "Central Karoo") {
+        municipality_choices = [
           new Choice("Beaufort Wes", $("Beaufort Wes")),
           new Choice("Laingsburg", $("Laingsburg")),
           new Choice("Prince Albert", $("Prince Albert")),
         ];
-      } else if (municipality === "Garden Route") {
-        city_choices = [
+      } else if (district === "Eden") {
+        municipality_choices = [
           new Choice("Bitou", $("Bitou")),
           new Choice("George", $("George")),
           new Choice("Hessequa", $("Hessequa")),
@@ -501,15 +536,15 @@ go.app = (function () {
           new Choice("Mosselbay", $("Mosselbay")),
           new Choice("Oudtshoorn", $("Oudtshoorn")),
         ];
-      } else if (municipality === "Overberg") {
-        city_choices = [
+      } else if (district === "Overberg") {
+        municipality_choices = [
           new Choice("Cape Agulhas", $("Cape Agulhas")),
           new Choice("Overstrand", $("Overstrand")),
           new Choice("Swellendam", $("Swellendam")),
           new Choice("Theewaterskloof", $("Theewaterskloof")),
         ];
-      } else if (municipality === "West Coast") {
-        city_choices = [
+      } else if (district === "West Coast") {
+        municipality_choices = [
           new Choice("Bergriver", $("Bergriver")),
           new Choice("Cederberg", $("Cederberg")),
           new Choice("Matzikama", $("Matzikama")),
@@ -518,18 +553,23 @@ go.app = (function () {
         ];
       }
 
-      city_choices.push(
+      municipality_choices.push(
+        new Choice("Back", $("Back"))
+      );
+      municipality_choices.push(
         new Choice("None of the above", $("None of the above"))
       );
 
       return new ChoiceState(name, {
-        question: $("[7/10] In which city do you stay?"),
+        question: $("[7/10] Select your municipality:"),
         error: $(
           "Sorry we don't understand. Please enter the number next to your answer."
         ),
-        choices: city_choices,
+        choices: municipality_choices,
         next: function (choice) {
-          if (choice.value === "None of the above") {
+          if (choice.value === "Back") {
+            return "state_district";
+          } else if (choice.value === "None of the above") {
             return "state_no_delivery";
           } else {
             return "state_suburb";
@@ -537,6 +577,8 @@ go.app = (function () {
         },
       });
     });
+
+
 
     self.add("state_suburb", function (name) {
       return new FreeText(name, {
@@ -612,8 +654,8 @@ go.app = (function () {
                     "YYYYMMDD"
                   ).format("YYYY-MM-DD"),
             folder_number: self.im.user.answers.state_folder_number,
+            district: self.im.user.answers.state_district,
             municipality: self.im.user.answers.state_municipality,
-            city: self.im.user.answers.state_city,
             suburb: self.im.user.answers.state_suburb,
             street_name: self.im.user.answers.state_street_name,
             street_number: self.im.user.answers.state_street_number,
