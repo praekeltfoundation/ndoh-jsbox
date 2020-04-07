@@ -642,9 +642,8 @@ describe("ussd_covid19_triage app", function() {
                 .check.interaction({
                     state: "state_display_risk",
                     reply: 
-                        "You won't need to complete this risk assessment again for 7 days UNLESS " +
-                        "you feel ill or if you come into contact with someone infected with " +
-                        "COVID-19",
+                        "Complete this HealthCheck again in 7 days or sooner if you feel ill or " +
+                        "you come into contact with someone infected with COVID-19",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
@@ -658,7 +657,7 @@ describe("ussd_covid19_triage app", function() {
                     state_city: "Cape Town",
                     state_age: "<18",
                     state_fever: true,
-                    state_cough: true,
+                    state_cough: false,
                     state_sore_throat: false,
                     state_exposure: "not_sure",
                 })
@@ -674,7 +673,7 @@ describe("ussd_covid19_triage app", function() {
                                 city: "Cape Town",
                                 age: "<18",
                                 fever: true,
-                                cough: true,
+                                cough: false,
                                 sore_throat: false,
                                 exposure: "not_sure",
                                 tracing: true,
@@ -693,9 +692,9 @@ describe("ussd_covid19_triage app", function() {
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
-                        "Self-isolate if you can. If u start feeling ill, go to a testing " +
-                        "center or Call 0800029999 or your healthcare practitioner for info on " +
-                        "what to do & how to test",
+                        "GET TESTED to find out if you have COVID-19. Go to a testing center or " +
+                        "Call 0800029999 or your healthcare practitioner for info on what to do " +
+                        "& how to test",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
@@ -730,57 +729,6 @@ describe("ussd_covid19_triage app", function() {
                                 exposure: "No",
                                 tracing: true,
                                 risk: "high"
-                            }
-                        },
-                        "response": {
-                            "code": 201,
-                            "data": {
-                                "accepted": true
-                            }
-                        }
-                    });
-                })
-                .input("1")
-                .check.interaction({
-                    state: "state_display_risk",
-                    reply:
-                        "GET TESTED to find out if you have COVID-19. Go to a testing center or " +
-                        "Call 0800029999 or your healthcare practitioner for info on what to " +
-                        "do & how to test",
-                    char_limit: 160
-                })
-                .check.reply.ends_session()
-                .run();
-        });
-        it("should display the critical risk message if critical risk", function() {
-            return tester
-                .setup.user.state("state_tracing")
-                .setup.user.answers({
-                    state_province: "ZA-WC",
-                    state_city: "Cape Town",
-                    state_age: "<18",
-                    state_fever: true,
-                    state_cough: true,
-                    state_sore_throat: true,
-                    state_exposure: "yes",
-                })
-                .setup(function(api) {
-                    api.http.fixtures.add({
-                        "request": {
-                            "url": 'http://eventstore/api/v2/covid19triage/',
-                            "method": 'POST',
-                            "data": {
-                                msisdn: "+27123456789",
-                                source: "USSD",
-                                province: "ZA-WC",
-                                city: "Cape Town",
-                                age: "<18",
-                                fever: true,
-                                cough: true,
-                                sore_throat: true,
-                                exposure: "yes",
-                                tracing: true,
-                                risk: "critical"
                             }
                         },
                         "response": {

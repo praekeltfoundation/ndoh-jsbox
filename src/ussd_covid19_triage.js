@@ -28,9 +28,8 @@ go.app = (function() {
       else if (answers.state_exposure === "not_sure") { score += 3; }
 
       var risk = "low";
-      if (score > 20) { risk = "moderate"; }
-      if (score > 23) { risk = "high"; }
-      if (score > 30) {risk = "critical"; }
+      if (score > 2) { risk = "moderate"; }
+      if (score > 13) { risk = "high"; }
 
       return risk;
     };
@@ -357,28 +356,22 @@ go.app = (function() {
       if(answers.state_tracing) {
         if(risk === "low") {
           text = $(
-            "You won't need to complete this risk assessment again for 7 days UNLESS you feel " +
-            "ill or if you come into contact with someone infected with COVID-19"
+            "Complete this HealthCheck again in 7 days or sooner if you feel ill or you come " +
+            "into contact with someone infected with COVID-19"
           );
         }
         if(risk === "moderate") {
-          text = $(
-            "Self-isolate if you can. If u start feeling ill, go to a testing center or Call " +
-            "0800029999 or your healthcare practitioner for info on what to do & how to test"
-          );
-        }
-        if(risk === "high") {
           text = $(
             "GET TESTED to find out if you have COVID-19. Go to a testing center or Call " +
             "0800029999 or your healthcare practitioner for info on what to do & how to test"
           );
         }
-        if(risk === "critical") {
+        if(risk === "high") {
           text = $([
             "Please seek medical care immediately at an emergency facility.",
             "Remember to:",
             "- Avoid contact with other people",
-            "- Put on a face mask before entering the facility",
+            "- Put on a face mask before entering the facility"
           ].join("\n"));
         }
         return new EndState(name, {
