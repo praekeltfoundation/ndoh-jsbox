@@ -28,9 +28,8 @@ go.app = (function() {
       else if (answers.state_exposure === "not_sure") { score += 3; }
 
       var risk = "low";
-      if (score > 20) { risk = "moderate"; }
-      if (score > 23) { risk = "high"; }
-      if (score > 30) {risk = "critical"; }
+      if (score > 2) { risk = "moderate"; }
+      if (score > 13) { risk = "high"; }
 
       return risk;
     };
@@ -82,15 +81,14 @@ go.app = (function() {
     self.add("state_terms", function(name) {
       return new MenuState(name, {
         question: $([
-          "Your answers may be used for Tracing, Screening and Monitoring of COVID-19's spread. " +
-          "Do you agree?",
+          "Confirm that you're responsible for your medical care & treatment. This service only " +
+          "provides info.",
           "",
           "Reply"
         ].join("\n")),
         error: $([
-          "Please use numbers from list.",
-          "Your answers may be used for Tracing, Screening & Monitoring of COVID-19's spread. " +
-          "Do you agree?",
+          "Please use numbers from list. Confirm that u're responsible for ur medical care & " +
+          "treatment. This service only provides info.",
           "",
           "Reply"
           ].join("\n")),
@@ -116,8 +114,8 @@ go.app = (function() {
     self.add("state_more_info_pg1", function(name) {
       return new MenuState(name, {
         question: $(
-          "You confirm that you're responsible for your medical care & treatment. This service " +
-          "only provides info."
+          "It's not a substitute for professional medical advice/diagnosis/treatment. Get a " +
+          "qualified health provider's advice about your medical condition/care."
         ),
         accept_labels: true,
         choices: [new Choice("state_more_info_pg2", $("Next"))]
@@ -125,17 +123,6 @@ go.app = (function() {
     });
 
     self.add("state_more_info_pg2", function(name) {
-      return new MenuState(name, {
-        question: $(
-          "It's not a substitute for professional medical advice/diagnosis/treatment. Get a " +
-          "qualified health provider's advice about your medical condition/care."
-        ),
-        accept_labels: true,
-        choices: [new Choice("state_more_info_pg3", $("Next"))]
-      });
-    });
-
-    self.add("state_more_info_pg3", function(name) {
       return new MenuState(name, {
         question: $(
           "You confirm that you shouldn't disregard/delay seeking medical advice about " +
@@ -258,6 +245,26 @@ go.app = (function() {
           new Choice(true, $("YES")),
           new Choice(false, $("NO")),
         ],
+        next: "state_breathing"
+      });
+    });
+
+    self.add("state_breathing", function(name) {
+      return new ChoiceState(name, {
+        question: $([
+          "Do you have breathlessness or a difficulty breathing, that you've noticed recently?",
+          "Reply"
+        ].join("\n")),
+        error: $([
+          "Please use numbers from list. Do you have breathlessness or a difficulty breathing, " +
+          "that you've noticed recently?",
+          "Reply"
+        ].join("\n")),
+        accept_labels: true,
+        choices: [
+          new Choice(true, $("YES")),
+          new Choice(false, $("NO")),
+        ],
         next: "state_exposure"
       });
     });
@@ -270,8 +277,8 @@ go.app = (function() {
           "Reply"
         ].join("\n")),
         error: $([
-          "Please use numbers from list.",
-          "Have you been in close contact to someone confirmed to be infected with COVID19?",
+          "Please use numbers from list. Have u been in contact with someone with COVID19 or " +
+          "been where COVID19 patients are treated?",
           "",
           "Reply"
         ].join("\n")),
@@ -329,6 +336,7 @@ go.app = (function() {
             fever: answers.state_fever,
             cough: answers.state_cough,
             sore_throat: answers.state_sore_throat,
+            difficulty_breathing: answers.state_breathing,
             exposure: answers.state_exposure,
             tracing: answers.state_tracing,
             risk: self.calculate_risk()
@@ -357,28 +365,22 @@ go.app = (function() {
       if(answers.state_tracing) {
         if(risk === "low") {
           text = $(
-            "You won't need to complete this risk assessment again for 7 days UNLESS you feel " +
-            "ill or if you come into contact with someone infected with COVID-19"
+            "Complete this HealthCheck again in 7 days or sooner if you feel ill or you come " +
+            "into contact with someone infected with COVID-19"
           );
         }
         if(risk === "moderate") {
-          text = $(
-            "Self-isolate if you can. If u start feeling ill, go to a testing center or Call " +
-            "0800029999 or your healthcare practitioner for info on what to do & how to test"
-          );
-        }
-        if(risk === "high") {
           text = $(
             "GET TESTED to find out if you have COVID-19. Go to a testing center or Call " +
             "0800029999 or your healthcare practitioner for info on what to do & how to test"
           );
         }
-        if(risk === "critical") {
+        if(risk === "high") {
           text = $([
             "Please seek medical care immediately at an emergency facility.",
             "Remember to:",
             "- Avoid contact with other people",
-            "- Put on a face mask before entering the facility",
+            "- Put on a face mask before entering the facility"
           ].join("\n"));
         }
         return new EndState(name, {

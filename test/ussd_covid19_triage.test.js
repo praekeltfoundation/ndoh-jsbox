@@ -95,8 +95,8 @@ describe("ussd_covid19_triage app", function() {
                 .check.interaction({
                     state: "state_terms",
                     reply: [
-                        "Your answers may be used for Tracing, Screening and Monitoring of " +
-                        "COVID-19's spread. Do you agree?",
+                        "Confirm that you're responsible for your medical care & treatment. " +
+                        "This service only provides info.",
                         "",
                         "Reply",
                         "1. YES",
@@ -114,9 +114,8 @@ describe("ussd_covid19_triage app", function() {
                 .check.interaction({
                     state: "state_terms",
                     reply: [
-                        "Please use numbers from list.",
-                        "Your answers may be used for Tracing, Screening & Monitoring of " +
-                        "COVID-19's spread. Do you agree?",
+                        "Please use numbers from list. Confirm that u're responsible for ur " +
+                        "medical care & treatment. This service only provides info.",
                         "",
                         "Reply",
                         "1. YES",
@@ -164,8 +163,9 @@ describe("ussd_covid19_triage app", function() {
                 .check.interaction({
                     state: "state_more_info_pg1",
                     reply: [
-                        "You confirm that you're responsible for your medical care & treatment. " +
-                        "This service only provides info.",
+                        "It's not a substitute for professional medical " +
+                        "advice/diagnosis/treatment. Get a qualified health provider's advice " +
+                        "about your medical condition/care.",
                         "1. Next",
                     ].join("\n"),
                     char_limit: 160
@@ -179,22 +179,6 @@ describe("ussd_covid19_triage app", function() {
                 .check.interaction({
                     state: "state_more_info_pg2",
                     reply: [
-                        "It's not a substitute for professional medical " +
-                        "advice/diagnosis/treatment. Get a qualified health provider's advice " +
-                        "about your medical condition/care.",
-                        "1. Next",
-                    ].join("\n"),
-                    char_limit: 160
-                })
-                .run();
-        });
-        it("should display more info pg 3", function() {
-            return tester
-                .setup.user.state("state_more_info_pg2")
-                .input("1")
-                .check.interaction({
-                    state: "state_more_info_pg3",
-                    reply: [
                         "You confirm that you shouldn't disregard/delay seeking medical advice " +
                         "about treatment/care because of this service. Rely on info at your own " +
                         "risk.",
@@ -206,7 +190,7 @@ describe("ussd_covid19_triage app", function() {
         });
         it("should go back to state_terms when the info is finished", function() {
             return tester
-                .setup.user.state("state_more_info_pg3")
+                .setup.user.state("state_more_info_pg2")
                 .input("1")
                 .check.user.state("state_terms")
                 .run();
@@ -453,9 +437,51 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("should go to state_exposure", function() {
+        it("should go to state_breathing", function() {
             return tester
                 .setup.user.state("state_sore_throat")
+                .input("1")
+                .check.user.state("state_breathing")
+                .run();
+        });
+    });
+    describe("state_breating", function() {
+        it("should ask if they have difficulty breathing", function() {
+            return tester
+                .setup.user.state("state_breathing")
+                .check.interaction({
+                    state: "state_breathing",
+                    reply: [
+                        "Do you have breathlessness or a difficulty breathing, that you've " +
+                        "noticed recently?",
+                        "Reply",
+                        "1. YES",
+                        "2. NO"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_breathing")
+                .input("A")
+                .check.interaction({
+                    state: "state_breathing",
+                    reply: [
+                        "Please use numbers from list. Do you have breathlessness or a " +
+                        "difficulty breathing, that you've noticed recently?",
+                        "Reply",
+                        "1. YES",
+                        "2. NO"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to state_exposure", function() {
+            return tester
+                .setup.user.state("state_breathing")
                 .input("1")
                 .check.user.state("state_exposure")
                 .run();
@@ -487,9 +513,8 @@ describe("ussd_covid19_triage app", function() {
                 .check.interaction({
                     state: "state_exposure",
                     reply: [
-                        "Please use numbers from list.",
-                        "Have you been in close contact to someone confirmed to be infected with " +
-                        "COVID19?",
+                        "Please use numbers from list. Have u been in contact with someone with " +
+                        "COVID19 or been where COVID19 patients are treated?",
                         "",
                         "Reply",
                         "1. YES",
@@ -557,6 +582,7 @@ describe("ussd_covid19_triage app", function() {
                     state_fever: false,
                     state_cough: false,
                     state_sore_throat: false,
+                    state_breathing: false,
                     state_exposure: "No",
                 })
                 .setup(function(api) {
@@ -573,6 +599,7 @@ describe("ussd_covid19_triage app", function() {
                                 fever: false,
                                 cough: false,
                                 sore_throat: false,
+                                difficulty_breathing: false,
                                 exposure: "No",
                                 tracing: true,
                                 risk: "low"
@@ -642,9 +669,8 @@ describe("ussd_covid19_triage app", function() {
                 .check.interaction({
                     state: "state_display_risk",
                     reply: 
-                        "You won't need to complete this risk assessment again for 7 days UNLESS " +
-                        "you feel ill or if you come into contact with someone infected with " +
-                        "COVID-19",
+                        "Complete this HealthCheck again in 7 days or sooner if you feel ill or " +
+                        "you come into contact with someone infected with COVID-19",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
@@ -658,7 +684,7 @@ describe("ussd_covid19_triage app", function() {
                     state_city: "Cape Town",
                     state_age: "<18",
                     state_fever: true,
-                    state_cough: true,
+                    state_cough: false,
                     state_sore_throat: false,
                     state_exposure: "not_sure",
                 })
@@ -674,7 +700,7 @@ describe("ussd_covid19_triage app", function() {
                                 city: "Cape Town",
                                 age: "<18",
                                 fever: true,
-                                cough: true,
+                                cough: false,
                                 sore_throat: false,
                                 exposure: "not_sure",
                                 tracing: true,
@@ -693,9 +719,9 @@ describe("ussd_covid19_triage app", function() {
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
-                        "Self-isolate if you can. If u start feeling ill, go to a testing " +
-                        "center or Call 0800029999 or your healthcare practitioner for info on " +
-                        "what to do & how to test",
+                        "GET TESTED to find out if you have COVID-19. Go to a testing center or " +
+                        "Call 0800029999 or your healthcare practitioner for info on what to do " +
+                        "& how to test",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
@@ -730,57 +756,6 @@ describe("ussd_covid19_triage app", function() {
                                 exposure: "No",
                                 tracing: true,
                                 risk: "high"
-                            }
-                        },
-                        "response": {
-                            "code": 201,
-                            "data": {
-                                "accepted": true
-                            }
-                        }
-                    });
-                })
-                .input("1")
-                .check.interaction({
-                    state: "state_display_risk",
-                    reply:
-                        "GET TESTED to find out if you have COVID-19. Go to a testing center or " +
-                        "Call 0800029999 or your healthcare practitioner for info on what to " +
-                        "do & how to test",
-                    char_limit: 160
-                })
-                .check.reply.ends_session()
-                .run();
-        });
-        it("should display the critical risk message if critical risk", function() {
-            return tester
-                .setup.user.state("state_tracing")
-                .setup.user.answers({
-                    state_province: "ZA-WC",
-                    state_city: "Cape Town",
-                    state_age: "<18",
-                    state_fever: true,
-                    state_cough: true,
-                    state_sore_throat: true,
-                    state_exposure: "yes",
-                })
-                .setup(function(api) {
-                    api.http.fixtures.add({
-                        "request": {
-                            "url": 'http://eventstore/api/v2/covid19triage/',
-                            "method": 'POST',
-                            "data": {
-                                msisdn: "+27123456789",
-                                source: "USSD",
-                                province: "ZA-WC",
-                                city: "Cape Town",
-                                age: "<18",
-                                fever: true,
-                                cough: true,
-                                sore_throat: true,
-                                exposure: "yes",
-                                tracing: true,
-                                risk: "critical"
                             }
                         },
                         "response": {
