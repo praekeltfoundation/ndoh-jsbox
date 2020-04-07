@@ -163,8 +163,9 @@ describe("ussd_covid19_triage app", function() {
                 .check.interaction({
                     state: "state_more_info_pg1",
                     reply: [
-                        "You confirm that you're responsible for your medical care & treatment. " +
-                        "This service only provides info.",
+                        "It's not a substitute for professional medical " +
+                        "advice/diagnosis/treatment. Get a qualified health provider's advice " +
+                        "about your medical condition/care.",
                         "1. Next",
                     ].join("\n"),
                     char_limit: 160
@@ -178,22 +179,6 @@ describe("ussd_covid19_triage app", function() {
                 .check.interaction({
                     state: "state_more_info_pg2",
                     reply: [
-                        "It's not a substitute for professional medical " +
-                        "advice/diagnosis/treatment. Get a qualified health provider's advice " +
-                        "about your medical condition/care.",
-                        "1. Next",
-                    ].join("\n"),
-                    char_limit: 160
-                })
-                .run();
-        });
-        it("should display more info pg 3", function() {
-            return tester
-                .setup.user.state("state_more_info_pg2")
-                .input("1")
-                .check.interaction({
-                    state: "state_more_info_pg3",
-                    reply: [
                         "You confirm that you shouldn't disregard/delay seeking medical advice " +
                         "about treatment/care because of this service. Rely on info at your own " +
                         "risk.",
@@ -205,7 +190,7 @@ describe("ussd_covid19_triage app", function() {
         });
         it("should go back to state_terms when the info is finished", function() {
             return tester
-                .setup.user.state("state_more_info_pg3")
+                .setup.user.state("state_more_info_pg2")
                 .input("1")
                 .check.user.state("state_terms")
                 .run();

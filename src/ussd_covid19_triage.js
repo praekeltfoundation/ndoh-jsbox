@@ -114,8 +114,8 @@ go.app = (function() {
     self.add("state_more_info_pg1", function(name) {
       return new MenuState(name, {
         question: $(
-          "You confirm that you're responsible for your medical care & treatment. This service " +
-          "only provides info."
+          "It's not a substitute for professional medical advice/diagnosis/treatment. Get a " +
+          "qualified health provider's advice about your medical condition/care."
         ),
         accept_labels: true,
         choices: [new Choice("state_more_info_pg2", $("Next"))]
@@ -123,17 +123,6 @@ go.app = (function() {
     });
 
     self.add("state_more_info_pg2", function(name) {
-      return new MenuState(name, {
-        question: $(
-          "It's not a substitute for professional medical advice/diagnosis/treatment. Get a " +
-          "qualified health provider's advice about your medical condition/care."
-        ),
-        accept_labels: true,
-        choices: [new Choice("state_more_info_pg3", $("Next"))]
-      });
-    });
-
-    self.add("state_more_info_pg3", function(name) {
       return new MenuState(name, {
         question: $(
           "You confirm that you shouldn't disregard/delay seeking medical advice about " +
