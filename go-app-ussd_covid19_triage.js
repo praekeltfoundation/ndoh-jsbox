@@ -291,8 +291,8 @@ go.app = (function() {
           "Reply"
         ].join("\n")),
         error: $([
-          "Please use numbers from list.",
-          "Have you been in close contact to someone confirmed to be infected with COVID19?",
+          "Please use numbers from list. Have u been in contact with someone with COVID19 or " +
+          "been where COVID19 patients are treated?",
           "",
           "Reply"
         ].join("\n")),
