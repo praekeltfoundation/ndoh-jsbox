@@ -210,16 +210,98 @@ describe("ussd_ccmdd_wc_address_update app", function () {
         .state("state_folder_number")
         .input("79927398713")
         .check.interaction({
-          state: "state_municipality",
+          state: "state_district",
           reply: [
-            "[6/10] In which Municipality do you stay?",
+            "[6/10] In which District do you stay?",
             "1. Cape Town",
             "2. Cape Winelands",
             "3. Central Karoo",
-            "4. Garden Route",
+            "4. Eden",
             "5. Overberg",
             "6. West Coast",
             "7. None of the above",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+  });
+  describe("state_district", function () {
+    it("should ask which district the user stays in", function () {
+      return tester.setup.user
+        .state("state_district")
+        .check.interaction({
+          state: "state_district",
+          reply: [
+            "[6/10] In which District do you stay?",
+            "1. Cape Town",
+            "2. Cape Winelands",
+            "3. Central Karoo",
+            "4. Eden",
+            "5. Overberg",
+            "6. West Coast",
+            "7. None of the above",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should save the correct value", function () {
+      return tester.setup.user
+        .state("state_district")
+        .input("2")
+        .check.interaction({
+          state: "state_municipality",
+          reply: [
+            "[7/10] Select your municipality:",
+            "1. Breede Valley",
+            "2. Drakenstein",
+            "3. Langeberg",
+            "4. Stellenbosch",
+            "5. Witzenberg",
+            "6. Back",
+            "7. None of the above",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+  });
+  describe("state_sub_district", function () {
+    it("should show the correct page 1 options for Cape Town", function () {
+      return tester.setup.user
+        .state("state_sub_district")
+        .setup.user.answer("state_district", "Cape Town")
+        .check.interaction({
+          state: "state_sub_district",
+          reply: [
+            "[7/10] Select your health sub-district:",
+            "1. Cape Town East",
+            "2. Cape Town North",
+            "3. Cape Town South",
+            "4. Cape Town West",
+            "5. Khayelitsha",
+            "6. Klipfontein",
+            "7. Next",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should show the correct page 2 options for Cape Town", function () {
+      return tester.setup.user
+        .state("state_sub_district")
+        .setup.user.answer("state_district", "Cape Town")
+        .input("7")
+        .check.interaction({
+          state: "state_sub_district",
+          reply: [
+            "[7/10] Select your health sub-district:",
+            "1. Mitchells Plain",
+            "2. Tygerberg",
+            "3. Back to district",
+            "4. None of the above",
+            "5. Back",
           ].join("\n"),
           char_limit: 160,
         })
@@ -227,19 +309,99 @@ describe("ussd_ccmdd_wc_address_update app", function () {
     });
   });
   describe("state_municipality", function () {
-    it("should ask which municipality the user stays in", function () {
+    it("should show the correct options for Cape winelands", function () {
       return tester.setup.user
         .state("state_municipality")
+        .setup.user.answer("state_district", "Cape Winelands")
         .check.interaction({
           state: "state_municipality",
           reply: [
-            "[6/10] In which Municipality do you stay?",
-            "1. Cape Town",
-            "2. Cape Winelands",
-            "3. Central Karoo",
-            "4. Garden Route",
-            "5. Overberg",
-            "6. West Coast",
+            "[7/10] Select your municipality:",
+            "1. Breede Valley",
+            "2. Drakenstein",
+            "3. Langeberg",
+            "4. Stellenbosch",
+            "5. Witzenberg",
+            "6. Back",
+            "7. None of the above",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should show the correct options for Central Karoo", function () {
+      return tester.setup.user
+        .state("state_municipality")
+        .setup.user.answer("state_district", "Central Karoo")
+        .check.interaction({
+          state: "state_municipality",
+          reply: [
+            "[7/10] Select your municipality:",
+            "1. Beaufort Wes",
+            "2. Laingsburg",
+            "3. Prince Albert",
+            "4. Back",
+            "5. None of the above",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should show the correct options for Eden", function () {
+      return tester.setup.user
+        .state("state_municipality")
+        .setup.user.answer("state_district", "Eden")
+        .check.interaction({
+          state: "state_municipality",
+          reply: [
+            "[7/10] Select your municipality:",
+            "1. Bitou",
+            "2. George",
+            "3. Hessequa",
+            "4. Kannaland",
+            "5. Knysna",
+            "6. Mosselbay",
+            "7. Oudtshoorn",
+            "8. Back",
+            "9. None of the above",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should show the correct options for Overberg", function () {
+      return tester.setup.user
+        .state("state_municipality")
+        .setup.user.answer("state_district", "Overberg")
+        .check.interaction({
+          state: "state_municipality",
+          reply: [
+            "[7/10] Select your municipality:",
+            "1. Cape Agulhas",
+            "2. Overstrand",
+            "3. Swellendam",
+            "4. Theewaterskloof",
+            "5. Back",
+            "6. None of the above",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should show the correct options for West Coast", function () {
+      return tester.setup.user
+        .state("state_municipality")
+        .setup.user.answer("state_district", "West Coast")
+        .check.interaction({
+          state: "state_municipality",
+          reply: [
+            "[7/10] Select your municipality:",
+            "1. Bergriver",
+            "2. Cederberg",
+            "3. Matzikama",
+            "4. Saldanabay",
+            "5. Swartland",
+            "6. Back",
             "7. None of the above",
           ].join("\n"),
           char_limit: 160,
@@ -249,129 +411,14 @@ describe("ussd_ccmdd_wc_address_update app", function () {
     it("should save the correct value", function () {
       return tester.setup.user
         .state("state_municipality")
-        .input("2")
-        .check.interaction({
-          state: "state_city",
-          reply: [
-            "[7/10] In which city do you stay?",
-            "1. Breede Valley",
-            "2. Drakenstein",
-            "3. Langeberg",
-            "4. Stellenbosch",
-            "5. Witzenberg",
-            "6. None of the above",
-          ].join("\n"),
-          char_limit: 160,
-        })
-        .run();
-    });
-  });
-  describe("state_city", function () {
-    it("should show the correct options for Cape winelands", function () {
-      return tester.setup.user
-        .state("state_city")
-        .setup.user.answer("state_municipality", "Cape Winelands")
-        .check.interaction({
-          state: "state_city",
-          reply: [
-            "[7/10] In which city do you stay?",
-            "1. Breede Valley",
-            "2. Drakenstein",
-            "3. Langeberg",
-            "4. Stellenbosch",
-            "5. Witzenberg",
-            "6. None of the above",
-          ].join("\n"),
-          char_limit: 160,
-        })
-        .run();
-    });
-    it("should show the correct options for Central Karoo", function () {
-      return tester.setup.user
-        .state("state_city")
-        .setup.user.answer("state_municipality", "Central Karoo")
-        .check.interaction({
-          state: "state_city",
-          reply: [
-            "[7/10] In which city do you stay?",
-            "1. Beaufort Wes",
-            "2. Laingsburg",
-            "3. Prince Albert",
-            "4. None of the above",
-          ].join("\n"),
-          char_limit: 160,
-        })
-        .run();
-    });
-    it("should show the correct options for Garden Route", function () {
-      return tester.setup.user
-        .state("state_city")
-        .setup.user.answer("state_municipality", "Garden Route")
-        .check.interaction({
-          state: "state_city",
-          reply: [
-            "[7/10] In which city do you stay?",
-            "1. Bitou",
-            "2. George",
-            "3. Hessequa",
-            "4. Kannaland",
-            "5. Knysna",
-            "6. Mosselbay",
-            "7. Oudtshoorn",
-            "8. None of the above",
-          ].join("\n"),
-          char_limit: 160,
-        })
-        .run();
-    });
-    it("should show the correct options for Overberg", function () {
-      return tester.setup.user
-        .state("state_city")
-        .setup.user.answer("state_municipality", "Overberg")
-        .check.interaction({
-          state: "state_city",
-          reply: [
-            "[7/10] In which city do you stay?",
-            "1. Cape Agulhas",
-            "2. Overstrand",
-            "3. Swellendam",
-            "4. Theewaterskloof",
-            "5. None of the above",
-          ].join("\n"),
-          char_limit: 160,
-        })
-        .run();
-    });
-    it("should show the correct options for West Coast", function () {
-      return tester.setup.user
-        .state("state_city")
-        .setup.user.answer("state_municipality", "West Coast")
-        .check.interaction({
-          state: "state_city",
-          reply: [
-            "[7/10] In which city do you stay?",
-            "1. Bergriver",
-            "2. Cederberg",
-            "3. Matzikama",
-            "4. Saldanabay",
-            "5. Swartland",
-            "6. None of the above",
-          ].join("\n"),
-          char_limit: 160,
-        })
-        .run();
-    });
-    it("should save the correct value", function () {
-      return tester.setup.user
-        .state("state_city")
-        .setup.user.answer("state_municipality", "West Coast")
+        .setup.user.answer("state_district", "West Coast")
         .input("2")
         .check.interaction({
           state: "state_suburb",
           reply: "[8/10] Please reply with the name of your suburb.",
           char_limit: 160,
         })
-        .check.user.answer("state_city", "Cederberg")
+        .check.user.answer("state_municipality", "Cederberg")
         .run();
     });
   });
@@ -427,8 +474,8 @@ describe("ussd_ccmdd_wc_address_update app", function () {
                 id_number: "8811115022085",
                 date_of_birth: "1988-11-11",
                 folder_number: "12345678",
-                municipality: "Cape Winelands",
-                city: "Cape Town",
+                district: "Cape Winelands",
+                municipality: "Drakenstein",
                 suburb: "Sea Point",
                 street_name: "High level road",
                 street_number: "167",
@@ -448,8 +495,8 @@ describe("ussd_ccmdd_wc_address_update app", function () {
         .setup.user.answer("state_id_type", "state_sa_id_no")
         .setup.user.answer("state_sa_id_no", "8811115022085")
         .setup.user.answer("state_folder_number", "12345678")
-        .setup.user.answer("state_municipality", "Cape Winelands")
-        .setup.user.answer("state_city", "Cape Town")
+        .setup.user.answer("state_district", "Cape Winelands")
+        .setup.user.answer("state_municipality", "Drakenstein")
         .setup.user.answer("state_suburb", "Sea Point")
         .setup.user.answer("state_street_name", "High level road")
         .setup.user.answer("state_street_number", "167")
