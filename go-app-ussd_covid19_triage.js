@@ -84,15 +84,14 @@ go.app = (function() {
     self.add("state_terms", function(name) {
       return new MenuState(name, {
         question: $([
-          "Your answers may be used for Tracing, Screening and Monitoring of COVID-19's spread. " +
-          "Do you agree?",
+          "Confirm that you're responsible for your medical care & treatment. This service only " +
+          "provides info.",
           "",
           "Reply"
         ].join("\n")),
         error: $([
-          "Please use numbers from list.",
-          "Your answers may be used for Tracing, Screening & Monitoring of COVID-19's spread. " +
-          "Do you agree?",
+          "Please use numbers from list. Confirm that u're responsible for ur medical care & " +
+          "treatment. This service only provides info.",
           "",
           "Reply"
           ].join("\n")),
