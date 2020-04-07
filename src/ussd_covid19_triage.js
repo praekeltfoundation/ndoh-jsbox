@@ -256,6 +256,26 @@ go.app = (function() {
           new Choice(true, $("YES")),
           new Choice(false, $("NO")),
         ],
+        next: "state_breathing"
+      });
+    });
+
+    self.add("state_breathing", function(name) {
+      return new ChoiceState(name, {
+        question: $([
+          "Do you have breathlessness or a difficulty breathing, that you've noticed recently?",
+          "Reply"
+        ].join("\n")),
+        error: $([
+          "Please use numbers from list. Do you have breathlessness or a difficulty breathing, " +
+          "that you've noticed recently?",
+          "Reply"
+        ].join("\n")),
+        accept_labels: true,
+        choices: [
+          new Choice(true, $("YES")),
+          new Choice(false, $("NO")),
+        ],
         next: "state_exposure"
       });
     });
@@ -327,6 +347,7 @@ go.app = (function() {
             fever: answers.state_fever,
             cough: answers.state_cough,
             sore_throat: answers.state_sore_throat,
+            difficulty_breathing: answers.state_breathing,
             exposure: answers.state_exposure,
             tracing: answers.state_tracing,
             risk: self.calculate_risk()

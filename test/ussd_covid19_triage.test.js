@@ -452,9 +452,51 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("should go to state_exposure", function() {
+        it("should go to state_breathing", function() {
             return tester
                 .setup.user.state("state_sore_throat")
+                .input("1")
+                .check.user.state("state_breathing")
+                .run();
+        });
+    });
+    describe("state_breating", function() {
+        it("should ask if they have difficulty breathing", function() {
+            return tester
+                .setup.user.state("state_breathing")
+                .check.interaction({
+                    state: "state_breathing",
+                    reply: [
+                        "Do you have breathlessness or a difficulty breathing, that you've " +
+                        "noticed recently?",
+                        "Reply",
+                        "1. YES",
+                        "2. NO"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_breathing")
+                .input("A")
+                .check.interaction({
+                    state: "state_breathing",
+                    reply: [
+                        "Please use numbers from list. Do you have breathlessness or a " +
+                        "difficulty breathing, that you've noticed recently?",
+                        "Reply",
+                        "1. YES",
+                        "2. NO"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to state_exposure", function() {
+            return tester
+                .setup.user.state("state_breathing")
                 .input("1")
                 .check.user.state("state_exposure")
                 .run();
@@ -556,6 +598,7 @@ describe("ussd_covid19_triage app", function() {
                     state_fever: false,
                     state_cough: false,
                     state_sore_throat: false,
+                    state_breathing: false,
                     state_exposure: "No",
                 })
                 .setup(function(api) {
@@ -572,6 +615,7 @@ describe("ussd_covid19_triage app", function() {
                                 fever: false,
                                 cough: false,
                                 sore_throat: false,
+                                difficulty_breathing: false,
                                 exposure: "No",
                                 tracing: true,
                                 risk: "low"
