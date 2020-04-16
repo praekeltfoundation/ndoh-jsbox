@@ -1,11 +1,11 @@
 var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
 
-describe("ussd_covid19_triage app", function() {
+describe("ussd_covid19_triage app", function () {
     var app;
     var tester;
 
-    beforeEach(function() {
+    beforeEach(function () {
         app = new go.app.GoNDOH();
         tester = new AppTester(app);
         tester.setup.config.app({
@@ -16,8 +16,8 @@ describe("ussd_covid19_triage app", function() {
         });
     });
 
-    describe("state_timed_out", function() {
-        it("should ask the user if they want to continue", function() {
+    describe("state_timed_out", function () {
+        it("should ask the user if they want to continue", function () {
             return tester
                 .setup.user.state("state_terms")
                 .start()
@@ -34,10 +34,10 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("should repeat question on invalid input", function() {
+        it("should repeat question on invalid input", function () {
             return tester
                 .setup.user.state("state_terms")
-                .inputs({session_event: "new"}, "A")
+                .inputs({ session_event: "new" }, "A")
                 .check.interaction({
                     state: "state_timed_out",
                     reply: [
@@ -52,8 +52,8 @@ describe("ussd_covid19_triage app", function() {
                 .run();
         });
     });
-    describe("state_start", function() {
-        it("should show the welcome message", function() {
+    describe("state_start", function () {
+        it("should show the welcome message", function () {
             return tester
                 .check.interaction({
                     state: "state_start",
@@ -68,7 +68,7 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("should display error on invalid input", function() {
+        it("should display error on invalid input", function () {
             return tester
                 .input("A")
                 .check.interaction({
@@ -81,15 +81,15 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("should go to state_terms", function() {
+        it("should go to state_terms", function () {
             return tester
                 .input("1")
                 .check.user.state("state_terms")
                 .run();
         });
     });
-    describe("state_terms", function() {
-        it("should show the terms", function() {
+    describe("state_terms", function () {
+        it("should show the terms", function () {
             return tester
                 .setup.user.state("state_terms")
                 .check.interaction({
@@ -107,7 +107,7 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("should display an error message on invalid input", function() {
+        it("should display an error message on invalid input", function () {
             return tester
                 .setup.user.state("state_terms")
                 .input("A")
@@ -126,14 +126,14 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("should go to state_province for yes", function() {
+        it("should go to state_province for yes", function () {
             return tester
                 .setup.user.state("state_terms")
                 .input("1")
                 .check.user.state("state_province")
                 .run();
         });
-        it("should go to state_end for no", function() {
+        it("should go to state_end for no", function () {
             return tester
                 .setup.user.state("state_terms")
                 .input("2")
@@ -148,7 +148,7 @@ describe("ussd_covid19_triage app", function() {
                 .check.reply.ends_session()
                 .run();
         });
-        it("should go to state_more_info for more info", function() {
+        it("should go to state_more_info for more info", function () {
             return tester
                 .setup.user.state("state_terms")
                 .input("3")
@@ -156,8 +156,8 @@ describe("ussd_covid19_triage app", function() {
                 .run();
         });
     });
-    describe("state_more_info", function() {
-        it("should display more info pg 1", function() {
+    describe("state_more_info", function () {
+        it("should display more info pg 1", function () {
             return tester
                 .setup.user.state("state_more_info_pg1")
                 .check.interaction({
@@ -172,7 +172,7 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("should display more info pg 2", function() {
+        it("should display more info pg 2", function () {
             return tester
                 .setup.user.state("state_more_info_pg1")
                 .input("1")
@@ -188,7 +188,7 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("should go back to state_terms when the info is finished", function() {
+        it("should go back to state_terms when the info is finished", function () {
             return tester
                 .setup.user.state("state_more_info_pg2")
                 .input("1")
@@ -196,8 +196,8 @@ describe("ussd_covid19_triage app", function() {
                 .run();
         });
     });
-    describe("state_province", function() {
-        it("should show the provinces", function() {
+    describe("state_province", function () {
+        it("should show the provinces", function () {
             return tester
                 .setup.user.state("state_province")
                 .check.interaction({
@@ -220,7 +220,7 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("should repeat the question on invalid input", function() {
+        it("should repeat the question on invalid input", function () {
             return tester
                 .setup.user.state("state_province")
                 .input("A")
@@ -244,7 +244,7 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("should go to state_city", function() {
+        it("should go to state_city", function () {
             return tester
                 .setup.user.state("state_province")
                 .input("1")
@@ -252,18 +252,20 @@ describe("ussd_covid19_triage app", function() {
                 .run();
         });
     });
-    describe("state_city", function() {
-        it("should ask for the city", function() {
+    describe("state_city", function () {
+        it("should ask for the city", function () {
             return tester
                 .setup.user.state("state_city")
                 .check.interaction({
                     state: "state_city",
-                    reply: "Please type the name of your City, Town or Village (or nearest)",
+                    reply:
+                        "Please TYPE the name of your Suburb, Township, Town or Village (or " +
+                        "nearest)",
                     char_limit: 160
                 })
                 .run();
         });
-        it("should go to state_age", function() {
+        it("should go to state_age", function () {
             return tester
                 .setup.user.state("state_city")
                 .input("test city")
@@ -271,8 +273,8 @@ describe("ussd_covid19_triage app", function() {
                 .run();
         });
     });
-    describe("state_age", function() {
-        it("should ask for their age", function() {
+    describe("state_age", function () {
+        it("should ask for their age", function () {
             return tester
                 .setup.user.state("state_age")
                 .check.interaction({
@@ -288,7 +290,7 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("should display an error on invalid input", function() {
+        it("should display an error on invalid input", function () {
             return tester
                 .setup.user.state("state_age")
                 .input("A")
@@ -307,7 +309,7 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("should go to state_fever", function() {
+        it("should go to state_fever", function () {
             return tester
                 .setup.user.state("state_age")
                 .input("1")
@@ -315,8 +317,8 @@ describe("ussd_covid19_triage app", function() {
                 .run();
         });
     });
-    describe("state_fever", function() {
-        it("should ask if they have a fever", function() {
+    describe("state_fever", function () {
+        it("should ask if they have a fever", function () {
             return tester
                 .setup.user.state("state_fever")
                 .check.interaction({
@@ -333,7 +335,7 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("should display an error on invalid input", function() {
+        it("should display an error on invalid input", function () {
             return tester
                 .setup.user.state("state_fever")
                 .input("A")
@@ -351,7 +353,7 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("should go to state_cough", function() {
+        it("should go to state_cough", function () {
             return tester
                 .setup.user.state("state_fever")
                 .input("1")
@@ -359,8 +361,8 @@ describe("ussd_covid19_triage app", function() {
                 .run();
         });
     });
-    describe("state_cough", function() {
-        it("should ask if they have a cough", function() {
+    describe("state_cough", function () {
+        it("should ask if they have a cough", function () {
             return tester
                 .setup.user.state("state_cough")
                 .check.interaction({
@@ -376,7 +378,7 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("display an error on invalid input", function() {
+        it("display an error on invalid input", function () {
             return tester
                 .setup.user.state("state_cough")
                 .input("A")
@@ -394,7 +396,7 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("should go to state_sore_throat", function() {
+        it("should go to state_sore_throat", function () {
             return tester
                 .setup.user.state("state_cough")
                 .input("1")
@@ -402,8 +404,8 @@ describe("ussd_covid19_triage app", function() {
                 .run();
         });
     });
-    describe("state_sore_throat", function() {
-        it("should ask if they have a sore throat", function() {
+    describe("state_sore_throat", function () {
+        it("should ask if they have a sore throat", function () {
             return tester
                 .setup.user.state("state_sore_throat")
                 .check.interaction({
@@ -419,7 +421,7 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("should display an error on invalid input", function() {
+        it("should display an error on invalid input", function () {
             return tester
                 .setup.user.state("state_sore_throat")
                 .input("A")
@@ -437,7 +439,7 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("should go to state_breathing", function() {
+        it("should go to state_breathing", function () {
             return tester
                 .setup.user.state("state_sore_throat")
                 .input("1")
@@ -445,8 +447,8 @@ describe("ussd_covid19_triage app", function() {
                 .run();
         });
     });
-    describe("state_breating", function() {
-        it("should ask if they have difficulty breathing", function() {
+    describe("state_breating", function () {
+        it("should ask if they have difficulty breathing", function () {
             return tester
                 .setup.user.state("state_breathing")
                 .check.interaction({
@@ -462,7 +464,7 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("should display an error on invalid input", function() {
+        it("should display an error on invalid input", function () {
             return tester
                 .setup.user.state("state_breathing")
                 .input("A")
@@ -479,7 +481,7 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("should go to state_exposure", function() {
+        it("should go to state_exposure", function () {
             return tester
                 .setup.user.state("state_breathing")
                 .input("1")
@@ -487,8 +489,8 @@ describe("ussd_covid19_triage app", function() {
                 .run();
         });
     });
-    describe("state_exposure", function() {
-        it("should ask if they have been exposed to the virus", function() {
+    describe("state_exposure", function () {
+        it("should ask if they have been exposed to the virus", function () {
             return tester
                 .setup.user.state("state_exposure")
                 .check.interaction({
@@ -506,7 +508,7 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("display an error on invalid input", function() {
+        it("display an error on invalid input", function () {
             return tester
                 .setup.user.state("state_exposure")
                 .input("A")
@@ -525,7 +527,7 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("should go to state_tracing", function() {
+        it("should go to state_tracing", function () {
             return tester
                 .setup.user.state("state_exposure")
                 .input("1")
@@ -533,8 +535,8 @@ describe("ussd_covid19_triage app", function() {
                 .run();
         });
     });
-    describe("state_tracing", function() {
-        it("should ask if the DoH can trace them", function() {
+    describe("state_tracing", function () {
+        it("should ask if the DoH can trace them", function () {
             return tester
                 .setup.user.state("state_tracing")
                 .check.interaction({
@@ -552,7 +554,7 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("should display the error on invalid input", function() {
+        it("should display the error on invalid input", function () {
             return tester
                 .setup.user.state("state_tracing")
                 .input("A")
@@ -572,7 +574,7 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("should go to state_display_risk", function() {
+        it("should go to state_display_risk", function () {
             return tester
                 .setup.user.state("state_tracing")
                 .setup.user.answers({
@@ -585,7 +587,7 @@ describe("ussd_covid19_triage app", function() {
                     state_breathing: false,
                     state_exposure: "No",
                 })
-                .setup(function(api) {
+                .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
                             "url": 'http://eventstore/api/v2/covid19triage/',
@@ -617,7 +619,7 @@ describe("ussd_covid19_triage app", function() {
                 .check.user.state("state_display_risk")
                 .run();
         });
-        it("should go to start if restart is chosen", function() {
+        it("should go to start if restart is chosen", function () {
             return tester
                 .setup.user.state("state_tracing")
                 .input("3")
@@ -625,8 +627,8 @@ describe("ussd_covid19_triage app", function() {
                 .run();
         });
     });
-    describe("state_display_risk", function() {
-        it("should display the low risk message if low risk", function() {
+    describe("state_display_risk", function () {
+        it("should display the low risk message if low risk", function () {
             return tester
                 .setup.user.state("state_tracing")
                 .setup.user.answers({
@@ -638,7 +640,7 @@ describe("ussd_covid19_triage app", function() {
                     state_sore_throat: false,
                     state_exposure: "No",
                 })
-                .setup(function(api) {
+                .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
                             "url": 'http://eventstore/api/v2/covid19triage/',
@@ -668,7 +670,7 @@ describe("ussd_covid19_triage app", function() {
                 .input("1")
                 .check.interaction({
                     state: "state_display_risk",
-                    reply: 
+                    reply:
                         "Complete this HealthCheck again in 7 days or sooner if you feel ill or " +
                         "you come into contact with someone infected with COVID-19",
                     char_limit: 160
@@ -676,7 +678,7 @@ describe("ussd_covid19_triage app", function() {
                 .check.reply.ends_session()
                 .run();
         });
-        it("should display the moderate risk message if moderate risk", function() {
+        it("should display the moderate risk message if moderate risk", function () {
             return tester
                 .setup.user.state("state_tracing")
                 .setup.user.answers({
@@ -688,7 +690,7 @@ describe("ussd_covid19_triage app", function() {
                     state_sore_throat: false,
                     state_exposure: "not_sure",
                 })
-                .setup(function(api) {
+                .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
                             "url": 'http://eventstore/api/v2/covid19triage/',
@@ -727,7 +729,7 @@ describe("ussd_covid19_triage app", function() {
                 .check.reply.ends_session()
                 .run();
         });
-        it("should display the high risk message if high risk", function() {
+        it("should display the high risk message if high risk", function () {
             return tester
                 .setup.user.state("state_tracing")
                 .setup.user.answers({
@@ -739,7 +741,7 @@ describe("ussd_covid19_triage app", function() {
                     state_sore_throat: false,
                     state_exposure: "No",
                 })
-                .setup(function(api) {
+                .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
                             "url": 'http://eventstore/api/v2/covid19triage/',
@@ -780,7 +782,7 @@ describe("ussd_covid19_triage app", function() {
                 .check.reply.ends_session()
                 .run();
         });
-        it("should display the alternate low risk message if low risk and no tracing", function() {
+        it("should display the alternate low risk message if low risk and no tracing", function () {
             return tester
                 .setup.user.state("state_tracing")
                 .setup.user.answers({
@@ -792,7 +794,7 @@ describe("ussd_covid19_triage app", function() {
                     state_sore_throat: false,
                     state_exposure: "No",
                 })
-                .setup(function(api) {
+                .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
                             "url": 'http://eventstore/api/v2/covid19triage/',
@@ -831,7 +833,59 @@ describe("ussd_covid19_triage app", function() {
                 })
                 .run();
         });
-        it("should display the alternate high risk message if high risk and no tracing", function() {
+        it("should display the alternate medium risk message if medium risk and no tracing", function () {
+            return tester
+                .setup.user.state("state_tracing")
+                .setup.user.answers({
+                    state_province: "ZA-WC",
+                    state_city: "Cape Town",
+                    state_age: "<18",
+                    state_fever: true,
+                    state_cough: false,
+                    state_sore_throat: false,
+                    state_exposure: "No",
+                })
+                .setup(function (api) {
+                    api.http.fixtures.add({
+                        "request": {
+                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "method": 'POST',
+                            "data": {
+                                msisdn: "+27123456789",
+                                source: "USSD",
+                                province: "ZA-WC",
+                                city: "Cape Town",
+                                age: "<18",
+                                fever: true,
+                                cough: false,
+                                sore_throat: false,
+                                exposure: "No",
+                                tracing: false,
+                                risk: "moderate"
+                            }
+                        },
+                        "response": {
+                            "code": 201,
+                            "data": {
+                                "accepted": true
+                            }
+                        }
+                    });
+                })
+                .input("2")
+                .check.interaction({
+                    state: "state_display_risk",
+                    reply: [
+                        "You will not be contacted. Call NICD:0800029999 for info on what to do " +
+                        "& how to test. STAY HOME. Avoid contact with people in your " +
+                        "house/community",
+                        "1. START OVER"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should display the alternate high risk message if high risk and no tracing", function () {
             return tester
                 .setup.user.state("state_tracing")
                 .setup.user.answers({
@@ -843,7 +897,7 @@ describe("ussd_covid19_triage app", function() {
                     state_sore_throat: false,
                     state_exposure: "No",
                 })
-                .setup(function(api) {
+                .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
                             "url": 'http://eventstore/api/v2/covid19triage/',
@@ -874,13 +928,14 @@ describe("ussd_covid19_triage app", function() {
                 .check.interaction({
                     state: "state_display_risk",
                     reply: [
-                        "You will not be contacted. Call NICD 0800029999 for info on what to do " +
-                        "& how to test. STAY HOME. Avoid contact with people in your house/" +
-                        "community",
-                        "1. START OVER"
+                        "You will not be contacted. Please seek medical care now at an " +
+                        "emergency facility.",
+                        "-Avoid contact with other people",
+                        "-Put on a face mask before entering facility",
                     ].join("\n"),
                     char_limit: 160
                 })
+                .check.reply.ends_session()
                 .run();
         });
     });
