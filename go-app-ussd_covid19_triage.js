@@ -28,11 +28,10 @@ go.app = (function () {
       if (answers.state_age === ">65") { score += 10; }
 
       if (answers.state_exposure === "yes") { score += 7; }
-      else if (answers.state_exposure === "not_sure") { score += 3; }
 
       var risk = "low";
-      if (score > 2) { risk = "moderate"; }
-      if (score > 13) { risk = "high"; }
+      if (score > 9) { risk = "moderate"; }
+      if (score > 17) { risk = "high"; }
 
       return risk;
     };
