@@ -823,7 +823,7 @@ describe("ussd_covid19_triage app", function () {
                 })
                 .input("2")
                 .check.interaction({
-                    state: "state_display_risk",
+                    state: "state_no_tracing_low_risk",
                     reply: [
                         "You will not be contacted. If you think you have COVID-19 please STAY " +
                         "HOME, avoid contact with other people in your community and self-isolate.",
@@ -874,7 +874,7 @@ describe("ussd_covid19_triage app", function () {
                 })
                 .input("2")
                 .check.interaction({
-                    state: "state_display_risk",
+                    state: "state_no_tracing_moderate_risk",
                     reply: [
                         "You will not be contacted. Call NICD:0800029999 for info on what to do " +
                         "& how to test. STAY HOME. Avoid contact with people in your " +
