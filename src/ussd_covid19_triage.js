@@ -382,38 +382,47 @@ go.app = (function () {
             "- Put on a face mask before entering the facility"
           ].join("\n"));
         }
-        return new EndState(name, {
-          next: "state_start",
-          text: text
-        });
       } else {
         if (risk === "low") {
-          text = $(
-            "You will not be contacted. If you think you have COVID-19 please STAY HOME, avoid " +
-            "contact with other people in your community and self-isolate."
-          );
+          // This needs to be a separate state because it needs timeout handling
+          return self.states.create("state_no_tracing_low_risk");
         }
         if (risk === "moderate") {
-          text = $(
-            "You will not be contacted. Call NICD:0800029999 for info on what to do & how to " +
-            "test. STAY HOME. Avoid contact with people in your house/community"
-          );
+          // This needs to be a separate state because it needs timeout handling
+          return self.states.create("state_no_tracing_moderate_risk");
         }
         if (risk === "high") {
-          return new EndState(name, {
-            next: "state_start",
-            text: $([
-              "You will not be contacted. Please seek medical care now at an emergency facility.",
-              "-Avoid contact with other people",
-              "-Put on a face mask before entering facility"
-            ].join("\n"))
-          });
+          text = $([
+            "You will not be contacted. Please seek medical care now at an emergency facility.",
+            "-Avoid contact with other people",
+            "-Put on a face mask before entering facility"
+          ].join("\n"));
         }
+      }
+      return new EndState(name, {
+        next: "state_start",
+        text: text,
+      });
+    });
+
+    self.add("state_no_tracing_low_risk", function(name) {
         return new MenuState(name, {
-          question: text,
+          question: $(
+            "You will not be contacted. If you think you have COVID-19 please STAY HOME, avoid " +
+            "contact with other people in your community and self-isolate."
+          ),
           choices: [new Choice("state_start", $("START OVER"))]
         });
-      }
+    });
+
+    self.add("state_no_tracing_moderate_risk", function(name) {
+        return new MenuState(name, {
+          question: $(
+            "You will not be contacted. Call NICD:0800029999 for info on what to do & how to " +
+            "test. STAY HOME. Avoid contact with people in your house/community"
+          ),
+          choices: [new Choice("state_start", $("START OVER"))]
+        });
     });
 
     self.states.creators.__error__ = function (name, opts) {
