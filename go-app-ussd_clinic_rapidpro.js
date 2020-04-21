@@ -520,51 +520,12 @@ go.app = function() {
             // Skip to message consent if the user has already given info consent
             var consent = _.get(self.im.user.answers, "contact.fields.info_consent", "") || "";
             if(consent.toUpperCase() === "TRUE"){
-                return self.states.create("state_message_consent");
-            }
-            return new MenuState(name, {
-                question: $(
-                    "We need to process the mom's personal info to send her relevant messages " +
-                    "about her pregnancy/baby. Does she agree?"
-                ),
-                error: $(
-                    "Sorry we don't understand. Please enter the number next to the mother's " +
-                    "answer."
-                ),
-                choices: [
-                    new Choice("state_message_consent", $("Yes")),
-                    new Choice("state_info_consent_confirm", $("No")),
-                    new Choice("state_more_info", $("She needs more info to decide"))
-                ]
-            });
-        });
-
-        self.add("state_info_consent_confirm", function(name) {
-            return new MenuState(name, {
-                question: $(
-                    "Unfortunately, without agreeing she can't sign up to MomConnect. Does she " +
-                    "agree to MomConnect processing her personal info?"
-                ),
-                error: $(
-                    "Sorry we don't understand. Please enter the number next to the mother's " +
-                    "answer."
-                ),
-                choices: [
-                    new Choice("state_message_consent", $("Yes")),
-                    new Choice("state_no_consent", $("No"))
-                ]
-            });
-        });
-
-        self.add("state_message_consent", function(name) {
-            var consent = _.get(self.im.user.answers, "contact.fields.message_consent", "") || "";
-            if(consent.toUpperCase() === "TRUE"){
                 return self.states.create("state_research_consent");
             }
             return new MenuState(name, {
                 question: $(
-                    "Does the mother agree to receive messages from MomConnect? This may include " +
-                    "receiving messages on public holidays and weekends."
+                    "Does she agree to let us process her info & to getting msgs? " +
+                    "She may get msgs on public holidays & weekends."
                 ),
                 error: $(
                     "Sorry we don't understand. Please enter the number next to the mother's " +
@@ -572,12 +533,13 @@ go.app = function() {
                 ),
                 choices: [
                     new Choice("state_research_consent", $("Yes")),
-                    new Choice("state_message_consent_confirm", $("No")),
+                    new Choice("state_info_consent_confirm", $("No")),
+                    new Choice("state_more_info", $("She needs more info to decide"))
                 ]
             });
         });
 
-        self.add("state_message_consent_confirm", function(name) {
+        self.add("state_info_consent_confirm", function(name) {
             return new MenuState(name, {
                 question: $(
                     "Unfortunately, without agreeing she can't sign up to MomConnect. Does she " +
