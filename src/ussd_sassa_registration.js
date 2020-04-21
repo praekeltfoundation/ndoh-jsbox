@@ -1,9 +1,12 @@
 go.app = (function () {
+  var _ = require("lodash");
+  var moment = require("moment");
   var vumigo = require("vumigo_v02");
   var App = vumigo.App;
   var Choice = vumigo.states.Choice;
   var EndState = vumigo.states.EndState;
   var MenuState = vumigo.states.MenuState;
+  var FreeText = vumigo.states.FreeText;
   var ChoiceState = vumigo.states.ChoiceState;
   var JsonApi = vumigo.http.api.JsonApi;
 
@@ -69,7 +72,7 @@ go.app = (function () {
       });
     });
 
-    self.add("state_id_number", function (name) {
+    self.add("state_id_number", function (name, opts) {
       var question = "Please enter your ID Number (eg 1234567890088)";
       var error_msg = [
         "Sorry, that is not a valid ID Number.",
@@ -80,7 +83,7 @@ go.app = (function () {
       if (self.im.user.answers.state_start === "refugee") {
         question =
           "Please enter your Refugee Permit Number (e.g. 1234567890268)";
-        var error_msg = [
+        error_msg = [
           "Sorry, that is not a valid Refugee Permit number.",
           "",
           "Please enter your Refugee Permit Number (eg 1234567890268)",
@@ -143,7 +146,7 @@ go.app = (function () {
                         "To appeal, call 0800 002 9999",
                       ].join("\n")
                     ).context({
-                      id_number: id_number,
+                      id_number: content,
                       status: response.data.status,
                     });
                   }
