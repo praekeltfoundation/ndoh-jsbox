@@ -255,7 +255,8 @@ go.app = (function () {
             "document (eg John Doe)"
         ),
         check: function (content) {
-          if (content.length < 2 || content.indexOf(" ") == -1) {
+          var name = content.trim();
+          if (name.length < 2 || name.length > 26 || name.indexOf(" ") == -1) {
             return $(
               [
                 "Sorry, not a valid name. This answer can only contain full names and surnames.",
@@ -312,7 +313,8 @@ go.app = (function () {
       return new FreeText(name, {
         question: $("Please TYPE the Street Name and Number"),
         check: function (content) {
-          if (content.length < 2 || content.indexOf(" ") == -1) {
+          var street = content.trim();
+          if (street.length < 2 || street.length > 95 || street.indexOf(" ") == -1) {
             return $(
               "Sorry, we don't understand. Please TYPE the Street Name and " +
                 "Number"

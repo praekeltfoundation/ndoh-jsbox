@@ -714,7 +714,7 @@ describe("ussd_sassa_registration app", function () {
           .setup.user.state("state_approval")
           .setup.user.answers({
             state_resident: "refugee",
-            state_id_number: "test-id_number",
+            state_id_number: "No",
             state_uif: false,
             state_income: false,
             state_grant: false,
@@ -731,7 +731,7 @@ describe("ussd_sassa_registration app", function () {
                     "method": 'POST',
                     "data": {
                       id_type: "refugee",
-                      id_number: "test-id_number",
+                      id_number: null,
                       uif: false,
                       income: false,
                       grant: false,
