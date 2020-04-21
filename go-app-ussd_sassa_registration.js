@@ -96,7 +96,7 @@ go.app = (function () {
       return new EndState(name, {
         next: "state_start",
         text: $(
-          "Sorry. This serivce is only available to South African Citizens, " +
+          "Sorry. This service is only available to South African Citizens, " +
             "Permanent Residents or Refugees "
         ),
       });
@@ -195,7 +195,20 @@ go.app = (function () {
             }
           }
         },
-        next: "state_grant",
+        next: function (choice) {
+          if (_.upperCase(choice) != "NO") {
+            return "state_grant";
+          } else {
+            return "state_no_id";
+          }
+        },
+      });
+    });
+
+    self.states.add("state_no_id", function (name) {
+      return new EndState(name, {
+        next: "state_start",
+        text: $("Please call 080 002 9999."),
       });
     });
 
@@ -279,15 +292,15 @@ go.app = (function () {
         error: $(["Please select Province", "", "Reply:"].join("\n")),
         accept_labels: true,
         choices: [
-          new Choice("ZA-EC", $("EASTERN CAPE")),
-          new Choice("ZA-FS", $("FREE STATE")),
-          new Choice("ZA-GT", $("GAUTENG")),
-          new Choice("ZA-NL", $("KWAZULU NATAL")),
-          new Choice("ZA-LP", $("LIMPOPO")),
-          new Choice("ZA-MP", $("MPUMALANGA")),
-          new Choice("ZA-NW", $("NORTH WEST")),
-          new Choice("ZA-NC", $("NORTHERN CAPE")),
           new Choice("ZA-WC", $("WESTERN CAPE")),
+          new Choice("ZA-EC", $("EASTERN CAPE")),
+          new Choice("ZA-NC", $("NORTHERN CAPE")),
+          new Choice("ZA-FS", $("FREE STATE")),
+          new Choice("ZA-NL", $("KWAZULU NATAL")),
+          new Choice("ZA-NW", $("NORTH WEST")),
+          new Choice("ZA-GT", $("GAUTENG")),
+          new Choice("ZA-MP", $("MPUMALANGA")),
+          new Choice("ZA-LP", $("LIMPOPO")),
         ],
         next: "state_suburb",
       });
@@ -330,6 +343,7 @@ go.app = (function () {
 
     self.add("state_confirm_phonenumber", function (name) {
       var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+      self.im.user.set_answer("msisdn", self.im.user.addr);
       return new MenuState(name, {
         question: $(
           "We have detected this number ({{ msisdn }}). " +
@@ -366,13 +380,14 @@ go.app = (function () {
               ].join("\n")
             );
           }
+          self.im.user.set_answer("msisdn", content);
         },
         next: "state_approval",
       });
     });
 
     self.add("state_approval", function (name) {
-      var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+      var msisdn = utils.normalize_msisdn(self.im.user.answers.msisdn, "ZA");
       var id_number = self.im.user.answers.state_id_number;
       var username = self.im.user.answers.state_name;
       return new MenuState(name, {
@@ -423,7 +438,7 @@ go.app = (function () {
     });
 
     self.add("state_submit_data", function (name, opts) {
-      var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+      var msisdn = utils.normalize_msisdn(self.im.user.answers.msisdn, "ZA");
       var address = [
         self.im.user.answers.state_street,
         self.im.user.answers.state_suburb,

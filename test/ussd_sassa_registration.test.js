@@ -200,7 +200,7 @@ describe("ussd_sassa_registration app", function () {
       return tester
           .setup.user.state("state_id_number")
           .input("No")
-          .check.user.state("state_grant")
+          .check.user.state("state_no_id")
           .run();
     });
     it("should check id number and go to state_grant if valid", function () {
@@ -465,15 +465,15 @@ describe("ussd_sassa_registration app", function () {
             "Please select Province",
             "",
             "Reply:",
-            "1. EASTERN CAPE",
-            "2. FREE STATE",
-            "3. GAUTENG",
-            "4. KWAZULU NATAL",
-            "5. LIMPOPO",
-            "6. MPUMALANGA",
-            "7. NORTH WEST",
-            "8. NORTHERN CAPE",
-            "9. WESTERN CAPE",
+            "1. WESTERN CAPE",
+            "2. EASTERN CAPE",
+            "3. NORTHERN CAPE",
+            "4. FREE STATE",
+            "5. KWAZULU NATAL",
+            "6. NORTH WEST",
+            "7. GAUTENG",
+            "8. MPUMALANGA",
+            "9. LIMPOPO",
           ].join("\n"),
           char_limit: 160,
         })
@@ -489,15 +489,15 @@ describe("ussd_sassa_registration app", function () {
                 "Please select Province",
                 "",
                 "Reply:",
-                "1. EASTERN CAPE",
-                "2. FREE STATE",
-                "3. GAUTENG",
-                "4. KWAZULU NATAL",
-                "5. LIMPOPO",
-                "6. MPUMALANGA",
-                "7. NORTH WEST",
-                "8. NORTHERN CAPE",
-                "9. WESTERN CAPE",
+                "1. WESTERN CAPE",
+                "2. EASTERN CAPE",
+                "3. NORTHERN CAPE",
+                "4. FREE STATE",
+                "5. KWAZULU NATAL",
+                "6. NORTH WEST",
+                "7. GAUTENG",
+                "8. MPUMALANGA",
+                "9. LIMPOPO",
               ].join("\n"),
               char_limit: 160
           })
@@ -660,7 +660,8 @@ describe("ussd_sassa_registration app", function () {
             .setup.user.state("state_approval")
             .setup.user.answers({
               state_id_number: "test-id-number",
-              state_name: "John Doe"
+              state_name: "John Doe",
+              msisdn: "+27123456789"
             })
             .check.interaction({
                 state: "state_approval",
@@ -682,7 +683,8 @@ describe("ussd_sassa_registration app", function () {
           .setup.user.state("state_approval")
           .setup.user.answers({
             state_id_number: "test-id-number",
-            state_name: "John Doe"
+            state_name: "John Doe",
+            msisdn: "+27123456789"
           })
           .input("a")
           .check.interaction({
@@ -705,6 +707,9 @@ describe("ussd_sassa_registration app", function () {
     it("should go to state_restart if details are wrong", function () {
         return tester
             .setup.user.state("state_approval")
+            .setup.user.answers({
+              msisdn: "+27123456780"
+            })
             .input("2")
             .check.user.state("state_restart")
             .run();
@@ -722,7 +727,8 @@ describe("ussd_sassa_registration app", function () {
             state_start: false,
             state_street: "1 friend street",
             state_suburb: "woodstock",
-            state_province: "ZA-WC"
+            state_province: "ZA-WC",
+            msisdn: "+27123456780"
           })
           .setup(function (api) {
             api.http.fixtures.add({
@@ -737,7 +743,7 @@ describe("ussd_sassa_registration app", function () {
                       grant: false,
                       name: "John Doe",
                       address: "1 friend street, woodstock, ZA-WC",
-                      phonenumber: "+27123456789",
+                      phonenumber: "+27123456780",
                       self_registration: false,
                     }
                 },
