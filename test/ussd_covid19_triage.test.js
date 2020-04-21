@@ -265,6 +265,19 @@ describe("ussd_covid19_triage app", function () {
                 })
                 .run();
         });
+        it("should ask again for invalid input", function () {
+            return tester
+                .setup.user.state("state_city")
+                .input(" \t\n")
+                .check.interaction({
+                    state: "state_city",
+                    reply:
+                        "Please TYPE the name of your Suburb, Township, Town or Village (or " +
+                        "nearest)",
+                    char_limit: 160
+                })
+                .run();
+        });
         it("should go to state_age", function () {
             return tester
                 .setup.user.state("state_city")

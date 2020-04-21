@@ -159,8 +159,17 @@ go.app = (function () {
     });
 
     self.add("state_city", function (name) {
+      var question = $(
+        "Please TYPE the name of your Suburb, Township, Town or Village (or nearest)"
+      );
       return new FreeText(name, {
-        question: $("Please TYPE the name of your Suburb, Township, Town or Village (or nearest)"),
+        question: question,
+        check: function(content) {
+          // Ensure that they're not giving an empty response
+          if(!content.trim()){
+            return question;
+          }
+        },
         next: "state_age"
       });
     });
