@@ -24,7 +24,8 @@ module.exports = function (grunt) {
                     ussd_optout_rapidpro: 'src/ussd_optout_rapidpro.js',
                     ussd_pmtct_rapidpro: 'src/ussd_pmtct_rapidpro.js',
                     ussd_ccmdd_wc_address_update: "src/ussd_ccmdd_wc_address_update.js",
-                    ussd_covid19_triage: "src/ussd_covid19_triage.js"
+                    ussd_covid19_triage: "src/ussd_covid19_triage.js",
+                    ussd_sassa_registration: "src/ussd_sassa_registration.js"
                 },
                 ussd_clinic: [
                     'src/index.js',
@@ -134,6 +135,11 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.ussd_covid19_triage %>',
                     'src/init.js'
                 ],
+                ussd_sassa_registration: [
+                    'src/index.js',
+                    '<%= paths.src.app.ussd_sassa_registration %>',
+                    'src/init.js'
+                ],
                 all: [
                     'src/**/*.js'
                 ]
@@ -155,7 +161,8 @@ module.exports = function (grunt) {
                 ussd_optout_rapidpro: 'go-app-ussd_optout_rapidpro.js',
                 ussd_pmtct_rapidpro: 'go-app-ussd_pmtct_rapidpro.js',
                 ussd_ccmdd_wc_address_update: 'go-app-ussd_ccmdd_wc_address_update.js',
-                ussd_covid19_triage: 'go-app-ussd_covid19_triage.js'
+                ussd_covid19_triage: 'go-app-ussd_covid19_triage.js',
+                ussd_sassa_registration: 'go-app-ussd_sassa_registration.js'
             },
             test: {
                 ussd_clinic: [
@@ -268,7 +275,12 @@ module.exports = function (grunt) {
                 session_length_helper: [
                     'src/session_length_helper.js',
                     'test/session_length_helper.test.js'
-                ]
+                ],
+                ussd_sassa_registration: [
+                    'test/setup.js',
+                    '<%= paths.src.app.ussd_sassa_registration %>',
+                    'test/ussd_sassa_registration.test.js'
+                ],
             }
         },
 
@@ -356,7 +368,11 @@ module.exports = function (grunt) {
             ussd_covid19_triage: {
                 src: ['<%= paths.src.ussd_covid19_triage %>'],
                 dest: '<%= paths.dest.ussd_covid19_triage %>'
-            }
+            },
+            ussd_sassa_registration: {
+                src: ['<%= paths.src.ussd_sassa_registration %>'],
+                dest: '<%= paths.dest.ussd_sassa_registration %>'
+            },
         },
 
         mochaTest: {
@@ -418,6 +434,9 @@ module.exports = function (grunt) {
             },
             test_session_length_helper: {
                 src: ['<%= paths.test.session_length_helper %>']
+            },
+            ussd_sassa_registration: {
+                src: ['<%= paths.test.ussd_sassa_registration %>']
             }
             /*
             */
