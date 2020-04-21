@@ -427,12 +427,16 @@ go.app = (function () {
         self.im.user.answers.state_suburb,
         self.im.user.answers.state_province,
       ].join(", ");
+      var id_number = null;
+      if (_.upperCase(self.im.user.answers.state_id_number) != "NO") {
+        id_number = self.im.user.answers.state_id_number;
+      }
 
       return new JsonApi(self.im)
         .post(self.im.config.sassa_api.url + "/api/v1/registrations/", {
           data: {
             id_type: self.im.user.answers.state_resident,
-            id_number: self.im.user.answers.state_id_number,
+            id_number: id_number,
             uif: self.im.user.answers.state_uif,
             income: self.im.user.answers.state_income,
             grant: self.im.user.answers.state_grant,
