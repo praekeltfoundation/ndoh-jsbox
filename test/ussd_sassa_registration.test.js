@@ -742,8 +742,10 @@ describe("ussd_sassa_registration app", function () {
                       income: false,
                       grant: false,
                       name: "John Doe",
-                      address: "1 friend street, woodstock, ZA-WC",
+                      address: "1 friend street, woodstock",
+                      province: "ZA-WC",
                       phonenumber: "+27123456780",
+                      device_msisdn: "+27123456789",
                       self_registration: false,
                     }
                 },

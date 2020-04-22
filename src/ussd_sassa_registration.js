@@ -435,11 +435,11 @@ go.app = (function () {
     });
 
     self.add("state_submit_data", function (name, opts) {
+      var device_msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
       var msisdn = utils.normalize_msisdn(self.im.user.answers.msisdn, "ZA");
       var address = [
         self.im.user.answers.state_street,
         self.im.user.answers.state_suburb,
-        self.im.user.answers.state_province,
       ].join(", ");
       var id_number = null;
       if (_.upperCase(self.im.user.answers.state_id_number) != "NO") {
@@ -458,6 +458,8 @@ go.app = (function () {
             address: address,
             phonenumber: msisdn,
             self_registration: self.im.user.answers.state_start,
+            device_msisdn: device_msisdn,
+            province: self.im.user.answers.state_province
           },
           headers: {
             Authorization: ["Token " + self.im.config.sassa_api.token],
