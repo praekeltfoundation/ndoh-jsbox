@@ -438,6 +438,7 @@ go.app = (function () {
     });
 
     self.add("state_submit_data", function (name, opts) {
+      var device_msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
       var msisdn = utils.normalize_msisdn(self.im.user.answers.msisdn, "ZA");
       var address = [
         self.im.user.answers.state_street,
@@ -461,6 +462,7 @@ go.app = (function () {
             address: address,
             phonenumber: msisdn,
             self_registration: self.im.user.answers.state_start,
+            device_msisdn: device_msisdn
           },
           headers: {
             Authorization: ["Token " + self.im.config.sassa_api.token],
