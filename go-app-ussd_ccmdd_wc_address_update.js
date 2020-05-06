@@ -208,7 +208,7 @@ go.app = (function () {
       return new MenuState(name, {
         question: $(
           [
-            "To have your prescription medication delivered to your door, we need to process your personal info.",
+            "To have your prescription chronic medication delivered to your door, we need to process your personal info.",
             "Do you want to continue?",
           ].join("\n")
         ),

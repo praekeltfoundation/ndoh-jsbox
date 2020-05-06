@@ -38,7 +38,7 @@ describe("ussd_ccmdd_wc_address_update app", function () {
         .check.interaction({
           state: "state_info_consent",
           reply: [
-            "To have your prescription medication delivered to your door, we need to process your personal info.",
+            "To have your prescription chronic medication delivered to your door, we need to process your personal info.",
             "Do you want to continue?",
             "1. Yes",
             "2. No",
