@@ -193,7 +193,7 @@ go.app = (function () {
         question: $(
           [
             "Welcome to the Department of Health's Medication Home Delivery Service.",
-            "We deliver prescription meds to your door.",
+            "We deliver prescription chronic medication to your door.",
           ].join("\n")
         ),
         error: $(
@@ -208,7 +208,7 @@ go.app = (function () {
       return new MenuState(name, {
         question: $(
           [
-            "To have your prescription medication delivered to your door, we need to process your personal info.",
+            "To have your prescription chronic medication delivered to your door, we need to process your personal info.",
             "Do you want to continue?",
           ].join("\n")
         ),
