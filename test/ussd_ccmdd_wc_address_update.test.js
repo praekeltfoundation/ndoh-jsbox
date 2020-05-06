@@ -23,7 +23,7 @@ describe("ussd_ccmdd_wc_address_update app", function () {
           state: "state_start",
           reply: [
             "Welcome to the Department of Health's Medication Home Delivery Service.",
-            "We deliver prescription meds to your door.",
+            "We deliver prescription chronic medication to your door.",
             "1. Continue",
           ].join("\n"),
           char_limit: 140,

@@ -44,7 +44,7 @@ go.app = (function () {
         question: $(
           [
             "Welcome to the Department of Health's Medication Home Delivery Service.",
-            "We deliver prescription meds to your door.",
+            "We deliver prescription chronic medication to your door.",
           ].join("\n")
         ),
         error: $(
