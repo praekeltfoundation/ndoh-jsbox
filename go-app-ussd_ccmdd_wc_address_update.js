@@ -378,7 +378,7 @@ go.app = (function () {
           "[4/10] On what day were you born? Please enter the day as a number, e.g. 12."
         ),
         check: function (content) {
-          var match = content.match(/^(\d+)$/),
+          var match = content.match(/^\d{1,2}$/),
             dob;
           if (
             !match ||
@@ -440,7 +440,7 @@ go.app = (function () {
       return new ChoiceState(name, {
         question: $("[6/10] In which District do you stay?"),
         error: $(
-          "Sorry we don't understand. Please enter the number next to your answer."
+          "Sorry we don't understand. Please enter the no."
         ),
         choices: [
           new Choice("Cape Town", $("Cape Town")),
@@ -477,7 +477,7 @@ go.app = (function () {
       return new PaginatedChoiceState(name, {
         question: $("[7/10] Select your health sub-district:"),
         error: $(
-          "Sorry we don't understand. Please enter the number next to your answer."
+          "Sorry we don't understand. Please enter the no."
         ),
         choices: [
           new Choice("Cape Town East", $("Cape Town East")),
@@ -577,8 +577,6 @@ go.app = (function () {
         },
       });
     });
-
-
 
     self.add("state_suburb", function (name) {
       return new FreeText(name, {

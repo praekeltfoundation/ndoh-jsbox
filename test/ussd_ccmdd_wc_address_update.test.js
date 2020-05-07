@@ -30,6 +30,27 @@ describe("ussd_ccmdd_wc_address_update app", function () {
         })
         .run();
     });
+    it("should give error message on invalid input", function () {
+      return tester.setup.user
+        .state("state_start")
+        .inputs({ session_event: "new" }, "A")
+        .check.interaction({
+          state: "state_start",
+          reply: [
+            "Sorry we don't understand. Please enter the number next to your answer.",
+            "1. Continue"
+          ].join("\n"),
+          char_limit: 140,
+        })
+        .run();
+    });
+    it("should go to consent on valid input", function () {
+      return tester
+        .setup.user.state("state_start")
+        .input("1")
+        .check.user.state("state_info_consent")
+        .run();
+    });
   });
   describe("state_info_consent", function () {
     it("should ask consent to collect personal info", function () {
@@ -58,8 +79,15 @@ describe("ussd_ccmdd_wc_address_update app", function () {
             "1. Yes",
             "2. No",
           ].join("\n"),
-          char_limit: 140,
+          char_limit: 160,
         })
+        .run();
+    });
+    it("should go to state_first_name on valid input", function () {
+      return tester
+        .setup.user.state("state_info_consent")
+        .input("1")
+        .check.user.state("state_first_name")
         .run();
     });
   });
@@ -74,6 +102,27 @@ describe("ussd_ccmdd_wc_address_update app", function () {
         })
         .run();
     });
+    it("should give error message on invalid input", function () {
+      return tester.setup.user
+        .state("state_first_name")
+        .inputs("A")
+        .check.interaction({
+          state: "state_first_name",
+          reply: (
+            "Sorry, we don’t understand. Please try again by replying with " +
+              "your first name e.g. Jane."
+          ),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should go to state_surname on valid input", function () {
+      return tester
+        .setup.user.state("state_first_name")
+        .input("Jane")
+        .check.user.state("state_surname")
+        .run();
+    });
   });
   describe("state_surname", function () {
     it("should ask for surname", function () {
@@ -84,6 +133,27 @@ describe("ussd_ccmdd_wc_address_update app", function () {
           reply: "[2/10] What is your last name?",
           char_limit: 160,
         })
+        .run();
+    });
+    it("should give error message on invalid input", function () {
+      return tester.setup.user
+        .state("state_surname")
+        .inputs("A")
+        .check.interaction({
+          state: "state_surname",
+          reply: (
+            "Sorry, we don’t understand. Please try again by replying with " +
+              "your surname e.g. Smith."
+          ),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should go to state_id_type on valid input", function () {
+      return tester
+        .setup.user.state("state_surname")
+        .input("Smith")
+        .check.user.state("state_id_type")
         .run();
     });
   });
@@ -102,6 +172,28 @@ describe("ussd_ccmdd_wc_address_update app", function () {
         })
         .run();
     });
+    it("should give error message on invalid input", function () {
+      return tester.setup.user
+        .state("state_id_type")
+        .inputs("A")
+        .check.interaction({
+          state: "state_id_type",
+          reply: [
+            "Sorry we don't understand. Please enter the number next to your answer.",
+            "1. SA ID",
+            "2. None"
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should go to state_sa_id_no on valid input", function () {
+      return tester
+        .setup.user.state("state_id_type")
+        .input("1")
+        .check.user.state("state_sa_id_no")
+        .run();
+    });
   });
   describe("state_sa_id_no", function () {
     it("should ask for the id number", function () {
@@ -115,6 +207,27 @@ describe("ussd_ccmdd_wc_address_update app", function () {
         })
         .run();
     });
+    it("should give error message on invalid input", function () {
+      return tester.setup.user
+        .state("state_sa_id_no")
+        .inputs("A")
+        .check.interaction({
+          state: "state_sa_id_no",
+          reply: (
+            "Sorry, we don't understand. Please try again by entering the your " +
+             "13 digit South African ID number."
+          ),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should go to state_folder_number on valid input", function () {
+      return tester
+        .setup.user.state("state_sa_id_no")
+        .input("7401106750188")
+        .check.user.state("state_folder_number")
+        .run();
+    });
   });
   describe("state_dob_year", function () {
     it("should ask what year the user was born", function () {
@@ -126,6 +239,27 @@ describe("ussd_ccmdd_wc_address_update app", function () {
             "[4/10] What year were you born? Please reply with the year as 4 digits in the format YYYY.",
           char_limit: 160,
         })
+        .run();
+    });
+    it("should give error message on invalid input", function () {
+      return tester.setup.user
+        .state("state_dob_year")
+        .inputs("A")
+        .check.interaction({
+          state: "state_dob_year",
+          reply: (
+            "Sorry, we don't understand. Please try again by entering the year " +
+              "you were born as 4 digits in the format YYYY, e.g. 1910."
+          ),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should go to state_dob_month on valid input", function () {
+      return tester
+        .setup.user.state("state_dob_year")
+        .input("2000")
+        .check.user.state("state_dob_month")
         .run();
     });
   });
@@ -167,6 +301,38 @@ describe("ussd_ccmdd_wc_address_update app", function () {
         .check.user.answer("state_dob_month", "01")
         .run();
     });
+    it("should give error message on invalid input", function () {
+      return tester.setup.user
+        .state("state_dob_month")
+        .inputs("A")
+        .check.interaction({
+          state: "state_dob_month",
+          reply: [
+            "Sorry we don't understand. Please enter the no. next to your answer.",
+            "1. Jan",
+            "2. Feb",
+            "3. Mar",
+            "4. Apr",
+            "5. May",
+            "6. Jun",
+            "7. Jul",
+            "8. Aug",
+            "9. Sep",
+            "10. Oct",
+            "11. Nov",
+            "12. Dec",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should go to state_dob_day on valid input", function () {
+      return tester
+        .setup.user.state("state_dob_month")
+        .input("12")
+        .check.user.state("state_dob_day")
+        .run();
+    });
   });
   describe("state_dob_day", function () {
     it("should ask what ay the user was born", function () {
@@ -176,6 +342,43 @@ describe("ussd_ccmdd_wc_address_update app", function () {
           state: "state_dob_day",
           reply:
             "[4/10] On what day were you born? Please enter the day as a number, e.g. 12.",
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should accept a valid day", function () {
+      return tester
+        .setup.user.state("state_dob_day")
+        .setup.user.answers({
+          state_dob_year: "2000",
+          state_dob_month: "01"
+        })
+        .input("12")
+        .check.user.state("state_folder_number")
+        .run();
+    });
+    it("should not accept incorrect day number", function () {
+      return tester.setup.user
+        .state("state_dob_day")
+        .input("123")
+        .check.interaction({
+          state: "state_dob_day",
+          reply: (
+            "Sorry, we don't understand. Please try again by entering the day " +
+            "you were born as a number, e.g. 12."),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should not accept invalid day", function () {
+      return tester.setup.user
+        .state("state_dob_day")
+        .input("A")
+        .check.interaction({
+          state: "state_dob_day",
+          reply: (
+            "Sorry, we don't understand. Please try again by entering the day " +
+            "you were born as a number, e.g. 12."),
           char_limit: 160,
         })
         .run();
@@ -266,6 +469,33 @@ describe("ussd_ccmdd_wc_address_update app", function () {
         })
         .run();
     });
+    it("should give error message on invalid input", function () {
+      return tester.setup.user
+        .state("state_district")
+        .inputs("A")
+        .check.interaction({
+          state: "state_district",
+          reply: [
+            "Sorry we don't understand. Please enter the no.",
+            "1. Cape Town",
+            "2. Cape Winelands",
+            "3. Central Karoo",
+            "4. Eden",
+            "5. Overberg",
+            "6. West Coast",
+            "7. None of the above",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should go to state_sub_district on valid input", function () {
+      return tester
+        .setup.user.state("state_district")
+        .input("1")
+        .check.user.state("state_sub_district")
+        .run();
+    });
   });
   describe("state_sub_district", function () {
     it("should show the correct page 1 options for Cape Town", function () {
@@ -305,6 +535,33 @@ describe("ussd_ccmdd_wc_address_update app", function () {
           ].join("\n"),
           char_limit: 160,
         })
+        .run();
+    });
+    it("should give error message on invalid input", function () {
+      return tester.setup.user
+        .state("state_sub_district")
+        .inputs("A")
+        .check.interaction({
+          state: "state_sub_district",
+          reply: [
+            "Sorry we don't understand. Please enter the no.",
+            "1. Cape Town East",
+            "2. Cape Town North",
+            "3. Cape Town South",
+            "4. Cape Town West",
+            "5. Khayelitsha",
+            "6. Klipfontein",
+            "7. Next",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should go to state_suburb on valid input", function () {
+      return tester
+        .setup.user.state("state_sub_district")
+        .input("1")
+        .check.user.state("state_suburb")
         .run();
     });
   });
@@ -433,6 +690,24 @@ describe("ussd_ccmdd_wc_address_update app", function () {
         })
         .run();
     });
+    it("should give error message on invalid input", function () {
+      return tester.setup.user
+        .state("state_suburb")
+        .inputs("A")
+        .check.interaction({
+          state: "state_suburb",
+          reply: "Sorry, we don't understand. Please reply with the name of your suburb, e.g. Woodstock",
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should go to state_street_name on valid input", function () {
+      return tester
+        .setup.user.state("state_suburb")
+        .input("Woodstock")
+        .check.user.state("state_street_name")
+        .run();
+    });
   });
   describe("state_street_name", function () {
     it("should ask for the street name", function () {
@@ -445,6 +720,24 @@ describe("ussd_ccmdd_wc_address_update app", function () {
         })
         .run();
     });
+    it("should give error message on invalid input", function () {
+      return tester.setup.user
+        .state("state_street_name")
+        .inputs("A")
+        .check.interaction({
+          state: "state_street_name",
+          reply: "Sorry, we don't understand. Please reply with the name of your street name",
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should go to state_street_number on valid input", function () {
+      return tester
+        .setup.user.state("state_street_name")
+        .input("High Level Street")
+        .check.user.state("state_street_number")
+        .run();
+    });
   });
   describe("state_street_number", function () {
     it("should ask for the street number", function () {
@@ -453,6 +746,20 @@ describe("ussd_ccmdd_wc_address_update app", function () {
         .check.interaction({
           state: "state_street_number",
           reply: "[10/10] Please reply with your house number, e.g. 17.",
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should give error message on invalid input", function () {
+      return tester.setup.user
+        .state("state_street_number")
+        .inputs("A")
+        .check.interaction({
+          state: "state_street_number",
+          reply: (
+            "Sorry, we don't understand. Please reply with your house " +
+              "number, e.g. 17."
+          ),
           char_limit: 160,
         })
         .run();
