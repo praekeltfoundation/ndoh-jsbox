@@ -49,7 +49,7 @@ go.app = (function () {
     self.states.add("state_timed_out", function (name, creator_opts) {
       return new MenuState(name, {
         question: $([
-          "Welcome back to The National Department of Health's COVID-19 Service",
+          "Welcome back to HealthCheck",
           "",
           "Reply"
         ].join("\n")),
@@ -67,8 +67,8 @@ go.app = (function () {
 
       return new MenuState(name, {
         question: $([
-          "The National Department of Health thanks you for contributing to the health of all " +
-          "citizens. Stop the spread of COVID-19",
+          "The HIGHER HEALTH HealthCheck is your risk assessment tool. " +
+          "Help us by answering a few questions about you and your health.",
           "",
           "Reply"
         ].join("\n")),
@@ -376,22 +376,21 @@ go.app = (function () {
       if (answers.state_tracing) {
         if (risk === "low") {
           text = $(
-            "Complete this HealthCheck again in 7 days or sooner if you feel ill or you come " +
-            "into contact with someone infected with COVID-19"
+            "You are at low risk of having COVID-19. If you feel ill or come " +
+            "into contact with someone infected with COVID-19, do this healthcheck again."
           );
         }
         if (risk === "moderate") {
           text = $(
-            "GET TESTED to find out if you have COVID-19. Go to a testing center or Call " +
-            "0800029999 or your healthcare practitioner for info on what to do & how to test"
+            "You should SELF-QUARANTINE for 14 days and do HealthCheck daily to monitor symptoms. " +
+            "Try stay and sleep alone in a room that has a window with good air flow."
           );
         }
         if (risk === "high") {
           text = $([
-            "Please seek medical care immediately at an emergency facility.",
-            "Remember to:",
-            "- Avoid contact with other people",
-            "- Put on a face mask before entering the facility"
+            "GET TESTED to find out if you have COVID-19. ",
+            "Go to a testing center or Call 0800029999 or your healthcare practitioner ",
+            "for info on what to do & how to test"
           ].join("\n"));
         }
       } else {
