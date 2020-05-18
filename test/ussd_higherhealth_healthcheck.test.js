@@ -1,7 +1,7 @@
 var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
 
-describe("ussd_covid19_triage app", function () {
+describe("ussd_higherhealth_healthcheck app", function () {
     var app;
     var tester;
 
@@ -24,7 +24,7 @@ describe("ussd_covid19_triage app", function () {
                 .check.interaction({
                     state: "state_timed_out",
                     reply: [
-                        "Welcome back to The National Department of Health's COVID-19 Service",
+                        "Welcome back to HealthCheck",
                         "",
                         "Reply",
                         "1. Continue where I left off",
@@ -41,7 +41,7 @@ describe("ussd_covid19_triage app", function () {
                 .check.interaction({
                     state: "state_timed_out",
                     reply: [
-                        "Welcome back to The National Department of Health's COVID-19 Service",
+                        "Welcome back to HealthCheck",
                         "",
                         "Reply",
                         "1. Continue where I left off",
@@ -58,8 +58,8 @@ describe("ussd_covid19_triage app", function () {
                 .check.interaction({
                     state: "state_start",
                     reply: [
-                        "The National Department of Health thanks you for contributing to the " +
-                        "health of all citizens. Stop the spread of COVID-19",
+                        "The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by " +
+                        "answering a few questions about you and your health.",
                         "",
                         "Reply",
                         "1. START"
@@ -684,8 +684,8 @@ describe("ussd_covid19_triage app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
-                        "Complete this HealthCheck again in 7 days or sooner if you feel ill or " +
-                        "you come into contact with someone infected with COVID-19",
+                        "You are at low risk of having COVID-19. If you feel ill or come into " +
+                        "contact with someone infected with COVID-19, do this healthcheck again.",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
@@ -734,9 +734,9 @@ describe("ussd_covid19_triage app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
-                        "GET TESTED to find out if you have COVID-19. Go to a testing center or " +
-                        "Call 0800029999 or your healthcare practitioner for info on what to do " +
-                        "& how to test",
+                        "You should SELF-QUARANTINE for 14 days and do HealthCheck daily to " +
+                        "monitor symptoms. Try stay and sleep alone in a room that has a window " +
+                        "with good air flow.",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
@@ -785,10 +785,9 @@ describe("ussd_covid19_triage app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply: [
-                        "Please seek medical care immediately at an emergency facility.",
-                        "Remember to:",
-                        "- Avoid contact with other people",
-                        "- Put on a face mask before entering the facility"
+                        "GET TESTED to find out if you have COVID-19.  Go to a testing center or " +
+                        "Call 0800029999 or your healthcare practitioner for info on what to do " +
+                        "& how to test"
                     ].join("\n"),
                     char_limit: 160
                 })
@@ -887,12 +886,11 @@ describe("ussd_covid19_triage app", function () {
                 })
                 .input("2")
                 .check.interaction({
-                    state: "state_no_tracing_moderate_risk",
+                    state: "state_display_risk",
                     reply: [
-                        "You will not be contacted. Call NICD:0800029999 for info on what to do " +
-                        "& how to test. STAY HOME. Avoid contact with people in your " +
-                        "house/community",
-                        "1. START OVER"
+                        "We won't contact you. SELF-QUARANTINE for 14 days and do this " +
+                        "HealthCheck daily to monitor symptoms. Stay/sleep alone in a room with " +
+                        "good air flowing through"
                     ].join("\n"),
                     char_limit: 160
                 })
@@ -941,10 +939,9 @@ describe("ussd_covid19_triage app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply: [
-                        "You will not be contacted. Please seek medical care now at an " +
-                        "emergency facility.",
-                        "-Avoid contact with other people",
-                        "-Put on a face mask before entering facility",
+                        "You will not be contacted. GET TESTED to find out if you have COVID-19. " +
+                        "Go to a testing center or Call 0800029999 or your healthcare " +
+                        "practitioner for info"
                     ].join("\n"),
                     char_limit: 160
                 })
