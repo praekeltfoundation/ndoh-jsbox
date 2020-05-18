@@ -19,12 +19,13 @@ go.app = (function () {
 
     self.calculate_risk = function () {
       var answers = self.im.user.answers;
-      var symptom_count = 0;
 
-      if (answers.state_fever) { symptom_count += 1; }
-      if (answers.state_cough) { symptom_count += 1; }
-      if (answers.state_sore_throat) { symptom_count += 1; }
-      if (answers.state_breathing) { symptom_count += 1; }
+      var symptom_count = _.filter([
+        answers.state_fever,
+        answers.state_cough,
+        answers.state_sore_throat,
+        answers.state_breathing
+      ]).length;
 
       if (symptom_count === 0) {
         if (answers.state_exposure === "yes") { return "moderate"; }
