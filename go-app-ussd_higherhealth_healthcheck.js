@@ -401,12 +401,14 @@ go.app = (function () {
     self.add("state_breathing", function (name) {
       return new ChoiceState(name, {
         question: $([
-          "Do you have breathlessness or a difficulty breathing, that you've noticed recently?",
+          "Do you have breathlessness or difficulty in breathing, that you've noticed recently?",
+          "",
           "Reply"
         ].join("\n")),
         error: $([
-          "Please use numbers from list. Do you have breathlessness or a difficulty breathing, " +
+          "Please use numbers from list. Do you have breathlessness or difficulty in breathing, " +
           "that you've noticed recently?",
+          "",
           "Reply"
         ].join("\n")),
         accept_labels: true,
@@ -421,7 +423,7 @@ go.app = (function () {
     self.add("state_exposure", function (name) {
       return new ChoiceState(name, {
         question: $([
-          "Have you been in close contact to someone confirmed to be infected with COVID19?",
+          "Have you been in close contact with someone confirmed to be infected with COVID19?",
           "",
           "Reply"
         ].join("\n")),
@@ -553,8 +555,8 @@ go.app = (function () {
       if (answers.state_tracing) {
         if (risk === "low") {
           text = $(
-            "You are at low risk of having COVID-19. If you feel ill or come into contact with " +
-            "someone infected with COVID-19, do this healthcheck again."
+            "You are at low risk of having COVID-19. You will still need to complete this risk " +
+            "assessment daily to monitor your symptoms."
           );
         }
         if (risk === "moderate") {
