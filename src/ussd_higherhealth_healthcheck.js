@@ -1,6 +1,8 @@
 go.app = (function () {
   var vumigo = require("vumigo_v02");
   var _ = require("lodash");
+  var moment = require("moment");
+  var utils = require("seed-jsbox-utils").utils;
   var App = vumigo.App;
   var Choice = vumigo.states.Choice;
   var EndState = vumigo.states.EndState;
@@ -171,9 +173,9 @@ go.app = (function () {
       );
       return new FreeText(name, {
         question: question,
-        check: function(content) {
+        check: function (content) {
           // Ensure that they're not giving an empty response
-          if(!content.trim()){
+          if (!content.trim()) {
             return question;
           }
         },
@@ -364,6 +366,37 @@ go.app = (function () {
           "User-Agent": ["Jsbox/Covid19-Triage-USSD"]
         }
       }).then(function () {
+        return self.states.create("state_submit_sms");
+      }, function (e) {
+        // Go to error state after 3 failed HTTP requests
+        opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+        if (opts.http_error_count === 3) {
+          self.im.log.error(e.message);
+          return self.states.create("__error__", { return_state: name });
+        }
+        return self.states.create(name, opts);
+      });
+    });
+
+    self.add("state_submit_sms", function (name, opts) {
+      var risk = self.calculate_risk();
+      if (risk !== "low") {
+        // Only send clearance SMS for low risk
+        return self.states.create("state_display_risk");
+      }
+
+      var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+      var rapidpro = new go.RapidPro(
+        new JsonApi(self.im),
+        self.im.config.rapidpro.url,
+        self.im.config.rapidpro.token
+      );
+      return rapidpro.start_flow(
+        self.im.config.rapidpro.sms_flow_uuid,
+        null,
+        "tel:" + msisdn,
+        { risk: risk, timestamp: moment(self.im.config.testing_today).toISOString() }
+      ).then(function () {
         return self.states.create("state_display_risk");
       }, function (e) {
         // Go to error state after 3 failed HTTP requests
@@ -423,14 +456,14 @@ go.app = (function () {
       });
     });
 
-    self.add("state_no_tracing_low_risk", function(name) {
-        return new MenuState(name, {
-          question: $(
-            "You will not be contacted. If you think you have COVID-19 please STAY HOME, avoid " +
-            "contact with other people in your community and self-isolate."
-          ),
-          choices: [new Choice("state_start", $("START OVER"))]
-        });
+    self.add("state_no_tracing_low_risk", function (name) {
+      return new MenuState(name, {
+        question: $(
+          "You will not be contacted. If you think you have COVID-19 please STAY HOME, avoid " +
+          "contact with other people in your community and self-isolate."
+        ),
+        choices: [new Choice("state_start", $("START OVER"))]
+      });
     });
 
     self.states.creators.__error__ = function (name, opts) {

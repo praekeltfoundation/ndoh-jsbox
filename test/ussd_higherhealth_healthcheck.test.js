@@ -1,5 +1,6 @@
 var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
+var fixtures_rapidpro = require("./fixtures_rapidpro")();
 
 describe("ussd_higherhealth_healthcheck app", function () {
     var app;
@@ -12,7 +13,13 @@ describe("ussd_higherhealth_healthcheck app", function () {
             eventstore: {
                 url: "http://eventstore",
                 token: "testtoken"
-            }
+            },
+            rapidpro: {
+                url: "https://rapidpro",
+                token: "testtoken",
+                sms_flow_uuid: "sms-flow-uuid"
+            },
+            testing_today: "2020-01-01T00:00:00Z"
         });
     });
 
@@ -627,6 +634,14 @@ describe("ussd_higherhealth_healthcheck app", function () {
                             }
                         }
                     });
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "sms-flow-uuid", null, "tel:+27123456789", {
+                            "risk": "low",
+                            "timestamp": "2020-01-01T00:00:00.000Z"
+                            }
+                        )
+                    );
                 })
                 .input("1")
                 .check.user.state("state_display_risk")
@@ -679,6 +694,14 @@ describe("ussd_higherhealth_healthcheck app", function () {
                             }
                         }
                     });
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "sms-flow-uuid", null, "tel:+27123456789", {
+                            "risk": "low",
+                            "timestamp": "2020-01-01T00:00:00.000Z"
+                        }
+                        )
+                    );
                 })
                 .input("1")
                 .check.interaction({
@@ -832,6 +855,14 @@ describe("ussd_higherhealth_healthcheck app", function () {
                             }
                         }
                     });
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "sms-flow-uuid", null, "tel:+27123456789", {
+                            "risk": "low",
+                            "timestamp": "2020-01-01T00:00:00.000Z"
+                            }
+                        )
+                    );
                 })
                 .input("2")
                 .check.interaction({
