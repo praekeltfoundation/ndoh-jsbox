@@ -208,7 +208,7 @@ go.app = (function () {
         ].join("\n")),
         accept_labels: true,
         choices: [
-          new Choice("state_province", $("YES")),
+          new Choice("state_first_name", $("YES")),
           new Choice("state_end", $("NO")),
           new Choice("state_more_info_pg1", $("MORE INFO")),
         ]
@@ -244,6 +244,32 @@ go.app = (function () {
         ),
         accept_labels: true,
         choices: [new Choice("state_terms", $("Next"))]
+      });
+    });
+
+    self.add("state_first_name", function (name) {
+      var question = $("Please TYPE your first name");
+      return new FreeText(name, {
+        question: question,
+        check: function (content) {
+          if (!content.trim()) {
+            return question;
+          }
+        },
+        next: "state_last_name"
+      });
+    });
+
+    self.add("state_last_name", function (name) {
+      var question = $("Please TYPE your surname");
+      return new FreeText(name, {
+        question: question,
+        check: function (content) {
+          if (!content.trim()) {
+            return question;
+          }
+        },
+        next: "state_province"
       });
     });
 
@@ -462,7 +488,9 @@ go.app = (function () {
           difficulty_breathing: answers.state_breathing,
           exposure: answers.state_exposure,
           tracing: answers.state_tracing,
-          risk: self.calculate_risk()
+          risk: self.calculate_risk(),
+          first_name: answers.state_first_name,
+          last_name: answers.state_last_name
         },
         headers: {
           "Authorization": ["Token " + self.im.config.eventstore.token],
@@ -488,6 +516,7 @@ go.app = (function () {
         return self.states.create("state_display_risk");
       }
 
+      var answers = self.im.user.answers;
       var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
       var rapidpro = new go.RapidPro(
         new JsonApi(self.im),
@@ -498,7 +527,12 @@ go.app = (function () {
         self.im.config.rapidpro.sms_flow_uuid,
         null,
         "tel:" + msisdn,
-        { risk: risk, timestamp: moment(self.im.config.testing_today).toISOString() }
+        {
+          risk: risk,
+          timestamp: moment(self.im.config.testing_today).toISOString(),
+          first_name: answers.state_first_name,
+          last_name: answers.state_last_name
+        }
       ).then(function () {
         return self.states.create("state_display_risk");
       }, function (e) {

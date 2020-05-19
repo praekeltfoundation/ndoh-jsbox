@@ -133,11 +133,11 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 })
                 .run();
         });
-        it("should go to state_province for yes", function () {
+        it("should go to state_first_name for yes", function () {
             return tester
                 .setup.user.state("state_terms")
                 .input("1")
-                .check.user.state("state_province")
+                .check.user.state("state_first_name")
                 .run();
         });
         it("should go to state_end for no", function () {
@@ -160,6 +160,66 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .setup.user.state("state_terms")
                 .input("3")
                 .check.user.state("state_more_info_pg1")
+                .run();
+        });
+    });
+    describe("state_first_name", function () {
+        it("should ask the user for their first name", function () {
+            return tester
+                .setup.user.state("state_first_name")
+                .check.interaction({
+                    state: "state_first_name",
+                    reply: "Please TYPE your first name",
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should repeat the question for invalid input", function () {
+            return tester
+                .setup.user.state("state_first_name")
+                .input("")
+                .check.interaction({
+                    state: "state_first_name",
+                    reply: "Please TYPE your first name",
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to state_last_name on valid input", function () {
+            return tester
+                .setup.user.state("state_first_name")
+                .input("first")
+                .check.user.state("state_last_name")
+                .run();
+        });
+    });
+    describe("state_last_name", function () {
+        it("should ask the user for their surname", function () {
+            return tester
+                .setup.user.state("state_last_name")
+                .check.interaction({
+                    state: "state_last_name",
+                    reply: "Please TYPE your surname",
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should repeat the question for invalid input", function () {
+            return tester
+                .setup.user.state("state_last_name")
+                .input("")
+                .check.interaction({
+                    state: "state_last_name",
+                    reply: "Please TYPE your surname",
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to state_province on valid input", function () {
+            return tester
+                .setup.user.state("state_last_name")
+                .input("last")
+                .check.user.state("state_province")
                 .run();
         });
     });
@@ -606,6 +666,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state_sore_throat: false,
                     state_breathing: false,
                     state_exposure: "No",
+                    state_first_name: "First",
+                    state_last_name: "Last"
                 })
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -624,7 +686,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 difficulty_breathing: false,
                                 exposure: "No",
                                 tracing: true,
-                                risk: "low"
+                                risk: "low",
+                                first_name: "First",
+                                last_name: "Last"
                             }
                         },
                         "response": {
@@ -638,8 +702,10 @@ describe("ussd_higherhealth_healthcheck app", function () {
                         fixtures_rapidpro.start_flow(
                             "sms-flow-uuid", null, "tel:+27123456789", {
                             "risk": "low",
-                            "timestamp": "2020-01-01T00:00:00.000Z"
-                            }
+                            "timestamp": "2020-01-01T00:00:00.000Z",
+                            "first_name": "First",
+                            "last_name": "Last"
+                        }
                         )
                     );
                 })
@@ -667,6 +733,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state_cough: false,
                     state_sore_throat: false,
                     state_exposure: "No",
+                    state_first_name: "first",
+                    state_last_name: "last"
                 })
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -684,7 +752,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 sore_throat: false,
                                 exposure: "No",
                                 tracing: true,
-                                risk: "low"
+                                risk: "low",
+                                first_name: "first",
+                                last_name: "last"
                             }
                         },
                         "response": {
@@ -698,7 +768,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                         fixtures_rapidpro.start_flow(
                             "sms-flow-uuid", null, "tel:+27123456789", {
                             "risk": "low",
-                            "timestamp": "2020-01-01T00:00:00.000Z"
+                            "timestamp": "2020-01-01T00:00:00.000Z",
+                            "first_name": "first",
+                            "last_name": "last"
                         }
                         )
                     );
@@ -828,6 +900,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state_cough: false,
                     state_sore_throat: false,
                     state_exposure: "No",
+                    state_first_name: "first",
+                    state_last_name: "last"
                 })
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -845,7 +919,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 sore_throat: false,
                                 exposure: "No",
                                 tracing: false,
-                                risk: "low"
+                                risk: "low",
+                                first_name: "first",
+                                last_name: "last"
                             }
                         },
                         "response": {
@@ -859,8 +935,10 @@ describe("ussd_higherhealth_healthcheck app", function () {
                         fixtures_rapidpro.start_flow(
                             "sms-flow-uuid", null, "tel:+27123456789", {
                             "risk": "low",
-                            "timestamp": "2020-01-01T00:00:00.000Z"
-                            }
+                            "timestamp": "2020-01-01T00:00:00.000Z",
+                            "first_name": "first",
+                            "last_name": "last"
+                        }
                         )
                     );
                 })
