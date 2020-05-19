@@ -534,8 +534,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_breathing",
                     reply: [
-                        "Do you have breathlessness or a difficulty breathing, that you've " +
+                        "Do you have breathlessness or difficulty in breathing, that you've " +
                         "noticed recently?",
+                        "",
                         "Reply",
                         "1. YES",
                         "2. NO"
@@ -551,8 +552,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_breathing",
                     reply: [
-                        "Please use numbers from list. Do you have breathlessness or a " +
-                        "difficulty breathing, that you've noticed recently?",
+                        "Please use numbers from list. Do you have breathlessness or " +
+                        "difficulty in breathing, that you've noticed recently?",
+                        "",
                         "Reply",
                         "1. YES",
                         "2. NO"
@@ -576,8 +578,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_exposure",
                     reply: [
-                        "Have you been in close contact to someone confirmed to be infected with " +
-                        "COVID19?",
+                        "Have you been in close contact with someone confirmed to be infected " +
+                        "with COVID19?",
                         "",
                         "Reply",
                         "1. YES",
@@ -779,8 +781,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
-                        "You are at low risk of having COVID-19. If you feel ill or come into " +
-                        "contact with someone infected with COVID-19, do this healthcheck again.",
+                        "You are at low risk of having COVID-19. You will still need to complete " +
+                        "this risk assessment daily to monitor your symptoms.",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
