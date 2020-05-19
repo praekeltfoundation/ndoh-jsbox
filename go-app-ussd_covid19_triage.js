@@ -19,21 +19,31 @@ go.app = (function () {
 
     self.calculate_risk = function () {
       var answers = self.im.user.answers;
-      var score = 0;
 
-      if (answers.state_fever) { score += 10; }
-      if (answers.state_cough) { score += 10; }
-      if (answers.state_sore_throat) { score += 10; }
+      var symptom_count = _.filter([
+        answers.state_fever,
+        answers.state_cough,
+        answers.state_sore_throat,
+        answers.state_breathing
+      ]).length;
 
-      if (answers.state_age === ">65") { score += 10; }
+      if (symptom_count === 0) {
+        if (answers.state_exposure === "yes") { return "moderate"; }
+        return "low";
+      }
 
-      if (answers.state_exposure === "yes") { score += 7; }
+      if (symptom_count === 1) {
+        if (answers.state_exposure === "yes") { return "high"; }
+        return "moderate";
+      }
 
-      var risk = "low";
-      if (score > 9) { risk = "moderate"; }
-      if (score > 17) { risk = "high"; }
+      if (symptom_count === 2) {
+        if (answers.state_exposure === "yes") { return "high"; }
+        if (answers.state_age === ">65") { return "high"; }
+        return "moderate";
+      }
 
-      return risk;
+      return "high";
     };
 
     self.add = function (name, creator) {

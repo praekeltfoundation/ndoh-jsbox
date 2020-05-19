@@ -593,7 +593,7 @@ describe("ussd_covid19_triage app", function () {
                 .setup.user.answers({
                     state_province: "ZA-WC",
                     state_city: "Cape Town",
-                    state_age: "<18",
+                    state_age: ">65",
                     state_fever: false,
                     state_cough: false,
                     state_sore_throat: false,
@@ -610,7 +610,7 @@ describe("ussd_covid19_triage app", function () {
                                 source: "USSD",
                                 province: "ZA-WC",
                                 city: "Cape Town",
-                                age: "<18",
+                                age: ">65",
                                 fever: false,
                                 cough: false,
                                 sore_throat: false,
