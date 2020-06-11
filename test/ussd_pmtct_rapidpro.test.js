@@ -160,7 +160,7 @@ describe("ussd_pmtct app", function() {
                 .setup.user.state("state_check_subscription")
                 .check.interaction({
                     state: "__error__",
-                    reply: 
+                    reply:
                         "Sorry, something went wrong. We have been notified. Please try again " +
                         "later"
                 })
@@ -220,7 +220,7 @@ describe("ussd_pmtct app", function() {
                 .input("2")
                 .check.interaction({
                     state: "state_no_optout",
-                    reply: 
+                    reply:
                     "Thanks! MomConnect will continue to send HER helpful messages and process your " +
                     "personal info."
                 })
@@ -273,8 +273,12 @@ describe("ussd_pmtct app", function() {
                 .setup.user.state("state_optout_reason")
                 .setup.user.answers({
                     state_optout: "yes",
+                    state_enter_msisdn: "0712221111",
                     contact: {
-                        fields: {dob: "1990-01-01T00:00:00"}
+                        fields: {
+                            dob: "1990-01-01T00:00:00",
+                            preferred_channel: "WhatsApp"
+                        }
                     }
                 })
                 .setup(function(api) {
@@ -282,13 +286,16 @@ describe("ussd_pmtct app", function() {
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
                             null,
-                            "whatsapp:27123456789",
+                            "whatsapp:27712221111",
                             {
                                 babyloss_subscription: "FALSE",
                                 optout: "TRUE",
                                 optout_reason: "not_useful",
                                 dob:  "1990-01-01T00:00:00Z",
                                 source: "PMTCT USSD",
+                                registered_by: "+27123456789",
+                                mha: 1,
+                                swt: 7,
                             }
                         )
                     );
@@ -371,6 +378,9 @@ describe("ussd_pmtct app", function() {
                                 optout: "TRUE",
                                 dob:  "1990-01-01T00:00:00Z",
                                 source: "PMTCT USSD",
+                                registered_by: "+27123456789",
+                                mha: 1,
+                                swt: 1,
                             }
                         )
                     );
@@ -405,6 +415,9 @@ describe("ussd_pmtct app", function() {
                                 optout: "TRUE",
                                 dob:  "1990-01-01T00:00:00Z",
                                 source: "PMTCT USSD",
+                                registered_by: "+27123456789",
+                                mha: 1,
+                                swt: 1,
                             }
                         )
                     );
@@ -465,7 +478,10 @@ describe("ussd_pmtct app", function() {
                                 babyloss_subscription: "FALSE",
                                 dob: "1990-01-01T00:00:00Z",
                                 optout: "FALSE",
-                                source: "PMTCT USSD"
+                                source: "PMTCT USSD",
+                                registered_by: "+27123456789",
+                                mha: 1,
+                                swt: 1,
                             }
                         )
                     );
@@ -502,7 +518,7 @@ describe("ussd_pmtct app", function() {
                 .setup.user.state("state_dob_year")
                 .input("22")
                 .check.interaction({
-                    reply: 
+                    reply:
                         "Sorry, we don't understand. Please try again by entering the year " +
                         "she was born as 4 digits in the format YYYY, e.g. 1910."
                 })
@@ -606,7 +622,10 @@ describe("ussd_pmtct app", function() {
                                 dob: "1987-02-22T00:00:00Z",
                                 babyloss_subscription: "FALSE",
                                 optout:"FALSE",
-                                source: "PMTCT USSD"
+                                source: "PMTCT USSD",
+                                registered_by: "+27123456789",
+                                mha: 1,
+                                swt: 1,
                             }
                         )
                     );
@@ -635,7 +654,10 @@ describe("ussd_pmtct app", function() {
                                 dob: "1990-01-01T00:00:00Z",
                                 babyloss_subscription: "FALSE",
                                 optout: "FALSE",
-                                source: "PMTCT USSD"
+                                source: "PMTCT USSD",
+                                registered_by: "+27123456789",
+                                mha: 1,
+                                swt: 1,
                             }
                         )
                     );
@@ -643,7 +665,7 @@ describe("ussd_pmtct app", function() {
                 .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_end_registration",
-                    reply: 
+                    reply:
                         "Thank you. The mother will receive messages about keeping her baby " +
                         "HIV-negative. Have a lovely day."
                 })
@@ -672,6 +694,9 @@ describe("ussd_pmtct app", function() {
                                 optout_reason: "other",
                                 dob:  "1990-01-01T00:00:00Z",
                                 source: "PMTCT USSD",
+                                registered_by: "+27123456789",
+                                mha: 1,
+                                swt: 1,
                             }
                         )
                     );
@@ -679,7 +704,7 @@ describe("ussd_pmtct app", function() {
                 .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_opted_out",
-                    reply: 
+                    reply:
                         "Thank you. She will no longer receive messages from us about HIV. She will " +
                         "get her regular MomConnect messages. For any medical concerns, please visit a clinic."
                 })
@@ -709,6 +734,9 @@ describe("ussd_pmtct app", function() {
                                 optout_reason: "babyloss",
                                 dob:  "1990-01-01T00:00:00Z",
                                 source: "PMTCT USSD",
+                                registered_by: "+27123456789",
+                                mha: 1,
+                                swt: 1,
                             }
                         )
                     );
@@ -716,7 +744,7 @@ describe("ussd_pmtct app", function() {
                 .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_loss_subscription",
-                    reply: 
+                    reply:
                     "Thank you. She will receive messages of support from MomConnect in the coming weeks."
                 })
                 .check.reply.ends_session()
@@ -745,6 +773,9 @@ describe("ussd_pmtct app", function() {
                                 optout_reason: "babyloss",
                                 dob:  "1990-01-01T00:00:00Z",
                                 source: "PMTCT USSD",
+                                registered_by: "+27123456789",
+                                mha: 1,
+                                swt: 1,
                             },
                             true
                         )
