@@ -202,8 +202,6 @@ go.app = function() {
                 }).then(function() {
                     // Delegate to the correct state depending on contact fields
                     var contact = self.im.user.get_answer("contact");
-                    console.log(_.get(contact, "fields.prebirth_messaging"));
-                    console.log(_.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7));
                     if(_.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7)) {
                         if(_.toUpper(_.get(contact, "fields.pmtct_messaging")) === "TRUE") {
                             return self.states.create("state_optout");
@@ -443,6 +441,7 @@ go.app = function() {
             var dob;
             var swt = 1;
             var contact = self.im.user.get_answer("contact");
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             var babyloss_subscription = self.im.user.get_answer("state_loss_optout") === "yes" ? "TRUE" : "FALSE";
             if(_.isString(_.get(contact, "fields.dob"))) {
                 dob = moment.utc(contact.fields.dob).format();
@@ -459,7 +458,6 @@ go.app = function() {
                 swt = _.toUpper(contact.fields.preferred_channel) === "WHATSAPP" ? 7 : 1;
             }
 
-            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             if (self.im.user.get_answer("state_enter_msisdn")) {
                 msisdn = utils.normalize_msisdn(self.im.user.get_answer("state_enter_msisdn"), "ZA");
             }
