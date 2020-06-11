@@ -202,6 +202,8 @@ go.app = function() {
                 }).then(function() {
                     // Delegate to the correct state depending on contact fields
                     var contact = self.im.user.get_answer("contact");
+                    console.log(_.get(contact, "fields.prebirth_messaging"));
+                    console.log(_.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7));
                     if(_.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7)) {
                         if(_.toUpper(_.get(contact, "fields.pmtct_messaging")) === "TRUE") {
                             return self.states.create("state_optout");
@@ -274,7 +276,7 @@ go.app = function() {
                         return "state_loss_optout";
                     } else {
                         return "state_trigger_rapidpro_flow";
-                      }  
+                      }
                 }
             });
         });
@@ -332,7 +334,7 @@ go.app = function() {
                         }
                         else{
                             return "state_dob_year";
-                        }  
+                        }
                     }
                     else {
                         return "state_no_registration";
@@ -402,9 +404,9 @@ go.app = function() {
                     if(
                         !match ||
                         !(dob = new moment(
-                            self.im.user.answers.state_dob_year + 
-                            self.im.user.answers.state_dob_month + 
-                            match[1], 
+                            self.im.user.answers.state_dob_year +
+                            self.im.user.answers.state_dob_month +
+                            match[1],
                             "YYYYMMDD")
                         ) ||
                         !dob.isValid()
@@ -439,27 +441,39 @@ go.app = function() {
 
         self.add("state_trigger_rapidpro_flow", function(name, opts) {
             var dob;
+            var swt = 1;
             var contact = self.im.user.get_answer("contact");
-            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             var babyloss_subscription = self.im.user.get_answer("state_loss_optout") === "yes" ? "TRUE" : "FALSE";
             if(_.isString(_.get(contact, "fields.dob"))) {
                 dob = moment.utc(contact.fields.dob).format();
-            } 
-            else { 
-                dob = new moment.utc(
-                self.im.user.answers.state_dob_year +
-                self.im.user.answers.state_dob_month +
-                self.im.user.answers.state_dob_day,
-                "YYYYMMDD"
-            ).format();
             }
+            else {
+                dob = new moment.utc(
+                    self.im.user.answers.state_dob_year +
+                    self.im.user.answers.state_dob_month +
+                    self.im.user.answers.state_dob_day,
+                    "YYYYMMDD"
+                ).format();
+            }
+            if(_.isString(_.get(contact, "fields.preferred_channel"))) {
+                swt = _.toUpper(contact.fields.preferred_channel) === "WHATSAPP" ? 7 : 1;
+            }
+
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            if (self.im.user.get_answer("state_enter_msisdn")) {
+                msisdn = utils.normalize_msisdn(self.im.user.get_answer("state_enter_msisdn"), "ZA");
+            }
+
             return self.rapidpro.start_flow(self.im.config.flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), {
                 dob: dob,
                 optout_reason: self.im.user.get_answer("state_optout_reason"),
                 babyloss_subscription: babyloss_subscription,
-                optout: 
+                optout:
                     self.im.user.get_answer("state_optout") === "yes" ? "TRUE" : "FALSE",
                 source: "PMTCT USSD",
+                registered_by: utils.normalize_msisdn(self.im.user.addr, "ZA"),
+                mha: 1,
+                swt: swt,
             }).then(function() {
                 if ((self.im.user.get_answer("state_optout") === "yes") && babyloss_subscription === "FALSE"){
                     return self.states.create("state_opted_out");
@@ -467,7 +481,7 @@ go.app = function() {
                     return self.states.create("state_loss_subscription");
                 }
                 else{
-                    return self.states.create("state_end_registration"); 
+                    return self.states.create("state_end_registration");
                 }
             }).catch(function(e) {
                 // Go to error state after 3 failed HTTP requests
