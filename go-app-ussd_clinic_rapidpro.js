@@ -754,7 +754,7 @@ go.app = function() {
                     "Unfortunately MomConnect doesn't send messages to children older than 2 " +
                     "years."
                 ),
-                next: "states_start"
+                next: "state_start"
             });
         });
 
@@ -1160,7 +1160,7 @@ go.app = function() {
                 back: $("Previous"),
                 next: "state_more_info"
             });
-        }); 
+        });
 
         self.add('state_question_pi', function(name) {
             return new PaginatedState(name, {
