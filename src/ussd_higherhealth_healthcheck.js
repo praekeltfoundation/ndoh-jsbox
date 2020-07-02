@@ -224,6 +224,51 @@ go.app = (function () {
           new Choice("40-65", $("40-65")),
           new Choice(">65", $(">65"))
         ],
+        next: "state_university"
+      });
+    });
+
+
+    self.make_choices_from_list = function(list){
+      var choices = [];
+      for(var i=0; i<list.length; i++){
+        choices[i] = new Choice(list[i].name, $(list[i].label));
+      }
+      return choices;
+    }
+
+    self.add("state_university", function (name) {
+      var universities_by_province = {
+        //prov:[{name, label}]
+      };
+      var selected_prov = self.im.user.answers.state_province;
+
+      return new PaginatedChoiceState(name, {
+        question: $([
+          "Select your university",
+          "",
+          "Reply:"
+        ].join("\n")),
+        accept_labels: true,
+        choices: self.make_choices_from_list(universities_by_province[selected_prov]),
+        next: "state_campus"
+      });
+    });
+
+    self.add("state_campus", function (name) {
+      campuses_by_university = {
+        // uni:[{name, label}]
+      }
+      var selected_uni = self.im.user.answers.state_university;
+
+      return new PaginatedChoiceState(name, {
+        question: $([
+          "Select your campus",
+          "",
+          "Reply:"
+        ].join("\n")),
+        accept_labels: true,
+        choices: self.make_choices_from_list(campuses_by_university[selected_uni]),
         next: "state_fever"
       });
     });
