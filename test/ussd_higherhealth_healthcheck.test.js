@@ -389,9 +389,87 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 })
                 .run();
         });
-        it("should go to state_fever", function () {
+        it("should go to state_university", function () {
             return tester
                 .setup.user.state("state_age")
+                .input("1")
+                .check.user.state("state_university")
+                .run();
+        });
+    });
+    describe("state_university", function () {
+        it("should ask for a users university", function () {
+            return tester
+                .setup.user.state("state_university")
+                .check.interaction({
+                    state: "state_university",
+                    reply: [
+                        "Select your university.",
+                        "",
+                        "1. UJ",
+                        "2. Wits"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function () {
+            return tester
+                .setup.user.state("state_university")
+                .input("A")
+                .check.interaction({
+                    state: "state_university",
+                    reply: [
+                        "Select your university.",
+                        "",
+                        "1. UJ",
+                        "2. Wits"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to state_campus", function () {
+            return tester
+                .setup.user.state("state_university")
+                .input("1")
+                .check.user.state("state_campus")
+                .run();
+        });
+    });
+    describe("state_campus", function () {
+        it("should ask for the users campus", function () {
+            return tester
+                .setup.user.state("state_campus")
+                .check.interaction({
+                    state: "state_campus",
+                    reply: [
+                        "Select your campus.",
+                        "",
+                        "1. Braamfontein"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function () {
+            return tester
+                .setup.user.state("state_campus")
+                .input("A")
+                .check.interaction({
+                    state: "state_campus",
+                    reply: [
+                        "Select your campus.",
+                        "",
+                        "1. Braamfontein"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to state_fever", function () {
+            return tester
+                .setup.user.state("state_campus")
                 .input("1")
                 .check.user.state("state_fever")
                 .run();

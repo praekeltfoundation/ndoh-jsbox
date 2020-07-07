@@ -10,6 +10,7 @@ go.app = (function () {
   var MenuState = vumigo.states.MenuState;
   var FreeText = vumigo.states.FreeText;
   var ChoiceState = vumigo.states.ChoiceState;
+  var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
 
 
   var GoNDOH = App.extend(function (self) {
@@ -230,22 +231,51 @@ go.app = (function () {
 
 
     self.make_choices_from_list = function(list){
-      var choices = [];
-      for(var i=0; i<list.length; i++){
-        choices[i] = new Choice(list[i].name, $(list[i].label));
+      if (list!==undefined){
+        var choices = [];
+        for(var i=0; i<list.length; i++){
+          choices[i] = new Choice(list[i].name, $(list[i].label));
+        }
+        return choices;
       }
-      return choices;
-    }
+      return [];
+    };
 
     self.add("state_university", function (name) {
       var universities_by_province = {
         //prov:[{name, label}]
+        'ZA-EC': [
+            'Buffalo City', 'Eastcape Midlands', 'Ikhala', 'Ingwe', 'King Hintsa', 'King Sabata Dalindyebo (KSD)', 'Lovedale', 'Nelson Mandela University (NMU)', 'Port Elizabeth', 'Rhodes University (RU)', 'UNISA', 'University of Fort Hare (UFH)', 'Walter Sisulu University (WSU)'
+        ],
+        'ZA-FS': [
+            'Central University of Technology (CUT)', 'Flavius Mareka ', 'Goldfields ', 'Maluti ', 'Motheo ', 'UNISA', 'University of the Free State (UFS)'
+        ],
+        'ZA-GT': [
+            'Central Johannesburg', 'Ekurhuleni East', 'Ekurhuleni West', 'North West University (NWU)', 'Sedibeng', 'Sefako Makgatho Health Sciences University (SMU)', 'South West Gauteng ', 'Tshwane North', 'Tshwane South', 'Tshwane University of Technology (TUT)', 'UNISA', 'University of Johannesburg (UJ)', 'University of Pretoria (UP)', 'University of the Witwatersrand (WITS)', 'Vaal University of Technology (VUT)', 'Western'
+        ],
+        'ZA-NL': [
+            'Coastal', 'Durban University of Technology (DUT)', 'Elangeni', 'Esayidi', 'Majuba', 'Mangosuthu University of Technology (MUT)', 'Mnambithi ', 'Mthashana', 'Thekwini', 'UNISA', 'Umfolozi', 'Umgungundlovu ', 'University of Kwazulu Natal (UKZN)', 'University of Zululand (UNIZULU)'
+        ],
+        'ZA-LP': [
+            'Capricorn', 'Lephalale', 'Letaba', 'Mopani', 'Sekhukhune', 'Tshwane University of Technology (TUT)', 'UNISA', 'University of Limpopo (UL)', 'University of Venda (UNIVEN)', 'Vhembe', 'Waterberg'
+        ],
+        'ZA-MP': [
+            'Ehlanzeni', 'Gert Sibande', 'Nkangala', 'Tshwane University of Technology (TUT)', 'UNISA', 'University of Mpumalanga (UMP)', 'Vaal University of Technology (VUT)'
+        ],
+        'ZA-NW': [
+            'North West University (NWU)', 'Orbit', 'Taletso', 'UNISA', 'Vuselela'
+        ],
+        'ZA-NC': [
+            'Northern Cape Rural', 'Northern Cape Urban', 'Sol Plaatje University (SPU)', 'UNISA'
+        ],
+        'ZA-WC': [
+            'Boland', 'Cape Peninsula University of Technology (CPUT)', 'College of Cape Town', 'False Bay', 'Nelson Mandela University (NMU)', 'Northlink', 'South Cape', 'Stellenbosch University (SU)', 'UNISA', 'University of Cape Town (UCT)', 'University of Western Cape (UWC)', 'West Coast']
       };
       var selected_prov = self.im.user.answers.state_province;
 
       return new PaginatedChoiceState(name, {
         question: $([
-          "Select your university",
+          "Select your university.",
           "",
           "Reply:"
         ].join("\n")),
@@ -256,14 +286,647 @@ go.app = (function () {
     });
 
     self.add("state_campus", function (name) {
-      campuses_by_university = {
+      var campuses_by_university = {
         // uni:[{name, label}]
-      }
+            "Boland":[
+                "Caledon",
+                "Head Office",
+                "Paarl",
+                "Stellenbosch",
+                "Strand",
+                "Worcester"
+
+        ],
+            "Buffalo City":[
+                "Central Office",
+                "East London",
+                "John Knox Bokwe",
+                "St Marks"
+
+        ],
+            "Cape Peninsula University of Technology (CPUT)":[
+                "Athlone",
+                "Bellville",
+                "Cape Town",
+                "District Six",
+                "George",
+                "Granger Bay",
+                "Groote Schuur",
+                "Media City",
+                "Mowbray",
+                "Optical Dispensing",
+                "Roeland Street",
+                "Tygerberg",
+                "Wellington",
+                "Worcester"
+
+        ],
+            "Capricorn":[
+                "Central Office",
+                "Polokwane",
+                "Ramokgopa",
+                "Senwabarwana",
+                "Seshego"
+
+        ],
+            "Central Johannesburg":[
+                "Alexandra",
+                "Central Office",
+                "Crown Mines",
+                "Ellis Park",
+                "Langlaagte",
+                "Parktown",
+                "Riverlea",
+                "Smith - Site",
+                "Troyeville"
+
+        ],
+            "Central University of Technology (CUT)":[
+                "Bloemfontein",
+                "Welkom"
+
+        ],
+            "Coastal":[
+                "Appelsbosch",
+                "As - Salaam",
+                "Central Office",
+                "Durban",
+                "Swinton",
+                "Ubuhle Bogu",
+                "Umbumbulu",
+                "Umlazi BB",
+                "Umlazi V"
+
+        ],
+            "College of Cape Town":[
+                "Athlone",
+                "Central Office",
+                "City",
+                "Crawford",
+                "Gardens",
+                "Guguletu",
+                "Pinelands",
+                "Thornton",
+                "Wynberg"
+
+        ],
+            "Durban University of Technology (DUT)":[
+                "Brickfield",
+                "City Campus",
+                "Indumiso",
+                "ML Sultan",
+                "Ritson",
+                "Riverside",
+                "Steve Biko"
+
+        ],
+            "Eastcape Midlands":[
+                "Brickfields",
+                "Central Office",
+                "Charles Goodyear",
+                "Graaff-Reinet",
+                "Grahamstown",
+                "Heath Park",
+                "High Street",
+                "Park Avenue",
+                "Thanduxolo"
+
+        ],
+            "Ehlanzeni":[
+                "Barberton",
+                "Central Office",
+                "Kanyamazane",
+                "Lydenburg",
+                "Mapulaneng",
+                "Mlumati",
+                "Mthimba",
+                "Nelspruit"
+
+        ],
+            "Ekurhuleni East":[
+                "Benoni",
+                "Brakpan",
+                "Central Office",
+                "Daveyton",
+                "Kwa-Thema",
+                "Springs"
+
+        ],
+            "Ekurhuleni West":[
+                "Alberton",
+                "Boksburg",
+                "Central Office",
+                "Germiston",
+                "Kathorus",
+                "Kempton",
+                "Tembisa"
+
+        ],
+            "Elangeni":[
+                "Central Office",
+                "Inanda",
+                "KwaDabeka",
+                "Kwamashu",
+                "Mpumalanga",
+                "Ndwedwe",
+                "Ntuzuma",
+                "Pinetown",
+                "Qadi"
+
+        ],
+            "Esayidi":[
+                "Central Office",
+                "Clydesdale",
+                "Enyenyezi",
+                "Gamalakhe",
+                "Kokstad",
+                "Port Shepstone",
+                "Umzimkhulu"
+
+        ],
+            "False Bay":[
+                "Central Office",
+                "Fish Hoek",
+                "Khayelitsha",
+                "Mitchell's Plain",
+                "Muizenberg",
+                "Westlake"
+
+        ],
+            "Flavius Mareka ":[
+                "Central Office",
+                "Kroonstad",
+                "Mphohadi",
+                "Sasolburg"
+
+        ],
+            "Gert Sibande":[
+                "Balfour",
+                "Central Office",
+                "Ermelo",
+                "Evander",
+                "Perdekop",
+                "Sibanesetfu",
+                "Standerton"
+
+        ],
+            "Goldfields ":[
+                "Central Office",
+                "Muruti House",
+                "Tosa",
+                "Virginia",
+                "Welkom"
+
+        ],
+            "Ikhala":[
+                "Aliwal North",
+                "Central Office",
+                "Ezibeleni",
+                "Queen Nonesi",
+                "Queenstown",
+                "Sterkspruit"
+
+        ],
+            "Ingwe":[
+                "Central Office",
+                "Maluti",
+                "Mount Fletcher",
+                "Mount Frere",
+                "Ngqungqushe",
+                "Siteto"
+
+        ],
+            "King Hintsa":[
+                "Centane",
+                "Central Office",
+                "Dutywa",
+                "Msobomvu",
+                "Teko",
+                "Willowvale"
+
+        ],
+            "King Sabata Dalindyebo (KSD)":[
+                "Libode",
+                "Mapuzi",
+                "Mngazi",
+                "Mthatha",
+                "Ngcobo",
+                "Ntabozuko",
+                "Zimbane"
+
+        ],
+            "Lephalale":[
+                "Central Office",
+                "Lephalale",
+                "Modimolle"
+
+        ],
+            "Letaba":[
+                "Central Office",
+                "Giyani",
+                "Maake",
+                "Tzaneen"
+
+        ],
+            "Lovedale":[
+                "Alice",
+                "Central Office",
+                "King",
+                "Zwelitsha"
+
+        ],
+            "Majuba":[
+                "CPD",
+                "Central Office",
+                "Dundee",
+                "IT&B",
+                "MTC",
+                "Newcastle Training Centre (NTC)",
+                "Newtech",
+                "Occupational Learning Unit",
+                "Open Learning Unit (OPU)"
+
+        ],
+            "Maluti ":[
+                "Bethlehem",
+                "Bonamelo",
+                "Central Office",
+                "Harrismith",
+                "Itemoheleng",
+                "Kwetlisong",
+                "Lere La Tshepe",
+                "Main Campus",
+                "Sefikeng"
+
+        ],
+            "Mangosuthu University of Technology (MUT)":[
+                "Main Campus"
+
+        ],
+            "Mnambithi ":[
+                "Central Office",
+                "Estcourt",
+                "Ezakheni A",
+                "Ezakheni E",
+                "Ladysmith"
+
+        ],
+            "Mopani":[
+                "Central Office",
+                "Phalaborwa",
+                "Sir Val Duncan"
+
+        ],
+            "Motheo ":[
+                "Bloemfontein",
+                "Botshabelo",
+                "Central Office",
+                "Hillside View",
+                "Koffiefontein",
+                "Thaba 'Nchu",
+                "Zastron"
+
+        ],
+            "Mthashana":[
+                "Central Office",
+                "Emandleni",
+                "Kwa-Gqikazi",
+                "Maputa",
+                "Nongoma",
+                "Nquthu",
+                "Vryheid"
+
+        ],
+            "Nelson Mandela University (NMU)":[
+                "2nd Avenue",
+                "Missionville",
+                "North",
+                "South",
+                "George"
+
+        ],
+            "Nkangala":[
+                "CN Mahlangu",
+                "Central Office",
+                "Middelburg",
+                "Mpondozankomo",
+                "Waterval Boven",
+                "Witbank"
+
+        ],
+            "North West University (NWU)":[
+                "Mafikeng",
+                "Potchefstroom",
+                "Vaal Triangle (Vanderbijl Park)"
+        ],
+            "Northern Cape Rural":[
+                "Central Office",
+                "De Aar",
+                "Kathu",
+                "Kuruman",
+                "Namaqualand",
+                "Upington"
+
+        ],
+            "Northern Cape Urban":[
+                "Central Office",
+                "City Campus",
+                "Moremogolo",
+                "Phatsimang"
+
+        ],
+            "Northlink":[
+                "Belhar",
+                "Bellville",
+                "Central Office",
+                "Goodwood",
+                "Parow",
+                "Protea",
+                "Tygerberg",
+                "Wingfield"
+
+        ],
+            "Orbit":[
+                "Brits",
+                "Central Office",
+                "Mankwe",
+                "Rustenburg"
+
+        ],
+            "Port Elizabeth":[
+                "Central Office",
+                "Dower",
+                "Iqhayiya",
+                "Russell Road"
+        ],
+            "Rhodes University (RU)":[
+                "Grahamstown"
+        ],
+            "Sedibeng":[
+                "Central Office",
+                "Heidelberg",
+                "Sebokeng",
+                "Vanderbijlpark",
+                "Vereeniging"
+        ],
+            "Sefako Makgatho Health Sciences University (SMU)":[
+                "Main Campus"
+        ],
+            "Sekhukhune":[
+                "Apel",
+                "CN Phatudi",
+                "CS Barlow",
+                "Central Office"
+        ],
+            "Sol Plaatje University (SPU)":[
+                "Kimberley"
+        ],
+            "South Cape":[
+                "Beaufort West",
+                "Bitou",
+                "Central Office",
+                "George",
+                "Hessequa",
+                "Mossel Bay",
+                "Oudtshoorn"
+        ],
+            "South West Gauteng ":[
+                "Dobsonville",
+                "George Tabor",
+                "Land is Wealth Farm",
+                "Molapo",
+                "Roodepoort",
+                "Roodepoort West",
+                "Technisa"
+        ],
+            "Stellenbosch University (SU)":[
+                "Stellenbosch",
+                "Tygerberg"
+        ],
+            "Taletso":[
+                "Central Office",
+                "Lehurutshe",
+                "Lichtenburg",
+                "Mafikeng"
+        ],
+            "Thekwini":[
+                "Asherville",
+                "Cato Manor",
+                "Centec",
+                "Central Office",
+                "Melbourne",
+                "Springfield",
+                "Umbilo"
+
+        ],
+            "Tshwane North":[
+                "Central Office",
+                "Mamelodi",
+                "Pretoria",
+                "Rosslyn",
+                "Soshanguve North",
+                "Soshanguve South",
+                "Temba"
+
+        ],
+            "Tshwane South":[
+                "Atteridgeville",
+                "Central Office",
+                "Centurion",
+                "Odi",
+                "Pretoria West"
+
+        ],
+            "Tshwane University of Technology (TUT)":[
+                "Polokwane",
+                "Mbombela",
+                "eMalahleni",
+                "Arcadia",
+                "Arts",
+                "Ga-Rankuwa",
+                "Pretoria West",
+                "Soshanguve"
+        ],
+            "UNISA":[
+                "Bloemfontein",
+                "Kroonstad",
+                "Durban",
+                "Newcastle",
+                "Pietermaritzburg",
+                "Richards Bay",
+                "Wild Coast (Mbizana)",
+                "East London",
+                "Mthatha",
+                "Port Elizabeth",
+                "Ekurhuleni",
+                "Florida (Science Campus)",
+                "Johannesburg",
+                "Pretoria (Sunnyside)",
+                "Vaal",
+                "George",
+                "Parow",
+                "Giyani",
+                "Makhado",
+                "Polokwane",
+                "Kimberley",
+                "Mafikeng",
+                "Potchefstroom",
+                "Rustenburg",
+                "Mbombela",
+                "Middelburg"
+
+        ],
+            "Umfolozi":[
+                "Bambanana",
+                "Central Office",
+                "Chief Albert Luthuli",
+                "Eshowe",
+                "Esikhawini",
+                "Isithebe(Sat)",
+                "Mandeni",
+                "Nkandla",
+                "Richards Bay",
+                "Sundumbili"
+        ],
+            "Umgungundlovu ":[
+                "Central Office",
+                "Edendale",
+                "Midlands",
+                "Msunduzi",
+                "Northdale",
+                "Plessislaer"
+        ],
+            "University of Cape Town (UCT)":[
+                "Rondebosch"
+        ],
+            "University of Fort Hare (UFH)":[
+                "Alice",
+                "Bisho",
+                "East London"
+        ],
+            "University of Johannesburg (UJ)":[
+                "Doornfontein (DFC)",
+                "Kingsway Auckland Park (APK)",
+                "Kingsway Bunting Road (APB)",
+                "Soweto"
+        ],
+            "University of Kwazulu Natal (UKZN)":[
+                "Edgewood",
+                "Howard",
+                "Medical School",
+                "Pietermaritzburg",
+                "Westville"
+        ],
+            "University of Limpopo (UL)":[
+                "Turfloop Campus"
+        ],
+            "University of Mpumalanga (UMP)":[
+                "Mbombela",
+                "Siyabuswa"
+
+        ],
+            "University of Pretoria (UP)":[
+                "GIBS",
+                "Groenkloof",
+                "Hatfield (Main Campus)",
+                "Hillcrest",
+                "Mamelodi",
+                "Onderstepoort",
+                "Prinshof"
+
+        ],
+            "University of Venda (UNIVEN)":[
+                "Thohoyandou"
+
+        ],
+            "University of Western Cape (UWC)":[
+                "Bellville"
+
+        ],
+            "University of Zululand (UNIZULU)":[
+                "KwaDlangezwa",
+                "Richards Bay"
+
+        ],
+            "University of the Free State (UFS)":[
+                "Main Campus",
+                "Qwaqwa Campus",
+                "South Campus"
+
+        ],
+            "University of the Witwatersrand (WITS)":[
+                "Braamfontein"
+
+        ],
+            "Vaal University of Technology (VUT)":[
+                "Ekurhuleni",
+                "Main Campus (Vanderbijlpark)",
+                "Secunda"
+
+        ],
+            "Vhembe":[
+                "Central Office",
+                "Makwarela",
+                "Mashamba",
+                "Mavhoi",
+                "Musina",
+                "Shingwedzi",
+                "Thengwe",
+                "Tshisimani"
+
+        ],
+            "Vuselela":[
+                "Central Office",
+                "Jouberton",
+                "Klerksdorp",
+                "Matlosana",
+                "Potchefstroom",
+                "Taung"
+
+        ],
+            "Walter Sisulu University (WSU)":[
+                "Buffalo City",
+                "Butterworth (Ibika)",
+                "Mthatha",
+                "Queenstown (Masibulele)"
+
+        ],
+            "Waterberg":[
+                "Business",
+                "Central Office",
+                "Engineering",
+                "IT&C",
+                "Thabazimbi"
+
+        ],
+            "West Coast":[
+                "Atlantis",
+                "Central Office",
+                "Citrusdal",
+                "Malmesbury",
+                "Vredenburg",
+                "Vredendal"
+
+        ],
+            "Western":[
+                "Carletonville",
+                "Central Office",
+                "Krugersdorp",
+                "Krugersdorp West",
+                "Randfontein"
+
+        ],
+            "Other":[
+                "Other"
+
+        ],
+        };
+
       var selected_uni = self.im.user.answers.state_university;
 
       return new PaginatedChoiceState(name, {
         question: $([
-          "Select your campus",
+          "Select your campus.",
           "",
           "Reply:"
         ].join("\n")),
