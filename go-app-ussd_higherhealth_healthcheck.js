@@ -332,18 +332,6 @@ go.app = (function () {
       });
     });
 
-
-    self.make_choices_from_list = function(list){
-      if (list!==undefined){
-        var choices = [];
-        for(var i=0; i<list.length; i++){
-          choices[i] = new Choice(list[i].name, $(list[i].label));
-        }
-        return choices;
-      }
-      return [];
-    };
-
     self.add("state_university", function (name) {
       var universities_by_province = {
         //prov:[{name, label}]
@@ -375,7 +363,13 @@ go.app = (function () {
             'Boland', 'Cape Peninsula University of Technology (CPUT)', 'College of Cape Town', 'False Bay', 'Nelson Mandela University (NMU)', 'Northlink', 'South Cape', 'Stellenbosch University (SU)', 'UNISA', 'University of Cape Town (UCT)', 'University of Western Cape (UWC)', 'West Coast']
       };
       var selected_prov = self.im.user.answers.state_province;
-
+      var choices = [];
+      for(var i=0; i<universities_by_province[selected_prov].length; i++){
+        choices[i] = new Choice(
+            universities_by_province[selected_prov][i],
+            $(universities_by_province[selected_prov][i])
+        );
+      }
       return new PaginatedChoiceState(name, {
         question: $([
           "Select your university.",
@@ -383,7 +377,7 @@ go.app = (function () {
           "Reply:"
         ].join("\n")),
         accept_labels: true,
-        choices: self.make_choices_from_list(universities_by_province[selected_prov]),
+        choices: choices,
         next: "state_campus"
       });
     });
@@ -1021,11 +1015,16 @@ go.app = (function () {
         ],
             "Other":[
                 "Other"
-
-        ],
+            ],
         };
-
       var selected_uni = self.im.user.answers.state_university;
+      var choices = [];
+      for(var i=0; i<campuses_by_university[selected_uni].length; i++){
+        choices[i] = new Choice(
+          campuses_by_university[selected_uni][i],
+          $(campuses_by_university[selected_uni][i])
+        );
+      }
 
       return new PaginatedChoiceState(name, {
         question: $([
@@ -1034,7 +1033,7 @@ go.app = (function () {
           "Reply:"
         ].join("\n")),
         accept_labels: true,
-        choices: self.make_choices_from_list(campuses_by_university[selected_uni]),
+        choices: choices,
         next: "state_fever"
       });
     });

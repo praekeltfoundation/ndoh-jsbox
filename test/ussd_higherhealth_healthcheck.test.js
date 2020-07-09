@@ -400,28 +400,37 @@ describe("ussd_higherhealth_healthcheck app", function () {
     describe("state_university", function () {
         it("should ask for a users university", function () {
             return tester
+                .setup.user.answers({
+                    state_province: 'GAUTENG',
+                })
                 .setup.user.state("state_university")
                 .check.interaction({
                     state: "state_university",
                     reply: [
                         "Select your university.",
                         "",
+                        "Reply:",
                         "1. UJ",
                         "2. Wits"
                     ].join("\n"),
                     char_limit: 160
                 })
+                .check.user.answer('state_province', 'GAUTENG')
                 .run();
         });
         it("should display an error on invalid input", function () {
             return tester
                 .setup.user.state("state_university")
+                .setup.user.answers({
+                    state_province: 'GAUTENG'
+                })
                 .input("A")
                 .check.interaction({
                     state: "state_university",
                     reply: [
                         "Select your university.",
                         "",
+                        "Reply:",
                         "1. UJ",
                         "2. Wits"
                     ].join("\n"),
@@ -432,6 +441,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
         it("should go to state_campus", function () {
             return tester
                 .setup.user.state("state_university")
+                .setup.user.answers({
+                    state_province: 'GAUTENG'
+                })
                 .input("1")
                 .check.user.state("state_campus")
                 .run();
@@ -441,12 +453,20 @@ describe("ussd_higherhealth_healthcheck app", function () {
         it("should ask for the users campus", function () {
             return tester
                 .setup.user.state("state_campus")
+                .setup.user.answers({
+                    state_province: 'GAUTENG',
+                    state_university: 'University of Johannesburg (UJ)'
+                })
                 .check.interaction({
                     state: "state_campus",
                     reply: [
                         "Select your campus.",
                         "",
-                        "1. Braamfontein"
+                        "Reply:",
+                        "1. Doornfontein (DFC)",
+                        "2. Kingsway Auckland Park (APK)",
+                        "3. Kingsway Bunting Road (APB)",
+                        "4. Soweto"
                     ].join("\n"),
                     char_limit: 160
                 })
@@ -455,13 +475,21 @@ describe("ussd_higherhealth_healthcheck app", function () {
         it("should display an error on invalid input", function () {
             return tester
                 .setup.user.state("state_campus")
+                .setup.user.answers({
+                    state_province: 'GAUTENG',
+                    state_university: 'University of Johannesburg (UJ)'
+                })
                 .input("A")
                 .check.interaction({
                     state: "state_campus",
                     reply: [
                         "Select your campus.",
                         "",
-                        "1. Braamfontein"
+                        "Reply:",
+                        "1. Doornfontein (DFC)",
+                        "2. Kingsway Auckland Park (APK)",
+                        "3. Kingsway Bunting Road (APB)",
+                        "4. Soweto"
                     ].join("\n"),
                     char_limit: 160
                 })
@@ -470,6 +498,10 @@ describe("ussd_higherhealth_healthcheck app", function () {
         it("should go to state_fever", function () {
             return tester
                 .setup.user.state("state_campus")
+                .setup.user.answers({
+                    state_province: 'GAUTENG',
+                    state_university: 'University of Johannesburg (UJ)'
+                })
                 .input("1")
                 .check.user.state("state_fever")
                 .run();
