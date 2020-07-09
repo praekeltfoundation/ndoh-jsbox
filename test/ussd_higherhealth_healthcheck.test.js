@@ -419,8 +419,12 @@ describe("ussd_higherhealth_healthcheck app", function () {
                         "Select your university.",
                         "",
                         "Reply:",
-                        "1. UJ",
-                        "2. Wits"
+                        "1. Central Johannesburg",
+                        "2. Ekurhuleni East",
+                        "3. Ekurhuleni West",
+                        "4. North West University (NWU)",
+                        "5. Sedibeng",
+                        "6. More"
                     ].join("\n"),
                     char_limit: 160
                 })
@@ -440,8 +444,12 @@ describe("ussd_higherhealth_healthcheck app", function () {
                         "Select your university.",
                         "",
                         "Reply:",
-                        "1. UJ",
-                        "2. Wits"
+                        "1. Central Johannesburg",
+                        "2. Ekurhuleni East",
+                        "3. Ekurhuleni West",
+                        "4. North West University (NWU)",
+                        "5. Sedibeng",
+                        "6. More"
                     ].join("\n"),
                     char_limit: 160
                 })

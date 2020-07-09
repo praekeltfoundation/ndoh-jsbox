@@ -377,6 +377,7 @@ go.app = (function () {
           "Reply:"
         ].join("\n")),
         accept_labels: true,
+        options_per_page: null,
         choices: choices,
         next: "state_campus"
       });
@@ -1033,6 +1034,7 @@ go.app = (function () {
           "Reply:"
         ].join("\n")),
         accept_labels: true,
+        options_per_page: null,
         choices: choices,
         next: "state_fever"
       });
