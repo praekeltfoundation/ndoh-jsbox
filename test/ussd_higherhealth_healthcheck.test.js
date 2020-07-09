@@ -357,6 +357,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
         it("should ask for their age", function () {
             return tester
                 .setup.user.state("state_age")
+                .setup.user.answers({
+                    state_province: 'ZA-GT',
+                })
                 .check.interaction({
                     state: "state_age",
                     reply: [
@@ -373,6 +376,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
         it("should display an error on invalid input", function () {
             return tester
                 .setup.user.state("state_age")
+                .setup.user.answers({
+                    state_province: 'ZA-GT',
+                })
                 .input("A")
                 .check.interaction({
                     state: "state_age",
@@ -392,6 +398,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
         it("should go to state_university", function () {
             return tester
                 .setup.user.state("state_age")
+                .setup.user.answers({
+                    state_province: 'ZA-GT',
+                })
                 .input("1")
                 .check.user.state("state_university")
                 .run();
@@ -401,7 +410,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
         it("should ask for a users university", function () {
             return tester
                 .setup.user.answers({
-                    state_province: 'GAUTENG',
+                    state_province: 'ZA-GT',
                 })
                 .setup.user.state("state_university")
                 .check.interaction({
@@ -415,14 +424,14 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     ].join("\n"),
                     char_limit: 160
                 })
-                .check.user.answer('state_province', 'GAUTENG')
+                .check.user.answer('state_province', 'ZA-GT')
                 .run();
         });
         it("should display an error on invalid input", function () {
             return tester
                 .setup.user.state("state_university")
                 .setup.user.answers({
-                    state_province: 'GAUTENG'
+                    state_province: 'ZA-GT'
                 })
                 .input("A")
                 .check.interaction({
@@ -442,7 +451,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
             return tester
                 .setup.user.state("state_university")
                 .setup.user.answers({
-                    state_province: 'GAUTENG'
+                    state_province: 'ZA-GT'
                 })
                 .input("1")
                 .check.user.state("state_campus")
@@ -454,7 +463,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
             return tester
                 .setup.user.state("state_campus")
                 .setup.user.answers({
-                    state_province: 'GAUTENG',
+                    state_province: 'ZA-GT',
                     state_university: 'University of Johannesburg (UJ)'
                 })
                 .check.interaction({
@@ -476,7 +485,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
             return tester
                 .setup.user.state("state_campus")
                 .setup.user.answers({
-                    state_province: 'GAUTENG',
+                    state_province: 'ZA-GT',
                     state_university: 'University of Johannesburg (UJ)'
                 })
                 .input("A")
@@ -499,7 +508,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
             return tester
                 .setup.user.state("state_campus")
                 .setup.user.answers({
-                    state_province: 'GAUTENG',
+                    state_province: 'ZA-GT',
                     state_university: 'University of Johannesburg (UJ)'
                 })
                 .input("1")
