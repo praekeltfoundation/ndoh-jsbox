@@ -285,7 +285,8 @@ go.app = function() {
             var mh = new MetricsHelper(self.im);
             mh
                 // Total sum of users for each state for app
-                // This adds <env>.ussd_clinic_rapidpro.sum.users_per_state.transient 'sum' metric
+                // <env>.ussd_clinic_rapidpro.sum.unique_users last metric, 
+                // and a <env>.ussd_clinic_rapidpro.sum.unique_users.transient sum metric
                 .add.total_unique_users([self.metric_prefix, 'sum', 'unique_users'].join('.')) 
             ;
         };
