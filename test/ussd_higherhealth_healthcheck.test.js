@@ -558,6 +558,22 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .run();
         });
     });
+
+    describe("state_campus_other", function(){
+        it("the user should be taken to next screen", function(){
+            return tester
+                .setup.user.state("state_campus_other")
+                .setup.user.answers({
+                    state_province: 'ZA-WC',
+                    state_university: 'Stellenbosch University (SU)',
+                    state_campus: 'Other',
+                })
+                .input("Neelsie")  // Other
+                .check.interaction({state:"state_fever"})
+                .run();
+        });
+    });
+
     describe("state_fever", function () {
         it("should ask if they have a fever", function () {
             return tester
