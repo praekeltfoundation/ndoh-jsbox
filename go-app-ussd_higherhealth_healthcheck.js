@@ -370,6 +370,8 @@ go.app = (function () {
             $(universities_by_province[selected_prov][i])
         );
       }
+      choices[choices.length] = new Choice('Other', $("Other"));
+
       return new PaginatedChoiceState(name, {
         question: $([
           "Select your university.",
@@ -379,8 +381,21 @@ go.app = (function () {
         accept_labels: true,
         options_per_page: null,
         choices: choices,
-        next: "state_campus"
+        next: function(){
+            return self.im.user.answers.state_university == "Other" ? "state_university_other" : "state_campus";
+        }
       });
+    });
+
+    self.add("state_university_other", function(name){
+        return new FreeText(name, {
+            question: $([
+              "Enter the name of your university." +
+              "",
+              "Reply:"
+            ].join("\n")),
+            next: "state_campus"
+        });
     });
 
     self.add("state_campus", function (name) {
@@ -1014,9 +1029,6 @@ go.app = (function () {
                 "Randfontein"
 
         ],
-            "Other":[
-                "Other"
-            ],
         };
       var selected_uni = self.im.user.answers.state_university;
       var choices = [];
@@ -1026,6 +1038,7 @@ go.app = (function () {
           $(campuses_by_university[selected_uni][i])
         );
       }
+      choices[choices.length] = new Choice('Other', $("Other"));
 
       return new PaginatedChoiceState(name, {
         question: $([
@@ -1036,8 +1049,21 @@ go.app = (function () {
         accept_labels: true,
         options_per_page: null,
         choices: choices,
-        next: "state_fever"
+        next: function(){
+            return self.im.user.answers.state_campus == "Other" ? "state_campus_other" : "state_fever";
+        }
       });
+    });
+
+    self.add("state_campus_other", function(name){
+        return new FreeText(name, {
+            question: $([
+              "Enter the name of your campus." +
+              "",
+              "Reply:"
+            ].join("\n")),
+            next: "state_fever"
+        });
     });
 
     self.add("state_fever", function (name) {

@@ -376,9 +376,6 @@ describe("ussd_higherhealth_healthcheck app", function () {
         it("should display an error on invalid input", function () {
             return tester
                 .setup.user.state("state_age")
-                .setup.user.answers({
-                    state_province: 'ZA-GT',
-                })
                 .input("A")
                 .check.interaction({
                     state: "state_age",
@@ -455,6 +452,23 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 })
                 .run();
         });
+        it("should go to other free text university input", function () {
+            return tester
+                .setup.user.state("state_university")
+                .setup.user.answers({
+                    state_province: 'ZA-NC'
+                })
+                .input("5")  // Other
+                .check.interaction({
+                    state: "state_university_other",
+                    reply: [
+                        "Enter the name of your university.",
+                        "Reply:"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
         it("should go to state_campus", function () {
             return tester
                 .setup.user.state("state_university")
@@ -483,7 +497,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                         "1. Doornfontein (DFC)",
                         "2. Kingsway Auckland Park (APK)",
                         "3. Kingsway Bunting Road (APB)",
-                        "4. Soweto"
+                        "4. Soweto",
+                        "5. Other"
                     ].join("\n"),
                     char_limit: 160
                 })
@@ -506,7 +521,26 @@ describe("ussd_higherhealth_healthcheck app", function () {
                         "1. Doornfontein (DFC)",
                         "2. Kingsway Auckland Park (APK)",
                         "3. Kingsway Bunting Road (APB)",
-                        "4. Soweto"
+                        "4. Soweto",
+                        "5. Other"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to other free text campus input", function () {
+            return tester
+                .setup.user.state("state_campus")
+                .setup.user.answers({
+                    state_province: 'ZA-WC',
+                    state_university: 'Stellenbosch University (SU)',
+                })
+                .input("3")  // Other
+                .check.interaction({
+                    state: "state_campus_other",
+                    reply: [
+                        "Enter the name of your campus.",
+                        "Reply:"
                     ].join("\n"),
                     char_limit: 160
                 })
