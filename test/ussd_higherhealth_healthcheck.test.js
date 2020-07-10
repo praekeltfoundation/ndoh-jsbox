@@ -480,6 +480,21 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .run();
         });
     });
+
+    describe("state_university_other", function(){
+        it("the user should be taken to next screen", function(){
+            return tester
+                .setup.user.answers({
+                    state_province: 'ZA-WC',
+                    state_university: 'Other',
+                })
+                .setup.user.state("state_university_other")
+                .input("Winelands")  // Other
+                .check.interaction({state:"state_campus"})
+                .run();
+        });
+    });
+
     describe("state_campus", function () {
         it("should ask for the users campus", function () {
             return tester
