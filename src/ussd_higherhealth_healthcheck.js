@@ -298,6 +298,7 @@ go.app = (function () {
     self.add("state_campus", function (name) {
       var campuses_by_university = {
         // uni:[{name, label}]
+            "Other": [],
             "Boland":[
                 "Caledon",
                 "Head Office",
