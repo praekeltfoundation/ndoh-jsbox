@@ -277,6 +277,8 @@ go.app = (function () {
         ].join("\n")),
         accept_labels: true,
         options_per_page: null,
+        more: "More",
+        back: "Back",
         choices: choices,
         next: function(){
             return self.im.user.answers.state_university == "Other" ? "state_university_other" : "state_campus";
@@ -946,6 +948,8 @@ go.app = (function () {
         ].join("\n")),
         accept_labels: true,
         options_per_page: null,
+        more: "More",
+        back: "Back",
         choices: choices,
         next: function(){
             return self.im.user.answers.state_campus == "Other" ? "state_campus_other" : "state_fever";
