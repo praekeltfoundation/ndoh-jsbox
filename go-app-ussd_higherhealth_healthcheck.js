@@ -380,8 +380,8 @@ go.app = (function () {
         ].join("\n")),
         accept_labels: true,
         options_per_page: null,
-        more: "More",
-        back: "Back",
+        more: $("More"),
+        back: $("Back"),
         choices: choices,
         next: function(){
             return self.im.user.answers.state_university == "Other" ? "state_university_other" : "state_campus";
@@ -1054,7 +1054,7 @@ go.app = (function () {
       var selected_uni = self.im.user.answers.state_university;
       var choices = [];
       var campus_list = [];
-      if (selected_uni !== 'UNISA') campus_list = campuses_by_university[selected_uni];
+      if (Array.isArray(campuses_by_university[selected_uni])) campus_list = campuses_by_university[selected_uni];
       else campus_list = campuses_by_university[selected_uni][selected_prov];
       for(var i=0; i<campus_list.length; i++){
         choices[i] = new Choice(campus_list[i], $(campus_list[i]));
@@ -1069,8 +1069,8 @@ go.app = (function () {
         ].join("\n")),
         accept_labels: true,
         options_per_page: null,
-        more: "More",
-        back: "Back",
+        more: $("More"),
+        back: $("Back"),
         choices: choices,
         next: function(){
             return self.im.user.answers.state_campus == "Other" ? "state_campus_other" : "state_fever";

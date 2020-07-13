@@ -951,7 +951,7 @@ go.app = (function () {
       var selected_uni = self.im.user.answers.state_university;
       var choices = [];
       var campus_list = [];
-      if (selected_uni !== 'UNISA') campus_list = campuses_by_university[selected_uni];
+      if (Array.isArray(campuses_by_university[selected_uni])) campus_list = campuses_by_university[selected_uni];
       else campus_list = campuses_by_university[selected_uni][selected_prov];
       for(var i=0; i<campus_list.length; i++){
         choices[i] = new Choice(campus_list[i], $(campus_list[i]));
