@@ -519,6 +519,30 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 })
                 .run();
         });
+        it("should ask for the users campus (Unisa)", function () {
+            return tester
+                .setup.user.state("state_campus")
+                .setup.user.answers({
+                    state_province: 'ZA-GT',
+                    state_university: 'UNISA'
+                })
+                .check.interaction({
+                    state: "state_campus",
+                    reply: [
+                        "Select your campus.",
+                        "",
+                        "Reply:",
+                         "1. Ekurhuleni",
+                        "2. Florida (Science Campus)",
+                        "3. Johannesburg",
+                        "4. Pretoria (Sunnyside)",
+                        "5. Vaal",
+                        "6. Other"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
         it("should display an error on invalid input", function () {
             return tester
                 .setup.user.state("state_campus")

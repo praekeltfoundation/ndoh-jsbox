@@ -863,35 +863,52 @@ go.app = (function () {
                 "Pretoria West",
                 "Soshanguve"
         ],
-            "UNISA":[
-                "Bloemfontein",
-                "Kroonstad",
-                "Durban",
-                "Newcastle",
-                "Pietermaritzburg",
-                "Richards Bay",
-                "Wild Coast (Mbizana)",
-                "East London",
-                "Mthatha",
-                "Port Elizabeth",
-                "Ekurhuleni",
-                "Florida (Science Campus)",
-                "Johannesburg",
-                "Pretoria (Sunnyside)",
-                "Vaal",
-                "George",
-                "Parow",
-                "Giyani",
-                "Makhado",
-                "Polokwane",
-                "Kimberley",
-                "Mafikeng",
-                "Potchefstroom",
-                "Rustenburg",
-                "Mbombela",
-                "Middelburg"
-
-        ],
+        "UNISA": {
+          "ZA-EC": [
+            "East London",
+            "Mthatha",
+            "Port Elizabeth"
+          ],
+          "ZA-FS": [
+            "Bloemfontein",
+            "Kroonstad"
+          ],
+          "ZA-GT": [
+            "Ekurhuleni",
+            "Florida (Science Campus)",
+            "Johannesburg",
+            "Pretoria (Sunnyside)",
+            "Vaal"
+          ],
+          "ZA-NL": [
+            "Durban",
+            "Newcastle",
+            "Pietermaritzburg",
+            "Richards Bay",
+            "Wild Coast (Mbizana)"
+          ],
+          "ZA-LP": [
+            "Giyani",
+            "Makhado",
+            "Polokwane"
+          ],
+          "ZA-MP": [
+            "Mbombela",
+            "Middelburg"
+          ],
+          "ZA-NW": [
+            "Mafikeng",
+            "Potchefstroom",
+            "Rustenburg"
+          ],
+          "ZA-NC": [
+            "Kimberley"
+          ],
+          "ZA-WC":[
+            "George",
+            "Parow"
+          ],
+        },
             "Umfolozi":[
                 "Bambanana",
                 "Central Office",
@@ -1033,13 +1050,14 @@ go.app = (function () {
 
         ],
         };
+      var selected_prov = self.im.user.answers.state_province;
       var selected_uni = self.im.user.answers.state_university;
       var choices = [];
-      for(var i=0; i<campuses_by_university[selected_uni].length; i++){
-        choices[i] = new Choice(
-          campuses_by_university[selected_uni][i],
-          $(campuses_by_university[selected_uni][i])
-        );
+      var campus_list = [];
+      if (selected_uni !== 'UNISA') campus_list = campuses_by_university[selected_uni];
+      else campus_list = campuses_by_university[selected_uni][selected_prov];
+      for(var i=0; i<campus_list.length; i++){
+        choices[i] = new Choice(campus_list[i], $(campus_list[i]));
       }
       choices[choices.length] = new Choice('Other', $("Other"));
 
