@@ -611,7 +611,7 @@ go.app = (function () {
                     "North",
                     "South",
                 ],
-                'ZA-EC': [
+                'ZA-WC': [
                     "George"
                 ]
             },
