@@ -125,11 +125,23 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .run();
         });
 
-        it("should go to change the language", function () {
+        it("should change the language", function () {
             return tester
                 .setup.user.state("state_language")
-                .input("2")
+                .input("4")
                 .check.user.state("state_terms")
+                .check.user.lang("xho")
+                .check.interaction({
+                    reply: [
+                        "Confirm that you're responsible for your medical care & treatment. " +
+                        "This service only provides info.",
+                        "",
+                        "Reply",
+                        "1. YES",
+                        "2. NO",
+                        "3. MORE INFO",
+                    ].join("\n"),
+                })
                 .run();
         });
     });
