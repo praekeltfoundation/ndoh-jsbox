@@ -10,6 +10,7 @@ go.app = (function () {
   var MenuState = vumigo.states.MenuState;
   var FreeText = vumigo.states.FreeText;
   var ChoiceState = vumigo.states.ChoiceState;
+  var LanguageChoice = vumigo.states.LanguageChoice;
   var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
 
 
@@ -78,15 +79,35 @@ go.app = (function () {
       return new MenuState(name, {
         question: $([
           "The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by answering a " +
-          "few questions about you and your health.",
+          "few questions.",
           "",
           "Reply"
         ].join("\n")),
-        error: $("This service works best when you select numbers from the list"),
+        error: $("Select a numbers from the list"),
         accept_labels: true,
         choices: [
-          new Choice("state_terms", $("START"))
+          new Choice("state_terms", $("START")),
+          new Choice("state_language", $("CHANGE LANGUAGE"))
         ]
+      });
+    });
+
+    self.add("state_language", function(name){
+        return new LanguageChoice(name, {
+        question: $([
+          "Select your language",
+          "",
+          "Reply:"
+        ].join("\n")),
+        accept_labels: true,
+        choices: [
+          new Choice("af", $("Afrikaans")),
+          new Choice("en", $("English")),
+          new Choice("st", $("Sotho")),
+          new Choice("xh", $("Xhosa")),
+          new Choice("zu", $("Zulu")),
+        ],
+        next: "state_terms"
       });
     });
 

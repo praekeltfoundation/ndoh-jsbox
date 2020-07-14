@@ -66,10 +66,11 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state: "state_start",
                     reply: [
                         "The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by " +
-                        "answering a few questions about you and your health.",
+                        "answering a few questions.",
                         "",
                         "Reply",
-                        "1. START"
+                        "1. START",
+                        "2. CHANGE LANGUAGE"
                     ].join("\n"),
                     char_limit: 140
                 })
@@ -81,8 +82,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_start",
                     reply: [
-                        "This service works best when you select numbers from the list",
-                        "1. START"
+                        "Select a numbers from the list",
+                        "1. START",
+                        "2. CHANGE LANGUAGE"
                     ].join("\n"),
                     char_limit: 140
                 })
@@ -94,7 +96,44 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.user.state("state_terms")
                 .run();
         });
+        it("should go to state_language", function () {
+            return tester
+                .input("2")
+                .check.user.state("state_language")
+                .run();
+        });
     });
+
+    describe("state_language", function(){
+        it("should ask the users language", function () {
+            return tester
+                .setup.user.state("state_language")
+                .check.interaction({
+                    state: "state_language",
+                    reply: [
+                        "Select your language",
+                        "",
+                        "Reply:",
+                        "1. Afrikaans",
+                        "2. English",
+                        "3. Sotho",
+                        "4. Xhosa",
+                        "5. Zulu",
+                    ].join("\n"),
+                    char_limit: 140
+                })
+                .run();
+        });
+
+        it("should go to change the language", function () {
+            return tester
+                .setup.user.state("state_language")
+                .input("2")
+                .check.user.state("state_terms")
+                .run();
+        });
+    });
+
     describe("state_terms", function () {
         it("should show the terms", function () {
             return tester
