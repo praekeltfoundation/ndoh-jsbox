@@ -101,11 +101,11 @@ go.app = (function () {
         ].join("\n")),
         accept_labels: true,
         choices: [
-          new Choice("af", $("Afrikaans")),
-          new Choice("en", $("English")),
-          new Choice("st", $("Sotho")),
-          new Choice("xh", $("Xhosa")),
-          new Choice("zu", $("Zulu")),
+          new Choice("afr", $("Afrikaans")),
+          new Choice("eng", $("English")),
+          new Choice("sot", $("Sotho")),
+          new Choice("xho", $("Xhosa")),
+          new Choice("zul", $("Zulu")),
         ],
         next: "state_terms"
       });
