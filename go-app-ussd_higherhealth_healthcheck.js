@@ -388,7 +388,7 @@ go.app = (function () {
       for(var i=0; i<universities_by_province[selected_prov].length; i++){
         choices[i] = new Choice(
             universities_by_province[selected_prov][i],
-            $(universities_by_province[selected_prov][i])
+            $("{{ label}}").context({label: universities_by_province[selected_prov][i]})
         );
       }
       choices[choices.length] = new Choice('Other', $("Other"));
@@ -1089,7 +1089,7 @@ go.app = (function () {
       if (Array.isArray(campuses_by_university[selected_uni])) campus_list = campuses_by_university[selected_uni];
       else campus_list = campuses_by_university[selected_uni][selected_prov];
       for(var i=0; i<campus_list.length; i++){
-        choices[i] = new Choice(campus_list[i], $(campus_list[i]));
+        choices[i] = new Choice(campus_list[i], $("{{ label }}").context({label: campus_list[i]}));
       }
       choices[choices.length] = new Choice('Other', $("Other"));
 
