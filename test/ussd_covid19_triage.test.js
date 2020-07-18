@@ -734,9 +734,8 @@ describe("ussd_covid19_triage app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
-                        "GET TESTED to find out if you have COVID-19. Go to a testing center or " +
-                        "Call 0800029999 or your healthcare practitioner for info on what to do " +
-                        "& how to test",
+                        "We recommend you SELF-QUARANTINE for the next 10 days and do this HealthCheck " +
+                        "daily to monitor your symptoms. Stay/sleep alone in a room with good air flow.",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
@@ -784,12 +783,9 @@ describe("ussd_covid19_triage app", function () {
                 .input("1")
                 .check.interaction({
                     state: "state_display_risk",
-                    reply: [
-                        "Please seek medical care immediately at an emergency facility.",
-                        "Remember to:",
-                        "- Avoid contact with other people",
-                        "- Put on a face mask before entering the facility"
-                    ].join("\n"),
+                    reply:
+                        "You may be ELIGIBLE FOR COVID-19 TESTING. Go to a testing center or Call " +
+                        "0800029999 or visit your healthcare practitioner for info on what to do & how to test.",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
@@ -839,7 +835,7 @@ describe("ussd_covid19_triage app", function () {
                     state: "state_no_tracing_low_risk",
                     reply: [
                         "You will not be contacted. If you think you have COVID-19 please STAY " +
-                        "HOME, avoid contact with other people in your community and self-isolate.",
+                        "HOME, avoid contact with other people in your community and self-quarantine.",
                         "1. START OVER"
                     ].join("\n"),
                     char_limit: 160
@@ -889,9 +885,8 @@ describe("ussd_covid19_triage app", function () {
                 .check.interaction({
                     state: "state_no_tracing_moderate_risk",
                     reply: [
-                        "You will not be contacted. Call NICD:0800029999 for info on what to do " +
-                        "& how to test. STAY HOME. Avoid contact with people in your " +
-                        "house/community",
+                        "You won't be contacted. SELF-QUARANTINE for 10 days, do this HealthCheck " +
+                        "daily to monitor symptoms. Stay/sleep alone in a room with good air flow.",
                         "1. START OVER"
                     ].join("\n"),
                     char_limit: 160
@@ -940,12 +935,9 @@ describe("ussd_covid19_triage app", function () {
                 .input("2")
                 .check.interaction({
                     state: "state_display_risk",
-                    reply: [
-                        "You will not be contacted. Please seek medical care now at an " +
-                        "emergency facility.",
-                        "-Avoid contact with other people",
-                        "-Put on a face mask before entering facility",
-                    ].join("\n"),
+                    reply:
+                        "You will not be contacted. You may be ELIGIBLE FOR COVID-19 TESTING. Go to a testing center or Call " +
+                        "0800029999 or your healthcare practitioner for info.",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
