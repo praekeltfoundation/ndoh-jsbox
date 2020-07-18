@@ -409,7 +409,7 @@ go.app = (function () {
           return self.states.create("state_no_tracing_moderate_risk");
         }
         if (risk === "high") {
-          text = text = $(
+          text = $(
             "You will not be contacted. You may be ELIGIBLE FOR COVID-19 TESTING. " +
             "Go to a testing center or Call 0800029999 or your healthcare practitioner for info."
           );
@@ -433,8 +433,8 @@ go.app = (function () {
 
     self.add("state_no_tracing_moderate_risk", function(name) {
         return new MenuState(name, {
-          question: text = $(
-            "You will not be contacted. SELF-QUARANTINE for the next 10 days, do this HealthCheck " +
+          question: $(
+            "You won't be contacted. SELF-QUARANTINE for 10 days, do this HealthCheck " +
             "daily to monitor symptoms. Stay/sleep alone in a room with good air flow."
           ),
           choices: [new Choice("state_start", $("START OVER"))]
