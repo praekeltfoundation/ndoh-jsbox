@@ -1,6 +1,7 @@
 var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
 var fixtures_rapidpro = require("./fixtures_rapidpro")();
+var xho_translation = require('../config/go-app-ussd_higherhealth_healthcheck.xho_ZA.json');
 
 describe("ussd_higherhealth_healthcheck app", function () {
     var app;
@@ -83,6 +84,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
 
         it("should change the language", function () {
             return tester
+                .setup.config({
+                    "translation.xho": xho_translation
+                })
                 .input("4")
                 .check.user.state("state_start")
                 .check.user.lang("xho")
