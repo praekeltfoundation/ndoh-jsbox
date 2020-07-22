@@ -132,6 +132,11 @@ go.app = (function () {
           "[4/10] Please reply with your ID number as you find it in your Identity Document."
         ),
         check: function (content) {
+          moment.parseTwoDigitYear = function (input) {
+              var offset = parseInt(new moment(self.im.config.testing_today).format('YY')) - 5;
+              return parseInt(input) + (parseInt(input) > offset ? 1900 : 2000);
+          };
+
           var match = content.match(/^(\d{6})(\d{4})(0|1)8\d$/);
           var today = new moment(self.im.config.testing_today).startOf("day"),
             dob;
