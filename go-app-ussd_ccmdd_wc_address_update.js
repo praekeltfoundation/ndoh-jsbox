@@ -282,8 +282,7 @@ go.app = (function () {
         ),
         check: function (content) {
           var match = content.match(/^(\d{6})(\d{4})(0|1)8\d$/);
-          var today = new moment(self.im.config.testing_today).startOf("day"),
-            dob;
+          var dob;
           var validLuhn = function (content) {
             return (
               content
@@ -305,11 +304,7 @@ go.app = (function () {
             !match ||
             !validLuhn(content) ||
             !(dob = new moment(match[1], "YYMMDD")) ||
-            !dob.isValid() ||
-            !dob.isBetween(
-              today.clone().add(-130, "years"),
-              today.clone().add(-5, "years")
-            )
+            !dob.isValid()
           ) {
             return $(
               "Sorry, we don't understand. Please try again by entering the your 13 digit South African ID number."

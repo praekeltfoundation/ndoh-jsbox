@@ -228,6 +228,13 @@ describe("ussd_ccmdd_wc_address_update app", function () {
         .check.user.state("state_folder_number")
         .run();
     });
+    it("should go to state_folder_number on valid input <1970", function () {
+      return tester
+        .setup.user.state("state_sa_id_no")
+        .input("6401106750189")
+        .check.user.state("state_folder_number")
+        .run();
+    });
   });
   describe("state_dob_year", function () {
     it("should ask what year the user was born", function () {
