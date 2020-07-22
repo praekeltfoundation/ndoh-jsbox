@@ -59,9 +59,49 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .run();
         });
     });
+
+    describe("state_language", function(){
+        it("should ask the users language", function () {
+            return tester
+                .check.interaction({
+                    state: "state_language",
+                    reply: [
+                         "Welcome to HealthCheck.",
+                          "Please select your preferred language.",
+                          "Reply",
+                          "",
+                          "1. Afrikaans",
+                          "2. English",
+                          "3. Sotho",
+                          "4. Xhosa",
+                          "5. Zulu",
+                    ].join("\n"),
+                    char_limit: 140
+                })
+                .run();
+        });
+
+        it("should change the language", function () {
+            return tester
+                .input("4")
+                .check.user.state("state_start")
+                .check.user.lang("xho")
+                .check.interaction({
+                    reply: [
+                        "The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by answering a few questions about you and your health.",
+                        "",
+                        "Reply",
+                        "1. START",
+                    ].join("\n"),
+                })
+                .run();
+        });
+    });
+
     describe("state_start", function () {
         it("should show the welcome message", function () {
             return tester
+                .setup.user.state("state_start")
                 .check.interaction({
                     state: "state_start",
                     reply: [
@@ -77,6 +117,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
         });
         it("should display error on invalid input", function () {
             return tester
+                .setup.user.state("state_start")
                 .input("A")
                 .check.interaction({
                     state: "state_start",
@@ -90,11 +131,13 @@ describe("ussd_higherhealth_healthcheck app", function () {
         });
         it("should go to state_terms", function () {
             return tester
+                .setup.user.state("state_start")
                 .input("1")
                 .check.user.state("state_terms")
                 .run();
         });
     });
+
     describe("state_terms", function () {
         it("should show the terms", function () {
             return tester
@@ -719,7 +762,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
             return tester
                 .setup.user.state("state_tracing")
                 .input("3")
-                .check.user.state("state_start")
+                .check.user.state("state_language")
                 .run();
         });
     });

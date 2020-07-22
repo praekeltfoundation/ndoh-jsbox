@@ -113,10 +113,11 @@ go.app = (function () {
   var MenuState = vumigo.states.MenuState;
   var FreeText = vumigo.states.FreeText;
   var ChoiceState = vumigo.states.ChoiceState;
+  var LanguageChoice = vumigo.states.LanguageChoice;
 
 
   var GoNDOH = App.extend(function (self) {
-    App.call(self, "state_start");
+    App.call(self, "state_language");
     var $ = self.$;
 
     self.calculate_risk = function () {
@@ -168,8 +169,29 @@ go.app = (function () {
         accept_labels: true,
         choices: [
           new Choice(creator_opts.name, $("Continue where I left off")),
-          new Choice("state_start", $("Start over"))
+          new Choice("state_language", $("Start over"))
         ]
+      });
+    });
+
+    self.add("state_language", function(name){
+        return new LanguageChoice(name, {
+        question: $([
+          "Welcome to HealthCheck.",
+          "Please select your preferred language.",
+
+          "Reply",
+          "",
+        ].join("\n")),
+        accept_labels: true,
+        choices: [
+          new Choice("afr", $("Afrikaans")),
+          new Choice("eng", $("English")),
+          new Choice("sot", $("Sotho")),
+          new Choice("xho", $("Xhosa")),
+          new Choice("zul", $("Zulu")),
+        ],
+        next: "state_start"
       });
     });
 
@@ -221,7 +243,7 @@ go.app = (function () {
           "You can return to this service at any time. Remember, if you think you have COVID-19 " +
           "STAY HOME, avoid contact with other people and self-isolate."
         ),
-        next: "state_start"
+        next: "state_language"
       });
     });
 
@@ -466,7 +488,7 @@ go.app = (function () {
         ],
         next: function (response) {
           if (response.value === null) {
-            return "state_start";
+            return "state_language";
           }
           return "state_submit_data";
         }
@@ -590,7 +612,7 @@ go.app = (function () {
         }
       }
       return new EndState(name, {
-        next: "state_start",
+        next: "state_language",
         text: text,
       });
     });
@@ -601,12 +623,12 @@ go.app = (function () {
           "You will not be contacted. If you think you have COVID-19 please STAY HOME, avoid " +
           "contact with other people in your community and self-isolate."
         ),
-        choices: [new Choice("state_start", $("START OVER"))]
+        choices: [new Choice("state_language", $("START OVER"))]
       });
     });
 
     self.states.creators.__error__ = function (name, opts) {
-      var return_state = opts.return_state || "state_start";
+      var return_state = opts.return_state || "state_language";
       return new EndState(name, {
         next: return_state,
         text: $(
