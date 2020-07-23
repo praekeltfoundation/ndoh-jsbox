@@ -6,11 +6,11 @@
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2020-07-22 10:59+0200",
+        "po-revision-date": "2020-07-23 11:13+0200",
         "x-generator": "Poedit 2.3.1",
+        "plural-forms": "nplurals=2; plural=(n==0 || n==1);",
         "last-translator": "",
-        "plural-forms": "nplurals=2; plural=(n != 1);",
-        "language": "af"
+        "language": "xho"
     },
     "Welcome back to HealthCheck\n\nReply": [
         null,
@@ -54,7 +54,8 @@
     ],
     "This service works best when you select numbers from the list": [
         null,
-        ""
+
+        "Le nkonzo isebenza ngcono xa ukhetha amanani kuluhlu"
     ],
     "START": [
         null,
@@ -62,7 +63,7 @@
     ],
     "Confirm that you're responsible for your medical care & treatment. This service only provides info.\n\nReply": [
         null,
-        ""
+        "Qinisekisa ukuba unoxanduva lokukhathalela unyango lwakho. Le nkonzo ibonelela ngolwazi kuphela. \n\nPhendula "
     ],
     "Please use numbers from list. Confirm that u're responsible for ur medical care & treatment. This service only provides info.\n\nReply": [
         null,
@@ -70,11 +71,11 @@
     ],
     "YES": [
         null,
-        ""
+        "EWE"
     ],
     "NO": [
         null,
-        ""
+        "HAYI"
     ],
     "MORE INFO": [
         null,
@@ -86,7 +87,7 @@
     ],
     "It's not a substitute for professional medical advice/diagnosis/treatment. Get a qualified health provider's advice about your medical condition/care.": [
         null,
-        ""
+        "Le nkonzo ayivali iingcebiso zengcali ngezonyango/ukufumanisa isifo/unyango. Fumana ingcebiso kugqirha ofanelekileyo ngonyango/ukhathalelo lwakho."
     ],
     "Next": [
         null,
@@ -94,7 +95,7 @@
     ],
     "You confirm that you shouldn't disregard/delay seeking medical advice about treatment/care because of this service. Rely on info at your own risk.": [
         null,
-        ""
+        "Uqinisekisa ukuba awuzukungahoyi / ulibazise ukufuna ingcebiso ngonyango ngenxa yale nkonzo. Thembela kolu lwazi ngokuse mngciphekweni wakho."
     ],
     "Please TYPE your first name": [
         null,
@@ -106,7 +107,7 @@
     ],
     "Select your province\n\nReply:": [
         null,
-        ""
+        "Khetha iphondo lakho\n\nPhendula:"
     ],
     "EASTERN CAPE": [
         null,
@@ -146,11 +147,11 @@
     ],
     "Please TYPE the name of your Suburb, Township, Town or Village (or nearest)": [
         null,
-        ""
+        "Nceda UTAYIPE igama lengingqi yedolophu yakho, ilokishi, idolophu okanye ilali (okanye ekufutshane)"
     ],
     "How old are you?": [
         null,
-        ""
+        "Uneminyaka emingaphi?"
     ],
     "Please use numbers from list.\n\nHow old are you?": [
         null,
@@ -174,7 +175,7 @@
     ],
     "Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?\n\nReply": [
         null,
-        ""
+        "Ingaba uziva ushushu kakhulu okanye ugodola? Uyabila okanye uyangcangcazela? Xa uchukumisa ibunzi lakho, ingaba livakala lishushu?\n\nPhendula"
     ],
     "Please use numbers from list. Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?\n\nReply": [
         null,
@@ -182,7 +183,7 @@
     ],
     "Do you have a cough that recently started?\n\nReply": [
         null,
-        ""
+        "Ingaba unokhohlokhohlo olukuqale kutsha nje?\n\nPhendula"
     ],
     "Please use numbers from list.\nDo you have a cough that recently started?\n\nReply": [
         null,
@@ -190,7 +191,7 @@
     ],
     "Do you have a sore throat, or pain when swallowing?\n\nReply": [
         null,
-        ""
+        "Ingaba unomqala obuhlungu okanye ubuhlungu xa uginya?\n\nPhendula"
     ],
     "Please use numbers from list.\nDo you have a sore throat, or pain when swallowing?\n\nReply": [
         null,
@@ -214,11 +215,11 @@
     ],
     "NOT SURE": [
         null,
-        ""
+        "ANDIQINISEKANGA"
     ],
     "Please confirm that the information you shared is correct & that the National Department of Health can contact you if necessary?\n\nReply": [
         null,
-        ""
+        "Qinisekisa ukuba ulwazi olwabeleyo lulo kwaye iSebe lezeMpilo likaZwelonke linokunxibelelana nawe xa ikho imfuneko? \n\nPhendula"
     ],
     "Please reply with numbers\nIs the information you shared correct & can the National Department of Health contact you if necessary?\n\nReply": [
         null,

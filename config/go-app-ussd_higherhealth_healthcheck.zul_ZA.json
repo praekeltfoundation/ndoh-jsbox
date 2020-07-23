@@ -6,11 +6,11 @@
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2020-07-22 11:00+0200",
+        "po-revision-date": "2020-07-23 11:36+0200",
         "x-generator": "Poedit 2.3.1",
+        "plural-forms": "nplurals=2; plural=(n==0 || n==1);",
         "last-translator": "",
-        "plural-forms": "nplurals=2; plural=(n != 1);",
-        "language": "af"
+        "language": "zul"
     },
     "Welcome back to HealthCheck\n\nReply": [
         null,
@@ -22,7 +22,7 @@
     ],
     "Start over": [
         null,
-        ""
+        "Qala phansi"
     ],
     "Welcome to HealthCheck.\nPlease select your preferred language.\nReply\n": [
         null,
@@ -54,15 +54,15 @@
     ],
     "This service works best when you select numbers from the list": [
         null,
-        ""
+        "Lensizakalo isebenza kahle uma ukhetha izinombolo ohlwini"
     ],
     "START": [
         null,
-        ""
+        "QALA"
     ],
     "Confirm that you're responsible for your medical care & treatment. This service only provides info.\n\nReply": [
         null,
-        ""
+        "Qinisekisa ukuthi unesibopho ekuzinakekeleni nokwelashwa kwakho . Lensizakalo inikezela ngolwazi kuphela.\n\nPhendula"
     ],
     "Please use numbers from list. Confirm that u're responsible for ur medical care & treatment. This service only provides info.\n\nReply": [
         null,
@@ -70,11 +70,11 @@
     ],
     "YES": [
         null,
-        ""
+        "YEBO"
     ],
     "NO": [
         null,
-        ""
+        "Cha"
     ],
     "MORE INFO": [
         null,
@@ -86,15 +86,15 @@
     ],
     "It's not a substitute for professional medical advice/diagnosis/treatment. Get a qualified health provider's advice about your medical condition/care.": [
         null,
-        ""
+        "Lensiza ayisithathi isikhundleni sezeluleko zempilo eziqhamuka kochwepheshe. Xhumana nomhlinzeki wezempilo ofanelekile mayelana nesimo sakho."
     ],
     "Next": [
         null,
-        ""
+        "Okulandelayo"
     ],
     "You confirm that you shouldn't disregard/delay seeking medical advice about treatment/care because of this service. Rely on info at your own risk.": [
         null,
-        ""
+        "Uqinisekisa ukuthi akumele uhlehlise ukufuna izeluleko zempilo mayelana nokwelashwa ngenxa yalensiza. Themba imininingwane ngokuthanda kwakho."
     ],
     "Please TYPE your first name": [
         null,
@@ -106,7 +106,7 @@
     ],
     "Select your province\n\nReply:": [
         null,
-        ""
+        "Khetha isifundazwe sakho\n\nPhendula"
     ],
     "EASTERN CAPE": [
         null,
@@ -146,11 +146,11 @@
     ],
     "Please TYPE the name of your Suburb, Township, Town or Village (or nearest)": [
         null,
-        ""
+        "Uyacelwa ukuthi UBHALE igama lesigatshana sakho, ilokishi, idolobha noma idolobhana (eliseduzane)"
     ],
     "How old are you?": [
         null,
-        ""
+        "Uneminyaka emingakhi?"
     ],
     "Please use numbers from list.\n\nHow old are you?": [
         null,
@@ -174,7 +174,7 @@
     ],
     "Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?\n\nReply": [
         null,
-        ""
+        "Ngabe uzizwa ushisa kakhulu noma ubanda? Ngabe uyajuluka noma uyathuthumela? Lapho uthinta isiphongo sakho, ingabe usizwa sishisa?\n\nPhendula"
     ],
     "Please use numbers from list. Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?\n\nReply": [
         null,
@@ -182,7 +182,7 @@
     ],
     "Do you have a cough that recently started?\n\nReply": [
         null,
-        ""
+        "Ingabe unakho ukukhwehlela okusanda kuqala?\n\nPhendula"
     ],
     "Please use numbers from list.\nDo you have a cough that recently started?\n\nReply": [
         null,
@@ -190,7 +190,7 @@
     ],
     "Do you have a sore throat, or pain when swallowing?\n\nReply": [
         null,
-        ""
+        "Ngabe unomphimbo obuhlungu noma kubuhlungu uma ugwinya?\n\nPhendula"
     ],
     "Please use numbers from list.\nDo you have a sore throat, or pain when swallowing?\n\nReply": [
         null,
@@ -218,7 +218,7 @@
     ],
     "Please confirm that the information you shared is correct & that the National Department of Health can contact you if necessary?\n\nReply": [
         null,
-        ""
+        "Cela uqinisekise iminingwane yakho nokuthi uMnyango Wezempilo Kazwelonke ungaxhumana nawe uma kunesidingo?\n\nPhendula"
     ],
     "Please reply with numbers\nIs the information you shared correct & can the National Department of Health contact you if necessary?\n\nReply": [
         null,
@@ -226,7 +226,7 @@
     ],
     "RESTART": [
         null,
-        ""
+        "QALALELA"
     ],
     "You are at low risk of having COVID-19. You will still need to complete this risk assessment daily to monitor your symptoms.": [
         null,
@@ -254,7 +254,7 @@
     ],
     "START OVER": [
         null,
-        ""
+        "Qala phansi"
     ],
     "Sorry, something went wrong. We have been notified. Please try again later": [
         null,

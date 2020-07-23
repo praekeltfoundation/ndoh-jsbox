@@ -6,11 +6,11 @@
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2020-07-22 11:00+0200",
+        "po-revision-date": "2020-07-23 11:39+0200",
         "x-generator": "Poedit 2.3.1",
-        "last-translator": "",
         "plural-forms": "nplurals=2; plural=(n != 1);",
-        "language": "af"
+        "last-translator": "",
+        "language": "afr"
     },
     "Welcome back to HealthCheck\n\nReply": [
         null,
@@ -54,7 +54,7 @@
     ],
     "This service works best when you select numbers from the list": [
         null,
-        ""
+        "Hierdie diens werk die beste wanneer jy nommers van die lys af kies"
     ],
     "START": [
         null,
@@ -62,7 +62,7 @@
     ],
     "Confirm that you're responsible for your medical care & treatment. This service only provides info.\n\nReply": [
         null,
-        ""
+        "Bevestig dat jy verantwoordelik is vir jou eie mediese sorg en behandeling. Hierdie diens verskaf slegs inligting.\n\nAntwoord"
     ],
     "Please use numbers from list. Confirm that u're responsible for ur medical care & treatment. This service only provides info.\n\nReply": [
         null,
@@ -70,11 +70,11 @@
     ],
     "YES": [
         null,
-        ""
+        "JA"
     ],
     "NO": [
         null,
-        ""
+        "NEE"
     ],
     "MORE INFO": [
         null,
@@ -86,15 +86,15 @@
     ],
     "It's not a substitute for professional medical advice/diagnosis/treatment. Get a qualified health provider's advice about your medical condition/care.": [
         null,
-        ""
+        "Die is nie ’n plaasvervanger vir professionele advies/ diagnose/ behandeling nie. Kry ’n gekwalifiseerde dokter se advies oor jou mediese sorg."
     ],
     "Next": [
         null,
-        ""
+        "Volgende"
     ],
     "You confirm that you shouldn't disregard/delay seeking medical advice about treatment/care because of this service. Rely on info at your own risk.": [
         null,
-        ""
+        "Jy bevestig dat jy nie agv die diens enige mediese advies oor sorg sal ignoreer/verontagsaam nie. Maak staat op inligting op jou eie risiko."
     ],
     "Please TYPE your first name": [
         null,
@@ -106,7 +106,7 @@
     ],
     "Select your province\n\nReply:": [
         null,
-        ""
+        "Kies jou Provinsie \n\nAntwoord:"
     ],
     "EASTERN CAPE": [
         null,
@@ -146,11 +146,11 @@
     ],
     "Please TYPE the name of your Suburb, Township, Town or Village (or nearest)": [
         null,
-        ""
+        "TIK asb die naam in van jou Voorstad, Township, Dorp of Village (of naaste)"
     ],
     "How old are you?": [
         null,
-        ""
+        "Hoe oud is jy?"
     ],
     "Please use numbers from list.\n\nHow old are you?": [
         null,
@@ -174,7 +174,7 @@
     ],
     "Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?\n\nReply": [
         null,
-        ""
+        "Voel jy baie warm of koud? Sweet of bewe jy? Wanneer jy aan jou voorkop vat, voel dit warm?\n\nAntwoord"
     ],
     "Please use numbers from list. Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?\n\nReply": [
         null,
@@ -182,7 +182,7 @@
     ],
     "Do you have a cough that recently started?\n\nReply": [
         null,
-        ""
+        "Het jy ’n hoes wat onlangs begin het?\n\nAntwoord"
     ],
     "Please use numbers from list.\nDo you have a cough that recently started?\n\nReply": [
         null,
@@ -190,7 +190,7 @@
     ],
     "Do you have a sore throat, or pain when swallowing?\n\nReply": [
         null,
-        ""
+        "Het jy ’n seer keel of pyn wanneer jy sluk?\n\nAntwoord"
     ],
     "Please use numbers from list.\nDo you have a sore throat, or pain when swallowing?\n\nReply": [
         null,
@@ -218,7 +218,7 @@
     ],
     "Please confirm that the information you shared is correct & that the National Department of Health can contact you if necessary?\n\nReply": [
         null,
-        ""
+        "Bevestig dat die inligting wat jy gedeel het reg is & dat die Nasionale Departement van Gesondheid jou kan kontak as nodig?\n\nAntwoord"
     ],
     "Please reply with numbers\nIs the information you shared correct & can the National Department of Health contact you if necessary?\n\nReply": [
         null,

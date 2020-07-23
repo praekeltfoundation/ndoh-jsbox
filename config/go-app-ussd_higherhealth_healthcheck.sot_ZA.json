@@ -6,11 +6,11 @@
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2020-07-22 11:00+0200",
+        "po-revision-date": "2020-07-23 10:32+0200",
         "x-generator": "Poedit 2.3.1",
+        "plural-forms": "nplurals=2; plural=(n==0 || n==1);",
         "last-translator": "",
-        "plural-forms": "nplurals=2; plural=(n != 1);",
-        "language": "af"
+        "language": "sot"
     },
     "Welcome back to HealthCheck\n\nReply": [
         null,
@@ -54,7 +54,7 @@
     ],
     "This service works best when you select numbers from the list": [
         null,
-        ""
+        "Tshebeletso ena e sebetsa hantle ha o kgetha dinomoro ho tswa lethathamong lena"
     ],
     "START": [
         null,
@@ -86,7 +86,7 @@
     ],
     "It's not a substitute for professional medical advice/diagnosis/treatment. Get a qualified health provider's advice about your medical condition/care.": [
         null,
-        ""
+        "Ha e nke sebaka sa keletso/tlhahlobo/kalafo ya bongaka. Fumana keletso ya mosebeletsi wa bophelo bo botle ka boemo/tlhokomelo ya bophelo ba hao. "
     ],
     "Next": [
         null,
@@ -94,7 +94,7 @@
     ],
     "You confirm that you shouldn't disregard/delay seeking medical advice about treatment/care because of this service. Rely on info at your own risk.": [
         null,
-        ""
+        "Itlame hore ha o tlo tlohela/diehisa ho fumaha keletso ya bongaka ya kalafo ka lebaka la tshebeletso ena. E-ba le boikarabello bophelong ba hao."
     ],
     "Please TYPE your first name": [
         null,
@@ -106,7 +106,7 @@
     ],
     "Select your province\n\nReply:": [
         null,
-        ""
+        "Kgetha profense\n\nAraba:"
     ],
     "EASTERN CAPE": [
         null,
@@ -146,11 +146,11 @@
     ],
     "Please TYPE the name of your Suburb, Township, Town or Village (or nearest)": [
         null,
-        ""
+        "Ka kopo THAEPA lebitso la Suburb, Lekeishine, Toropo ka Motse (kapa ho haufinyane)"
     ],
     "How old are you?": [
         null,
-        ""
+        "O na le dilemo tse kae?"
     ],
     "Please use numbers from list.\n\nHow old are you?": [
         null,
@@ -174,7 +174,7 @@
     ],
     "Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?\n\nReply": [
         null,
-        ""
+        "O ikutlwa o tjhesa haholo kapa o bata? O ntse o fufulelwa kapa wa thothomela? Ha o tshwara phatla ya hao, na o ikutlwa o tjhesa?\n\nAraba"
     ],
     "Please use numbers from list. Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?\n\nReply": [
         null,
@@ -182,7 +182,7 @@
     ],
     "Do you have a cough that recently started?\n\nReply": [
         null,
-        ""
+        "O na le ho kgohlela ho sa tswa qala haufinyane?\n\nAraba"
     ],
     "Please use numbers from list.\nDo you have a cough that recently started?\n\nReply": [
         null,
@@ -190,7 +190,7 @@
     ],
     "Do you have a sore throat, or pain when swallowing?\n\nReply": [
         null,
-        ""
+        "Na o na le mmetso o bohloko kapa ho bohloko ha o kwenya dijo?\n\nAraba"
     ],
     "Please use numbers from list.\nDo you have a sore throat, or pain when swallowing?\n\nReply": [
         null,
@@ -218,7 +218,7 @@
     ],
     "Please confirm that the information you shared is correct & that the National Department of Health can contact you if necessary?\n\nReply": [
         null,
-        ""
+        "Ka kopo netefatsa hore dintlha tseo o faneng ka tsona di nepahetse le hore Lefapha la Bophelo le ka o letsetsa ha ho hlokahala?\n\nAraba"
     ],
     "Please reply with numbers\nIs the information you shared correct & can the National Department of Health contact you if necessary?\n\nReply": [
         null,
