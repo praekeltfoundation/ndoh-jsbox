@@ -381,9 +381,13 @@ go.app = (function () {
           province: answers.state_province,
           city: answers.state_city,
           age: answers.state_age,
-          university: answers.state_university,
+          university: {
+            name: answers.state_university
+          },
           university_other: answers.state_university_other,
-          campus: answers.state_campus,
+          campus: {
+            name: answers.state_campus
+          },
           campus_other: answers.state_campus_other,
           fever: answers.state_fever,
           cough: answers.state_cough,
