@@ -113,7 +113,6 @@ go.app = (function () {
   var MenuState = vumigo.states.MenuState;
   var FreeText = vumigo.states.FreeText;
   var ChoiceState = vumigo.states.ChoiceState;
-  var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
 
 
   var GoNDOH = App.extend(function (self) {
@@ -328,7 +327,7 @@ go.app = (function () {
           new Choice("40-65", $("40-65")),
           new Choice(">65", $(">65"))
         ],
-        next: "state_university"
+        next: "state_fever"
       });
     });
 

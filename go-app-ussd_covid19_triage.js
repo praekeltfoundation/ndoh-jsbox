@@ -392,17 +392,15 @@ go.app = (function () {
         }
         if (risk === "moderate") {
           text = $(
-            "GET TESTED to find out if you have COVID-19. Go to a testing center or Call " +
-            "0800029999 or your healthcare practitioner for info on what to do & how to test"
+            "We recommend you SELF-QUARANTINE for the next 10 days and do this HealthCheck " +
+            "daily to monitor your symptoms. Stay/sleep alone in a room with good air flow."
           );
         }
         if (risk === "high") {
-          text = $([
-            "Please seek medical care immediately at an emergency facility.",
-            "Remember to:",
-            "- Avoid contact with other people",
-            "- Put on a face mask before entering the facility"
-          ].join("\n"));
+          text = $(
+            "You may be ELIGIBLE FOR COVID-19 TESTING. Go to a testing center or Call " +
+            "0800029999 or visit your healthcare practitioner for info on what to do & how to test."
+          );
         }
       } else {
         if (risk === "low") {
@@ -414,11 +412,10 @@ go.app = (function () {
           return self.states.create("state_no_tracing_moderate_risk");
         }
         if (risk === "high") {
-          text = $([
-            "You will not be contacted. Please seek medical care now at an emergency facility.",
-            "-Avoid contact with other people",
-            "-Put on a face mask before entering facility"
-          ].join("\n"));
+          text = $(
+            "You will not be contacted. You may be ELIGIBLE FOR COVID-19 TESTING. " +
+            "Go to a testing center or Call 0800029999 or your healthcare practitioner for info."
+          );
         }
       }
       return new EndState(name, {
@@ -431,7 +428,7 @@ go.app = (function () {
         return new MenuState(name, {
           question: $(
             "You will not be contacted. If you think you have COVID-19 please STAY HOME, avoid " +
-            "contact with other people in your community and self-isolate."
+            "contact with other people in your community and self-quarantine."
           ),
           choices: [new Choice("state_start", $("START OVER"))]
         });
@@ -440,8 +437,8 @@ go.app = (function () {
     self.add("state_no_tracing_moderate_risk", function(name) {
         return new MenuState(name, {
           question: $(
-            "You will not be contacted. Call NICD:0800029999 for info on what to do & how to " +
-            "test. STAY HOME. Avoid contact with people in your house/community"
+            "You won't be contacted. SELF-QUARANTINE for 10 days, do this HealthCheck " +
+            "daily to monitor symptoms. Stay/sleep alone in a room with good air flow."
           ),
           choices: [new Choice("state_start", $("START OVER"))]
         });
