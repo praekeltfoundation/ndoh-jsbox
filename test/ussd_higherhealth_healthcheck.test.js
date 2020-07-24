@@ -693,8 +693,10 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 risk: "low",
                                 first_name: "First",
                                 last_name: "Last",
-                                university: {name: "Other"},
-                                campus: {name: "Other"},
+                                data:{
+                                    university:{"name":"Other"},
+                                    campus:{"name":"Other"}
+                                }
                             }
                         },
                         "response": {
@@ -763,8 +765,10 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 risk: "low",
                                 first_name: "first",
                                 last_name: "last",
-                                university: {name: "Other"},
-                                campus: {name: "Other"},
+                                data:{
+                                    university:{"name":"Other"},
+                                    campus:{"name":"Other"}
+                                }
                             }
                         },
                         "response": {
@@ -827,8 +831,10 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 exposure: "not_sure",
                                 tracing: true,
                                 risk: "moderate",
-                                university:{"name":"Other"},
-                                campus:{"name":"Other"},
+                                data:{
+                                    university:{"name":"Other"},
+                                    campus:{"name":"Other"}
+                                }
                             }
                         },
                         "response": {
@@ -882,8 +888,10 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 exposure: "No",
                                 tracing: true,
                                 risk: "high",
-                                university: {name: "Other"},
-                                campus: {name: "Other"},
+                                data:{
+                                    university:{"name":"Other"},
+                                    campus:{"name":"Other"}
+                                }
                             }
                         },
                         "response": {
@@ -942,8 +950,10 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 risk: "low",
                                 first_name: "first",
                                 last_name: "last",
-                                university:{"name":"Other"},
-                                campus:{"name":"Other"},
+                                data:{
+                                    university:{"name":"Other"},
+                                    campus:{"name":"Other"}
+                                }
                             }
                         },
                         "response": {
@@ -1007,8 +1017,10 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 exposure: "No",
                                 tracing: false,
                                 risk: "moderate",
-                                university:{"name":"Other"},
-                                campus:{"name":"Other"},
+                                data:{
+                                    university:{"name":"Other"},
+                                    campus:{"name":"Other"}
+                                }
                             }
                         },
                         "response": {
@@ -1062,8 +1074,10 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 exposure: "No",
                                 tracing: false,
                                 risk: "high",
-                                university:{"name":"Other"},
-                                campus:{"name":"Other"},
+                                data:{
+                                    university:{"name":"Other"},
+                                    campus:{"name":"Other"}
+                                }
                             }
                         },
                         "response": {

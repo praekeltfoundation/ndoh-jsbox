@@ -381,14 +381,6 @@ go.app = (function () {
           province: answers.state_province,
           city: answers.state_city,
           age: answers.state_age,
-          university: {
-            name: answers.state_university
-          },
-          university_other: answers.state_university_other,
-          campus: {
-            name: answers.state_campus
-          },
-          campus_other: answers.state_campus_other,
           fever: answers.state_fever,
           cough: answers.state_cough,
           sore_throat: answers.state_sore_throat,
@@ -397,7 +389,17 @@ go.app = (function () {
           tracing: answers.state_tracing,
           risk: self.calculate_risk(),
           first_name: answers.state_first_name,
-          last_name: answers.state_last_name
+          last_name: answers.state_last_name,
+          data: {
+            university: {
+              name: answers.state_university
+            },
+            university_other: answers.state_university_other,
+            campus: {
+              name: answers.state_campus
+            },
+            campus_other: answers.state_campus_other,
+          }
         },
         headers: {
           "Authorization": ["Token " + self.im.config.eventstore.token],
@@ -410,6 +412,7 @@ go.app = (function () {
         opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
         if (opts.http_error_count === 3) {
           self.im.log.error(e.message);
+          console.log(e, e.message, '===========================');
           return self.states.create("__error__", { return_state: name });
         }
         return self.states.create(name, opts);
