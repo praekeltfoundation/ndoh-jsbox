@@ -20,7 +20,10 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 token: "testtoken",
                 sms_flow_uuid: "sms-flow-uuid"
             },
-            testing_today: "2020-01-01T00:00:00Z"
+            testing_today: "2020-01-01T00:00:00Z",
+        })
+        .setup.config({
+            "translation.xho": xho_translation
         });
     });
 
@@ -84,20 +87,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
 
         it("should change the language", function () {
             return tester
-                .setup.config({
-                    "translation.xho": xho_translation
-                })
                 .input("4")
                 .check.user.state("state_start")
                 .check.user.lang("xho")
-                .check.interaction({
-                    reply: [
-                        "The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by answering a few questions about you and your health.",
-                        "",
-                        "Reply",
-                        "1. START",
-                    ].join("\n"),
-                })
                 .run();
         });
     });
