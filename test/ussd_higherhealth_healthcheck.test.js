@@ -669,7 +669,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state_breathing: false,
                     state_exposure: "No",
                     state_first_name: "First",
-                    state_last_name: "Last"
+                    state_last_name: "Last",
+                    state_university: "Other",
+                    state_campus: "Other",
                 })
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -690,7 +692,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 tracing: true,
                                 risk: "low",
                                 first_name: "First",
-                                last_name: "Last"
+                                last_name: "Last",
+                                university: {name: "Other"},
+                                campus: {name: "Other"},
                             }
                         },
                         "response": {
@@ -736,7 +740,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state_sore_throat: false,
                     state_exposure: "No",
                     state_first_name: "first",
-                    state_last_name: "last"
+                    state_last_name: "last",
+                    state_university: "Other",
+                    state_campus: "Other",
                 })
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -756,7 +762,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 tracing: true,
                                 risk: "low",
                                 first_name: "first",
-                                last_name: "last"
+                                last_name: "last",
+                                university: {name: "Other"},
+                                campus: {name: "Other"},
                             }
                         },
                         "response": {
@@ -799,6 +807,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state_cough: false,
                     state_sore_throat: false,
                     state_exposure: "not_sure",
+                    state_university: "Other",
+                    state_campus: "Other",
                 })
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -816,7 +826,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 sore_throat: false,
                                 exposure: "not_sure",
                                 tracing: true,
-                                risk: "moderate"
+                                risk: "moderate",
+                                university:{"name":"Other"},
+                                campus:{"name":"Other"},
                             }
                         },
                         "response": {
@@ -850,6 +862,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state_city: "Cape Town",
                     state_sore_throat: false,
                     state_exposure: "No",
+                    state_university: "Other",
+                    state_campus: "Other",
                 })
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -867,7 +881,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 sore_throat: false,
                                 exposure: "No",
                                 tracing: true,
-                                risk: "high"
+                                risk: "high",
+                                university: {name: "Other"},
+                                campus: {name: "Other"},
                             }
                         },
                         "response": {
@@ -903,7 +919,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state_sore_throat: false,
                     state_exposure: "No",
                     state_first_name: "first",
-                    state_last_name: "last"
+                    state_last_name: "last",
+                    state_university: "Other",
+                    state_campus: "Other",
                 })
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -923,7 +941,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 tracing: false,
                                 risk: "low",
                                 first_name: "first",
-                                last_name: "last"
+                                last_name: "last",
+                                university:{"name":"Other"},
+                                campus:{"name":"Other"},
                             }
                         },
                         "response": {
@@ -967,6 +987,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state_cough: false,
                     state_sore_throat: false,
                     state_exposure: "No",
+                    state_university: "Other",
+                    state_campus: "Other",
                 })
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -984,7 +1006,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 sore_throat: false,
                                 exposure: "No",
                                 tracing: false,
-                                risk: "moderate"
+                                risk: "moderate",
+                                university:{"name":"Other"},
+                                campus:{"name":"Other"},
                             }
                         },
                         "response": {
@@ -1018,6 +1042,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state_city: "Cape Town",
                     state_sore_throat: false,
                     state_exposure: "No",
+                    state_university: "Other",
+                    state_campus: "Other",
                 })
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -1035,7 +1061,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 sore_throat: false,
                                 exposure: "No",
                                 tracing: false,
-                                risk: "high"
+                                risk: "high",
+                                university:{"name":"Other"},
+                                campus:{"name":"Other"},
                             }
                         },
                         "response": {
