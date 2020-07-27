@@ -35,7 +35,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_timed_out",
                     reply: [
-                        "Welcome back to HealthCheck",
+                        "Welcome back to the The National Department of Health's COVID-19 Service",
                         "",
                         "Reply",
                         "1. Continue where I left off",
@@ -52,7 +52,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_timed_out",
                     reply: [
-                        "Welcome back to HealthCheck",
+                        "Welcome back to the The National Department of Health's COVID-19 Service",
                         "",
                         "Reply",
                         "1. Continue where I left off",
@@ -101,8 +101,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_start",
                     reply: [
-                        "The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by " +
-                        "answering a few questions about you and your health.",
+                        "The National Department of Health thanks you for contributing to the health of all citizens. Stop the spread of COVID-19",
                         "",
                         "Reply",
                         "1. START"
@@ -188,7 +187,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     reply:
                         "You can return to this service at any time. Remember, if you think you " +
                         "have COVID-19 STAY HOME, avoid contact with other people and " +
-                        "self-isolate.",
+                        "self-quarantine.",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
@@ -416,9 +415,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_age",
                     reply: [
-                        "Please use numbers from list.",
-                        "",
                         "How old are you?",
+                        "",
                         "1. <18",
                         "2. 18-39",
                         "3. 40-65",
@@ -443,8 +441,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_fever",
                     reply: [
-                        "Do you feel very hot or cold? Are you sweating or shivering? When you " +
-                        "touch your forehead, does it feel hot?",
+                        "Have you been diagnosed with either Obesity, Diabetes, Hypertension or Cardiovascular disease?",
                         "",
                         "Reply",
                         "1. YES",
@@ -573,8 +570,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_breathing",
                     reply: [
-                        "Do you have breathlessness or difficulty in breathing, that you've " +
-                        "noticed recently?",
+                        "Do you have breathlessness or a difficulty breathing, that you've noticed recently?",
                         "",
                         "Reply",
                         "1. YES",
@@ -617,8 +613,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_exposure",
                     reply: [
-                        "Have you been in close contact with someone confirmed to be infected " +
-                        "with COVID19?",
+                        "Have you been in close contact to someone confirmed to be infected with COVID-19?",
                         "",
                         "Reply",
                         "1. YES",
@@ -820,8 +815,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
-                        "You are at low risk of having COVID-19. You will still need to complete " +
-                        "this risk assessment daily to monitor your symptoms.",
+                        "Complete this HealthCheck again in 7 days or sooner if you feel ill or you come into contact with someone infected with COVID-19.",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
@@ -870,9 +864,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
-                        "You should SELF-QUARANTINE for 14 days and do HealthCheck daily to " +
-                        "monitor symptoms. Try stay and sleep alone in a room that has a window " +
-                        "with good air flow.",
+                        "We recommend you SELF-QUARANTINE for the next 14 days and do this HealthCheck daily to monitor your symptoms. Stay/sleep alone in a room with good air flow.",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
@@ -921,9 +913,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply: [
-                        "GET TESTED to find out if you have COVID-19.  Go to a testing center or " +
-                        "Call 0800029999 or your healthcare practitioner for info on what to do " +
-                        "& how to test"
+                        "You may be ELIGIBLE FOR COVID-19 TESTING. Go to a testing center or Call 0800029999 or visit your healthcare practitioner for info on what to do & how to test."
                     ].join("\n"),
                     char_limit: 160
                 })

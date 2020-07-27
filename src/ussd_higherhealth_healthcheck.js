@@ -59,7 +59,7 @@ go.app = (function () {
     self.states.add("state_timed_out", function (name, creator_opts) {
       return new MenuState(name, {
         question: $([
-          "Welcome back to HealthCheck",
+          "Welcome back to the The National Department of Health's COVID-19 Service",
           "",
           "Reply"
         ].join("\n")),
@@ -98,8 +98,7 @@ go.app = (function () {
 
       return new MenuState(name, {
         question: $([
-          "The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by answering a " +
-          "few questions about you and your health.",
+          "The National Department of Health thanks you for contributing to the health of all citizens. Stop the spread of COVID-19",
           "",
           "Reply"
         ].join("\n")),
@@ -114,8 +113,7 @@ go.app = (function () {
     self.add("state_terms", function (name) {
       return new MenuState(name, {
         question: $([
-          "Confirm that you're responsible for your medical care & treatment. This service only " +
-          "provides info.",
+          "Confirm that you're responsible for your medical care & treatment. This service only provides info.",
           "",
           "Reply"
         ].join("\n")),
@@ -137,8 +135,7 @@ go.app = (function () {
     self.states.add("state_end", function (name) {
       return new EndState(name, {
         text: $(
-          "You can return to this service at any time. Remember, if you think you have COVID-19 " +
-          "STAY HOME, avoid contact with other people and self-isolate."
+          "You can return to this service at any time. Remember, if you think you have COVID-19 STAY HOME, avoid contact with other people and self-quarantine."
         ),
         next: "state_language"
       });
@@ -235,9 +232,8 @@ go.app = (function () {
       return new ChoiceState(name, {
         question: $("How old are you?"),
         error: $([
-          "Please use numbers from list.",
-          "",
           "How old are you?",
+          "",
         ].join("\n")),
         accept_labels: true,
         choices: [
@@ -253,8 +249,7 @@ go.app = (function () {
     self.add("state_fever", function (name) {
       return new ChoiceState(name, {
         question: $([
-          "Do you feel very hot or cold? Are you sweating or shivering? When you touch your " +
-          "forehead, does it feel hot?",
+          "Have you been diagnosed with either Obesity, Diabetes, Hypertension or Cardiovascular disease?",
           "",
           "Reply"
         ].join("\n")),
@@ -320,7 +315,7 @@ go.app = (function () {
     self.add("state_breathing", function (name) {
       return new ChoiceState(name, {
         question: $([
-          "Do you have breathlessness or difficulty in breathing, that you've noticed recently?",
+          "Do you have breathlessness or a difficulty breathing, that you've noticed recently?",
           "",
           "Reply"
         ].join("\n")),
@@ -342,7 +337,7 @@ go.app = (function () {
     self.add("state_exposure", function (name) {
       return new ChoiceState(name, {
         question: $([
-          "Have you been in close contact with someone confirmed to be infected with COVID19?",
+          "Have you been in close contact to someone confirmed to be infected with COVID-19?",
           "",
           "Reply"
         ].join("\n")),
@@ -365,8 +360,7 @@ go.app = (function () {
     self.add("state_tracing", function (name) {
       return new ChoiceState(name, {
         question: $([
-          "Please confirm that the information you shared is correct & that the National " +
-          "Department of Health can contact you if necessary?",
+          "Please confirm that the information you shared is correct & that the National Department of Health can contact you if necessary?",
           "",
           "Reply"
         ].join("\n")),
@@ -474,20 +468,17 @@ go.app = (function () {
       if (answers.state_tracing) {
         if (risk === "low") {
           text = $(
-            "You are at low risk of having COVID-19. You will still need to complete this risk " +
-            "assessment daily to monitor your symptoms."
+            "Complete this HealthCheck again in 7 days or sooner if you feel ill or you come into contact with someone infected with COVID-19."
           );
         }
         if (risk === "moderate") {
           text = $(
-            "You should SELF-QUARANTINE for 14 days and do HealthCheck daily to monitor " +
-            "symptoms. Try stay and sleep alone in a room that has a window with good air flow."
+            "We recommend you SELF-QUARANTINE for the next 14 days and do this HealthCheck daily to monitor your symptoms. Stay/sleep alone in a room with good air flow."
           );
         }
         if (risk === "high") {
           text = $([
-            "GET TESTED to find out if you have COVID-19.  Go to a testing center or Call " +
-            "0800029999 or your healthcare practitioner for info on what to do & how to test"
+            "You may be ELIGIBLE FOR COVID-19 TESTING. Go to a testing center or Call 0800029999 or visit your healthcare practitioner for info on what to do & how to test."
           ].join("\n"));
         }
       } else {
