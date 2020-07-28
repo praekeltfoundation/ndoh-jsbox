@@ -1,28 +1,27 @@
 {
     "": {
-        "pot-creation-date": "2020-07-22 08:53:+0000",
+        "pot-creation-date": "2020-07-27 01:03:+0000",
         "project-id-version": "",
-        "language-team": "",
+        "language": "xho",
         "mime-version": "1.0",
-        "content-type": "text/plain; charset=UTF-8",
+        "content-type": "text/plain; charset=utf-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2020-07-23 11:13+0200",
-        "x-generator": "Poedit 2.3.1",
-        "plural-forms": "nplurals=2; plural=(n==0 || n==1);",
+        "po-revision-date": "2020-07-27 16:02+0200",
         "last-translator": "",
-        "language": "xho"
+        "language-team": "",
+        "x-generator": "Poedit 2.4"
     },
-    "Welcome back to HealthCheck\n\nReply": [
+    "Welcome back to the The National Department of Health's COVID-19 Service\n\nReply": [
         null,
-        ""
+        "Wamkelekile kwakhona kwinkonzo yeSebe lezeMpilo likaZwelonke ye-COVID-19\n\nPhendula"
     ],
     "Continue where I left off": [
         null,
-        ""
+        "Gqibezela apho ndiyeke khona"
     ],
     "Start over": [
         null,
-        ""
+        "Qala okutsha"
     ],
     "Welcome to HealthCheck.\nPlease select your preferred language.\nReply\n": [
         null,
@@ -48,26 +47,25 @@
         null,
         ""
     ],
-    "The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by answering a few questions about you and your health.\n\nReply": [
+    "The National Department of Health thanks you for contributing to the health of all citizens. Stop the spread of COVID-19\n\nReply": [
         null,
-        ""
+        "ISebe lezeMpilo likaZwelonke liyanibulela ngokuxhasa kwimpilo yabo bonke abahlali. Nqanda ukusasazeka kwe-COVID-19\n\nPhendula"
     ],
     "This service works best when you select numbers from the list": [
         null,
-
         "Le nkonzo isebenza ngcono xa ukhetha amanani kuluhlu"
     ],
     "START": [
         null,
-        ""
+        "QALA"
     ],
     "Confirm that you're responsible for your medical care & treatment. This service only provides info.\n\nReply": [
         null,
-        "Qinisekisa ukuba unoxanduva lokukhathalela unyango lwakho. Le nkonzo ibonelela ngolwazi kuphela. \n\nPhendula "
+        "Qinisekisa ukuba unoxanduva lokukhathalela unyango lwakho. Le nkonzo ibonelela ngolwazi kuphela. \n\nPhendula"
     ],
     "Please use numbers from list. Confirm that u're responsible for ur medical care & treatment. This service only provides info.\n\nReply": [
         null,
-        ""
+        "Qinisekisa ukuba unoxanduva lokukhathalela unyango lwakho. Le nkonzo ibonelela ngolwazi kuphela.\n\nPhendula"
     ],
     "YES": [
         null,
@@ -79,11 +77,11 @@
     ],
     "MORE INFO": [
         null,
-        ""
+        "ULWAZI OLUTHE VETSHE"
     ],
-    "You can return to this service at any time. Remember, if you think you have COVID-19 STAY HOME, avoid contact with other people and self-isolate.": [
+    "You can return to this service at any time. Remember, if you think you have COVID-19 STAY HOME, avoid contact with other people and self-quarantine.": [
         null,
-        ""
+        "Ungabuyela kulenkonzo nanini. Khumbula, ukuba ucinga ukuba une-COVID-19 HLALA EKHAYA, lumkela ukusondelelana nabanye abantu kwaye hlala uzibeke bucala."
     ],
     "It's not a substitute for professional medical advice/diagnosis/treatment. Get a qualified health provider's advice about your medical condition/care.": [
         null,
@@ -91,7 +89,7 @@
     ],
     "Next": [
         null,
-        ""
+        "Okulandelayo"
     ],
     "You confirm that you shouldn't disregard/delay seeking medical advice about treatment/care because of this service. Rely on info at your own risk.": [
         null,
@@ -111,39 +109,39 @@
     ],
     "EASTERN CAPE": [
         null,
-        ""
+        "MPUMA KOLONI"
     ],
     "FREE STATE": [
         null,
-        ""
+        "FREYISTATA"
     ],
     "GAUTENG": [
         null,
-        ""
+        "GAUTENG"
     ],
     "KWAZULU NATAL": [
         null,
-        ""
+        "KWAZULU NATAL"
     ],
     "LIMPOPO": [
         null,
-        ""
+        "LIMPOPO"
     ],
     "MPUMALANGA": [
         null,
-        ""
+        "MPUMALANGA"
     ],
     "NORTH WEST": [
         null,
-        ""
+        "MNTLA-NTSHONA"
     ],
     "NORTHERN CAPE": [
         null,
-        ""
+        "MNTLA KOLONI"
     ],
     "WESTERN CAPE": [
         null,
-        ""
+        "NTSHONA KOLON"
     ],
     "Please TYPE the name of your Suburb, Township, Town or Village (or nearest)": [
         null,
@@ -153,9 +151,9 @@
         null,
         "Uneminyaka emingaphi?"
     ],
-    "Please use numbers from list.\n\nHow old are you?": [
+    "How old are you?\n": [
         null,
-        ""
+        "Uneminyaka emingaphi?\n"
     ],
     "<18": [
         null,
@@ -173,13 +171,13 @@
         null,
         ""
     ],
-    "Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?\n\nReply": [
+    "Have you been diagnosed with either Obesity, Diabetes, Hypertension or Cardiovascular disease?\n\nReply": [
         null,
-        "Ingaba uziva ushushu kakhulu okanye ugodola? Uyabila okanye uyangcangcazela? Xa uchukumisa ibunzi lakho, ingaba livakala lishushu?\n\nPhendula"
+        "Ingaba ukhe wafunyaniswa ukuba unokutyeba okugqithiseleyo , isifo seswekile, i-high high okanye isifo sentliziyo?\n\nPhendula"
     ],
     "Please use numbers from list. Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?\n\nReply": [
         null,
-        ""
+        "Ingaba uziva ushushu kakhulu okanye ugodola? Uyabila okanye uyangcangcazela? Xa uchukumisa ibunzi lakho, ingaba livakala lishushu?\n\nPhendula"
     ],
     "Do you have a cough that recently started?\n\nReply": [
         null,
@@ -187,7 +185,7 @@
     ],
     "Please use numbers from list.\nDo you have a cough that recently started?\n\nReply": [
         null,
-        ""
+        "Ingaba unokhohlokhohlo olukuqale kutsha nje?\n\nPhendula"
     ],
     "Do you have a sore throat, or pain when swallowing?\n\nReply": [
         null,
@@ -195,23 +193,23 @@
     ],
     "Please use numbers from list.\nDo you have a sore throat, or pain when swallowing?\n\nReply": [
         null,
-        ""
+        "Ingaba unomqala obuhlungu okanye ubuhlungu xa uginya?\n\nPendula"
     ],
-    "Do you have breathlessness or difficulty in breathing, that you've noticed recently?\n\nReply": [
+    "Do you have breathlessness or a difficulty breathing, that you've noticed recently?\n\nReply": [
         null,
-        ""
+        "Ingaba unephika okanye ubunzima bokuphefumla, okubonileyo kutsha nje?\n\nReply"
     ],
     "Please use numbers from list. Do you have breathlessness or difficulty in breathing, that you've noticed recently?\n\nReply": [
         null,
-        ""
+        "Ingaba unephika okanye ubunzima bokuphefumla, okubonileyo kutsha nje?\n\nPhendula"
     ],
-    "Have you been in close contact with someone confirmed to be infected with COVID19?\n\nReply": [
+    "Have you been in close contact to someone confirmed to be infected with COVID-19?\n\nReply": [
         null,
-        ""
+        "Ubukhe wasondelelana nomntu one-COVID19?\n\nPhendula"
     ],
     "Please use numbers from list. Have u been in contact with someone with COVID19 or been where COVID19 patients are treated?\n\nReply": [
         null,
-        ""
+        "Ubukhe wasondelelana nomntu one-COVID19?\n\nPhendula"
     ],
     "NOT SURE": [
         null,
@@ -219,43 +217,43 @@
     ],
     "Please confirm that the information you shared is correct & that the National Department of Health can contact you if necessary?\n\nReply": [
         null,
-        "Qinisekisa ukuba ulwazi olwabeleyo lulo kwaye iSebe lezeMpilo likaZwelonke linokunxibelelana nawe xa ikho imfuneko? \n\nPhendula"
+        "Qinisekisa ukuba ulwazi olwabeleyo lulo kwaye iSebe lezeMpilo likaZwelonke linokunxibelelana nawe xa ikho imfuneko?\n\nPhendula"
     ],
     "Please reply with numbers\nIs the information you shared correct & can the National Department of Health contact you if necessary?\n\nReply": [
         null,
-        ""
+        "Qinisekisa ukuba ulwazi olwabeleyo lulo kwaye iSebe lezeMpilo likaZwelonke linokunxibelelana nawe xa ikho imfuneko?\n\nPhendula"
     ],
     "RESTART": [
         null,
-        ""
+        "QALA EKUQALENI"
     ],
-    "You are at low risk of having COVID-19. You will still need to complete this risk assessment daily to monitor your symptoms.": [
+    "Complete this HealthCheck again in 7 days or sooner if you feel ill or you come into contact with someone infected with COVID-19.": [
         null,
-        ""
+        "Gcwalisa olu-Hlolo Lwempilo kwakhona kwiintsuku ezisi-7 okanye kungekudala ukuba uziva ugula okanye usondelelene nomntu osulelwe yi-COVID-19."
     ],
-    "You should SELF-QUARANTINE for 14 days and do HealthCheck daily to monitor symptoms. Try stay and sleep alone in a room that has a window with good air flow.": [
+    "We recommend you SELF-QUARANTINE for the next 14 days and do this HealthCheck daily to monitor your symptoms. Stay/sleep alone in a room with good air flow.": [
         null,
-        ""
+        "Sicebisa ukuba uhlale bucala iintsuku ezili-14 ezizayo kwaye wenze le-HealthCheck imihla-ngemihla ukujonga iimpawu zakho. Hlala/ulale wedwa kwigumbi elinomoya."
     ],
-    "GET TESTED to find out if you have COVID-19.  Go to a testing center or Call 0800029999 or your healthcare practitioner for info on what to do & how to test": [
+    "You may be ELIGIBLE FOR COVID-19 TESTING. Go to a testing center or Call 0800029999 or visit your healthcare practitioner for info on what to do & how to test.": [
         null,
-        ""
+        "UNAKO UKUVAVANYWA I-COVID-19. Yiya kwiziko lokuvavanya okanye utsalele ku-0800029999 okanye utyelele ugqirha wezempilo malunga nendlela yokwenza uvavanyo."
     ],
     "We won't contact you. SELF-QUARANTINE for 14 days and do this HealthCheck daily to monitor symptoms. Stay/sleep alone in a room with good air flowing through": [
         null,
-        ""
+        "Sicebisa ukuba uhlale bucala iintsuku ezili-14 ezizayo kwaye wenze le-HealthCheck imihla-ngemihla ukujonga iimpawu zakho. Hlala/ulale wedwa kwigumbi elinomoya."
     ],
     "You will not be contacted. GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info": [
         null,
-        ""
+        "UNAKO UKUVAVANYWA I-COVID-19. Yiya kwiziko lokuvavanya okanye utsalele ku-0800029999 okanye utyelele ugqirha wezempilo malunga nendlela yokwenza uvavanyo."
     ],
     "You will not be contacted. If you think you have COVID-19 please STAY HOME, avoid contact with other people in your community and self-isolate.": [
         null,
-        ""
+        "Awuyi kuqhagamshelwa. Ukuba ucinga ukuba une-COVID-19 HLALA EKHAYA, lumkela ukusondelelana noluntu kwindawo ohlala kuyo kwaye zibeke bucala."
     ],
     "START OVER": [
         null,
-        ""
+        "QALA EKUQALENI"
     ],
     "Sorry, something went wrong. We have been notified. Please try again later": [
         null,

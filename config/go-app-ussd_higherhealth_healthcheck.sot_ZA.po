@@ -1,31 +1,33 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2020-07-22 08:53:+0000\n"
+"POT-Creation-Date: 2020-07-27 01:03:+0000\n"
 "Project-Id-Version: \n"
-"Language-Team: \n"
+"Language: za\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2020-07-23 10:32+0200\n"
-"X-Generator: Poedit 2.3.1\n"
-"Plural-Forms: nplurals=2; plural=(n==0 || n==1);\n"
+"PO-Revision-Date: 2020-07-28 08:04+0200\n"
 "Last-Translator: \n"
-"Language: zu\n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.4\n"
 
 #: go-app-ussd_higherhealth_healthcheck.js:164
 msgid ""
-"Welcome back to HealthCheck\n"
+"Welcome back to the The National Department of Health's COVID-19 Service\n"
 "\n"
 "Reply"
 msgstr ""
+"Re ya o amohela Tshebeletsong ya COVID-19 ya Lefapha la Bophelo la Naha\n"
+"\n"
+"Araba"
 
 #: go-app-ussd_higherhealth_healthcheck.js:171
 msgid "Continue where I left off"
-msgstr ""
+msgstr "Tswela pele mo ke qetetseng teng"
 
 #: go-app-ussd_higherhealth_healthcheck.js:172
 msgid "Start over"
-msgstr ""
+msgstr "Qala qalong"
 
 #: go-app-ussd_higherhealth_healthcheck.js:179
 msgid ""
@@ -56,98 +58,79 @@ msgstr ""
 
 #: go-app-ussd_higherhealth_healthcheck.js:203
 msgid ""
-"The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by "
-"answering a few questions about you and your health.\n"
+"The National Department of Health thanks you for contributing to the health of all citizens. Stop the spread of COVID-19\n"
 "\n"
 "Reply"
 msgstr ""
+"Lefapha la Bophelo la Naha lea leboha ha o kenya letsoho maphelong a baahi bohle ba naha. Thibela ho ata ha COVID-19\n"
+"\n"
+"Araba"
 
-#: go-app-ussd_higherhealth_healthcheck.js:209
+#: go-app-ussd_higherhealth_healthcheck.js:208
 msgid "This service works best when you select numbers from the list"
-msgstr ""
-"Tshebeletso ena e sebetsa hantle ha o kgetha dinomoro ho tswa lethathamong "
-"lena"
+msgstr "Tshebeletso ena e sebetsa hantle ha o kgetha dinomoro ho tswa lethathamong lena"
 
-#: go-app-ussd_higherhealth_healthcheck.js:212
+#: go-app-ussd_higherhealth_healthcheck.js:211
 msgid "START"
-msgstr ""
+msgstr "QALA"
 
-#: go-app-ussd_higherhealth_healthcheck.js:219
+#: go-app-ussd_higherhealth_healthcheck.js:218
 msgid ""
-"Confirm that you're responsible for your medical care & treatment. This "
-"service only provides info.\n"
+"Confirm that you're responsible for your medical care & treatment. This service only provides info.\n"
 "\n"
 "Reply"
 msgstr ""
+"Netefatsa hore o nka boikarabello tlhokomelong le kalafong ya bophelo ba hao. Tshebeletso ena e fana ka lesedi feela.\n"
+"\n"
+"Araba"
 
-#: go-app-ussd_higherhealth_healthcheck.js:225
+#: go-app-ussd_higherhealth_healthcheck.js:223
 msgid ""
-"Please use numbers from list. Confirm that u're responsible for ur medical "
-"care & treatment. This service only provides info.\n"
+"Please use numbers from list. Confirm that u're responsible for ur medical care & treatment. This service only provides info.\n"
 "\n"
 "Reply"
 msgstr ""
+"Netefatsa hore o nka boikarabello tlhokomelong le kalafong ya bophelo ba hao. Tshebeletso ena e fana ka lesedi feela.\n"
+"\n"
+"Araba"
+
+#: go-app-ussd_higherhealth_healthcheck.js:231 go-app-ussd_higherhealth_healthcheck.js:367 go-app-ussd_higherhealth_healthcheck.js:389 go-app-ussd_higherhealth_healthcheck.js:411 go-app-ussd_higherhealth_healthcheck.js:433 go-app-ussd_higherhealth_healthcheck.js:455 go-app-ussd_higherhealth_healthcheck.js:479
+msgid "YES"
+msgstr "E"
+
+#: go-app-ussd_higherhealth_healthcheck.js:232 go-app-ussd_higherhealth_healthcheck.js:368 go-app-ussd_higherhealth_healthcheck.js:390 go-app-ussd_higherhealth_healthcheck.js:412 go-app-ussd_higherhealth_healthcheck.js:434 go-app-ussd_higherhealth_healthcheck.js:456 go-app-ussd_higherhealth_healthcheck.js:480
+msgid "NO"
+msgstr "Tjhe"
 
 #: go-app-ussd_higherhealth_healthcheck.js:233
-#: go-app-ussd_higherhealth_healthcheck.js:372
-#: go-app-ussd_higherhealth_healthcheck.js:394
-#: go-app-ussd_higherhealth_healthcheck.js:416
-#: go-app-ussd_higherhealth_healthcheck.js:438
-#: go-app-ussd_higherhealth_healthcheck.js:460
-#: go-app-ussd_higherhealth_healthcheck.js:485
-msgid "YES"
-msgstr ""
-
-#: go-app-ussd_higherhealth_healthcheck.js:234
-#: go-app-ussd_higherhealth_healthcheck.js:373
-#: go-app-ussd_higherhealth_healthcheck.js:395
-#: go-app-ussd_higherhealth_healthcheck.js:417
-#: go-app-ussd_higherhealth_healthcheck.js:439
-#: go-app-ussd_higherhealth_healthcheck.js:461
-#: go-app-ussd_higherhealth_healthcheck.js:486
-msgid "NO"
-msgstr ""
-
-#: go-app-ussd_higherhealth_healthcheck.js:235
 msgid "MORE INFO"
-msgstr ""
+msgstr "Tse ding"
 
-#: go-app-ussd_higherhealth_healthcheck.js:242
-msgid ""
-"You can return to this service at any time. Remember, if you think you have "
-"COVID-19 STAY HOME, avoid contact with other people and self-isolate."
-msgstr ""
+#: go-app-ussd_higherhealth_healthcheck.js:240
+msgid "You can return to this service at any time. Remember, if you think you have COVID-19 STAY HOME, avoid contact with other people and self-quarantine."
+msgstr "O ka kgutlela tshebeletsong ena neng kapa neng. Hopola, haeba o nahana o na le COVID-19 DULA HAE, qoba ho teana le batho ba bang mme o ikarohanye le batho."
 
-#: go-app-ussd_higherhealth_healthcheck.js:252
-msgid ""
-"It's not a substitute for professional medical advice/diagnosis/treatment. "
-"Get a qualified health provider's advice about your medical condition/care."
-msgstr ""
-"Ha e nke sebaka sa keletso/tlhahlobo/kalafo ya bongaka. Fumana keletso ya "
-"mosebeletsi wa bophelo bo botle ka boemo/tlhokomelo ya bophelo ba hao. "
+#: go-app-ussd_higherhealth_healthcheck.js:249
+msgid "It's not a substitute for professional medical advice/diagnosis/treatment. Get a qualified health provider's advice about your medical condition/care."
+msgstr "Ha e nke sebaka sa keletso/tlhahlobo/kalafo ya bongaka. Fumana keletso ya mosebeletsi wa bophelo bo botle ka boemo/tlhokomelo ya bophelo ba hao. "
 
-#: go-app-ussd_higherhealth_healthcheck.js:257
-#: go-app-ussd_higherhealth_healthcheck.js:268
+#: go-app-ussd_higherhealth_healthcheck.js:254 go-app-ussd_higherhealth_healthcheck.js:265
 msgid "Next"
-msgstr ""
+msgstr "E latelang"
 
-#: go-app-ussd_higherhealth_healthcheck.js:263
-msgid ""
-"You confirm that you shouldn't disregard/delay seeking medical advice about "
-"treatment/care because of this service. Rely on info at your own risk."
-msgstr ""
-"Itlame hore ha o tlo tlohela/diehisa ho fumaha keletso ya bongaka ya kalafo "
-"ka lebaka la tshebeletso ena. E-ba le boikarabello bophelong ba hao."
+#: go-app-ussd_higherhealth_healthcheck.js:260
+msgid "You confirm that you shouldn't disregard/delay seeking medical advice about treatment/care because of this service. Rely on info at your own risk."
+msgstr "Itlame hore ha o tlo tlohela/diehisa ho fumaha keletso ya bongaka ya kalafo ka lebaka la tshebeletso ena. E-ba le boikarabello bophelong ba hao."
 
-#: go-app-ussd_higherhealth_healthcheck.js:273
+#: go-app-ussd_higherhealth_healthcheck.js:270
 msgid "Please TYPE your first name"
 msgstr ""
 
-#: go-app-ussd_higherhealth_healthcheck.js:286
+#: go-app-ussd_higherhealth_healthcheck.js:283
 msgid "Please TYPE your surname"
 msgstr ""
 
-#: go-app-ussd_higherhealth_healthcheck.js:300
+#: go-app-ussd_higherhealth_healthcheck.js:297
 msgid ""
 "Select your province\n"
 "\n"
@@ -155,99 +138,93 @@ msgid ""
 msgstr ""
 "Kgetha profense\n"
 "\n"
-"Araba:"
+"Araba"
 
-#: go-app-ussd_higherhealth_healthcheck.js:307
+#: go-app-ussd_higherhealth_healthcheck.js:304
 msgid "EASTERN CAPE"
 msgstr ""
 
-#: go-app-ussd_higherhealth_healthcheck.js:308
+#: go-app-ussd_higherhealth_healthcheck.js:305
 msgid "FREE STATE"
 msgstr ""
 
-#: go-app-ussd_higherhealth_healthcheck.js:309
+#: go-app-ussd_higherhealth_healthcheck.js:306
 msgid "GAUTENG"
 msgstr ""
 
-#: go-app-ussd_higherhealth_healthcheck.js:310
+#: go-app-ussd_higherhealth_healthcheck.js:307
 msgid "KWAZULU NATAL"
 msgstr ""
 
-#: go-app-ussd_higherhealth_healthcheck.js:311
+#: go-app-ussd_higherhealth_healthcheck.js:308
 msgid "LIMPOPO"
 msgstr ""
 
-#: go-app-ussd_higherhealth_healthcheck.js:312
+#: go-app-ussd_higherhealth_healthcheck.js:309
 msgid "MPUMALANGA"
 msgstr ""
 
-#: go-app-ussd_higherhealth_healthcheck.js:313
+#: go-app-ussd_higherhealth_healthcheck.js:310
 msgid "NORTH WEST"
 msgstr ""
 
-#: go-app-ussd_higherhealth_healthcheck.js:314
+#: go-app-ussd_higherhealth_healthcheck.js:311
 msgid "NORTHERN CAPE"
 msgstr ""
 
-#: go-app-ussd_higherhealth_healthcheck.js:315
+#: go-app-ussd_higherhealth_healthcheck.js:312
 msgid "WESTERN CAPE"
 msgstr ""
 
-#: go-app-ussd_higherhealth_healthcheck.js:322
-msgid ""
-"Please TYPE the name of your Suburb, Township, Town or Village (or nearest)"
-msgstr ""
-"Ka kopo THAEPA lebitso la Suburb, Lekeishine, Toropo ka Motse (kapa ho "
-"haufinyane)"
+#: go-app-ussd_higherhealth_healthcheck.js:319
+msgid "Please TYPE the name of your Suburb, Township, Town or Village (or nearest)"
+msgstr "Ka kopo THAEPA lebitso la Suburb, Lekeishine, Toropo ka Motse (kapa ho haufinyane)"
 
-#: go-app-ussd_higherhealth_healthcheck.js:339
+#: go-app-ussd_higherhealth_healthcheck.js:336
 msgid "How old are you?"
 msgstr "O na le dilemo tse kae?"
 
-#: go-app-ussd_higherhealth_healthcheck.js:340
-msgid ""
-"Please use numbers from list.\n"
-"\n"
-"How old are you?"
-msgstr ""
+#: go-app-ussd_higherhealth_healthcheck.js:337
+msgid "How old are you?\n"
+msgstr "O na le dilemo tse kae?\n"
 
-#: go-app-ussd_higherhealth_healthcheck.js:347
+#: go-app-ussd_higherhealth_healthcheck.js:343
 msgid "<18"
 msgstr ""
 
-#: go-app-ussd_higherhealth_healthcheck.js:348
+#: go-app-ussd_higherhealth_healthcheck.js:344
 msgid "18-39"
 msgstr ""
 
-#: go-app-ussd_higherhealth_healthcheck.js:349
+#: go-app-ussd_higherhealth_healthcheck.js:345
 msgid "40-65"
 msgstr ""
 
-#: go-app-ussd_higherhealth_healthcheck.js:350
+#: go-app-ussd_higherhealth_healthcheck.js:346
 msgid ">65"
 msgstr ""
 
-#: go-app-ussd_higherhealth_healthcheck.js:358
+#: go-app-ussd_higherhealth_healthcheck.js:354
 msgid ""
-"Do you feel very hot or cold? Are you sweating or shivering? When you touch "
-"your forehead, does it feel hot?\n"
+"Have you been diagnosed with either Obesity, Diabetes, Hypertension or Cardiovascular disease?\n"
 "\n"
 "Reply"
 msgstr ""
-"O ikutlwa o tjhesa haholo kapa o bata? O ntse o fufulelwa kapa wa "
-"thothomela? Ha o tshwara phatla ya hao, na o ikutlwa o tjhesa?\n"
+"Na ngaka e kile ya fumana o na le Botenya, Tswekere, Phaello ya madi kapa lefu la Pelo?\n"
 "\n"
 "Araba"
 
-#: go-app-ussd_higherhealth_healthcheck.js:364
+#: go-app-ussd_higherhealth_healthcheck.js:359
 msgid ""
-"Please use numbers from list. Do you feel very hot or cold? Are you sweating "
-"or shivering? When you touch your forehead, does it feel hot?\n"
+"Please use numbers from list. Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?\n"
 "\n"
 "Reply"
 msgstr ""
+"O ikutlwa o tjhesa haholo kapa o bata? O ntse o fufulelwa kapa wa thothomela? Ha o tshwara phatla ya hao, na o ikutlwa o tjhesa?\n"
+"\n"
+"Araba"
 
-#: go-app-ussd_higherhealth_healthcheck.js:381
+#: go-app-ussd_higherhealth_healthcheck.js:376
 msgid ""
 "Do you have a cough that recently started?\n"
 "\n"
@@ -257,15 +234,18 @@ msgstr ""
 "\n"
 "Araba"
 
-#: go-app-ussd_higherhealth_healthcheck.js:386
+#: go-app-ussd_higherhealth_healthcheck.js:381
 msgid ""
 "Please use numbers from list.\n"
 "Do you have a cough that recently started?\n"
 "\n"
 "Reply"
 msgstr ""
+"O na le ho kgohlela ho sa tswa qala haufinyane?\n"
+"\n"
+"Araba"
 
-#: go-app-ussd_higherhealth_healthcheck.js:403
+#: go-app-ussd_higherhealth_healthcheck.js:398
 msgid ""
 "Do you have a sore throat, or pain when swallowing?\n"
 "\n"
@@ -275,120 +255,108 @@ msgstr ""
 "\n"
 "Araba"
 
-#: go-app-ussd_higherhealth_healthcheck.js:408
+#: go-app-ussd_higherhealth_healthcheck.js:403
 msgid ""
 "Please use numbers from list.\n"
 "Do you have a sore throat, or pain when swallowing?\n"
 "\n"
 "Reply"
 msgstr ""
-
-#: go-app-ussd_higherhealth_healthcheck.js:425
-msgid ""
-"Do you have breathlessness or difficulty in breathing, that you've noticed "
-"recently?\n"
-"\n"
-"Reply"
-msgstr ""
-
-#: go-app-ussd_higherhealth_healthcheck.js:430
-msgid ""
-"Please use numbers from list. Do you have breathlessness or difficulty in "
-"breathing, that you've noticed recently?\n"
-"\n"
-"Reply"
-msgstr ""
-
-#: go-app-ussd_higherhealth_healthcheck.js:447
-msgid ""
-"Have you been in close contact with someone confirmed to be infected with "
-"COVID19?\n"
-"\n"
-"Reply"
-msgstr ""
-
-#: go-app-ussd_higherhealth_healthcheck.js:452
-msgid ""
-"Please use numbers from list. Have u been in contact with someone with "
-"COVID19 or been where COVID19 patients are treated?\n"
-"\n"
-"Reply"
-msgstr ""
-
-#: go-app-ussd_higherhealth_healthcheck.js:462
-msgid "NOT SURE"
-msgstr ""
-
-#: go-app-ussd_higherhealth_healthcheck.js:470
-msgid ""
-"Please confirm that the information you shared is correct & that the "
-"National Department of Health can contact you if necessary?\n"
-"\n"
-"Reply"
-msgstr ""
-"Ka kopo netefatsa hore dintlha tseo o faneng ka tsona di nepahetse le hore "
-"Lefapha la Bophelo le ka o letsetsa ha ho hlokahala?\n"
+"Na o na le mmetso o bohloko kapa ho bohloko ha o kwenya dijo?\n"
 "\n"
 "Araba"
 
-#: go-app-ussd_higherhealth_healthcheck.js:476
+#: go-app-ussd_higherhealth_healthcheck.js:420
 msgid ""
-"Please reply with numbers\n"
-"Is the information you shared correct & can the National Department of "
-"Health contact you if necessary?\n"
+"Do you have breathlessness or a difficulty breathing, that you've noticed recently?\n"
+"\n"
+"Reply"
+msgstr ""
+"Na o na le ho fellwa ke moya kapa ho hema ka thata, hoo o ho hlokometseng haufinyane?\n"
+"\n"
+"Araba"
+
+#: go-app-ussd_higherhealth_healthcheck.js:425
+msgid ""
+"Please use numbers from list. Do you have breathlessness or difficulty in breathing, that you've noticed recently?\n"
+"\n"
+"Reply"
+msgstr ""
+"Na o na le ho fellwa ke moya kapa ho hema ka thata, hoo o ho hlokometseng haufinyane?\n"
+"\n"
+"Araba"
+
+#: go-app-ussd_higherhealth_healthcheck.js:442
+msgid ""
+"Have you been in close contact to someone confirmed to be infected with COVID-19?\n"
+"\n"
+"Reply"
+msgstr ""
+"Na o bile haufi le motho eo ho netefaditsweng hore o tshwaeditswe ke COVID19?\n"
+"\n"
+"Araba"
+
+#: go-app-ussd_higherhealth_healthcheck.js:447
+msgid ""
+"Please use numbers from list. Have u been in contact with someone with COVID19 or been where COVID19 patients are treated?\n"
 "\n"
 "Reply"
 msgstr ""
 
-#: go-app-ussd_higherhealth_healthcheck.js:487
+#: go-app-ussd_higherhealth_healthcheck.js:457
+msgid "NOT SURE"
+msgstr "HA KE NA BONNETE"
+
+#: go-app-ussd_higherhealth_healthcheck.js:465
+msgid ""
+"Please confirm that the information you shared is correct & that the National Department of Health can contact you if necessary?\n"
+"\n"
+"Reply"
+msgstr ""
+"Ka kopo netefatsa hore dintlha tseo o faneng ka tsona di nepahetse le hore Lefapha la Bophelo le ka o letsetsa ha ho hlokahala?\n"
+"\n"
+"Araba"
+
+#: go-app-ussd_higherhealth_healthcheck.js:470
+msgid ""
+"Please reply with numbers\n"
+"Is the information you shared correct & can the National Department of Health contact you if necessary?\n"
+"\n"
+"Reply"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:481
 msgid "RESTART"
+msgstr "QALA HAPE"
+
+#: go-app-ussd_higherhealth_healthcheck.js:573
+msgid "Complete this HealthCheck again in 7 days or sooner if you feel ill or you come into contact with someone infected with COVID-19."
+msgstr "Tlatsa HealthCheck ena hape kamora matsatsi a 14 kapa hang ha o ikutlwa o kula kapa ha o kopane le motho ya tshwaeditsweng ke COVID-19."
+
+#: go-app-ussd_higherhealth_healthcheck.js:578
+msgid "We recommend you SELF-QUARANTINE for the next 14 days and do this HealthCheck daily to monitor your symptoms. Stay/sleep alone in a room with good air flow."
+msgstr "Re kgothaletsa hore o IKAROHANYE LE BATHO matsatsi a 14 ebe o dula o tlatsa HealthCheck ena. Dula/robala o le mong ka kamoreng e nang le moya o phallang."
+
+#: go-app-ussd_higherhealth_healthcheck.js:583
+msgid "You may be ELIGIBLE FOR COVID-19 TESTING. Go to a testing center or Call 0800029999 or visit your healthcare practitioner for info on what to do & how to test."
+msgstr "Ha o tlo letsetswa. O ka fumanwa O HLOKA HO HLAHLOBELA COVID-19. E-ya setsing sa tlhahlobo kapa letsetsa 0800029999 kapa ngaka ya hao bakeng sa lesedi le leng."
+
+#: go-app-ussd_higherhealth_healthcheck.js:593
+msgid "We won't contact you. SELF-QUARANTINE for 14 days and do this HealthCheck daily to monitor symptoms. Stay/sleep alone in a room with good air flowing through"
 msgstr ""
 
-#: go-app-ussd_higherhealth_healthcheck.js:579
-msgid ""
-"You are at low risk of having COVID-19. You will still need to complete this "
-"risk assessment daily to monitor your symptoms."
+#: go-app-ussd_higherhealth_healthcheck.js:599
+msgid "You will not be contacted. GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info"
 msgstr ""
 
-#: go-app-ussd_higherhealth_healthcheck.js:585
-msgid ""
-"You should SELF-QUARANTINE for 14 days and do HealthCheck daily to monitor "
-"symptoms. Try stay and sleep alone in a room that has a window with good air "
-"flow."
-msgstr ""
+#: go-app-ussd_higherhealth_healthcheck.js:613
+msgid "You will not be contacted. If you think you have COVID-19 please STAY HOME, avoid contact with other people in your community and self-isolate."
+msgstr "Ha o tlo letsetswa. Haeba o nahana hore o na le COVID-19 ka kopo DULA HAE, qoba ho kopana le batho ba bang mme o ikarohanye le batho."
 
-#: go-app-ussd_higherhealth_healthcheck.js:591
-msgid ""
-"GET TESTED to find out if you have COVID-19.  Go to a testing center or Call "
-"0800029999 or your healthcare practitioner for info on what to do & how to "
-"test"
-msgstr ""
-
-#: go-app-ussd_higherhealth_healthcheck.js:602
-msgid ""
-"We won't contact you. SELF-QUARANTINE for 14 days and do this HealthCheck "
-"daily to monitor symptoms. Stay/sleep alone in a room with good air flowing "
-"through"
-msgstr ""
-
-#: go-app-ussd_higherhealth_healthcheck.js:608
-msgid ""
-"You will not be contacted. GET TESTED to find out if you have COVID-19. Go "
-"to a testing center or Call 0800029999 or your healthcare practitioner for "
-"info"
-msgstr ""
-
-#: go-app-ussd_higherhealth_healthcheck.js:622
-msgid ""
-"You will not be contacted. If you think you have COVID-19 please STAY HOME, "
-"avoid contact with other people in your community and self-isolate."
-msgstr ""
-
-#: go-app-ussd_higherhealth_healthcheck.js:626
+#: go-app-ussd_higherhealth_healthcheck.js:617
 msgid "START OVER"
-msgstr ""
+msgstr "QALA HAPE"
 
-#: go-app-ussd_higherhealth_healthcheck.js:634
-msgid ""
-"Sorry, something went wrong. We have been notified. Please try again later"
+#: go-app-ussd_higherhealth_healthcheck.js:625
+msgid "Sorry, something went wrong. We have been notified. Please try again later"
 msgstr ""
