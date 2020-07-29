@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2020-07-28 08:04+0200\n"
+"PO-Revision-Date: 2020-07-28 12:09+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "X-Generator: Poedit 2.4\n"
@@ -94,11 +94,23 @@ msgstr ""
 "\n"
 "Araba"
 
-#: go-app-ussd_higherhealth_healthcheck.js:231 go-app-ussd_higherhealth_healthcheck.js:367 go-app-ussd_higherhealth_healthcheck.js:389 go-app-ussd_higherhealth_healthcheck.js:411 go-app-ussd_higherhealth_healthcheck.js:433 go-app-ussd_higherhealth_healthcheck.js:455 go-app-ussd_higherhealth_healthcheck.js:479
+#: go-app-ussd_higherhealth_healthcheck.js:231
+#: go-app-ussd_higherhealth_healthcheck.js:367
+#: go-app-ussd_higherhealth_healthcheck.js:389
+#: go-app-ussd_higherhealth_healthcheck.js:411
+#: go-app-ussd_higherhealth_healthcheck.js:433
+#: go-app-ussd_higherhealth_healthcheck.js:455
+#: go-app-ussd_higherhealth_healthcheck.js:479
 msgid "YES"
 msgstr "E"
 
-#: go-app-ussd_higherhealth_healthcheck.js:232 go-app-ussd_higherhealth_healthcheck.js:368 go-app-ussd_higherhealth_healthcheck.js:390 go-app-ussd_higherhealth_healthcheck.js:412 go-app-ussd_higherhealth_healthcheck.js:434 go-app-ussd_higherhealth_healthcheck.js:456 go-app-ussd_higherhealth_healthcheck.js:480
+#: go-app-ussd_higherhealth_healthcheck.js:232
+#: go-app-ussd_higherhealth_healthcheck.js:368
+#: go-app-ussd_higherhealth_healthcheck.js:390
+#: go-app-ussd_higherhealth_healthcheck.js:412
+#: go-app-ussd_higherhealth_healthcheck.js:434
+#: go-app-ussd_higherhealth_healthcheck.js:456
+#: go-app-ussd_higherhealth_healthcheck.js:480
 msgid "NO"
 msgstr "Tjhe"
 
@@ -112,9 +124,10 @@ msgstr "O ka kgutlela tshebeletsong ena neng kapa neng. Hopola, haeba o nahana o
 
 #: go-app-ussd_higherhealth_healthcheck.js:249
 msgid "It's not a substitute for professional medical advice/diagnosis/treatment. Get a qualified health provider's advice about your medical condition/care."
-msgstr "Ha e nke sebaka sa keletso/tlhahlobo/kalafo ya bongaka. Fumana keletso ya mosebeletsi wa bophelo bo botle ka boemo/tlhokomelo ya bophelo ba hao. "
+msgstr "Ha e nke sebaka sa keletso/tlhahlobo/kalafo ya bongaka. Fumana keletso ya mosebeletsi wa bophelo bo botle ka boemo/tlhokomelo ya bophelo ba hao."
 
-#: go-app-ussd_higherhealth_healthcheck.js:254 go-app-ussd_higherhealth_healthcheck.js:265
+#: go-app-ussd_higherhealth_healthcheck.js:254
+#: go-app-ussd_higherhealth_healthcheck.js:265
 msgid "Next"
 msgstr "E latelang"
 
@@ -138,7 +151,7 @@ msgid ""
 msgstr ""
 "Kgetha profense\n"
 "\n"
-"Araba"
+"Araba:"
 
 #: go-app-ussd_higherhealth_healthcheck.js:304
 msgid "EASTERN CAPE"

@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2020-07-28 07:19+0200\n"
+"PO-Revision-Date: 2020-07-28 12:00+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "X-Generator: Poedit 2.4\n"
@@ -17,6 +17,9 @@ msgid ""
 "\n"
 "Reply"
 msgstr ""
+"Welkom terug by Die Nasionale Department van Gesondheid se COVID-19 Diens\n"
+"\n"
+"Antwoord"
 
 #: go-app-ussd_higherhealth_healthcheck.js:171
 msgid "Continue where I left off"
@@ -91,11 +94,23 @@ msgstr ""
 "\n"
 "Antwoord"
 
-#: go-app-ussd_higherhealth_healthcheck.js:231 go-app-ussd_higherhealth_healthcheck.js:367 go-app-ussd_higherhealth_healthcheck.js:389 go-app-ussd_higherhealth_healthcheck.js:411 go-app-ussd_higherhealth_healthcheck.js:433 go-app-ussd_higherhealth_healthcheck.js:455 go-app-ussd_higherhealth_healthcheck.js:479
+#: go-app-ussd_higherhealth_healthcheck.js:231
+#: go-app-ussd_higherhealth_healthcheck.js:367
+#: go-app-ussd_higherhealth_healthcheck.js:389
+#: go-app-ussd_higherhealth_healthcheck.js:411
+#: go-app-ussd_higherhealth_healthcheck.js:433
+#: go-app-ussd_higherhealth_healthcheck.js:455
+#: go-app-ussd_higherhealth_healthcheck.js:479
 msgid "YES"
 msgstr "JA"
 
-#: go-app-ussd_higherhealth_healthcheck.js:232 go-app-ussd_higherhealth_healthcheck.js:368 go-app-ussd_higherhealth_healthcheck.js:390 go-app-ussd_higherhealth_healthcheck.js:412 go-app-ussd_higherhealth_healthcheck.js:434 go-app-ussd_higherhealth_healthcheck.js:456 go-app-ussd_higherhealth_healthcheck.js:480
+#: go-app-ussd_higherhealth_healthcheck.js:232
+#: go-app-ussd_higherhealth_healthcheck.js:368
+#: go-app-ussd_higherhealth_healthcheck.js:390
+#: go-app-ussd_higherhealth_healthcheck.js:412
+#: go-app-ussd_higherhealth_healthcheck.js:434
+#: go-app-ussd_higherhealth_healthcheck.js:456
+#: go-app-ussd_higherhealth_healthcheck.js:480
 msgid "NO"
 msgstr "NEE"
 
@@ -113,7 +128,8 @@ msgstr ""
 msgid "It's not a substitute for professional medical advice/diagnosis/treatment. Get a qualified health provider's advice about your medical condition/care."
 msgstr "Die is nie ’n plaasvervanger vir professionele advies/ diagnose/ behandeling nie. Kry ’n gekwalifiseerde dokter se advies oor jou mediese sorg."
 
-#: go-app-ussd_higherhealth_healthcheck.js:254 go-app-ussd_higherhealth_healthcheck.js:265
+#: go-app-ussd_higherhealth_healthcheck.js:254
+#: go-app-ussd_higherhealth_healthcheck.js:265
 msgid "Next"
 msgstr "Volgende"
 
@@ -141,7 +157,7 @@ msgstr ""
 
 #: go-app-ussd_higherhealth_healthcheck.js:304
 msgid "EASTERN CAPE"
-msgstr "OOS-KAAP\n"
+msgstr "OOS-KAAP"
 
 #: go-app-ussd_higherhealth_healthcheck.js:305
 msgid "FREE STATE"
@@ -348,11 +364,11 @@ msgstr "Jy kan moontlik KWALIFISEER VIR COVID-19 TOETSING. Gaan na ’n toets se
 
 #: go-app-ussd_higherhealth_healthcheck.js:593
 msgid "We won't contact you. SELF-QUARANTINE for 14 days and do this HealthCheck daily to monitor symptoms. Stay/sleep alone in a room with good air flowing through"
-msgstr "Jy moet vir 14 dae SELF-KWARANTYN en hierdie HealthCheck daagliks doen om jou simptome te monitor. Bly/slaap alleen in ’n kamer met goeie lug vloei."
+msgstr "Jy moet vir 14 dae SELF-KWARANTYN en hierdie HealthCheck daagliks doen om jou simptome te monitor. Bly/slaap alleen in ’n kamer met goeie lug vloei"
 
 #: go-app-ussd_higherhealth_healthcheck.js:599
 msgid "You will not be contacted. GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info"
-msgstr "Jy kan moontlik KWALIFISEER VIR COVID-19 TOETSING. Gaan na ’n toets sentrum of Bel 0800029999 of besoek jou dokter vir meer inligting oor die toetsing."
+msgstr "Jy kan moontlik KWALIFISEER VIR COVID-19 TOETSING. Gaan na ’n toets sentrum of Bel 0800029999 of besoek jou dokter vir meer inligting oor die toetsing"
 
 #: go-app-ussd_higherhealth_healthcheck.js:613
 msgid "You will not be contacted. If you think you have COVID-19 please STAY HOME, avoid contact with other people in your community and self-isolate."
