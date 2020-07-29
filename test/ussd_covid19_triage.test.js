@@ -734,7 +734,7 @@ describe("ussd_covid19_triage app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
-                        "We recommend you SELF-QUARANTINE for the next 10 days and do this HealthCheck " +
+                        "We recommend you SELF-QUARANTINE for the next 14 days and do this HealthCheck " +
                         "daily to monitor your symptoms. Stay/sleep alone in a room with good air flow.",
                     char_limit: 160
                 })
@@ -885,7 +885,7 @@ describe("ussd_covid19_triage app", function () {
                 .check.interaction({
                     state: "state_no_tracing_moderate_risk",
                     reply: [
-                        "You won't be contacted. SELF-QUARANTINE for 10 days, do this HealthCheck " +
+                        "You won't be contacted. SELF-QUARANTINE for 14 days, do this HealthCheck " +
                         "daily to monitor symptoms. Stay/sleep alone in a room with good air flow.",
                         "1. START OVER"
                     ].join("\n"),
