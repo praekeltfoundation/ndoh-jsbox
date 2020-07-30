@@ -6,14 +6,14 @@
         "mime-version": "1.0",
         "content-type": "text/plain; charset=utf-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2020-07-28 07:19+0200",
+        "po-revision-date": "2020-07-28 12:00+0200",
         "last-translator": "",
         "language-team": "",
         "x-generator": "Poedit 2.4"
     },
     "Welcome back to the The National Department of Health's COVID-19 Service\n\nReply": [
         null,
-        ""
+        "Welkom terug by Die Nasionale Department van Gesondheid se COVID-19 Diens\n\nAntwoord"
     ],
     "Continue where I left off": [
         null,
@@ -47,7 +47,7 @@
         null,
         ""
     ],
-    "The National Department of Health thanks you for contributing to the health of all citizens. Stop the spread of COVID-19\n\nReply": [
+    "The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by answering a few questions about you and your health.\n\nReply": [
         null,
         "Die Nasionale Departement van Gesondheid bedank jou vir jou bydra. Stop die verspreiding van COVID-19.\n\nAntwoord"
     ],
@@ -109,7 +109,7 @@
     ],
     "EASTERN CAPE": [
         null,
-        "OOS-KAAP\n"
+        "OOS-KAAP"
     ],
     "FREE STATE": [
         null,
@@ -171,7 +171,7 @@
         null,
         ""
     ],
-    "Have you been diagnosed with either Obesity, Diabetes, Hypertension or Cardiovascular disease?\n\nReply": [
+    "Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?\n\nReply": [
         null,
         "Was jy al gediagnoseer as Oorgewig of met Diabetes, Hoë Bloeddruk of ’n Hart kondisie?\n\nAntwoord"
     ],
@@ -195,7 +195,7 @@
         null,
         "Het jy ’n seer keel of pyn wanneer jy sluk?\n\nAntwoord"
     ],
-    "Do you have breathlessness or a difficulty breathing, that you've noticed recently?\n\nReply": [
+    "Do you have breathlessness or difficulty in breathing, that you've noticed recently?\n\nReply": [
         null,
         "Het jy onlangs opgemerk dat jy raak kort van asem of sukkel om asem te haal?\n\nAntwoord"
     ],
@@ -203,7 +203,7 @@
         null,
         "Het jy onlangs opgemerk dat jy raak kort van asem of sukkel om asem te haal?\n\nAntwoord"
     ],
-    "Have you been in close contact to someone confirmed to be infected with COVID-19?\n\nReply": [
+    "Have you been in close contact with someone confirmed to be infected with COVID-19?\n\nReply": [
         null,
         "Was jy in onmiddelike kontak met enige iemand wat positief getoets is vir COVID 19?\n\nAntwoord"
     ],
@@ -227,25 +227,25 @@
         null,
         "BEGIN OOR"
     ],
-    "Complete this HealthCheck again in 7 days or sooner if you feel ill or you come into contact with someone infected with COVID-19.": [
+    "You are at low risk of having COVID-19. You will still need to complete this risk assessment daily to monitor your symptoms.": [
         null,
         "Voltooi hierdie HealthCheck weer in 7 dae of vroër as jy siek voel of met iemand in kontak kom wat COVID-19 het."
     ],
-    "We recommend you SELF-QUARANTINE for the next 14 days and do this HealthCheck daily to monitor your symptoms. Stay/sleep alone in a room with good air flow.": [
+    "You should SELF-QUARANTINE for 14 days and do HealthCheck daily to monitor symptoms. Try stay and sleep alone in a room that has a window with good air flow.": [
         null,
         "Jy moet vir 14 dae SELF-KWARANTYN en hierdie HealthCheck daagliks doen om jou simptome te monitor. Bly/slaap alleen in ’n kamer met goeie lug vloei."
     ],
-    "You may be ELIGIBLE FOR COVID-19 TESTING. Go to a testing center or Call 0800029999 or visit your healthcare practitioner for info on what to do & how to test.": [
+    "GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info on what to do & how to test.": [
         null,
         "Jy kan moontlik KWALIFISEER VIR COVID-19 TOETSING. Gaan na ’n toets sentrum of Bel 0800029999 of besoek jou dokter vir meer inligting oor die toetsing."
     ],
     "We won't contact you. SELF-QUARANTINE for 14 days and do this HealthCheck daily to monitor symptoms. Stay/sleep alone in a room with good air flowing through": [
         null,
-        "Jy moet vir 14 dae SELF-KWARANTYN en hierdie HealthCheck daagliks doen om jou simptome te monitor. Bly/slaap alleen in ’n kamer met goeie lug vloei."
+        "Jy moet vir 14 dae SELF-KWARANTYN en hierdie HealthCheck daagliks doen om jou simptome te monitor. Bly/slaap alleen in ’n kamer met goeie lug vloei"
     ],
     "You will not be contacted. GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info": [
         null,
-        "Jy kan moontlik KWALIFISEER VIR COVID-19 TOETSING. Gaan na ’n toets sentrum of Bel 0800029999 of besoek jou dokter vir meer inligting oor die toetsing."
+        "Jy kan moontlik KWALIFISEER VIR COVID-19 TOETSING. Gaan na ’n toets sentrum of Bel 0800029999 of besoek jou dokter vir meer inligting oor die toetsing"
     ],
     "You will not be contacted. If you think you have COVID-19 please STAY HOME, avoid contact with other people in your community and self-isolate.": [
         null,
