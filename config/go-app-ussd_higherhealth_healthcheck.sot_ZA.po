@@ -58,7 +58,7 @@ msgstr ""
 
 #: go-app-ussd_higherhealth_healthcheck.js:203
 msgid ""
-"The National Department of Health thanks you for contributing to the health of all citizens. Stop the spread of COVID-19\n"
+"The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by answering a few questions about you and your health.\n"
 "\n"
 "Reply"
 msgstr ""
@@ -219,7 +219,7 @@ msgstr ""
 
 #: go-app-ussd_higherhealth_healthcheck.js:354
 msgid ""
-"Have you been diagnosed with either Obesity, Diabetes, Hypertension or Cardiovascular disease?\n"
+"Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?\n"
 "\n"
 "Reply"
 msgstr ""
@@ -281,7 +281,7 @@ msgstr ""
 
 #: go-app-ussd_higherhealth_healthcheck.js:420
 msgid ""
-"Do you have breathlessness or a difficulty breathing, that you've noticed recently?\n"
+"Do you have breathlessness or difficulty in breathing, that you've noticed recently?\n"
 "\n"
 "Reply"
 msgstr ""
@@ -301,7 +301,7 @@ msgstr ""
 
 #: go-app-ussd_higherhealth_healthcheck.js:442
 msgid ""
-"Have you been in close contact to someone confirmed to be infected with COVID-19?\n"
+"Have you been in close contact with someone confirmed to be infected with COVID-19?\n"
 "\n"
 "Reply"
 msgstr ""
@@ -343,15 +343,15 @@ msgid "RESTART"
 msgstr "QALA HAPE"
 
 #: go-app-ussd_higherhealth_healthcheck.js:573
-msgid "Complete this HealthCheck again in 7 days or sooner if you feel ill or you come into contact with someone infected with COVID-19."
+msgid "You are at low risk of having COVID-19. You will still need to complete this risk assessment daily to monitor your symptoms."
 msgstr "Tlatsa HealthCheck ena hape kamora matsatsi a 14 kapa hang ha o ikutlwa o kula kapa ha o kopane le motho ya tshwaeditsweng ke COVID-19."
 
 #: go-app-ussd_higherhealth_healthcheck.js:578
-msgid "We recommend you SELF-QUARANTINE for the next 14 days and do this HealthCheck daily to monitor your symptoms. Stay/sleep alone in a room with good air flow."
+msgid "You should SELF-QUARANTINE for 14 days and do HealthCheck daily to monitor symptoms. Try stay and sleep alone in a room that has a window with good air flow."
 msgstr "Re kgothaletsa hore o IKAROHANYE LE BATHO matsatsi a 14 ebe o dula o tlatsa HealthCheck ena. Dula/robala o le mong ka kamoreng e nang le moya o phallang."
 
 #: go-app-ussd_higherhealth_healthcheck.js:583
-msgid "You may be ELIGIBLE FOR COVID-19 TESTING. Go to a testing center or Call 0800029999 or visit your healthcare practitioner for info on what to do & how to test."
+msgid "GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info on what to do & how to test."
 msgstr "Ha o tlo letsetswa. O ka fumanwa O HLOKA HO HLAHLOBELA COVID-19. E-ya setsing sa tlhahlobo kapa letsetsa 0800029999 kapa ngaka ya hao bakeng sa lesedi le leng."
 
 #: go-app-ussd_higherhealth_healthcheck.js:593
