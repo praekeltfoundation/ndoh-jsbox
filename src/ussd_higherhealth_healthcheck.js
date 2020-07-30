@@ -389,7 +389,17 @@ go.app = (function () {
           tracing: answers.state_tracing,
           risk: self.calculate_risk(),
           first_name: answers.state_first_name,
-          last_name: answers.state_last_name
+          last_name: answers.state_last_name,
+          data: {
+            university: {
+              name: answers.state_university
+            },
+            university_other: answers.state_university_other,
+            campus: {
+              name: answers.state_campus
+            },
+            campus_other: answers.state_campus_other,
+          }
         },
         headers: {
           "Authorization": ["Token " + self.im.config.eventstore.token],
