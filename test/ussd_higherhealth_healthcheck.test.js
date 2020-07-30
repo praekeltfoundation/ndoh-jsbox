@@ -101,7 +101,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_start",
                     reply: [
-                        "The National Department of Health thanks you for contributing to the health of all citizens. Stop the spread of COVID-19",
+                        "The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by answering a few questions about you and your health.",
                         "",
                         "Reply",
                         "1. START"
@@ -441,7 +441,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_fever",
                     reply: [
-                        "Have you been diagnosed with either Obesity, Diabetes, Hypertension or Cardiovascular disease?",
+                        "Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?",
                         "",
                         "Reply",
                         "1. YES",
@@ -587,8 +587,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_breathing",
                     reply: [
-                        "Please use numbers from list. Do you have breathlessness or " +
-                        "difficulty in breathing, that you've noticed recently?",
+                        "Do you have breathlessness or difficulty in breathing, that you've noticed recently?",
                         "",
                         "Reply",
                         "1. YES",
@@ -613,7 +612,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_exposure",
                     reply: [
-                        "Have you been in close contact to someone confirmed to be infected with COVID-19?",
+                        "Have you been in close contact with someone confirmed to be infected with COVID-19?",
                         "",
                         "Reply",
                         "1. YES",
@@ -631,8 +630,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_exposure",
                     reply: [
-                        "Please use numbers from list. Have u been in contact with someone with " +
-                        "COVID19 or been where COVID19 patients are treated?",
+                        "Please use numbers from list. Have u been in contact with someone with COVID19 or been where COVID19 patients are treated?",
                         "",
                         "Reply",
                         "1. YES",
@@ -864,7 +862,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
-                        "We recommend you SELF-QUARANTINE for the next 14 days and do this HealthCheck daily to monitor your symptoms. Stay/sleep alone in a room with good air flow.",
+                        "You should SELF-QUARANTINE for 14 days and do HealthCheck daily to monitor symptoms. Try stay and sleep alone in a room that has a window with good air flow.",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
@@ -913,7 +911,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply: [
-                        "You may be ELIGIBLE FOR COVID-19 TESTING. Go to a testing center or Call 0800029999 or visit your healthcare practitioner for info on what to do & how to test."
+                        "GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info on what to do & how to test."
                     ].join("\n"),
                     char_limit: 160
                 })

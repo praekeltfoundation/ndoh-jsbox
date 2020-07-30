@@ -98,7 +98,7 @@ go.app = (function () {
 
       return new MenuState(name, {
         question: $([
-          "The National Department of Health thanks you for contributing to the health of all citizens. Stop the spread of COVID-19",
+          "The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by answering a few questions about you and your health.",
           "",
           "Reply"
         ].join("\n")),
@@ -249,7 +249,7 @@ go.app = (function () {
     self.add("state_fever", function (name) {
       return new ChoiceState(name, {
         question: $([
-          "Have you been diagnosed with either Obesity, Diabetes, Hypertension or Cardiovascular disease?",
+          "Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?",
           "",
           "Reply"
         ].join("\n")),
@@ -320,8 +320,7 @@ go.app = (function () {
           "Reply"
         ].join("\n")),
         error: $([
-          "Please use numbers from list. Do you have breathlessness or difficulty in breathing, " +
-          "that you've noticed recently?",
+          "Do you have breathlessness or difficulty in breathing, that you've noticed recently?",
           "",
           "Reply"
         ].join("\n")),
@@ -337,7 +336,7 @@ go.app = (function () {
     self.add("state_exposure", function (name) {
       return new ChoiceState(name, {
         question: $([
-          "Have you been in close contact to someone confirmed to be infected with COVID-19?",
+          "Have you been in close contact with someone confirmed to be infected with COVID-19?",
           "",
           "Reply"
         ].join("\n")),
@@ -473,12 +472,12 @@ go.app = (function () {
         }
         if (risk === "moderate") {
           text = $(
-            "We recommend you SELF-QUARANTINE for the next 14 days and do this HealthCheck daily to monitor your symptoms. Stay/sleep alone in a room with good air flow."
+            "You should SELF-QUARANTINE for 14 days and do HealthCheck daily to monitor symptoms. Try stay and sleep alone in a room that has a window with good air flow."
           );
         }
         if (risk === "high") {
           text = $([
-            "You may be ELIGIBLE FOR COVID-19 TESTING. Go to a testing center or Call 0800029999 or visit your healthcare practitioner for info on what to do & how to test."
+            "GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info on what to do & how to test."
           ].join("\n"));
         }
       } else {
