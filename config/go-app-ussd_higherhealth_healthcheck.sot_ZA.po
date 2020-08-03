@@ -137,11 +137,11 @@ msgstr "Itlame hore ha o tlo tlohela/diehisa ho fumaha keletso ya bongaka ya kal
 
 #: go-app-ussd_higherhealth_healthcheck.js:270
 msgid "Please TYPE your first name"
-msgstr ""
+msgstr "Ka kopo THAEPA lebitso la hao"
 
 #: go-app-ussd_higherhealth_healthcheck.js:283
 msgid "Please TYPE your surname"
-msgstr ""
+msgstr "Ka kopo THAEPA fane ya hao"
 
 #: go-app-ussd_higherhealth_healthcheck.js:297
 msgid ""

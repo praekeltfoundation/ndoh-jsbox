@@ -121,11 +121,11 @@ msgstr "Uqinisekisa ukuthi akumele uhlehlise ukufuna izeluleko zempilo mayelana 
 
 #: go-app-ussd_higherhealth_healthcheck.js:270
 msgid "Please TYPE your first name"
-msgstr ""
+msgstr "Sicela UBHALE igama lakho lokuqala"
 
 #: go-app-ussd_higherhealth_healthcheck.js:283
 msgid "Please TYPE your surname"
-msgstr ""
+msgstr "Sicela UBHALE isibongo sakho"
 
 #: go-app-ussd_higherhealth_healthcheck.js:297
 msgid ""

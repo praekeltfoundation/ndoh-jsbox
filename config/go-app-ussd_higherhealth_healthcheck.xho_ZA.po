@@ -137,11 +137,11 @@ msgstr "Uqinisekisa ukuba awuzukungahoyi / ulibazise ukufuna ingcebiso ngonyango
 
 #: go-app-ussd_higherhealth_healthcheck.js:270
 msgid "Please TYPE your first name"
-msgstr ""
+msgstr "Nceda TAYIPA igama lakho"
 
 #: go-app-ussd_higherhealth_healthcheck.js:283
 msgid "Please TYPE your surname"
-msgstr ""
+msgstr "Nceda TAYIPA ifani yakho"
 
 #: go-app-ussd_higherhealth_healthcheck.js:297
 msgid ""

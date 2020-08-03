@@ -139,11 +139,11 @@ msgstr "Jy bevestig dat jy nie agv die diens enige mediese advies oor sorg sal i
 
 #: go-app-ussd_higherhealth_healthcheck.js:270
 msgid "Please TYPE your first name"
-msgstr ""
+msgstr "TIK asb jou eerste naam in"
 
 #: go-app-ussd_higherhealth_healthcheck.js:283
 msgid "Please TYPE your surname"
-msgstr ""
+msgstr "TIK asb jou van in"
 
 #: go-app-ussd_higherhealth_healthcheck.js:297
 msgid ""
