@@ -415,8 +415,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_age",
                     reply: [
-                        "How old are you?",
+                        "Please use numbers from list.",
                         "",
+                        "How old are you?",
                         "1. <18",
                         "2. 18-39",
                         "3. 40-65",
@@ -587,7 +588,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_breathing",
                     reply: [
-                        "Do you have breathlessness or difficulty in breathing, that you've noticed recently?",
+                        "Please use numbers from list. Do you have breathlessness or difficulty in breathing, that you've noticed recently?",
                         "",
                         "Reply",
                         "1. YES",

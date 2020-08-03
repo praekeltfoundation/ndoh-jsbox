@@ -232,8 +232,9 @@ go.app = (function () {
       return new ChoiceState(name, {
         question: $("How old are you?"),
         error: $([
-          "How old are you?",
+          "Please use numbers from list.",
           "",
+          "How old are you?",
         ].join("\n")),
         accept_labels: true,
         choices: [
@@ -320,7 +321,8 @@ go.app = (function () {
           "Reply"
         ].join("\n")),
         error: $([
-          "Do you have breathlessness or difficulty in breathing, that you've noticed recently?",
+          "Please use numbers from list. Do you have breathlessness or difficulty in breathing, " +
+          "that you've noticed recently?",
           "",
           "Reply"
         ].join("\n")),
