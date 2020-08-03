@@ -363,7 +363,7 @@ msgstr "Re kgothaletsa hore o IKAROHANYE LE BATHO matsatsi a 14 ebe o dula o tla
 
 #: go-app-ussd_higherhealth_healthcheck.js:599
 msgid "You will not be contacted. GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info"
-msgstr ""
+msgstr "O ke ke wa letsetswa. HLAHLOBA ho fumana hore na o na le COVID-19. E-ya setsing sa tlhahlobo kapa letsetsa 0800029999 kapa o ye mosebeletsing wa hao wa tsa bophelo bakeng sa lesedi le leng"
 
 #: go-app-ussd_higherhealth_healthcheck.js:613
 msgid "You will not be contacted. If you think you have COVID-19 please STAY HOME, avoid contact with other people in your community and self-isolate."
