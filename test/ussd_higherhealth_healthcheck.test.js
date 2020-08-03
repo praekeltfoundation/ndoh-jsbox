@@ -72,8 +72,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     reply: [
                          "Welcome to HealthCheck.",
                           "Please select your preferred language.",
-                          "Reply",
                           "",
+                          "Reply",
                           "1. Afrikaans",
                           "2. English",
                           "3. Sotho",

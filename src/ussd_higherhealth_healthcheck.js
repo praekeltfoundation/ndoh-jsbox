@@ -76,9 +76,8 @@ go.app = (function () {
         question: $([
           "Welcome to HealthCheck.",
           "Please select your preferred language.",
-
-          "Reply",
           "",
+          "Reply",
         ].join("\n")),
         accept_labels: true,
         choices: [
