@@ -321,7 +321,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .check.user.state("state_language_change_enter")
                 .run();
         });
-        it("should got to state_preferred_channel_language_option if WA is channel", function() {
+        it("should got to state_switch_to_sms_option if WA is channel", function() {
             return tester
                 .setup.user.state("state_change_info")
                 .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
@@ -333,7 +333,7 @@ describe("ussd_popi_rapidpro app", function() {
                             "pick your language)",
                         "2. Exit"
                     ].join("\n"),
-                    state: "state_preferred_channel_language_option"
+                    state: "state_switch_to_sms_option"
                 })
                 .run();
         });
