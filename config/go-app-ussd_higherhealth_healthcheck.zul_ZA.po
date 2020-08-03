@@ -350,7 +350,7 @@ msgstr "Ngeke sixhumane nawe. ZIHLUKANISE NABANTU izinsuku eziyi-14 futhi wenze 
 
 #: go-app-ussd_higherhealth_healthcheck.js:599
 msgid "You will not be contacted. GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info"
-msgstr ""
+msgstr "Ngeke kuxhunyanwe nawe. HLOLWA ukuthola ukuthi une-COVID-19. Iya esikhungweni sokuvivinya noma ushayele ku-0800029999 noma udokotela wakho wezempilo onolwazi"
 
 #: go-app-ussd_higherhealth_healthcheck.js:613
 msgid "You will not be contacted. If you think you have COVID-19 please STAY HOME, avoid contact with other people in your community and self-isolate."
