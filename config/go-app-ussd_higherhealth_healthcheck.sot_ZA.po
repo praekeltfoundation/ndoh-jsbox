@@ -330,16 +330,6 @@ msgstr ""
 "\n"
 "Araba"
 
-#: go-app-ussd_higherhealth_healthcheck.js:470
-msgid ""
-"Please reply with numbers\n"
-"Is the information you shared correct & can the National Department of Health contact you if necessary?\n"
-"\n"
-"Reply"
-msgstr ""
-"Ka kopo netefatsa hore dintlha tseo o faneng ka tsona di nepahetse le hore Lefapha la Bophelo le ka o letsetsa ha ho hlokahala?\n"
-"\n"
-"Araba"
 
 #: go-app-ussd_higherhealth_healthcheck.js:481
 msgid "RESTART"

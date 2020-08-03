@@ -335,17 +335,6 @@ msgstr ""
 "\n"
 "Antwoord"
 
-#: go-app-ussd_higherhealth_healthcheck.js:470
-msgid ""
-"Please reply with numbers\n"
-"Is the information you shared correct & can the National Department of Health contact you if necessary?\n"
-"\n"
-"Reply"
-msgstr ""
-"Bevestig dat die inligting wat jy gedeel het reg is & dat die Nasionale Departement van Gesondheid jou kan kontak as nodig?\n"
-"\n"
-"Antwoord"
-
 #: go-app-ussd_higherhealth_healthcheck.js:481
 msgid "RESTART"
 msgstr "BEGIN OOR"

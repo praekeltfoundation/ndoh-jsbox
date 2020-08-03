@@ -171,7 +171,7 @@
         null,
         ""
     ],
-    "Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?\n\nReply": [
+    "Have you been diagnosed with either Obesity, Diabetes, Hypertension or Cardiovascular disease?\n\nReply": [
         null,
         "Na ngaka e kile ya fumana o na le Botenya, Tswekere, Phaello ya madi kapa lefu la Pelo?\n\nAraba"
     ],
@@ -216,10 +216,6 @@
         "HA KE NA BONNETE"
     ],
     "Please confirm that the information you shared is correct & that the National Department of Health can contact you if necessary?\n\nReply": [
-        null,
-        "Ka kopo netefatsa hore dintlha tseo o faneng ka tsona di nepahetse le hore Lefapha la Bophelo le ka o letsetsa ha ho hlokahala?\n\nAraba"
-    ],
-    "Please reply with numbers\nIs the information you shared correct & can the National Department of Health contact you if necessary?\n\nReply": [
         null,
         "Ka kopo netefatsa hore dintlha tseo o faneng ka tsona di nepahetse le hore Lefapha la Bophelo le ka o letsetsa ha ho hlokahala?\n\nAraba"
     ],

@@ -333,16 +333,6 @@ msgstr ""
 "\n"
 "Phendula"
 
-#: go-app-ussd_higherhealth_healthcheck.js:470
-msgid ""
-"Please reply with numbers\n"
-"Is the information you shared correct & can the National Department of Health contact you if necessary?\n"
-"\n"
-"Reply"
-msgstr ""
-"Qinisekisa ukuba ulwazi olwabeleyo lulo kwaye iSebe lezeMpilo likaZwelonke linokunxibelelana nawe xa ikho imfuneko?\n"
-"\n"
-"Phendula"
 
 #: go-app-ussd_higherhealth_healthcheck.js:481
 msgid "RESTART"
