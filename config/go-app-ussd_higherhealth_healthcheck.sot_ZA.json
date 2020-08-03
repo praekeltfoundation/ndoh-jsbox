@@ -6,7 +6,7 @@
         "mime-version": "1.0",
         "content-type": "text/plain; charset=utf-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2020-07-28 12:09+0200",
+        "po-revision-date": "2020-08-03 02:56+0200",
         "last-translator": "",
         "language-team": "",
         "x-generator": "Poedit 2.4"
@@ -221,7 +221,7 @@
     ],
     "Please reply with numbers\nIs the information you shared correct & can the National Department of Health contact you if necessary?\n\nReply": [
         null,
-        ""
+        "Ka kopo netefatsa hore dintlha tseo o faneng ka tsona di nepahetse le hore Lefapha la Bophelo le ka o letsetsa ha ho hlokahala?\n\nAraba"
     ],
     "RESTART": [
         null,
@@ -233,7 +233,7 @@
     ],
     "You should SELF-QUARANTINE for 14 days and do HealthCheck daily to monitor symptoms. Try stay and sleep alone in a room that has a window with good air flow.": [
         null,
-        "Re kgothaletsa hore o IKAROHANYE LE BATHO matsatsi a 14 ebe o dula o tlatsa HealthCheck ena. Dula/robala o le mong ka kamoreng e nang le moya o phallang."
+        "O tlameha ho IKAROHANYA LE BATHO nakong ya matsatsi a 14 mme o tlatse HealthCheck ena letsatsi le letsatsi ho beha matshwao a hao leihlo. Leka ho dula le ho robala ka hara kamore e nang le moya o motle o phallang."
     ],
     "GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info on what to do & how to test.": [
         null,
@@ -241,7 +241,7 @@
     ],
     "We won't contact you. SELF-QUARANTINE for 14 days and do this HealthCheck daily to monitor symptoms. Stay/sleep alone in a room with good air flowing through": [
         null,
-        ""
+        "Re kgothaletsa hore o IKAROHANYE LE BATHO matsatsi a 14 ebe o dula o tlatsa HealthCheck ena. Dula/robala o le mong ka kamoreng e nang le moya o phallang"
     ],
     "You will not be contacted. GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info": [
         null,

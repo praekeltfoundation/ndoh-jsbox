@@ -121,7 +121,7 @@ msgstr "MEER INLIGTING"
 #: go-app-ussd_higherhealth_healthcheck.js:240
 msgid "You can return to this service at any time. Remember, if you think you have COVID-19 STAY HOME, avoid contact with other people and self-quarantine."
 msgstr ""
-"Jy kan enige tyd na hierdie diens terug keer.\n"
+"Jy kan enige tyd na hierdie diens terug keer. "
 "Onthou, as jy dink dat jy COVID-19 het, BLY BY DIE HUIS, vermy kontak met ander mense en self-kwarantyn."
 
 #: go-app-ussd_higherhealth_healthcheck.js:249
@@ -352,7 +352,7 @@ msgstr "BEGIN OOR"
 
 #: go-app-ussd_higherhealth_healthcheck.js:573
 msgid "You are at low risk of having COVID-19. You will still need to complete this risk assessment daily to monitor your symptoms."
-msgstr "Voltooi hierdie HealthCheck weer in 7 dae of vroër as jy siek voel of met iemand in kontak kom wat COVID-19 het."
+msgstr "Jy loop 'n lae risiko om COVID-19 te hê. Jy sal steeds hierdie risiko-assesering daagliks moet voltooi om jou simptome te monitor."
 
 #: go-app-ussd_higherhealth_healthcheck.js:578
 msgid "You should SELF-QUARANTINE for 14 days and do HealthCheck daily to monitor symptoms. Try stay and sleep alone in a room that has a window with good air flow."
