@@ -366,7 +366,7 @@ msgstr "Asizi kuqhagamishelana nawe. ZIKHETHE BUCALA iintsuku ezili-14 kwaye wen
 
 #: go-app-ussd_higherhealth_healthcheck.js:599
 msgid "You will not be contacted. GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info"
-msgstr "UNAKO UKUVAVANYWA I-COVID-19. Yiya kwiziko lokuvavanya okanye utsalele ku-0800029999 okanye utyelele ugqirha wezempilo malunga nendlela yokwenza uvavanyo"
+msgstr "Awuyi kuqhagamshelwa. YENZA UVAVANYO ukuze ufumanise ukuba unayo na i-COVID-19. Yiya kwiziko lokuvavanya okanye utsalele umnxeba ku-0800029999 okanye ugqirha wakho okhathalele ezonyango malunga nolwazi oludingayo"
 
 #: go-app-ussd_higherhealth_healthcheck.js:613
 msgid "You will not be contacted. If you think you have COVID-19 please STAY HOME, avoid contact with other people in your community and self-isolate."
