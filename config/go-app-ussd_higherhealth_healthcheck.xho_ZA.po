@@ -354,7 +354,7 @@ msgstr "Gcwalisa olu-Hlolo Lwempilo kwakhona kwiintsuku ezisi-7 okanye kungekuda
 
 #: go-app-ussd_higherhealth_healthcheck.js:578
 msgid "You should SELF-QUARANTINE for 14 days and do HealthCheck daily to monitor symptoms. Try stay and sleep alone in a room that has a window with good air flow."
-msgstr "Sicebisa ukuba uhlale bucala iintsuku ezili-14 ezizayo kwaye wenze le-HealthCheck imihla-ngemihla ukujonga iimpawu zakho. Hlala/ulale wedwa kwigumbi elinomoya."
+msgstr "Asizi kuqhagamishelana nawe. ZIKHETHE BUCALA iintsuku ezili-14 kwaye wenze u-Hlolo Lwempilo imihla ngemihla ukubeka esweni iimpawu. Hlala / ulale wedwa kwigumbi elinempepho emnandi."
 
 #: go-app-ussd_higherhealth_healthcheck.js:583
 msgid "GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info on what to do & how to test."
@@ -362,7 +362,7 @@ msgstr "UNAKO UKUVAVANYWA I-COVID-19. Yiya kwiziko lokuvavanya okanye utsalele k
 
 #: go-app-ussd_higherhealth_healthcheck.js:593
 msgid "We won't contact you. SELF-QUARANTINE for 14 days and do this HealthCheck daily to monitor symptoms. Stay/sleep alone in a room with good air flowing through"
-msgstr "Sicebisa ukuba uhlale bucala iintsuku ezili-14 ezizayo kwaye wenze le-HealthCheck imihla-ngemihla ukujonga iimpawu zakho. Hlala/ulale wedwa kwigumbi elinomoya"
+msgstr "Asizi kuqhagamishelana nawe. ZIKHETHE BUCALA iintsuku ezili-14 kwaye wenze u-Hlolo Lwempilo imihla ngemihla ukubeka esweni iimpawu. Hlala / ulale wedwa kwigumbi elinempepho emnandi"
 
 #: go-app-ussd_higherhealth_healthcheck.js:599
 msgid "You will not be contacted. GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info"

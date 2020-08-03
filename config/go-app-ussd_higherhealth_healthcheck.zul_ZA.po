@@ -24,7 +24,7 @@ msgstr "Qhubeka lapho ngashiya khona"
 
 #: go-app-ussd_higherhealth_healthcheck.js:172
 msgid "Start over"
-msgstr "QALA PHANSI"
+msgstr "qala phansi"
 
 #: go-app-ussd_higherhealth_healthcheck.js:179
 msgid ""
@@ -330,7 +330,7 @@ msgstr ""
 
 #: go-app-ussd_higherhealth_healthcheck.js:481
 msgid "RESTART"
-msgstr "QALA PHANSI"
+msgstr "qala phansi"
 
 #: go-app-ussd_higherhealth_healthcheck.js:573
 msgid "You are at low risk of having COVID-19. You will still need to complete this risk assessment daily to monitor your symptoms."

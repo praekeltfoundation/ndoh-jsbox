@@ -21,7 +21,7 @@
     ],
     "Start over": [
         null,
-        "QALA PHANSI"
+        "qala phansi"
     ],
     "Welcome to HealthCheck.\nPlease select your preferred language.\nReply\n": [
         null,
@@ -225,7 +225,7 @@
     ],
     "RESTART": [
         null,
-        "QALA PHANSI"
+        "qala phansi"
     ],
     "You are at low risk of having COVID-19. You will still need to complete this risk assessment daily to monitor your symptoms.": [
         null,
@@ -253,7 +253,7 @@
     ],
     "START OVER": [
         null,
-        "QALA PHANSI"
+        "qala phansi"
     ],
     "Sorry, something went wrong. We have been notified. Please try again later": [
         null,
