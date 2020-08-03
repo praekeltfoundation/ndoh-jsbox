@@ -35,7 +35,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_timed_out",
                     reply: [
-                        "Welcome back to the The National Department of Health's COVID-19 Service",
+                        "Welcome back to HealthCheck",
                         "",
                         "Reply",
                         "1. Continue where I left off",
@@ -52,7 +52,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_timed_out",
                     reply: [
-                        "Welcome back to the The National Department of Health's COVID-19 Service",
+                        "Welcome back to HealthCheck",
                         "",
                         "Reply",
                         "1. Continue where I left off",
@@ -570,7 +570,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_breathing",
                     reply: [
-                        "Do you have breathlessness or a difficulty breathing, that you've noticed recently?",
+                        "Do you have breathlessness or difficulty in breathing, that you've noticed recently",
                         "",
                         "Reply",
                         "1. YES",

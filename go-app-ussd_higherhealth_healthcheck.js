@@ -162,7 +162,7 @@ go.app = (function () {
     self.states.add("state_timed_out", function (name, creator_opts) {
       return new MenuState(name, {
         question: $([
-          "Welcome back to the The National Department of Health's COVID-19 Service",
+          "Welcome back to HealthCheck",
           "",
           "Reply"
         ].join("\n")),
@@ -418,7 +418,7 @@ go.app = (function () {
     self.add("state_breathing", function (name) {
       return new ChoiceState(name, {
         question: $([
-          "Do you have breathlessness or a difficulty breathing, that you've noticed recently?",
+          "Do you have breathlessness or difficulty in breathing, that you've noticed recently",
           "",
           "Reply"
         ].join("\n")),

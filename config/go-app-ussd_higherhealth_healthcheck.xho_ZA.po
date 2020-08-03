@@ -13,7 +13,7 @@ msgstr ""
 
 #: go-app-ussd_higherhealth_healthcheck.js:164
 msgid ""
-"Welcome back to the The National Department of Health's COVID-19 Service\n"
+"Welcome back to HealthCheck\n"
 "\n"
 "Reply"
 msgstr ""
