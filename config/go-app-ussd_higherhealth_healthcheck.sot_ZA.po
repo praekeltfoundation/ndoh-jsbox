@@ -314,7 +314,7 @@ msgid ""
 "Please use numbers from list. Have u been in contact with someone with COVID19 or been where COVID19 patients are treated?\n"
 "\n"
 "Reply"
-msgstr ""
+msgstr "Na o bile haufi le motho eo ho netefaditsweng hore o tshwaeditswe ke COVID19?\n"
 
 #: go-app-ussd_higherhealth_healthcheck.js:457
 msgid "NOT SURE"
