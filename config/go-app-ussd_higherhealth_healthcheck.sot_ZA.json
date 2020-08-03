@@ -1,0 +1,258 @@
+{
+    "": {
+        "pot-creation-date": "2020-07-27 01:03:+0000",
+        "project-id-version": "",
+        "language": "za",
+        "mime-version": "1.0",
+        "content-type": "text/plain; charset=utf-8",
+        "content-transfer-encoding": "8bit",
+        "po-revision-date": "2020-08-03 02:56+0200",
+        "last-translator": "",
+        "language-team": "",
+        "x-generator": "Poedit 2.4"
+    },
+    "Welcome back to HealthCheck\n\nReply": [
+        null,
+        "Re ya o amohela Tshebeletsong ya COVID-19 ya Lefapha la Bophelo la Naha\n\nAraba"
+    ],
+    "Continue where I left off": [
+        null,
+        "Tswela pele mo ke qetetseng teng"
+    ],
+    "Start over": [
+        null,
+        "Qala qalong"
+    ],
+    "Welcome to HealthCheck.\nPlease select your preferred language.\nReply\n": [
+        null,
+        ""
+    ],
+    "Afrikaans": [
+        null,
+        ""
+    ],
+    "English": [
+        null,
+        ""
+    ],
+    "Sotho": [
+        null,
+        ""
+    ],
+    "Xhosa": [
+        null,
+        ""
+    ],
+    "Zulu": [
+        null,
+        ""
+    ],
+    "The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by answering a few questions about you and your health.\n\nReply": [
+        null,
+        "Lefapha la Bophelo la Naha lea leboha ha o kenya letsoho maphelong a baahi bohle ba naha. Thibela ho ata ha COVID-19\n\nAraba"
+    ],
+    "This service works best when you select numbers from the list": [
+        null,
+        "Tshebeletso ena e sebetsa hantle ha o kgetha dinomoro ho tswa lethathamong lena"
+    ],
+    "START": [
+        null,
+        "QALA"
+    ],
+    "Confirm that you're responsible for your medical care & treatment. This service only provides info.\n\nReply": [
+        null,
+        "Netefatsa hore o nka boikarabello tlhokomelong le kalafong ya bophelo ba hao. Tshebeletso ena e fana ka lesedi feela.\n\nAraba"
+    ],
+    "Please use numbers from list. Confirm that u're responsible for ur medical care & treatment. This service only provides info.\n\nReply": [
+        null,
+        "Netefatsa hore o nka boikarabello tlhokomelong le kalafong ya bophelo ba hao. Tshebeletso ena e fana ka lesedi feela.\n\nAraba"
+    ],
+    "YES": [
+        null,
+        "E"
+    ],
+    "NO": [
+        null,
+        "TJHE"
+    ],
+    "MORE INFO": [
+        null,
+        "TSE DING"
+    ],
+    "You can return to this service at any time. Remember, if you think you have COVID-19 STAY HOME, avoid contact with other people and self-quarantine.": [
+        null,
+        "O ka kgutlela tshebeletsong ena neng kapa neng. Hopola, haeba o nahana o na le COVID-19 DULA HAE, qoba ho teana le batho ba bang mme o ikarohanye le batho."
+    ],
+    "It's not a substitute for professional medical advice/diagnosis/treatment. Get a qualified health provider's advice about your medical condition/care.": [
+        null,
+        "Ha e nke sebaka sa keletso/tlhahlobo/kalafo ya bongaka. Fumana keletso ya mosebeletsi wa bophelo bo botle ka boemo/tlhokomelo ya bophelo ba hao."
+    ],
+    "Next": [
+        null,
+        "E latelang"
+    ],
+    "You confirm that you shouldn't disregard/delay seeking medical advice about treatment/care because of this service. Rely on info at your own risk.": [
+        null,
+        "Itlame hore ha o tlo tlohela/diehisa ho fumaha keletso ya bongaka ya kalafo ka lebaka la tshebeletso ena. E-ba le boikarabello bophelong ba hao."
+    ],
+    "Please TYPE your first name": [
+        null,
+        "Ka kopo THAEPA lebitso la hao"
+    ],
+    "Please TYPE your surname": [
+        null,
+        "Ka kopo THAEPA fane ya hao"
+    ],
+    "Select your province\n\nReply:": [
+        null,
+        "Kgetha profense\n\nAraba:"
+    ],
+    "EASTERN CAPE": [
+        null,
+        ""
+    ],
+    "FREE STATE": [
+        null,
+        ""
+    ],
+    "GAUTENG": [
+        null,
+        ""
+    ],
+    "KWAZULU NATAL": [
+        null,
+        ""
+    ],
+    "LIMPOPO": [
+        null,
+        ""
+    ],
+    "MPUMALANGA": [
+        null,
+        ""
+    ],
+    "NORTH WEST": [
+        null,
+        ""
+    ],
+    "NORTHERN CAPE": [
+        null,
+        ""
+    ],
+    "WESTERN CAPE": [
+        null,
+        ""
+    ],
+    "Please TYPE the name of your Suburb, Township, Town or Village (or nearest)": [
+        null,
+        "Ka kopo THAEPA lebitso la Suburb, Lekeishine, Toropo ka Motse (kapa ho haufinyane)"
+    ],
+    "How old are you?": [
+        null,
+        "O na le dilemo tse kae?"
+    ],
+    "How old are you?\n": [
+        null,
+        "O na le dilemo tse kae?\n"
+    ],
+    "<18": [
+        null,
+        ""
+    ],
+    "18-39": [
+        null,
+        ""
+    ],
+    "40-65": [
+        null,
+        ""
+    ],
+    ">65": [
+        null,
+        ""
+    ],
+    "Have you been diagnosed with either Obesity, Diabetes, Hypertension or Cardiovascular disease?\n\nReply": [
+        null,
+        "Na ngaka e kile ya fumana o na le Botenya, Tswekere, Phaello ya madi kapa lefu la Pelo?\n\nAraba"
+    ],
+    "Please use numbers from list. Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?\n\nReply": [
+        null,
+        "O ikutlwa o tjhesa haholo kapa o bata? O ntse o fufulelwa kapa wa thothomela? Ha o tshwara phatla ya hao, na o ikutlwa o tjhesa?\n\nAraba"
+    ],
+    "Do you have a cough that recently started?\n\nReply": [
+        null,
+        "O na le ho kgohlela ho sa tswa qala haufinyane?\n\nAraba"
+    ],
+    "Please use numbers from list.\nDo you have a cough that recently started?\n\nReply": [
+        null,
+        "O na le ho kgohlela ho sa tswa qala haufinyane?\n\nAraba"
+    ],
+    "Do you have a sore throat, or pain when swallowing?\n\nReply": [
+        null,
+        "Na o na le mmetso o bohloko kapa ho bohloko ha o kwenya dijo?\n\nAraba"
+    ],
+    "Please use numbers from list.\nDo you have a sore throat, or pain when swallowing?\n\nReply": [
+        null,
+        "Na o na le mmetso o bohloko kapa ho bohloko ha o kwenya dijo?\n\nAraba"
+    ],
+    "Do you have breathlessness or difficulty in breathing, that you've noticed recently?\n\nReply": [
+        null,
+        "Na o na le ho fellwa ke moya kapa ho hema ka thata, hoo o ho hlokometseng haufinyane?\n\nAraba"
+    ],
+    "Please use numbers from list. Do you have breathlessness or difficulty in breathing, that you've noticed recently?\n\nReply": [
+        null,
+        "Na o na le ho fellwa ke moya kapa ho hema ka thata, hoo o ho hlokometseng haufinyane?\n\nAraba"
+    ],
+    "Have you been in close contact with someone confirmed to be infected with COVID-19?\n\nReply": [
+        null,
+        "Na o bile haufi le motho eo ho netefaditsweng hore o tshwaeditswe ke COVID19?\n\nAraba"
+    ],
+    "Please use numbers from list. Have u been in contact with someone with COVID19 or been where COVID19 patients are treated?\n\nReply": [
+        null,
+        "Na o bile haufi le motho eo ho netefaditsweng hore o tshwaeditswe ke COVID19?\n"
+    ],
+    "NOT SURE": [
+        null,
+        "HA KE NA BONNETE"
+    ],
+    "Please confirm that the information you shared is correct & that the National Department of Health can contact you if necessary?\n\nReply": [
+        null,
+        "Ka kopo netefatsa hore dintlha tseo o faneng ka tsona di nepahetse le hore Lefapha la Bophelo le ka o letsetsa ha ho hlokahala?\n\nAraba"
+    ],
+    "RESTART": [
+        null,
+        "QALA HAPE"
+    ],
+    "You are at low risk of having COVID-19. You will still need to complete this risk assessment daily to monitor your symptoms.": [
+        null,
+        "Tlatsa HealthCheck ena hape kamora matsatsi a 14 kapa hang ha o ikutlwa o kula kapa ha o kopane le motho ya tshwaeditsweng ke COVID-19."
+    ],
+    "You should SELF-QUARANTINE for 14 days and do HealthCheck daily to monitor symptoms. Try stay and sleep alone in a room that has a window with good air flow.": [
+        null,
+        "O tlameha ho IKAROHANYA LE BATHO nakong ya matsatsi a 14 mme o tlatse HealthCheck ena letsatsi le letsatsi ho beha matshwao a hao leihlo. Leka ho dula le ho robala ka hara kamore e nang le moya o motle o phallang."
+    ],
+    "GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info on what to do & how to test.": [
+        null,
+        "Ha o tlo letsetswa. O ka fumanwa O HLOKA HO HLAHLOBELA COVID-19. E-ya setsing sa tlhahlobo kapa letsetsa 0800029999 kapa ngaka ya hao bakeng sa lesedi le leng."
+    ],
+    "We won't contact you. SELF-QUARANTINE for 14 days and do this HealthCheck daily to monitor symptoms. Stay/sleep alone in a room with good air flowing through": [
+        null,
+        "Re kgothaletsa hore o IKAROHANYE LE BATHO matsatsi a 14 ebe o dula o tlatsa HealthCheck ena. Dula/robala o le mong ka kamoreng e nang le moya o phallang"
+    ],
+    "You will not be contacted. GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info": [
+        null,
+        "O ke ke wa letsetswa. HLAHLOBA ho fumana hore na o na le COVID-19. E-ya setsing sa tlhahlobo kapa letsetsa 0800029999 kapa o ye mosebeletsing wa hao wa tsa bophelo bakeng sa lesedi le leng"
+    ],
+    "You will not be contacted. If you think you have COVID-19 please STAY HOME, avoid contact with other people in your community and self-isolate.": [
+        null,
+        "Ha o tlo letsetswa. Haeba o nahana hore o na le COVID-19 ka kopo DULA HAE, qoba ho kopana le batho ba bang mme o ikarohanye le batho."
+    ],
+    "START OVER": [
+        null,
+        "QALA HAPE"
+    ],
+    "Sorry, something went wrong. We have been notified. Please try again later": [
+        null,
+        ""
+    ]
+}

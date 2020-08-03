@@ -113,10 +113,11 @@ go.app = (function () {
   var MenuState = vumigo.states.MenuState;
   var FreeText = vumigo.states.FreeText;
   var ChoiceState = vumigo.states.ChoiceState;
+  var LanguageChoice = vumigo.states.LanguageChoice;
 
 
   var GoNDOH = App.extend(function (self) {
-    App.call(self, "state_start");
+    App.call(self, "state_language");
     var $ = self.$;
 
     self.calculate_risk = function () {
@@ -168,8 +169,28 @@ go.app = (function () {
         accept_labels: true,
         choices: [
           new Choice(creator_opts.name, $("Continue where I left off")),
-          new Choice("state_start", $("Start over"))
+          new Choice("state_language", $("Start over"))
         ]
+      });
+    });
+
+    self.add("state_language", function(name){
+        return new LanguageChoice(name, {
+        question: $([
+          "Welcome to HealthCheck.",
+          "Please select your preferred language.",
+          "",
+          "Reply",
+        ].join("\n")),
+        accept_labels: true,
+        choices: [
+          new Choice("afr", $("Afrikaans")),
+          new Choice("eng", $("English")),
+          new Choice("sot", $("Sotho")),
+          new Choice("xho", $("Xhosa")),
+          new Choice("zul", $("Zulu")),
+        ],
+        next: "state_start"
       });
     });
 
@@ -179,8 +200,7 @@ go.app = (function () {
 
       return new MenuState(name, {
         question: $([
-          "The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by answering a " +
-          "few questions about you and your health.",
+          "The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by answering a few questions about you and your health.",
           "",
           "Reply"
         ].join("\n")),
@@ -195,8 +215,7 @@ go.app = (function () {
     self.add("state_terms", function (name) {
       return new MenuState(name, {
         question: $([
-          "Confirm that you're responsible for your medical care & treatment. This service only " +
-          "provides info.",
+          "Confirm that you're responsible for your medical care & treatment. This service only provides info.",
           "",
           "Reply"
         ].join("\n")),
@@ -218,10 +237,9 @@ go.app = (function () {
     self.states.add("state_end", function (name) {
       return new EndState(name, {
         text: $(
-          "You can return to this service at any time. Remember, if you think you have COVID-19 " +
-          "STAY HOME, avoid contact with other people and self-isolate."
+          "You can return to this service at any time. Remember, if you think you have COVID-19 STAY HOME, avoid contact with other people and self-quarantine."
         ),
-        next: "state_start"
+        next: "state_language"
       });
     });
 
@@ -334,8 +352,7 @@ go.app = (function () {
     self.add("state_fever", function (name) {
       return new ChoiceState(name, {
         question: $([
-          "Do you feel very hot or cold? Are you sweating or shivering? When you touch your " +
-          "forehead, does it feel hot?",
+          "Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?",
           "",
           "Reply"
         ].join("\n")),
@@ -401,7 +418,7 @@ go.app = (function () {
     self.add("state_breathing", function (name) {
       return new ChoiceState(name, {
         question: $([
-          "Do you have breathlessness or difficulty in breathing, that you've noticed recently?",
+          "Do you have breathlessness or difficulty in breathing, that you've noticed recently",
           "",
           "Reply"
         ].join("\n")),
@@ -423,7 +440,7 @@ go.app = (function () {
     self.add("state_exposure", function (name) {
       return new ChoiceState(name, {
         question: $([
-          "Have you been in close contact with someone confirmed to be infected with COVID19?",
+          "Have you been in close contact with someone confirmed to be infected with COVID-19?",
           "",
           "Reply"
         ].join("\n")),
@@ -446,8 +463,7 @@ go.app = (function () {
     self.add("state_tracing", function (name) {
       return new ChoiceState(name, {
         question: $([
-          "Please confirm that the information you shared is correct & that the National " +
-          "Department of Health can contact you if necessary?",
+          "Please confirm that the information you shared is correct & that the National Department of Health can contact you if necessary?",
           "",
           "Reply"
         ].join("\n")),
@@ -466,7 +482,7 @@ go.app = (function () {
         ],
         next: function (response) {
           if (response.value === null) {
-            return "state_start";
+            return "state_language";
           }
           return "state_submit_data";
         }
@@ -565,20 +581,17 @@ go.app = (function () {
       if (answers.state_tracing) {
         if (risk === "low") {
           text = $(
-            "You are at low risk of having COVID-19. You will still need to complete this risk " +
-            "assessment daily to monitor your symptoms."
+            "Complete this HealthCheck again in 7 days or sooner if you feel ill or you come into contact with someone infected with COVID-19."
           );
         }
         if (risk === "moderate") {
           text = $(
-            "You should SELF-QUARANTINE for 14 days and do HealthCheck daily to monitor " +
-            "symptoms. Try stay and sleep alone in a room that has a window with good air flow."
+            "You should SELF-QUARANTINE for 14 days and do HealthCheck daily to monitor symptoms. Try stay and sleep alone in a room that has a window with good air flow."
           );
         }
         if (risk === "high") {
           text = $([
-            "GET TESTED to find out if you have COVID-19.  Go to a testing center or Call " +
-            "0800029999 or your healthcare practitioner for info on what to do & how to test"
+            "GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info on what to do & how to test."
           ].join("\n"));
         }
       } else {
@@ -600,7 +613,7 @@ go.app = (function () {
         }
       }
       return new EndState(name, {
-        next: "state_start",
+        next: "state_language",
         text: text,
       });
     });
@@ -611,12 +624,12 @@ go.app = (function () {
           "You will not be contacted. If you think you have COVID-19 please STAY HOME, avoid " +
           "contact with other people in your community and self-isolate."
         ),
-        choices: [new Choice("state_start", $("START OVER"))]
+        choices: [new Choice("state_language", $("START OVER"))]
       });
     });
 
     self.states.creators.__error__ = function (name, opts) {
-      var return_state = opts.return_state || "state_start";
+      var return_state = opts.return_state || "state_language";
       return new EndState(name, {
         next: return_state,
         text: $(

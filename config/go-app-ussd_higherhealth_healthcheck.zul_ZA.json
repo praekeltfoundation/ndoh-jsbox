@@ -1,0 +1,258 @@
+{
+    "": {
+        "pot-creation-date": "2020-07-27 01:03:+0000",
+        "project-id-version": "",
+        "language": "zul",
+        "mime-version": "1.0",
+        "content-type": "text/plain; charset=utf-8",
+        "content-transfer-encoding": "8bit",
+        "po-revision-date": "2020-07-28 07:39+0200",
+        "last-translator": "",
+        "language-team": "",
+        "x-generator": "Poedit 2.4"
+    },
+    "Welcome back to HealthCheck\n\nReply": [
+        null,
+        ""
+    ],
+    "Continue where I left off": [
+        null,
+        "Qhubeka lapho ngashiya khona"
+    ],
+    "Start over": [
+        null,
+        "qala phansi"
+    ],
+    "Welcome to HealthCheck.\nPlease select your preferred language.\nReply\n": [
+        null,
+        ""
+    ],
+    "Afrikaans": [
+        null,
+        ""
+    ],
+    "English": [
+        null,
+        ""
+    ],
+    "Sotho": [
+        null,
+        ""
+    ],
+    "Xhosa": [
+        null,
+        ""
+    ],
+    "Zulu": [
+        null,
+        ""
+    ],
+    "The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by answering a few questions about you and your health.\n\nReply": [
+        null,
+        "UMnyango Wezempilo Kazwelonke ukubonga ngokudlala iqhaza empilweni yazo zonke izakhamizi.Misa ukusatshalaliswa kwe-COVID-19\n\nPhendula"
+    ],
+    "This service works best when you select numbers from the list": [
+        null,
+        "Lensizakalo isebenza kahle uma ukhetha izinombolo ohlwini"
+    ],
+    "START": [
+        null,
+        "QALA"
+    ],
+    "Confirm that you're responsible for your medical care & treatment. This service only provides info.\n\nReply": [
+        null,
+        "Qinisekisa ukuthi unesibopho ekuzinakekeleni nokwelashwa kwakho . Lensizakalo inikezela ngolwazi kuphela.\n\nPhendula"
+    ],
+    "Please use numbers from list. Confirm that u're responsible for ur medical care & treatment. This service only provides info.\n\nReply": [
+        null,
+        "Qinisekisa ukuthi unesibopho ekuzinakekeleni nokwelashwa kwakho . Lensizakalo inikezela ngolwazi kuphela.\n\nPhendula"
+    ],
+    "YES": [
+        null,
+        "YEBO"
+    ],
+    "NO": [
+        null,
+        "CHA"
+    ],
+    "MORE INFO": [
+        null,
+        "EMINYE IMINININGWANE"
+    ],
+    "You can return to this service at any time. Remember, if you think you have COVID-19 STAY HOME, avoid contact with other people and self-quarantine.": [
+        null,
+        "Ungabuyela kule nsiza noma inini. Khumbula, uma ucabanga ukuthi kungenzeka ube ne-COVID-19 HLALA EKHAYA, ugweme ukuthintana nabantu futhi uzihlukanise wedwa."
+    ],
+    "It's not a substitute for professional medical advice/diagnosis/treatment. Get a qualified health provider's advice about your medical condition/care.": [
+        null,
+        "Lensiza ayisithathi isikhundleni sezeluleko zempilo eziqhamuka kochwepheshe. Xhumana nomhlinzeki wezempilo ofanelekile mayelana nesimo sakho."
+    ],
+    "Next": [
+        null,
+        "Okulandelayo"
+    ],
+    "You confirm that you shouldn't disregard/delay seeking medical advice about treatment/care because of this service. Rely on info at your own risk.": [
+        null,
+        "Uqinisekisa ukuthi akumele uhlehlise ukufuna izeluleko zempilo mayelana nokwelashwa ngenxa yalensiza. Themba imininingwane ngokuthanda kwakho."
+    ],
+    "Please TYPE your first name": [
+        null,
+        "Sicela UBHALE igama lakho lokuqala"
+    ],
+    "Please TYPE your surname": [
+        null,
+        "Sicela UBHALE isibongo sakho"
+    ],
+    "Select your province\n\nReply:": [
+        null,
+        "Khetha isifundazwe sakho\n\nPhendula"
+    ],
+    "EASTERN CAPE": [
+        null,
+        ""
+    ],
+    "FREE STATE": [
+        null,
+        ""
+    ],
+    "GAUTENG": [
+        null,
+        ""
+    ],
+    "KWAZULU NATAL": [
+        null,
+        ""
+    ],
+    "LIMPOPO": [
+        null,
+        ""
+    ],
+    "MPUMALANGA": [
+        null,
+        ""
+    ],
+    "NORTH WEST": [
+        null,
+        ""
+    ],
+    "NORTHERN CAPE": [
+        null,
+        ""
+    ],
+    "WESTERN CAPE": [
+        null,
+        ""
+    ],
+    "Please TYPE the name of your Suburb, Township, Town or Village (or nearest)": [
+        null,
+        "Uyacelwa ukuthi UBHALE igama lesigatshana sakho, ilokishi, idolobha noma idolobhana (eliseduzane)"
+    ],
+    "How old are you?": [
+        null,
+        "Uneminyaka emingakhi?"
+    ],
+    "How old are you?\n": [
+        null,
+        "Uneminyaka emingakhi?\n"
+    ],
+    "<18": [
+        null,
+        ""
+    ],
+    "18-39": [
+        null,
+        ""
+    ],
+    "40-65": [
+        null,
+        ""
+    ],
+    ">65": [
+        null,
+        ""
+    ],
+    "Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?\n\nReply": [
+        null,
+        "Wake watholakala ukuthi unesifo sokukhuluphala, soshukela, i-hypertension noma isifo senhliziyo?\n\nPhendula"
+    ],
+    "Please use numbers from list. Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?\n\nReply": [
+        null,
+        "Ngabe uzizwa ushisa kakhulu noma ubanda? Ngabe uyajuluka noma uyathuthumela? Lapho uthinta isiphongo sakho, ingabe usizwa sishisa?\n\nPhendula"
+    ],
+    "Do you have a cough that recently started?\n\nReply": [
+        null,
+        "Ingabe unakho ukukhwehlela okusanda kuqala?\n\nPhendula"
+    ],
+    "Please use numbers from list.\nDo you have a cough that recently started?\n\nReply": [
+        null,
+        "Ingabe unakho ukukhwehlela okusanda kuqala?\n\nPhendula"
+    ],
+    "Do you have a sore throat, or pain when swallowing?\n\nReply": [
+        null,
+        "Ngabe unomphimbo obuhlungu noma kubuhlungu uma ugwinya?\n\nPhendula"
+    ],
+    "Please use numbers from list.\nDo you have a sore throat, or pain when swallowing?\n\nReply": [
+        null,
+        "Ngabe unomphimbo obuhlungu noma kubuhlungu uma ugwinya?\n\nPhendula"
+    ],
+    "Do you have breathlessness or difficulty in breathing, that you've noticed recently?\n\nReply": [
+        null,
+        "Ingabe uqaphele ukuthi unokuphelelwa umoya noma unenkinga yokuphefumula, ezinsukwini?\n\nPhendula"
+    ],
+    "Please use numbers from list. Do you have breathlessness or difficulty in breathing, that you've noticed recently?\n\nReply": [
+        null,
+        "Ingabe uqaphele ukuthi unokuphelelwa umoya noma unenkinga yokuphefumula, ezinsukwini?\n\nPhendula"
+    ],
+    "Have you been in close contact with someone confirmed to be infected with COVID-19?\n\nReply": [
+        null,
+        "Uke wasondelana eduze nomuntu okuqinisekisiwe ukuthi ungenwe yi-COVID19?\n\nPhendula"
+    ],
+    "Please use numbers from list. Have u been in contact with someone with COVID19 or been where COVID19 patients are treated?\n\nReply": [
+        null,
+        "Uke wasondelana eduze nomuntu okuqinisekisiwe ukuthi ungenwe yi-COVID19?\n\nPhendula"
+    ],
+    "NOT SURE": [
+        null,
+        "ANGINASO ISIQINISEKO"
+    ],
+    "Please confirm that the information you shared is correct & that the National Department of Health can contact you if necessary?\n\nReply": [
+        null,
+        "Cela uqinisekise iminingwane yakho nokuthi uMnyango Wezempilo Kazwelonke ungaxhumana nawe uma kunesidingo?\n\nPhendula"
+    ],
+    "RESTART": [
+        null,
+        "qala phansi"
+    ],
+    "You are at low risk of having COVID-19. You will still need to complete this risk assessment daily to monitor your symptoms.": [
+        null,
+        "Usengozini ephansi yokuba ne-COVID-19. Kuzodingeka ukuthi uqede lokhu kuhlolwa kwengozi nsuku zonke ukuqapha izimpawu zakho."
+    ],
+    "You should SELF-QUARANTINE for 14 days and do HealthCheck daily to monitor symptoms. Try stay and sleep alone in a room that has a window with good air flow.": [
+        null,
+        "Siyakuncoma ukuUZIHLUKANISA NABANTU izinsuku eziyi-14 futhi wenze i-HealthCheck nsuku zonke ukuqapha izimpawu. Hlala/lala wedwa egumbini elinomoya omuhle."
+    ],
+    "GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info on what to do & how to test.": [
+        null,
+        "Ngeke sixhumane nawe. Ungafaneleka ukuthi uhlolelwe iCOVID19. Iya esikhungweni sokuhlola noma kudokotela wakho noma ushayele ku0800029999 ukuthola ulwazi"
+    ],
+    "We won't contact you. SELF-QUARANTINE for 14 days and do this HealthCheck daily to monitor symptoms. Stay/sleep alone in a room with good air flowing through": [
+        null,
+        "Ngeke sixhumane nawe. ZIHLUKANISE NABANTU izinsuku eziyi-14 futhi wenze iHealthCheck nsuku zonke ukugada izimpawu. Hlala/lala wedwa egumbini elinomoya omuhle."
+    ],
+    "You will not be contacted. GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info": [
+        null,
+        "Ngeke kuxhunyanwe nawe. HLOLWA ukuthola ukuthi une-COVID-19. Iya esikhungweni sokuvivinya noma ushayele ku-0800029999 noma udokotela wakho wezempilo onolwazi"
+    ],
+    "You will not be contacted. If you think you have COVID-19 please STAY HOME, avoid contact with other people in your community and self-isolate.": [
+        null,
+        "Ngeke kuxhunyanwe nawe. Uma ucabanga ukuthi une-COVID-19 sicela UHLALE EKHAYA, gwema ukuthintana nabantu emphakathini wakho futhi uzihlukanise."
+    ],
+    "START OVER": [
+        null,
+        "QALA PHANSI"
+    ],
+    "Sorry, something went wrong. We have been notified. Please try again later": [
+        null,
+        ""
+    ]
+}

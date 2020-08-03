@@ -1,0 +1,372 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2020-07-27 01:03:+0000\n"
+"Project-Id-Version: \n"
+"Language: sot\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2020-07-28 12:00+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.4\n"
+
+#: go-app-ussd_higherhealth_healthcheck.js:164
+msgid ""
+"Welcome back to HealthCheck\n"
+"\n"
+"Reply"
+msgstr ""
+"Welkom terug by Die Nasionale Department van Gesondheid se COVID-19 Diens\n"
+"\n"
+"Antwoord"
+
+#: go-app-ussd_higherhealth_healthcheck.js:171
+msgid "Continue where I left off"
+msgstr "Gaan voort waar ek opgehou het"
+
+#: go-app-ussd_higherhealth_healthcheck.js:172
+msgid "Start over"
+msgstr "Begin oor"
+
+#: go-app-ussd_higherhealth_healthcheck.js:179
+msgid ""
+"Welcome to HealthCheck.\n"
+"Please select your preferred language.\n"
+"Reply\n"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:188
+msgid "Afrikaans"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:189
+msgid "English"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:190
+msgid "Sotho"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:191
+msgid "Xhosa"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:192
+msgid "Zulu"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:203
+msgid ""
+"The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by answering a few questions about you and your health.\n"
+"\n"
+"Reply"
+msgstr ""
+"Die Nasionale Departement van Gesondheid bedank jou vir jou bydra. Stop die verspreiding van COVID-19.\n"
+"\n"
+"Antwoord"
+
+#: go-app-ussd_higherhealth_healthcheck.js:208
+msgid "This service works best when you select numbers from the list"
+msgstr "Hierdie diens werk die beste wanneer jy nommers van die lys af kies"
+
+#: go-app-ussd_higherhealth_healthcheck.js:211
+msgid "START"
+msgstr "BEGIN"
+
+#: go-app-ussd_higherhealth_healthcheck.js:218
+msgid ""
+"Confirm that you're responsible for your medical care & treatment. This service only provides info.\n"
+"\n"
+"Reply"
+msgstr ""
+"Bevestig dat jy verantwoordelik is vir jou eie mediese sorg en behandeling. Hierdie diens verskaf slegs inligting.\n"
+"\n"
+"Antwoord"
+
+#: go-app-ussd_higherhealth_healthcheck.js:223
+msgid ""
+"Please use numbers from list. Confirm that u're responsible for ur medical care & treatment. This service only provides info.\n"
+"\n"
+"Reply"
+msgstr ""
+"Bevestig dat jy verantwoordelik is vir jou eie mediese sorg en behandeling. Hierdie diens verskaf slegs inligting.\n"
+"\n"
+"Antwoord"
+
+#: go-app-ussd_higherhealth_healthcheck.js:231
+#: go-app-ussd_higherhealth_healthcheck.js:367
+#: go-app-ussd_higherhealth_healthcheck.js:389
+#: go-app-ussd_higherhealth_healthcheck.js:411
+#: go-app-ussd_higherhealth_healthcheck.js:433
+#: go-app-ussd_higherhealth_healthcheck.js:455
+#: go-app-ussd_higherhealth_healthcheck.js:479
+msgid "YES"
+msgstr "JA"
+
+#: go-app-ussd_higherhealth_healthcheck.js:232
+#: go-app-ussd_higherhealth_healthcheck.js:368
+#: go-app-ussd_higherhealth_healthcheck.js:390
+#: go-app-ussd_higherhealth_healthcheck.js:412
+#: go-app-ussd_higherhealth_healthcheck.js:434
+#: go-app-ussd_higherhealth_healthcheck.js:456
+#: go-app-ussd_higherhealth_healthcheck.js:480
+msgid "NO"
+msgstr "NEE"
+
+#: go-app-ussd_higherhealth_healthcheck.js:233
+msgid "MORE INFO"
+msgstr "MEER INLIGTING"
+
+#: go-app-ussd_higherhealth_healthcheck.js:240
+msgid "You can return to this service at any time. Remember, if you think you have COVID-19 STAY HOME, avoid contact with other people and self-quarantine."
+msgstr ""
+"Jy kan enige tyd na hierdie diens terug keer. "
+"Onthou, as jy dink dat jy COVID-19 het, BLY BY DIE HUIS, vermy kontak met ander mense en self-kwarantyn."
+
+#: go-app-ussd_higherhealth_healthcheck.js:249
+msgid "It's not a substitute for professional medical advice/diagnosis/treatment. Get a qualified health provider's advice about your medical condition/care."
+msgstr "Die is nie ’n plaasvervanger vir professionele advies/ diagnose/ behandeling nie. Kry ’n gekwalifiseerde dokter se advies oor jou mediese sorg."
+
+#: go-app-ussd_higherhealth_healthcheck.js:254
+#: go-app-ussd_higherhealth_healthcheck.js:265
+msgid "Next"
+msgstr "Volgende"
+
+#: go-app-ussd_higherhealth_healthcheck.js:260
+msgid "You confirm that you shouldn't disregard/delay seeking medical advice about treatment/care because of this service. Rely on info at your own risk."
+msgstr "Jy bevestig dat jy nie agv die diens enige mediese advies oor sorg sal ignoreer/verontagsaam nie. Maak staat op inligting op jou eie risiko."
+
+#: go-app-ussd_higherhealth_healthcheck.js:270
+msgid "Please TYPE your first name"
+msgstr "TIK asb jou eerste naam in"
+
+#: go-app-ussd_higherhealth_healthcheck.js:283
+msgid "Please TYPE your surname"
+msgstr "TIK asb jou van in"
+
+#: go-app-ussd_higherhealth_healthcheck.js:297
+msgid ""
+"Select your province\n"
+"\n"
+"Reply:"
+msgstr ""
+"Kies jou Provinsie\n"
+"\n"
+"Antwoord:"
+
+#: go-app-ussd_higherhealth_healthcheck.js:304
+msgid "EASTERN CAPE"
+msgstr "OOS-KAAP"
+
+#: go-app-ussd_higherhealth_healthcheck.js:305
+msgid "FREE STATE"
+msgstr "VRYSTAAT"
+
+#: go-app-ussd_higherhealth_healthcheck.js:306
+msgid "GAUTENG"
+msgstr "GAUTENG"
+
+#: go-app-ussd_higherhealth_healthcheck.js:307
+msgid "KWAZULU NATAL"
+msgstr "KWAZULU-NATAL"
+
+#: go-app-ussd_higherhealth_healthcheck.js:308
+msgid "LIMPOPO"
+msgstr "LIMPOPO"
+
+#: go-app-ussd_higherhealth_healthcheck.js:309
+msgid "MPUMALANGA"
+msgstr "MPUMALANGA"
+
+#: go-app-ussd_higherhealth_healthcheck.js:310
+msgid "NORTH WEST"
+msgstr "NOORDWES"
+
+#: go-app-ussd_higherhealth_healthcheck.js:311
+msgid "NORTHERN CAPE"
+msgstr "NOORD-KAAP"
+
+#: go-app-ussd_higherhealth_healthcheck.js:312
+msgid "WESTERN CAPE"
+msgstr "WES-KAAP"
+
+#: go-app-ussd_higherhealth_healthcheck.js:319
+msgid "Please TYPE the name of your Suburb, Township, Town or Village (or nearest)"
+msgstr "TIK asb die naam in van jou Voorstad, Township, Dorp of Village (of naaste)"
+
+#: go-app-ussd_higherhealth_healthcheck.js:336
+msgid "How old are you?"
+msgstr "Hoe oud is jy?"
+
+#: go-app-ussd_higherhealth_healthcheck.js:337
+msgid "How old are you?\n"
+msgstr "Hoe oud is jy?\n"
+
+#: go-app-ussd_higherhealth_healthcheck.js:343
+msgid "<18"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:344
+msgid "18-39"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:345
+msgid "40-65"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:346
+msgid ">65"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:354
+msgid ""
+"Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?\n"
+"\n"
+"Reply"
+msgstr ""
+"Was jy al gediagnoseer as Oorgewig of met Diabetes, Hoë Bloeddruk of ’n Hart kondisie?\n"
+"\n"
+"Antwoord"
+
+#: go-app-ussd_higherhealth_healthcheck.js:359
+msgid ""
+"Please use numbers from list. Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?\n"
+"\n"
+"Reply"
+msgstr ""
+"Voel jy baie warm of koud? Sweet of bewe jy? Wanneer jy aan jou voorkop vat, voel dit warm?\n"
+"\n"
+"Antwoord"
+
+#: go-app-ussd_higherhealth_healthcheck.js:376
+msgid ""
+"Do you have a cough that recently started?\n"
+"\n"
+"Reply"
+msgstr ""
+"Het jy ’n hoes wat onlangs begin het?\n"
+"\n"
+"Antwoord"
+
+#: go-app-ussd_higherhealth_healthcheck.js:381
+msgid ""
+"Please use numbers from list.\n"
+"Do you have a cough that recently started?\n"
+"\n"
+"Reply"
+msgstr ""
+"Het jy ’n hoes wat onlangs begin het?\n"
+"\n"
+"Antwoord"
+
+#: go-app-ussd_higherhealth_healthcheck.js:398
+msgid ""
+"Do you have a sore throat, or pain when swallowing?\n"
+"\n"
+"Reply"
+msgstr ""
+"Het jy ’n seer keel of pyn wanneer jy sluk?\n"
+"\n"
+"Antwoord"
+
+#: go-app-ussd_higherhealth_healthcheck.js:403
+msgid ""
+"Please use numbers from list.\n"
+"Do you have a sore throat, or pain when swallowing?\n"
+"\n"
+"Reply"
+msgstr ""
+"Het jy ’n seer keel of pyn wanneer jy sluk?\n"
+"\n"
+"Antwoord"
+
+#: go-app-ussd_higherhealth_healthcheck.js:420
+msgid ""
+"Do you have breathlessness or difficulty in breathing, that you've noticed recently?\n"
+"\n"
+"Reply"
+msgstr ""
+"Het jy onlangs opgemerk dat jy raak kort van asem of sukkel om asem te haal?\n"
+"\n"
+"Antwoord"
+
+#: go-app-ussd_higherhealth_healthcheck.js:425
+msgid ""
+"Please use numbers from list. Do you have breathlessness or difficulty in breathing, that you've noticed recently?\n"
+"\n"
+"Reply"
+msgstr ""
+"Het jy onlangs opgemerk dat jy raak kort van asem of sukkel om asem te haal?\n"
+"\n"
+"Antwoord"
+
+#: go-app-ussd_higherhealth_healthcheck.js:442
+msgid ""
+"Have you been in close contact with someone confirmed to be infected with COVID-19?\n"
+"\n"
+"Reply"
+msgstr ""
+"Was jy in onmiddelike kontak met enige iemand wat positief getoets is vir COVID 19?\n"
+"\n"
+"Antwoord"
+
+#: go-app-ussd_higherhealth_healthcheck.js:447
+msgid ""
+"Please use numbers from list. Have u been in contact with someone with COVID19 or been where COVID19 patients are treated?\n"
+"\n"
+"Reply"
+msgstr ""
+"Was jy in onmiddelike kontak met enige iemand wat positief getoets is vir COVID 19?\n"
+"\n"
+"Antwoord"
+
+#: go-app-ussd_higherhealth_healthcheck.js:457
+msgid "NOT SURE"
+msgstr "NIE SEKER NIE"
+
+#: go-app-ussd_higherhealth_healthcheck.js:465
+msgid ""
+"Please confirm that the information you shared is correct & that the National Department of Health can contact you if necessary?\n"
+"\n"
+"Reply"
+msgstr ""
+"Bevestig dat die inligting wat jy gedeel het reg is & dat die Nasionale Departement van Gesondheid jou kan kontak as nodig?\n"
+"\n"
+"Antwoord"
+
+#: go-app-ussd_higherhealth_healthcheck.js:481
+msgid "RESTART"
+msgstr "BEGIN OOR"
+
+#: go-app-ussd_higherhealth_healthcheck.js:573
+msgid "You are at low risk of having COVID-19. You will still need to complete this risk assessment daily to monitor your symptoms."
+msgstr "Jy loop 'n lae risiko om COVID-19 te hê. Jy sal steeds hierdie risiko-assesering daagliks moet voltooi om jou simptome te monitor."
+
+#: go-app-ussd_higherhealth_healthcheck.js:578
+msgid "You should SELF-QUARANTINE for 14 days and do HealthCheck daily to monitor symptoms. Try stay and sleep alone in a room that has a window with good air flow."
+msgstr "Jy moet vir 14 dae SELF-KWARANTYN en hierdie HealthCheck daagliks doen om jou simptome te monitor. Bly/slaap alleen in ’n kamer met goeie lug vloei."
+
+#: go-app-ussd_higherhealth_healthcheck.js:583
+msgid "GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info on what to do & how to test."
+msgstr "Jy kan moontlik KWALIFISEER VIR COVID-19 TOETSING. Gaan na ’n toets sentrum of Bel 0800029999 of besoek jou dokter vir meer inligting oor die toetsing."
+
+#: go-app-ussd_higherhealth_healthcheck.js:593
+msgid "We won't contact you. SELF-QUARANTINE for 14 days and do this HealthCheck daily to monitor symptoms. Stay/sleep alone in a room with good air flowing through"
+msgstr "Jy moet vir 14 dae SELF-KWARANTYN en hierdie HealthCheck daagliks doen om jou simptome te monitor. Bly/slaap alleen in ’n kamer met goeie lug vloei"
+
+#: go-app-ussd_higherhealth_healthcheck.js:599
+msgid "You will not be contacted. GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info"
+msgstr "Jy kan moontlik KWALIFISEER VIR COVID-19 TOETSING. Gaan na ’n toets sentrum of Bel 0800029999 of besoek jou dokter vir meer inligting oor die toetsing"
+
+#: go-app-ussd_higherhealth_healthcheck.js:613
+msgid "You will not be contacted. If you think you have COVID-19 please STAY HOME, avoid contact with other people in your community and self-isolate."
+msgstr "Jy sal nie gekontak word nie. As jy dink jy het COVID-19, BLY ASB BY DIE HUIS, vermy kontak met ander mense en self-kwarantyn."
+
+#: go-app-ussd_higherhealth_healthcheck.js:617
+msgid "START OVER"
+msgstr "BEGIN OOR"
+
+#: go-app-ussd_higherhealth_healthcheck.js:625
+msgid "Sorry, something went wrong. We have been notified. Please try again later"
+msgstr ""

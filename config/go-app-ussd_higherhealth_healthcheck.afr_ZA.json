@@ -1,0 +1,258 @@
+{
+    "": {
+        "pot-creation-date": "2020-07-27 01:03:+0000",
+        "project-id-version": "",
+        "language": "sot",
+        "mime-version": "1.0",
+        "content-type": "text/plain; charset=utf-8",
+        "content-transfer-encoding": "8bit",
+        "po-revision-date": "2020-07-28 12:00+0200",
+        "last-translator": "",
+        "language-team": "",
+        "x-generator": "Poedit 2.4"
+    },
+    "Welcome back to HealthCheck\n\nReply": [
+        null,
+        "Welkom terug by Die Nasionale Department van Gesondheid se COVID-19 Diens\n\nAntwoord"
+    ],
+    "Continue where I left off": [
+        null,
+        "Gaan voort waar ek opgehou het"
+    ],
+    "Start over": [
+        null,
+        "Begin oor"
+    ],
+    "Welcome to HealthCheck.\nPlease select your preferred language.\nReply\n": [
+        null,
+        ""
+    ],
+    "Afrikaans": [
+        null,
+        ""
+    ],
+    "English": [
+        null,
+        ""
+    ],
+    "Sotho": [
+        null,
+        ""
+    ],
+    "Xhosa": [
+        null,
+        ""
+    ],
+    "Zulu": [
+        null,
+        ""
+    ],
+    "The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by answering a few questions about you and your health.\n\nReply": [
+        null,
+        "Die Nasionale Departement van Gesondheid bedank jou vir jou bydra. Stop die verspreiding van COVID-19.\n\nAntwoord"
+    ],
+    "This service works best when you select numbers from the list": [
+        null,
+        "Hierdie diens werk die beste wanneer jy nommers van die lys af kies"
+    ],
+    "START": [
+        null,
+        "BEGIN"
+    ],
+    "Confirm that you're responsible for your medical care & treatment. This service only provides info.\n\nReply": [
+        null,
+        "Bevestig dat jy verantwoordelik is vir jou eie mediese sorg en behandeling. Hierdie diens verskaf slegs inligting.\n\nAntwoord"
+    ],
+    "Please use numbers from list. Confirm that u're responsible for ur medical care & treatment. This service only provides info.\n\nReply": [
+        null,
+        "Bevestig dat jy verantwoordelik is vir jou eie mediese sorg en behandeling. Hierdie diens verskaf slegs inligting.\n\nAntwoord"
+    ],
+    "YES": [
+        null,
+        "JA"
+    ],
+    "NO": [
+        null,
+        "NEE"
+    ],
+    "MORE INFO": [
+        null,
+        "MEER INLIGTING"
+    ],
+    "You can return to this service at any time. Remember, if you think you have COVID-19 STAY HOME, avoid contact with other people and self-quarantine.": [
+        null,
+        "Jy kan enige tyd na hierdie diens terug keer. Onthou, as jy dink dat jy COVID-19 het, BLY BY DIE HUIS, vermy kontak met ander mense en self-kwarantyn."
+    ],
+    "It's not a substitute for professional medical advice/diagnosis/treatment. Get a qualified health provider's advice about your medical condition/care.": [
+        null,
+        "Die is nie ’n plaasvervanger vir professionele advies/ diagnose/ behandeling nie. Kry ’n gekwalifiseerde dokter se advies oor jou mediese sorg."
+    ],
+    "Next": [
+        null,
+        "Volgende"
+    ],
+    "You confirm that you shouldn't disregard/delay seeking medical advice about treatment/care because of this service. Rely on info at your own risk.": [
+        null,
+        "Jy bevestig dat jy nie agv die diens enige mediese advies oor sorg sal ignoreer/verontagsaam nie. Maak staat op inligting op jou eie risiko."
+    ],
+    "Please TYPE your first name": [
+        null,
+        "TIK asb jou eerste naam in"
+    ],
+    "Please TYPE your surname": [
+        null,
+        "TIK asb jou van in"
+    ],
+    "Select your province\n\nReply:": [
+        null,
+        "Kies jou Provinsie\n\nAntwoord:"
+    ],
+    "EASTERN CAPE": [
+        null,
+        "OOS-KAAP"
+    ],
+    "FREE STATE": [
+        null,
+        "VRYSTAAT"
+    ],
+    "GAUTENG": [
+        null,
+        "GAUTENG"
+    ],
+    "KWAZULU NATAL": [
+        null,
+        "KWAZULU-NATAL"
+    ],
+    "LIMPOPO": [
+        null,
+        "LIMPOPO"
+    ],
+    "MPUMALANGA": [
+        null,
+        "MPUMALANGA"
+    ],
+    "NORTH WEST": [
+        null,
+        "NOORDWES"
+    ],
+    "NORTHERN CAPE": [
+        null,
+        "NOORD-KAAP"
+    ],
+    "WESTERN CAPE": [
+        null,
+        "WES-KAAP"
+    ],
+    "Please TYPE the name of your Suburb, Township, Town or Village (or nearest)": [
+        null,
+        "TIK asb die naam in van jou Voorstad, Township, Dorp of Village (of naaste)"
+    ],
+    "How old are you?": [
+        null,
+        "Hoe oud is jy?"
+    ],
+    "How old are you?\n": [
+        null,
+        "Hoe oud is jy?\n"
+    ],
+    "<18": [
+        null,
+        ""
+    ],
+    "18-39": [
+        null,
+        ""
+    ],
+    "40-65": [
+        null,
+        ""
+    ],
+    ">65": [
+        null,
+        ""
+    ],
+    "Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?\n\nReply": [
+        null,
+        "Was jy al gediagnoseer as Oorgewig of met Diabetes, Hoë Bloeddruk of ’n Hart kondisie?\n\nAntwoord"
+    ],
+    "Please use numbers from list. Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?\n\nReply": [
+        null,
+        "Voel jy baie warm of koud? Sweet of bewe jy? Wanneer jy aan jou voorkop vat, voel dit warm?\n\nAntwoord"
+    ],
+    "Do you have a cough that recently started?\n\nReply": [
+        null,
+        "Het jy ’n hoes wat onlangs begin het?\n\nAntwoord"
+    ],
+    "Please use numbers from list.\nDo you have a cough that recently started?\n\nReply": [
+        null,
+        "Het jy ’n hoes wat onlangs begin het?\n\nAntwoord"
+    ],
+    "Do you have a sore throat, or pain when swallowing?\n\nReply": [
+        null,
+        "Het jy ’n seer keel of pyn wanneer jy sluk?\n\nAntwoord"
+    ],
+    "Please use numbers from list.\nDo you have a sore throat, or pain when swallowing?\n\nReply": [
+        null,
+        "Het jy ’n seer keel of pyn wanneer jy sluk?\n\nAntwoord"
+    ],
+    "Do you have breathlessness or difficulty in breathing, that you've noticed recently?\n\nReply": [
+        null,
+        "Het jy onlangs opgemerk dat jy raak kort van asem of sukkel om asem te haal?\n\nAntwoord"
+    ],
+    "Please use numbers from list. Do you have breathlessness or difficulty in breathing, that you've noticed recently?\n\nReply": [
+        null,
+        "Het jy onlangs opgemerk dat jy raak kort van asem of sukkel om asem te haal?\n\nAntwoord"
+    ],
+    "Have you been in close contact with someone confirmed to be infected with COVID-19?\n\nReply": [
+        null,
+        "Was jy in onmiddelike kontak met enige iemand wat positief getoets is vir COVID 19?\n\nAntwoord"
+    ],
+    "Please use numbers from list. Have u been in contact with someone with COVID19 or been where COVID19 patients are treated?\n\nReply": [
+        null,
+        "Was jy in onmiddelike kontak met enige iemand wat positief getoets is vir COVID 19?\n\nAntwoord"
+    ],
+    "NOT SURE": [
+        null,
+        "NIE SEKER NIE"
+    ],
+    "Please confirm that the information you shared is correct & that the National Department of Health can contact you if necessary?\n\nReply": [
+        null,
+        "Bevestig dat die inligting wat jy gedeel het reg is & dat die Nasionale Departement van Gesondheid jou kan kontak as nodig?\n\nAntwoord"
+    ],
+    "RESTART": [
+        null,
+        "BEGIN OOR"
+    ],
+    "You are at low risk of having COVID-19. You will still need to complete this risk assessment daily to monitor your symptoms.": [
+        null,
+        "Jy loop 'n lae risiko om COVID-19 te hê. Jy sal steeds hierdie risiko-assesering daagliks moet voltooi om jou simptome te monitor."
+    ],
+    "You should SELF-QUARANTINE for 14 days and do HealthCheck daily to monitor symptoms. Try stay and sleep alone in a room that has a window with good air flow.": [
+        null,
+        "Jy moet vir 14 dae SELF-KWARANTYN en hierdie HealthCheck daagliks doen om jou simptome te monitor. Bly/slaap alleen in ’n kamer met goeie lug vloei."
+    ],
+    "GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info on what to do & how to test.": [
+        null,
+        "Jy kan moontlik KWALIFISEER VIR COVID-19 TOETSING. Gaan na ’n toets sentrum of Bel 0800029999 of besoek jou dokter vir meer inligting oor die toetsing."
+    ],
+    "We won't contact you. SELF-QUARANTINE for 14 days and do this HealthCheck daily to monitor symptoms. Stay/sleep alone in a room with good air flowing through": [
+        null,
+        "Jy moet vir 14 dae SELF-KWARANTYN en hierdie HealthCheck daagliks doen om jou simptome te monitor. Bly/slaap alleen in ’n kamer met goeie lug vloei"
+    ],
+    "You will not be contacted. GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info": [
+        null,
+        "Jy kan moontlik KWALIFISEER VIR COVID-19 TOETSING. Gaan na ’n toets sentrum of Bel 0800029999 of besoek jou dokter vir meer inligting oor die toetsing"
+    ],
+    "You will not be contacted. If you think you have COVID-19 please STAY HOME, avoid contact with other people in your community and self-isolate.": [
+        null,
+        "Jy sal nie gekontak word nie. As jy dink jy het COVID-19, BLY ASB BY DIE HUIS, vermy kontak met ander mense en self-kwarantyn."
+    ],
+    "START OVER": [
+        null,
+        "BEGIN OOR"
+    ],
+    "Sorry, something went wrong. We have been notified. Please try again later": [
+        null,
+        ""
+    ]
+}

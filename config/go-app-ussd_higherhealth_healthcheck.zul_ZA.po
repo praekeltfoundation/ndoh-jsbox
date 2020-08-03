@@ -1,0 +1,354 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2020-07-27 01:03:+0000\n"
+"Project-Id-Version: \n"
+"Language: zul\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2020-07-28 07:39+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.4\n"
+
+#: go-app-ussd_higherhealth_healthcheck.js:164
+msgid ""
+"Welcome back to HealthCheck\n"
+"\n"
+"Reply"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:171
+msgid "Continue where I left off"
+msgstr "Qhubeka lapho ngashiya khona"
+
+#: go-app-ussd_higherhealth_healthcheck.js:172
+msgid "Start over"
+msgstr "qala phansi"
+
+#: go-app-ussd_higherhealth_healthcheck.js:179
+msgid ""
+"Welcome to HealthCheck.\n"
+"Please select your preferred language.\n"
+"Reply\n"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:188
+msgid "Afrikaans"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:189
+msgid "English"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:190
+msgid "Sotho"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:191
+msgid "Xhosa"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:192
+msgid "Zulu"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:203
+msgid ""
+"The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by answering a few questions about you and your health.\n"
+"\n"
+"Reply"
+msgstr ""
+"UMnyango Wezempilo Kazwelonke ukubonga ngokudlala iqhaza empilweni yazo zonke izakhamizi.Misa ukusatshalaliswa kwe-COVID-19\n"
+"\n"
+"Phendula"
+
+#: go-app-ussd_higherhealth_healthcheck.js:208
+msgid "This service works best when you select numbers from the list"
+msgstr "Lensizakalo isebenza kahle uma ukhetha izinombolo ohlwini"
+
+#: go-app-ussd_higherhealth_healthcheck.js:211
+msgid "START"
+msgstr "QALA"
+
+#: go-app-ussd_higherhealth_healthcheck.js:218
+msgid ""
+"Confirm that you're responsible for your medical care & treatment. This service only provides info.\n"
+"\n"
+"Reply"
+msgstr ""
+"Qinisekisa ukuthi unesibopho ekuzinakekeleni nokwelashwa kwakho . Lensizakalo inikezela ngolwazi kuphela.\n"
+"\n"
+"Phendula"
+
+#: go-app-ussd_higherhealth_healthcheck.js:223
+msgid ""
+"Please use numbers from list. Confirm that u're responsible for ur medical care & treatment. This service only provides info.\n"
+"\n"
+"Reply"
+msgstr ""
+"Qinisekisa ukuthi unesibopho ekuzinakekeleni nokwelashwa kwakho . Lensizakalo inikezela ngolwazi kuphela.\n"
+"\n"
+"Phendula"
+
+#: go-app-ussd_higherhealth_healthcheck.js:231 go-app-ussd_higherhealth_healthcheck.js:367 go-app-ussd_higherhealth_healthcheck.js:389 go-app-ussd_higherhealth_healthcheck.js:411 go-app-ussd_higherhealth_healthcheck.js:433 go-app-ussd_higherhealth_healthcheck.js:455 go-app-ussd_higherhealth_healthcheck.js:479
+msgid "YES"
+msgstr "YEBO"
+
+#: go-app-ussd_higherhealth_healthcheck.js:232 go-app-ussd_higherhealth_healthcheck.js:368 go-app-ussd_higherhealth_healthcheck.js:390 go-app-ussd_higherhealth_healthcheck.js:412 go-app-ussd_higherhealth_healthcheck.js:434 go-app-ussd_higherhealth_healthcheck.js:456 go-app-ussd_higherhealth_healthcheck.js:480
+msgid "NO"
+msgstr "CHA"
+
+#: go-app-ussd_higherhealth_healthcheck.js:233
+msgid "MORE INFO"
+msgstr "EMINYE IMINININGWANE"
+
+#: go-app-ussd_higherhealth_healthcheck.js:240
+msgid "You can return to this service at any time. Remember, if you think you have COVID-19 STAY HOME, avoid contact with other people and self-quarantine."
+msgstr "Ungabuyela kule nsiza noma inini. Khumbula, uma ucabanga ukuthi kungenzeka ube ne-COVID-19 HLALA EKHAYA, ugweme ukuthintana nabantu futhi uzihlukanise wedwa."
+
+#: go-app-ussd_higherhealth_healthcheck.js:249
+msgid "It's not a substitute for professional medical advice/diagnosis/treatment. Get a qualified health provider's advice about your medical condition/care."
+msgstr "Lensiza ayisithathi isikhundleni sezeluleko zempilo eziqhamuka kochwepheshe. Xhumana nomhlinzeki wezempilo ofanelekile mayelana nesimo sakho."
+
+#: go-app-ussd_higherhealth_healthcheck.js:254 go-app-ussd_higherhealth_healthcheck.js:265
+msgid "Next"
+msgstr "Okulandelayo"
+
+#: go-app-ussd_higherhealth_healthcheck.js:260
+msgid "You confirm that you shouldn't disregard/delay seeking medical advice about treatment/care because of this service. Rely on info at your own risk."
+msgstr "Uqinisekisa ukuthi akumele uhlehlise ukufuna izeluleko zempilo mayelana nokwelashwa ngenxa yalensiza. Themba imininingwane ngokuthanda kwakho."
+
+#: go-app-ussd_higherhealth_healthcheck.js:270
+msgid "Please TYPE your first name"
+msgstr "Sicela UBHALE igama lakho lokuqala"
+
+#: go-app-ussd_higherhealth_healthcheck.js:283
+msgid "Please TYPE your surname"
+msgstr "Sicela UBHALE isibongo sakho"
+
+#: go-app-ussd_higherhealth_healthcheck.js:297
+msgid ""
+"Select your province\n"
+"\n"
+"Reply:"
+msgstr ""
+"Khetha isifundazwe sakho\n"
+"\n"
+"Phendula"
+
+#: go-app-ussd_higherhealth_healthcheck.js:304
+msgid "EASTERN CAPE"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:305
+msgid "FREE STATE"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:306
+msgid "GAUTENG"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:307
+msgid "KWAZULU NATAL"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:308
+msgid "LIMPOPO"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:309
+msgid "MPUMALANGA"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:310
+msgid "NORTH WEST"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:311
+msgid "NORTHERN CAPE"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:312
+msgid "WESTERN CAPE"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:319
+msgid "Please TYPE the name of your Suburb, Township, Town or Village (or nearest)"
+msgstr "Uyacelwa ukuthi UBHALE igama lesigatshana sakho, ilokishi, idolobha noma idolobhana (eliseduzane)"
+
+#: go-app-ussd_higherhealth_healthcheck.js:336
+msgid "How old are you?"
+msgstr "Uneminyaka emingakhi?"
+
+#: go-app-ussd_higherhealth_healthcheck.js:337
+msgid "How old are you?\n"
+msgstr "Uneminyaka emingakhi?\n"
+
+#: go-app-ussd_higherhealth_healthcheck.js:343
+msgid "<18"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:344
+msgid "18-39"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:345
+msgid "40-65"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:346
+msgid ">65"
+msgstr ""
+
+#: go-app-ussd_higherhealth_healthcheck.js:354
+msgid ""
+"Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?\n"
+"\n"
+"Reply"
+msgstr ""
+"Wake watholakala ukuthi unesifo sokukhuluphala, soshukela, i-hypertension noma isifo senhliziyo?\n"
+"\n"
+"Phendula"
+
+#: go-app-ussd_higherhealth_healthcheck.js:359
+msgid ""
+"Please use numbers from list. Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?\n"
+"\n"
+"Reply"
+msgstr ""
+"Ngabe uzizwa ushisa kakhulu noma ubanda? Ngabe uyajuluka noma uyathuthumela? Lapho uthinta isiphongo sakho, ingabe usizwa sishisa?\n"
+"\n"
+"Phendula"
+
+#: go-app-ussd_higherhealth_healthcheck.js:376
+msgid ""
+"Do you have a cough that recently started?\n"
+"\n"
+"Reply"
+msgstr ""
+"Ingabe unakho ukukhwehlela okusanda kuqala?\n"
+"\n"
+"Phendula"
+
+#: go-app-ussd_higherhealth_healthcheck.js:381
+msgid ""
+"Please use numbers from list.\n"
+"Do you have a cough that recently started?\n"
+"\n"
+"Reply"
+msgstr ""
+"Ingabe unakho ukukhwehlela okusanda kuqala?\n"
+"\n"
+"Phendula"
+
+#: go-app-ussd_higherhealth_healthcheck.js:398
+msgid ""
+"Do you have a sore throat, or pain when swallowing?\n"
+"\n"
+"Reply"
+msgstr ""
+"Ngabe unomphimbo obuhlungu noma kubuhlungu uma ugwinya?\n"
+"\n"
+"Phendula"
+
+#: go-app-ussd_higherhealth_healthcheck.js:403
+msgid ""
+"Please use numbers from list.\n"
+"Do you have a sore throat, or pain when swallowing?\n"
+"\n"
+"Reply"
+msgstr ""
+"Ngabe unomphimbo obuhlungu noma kubuhlungu uma ugwinya?\n"
+"\n"
+"Phendula"
+
+#: go-app-ussd_higherhealth_healthcheck.js:420
+msgid ""
+"Do you have breathlessness or difficulty in breathing, that you've noticed recently?\n"
+"\n"
+"Reply"
+msgstr ""
+"Ingabe uqaphele ukuthi unokuphelelwa umoya noma unenkinga yokuphefumula, ezinsukwini?\n"
+"\n"
+"Phendula"
+
+#: go-app-ussd_higherhealth_healthcheck.js:425
+msgid ""
+"Please use numbers from list. Do you have breathlessness or difficulty in breathing, that you've noticed recently?\n"
+"\n"
+"Reply"
+msgstr ""
+"Ingabe uqaphele ukuthi unokuphelelwa umoya noma unenkinga yokuphefumula, ezinsukwini?\n"
+"\n"
+"Phendula"
+
+#: go-app-ussd_higherhealth_healthcheck.js:442
+msgid ""
+"Have you been in close contact with someone confirmed to be infected with COVID-19?\n"
+"\n"
+"Reply"
+msgstr ""
+"Uke wasondelana eduze nomuntu okuqinisekisiwe ukuthi ungenwe yi-COVID19?\n"
+"\n"
+"Phendula"
+
+#: go-app-ussd_higherhealth_healthcheck.js:447
+msgid ""
+"Please use numbers from list. Have u been in contact with someone with COVID19 or been where COVID19 patients are treated?\n"
+"\n"
+"Reply"
+msgstr ""
+"Uke wasondelana eduze nomuntu okuqinisekisiwe ukuthi ungenwe yi-COVID19?\n"
+"\n"
+"Phendula"
+
+#: go-app-ussd_higherhealth_healthcheck.js:457
+msgid "NOT SURE"
+msgstr "ANGINASO ISIQINISEKO"
+
+#: go-app-ussd_higherhealth_healthcheck.js:465
+msgid ""
+"Please confirm that the information you shared is correct & that the National Department of Health can contact you if necessary?\n"
+"\n"
+"Reply"
+msgstr ""
+"Cela uqinisekise iminingwane yakho nokuthi uMnyango Wezempilo Kazwelonke ungaxhumana nawe uma kunesidingo?\n"
+"\n"
+"Phendula"
+
+#: go-app-ussd_higherhealth_healthcheck.js:481
+msgid "RESTART"
+msgstr "qala phansi"
+
+#: go-app-ussd_higherhealth_healthcheck.js:573
+msgid "You are at low risk of having COVID-19. You will still need to complete this risk assessment daily to monitor your symptoms."
+msgstr "Usengozini ephansi yokuba ne-COVID-19. Kuzodingeka ukuthi uqede lokhu kuhlolwa kwengozi nsuku zonke ukuqapha izimpawu zakho."
+
+#: go-app-ussd_higherhealth_healthcheck.js:578
+msgid "You should SELF-QUARANTINE for 14 days and do HealthCheck daily to monitor symptoms. Try stay and sleep alone in a room that has a window with good air flow."
+msgstr "Siyakuncoma ukuUZIHLUKANISA NABANTU izinsuku eziyi-14 futhi wenze i-HealthCheck nsuku zonke ukuqapha izimpawu. Hlala/lala wedwa egumbini elinomoya omuhle."
+
+#: go-app-ussd_higherhealth_healthcheck.js:583
+msgid "GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info on what to do & how to test."
+msgstr "Ngeke sixhumane nawe. Ungafaneleka ukuthi uhlolelwe iCOVID19. Iya esikhungweni sokuhlola noma kudokotela wakho noma ushayele ku0800029999 ukuthola ulwazi"
+
+#: go-app-ussd_higherhealth_healthcheck.js:593
+msgid "We won't contact you. SELF-QUARANTINE for 14 days and do this HealthCheck daily to monitor symptoms. Stay/sleep alone in a room with good air flowing through"
+msgstr "Ngeke sixhumane nawe. ZIHLUKANISE NABANTU izinsuku eziyi-14 futhi wenze iHealthCheck nsuku zonke ukugada izimpawu. Hlala/lala wedwa egumbini elinomoya omuhle."
+
+#: go-app-ussd_higherhealth_healthcheck.js:599
+msgid "You will not be contacted. GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info"
+msgstr "Ngeke kuxhunyanwe nawe. HLOLWA ukuthola ukuthi une-COVID-19. Iya esikhungweni sokuvivinya noma ushayele ku-0800029999 noma udokotela wakho wezempilo onolwazi"
+
+#: go-app-ussd_higherhealth_healthcheck.js:613
+msgid "You will not be contacted. If you think you have COVID-19 please STAY HOME, avoid contact with other people in your community and self-isolate."
+msgstr "Ngeke kuxhunyanwe nawe. Uma ucabanga ukuthi une-COVID-19 sicela UHLALE EKHAYA, gwema ukuthintana nabantu emphakathini wakho futhi uzihlukanise."
+
+#: go-app-ussd_higherhealth_healthcheck.js:617
+msgid "START OVER"
+msgstr "QALA PHANSI"
+
+#: go-app-ussd_higherhealth_healthcheck.js:625
+msgid "Sorry, something went wrong. We have been notified. Please try again later"
+msgstr ""

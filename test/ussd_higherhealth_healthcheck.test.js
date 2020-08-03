@@ -1,6 +1,7 @@
 var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
 var fixtures_rapidpro = require("./fixtures_rapidpro")();
+var xho_translation = require('../config/go-app-ussd_higherhealth_healthcheck.xho_ZA.json');
 
 describe("ussd_higherhealth_healthcheck app", function () {
     var app;
@@ -19,7 +20,10 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 token: "testtoken",
                 sms_flow_uuid: "sms-flow-uuid"
             },
-            testing_today: "2020-01-01T00:00:00Z"
+            testing_today: "2020-01-01T00:00:00Z",
+        })
+        .setup.config({
+            "translation.xho": xho_translation
         });
     });
 
@@ -59,14 +63,45 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .run();
         });
     });
+
+    describe("state_language", function(){
+        it("should ask the users language", function () {
+            return tester
+                .check.interaction({
+                    state: "state_language",
+                    reply: [
+                         "Welcome to HealthCheck.",
+                          "Please select your preferred language.",
+                          "",
+                          "Reply",
+                          "1. Afrikaans",
+                          "2. English",
+                          "3. Sotho",
+                          "4. Xhosa",
+                          "5. Zulu",
+                    ].join("\n"),
+                    char_limit: 140
+                })
+                .run();
+        });
+
+        it("should change the language", function () {
+            return tester
+                .input("4")
+                .check.user.state("state_start")
+                .check.user.lang("xho")
+                .run();
+        });
+    });
+
     describe("state_start", function () {
         it("should show the welcome message", function () {
             return tester
+                .setup.user.state("state_start")
                 .check.interaction({
                     state: "state_start",
                     reply: [
-                        "The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by " +
-                        "answering a few questions about you and your health.",
+                        "The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by answering a few questions about you and your health.",
                         "",
                         "Reply",
                         "1. START"
@@ -77,6 +112,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
         });
         it("should display error on invalid input", function () {
             return tester
+                .setup.user.state("state_start")
                 .input("A")
                 .check.interaction({
                     state: "state_start",
@@ -90,11 +126,13 @@ describe("ussd_higherhealth_healthcheck app", function () {
         });
         it("should go to state_terms", function () {
             return tester
+                .setup.user.state("state_start")
                 .input("1")
                 .check.user.state("state_terms")
                 .run();
         });
     });
+
     describe("state_terms", function () {
         it("should show the terms", function () {
             return tester
@@ -149,7 +187,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     reply:
                         "You can return to this service at any time. Remember, if you think you " +
                         "have COVID-19 STAY HOME, avoid contact with other people and " +
-                        "self-isolate.",
+                        "self-quarantine.",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
@@ -404,8 +442,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_fever",
                     reply: [
-                        "Do you feel very hot or cold? Are you sweating or shivering? When you " +
-                        "touch your forehead, does it feel hot?",
+                        "Do you feel very hot or cold? Are you sweating or shivering? When you touch your forehead, does it feel hot?",
                         "",
                         "Reply",
                         "1. YES",
@@ -534,8 +571,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_breathing",
                     reply: [
-                        "Do you have breathlessness or difficulty in breathing, that you've " +
-                        "noticed recently?",
+                        "Do you have breathlessness or difficulty in breathing, that you've noticed recently",
                         "",
                         "Reply",
                         "1. YES",
@@ -552,8 +588,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_breathing",
                     reply: [
-                        "Please use numbers from list. Do you have breathlessness or " +
-                        "difficulty in breathing, that you've noticed recently?",
+                        "Please use numbers from list. Do you have breathlessness or difficulty in breathing, that you've noticed recently?",
                         "",
                         "Reply",
                         "1. YES",
@@ -578,8 +613,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_exposure",
                     reply: [
-                        "Have you been in close contact with someone confirmed to be infected " +
-                        "with COVID19?",
+                        "Have you been in close contact with someone confirmed to be infected with COVID-19?",
                         "",
                         "Reply",
                         "1. YES",
@@ -597,8 +631,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_exposure",
                     reply: [
-                        "Please use numbers from list. Have u been in contact with someone with " +
-                        "COVID19 or been where COVID19 patients are treated?",
+                        "Please use numbers from list. Have u been in contact with someone with COVID19 or been where COVID19 patients are treated?",
                         "",
                         "Reply",
                         "1. YES",
@@ -725,7 +758,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
             return tester
                 .setup.user.state("state_tracing")
                 .input("3")
-                .check.user.state("state_start")
+                .check.user.state("state_language")
                 .run();
         });
     });
@@ -793,8 +826,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
-                        "You are at low risk of having COVID-19. You will still need to complete " +
-                        "this risk assessment daily to monitor your symptoms.",
+                        "Complete this HealthCheck again in 7 days or sooner if you feel ill or you come into contact with someone infected with COVID-19.",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
@@ -849,9 +881,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
-                        "You should SELF-QUARANTINE for 14 days and do HealthCheck daily to " +
-                        "monitor symptoms. Try stay and sleep alone in a room that has a window " +
-                        "with good air flow.",
+                        "You should SELF-QUARANTINE for 14 days and do HealthCheck daily to monitor symptoms. Try stay and sleep alone in a room that has a window with good air flow.",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
@@ -906,9 +936,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply: [
-                        "GET TESTED to find out if you have COVID-19.  Go to a testing center or " +
-                        "Call 0800029999 or your healthcare practitioner for info on what to do " +
-                        "& how to test"
+                        "GET TESTED to find out if you have COVID-19. Go to a testing center or Call 0800029999 or your healthcare practitioner for info on what to do & how to test."
                     ].join("\n"),
                     char_limit: 160
                 })
