@@ -515,7 +515,6 @@ go.app = (function () {
         opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
         if (opts.http_error_count === 3) {
           self.im.log.error(e.message);
-          console.log(e, e.message, '===========================');
           return self.states.create("__error__", { return_state: name });
         }
         return self.states.create(name, opts);
