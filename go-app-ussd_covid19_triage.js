@@ -11,6 +11,7 @@ go.app = (function () {
   var MenuState = vumigo.states.MenuState;
   var FreeText = vumigo.states.FreeText;
   var ChoiceState = vumigo.states.ChoiceState;
+  var utils = require("seed-jsbox-utils").utils;
 
 
   var GoNDOH = App.extend(function (self) {
@@ -71,17 +72,59 @@ go.app = (function () {
       });
     });
 
-    self.states.add("state_start", function (name) {
-      // Reset user answers when restarting the app
-      self.im.user.answers = {};
+    self.states.add("state_start", function (name, opts) {
+      var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
 
-      return new MenuState(name, {
-        question: $([
+      return new JsonApi(self.im).get(
+        self.im.config.eventstore.url + "/api/v2/healthcheckuserprofile/" + msisdn + "/", {
+        headers: {
+          "Authorization": ["Token " + self.im.config.eventstore.token],
+          "User-Agent": ["Jsbox/Covid19-Triage-USSD"]
+        }
+      }).then(function (response) {
+        self.im.user.answers = {
+          returning_user: true,
+          state_province: response.data.province,
+          state_city: response.data.city,
+          state_age: response.data.age
+        };
+        return self.states.create("state_welcome");
+      }, function (e) {
+        // If it's 404, new user
+        if(_.get(e, "response.code") === 404) {
+          self.im.user.answers = {returning_user: false};
+          return self.states.create("state_welcome");
+        }
+        // Go to error state after 3 failed HTTP requests
+        opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+        if (opts.http_error_count === 3) {
+          self.im.log.error(e.message);
+          return self.states.create("__error__", { return_state: name });
+        }
+        return self.states.create(name, opts);
+      });
+    });
+
+    self.states.add("state_welcome", function(name) {
+      var question;
+      if(self.im.user.answers.returning_user) {
+        question = $([
+          "Welcome back to HealthCheck, your weekly COVID-19 Risk Assesment tool. Let's see how " +
+          "you are feeling today.",
+          "",
+          "Reply"
+        ].join("\n"));
+      }
+      else {
+        question = $([
           "The National Department of Health thanks you for contributing to the health of all " +
           "citizens. Stop the spread of COVID-19",
           "",
           "Reply"
-        ].join("\n")),
+        ].join("\n"));
+      }
+      return new MenuState(name, {
+        question: question,
         error: $("This service works best when you select numbers from the list"),
         accept_labels: true,
         choices: [
@@ -91,6 +134,9 @@ go.app = (function () {
     });
 
     self.add("state_terms", function (name) {
+      if(self.im.user.answers.returning_user) {
+        return self.states.create("state_province");
+      }
       return new MenuState(name, {
         question: $([
           "Confirm that you're responsible for your medical care & treatment. This service only " +
@@ -146,6 +192,9 @@ go.app = (function () {
     });
 
     self.add("state_province", function (name) {
+      if(self.im.user.answers.state_province) {
+        return self.states.create("state_city");
+      }
       return new ChoiceState(name, {
         question: $([
           "Select your province",
@@ -169,6 +218,9 @@ go.app = (function () {
     });
 
     self.add("state_city", function (name) {
+      if(self.im.user.answers.state_city) {
+        return self.states.create("state_age");
+      }
       var question = $(
         "Please TYPE the name of your Suburb, Township, Town or Village (or nearest)"
       );
@@ -185,6 +237,9 @@ go.app = (function () {
     });
 
     self.add("state_age", function (name) {
+      if(self.im.user.answers.state_age) {
+        return self.states.create("state_fever");
+      }
       return new ChoiceState(name, {
         question: $("How old are you?"),
         error: $([
