@@ -88,7 +88,7 @@ go.app = (function () {
         return self.states.create("state_welcome");
       }, function (e) {
         // If it's 404, new user
-        if(e.response.code === 404) {
+        if(_.get(e, "response.code") === 404) {
           self.im.user.answers = {returning_user: false};
           return self.states.create("state_welcome");
         }
