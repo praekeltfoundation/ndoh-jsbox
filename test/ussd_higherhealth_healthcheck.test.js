@@ -59,11 +59,82 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .run();
         });
     });
-    describe("state_start", function () {
+    describe("state_start", function() {
+        it("should handle 404 responses to contact profile lookups", function() {
+            return tester
+                .setup(function (api) {
+                    api.http.fixtures.add({
+                        request: {
+                            url: "http://eventstore/api/v2/healthcheckuserprofile/+27123456789/",
+                            method: "GET"
+                        },
+                        response: {
+                            code: 404,
+                            data: {
+                                detail: "Not found."
+                            }
+                        }
+                    });
+                })
+                .check.user.answers({
+                    returning_user: false
+                })
+                .check.user.state("state_welcome")
+                .run();
+        });
+        it("should store user answers if returning user", function() {
+            return tester
+                .setup(function (api) {
+                    api.http.fixtures.add({
+                        request: {
+                            url: "http://eventstore/api/v2/healthcheckuserprofile/+27123456789/",
+                            method: "GET"
+                        },
+                        response: {
+                            code: 200,
+                            data: {
+                                msisdn: "+27123456789",
+                                province: "ZA-GT",
+                                city: "Sandton, South Africa",
+                                age: "18-40",
+                                first_name: "John",
+                                last_name: "Doe",
+                                data: {
+                                    university: {
+                                        name: "Other"
+                                    },
+                                    university_other: "test_uni",
+                                    campus: {
+                                        name: "Other"
+                                    },
+                                    campus_other: "test_campus",
+                                }
+                            }
+                        }
+                    });
+                })
+                .check.user.answers({
+                    returning_user: true,
+                    state_province: "ZA-GT",
+                    state_city: "Sandton, South Africa",
+                    state_age: "18-40",
+                    state_first_name: "John",
+                    state_last_name: "Doe",
+                    state_university: "Other",
+                    state_university_other: "test_uni",
+                    state_campus: "Other",
+                    state_campus_other: "test_campus"
+                })
+                .check.user.state("state_welcome")
+                .run();
+        });
+    });
+    describe("state_welcome", function () {
         it("should show the welcome message", function () {
             return tester
+                .setup.user.state("state_welcome")
                 .check.interaction({
-                    state: "state_start",
+                    state: "state_welcome",
                     reply: [
                         "The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by " +
                         "answering a few questions about you and your health.",
@@ -77,9 +148,10 @@ describe("ussd_higherhealth_healthcheck app", function () {
         });
         it("should display error on invalid input", function () {
             return tester
+                .setup.user.state("state_welcome")
                 .input("A")
                 .check.interaction({
-                    state: "state_start",
+                    state: "state_welcome",
                     reply: [
                         "This service works best when you select numbers from the list",
                         "1. START"
@@ -90,6 +162,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
         });
         it("should go to state_terms", function () {
             return tester
+                .setup.user.state("state_welcome")
                 .input("1")
                 .check.user.state("state_terms")
                 .run();
@@ -723,9 +796,23 @@ describe("ussd_higherhealth_healthcheck app", function () {
         });
         it("should go to start if restart is chosen", function () {
             return tester
+                .setup(function (api) {
+                    api.http.fixtures.add({
+                        request: {
+                            url: "http://eventstore/api/v2/healthcheckuserprofile/+27123456789/",
+                            method: "GET"
+                        },
+                        response: {
+                            code: 404,
+                            data: {
+                                detail: "Not found."
+                            }
+                        }
+                    });
+                })
                 .setup.user.state("state_tracing")
                 .input("3")
-                .check.user.state("state_start")
+                .check.user.state("state_welcome")
                 .run();
         });
     });

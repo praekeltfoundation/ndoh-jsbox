@@ -70,10 +70,46 @@ go.app = (function () {
       });
     });
 
-    self.states.add("state_start", function (name) {
-      // Reset user answers when restarting the app
-      self.im.user.answers = {};
+    self.states.add("state_start", function (name, opts) {
+      var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
 
+      return new JsonApi(self.im).get(
+        self.im.config.eventstore.url + "/api/v2/healthcheckuserprofile/" + msisdn + "/", {
+        headers: {
+          "Authorization": ["Token " + self.im.config.eventstore.token],
+          "User-Agent": ["Jsbox/Covid19-Triage-USSD"]
+        }
+      }).then(function (response) {
+        self.im.user.answers = {
+          returning_user: true,
+          state_province: response.data.province,
+          state_city: response.data.city,
+          state_age: response.data.age,
+          state_first_name: response.data.first_name,
+          state_last_name: response.data.last_name,
+          state_university: _.get(response.data, "data.university.name"),
+          state_university_other: _.get(response.data, "data.university_other"),
+          state_campus: _.get(response.data, "data.campus.name"),
+          state_campus_other: _.get(response.data, "data.campus_other"),
+        };
+        return self.states.create("state_welcome");
+      }, function (e) {
+        // If it's 404, new user
+        if(_.get(e, "response.code") === 404) {
+          self.im.user.answers = {returning_user: false};
+          return self.states.create("state_welcome");
+        }
+        // Go to error state after 3 failed HTTP requests
+        opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+        if (opts.http_error_count === 3) {
+          self.im.log.error(e.message);
+          return self.states.create("__error__", { return_state: name });
+        }
+        return self.states.create(name, opts);
+      });
+    });
+
+    self.states.add("state_welcome", function(name) {
       return new MenuState(name, {
         question: $([
           "The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by answering a " +
