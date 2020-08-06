@@ -121,6 +121,23 @@ describe("ussd_covid19_triage app", function () {
                 })
                 .run();
         });
+        it("should show the returning user welcome message", function () {
+            return tester
+                .setup.user.answer("returning_user", true)
+                .setup.user.state("state_welcome")
+                .check.interaction({
+                    state: "state_welcome",
+                    reply: [
+                        "Welcome back to HealthCheck, your weekly COVID-19 Risk Assesment tool. " +
+                        "Let's see how you are feeling today.",
+                        "",
+                        "Reply",
+                        "1. START"
+                    ].join("\n"),
+                    char_limit: 140
+                })
+                .run();
+        });
         it("should display error on invalid input", function () {
             return tester
                 .setup.user.state("state_welcome")

@@ -103,13 +103,25 @@ go.app = (function () {
     });
 
     self.states.add("state_welcome", function(name) {
-      return new MenuState(name, {
-        question: $([
+      var question;
+      if(self.im.user.answers.returning_user) {
+        question = $([
+          "Welcome back to HealthCheck, your weekly COVID-19 Risk Assesment tool. Let's see how " +
+          "you are feeling today.",
+          "",
+          "Reply"
+        ].join("\n"));
+      }
+      else {
+        question = $([
           "The National Department of Health thanks you for contributing to the health of all " +
           "citizens. Stop the spread of COVID-19",
           "",
           "Reply"
-        ].join("\n")),
+        ].join("\n"));
+      }
+      return new MenuState(name, {
+        question: question,
         error: $("This service works best when you select numbers from the list"),
         accept_labels: true,
         choices: [
