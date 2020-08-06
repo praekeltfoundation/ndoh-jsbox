@@ -205,6 +205,13 @@ describe("ussd_covid19_triage app", function () {
                 .check.user.state("state_province")
                 .run();
         });
+        it("should go to state_province for returning users", function() {
+            return tester
+                .setup.user.answer("returning_user", true)
+                .setup.user.state("state_terms")
+                .check.user.state("state_province")
+                .run();
+        });
         it("should go to state_end for no", function () {
             return tester
                 .setup.user.state("state_terms")
@@ -316,6 +323,13 @@ describe("ussd_covid19_triage app", function () {
                 })
                 .run();
         });
+        it("should skip the state for users who already have this info", function() {
+            return tester
+                .setup.user.state("state_province")
+                .setup.user.answer("state_province", "ZA-WC")
+                .check.user.state("state_city")
+                .run();
+        });
         it("should go to state_city", function () {
             return tester
                 .setup.user.state("state_province")
@@ -354,6 +368,13 @@ describe("ussd_covid19_triage app", function () {
             return tester
                 .setup.user.state("state_city")
                 .input("test city")
+                .check.user.state("state_age")
+                .run();
+        });
+        it("should skip the state for users who already have this info", function() {
+            return tester
+                .setup.user.state("state_city")
+                .setup.user.answer("state_city", "Cape Town, South Africa")
                 .check.user.state("state_age")
                 .run();
         });
@@ -398,6 +419,13 @@ describe("ussd_covid19_triage app", function () {
             return tester
                 .setup.user.state("state_age")
                 .input("1")
+                .check.user.state("state_fever")
+                .run();
+        });
+        it("should skip the state for users who already have this info", function() {
+            return tester
+                .setup.user.state("state_age")
+                .setup.user.answer("state_age", "18-40")
                 .check.user.state("state_fever")
                 .run();
         });
