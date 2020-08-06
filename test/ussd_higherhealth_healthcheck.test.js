@@ -213,6 +213,13 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.user.state("state_first_name")
                 .run();
         });
+        it("should go to state_first_name for returning users", function () {
+            return tester
+                .setup.user.answer("returning_user", true)
+                .setup.user.state("state_terms")
+                .check.user.state("state_first_name")
+                .run();
+        });
         it("should go to state_end for no", function () {
             return tester
                 .setup.user.state("state_terms")
@@ -265,6 +272,13 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.user.state("state_last_name")
                 .run();
         });
+        it("should go to state_last_name if value exists", function () {
+            return tester
+                .setup.user.answer("state_first_name", "Jane")
+                .setup.user.state("state_first_name")
+                .check.user.state("state_last_name")
+                .run();
+        });
     });
     describe("state_last_name", function () {
         it("should ask the user for their surname", function () {
@@ -292,6 +306,13 @@ describe("ussd_higherhealth_healthcheck app", function () {
             return tester
                 .setup.user.state("state_last_name")
                 .input("last")
+                .check.user.state("state_province")
+                .run();
+        });
+        it("should go to state_province if value exists", function () {
+            return tester
+                .setup.user.answer("state_last_name", "Doe")
+                .setup.user.state("state_last_name")
                 .check.user.state("state_province")
                 .run();
         });
@@ -391,6 +412,13 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.user.state("state_city")
                 .run();
         });
+        it("should go to state_city if value exists", function () {
+            return tester
+                .setup.user.answer("state_province", "ZA-WC")
+                .setup.user.state("state_province")
+                .check.user.state("state_city")
+                .run();
+        });
     });
     describe("state_city", function () {
         it("should ask for the city", function () {
@@ -422,6 +450,13 @@ describe("ussd_higherhealth_healthcheck app", function () {
             return tester
                 .setup.user.state("state_city")
                 .input("test city")
+                .check.user.state("state_age")
+                .run();
+        });
+        it("should go to state_age if value exists", function () {
+            return tester
+                .setup.user.answer("state_city", "Cape Town, South Africa")
+                .setup.user.state("state_city")
                 .check.user.state("state_age")
                 .run();
         });
@@ -466,6 +501,13 @@ describe("ussd_higherhealth_healthcheck app", function () {
             return tester
                 .setup.user.state("state_age")
                 .input("1")
+                .check.user.state("state_fever")
+                .run();
+        });
+        it("should go to state_fever if value exists", function () {
+            return tester
+                .setup.user.answer("state_age", "18-40")
+                .setup.user.state("state_age")
                 .check.user.state("state_fever")
                 .run();
         });
