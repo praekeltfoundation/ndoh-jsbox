@@ -173,10 +173,46 @@ go.app = (function () {
       });
     });
 
-    self.states.add("state_start", function (name) {
-      // Reset user answers when restarting the app
-      self.im.user.answers = {};
+    self.states.add("state_start", function (name, opts) {
+      var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
 
+      return new JsonApi(self.im).get(
+        self.im.config.eventstore.url + "/api/v2/healthcheckuserprofile/" + msisdn + "/", {
+        headers: {
+          "Authorization": ["Token " + self.im.config.eventstore.token],
+          "User-Agent": ["Jsbox/Covid19-Triage-USSD"]
+        }
+      }).then(function (response) {
+        self.im.user.answers = {
+          returning_user: true,
+          state_province: response.data.province,
+          state_city: response.data.city,
+          state_age: response.data.age,
+          state_first_name: response.data.first_name,
+          state_last_name: response.data.last_name,
+          state_university: _.get(response.data, "data.university.name"),
+          state_university_other: _.get(response.data, "data.university_other"),
+          state_campus: _.get(response.data, "data.campus.name"),
+          state_campus_other: _.get(response.data, "data.campus_other"),
+        };
+        return self.states.create("state_welcome");
+      }, function (e) {
+        // If it's 404, new user
+        if(_.get(e, "response.code") === 404) {
+          self.im.user.answers = {returning_user: false};
+          return self.states.create("state_welcome");
+        }
+        // Go to error state after 3 failed HTTP requests
+        opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+        if (opts.http_error_count === 3) {
+          self.im.log.error(e.message);
+          return self.states.create("__error__", { return_state: name });
+        }
+        return self.states.create(name, opts);
+      });
+    });
+
+    self.states.add("state_welcome", function(name) {
       return new MenuState(name, {
         question: $([
           "The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by answering a " +
@@ -193,6 +229,9 @@ go.app = (function () {
     });
 
     self.add("state_terms", function (name) {
+      if(self.im.user.answers.returning_user) {
+        return self.states.create("state_first_name");
+      }
       return new MenuState(name, {
         question: $([
           "Confirm that you're responsible for your medical care & treatment. This service only " +
@@ -248,6 +287,9 @@ go.app = (function () {
     });
 
     self.add("state_first_name", function (name) {
+      if(self.im.user.answers.state_first_name) {
+        return self.states.create("state_last_name");
+      }
       var question = $("Please TYPE your first name");
       return new FreeText(name, {
         question: question,
@@ -261,6 +303,9 @@ go.app = (function () {
     });
 
     self.add("state_last_name", function (name) {
+      if(self.im.user.answers.state_last_name) {
+        return self.states.create("state_province");
+      }
       var question = $("Please TYPE your surname");
       return new FreeText(name, {
         question: question,
@@ -274,6 +319,9 @@ go.app = (function () {
     });
 
     self.add("state_province", function (name) {
+      if(self.im.user.answers.state_province) {
+        return self.states.create("state_city");
+      }
       return new ChoiceState(name, {
         question: $([
           "Select your province",
@@ -297,6 +345,9 @@ go.app = (function () {
     });
 
     self.add("state_city", function (name) {
+      if(self.im.user.answers.state_city) {
+        return self.states.create("state_age");
+      }
       var question = $(
         "Please TYPE the name of your Suburb, Township, Town or Village (or nearest)"
       );
@@ -313,6 +364,9 @@ go.app = (function () {
     });
 
     self.add("state_age", function (name) {
+      if(self.im.user.answers.state_age) {
+        return self.states.create("state_fever");
+      }
       return new ChoiceState(name, {
         question: $("How old are you?"),
         error: $([
