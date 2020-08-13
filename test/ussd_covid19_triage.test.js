@@ -511,6 +511,41 @@ describe("ussd_covid19_triage app", function () {
                 .run();
         });
     });
+    describe("state_age_years", function () {
+        it("should ask for their age", function () {
+            return tester
+                .setup.user.state("state_age_years")
+                .check.interaction({
+                    state: "state_age_years",
+                    reply: [
+                        "Please TYPE your age in years (eg. 35)"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should repeat the question on invalid input", function () {
+            return tester
+                .setup.user.state("state_age_years")
+                .input("A")
+                .check.interaction({
+                    state: "state_age_years",
+                    reply: [
+                        "Please TYPE your age in years (eg. 35)"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to state_province", function () {
+            return tester
+                .setup.user.state("state_age_years")
+                .input("22")
+                .check.user.state("state_province")
+                .check.user.answer("state_age", "18-40")
+                .run();
+        });
+    });
     describe("state_fever", function () {
         it("should ask if they have a fever", function () {
             return tester

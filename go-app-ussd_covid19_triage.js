@@ -307,6 +307,33 @@ go.app = (function () {
       });
     });
 
+    self.add("state_age_years", function (name) {
+      var question = $("Please TYPE your age in years (eg. 35)");
+      return new FreeText(name, {
+        question: question,
+        check: function(content) {
+          var age = _.parseInt(content);
+          if(age < 1) {
+            return question;
+          } else if (age < 18) {
+            self.im.user.answers.state_age = "<18";
+            return;
+          } else if (age < 40) {
+            self.im.user.answers.state_age = "18-40";
+            return;
+          } else if (age <= 65) {
+            self.im.user.answers.state_age = "40-65";
+            return;
+          } else if (age < 150) {
+            self.im.user.answers.state_age = "40-65";
+            return;
+          }
+          return question;
+        },
+        next: "state_province"
+      });
+    });
+
     self.add("state_fever", function (name) {
       return new ChoiceState(name, {
         question: $([
