@@ -284,6 +284,22 @@ describe("ussd_covid19_triage app", function () {
                 .check.reply.ends_session()
                 .run();
         });
+        it("should go to state_end for no confirmed contact", function () {
+            return tester
+                .setup.user.state("state_terms")
+                .setup.user.answer("confirmed_contact", true)
+                .input("2")
+                .check.interaction({
+                    state: "state_end",
+                    reply:
+                        "You can return to this service at any time. Remember, if you think you " +
+                        "have COVID-19 STAY HOME, avoid contact with other people and " +
+                        "self-quarantine.",
+                    char_limit: 160
+                })
+                .check.reply.ends_session()
+                .run();
+        });
         it("should go to state_more_info for more info", function () {
             return tester
                 .setup.user.state("state_terms")

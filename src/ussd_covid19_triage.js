@@ -152,7 +152,7 @@ go.app = (function () {
           "for 10 days & answer these questions.",
           "",
           "Reply"
-        ].join("\n"))
+        ].join("\n"));
         error = question;
       }
       return new MenuState(name, {
@@ -192,11 +192,21 @@ go.app = (function () {
     });
 
     self.states.add("state_end", function (name) {
-      return new EndState(name, {
-        text: $(
+      var text;
+      if(self.im.user.answers.confirmed_contact) {
+        text = $(
+          "You can return to this service at any time. Remember, if you think you have COVID-19 " +
+          "STAY HOME, avoid contact with other people and self-quarantine."
+        );
+      } else {
+        text = $(
           "You can return to this service at any time. Remember, if you think you have COVID-19 " +
           "STAY HOME, avoid contact with other people and self-isolate."
-        ),
+        );
+      }
+
+      return new EndState(name, {
+        text: text,
         next: "state_start"
       });
     });
