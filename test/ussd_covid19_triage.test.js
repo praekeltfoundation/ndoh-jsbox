@@ -712,6 +712,45 @@ describe("ussd_covid19_triage app", function () {
                 })
                 .run();
         });
+        it("should ask if they have difficulty breathing confirmed contact", function () {
+            return tester
+                .setup.user.state("state_breathing")
+                .setup.user.answer("confirmed_contact", true)
+                .check.interaction({
+                    state: "state_breathing",
+                    reply: [
+                        "Do you have shortness of breath while resting or difficulty breathing, " +
+                        "that you've noticed recently?",
+                        "",
+                        "Reply",
+                        "1. YES",
+                        "2. NO"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should display an error on invalid input confirmed contact", function () {
+            return tester
+                .setup.user.state("state_breathing")
+                .setup.user.answer("confirmed_contact", true)
+                .input("A")
+                .check.interaction({
+                    state: "state_breathing",
+                    reply: [
+                        "Please use numbers from list.",
+                        "",
+                        "Do you have shortness of breath while resting or difficulty breathing, " +
+                        "that you've noticed recently?",
+                        "",
+                        "Reply",
+                        "1. YES",
+                        "2. NO"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
         it("should go to state_exposure", function () {
             return tester
                 .setup.user.state("state_breathing")

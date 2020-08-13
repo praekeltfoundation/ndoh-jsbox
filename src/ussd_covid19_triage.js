@@ -388,16 +388,34 @@ go.app = (function () {
     });
 
     self.add("state_breathing", function (name) {
+      var question = $([
+        "Do you have breathlessness or a difficulty breathing, that you've noticed recently?",
+        "Reply"
+      ].join("\n"));
+      var error = $([
+        "Please use numbers from list. Do you have breathlessness or a difficulty breathing, " +
+        "that you've noticed recently?",
+        "Reply"
+      ].join("\n"));
+      if(self.im.user.answers.confirmed_contact) {
+        question = $([
+          "Do you have shortness of breath while resting or difficulty breathing, that you've " +
+          "noticed recently?",
+          "",
+          "Reply"
+        ].join("\n"));
+        error = $([
+          "Please use numbers from list.",
+          "",
+          "Do you have shortness of breath while resting or difficulty breathing, that you've " +
+          "noticed recently?",
+          "",
+          "Reply"
+        ].join("\n"));
+      }
       return new ChoiceState(name, {
-        question: $([
-          "Do you have breathlessness or a difficulty breathing, that you've noticed recently?",
-          "Reply"
-        ].join("\n")),
-        error: $([
-          "Please use numbers from list. Do you have breathlessness or a difficulty breathing, " +
-          "that you've noticed recently?",
-          "Reply"
-        ].join("\n")),
+        question: question,
+        error: error,
         accept_labels: true,
         choices: [
           new Choice(true, $("YES")),
