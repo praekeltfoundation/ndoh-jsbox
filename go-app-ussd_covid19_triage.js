@@ -12,6 +12,7 @@ go.app = (function () {
   var FreeText = vumigo.states.FreeText;
   var ChoiceState = vumigo.states.ChoiceState;
   var utils = require("seed-jsbox-utils").utils;
+  var crypto = require("crypto");
 
 
   var GoNDOH = App.extend(function (self) {
@@ -106,6 +107,7 @@ go.app = (function () {
     });
 
     self.states.add("state_get_confirmed_contact", function(name, opts) {
+      self.im.user.answers.google_session_token = crypto.randomBytes(20).toString("hex");
       var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
       var whatsapp_id = _.trimStart(msisdn, "+");
       return new JsonApi(self.im).get(
@@ -267,7 +269,7 @@ go.app = (function () {
     });
 
     self.add("state_city", function (name) {
-      if(self.im.user.answers.state_city) {
+      if(self.im.user.answers.state_city && self.im.user.answers.city_location) {
         return self.states.create("state_age");
       }
       var question = $(
@@ -281,8 +283,106 @@ go.app = (function () {
             return question;
           }
         },
-        next: "state_age"
+        next: "state_google_places_lookup"
       });
+    });
+
+    self.add("state_google_places_lookup", function (name, opts) {
+      return new JsonApi(self.im).get(
+        "https://maps.googleapis.com/maps/api/place/autocomplete/json", {
+          params: {
+            input: self.im.user.answers.state_city,
+            key: self.im.config.google_places.key,
+            sessiontoken: self.im.user.answers.google_session_token,
+            language: "en",
+            components: "country:za"
+          },
+          headers: {
+            "User-Agent": ["Jsbox/Covid19-Triage-USSD"]
+          }
+        }).then(function(response) {
+          if(_.get(response.data, "status") !== "OK"){
+            return self.states.create("state_city");
+          }
+          var first_result = response.data.predictions[0];
+          self.im.user.answers.place_id = first_result.place_id;
+          self.im.user.answers.state_city = first_result.description;
+          return self.states.create("state_confirm_city");
+        }, function (e) {
+          // Go to error state after 3 failed HTTP requests
+          opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+          if (opts.http_error_count === 3) {
+            self.im.log.error(e.message);
+            return self.states.create("__error__", { return_state: name });
+          }
+          return self.states.create(name, opts);
+        });
+    });
+
+    self.add("state_confirm_city", function (name, opts) {
+      return new MenuState(name, {
+        question: $([
+          "Please confirm the address below based on info you shared:",
+          "{{ address }}",
+          "",
+          "Reply"
+        ].join("\n")).context({address: self.im.user.answers.state_city}),
+        accept_labels: true,
+        choices: [
+          new Choice("state_place_details_lookup", $("Yes")),
+          new Choice("state_city", $("No")),
+        ]
+      });
+    });
+
+    self.pad_location = function(location, places) {
+      // Pads the integer part of the number to places
+      // Ensures that there's always a sign
+      // Ensures that there's always a decimal part
+      var sign = "+";
+      if(location < 0) {
+        sign = "-";
+        location = location * -1;
+      }
+      location = _.split(location, ".", 2);
+      var int = location[0];
+      var dec = location[1] || 0;
+      return sign + _.padStart(int, places, "0") + "." + dec;
+    };
+
+    self.add("state_place_details_lookup", function (name, opts) {
+      return new JsonApi(self.im).get(
+        "https://maps.googleapis.com/maps/api/place/details/json", {
+          params: {
+            key: self.im.config.google_places.key,
+            place_id: self.im.user.answers.place_id,
+            sessiontoken: self.im.user.answers.google_session_token,
+            language: "en",
+            fields: "geometry"
+          },
+          headers: {
+            "User-Agent": ["Jsbox/Covid19-Triage-USSD"]
+          }
+        }).then(function(response) {
+          if(_.get(response.data, "status") !== "OK"){
+            return self.states.create("__error__");
+          }
+          var location = response.data.result.geometry.location;
+          self.im.user.answers.city_location = 
+            self.pad_location(location.lat, 2) + self.pad_location(location.lng, 3) + "/";
+          if(self.im.user.answers.confirmed_contact) {
+            return self.states.create("state_tracing");
+          }
+          return self.states.create("state_age");
+        }, function (e) {
+          // Go to error state after 3 failed HTTP requests
+          opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+          if (opts.http_error_count === 3) {
+            self.im.log.error(e.message);
+            return self.states.create("__error__", { return_state: name });
+          }
+          return self.states.create(name, opts);
+        });
     });
 
     self.add("state_age", function (name) {
