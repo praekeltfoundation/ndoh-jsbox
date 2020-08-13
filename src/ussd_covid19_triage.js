@@ -683,20 +683,27 @@ go.app = (function () {
       var answers = self.im.user.answers;
 
       return new JsonApi(self.im).post(
-        self.im.config.eventstore.url + "/api/v2/covid19triage/", {
+        self.im.config.eventstore.url + "/api/v3/covid19triage/", {
         data: {
           msisdn: self.im.user.addr,
           source: "USSD",
           province: answers.state_province,
           city: answers.state_city,
+          city_location: answers.city_location,
           age: answers.state_age,
           fever: answers.state_fever,
           cough: answers.state_cough,
           sore_throat: answers.state_sore_throat,
           difficulty_breathing: answers.state_breathing,
+          smell: answers.state_taste,
+          preexisting_condition: answers.state_preexisting_conditions,
           exposure: answers.state_exposure,
           tracing: answers.state_tracing,
-          risk: self.calculate_risk()
+          confirmed_contact: answers.confirmed_contact,
+          risk: self.calculate_risk(),
+          data: {
+            age_years: answers.state_age_years
+          }
         },
         headers: {
           "Authorization": ["Token " + self.im.config.eventstore.token],

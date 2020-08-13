@@ -1178,7 +1178,7 @@ describe("ussd_covid19_triage app", function () {
                 .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
-                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "url": 'http://eventstore/api/v3/covid19triage/',
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
@@ -1192,7 +1192,8 @@ describe("ussd_covid19_triage app", function () {
                                 difficulty_breathing: false,
                                 exposure: "No",
                                 tracing: true,
-                                risk: "low"
+                                risk: "low",
+                                data: {}
                             }
                         },
                         "response": {
@@ -1255,7 +1256,7 @@ describe("ussd_covid19_triage app", function () {
                 .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
-                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "url": 'http://eventstore/api/v3/covid19triage/',
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
@@ -1268,7 +1269,8 @@ describe("ussd_covid19_triage app", function () {
                                 sore_throat: false,
                                 exposure: "No",
                                 tracing: true,
-                                risk: "low"
+                                risk: "low",
+                                data: {}
                             }
                         },
                         "response": {
@@ -1305,7 +1307,7 @@ describe("ussd_covid19_triage app", function () {
                 .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
-                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "url": 'http://eventstore/api/v3/covid19triage/',
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
@@ -1318,7 +1320,8 @@ describe("ussd_covid19_triage app", function () {
                                 sore_throat: false,
                                 exposure: "not_sure",
                                 tracing: true,
-                                risk: "moderate"
+                                risk: "moderate",
+                                data: {}
                             }
                         },
                         "response": {
@@ -1355,7 +1358,7 @@ describe("ussd_covid19_triage app", function () {
                 .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
-                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "url": 'http://eventstore/api/v3/covid19triage/',
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
@@ -1368,7 +1371,8 @@ describe("ussd_covid19_triage app", function () {
                                 sore_throat: false,
                                 exposure: "No",
                                 tracing: true,
-                                risk: "high"
+                                risk: "high",
+                                data: {}
                             }
                         },
                         "response": {
@@ -1405,7 +1409,7 @@ describe("ussd_covid19_triage app", function () {
                 .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
-                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "url": 'http://eventstore/api/v3/covid19triage/',
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
@@ -1418,7 +1422,8 @@ describe("ussd_covid19_triage app", function () {
                                 sore_throat: false,
                                 exposure: "No",
                                 tracing: false,
-                                risk: "low"
+                                risk: "low",
+                                data: {}
                             }
                         },
                         "response": {
@@ -1456,7 +1461,7 @@ describe("ussd_covid19_triage app", function () {
                 .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
-                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "url": 'http://eventstore/api/v3/covid19triage/',
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
@@ -1469,7 +1474,8 @@ describe("ussd_covid19_triage app", function () {
                                 sore_throat: false,
                                 exposure: "No",
                                 tracing: false,
-                                risk: "moderate"
+                                risk: "moderate",
+                                data: {}
                             }
                         },
                         "response": {
@@ -1507,7 +1513,7 @@ describe("ussd_covid19_triage app", function () {
                 .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
-                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "url": 'http://eventstore/api/v3/covid19triage/',
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
@@ -1520,7 +1526,8 @@ describe("ussd_covid19_triage app", function () {
                                 sore_throat: false,
                                 exposure: "No",
                                 tracing: false,
-                                risk: "high"
+                                risk: "high",
+                                data: {}
                             }
                         },
                         "response": {
@@ -1558,7 +1565,7 @@ describe("ussd_covid19_triage app", function () {
                 .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
-                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "url": 'http://eventstore/api/v3/covid19triage/',
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
@@ -1571,7 +1578,9 @@ describe("ussd_covid19_triage app", function () {
                                 sore_throat: false,
                                 exposure: "yes",
                                 tracing: true,
-                                risk: "moderate"
+                                risk: "moderate",
+                                confirmed_contact: true,
+                                data: {}
                             }
                         },
                         "response": {
@@ -1604,26 +1613,37 @@ describe("ussd_covid19_triage app", function () {
                     state_cough: false,
                     state_province: "ZA-WC",
                     state_city: "Cape Town",
+                    city_location: "-03.866651+051.195827/",
                     state_sore_throat: false,
                     state_exposure: "yes",
+                    state_taste: true,
+                    state_preexisting_conditions: "yes",
+                    state_age_years: "67"
                 })
                 .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
-                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "url": 'http://eventstore/api/v3/covid19triage/',
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
                                 source: "USSD",
                                 province: "ZA-WC",
                                 city: "Cape Town",
+                                city_location: "-03.866651+051.195827/",
                                 age: ">65",
                                 fever: true,
                                 cough: false,
                                 sore_throat: false,
                                 exposure: "yes",
                                 tracing: true,
-                                risk: "high"
+                                risk: "high",
+                                smell: true,
+                                preexisting_condition: "yes",
+                                confirmed_contact: true,
+                                data: {
+                                    age_years: "67"
+                                }
                             }
                         },
                         "response": {
