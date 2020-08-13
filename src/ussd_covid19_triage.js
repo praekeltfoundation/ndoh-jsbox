@@ -85,12 +85,12 @@ go.app = (function () {
           state_city: response.data.city,
           state_age: response.data.age
         };
-        return self.states.create("state_welcome");
+        return self.states.create("state_get_confirmed_contact");
       }, function (e) {
         // If it's 404, new user
         if(_.get(e, "response.code") === 404) {
           self.im.user.answers = {returning_user: false};
-          return self.states.create("state_welcome");
+          return self.states.create("state_get_confirmed_contact");
         }
         // Go to error state after 3 failed HTTP requests
         opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
@@ -100,6 +100,31 @@ go.app = (function () {
         }
         return self.states.create(name, opts);
       });
+    });
+
+    self.states.add("state_get_confirmed_contact", function(name, opts) {
+      var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+      var whatsapp_id = _.trimStart(msisdn, "+");
+      return new JsonApi(self.im).get(
+        self.im.config.turn.url + "/v1/contacts/" + whatsapp_id + "/profile", {
+          headers: {
+            "Authorization": ["Bearer " + self.im.config.turn.token],
+            "Accept": ["application/vnd.v1+json"],
+            "User-Agent": ["Jsbox/Covid19-Triage-USSD"]
+          }
+        }).then(function(response) {
+          self.im.user.answers.confirmed_contact = _.get(
+            response.data, "fields.confirmed_contact", false);
+          return self.states.create("state_welcome");
+        }, function (e) {
+          // Go to error state after 3 failed HTTP requests
+          opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+          if (opts.http_error_count === 3) {
+            self.im.log.error(e.message);
+            return self.states.create("__error__", { return_state: name });
+          }
+          return self.states.create(name, opts);
+        });
     });
 
     self.states.add("state_welcome", function(name) {

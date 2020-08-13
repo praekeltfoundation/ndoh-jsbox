@@ -12,6 +12,10 @@ describe("ussd_covid19_triage app", function () {
             eventstore: {
                 url: "http://eventstore",
                 token: "testtoken"
+            },
+            turn: {
+                url: "http://turn",
+                token: "turntoken"
             }
         });
     });
@@ -68,10 +72,18 @@ describe("ussd_covid19_triage app", function () {
                             }
                         }
                     });
+                    api.http.fixtures.add({
+                        request: {
+                            url: "http://turn/v1/contacts/27123456789/profile",
+                            method: "GET"
+                        },
+                        response: {
+                            code: 200,
+                            data: {}
+                        }
+                    });
                 })
-                .check.user.answers({
-                    returning_user: false
-                })
+                .check.user.answer("returning_user", false)
                 .check.user.state("state_welcome")
                 .run();
         });
@@ -93,13 +105,21 @@ describe("ussd_covid19_triage app", function () {
                             }
                         }
                     });
+                    api.http.fixtures.add({
+                        request: {
+                            url: "http://turn/v1/contacts/27123456789/profile",
+                            method: "GET"
+                        },
+                        response: {
+                            code: 200,
+                            data: {}
+                        }
+                    });
                 })
-                .check.user.answers({
-                    returning_user: true,
-                    state_province: "ZA-GT",
-                    state_city: "Sandton, South Africa",
-                    state_age: "18-40"
-                })
+                .check.user.answer("returning_user", true)
+                .check.user.answer("state_province", "ZA-GT")
+                .check.user.answer("state_city", "Sandton, South Africa")
+                .check.user.answer("state_age", "18-40")
                 .check.user.state("state_welcome")
                 .run();
         });
@@ -746,6 +766,16 @@ describe("ussd_covid19_triage app", function () {
                             "data": {
                                 "detail": "Not found."
                             }
+                        }
+                    });
+                    api.http.fixtures.add({
+                        request: {
+                            url: "http://turn/v1/contacts/27123456789/profile",
+                            method: "GET"
+                        },
+                        response: {
+                            code: 200,
+                            data: {}
                         }
                     });
                 })
