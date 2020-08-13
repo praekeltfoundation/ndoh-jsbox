@@ -572,6 +572,43 @@ describe("ussd_covid19_triage app", function () {
                 })
                 .run();
         });
+        it("should ask if they have a cough confirmed contact", function () {
+            return tester
+                .setup.user.state("state_cough")
+                .setup.user.answer("confirmed_contact", true)
+                .check.interaction({
+                    state: "state_cough",
+                    reply: [
+                        "Do you have a cough that recently started in the last week?",
+                        "",
+                        "Reply",
+                        "1. YES",
+                        "2. NO"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("display an error on invalid input confirmed contact", function () {
+            return tester
+                .setup.user.state("state_cough")
+                .setup.user.answer("confirmed_contact", true)
+                .input("A")
+                .check.interaction({
+                    state: "state_cough",
+                    reply: [
+                        "This service works best when you select numbers from the list.",
+                        "",
+                        "Do you have a cough that recently started in the last week?",
+                        "",
+                        "Reply",
+                        "1. YES",
+                        "2. NO"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
         it("display an error on invalid input", function () {
             return tester
                 .setup.user.state("state_cough")
