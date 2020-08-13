@@ -166,8 +166,12 @@ go.app = (function () {
     });
 
     self.add("state_terms", function (name) {
+      var next = "state_province";
+      if(self.im.user.answers.confirmed_contact) {
+        next = "state_fever";
+      }
       if(self.im.user.answers.returning_user) {
-        return self.states.create("state_province");
+        return self.states.create(next);
       }
       return new MenuState(name, {
         question: $([
@@ -184,7 +188,7 @@ go.app = (function () {
         ].join("\n")),
         accept_labels: true,
         choices: [
-          new Choice("state_province", $("YES")),
+          new Choice(next, $("YES")),
           new Choice("state_end", $("NO")),
           new Choice("state_more_info_pg1", $("MORE INFO")),
         ]

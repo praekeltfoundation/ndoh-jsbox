@@ -262,6 +262,14 @@ describe("ussd_covid19_triage app", function () {
                 .check.user.state("state_province")
                 .run();
         });
+        it("should go to state_fever for yes confirmed_contact", function () {
+            return tester
+                .setup.user.state("state_terms")
+                .setup.user.answer("confirmed_contact", true)
+                .input("1")
+                .check.user.state("state_fever")
+                .run();
+        });
         it("should go to state_province for returning users", function() {
             return tester
                 .setup.user.answer("returning_user", true)
