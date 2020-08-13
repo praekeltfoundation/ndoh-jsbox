@@ -543,6 +543,7 @@ go.app = (function () {
           "",
           "Reply"
         ].join("\n"));
+        self.im.user.answers.state_exposure = "yes";
         next = "state_taste";
       }
       return new ChoiceState(name, {
@@ -629,26 +630,49 @@ go.app = (function () {
     });
 
     self.add("state_tracing", function (name) {
-      return new ChoiceState(name, {
-        question: $([
-          "Please confirm that the information you shared is correct & that the National " +
-          "Department of Health can contact you if necessary?",
+      var question= $([
+        "Please confirm that the information you shared is correct & that the National " +
+        "Department of Health can contact you if necessary?",
+        "",
+        "Reply"
+      ].join("\n"));
+      var error = $([
+        "Please reply with numbers",
+        "Is the information you shared correct & can the National Department of Health contact " +
+        "you if necessary?",
+        "",
+        "Reply",
+      ].join("\n"));
+      var choices = [
+        new Choice(true, $("YES")),
+        new Choice(false, $("NO")),
+        new Choice(null, $("RESTART"))
+      ];
+      if(self.im.user.answers.confirmed_contact) {
+        question = $([
+          "Finally, please confirm that the information you shared is ACCURATE to the best of " +
+          "your knowledge?",
           "",
           "Reply"
-        ].join("\n")),
-        error: $([
-          "Please reply with numbers",
-          "Is the information you shared correct & can the National Department of Health contact " +
-          "you if necessary?",
+        ].join("\n"));
+        error = $([
+          "Please use numbers from the list.",
           "",
-          "Reply",
-        ].join("\n")),
-        accept_labels: true,
-        choices: [
+          "Finally, please confirm that the information you shared is ACCURATE to the best of " +
+          "your knowledge?",
+          "",
+          "Reply"
+        ].join("\n"));
+        choices = [
           new Choice(true, $("YES")),
           new Choice(false, $("NO")),
-          new Choice(null, $("RESTART"))
-        ],
+        ];
+      }
+      return new ChoiceState(name, {
+        question: question,
+        error: error,
+        accept_labels: true,
+        choices: choices,
         next: function (response) {
           if (response.value === null) {
             return "state_start";

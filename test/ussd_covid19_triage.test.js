@@ -1123,6 +1123,45 @@ describe("ussd_covid19_triage app", function () {
                 })
                 .run();
         });
+        it("should ask that the info is correct confirmed contact", function () {
+            return tester
+                .setup.user.state("state_tracing")
+                .setup.user.answer("confirmed_contact", true)
+                .check.interaction({
+                    state: "state_tracing",
+                    reply: [
+                        "Finally, please confirm that the information you shared is ACCURATE to " +
+                        "the best of your knowledge?",
+                        "",
+                        "Reply",
+                        "1. YES",
+                        "2. NO"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should display the error on invalid input confirmed contact", function () {
+            return tester
+                .setup.user.state("state_tracing")
+                .setup.user.answer("confirmed_contact", true)
+                .input("A")
+                .check.interaction({
+                    state: "state_tracing",
+                    reply: [
+                        "Please use numbers from the list.",
+                        "",
+                        "Finally, please confirm that the information you shared is ACCURATE to " +
+                        "the best of your knowledge?",
+                        "",
+                        "Reply",
+                        "1. YES",
+                        "2. NO"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
         it("should go to state_display_risk", function () {
             return tester
                 .setup.user.state("state_tracing")
