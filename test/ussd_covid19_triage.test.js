@@ -758,6 +758,59 @@ describe("ussd_covid19_triage app", function () {
                 .check.user.state("state_exposure")
                 .run();
         });
+        it("should go to state_taste confirmed contact", function () {
+            return tester
+                .setup.user.state("state_breathing")
+                .setup.user.answer("confirmed_contact", true)
+                .input("1")
+                .check.user.state("state_taste")
+                .run();
+        });
+    });
+    describe("state_taste", function() {
+        it("should ask if they have lost their sense of taste and smell", function () {
+            return tester
+                .setup.user.state("state_taste")
+                .check.interaction({
+                    state: "state_taste",
+                    reply: [
+                        "Have you noticed any recent changes in your ability to taste or smell " +
+                        "things?",
+                        "",
+                        "Reply",
+                        "1. YES",
+                        "2. NO"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function () {
+            return tester
+                .setup.user.state("state_taste")
+                .input("A")
+                .check.interaction({
+                    state: "state_taste",
+                    reply: [
+                        "This service works best when you select numbers from the list.",
+                        "Have you noticed any recent changes in your ability to taste or smell " +
+                        "things?",
+                        "",
+                        "Reply",
+                        "1. YES",
+                        "2. NO"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to state_preexisting_conditions", function () {
+            return tester
+                .setup.user.state("state_taste")
+                .input("1")
+                .check.user.state("state_preexisting_conditions")
+                .run();
+        });
     });
     describe("state_exposure", function () {
         it("should ask if they have been exposed to the virus", function () {

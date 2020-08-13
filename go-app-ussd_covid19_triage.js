@@ -400,6 +400,7 @@ go.app = (function () {
         "that you've noticed recently?",
         "Reply"
       ].join("\n"));
+      var next = "state_exposure";
       if(self.im.user.answers.confirmed_contact) {
         question = $([
           "Do you have shortness of breath while resting or difficulty breathing, that you've " +
@@ -415,6 +416,7 @@ go.app = (function () {
           "",
           "Reply"
         ].join("\n"));
+        next = "state_taste";
       }
       return new ChoiceState(name, {
         question: question,
@@ -424,7 +426,29 @@ go.app = (function () {
           new Choice(true, $("YES")),
           new Choice(false, $("NO")),
         ],
-        next: "state_exposure"
+        next: next
+      });
+    });
+
+    self.add("state_taste", function (name) {
+      return new ChoiceState(name, {
+        question: $([
+          "Have you noticed any recent changes in your ability to taste or smell things?",
+          "",
+          "Reply"
+        ].join("\n")),
+        error: $([
+          "This service works best when you select numbers from the list.",
+          "Have you noticed any recent changes in your ability to taste or smell things?",
+          "",
+          "Reply",
+        ].join("\n")),
+        accept_labels: true,
+        choices: [
+          new Choice(true, $("YES")),
+          new Choice(false, $("NO")),
+        ],
+        next: "state_preexisting_conditions"
       });
     });
 
