@@ -129,6 +129,7 @@ go.app = (function () {
 
     self.states.add("state_welcome", function(name) {
       var question;
+      var error = $("This service works best when you select numbers from the list");
       if(self.im.user.answers.returning_user) {
         question = $([
           "Welcome back to HealthCheck, your weekly COVID-19 Risk Assesment tool. Let's see how " +
@@ -145,9 +146,18 @@ go.app = (function () {
           "Reply"
         ].join("\n"));
       }
+      if(self.im.user.answers.confirmed_contact) {
+        question = $([
+          "The Dept of Health: you have been in contact with someone who has COVID-19. Isolate " +
+          "for 10 days & answer these questions.",
+          "",
+          "Reply"
+        ].join("\n"))
+        error = question;
+      }
       return new MenuState(name, {
         question: question,
-        error: $("This service works best when you select numbers from the list"),
+        error: error,
         accept_labels: true,
         choices: [
           new Choice("state_terms", $("START"))
@@ -530,6 +540,22 @@ go.app = (function () {
         )
       });
     };
+
+    self.states.add("state_cc_welcome", function(name) {
+      return new MenuState(name, {
+        question: $([
+          "The Dept of Health: you have been in contact with someone who has COVID-19. Isolate " +
+          "for 10 days & answer these questions.",
+          "", 
+          "Reply"
+        ].join("\n")),
+        accept_labels: true,
+        choices: [
+          new Choice("state_terms", $("START"))
+        ]
+      });
+    });
+
   });
 
   return {

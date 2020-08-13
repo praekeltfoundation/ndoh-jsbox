@@ -84,6 +84,7 @@ describe("ussd_covid19_triage app", function () {
                     });
                 })
                 .check.user.answer("returning_user", false)
+                .check.user.answer("confirmed_contact", false)
                 .check.user.state("state_welcome")
                 .run();
         });
@@ -112,7 +113,7 @@ describe("ussd_covid19_triage app", function () {
                         },
                         response: {
                             code: 200,
-                            data: {}
+                            data: {fields: {confirmed_contact: true}}
                         }
                     });
                 })
@@ -120,6 +121,7 @@ describe("ussd_covid19_triage app", function () {
                 .check.user.answer("state_province", "ZA-GT")
                 .check.user.answer("state_city", "Sandton, South Africa")
                 .check.user.answer("state_age", "18-40")
+                .check.user.answer("confirmed_contact", true)
                 .check.user.state("state_welcome")
                 .run();
         });
@@ -166,6 +168,41 @@ describe("ussd_covid19_triage app", function () {
                     state: "state_welcome",
                     reply: [
                         "This service works best when you select numbers from the list",
+                        "1. START"
+                    ].join("\n"),
+                    char_limit: 140
+                })
+                .run();
+        });
+        it("should repeat question on invalid input confirmed contact", function () {
+            return tester
+                .setup.user.state("state_welcome")
+                .setup.user.answer("confirmed_contact", true)
+                .input("A")
+                .check.interaction({
+                    state: "state_welcome",
+                    reply: [
+                        "The Dept of Health: you have been in contact with someone who has " +
+                        "COVID-19. Isolate for 10 days & answer these questions.",
+                        "",
+                        "Reply",
+                        "1. START"
+                    ].join("\n"),
+                    char_limit: 140
+                })
+                .run();
+        });
+        it("should show the confirmed contact welcome message", function () {
+            return tester
+                .setup.user.state("state_welcome")
+                .setup.user.answer("confirmed_contact", true)
+                .check.interaction({
+                    state: "state_welcome",
+                    reply: [
+                        "The Dept of Health: you have been in contact with someone who has " +
+                        "COVID-19. Isolate for 10 days & answer these questions.",
+                        "",
+                        "Reply",
                         "1. START"
                     ].join("\n"),
                     char_limit: 140
