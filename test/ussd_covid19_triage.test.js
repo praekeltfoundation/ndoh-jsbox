@@ -812,6 +812,54 @@ describe("ussd_covid19_triage app", function () {
                 .run();
         });
     });
+    describe("state_preexisting_conditions", function () {
+        it("should ask if they have any preexisting conditions", function () {
+            return tester
+                .setup.user.state("state_preexisting_conditions")
+                .check.interaction({
+                    state: "state_preexisting_conditions",
+                    reply: [
+                        "Have you been diagnosed with either Obesity, Diabetes, Hypertension or " +
+                        "Cardiovascular disease?",
+                        "",
+                        "Reply",
+                        "1. YES",
+                        "2. NO",
+                        "3. NOT SURE"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("display an error on invalid input", function () {
+            return tester
+                .setup.user.state("state_preexisting_conditions")
+                .input("A")
+                .check.interaction({
+                    state: "state_preexisting_conditions",
+                    reply: [
+                        "Please use numbers from list.",
+                        "",
+                        "Have you been diagnosed with either Obesity, Diabetes, Hypertension or " +
+                        "Cardiovascular disease?",
+                        "",
+                        "Reply",
+                        "1. YES",
+                        "2. NO",
+                        "3. NOT SURE"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to state_age_years", function () {
+            return tester
+                .setup.user.state("state_preexisting_conditions")
+                .input("1")
+                .check.user.state("state_age_years")
+                .run();
+        });
+    });
     describe("state_exposure", function () {
         it("should ask if they have been exposed to the virus", function () {
             return tester

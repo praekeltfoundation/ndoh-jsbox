@@ -449,6 +449,32 @@ go.app = (function () {
       });
     });
 
+    self.add("state_preexisting_conditions", function (name) {
+      return new ChoiceState(name, {
+        question: $([
+          "Have you been diagnosed with either Obesity, Diabetes, Hypertension or Cardiovascular " +
+          "disease?",
+          "",
+          "Reply"
+        ].join("\n")),
+        error: $([
+          "Please use numbers from list.",
+          "",
+          "Have you been diagnosed with either Obesity, Diabetes, Hypertension or Cardiovascular " +
+          "disease?",
+          "",
+          "Reply"
+        ].join("\n")),
+        accept_labels: true,
+        choices: [
+          new Choice("yes", $("YES")),
+          new Choice("no", $("NO")),
+          new Choice("not_sure", $("NOT SURE")),
+        ],
+        next: "state_age_years"
+      });
+    });
+
     self.add("state_exposure", function (name) {
       return new ChoiceState(name, {
         question: $([
