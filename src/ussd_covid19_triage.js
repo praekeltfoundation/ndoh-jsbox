@@ -719,6 +719,24 @@ go.app = (function () {
       var answers = self.im.user.answers;
       var risk = self.calculate_risk();
       var text = "";
+      if (answers.confirmed_contact) {
+        if (risk === "moderate") {
+          text = $(
+            "We recommend you SELF-QUARANTINE for the next 14 days and do this HealthCheck daily " +
+            "to monitor your symptoms. Stay/sleep alone in a room with good air flow."
+          );
+        }
+        if (risk === "high") {
+          text = $(
+            "You may be ELIGIBLE FOR COVID-19 TESTING. Go to a testing center or Call 0800029999 " +
+            "or visit your healthcare practitioner for info on what to do & how to test."
+          );
+        }
+        return new EndState(name, {
+          next: "state_start",
+          text: text,
+        });
+      }
       if (answers.state_tracing) {
         if (risk === "low") {
           text = $(
@@ -789,21 +807,6 @@ go.app = (function () {
         )
       });
     };
-
-    self.states.add("state_cc_welcome", function(name) {
-      return new MenuState(name, {
-        question: $([
-          "The Dept of Health: you have been in contact with someone who has COVID-19. Isolate " +
-          "for 10 days & answer these questions.",
-          "", 
-          "Reply"
-        ].join("\n")),
-        accept_labels: true,
-        choices: [
-          new Choice("state_terms", $("START"))
-        ]
-      });
-    });
 
   });
 

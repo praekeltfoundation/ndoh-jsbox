@@ -1542,5 +1542,109 @@ describe("ussd_covid19_triage app", function () {
                 .check.reply.ends_session()
                 .run();
         });
+        it("displays moderate risk message confirmed contact", function() {
+            return tester
+                .setup.user.state("state_tracing")
+                .setup.user.answers({
+                    confirmed_contact: true,
+                    state_age: ">65",
+                    state_fever: false,
+                    state_cough: false,
+                    state_province: "ZA-WC",
+                    state_city: "Cape Town",
+                    state_sore_throat: false,
+                    state_exposure: "yes",
+                })
+                .setup(function (api) {
+                    api.http.fixtures.add({
+                        "request": {
+                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "method": 'POST',
+                            "data": {
+                                msisdn: "+27123456789",
+                                source: "USSD",
+                                province: "ZA-WC",
+                                city: "Cape Town",
+                                age: ">65",
+                                fever: false,
+                                cough: false,
+                                sore_throat: false,
+                                exposure: "yes",
+                                tracing: true,
+                                risk: "moderate"
+                            }
+                        },
+                        "response": {
+                            "code": 201,
+                            "data": {
+                                "accepted": true
+                            }
+                        }
+                    });
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_display_risk",
+                    reply:
+                        "We recommend you SELF-QUARANTINE for the next 14 days and do this " +
+                        "HealthCheck daily to monitor your symptoms. Stay/sleep alone in a room " +
+                        "with good air flow.",
+                    char_limit: 160
+                })
+                .check.reply.ends_session()
+                .run();
+        });
+        it("displays high risk message confirmed contact", function() {
+            return tester
+                .setup.user.state("state_tracing")
+                .setup.user.answers({
+                    confirmed_contact: true,
+                    state_age: ">65",
+                    state_fever: true,
+                    state_cough: false,
+                    state_province: "ZA-WC",
+                    state_city: "Cape Town",
+                    state_sore_throat: false,
+                    state_exposure: "yes",
+                })
+                .setup(function (api) {
+                    api.http.fixtures.add({
+                        "request": {
+                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "method": 'POST',
+                            "data": {
+                                msisdn: "+27123456789",
+                                source: "USSD",
+                                province: "ZA-WC",
+                                city: "Cape Town",
+                                age: ">65",
+                                fever: true,
+                                cough: false,
+                                sore_throat: false,
+                                exposure: "yes",
+                                tracing: true,
+                                risk: "high"
+                            }
+                        },
+                        "response": {
+                            "code": 201,
+                            "data": {
+                                "accepted": true
+                            }
+                        }
+                    });
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_display_risk",
+                    reply:
+                        "You may be ELIGIBLE FOR COVID-19 TESTING. Go to a testing center or " +
+                        "Call 0800029999 or visit your healthcare practitioner for info on what " +
+                        "to do & how to test.",
+                    char_limit: 160
+                })
+                .check.reply.ends_session()
+                .run();
+        });
     });
 });
