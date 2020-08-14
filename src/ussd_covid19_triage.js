@@ -23,8 +23,26 @@ go.app = (function () {
         answers.state_fever,
         answers.state_cough,
         answers.state_sore_throat,
-        answers.state_breathing
+        answers.state_breathing,
+        answers.state_taste
       ]).length;
+
+      if (answers.confirmed_contact) {
+        if (answers.state_province === "ZA-WC") {
+          if (
+            (
+              _.parseInt(answers.state_age_years) > 55 
+              || answers.state_preexisting_conditions === "yes"
+            ) && symptom_count >= 1) {
+              return "high";
+          }
+          return "moderate";
+        }
+        if (symptom_count >= 1) {
+          return "high";
+        }
+        return "moderate";
+      }
 
       if (symptom_count === 0) {
         if (answers.state_exposure === "yes") { return "moderate"; }
