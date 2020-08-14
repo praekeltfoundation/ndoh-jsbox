@@ -961,21 +961,21 @@ describe("ussd_covid19_triage app", function () {
                 .check.user.state("state_exposure")
                 .run();
         });
-        it("should go to state_taste confirmed contact", function () {
+        it("should go to state_taste_and_smell confirmed contact", function () {
             return tester
                 .setup.user.state("state_breathing")
                 .setup.user.answer("confirmed_contact", true)
                 .input("1")
-                .check.user.state("state_taste")
+                .check.user.state("state_taste_and_smell")
                 .run();
         });
     });
-    describe("state_taste", function() {
+    describe("state_taste_and_smell", function() {
         it("should ask if they have lost their sense of taste and smell", function () {
             return tester
-                .setup.user.state("state_taste")
+                .setup.user.state("state_taste_and_smell")
                 .check.interaction({
-                    state: "state_taste",
+                    state: "state_taste_and_smell",
                     reply: [
                         "Have you noticed any recent changes in your ability to taste or smell " +
                         "things?",
@@ -990,10 +990,10 @@ describe("ussd_covid19_triage app", function () {
         });
         it("should display an error on invalid input", function () {
             return tester
-                .setup.user.state("state_taste")
+                .setup.user.state("state_taste_and_smell")
                 .input("A")
                 .check.interaction({
-                    state: "state_taste",
+                    state: "state_taste_and_smell",
                     reply: [
                         "This service works best when you select numbers from the list.",
                         "Have you noticed any recent changes in your ability to taste or smell " +
@@ -1009,7 +1009,7 @@ describe("ussd_covid19_triage app", function () {
         });
         it("should go to state_preexisting_conditions", function () {
             return tester
-                .setup.user.state("state_taste")
+                .setup.user.state("state_taste_and_smell")
                 .input("1")
                 .check.user.state("state_preexisting_conditions")
                 .run();
@@ -1648,7 +1648,7 @@ describe("ussd_covid19_triage app", function () {
                     city_location: "-03.866651+051.195827/",
                     state_sore_throat: false,
                     state_exposure: "yes",
-                    state_taste: true,
+                    state_taste_and_smell: true,
                     state_preexisting_conditions: "yes",
                     state_age_years: "67"
                 })

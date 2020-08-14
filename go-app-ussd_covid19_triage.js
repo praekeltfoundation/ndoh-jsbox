@@ -27,7 +27,7 @@ go.app = (function () {
         answers.state_cough,
         answers.state_sore_throat,
         answers.state_breathing,
-        answers.state_taste
+        answers.state_taste_and_smell
       ]).length;
 
       if (answers.confirmed_contact) {
@@ -571,7 +571,7 @@ go.app = (function () {
           "Reply"
         ].join("\n"));
         self.im.user.answers.state_exposure = "yes";
-        next = "state_taste";
+        next = "state_taste_and_smell";
       }
       return new ChoiceState(name, {
         question: question,
@@ -585,7 +585,7 @@ go.app = (function () {
       });
     });
 
-    self.add("state_taste", function (name) {
+    self.add("state_taste_and_smell", function (name) {
       return new ChoiceState(name, {
         question: $([
           "Have you noticed any recent changes in your ability to taste or smell things?",
@@ -728,7 +728,7 @@ go.app = (function () {
           cough: answers.state_cough,
           sore_throat: answers.state_sore_throat,
           difficulty_breathing: answers.state_breathing,
-          smell: answers.state_taste,
+          smell: answers.state_taste_and_smell,
           preexisting_condition: answers.state_preexisting_conditions,
           exposure: answers.state_exposure,
           tracing: answers.state_tracing,
