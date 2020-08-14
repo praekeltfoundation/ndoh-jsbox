@@ -105,7 +105,12 @@ describe("ussd_covid19_triage app", function () {
                                 msisdn: "+27123456789",
                                 province: "ZA-GT",
                                 city: "Sandton, South Africa",
-                                age: "18-40"
+                                city_location: "+00-025/",
+                                age: "18-40",
+                                preexisting_condition: "yes",
+                                data: {
+                                    age_years: "35",
+                                }
                             }
                         }
                     });
@@ -123,7 +128,10 @@ describe("ussd_covid19_triage app", function () {
                 .check.user.answer("returning_user", true)
                 .check.user.answer("state_province", "ZA-GT")
                 .check.user.answer("state_city", "Sandton, South Africa")
+                .check.user.answer("city_location", "+00-025/")
                 .check.user.answer("state_age", "18-40")
+                .check.user.answer("state_age_years", "35")
+                .check.user.answer("state_preexisting_conditions", "yes")
                 .check.user.answer("confirmed_contact", true)
                 .check.user.state("state_welcome")
                 .run();
@@ -493,6 +501,15 @@ describe("ussd_covid19_triage app", function () {
                 .check.user.state("state_age")
                 .run();
         });
+        it("should skip the state for users who already have this info confirmed contact", function() {
+            return tester
+                .setup.user.state("state_city")
+                .setup.user.answer("confirmed_contact", true)
+                .setup.user.answer("state_city", "Cape Town, South Africa")
+                .setup.user.answer("city_location", "+00-025/")
+                .check.user.state("state_tracing")
+                .run();
+        });
     });
     describe("state_confirm_city", function () {
         it("should ask to confirm the city", function() {
@@ -686,6 +703,14 @@ describe("ussd_covid19_triage app", function () {
                 .input("22")
                 .check.user.state("state_province")
                 .check.user.answer("state_age", "18-40")
+                .run();
+        });
+        it("should skip the state for users who already have this info", function() {
+            return tester
+                .setup.user.state("state_age_years")
+                .setup.user.answer("state_age_years", "23")
+                .setup.user.answer("state_age", "18-49")
+                .check.user.state("state_province")
                 .run();
         });
     });
@@ -1034,6 +1059,13 @@ describe("ussd_covid19_triage app", function () {
             return tester
                 .setup.user.state("state_preexisting_conditions")
                 .input("1")
+                .check.user.state("state_age_years")
+                .run();
+        });
+        it("should skip this state if we already have this info", function () {
+            return tester
+                .setup.user.state("state_preexisting_conditions")
+                .setup.user.answer("state_preexisting_conditions", "yes")
                 .check.user.state("state_age_years")
                 .run();
         });

@@ -105,7 +105,10 @@ go.app = (function () {
           returning_user: true,
           state_province: response.data.province,
           state_city: response.data.city,
-          state_age: response.data.age
+          city_location: response.data.city_location,
+          state_age: response.data.age,
+          state_age_years: response.data.data.age_years,
+          state_preexisting_conditions: response.data.preexisting_condition,
         };
         return self.states.create("state_get_confirmed_contact");
       }, function (e) {
@@ -288,6 +291,9 @@ go.app = (function () {
 
     self.add("state_city", function (name) {
       if(self.im.user.answers.state_city && self.im.user.answers.city_location) {
+        if(self.im.user.answers.confirmed_contact) {
+          return self.states.create("state_tracing");
+        }
         return self.states.create("state_age");
       }
       var question = $(
@@ -426,6 +432,9 @@ go.app = (function () {
     });
 
     self.add("state_age_years", function (name) {
+      if (self.im.user.answers.state_age_years && self.im.user.answers.state_age) {
+        return self.states.create("state_province");
+      }
       var question = $("Please TYPE your age in years (eg. 35)");
       return new FreeText(name, {
         question: question,
@@ -599,6 +608,9 @@ go.app = (function () {
     });
 
     self.add("state_preexisting_conditions", function (name) {
+      if(self.im.user.answers.state_preexisting_conditions) {
+        return self.states.create("state_age_years");
+      }
       return new ChoiceState(name, {
         question: $([
           "Have you been diagnosed with either Obesity, Diabetes, Hypertension or Cardiovascular " +
