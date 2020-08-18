@@ -449,7 +449,7 @@ go.app = (function () {
             self.im.user.answers.state_age = "40-65";
             return;
           } else if (age < 150) {
-            self.im.user.answers.state_age = "40-65";
+            self.im.user.answers.state_age = ">65";
             return;
           }
           return question;
