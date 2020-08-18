@@ -175,7 +175,7 @@ go.app = (function () {
       if(self.im.user.answers.confirmed_contact) {
         question = $([
           "The Dept of Health: you have been in contact with someone who has COVID-19. Isolate " +
-          "for 10 days & answer these questions.",
+          "for 14 days & answer these questions.",
           "",
           "Reply"
         ].join("\n"));

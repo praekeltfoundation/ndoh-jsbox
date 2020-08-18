@@ -194,7 +194,7 @@ describe("ussd_covid19_triage app", function () {
                     state: "state_welcome",
                     reply: [
                         "The Dept of Health: you have been in contact with someone who has " +
-                        "COVID-19. Isolate for 10 days & answer these questions.",
+                        "COVID-19. Isolate for 14 days & answer these questions.",
                         "",
                         "Reply",
                         "1. START"
@@ -211,7 +211,7 @@ describe("ussd_covid19_triage app", function () {
                     state: "state_welcome",
                     reply: [
                         "The Dept of Health: you have been in contact with someone who has " +
-                        "COVID-19. Isolate for 10 days & answer these questions.",
+                        "COVID-19. Isolate for 14 days & answer these questions.",
                         "",
                         "Reply",
                         "1. START"
