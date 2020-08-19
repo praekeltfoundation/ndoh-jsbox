@@ -892,7 +892,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
-                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "url": 'http://eventstore/api/v3/covid19triage/',
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
@@ -980,7 +980,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
-                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "url": 'http://eventstore/api/v3/covid19triage/',
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
@@ -1049,7 +1049,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
-                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "url": 'http://eventstore/api/v3/covid19triage/',
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
@@ -1106,7 +1106,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
-                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "url": 'http://eventstore/api/v3/covid19triage/',
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
@@ -1166,7 +1166,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
-                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "url": 'http://eventstore/api/v3/covid19triage/',
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
@@ -1235,7 +1235,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
-                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "url": 'http://eventstore/api/v3/covid19triage/',
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
@@ -1292,7 +1292,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
-                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "url": 'http://eventstore/api/v3/covid19triage/',
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",

@@ -530,7 +530,7 @@ go.app = (function () {
       var answers = self.im.user.answers;
 
       return new JsonApi(self.im).post(
-        self.im.config.eventstore.url + "/api/v2/covid19triage/", {
+        self.im.config.eventstore.url + "/api/v3/covid19triage/", {
         data: {
           msisdn: self.im.user.addr,
           source: "USSD",
