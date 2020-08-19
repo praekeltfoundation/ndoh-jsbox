@@ -966,6 +966,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .setup.user.answers({
                     state_province: "ZA-WC",
                     state_city: "Cape Town",
+                    city_location: "+12.34-56.78/",
                     state_age: "<18",
                     state_fever: false,
                     state_cough: false,
@@ -986,6 +987,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 source: "USSD",
                                 province: "ZA-WC",
                                 city: "Cape Town",
+                                city_location: "+12.34-56.78/",
                                 age: "<18",
                                 fever: false,
                                 cough: false,

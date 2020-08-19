@@ -639,6 +639,7 @@ go.app = (function () {
           source: "USSD",
           province: answers.state_province,
           city: answers.state_city,
+          city_location: answers.city_location,
           age: answers.state_age,
           fever: answers.state_fever,
           cough: answers.state_cough,
