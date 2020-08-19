@@ -9,6 +9,7 @@ go.app = (function () {
   var FreeText = vumigo.states.FreeText;
   var ChoiceState = vumigo.states.ChoiceState;
   var utils = require("seed-jsbox-utils").utils;
+  var crypto = require("crypto");
 
 
   var GoNDOH = App.extend(function (self) {
@@ -22,8 +23,26 @@ go.app = (function () {
         answers.state_fever,
         answers.state_cough,
         answers.state_sore_throat,
-        answers.state_breathing
+        answers.state_breathing,
+        answers.state_taste_and_smell
       ]).length;
+
+      if (answers.confirmed_contact) {
+        if (answers.state_province === "ZA-WC") {
+          if (
+            (
+              _.parseInt(answers.state_age_years) > 55 
+              || answers.state_preexisting_conditions === "yes"
+            ) && symptom_count >= 1) {
+              return "high";
+          }
+          return "moderate";
+        }
+        if (symptom_count >= 1) {
+          return "high";
+        }
+        return "moderate";
+      }
 
       if (symptom_count === 0) {
         if (answers.state_exposure === "yes") { return "moderate"; }
@@ -83,14 +102,17 @@ go.app = (function () {
           returning_user: true,
           state_province: response.data.province,
           state_city: response.data.city,
-          state_age: response.data.age
+          city_location: response.data.city_location,
+          state_age: response.data.age,
+          state_age_years: response.data.data.age_years,
+          state_preexisting_conditions: response.data.preexisting_condition,
         };
-        return self.states.create("state_welcome");
+        return self.states.create("state_get_confirmed_contact");
       }, function (e) {
         // If it's 404, new user
         if(_.get(e, "response.code") === 404) {
           self.im.user.answers = {returning_user: false};
-          return self.states.create("state_welcome");
+          return self.states.create("state_get_confirmed_contact");
         }
         // Go to error state after 3 failed HTTP requests
         opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
@@ -102,8 +124,35 @@ go.app = (function () {
       });
     });
 
+    self.states.add("state_get_confirmed_contact", function(name, opts) {
+      self.im.user.answers.google_session_token = crypto.randomBytes(20).toString("hex");
+      var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+      var whatsapp_id = _.trimStart(msisdn, "+");
+      return new JsonApi(self.im).get(
+        self.im.config.turn.url + "/v1/contacts/" + whatsapp_id + "/profile", {
+          headers: {
+            "Authorization": ["Bearer " + self.im.config.turn.token],
+            "Accept": ["application/vnd.v1+json"],
+            "User-Agent": ["Jsbox/Covid19-Triage-USSD"]
+          }
+        }).then(function(response) {
+          self.im.user.answers.confirmed_contact = _.get(
+            response.data, "fields.confirmed_contact", false);
+          return self.states.create("state_welcome");
+        }, function (e) {
+          // Go to error state after 3 failed HTTP requests
+          opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+          if (opts.http_error_count === 3) {
+            self.im.log.error(e.message);
+            return self.states.create("__error__", { return_state: name });
+          }
+          return self.states.create(name, opts);
+        });
+    });
+
     self.states.add("state_welcome", function(name) {
       var question;
+      var error = $("This service works best when you select numbers from the list");
       if(self.im.user.answers.returning_user) {
         question = $([
           "Welcome back to HealthCheck, your weekly COVID-19 Risk Assesment tool. Let's see how " +
@@ -120,9 +169,18 @@ go.app = (function () {
           "Reply"
         ].join("\n"));
       }
+      if(self.im.user.answers.confirmed_contact) {
+        question = $([
+          "The Dept of Health: you have been in contact with someone who has COVID-19. Isolate " +
+          "for 14 days & answer these questions.",
+          "",
+          "Reply"
+        ].join("\n"));
+        error = question;
+      }
       return new MenuState(name, {
         question: question,
-        error: $("This service works best when you select numbers from the list"),
+        error: error,
         accept_labels: true,
         choices: [
           new Choice("state_terms", $("START"))
@@ -131,8 +189,12 @@ go.app = (function () {
     });
 
     self.add("state_terms", function (name) {
+      var next = "state_province";
+      if(self.im.user.answers.confirmed_contact) {
+        next = "state_fever";
+      }
       if(self.im.user.answers.returning_user) {
-        return self.states.create("state_province");
+        return self.states.create(next);
       }
       return new MenuState(name, {
         question: $([
@@ -149,7 +211,7 @@ go.app = (function () {
         ].join("\n")),
         accept_labels: true,
         choices: [
-          new Choice("state_province", $("YES")),
+          new Choice(next, $("YES")),
           new Choice("state_end", $("NO")),
           new Choice("state_more_info_pg1", $("MORE INFO")),
         ]
@@ -157,11 +219,21 @@ go.app = (function () {
     });
 
     self.states.add("state_end", function (name) {
-      return new EndState(name, {
-        text: $(
+      var text;
+      if(self.im.user.answers.confirmed_contact) {
+        text = $(
+          "You can return to this service at any time. Remember, if you think you have COVID-19 " +
+          "STAY HOME, avoid contact with other people and self-quarantine."
+        );
+      } else {
+        text = $(
           "You can return to this service at any time. Remember, if you think you have COVID-19 " +
           "STAY HOME, avoid contact with other people and self-isolate."
-        ),
+        );
+      }
+
+      return new EndState(name, {
+        text: text,
         next: "state_start"
       });
     });
@@ -215,7 +287,10 @@ go.app = (function () {
     });
 
     self.add("state_city", function (name) {
-      if(self.im.user.answers.state_city) {
+      if(self.im.user.answers.state_city && self.im.user.answers.city_location) {
+        if(self.im.user.answers.confirmed_contact) {
+          return self.states.create("state_tracing");
+        }
         return self.states.create("state_age");
       }
       var question = $(
@@ -229,8 +304,106 @@ go.app = (function () {
             return question;
           }
         },
-        next: "state_age"
+        next: "state_google_places_lookup"
       });
+    });
+
+    self.add("state_google_places_lookup", function (name, opts) {
+      return new JsonApi(self.im).get(
+        "https://maps.googleapis.com/maps/api/place/autocomplete/json", {
+          params: {
+            input: self.im.user.answers.state_city,
+            key: self.im.config.google_places.key,
+            sessiontoken: self.im.user.answers.google_session_token,
+            language: "en",
+            components: "country:za"
+          },
+          headers: {
+            "User-Agent": ["Jsbox/Covid19-Triage-USSD"]
+          }
+        }).then(function(response) {
+          if(_.get(response.data, "status") !== "OK"){
+            return self.states.create("state_city");
+          }
+          var first_result = response.data.predictions[0];
+          self.im.user.answers.place_id = first_result.place_id;
+          self.im.user.answers.state_city = first_result.description;
+          return self.states.create("state_confirm_city");
+        }, function (e) {
+          // Go to error state after 3 failed HTTP requests
+          opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+          if (opts.http_error_count === 3) {
+            self.im.log.error(e.message);
+            return self.states.create("__error__", { return_state: name });
+          }
+          return self.states.create(name, opts);
+        });
+    });
+
+    self.add("state_confirm_city", function (name, opts) {
+      return new MenuState(name, {
+        question: $([
+          "Please confirm the address below based on info you shared:",
+          "{{ address }}",
+          "",
+          "Reply"
+        ].join("\n")).context({address: self.im.user.answers.state_city}),
+        accept_labels: true,
+        choices: [
+          new Choice("state_place_details_lookup", $("Yes")),
+          new Choice("state_city", $("No")),
+        ]
+      });
+    });
+
+    self.pad_location = function(location, places) {
+      // Pads the integer part of the number to places
+      // Ensures that there's always a sign
+      // Ensures that there's always a decimal part
+      var sign = "+";
+      if(location < 0) {
+        sign = "-";
+        location = location * -1;
+      }
+      location = _.split(location, ".", 2);
+      var int = location[0];
+      var dec = location[1] || 0;
+      return sign + _.padStart(int, places, "0") + "." + dec;
+    };
+
+    self.add("state_place_details_lookup", function (name, opts) {
+      return new JsonApi(self.im).get(
+        "https://maps.googleapis.com/maps/api/place/details/json", {
+          params: {
+            key: self.im.config.google_places.key,
+            place_id: self.im.user.answers.place_id,
+            sessiontoken: self.im.user.answers.google_session_token,
+            language: "en",
+            fields: "geometry"
+          },
+          headers: {
+            "User-Agent": ["Jsbox/Covid19-Triage-USSD"]
+          }
+        }).then(function(response) {
+          if(_.get(response.data, "status") !== "OK"){
+            return self.states.create("__error__");
+          }
+          var location = response.data.result.geometry.location;
+          self.im.user.answers.city_location = 
+            self.pad_location(location.lat, 2) + self.pad_location(location.lng, 3) + "/";
+          if(self.im.user.answers.confirmed_contact) {
+            return self.states.create("state_tracing");
+          }
+          return self.states.create("state_age");
+        }, function (e) {
+          // Go to error state after 3 failed HTTP requests
+          opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+          if (opts.http_error_count === 3) {
+            self.im.log.error(e.message);
+            return self.states.create("__error__", { return_state: name });
+          }
+          return self.states.create(name, opts);
+        });
     });
 
     self.add("state_age", function (name) {
@@ -252,6 +425,36 @@ go.app = (function () {
           new Choice(">65", $(">65"))
         ],
         next: "state_fever"
+      });
+    });
+
+    self.add("state_age_years", function (name) {
+      if (self.im.user.answers.state_age_years && self.im.user.answers.state_age) {
+        return self.states.create("state_province");
+      }
+      var question = $("Please TYPE your age in years (eg. 35)");
+      return new FreeText(name, {
+        question: question,
+        check: function(content) {
+          var age = _.parseInt(content);
+          if(age < 1) {
+            return question;
+          } else if (age < 18) {
+            self.im.user.answers.state_age = "<18";
+            return;
+          } else if (age < 40) {
+            self.im.user.answers.state_age = "18-40";
+            return;
+          } else if (age <= 65) {
+            self.im.user.answers.state_age = "40-65";
+            return;
+          } else if (age < 150) {
+            self.im.user.answers.state_age = ">65";
+            return;
+          }
+          return question;
+        },
+        next: "state_province"
       });
     });
 
@@ -279,18 +482,34 @@ go.app = (function () {
     });
 
     self.add("state_cough", function (name) {
+      var question = $([
+        "Do you have a cough that recently started?",
+        "",
+        "Reply"
+      ].join("\n"));
+      var error = $([
+        "Please use numbers from list.",
+        "Do you have a cough that recently started?",
+        "",
+        "Reply"
+      ].join("\n"));
+      if(self.im.user.answers.confirmed_contact) {
+        question = $([
+          "Do you have a cough that recently started in the last week?",
+          "",
+          "Reply"
+        ].join("\n"));
+        error = $([
+          "This service works best when you select numbers from the list.",
+          "",
+          "Do you have a cough that recently started in the last week?",
+          "",
+          "Reply"
+        ].join("\n"));
+      }
       return new ChoiceState(name, {
-        question: $([
-          "Do you have a cough that recently started?",
-          "",
-          "Reply"
-        ].join("\n")),
-        error: $([
-          "Please use numbers from list.",
-          "Do you have a cough that recently started?",
-          "",
-          "Reply"
-        ].join("\n")),
+        question: question,
+        error: error,
         accept_labels: true,
         choices: [
           new Choice(true, $("YES")),
@@ -323,22 +542,94 @@ go.app = (function () {
     });
 
     self.add("state_breathing", function (name) {
+      var question = $([
+        "Do you have breathlessness or a difficulty breathing, that you've noticed recently?",
+        "Reply"
+      ].join("\n"));
+      var error = $([
+        "Please use numbers from list. Do you have breathlessness or a difficulty breathing, " +
+        "that you've noticed recently?",
+        "Reply"
+      ].join("\n"));
+      var next = "state_exposure";
+      if(self.im.user.answers.confirmed_contact) {
+        question = $([
+          "Do you have shortness of breath while resting or difficulty breathing, that you've " +
+          "noticed recently?",
+          "",
+          "Reply"
+        ].join("\n"));
+        error = $([
+          "Please use numbers from list.",
+          "",
+          "Do you have shortness of breath while resting or difficulty breathing, that you've " +
+          "noticed recently?",
+          "",
+          "Reply"
+        ].join("\n"));
+        self.im.user.answers.state_exposure = "yes";
+        next = "state_taste_and_smell";
+      }
+      return new ChoiceState(name, {
+        question: question,
+        error: error,
+        accept_labels: true,
+        choices: [
+          new Choice(true, $("YES")),
+          new Choice(false, $("NO")),
+        ],
+        next: next
+      });
+    });
+
+    self.add("state_taste_and_smell", function (name) {
       return new ChoiceState(name, {
         question: $([
-          "Do you have breathlessness or a difficulty breathing, that you've noticed recently?",
+          "Have you noticed any recent changes in your ability to taste or smell things?",
+          "",
           "Reply"
         ].join("\n")),
         error: $([
-          "Please use numbers from list. Do you have breathlessness or a difficulty breathing, " +
-          "that you've noticed recently?",
-          "Reply"
+          "This service works best when you select numbers from the list.",
+          "Have you noticed any recent changes in your ability to taste or smell things?",
+          "",
+          "Reply",
         ].join("\n")),
         accept_labels: true,
         choices: [
           new Choice(true, $("YES")),
           new Choice(false, $("NO")),
         ],
-        next: "state_exposure"
+        next: "state_preexisting_conditions"
+      });
+    });
+
+    self.add("state_preexisting_conditions", function (name) {
+      if(self.im.user.answers.state_preexisting_conditions) {
+        return self.states.create("state_age_years");
+      }
+      return new ChoiceState(name, {
+        question: $([
+          "Have you been diagnosed with either Obesity, Diabetes, Hypertension or Cardiovascular " +
+          "disease?",
+          "",
+          "Reply"
+        ].join("\n")),
+        error: $([
+          "Please use numbers from list.",
+          "",
+          "Have you been diagnosed with either Obesity, Diabetes, Hypertension or Cardiovascular " +
+          "disease?",
+          "",
+          "Reply"
+        ].join("\n")),
+        accept_labels: true,
+        choices: [
+          new Choice("yes", $("YES")),
+          new Choice("no", $("NO")),
+          new Choice("not_sure", $("NOT SURE")),
+        ],
+        next: "state_age_years"
       });
     });
 
@@ -366,26 +657,49 @@ go.app = (function () {
     });
 
     self.add("state_tracing", function (name) {
-      return new ChoiceState(name, {
-        question: $([
-          "Please confirm that the information you shared is correct & that the National " +
-          "Department of Health can contact you if necessary?",
+      var question= $([
+        "Please confirm that the information you shared is correct & that the National " +
+        "Department of Health can contact you if necessary?",
+        "",
+        "Reply"
+      ].join("\n"));
+      var error = $([
+        "Please reply with numbers",
+        "Is the information you shared correct & can the National Department of Health contact " +
+        "you if necessary?",
+        "",
+        "Reply",
+      ].join("\n"));
+      var choices = [
+        new Choice(true, $("YES")),
+        new Choice(false, $("NO")),
+        new Choice(null, $("RESTART"))
+      ];
+      if(self.im.user.answers.confirmed_contact) {
+        question = $([
+          "Finally, please confirm that the information you shared is ACCURATE to the best of " +
+          "your knowledge?",
           "",
           "Reply"
-        ].join("\n")),
-        error: $([
-          "Please reply with numbers",
-          "Is the information you shared correct & can the National Department of Health contact " +
-          "you if necessary?",
+        ].join("\n"));
+        error = $([
+          "Please use numbers from the list.",
           "",
-          "Reply",
-        ].join("\n")),
-        accept_labels: true,
-        choices: [
+          "Finally, please confirm that the information you shared is ACCURATE to the best of " +
+          "your knowledge?",
+          "",
+          "Reply"
+        ].join("\n"));
+        choices = [
           new Choice(true, $("YES")),
           new Choice(false, $("NO")),
-          new Choice(null, $("RESTART"))
-        ],
+        ];
+      }
+      return new ChoiceState(name, {
+        question: question,
+        error: error,
+        accept_labels: true,
+        choices: choices,
         next: function (response) {
           if (response.value === null) {
             return "state_start";
@@ -399,20 +713,27 @@ go.app = (function () {
       var answers = self.im.user.answers;
 
       return new JsonApi(self.im).post(
-        self.im.config.eventstore.url + "/api/v2/covid19triage/", {
+        self.im.config.eventstore.url + "/api/v3/covid19triage/", {
         data: {
           msisdn: self.im.user.addr,
           source: "USSD",
           province: answers.state_province,
           city: answers.state_city,
+          city_location: answers.city_location,
           age: answers.state_age,
           fever: answers.state_fever,
           cough: answers.state_cough,
           sore_throat: answers.state_sore_throat,
           difficulty_breathing: answers.state_breathing,
+          smell: answers.state_taste_and_smell,
+          preexisting_condition: answers.state_preexisting_conditions,
           exposure: answers.state_exposure,
           tracing: answers.state_tracing,
-          risk: self.calculate_risk()
+          confirmed_contact: answers.confirmed_contact,
+          risk: self.calculate_risk(),
+          data: {
+            age_years: answers.state_age_years
+          }
         },
         headers: {
           "Authorization": ["Token " + self.im.config.eventstore.token],
@@ -435,6 +756,24 @@ go.app = (function () {
       var answers = self.im.user.answers;
       var risk = self.calculate_risk();
       var text = "";
+      if (answers.confirmed_contact) {
+        if (risk === "moderate") {
+          text = $(
+            "We recommend you SELF-QUARANTINE for the next 14 days and do this HealthCheck daily " +
+            "to monitor your symptoms. Stay/sleep alone in a room with good air flow."
+          );
+        }
+        if (risk === "high") {
+          text = $(
+            "You may be ELIGIBLE FOR COVID-19 TESTING. Go to a testing center or Call 0800029999 " +
+            "or visit your healthcare practitioner for info on what to do & how to test."
+          );
+        }
+        return new EndState(name, {
+          next: "state_start",
+          text: text,
+        });
+      }
       if (answers.state_tracing) {
         if (risk === "low") {
           text = $(
@@ -505,6 +844,7 @@ go.app = (function () {
         )
       });
     };
+
   });
 
   return {
