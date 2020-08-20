@@ -146,6 +146,23 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 })
                 .run();
         });
+        it("should show the welcome message returning user", function () {
+            return tester
+                .setup.user.state("state_welcome")
+                .setup.user.answer("returning_user", true)
+                .check.interaction({
+                    state: "state_welcome",
+                    reply: [
+                        "Welcome back to HIGHER HEALTH HealthCheck is your risk assessment " +
+                        "tool. Let us know how you're feeling today.",
+                        "",
+                        "Reply",
+                        "1. START"
+                    ].join("\n"),
+                    char_limit: 140
+                })
+                .run();
+        });
         it("should display error on invalid input", function () {
             return tester
                 .setup.user.state("state_welcome")

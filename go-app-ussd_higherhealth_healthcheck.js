@@ -213,13 +213,24 @@ go.app = (function () {
     });
 
     self.states.add("state_welcome", function(name) {
-      return new MenuState(name, {
-        question: $([
+      var question;
+      if (self.im.user.answers.returning_user) {
+        question = $([
+          "Welcome back to HIGHER HEALTH HealthCheck is your risk assessment tool. Let us know " +
+          "how you're feeling today.",
+          "",
+          "Reply",
+        ].join("\n"));
+      } else {
+        question = $([
           "The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by answering a " +
           "few questions about you and your health.",
           "",
           "Reply"
-        ].join("\n")),
+        ].join("\n"));
+      }
+      return new MenuState(name, {
+        question: question,
         error: $("This service works best when you select numbers from the list"),
         accept_labels: true,
         choices: [
