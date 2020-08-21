@@ -344,13 +344,14 @@ go.app = (function () {
     });
 
     self.add("state_confirm_city", function (name, opts) {
+      var city_trunc = self.im.user.answers.state_city.slice(0, 160-79);
       return new MenuState(name, {
         question: $([
           "Please confirm the address below based on info you shared:",
           "{{ address }}",
           "",
           "Reply"
-        ].join("\n")).context({address: self.im.user.answers.state_city}),
+        ].join("\n")).context({address: city_trunc}),
         accept_labels: true,
         choices: [
           new Choice("state_place_details_lookup", $("Yes")),

@@ -19,6 +19,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 token: "testtoken",
                 sms_flow_uuid: "sms-flow-uuid"
             },
+            google_places: {
+                key: "googleplaceskey"
+            },
             testing_today: "2020-01-01T00:00:00Z"
         });
     });
@@ -76,9 +79,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                         }
                     });
                 })
-                .check.user.answers({
-                    returning_user: false
-                })
+                .check.user.answer("returning_user", false)
                 .check.user.state("state_welcome")
                 .run();
         });
@@ -96,6 +97,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 msisdn: "+27123456789",
                                 province: "ZA-GT",
                                 city: "Sandton, South Africa",
+                                city_location: "+12.34-56.78/",
                                 age: "18-40",
                                 first_name: "John",
                                 last_name: "Doe",
@@ -113,18 +115,17 @@ describe("ussd_higherhealth_healthcheck app", function () {
                         }
                     });
                 })
-                .check.user.answers({
-                    returning_user: true,
-                    state_province: "ZA-GT",
-                    state_city: "Sandton, South Africa",
-                    state_age: "18-40",
-                    state_first_name: "John",
-                    state_last_name: "Doe",
-                    state_university: "Other",
-                    state_university_other: "test_uni",
-                    state_campus: "Other",
-                    state_campus_other: "test_campus"
-                })
+                .check.user.answer("returning_user", true)
+                .check.user.answer("state_province", "ZA-GT")
+                .check.user.answer("state_city", "Sandton, South Africa")
+                .check.user.answer("city_location", "+12.34-56.78/")
+                .check.user.answer("state_age", "18-40")
+                .check.user.answer("state_first_name", "John")
+                .check.user.answer("state_last_name", "Doe")
+                .check.user.answer("state_university", "Other")
+                .check.user.answer("state_university_other", "test_uni")
+                .check.user.answer("state_campus", "Other")
+                .check.user.answer("state_campus_other", "test_campus")
                 .check.user.state("state_welcome")
                 .run();
         });
@@ -463,18 +464,118 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 })
                 .run();
         });
-        it("should go to state_age", function () {
+        it("should go to state_confirm_city", function () {
             return tester
+                .setup.user.answer("google_session_token", "testsessiontoken")
+                .setup(function (api) {
+                    api.http.fixtures.add({
+                        request: {
+                            url: "https://maps.googleapis.com/maps/api/place/autocomplete/json",
+                            params: {
+                                input: "cape town",
+                                key: "googleplaceskey",
+                                sessiontoken: "testsessiontoken",
+                                language: "en",
+                                components: "country:za"
+                            },
+                            method: "GET"
+                        },
+                        response: {
+                            code: 200,
+                            data: {
+                                status: "OK",
+                                predictions: [
+                                    {
+                                        description: "Cape Town, South Africa",
+                                        place_id: "ChIJD7fiBh9u5kcRYJSMaMOCCwQ"
+                                    }
+                                ]
+                            }
+                        }
+                    });
+                })
                 .setup.user.state("state_city")
-                .input("test city")
-                .check.user.state("state_age")
+                .input("cape town")
+                .check.user.state("state_confirm_city")
+                .check.user.answer("state_city", "Cape Town, South Africa")
+                .check.user.answer("place_id", "ChIJD7fiBh9u5kcRYJSMaMOCCwQ")
                 .run();
         });
+        
         it("should go to state_age if value exists", function () {
             return tester
                 .setup.user.answer("state_city", "Cape Town, South Africa")
+                .setup.user.answer("city_location", "+12.34-56.78/")
                 .setup.user.state("state_city")
                 .check.user.state("state_age")
+                .run();
+        });
+    });
+    describe("state_confirm_city", function() {
+        it("should ask to confirm the city", function() {
+            return tester
+                .setup.user.state("state_confirm_city")
+                .setup.user.answer("state_city", "54321 Fancy Apartment, 12345 Really really long address, Fresnaye, Cape Town, South Africa")
+                .check.interaction({
+                    state: "state_confirm_city",
+                    reply: [
+                        "Please confirm the address below based on info you shared:",
+                        "54321 Fancy Apartment, 12345 Really really long address, Fresnaye, Cape Town, Sou",
+                        "",
+                        "Reply",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("go back to state_city if user selects no", function() {
+            return tester
+                .setup.user.state("state_confirm_city")
+                .setup.user.answer("state_city", "Cape Town, South Africa")
+                .input("2")
+                .check.user.state("state_city")
+                .run();
+        });
+        it("go to state_age if user selects yes", function() {
+            return tester
+                .setup(function (api) {
+                    api.http.fixtures.add({
+                        request: {
+                            url: "https://maps.googleapis.com/maps/api/place/details/json",
+                            params: {
+                                key: "googleplaceskey",
+                                place_id: "ChIJD7fiBh9u5kcRYJSMaMOCCwQ",
+                                sessiontoken: "testsessiontoken",
+                                language: "en",
+                                fields: "geometry"
+                            },
+                            method: "GET"
+                        },
+                        response: {
+                            code: 200,
+                            data: {
+                                status: "OK",
+                                result: {
+                                    geometry: {
+                                        location: {
+                                           lat: -3.866651,
+                                           lng: 51.195827
+                                        },
+                                    }
+                                }
+                            }
+                        }
+                    });
+                })
+                .setup.user.state("state_confirm_city")
+                .setup.user.answer("state_city", "Cape Town, South Africa")
+                .setup.user.answer("place_id", "ChIJD7fiBh9u5kcRYJSMaMOCCwQ")
+                .setup.user.answer("google_session_token", "testsessiontoken")
+                .input("1")
+                .check.user.state("state_age")
+                .check.user.answer("city_location", "-03.866651+051.195827/")
                 .run();
         });
     });
@@ -808,7 +909,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
-                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "url": 'http://eventstore/api/v3/covid19triage/',
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
@@ -882,6 +983,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .setup.user.answers({
                     state_province: "ZA-WC",
                     state_city: "Cape Town",
+                    city_location: "+12.34-56.78/",
                     state_age: "<18",
                     state_fever: false,
                     state_cough: false,
@@ -895,13 +997,14 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
-                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "url": 'http://eventstore/api/v3/covid19triage/',
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
                                 source: "USSD",
                                 province: "ZA-WC",
                                 city: "Cape Town",
+                                city_location: "+12.34-56.78/",
                                 age: "<18",
                                 fever: false,
                                 cough: false,
@@ -963,7 +1066,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
-                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "url": 'http://eventstore/api/v3/covid19triage/',
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
@@ -1020,7 +1123,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
-                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "url": 'http://eventstore/api/v3/covid19triage/',
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
@@ -1080,7 +1183,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
-                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "url": 'http://eventstore/api/v3/covid19triage/',
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
@@ -1149,7 +1252,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
-                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "url": 'http://eventstore/api/v3/covid19triage/',
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
@@ -1206,7 +1309,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .setup(function (api) {
                     api.http.fixtures.add({
                         "request": {
-                            "url": 'http://eventstore/api/v2/covid19triage/',
+                            "url": 'http://eventstore/api/v3/covid19triage/',
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",

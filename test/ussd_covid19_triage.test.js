@@ -515,12 +515,12 @@ describe("ussd_covid19_triage app", function () {
         it("should ask to confirm the city", function() {
             return tester
                 .setup.user.state("state_confirm_city")
-                .setup.user.answer("state_city", "Cape Town, South Africa")
+                .setup.user.answer("state_city", "54321 Fancy Apartment, 12345 Really really long address, Fresnaye, Cape Town, South Africa")
                 .check.interaction({
                     state: "state_confirm_city",
                     reply: [
                         "Please confirm the address below based on info you shared:",
-                        "Cape Town, South Africa",
+                        "54321 Fancy Apartment, 12345 Really really long address, Fresnaye, Cape Town, Sou",
                         "",
                         "Reply",
                         "1. Yes",
