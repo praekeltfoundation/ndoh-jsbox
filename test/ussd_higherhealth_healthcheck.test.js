@@ -1098,7 +1098,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
-                        "You should SELF-QUARANTINE for 14 days and do HealthCheck daily to " +
+                        "You should SELF-QUARANTINE for 10 days and do HealthCheck daily to " +
                         "monitor symptoms. Try stay and sleep alone in a room that has a window " +
                         "with good air flow.",
                     char_limit: 160
@@ -1284,7 +1284,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply: [
-                        "We won't contact you. SELF-QUARANTINE for 14 days and do this " +
+                        "We won't contact you. SELF-QUARANTINE for 10 days and do this " +
                         "HealthCheck daily to monitor symptoms. Stay/sleep alone in a room with " +
                         "good air flowing through"
                     ].join("\n"),
