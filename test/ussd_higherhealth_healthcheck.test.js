@@ -583,6 +583,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
         it("should ask for their age", function () {
             return tester
                 .setup.user.state("state_age")
+                .setup.user.answers({
+                    state_province: 'ZA-GT',
+                })
                 .check.interaction({
                     state: "state_age",
                     reply: [
@@ -615,9 +618,206 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 })
                 .run();
         });
-        it("should go to state_fever", function () {
+        it("should go to state_university", function () {
             return tester
                 .setup.user.state("state_age")
+                .setup.user.answers({
+                    state_province: 'ZA-GT',
+                })
+                .input("1")
+                .check.user.state("state_university")
+                .run();
+        });
+    });
+    describe("state_university", function () {
+        it("should ask for a users university", function () {
+            return tester
+                .setup.user.answers({
+                    state_province: 'ZA-GT',
+                })
+                .setup.user.state("state_university")
+                .check.interaction({
+                    state: "state_university",
+                    reply: [
+                        "Select your university.",
+                        "",
+                        "Reply:",
+                        "1. Central Johannesburg",
+                        "2. Ekurhuleni East",
+                        "3. Ekurhuleni West",
+                        "4. North West University (NWU)",
+                        "5. Sedibeng",
+                        "6. More"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .check.user.answer('state_province', 'ZA-GT')
+                .run();
+        });
+        it("should display an error on invalid input", function () {
+            return tester
+                .setup.user.state("state_university")
+                .setup.user.answers({
+                    state_province: 'ZA-GT'
+                })
+                .input("A")
+                .check.interaction({
+                    state: "state_university",
+                    reply: [
+                        "Select your university.",
+                        "",
+                        "Reply:",
+                        "1. Central Johannesburg",
+                        "2. Ekurhuleni East",
+                        "3. Ekurhuleni West",
+                        "4. North West University (NWU)",
+                        "5. Sedibeng",
+                        "6. More"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to other free text university input", function () {
+            return tester
+                .setup.user.state("state_university")
+                .setup.user.answers({
+                    state_province: 'ZA-NC'
+                })
+                .input("5")  // Other
+                .check.interaction({
+                    state: "state_university_other",
+                    reply: [
+                        "Enter the name of your university.",
+                        "Reply:"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to state_campus", function () {
+            return tester
+                .setup.user.state("state_university")
+                .setup.user.answers({
+                    state_province: 'ZA-GT'
+                })
+                .input("1")
+                .check.user.state("state_campus")
+                .run();
+        });
+    });
+
+    describe("state_university_other", function(){
+        it("the user should be taken to next screen", function(){
+            return tester
+                .setup.user.answers({
+                    state_province: 'ZA-WC',
+                    state_university: 'Other',
+                })
+                .setup.user.state("state_university_other")
+                .input("Winelands")  // Other
+                .check.interaction({state:"state_campus"})
+                .run();
+        });
+    });
+
+    describe("state_campus", function () {
+        it("should ask for the users campus", function () {
+            return tester
+                .setup.user.state("state_campus")
+                .setup.user.answers({
+                    state_province: 'ZA-GT',
+                    state_university: 'University of Johannesburg (UJ)'
+                })
+                .check.interaction({
+                    state: "state_campus",
+                    reply: [
+                        "Select your campus.",
+                        "",
+                        "Reply:",
+                        "1. Doornfontein (DFC)",
+                        "2. Kingsway Auckland Park (APK)",
+                        "3. Kingsway Bunting Road (APB)",
+                        "4. Soweto",
+                        "5. Other"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should ask for the users campus (Unisa)", function () {
+            return tester
+                .setup.user.state("state_campus")
+                .setup.user.answers({
+                    state_province: 'ZA-GT',
+                    state_university: 'UNISA'
+                })
+                .check.interaction({
+                    state: "state_campus",
+                    reply: [
+                        "Select your campus.",
+                        "",
+                        "Reply:",
+                         "1. Ekurhuleni",
+                        "2. Florida (Science Campus)",
+                        "3. Johannesburg",
+                        "4. Pretoria (Sunnyside)",
+                        "5. Vaal",
+                        "6. Other"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function () {
+            return tester
+                .setup.user.state("state_campus")
+                .setup.user.answers({
+                    state_province: 'ZA-GT',
+                    state_university: 'University of Johannesburg (UJ)'
+                })
+                .input("A")
+                .check.interaction({
+                    state: "state_campus",
+                    reply: [
+                        "Select your campus.",
+                        "",
+                        "Reply:",
+                        "1. Doornfontein (DFC)",
+                        "2. Kingsway Auckland Park (APK)",
+                        "3. Kingsway Bunting Road (APB)",
+                        "4. Soweto",
+                        "5. Other"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to other free text campus input", function () {
+            return tester
+                .setup.user.state("state_campus")
+                .setup.user.answers({
+                    state_province: 'ZA-WC',
+                    state_university: 'Stellenbosch University (SU)',
+                })
+                .input("3")  // Other
+                .check.interaction({
+                    state: "state_campus_other",
+                    reply: [
+                        "Enter the name of your campus.",
+                        "Reply:"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to state_fever", function () {
+            return tester
+                .setup.user.state("state_campus")
+                .setup.user.answers({
+                    state_province: 'ZA-GT',
+                    state_university: 'University of Johannesburg (UJ)'
+                })
                 .input("1")
                 .check.user.state("state_fever")
                 .run();
@@ -630,6 +830,22 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .run();
         });
     });
+
+    describe("state_campus_other", function(){
+        it("the user should be taken to next screen", function(){
+            return tester
+                .setup.user.state("state_campus_other")
+                .setup.user.answers({
+                    state_province: 'ZA-WC',
+                    state_university: 'Stellenbosch University (SU)',
+                    state_campus: 'Other',
+                })
+                .input("Neelsie")  // Other
+                .check.interaction({state:"state_fever"})
+                .run();
+        });
+    });
+
     describe("state_fever", function () {
         it("should ask if they have a fever", function () {
             return tester
