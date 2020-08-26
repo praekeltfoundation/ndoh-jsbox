@@ -739,7 +739,7 @@ go.app = (function () {
         }
         if (risk === "moderate") {
           text = $(
-            "You should SELF-QUARANTINE for 14 days and do HealthCheck daily to monitor " +
+            "You should SELF-QUARANTINE for 10 days and do HealthCheck daily to monitor " +
             "symptoms. Try stay and sleep alone in a room that has a window with good air flow."
           );
         }
@@ -756,7 +756,7 @@ go.app = (function () {
         }
         if (risk === "moderate") {
           text = $([
-            "We won't contact you. SELF-QUARANTINE for 14 days and do this HealthCheck daily " +
+            "We won't contact you. SELF-QUARANTINE for 10 days and do this HealthCheck daily " +
             "to monitor symptoms. Stay/sleep alone in a room with good air flowing through"
           ].join("\n"));
         }

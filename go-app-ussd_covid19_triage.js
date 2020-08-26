@@ -175,7 +175,7 @@ go.app = (function () {
       if(self.im.user.answers.confirmed_contact) {
         question = $([
           "The Dept of Health: you have been in contact with someone who has COVID-19. Isolate " +
-          "for 14 days & answer these questions.",
+          "for 10 days & answer these questions.",
           "",
           "Reply"
         ].join("\n"));
@@ -763,7 +763,7 @@ go.app = (function () {
       if (answers.confirmed_contact) {
         if (risk === "moderate") {
           text = $(
-            "We recommend you SELF-QUARANTINE for the next 14 days and do this HealthCheck daily " +
+            "We recommend you SELF-QUARANTINE for the next 10 days and do this HealthCheck daily " +
             "to monitor your symptoms. Stay/sleep alone in a room with good air flow."
           );
         }
@@ -787,7 +787,7 @@ go.app = (function () {
         }
         if (risk === "moderate") {
           text = $(
-            "We recommend you SELF-QUARANTINE for the next 14 days and do this HealthCheck " +
+            "We recommend you SELF-QUARANTINE for the next 10 days and do this HealthCheck " +
             "daily to monitor your symptoms. Stay/sleep alone in a room with good air flow."
           );
         }
@@ -832,7 +832,7 @@ go.app = (function () {
     self.add("state_no_tracing_moderate_risk", function(name) {
         return new MenuState(name, {
           question: $(
-            "You won't be contacted. SELF-QUARANTINE for 14 days, do this HealthCheck " +
+            "You won't be contacted. SELF-QUARANTINE for 10 days, do this HealthCheck " +
             "daily to monitor symptoms. Stay/sleep alone in a room with good air flow."
           ),
           choices: [new Choice("state_start", $("START OVER"))]
