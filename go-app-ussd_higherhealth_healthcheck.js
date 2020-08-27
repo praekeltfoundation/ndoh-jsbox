@@ -585,8 +585,7 @@ go.app = (function () {
                 "East London",
                 "John Knox Bokwe",
                 "St Marks"
-
-        ],
+            ],
             "Cape Peninsula University of Technology (CPUT)":[
                 "Athlone",
                 "Bellville",
@@ -610,8 +609,7 @@ go.app = (function () {
                 "Ramokgopa",
                 "Senwabarwana",
                 "Seshego"
-
-        ],
+            ],
             "Central Johannesburg":[
                 "Alexandra",
                 "Central Office",
@@ -639,8 +637,7 @@ go.app = (function () {
                 "Umbumbulu",
                 "Umlazi BB",
                 "Umlazi V"
-
-        ],
+            ],
             "College of Cape Town":[
                 "Athlone",
                 "Central Office",
@@ -651,8 +648,7 @@ go.app = (function () {
                 "Pinelands",
                 "Thornton",
                 "Wynberg"
-
-        ],
+            ],
             "Durban University of Technology (DUT)":[
                 "Brickfield",
                 "City Campus",
@@ -661,8 +657,7 @@ go.app = (function () {
                 "Ritson",
                 "Riverside",
                 "Steve Biko"
-
-        ],
+            ],
             "Eastcape Midlands":[
                 "Brickfields",
                 "Central Office",
@@ -673,8 +668,7 @@ go.app = (function () {
                 "High Street",
                 "Park Avenue",
                 "Thanduxolo"
-
-        ],
+            ],
             "Ehlanzeni":[
                 "Barberton",
                 "Central Office",
@@ -880,14 +874,17 @@ go.app = (function () {
                 "Vryheid"
 
         ],
-            "Nelson Mandela University (NMU)":[
-                "2nd Avenue",
-                "Missionville",
-                "North",
-                "South",
-                "George"
-
-        ],
+            "Nelson Mandela University (NMU)": {
+                'ZA-EC': [
+                    "2nd Avenue",
+                    "Missionville",
+                    "North",
+                    "South",
+                ],
+                'ZA-WC': [
+                    "George"
+                ]
+            },
             "Nkangala":[
                 "CN Mahlangu",
                 "Central Office",
@@ -897,11 +894,15 @@ go.app = (function () {
                 "Witbank"
 
         ],
-            "North West University (NWU)":[
-                "Mafikeng",
-                "Potchefstroom",
-                "Vaal Triangle (Vanderbijl Park)"
-        ],
+            "North West University (NWU)": {
+                "ZA-GT": [
+                    "Vaal Triangle (Vanderbijl Park)"
+                ],
+                "ZA-NW": [
+                    "Mafikeng",
+                    "Potchefstroom",
+                ]
+            },
             "Northern Cape Rural":[
                 "Central Office",
                 "De Aar",
@@ -1020,16 +1021,24 @@ go.app = (function () {
                 "Pretoria West"
 
         ],
-            "Tshwane University of Technology (TUT)":[
-                "Polokwane",
-                "Mbombela",
-                "eMalahleni",
+        "Tshwane University of Technology (TUT)":{
+            "ZA-GT": [
                 "Arcadia",
                 "Arts",
-                "Ga-Rankuwa",
                 "Pretoria West",
+                "Ga-Rankuwa",
                 "Soshanguve"
-        ],
+
+            ],
+            "ZA-MP": [
+                "Mbombela",
+                "eMalahleni",
+            ],
+            "ZA-LP": [
+                "Polokwane",
+                "eMalahleni",
+            ]
+        },
         "UNISA": {
           "ZA-EC": [
             "East London",
@@ -1158,12 +1167,15 @@ go.app = (function () {
                 "Braamfontein"
 
         ],
-            "Vaal University of Technology (VUT)":[
-                "Ekurhuleni",
-                "Main Campus (Vanderbijlpark)",
-                "Secunda"
-
-        ],
+            "Vaal University of Technology (VUT)": {
+                "ZA-GT": [
+                    "Ekurhuleni",
+                    "Main Campus (Vanderbijlpark)",
+                ],
+                "ZA-MP": [
+                    "Secunda"
+                ],
+            },
             "Vhembe":[
                 "Central Office",
                 "Makwarela",
@@ -1189,7 +1201,6 @@ go.app = (function () {
                 "Butterworth (Ibika)",
                 "Mthatha",
                 "Queenstown (Masibulele)"
-
         ],
             "Waterberg":[
                 "Business",
