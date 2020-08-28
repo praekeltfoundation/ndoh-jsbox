@@ -538,6 +538,7 @@ go.app = (function () {
             city: answers.state_city,
             city_location: answers.city_location,
             age: answers.state_age,
+            gender: answers.state_gender,
             cough: answers.state_cough,
             fever: answers.state_fever,
             sweat: answers.state_sweat,
