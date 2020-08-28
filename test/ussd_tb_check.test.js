@@ -739,7 +739,7 @@ describe("ussd_tb_check app", function () {
           api.http.fixtures.add({
             request: {
               url:
-                "http://healthcheck/api/v2/healthcheckuserprofile/+27123456789/",
+                "http://healthcheck/v2/healthcheckuserprofile/+27123456789/",
               method: "GET",
             },
             response: {
@@ -747,16 +747,6 @@ describe("ussd_tb_check app", function () {
               data: {
                 detail: "Not found.",
               },
-            },
-          });
-          api.http.fixtures.add({
-            request: {
-              url: "http://turn/v1/contacts/27123456789/profile",
-              method: "GET",
-            },
-            response: {
-              code: 200,
-              data: {},
             },
           });
         })

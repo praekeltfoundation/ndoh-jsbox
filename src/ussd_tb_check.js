@@ -75,7 +75,7 @@ go.app = (function () {
       return new JsonApi(self.im)
         .get(
           self.im.config.healthcheck.url +
-            "/api/v2/healthcheckuserprofile/" +
+            "/v2/healthcheckuserprofile/" +
             msisdn +
             "/",
           {
