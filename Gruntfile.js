@@ -17,7 +17,8 @@ module.exports = function (grunt) {
                     ussd_pmtct_rapidpro: 'src/ussd_pmtct_rapidpro.js',
                     ussd_ccmdd_wc_address_update: "src/ussd_ccmdd_wc_address_update.js",
                     ussd_covid19_triage: "src/ussd_covid19_triage.js",
-                    ussd_higherhealth_healthcheck: "src/ussd_higherhealth_healthcheck.js"
+                    ussd_higherhealth_healthcheck: "src/ussd_higherhealth_healthcheck.js",
+                    ussd_tb_check: "src/ussd_tb_check.js"
                 },
                 ussd_nurse_rapidpro: [
                     'src/index.js',
@@ -84,6 +85,11 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.ussd_higherhealth_healthcheck %>',
                     'src/init.js'
                 ],
+                ussd_tb_check: [
+                    'src/index.js',
+                    '<%= paths.src.app.ussd_tb_check %>',
+                    'src/init.js'
+                ],
                 all: [
                     'src/**/*.js'
                 ]
@@ -98,7 +104,8 @@ module.exports = function (grunt) {
                 ussd_pmtct_rapidpro: 'go-app-ussd_pmtct_rapidpro.js',
                 ussd_ccmdd_wc_address_update: 'go-app-ussd_ccmdd_wc_address_update.js',
                 ussd_covid19_triage: 'go-app-ussd_covid19_triage.js',
-                ussd_higherhealth_healthcheck: 'go-app-ussd_higherhealth_healthcheck.js'
+                ussd_higherhealth_healthcheck: 'go-app-ussd_higherhealth_healthcheck.js',
+                ussd_tb_check: 'go-app-ussd_tb_check.js'
             },
             test: {
                 ussd_nurse_rapidpro: [
@@ -166,6 +173,11 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.ussd_higherhealth_healthcheck %>',
                     'test/ussd_higherhealth_healthcheck.test.js'
                 ],
+                ussd_tb_check: [
+                    'test/setup.js',
+                    '<%= paths.src.app.ussd_tb_check %>',
+                    'test/ussd_tb_check.test.js'
+                ],
             }
         },
 
@@ -226,6 +238,10 @@ module.exports = function (grunt) {
                 src: ['<%= paths.src.ussd_higherhealth_healthcheck %>'],
                 dest: '<%= paths.dest.ussd_higherhealth_healthcheck %>'
             },
+            ussd_tb_check: {
+                src: ['<%= paths.src.ussd_tb_check %>'],
+                dest: '<%= paths.dest.ussd_tb_check %>'
+            },
         },
 
         mochaTest: {
@@ -263,6 +279,9 @@ module.exports = function (grunt) {
             },
             test_ussd_higherhealth_healthcheck: {
                 src: ['<%= paths.test.ussd_higherhealth_healthcheck %>']
+            },
+            test_ussd_tb_check: {
+                src: ['<%= paths.test.ussd_tb_check %>']
             }
             /*
             */
