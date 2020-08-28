@@ -349,7 +349,7 @@ go.app = (function () {
 
     self.add("state_age", function (name) {
       if (self.im.user.answers.state_age) {
-        return self.states.create("state_cough");
+        return self.states.create("state_gender");
       }
       return new ChoiceState(name, {
         question: $("How old are you?"),
@@ -362,6 +362,26 @@ go.app = (function () {
           new Choice("18-40", $("18-39")),
           new Choice("40-65", $("40-65")),
           new Choice(">65", $(">65")),
+        ],
+        next: "state_gender",
+      });
+    });
+
+    self.add("state_gender", function (name) {
+      if (self.im.user.answers.state_gender) {
+        return self.states.create("state_cough");
+      }
+      return new ChoiceState(name, {
+        question: $("Please provide us with the gender you identify as?"),
+        error: $(
+          ["Please use numbers from list.", "", "Please provide us with the gender you identify as?"].join("\n")
+        ),
+        accept_labels: true,
+        choices: [
+          new Choice("male", $("Male")),
+          new Choice("female", $("Female")),
+          new Choice("other", $("Other")),
+          new Choice("not_say", $("Rather not say")),
         ],
         next: "state_cough",
       });

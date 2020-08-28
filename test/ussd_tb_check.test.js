@@ -412,17 +412,61 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
-    it("should go to state_cough", function () {
+    it("should go to state_gender", function () {
       return tester.setup.user
         .state("state_age")
         .input("1")
-        .check.user.state("state_cough")
+        .check.user.state("state_gender")
         .run();
     });
     it("should skip the state for users who already have this info", function () {
       return tester.setup.user
         .state("state_age")
         .setup.user.answer("state_age", "18-40")
+        .check.user.state("state_gender")
+        .run();
+    });
+  });
+  describe("state_gender", function () {
+    it("should ask for their gender", function () {
+      return tester.setup.user
+        .state("state_gender")
+        .check.interaction({
+          state: "state_gender",
+          reply: [
+            "Please provide us with the gender you identify as?",
+            "1. Male",
+            "2. Female",
+            "3. Other",
+            "4. Rather not say",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("display an error on invalid input", function () {
+      return tester.setup.user
+        .state("state_gender")
+        .input("A")
+        .check.interaction({
+          state: "state_gender",
+          reply: [
+            "Please use numbers from list.",
+            "",
+            "Please provide us with the gender you identify as?",
+            "1. Male",
+            "2. Female",
+            "3. Other",
+            "4. Rather not say",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should go to state_fever", function () {
+      return tester.setup.user
+        .state("state_gender")
+        .input("1")
         .check.user.state("state_cough")
         .run();
     });
