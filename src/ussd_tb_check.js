@@ -89,6 +89,7 @@ go.app = (function () {
           function (response) {
             self.im.user.answers = {
               returning_user: true,
+              state_gender: response.data.province,
               state_province: response.data.province,
               state_city: response.data.city,
               city_location: response.data.city_location,
@@ -528,11 +529,12 @@ go.app = (function () {
 
     self.add("state_submit_data", function (name, opts) {
       var answers = self.im.user.answers;
+      var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
 
       return new JsonApi(self.im)
         .post(self.im.config.healthcheck.url + "/v2/tbcheck/", {
           data: {
-            msisdn: self.im.user.addr,
+            msisdn: msisdn,
             source: "USSD",
             province: answers.state_province,
             city: answers.state_city,
