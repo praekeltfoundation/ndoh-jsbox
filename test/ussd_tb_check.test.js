@@ -27,7 +27,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_timed_out",
           reply: [
-            "Welcome back to The National Department of Health's TB Service",
+            "Welcome back to the The National Department of Health's TB HealthCheck",
             "",
             "Reply",
             "1. Continue where I left off",
@@ -44,7 +44,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_timed_out",
           reply: [
-            "Welcome back to The National Department of Health's TB Service",
+            "Welcome back to the The National Department of Health's TB HealthCheck",
             "",
             "Reply",
             "1. Continue where I left off",
@@ -63,8 +63,8 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_terms",
           reply: [
-            "Confirm that you're responsible for your medical care & treatment. " +
-              "This service only provides info.",
+            "Confirm that you're responsible for your medical care & treatment. This service " +
+              "only provides info.",
             "",
             "Reply",
             "1. YES",
@@ -82,8 +82,8 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_terms",
           reply: [
-            "Please use numbers from list. Confirm that u're responsible for ur " +
-              "medical care & treatment. This service only provides info.",
+            "Please reply with numbers. Confirm that you're responsible for your medical " +
+              "care & treatment. This service only provides info.",
             "",
             "Reply",
             "1. YES",
@@ -478,12 +478,12 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_cough",
           reply: [
-            "Do you have a cough?",
+            "Let's see how you are feeling today. Do you have a cough?",
             "",
             "Reply",
             "1. NO",
-            "2. YES < 2 weeks",
-            "3. YES > 2 weeks",
+            "2. YES - started in last two weeks",
+            "3. YES - for more than two weeks",
           ].join("\n"),
           char_limit: 160,
         })
@@ -501,8 +501,8 @@ describe("ussd_tb_check app", function () {
             "",
             "Reply",
             "1. NO",
-            "2. YES < 2 weeks",
-            "3. YES > 2 weeks",
+            "2. YES - started in last two weeks",
+            "3. YES - for more than two weeks",
           ].join("\n"),
           char_limit: 160,
         })
@@ -609,12 +609,14 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_exposure",
           reply: [
-            "Are you at high risk for TB?",
+            "Are you at high risk of TB?",
+            "",
+            "Risk= if you live with someone who has TB OR you've had TB in the last 2 years OR you are HIV+",
             "",
             "Reply",
-            "1. YES",
-            "2. NO",
-            "3. NOT SURE",
+            "1. Yes",
+            "2. No",
+            "3. Dont know",
           ].join("\n"),
           char_limit: 160,
         })
@@ -630,9 +632,9 @@ describe("ussd_tb_check app", function () {
             "Please use numbers from list. Are you at high risk for TB?",
             "",
             "Reply",
-            "1. YES",
-            "2. NO",
-            "3. NOT SURE",
+            "1. Yes",
+            "2. No",
+            "3. Dont know",
           ].join("\n"),
           char_limit: 160,
         })
@@ -653,8 +655,8 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_tracing",
           reply: [
-            "Please confirm that the information you shared is correct & that the " +
-              "National Department of Health can contact you if necessary?",
+            "Please confirm that the info you shared is accurate and that you give the NDoH permission " +
+              "to contact you if needed?",
             "",
             "Reply",
             "1. YES",
@@ -672,9 +674,8 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_tracing",
           reply: [
-            "Please reply with numbers",
-            "Is the information you shared correct & can the National Department of " +
-              "Health contact you if necessary?",
+            "Please confirm that the info you shared is accurate and that you give the NDoH permission " +
+              "to contact you if needed?",
             "",
             "Reply",
             "1. YES",
@@ -685,9 +686,72 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
-    it("should go to state_display_risk", function () {
+    it("should go to state_opt_in", function () {
       return tester.setup.user
         .state("state_tracing")
+        .input("1")
+        .check.user.state("state_opt_in")
+        .run();
+    });
+    it("should go to start if restart is chosen", function () {
+      return tester.setup.user
+        .state("state_tracing")
+        .setup(function (api) {
+          api.http.fixtures.add({
+            request: {
+              url: "http://healthcheck/v2/healthcheckuserprofile/+27123456789/",
+              method: "GET",
+            },
+            response: {
+              code: 404,
+              data: {
+                detail: "Not found.",
+              },
+            },
+          });
+        })
+        .input("3")
+        .check.user.state("state_welcome")
+        .run();
+    });
+  });
+  describe("state_opt_in", function () {
+    it("should ask the user to opt in to follow up messages", function () {
+      return tester.setup.user
+        .state("state_opt_in")
+        .check.interaction({
+          state: "state_opt_in",
+          reply: [
+            "Thank you for your resposes. We'll SMS you result the shortly. Would you " +
+              "like to receive follow up messages? ",
+            "Reply",
+            "1. Yes",
+            "2. No",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("display an error on invalid input", function () {
+      return tester.setup.user
+        .state("state_opt_in")
+        .input("A")
+        .check.interaction({
+          state: "state_opt_in",
+          reply: [
+            "Thank you for your resposes. We'll SMS you result the shortly. Would you " +
+              "like to receive follow up messages? ",
+            "Reply",
+            "1. Yes",
+            "2. No",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("go to state_complete for valid answer", function () {
+      return tester.setup.user
+        .state("state_opt_in")
         .setup.user.answers({
           state_province: "ZA-WC",
           state_city: "Cape Town",
@@ -697,6 +761,7 @@ describe("ussd_tb_check app", function () {
           state_fever: false,
           state_sweat: false,
           state_weight: false,
+          state_tracing: true,
           state_exposure: "No",
         })
         .setup(function (api) {
@@ -717,6 +782,7 @@ describe("ussd_tb_check app", function () {
                 weight: false,
                 exposure: "No",
                 tracing: true,
+                follow_up_optin: true,
                 risk: "moderate_without_cough",
               },
             },
@@ -729,36 +795,14 @@ describe("ussd_tb_check app", function () {
           });
         })
         .input("1")
-        .check.user.state("state_display_risk")
-        .run();
-    });
-    it("should go to start if restart is chosen", function () {
-      return tester.setup.user
-        .state("state_tracing")
-        .setup(function (api) {
-          api.http.fixtures.add({
-            request: {
-              url:
-                "http://healthcheck/v2/healthcheckuserprofile/+27123456789/",
-              method: "GET",
-            },
-            response: {
-              code: 404,
-              data: {
-                detail: "Not found.",
-              },
-            },
-          });
-        })
-        .input("3")
-        .check.user.state("state_welcome")
+        .check.user.state("state_complete")
         .run();
     });
   });
-  describe("state_display_risk", function () {
-    it("should display the low risk message if low risk", function () {
+  describe("state_complete", function () {
+    it("should say thanks for opt in", function () {
       return tester.setup.user
-        .state("state_tracing")
+        .state("state_opt_in")
         .setup.user.answers({
           state_province: "ZA-WC",
           state_city: "Cape Town",
@@ -768,7 +812,8 @@ describe("ussd_tb_check app", function () {
           state_fever: false,
           state_sweat: false,
           state_weight: false,
-          state_exposure: "no",
+          state_tracing: true,
+          state_exposure: "No",
         })
         .setup(function (api) {
           api.http.fixtures.add({
@@ -786,60 +831,9 @@ describe("ussd_tb_check app", function () {
                 fever: false,
                 sweat: false,
                 weight: false,
-                exposure: "no",
+                exposure: "No",
                 tracing: true,
-                risk: "low",
-              },
-            },
-            response: {
-              code: 201,
-              data: {
-                accepted: true,
-              },
-            },
-          });
-        })
-        .input("1")
-        .check.interaction({
-          state: "state_display_risk",
-          reply: "TODO: low risk",
-          char_limit: 160,
-        })
-        .check.reply.ends_session()
-        .run();
-    });
-    it("should display the moderate without cough risk message", function () {
-      return tester.setup.user
-        .state("state_tracing")
-        .setup.user.answers({
-          state_province: "ZA-WC",
-          state_city: "Cape Town",
-          state_age: ">65",
-          state_gender: "male",
-          state_cough: "no",
-          state_fever: false,
-          state_sweat: false,
-          state_weight: false,
-          state_exposure: "not_sure",
-        })
-        .setup(function (api) {
-          api.http.fixtures.add({
-            request: {
-              url: "http://healthcheck/v2/tbcheck/",
-              method: "POST",
-              data: {
-                msisdn: "+27123456789",
-                source: "USSD",
-                province: "ZA-WC",
-                city: "Cape Town",
-                age: ">65",
-                gender: "male",
-                cough: "no",
-                fever: false,
-                sweat: false,
-                weight: false,
-                exposure: "not_sure",
-                tracing: true,
+                follow_up_optin: true,
                 risk: "moderate_without_cough",
               },
             },
@@ -853,26 +847,26 @@ describe("ussd_tb_check app", function () {
         })
         .input("1")
         .check.interaction({
-          state: "state_display_risk",
-          reply: "TODO: moderate_without_cough risk",
+          state: "state_complete",
+          reply: "Thank you for opting in for our follow up messages.",
           char_limit: 160,
         })
-        .check.reply.ends_session()
         .run();
     });
-    it("should display the moderate with cough risk message", function () {
+    it("should confirm no message if no opt in", function () {
       return tester.setup.user
-        .state("state_tracing")
+        .state("state_opt_in")
         .setup.user.answers({
           state_province: "ZA-WC",
           state_city: "Cape Town",
           state_age: ">65",
           state_gender: "male",
-          state_cough: "yes_lt_2weeks",
+          state_cough: "no",
           state_fever: false,
           state_sweat: false,
           state_weight: false,
-          state_exposure: "not_sure",
+          state_tracing: true,
+          state_exposure: "No",
         })
         .setup(function (api) {
           api.http.fixtures.add({
@@ -886,13 +880,14 @@ describe("ussd_tb_check app", function () {
                 city: "Cape Town",
                 age: ">65",
                 gender: "male",
-                cough: "yes_lt_2weeks",
+                cough: "no",
                 fever: false,
                 sweat: false,
                 weight: false,
-                exposure: "not_sure",
+                exposure: "No",
                 tracing: true,
-                risk: "moderate_with_cough",
+                follow_up_optin: false,
+                risk: "moderate_without_cough",
               },
             },
             response: {
@@ -903,65 +898,12 @@ describe("ussd_tb_check app", function () {
             },
           });
         })
-        .input("1")
+        .input("2")
         .check.interaction({
-          state: "state_display_risk",
-          reply: "TODO: moderate_with_cough risk",
+          state: "state_complete",
+          reply: "OK, you won't receive any follow up messages.",
           char_limit: 160,
         })
-        .check.reply.ends_session()
-        .run();
-    });
-    it("should display the high risk message", function () {
-      return tester.setup.user
-        .state("state_tracing")
-        .setup.user.answers({
-          state_province: "ZA-WC",
-          state_city: "Cape Town",
-          state_age: ">65",
-          state_gender: "male",
-          state_cough: "yes_gt_2weeks",
-          state_fever: false,
-          state_sweat: false,
-          state_weight: false,
-          state_exposure: "not_sure",
-        })
-        .setup(function (api) {
-          api.http.fixtures.add({
-            request: {
-              url: "http://healthcheck/v2/tbcheck/",
-              method: "POST",
-              data: {
-                msisdn: "+27123456789",
-                source: "USSD",
-                province: "ZA-WC",
-                city: "Cape Town",
-                age: ">65",
-                gender: "male",
-                cough: "yes_gt_2weeks",
-                fever: false,
-                sweat: false,
-                weight: false,
-                exposure: "not_sure",
-                tracing: true,
-                risk: "high",
-              },
-            },
-            response: {
-              code: 201,
-              data: {
-                accepted: true,
-              },
-            },
-          });
-        })
-        .input("1")
-        .check.interaction({
-          state: "state_display_risk",
-          reply: "TODO: high risk",
-          char_limit: 160,
-        })
-        .check.reply.ends_session()
         .run();
     });
   });

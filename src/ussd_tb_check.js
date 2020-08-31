@@ -56,7 +56,7 @@ go.app = (function () {
       return new MenuState(name, {
         question: $(
           [
-            "Welcome back to The National Department of Health's TB Service",
+            "Welcome back to the The National Department of Health's TB HealthCheck",
             "",
             "Reply",
           ].join("\n")
@@ -115,15 +115,17 @@ go.app = (function () {
     });
 
     self.states.add("state_welcome", function (name) {
-      var question;
       var error = $(
         "This service works best when you select numbers from the list"
       );
-      if (self.im.user.answers.returning_user) {
-        question = $(["TODO: Welcome back", "", "Reply"].join("\n"));
-      } else {
-        question = $(["TODO: Welcome", "", "Reply"].join("\n"));
-      }
+      var question = $(
+        [
+          "The National Department of Health thanks you for contributing to the health of all " +
+            "citizens. Stop the spread of TB.",
+          "",
+          "Reply",
+        ].join("\n")
+      );
 
       return new MenuState(name, {
         question: question,
@@ -141,16 +143,16 @@ go.app = (function () {
       return new MenuState(name, {
         question: $(
           [
-            "Confirm that you're responsible for your medical care & treatment. This service only " +
-              "provides info.",
+            "Confirm that you're responsible for your medical care & treatment. This service " +
+              "only provides info.",
             "",
             "Reply",
           ].join("\n")
         ),
         error: $(
           [
-            "Please use numbers from list. Confirm that u're responsible for ur medical care & " +
-              "treatment. This service only provides info.",
+            "Please reply with numbers. Confirm that you're responsible for your medical " +
+              "care & treatment. This service only provides info.",
             "",
             "Reply",
           ].join("\n")
@@ -372,7 +374,11 @@ go.app = (function () {
       return new ChoiceState(name, {
         question: $("Please provide us with the gender you identify as?"),
         error: $(
-          ["Please use numbers from list.", "", "Please provide us with the gender you identify as?"].join("\n")
+          [
+            "Please use numbers from list.",
+            "",
+            "Please provide us with the gender you identify as?",
+          ].join("\n")
         ),
         accept_labels: true,
         choices: [
@@ -386,7 +392,13 @@ go.app = (function () {
     });
 
     self.add("state_cough", function (name) {
-      var question = $(["Do you have a cough?", "", "Reply"].join("\n"));
+      var question = $(
+        [
+          "Let's see how you are feeling today. Do you have a cough?",
+          "",
+          "Reply",
+        ].join("\n")
+      );
       var error = $(
         [
           "Please use numbers from list.",
@@ -401,8 +413,8 @@ go.app = (function () {
         accept_labels: true,
         choices: [
           new Choice("no", $("NO")),
-          new Choice("yes_lt_2weeks", $("YES < 2 weeks")),
-          new Choice("yes_gt_2weeks", $("YES > 2 weeks")),
+          new Choice("yes_lt_2weeks", $("YES - started in last two weeks")),
+          new Choice("yes_gt_2weeks", $("YES - for more than two weeks")),
         ],
         next: "state_fever",
       });
@@ -472,7 +484,15 @@ go.app = (function () {
 
     self.add("state_exposure", function (name) {
       return new ChoiceState(name, {
-        question: $(["Are you at high risk for TB?", "", "Reply"].join("\n")),
+        question: $(
+          [
+            "Are you at high risk of TB?",
+            "",
+            "Risk= if you live with someone who has TB OR you've had TB in the last 2 years OR you are HIV+",
+            "",
+            "Reply",
+          ].join("\n")
+        ),
         error: $(
           [
             "Please use numbers from list. Are you at high risk for TB?",
@@ -482,9 +502,9 @@ go.app = (function () {
         ),
         accept_labels: true,
         choices: [
-          new Choice("yes", $("YES")),
-          new Choice("no", $("NO")),
-          new Choice("not_sure", $("NOT SURE")),
+          new Choice("yes", $("Yes")),
+          new Choice("no", $("No")),
+          new Choice("not_sure", $("Dont know")),
         ],
         next: "state_tracing",
       });
@@ -493,17 +513,16 @@ go.app = (function () {
     self.add("state_tracing", function (name) {
       var question = $(
         [
-          "Please confirm that the information you shared is correct & that the National " +
-            "Department of Health can contact you if necessary?",
+          "Please confirm that the info you shared is accurate and that you give the NDoH permission " +
+            "to contact you if needed?",
           "",
           "Reply",
         ].join("\n")
       );
       var error = $(
         [
-          "Please reply with numbers",
-          "Is the information you shared correct & can the National Department of Health contact " +
-            "you if necessary?",
+          "Please confirm that the info you shared is accurate and that you give the NDoH permission " +
+            "to contact you if needed?",
           "",
           "Reply",
         ].join("\n")
@@ -522,8 +541,33 @@ go.app = (function () {
           if (response.value === null) {
             return "state_start";
           }
-          return "state_submit_data";
+          return "state_opt_in";
         },
+      });
+    });
+
+    self.states.add("state_opt_in", function (name) {
+      var question = $(
+        [
+          "Thank you for your resposes. We'll SMS you result the shortly. Would you " +
+            "like to receive follow up messages? ",
+          "Reply",
+        ].join("\n")
+      );
+      var error = $(
+        [
+          "Thank you for your resposes. We'll SMS you result the shortly. Would you " +
+            "like to receive follow up messages? ",
+          "Reply",
+        ].join("\n")
+      );
+      var choices = [new Choice(true, $("Yes")), new Choice(false, $("No"))];
+      return new ChoiceState(name, {
+        question: question,
+        error: error,
+        accept_labels: true,
+        choices: choices,
+        next: "state_submit_data",
       });
     });
 
@@ -547,6 +591,7 @@ go.app = (function () {
             weight: answers.state_weight,
             exposure: answers.state_exposure,
             tracing: answers.state_tracing,
+            follow_up_optin: answers.state_opt_in,
             risk: self.calculate_risk(),
           },
           headers: {
@@ -556,7 +601,7 @@ go.app = (function () {
         })
         .then(
           function () {
-            return self.states.create("state_display_risk");
+            return self.states.create("state_complete");
           },
           function (e) {
             // Go to error state after 3 failed HTTP requests
@@ -570,20 +615,13 @@ go.app = (function () {
         );
     });
 
-    self.states.add("state_display_risk", function (name) {
-      var risk = self.calculate_risk();
-      var text = "";
-      if (risk === "low") {
-        text = $("TODO: low risk");
-      }
-      if (risk === "moderate_with_cough") {
-        text = $("TODO: moderate_with_cough risk");
-      }
-      if (risk === "moderate_without_cough") {
-        text = $("TODO: moderate_without_cough risk");
-      }
-      if (risk === "high") {
-        text = $("TODO: high risk");
+    self.states.add("state_complete", function (name) {
+      var answers = self.im.user.answers;
+
+      var text = "Thank you for opting in for our follow up messages.";
+
+      if (!answers.state_opt_in) {
+        text = "OK, you won't receive any follow up messages.";
       }
       return new EndState(name, {
         next: "state_start",
