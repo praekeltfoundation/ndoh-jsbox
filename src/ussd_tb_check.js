@@ -89,7 +89,7 @@ go.app = (function () {
           function (response) {
             self.im.user.answers = {
               returning_user: true,
-              state_gender: response.data.province,
+              state_gender: response.data.gender,
               state_province: response.data.province,
               state_city: response.data.city,
               city_location: response.data.city_location,
