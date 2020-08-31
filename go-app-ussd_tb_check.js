@@ -97,6 +97,7 @@ go.app = (function () {
               state_city: response.data.city,
               city_location: response.data.city_location,
               state_age: response.data.age,
+              state_language: response.data.language,
             };
             return self.states.create("state_welcome");
           },
@@ -134,7 +135,26 @@ go.app = (function () {
         question: question,
         error: error,
         accept_labels: true,
-        choices: [new Choice("state_terms", $("START"))],
+        choices: [new Choice("state_language", $("START"))],
+      });
+    });
+
+    self.states.add("state_language", function (name) {
+      if (self.im.user.answers.state_language) {
+        return self.states.create("state_terms");
+      }
+      return new ChoiceState(name, {
+        question: $("Select your preferred language"),
+        error: $("Please reply with numbers. Select your preferred language"),
+        accept_labels: true,
+        choices: [
+          new Choice("eng", $("English")),
+          new Choice("zul", $("isiZulu")),
+          new Choice("afr", $("Afrikaans")),
+          new Choice("xho", $("isiXhosa")),
+          new Choice("sot", $("Sesotho")),
+        ],
+        next: "state_terms",
       });
     });
 
@@ -171,7 +191,10 @@ go.app = (function () {
 
     self.states.add("state_end", function (name) {
       return new EndState(name, {
-        text: "You can return to this service at any time.",
+        text: $(
+          "You can return to this service at any time. Remember, if you think you have " +
+            "TB, avoid contact with other people and get tested at your nearest clinic."
+        ),
         next: "state_start",
       });
     });
@@ -583,6 +606,7 @@ go.app = (function () {
           data: {
             msisdn: msisdn,
             source: "USSD",
+            language: answers.state_language,
             province: answers.state_province,
             city: answers.state_city,
             city_location: answers.city_location,

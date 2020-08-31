@@ -56,6 +56,98 @@ describe("ussd_tb_check app", function () {
     });
   });
 
+  describe("state_welcome", function () {
+    it("should show welcome message", function () {
+      return tester.setup.user
+        .state("state_welcome")
+        .check.interaction({
+          state: "state_welcome",
+          reply: [
+            "The National Department of Health thanks you for contributing to the health of all " +
+              "citizens. Stop the spread of TB.",
+            "",
+            "Reply",
+            "1. START",
+          ].join("\n"),
+          char_limit: 140,
+        })
+        .run();
+    });
+    it("should display an error message on invalid input", function () {
+      return tester.setup.user
+        .state("state_welcome")
+        .input("A")
+        .check.interaction({
+          state: "state_welcome",
+          reply: [
+            "This service works best when you select numbers from the list",
+            "1. START",
+          ].join("\n"),
+          char_limit: 140,
+        })
+        .run();
+    });
+    it("should go to state_language for 1", function () {
+      return tester.setup.user
+        .state("state_welcome")
+        .input("1")
+        .check.user.state("state_language")
+        .run();
+    });
+  });
+
+  describe("state_language", function () {
+    it("should show available languages", function () {
+      return tester.setup.user
+        .state("state_language")
+        .check.interaction({
+          state: "state_language",
+          reply: [
+            "Select your preferred language",
+            "1. English",
+            "2. isiZulu",
+            "3. Afrikaans",
+            "4. isiXhosa",
+            "5. Sesotho",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should show error on invalid option", function () {
+      return tester.setup.user
+        .state("state_language")
+        .input("A")
+        .check.interaction({
+          state: "state_language",
+          reply: [
+            "Please reply with numbers. Select your preferred language",
+            "1. English",
+            "2. isiZulu",
+            "3. Afrikaans",
+            "4. isiXhosa",
+            "5. Sesotho",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should go to state_terms for valid option", function () {
+      return tester.setup.user
+        .state("state_language")
+        .input("1")
+        .check.user.state("state_terms")
+        .run();
+    });
+    it("should skip the state for users who already have this info", function () {
+      return tester.setup.user
+        .state("state_language")
+        .setup.user.answer("state_language", "eng")
+        .check.user.state("state_terms")
+        .run();
+    });
+  });
+
   describe("state_terms", function () {
     it("should show the terms", function () {
       return tester.setup.user
@@ -114,7 +206,9 @@ describe("ussd_tb_check app", function () {
         .input("2")
         .check.interaction({
           state: "state_end",
-          reply: "You can return to this service at any time.",
+          reply:
+            "You can return to this service at any time. Remember, if you think you have " +
+            "TB, avoid contact with other people and get tested at your nearest clinic.",
           char_limit: 160,
         })
         .check.reply.ends_session()
@@ -763,6 +857,7 @@ describe("ussd_tb_check app", function () {
           state_weight: false,
           state_tracing: true,
           state_exposure: "No",
+          state_language: "eng",
         })
         .setup(function (api) {
           api.http.fixtures.add({
@@ -772,6 +867,7 @@ describe("ussd_tb_check app", function () {
               data: {
                 msisdn: "+27123456789",
                 source: "USSD",
+                language: "eng",
                 province: "ZA-WC",
                 city: "Cape Town",
                 age: ">65",
@@ -814,6 +910,7 @@ describe("ussd_tb_check app", function () {
           state_weight: false,
           state_tracing: true,
           state_exposure: "No",
+          state_language: "eng",
         })
         .setup(function (api) {
           api.http.fixtures.add({
@@ -823,6 +920,7 @@ describe("ussd_tb_check app", function () {
               data: {
                 msisdn: "+27123456789",
                 source: "USSD",
+                language: "eng",
                 province: "ZA-WC",
                 city: "Cape Town",
                 age: ">65",
@@ -867,6 +965,7 @@ describe("ussd_tb_check app", function () {
           state_weight: false,
           state_tracing: true,
           state_exposure: "No",
+          state_language: "eng",
         })
         .setup(function (api) {
           api.http.fixtures.add({
@@ -876,6 +975,7 @@ describe("ussd_tb_check app", function () {
               data: {
                 msisdn: "+27123456789",
                 source: "USSD",
+                language: "eng",
                 province: "ZA-WC",
                 city: "Cape Town",
                 age: ">65",
