@@ -816,7 +816,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_opt_in",
           reply: [
-            "Thank you for your resposes. We'll SMS you result the shortly. Would you " +
+            "Thank you for your responses. We'll SMS you the result shortly. Would you " +
               "like to receive follow up messages? ",
             "Reply",
             "1. Yes",
@@ -833,7 +833,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_opt_in",
           reply: [
-            "Thank you for your resposes. We'll SMS you result the shortly. Would you " +
+            "Thank you for your responses. We'll SMS you the result shortly. Would you " +
               "like to receive follow up messages? ",
             "Reply",
             "1. Yes",
