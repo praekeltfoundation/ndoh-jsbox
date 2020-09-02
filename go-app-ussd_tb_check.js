@@ -575,14 +575,14 @@ go.app = (function () {
     self.states.add("state_opt_in", function (name) {
       var question = $(
         [
-          "Thank you for your resposes. We'll SMS you result the shortly. Would you " +
+          "Thank you for your responses. We'll SMS you the result shortly. Would you " +
             "like to receive follow up messages? ",
           "Reply",
         ].join("\n")
       );
       var error = $(
         [
-          "Thank you for your resposes. We'll SMS you result the shortly. Would you " +
+          "Thank you for your responses. We'll SMS you the result shortly. Would you " +
             "like to receive follow up messages? ",
           "Reply",
         ].join("\n")
