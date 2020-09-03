@@ -1,5 +1,6 @@
 var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
+var assert = require("assert");
 
 describe("ussd_tb_check app", function () {
   var app;
@@ -16,6 +17,107 @@ describe("ussd_tb_check app", function () {
       google_places: {
         key: "googleplaceskey",
       },
+    });
+  });
+
+  describe("calculate_risk", function () {
+    it("cough > 2 weeks should be high", function () {
+      return tester.setup.user
+        .answers({
+          state_cough: "yes_gt_2weeks",
+          state_fever: false,
+          state_sweat: false,
+          state_weight: false,
+          state_exposure: "no",
+        })
+        .check(function (api) {
+          assert.equal(app.calculate_risk(), "high");
+        })
+        .run();
+    });
+    it("cough less than two weeks, with one or more symptoms and exposure", function () {
+      return tester.setup.user
+        .answers({
+          state_cough: "yes_lt_2weeks",
+          state_fever: true,
+          state_sweat: false,
+          state_weight: false,
+          state_exposure: "yes",
+        })
+        .check(function (api) {
+          assert.equal(app.calculate_risk(), "high");
+        })
+        .run();
+    });
+    it("cough less than two weeks, with one or more symptoms and maybe exposure", function () {
+      return tester.setup.user
+        .answers({
+          state_cough: "yes_lt_2weeks",
+          state_fever: true,
+          state_sweat: false,
+          state_weight: false,
+          state_exposure: "not_sure",
+        })
+        .check(function (api) {
+          assert.equal(app.calculate_risk(), "high");
+        })
+        .run();
+    });
+    it("cough less than two weeks, no other symptoms, no exposure", function () {
+      return tester.setup.user
+        .answers({
+          state_cough: "yes_lt_2weeks",
+          state_fever: false,
+          state_sweat: false,
+          state_weight: false,
+          state_exposure: "no",
+        })
+        .check(function (api) {
+          assert.equal(app.calculate_risk(), "moderate_with_cough");
+        })
+        .run();
+    });
+    it("no cough, one or more other symptoms", function () {
+      return tester.setup.user
+        .answers({
+          state_cough: "no",
+          state_fever: true,
+          state_sweat: false,
+          state_weight: false,
+          state_exposure: "no",
+        })
+        .check(function (api) {
+          assert.equal(app.calculate_risk(), "high");
+        })
+        .run();
+    });
+    it("no cough, with exposure", function () {
+      return tester.setup.user
+        .answers({
+          state_cough: "no",
+          state_fever: false,
+          state_sweat: false,
+          state_weight: false,
+          state_exposure: "yes",
+        })
+        .check(function (api) {
+          assert.equal(app.calculate_risk(), "moderate_without_cough");
+        })
+        .run();
+    });
+    it("no cough, symptyms or exposure should be low", function () {
+      return tester.setup.user
+        .answers({
+          state_cough: "no",
+          state_fever: false,
+          state_sweat: false,
+          state_weight: false,
+          state_exposure: "no",
+        })
+        .check(function (api) {
+          assert.equal(app.calculate_risk(), "low");
+        })
+        .run();
     });
   });
 
