@@ -1,5 +1,6 @@
 var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
+var assert = require("assert");
 
 describe("ussd_tb_check app", function () {
   var app;
@@ -16,6 +17,121 @@ describe("ussd_tb_check app", function () {
       google_places: {
         key: "googleplaceskey",
       },
+    });
+  });
+
+  describe("calculate_risk", function () {
+    it("No cough, no symptoms, no exposure", function () {
+      return tester.setup.user
+        .answers({
+          state_cough: "no",
+          state_fever: false,
+          state_sweat: false,
+          state_weight: false,
+          state_exposure: "no",
+        })
+        .check(function (api) {
+          assert.equal(app.calculate_risk(), "low");
+        })
+        .run();
+    });
+    it("No cough, 1+ symptoms, no exposure", function () {
+      return tester.setup.user
+        .answers({
+          state_cough: "no",
+          state_fever: true,
+          state_sweat: false,
+          state_weight: false,
+          state_exposure: "no",
+        })
+        .check(function (api) {
+          assert.equal(app.calculate_risk(), "moderate");
+        })
+        .run();
+    });
+    it("No cough, no symptoms, exposure", function () {
+      return tester.setup.user
+        .answers({
+          state_cough: "no",
+          state_fever: false,
+          state_sweat: false,
+          state_weight: false,
+          state_exposure: "yes",
+        })
+        .check(function (api) {
+          assert.equal(app.calculate_risk(), "high");
+        })
+        .run();
+    });
+    it("No cough, 1+ symptom, exposure", function () {
+      return tester.setup.user
+        .answers({
+          state_cough: "no",
+          state_fever: true,
+          state_sweat: false,
+          state_weight: false,
+          state_exposure: "yes",
+        })
+        .check(function (api) {
+          assert.equal(app.calculate_risk(), "high");
+        })
+        .run();
+    });
+    it("Cough, no symptoms, no exposure", function () {
+      return tester.setup.user
+        .answers({
+          state_cough: "yes",
+          state_fever: false,
+          state_sweat: false,
+          state_weight: false,
+          state_exposure: "no",
+        })
+        .check(function (api) {
+          assert.equal(app.calculate_risk(), "moderate");
+        })
+        .run();
+    });
+    it("Cough, 1+ symptoms, no exposure", function () {
+      return tester.setup.user
+        .answers({
+          state_cough: "yes",
+          state_fever: true,
+          state_sweat: false,
+          state_weight: false,
+          state_exposure: "no",
+        })
+        .check(function (api) {
+          assert.equal(app.calculate_risk(), "moderate");
+        })
+        .run();
+    });
+    it("Cough, 1+ symptoms, high risk", function () {
+      return tester.setup.user
+        .answers({
+          state_cough: "yes",
+          state_fever: true,
+          state_sweat: false,
+          state_weight: false,
+          state_exposure: "not_sure",
+        })
+        .check(function (api) {
+          assert.equal(app.calculate_risk(), "high");
+        })
+        .run();
+    });
+    it("Cough, no symptoms, high risk", function () {
+      return tester.setup.user
+        .answers({
+          state_cough: "yes",
+          state_fever: false,
+          state_sweat: false,
+          state_weight: false,
+          state_exposure: "yes",
+        })
+        .check(function (api) {
+          assert.equal(app.calculate_risk(), "high");
+        })
+        .run();
     });
   });
 
@@ -575,9 +691,8 @@ describe("ussd_tb_check app", function () {
             "Let's see how you are feeling today. Do you have a cough?",
             "",
             "Reply",
-            "1. NO",
-            "2. YES - started in last two weeks",
-            "3. YES - for more than two weeks",
+            "1. YES",
+            "2. NO",
           ].join("\n"),
           char_limit: 160,
         })
@@ -594,9 +709,8 @@ describe("ussd_tb_check app", function () {
             "Do you have a cough?",
             "",
             "Reply",
-            "1. NO",
-            "2. YES - started in last two weeks",
-            "3. YES - for more than two weeks",
+            "1. YES",
+            "2. NO",
           ].join("\n"),
           char_limit: 160,
         })
@@ -856,7 +970,7 @@ describe("ussd_tb_check app", function () {
           state_sweat: false,
           state_weight: false,
           state_tracing: true,
-          state_exposure: "No",
+          state_exposure: "no",
           state_language: "eng",
         })
         .setup(function (api) {
@@ -876,10 +990,10 @@ describe("ussd_tb_check app", function () {
                 fever: false,
                 sweat: false,
                 weight: false,
-                exposure: "No",
+                exposure: "no",
                 tracing: true,
                 follow_up_optin: true,
-                risk: "moderate_without_cough",
+                risk: "low",
               },
             },
             response: {
@@ -909,7 +1023,7 @@ describe("ussd_tb_check app", function () {
           state_sweat: false,
           state_weight: false,
           state_tracing: true,
-          state_exposure: "No",
+          state_exposure: "no",
           state_language: "eng",
         })
         .setup(function (api) {
@@ -929,10 +1043,10 @@ describe("ussd_tb_check app", function () {
                 fever: false,
                 sweat: false,
                 weight: false,
-                exposure: "No",
+                exposure: "no",
                 tracing: true,
                 follow_up_optin: true,
-                risk: "moderate_without_cough",
+                risk: "low",
               },
             },
             response: {
@@ -964,7 +1078,7 @@ describe("ussd_tb_check app", function () {
           state_sweat: false,
           state_weight: false,
           state_tracing: true,
-          state_exposure: "No",
+          state_exposure: "no",
           state_language: "eng",
         })
         .setup(function (api) {
@@ -984,10 +1098,10 @@ describe("ussd_tb_check app", function () {
                 fever: false,
                 sweat: false,
                 weight: false,
-                exposure: "No",
+                exposure: "no",
                 tracing: true,
                 follow_up_optin: false,
-                risk: "moderate_without_cough",
+                risk: "low",
               },
             },
             response: {

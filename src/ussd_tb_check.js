@@ -17,26 +17,18 @@ go.app = (function () {
     self.calculate_risk = function () {
       var answers = self.im.user.answers;
 
+      if (answers.state_exposure != "no") {
+        return "high";
+      }
+
       var symptom_count = _.filter([
         answers.state_fever,
         answers.state_sweat,
         answers.state_weight,
       ]).length;
 
-      if (answers.state_cough !== "no") {
-        if (answers.state_cough === "yes_gt_2weeks") {
-          return "high";
-        } else if (symptom_count >= 1 && answers.state_exposure != "no") {
-          return "high";
-        } else {
-          return "moderate_with_cough";
-        }
-      }
-
-      if (symptom_count >= 1) {
-        return "high";
-      } else if (answers.state_exposure != "no") {
-        return "moderate_without_cough";
+      if (answers.state_cough == "yes" || symptom_count >= 1) {
+        return "moderate";
       }
 
       return "low";
@@ -434,11 +426,7 @@ go.app = (function () {
         question: question,
         error: error,
         accept_labels: true,
-        choices: [
-          new Choice("no", $("NO")),
-          new Choice("yes_lt_2weeks", $("YES - started in last two weeks")),
-          new Choice("yes_gt_2weeks", $("YES - for more than two weeks")),
-        ],
+        choices: [new Choice("yes", $("YES")), new Choice("no", $("NO"))],
         next: "state_fever",
       });
     });
