@@ -145,7 +145,7 @@ describe("ussd_tb_check app", function () {
           reply: [
             "Welcome back to the The National Department of Health's TB HealthCheck",
             "",
-            "Reply",
+            "Reply 1 or 2",
             "1. Continue where I left off",
             "2. Start over",
           ].join("\n"),
@@ -162,7 +162,7 @@ describe("ussd_tb_check app", function () {
           reply: [
             "Welcome back to the The National Department of Health's TB HealthCheck",
             "",
-            "Reply",
+            "Reply 1 or 2",
             "1. Continue where I left off",
             "2. Start over",
           ].join("\n"),
@@ -219,7 +219,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_language",
           reply: [
-            "Select your preferred language",
+            "Choose your preferred language",
             "1. English",
             "2. isiZulu",
             "3. Afrikaans",
@@ -237,7 +237,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_language",
           reply: [
-            "Please reply with numbers. Select your preferred language",
+            "Please reply with numbers. Choose your preferred language",
             "1. English",
             "2. isiZulu",
             "3. Afrikaans",
@@ -271,8 +271,8 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_terms",
           reply: [
-            "Confirm that you're responsible for your medical care & treatment. This service " +
-              "only provides info.",
+            "This service only provides health info. Agree that you are responsible for " +
+              "your medical care and treatment.",
             "",
             "Reply",
             "1. YES",
@@ -290,8 +290,8 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_terms",
           reply: [
-            "Please reply with numbers. Confirm that you're responsible for your medical " +
-              "care & treatment. This service only provides info.",
+            "This service only provides health info. Agree " +
+              "that you are responsible for your medical care and treatment.",
             "",
             "Reply",
             "1. YES",
@@ -323,8 +323,8 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_end",
           reply:
-            "You can return to this service at any time. Remember, if you think you have " +
-            "TB, avoid contact with other people and get tested at your nearest clinic.",
+            "Return to use this service at any time. Remember, if you think you have TB, " +
+            "avoid contact with other people and get tested at your nearest clinic.",
           char_limit: 160,
         })
         .check.reply.ends_session()
@@ -346,9 +346,8 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_more_info_pg1",
           reply: [
-            "It's not a substitute for professional medical " +
-              "advice/diagnosis/treatment. Get a qualified health provider's advice " +
-              "about your medical condition/care.",
+            "TB HealthCheck does not replace medical advice, diagnosis or treatment. Get" +
+              " a qualified health provider's advice on your medical condition and care.",
             "1. Next",
           ].join("\n"),
           char_limit: 160,
@@ -362,9 +361,8 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_more_info_pg2",
           reply: [
-            "You confirm that you shouldn't disregard/delay seeking medical advice " +
-              "about treatment/care because of this service. Rely on info at your own " +
-              "risk.",
+            "You use this info at your own risk. This tool cannot replace medical advice. " +
+              "Agree not to ignore or delay getting medical advice on treatment or care",
             "1. Next",
           ].join("\n"),
           char_limit: 160,
@@ -386,7 +384,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_province",
           reply: [
-            "Select your province",
+            "Choose your province:",
             "",
             "Reply:",
             "1. EASTERN CAPE",
@@ -410,7 +408,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_province",
           reply: [
-            "Select your province",
+            "Choose your province:",
             "",
             "Reply:",
             "1. EASTERN CAPE",
@@ -449,8 +447,8 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_city",
           reply:
-            "Please TYPE the name of your Suburb, Township, Town or Village (or " +
-            "nearest)",
+            "Please TYPE your home address (or the address where you are currently staying). " +
+            "Give the street number, street name, suburb/township/town/village (or nearest).",
           char_limit: 160,
         })
         .run();
@@ -462,8 +460,8 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_city",
           reply:
-            "Please TYPE the name of your Suburb, Township, Town or Village (or " +
-            "nearest)",
+            "Please TYPE your home address (or the address where you are currently staying). " +
+            "Give the street number, street name, suburb/township/town/village (or nearest).",
           char_limit: 160,
         })
         .run();
@@ -644,7 +642,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_gender",
           reply: [
-            "Please provide us with the gender you identify as?",
+            "Which gender do you identify as?",
             "1. Male",
             "2. Female",
             "3. Other",
@@ -663,7 +661,7 @@ describe("ussd_tb_check app", function () {
           reply: [
             "Please use numbers from list.",
             "",
-            "Please provide us with the gender you identify as?",
+            "Which gender do you identify as?",
             "1. Male",
             "2. Female",
             "3. Other",
@@ -688,7 +686,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_cough",
           reply: [
-            "Let's see how you are feeling today. Do you have a cough?",
+            "Let's see how you're feeling today. Do you have a cough?",
             "",
             "Reply",
             "1. YES",
@@ -731,8 +729,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_fever",
           reply: [
-            "Do you have a fever / When you touch your " +
-              "forehead, does it feel hot?",
+            "Do you have a fever? (when you touch your forehead, does it feel hot?)",
             "",
             "Reply",
             "1. YES",
@@ -749,8 +746,8 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_fever",
           reply: [
-            "Please use numbers from list. Do you have a fever / When you touch your " +
-              "forehead, does it feel hot?",
+            "Please use numbers from list. Do you have a fever? (when you touch " +
+              "your forehead, does it feel hot?)",
             "",
             "Reply",
             "1. YES",
@@ -819,7 +816,7 @@ describe("ussd_tb_check app", function () {
           reply: [
             "Are you at high risk of TB?",
             "",
-            "Risk= if you live with someone who has TB OR you've had TB in the last 2 years OR you are HIV+",
+            "Risk means you live with someone who has TB OR you had TB in the last 2 years OR you are HIV+",
             "",
             "Reply",
             "1. Yes",
@@ -863,8 +860,8 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_tracing",
           reply: [
-            "Please confirm that the info you shared is accurate and that you give the NDoH permission " +
-              "to contact you if needed?",
+            "Now, please agree that the info you shared is correct and that you give the NDoH" +
+              " permission to contact you if needed?",
             "",
             "Reply",
             "1. YES",
@@ -882,8 +879,8 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_tracing",
           reply: [
-            "Please confirm that the info you shared is accurate and that you give the NDoH permission " +
-              "to contact you if needed?",
+            "Now, please agree that the info you shared is correct and that you give the NDoH" +
+              " permission to contact you if needed?",
             "",
             "Reply",
             "1. YES",
@@ -930,8 +927,8 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_opt_in",
           reply: [
-            "Thank you for your responses. We'll SMS you the result shortly. Would you " +
-              "like to receive follow up messages? ",
+            "Thanks for your answers. Your result will be sent soon on SMS. Would you like " +
+              "to receive follow-up messages?",
             "Reply",
             "1. Yes",
             "2. No",
@@ -947,8 +944,8 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_opt_in",
           reply: [
-            "Thank you for your responses. We'll SMS you the result shortly. Would you " +
-              "like to receive follow up messages? ",
+            "Thanks for your answers. Your result will be sent soon on SMS. Would you like " +
+              "to receive follow-up messages?",
             "Reply",
             "1. Yes",
             "2. No",
@@ -1060,7 +1057,7 @@ describe("ussd_tb_check app", function () {
         .input("1")
         .check.interaction({
           state: "state_complete",
-          reply: "Thank you for opting in for our follow up messages.",
+          reply: "Thanks for choosing to get our follow-up messages.",
           char_limit: 160,
         })
         .run();
@@ -1115,7 +1112,7 @@ describe("ussd_tb_check app", function () {
         .input("2")
         .check.interaction({
           state: "state_complete",
-          reply: "OK, you won't receive any follow up messages.",
+          reply: "Okay thanks, you won't get any follow-up messages.",
           char_limit: 160,
         })
         .run();
