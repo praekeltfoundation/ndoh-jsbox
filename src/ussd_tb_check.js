@@ -50,7 +50,7 @@ go.app = (function () {
           [
             "Welcome back to the The National Department of Health's TB HealthCheck",
             "",
-            "Reply",
+            "Reply 1 or 2",
           ].join("\n")
         ),
         accept_labels: true,
@@ -133,8 +133,8 @@ go.app = (function () {
         return self.states.create("state_terms");
       }
       return new ChoiceState(name, {
-        question: $("Select your preferred language"),
-        error: $("Please reply with numbers. Select your preferred language"),
+        question: $("Choose your preferred language"),
+        error: $("Please reply with numbers. Choose your preferred language"),
         accept_labels: true,
         choices: [
           new Choice("eng", $("English")),
@@ -155,16 +155,16 @@ go.app = (function () {
       return new MenuState(name, {
         question: $(
           [
-            "Confirm that you're responsible for your medical care & treatment. This service " +
-              "only provides info.",
+            "This service only provides health info. Agree that you are responsible for " +
+              "your medical care and treatment.",
             "",
             "Reply",
           ].join("\n")
         ),
         error: $(
           [
-            "Please reply with numbers. Confirm that you're responsible for your medical " +
-              "care & treatment. This service only provides info.",
+            "This service only provides health info. Agree " +
+              "that you are responsible for your medical care and treatment.",
             "",
             "Reply",
           ].join("\n")
@@ -181,8 +181,8 @@ go.app = (function () {
     self.states.add("state_end", function (name) {
       return new EndState(name, {
         text: $(
-          "You can return to this service at any time. Remember, if you think you have " +
-            "TB, avoid contact with other people and get tested at your nearest clinic."
+          "Return to use this service at any time. Remember, if you think you have TB, " +
+            "avoid contact with other people and get tested at your nearest clinic."
         ),
         next: "state_start",
       });
@@ -191,8 +191,8 @@ go.app = (function () {
     self.add("state_more_info_pg1", function (name) {
       return new MenuState(name, {
         question: $(
-          "It's not a substitute for professional medical advice/diagnosis/treatment. Get a " +
-            "qualified health provider's advice about your medical condition/care."
+          "TB HealthCheck does not replace medical advice, diagnosis or treatment. Get" +
+            " a qualified health provider's advice on your medical condition and care."
         ),
         accept_labels: true,
         choices: [new Choice("state_more_info_pg2", $("Next"))],
@@ -202,8 +202,8 @@ go.app = (function () {
     self.add("state_more_info_pg2", function (name) {
       return new MenuState(name, {
         question: $(
-          "You confirm that you shouldn't disregard/delay seeking medical advice about " +
-            "treatment/care because of this service. Rely on info at your own risk."
+          "You use this info at your own risk. This tool cannot replace medical advice. " +
+            "Agree not to ignore or delay getting medical advice on treatment or care"
         ),
         accept_labels: true,
         choices: [new Choice("state_terms", $("Next"))],
@@ -215,7 +215,7 @@ go.app = (function () {
         return self.states.create("state_city");
       }
       return new ChoiceState(name, {
-        question: $(["Select your province", "", "Reply:"].join("\n")),
+        question: $(["Choose your province:", "", "Reply:"].join("\n")),
         accept_labels: true,
         choices: [
           new Choice("ZA-EC", $("EASTERN CAPE")),
@@ -240,7 +240,8 @@ go.app = (function () {
         return self.states.create("state_age");
       }
       var question = $(
-        "Please TYPE the name of your Suburb, Township, Town or Village (or nearest)"
+        "Please TYPE your home address (or the address where you are currently staying). " +
+          "Give the street number, street name, suburb/township/town/village (or nearest)."
       );
       return new FreeText(name, {
         question: question,
@@ -387,12 +388,12 @@ go.app = (function () {
         return self.states.create("state_cough");
       }
       return new ChoiceState(name, {
-        question: $("Please provide us with the gender you identify as?"),
+        question: $("Which gender do you identify as?"),
         error: $(
           [
             "Please use numbers from list.",
             "",
-            "Please provide us with the gender you identify as?",
+            "Which gender do you identify as?",
           ].join("\n")
         ),
         accept_labels: true,
@@ -409,7 +410,7 @@ go.app = (function () {
     self.add("state_cough", function (name) {
       var question = $(
         [
-          "Let's see how you are feeling today. Do you have a cough?",
+          "Let's see how you're feeling today. Do you have a cough?",
           "",
           "Reply",
         ].join("\n")
@@ -435,16 +436,15 @@ go.app = (function () {
       return new ChoiceState(name, {
         question: $(
           [
-            "Do you have a fever / When you touch your " +
-              "forehead, does it feel hot?",
+            "Do you have a fever? (when you touch your forehead, does it feel hot?)",
             "",
             "Reply",
           ].join("\n")
         ),
         error: $(
           [
-            "Please use numbers from list. Do you have a fever / When you touch your " +
-              "forehead, does it feel hot?",
+            "Please use numbers from list. Do you have a fever? (when you touch " +
+              "your forehead, does it feel hot?)",
             "",
             "Reply",
           ].join("\n")
@@ -499,7 +499,7 @@ go.app = (function () {
           [
             "Are you at high risk of TB?",
             "",
-            "Risk= if you live with someone who has TB OR you've had TB in the last 2 years OR you are HIV+",
+            "Risk means you live with someone who has TB OR you had TB in the last 2 years OR you are HIV+",
             "",
             "Reply",
           ].join("\n")
@@ -524,16 +524,16 @@ go.app = (function () {
     self.add("state_tracing", function (name) {
       var question = $(
         [
-          "Please confirm that the info you shared is accurate and that you give the NDoH permission " +
-            "to contact you if needed?",
+          "Now, please agree that the info you shared is correct and that you give the NDoH" +
+            " permission to contact you if needed?",
           "",
           "Reply",
         ].join("\n")
       );
       var error = $(
         [
-          "Please confirm that the info you shared is accurate and that you give the NDoH permission " +
-            "to contact you if needed?",
+          "Now, please agree that the info you shared is correct and that you give the NDoH" +
+            " permission to contact you if needed?",
           "",
           "Reply",
         ].join("\n")
@@ -560,15 +560,15 @@ go.app = (function () {
     self.states.add("state_opt_in", function (name) {
       var question = $(
         [
-          "Thank you for your responses. We'll SMS you the result shortly. Would you " +
-            "like to receive follow up messages? ",
+          "Thanks for your answers. Your result will be sent soon on SMS. Would you like " +
+            "to receive follow-up messages?",
           "Reply",
         ].join("\n")
       );
       var error = $(
         [
-          "Thank you for your responses. We'll SMS you the result shortly. Would you " +
-            "like to receive follow up messages? ",
+          "Thanks for your answers. Your result will be sent soon on SMS. Would you like " +
+            "to receive follow-up messages?",
           "Reply",
         ].join("\n")
       );
@@ -630,10 +630,10 @@ go.app = (function () {
     self.states.add("state_complete", function (name) {
       var answers = self.im.user.answers;
 
-      var text = "Thank you for opting in for our follow up messages.";
+      var text = "Thanks for choosing to get our follow-up messages.";
 
       if (!answers.state_opt_in) {
-        text = "OK, you won't receive any follow up messages.";
+        text = "Okay thanks, you won't get any follow-up messages.";
       }
       return new EndState(name, {
         next: "state_start",
