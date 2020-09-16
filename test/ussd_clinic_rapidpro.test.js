@@ -47,9 +47,9 @@ describe("ussd_clinic app", function() {
                 .check.interaction({
                     state: "state_start",
                     reply: [
-                        "Welcome to the Department of Health's MomConnect (MC).",
+                        "Welcome to the Department of Health's MomConnect. We only send WhatsApp msgs in English.",
                         "",
-                        "Is 0123456789 the cell number of the mother who wants to sign up?",
+                        "Is 0123456789 the no. signing up?",
                         "1. Yes",
                         "2. No"
                     ].join("\n"),
@@ -1215,17 +1215,6 @@ describe("ussd_clinic app", function() {
                 })
                 .run();
         });
-        it("should go to state_language if the ID number is valid", function() {
-            return tester
-                .setup.user.state("state_sa_id_no")
-                .input("9001020005087")
-                .check.user.state("state_language")
-                .check(function(api) {
-                    var metrics = api.metrics.stores.test_metric_store;
-                    assert.deepEqual(metrics['enter.state_language'], {agg: 'sum', values: [1]});
-                })
-                .run();
-        });
     });
     describe("state_passport_country", function() {
         it("should ask the user which country the passport is for", function() {
@@ -1295,17 +1284,6 @@ describe("ussd_clinic app", function() {
                     reply: 
                         "Sorry, we don't understand. Please try again by entering the mother's " +
                         "Passport number as it appears in her passport."
-                })
-                .run();
-        });
-        it("should go to state_language on a successful input", function() {
-            return tester
-                .setup.user.state("state_passport_no")
-                .input("A1234567890")
-                .check.user.state("state_language")
-                .check(function(api) {
-                    var metrics = api.metrics.stores.test_metric_store;
-                    assert.deepEqual(metrics['enter.state_language'], {agg: 'sum', values: [1]});
                 })
                 .run();
         });
@@ -1425,72 +1403,6 @@ describe("ussd_clinic app", function() {
                 })
                 .run();
         });
-        it("should go to state_language on a valid input", function() {
-            return tester
-                .setup.user.state("state_dob_day")
-                .setup.user.answers({state_dob_year: "1987", state_dob_month: "02"})
-                .input("22")
-                .check.user.state("state_language")
-                .check(function(api) {
-                    var metrics = api.metrics.stores.test_metric_store;
-                    assert.deepEqual(metrics['enter.state_language'], {agg: 'sum', values: [1]});
-                })
-                .run();
-        });
-    });
-    describe("state_language", function() {
-        it("should ask the user for the language", function() {
-            return tester
-                .setup.user.state("state_language")
-                .check.interaction({
-                    reply: [
-                        "What language does the mother want to receive her MomConnect messages in?",
-                        "1. isiZulu",
-                        "2. isiXhosa",
-                        "3. Afrikaans",
-                        "4. English",
-                        "5. Sesotho sa Leboa",
-                        "6. Next"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should be able to page through choices", function() {
-            return tester
-                .setup.user.state("state_language")
-                .input("6")
-                .check.interaction({
-                    reply: [
-                        "What language does the mother want to receive her MomConnect messages in?",
-                        "1. Setswana",
-                        "2. Sesotho",
-                        "3. Xitsonga",
-                        "4. siSwati",
-                        "5. Tshivenda",
-                        "6. isiNdebele",
-                        "7. Back"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should display an error for an incorrect choice", function() {
-            return tester
-                .setup.user.state("state_language")
-                .input("A")
-                .check.interaction({
-                    reply: [
-                        "Sorry we don't understand. Please enter the number next to the " +
-                        "mother's answer.",
-                        "1. isiZulu",
-                        "2. isiXhosa",
-                        "3. Afrikaans",
-                        "4. English",
-                        "5. Sesotho sa Leboa",
-                        "6. Next"
-                    ].join("\n")
-                })
-                .run();
-        });
     });
     describe("state_whatsapp_contact_check + state_trigger_rapidpro_flow", function() {
         it("should make a request to the WhatsApp and RapidPro APIs for prebirth", function() {
@@ -1500,7 +1412,6 @@ describe("ussd_clinic app", function() {
                     state_message_type: "state_edd_month",
                     state_research_consent: "no",
                     state_enter_msisdn: "0820001001",
-                    state_language: "zul",
                     state_id_type: "state_sa_id_no",
                     state_sa_id_no: "9001020005087",
                     state_edd_month: "201502",
@@ -1519,7 +1430,7 @@ describe("ussd_clinic app", function() {
                             "prebirth-flow-uuid", null, "whatsapp:27820001001", {
                                 research_consent: "FALSE",
                                 registered_by: "+27123456789",
-                                language: "zul",
+                                language: "eng",
                                 timestamp: "2014-04-04T07:07:07Z",
                                 source: "Clinic USSD",
                                 id_type: "sa_id",
@@ -1557,7 +1468,6 @@ describe("ussd_clinic app", function() {
                     state_message_type: "state_birth_year",
                     state_research_consent: "no",
                     state_enter_msisdn: "0820001001",
-                    state_language: "zul",
                     state_id_type: "state_sa_id_no",
                     state_sa_id_no: "9001020005087",
                     state_birth_month: "2014-02",
@@ -1576,7 +1486,7 @@ describe("ussd_clinic app", function() {
                             "postbirth-flow-uuid", null, "whatsapp:27820001001", {
                                 research_consent: "FALSE",
                                 registered_by: "+27123456789",
-                                language: "zul",
+                                language: "eng",
                                 timestamp: "2014-04-04T07:07:07Z",
                                 source: "Clinic USSD",
                                 id_type: "sa_id",
@@ -1643,7 +1553,6 @@ describe("ussd_clinic app", function() {
                     state_message_type: "state_edd_month",
                     state_research_consent: "no",
                     state_enter_msisdn: "0820001001",
-                    state_language: "zul",
                     state_id_type: "state_sa_id_no",
                     state_sa_id_no: "9001020005087",
                     state_edd_month: "201502",
@@ -1662,7 +1571,7 @@ describe("ussd_clinic app", function() {
                             "prebirth-flow-uuid", null, "whatsapp:27820001001", {
                                 research_consent: "FALSE",
                                 registered_by: "+27123456789",
-                                language: "zul",
+                                language: "eng",
                                 timestamp: "2014-04-04T07:07:07Z",
                                 source: "Clinic USSD",
                                 id_type: "sa_id",
