@@ -80,7 +80,6 @@ describe("ussd_public app", function() {
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27123456789",
                             exists: true,
-                            language: "zul",
                             fields: {prebirth_messaging: "3"}
                         })
                     );
@@ -92,7 +91,6 @@ describe("ussd_public app", function() {
                         "Hello mom! You can reply to any MomConnect message with a question, compliment or complaint. Our team " +
                         "will get back to you as soon as they can."
                 })
-                .check.user.lang("zul")
                 .run();
         });
         it("should welcome the user if they don't have a subscription", function() {
@@ -480,7 +478,7 @@ describe("ussd_public app", function() {
             return tester
                 .setup(function(api) {
                     api.http.fixtures.add(
-                        fixtures_whatsapp.not_exists({
+                        fixtures_whatsapp.exists({
                             address: "+27123456789",
                             wait: true
                         })
@@ -491,20 +489,19 @@ describe("ussd_public app", function() {
                             null,
                             "whatsapp:27123456789",
                             {
-                                "on_whatsapp": "FALSE",
+                                "on_whatsapp": "TRUE",
                                 "research_consent": "FALSE",
-                                "language": "zul",
+                                "language": "eng",
                                 "source": "Public USSD",
                                 "timestamp": "2014-04-04T07:07:07Z",
                                 "registered_by": "+27123456789",
                                 "mha": 6,
-                                "swt": 1
+                                "swt": 7
                             }
                         )
                     );
                 })
                 .setup.user.state("state_opt_in")
-                .setup.user.lang("zul")
                 .input({session_event: "continue"})
                 .check.user.state("state_registration_complete")
                 .run();
@@ -560,7 +557,7 @@ describe("ussd_public app", function() {
                             {
                                 "on_whatsapp": "TRUE",
                                 "research_consent": "TRUE",
-                                "language": "xho",
+                                "language": "eng",
                                 "source": "Public USSD",
                                 "timestamp": "2014-04-04T07:07:07Z",
                                 "registered_by": "+27123456789",
@@ -573,7 +570,6 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_trigger_rapidpro_flow")
                 .setup.user.answer("on_whatsapp", true)
                 .setup.user.answer("state_research_consent", "yes")
-                .setup.user.lang("xho")
                 .input({session_event: "continue"})
                 .check.user.state("state_registration_complete")
                 .run();
@@ -587,23 +583,22 @@ describe("ussd_public app", function() {
                             null,
                             "whatsapp:27123456789",
                             {
-                                "on_whatsapp": "FALSE",
+                                "on_whatsapp": "TRUE",
                                 "research_consent": "FALSE",
-                                "language": "zul",
+                                "language": "eng",
                                 "source": "Public USSD",
                                 "timestamp": "2014-04-04T07:07:07Z",
                                 "registered_by": "+27123456789",
                                 "mha": 6,
-                                "swt": 1
+                                "swt": 7
                             },
                             true
                         )
                     );
                 })
                 .setup.user.state("state_trigger_rapidpro_flow")
-                .setup.user.answer("on_whatsapp", false)
+                .setup.user.answer("on_whatsapp", true)
                 .setup.user.answer("state_research_consent", "no")
-                .setup.user.lang("zul")
                 .input({session_event: "continue"})
                 .check(function(api){
                     assert.equal(api.http.requests.length, 3);
@@ -634,7 +629,7 @@ describe("ussd_public app", function() {
                             {
                                 "on_whatsapp": "TRUE",
                                 "research_consent": "FALSE",
-                                "language": "zul",
+                                "language": "eng",
                                 "source": "Public USSD",
                                 "timestamp": "2014-04-04T07:07:07Z",
                                 "registered_by": "+27123456789",
@@ -647,7 +642,6 @@ describe("ussd_public app", function() {
                 // For some reason, if we start the test on state_registration_complete, it skips to state_start,
                 // so we need to start it before
                 .setup.user.state("state_whatsapp_contact_check")
-                .setup.user.lang("zul")
                 .setup.user.answer("on_whatsapp", false)
                 .input({session_event: "continue"})
                 .check.interaction({
@@ -667,35 +661,16 @@ describe("ussd_public app", function() {
                             wait: true
                         })
                     );
-                    api.http.fixtures.add(
-                        fixtures_rapidpro.start_flow(
-                            "rapidpro-flow-uuid",
-                            null,
-                            "whatsapp:27123456789",
-                            {
-                                "on_whatsapp": "FALSE",
-                                "research_consent": "FALSE",
-                                "language": "zul",
-                                "source": "Public USSD",
-                                "timestamp": "2014-04-04T07:07:07Z",
-                                "registered_by": "+27123456789",
-                                "mha": 6,
-                                "swt": 1
-                            }
-                        )
-                    );
                 })
                 // For some reason, if we start the test on state_registration_complete, it skips to state_start,
                 // so we need to start it before
                 .setup.user.state("state_whatsapp_contact_check")
-                .setup.user.lang("zul")
-                .setup.user.answer("on_whatsapp", false)
                 .input({session_event: "continue"})
                 .check.interaction({
-                    state: "state_registration_complete",
+                    state: "state_not_on_whatsapp",
                     reply:
-                        "You're done! This number 0123456789 will get helpful messages from MomConnect on SMS. " +
-                        "You can register for the full set of FREE messages at a clinic."
+                        "Sorry, MomConnect is not available on SMS. We only send WhatsApp messages in English. " +
+                        "You can dial *134*550*2# again on a cell number that has WhatsApp."
                 })
                 .run();
         });

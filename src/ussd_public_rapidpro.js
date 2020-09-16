@@ -62,10 +62,6 @@ go.app = function() {
             return self.rapidpro.get_contact({urn: "whatsapp:" + _.trim(msisdn, "+")})
                 .then(function(contact) {
                     self.im.user.set_answer("contact", contact);
-                    // Set the language if we have it
-                    if(_.isString(_.get(contact, "language"))) {
-                        return self.im.user.set_lang(contact.language);
-                    }
                 }).then(function() {
                     // Delegate to the correct state depending on contact fields
                     var contact = self.im.user.get_answer("contact");
@@ -273,16 +269,19 @@ go.app = function() {
         });
 
         self.add("state_trigger_rapidpro_flow", function(name, opts) {
+            if (!self.im.user.get_answer("on_whatsapp")) {
+                return self.states.create("state_not_on_whatsapp");
+            }
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             var data = {
-                on_whatsapp: self.im.user.get_answer("on_whatsapp") ? "TRUE" : "FALSE",
+                on_whatsapp: "TRUE",
                 research_consent: self.im.user.get_answer("state_research_consent") === "yes" ? "TRUE" : "FALSE",
-                language: self.im.user.lang,
+                language: "eng",
                 source: "Public USSD",
                 timestamp: new moment.utc(self.im.config.testing_today).format(),
-                registered_by: utils.normalize_msisdn(self.im.user.addr, "ZA"),
+                registered_by: msisdn,
                 mha: 6,
-                swt: self.im.user.get_answer("on_whatsapp") ? 7 : 1
+                swt: 7
             };
             return self.rapidpro
                 .start_flow(self.im.config.flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), data)
@@ -299,17 +298,24 @@ go.app = function() {
                 });
         });
 
+        self.states.add("state_not_on_whatsapp", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "Sorry, MomConnect is not available on SMS. We only send WhatsApp messages in English. " +
+                    "You can dial *134*550*2# again on a cell number that has WhatsApp."
+                )
+            });
+        });
+
         self.states.add("state_registration_complete", function(name) {
             var msisdn = utils.readable_msisdn(utils.normalize_msisdn(self.im.user.addr, "ZA"), "27");
             var whatsapp_message = $(
                 "You're done! This number {{ msisdn }} will get helpful messages from MomConnect on WhatsApp. For " +
                 "the full set of messages, visit a clinic.").context({msisdn: msisdn});
-            var sms_message = $(
-                "You're done! This number {{ msisdn }} will get helpful messages from MomConnect on SMS. You can " +
-                "register for the full set of FREE messages at a clinic.").context({msisdn: msisdn});
             return new EndState(name, {
                 next: "state_start",
-                text: self.im.user.get_answer("on_whatsapp") ? whatsapp_message : sms_message
+                text: whatsapp_message,
             });
         });
 
