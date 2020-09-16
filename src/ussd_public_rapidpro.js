@@ -74,7 +74,7 @@ go.app = function() {
                     } else if(_.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7)) {
                         return self.states.create("state_clinic_subscription");
                     } else {
-                        return self.states.create("state_language");
+                        return self.states.create("state_pregnant");
                     }
                 }).catch(function(e) {
                     // Go to error state after 3 failed HTTP requests
@@ -107,69 +107,19 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_language", function(name) {
-            // Skip this state if we already have a language
-            var language = _.get(self.im.user.get_answer("contact"), "language");
-            if(_.isString(language)) {
-                return self.states.create("state_pregnant");
-            }
-            // No translations are needed for this state, since we don't know the language yet
-            var question = "Welcome to the Department of Health's MomConnect (MC). Please select your language:";
-            // TODO: use the error pretext. There is currently a bug in the sandbox that doesn't take into account
-            // the length of the error message when calculating choices
-            // var error_pretext = "Sorry, please reply with the number next to your answer.";
-            return new PaginatedChoiceState(name, {
-                question: question,
-                error: question,
-                accept_labels: true,
-                options_per_page: null,
-                characters_per_page: 160,
-                choices: [
-                    new Choice('zul', 'isiZulu'),
-                    new Choice('xho', 'isiXhosa'),
-                    new Choice('afr', 'Afrikaans'),
-                    new Choice('eng', 'English'),
-                    new Choice('nso', 'Sesotho sa Leboa'),
-                    new Choice('tsn', 'Setswana'),
-                    new Choice('sot', 'Sesotho'),
-                    new Choice('tso', 'Xitsonga'),
-                    new Choice('ssw', 'siSwati'),
-                    new Choice('ven', 'Tshivenda'),
-                    new Choice('nbl', 'isiNdebele')
-                ],
-                next: function(choice) {
-                    return self.im.user
-                        .set_lang(choice.value)
-                        .then(_.constant("state_pregnant"));
-                }
-            });
-        });
-
-        self.add("state_pregnant", function(name) {
+        self.states.add("state_pregnant", function(name) {
             return new MenuState(name, {
                 question: $(
-                    "MomConnect sends free messages to help pregnant moms and babies. Are you or do you suspect that you " +
-                    "are pregnant?"
+                    "Welcome to the Department of Health’s MomConnect. We only send WhatsApp msgs in English."
                 ),
                 error: $(
-                    "Sorry, please reply with the number next to your answer. Are you or do you suspect that you are " +
-                    "pregnant?"
+                    "Sorry, please reply with the number next to your answer. " +
+                    "We only send WhatsApp msgs in English."
                 ),
                 accept_labels: true,
                 choices: [
-                    new Choice("state_info_consent", $("Yes")),
-                    new Choice("state_pregnant_only", $("No"))
+                    new Choice("state_info_consent", $("Continue")),
                 ]
-            });
-        });
-
-        self.states.add("state_pregnant_only", function(name) {
-            return new EndState(name, {
-                next: "state_start",
-                text: $(
-                    "We're sorry but this service is only for pregnant mothers. If you have other health concerns " +
-                    "please visit your nearest clinic. Have a lovely day!"
-                )
             });
         });
 

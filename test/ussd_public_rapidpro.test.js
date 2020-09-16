@@ -95,7 +95,7 @@ describe("ussd_public app", function() {
                 .check.user.lang("zul")
                 .run();
         });
-        it("should ask the user for their language if they don't have a subscription", function() {
+        it("should welcome the user if they don't have a subscription", function() {
             return tester
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -106,10 +106,10 @@ describe("ussd_public app", function() {
                     );
                 })
                 .start()
-                .check.user.state("state_language")
+                .check.user.state("state_pregnant")
                 .run();
         });
-        it("should ask the user for their language if they don't have a contact", function() {
+        it("should welcome the user if they don't have a contact", function() {
             return tester
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -120,61 +120,6 @@ describe("ussd_public app", function() {
                     );
                 })
                 .start()
-                .check.user.state("state_language")
-                .run();
-        });
-    });
-    describe("state_language", function() {
-        it("should display the list of languages", function() {
-            return tester
-                .setup.user.state("state_language")
-                .input({session_event: "continue"})
-                .check.interaction({
-                    state: "state_language",
-                    reply: [
-                        "Welcome to the Department of Health's MomConnect (MC). Please select your language:",
-                        "1. isiZulu",
-                        "2. isiXhosa",
-                        "3. Afrikaans",
-                        "4. English",
-                        "5. Sesotho sa Leboa",
-                        "6. More"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should set the language if a language is selected", function() {
-            return tester
-                .setup.user.state("state_language")
-                .input("5")
-                .check.user.lang("nso")
-                .check.user.answer("state_language", "nso")
-                .check.user.state("state_pregnant")
-                .run();
-        });
-        it("should display an error if an incorrect input is sent", function() {
-            return tester
-                .setup.user.state("state_language")
-                .input("foo")
-                .check.interaction({
-                    state: "state_language",
-                    reply: [
-                        "Welcome to the Department of Health's MomConnect (MC). Please select your language:",
-                        "1. isiZulu",
-                        "2. isiXhosa",
-                        "3. Afrikaans",
-                        "4. English",
-                        "5. Sesotho sa Leboa",
-                        "6. More"
-                    ].join("\n"),
-                })
-                .run();
-        });
-        it("should skip asking for language if the user has previously selected a language", function() {
-            return tester
-                .setup.user.state("state_language")
-                .setup.user.answer("contact", {"language": "zul"})
-                .input({session_event: "continue"})
                 .check.user.state("state_pregnant")
                 .run();
         });
@@ -187,11 +132,10 @@ describe("ussd_public app", function() {
                 .check.interaction({
                     state: "state_pregnant",
                     reply: [
-                        "MomConnect sends free messages to help pregnant moms and babies. Are you or do you suspect that you " +
-                        "are pregnant?",
-                        "1. Yes",
-                        "2. No"
-                    ].join("\n")
+                        "Welcome to the Department of Health’s MomConnect. We only send WhatsApp msgs in English.",
+                        "1. Continue",
+                    ].join("\n"),
+                    char_limit: 140,
                 })
                 .run();
         });
@@ -202,27 +146,15 @@ describe("ussd_public app", function() {
                 .check.interaction({
                     state: "state_pregnant",
                     reply: [
-                        "Sorry, please reply with the number next to your answer. Are you or do you suspect that " +
-                        "you are pregnant?",
-                        "1. Yes",
-                        "2. No"
-                    ].join("\n")
+                        "Sorry, please reply with the number next to your answer. " +
+                        "We only send WhatsApp msgs in English.",
+                        "1. Continue",
+                    ].join("\n"),
+                    char_limit: 140,
                 })
                 .run();
         });
-        it("should turn the user away if they aren't pregnant", function() {
-            return tester
-                .setup.user.state("state_pregnant")
-                .input("2")
-                .check.interaction({
-                    state: "state_pregnant_only",
-                    reply:
-                        "We're sorry but this service is only for pregnant mothers. If you have other health concerns " +
-                        "please visit your nearest clinic. Have a lovely day!"
-                })
-                .run();
-        });
-        it("should ask them for consent if they are pregnant", function() {
+        it("should ask them for consent if they continue", function() {
             return tester
                 .setup.user.state("state_pregnant")
                 .input("1")
@@ -464,7 +396,7 @@ describe("ussd_public app", function() {
     describe("timeout testing", function() {
         it("should go to state_timed_out", function() {
             return tester
-                .setup.user.state("state_pregnant")
+                .setup.user.state("state_info_consent")
                 .inputs(
                     {session_event: "close"}
                     , {session_event: "new"}
