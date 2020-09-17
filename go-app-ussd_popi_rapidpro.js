@@ -1,6 +1,52 @@
 var go = {};
 go;
 
+go.Engage = function() {
+    var vumigo = require('vumigo_v02');
+    var events = vumigo.events;
+    var Eventable = events.Eventable;
+    var _ = require('lodash');
+    var url = require('url');
+
+    var Engage = Eventable.extend(function(self, json_api, base_url, token) {
+        self.json_api = json_api;
+        self.base_url = base_url;
+        self.json_api.defaults.headers.Authorization = ['Bearer ' + token];
+        self.json_api.defaults.headers['Content-Type'] = ['application/json'];
+
+        self.contact_check = function(msisdn, block) {
+            return self.json_api.post(url.resolve(self.base_url, 'v1/contacts'), {
+                data: {
+                    blocking: block ? 'wait' : 'no_wait',
+                    contacts: [msisdn]
+                }
+            }).then(function(response) {
+                var existing = _.filter(response.data.contacts, function(obj) {
+                    return obj.status === "valid";
+                });
+                return !_.isEmpty(existing);
+            });
+        };
+
+          self.LANG_MAP = {zul_ZA: "en",
+                          xho_ZA: "en",
+                          afr_ZA: "af",
+                          eng_ZA: "en",
+                          nso_ZA: "en",
+                          tsn_ZA: "en",
+                          sot_ZA: "en",
+                          tso_ZA: "en",
+                          ssw_ZA: "en",
+                          ven_ZA: "en",
+                          nbl_ZA: "en",
+                        };
+    });
+
+
+
+    return Engage;
+}();
+
 go.RapidPro = function() {
     var vumigo = require('vumigo_v02');
     var url_utils = require('url');
@@ -149,6 +195,11 @@ go.app = function() {
                 new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-POPI"]}}),
                 self.im.config.services.rapidpro.base_url,
                 self.im.config.services.rapidpro.token
+            );
+            self.whatsapp = new go.Engage(
+                new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-Clinic"]}}),
+                self.im.config.services.whatsapp.base_url,
+                self.im.config.services.whatsapp.token
             );
         };
 
@@ -442,8 +493,25 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_msisdn_change_get_contact"
+                next: "state_msisdn_change_get_whatsapp_contact_background"
             });
+        });
+
+        self.add("state_msisdn_change_get_whatsapp_contact_background", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(
+                _.get(self.im.user.answers, "state_msisdn_change_enter"), "ZA");
+            return self.whatsapp.contact_check(msisdn, false)
+                .then(function() {
+                    return self.states.create("state_msisdn_change_get_contact");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
         });
 
         self.add("state_msisdn_change_get_contact", function(name, opts) {
@@ -499,12 +567,44 @@ go.app = function() {
                     "You've entered {{msisdn}} as your new MomConnect number. Is this correct?"
                 ).context({msisdn: msisdn}),
                 choices: [
-                    new Choice("state_msisdn_change", $("Yes")),
+                    new Choice("state_msisdn_change_get_whatsapp_contact", $("Yes")),
                     new Choice("state_msisdn_change_enter", $("No, I want to try again"))
                 ],
                 error: $(
                     "Sorry we don't recognise that reply. Please enter the number next to your " +
                     "answer."
+                )
+            });
+        });
+
+        self.add("state_msisdn_change_get_whatsapp_contact", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(
+                _.get(self.im.user.answers, "state_msisdn_change_enter"), "ZA");
+            return self.whatsapp.contact_check(msisdn, true)
+                .then(function(on_whatsapp) {
+                    if(on_whatsapp) {
+                        return self.states.create("state_msisdn_change");
+                    } else {
+                        return self.states.create("state_not_on_whatsapp");
+                    }
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+        self.states.add("state_not_on_whatsapp", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "The no. you're trying to switch to doesn't have WhatsApp. " +
+                    "MomConnect only sends WhatsApp msgs in English. " +
+                    "Dial *134*550*7# to switch to a no. with WhatsApp."
                 )
             });
         });

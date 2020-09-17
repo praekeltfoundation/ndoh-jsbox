@@ -44,6 +44,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_popi_rapidpro: [
                     'src/index.js',
+                    'src/engage.js',
                     'src/rapidpro.js',
                     '<%= paths.src.app.ussd_popi_rapidpro %>',
                     'src/init.js'
@@ -132,6 +133,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_popi_rapidpro: [
                     'test/setup.js',
+                    'src/engage.js',
                     'src/rapidpro.js',
                     '<%= paths.src.app.ussd_popi_rapidpro %>',
                     'test/ussd_popi_rapidpro.test.js'
