@@ -307,50 +307,27 @@ go.app = function() {
         
         self.add("state_change_info", function(name) {
             var contact = self.im.user.answers.contact;
+            var channel = _.get(contact, "fields.preferred_channel");
+
+            var sms_choices = [
+                new Choice("state_channel_switch_confirm", $("Change from SMS to WhatsApp")),
+                new Choice("state_msisdn_change_enter", $("Cell number")),
+                new Choice("state_language_change_enter", $("Language")),
+                new Choice("state_identification_change_type", $("Identification")),
+                new Choice("state_change_research_confirm", $("Research messages")),
+                new Choice("state_main_menu", $("Back"))
+            ];
+            var whatsapp_choices = [
+                new Choice("state_msisdn_change_enter", $("Cell number")),
+                new Choice("state_identification_change_type", $("Identification")),
+                new Choice("state_change_research_confirm", $("Research messages")),
+                new Choice("state_main_menu", $("Back"))
+            ];
             
-            return new ChoiceState(name, {
+            return new MenuState(name, {
                 question: $("What would you like to change?"),
                 error: $("Sorry we don't understand. Please try again."),
-                choices: [
-                    new Choice(
-                        "state_channel_switch_confirm",
-                        $("Change from {{current_channel}} to {{alternative_channel}}").context({
-                            current_channel: self.contact_current_channel(contact),
-                            alternative_channel: self.contact_alternative_channel(contact)
-                        })
-                    ),
-                    new Choice("state_msisdn_change_enter", $("Cell number")),
-                    new Choice("state_language_change_enter", $("Language")),
-                    new Choice("state_identification_change_type", $("Identification")),
-                    new Choice("state_change_research_confirm", $("Research messages")),
-                    new Choice("state_main_menu", $("Back")),
-                ],
-                next: function(choice) {
-                    if(choice.value === "state_language_change_enter") {
-                        if(_.toUpper(_.get(contact, "fields.preferred_channel")) === "WHATSAPP"){
-                            return "state_switch_to_sms_option";
-                        }
-                        else {
-                            return "state_language_change_enter";
-                        }
-                    }
-                    else{
-                        return choice.value;
-                    }
-                }
-            });
-        });
-
-        self.add("state_preferred_channel_language_option", function(name) {
-            return new MenuState(name, {
-                question: $("Please switch to SMS for msgs in another language"),
-                error: $("Sorry we don't recognise that reply. Please try again."
-                ),
-                choices: [
-                    new Choice("state_channel_switch_confirm", $("Switch to SMS (Dial *134*550*7# again when switch is done to " +
-                                            "pick your language)")),
-                    new Choice("state_exit", $("Exit")),
-                ]
+                choices: channel == "WhatsApp" ? whatsapp_choices : sms_choices
             });
         });
 
