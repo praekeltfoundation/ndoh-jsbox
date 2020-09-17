@@ -127,17 +127,10 @@ go.app = function() {
         self.add("state_personal_info", function(name) {
             var contact = self.im.user.answers.contact;
             var id_type = _.get(contact, "fields.identification_type");
-            var text = $([
-                "Cell number: {{msisdn}}",
-                "Channel: {{channel}}",
-                "Language: {{language}}",
-                "{{id_type}}: {{id_details}}",
-                "Type: {{message_type}}",
-                "Research messages: {{research}}",
-                "Baby's birthday: {{dobs}}"
-            ].join("\n")).context({
+            var channel = _.get(contact, "fields.preferred_channel");
+            var context = {
                 msisdn: utils.readable_msisdn(self.im.user.addr, "27"),
-                channel: _.get(contact, "fields.preferred_channel") || $("None"),
+                channel: channel || $("None"),
                 language: _.get(self.languages, _.get(contact, "language"), $("None")),
                 id_type: _.get({
                     passport: $("Passport"),
@@ -170,7 +163,23 @@ go.app = function() {
                     new moment(_.get(contact, "fields.baby_dob3", null)),
                     new moment(_.get(contact, "fields.edd", null)),
                 ], _.method("isValid")), _.method("format", "YY-MM-DD")).join(", ") || $("None")
-            });
+            };
+            var sms_text = $([
+                "Cell number: {{msisdn}}",
+                "Channel: {{channel}}",
+                "Language: {{language}}",
+                "{{id_type}}: {{id_details}}",
+                "Type: {{message_type}}",
+                "Research messages: {{research}}",
+                "Baby's birthday: {{dobs}}"
+            ].join("\n")).context(context);
+            var whatsapp_text = $([
+                "Cell number: {{msisdn}}",
+                "{{id_type}}: {{id_details}}",
+                "Type: {{message_type}}",
+                "Research messages: {{research}}",
+                "Baby's birthday: {{dobs}}"
+            ].join("\n")).context(context);
             // Modified pagination logic to split on newline
             var page_end = function(i, text, n) {
                 var start = page_start(i, text, n);
@@ -184,7 +193,7 @@ go.app = function() {
                 return text.slice(page_start(i, text, n), page_end(i, text, n));
             };
             return new PaginatedState(name, {
-                text: text,
+                text: channel == "WhatsApp" ? whatsapp_text : sms_text,
                 back: $("Previous"),
                 more: $("Next"),
                 exit: $("Back"),

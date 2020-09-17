@@ -204,7 +204,7 @@ describe("ussd_popi_rapidpro app", function() {
                 })
                 .run();
         });
-        it("should display contact data page 1", function() {
+        it("should display contact data WhatsApp", function() {
             return tester
                 .setup.user.state("state_personal_info")
                 .setup.user.answer("contact", {
@@ -223,7 +223,35 @@ describe("ussd_popi_rapidpro app", function() {
                 .check.interaction({
                     reply: [
                         "Cell number: 0123456789",
-                        "Channel: WhatsApp",
+                        "Passport: A12345 Malawi",
+                        "Type: Pregnancy",
+                        "Research messages: Yes",
+                        "Baby's birthday: 18-03-02, 20-06-04",
+                        "1. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display contact data page 1 SMS", function() {
+            return tester
+                .setup.user.state("state_personal_info")
+                .setup.user.answer("contact", {
+                    language: "zul",
+                    fields: {
+                        preferred_channel: "SMS",
+                        identification_type: "passport",
+                        passport_number: "A12345",
+                        passport_origin: "mw",
+                        research_consent: "TRUE",
+                        edd: "2020-06-04T00:00:00.000000Z",
+                        baby_dob1: "2018-03-02T00:00:00.000000Z",
+                        prebirth_messaging: "1"
+                    },
+                })
+                .check.interaction({
+                    reply: [
+                        "Cell number: 0123456789",
+                        "Channel: SMS",
                         "Language: isiZulu",
                         "Passport: A12345 Malawi",
                         "Type: Pregnancy",
@@ -240,7 +268,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup.user.answer("contact", {
                     language: "zul",
                     fields: {
-                        preferred_channel: "WhatsApp",
+                        preferred_channel: "SMS",
                         identification_type: "passport",
                         passport_number: "A12345",
                         passport_origin: "mw",
