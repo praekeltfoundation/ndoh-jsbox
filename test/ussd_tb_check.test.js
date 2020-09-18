@@ -1071,7 +1071,10 @@ describe("ussd_tb_check app", function () {
         .input("1")
         .check.interaction({
           state: "state_complete",
-          reply: "Thanks for choosing to get our follow-up messages.",
+          reply: [
+            "Thanks for choosing to get our follow-up messages.",
+            "1. See Results",
+          ].join("\n"),
           char_limit: 160,
         })
         .run();
@@ -1126,7 +1129,88 @@ describe("ussd_tb_check app", function () {
         .input("2")
         .check.interaction({
           state: "state_complete",
-          reply: "Okay thanks, you won't get any follow-up messages.",
+          reply: [
+            "Okay thanks, you won't get any follow-up messages.",
+            "1. See Results",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should display error message for incorrect input", function () {
+      return tester.setup.user
+        .state("state_complete")
+        .input("2")
+        .check.interaction({
+          state: "state_complete",
+          reply: [
+            "This service works best when you select numbers from the list",
+            "1. See Results",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+  });
+  describe("state_show_results", function () {
+    it("should show the correct low risk message", function () {
+      return tester.setup.user
+        .state("state_complete")
+        .setup.user.answers({
+          state_cough: "no",
+          state_fever: false,
+          state_sweat: false,
+          state_weight: false,
+          state_exposure: "no",
+        })
+        .input("1")
+        .check.interaction({
+          state: "state_show_results",
+          reply:
+            "You don't need a TB test now, but if you develop cough, fever, weight loss " +
+            "or night sweats visit your nearest clinic.",
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should show the correct moderate/high risk message", function () {
+      return tester.setup.user
+        .state("state_complete")
+        .setup.user.answers({
+          state_cough: "yes",
+          state_fever: false,
+          state_sweat: false,
+          state_weight: false,
+          state_exposure: "no",
+        })
+        .input("1")
+        .check.interaction({
+          state: "state_show_results",
+          reply: [
+            "Your replies to the questions show you need a TB test this week.",
+            "",
+            "Go to your clinic for a free TB test. Please put on a face mask before you enter the clinic",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should show the correct low risk, unknown exposure message", function () {
+      return tester.setup.user
+        .state("state_complete")
+        .setup.user.answers({
+          state_cough: "no",
+          state_fever: false,
+          state_sweat: false,
+          state_weight: false,
+          state_exposure: "not_sure",
+        })
+        .input("1")
+        .check.interaction({
+          state: "state_show_results",
+          reply:
+            "Check if those you live with are on TB treatment. If you don't know " +
+            "your HIV status, visit the clinic for a free HIV test. Then do the TB check again.",
           char_limit: 160,
         })
         .run();
