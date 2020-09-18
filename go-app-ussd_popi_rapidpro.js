@@ -1273,7 +1273,7 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_check_origin_contact"
+                next: "state_origin_msisdn_change_get_whatsapp_contact_background"
             });
         });
 
@@ -1485,8 +1485,25 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_check_target_contact"
+                next: "state_target_msisdn_whatsapp_contact_background"
             });
+        });
+
+        self.add("state_target_msisdn_whatsapp_contact_background", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(
+                _.get(self.im.user.answers, "state_target_msisdn"), "ZA");
+            return self.whatsapp.contact_check(msisdn, false)
+                .then(function() {
+                    return self.states.create("state_check_target_contact");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
         });
 
         self.add("state_check_target_contact", function(name, opts) {
@@ -1542,10 +1559,31 @@ go.app = function() {
                     "answer."
                 ),
                 choices: [
-                    new Choice("state_nosim_change_msisdn", $("Yes")),
+                    new Choice("state_target_msisdn_whatsapp_contact", $("Yes")),
                     new Choice("state_target_msisdn", $("No, I want to try again"))
                 ]
             });
+        });
+
+        self.add("state_target_msisdn_whatsapp_contact", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(
+                _.get(self.im.user.answers, "state_target_msisdn"), "ZA");
+            return self.whatsapp.contact_check(msisdn, true)
+                .then(function(on_whatsapp) {
+                    if(on_whatsapp) {
+                        return self.states.create("state_nosim_change_msisdn");
+                    } else {
+                        return self.states.create("state_not_on_whatsapp");
+                    }
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
         });
 
         self.add("state_nosim_change_msisdn", function(name, opts) {

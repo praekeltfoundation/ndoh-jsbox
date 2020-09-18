@@ -1989,6 +1989,12 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup.user.state("state_target_msisdn")
                 .setup(function(api) {
                     api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27820001001",
+                            wait: false
+                        })
+                    );
+                    api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27820001001",
                             exists: true,
@@ -2004,6 +2010,12 @@ describe("ussd_popi_rapidpro app", function() {
             return tester
                 .setup.user.state("state_target_msisdn")
                 .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27820001001",
+                            wait: false
+                        })
+                    );
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27820001001",
@@ -2080,6 +2092,12 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup.user.state("state_target_no_subscriptions")
                 .setup(function(api) {
                     api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27820001001",
+                            wait: true
+                        })
+                    );
+                    api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
                             "msisdn-change-flow", null, "whatsapp:27820001001", {
                                 new_msisdn: "+27820001001",
@@ -2098,6 +2116,27 @@ describe("ussd_popi_rapidpro app", function() {
                 })
                 .input("1")
                 .check.user.state("state_nosim_change_success")
+                .run();
+        });
+        it("should show an error if the target number doesn't have WhatsApp", function () {
+            return tester
+                .setup.user.state("state_target_no_subscriptions")
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.not_exists({
+                            address: "+27820001001",
+                            wait: true
+                        })
+                    );
+                })
+                .setup.user.answer("state_target_msisdn")
+                .setup.user.answers({
+                    state_target_msisdn: "0820001001",
+                    state_enter_origin_msisdn: "0820001002",
+                    origin_contact: {uuid: "contact-uuid"}
+                })
+                .input("1")
+                .check.user.state("state_not_on_whatsapp")
                 .run();
         });
     });
