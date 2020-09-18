@@ -17,7 +17,7 @@ go.app = (function () {
     self.calculate_risk = function () {
       var answers = self.im.user.answers;
 
-      if (answers.state_exposure != "no") {
+      if (answers.state_exposure == "yes") {
         return "high";
       }
 
