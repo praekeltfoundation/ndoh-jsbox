@@ -2,6 +2,7 @@ var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
 var assert = require("assert");
 var fixtures_rapidpro = require("./fixtures_rapidpro")();
+var fixtures_whatsapp = require("./fixtures_pilot")();
 
 describe("ussd_popi_rapidpro app", function() {
     var app;
@@ -15,6 +16,10 @@ describe("ussd_popi_rapidpro app", function() {
                 rapidpro: {
                     base_url: "https://rapidpro",
                     token: "rapidprotoken"
+                },
+                whatsapp: {
+                    base_url: "http://pilot.example.org",
+                    token: "engage-token"
                 }
             },
             sms_switch_flow_id: "sms-switch-flow",
@@ -204,7 +209,7 @@ describe("ussd_popi_rapidpro app", function() {
                 })
                 .run();
         });
-        it("should display contact data page 1", function() {
+        it("should display contact data WhatsApp", function() {
             return tester
                 .setup.user.state("state_personal_info")
                 .setup.user.answer("contact", {
@@ -223,7 +228,35 @@ describe("ussd_popi_rapidpro app", function() {
                 .check.interaction({
                     reply: [
                         "Cell number: 0123456789",
-                        "Channel: WhatsApp",
+                        "Passport: A12345 Malawi",
+                        "Type: Pregnancy",
+                        "Research messages: Yes",
+                        "Baby's birthday: 18-03-02, 20-06-04",
+                        "1. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display contact data page 1 SMS", function() {
+            return tester
+                .setup.user.state("state_personal_info")
+                .setup.user.answer("contact", {
+                    language: "zul",
+                    fields: {
+                        preferred_channel: "SMS",
+                        identification_type: "passport",
+                        passport_number: "A12345",
+                        passport_origin: "mw",
+                        research_consent: "TRUE",
+                        edd: "2020-06-04T00:00:00.000000Z",
+                        baby_dob1: "2018-03-02T00:00:00.000000Z",
+                        prebirth_messaging: "1"
+                    },
+                })
+                .check.interaction({
+                    reply: [
+                        "Cell number: 0123456789",
+                        "Channel: SMS",
                         "Language: isiZulu",
                         "Passport: A12345 Malawi",
                         "Type: Pregnancy",
@@ -240,7 +273,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup.user.answer("contact", {
                     language: "zul",
                     fields: {
-                        preferred_channel: "WhatsApp",
+                        preferred_channel: "SMS",
                         identification_type: "passport",
                         passport_number: "A12345",
                         passport_origin: "mw",
@@ -262,14 +295,14 @@ describe("ussd_popi_rapidpro app", function() {
         });
     });
     describe("state_change_info", function(){
-        it("should display the list of options to the user", function() {
+        it("should display the list of options to the user SMS", function() {
             return tester
                 .setup.user.state("state_change_info")
-                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
+                .setup.user.answer("contact", {fields: {preferred_channel: "SMS"}})
                 .check.interaction({
                     reply: [
                         "What would you like to change?",
-                        "1. Change from WhatsApp to SMS",
+                        "1. Change from SMS to WhatsApp",
                         "2. Cell number",
                         "3. Language",
                         "4. Identification",
@@ -279,15 +312,30 @@ describe("ussd_popi_rapidpro app", function() {
                 })
                 .run();
         });
-        it("should display an error on invalid input", function() {
+        it("should display the list of options to the user WhatsApp", function() {
             return tester
                 .setup.user.state("state_change_info")
                 .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
+                .check.interaction({
+                    reply: [
+                        "What would you like to change?",
+                        "1. Cell number",
+                        "2. Identification",
+                        "3. Research messages",
+                        "4. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "SMS"}})
                 .input("A")
                 .check.interaction({
                     reply: [
                         "Sorry we don't understand. Please try again.",
-                        "1. Change from WhatsApp to SMS",
+                        "1. Change from SMS to WhatsApp",
                         "2. Cell number",
                         "3. Language",
                         "4. Identification",
@@ -300,7 +348,7 @@ describe("ussd_popi_rapidpro app", function() {
         it("should go to state_channel_switch_confirm if that option is chosen", function() {
             return tester
                 .setup.user.state("state_change_info")
-                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
+                .setup.user.answer("contact", {fields: {preferred_channel: "SMS"}})
                 .input("1")
                 .check.user.state("state_channel_switch_confirm")
                 .run();
@@ -309,7 +357,7 @@ describe("ussd_popi_rapidpro app", function() {
             return tester
                 .setup.user.state("state_change_info")
                 .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
-                .input("2")
+                .input("1")
                 .check.user.state("state_msisdn_change_enter")
                 .run();
         });
@@ -321,85 +369,12 @@ describe("ussd_popi_rapidpro app", function() {
                 .check.user.state("state_language_change_enter")
                 .run();
         });
-        it("should got to state_switch_to_sms_option if WA is channel", function() {
-            return tester
-                .setup.user.state("state_change_info")
-                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
-                .input("3")
-                .check.interaction({
-                    reply: [
-                        "Please switch to SMS for msgs in another language",
-                        "1. Switch to SMS (Dial *134*550*7# again when switch is done to " +
-                            "pick your language)",
-                        "2. Exit"
-                    ].join("\n"),
-                    state: "state_switch_to_sms_option"
-                })
-                .run();
-        });
         it("should go to state_identification_change_type if that option is chosen", function() {
             return tester
                 .setup.user.state("state_change_info")
                 .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
-                .input("4")
-                .check.user.state("state_identification_change_type")
-                .run();
-        });
-    });
-    describe("state_preferred_channel_language_option", function() {
-        it("should ask the user what they want to do", function() {
-            return tester
-                .setup.user.state("state_preferred_channel_language_option")
-                .check.interaction({
-                    reply: [
-                        "Please switch to SMS for msgs in another language",
-                        "1. Switch to SMS (Dial *134*550*7# again when switch is done to " +
-                            "pick your language)",
-                        "2. Exit"
-                    ].join("\n"),
-                })
-                .run();
-        });
-        it("should show an error on invalid input", function() {
-            return tester
-                .setup.user.state("state_preferred_channel_language_option")
-                .input("A")
-                .check.interaction({
-                    reply: [
-                        "Sorry we don't recognise that reply. Please try again.",
-                        "1. Switch to SMS (Dial *134*550*7# again when switch is done to " +
-                            "pick your language)",
-                        "2. Exit"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should exit if the user chooses to", function() {
-            return tester
-                .setup.user.state("state_preferred_channel_language_option")
                 .input("2")
-                .check.interaction({
-                    reply:
-                        "Thanks for using MomConnect. You can dial *134*550*7# any time to manage " +
-                        "your info. Have a lovely day!",
-                    state: "state_exit"
-                })
-                .check.reply.ends_session()
-                .run();
-        });
-        it("should ask the user if they want to switch channels to SMS", function() {
-            return tester
-                .setup.user.state("state_preferred_channel_language_option")
-                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
-                .input("1")
-                .check.interaction({
-                    reply: [
-                        "Are you sure you want to get your MomConnect messages on SMS?",
-                        "1. Yes",
-                        "2. No"
-                    ].join("\n"),
-                    state: "state_channel_switch_confirm"
-                })
+                .check.user.state("state_identification_change_type")
                 .run();
         });
     });
@@ -562,6 +537,12 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup.user.state("state_msisdn_change_enter")
                 .setup(function(api) {
                     api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27820001001",
+                            wait: false
+                        })
+                    );
+                    api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27820001001",
                             exists: true,
@@ -579,6 +560,12 @@ describe("ussd_popi_rapidpro app", function() {
             return tester
                 .setup.user.state("state_msisdn_change_enter")
                 .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27820001001",
+                            wait: false
+                        })
+                    );
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27820001001",
@@ -658,6 +645,12 @@ describe("ussd_popi_rapidpro app", function() {
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27820001001",
+                            wait: true
+                        })
+                    );
+                    api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
                             "msisdn-change-flow", null, "whatsapp:27820001001", {
                                 new_msisdn: "+27820001001",
@@ -670,6 +663,31 @@ describe("ussd_popi_rapidpro app", function() {
                 })
                 .input("1")
                 .check.user.state("state_msisdn_change_success")
+                .run();
+        });
+        it("should give them an error if the number is not registered on WhatsApp", function() {
+            return tester
+                .setup.user.state("state_msisdn_change_confirm")
+                .setup.user.answers({
+                    state_msisdn_change_enter: "0820001001",
+                    contact: {uuid: "contact-uuid"}
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.not_exists({
+                            address: "+27820001001",
+                            wait: true
+                        })
+                    );
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_not_on_whatsapp",
+                    reply:
+                        "The no. you're trying to switch to doesn't have WhatsApp. " +
+                        "MomConnect only sends WhatsApp msgs in English. " +
+                        "Dial *134*550*7# to switch to a no. with WhatsApp."
+                })
                 .run();
         });
         it("should go to state_msisdn_change_enter if they choose no", function() {
@@ -1971,6 +1989,12 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup.user.state("state_target_msisdn")
                 .setup(function(api) {
                     api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27820001001",
+                            wait: false
+                        })
+                    );
+                    api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27820001001",
                             exists: true,
@@ -1986,6 +2010,12 @@ describe("ussd_popi_rapidpro app", function() {
             return tester
                 .setup.user.state("state_target_msisdn")
                 .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27820001001",
+                            wait: false
+                        })
+                    );
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27820001001",
@@ -2062,6 +2092,12 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup.user.state("state_target_no_subscriptions")
                 .setup(function(api) {
                     api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27820001001",
+                            wait: true
+                        })
+                    );
+                    api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
                             "msisdn-change-flow", null, "whatsapp:27820001001", {
                                 new_msisdn: "+27820001001",
@@ -2080,6 +2116,27 @@ describe("ussd_popi_rapidpro app", function() {
                 })
                 .input("1")
                 .check.user.state("state_nosim_change_success")
+                .run();
+        });
+        it("should show an error if the target number doesn't have WhatsApp", function () {
+            return tester
+                .setup.user.state("state_target_no_subscriptions")
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.not_exists({
+                            address: "+27820001001",
+                            wait: true
+                        })
+                    );
+                })
+                .setup.user.answer("state_target_msisdn")
+                .setup.user.answers({
+                    state_target_msisdn: "0820001001",
+                    state_enter_origin_msisdn: "0820001002",
+                    origin_contact: {uuid: "contact-uuid"}
+                })
+                .input("1")
+                .check.user.state("state_not_on_whatsapp")
                 .run();
         });
     });

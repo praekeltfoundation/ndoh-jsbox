@@ -1,6 +1,52 @@
 var go = {};
 go;
 
+go.Engage = function() {
+    var vumigo = require('vumigo_v02');
+    var events = vumigo.events;
+    var Eventable = events.Eventable;
+    var _ = require('lodash');
+    var url = require('url');
+
+    var Engage = Eventable.extend(function(self, json_api, base_url, token) {
+        self.json_api = json_api;
+        self.base_url = base_url;
+        self.json_api.defaults.headers.Authorization = ['Bearer ' + token];
+        self.json_api.defaults.headers['Content-Type'] = ['application/json'];
+
+        self.contact_check = function(msisdn, block) {
+            return self.json_api.post(url.resolve(self.base_url, 'v1/contacts'), {
+                data: {
+                    blocking: block ? 'wait' : 'no_wait',
+                    contacts: [msisdn]
+                }
+            }).then(function(response) {
+                var existing = _.filter(response.data.contacts, function(obj) {
+                    return obj.status === "valid";
+                });
+                return !_.isEmpty(existing);
+            });
+        };
+
+          self.LANG_MAP = {zul_ZA: "en",
+                          xho_ZA: "en",
+                          afr_ZA: "af",
+                          eng_ZA: "en",
+                          nso_ZA: "en",
+                          tsn_ZA: "en",
+                          sot_ZA: "en",
+                          tso_ZA: "en",
+                          ssw_ZA: "en",
+                          ven_ZA: "en",
+                          nbl_ZA: "en",
+                        };
+    });
+
+
+
+    return Engage;
+}();
+
 go.RapidPro = function() {
     var vumigo = require('vumigo_v02');
     var url_utils = require('url');
@@ -150,6 +196,11 @@ go.app = function() {
                 self.im.config.services.rapidpro.base_url,
                 self.im.config.services.rapidpro.token
             );
+            self.whatsapp = new go.Engage(
+                new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-Clinic"]}}),
+                self.im.config.services.whatsapp.base_url,
+                self.im.config.services.whatsapp.token
+            );
         };
 
         self.contact_current_channel = function(contact) {
@@ -230,17 +281,10 @@ go.app = function() {
         self.add("state_personal_info", function(name) {
             var contact = self.im.user.answers.contact;
             var id_type = _.get(contact, "fields.identification_type");
-            var text = $([
-                "Cell number: {{msisdn}}",
-                "Channel: {{channel}}",
-                "Language: {{language}}",
-                "{{id_type}}: {{id_details}}",
-                "Type: {{message_type}}",
-                "Research messages: {{research}}",
-                "Baby's birthday: {{dobs}}"
-            ].join("\n")).context({
+            var channel = _.get(contact, "fields.preferred_channel");
+            var context = {
                 msisdn: utils.readable_msisdn(self.im.user.addr, "27"),
-                channel: _.get(contact, "fields.preferred_channel") || $("None"),
+                channel: channel || $("None"),
                 language: _.get(self.languages, _.get(contact, "language"), $("None")),
                 id_type: _.get({
                     passport: $("Passport"),
@@ -273,7 +317,23 @@ go.app = function() {
                     new moment(_.get(contact, "fields.baby_dob3", null)),
                     new moment(_.get(contact, "fields.edd", null)),
                 ], _.method("isValid")), _.method("format", "YY-MM-DD")).join(", ") || $("None")
-            });
+            };
+            var sms_text = $([
+                "Cell number: {{msisdn}}",
+                "Channel: {{channel}}",
+                "Language: {{language}}",
+                "{{id_type}}: {{id_details}}",
+                "Type: {{message_type}}",
+                "Research messages: {{research}}",
+                "Baby's birthday: {{dobs}}"
+            ].join("\n")).context(context);
+            var whatsapp_text = $([
+                "Cell number: {{msisdn}}",
+                "{{id_type}}: {{id_details}}",
+                "Type: {{message_type}}",
+                "Research messages: {{research}}",
+                "Baby's birthday: {{dobs}}"
+            ].join("\n")).context(context);
             // Modified pagination logic to split on newline
             var page_end = function(i, text, n) {
                 var start = page_start(i, text, n);
@@ -287,7 +347,7 @@ go.app = function() {
                 return text.slice(page_start(i, text, n), page_end(i, text, n));
             };
             return new PaginatedState(name, {
-                text: text,
+                text: channel == "WhatsApp" ? whatsapp_text : sms_text,
                 back: $("Previous"),
                 more: $("Next"),
                 exit: $("Back"),
@@ -298,50 +358,27 @@ go.app = function() {
         
         self.add("state_change_info", function(name) {
             var contact = self.im.user.answers.contact;
+            var channel = _.get(contact, "fields.preferred_channel");
+
+            var sms_choices = [
+                new Choice("state_channel_switch_confirm", $("Change from SMS to WhatsApp")),
+                new Choice("state_msisdn_change_enter", $("Cell number")),
+                new Choice("state_language_change_enter", $("Language")),
+                new Choice("state_identification_change_type", $("Identification")),
+                new Choice("state_change_research_confirm", $("Research messages")),
+                new Choice("state_main_menu", $("Back"))
+            ];
+            var whatsapp_choices = [
+                new Choice("state_msisdn_change_enter", $("Cell number")),
+                new Choice("state_identification_change_type", $("Identification")),
+                new Choice("state_change_research_confirm", $("Research messages")),
+                new Choice("state_main_menu", $("Back"))
+            ];
             
-            return new ChoiceState(name, {
+            return new MenuState(name, {
                 question: $("What would you like to change?"),
                 error: $("Sorry we don't understand. Please try again."),
-                choices: [
-                    new Choice(
-                        "state_channel_switch_confirm",
-                        $("Change from {{current_channel}} to {{alternative_channel}}").context({
-                            current_channel: self.contact_current_channel(contact),
-                            alternative_channel: self.contact_alternative_channel(contact)
-                        })
-                    ),
-                    new Choice("state_msisdn_change_enter", $("Cell number")),
-                    new Choice("state_language_change_enter", $("Language")),
-                    new Choice("state_identification_change_type", $("Identification")),
-                    new Choice("state_change_research_confirm", $("Research messages")),
-                    new Choice("state_main_menu", $("Back")),
-                ],
-                next: function(choice) {
-                    if(choice.value === "state_language_change_enter") {
-                        if(_.toUpper(_.get(contact, "fields.preferred_channel")) === "WHATSAPP"){
-                            return "state_switch_to_sms_option";
-                        }
-                        else {
-                            return "state_language_change_enter";
-                        }
-                    }
-                    else{
-                        return choice.value;
-                    }
-                }
-            });
-        });
-
-        self.add("state_preferred_channel_language_option", function(name) {
-            return new MenuState(name, {
-                question: $("Please switch to SMS for msgs in another language"),
-                error: $("Sorry we don't recognise that reply. Please try again."
-                ),
-                choices: [
-                    new Choice("state_channel_switch_confirm", $("Switch to SMS (Dial *134*550*7# again when switch is done to " +
-                                            "pick your language)")),
-                    new Choice("state_exit", $("Exit")),
-                ]
+                choices: channel == "WhatsApp" ? whatsapp_choices : sms_choices
             });
         });
 
@@ -456,8 +493,25 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_msisdn_change_get_contact"
+                next: "state_msisdn_change_get_whatsapp_contact_background"
             });
+        });
+
+        self.add("state_msisdn_change_get_whatsapp_contact_background", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(
+                _.get(self.im.user.answers, "state_msisdn_change_enter"), "ZA");
+            return self.whatsapp.contact_check(msisdn, false)
+                .then(function() {
+                    return self.states.create("state_msisdn_change_get_contact");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
         });
 
         self.add("state_msisdn_change_get_contact", function(name, opts) {
@@ -513,12 +567,44 @@ go.app = function() {
                     "You've entered {{msisdn}} as your new MomConnect number. Is this correct?"
                 ).context({msisdn: msisdn}),
                 choices: [
-                    new Choice("state_msisdn_change", $("Yes")),
+                    new Choice("state_msisdn_change_get_whatsapp_contact", $("Yes")),
                     new Choice("state_msisdn_change_enter", $("No, I want to try again"))
                 ],
                 error: $(
                     "Sorry we don't recognise that reply. Please enter the number next to your " +
                     "answer."
+                )
+            });
+        });
+
+        self.add("state_msisdn_change_get_whatsapp_contact", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(
+                _.get(self.im.user.answers, "state_msisdn_change_enter"), "ZA");
+            return self.whatsapp.contact_check(msisdn, true)
+                .then(function(on_whatsapp) {
+                    if(on_whatsapp) {
+                        return self.states.create("state_msisdn_change");
+                    } else {
+                        return self.states.create("state_not_on_whatsapp");
+                    }
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+        self.states.add("state_not_on_whatsapp", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "The no. you're trying to switch to doesn't have WhatsApp. " +
+                    "MomConnect only sends WhatsApp msgs in English. " +
+                    "Dial *134*550*7# to switch to a no. with WhatsApp."
                 )
             });
         });
@@ -1187,7 +1273,7 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_check_origin_contact"
+                next: "state_origin_msisdn_change_get_whatsapp_contact_background"
             });
         });
 
@@ -1399,8 +1485,25 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_check_target_contact"
+                next: "state_target_msisdn_whatsapp_contact_background"
             });
+        });
+
+        self.add("state_target_msisdn_whatsapp_contact_background", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(
+                _.get(self.im.user.answers, "state_target_msisdn"), "ZA");
+            return self.whatsapp.contact_check(msisdn, false)
+                .then(function() {
+                    return self.states.create("state_check_target_contact");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
         });
 
         self.add("state_check_target_contact", function(name, opts) {
@@ -1456,10 +1559,31 @@ go.app = function() {
                     "answer."
                 ),
                 choices: [
-                    new Choice("state_nosim_change_msisdn", $("Yes")),
+                    new Choice("state_target_msisdn_whatsapp_contact", $("Yes")),
                     new Choice("state_target_msisdn", $("No, I want to try again"))
                 ]
             });
+        });
+
+        self.add("state_target_msisdn_whatsapp_contact", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(
+                _.get(self.im.user.answers, "state_target_msisdn"), "ZA");
+            return self.whatsapp.contact_check(msisdn, true)
+                .then(function(on_whatsapp) {
+                    if(on_whatsapp) {
+                        return self.states.create("state_nosim_change_msisdn");
+                    } else {
+                        return self.states.create("state_not_on_whatsapp");
+                    }
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
         });
 
         self.add("state_nosim_change_msisdn", function(name, opts) {
