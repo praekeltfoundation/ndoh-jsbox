@@ -105,7 +105,7 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
-    it("Cough, 1+ symptoms, high risk", function () {
+    it("Cough, 1+ symptoms, unknown exposure", function () {
       return tester.setup.user
         .answers({
           state_cough: "yes",
@@ -115,7 +115,7 @@ describe("ussd_tb_check app", function () {
           state_exposure: "not_sure",
         })
         .check(function (api) {
-          assert.equal(app.calculate_risk(), "high");
+          assert.equal(app.calculate_risk(), "moderate");
         })
         .run();
     });
@@ -130,6 +130,20 @@ describe("ussd_tb_check app", function () {
         })
         .check(function (api) {
           assert.equal(app.calculate_risk(), "high");
+        })
+        .run();
+    });
+    it("No cough, no symptoms, unknown exposure", function () {
+      return tester.setup.user
+        .answers({
+          state_cough: "no",
+          state_fever: false,
+          state_sweat: false,
+          state_weight: false,
+          state_exposure: "not_sure",
+        })
+        .check(function (api) {
+          assert.equal(app.calculate_risk(), "low");
         })
         .run();
     });
