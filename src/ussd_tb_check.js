@@ -635,6 +635,40 @@ go.app = (function () {
       if (!answers.state_opt_in) {
         text = "Okay thanks, you won't get any follow-up messages.";
       }
+      var error = $(
+        "This service works best when you select numbers from the list"
+      );
+
+      return new MenuState(name, {
+        question: text,
+        error: error,
+        accept_labels: true,
+        choices: [new Choice("state_show_results", $("See Results"))],
+      });
+    });
+
+    self.states.add("state_show_results", function (name) {
+      var answers = self.im.user.answers;
+      var risk = self.calculate_risk();
+      var text = $(
+        "You don't need a TB test now, but if you develop cough, fever, weight loss " +
+          "or night sweats visit your nearest clinic."
+      );
+
+      if (risk == "high" || risk == "moderate") {
+        text = $(
+          [
+            "Your replies to the questions show you need a TB test this week.",
+            "",
+            "Go to your clinic for a free TB test. Please put on a face mask before you enter the clinic",
+          ].join("\n")
+        );
+      } else if (answers.state_exposure == "not_sure") {
+        text = $(
+          "Check if those you live with are on TB treatment. If you don't know " +
+            "your HIV status, visit the clinic for a free HIV test. Then do the TB check again."
+        );
+      }
       return new EndState(name, {
         next: "state_start",
         text: text,
