@@ -361,7 +361,7 @@ go.app = function() {
             var channel = _.get(contact, "fields.preferred_channel");
 
             var sms_choices = [
-                new Choice("state_channel_switch_confirm", $("Change from SMS to WhatsApp")),
+                new Choice("state_channel_switch_whatsapp_contact_bg", $("Change from SMS to WhatsApp")),
                 new Choice("state_msisdn_change_enter", $("Cell number")),
                 new Choice("state_language_change_enter", $("Language")),
                 new Choice("state_identification_change_type", $("Identification")),
@@ -382,6 +382,22 @@ go.app = function() {
             });
         });
 
+        self.add("state_channel_switch_whatsapp_contact_bg", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            return self.whatsapp.contact_check(msisdn, false)
+                .then(function() {
+                    return self.states.create("state_channel_switch_confirm");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
         self.add("state_channel_switch_confirm", function(name) {
             var contact = self.im.user.answers.contact;
             return new MenuState(name, {
@@ -392,12 +408,42 @@ go.app = function() {
                         alternative_channel: self.contact_alternative_channel(contact)
                     }),
                 choices: [
-                    new Choice("state_channel_switch", $("Yes")),
+                    new Choice("state_channel_switch_get_whatsapp_contact", $("Yes")),
                     new Choice("state_no_channel_switch", $("No")),
                 ],
                 error: $(
                     "Sorry we don't recognise that reply. Please enter the number next to your " +
                     "answer."
+                )
+            });
+        });
+
+        self.add("state_channel_switch_get_whatsapp_contact", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            return self.whatsapp.contact_check(msisdn, true)
+                .then(function(on_whatsapp) {
+                    if(on_whatsapp) {
+                        return self.states.create("state_channel_switch");
+                    } else {
+                        return self.states.create("state_not_on_whatsapp_channel");
+                    }
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+        self.states.add("state_not_on_whatsapp_channel", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "This number doesn’t have a WhatsApp account. You’ll keep getting your " +
+                    "messages on SMS. Dial *134*550*7# to switch to a number that has WhatsApp."
                 )
             });
         });
