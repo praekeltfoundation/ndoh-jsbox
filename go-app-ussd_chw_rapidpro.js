@@ -719,7 +719,7 @@ go.app = function() {
                 next: "state_start",
                 text: $(
                     "Sorry, MomConnect is not available on SMS. We only send WhatsApp messages in English. " +
-                    "You can dial *134*550*2# again on a cell number that has WhatsApp."
+                    "You can dial *134*550*3# again on a cell number that has WhatsApp."
                 )
             });
         });
