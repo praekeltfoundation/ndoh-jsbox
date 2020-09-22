@@ -1319,7 +1319,7 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_origin_msisdn_change_get_whatsapp_contact_background"
+                next: "state_check_origin_contact"
             });
         });
 
