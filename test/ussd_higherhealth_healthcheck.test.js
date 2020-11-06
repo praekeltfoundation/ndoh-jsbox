@@ -642,12 +642,11 @@ describe("ussd_higherhealth_healthcheck app", function () {
                         "Select your university.",
                         "",
                         "Reply:",
-                        "1. Central Johannesburg",
-                        "2. Ekurhuleni East",
-                        "3. Ekurhuleni West",
-                        "4. North West University (NWU)",
-                        "5. Sedibeng",
-                        "6. More"
+                        "1. AAA School of Advertising",
+                        "2. AFDA",
+                        "3. AROS",
+                        "4. Academy for Facilities Management (distance only)",
+                        "5. More"
                     ].join("\n"),
                     char_limit: 160
                 })
@@ -667,12 +666,11 @@ describe("ussd_higherhealth_healthcheck app", function () {
                         "Select your university.",
                         "",
                         "Reply:",
-                        "1. Central Johannesburg",
-                        "2. Ekurhuleni East",
-                        "3. Ekurhuleni West",
-                        "4. North West University (NWU)",
-                        "5. Sedibeng",
-                        "6. More"
+                        "1. AAA School of Advertising",
+                        "2. AFDA",
+                        "3. AROS",
+                        "4. Academy for Facilities Management (distance only)",
+                        "5. More"
                     ].join("\n"),
                     char_limit: 160
                 })
@@ -684,7 +682,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .setup.user.answers({
                     state_province: 'ZA-NC'
                 })
-                .input("5")  // Other
+                .inputs("6", "3")  // Other
                 .check.interaction({
                     state: "state_university_other",
                     reply: [
@@ -758,12 +756,14 @@ describe("ussd_higherhealth_healthcheck app", function () {
                         "Select your campus.",
                         "",
                         "Reply:",
-                         "1. Ekurhuleni",
-                        "2. Florida (Science Campus)",
-                        "3. Johannesburg",
-                        "4. Pretoria (Sunnyside)",
-                        "5. Vaal",
-                        "6. Other"
+                        "1. Brooklyn",
+                        "2. Daveyton",
+                        "3. Ekurhuleni",
+                        "4. Florida (Science Campus)",
+                        "5. Johannesburg",
+                        "6. Little Theatre",
+                        "7. Muckleneuk",
+                        "8. More"
                     ].join("\n"),
                     char_limit: 160
                 })

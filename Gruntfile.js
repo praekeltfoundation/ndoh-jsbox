@@ -83,6 +83,7 @@ module.exports = function (grunt) {
                 ussd_higherhealth_healthcheck: [
                     'src/index.js',
                     'src/rapidpro.js',
+                    'src/higher_health_institutions.js',
                     '<%= paths.src.app.ussd_higherhealth_healthcheck %>',
                     'src/init.js'
                 ],
@@ -172,6 +173,7 @@ module.exports = function (grunt) {
                 ussd_higherhealth_healthcheck: [
                     'test/setup.js',
                     'src/rapidpro.js',
+                    'src/higher_health_institutions.js',
                     '<%= paths.src.app.ussd_higherhealth_healthcheck %>',
                     'test/ussd_higherhealth_healthcheck.test.js'
                 ],
