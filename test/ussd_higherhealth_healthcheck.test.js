@@ -1,6 +1,6 @@
 var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
-var fixtures_rapidpro = require("./fixtures_rapidpro")();
+var assert = require("assert");
 
 describe("ussd_higherhealth_healthcheck app", function () {
     var app;
@@ -1155,19 +1155,12 @@ describe("ussd_higherhealth_healthcheck app", function () {
                             }
                         }
                     });
-                    api.http.fixtures.add(
-                        fixtures_rapidpro.start_flow(
-                            "sms-flow-uuid", null, "tel:+27123456789", {
-                            "risk": "low",
-                            "timestamp": "2020-01-01T00:00:00.000Z",
-                            "first_name": "First",
-                            "last_name": "Last"
-                        }
-                        )
-                    );
                 })
                 .input("1")
                 .check.user.state("state_display_risk")
+                .check(function(api) {
+                    assert.strictEqual(api.http.requests.length, 1);
+                })
                 .run();
         });
         it("should go to start if restart is chosen", function () {
@@ -1243,16 +1236,6 @@ describe("ussd_higherhealth_healthcheck app", function () {
                             }
                         }
                     });
-                    api.http.fixtures.add(
-                        fixtures_rapidpro.start_flow(
-                            "sms-flow-uuid", null, "tel:+27123456789", {
-                            "risk": "low",
-                            "timestamp": "2020-01-01T00:00:00.000Z",
-                            "first_name": "first",
-                            "last_name": "last"
-                        }
-                        )
-                    );
                 })
                 .input("1")
                 .check.interaction({
@@ -1263,6 +1246,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     char_limit: 160
                 })
                 .check.reply.ends_session()
+                .check(function(api) {
+                    assert.strictEqual(api.http.requests.length, 1);
+                })
                 .run();
         });
         it("should display the moderate risk message if moderate risk", function () {
@@ -1428,16 +1414,6 @@ describe("ussd_higherhealth_healthcheck app", function () {
                             }
                         }
                     });
-                    api.http.fixtures.add(
-                        fixtures_rapidpro.start_flow(
-                            "sms-flow-uuid", null, "tel:+27123456789", {
-                            "risk": "low",
-                            "timestamp": "2020-01-01T00:00:00.000Z",
-                            "first_name": "first",
-                            "last_name": "last"
-                        }
-                        )
-                    );
                 })
                 .input("2")
                 .check.interaction({
@@ -1448,6 +1424,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                         "1. START OVER"
                     ].join("\n"),
                     char_limit: 160
+                })
+                .check(function(api) {
+                    assert.strictEqual(api.http.requests.length, 1);
                 })
                 .run();
         });
