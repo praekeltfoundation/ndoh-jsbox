@@ -1577,7 +1577,6 @@ go.institutions = {
 go.app = (function () {
   var vumigo = require("vumigo_v02");
   var _ = require("lodash");
-  var moment = require("moment");
   var utils = require("seed-jsbox-utils").utils;
   var crypto = require("crypto");
   var App = vumigo.App;
@@ -2226,43 +2225,6 @@ go.app = (function () {
           "User-Agent": ["Jsbox/HH-Covid19-Triage-USSD"]
         }
       }).then(function () {
-        return self.states.create("state_submit_sms");
-      }, function (e) {
-        // Go to error state after 3 failed HTTP requests
-        opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-        if (opts.http_error_count === 3) {
-          self.im.log.error(e.message);
-          return self.states.create("__error__", { return_state: name });
-        }
-        return self.states.create(name, opts);
-      });
-    });
-
-    self.add("state_submit_sms", function (name, opts) {
-      var risk = self.calculate_risk();
-      if (risk !== "low") {
-        // Only send clearance SMS for low risk
-        return self.states.create("state_display_risk");
-      }
-
-      var answers = self.im.user.answers;
-      var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
-      var rapidpro = new go.RapidPro(
-        new JsonApi(self.im),
-        self.im.config.rapidpro.url,
-        self.im.config.rapidpro.token
-      );
-      return rapidpro.start_flow(
-        self.im.config.rapidpro.sms_flow_uuid,
-        null,
-        "tel:" + msisdn,
-        {
-          risk: risk,
-          timestamp: moment(self.im.config.testing_today).toISOString(),
-          first_name: answers.state_first_name,
-          last_name: answers.state_last_name
-        }
-      ).then(function () {
         return self.states.create("state_display_risk");
       }, function (e) {
         // Go to error state after 3 failed HTTP requests
