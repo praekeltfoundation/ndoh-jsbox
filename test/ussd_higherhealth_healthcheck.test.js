@@ -137,8 +137,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_welcome",
                     reply: [
-                        "The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by " +
-                        "answering a few questions about you and your health.",
+                        "HIGHER HEALTH HealthCheck is your risk assessment tool.",
+                        "No result SMS will be sent. Continue or WhatsApp HI to 0600110000",
                         "",
                         "Reply",
                         "1. START"
@@ -154,8 +154,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_welcome",
                     reply: [
-                        "Welcome back to HIGHER HEALTH HealthCheck is your risk assessment " +
-                        "tool. Let us know how you're feeling today.",
+                        "Welcome back to HIGHER HEALTH's HealthCheck.",
+                        "No result SMS will be sent. Continue or WhatsApp HI to 0600110000",
                         "",
                         "Reply",
                         "1. START"
@@ -1241,8 +1241,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
-                        "You are at low risk of having COVID-19. You will still need to complete " +
-                        "this risk assessment daily to monitor your symptoms.",
+                        "You are at low risk of having COVID-19. Monitor your symptoms daily. " +
+                        "No result SMS will be sent. Screenshot or save this result or use the " +
+                        "WhatsApp channel.",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
@@ -1419,8 +1420,10 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_no_tracing_low_risk",
                     reply: [
-                        "You will not be contacted. If you think you have COVID-19 please STAY " +
-                        "HOME, avoid contact with other people in your community and self-isolate.",
+                        "You won't be contacted. If you think you have COVID-19 STAY HOME, avoid " +
+                        "contact with other people & self-quarantine.",
+                        "No result SMS will be sent.",
+                        "",
                         "1. START OVER"
                     ].join("\n"),
                     char_limit: 160

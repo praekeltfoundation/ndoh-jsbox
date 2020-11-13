@@ -116,15 +116,15 @@ go.app = (function () {
       var question;
       if (self.im.user.answers.returning_user) {
         question = $([
-          "Welcome back to HIGHER HEALTH HealthCheck is your risk assessment tool. Let us know " +
-          "how you're feeling today.",
+          "Welcome back to HIGHER HEALTH's HealthCheck.",
+          "No result SMS will be sent. Continue or WhatsApp HI to 0600110000",
           "",
-          "Reply",
+          "Reply"
         ].join("\n"));
       } else {
         question = $([
-          "The HIGHER HEALTH HealthCheck is your risk assessment tool. Help us by answering a " +
-          "few questions about you and your health.",
+          "HIGHER HEALTH HealthCheck is your risk assessment tool.",
+          "No result SMS will be sent. Continue or WhatsApp HI to 0600110000",
           "",
           "Reply"
         ].join("\n"));
@@ -668,8 +668,8 @@ go.app = (function () {
       if (answers.state_tracing) {
         if (risk === "low") {
           text = $(
-            "You are at low risk of having COVID-19. You will still need to complete this risk " +
-            "assessment daily to monitor your symptoms."
+            "You are at low risk of having COVID-19. Monitor your symptoms daily. No result SMS " +
+            "will be sent. Screenshot or save this result or use the WhatsApp channel."
           );
         }
         if (risk === "moderate") {
@@ -710,10 +710,12 @@ go.app = (function () {
 
     self.add("state_no_tracing_low_risk", function (name) {
       return new MenuState(name, {
-        question: $(
-          "You will not be contacted. If you think you have COVID-19 please STAY HOME, avoid " +
-          "contact with other people in your community and self-isolate."
-        ),
+        question: $([
+          "You won't be contacted. If you think you have COVID-19 STAY HOME, avoid contact with " +
+          "other people & self-quarantine.",
+          "No result SMS will be sent.",
+          ""
+        ].join("\n")),
         choices: [new Choice("state_start", $("START OVER"))]
       });
     });
