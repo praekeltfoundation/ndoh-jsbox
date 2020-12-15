@@ -884,7 +884,9 @@ go.app = function() {
                 more: $("Next"),
                 back: $("Previous"),
                 next: function(choice) {
-                    return choice.value;
+                    if(choice !== undefined){
+                        return choice.value;
+                    }
                 }
             });
         });
