@@ -1,6 +1,6 @@
 var csv_parse = require("csv-parse/lib/sync");
 var fs = require("fs");
-go = {}
+go = {};
 require("./higher_health_institutions");
 
 var PROVINCE_MAPPING = {
