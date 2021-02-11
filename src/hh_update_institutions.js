@@ -1,5 +1,7 @@
 var csv_parse = require("csv-parse/lib/sync");
 var fs = require("fs");
+go = {}
+require("./higher_health_institutions");
 
 var PROVINCE_MAPPING = {
     "EC": "ZA-EC",
@@ -22,7 +24,8 @@ var PROVINCE_MAPPING = {
     "Western Cape": "ZA-WC",
 };
 
-var data = {};
+var data = go.institutions;
+
 process.argv.slice(2).forEach(function(filename) {
     csv_parse(fs.readFileSync(filename), {columns: true}).forEach(function(record) {
         var normalised_record = {};
