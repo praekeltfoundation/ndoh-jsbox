@@ -642,10 +642,10 @@ describe("ussd_higherhealth_healthcheck app", function () {
                         "Select your university.",
                         "",
                         "Reply:",
-                        "1. AAA School of Advertising",
-                        "2. AFDA",
-                        "3. AROS",
-                        "4. Academy for Facilities Management (distance only)",
+                        "1. 21 Battalion Community Learning Centre",
+                        "2. AAA School of Advertising",
+                        "3. AFDA",
+                        "4. AROS",
                         "5. More"
                     ].join("\n"),
                     char_limit: 160
@@ -666,10 +666,10 @@ describe("ussd_higherhealth_healthcheck app", function () {
                         "Select your university.",
                         "",
                         "Reply:",
-                        "1. AAA School of Advertising",
-                        "2. AFDA",
-                        "3. AROS",
-                        "4. Academy for Facilities Management (distance only)",
+                        "1. 21 Battalion Community Learning Centre",
+                        "2. AAA School of Advertising",
+                        "3. AFDA",
+                        "4. AROS",
                         "5. More"
                     ].join("\n"),
                     char_limit: 160
@@ -682,7 +682,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .setup.user.answers({
                     state_province: 'ZA-NC'
                 })
-                .inputs("6", "3")  // Other
+                .inputs("6", "6", "6")  // Other
                 .check.interaction({
                     state: "state_university_other",
                     reply: [

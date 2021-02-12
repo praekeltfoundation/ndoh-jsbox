@@ -106,6 +106,18 @@ go.institutions = {
     "AFDA": [
       "Cenral"
     ],
+    "Betshwana": [
+      "Betshwana"
+    ],
+    "Blythswood": [
+      "Blythswood"
+    ],
+    "Bofolo": [
+      "Bofolo"
+    ],
+    "Bokamoso": [
+      "Bokamoso"
+    ],
     "Boston City Campus & Business College": [
       "East London",
       "Mthatha",
@@ -120,6 +132,9 @@ go.institutions = {
     ],
     "CTU Training Solutions": [
       "Port Elizabeth"
+    ],
+    "Cecilia Makiwane": [
+      "Cecilia Makiwane"
     ],
     "College of Transfiguration NPC": [
       "Grahamstown"
@@ -142,8 +157,17 @@ go.institutions = {
       "Park Avenue",
       "Thanduxolo"
     ],
+    "Eastern Cape CET College": [
+      "Eastern Cape CET College"
+    ],
     "Ed-U City Campus (Pty) Ltd": [
       "Port Elizabeth"
+    ],
+    "Equleni": [
+      "Equleni"
+    ],
+    "Frere Hospital": [
+      "Frere Hospital"
     ],
     "Health and Fitness Professionals Academy (HFPA)": [
       "Port Elizabeth"
@@ -166,6 +190,18 @@ go.institutions = {
       "Mount Frere",
       "Ngqungqushe",
       "Siteto"
+    ],
+    "Jeffrey’s Bay": [
+      "Jeffrey’s Bay"
+    ],
+    "Kalerato": [
+      "Kalerato"
+    ],
+    "Khanya": [
+      "Khanya"
+    ],
+    "Khanyisa": [
+      "Khanyisa"
     ],
     "King Hintsa": [
       "Centane",
@@ -201,6 +237,21 @@ go.institutions = {
       "Queenstown",
       "Uitenhage"
     ],
+    "Makanaskop": [
+      "Makanaskop"
+    ],
+    "Mangquzu": [
+      "Mangquzu"
+    ],
+    "Masizakhe": [
+      "Masizakhe"
+    ],
+    "Mgobozi Commercial": [
+      "Mgobozi Commercial"
+    ],
+    "Msobomvu": [
+      "Msobomvu"
+    ],
     "Nelson Mandela University (NMU)": [
       "2nd Avenue",
       "Missionville",
@@ -210,9 +261,21 @@ go.institutions = {
     "Netcare  Education (Pty Ltd)": [
       "Port Elizabeth"
     ],
+    "Ngqeleni": [
+      "Ngqeleni"
+    ],
+    "Ntukayi": [
+      "Ntukayi"
+    ],
+    "Osborn": [
+      "Osborn"
+    ],
     "Pearson Instittute of Higher Education": [
       "East London",
       "Port Elizabeth"
+    ],
+    "Phakamile (Phaphani)": [
+      "Phakamile (Phaphani)"
     ],
     "Port Elizabeth": [
       "Central Office",
@@ -220,9 +283,18 @@ go.institutions = {
       "Iqhayiya",
       "Russell Road"
     ],
+    "Port St Johns": [
+      "Port St Johns"
+    ],
     "Production Management Institute of Southern Africa PTY LTD / PMI": [
       "East London",
       "Uitenhage"
+    ],
+    "Qoqodala": [
+      "Qoqodala"
+    ],
+    "Qumbu": [
+      "Qumbu"
     ],
     "Regent Business School (Pty) Ltd (Learning Centre)": [
       "East London"
@@ -232,6 +304,18 @@ go.institutions = {
     ],
     "STADIO AFDA": [
       "Port Elizabeth"
+    ],
+    "Sinethemba": [
+      "Sinethemba"
+    ],
+    "Sofunda": [
+      "Sofunda"
+    ],
+    "Soweto-On-Sea": [
+      "Soweto-On-Sea"
+    ],
+    "St Dennis": [
+      "St Dennis"
     ],
     "Stenden": [
       "Port Alfred"
@@ -246,11 +330,20 @@ go.institutions = {
       "Bisho",
       "East London"
     ],
+    "Vorster": [
+      "Vorster"
+    ],
     "Walter Sisulu University (WSU)": [
       "Buffalo City",
       "Butterworth (Ibika)",
       "Mthatha",
       "Queenstown (Masibulele)"
+    ],
+    "Zimele": [
+      "Zimele"
+    ],
+    "Zwelakhe": [
+      "Zwelakhe"
     ],
     "eta College": [
       "East London",
@@ -282,6 +375,9 @@ go.institutions = {
     "eta College": [
       "Bloemfontein"
     ],
+    "Boitumelo": [
+      "Boitumelo"
+    ],
     "Camelot International": [
       "Bloemfontein"
     ],
@@ -295,6 +391,9 @@ go.institutions = {
       "Mphohadi",
       "Sasolburg"
     ],
+    "Free State CET College": [
+      "Free State CET College"
+    ],
     "Goldfields": [
       "Central Office",
       "Muruti House",
@@ -304,6 +403,15 @@ go.institutions = {
     ],
     "Jeppe College": [
       "Bloemfontein"
+    ],
+    "Katlehong": [
+      "Katlehong"
+    ],
+    "Kgodiso": [
+      "Kgodiso"
+    ],
+    "Letjhabile": [
+      "Letjhabile"
     ],
     "Maluti": [
       "Bethlehem",
@@ -328,14 +436,47 @@ go.institutions = {
       "Thaba 'Nchu",
       "Zastron"
     ],
+    "NG Noord": [
+      "NG Noord"
+    ],
+    "Ponelopele": [
+      "Ponelopele"
+    ],
+    "Retswelletse": [
+      "Retswelletse"
+    ],
     "Richfield Graduate School": [
       "Bloemfontein",
       "Phuthaditjhaba"
+    ],
+    "Rutegang": [
+      "Rutegang"
+    ],
+    "Tjheseho": [
+      "Tjheseho"
+    ],
+    "Tsibogang": [
+      "Tsibogang"
+    ],
+    "Tumahole": [
+      "Tumahole"
+    ],
+    "Umziwoxolo": [
+      "Umziwoxolo"
     ],
     "University of the Free State (UFS)": [
       "Main Campus",
       "Qwaqwa Campus",
       "South Campus"
+    ],
+    "Vulamehlo": [
+      "Vulamehlo"
+    ],
+    "Wesselsbron": [
+      "Wesselsbron"
+    ],
+    "Zakhele Ikusasa": [
+      "Zakhele Ikusasa"
     ]
   },
   "ZA-GT": {
@@ -466,11 +607,17 @@ go.institutions = {
       "Randburg",
       "Vereeniging"
     ],
+    "21 Battalion Community Learning Centre": [
+      "21 Battalion Community Learning Centre"
+    ],
     "AAA School of Advertising": [
       "Bryanston"
     ],
     "AROS": [
       "Waverly Pretoria"
+    ],
+    "Aaron Moeti Community Learning Centre": [
+      "Aaron Moeti Community Learning Centre"
     ],
     "Academy for Facilities Management (distance only)": [
       "Waterkloof"
@@ -484,6 +631,9 @@ go.institutions = {
     "Akademia NPC": [
       "Centurion"
     ],
+    "Alexandra Community Learning Centre": [
+      "Alexandra Community Learning Centre"
+    ],
     "Animation School (Pty) Ltd (The)": [
       "Craighall Park"
     ],
@@ -493,10 +643,16 @@ go.institutions = {
     "Baptist Theological College of Southern Africa (The) NPC CONTACT": [
       "Randburg"
     ],
+    "Bekkersdal Community Learning Centre": [
+      "Bekkersdal Community Learning Centre"
+    ],
     "Belgium Campus": [
       "Akasia",
       "Kempton Park",
       "Sydenham"
+    ],
+    "Bethsaida": [
+      "Bethsaida"
     ],
     "Boston Media House": [
       "Pretoria",
@@ -523,14 +679,38 @@ go.institutions = {
     "Chartall Business College": [
       "Broadacres"
     ],
+    "Chiawelo Community Learning Centre": [
+      "Chiawelo Community Learning Centre"
+    ],
     "Christian Reformed Theological Seminary (Distance only)": [
       "Bronkhorstspruit"
+    ],
+    "City Deep Community Learning Centre": [
+      "City Deep Community Learning Centre"
     ],
     "Concept Interactive Cape": [
       "Midrand"
     ],
     "Cranefield COllege": [
       "Pretoria"
+    ],
+    "DWT Thate": [
+      "DWT Thate"
+    ],
+    "Daveyton Community Learning Centre": [
+      "Daveyton Community Learning Centre"
+    ],
+    "Denver Community Learning Centre": [
+      "Denver Community Learning Centre"
+    ],
+    "Diepkloof Community Learning Centre": [
+      "Diepkloof Community Learning Centre"
+    ],
+    "Duduza Community Learning Centre": [
+      "Duduza Community Learning Centre"
+    ],
+    "E.D Mafole Community Learning Centre": [
+      "E.D Mafole Community Learning Centre"
     ],
     "Ekurhuleni East": [
       "Benoni",
@@ -558,11 +738,26 @@ go.institutions = {
     "Foundation for Professional Development (Pty) Ltd": [
       "Pretoria"
     ],
+    "Fourways Community Learning Centre": [
+      "Fourways Community Learning Centre"
+    ],
+    "Gaegolelwe": [
+      "Gaegolelwe"
+    ],
+    "Gaerobe": [
+      "Gaerobe"
+    ],
+    "Gauteng CET College": [
+      "Gauteng CET College"
+    ],
     "Global School of Theology": [
       "Rooderpoort"
     ],
     "Greenside Design Centre, College of Design": [
       "Greenside, Gauteng"
+    ],
+    "Hammanstkraal": [
+      "Hammanstkraal"
     ],
     "Health Science Academy": [
       "Pretoria"
@@ -572,6 +767,12 @@ go.institutions = {
     ],
     "Henley Business School": [
       "Paulshof"
+    ],
+    "Herbert Mdingi Community Learning Centre": [
+      "Herbert Mdingi Community Learning Centre"
+    ],
+    "Holy Trinity": [
+      "Holy Trinity"
     ],
     "IMM Graduate School of Marketing": [
       "Edenvale",
@@ -608,8 +809,26 @@ go.institutions = {
     "Isa Carstens Academy (Pty)": [
       "Pretoria"
     ],
+    "Ivory Park Community Learning Centre": [
+      "Ivory Park Community Learning Centre"
+    ],
+    "Josiah Khumalo Community Learning Centre": [
+      "Josiah Khumalo Community Learning Centre"
+    ],
+    "Kagiso Community Learning Centre": [
+      "Kagiso Community Learning Centre"
+    ],
     "Katapult Business School (Pty) Ltd": [
       "Bedfordview"
+    ],
+    "Khutsong Community Learning Centre": [
+      "Khutsong Community Learning Centre"
+    ],
+    "Kwa -Thema Community Learning Centre": [
+      "Kwa -Thema Community Learning Centre"
+    ],
+    "Kwazini Community Learning Centre": [
+      "Kwazini Community Learning Centre"
     ],
     "Life College of Learning (Life Healthcare Group (Pty) Ltd)": [
       "Johannesburg"
@@ -620,14 +839,23 @@ go.institutions = {
     "Macmillan South Africa": [
       "Midrand"
     ],
+    "Mamelodi": [
+      "Mamelodi"
+    ],
     "Mediclinic (Northern Region Mediclinic Learning Centre)": [
       "Johannesburg"
     ],
     "Mediclinic (Tshwane Region Mediclinic Learning Centre)": [
       "Pretoria"
     ],
+    "Moepathutse": [
+      "Moepathutse"
+    ],
     "Moonstone Business School of Excellence": [
       "Pretoria"
+    ],
+    "Morakapula": [
+      "Morakapula"
     ],
     "Mukhanyo Theological College NPC": [
       "Braamfontein",
@@ -655,6 +883,15 @@ go.institutions = {
     "PM Academy": [
       "Edenvale"
     ],
+    "PQ Vundla Community Learning Centre": [
+      "PQ Vundla Community Learning Centre"
+    ],
+    "Peter Lengene Community Learning Centre": [
+      "Peter Lengene Community Learning Centre"
+    ],
+    "Pretoria Central": [
+      "Pretoria Central"
+    ],
     "Private Hotel School (Part of ADvTech Group)": [
       "Rosebank"
     ],
@@ -663,6 +900,9 @@ go.institutions = {
     ],
     "Red and Yellow Creative School of Business": [
       "Johannesburg"
+    ],
+    "Reneilwe": [
+      "Reneilwe"
     ],
     "SANTS": [
       "Pretoria"
@@ -687,6 +927,9 @@ go.institutions = {
     "STADIO Southern Business School": [
       "Krugersdorp"
     ],
+    "Sebokeng Community Learning Centre": [
+      "Sebokeng Community Learning Centre"
+    ],
     "Sedibeng": [
       "Central Office",
       "Heidelberg",
@@ -696,6 +939,12 @@ go.institutions = {
     ],
     "Sefako Makgatho Health Sciences University (SMU)": [
       "Main Campus"
+    ],
+    "Setlakalane Molepo Community Learning Centre": [
+      "Setlakalane Molepo Community Learning Centre"
+    ],
+    "Sharperville Community Learning Centre": [
+      "Sharperville Community Learning Centre"
     ],
     "South African College of Applied Psychology (SACAP)": [
       "Johannesburg",
@@ -716,11 +965,23 @@ go.institutions = {
     "South African Theological Seminary": [
       "Sandton"
     ],
+    "St Anthonys Community Learning Centre": [
+      "St Anthonys Community Learning Centre"
+    ],
     "St John Vianney Seminary": [
       "Pretoria"
     ],
+    "Sydney Maseko Community Learning Centre": [
+      "Sydney Maseko Community Learning Centre"
+    ],
     "TSIBA Education NPC": [
       "Newtown"
+    ],
+    "Taamane": [
+      "Taamane"
+    ],
+    "Tembisa Community Learning Centre": [
+      "Tembisa Community Learning Centre"
     ],
     "The Animation School": [
       "Johannesburg Campus"
@@ -737,6 +998,15 @@ go.institutions = {
     ],
     "Theological Education by Extension College NPC (Distance only)": [
       "Johanesburg"
+    ],
+    "Thokoza Community Learning Centre": [
+      "Thokoza Community Learning Centre"
+    ],
+    "Thutomfundo Community Learning Centre": [
+      "Thutomfundo Community Learning Centre"
+    ],
+    "Tsakane Community Learning Centre": [
+      "Tsakane Community Learning Centre"
     ],
     "Tshwane North": [
       "Central Office",
@@ -760,6 +1030,9 @@ go.institutions = {
       "Ga-Rankuwa",
       "Pretoria West",
       "Soshanguve"
+    ],
+    "Tswinyane Community Learning Centre": [
+      "Tswinyane Community Learning Centre"
     ],
     "Turaco Hospitality (Pty) Ltd": [
       "Randburg"
@@ -786,8 +1059,20 @@ go.institutions = {
       "Ekurhuleni",
       "Main Campus (Vanderbijlpark)"
     ],
+    "Victory Community Learning Centre": [
+      "Victory Community Learning Centre"
+    ],
     "Villioti Fashion Institute (Pty) Ltd": [
       "Hyde Park"
+    ],
+    "Vunanimfundo Communi Learnin Centre": [
+      "Vunanimfundo Communi Learnin Centre"
+    ],
+    "Wattville Community Learning Centre": [
+      "Wattville Community Learning Centre"
+    ],
+    "Wedela Community Learning Centre": [
+      "Wedela Community Learning Centre"
     ],
     "Western": [
       "Carletonville",
@@ -829,6 +1114,9 @@ go.institutions = {
     "Tshwane University of Technology (TUT)": [
       "Polokwane"
     ],
+    "Bogwasha Community Learning Centre": [
+      "Bogwasha Community Learning Centre"
+    ],
     "Capricorn": [
       "Central Office",
       "Polokwane",
@@ -838,6 +1126,18 @@ go.institutions = {
     ],
     "Christ Baptist Church Seminary NPC": [
       "Faunapark"
+    ],
+    "Dambalwashe Community Learning Centre": [
+      "Dambalwashe Community Learning Centre"
+    ],
+    "Giyani Comprehensive Community Learning Centre": [
+      "Giyani Comprehensive Community Learning Centre"
+    ],
+    "Helen Franz Hospital": [
+      "Helen Franz Hospital"
+    ],
+    "Khudutseke Community Learning Centre": [
+      "Khudutseke Community Learning Centre"
     ],
     "Lephalale": [
       "Central Office",
@@ -850,19 +1150,67 @@ go.institutions = {
       "Maake",
       "Tzaneen"
     ],
+    "Limpopo CET College": [
+      "Limpopo CET College"
+    ],
+    "Mageme Community Learning Centre": [
+      "Mageme Community Learning Centre"
+    ],
+    "Makwarela Community Learning Centre": [
+      "Makwarela Community Learning Centre"
+    ],
+    "Malamulele Public Works Community Learning Centre": [
+      "Malamulele Public Works Community Learning Centre"
+    ],
+    "Mapeloana": [
+      "Mapeloana"
+    ],
+    "Maphopha Community Learning Centre": [
+      "Maphopha Community Learning Centre"
+    ],
     "Mediclinic (Limpopo Mediclinic Learning Centre)": [
       "Polokwane"
+    ],
+    "Modjadji Community": [
+      "Modjadji Community"
     ],
     "Mopani": [
       "Central Office",
       "Phalaborwa",
       "Sir Val Duncan"
     ],
+    "Musina Community Learning Centre": [
+      "Musina Community Learning Centre"
+    ],
+    "Nelson Skop Community Learning Centre": [
+      "Nelson Skop Community Learning Centre"
+    ],
+    "OR Tambo Community Learning Centre": [
+      "OR Tambo Community Learning Centre"
+    ],
+    "Phomelelo Community Learning College": [
+      "Phomelelo Community Learning College"
+    ],
+    "Pondo Community Learning Centre": [
+      "Pondo Community Learning Centre"
+    ],
     "Sekhukhune": [
       "Apel",
       "CN Phatudi",
       "CS Barlow",
       "Central Office"
+    ],
+    "Seshego Hospital": [
+      "Seshego Hospital"
+    ],
+    "Thabamoopo Hospital": [
+      "Thabamoopo Hospital"
+    ],
+    "Tivumbeni Community": [
+      "Tivumbeni Community"
+    ],
+    "Tshikondeni Community Learning Centre": [
+      "Tshikondeni Community Learning Centre"
     ],
     "University of Limpopo (UL)": [
       "Turfloop Campus"
@@ -923,6 +1271,9 @@ go.institutions = {
       "Middelburg",
       "eMalahleni"
     ],
+    "Vulamehlo": [
+      "Vulamehlo"
+    ],
     "Centurion Akademie": [
       "Witbank"
     ],
@@ -935,6 +1286,18 @@ go.institutions = {
     ],
     "Vaal University of Technology (VUT)": [
       "Secunda"
+    ],
+    "Andisa": [
+      "Andisa"
+    ],
+    "Cheshire": [
+      "Cheshire"
+    ],
+    "Chubekani": [
+      "Chubekani"
+    ],
+    "Eamogetswe": [
+      "Eamogetswe"
     ],
     "Ehlanzeni": [
       "Barberton",
@@ -955,8 +1318,23 @@ go.institutions = {
       "Sibanesetfu",
       "Standerton"
     ],
+    "Kamaqhekeza": [
+      "Kamaqhekeza"
+    ],
+    "Kennen": [
+      "Kennen"
+    ],
+    "Kwaguqa": [
+      "Kwaguqa"
+    ],
+    "Mafu": [
+      "Mafu"
+    ],
     "Mediclinic (Nelspruit Mediclinic Learning Centre)": [
       "Mbombela"
+    ],
+    "Mpumalanga CET College": [
+      "Mpumalanga CET College"
     ],
     "Nkangala": [
       "CN Mahlangu",
@@ -966,9 +1344,27 @@ go.institutions = {
       "Waterval Boven",
       "Witbank"
     ],
+    "Rivoningo": [
+      "Rivoningo"
+    ],
+    "Salubindza": [
+      "Salubindza"
+    ],
+    "Shalamuka": [
+      "Shalamuka"
+    ],
+    "Simile": [
+      "Simile"
+    ],
+    "Thulamahashe": [
+      "Thulamahashe"
+    ],
     "University of Mpumalanga (UMP)": [
       "Mbombela",
       "Siyabuswa"
+    ],
+    "Wesselton": [
+      "Wesselton"
     ]
   },
   "ZA-NC": {
@@ -981,8 +1377,26 @@ go.institutions = {
     "UNISA": [
       "Kimberley"
     ],
+    "Helen Joseph CLC": [
+      "Helen Joseph CLC"
+    ],
     "Hugenote Kollege": [
       "Kimberely"
+    ],
+    "Itlhatloseng CLC": [
+      "Itlhatloseng CLC"
+    ],
+    "Kareeville CLC": [
+      "Kareeville CLC"
+    ],
+    "Kolomela CLC": [
+      "Kolomela CLC"
+    ],
+    "Mecwi CLC": [
+      "Mecwi CLC"
+    ],
+    "Northern Cape CET College": [
+      "Northern Cape CET College"
     ],
     "Northern Cape Rural": [
       "Central Office",
@@ -998,8 +1412,14 @@ go.institutions = {
       "Moremogolo",
       "Phatsimang"
     ],
+    "People's Public CLC": [
+      "People's Public CLC"
+    ],
     "Sol Plaatje University (SPU)": [
       "Kimberley"
+    ],
+    "Thuto-Boswa CLC": [
+      "Thuto-Boswa CLC"
     ]
   },
   "ZA-NL": {
@@ -1091,11 +1511,32 @@ go.institutions = {
       "Durban",
       "Umhlanga"
     ],
+    "121 Battalion CLC": [
+      "121 Battalion CLC"
+    ],
+    "Bekezela CLC": [
+      "Bekezela CLC"
+    ],
     "Berea College of Technology": [
       "Durban Tourist Juncion"
     ],
     "Berea Technical College": [
       "Durban"
+    ],
+    "Bhongweni CLC": [
+      "Bhongweni CLC"
+    ],
+    "Bonamuva CLC": [
+      "Bonamuva CLC"
+    ],
+    "Bonela CLC": [
+      "Bonela CLC"
+    ],
+    "Braaimwood CLC": [
+      "Braaimwood CLC"
+    ],
+    "CB Addison CLC": [
+      "CB Addison CLC"
     ],
     "Coastal": [
       "Appelsbosch",
@@ -1110,6 +1551,9 @@ go.institutions = {
     ],
     "Commerce and Computer College of South Africa (Pty) Ltd": [
       "Duban CBD"
+    ],
+    "Dokkies CLC": [
+      "Dokkies CLC"
     ],
     "Durban University of Technology (DUT)": [
       "Brickfield",
@@ -1131,6 +1575,15 @@ go.institutions = {
       "Pinetown",
       "Qadi"
     ],
+    "Embonisweni CLC": [
+      "Embonisweni CLC"
+    ],
+    "Emlandeleni CLC": [
+      "Emlandeleni CLC"
+    ],
+    "Endleleni CLC": [
+      "Endleleni CLC"
+    ],
     "Esayidi": [
       "Central Office",
       "Clydesdale",
@@ -1139,6 +1592,39 @@ go.institutions = {
       "Kokstad",
       "Port Shepstone",
       "Umzimkhulu"
+    ],
+    "Funulwazi CLC": [
+      "Funulwazi CLC"
+    ],
+    "Harding HRD CLC": [
+      "Harding HRD CLC"
+    ],
+    "Hlakaniphani CLC": [
+      "Hlakaniphani CLC"
+    ],
+    "Ilungelolethu CLC": [
+      "Ilungelolethu CLC"
+    ],
+    "Inqabayamangwane CLC": [
+      "Inqabayamangwane CLC"
+    ],
+    "Isibani CLC": [
+      "Isibani CLC"
+    ],
+    "Ithuba CLC": [
+      "Ithuba CLC"
+    ],
+    "Jozini CLC": [
+      "Jozini CLC"
+    ],
+    "KZN CET College": [
+      "KZN CET College"
+    ],
+    "Lathi-tha CLC": [
+      "Lathi-tha CLC"
+    ],
+    "Lethukukhanya CLC": [
+      "Lethukukhanya CLC"
     ],
     "Majuba": [
       "CPD",
@@ -1151,8 +1637,14 @@ go.institutions = {
       "Occupational Learning Unit",
       "Open Learning Unit (OPU)"
     ],
+    "Manaye CLC": [
+      "Manaye CLC"
+    ],
     "Mangosuthu University of Technology (MUT)": [
       "Main Campus"
+    ],
+    "Meshack Ntshulwana CLC": [
+      "Meshack Ntshulwana CLC"
     ],
     "Mnambithi": [
       "Central Office",
@@ -1170,17 +1662,50 @@ go.institutions = {
       "Nquthu",
       "Vryheid"
     ],
+    "Ondini CLC": [
+      "Ondini CLC"
+    ],
+    "Phathisizwe CLC": [
+      "Phathisizwe CLC"
+    ],
+    "Phindangene CLC": [
+      "Phindangene CLC"
+    ],
+    "Phumelela": [
+      "Phumelela"
+    ],
     "Production Management Institute of Southern Africa PTY LTD / PMI (HEAD OFFICE)": [
       "Durban"
+    ],
+    "Qinisela CLC": [
+      "Qinisela CLC"
     ],
     "Regent Business School (Pty) Ltd": [
       "Durban"
     ],
+    "Sesikwazi CLC": [
+      "Sesikwazi CLC"
+    ],
     "Seth Mokitimi Methodist Seminary (NPC)": [
       "Pietermaritzburg"
     ],
+    "Sikhanyiselwe CLC": [
+      "Sikhanyiselwe CLC"
+    ],
+    "Siyanatha  CLC": [
+      "Siyanatha  CLC"
+    ],
     "St Joseph’s Theological Institute NPC": [
       "Cedara"
+    ],
+    "Stoffelton  CLC": [
+      "Stoffelton  CLC"
+    ],
+    "Thandiwe CLC": [
+      "Thandiwe CLC"
+    ],
+    "Thathezakho CLC (Limehill)": [
+      "Thathezakho CLC (Limehill)"
     ],
     "Thekwini": [
       "Asherville",
@@ -1190,6 +1715,12 @@ go.institutions = {
       "Melbourne",
       "Springfield",
       "Umbilo"
+    ],
+    "Ulwazi CLC": [
+      "Ulwazi CLC"
+    ],
+    "Umendomuhle CLC": [
+      "Umendomuhle CLC"
     ],
     "Umfolozi": [
       "Bambanana",
@@ -1224,6 +1755,18 @@ go.institutions = {
     "University of Zululand (UNIZULU)": [
       "KwaDlangezwa",
       "Richards Bay"
+    ],
+    "Usizuzulu CLC": [
+      "Usizuzulu CLC"
+    ],
+    "Wotana CLC": [
+      "Wotana CLC"
+    ],
+    "Zamani CLC": [
+      "Zamani CLC"
+    ],
+    "Zibuke CLC": [
+      "Zibuke CLC"
     ]
   },
   "ZA-NW": {
@@ -1263,14 +1806,50 @@ go.institutions = {
       "Mafikeng",
       "Potchefstroom"
     ],
+    "Dinaledi CLC": [
+      "Dinaledi CLC"
+    ],
+    "Good Shepherd CLC": [
+      "Good Shepherd CLC"
+    ],
+    "Ikageng CLC": [
+      "Ikageng CLC"
+    ],
+    "Iphatlhose CLC": [
+      "Iphatlhose CLC"
+    ],
+    "Kgatelopele CLC": [
+      "Kgatelopele CLC"
+    ],
+    "Lodirile CLC": [
+      "Lodirile CLC"
+    ],
+    "Neo-Estsile": [
+      "Neo-Estsile"
+    ],
+    "North West CET College": [
+      "North West CET College"
+    ],
     "Orbit": [
       "Brits",
       "Central Office",
       "Mankwe",
       "Rustenburg"
     ],
+    "Pooe CLC": [
+      "Pooe CLC"
+    ],
     "Potchefstroom Academy": [
       "Potchefstroom"
+    ],
+    "Raphephe CLC": [
+      "Raphephe CLC"
+    ],
+    "Reabetswe CLC": [
+      "Reabetswe CLC"
+    ],
+    "Sekitla CLC": [
+      "Sekitla CLC"
     ],
     "Taletso": [
       "Central Office",
@@ -1462,6 +2041,9 @@ go.institutions = {
     "Cape Town College of Fashion Design (Pty) Ltd": [
       "Moabray"
     ],
+    "Central Karoo": [
+      "Central Karoo"
+    ],
     "Centre for Creative Education/Iziko La Bantu Be Afrika NPC": [
       "Plumstead"
     ],
@@ -1485,8 +2067,14 @@ go.institutions = {
     "Design Academy of Fashion": [
       "Cape Town"
     ],
+    "Eerste River": [
+      "Eerste River"
+    ],
     "Elizabeth Galloway Academy of Fashion Design": [
       "Stellenbosch"
+    ],
+    "Elsies River": [
+      "Elsies River"
     ],
     "Equine Librium": [
       "Plettenberg Bay"
@@ -1498,6 +2086,9 @@ go.institutions = {
       "Mitchell's Plain",
       "Muizenberg",
       "Westlake"
+    ],
+    "George": [
+      "George"
     ],
     "George Whitefield College": [
       "Muizenberg"
@@ -1517,6 +2108,12 @@ go.institutions = {
     "Madina Institute NPC": [
       "Cape Town"
     ],
+    "Malmesbury": [
+      "Malmesbury"
+    ],
+    "Masiyile": [
+      "Masiyile"
+    ],
     "Mediclinic (Cape Region Mediclinic Learning Centre)": [
       "Belville"
     ],
@@ -1530,11 +2127,26 @@ go.institutions = {
       "Tygerberg",
       "Wingfield"
     ],
+    "Olifantsriver": [
+      "Olifantsriver"
+    ],
     "Optimi College (Pty) Ltd T/A College SA": [
       "Cape Town"
     ],
+    "Oudtshoorn": [
+      "Oudtshoorn"
+    ],
+    "Overberg": [
+      "Overberg"
+    ],
+    "Portlands": [
+      "Portlands"
+    ],
     "Ruth Prowse School of Art NPC": [
       "Woodstock"
+    ],
+    "Sijonga-Phambili": [
+      "Sijonga-Phambili"
     ],
     "South Cape": [
       "Beaufort West",
@@ -1547,6 +2159,9 @@ go.institutions = {
     ],
     "Southern African Wildlife College NPC": [
       "Stellenbosch"
+    ],
+    "St Francis": [
+      "St Francis"
     ],
     "Stellenbosch Academy of Design and Photography (Pty) Ltd": [
       "Stellenbosch"
@@ -1564,6 +2179,12 @@ go.institutions = {
     "University of Western Cape (UWC)": [
       "Bellville"
     ],
+    "Villiersdorp": [
+      "Villiersdorp"
+    ],
+    "Wellington": [
+      "Wellington"
+    ],
     "West Coast": [
       "Atlantis",
       "Central Office",
@@ -1571,6 +2192,12 @@ go.institutions = {
       "Malmesbury",
       "Vredenburg",
       "Vredendal"
+    ],
+    "Western Cape CET College": [
+      "Western Cape CET College"
+    ],
+    "Worcester": [
+      "Worcester"
     ]
   }
 };
