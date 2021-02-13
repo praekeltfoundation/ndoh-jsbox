@@ -25,7 +25,6 @@ var PROVINCE_MAPPING = {
 };
 
 var data = go.institutions;
-
 process.argv.slice(2).forEach(function(filename) {
     csv_parse(fs.readFileSync(filename), {columns: true}).forEach(function(record) {
         var normalised_record = {};
