@@ -682,7 +682,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .setup.user.answers({
                     state_province: 'ZA-NC'
                 })
-                .inputs("6", "3")  // Other
+                .inputs("6", "5", "5")  // Other
                 .check.interaction({
                     state: "state_university_other",
                     reply: [
