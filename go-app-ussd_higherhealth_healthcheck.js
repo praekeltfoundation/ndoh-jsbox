@@ -142,6 +142,9 @@ go.institutions = {
       "Park Avenue",
       "Thanduxolo"
     ],
+    "Eastern Cape CET College": [
+      "Eastern Cape CET College"
+    ],
     "Ed-U City Campus (Pty) Ltd": [
       "Port Elizabeth"
     ],
@@ -294,6 +297,9 @@ go.institutions = {
       "Kroonstad",
       "Mphohadi",
       "Sasolburg"
+    ],
+    "Free State CET College": [
+      "Free State CET College"
     ],
     "Goldfields": [
       "Central Office",
@@ -557,6 +563,9 @@ go.institutions = {
     ],
     "Foundation for Professional Development (Pty) Ltd": [
       "Pretoria"
+    ],
+    "Gauteng CET College": [
+      "Gauteng CET College"
     ],
     "Global School of Theology": [
       "Rooderpoort"
@@ -850,6 +859,9 @@ go.institutions = {
       "Maake",
       "Tzaneen"
     ],
+    "Limpopo CET College": [
+      "Limpopo CET College"
+    ],
     "Mediclinic (Limpopo Mediclinic Learning Centre)": [
       "Polokwane"
     ],
@@ -958,6 +970,9 @@ go.institutions = {
     "Mediclinic (Nelspruit Mediclinic Learning Centre)": [
       "Mbombela"
     ],
+    "Mpumalanga CET College": [
+      "Mpumalanga CET College"
+    ],
     "Nkangala": [
       "CN Mahlangu",
       "Central Office",
@@ -983,6 +998,9 @@ go.institutions = {
     ],
     "Hugenote Kollege": [
       "Kimberely"
+    ],
+    "Northern Cape CET College": [
+      "Northern Cape CET College"
     ],
     "Northern Cape Rural": [
       "Central Office",
@@ -1140,6 +1158,9 @@ go.institutions = {
       "Port Shepstone",
       "Umzimkhulu"
     ],
+    "KZN CET College": [
+      "KZN CET College"
+    ],
     "Majuba": [
       "CPD",
       "Central Office",
@@ -1262,6 +1283,9 @@ go.institutions = {
     "North West University (NWU)": [
       "Mafikeng",
       "Potchefstroom"
+    ],
+    "North West CET College": [
+      "North West CET College"
     ],
     "Orbit": [
       "Brits",
@@ -1571,6 +1595,9 @@ go.institutions = {
       "Malmesbury",
       "Vredenburg",
       "Vredendal"
+    ],
+    "Western Cape CET College": [
+      "Western Cape CET College"
     ]
   }
 };
