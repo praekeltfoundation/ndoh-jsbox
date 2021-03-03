@@ -76,8 +76,10 @@ describe("ussd_mcgcc app", function() {
                 .check.interaction({
                     state: "state_welcome",
                     reply: [
-                        "Welcome to MomConnect GCC. We only send WhatsApp msgs in English.",
-                        "1. Continue",
+                        "Welcome to Dept. of Health's MomConnect. " +
+                        "What would you like to do?",
+                        "1. Suggest a supporter",
+                        "2. Signup as a supporter"
                     ].join("\n"),
                     char_limit: 140,
                 })
@@ -91,8 +93,9 @@ describe("ussd_mcgcc app", function() {
                     state: "state_welcome",
                     reply: [
                         "Sorry, please reply with the number next to your answer. " +
-                        "We only send WhatsApp msgs in English.",
-                        "1. Continue",
+                        "What would you like to do?",
+                        "1. Suggest a supporter",
+                        "2. Signup as a supporter"
                     ].join("\n"),
                     char_limit: 140,
                 })

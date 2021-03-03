@@ -229,16 +229,17 @@ go.app = function() {
         self.states.add("state_welcome", function(name) {
             return new MenuState(name, {
                 question: $(
-                    "Welcome to MomConnect GCC. " +
-                    "We only send WhatsApp msgs in English."
+                    "Welcome to Dept. of Health's MomConnect. " +
+                    "What would you like to do?"
                 ),
                 error: $(
                     "Sorry, please reply with the number next to your answer. " +
-                    "We only send WhatsApp msgs in English."
+                    "What would you like to do?"
                 ),
                 accept_labels: true,
                 choices: [
-                    new Choice("state_exit", $("Continue")),
+                    new Choice("state_exit", $("Suggest a supporter")),
+                    new Choice("state_exit", $("Signup as a supporter")),
                 ]
             });
         });
