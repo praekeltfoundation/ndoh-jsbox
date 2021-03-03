@@ -244,6 +244,15 @@ go.app = function() {
             });
         });
 
+        self.states.add("state_exit", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "Thank you for considering MomConnect. Have a lovely day."
+                )
+            });
+        });
+
         self.states.creators.__error__ = function(name, opts) {
             var return_state = opts.return_state || "state_start";
             return new EndState(name, {
