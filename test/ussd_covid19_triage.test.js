@@ -76,6 +76,22 @@ describe("ussd_covid19_triage app", function () {
                         }
                     });
                     api.http.fixtures.add({
+                        "request": {
+                            "url": "http://eventstore/api/v2/covid19triagestart/",
+                            "method": "POST",
+                            "data": {
+                                msisdn: "+27123456789",
+                                source: "USSD *123#"
+                            }
+                        },
+                        "response": {
+                            "code": 201,
+                            "data": {
+                                "accepted": true
+                            }
+                        }
+                    });
+                    api.http.fixtures.add({
                         request: {
                             url: "http://turn/v1/contacts/27123456789/profile",
                             method: "GET"
@@ -86,6 +102,7 @@ describe("ussd_covid19_triage app", function () {
                         }
                     });
                 })
+                .inputs({ session_event: "new", to_addr: "*123#" })
                 .check.user.answer("returning_user", false)
                 .check.user.answer("confirmed_contact", false)
                 .check.user.state("state_welcome")
@@ -115,6 +132,22 @@ describe("ussd_covid19_triage app", function () {
                         }
                     });
                     api.http.fixtures.add({
+                        "request": {
+                            "url": "http://eventstore/api/v2/covid19triagestart/",
+                            "method": "POST",
+                            "data": {
+                                msisdn: "+27123456789",
+                                source: "USSD *123#"
+                            }
+                        },
+                        "response": {
+                            "code": 201,
+                            "data": {
+                                "accepted": true
+                            }
+                        }
+                    });
+                    api.http.fixtures.add({
                         request: {
                             url: "http://turn/v1/contacts/27123456789/profile",
                             method: "GET"
@@ -125,6 +158,7 @@ describe("ussd_covid19_triage app", function () {
                         }
                     });
                 })
+                .inputs({ session_event: "new", to_addr: "*123#" })
                 .check.user.answer("returning_user", true)
                 .check.user.answer("state_province", "ZA-GT")
                 .check.user.answer("state_city", "Sandton, South Africa")
@@ -1257,6 +1291,22 @@ describe("ussd_covid19_triage app", function () {
                         }
                     });
                     api.http.fixtures.add({
+                        "request": {
+                            "url": "http://eventstore/api/v2/covid19triagestart/",
+                            "method": "POST",
+                            "data": {
+                                msisdn: "+27123456789",
+                                source: "USSD *123#"
+                            }
+                        },
+                        "response": {
+                            "code": 201,
+                            "data": {
+                                "accepted": true
+                            }
+                        }
+                    });
+                    api.http.fixtures.add({
                         request: {
                             url: "http://turn/v1/contacts/27123456789/profile",
                             method: "GET"
@@ -1267,7 +1317,7 @@ describe("ussd_covid19_triage app", function () {
                         }
                     });
                 })
-                .input("3")
+                .input({content: "3", to_addr: "*123#"})
                 .check.user.state("state_welcome")
                 .run();
         });

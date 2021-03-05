@@ -34,7 +34,7 @@ go.app = (function () {
         if (answers.state_province === "ZA-WC") {
           if (
             (
-              _.parseInt(answers.state_age_years) > 55 
+              _.parseInt(answers.state_age_years) > 55
               || answers.state_preexisting_conditions === "yes"
             ) && symptom_count >= 1) {
               return "high";
@@ -110,13 +110,37 @@ go.app = (function () {
           state_age_years: response.data.data.age_years,
           state_preexisting_conditions: response.data.preexisting_condition,
         };
-        return self.states.create("state_get_confirmed_contact");
+        return self.states.create("state_save_healthcheck_start");
       }, function (e) {
         // If it's 404, new user
         if(_.get(e, "response.code") === 404) {
           self.im.user.answers = {returning_user: false};
-          return self.states.create("state_get_confirmed_contact");
+          return self.states.create("state_save_healthcheck_start");
         }
+        // Go to error state after 3 failed HTTP requests
+        opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+        if (opts.http_error_count === 3) {
+          self.im.log.error(e.message);
+          return self.states.create("__error__", { return_state: name });
+        }
+        return self.states.create(name, opts);
+      });
+    });
+
+    self.states.add("state_save_healthcheck_start", function(name, opts) {
+      return new JsonApi(self.im).post(
+        self.im.config.eventstore.url + "/api/v2/covid19triagestart/", {
+        data: {
+          msisdn: self.im.user.addr,
+          source: "USSD " + self.im.msg.to_addr,
+        },
+        headers: {
+          "Authorization": ["Token " + self.im.config.eventstore.token],
+          "User-Agent": ["Jsbox/Covid19-Triage-USSD"]
+        }
+      }).then(function () {
+        return self.states.create("state_get_confirmed_contact");
+      }, function (e) {
         // Go to error state after 3 failed HTTP requests
         opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
         if (opts.http_error_count === 3) {
@@ -393,7 +417,7 @@ go.app = (function () {
             return self.states.create("__error__");
           }
           var location = response.data.result.geometry.location;
-          self.im.user.answers.city_location = 
+          self.im.user.answers.city_location =
             self.pad_location(location.lat, 2) + self.pad_location(location.lng, 3) + "/";
           if(self.im.user.answers.confirmed_contact) {
             return self.states.create("state_tracing");
