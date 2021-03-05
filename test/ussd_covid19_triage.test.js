@@ -1248,7 +1248,7 @@ describe("ussd_covid19_triage app", function () {
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
-                                source: "USSD",
+                                source: "USSD *123#",
                                 province: "ZA-WC",
                                 city: "Cape Town",
                                 age: ">65",
@@ -1270,7 +1270,7 @@ describe("ussd_covid19_triage app", function () {
                         }
                     });
                 })
-                .input("1")
+                .input({content: "1", to_addr: "*123#"})
                 .check.user.state("state_display_risk")
                 .run();
         });
@@ -1342,7 +1342,7 @@ describe("ussd_covid19_triage app", function () {
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
-                                source: "USSD",
+                                source: "USSD *123#",
                                 province: "ZA-WC",
                                 city: "Cape Town",
                                 age: "<18",
@@ -1363,7 +1363,7 @@ describe("ussd_covid19_triage app", function () {
                         }
                     });
                 })
-                .input("1")
+                .input({content: "1", to_addr: "*123#"})
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
@@ -1393,7 +1393,7 @@ describe("ussd_covid19_triage app", function () {
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
-                                source: "USSD",
+                                source: "USSD *123#",
                                 province: "ZA-WC",
                                 city: "Cape Town",
                                 age: "<18",
@@ -1414,7 +1414,7 @@ describe("ussd_covid19_triage app", function () {
                         }
                     });
                 })
-                .input("1")
+                .input({content: "1", to_addr: "*123#"})
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
@@ -1444,7 +1444,7 @@ describe("ussd_covid19_triage app", function () {
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
-                                source: "USSD",
+                                source: "USSD *123#",
                                 province: "ZA-WC",
                                 city: "Cape Town",
                                 age: ">65",
@@ -1465,7 +1465,7 @@ describe("ussd_covid19_triage app", function () {
                         }
                     });
                 })
-                .input("1")
+                .input({content: "1", to_addr: "*123#"})
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
@@ -1495,7 +1495,7 @@ describe("ussd_covid19_triage app", function () {
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
-                                source: "USSD",
+                                source: "USSD *123#",
                                 province: "ZA-WC",
                                 city: "Cape Town",
                                 age: "<18",
@@ -1516,7 +1516,7 @@ describe("ussd_covid19_triage app", function () {
                         }
                     });
                 })
-                .input("2")
+                .input({content: "2", to_addr: "*123#"})
                 .check.interaction({
                     state: "state_no_tracing_low_risk",
                     reply: [
@@ -1547,7 +1547,7 @@ describe("ussd_covid19_triage app", function () {
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
-                                source: "USSD",
+                                source: "USSD *123#",
                                 province: "ZA-WC",
                                 city: "Cape Town",
                                 age: "<18",
@@ -1568,7 +1568,7 @@ describe("ussd_covid19_triage app", function () {
                         }
                     });
                 })
-                .input("2")
+                .input({content: "2", to_addr: "*123#"})
                 .check.interaction({
                     state: "state_no_tracing_moderate_risk",
                     reply: [
@@ -1599,7 +1599,7 @@ describe("ussd_covid19_triage app", function () {
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
-                                source: "USSD",
+                                source: "USSD *123#",
                                 province: "ZA-WC",
                                 city: "Cape Town",
                                 age: ">65",
@@ -1620,7 +1620,7 @@ describe("ussd_covid19_triage app", function () {
                         }
                     });
                 })
-                .input("2")
+                .input({content: "2", to_addr: "*123#"})
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
@@ -1651,7 +1651,7 @@ describe("ussd_covid19_triage app", function () {
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
-                                source: "USSD",
+                                source: "USSD *123#",
                                 province: "ZA-WC",
                                 city: "Cape Town",
                                 age: ">65",
@@ -1673,7 +1673,7 @@ describe("ussd_covid19_triage app", function () {
                         }
                     });
                 })
-                .input("1")
+                .input({content: "1", to_addr: "*123#"})
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
@@ -1709,7 +1709,7 @@ describe("ussd_covid19_triage app", function () {
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
-                                source: "USSD",
+                                source: "USSD *123#",
                                 province: "ZA-WC",
                                 city: "Cape Town",
                                 city_location: "-03.866651+051.195827/",
@@ -1736,7 +1736,7 @@ describe("ussd_covid19_triage app", function () {
                         }
                     });
                 })
-                .input("1")
+                .input({content: "1", to_addr: "*123#"})
                 .check.interaction({
                     state: "state_display_risk",
                     reply:

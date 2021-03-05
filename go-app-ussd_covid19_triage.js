@@ -744,7 +744,7 @@ go.app = (function () {
         self.im.config.eventstore.url + "/api/v3/covid19triage/", {
         data: {
           msisdn: self.im.user.addr,
-          source: "USSD",
+          source: "USSD " + self.im.msg.to_addr,
           province: answers.state_province,
           city: answers.state_city,
           city_location: answers.city_location,
