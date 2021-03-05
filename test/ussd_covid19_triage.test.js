@@ -102,7 +102,7 @@ describe("ussd_covid19_triage app", function () {
                         }
                     });
                 })
-                .inputs({ session_event: "new", to_addr: "*123#" })
+                .input({ session_event: "new", to_addr: "*123#" })
                 .check.user.answer("returning_user", false)
                 .check.user.answer("confirmed_contact", false)
                 .check.user.state("state_welcome")
@@ -158,7 +158,7 @@ describe("ussd_covid19_triage app", function () {
                         }
                     });
                 })
-                .inputs({ session_event: "new", to_addr: "*123#" })
+                .input({ session_event: "new", to_addr: "*123#" })
                 .check.user.answer("returning_user", true)
                 .check.user.answer("state_province", "ZA-GT")
                 .check.user.answer("state_city", "Sandton, South Africa")
