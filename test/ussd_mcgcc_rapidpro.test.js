@@ -12,7 +12,7 @@ describe("ussd_mcgcc app", function() {
         app = new go.app.GoNDOH();
         tester = new AppTester(app);
         tester.setup.config.app({
-            testing_today: "2014-04-04T07:07:07",
+            testing_today: "2021-03-06T07:07:07",
             services: {
                 rapidpro: {
                     base_url: "https://rapidpro",
@@ -53,52 +53,78 @@ describe("ussd_mcgcc app", function() {
                 })
                 .run();
         });
-        it("should welcome the user if they don't have a contact", function() {
+        it("should show the supporter consent page", function() {
             return tester
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27123456789",
-                            exists: false,
+                            exists: true,
+                            fields: {
+                                prebirth_messaging: "3", 
+                                supp_cell: "27123456369",
+                                supp_status: "OTHER"}
                         })
                     );
                 })
                 .start()
-                .check.user.state("state_welcome")
+                .check.user.state("state_mother_supporter_consent")
                 .run();
         });
-    });
-    describe("state_welcome", function() {
-        it("should display the options to the user", function() {
+        it("should also show the supporter consent screen", function() {
             return tester
-                .setup.user.state("state_welcome")
-                .input({session_event: "continue"})
-                .check.interaction({
-                    state: "state_welcome",
-                    reply: [
-                        "Welcome to Dept. of Health's MomConnect. " +
-                        "What would you like to do?",
-                        "1. Suggest a supporter",
-                        "2. Signup as a supporter"
-                    ].join("\n"),
-                    char_limit: 140,
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "whatsapp:27123456789",
+                            exists: true,
+                            fields: {
+                                prebirth_messaging: "3", 
+                                supp_cell: null
+                            }
+                        })
+                    );
                 })
+                .start()
+                .check.user.state("state_mother_supporter_consent")
                 .run();
         });
-        it("should display the error pretext if the user types an invalid choice", function() {
+        it("should also show the incomplete supporter registration screen", function() {
             return tester
-                .setup.user.state("state_welcome")
-                .input("foo")
-                .check.interaction({
-                    state: "state_welcome",
-                    reply: [
-                        "Sorry, please reply with the number next to your answer. " +
-                        "What would you like to do?",
-                        "1. Suggest a supporter",
-                        "2. Signup as a supporter"
-                    ].join("\n"),
-                    char_limit: 140,
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "whatsapp:27123456789",
+                            exists: true,
+                            fields: {
+                                prebirth_messaging: "3", 
+                                supp_cell: "27123456369",
+                                supp_status: "SUGGESTED"
+                            }
+                        })
+                    );
                 })
+                .start()
+                .check.user.state("state_mother_supporter_suggested_state")
+                .run();
+        });
+        it("should also show the postbirth > 5 months screen", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "whatsapp:27123456789",
+                            exists: true,
+                            fields: {
+                                postbirth_messaging: "true",
+                                supp_cell: "0903095", 
+                                baby_dob1: "2020-07-25T10:01:52.648503+02:00",
+                            }
+                        })
+                    );
+                })
+                .start()
+                .check.user.state("state_mother_supporter_5_months_end")
                 .run();
         });
     });
