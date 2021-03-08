@@ -168,8 +168,8 @@ go.app = function() {
             return new EndState(name, {
                 next: "state_start",
                 text: $(
-                    "That's OK. We hope they can love and support you & baby. " +
-                    "If they change their mind, you can dial *134*550# from your " + 
+                    "That's OK. We hope they can love and support you & baby." +
+                    "\n\nIf they change their mind, you can dial *134*550# from your " + 
                     "number to sign them up for messages."
                 )
             });
@@ -193,11 +193,33 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_mother_name"
+                next: "state_whatsapp_contact_check"
             });
         });
 
-    self.add("state_mother_name", function (name){
+        self.add("state_whatsapp_contact_check", function (name, opts) {
+            var content = self.im.user.answers.state_mother_supporter_msisdn;
+            var msisdn = utils.normalize_msisdn(content, "ZA");
+            return self.whatsapp
+                .contact_check(msisdn, true)
+                .then(function (result) {
+                    self.im.user.set_answer("on_whatsapp", result);
+                    return self.states.create("state_mother_name");
+                })
+                .catch(function (e) {
+                // Go to error state after 3 failed HTTP requests
+                opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                if (opts.http_error_count === 3) {
+                    self.im.log.error(e.message);
+                    return self.states.create("__error__", {
+                      return_state: "state_whatsapp_contact_check"
+                    });
+                  }
+                  return self.states.create("state_whatsapp_contact_check", opts);
+                });
+        });
+
+        self.add("state_mother_name", function (name){
             return new FreeText(name, {
                 question: $(
                     "What is your name? We will use your name in the invite to your " +
@@ -208,12 +230,12 @@ go.app = function() {
             });
         });
 
-    self.add("state_mother_name_confirm", function (name){
+        self.add("state_mother_name_confirm", function (name){
             var mother_name = self.im.user.answers.state_mother_name;
             return new MenuState(name, {
                 question: $(
                     "Thank you! Let's make sure we got it right. " + 
-                    "is your name {{mother_name}}").context({ mother_name: mother_name }),
+                    "is your name {{mother_name}}?").context({ mother_name: mother_name }),
                 error:$(
                     "Sorry please try again. Is your name {{mother_name}}?").context({ mother_name: mother_name }),
                 accept_labels: true, 
@@ -223,8 +245,44 @@ go.app = function() {
                 ]
             });
         });
+
+        self.add("state_trigger_mother_registration_flow", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            var supporter_cell = utils.normalize_msisdn(self.im.user.get_answer("state_mother_supporter_msisdn"), "ZA");
+            var data = {
+                on_whatsapp: self.im.user.get_answer("on_whatsapp") ? "true" : "false",
+                supp_consent: self.im.user.get_answer("state_mother_supporter_consent") === "yes" ? "true" : "false",
+                supp_cell: supporter_cell,
+                mom_name: self.im.user.get_answer("state_mother_name"),
+                source: "USSD",
+                timestamp: new moment.utc(self.im.config.testing_today).format(),
+                registered_by: msisdn,
+                mha: 6,
+                swt: self.im.user.get_answer("on_whatsapp") ? 7 : 1
+            };
+            console.log(data);
+            return self.rapidpro
+                .start_flow(
+                    self.im.config.mother_registration_uuid,
+                    null,
+                    "whatsapp:" + _.trim(msisdn, "+"), data)
+                .then(function () {
+                    return self.states.create("state_mother_supporter_end");
+                })
+                .catch(function(e) {
+                   // Go to error state after 3 failed HTTP requests
+                   opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                   if (opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                       return self.states.create("__error__", {
+                           return_state: "state_trigger_mother_registration_flow"
+                       });
+                   }
+                   return self.states.create("state_trigger_mother_registration_flow", opts);
+                });
+        });
         
-    self.states.add("state_mother_supporter_end", function(name) {
+        self.states.add("state_mother_supporter_end", function(name) {
             return new EndState(name, {
                 next: "state_start",
                 text: $(
@@ -256,6 +314,13 @@ go.app = function() {
                 )
             });
         });
+
+        //self.add("state_trigger_mother_rapidpro_flow", function (name, opts) {
+        //    var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+        //    var data = {
+
+        //    }
+        //})
 
         /***************
         Supporter states
@@ -290,7 +355,7 @@ go.app = function() {
             ), 
             accept_labels: true,
             choices: [
-                new Choice("state_whatsapp_contact_check", $("Yes")),
+                new Choice("state_supporter_language_whatsapp", $("Yes")),
                 new Choice("state_mother_noconsent_end_confirm", $("No")),
             ],
         });
@@ -307,30 +372,10 @@ go.app = function() {
         });
     });
 
-        self.add("state_whatsapp_contact_check", function (name, opts) {
-        var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
-        return self.whatsapp
-          .contact_check(msisdn, true)
-          .then(function (result) {
-            self.im.user.set_answer("on_whatsapp", result);
-            return self.states.create("state_supporter_language_whatsapp");
-          })
-          .catch(function (e) {
-            // Go to error state after 3 failed HTTP requests
-            opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-            if (opts.http_error_count === 3) {
-              self.im.log.error(e.message);
-              return self.states.create("__error__", {
-                return_state: "state_whatsapp_contact_check"
-              });
-            }
-            return self.states.create("state_whatsapp_contact_check", opts);
-          });
-      });
-
     self.add("state_supporter_language_whatsapp", function(name) {
-        var channel = self.im.user.get_answer("on_whatsapp") ? "WhatsApp" : "SMS";
-        if(channel === "SMS") {
+        var contact = self.im.user.get_answer("contact");
+        var channel = _.toUpper(_.get(contact, "fields.postbirth_messaging")) === "SMS";
+        if(channel === true) {
             return self.states.create("state_supporter_language_sms");
         }
         return new ChoiceState(name, {
