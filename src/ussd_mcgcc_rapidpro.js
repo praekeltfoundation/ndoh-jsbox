@@ -123,6 +123,9 @@ go.app = function() {
                         return self.states.create("state_supporter_consent");
                     }
                     else {
+                        console.log(postbirth_messaging);
+                        console.log(prebirth_messaging);
+                        console.log(status);
                         return self.states.create("state_supporter_unknown");
                     }
 
@@ -251,7 +254,7 @@ go.app = function() {
             var supporter_cell = utils.normalize_msisdn(self.im.user.get_answer("state_mother_supporter_msisdn"), "ZA");
             var data = {
                 on_whatsapp: self.im.user.get_answer("on_whatsapp") ? "true" : "false",
-                supp_consent: self.im.user.get_answer("state_mother_supporter_consent") === "yes" ? "true" : "false",
+                supp_consent: _.toUpper(self.im.user.get_answer("state_mother_supporter_consent")) === "YES" ? "true" : "false",
                 supp_cell: supporter_cell,
                 mom_name: self.im.user.get_answer("state_mother_name"),
                 source: "USSD",
@@ -260,7 +263,6 @@ go.app = function() {
                 mha: 6,
                 swt: self.im.user.get_answer("on_whatsapp") ? 7 : 1
             };
-            console.log(data);
             return self.rapidpro
                 .start_flow(
                     self.im.config.mother_registration_uuid,
@@ -315,23 +317,19 @@ go.app = function() {
             });
         });
 
-        //self.add("state_trigger_mother_rapidpro_flow", function (name, opts) {
-        //    var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
-        //    var data = {
-
-        //    }
-        //})
 
         /***************
         Supporter states
         ****************/
 
-       self.add("state_supporter_consent", function(name) {
-        return new MenuState(name, {
+       self.states.add("state_supporter_consent", function(name) {
+            var mom_name = _.get(self.im.user.get_answer("contact"), "fields.mom_name");
+            return new MenuState(name, {
             question: $(
-                "Welcome to the Dept. of Health's MomConnect. " +
+                "Welcome to the Dept. of Health's MomConnect." +
                 "\n\n[1/5]" +
-                "Do you agree to get messages to help [mother's name] during and after pregnancy?"),
+                "\nDo you agree to get messages to help {{mom_name}} during and after pregnancy?")
+                .context({ mom_name: mom_name }),
             error:$(
                 "Sorry, please try again. Do you agree to get MomConnect messages? " +
                 "Reply with the number, e.g. 1."
@@ -339,15 +337,15 @@ go.app = function() {
             accept_labels: true,
             choices: [
                 new Choice("state_whatsapp_contact_check", $("Yes")),
-                new Choice("state_mother_noconsent_end", $("No")),
-            ],
+                new Choice("state_supporter_noconsent_ask_again", $("No")),
+                ],
+            });
         });
-    });
 
-        self.add("state_mother_noconsent_end", function(name) {
+        self.add("state_supporter_noconsent_ask_again", function(name) {
         return new MenuState(name, {
             question: $(
-                "Without agreeing we can’t sign you up to get MomConnect supporter messages." +
+                "Without agreeing we can’t sign you up to get MomConnect supporter messages. " +
                 "May MomConnect send your relevant supporter messages?"),
             error:$(
                 "Sorry, please try again. Do you agree to get MomConnect messages? " +
@@ -356,12 +354,12 @@ go.app = function() {
             accept_labels: true,
             choices: [
                 new Choice("state_supporter_language_whatsapp", $("Yes")),
-                new Choice("state_mother_noconsent_end_confirm", $("No")),
+                new Choice("state_supporter_noconsent_end_confirm", $("No")),
             ],
         });
     });
 
-        self.states.add("state_mother_noconsent_end_confirm", function(name) {
+        self.states.add("state_supporter_noconsent_end_confirm", function(name) {
         return new EndState(name, {
             next: "state_start",
             text: $(
@@ -374,7 +372,7 @@ go.app = function() {
 
     self.add("state_supporter_language_whatsapp", function(name) {
         var contact = self.im.user.get_answer("contact");
-        var channel = _.toUpper(_.get(contact, "fields.postbirth_messaging")) === "SMS";
+        var channel = _.toUpper(_.get(contact, "fields.preferred_channel")) === "SMS";
         if(channel === true) {
             return self.states.create("state_supporter_language_sms");
         }
@@ -388,9 +386,36 @@ go.app = function() {
             ), 
             accept_labels: true,
             choices: [
-                new Choice("English", $("english")),
-                new Choice("Afrikaans", $("afrikaans")),
-                new Choice("Zulu", $("zulu")),
+                new Choice("eng_ZA", $("English")),
+                new Choice("afrikaans", $("Afrikaans")),
+                new Choice("zul_ZA", $("isiZulu")),
+            ],
+            next: "state_supporter_research_consent"
+        });
+    });
+
+    self.add("state_supporter_language_sms", function(name) {
+        return new ChoiceState(name, {
+            question: $(
+                "[2/5]" +
+                "\nWhat language would you like to get msgs in?"),
+            error:$(
+                "Please try again. " +
+                "Reply with the no, e.g. 1."
+            ), 
+            accept_labels: true,
+            choices: [
+                new Choice("zul_ZA", $("Zulu")),
+                new Choice("xho", $("Xhosa")),
+                new Choice("afrikaans", $("Afrikaans")),
+                new Choice("eng_ZA", $("Eng")),
+                new Choice("nso", $("Sepedi")),
+                new Choice("tsn", $("Tswana")),
+                new Choice("sot", $("Sotho")),
+                new Choice("tso", $("Tsonga")),
+                new Choice("ssw", $("siSwati")),
+                new Choice("ven", $("Venda")),
+                new Choice("nde", $("Ndebele"))
             ],
             next: "state_supporter_research_consent"
         });
@@ -399,7 +424,7 @@ go.app = function() {
     self.add("state_supporter_research_consent", function(name) {
         return new ChoiceState(name, {
             question: $(
-                "[3/5] " +
+                "[3/5]" +
                 "\nMay we also send messages for historical, statistical, or research reasons?" +
                 "\nWe won't contact you unnecessarily and we'll keep your info safe."),
             error:$(
@@ -408,8 +433,8 @@ go.app = function() {
             ), 
             accept_labels: true,
             choices: [
-                new Choice("Yes", $("yes")),
-                new Choice("No", $("no")),
+                new Choice("yes", $("Yes")),
+                new Choice("no", $("No")),
             ],
             next: "state_supporter_relationship"
         });
@@ -427,11 +452,11 @@ go.app = function() {
             ), 
             accept_labels: true,
             choices: [
-                new Choice("Father", $("father")),
-                new Choice("Uncle", $("uncle")),
-                new Choice("Aunt", $("aunt")),
-                new Choice("Grandmother", $("grandmother")),
-                new Choice("Other", $("other")),
+                new Choice("father", $("Father")),
+                new Choice("uncle", $("Uncle")),
+                new Choice("aunt", $("Aunt")),
+                new Choice("grandmother", $("Grandmother")),
+                new Choice("other", $("Other")),
             ],
             next: "state_supporter_name"
         });
@@ -441,7 +466,7 @@ go.app = function() {
         return new FreeText(name, {
             question: $(
                 "[5/5]" +
-                "\nWhat is your name? " +
+                "\nWhat is your name?" +
                 "\n\nWe will use this in the messages we send to you. " + 
                 "We won't share your name with anyone."),
             next: function (content) {
@@ -454,16 +479,70 @@ go.app = function() {
         var supporter_name = self.im.user.answers.state_supporter_name;
         return new MenuState(name, {
             question: $(
-                "Thank you! Let's make sure we got it right. " + 
-                "is your name {{supporter_name}}").context({ supporter_name: supporter_name }), 
+                "Thank you! Let's make sure we got it right." + 
+                "\n\nIs your name {{supporter_name}}?").context({ supporter_name: supporter_name }), 
             error:$(
                 "Sorry please try again. Is your name {{supporter_name}}?").context({ supporter_name: supporter_name }),
             accept_labels: true, 
             choices: [
-                new Choice("state_supporter_end", $("Yes")),
+                new Choice("state_trigger_supporter_registration_flow", $("Yes")),
                 new Choice("state_supporter_name", $("No, I want to retype it"))
             ]
         });
+    });
+
+    self.add("state_trigger_supporter_registration_flow", function(name, opts) {
+        var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+        var supporter_consent;
+        var supporters_language;
+
+        if(typeof self.im.user.get_answer("state_supporter_language_whatsapp") === "undefined") {
+            supporters_language = self.im.user.get_answer("state_supporter_language_sms");
+        }
+        else {
+            supporters_language = self.im.user.get_answer("state_supporter_language_whatsapp");
+        }
+        
+        if (typeof self.im.user.get_answer("state_supporter_noconsent_ask_again") === "undefined"){
+            supporter_consent = _.toUpper(self.im.user.get_answer("state_supporter_consent")) === "YES" ? "true" : "false";
+        }
+        else {
+            supporter_consent = _.toUpper(self.im.user.get_answer("state_supporter_noconsent_ask_again")) === "YES" ? "true" : "false";
+        }
+
+        var data = {
+            on_whatsapp: self.im.user.get_answer("on_whatsapp") ? "true" : "false",
+            supp_consent: supporter_consent,
+            research_consent: _.toUpper(self.im.user.get_answer("state_supporter_research_consent")) === "YES" ? "true" : "false",
+            supp_cell: msisdn,
+            supp_language: supporters_language,
+            supp_relationship: self.im.user.get_answer("state_supporter_relationship"),
+            supp_name: self.im.user.get_answer("state_supporter_name"),
+            source: "USSD",
+            timestamp: new moment.utc(self.im.config.testing_today).format(),
+            registered_by: msisdn,
+            mha: 6,
+            swt: self.im.user.get_answer("on_whatsapp") ? 7 : 1
+        };
+        return self.rapidpro
+            .start_flow(
+                self.im.config.supporter_registration_uuid,
+                null,
+                "whatsapp:" + _.trim(msisdn, "+"), data)
+            .then(function () {
+                return self.states.create("state_supporter_end");
+            })
+            .catch(function(e) {
+               // Go to error state after 3 failed HTTP requests
+               opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+               if (opts.http_error_count === 3) {
+                    self.im.log.error(e.message);
+                   return self.states.create("__error__", {
+                       return_state: "state_trigger_supporter_registration_flow"
+                   });
+               }
+               return self.states.create("state_trigger_supporter_registration_flow", opts);
+            });
     });
 
     self.states.add("state_supporter_end", function(name) {
