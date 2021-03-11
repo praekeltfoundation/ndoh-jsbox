@@ -312,7 +312,7 @@ go.app = function() {
                 next: "state_start",
                 text: $(
                     "Your supporter hasn't registered yet. " +
-                    "Remind them to dial [used#] to complete registration."
+                    "Remind them to dial *134*550# to complete registration."
                 )
             });
         });
