@@ -137,10 +137,10 @@ go.app = function() {
                         }
                     }
 
-                    else if (!(postbirth_messaging === false && prebirth_messaging) && status === 1) {
+                    else if (!(postbirth_messaging && prebirth_messaging) && status === 1) {
                         return self.states.create("state_supporter_consent");
                     }
-                    else if (!(postbirth_messaging === false && prebirth_messaging) && status === 0) {
+                    else if (!(postbirth_messaging && prebirth_messaging) && status === 0) {
                         return self.states.create("state_supporter_profile");
                     }
                     else {

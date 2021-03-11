@@ -153,6 +153,23 @@ describe("ussd_mcgcc app", function() {
                 .check.user.state("state_supporter_profile")
                 .run();
         });
+        it("should show the supporter change profile screen", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "whatsapp:27123456789",
+                            exists: true,
+                            fields: {
+                                supp_status: "RANDOM"
+                            }
+                        })
+                    );
+                })
+                .start()
+                .check.user.state("state_supporter_unknown")
+                .run();
+        });
     });
 
     describe("mother_registration", function() {

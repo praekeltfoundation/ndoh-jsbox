@@ -286,10 +286,10 @@ go.app = function() {
                         }
                     }
 
-                    else if (!(postbirth_messaging === false && prebirth_messaging) && status === 1) {
+                    else if (!(postbirth_messaging && prebirth_messaging) && status === 1) {
                         return self.states.create("state_supporter_consent");
                     }
-                    else if (!(postbirth_messaging === false && prebirth_messaging) && status === 0) {
+                    else if (!(postbirth_messaging && prebirth_messaging) && status === 0) {
                         return self.states.create("state_supporter_profile");
                     }
                     else {
@@ -1259,7 +1259,6 @@ go.app = function() {
             mha: 6,
             swt: self.im.user.get_answer("on_whatsapp") ? 7 : 1
         };
-        console.log(data);
         return self.rapidpro
             .start_flow(
                 self.im.config.mother_new_supporter_registration_uuid,
