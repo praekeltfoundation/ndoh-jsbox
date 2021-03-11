@@ -50,9 +50,9 @@ describe("ussd_mcgcc app", function() {
                     state: "__error__",
                     reply: "Sorry, something went wrong. We have been notified. Please try again later"
                 })
-                .check(function(api){
+                .check(function(api) {
                     assert.equal(api.http.requests.length, 3);
-                    api.http.requests.forEach(function(request){
+                    api.http.requests.forEach(function(request) {
                         assert.equal(request.url, "https://rapidpro/api/v2/contacts.json");
                     });
                     assert.equal(api.log.error.length, 1);
@@ -70,9 +70,10 @@ describe("ussd_mcgcc app", function() {
                             urn: "whatsapp:27123456789",
                             exists: true,
                             fields: {
-                                prebirth_messaging: "3", 
+                                prebirth_messaging: "3",
                                 supp_cell: "27123456369",
-                                supp_status: "OTHER"}
+                                supp_status: "OTHER"
+                            }
                         })
                     );
                 })
@@ -88,7 +89,7 @@ describe("ussd_mcgcc app", function() {
                             urn: "whatsapp:27123456789",
                             exists: true,
                             fields: {
-                                prebirth_messaging: "3", 
+                                prebirth_messaging: "3",
                                 supp_cell: null
                             }
                         })
@@ -106,7 +107,7 @@ describe("ussd_mcgcc app", function() {
                             urn: "whatsapp:27123456789",
                             exists: true,
                             fields: {
-                                prebirth_messaging: "3", 
+                                prebirth_messaging: "3",
                                 supp_cell: "27123456369",
                                 supp_status: "SUGGESTED"
                             }
@@ -126,7 +127,7 @@ describe("ussd_mcgcc app", function() {
                             exists: true,
                             fields: {
                                 postbirth_messaging: "true",
-                                supp_cell: "0903095", 
+                                supp_cell: "0903095",
                                 baby_dob1: "2020-07-25T10:01:52.648503+02:00",
                             }
                         })
@@ -173,22 +174,24 @@ describe("ussd_mcgcc app", function() {
     });
 
     describe("mother_registration", function() {
-        it("should ask the mother for supporters consent", function () {
+        it("should ask the mother for supporters consent", function() {
             return tester.setup.user
-            .state("state_mother_supporter_consent")
-            .input({ session_event: "continue" })
-            .check.interaction({
-                state: "state_mother_supporter_consent",
-                reply: [
-                    "A supporter is someone you trust & is part of baby's life. " + 
-                    "Do they agree to get messages to help you during and after pregnancy?",
-                    "1. Yes",
-                    "2. No"
-                ].join("\n")
-            })
-            .run();
+                .state("state_mother_supporter_consent")
+                .input({
+                    session_event: "continue"
+                })
+                .check.interaction({
+                    state: "state_mother_supporter_consent",
+                    reply: [
+                        "A supporter is someone you trust & is part of baby's life. " +
+                        "Do they agree to get messages to help you during and after pregnancy?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
         });
-        it("should end if the mother does not provide supporter's consent", function () {
+        it("should end if the mother does not provide supporter's consent", function() {
             return tester.setup.user
                 .state("state_mother_supporter_consent")
                 .input("2")
@@ -202,55 +205,55 @@ describe("ussd_mcgcc app", function() {
                 })
                 .run();
         });
-        it("should ask for phone number after the mother provides supporter's consent", function () {
+        it("should ask for phone number after the mother provides supporter's consent", function() {
             return tester.setup.user
                 .state("state_mother_supporter_consent")
                 .input("1")
                 .check.interaction({
                     state: "state_mother_supporter_msisdn",
                     reply: [
-                        "Please reply with the cellphone number of the " + 
+                        "Please reply with the cellphone number of the " +
                         "supporter who wants to get messages, e.g. 0762564733."
                     ].join("\n")
                 })
                 .run();
         });
-        it("should return an error for invalid cell number", function () {
+        it("should return an error for invalid cell number", function() {
             return tester.setup.user
                 .state("state_mother_supporter_msisdn")
                 .input("foo")
                 .check.interaction({
                     state: "state_mother_supporter_msisdn",
                     reply: [
-                        "Sorry, we don't recognise that as a cell number. " + 
+                        "Sorry, we don't recognise that as a cell number. " +
                         "Please reply with the 10 digit cell number, e.g. 0762564733."
                     ].join("\n")
                 })
                 .run();
         });
-        it("should return an error if the sample number is entered", function () {
+        it("should return an error if the sample number is entered", function() {
             return tester.setup.user
                 .state("state_mother_supporter_msisdn")
                 .input("0762564733")
                 .check.interaction({
                     state: "state_mother_supporter_msisdn",
                     reply: [
-                        "Please try again. Reply with the cellphone number " + 
+                        "Please try again. Reply with the cellphone number " +
                         "of your supporter as a 10-digit number."
                     ].join("\n")
                 })
                 .run();
         });
-        it("should ask mother to confirm the name she entered", function () {
+        it("should ask mother to confirm the name she entered", function() {
             return tester.setup.user
                 .state("state_mother_name")
                 .input("Mary James")
                 .check.interaction({
                     state: "state_mother_name_confirm",
                     reply: [
-                        "Thank you! Let's make sure we got it right. " + 
+                        "Thank you! Let's make sure we got it right. " +
                         "is your name Mary James?",
-                        "1. Yes", 
+                        "1. Yes",
                         "2. No"
                     ].join("\n")
                 })
@@ -288,7 +291,7 @@ describe("ussd_mcgcc app", function() {
                 .setup.user.answer("state_mother_supporter_msisdn", "+27123456789")
                 .check(function(api) {
                     assert.equal(api.http.requests.length, 3);
-                    api.http.requests.forEach(function(request){
+                    api.http.requests.forEach(function(request) {
                         assert.equal(request.url, "http://pilot.example.org/v1/contacts");
                     });
                     assert.equal(api.log.error.length, 1);
@@ -297,7 +300,7 @@ describe("ussd_mcgcc app", function() {
                 .run();
         });
     });
-    describe("state_trigger_mother_registration_flow", function () {
+    describe("state_trigger_mother_registration_flow", function() {
         it("should start a flow with the correct metadata", function() {
             return tester
                 .setup.user.state("state_trigger_mother_registration_flow")
@@ -308,28 +311,29 @@ describe("ussd_mcgcc app", function() {
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
-                    fixtures_rapidpro.start_flow(
-                        "mother-registration-uuid",
-                        null,
-                        "whatsapp:27123456789",
-                        {
-                            "on_whatsapp": "true",
-                            "supp_consent": "true",
-                            "supp_cell": "+27123456722",
-                            "mom_name": "Jane",
-                            "source": "USSD",
-                            "timestamp": "2021-03-06T07:07:07Z",
-                            "registered_by": "+27123456789",
-                            "mha": 6,
-                            "swt": 7           
-                        }
-                    )
-                );
-            })
-            .setup.user.answer("on_whatsapp", true)
-            .input({ session_event: "continue" })
-            .check.user.state("state_mother_supporter_end")
-            .run();
+                        fixtures_rapidpro.start_flow(
+                            "mother-registration-uuid",
+                            null,
+                            "whatsapp:27123456789", {
+                                "on_whatsapp": "true",
+                                "supp_consent": "true",
+                                "supp_cell": "+27123456722",
+                                "mom_name": "Jane",
+                                "source": "USSD",
+                                "timestamp": "2021-03-06T07:07:07Z",
+                                "registered_by": "+27123456789",
+                                "mha": 6,
+                                "swt": 7
+                            }
+                        )
+                    );
+                })
+                .setup.user.answer("on_whatsapp", true)
+                .input({
+                    session_event: "continue"
+                })
+                .check.user.state("state_mother_supporter_end")
+                .run();
         });
         it("should retry in the case of HTTP failures", function() {
             return tester
@@ -341,36 +345,37 @@ describe("ussd_mcgcc app", function() {
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
-                    fixtures_rapidpro.start_flow(
-                        "mother-registration-uuid",
-                        null,
-                        "whatsapp:27123456789",
-                        {
-                            "on_whatsapp": "true",
-                            "supp_consent": "true",
-                            "supp_cell": "+27123456722",
-                            "mom_name": "Jane",
-                            "source": "USSD",
-                            "timestamp": "2021-03-06T07:07:07Z",
-                            "registered_by": "+27123456789",
-                            "mha": 6,
-                            "swt": 7           
-                        },
-                        true
-                    )
-                );
-            })
-            .setup.user.answer("on_whatsapp", true)
-            .input({ session_event: "continue" })
-            .check(function(api){
-                assert.equal(api.http.requests.length, 3);
-                api.http.requests.forEach(function(request) {
-                    assert.equal(request.url, "https://rapidpro/api/v2/flow_starts.json");
-                });
-                assert.equal(api.log.error.length, 1);
-                assert(api.log.error[0].includes("HttpResponseError"));  
-            })
-            .run();
+                        fixtures_rapidpro.start_flow(
+                            "mother-registration-uuid",
+                            null,
+                            "whatsapp:27123456789", {
+                                "on_whatsapp": "true",
+                                "supp_consent": "true",
+                                "supp_cell": "+27123456722",
+                                "mom_name": "Jane",
+                                "source": "USSD",
+                                "timestamp": "2021-03-06T07:07:07Z",
+                                "registered_by": "+27123456789",
+                                "mha": 6,
+                                "swt": 7
+                            },
+                            true
+                        )
+                    );
+                })
+                .setup.user.answer("on_whatsapp", true)
+                .input({
+                    session_event: "continue"
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 3);
+                    api.http.requests.forEach(function(request) {
+                        assert.equal(request.url, "https://rapidpro/api/v2/flow_starts.json");
+                    });
+                    assert.equal(api.log.error.length, 1);
+                    assert(api.log.error[0].includes("HttpResponseError"));
+                })
+                .run();
         });
     });
     describe("Supporter_registration_state_tests", function() {
@@ -383,8 +388,9 @@ describe("ussd_mcgcc app", function() {
                             exists: true,
                             fields: {
                                 prebirth_messaging: null,
-                                postbirth_messaging: null, 
-                                supp_status: "SUGGESTED"}
+                                postbirth_messaging: null,
+                                supp_status: "SUGGESTED"
+                            }
                         })
                     );
                 })
@@ -397,28 +403,28 @@ describe("ussd_mcgcc app", function() {
                 .setup.user.state("state_supporter_consent")
                 .setup.user.answer("contact", {
                     fields: {
-                        mom_name : "Mary"
+                        mom_name: "Mary"
                     }
                 })
                 .check.interaction({
-                    reply:[
+                    reply: [
                         "Welcome to the Dept. of Health's MomConnect.",
                         "\n[1/5]",
                         "Do you agree to get messages to help Mary during and after pregnancy?",
                         "1. Yes",
-                        "2. No" 
+                        "2. No"
                     ].join("\n")
                 })
                 .run();
         });
-        it("should ask again the supporter declines consent the first time", function () {
+        it("should ask again the supporter declines consent the first time", function() {
             return tester.setup.user
                 .state("state_supporter_consent")
                 .input("2")
                 .check.interaction({
                     state: "state_supporter_noconsent_ask_again",
                     reply: [
-                        "Without agreeing we can’t sign you up to get MomConnect supporter messages. "  +
+                        "Without agreeing we can’t sign you up to get MomConnect supporter messages. " +
                         "May MomConnect send your relevant supporter messages?",
                         "1. Yes",
                         "2. No"
@@ -426,30 +432,30 @@ describe("ussd_mcgcc app", function() {
                 })
                 .run();
         });
-        it("should end if the supporter declines consent the second time", function () {
+        it("should end if the supporter declines consent the second time", function() {
             return tester.setup.user
                 .state("state_supporter_noconsent_ask_again")
                 .input("2")
                 .check.interaction({
                     state: "state_supporter_noconsent_end_confirm",
                     reply: [
-                        "Thanks for considering MomConnect. We respect your decision." ,
+                        "Thanks for considering MomConnect. We respect your decision.",
                         "\nIf you change your mind, dial [USSD#] to signup for supporter messages.",
                         "\nHave a lovely day!"
                     ].join("\n")
                 })
                 .run();
         });
-        it("should show the Whatsapp language screen for Whatsapp preferred channel", function () {
+        it("should show the Whatsapp language screen for Whatsapp preferred channel", function() {
             return tester.setup.user
                 .state("state_supporter_language_whatsapp")
                 .setup.user.answer("contact", {
                     fields: {
-                        preferred_channel : "WhatsApp"
+                        preferred_channel: "WhatsApp"
                     }
                 })
                 .check.interaction({
-                    reply:[
+                    reply: [
                         "[2/5]",
                         "What language would you like to get messages in?",
                         "1. English",
@@ -459,16 +465,16 @@ describe("ussd_mcgcc app", function() {
                 })
                 .run();
         });
-        it("should show the SMS language screen for SMS preferred channel", function () {
+        it("should show the SMS language screen for SMS preferred channel", function() {
             return tester.setup.user
                 .state("state_supporter_language_whatsapp")
                 .setup.user.answer("contact", {
                     fields: {
-                        preferred_channel : "SMS"
+                        preferred_channel: "SMS"
                     }
                 })
                 .check.interaction({
-                    reply:[
+                    reply: [
                         "[2/5]",
                         "What language would you like to get msgs in?",
                         "1. Zulu",
@@ -486,14 +492,14 @@ describe("ussd_mcgcc app", function() {
                 })
                 .run();
         });
-        it("should throw an error on invalid input", function () {
+        it("should throw an error on invalid input", function() {
             return tester.setup.user
                 .state("state_supporter_language_sms")
                 .input("14")
                 .check.interaction({
                     state: "state_supporter_language_sms",
                     reply: [
-                        "Please try again. Reply with the no, e.g. 1." ,
+                        "Please try again. Reply with the no, e.g. 1.",
                         "1. Zulu",
                         "2. Xhosa",
                         "3. Afrikaans",
@@ -509,7 +515,7 @@ describe("ussd_mcgcc app", function() {
                 })
                 .run();
         });
-        it("should show the research content screen on valid language choice", function () {
+        it("should show the research content screen on valid language choice", function() {
             return tester.setup.user
                 .state("state_supporter_language_sms")
                 .input("4")
@@ -525,7 +531,7 @@ describe("ussd_mcgcc app", function() {
                 })
                 .run();
         });
-        it("should show the relationship screen valid after consent or non-consent", function () {
+        it("should show the relationship screen valid after consent or non-consent", function() {
             return tester.setup.user
                 .state("state_supporter_research_consent")
                 .input("1")
@@ -543,7 +549,7 @@ describe("ussd_mcgcc app", function() {
                 })
                 .run();
         });
-        it("should show the name screen", function () {
+        it("should show the name screen", function() {
             return tester.setup.user
                 .state("state_supporter_relationship")
                 .input("1")
@@ -558,22 +564,22 @@ describe("ussd_mcgcc app", function() {
                 })
                 .run();
         });
-        it("should ask the supporter to confirm the name she entered", function () {
+        it("should ask the supporter to confirm the name she entered", function() {
             return tester.setup.user
                 .state("state_supporter_name")
                 .input("Jonathan")
                 .check.interaction({
                     state: "state_supporter_name_confirm",
                     reply: [
-                        "Thank you! Let's make sure we got it right." ,
+                        "Thank you! Let's make sure we got it right.",
                         "\nIs your name Jonathan?",
-                        "1. Yes", 
+                        "1. Yes",
                         "2. No, I want to retype it"
                     ].join("\n")
                 })
                 .run();
         });
-        it("should allow the suppoter re-type their name", function () {
+        it("should allow the suppoter re-type their name", function() {
             return tester.setup.user
                 .state("state_supporter_name_confirm")
                 .input("2")
@@ -589,7 +595,7 @@ describe("ussd_mcgcc app", function() {
                 .run();
         });
     });
-    describe("state_trigger_supporter_registration_flow", function () {
+    describe("state_trigger_supporter_registration_flow", function() {
         it("should start a flow with the correct metadata", function() {
             return tester
                 .setup.user.state("state_trigger_supporter_registration_flow")
@@ -602,31 +608,32 @@ describe("ussd_mcgcc app", function() {
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
-                    fixtures_rapidpro.start_flow(
-                        "supporter-registration-uuid",
-                        null,
-                        "whatsapp:27123456789",
-                        {
-                            "on_whatsapp": "true",
-                            "supp_consent": "true",
-                            "research_consent": "true",
-                            "supp_cell": "+27123456789",
-                            "supp_language": "eng_ZA",
-                            "supp_name": "John",
-                            "supp_relationship": "father",
-                            "source": "USSD",
-                            "timestamp": "2021-03-06T07:07:07Z",
-                            "registered_by": "+27123456789",
-                            "mha": 6,
-                            "swt": 7           
-                        }
-                    )
-                );
-            })
-            .setup.user.answer("on_whatsapp", true)
-            .input({ session_event: "continue" })
-            .check.user.state("state_supporter_end")
-            .run();
+                        fixtures_rapidpro.start_flow(
+                            "supporter-registration-uuid",
+                            null,
+                            "whatsapp:27123456789", {
+                                "on_whatsapp": "true",
+                                "supp_consent": "true",
+                                "research_consent": "true",
+                                "supp_cell": "+27123456789",
+                                "supp_language": "eng_ZA",
+                                "supp_name": "John",
+                                "supp_relationship": "father",
+                                "source": "USSD",
+                                "timestamp": "2021-03-06T07:07:07Z",
+                                "registered_by": "+27123456789",
+                                "mha": 6,
+                                "swt": 7
+                            }
+                        )
+                    );
+                })
+                .setup.user.answer("on_whatsapp", true)
+                .input({
+                    session_event: "continue"
+                })
+                .check.user.state("state_supporter_end")
+                .run();
         });
         it("should retry in the case of HTTP failures", function() {
             return tester
@@ -640,42 +647,43 @@ describe("ussd_mcgcc app", function() {
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
-                    fixtures_rapidpro.start_flow(
-                        "supporter-registration-uuid",
-                        null,
-                        "whatsapp:27123456789",
-                        {
-                            "on_whatsapp": "true",
-                            "supp_consent": "true",
-                            "research_consent": "true",
-                            "supp_cell": "+27123456789",
-                            "supp_language": "eng_ZA",
-                            "supp_name": "John",
-                            "supp_relationship": "father",
-                            "source": "USSD",
-                            "timestamp": "2021-03-06T07:07:07Z",
-                            "registered_by": "+27123456789",
-                            "mha": 6,
-                            "swt": 7          
-                        },
-                        true
-                    )
-                );
-            })
-            .setup.user.answer("on_whatsapp", true)
-            .input({ session_event: "continue" })
-            .check(function(api){
-                assert.equal(api.http.requests.length, 3);
-                api.http.requests.forEach(function(request) {
-                    assert.equal(request.url, "https://rapidpro/api/v2/flow_starts.json");
-                });
-                assert.equal(api.log.error.length, 1);
-                assert(api.log.error[0].includes("HttpResponseError"));  
-            })
-            .run();
+                        fixtures_rapidpro.start_flow(
+                            "supporter-registration-uuid",
+                            null,
+                            "whatsapp:27123456789", {
+                                "on_whatsapp": "true",
+                                "supp_consent": "true",
+                                "research_consent": "true",
+                                "supp_cell": "+27123456789",
+                                "supp_language": "eng_ZA",
+                                "supp_name": "John",
+                                "supp_relationship": "father",
+                                "source": "USSD",
+                                "timestamp": "2021-03-06T07:07:07Z",
+                                "registered_by": "+27123456789",
+                                "mha": 6,
+                                "swt": 7
+                            },
+                            true
+                        )
+                    );
+                })
+                .setup.user.answer("on_whatsapp", true)
+                .input({
+                    session_event: "continue"
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 3);
+                    api.http.requests.forEach(function(request) {
+                        assert.equal(request.url, "https://rapidpro/api/v2/flow_starts.json");
+                    });
+                    assert.equal(api.log.error.length, 1);
+                    assert(api.log.error[0].includes("HttpResponseError"));
+                })
+                .run();
         });
     });
-    describe("supporter_profile_tests", function () {
+    describe("supporter_profile_tests", function() {
         it("should display supporter profile", function() {
             return tester
                 .setup.user.state("state_supporter_view_info")
@@ -687,18 +695,18 @@ describe("ussd_mcgcc app", function() {
                         research_consent: "true"
                     }
                 })
-                
-            .check.interaction({
-                reply: [
-                    "Name: James",
-                    "Language: eng_ZA",
-                    "Cell: 0123456789",
-                    "Channel: WhatsApp",
-                    "Research consent: true",
-                    "\n1. Back"
-                ].join("\n")
-            })
-            .run();
+
+                .check.interaction({
+                    reply: [
+                        "Name: James",
+                        "Language: eng_ZA",
+                        "Cell: 0123456789",
+                        "Channel: WhatsApp",
+                        "Research consent: true",
+                        "\n1. Back"
+                    ].join("\n")
+                })
+                .run();
         });
         it("should handle missing contact fields", function() {
             return tester
@@ -711,20 +719,20 @@ describe("ussd_mcgcc app", function() {
                         research_consent: "true"
                     }
                 })
-                
-            .check.interaction({
-                reply: [
-                    "Name: James",
-                    "Language: null",
-                    "Cell: 0123456789",
-                    "Channel: null",
-                    "Research consent: true",
-                    "\n1. Back"
-                ].join("\n")
-            })
-            .run();
+
+                .check.interaction({
+                    reply: [
+                        "Name: James",
+                        "Language: null",
+                        "Cell: 0123456789",
+                        "Channel: null",
+                        "Research consent: true",
+                        "\n1. Back"
+                    ].join("\n")
+                })
+                .run();
         });
-        it("should show a list of options to change", function () {
+        it("should show a list of options to change", function() {
             return tester.setup.user
                 .state("state_supporter_profile")
                 .setup.user.answer("contact", {
@@ -749,48 +757,49 @@ describe("ussd_mcgcc app", function() {
         });
         it("should ask for a new supporter name", function() {
             return tester
-              .setup.user.state("state_supporter_new_name")
-              .setup.user.answer("contact", {
-                name: "James"})
-              .check.interaction({
-                reply: [
-                    "I've been calling you James.",
-                    "\nWhat name would you like me to call you instead?"
-                ].join("\n")
-              })
-            .run();
-          });
+                .setup.user.state("state_supporter_new_name")
+                .setup.user.answer("contact", {
+                    name: "James"
+                })
+                .check.interaction({
+                    reply: [
+                        "I've been calling you James.",
+                        "\nWhat name would you like me to call you instead?"
+                    ].join("\n")
+                })
+                .run();
+        });
         it("should submit the new supporter name", function() {
             return tester
-              .setup.user.state("state_supporter_new_name_display")
-              .setup.user.answers({
-                state_supporter_new_name: "James"
-              })
-              .setup(function(api) {
-                api.http.fixtures.add(
-                  fixtures_rapidpro.start_flow(
-                    "supporter-change-name-uuid", null, "whatsapp:27123456789", {
-                      "supp_name": "James"
-                    })
-                );
-              })
-              .input("1")
-              .check.interaction({
-                state: "state_supporter_new_name_end",
-                reply: [
-                  "Thanks!",
-                  "\nI'll call you James from now on."
-                ].join("\n")
-              })
-              .check(function(api) {
-                assert.equal(api.http.requests.length, 1);
-                assert.equal(
-                  api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
-                );
-              })
-              .run();
-          });
-        it("should show available languages if channel is WhatsApp", function () {
+                .setup.user.state("state_supporter_new_name_display")
+                .setup.user.answers({
+                    state_supporter_new_name: "James"
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "supporter-change-name-uuid", null, "whatsapp:27123456789", {
+                                "supp_name": "James"
+                            })
+                    );
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_supporter_new_name_end",
+                    reply: [
+                        "Thanks!",
+                        "\nI'll call you James from now on."
+                    ].join("\n")
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(
+                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
+                    );
+                })
+                .run();
+        });
+        it("should show available languages if channel is WhatsApp", function() {
             return tester.setup.user
                 .state("state_supporter_change_info")
                 .setup.user.answer("contact", {
@@ -810,7 +819,7 @@ describe("ussd_mcgcc app", function() {
                 })
                 .run();
         });
-        it("should show available languages if channel is SMS", function () {
+        it("should show available languages if channel is SMS", function() {
             return tester.setup.user
                 .state("state_supporter_change_info")
                 .setup.user.answer("contact", {
@@ -848,8 +857,8 @@ describe("ussd_mcgcc app", function() {
                 })
                 .input("12")
                 .check.interaction({
-                reply: [
-                    "Reply with the nr that matches your answer, e.g. 1.",
+                    reply: [
+                        "Reply with the nr that matches your answer, e.g. 1.",
                         "1. Zulu",
                         "2. Xhosa",
                         "3. Afrikaans",
@@ -861,40 +870,40 @@ describe("ussd_mcgcc app", function() {
                         "9. siSwati",
                         "10. Venda",
                         "11. Ndebele",
-                ].join("\n")
-              })
-            .run();
+                    ].join("\n")
+                })
+                .run();
         });
         it("should submit the new supporter language", function() {
             return tester
                 .setup.user.state("state_supporter_new_language_whatsapp")
                 .setup.user.answers({
                     state_supporter_new_language_whatsapp: "eng_ZA"
-              })
+                })
                 .setup(function(api) {
                     api.http.fixtures.add(
-                    fixtures_rapidpro.start_flow(
-                    "supporter-change-language-uuid", null, "whatsapp:27123456789", {
-                      "supp_language": "eng_ZA"
-                    })
-                );
-              })
+                        fixtures_rapidpro.start_flow(
+                            "supporter-change-language-uuid", null, "whatsapp:27123456789", {
+                                "supp_language": "eng_ZA"
+                            })
+                    );
+                })
                 .input("1")
                 .check.interaction({
                     state: "state_supporter_new_language_end",
-                reply: [
-                  "You will receive messages in eng_ZA from now on."
-                ].join("\n")
+                    reply: [
+                        "You will receive messages in eng_ZA from now on."
+                    ].join("\n")
                 })
                 .check(function(api) {
                     assert.equal(api.http.requests.length, 1);
                     assert.equal(
-                  api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
-                );
-              })
-              .run();
-          });
-        it("should ask for research consent", function () {
+                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
+                    );
+                })
+                .run();
+        });
+        it("should ask for research consent", function() {
             return tester.setup.user
                 .state("state_supporter_change_info")
                 .input("5")
@@ -911,36 +920,36 @@ describe("ussd_mcgcc app", function() {
         });
         it("should submit the new supporter research consent", function() {
             return tester
-              .setup.user.state("state_supporter_new_research_consent")
-              .setup.user.answers({
-                state_supporter_new_research_consent: "Yes"
-              })
-              .setup(function(api) {
-                api.http.fixtures.add(
-                  fixtures_rapidpro.start_flow(
-                    "supporter-change-research-consent-uuid", null, "whatsapp:27123456789", {
-                      "supp_research_consent": "true"
-                    })
-                );
-              })
-              .input("1")
-              .check.interaction({
-                state: "state_supporter_new_research_consent_end",
-                reply: [
-                  "Your research consent has been updated.",
-                  "1. Back"
-                ].join("\n")
-              })
-              .check(function(api) {
-                assert.equal(api.http.requests.length, 1);
-                assert.equal(
-                  api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
-                );
-              })
-              .run();
-          });  
+                .setup.user.state("state_supporter_new_research_consent")
+                .setup.user.answers({
+                    state_supporter_new_research_consent: "Yes"
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "supporter-change-research-consent-uuid", null, "whatsapp:27123456789", {
+                                "supp_research_consent": "true"
+                            })
+                    );
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_supporter_new_research_consent_end",
+                    reply: [
+                        "Your research consent has been updated.",
+                        "1. Back"
+                    ].join("\n")
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(
+                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
+                    );
+                })
+                .run();
+        });
     });
-    describe("mother_change_supporter_tests", function (){
+    describe("mother_change_supporter_tests", function() {
         it("should display the first screen", function() {
             return tester
                 .setup.user.state("state_mother_profile")
@@ -949,15 +958,15 @@ describe("ussd_mcgcc app", function() {
                         supp_name: "James"
                     }
                 })
-            .check.interaction({
-                reply: [
-                    "James is currently getting messages to help you & baby.",
-                    "\nWhat would you like to do?",
-                    "1. Change Supporter",
-                    "2. Stop messages for James"
-                ].join("\n")
-            })
-            .run();
+                .check.interaction({
+                    reply: [
+                        "James is currently getting messages to help you & baby.",
+                        "\nWhat would you like to do?",
+                        "1. Change Supporter",
+                        "2. Stop messages for James"
+                    ].join("\n")
+                })
+                .run();
         });
         it("should show None is name is unretrievable", function() {
             return tester
@@ -967,17 +976,17 @@ describe("ussd_mcgcc app", function() {
                         supp_name: "None"
                     }
                 })
-            .check.interaction({
-                reply: [
-                    "None is currently getting messages to help you & baby.",
-                    "\nWhat would you like to do?",
-                    "1. Change Supporter",
-                    "2. Stop messages for None"
-                ].join("\n")
-            })
-            .run();
+                .check.interaction({
+                    reply: [
+                        "None is currently getting messages to help you & baby.",
+                        "\nWhat would you like to do?",
+                        "1. Change Supporter",
+                        "2. Stop messages for None"
+                    ].join("\n")
+                })
+                .run();
         });
-        it("should show stop supporter confirm screen", function () {
+        it("should show stop supporter confirm screen", function() {
             return tester.setup.user
                 .state("state_mother_stop_supporter")
                 .setup.user.answer("contact", {
@@ -1011,29 +1020,29 @@ describe("ussd_mcgcc app", function() {
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
-                    fixtures_rapidpro.start_flow(
-                        "mother-change-stop-supporter-uuid", null, "whatsapp:27123456789", {
-                        "supp_stop": "true"
-                    })
-                );
-              })
+                        fixtures_rapidpro.start_flow(
+                            "mother-change-stop-supporter-uuid", null, "whatsapp:27123456789", {
+                                "supp_stop": "true"
+                            })
+                    );
+                })
                 .input("1")
                 .check.interaction({
                     state: "state_mother_stop_supporter_end",
-                reply: [
-                  "James will no longer get MomConnect messages about supporting you and baby.",
-                  "\nTo invite a new supporter, dial *134*550*9#"
-                ].join("\n")
-              })
-              .check(function(api) {
-                assert.equal(api.http.requests.length, 1);
-                assert.equal(
-                  api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
-                );
-              })
-              .run();
-          });
-        it("should show the change supporter confirm screen", function () {
+                    reply: [
+                        "James will no longer get MomConnect messages about supporting you and baby.",
+                        "\nTo invite a new supporter, dial *134*550*9#"
+                    ].join("\n")
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(
+                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
+                    );
+                })
+                .run();
+        });
+        it("should show the change supporter confirm screen", function() {
             return tester.setup.user
                 .state("state_mother_profile")
                 .setup.user.answer("contact", {
@@ -1061,119 +1070,115 @@ describe("ussd_mcgcc app", function() {
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
-                    fixtures_rapidpro.start_flow(
-                        "mother-change-clear-supporter-uuid", null, "whatsapp:27123456789", {
-                      "supp_stop": "true"
-                    })
-                );
-              })
+                        fixtures_rapidpro.start_flow(
+                            "mother-change-clear-supporter-uuid", null, "whatsapp:27123456789", {
+                                "supp_stop": "true"
+                            })
+                    );
+                })
                 .input("1")
                 .check.interaction({
                     state: "state_mother_new_supporter_consent",
                     reply: [
-                    "Does the new supporter agree to get messages?",
-                    "1. Yes",
-                    "2. No"
-                ].join("\n")
-              })
+                        "Does the new supporter agree to get messages?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
                 .check(function(api) {
                     assert.equal(api.http.requests.length, 1);
                     assert.equal(
-                    api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
-                );
-              })
-              .run();
-            });
-            it("should end with no supporter on no consent", function () {
-                return tester.setup.user
-                    .state("state_mother_new_supporter_consent")
-                    .input("2")
-                    .check.interaction({
-                        state: "state_mother_new_supporter_noconsent_end",
-                        reply: [
-                            "That's OK. You don't have a supporter signed up to get msgs.",
-                            "\nWhat would you like to do?",
-                            "1. Signup a supporter",
-                            "2. Exit"
-                        ].join("\n")
-                    })
-                    .run();
-            });
-            it("should ask for new supporter's cell number on consent", function () {
-                return tester.setup.user
-                    .state("state_mother_new_supporter_consent")
-                    .input("1")
-                    .check.interaction({
-                        state: "state_mother_new_supporter_msisdn",
-                        reply: [
-                            "Please reply with the new cellphone number of the " +
-                            "supporter who wants to get messages, e.g. 0762564733."
-                        ].join("\n")
-                    })
-                    .run();
-            });
-            it("should ask the for new supporter's cell number", function() {
-                return tester
-                  .setup.user.state("state_mother_new_supporter_msisdn")
-                  .check.interaction({
-                    reply:
-                    "Please reply with the new cellphone number of the " +
-                              "supporter who wants to get messages, e.g. 0762564733."
-                  })
-                  .run();
-            });
-            it("should display an error on invalid cell phone", function() {
-                return tester
-                  .setup.user.state("state_mother_new_supporter_msisdn")
-                  .input("A")
-                  .check.interaction({
-                    reply:
-                    "Sorry, we don't recognise that as a cell number. " +
-                      "Please reply with the 10 digit cell number, e.g. 0762564733."
-                  })
-                  .run();
-            });
-            it("should display an error if the mother uses the example msisdn", function() {
-                return tester
-                  .setup.user.state("state_mother_new_supporter_msisdn")
-                  .input("0762564733")
-                  .check.interaction({
-                    reply:
-                    "Please try again. Reply with the cellphone number of " +
-                      "your supporter as a 10-digit number."
-                  })
-                  .run();
-            });
-            it("should store the result of the contact check", function() {
-                return tester
-                    .setup(function(api) {
-                        api.http.fixtures.add(
-                            fixtures_whatsapp.exists({
-                                address: "+27123456789",
-                                wait: true
-                            })
-                        );
-                    })
-                    .setup.user.state("state_mother_new_supporter_whatsapp_contact_check")
-                    .setup.user.answer("state_mother_new_supporter_msisdn", "+27123456789")
-                    .check.user.answer("on_whatsapp", true)
-                    .run();
-            });
-            it("should start a flow with the correct new supporter's metadata", function() {
-                return tester
-                    .setup.user.state("state_mother_change_new_supporter_rapidpro")
-                    .setup.user.answers({
-                        state_mother_new_supporter_consent: "yes",
-                        state_mother_new_supporter_msisdn: "0123456722",
-                        state_new_supporter_mother_name: "Jane"
-                    })
-                    .setup(function(api) {
-                        api.http.fixtures.add(
+                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
+                    );
+                })
+                .run();
+        });
+        it("should end with no supporter on no consent", function() {
+            return tester.setup.user
+                .state("state_mother_new_supporter_consent")
+                .input("2")
+                .check.interaction({
+                    state: "state_mother_new_supporter_noconsent_end",
+                    reply: [
+                        "That's OK. You don't have a supporter signed up to get msgs.",
+                        "\nWhat would you like to do?",
+                        "1. Signup a supporter",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should ask for new supporter's cell number on consent", function() {
+            return tester.setup.user
+                .state("state_mother_new_supporter_consent")
+                .input("1")
+                .check.interaction({
+                    state: "state_mother_new_supporter_msisdn",
+                    reply: [
+                        "Please reply with the new cellphone number of the " +
+                        "supporter who wants to get messages, e.g. 0762564733."
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should ask the for new supporter's cell number", function() {
+            return tester
+                .setup.user.state("state_mother_new_supporter_msisdn")
+                .check.interaction({
+                    reply: "Please reply with the new cellphone number of the " +
+                        "supporter who wants to get messages, e.g. 0762564733."
+                })
+                .run();
+        });
+        it("should display an error on invalid cell phone", function() {
+            return tester
+                .setup.user.state("state_mother_new_supporter_msisdn")
+                .input("A")
+                .check.interaction({
+                    reply: "Sorry, we don't recognise that as a cell number. " +
+                        "Please reply with the 10 digit cell number, e.g. 0762564733."
+                })
+                .run();
+        });
+        it("should display an error if the mother uses the example msisdn", function() {
+            return tester
+                .setup.user.state("state_mother_new_supporter_msisdn")
+                .input("0762564733")
+                .check.interaction({
+                    reply: "Please try again. Reply with the cellphone number of " +
+                        "your supporter as a 10-digit number."
+                })
+                .run();
+        });
+        it("should store the result of the contact check", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27123456789",
+                            wait: true
+                        })
+                    );
+                })
+                .setup.user.state("state_mother_new_supporter_whatsapp_contact_check")
+                .setup.user.answer("state_mother_new_supporter_msisdn", "+27123456789")
+                .check.user.answer("on_whatsapp", true)
+                .run();
+        });
+        it("should start a flow with the correct new supporter's metadata", function() {
+            return tester
+                .setup.user.state("state_mother_change_new_supporter_rapidpro")
+                .setup.user.answers({
+                    state_mother_new_supporter_consent: "yes",
+                    state_mother_new_supporter_msisdn: "0123456722",
+                    state_new_supporter_mother_name: "Jane"
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
                             "mother-new-supporter-registration-uuid",
                             null,
-                            "whatsapp:27123456789",
-                            {
+                            "whatsapp:27123456789", {
                                 "on_whatsapp": "true",
                                 "supp_consent": "true",
                                 "supp_cell": "+27123456722",
@@ -1182,15 +1187,17 @@ describe("ussd_mcgcc app", function() {
                                 "timestamp": "2021-03-06T07:07:07Z",
                                 "registered_by": "+27123456789",
                                 "mha": 6,
-                                "swt": 7           
+                                "swt": 7
                             }
                         )
                     );
                 })
                 .setup.user.answer("on_whatsapp", true)
-                .input({ session_event: "continue" })
+                .input({
+                    session_event: "continue"
+                })
                 .check.user.state("state_supporter_new_consent_end")
                 .run();
-            });            
+        });
     });
 });
