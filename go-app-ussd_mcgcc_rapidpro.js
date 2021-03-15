@@ -435,9 +435,6 @@ go.app = function() {
                 mha: 6,
                 swt: self.im.user.get_answer("on_whatsapp") ? 7 : 1
             };
-            console.log(data);
-            console.log(msisdn);
-            console.log(supporter_cell);
             return self.rapidpro
                 .start_flow(
                     self.im.config.mother_registration_uuid,
