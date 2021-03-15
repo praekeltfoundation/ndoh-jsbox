@@ -314,7 +314,7 @@ describe("ussd_mcgcc app", function() {
                         fixtures_rapidpro.start_flow(
                             "mother-registration-uuid",
                             null,
-                            "whatsapp:27123456789", {
+                            "whatsapp:27123456722", {
                                 "on_whatsapp": "true",
                                 "supp_consent": "true",
                                 "supp_cell": "+27123456722",
@@ -348,7 +348,7 @@ describe("ussd_mcgcc app", function() {
                         fixtures_rapidpro.start_flow(
                             "mother-registration-uuid",
                             null,
-                            "whatsapp:27123456789", {
+                            "whatsapp:27123456722", {
                                 "on_whatsapp": "true",
                                 "supp_consent": "true",
                                 "supp_cell": "+27123456722",

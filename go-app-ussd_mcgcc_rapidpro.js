@@ -439,7 +439,7 @@ go.app = function() {
                 .start_flow(
                     self.im.config.mother_registration_uuid,
                     null,
-                    "whatsapp:" + _.trim(msisdn, "+"), data)
+                    "whatsapp:" + _.trim(supporter_cell, "+"), data)
                 .then(function() {
                     return self.states.create("state_mother_supporter_end");
                 })
