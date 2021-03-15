@@ -286,11 +286,14 @@ go.app = function() {
                 mha: 6,
                 swt: self.im.user.get_answer("on_whatsapp") ? 7 : 1
             };
+            console.log(data);
+            console.log(msisdn);
+            console.log(supporter_cell);
             return self.rapidpro
                 .start_flow(
                     self.im.config.mother_registration_uuid,
                     null,
-                    "whatsapp:" + _.trim(msisdn, "+"), data)
+                    "whatsapp:" + _.trim(supporter_cell, "+"), data)
                 .then(function() {
                     return self.states.create("state_mother_supporter_end");
                 })
