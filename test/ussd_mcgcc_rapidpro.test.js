@@ -28,7 +28,6 @@ describe("ussd_mcgcc app", function() {
             supporter_change_name_uuid: "supporter-change-name-uuid",
             supporter_change_language_uuid: "supporter-change-language-uuid",
             supporter_change_research_consent_uuid: "supporter-change-research-consent-uuid",
-            mother_change_clear_supporter_uuid: "mother-change-clear-supporter-uuid",
             mother_change_stop_supporter_uuid: "mother-change-stop-supporter-uuid",
             mother_new_supporter_registration_uuid: "mother-new-supporter-registration-uuid"
         });
@@ -73,6 +72,25 @@ describe("ussd_mcgcc app", function() {
                                 prebirth_messaging: "3",
                                 supp_cell: "27123456369",
                                 supp_status: "OTHER"
+                            }
+                        })
+                    );
+                })
+                .start()
+                .check.user.state("state_mother_supporter_consent")
+                .run();
+        });
+        it("should show the supporter consent page for opted out supporter", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "whatsapp:27123456789",
+                            exists: true,
+                            fields: {
+                                prebirth_messaging: "3",
+                                supp_cell: "27123456369",
+                                supp_status: "OPTEDOUT"
                             }
                         })
                     );
@@ -1071,7 +1089,7 @@ describe("ussd_mcgcc app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
-                            "mother-change-clear-supporter-uuid", null, "whatsapp:27123456789", {
+                            "mother-change-stop-supporter-uuid", null, "whatsapp:27123456789", {
                                 "supp_stop": "true"
                             })
                     );
@@ -1178,7 +1196,7 @@ describe("ussd_mcgcc app", function() {
                         fixtures_rapidpro.start_flow(
                             "mother-new-supporter-registration-uuid",
                             null,
-                            "whatsapp:27123456789", {
+                            "whatsapp:27123456722", {
                                 "on_whatsapp": "true",
                                 "supp_consent": "true",
                                 "supp_cell": "+27123456722",

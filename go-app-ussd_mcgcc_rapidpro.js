@@ -264,6 +264,9 @@ go.app = function() {
                         if (supp_cell != null && status === -1) {
                             return self.states.create("state_mother_supporter_consent");
                         }
+                        if (supp_cell != null && status === 2) {
+                            return self.states.create("state_mother_supporter_consent");
+                        }
                         if (supp_cell === null) {
                             return self.states.create("state_mother_supporter_consent");
                         } else {
@@ -1167,7 +1170,7 @@ go.app = function() {
                 self.im.user.get_answer("state_mother_profile") === "CHANGE SUPPORTER")) ? "true" : "false";
             return self.rapidpro
                 .start_flow(
-                    self.im.config.mother_change_clear_supporter_uuid,
+                    self.im.config.mother_change_stop_supporter_uuid,
                     null,
                     "whatsapp:" + _.trim(msisdn, "+"), {
                         supp_stop: supp_stop
@@ -1295,7 +1298,7 @@ go.app = function() {
                 .start_flow(
                     self.im.config.mother_new_supporter_registration_uuid,
                     null,
-                    "whatsapp:" + _.trim(msisdn, "+"), data)
+                    "whatsapp:" + _.trim(supporter_cell, "+"), data)
                 .then(function() {
                     return self.states.create("state_supporter_new_consent_end");
                 })
