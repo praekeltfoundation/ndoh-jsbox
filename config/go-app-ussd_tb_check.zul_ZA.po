@@ -1,0 +1,451 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2021-03-18 10:24:+0000\n"
+"Project-Id-Version: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2021-03-18 14:41+0200\n"
+"X-Generator: Poedit 2.4.2\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n==0 || n==1);\n"
+"Language: zu_ZA\n"
+
+#: go-app-ussd_tb_check.js:52
+msgid ""
+"Welcome back to the The National Department of Health's TB HealthCheck\n"
+"\n"
+"Reply 1 or 2"
+msgstr ""
+"Siyakwamukela futhi kwi-HealthCheck ye-TB yoMnyango Kazwelonke Wezempilo\n"
+" \n"
+"Phendula 1 noma 2"
+
+#: go-app-ussd_tb_check.js:61
+msgid "Continue where I left off"
+msgstr "Qhubeka la engigcine khona"
+
+#: go-app-ussd_tb_check.js:62
+msgid "Start over"
+msgstr "Qala phansi"
+
+#: go-app-ussd_tb_check.js:114 go-app-ussd_tb_check.js:641
+msgid "This service works best when you select numbers from the list"
+msgstr ""
+"Le sevisi isebenza kahle kakhulu uma ukhetha izinketho zezinombolo ohlwini."
+
+#: go-app-ussd_tb_check.js:117
+msgid ""
+"The National Department of Health thanks you for contributing to the health "
+"of all citizens. Stop the spread of TB.\n"
+"\n"
+"Reply"
+msgstr ""
+"UMnyango Wezempilo Kazwelonke uyabonga ngokusiza ukuvikela impilo "
+"yezakhamizi zaseNingizimu Afrika. Misa ukusabalala kwe-TB. \n"
+"\n"
+"Phendula"
+
+#: go-app-ussd_tb_check.js:130
+msgid "START"
+msgstr "QALA"
+
+#: go-app-ussd_tb_check.js:139
+msgid "Choose your preferred language"
+msgstr "Khetha ulimi lwakho oluthandayo"
+
+#: go-app-ussd_tb_check.js:140
+msgid "Please reply with numbers. Choose your preferred language"
+msgstr "Phendula ngenombolo. Khetha ulimi lwakho oluthandayo"
+
+#: go-app-ussd_tb_check.js:143
+msgid "English"
+msgstr "English"
+
+#: go-app-ussd_tb_check.js:144
+msgid "isiZulu"
+msgstr "isiZulu"
+
+#: go-app-ussd_tb_check.js:145
+msgid "Afrikaans"
+msgstr "Afrikaans"
+
+#: go-app-ussd_tb_check.js:146
+msgid "isiXhosa"
+msgstr "isiXhosa"
+
+#: go-app-ussd_tb_check.js:147
+msgid "Sesotho"
+msgstr "Sesotho"
+
+#: go-app-ussd_tb_check.js:159 go-app-ussd_tb_check.js:167
+msgid ""
+"This service only provides health info. Agree that you are responsible for "
+"your medical care and treatment.\n"
+"\n"
+"Reply"
+msgstr ""
+"Le sevisi inikeza imininingwane yezempilo kuphela. Vuma ukuthi unesibopho "
+"sokunakekelwa nokwelashwa kwakho. \n"
+"\n"
+"Phendula"
+
+#: go-app-ussd_tb_check.js:177 go-app-ussd_tb_check.js:433
+#: go-app-ussd_tb_check.js:456 go-app-ussd_tb_check.js:474
+#: go-app-ussd_tb_check.js:494 go-app-ussd_tb_check.js:545
+msgid "YES"
+msgstr "YEBO"
+
+#: go-app-ussd_tb_check.js:178 go-app-ussd_tb_check.js:433
+#: go-app-ussd_tb_check.js:456 go-app-ussd_tb_check.js:474
+#: go-app-ussd_tb_check.js:494 go-app-ussd_tb_check.js:546
+msgid "NO"
+msgstr "CHA"
+
+#: go-app-ussd_tb_check.js:179
+msgid "MORE INFO"
+msgstr "MINININGWANE ENGAPHEZULU"
+
+#: go-app-ussd_tb_check.js:186
+msgid ""
+"Return to use this service at any time. Remember, if you think you have TB, "
+"avoid contact with other people and get tested at your nearest clinic."
+msgstr ""
+"Buyela ukusebenzisa le sevisi noma kunini. Khumbula, uma ucabanga ukuthi une-"
+"TB, gwema ukuxhumana nabanye abantu futhi uyohlolwa emtholampilo oseduzane "
+"nawe."
+
+#: go-app-ussd_tb_check.js:196
+msgid ""
+"TB HealthCheck does not replace medical advice, diagnosis or treatment. Get "
+"a qualified health provider's advice on your medical condition and care."
+msgstr ""
+"I-TB HealthCheck ayithathi indawo yezeluleko zezokwelapha, ukuxilongwa noma "
+"ukwelashwa. Thola izeluleko zomhlinzeki wezempilo oqeqeshiwe ngesimo sakho "
+"sezempilo nokunakekelwa."
+
+#: go-app-ussd_tb_check.js:201 go-app-ussd_tb_check.js:212
+msgid "Next"
+msgstr "Okulandelayo"
+
+#: go-app-ussd_tb_check.js:207
+msgid ""
+"You use this info at your own risk. This tool cannot replace medical advice. "
+"Agree not to ignore or delay getting medical advice on treatment or care"
+msgstr ""
+"Usebenzisa lolu lwazi ngokuzibeka wena engcupheni. Leli thuluzi alikwazi "
+"ukufaka izeluleko zezokwelapha. Vumelana ngokungazibi noma ukubambezeleka "
+"kokuthola izeluleko zezokwelapha ekwelashweni noma ekunakekelweni"
+
+#: go-app-ussd_tb_check.js:221
+msgid ""
+"Choose your province:\n"
+"\n"
+"Reply:"
+msgstr ""
+"Khetha isifundazwe sakho Phendula ngenombolo:\n"
+" \n"
+"Phendula:"
+
+#: go-app-ussd_tb_check.js:224
+msgid "EASTERN CAPE"
+msgstr "E. CAPE"
+
+#: go-app-ussd_tb_check.js:225
+msgid "FREE STATE"
+msgstr "FREE STATE"
+
+#: go-app-ussd_tb_check.js:226
+msgid "GAUTENG"
+msgstr "GAUTENG"
+
+#: go-app-ussd_tb_check.js:227
+msgid "KWAZULU NATAL"
+msgstr "KWAZULU NATAL"
+
+#: go-app-ussd_tb_check.js:228
+msgid "LIMPOPO"
+msgstr "LIMPOPO"
+
+#: go-app-ussd_tb_check.js:229
+msgid "MPUMALANGA"
+msgstr "MPUMALANGA"
+
+#: go-app-ussd_tb_check.js:230
+msgid "NORTH WEST"
+msgstr "NORTH WEST"
+
+#: go-app-ussd_tb_check.js:231
+msgid "NORTHERN CAPE"
+msgstr "N. CAPE"
+
+#: go-app-ussd_tb_check.js:232
+msgid "WESTERN CAPE"
+msgstr "W. CAPE"
+
+#: go-app-ussd_tb_check.js:245
+msgid ""
+"Please TYPE your home address (or the address where you are currently "
+"staying). Give the street number, street name, suburb/township/town/village "
+"(or nearest)."
+msgstr ""
+"Sicela UTHAYIPHE ikheli lakho lasekhaya (noma ikheli ohlala kulo "
+"njengamanje). Nikeza inombolo yomgwaqo, igama lomgwaqo, i-suburb/ilokishi/"
+"idolobhana/ikhaya (noma eliseduzane)."
+
+#: go-app-ussd_tb_check.js:300
+msgid ""
+"Please confirm the address below based on info you shared:\n"
+"{{ address }}\n"
+"\n"
+"Reply"
+msgstr ""
+"Sicela ubheke ukuthi ikheli elingezansi lilungile futhi lihambisana "
+"nemininingwane osinike yona:\n"
+"{{IKHELI}}\n"
+"\n"
+"Phendula"
+
+#: go-app-ussd_tb_check.js:310 go-app-ussd_tb_check.js:519
+#: go-app-ussd_tb_check.js:578
+msgid "Yes"
+msgstr "YEBO"
+
+#: go-app-ussd_tb_check.js:311 go-app-ussd_tb_check.js:520
+#: go-app-ussd_tb_check.js:578
+msgid "No"
+msgstr "CHA"
+
+#: go-app-ussd_tb_check.js:374
+msgid "How old are you?"
+msgstr "Uneminyaka emingaki?"
+
+#: go-app-ussd_tb_check.js:375
+msgid ""
+"Please use numbers from list.\n"
+"\n"
+"How old are you?"
+msgstr ""
+"Phendula ngonombolo \n"
+"\n"
+"Uneminyaka emingaki?"
+
+#: go-app-ussd_tb_check.js:380
+msgid "<18"
+msgstr "ngaphansi kwa-18"
+
+#: go-app-ussd_tb_check.js:381
+msgid "18-39"
+msgstr "18-39"
+
+#: go-app-ussd_tb_check.js:382
+msgid "40-65"
+msgstr "40-65"
+
+#: go-app-ussd_tb_check.js:383
+msgid ">65"
+msgstr "ngaphezu kwa-65"
+
+#: go-app-ussd_tb_check.js:394
+msgid "Which gender do you identify as?"
+msgstr "Ubuphi ubulili ozibona uyibo?"
+
+#: go-app-ussd_tb_check.js:395
+msgid ""
+"Please use numbers from list.\n"
+"\n"
+"Which gender do you identify as?"
+msgstr ""
+"Phendula ngenombolo.\n"
+"\n"
+"Ubuphi ubulili ozibona uyibo?"
+
+#: go-app-ussd_tb_check.js:404
+msgid "Male"
+msgstr "OWESILISA"
+
+#: go-app-ussd_tb_check.js:405
+msgid "Female"
+msgstr "OWESIFAZANE "
+
+#: go-app-ussd_tb_check.js:406
+msgid "Other"
+msgstr "OKUNYE"
+
+#: go-app-ussd_tb_check.js:407
+msgid "Rather not say"
+msgstr "NGINCAMELA UKUNGASHO"
+
+#: go-app-ussd_tb_check.js:414
+msgid ""
+"Let's see how you're feeling today. Do you have a cough?\n"
+"\n"
+"Reply"
+msgstr ""
+"Asibone ukuthi uzizwa kanjani namuhla. Uyakhwehlela? \n"
+"\n"
+"Phendula 1, 2 noma 3"
+
+#: go-app-ussd_tb_check.js:421
+msgid ""
+"Please use numbers from list.\n"
+"Do you have a cough?\n"
+"\n"
+"Reply"
+msgstr ""
+"Phendula ngenombolo.\n"
+"Uyakhwehlela? \n"
+"\n"
+"Phendula"
+
+#: go-app-ussd_tb_check.js:440
+msgid ""
+"Do you have a fever? (when you touch your forehead, does it feel hot?)\n"
+"\n"
+"Reply"
+msgstr ""
+"Unemfiva? (uma uthina isiphongo sakho, usizwa sishisa?)\n"
+"\n"
+"Phendula 1 noma 2"
+
+#: go-app-ussd_tb_check.js:447
+msgid ""
+"Please use numbers from list. Do you have a fever? (when you touch your "
+"forehead, does it feel hot?)\n"
+"\n"
+"Reply"
+msgstr ""
+"Phendula ngenombolo. Unemfiva? (uma uthina isiphongo sakho, usizwa "
+"sishisa?)\n"
+"\n"
+"Phendula 1 noma 2"
+
+#: go-app-ussd_tb_check.js:463
+msgid ""
+"Are you sweating more than usual at night?\n"
+"\n"
+"Reply"
+msgstr ""
+"Ingabe ujuluka ngaphezu kokujwayelekile ebusuku? \n"
+"\n"
+"Phendula"
+
+#: go-app-ussd_tb_check.js:466
+msgid ""
+"Please use numbers from list. Are you sweating more than usual at night?\n"
+"\n"
+"Reply"
+msgstr ""
+"Phendula ngenombolo. Ingabe ujuluka ngaphezu kokujwayelekile ebusuku? \n"
+"\n"
+"Phendula"
+
+#: go-app-ussd_tb_check.js:481
+msgid ""
+"Have you been losing weight without trying?\n"
+"\n"
+"Reply"
+msgstr ""
+"Ngabe uyancipha emzimbeni ngaphandle kokuzama? \n"
+"\n"
+"Phendula"
+
+#: go-app-ussd_tb_check.js:486
+msgid ""
+"Please use numbers from list. Have you been losing weight without trying?\n"
+"\n"
+"Reply"
+msgstr ""
+"Phendula ngenombolo. Ngabe uyancipha emzimbeni ngaphandle kokuzama? \n"
+"\n"
+"Phendula"
+
+#: go-app-ussd_tb_check.js:501
+msgid ""
+"Are you at high risk of TB?\n"
+"\n"
+"Risk means you live with someone who has TB OR you had TB in the last 2 "
+"years OR you are HIV+\n"
+"\n"
+"Reply"
+msgstr ""
+"Ingabe usengozini enkulu ye-TB? \n"
+"\n"
+"Ubungozi busho ukuthi uhlala nomuntu one-TB NOMA ubene-TB eminyakeni emi-2 "
+"edlule NOMA wena une-HIV"
+
+#: go-app-ussd_tb_check.js:510
+msgid ""
+"Please use numbers from list. Are you at high risk for TB?\n"
+"\n"
+"Reply"
+msgstr ""
+"Phendula ngenombolo. Ingabe usengozini enkulu ye-TB? \n"
+"\n"
+"Phendula"
+
+#: go-app-ussd_tb_check.js:521
+msgid "Dont know"
+msgstr "Angazi"
+
+#: go-app-ussd_tb_check.js:528 go-app-ussd_tb_check.js:536
+msgid ""
+"Now, please agree that the info you shared is correct and that you give the "
+"NDoH permission to contact you if needed?\n"
+"\n"
+"Reply"
+msgstr ""
+"Manje, ngicela uvume ukuthi imininingwane owabelane ngayo iyiqiniso nokuthi "
+"unikeza i-NDoH imvume yokuxhumana nawe uma kudingeka? \n"
+"\n"
+"Phendula 1 noma 2"
+
+#: go-app-ussd_tb_check.js:547
+msgid "RESTART"
+msgstr "QALA"
+
+#: go-app-ussd_tb_check.js:564 go-app-ussd_tb_check.js:571
+msgid ""
+"Thanks for your answers. Your result will be sent soon on SMS. Would you "
+"like to receive follow-up messages?\n"
+"Reply"
+msgstr ""
+"Siyabonga ngempendulo yakho. Imiphumela yakho izothunyelwa ku-SMS "
+"kungekudala. Ungathanda ukuthola imilayezo ezolandelela? \n"
+"Phendula"
+
+#: go-app-ussd_tb_check.js:649
+msgid "See Results"
+msgstr "See results"
+
+#: go-app-ussd_tb_check.js:656
+msgid ""
+"You don't need a TB test now, but if you develop cough, fever, weight loss "
+"or night sweats visit your nearest clinic."
+msgstr ""
+"Awuyidingi i-test ye-TB manje, kodwa uma uba nokukhwehlela, imfiva, "
+"ukuncipha ngokomzimba noma ukujuluka ebusuku vakashela umtholampilo "
+"oseduzane nawe."
+
+#: go-app-ussd_tb_check.js:662
+msgid ""
+"Your replies to the questions show you need a TB test this week.\n"
+"\n"
+"Go to your clinic for a free TB test. Please put on a face mask before you "
+"enter the clinic"
+msgstr ""
+"Izimpendulo zakho kule mibuzo zibonisa ukuthi udinga ukuhlolelwa i-TB kuleli "
+"sonto. \n"
+"\n"
+"Iya emtholampilo wakho uyohlolelwa i-TB mahhala. Sicela ufake isifonyo "
+"sobuso ngaphambi kokungena emtholampilo"
+
+#: go-app-ussd_tb_check.js:670
+msgid ""
+"Check if those you live with are on TB treatment. If you don't know your HIV "
+"status, visit the clinic for a free HIV test. Then do the TB check again."
+msgstr ""
+"Bheka ukuthi labo ohlala nabo balashelwa i-TB na. Uma ungasazi isimo sakho "
+"se-HIV, vakashela umtholampilo uyohlolelwa i-HIV mahhala. Bese uphinde "
+"uhlole i-TB."
