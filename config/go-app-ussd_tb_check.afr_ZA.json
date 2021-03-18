@@ -1,0 +1,275 @@
+{
+    "": {
+        "pot-creation-date": "2021-03-18 10:24:+0000",
+        "project-id-version": "",
+        "language-team": "",
+        "mime-version": "1.0",
+        "content-type": "text/plain; charset=UTF-8",
+        "content-transfer-encoding": "8bit",
+        "po-revision-date": "2021-03-18 13:48+0200",
+        "x-generator": "Poedit 2.4.2",
+        "plural-forms": "nplurals=2; plural=(n != 1);",
+        "last-translator": "",
+        "language": "af_ZA"
+    },
+    "Welcome back to the The National Department of Health's TB HealthCheck\n\nReply 1 or 2": [
+        null,
+        ""
+    ],
+    "Continue where I left off": [
+        null,
+        ""
+    ],
+    "Start over": [
+        null,
+        ""
+    ],
+    "This service works best when you select numbers from the list": [
+        null,
+        ""
+    ],
+    "The National Department of Health thanks you for contributing to the health of all citizens. Stop the spread of TB.\n\nReply": [
+        null,
+        ""
+    ],
+    "START": [
+        null,
+        ""
+    ],
+    "Choose your preferred language": [
+        null,
+        ""
+    ],
+    "Please reply with numbers. Choose your preferred language": [
+        null,
+        ""
+    ],
+    "English": [
+        null,
+        ""
+    ],
+    "isiZulu": [
+        null,
+        ""
+    ],
+    "Afrikaans": [
+        null,
+        ""
+    ],
+    "isiXhosa": [
+        null,
+        ""
+    ],
+    "Sesotho": [
+        null,
+        ""
+    ],
+    "This service only provides health info. Agree that you are responsible for your medical care and treatment.\n\nReply": [
+        null,
+        ""
+    ],
+    "YES": [
+        null,
+        ""
+    ],
+    "NO": [
+        null,
+        ""
+    ],
+    "MORE INFO": [
+        null,
+        ""
+    ],
+    "Return to use this service at any time. Remember, if you think you have TB, avoid contact with other people and get tested at your nearest clinic.": [
+        null,
+        ""
+    ],
+    "TB HealthCheck does not replace medical advice, diagnosis or treatment. Get a qualified health provider's advice on your medical condition and care.": [
+        null,
+        ""
+    ],
+    "Next": [
+        null,
+        ""
+    ],
+    "You use this info at your own risk. This tool cannot replace medical advice. Agree not to ignore or delay getting medical advice on treatment or care": [
+        null,
+        ""
+    ],
+    "Choose your province:\n\nReply:": [
+        null,
+        ""
+    ],
+    "EASTERN CAPE": [
+        null,
+        ""
+    ],
+    "FREE STATE": [
+        null,
+        ""
+    ],
+    "GAUTENG": [
+        null,
+        ""
+    ],
+    "KWAZULU NATAL": [
+        null,
+        ""
+    ],
+    "LIMPOPO": [
+        null,
+        ""
+    ],
+    "MPUMALANGA": [
+        null,
+        ""
+    ],
+    "NORTH WEST": [
+        null,
+        ""
+    ],
+    "NORTHERN CAPE": [
+        null,
+        ""
+    ],
+    "WESTERN CAPE": [
+        null,
+        ""
+    ],
+    "Please TYPE your home address (or the address where you are currently staying). Give the street number, street name, suburb/township/town/village (or nearest).": [
+        null,
+        ""
+    ],
+    "Please confirm the address below based on info you shared:\n{{ address }}\n\nReply": [
+        null,
+        ""
+    ],
+    "Yes": [
+        null,
+        ""
+    ],
+    "No": [
+        null,
+        ""
+    ],
+    "How old are you?": [
+        null,
+        ""
+    ],
+    "Please use numbers from list.\n\nHow old are you?": [
+        null,
+        ""
+    ],
+    "<18": [
+        null,
+        ""
+    ],
+    "18-39": [
+        null,
+        ""
+    ],
+    "40-65": [
+        null,
+        ""
+    ],
+    ">65": [
+        null,
+        ""
+    ],
+    "Which gender do you identify as?": [
+        null,
+        ""
+    ],
+    "Please use numbers from list.\n\nWhich gender do you identify as?": [
+        null,
+        ""
+    ],
+    "Male": [
+        null,
+        ""
+    ],
+    "Female": [
+        null,
+        ""
+    ],
+    "Other": [
+        null,
+        ""
+    ],
+    "Rather not say": [
+        null,
+        ""
+    ],
+    "Let's see how you're feeling today. Do you have a cough?\n\nReply": [
+        null,
+        ""
+    ],
+    "Please use numbers from list.\nDo you have a cough?\n\nReply": [
+        null,
+        ""
+    ],
+    "Do you have a fever? (when you touch your forehead, does it feel hot?)\n\nReply": [
+        null,
+        ""
+    ],
+    "Please use numbers from list. Do you have a fever? (when you touch your forehead, does it feel hot?)\n\nReply": [
+        null,
+        ""
+    ],
+    "Are you sweating more than usual at night?\n\nReply": [
+        null,
+        ""
+    ],
+    "Please use numbers from list. Are you sweating more than usual at night?\n\nReply": [
+        null,
+        ""
+    ],
+    "Have you been losing weight without trying?\n\nReply": [
+        null,
+        ""
+    ],
+    "Please use numbers from list. Have you been losing weight without trying?\n\nReply": [
+        null,
+        ""
+    ],
+    "Are you at high risk of TB?\n\nRisk means you live with someone who has TB OR you had TB in the last 2 years OR you are HIV+\n\nReply": [
+        null,
+        ""
+    ],
+    "Please use numbers from list. Are you at high risk for TB?\n\nReply": [
+        null,
+        ""
+    ],
+    "Dont know": [
+        null,
+        ""
+    ],
+    "Now, please agree that the info you shared is correct and that you give the NDoH permission to contact you if needed?\n\nReply": [
+        null,
+        ""
+    ],
+    "RESTART": [
+        null,
+        ""
+    ],
+    "Thanks for your answers. Your result will be sent soon on SMS. Would you like to receive follow-up messages?\nReply": [
+        null,
+        ""
+    ],
+    "See Results": [
+        null,
+        ""
+    ],
+    "You don't need a TB test now, but if you develop cough, fever, weight loss or night sweats visit your nearest clinic.": [
+        null,
+        ""
+    ],
+    "Your replies to the questions show you need a TB test this week.\n\nGo to your clinic for a free TB test. Please put on a face mask before you enter the clinic": [
+        null,
+        ""
+    ],
+    "Check if those you live with are on TB treatment. If you don't know your HIV status, visit the clinic for a free HIV test. Then do the TB check again.": [
+        null,
+        ""
+    ]
+}
