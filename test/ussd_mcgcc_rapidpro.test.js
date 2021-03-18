@@ -274,7 +274,7 @@ describe("ussd_mcgcc app", function() {
                     state: "state_mother_name_confirm",
                     reply: [
                         "Thank you! Let's make sure we got it right. " +
-                        "is your name Mary James?",
+                        "Is your name Mary James?",
                         "1. Yes",
                         "2. No"
                     ].join("\n")
