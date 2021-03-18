@@ -31,12 +31,13 @@
   },
   "devDependencies": {
     "csv-parse": "^4.14.0",
-    "grunt": "~1.0.3",
+    "grunt": "^1.3.0",
     "grunt-cli": "~1.3.2",
     "grunt-contrib-concat": "~1.0.1",
     "grunt-contrib-jshint": "~1.1.0",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-mocha-test": "~0.13.3",
+    "grunt-pot": "^0.3.0",
     "jshint": "~2.9.5",
     "mocha": "~5.0.1"
   }
