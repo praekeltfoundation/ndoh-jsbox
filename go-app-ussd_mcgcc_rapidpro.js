@@ -411,7 +411,7 @@ go.app = function() {
             return new MenuState(name, {
                 question: $(
                     "Thank you! Let's make sure we got it right. " +
-                    "is your name {{mother_name}}?").context({
+                    "Is your name {{mother_name}}?").context({
                     mother_name: mother_name
                 }),
                 error: $(
@@ -1600,7 +1600,7 @@ go.app = function() {
             return new MenuState(name, {
                 question: $(
                     "Thank you! Let's make sure we got it right. " +
-                    "is your name {{mother_name}}?").context({
+                    "Is your name {{mother_name}}?").context({
                     mother_name: mother_name
                 }),
                 error: $(
