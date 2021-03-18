@@ -1019,27 +1019,6 @@ go.app = function() {
                 ]
             });
         });
-              
-        /*self.add("state_supporter_new_msisdn_whatsapp_contact_check", function(name, opts) {
-            var content = utils.normalize_msisdn(self.im.user.get_answer("state_supporter_new_msisdn"), "ZA");
-            return self.whatsapp
-                .contact_check(content, true)
-                .then(function(result) {
-                    self.im.user.set_answer("on_whatsapp", result);
-                    return self.states.create("state_supporter_change_msisdn_rapidpro");
-                })
-                .catch(function(e) {
-                    // Go to error state after 3 failed HTTP requests
-                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-                    if (opts.http_error_count === 3) {
-                        self.im.log.error(e.message);
-                        return self.states.create("__error__", {
-                            return_state: "state_supporter_new_msisdn_whatsapp_contact_check"
-                        });
-                    }
-                    return self.states.create("state_supporter_new_msisdn_whatsapp_contact_check", opts);
-                });
-        });*/
         
         self.add("state_supporter_change_msisdn_rapidpro", function(name, opts) {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
