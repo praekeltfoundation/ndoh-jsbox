@@ -156,6 +156,8 @@ go.app = function() {
     var FreeText = vumigo.states.FreeText;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
+    var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
+    var PaginatedState = vumigo.states.PaginatedState;
     var EndState = vumigo.states.EndState;
     var JsonApi = vumigo.http.api.JsonApi;
     var MenuState = vumigo.states.MenuState;
@@ -755,7 +757,7 @@ go.app = function() {
                     new Choice("state_supporter_view_info", $("See my info")),
                     new Choice("state_supporter_change_info", $("Change my info")),
                     new Choice("state_supporter_end_messages", $("End messages")),
-                    new Choice("state_supporter_use_of_info", $("How is my info processed"))
+                    new Choice("state_all_questions_view", $("How is my info processed"))
                 ]
             });
         });
@@ -980,6 +982,162 @@ go.app = function() {
             });
         });
 
+        self.add("state_supporter_new_msisdn", function(name) {
+            return new FreeText(name, {
+                question: $("Please reply with the new cellphone number " +
+                    "you would like to get messages, e.g. 0762564733."),
+                check: function(content) {
+                    if (!utils.is_valid_msisdn(content, "ZA")) {
+                        return (
+                            "Sorry, we don't recognise that as a cell number. " +
+                            "Please reply with the 10 digit cell number, e.g. 0762564733."
+                        );
+                    }
+                    if (utils.normalize_msisdn(content, "ZA") === "+27762564733") {
+                        return (
+                            "Please try again. Reply with your new cellphone number " +
+                            "as a 10-digit number."
+                        );
+                    }
+                },
+                next: "state_supporter_new_msisdn_display"
+            });
+        });
+        
+        self.add("state_supporter_new_msisdn_display", function(name) {
+            var new_cell = self.im.user.answers.state_supporter_new_msisdn;
+            return new MenuState(name, {
+                question: $("Thank you! Let's make sure we got it right." +
+                    "\n\nIs your new number {{new_cell}}?").context({
+                    new_cell: new_cell
+                }),
+                error: $("Please try again. Reply with the nr that matchs your answer, e.g. 1").context(),
+                accept_labels: true,
+                choices: [
+                    new Choice("state_supporter_change_msisdn_rapidpro", $("Yes")),
+                    new Choice("state_supporter_new_msisdn", $("No, I want to retype my number"))
+                ]
+            });
+        });
+        
+        self.add("state_supporter_change_msisdn_rapidpro", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            var new_supporter_msisdn = utils.normalize_msisdn(self.im.user.get_answer("state_supporter_new_msisdn"), "ZA");     
+            return self.rapidpro
+                .start_flow(
+                    self.im.config.supporter_change_msisdn_uuid,
+                    null,
+                    "whatsapp:" + _.trim(msisdn, "+"), {
+                        supp_msisdn: new_supporter_msisdn
+                    })
+                .then(function() {
+                    return self.states.create("state_supporter_new_msisdn_end");
+                })
+                .catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if (opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {
+                            return_state: "state_supporter_change_msisdn_rapidpro"
+                        });
+                    }
+                    return self.states.create("state_supporter_change_msisdn_rapidpro", opts);
+                });
+        });
+        
+        self.states.add("state_supporter_new_msisdn_end", function(name) {
+            var supp_msisdn = utils.normalize_msisdn(
+                _.get(self.im.user.answers, "state_supporter_new_msisdn"), "ZA"
+              );
+            //var supp_msisdn = utils.normalize_msisdn(self.im.user.get_answer("state_supporter_new_msisdn"), "ZA");
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "Thanks! You'll receive messages on {{supp_msisdn}} from now on."
+                ).context({
+                    supp_msisdn: supp_msisdn
+                }),
+            });
+        });
+
+        self.add("state_supporter_channel_switch_confirm", function (name) {
+            var contact = self.im.user.answers.contact;
+            return new MenuState(name, {
+                question: $("Are you sure you want to get your MomConnect messages on " +
+                "{{alternative_channel}}?").context({
+                    alternative_channel: self.contact_alternative_channel(contact)
+                }),
+                choices: [
+                    new Choice("state_supporter_channel_switch_rapidpro", $("Yes")),
+                    new Choice("state_no_channel_switch", $("No")),
+                ],
+                error: $("Sorry we don't recognise that reply. " + 
+                "Please enter the number next to your answer.")
+            });
+        });
+
+        self.add("state_no_channel_switch", function (name) {
+            var contact = self.im.user.answers.contact;
+            return new MenuState(name, {
+              question: $(
+                "You'll keep getting your messages on {{channel}}. If you change your mind, " +
+                "dial *134*550*9#. What would you like to do?"
+              ).context({ channel: self.contact_current_channel(contact) }),
+              choices: [
+                new Choice("state_start", $("Back to main menu")),
+                new Choice("state_exit", $("Exit"))
+              ],
+              error: $("Sorry we don't recognise that reply. " + 
+                "Please enter the number next to your answer.")
+            });
+        });
+
+        self.add("state_supporter_channel_switch_rapidpro", function (name, opts) {
+            var contact = self.im.user.answers.contact, flow_uuid;
+            if (_.toUpper(_.get(contact, "fields.preferred_channel")) === "WHATSAPP") {
+              flow_uuid = self.im.config.sms_switch_flow_uuid;
+            } else {
+              flow_uuid = self.im.config.whatsapp_switch_flow_uuid;
+            }
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+      
+            return self.rapidpro
+              .start_flow(flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"))
+              .then(function () {
+                return self.states.create("state_supporter_channel_switch_success");
+              }).catch(function (e) {
+                // Go to error state after 3 failed HTTP requests
+                opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                if (opts.http_error_count === 3) {
+                  self.im.log.error(e.message);
+                  return self.states.create("__error__", { return_state: name });
+                }
+                return self.states.create(name, opts);
+              });
+        });
+
+        self.add("state_supporter_channel_switch_success", function (name) {
+            var contact = self.im.user.answers.contact;
+            return new MenuState(name, {
+              question: $(
+                "Okay. I'll send you MomConnect messages on {{alternative_channel}}. " +
+                "To move back to {{current_channel}}, dial *134*550*9#."
+              ).context({
+                alternative_channel: self.contact_alternative_channel(contact),
+                current_channel: self.contact_current_channel(contact)
+              }),
+              choices: [
+                new Choice("state_supporter_profile", $("Back")),
+                new Choice("state_exit", $("Exit"))
+              ],
+              error: $(
+                "Sorry we don't recognise that reply. Please enter the number next to your " +
+                "answer."
+              )
+            });
+          });
+
         self.add("state_supporter_new_research_consent", function(name) {
             return new ChoiceState(name, {
                 question: $(
@@ -1039,6 +1197,183 @@ go.app = function() {
                     new Choice("back", $("Back")),
                 ],
                 next: "state_supporter_profile"
+            });
+        });
+
+        self.add("state_supporter_end_messages", function(name) {
+            var mom_name = _.get(self.im.user.get_answer("contact"), "fields.mom_name", $("None"));
+            return new MenuState(name, {
+                question: $(
+                        "Do you want to stop getting messages to support {{mom_name}} and baby?")
+                    .context({
+                        mom_name: mom_name
+                    }),
+                error: $(
+                    "Please try again. Reply with the nr that matches your answer, e.g. 1."),
+                accept_labels: true,
+                choices: [
+                    new Choice("state_supporter_stop_mother_confirm", $("Yes")),
+                    new Choice("state_supporter_profile", $("No")),
+                    new Choice("state_supporter_profile", $("Back"))
+                ]
+            });
+        });
+
+        self.add("state_supporter_stop_mother_confirm", function(name) {
+            var mom_name = _.get(self.im.user.get_answer("contact"), "fields.mom_name");
+            self.im.user.set_answer("mom_name_clone", mom_name);
+            return new MenuState(name, {
+                question: $(
+                        "This means you will no longer get MomConnect messages to " +
+                        "support {{mom_name}} & baby." +
+                        "\n\nAre you sure?")
+                    .context({
+                        mom_name: mom_name
+                    }),
+                error: $(
+                    "Please try again. Reply with the nr that matches your answer, e.g. 1."),
+                accept_labels: true,
+                choices: [
+                    new Choice("state_supporter_stop_mother_rapidpro", $("Yes")),
+                    new Choice("state_supporter_profile", $("No"))
+                ]
+            });
+        });
+
+        self.add("state_supporter_stop_mother_rapidpro", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            var mom_stop = _.toUpper(self.im.user.get_answer("state_supporter_end_messages")) === "YES" ? "true" : "false";
+            return self.rapidpro
+                .start_flow(
+                    self.im.config.supporter_change_stop_mother_uuid,
+                    null,
+                    "whatsapp:" + _.trim(msisdn, "+"), {
+                        mom_stop: mom_stop
+                    })
+                .then(function() {
+                    return self.states.create("state_supporter_stop_mother_end");
+                })
+                .catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if (opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {
+                            return_state: "state_supporter_stop_mother_rapidpro"
+                        });
+                    }
+                    return self.states.create("state_supporter_stop_mother_rapidpro", opts);
+                });
+        });
+
+        self.states.add("state_supporter_stop_mother_end", function(name) {
+            var mom_name = self.im.user.get_answer(("mom_name_clone"), $("None"));
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "You will no longer get MomConnect messages about " +
+                    "supporting {{mom_name}} and baby.").context({
+                    mom_name: mom_name
+                }),
+            });
+        });
+
+        self.add("state_all_questions_view", function(name) {
+            return new PaginatedChoiceState(name, {
+                question: $("Choose a question you're interested in:"),
+                options_per_page: null,
+                characters_per_page: 160,
+                choices: [
+                    new Choice("state_question_1", $("What is MomConnect?")),
+                    new Choice("state_question_2", $("Why does MomConnect need my info?")),
+                    new Choice("state_question_3", $("What personal info is collected?")),
+                    new Choice("state_question_4", $("Who can see my personal info?")),
+                    new Choice("state_question_5", $("How long does MC keep my info?")),
+                    new Choice("state_supporter_profile", $("Back to main menu"))
+                ],
+                more: $("Next"),
+                back: $("Previous"),
+                next: function(choice) {
+                    if(choice !== undefined){
+                        return choice.value;
+                    }
+                }
+            });
+        });
+
+        self.add('state_question_1', function(name) {
+            return new PaginatedState(name, {
+                text: $(
+                    "MomConnect is a Health Department programme. It sends helpful messages for " +
+                    "you and your baby."
+                ),
+                characters_per_page: 160,
+                exit: $("Back"),
+                more: $("Next"),
+                back: $("Previous"),
+                next: "state_all_questions_view"
+            });
+        });
+
+
+        self.add('state_question_2', function(name) {
+            return new PaginatedState(name, {
+                text: $(
+                    "MomConnect needs your personal info to send you messages that are relevant " +
+                    "to your pregnancy or your baby's age. By knowing where you registered for " +
+                    "MomConnect, the Health Department can make sure that the service is being " +
+                    "offered to women at your clinic. Your info assists the Health Department to " +
+                    "improve its services, understand your needs better and provide even better " +
+                    "messaging."
+                ),
+                characters_per_page: 160,
+                exit: $("Back"),
+                more: $("Next"),
+                back: $("Previous"),
+                next: "state_all_questions_view"
+            });
+        }); 
+
+        self.add('state_question_3', function(name) {
+            return new PaginatedState(name, {
+                text: $(
+                    "MomConnect collects your cell and ID numbers, clinic location, and info " +
+                    "about how your pregnancy or baby is progressing."
+                ),
+                characters_per_page: 160,
+                exit: $("Back"),
+                more: $("Next"),
+                back: $("Previous"),
+                next: "state_all_questions_view"
+            });
+        });
+
+        self.add('state_question_4', function(name) {
+            return new PaginatedState(name, {
+                text: $(
+                    "MomConnect is owned by the Health Department. Your data is protected. It's " +
+                    "processed by MTN, Cell C, Telkom, Vodacom, Praekelt, Jembi, HISP & WhatsApp."
+                ),
+                characters_per_page: 160,
+                exit: $("Back"),
+                more: $("Next"),
+                back: $("Previous"),
+                next: "state_all_questions_view"
+            });
+        });
+
+        self.add('state_question_5', function(name) {
+            return new PaginatedState(name, {
+                text: $(
+                    "MomConnect holds your info while you're registered. If you opt out, we'll " +
+                    "use your info for historical, research & statistical reasons with your " +
+                    "consent."
+                ),
+                characters_per_page: 160,
+                exit: $("Back"),
+                more: $("Next"),
+                back: $("Previous"),
+                next: "state_all_questions_view"
             });
         });
 

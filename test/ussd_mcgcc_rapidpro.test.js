@@ -29,7 +29,11 @@ describe("ussd_mcgcc app", function() {
             supporter_change_language_uuid: "supporter-change-language-uuid",
             supporter_change_research_consent_uuid: "supporter-change-research-consent-uuid",
             mother_change_stop_supporter_uuid: "mother-change-stop-supporter-uuid",
-            mother_new_supporter_registration_uuid: "mother-new-supporter-registration-uuid"
+            mother_new_supporter_registration_uuid: "mother-new-supporter-registration-uuid",
+            supporter_change_stop_mother_uuid: "supporter-change-stop-mother-uuid",
+            supporter_change_msisdn_uuid: "supporter-change-msisdn-uuid",
+            sms_switch_flow_uuid: "sms-switch-flow-uuid",
+            whatsapp_switch_flow_uuid: "whatsapp-switch-flow-uuid"
         });
     });
 
@@ -817,6 +821,84 @@ describe("ussd_mcgcc app", function() {
                 })
                 .run();
         });
+        it("should ask for a new supporter msisdn", function() {
+            return tester
+                .setup.user.state("state_supporter_new_msisdn")
+                .check.interaction({
+                    reply: [
+                        "Please reply with the new cellphone number " +
+                        "you would like to get messages, e.g. 0762564733."
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error on invalid cell phone", function() {
+            return tester
+                .setup.user.state("state_supporter_new_msisdn")
+                .input("A")
+                .check.interaction({
+                    reply: ["Sorry, we don't recognise that as a cell number. " +
+                        "Please reply with the 10 digit cell number, e.g. 0762564733."
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error if the supporter uses the example msisdn", function() {
+            return tester
+                .setup.user.state("state_supporter_new_msisdn")
+                .input("0762564733")
+                .check.interaction({
+                    reply: ["Please try again. Reply with your new cellphone number " +
+                        "as a 10-digit number."
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an a confirmation screen if the supporter enters a valid msisdn", function() {
+            return tester
+                .setup.user.state("state_supporter_new_msisdn_display")
+                .setup.user.answers({
+                    state_supporter_new_msisdn: "0123456722"
+                })
+                .check.interaction({
+                    reply: ["Thank you! Let's make sure we got it right." +
+                    "\n\nIs your new number 0123456722?",
+                    "1. Yes",
+                    "2. No, I want to retype my number"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should submit the new supporter msisdn", function() {
+            return tester
+                .setup.user.state("state_supporter_new_msisdn_display")
+                .setup.user.answers({
+                    state_supporter_new_msisdn: "0123456722"
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "supporter-change-msisdn-uuid", null, "whatsapp:27123456789", {
+                                //"on_whatsapp": "true",
+                                "supp_msisdn": "+27123456722"
+                            })
+                    );
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_supporter_new_msisdn_end",
+                    reply: [
+                        "Thanks! You'll receive messages on +27123456722 from now on."
+                    ].join("\n")
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(
+                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
+                    );
+                })
+                .run();
+        });
         it("should show available languages if channel is WhatsApp", function() {
             return tester.setup.user
                 .state("state_supporter_change_info")
@@ -921,6 +1003,63 @@ describe("ussd_mcgcc app", function() {
                 })
                 .run();
         });
+        it("should ask the user if they want to switch channels", function() {
+            return tester
+              .setup.user.state("state_supporter_channel_switch_confirm")
+              .setup.user.answer("contact", {fields: {preferred_channel: "SMS"}})
+              .check.interaction({
+                reply: [
+                  "Are you sure you want to get your MomConnect messages on WhatsApp?",
+                  "1. Yes",
+                  "2. No"
+                ].join("\n")
+              })
+              .run();
+          });
+          it("should show the user an error on invalid input", function() {
+            return tester
+              .setup.user.state("state_supporter_channel_switch_confirm")
+              .setup.user.answer("contact", {fields: {preferred_channel: "SMS"}})
+              .input("A")
+              .check.interaction({
+                reply: [
+                  "Sorry we don't recognise that reply. Please enter the number next to " +
+                  "your answer.",
+                  "1. Yes",
+                  "2. No"
+                ].join("\n")
+              })
+              .run();
+          });
+          it("should submit the channel switch if they choose yes", function() {
+            return tester
+              .setup.user.state("state_supporter_channel_switch_confirm")
+              .setup.user.answer("contact", {fields: {preferred_channel: "SMS"}})
+              .setup(function(api) {
+                api.http.fixtures.add(
+                  fixtures_rapidpro.start_flow(
+                    "whatsapp-switch-flow-uuid", null, "whatsapp:27123456789"
+                  )
+                );
+              })
+              .input("1")
+              .check.interaction({
+                reply: [
+                  "Okay. I'll send you MomConnect messages on WhatsApp. " +
+                  "To move back to SMS, dial *134*550*9#.",
+                  "1. Back",
+                  "2. Exit"
+                ].join("\n"),
+                state: "state_supporter_channel_switch_success"
+                })
+                .check(function(api) {
+                assert.equal(api.http.requests.length, 1);
+                assert.equal(
+                api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
+                );
+              })
+              .run();
+          }); 
         it("should ask for research consent", function() {
             return tester.setup.user
                 .state("state_supporter_change_info")
@@ -963,6 +1102,132 @@ describe("ussd_mcgcc app", function() {
                     assert.equal(
                         api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
                     );
+                })
+                .run();
+        });
+    });
+
+    describe("state supporter opt out", function() {
+        it("should the first opt out screen", function() {
+            return tester
+                .setup.user.state("state_supporter_end_messages")
+                .setup.user.answer("contact", {
+                    fields: {
+                        mom_name: "Mary"
+                    }
+                })
+                .check.interaction({
+                    reply: [
+                        "Do you want to stop getting messages to support Mary and baby?",
+                        "1. Yes",
+                        "2. No",
+                        "3. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show None is name is unretrievable", function() {
+            return tester
+                .setup.user.state("state_supporter_end_messages")
+                .setup.user.answer("contact", {
+                    fields: {
+                        supp_name: "None"
+                    }
+                })
+                .check.interaction({
+                    reply: [
+                        "Do you want to stop getting messages to support None and baby?",
+                        "1. Yes",
+                        "2. No",
+                        "3. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show stop mother messages confirm screen", function() {
+            return tester.setup.user
+                .state("state_supporter_end_messages")
+                .setup.user.answer("contact", {
+                    fields: {
+                        mom_name: "Mary"
+                    }
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_supporter_stop_mother_confirm",
+                    reply: [
+                        "This means you will no longer get MomConnect messages to " +
+                        "support Mary & baby.",
+                        "\nAre you sure?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should submit the stop mother messages request", function() {
+            return tester
+                .setup.user.state("state_supporter_stop_mother_confirm")
+                .setup.user.answers({
+                    state_supporter_end_messages: "Yes",
+                })
+                .setup.user.answer("contact", {
+                    fields: {
+                        mom_name: "Mary"
+                    }
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "supporter-change-stop-mother-uuid", null, "whatsapp:27123456789", {
+                                "mom_stop": "true"
+                            })
+                    );
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_supporter_stop_mother_end",
+                    reply: [
+                        "You will no longer get MomConnect messages about " +
+                        "supporting Mary and baby."
+                    ].join("\n")
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(
+                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
+                    );
+                })
+                .run();
+        });
+    });
+    describe("state_all_questions_view", function() {
+        it("should display the list of questions to the user page 1", function() {
+            return tester
+                .setup.user.state("state_all_questions_view")
+                .check.interaction({
+                    reply: [
+                        "Choose a question you're interested in:",
+                        "1. What is MomConnect?",
+                        "2. Why does MomConnect need my info?",
+                        "3. What personal info is collected?",
+                        "4. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display the list of questions to the user page 2", function() {
+            return tester
+                .setup.user.state("state_all_questions_view")
+                .input("4")
+                .check.interaction({
+                    reply: [
+                        "Choose a question you're interested in:",
+                        "1. Who can see my personal info?",
+                        "2. How long does MC keep my info?",
+                        "3. Back to main menu",
+                        "4. Previous"
+                    ].join("\n")
                 })
                 .run();
         });
