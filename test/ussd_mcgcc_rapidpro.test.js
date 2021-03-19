@@ -266,6 +266,19 @@ describe("ussd_mcgcc app", function() {
                 })
                 .run();
         });
+        it("should return an error if the enters her number as a supporter", function() {
+            return tester.setup.user
+                .state("state_mother_supporter_msisdn")
+                .input("0123456789")
+                .check.interaction({
+                    state: "state_mother_supporter_msisdn",
+                    reply: [
+                        "Sorry, this number is registered as a mother. Reply with the cellphone number " +
+                        "of your supporter as a 10-digit number."
+                    ].join("\n")
+                })
+                .run();
+        });
         it("should ask mother to confirm the name she entered", function() {
             return tester.setup.user
                 .state("state_mother_name")
