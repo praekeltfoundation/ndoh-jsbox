@@ -203,6 +203,7 @@ go.app = function() {
         });
 
         self.add("state_mother_supporter_msisdn", function(name) {
+            var mother_msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             return new FreeText(name, {
                 question: $("Please reply with the cellphone number of the " +
                     "supporter who wants to get messages, e.g. 0762564733."),
@@ -216,6 +217,12 @@ go.app = function() {
                     if (utils.normalize_msisdn(content, "ZA") === "+27762564733") {
                         return (
                             "Please try again. Reply with the cellphone number of " +
+                            "your supporter as a 10-digit number."
+                        );
+                    }
+                    if (utils.normalize_msisdn(content, "ZA") === mother_msisdn) {
+                        return (
+                            "Sorry, this number is registered as a mother. Reply with the cellphone number of " +
                             "your supporter as a 10-digit number."
                         );
                     }
