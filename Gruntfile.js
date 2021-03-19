@@ -3,8 +3,21 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-pot');
 
     grunt.initConfig({
+        pot: {
+            options:{
+          text_domain: 'my-text-domain', //Your text domain. Produces my-text-domain.pot
+          dest: 'config/', //directory to place the pot file
+          keywords: [ '$' ], //functions to look for
+          msgmerge: true
+          },
+          files:{
+            src:  [ '**/*.js' ], //Parse all .js files
+            expand: true,
+             }
+        },
         paths: {
             src: {
                 app: {
