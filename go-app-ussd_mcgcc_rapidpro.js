@@ -434,13 +434,22 @@ go.app = function() {
         });
 
         self.add("state_trigger_mother_registration_flow", function(name, opts) {
+            var contact = self.im.user.get_answer("contact");
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            var baby_dob1 = (contact.fields.baby_dob1) ? moment.utc(contact.fields.baby_dob1).format() : null;
+            var baby_dob2 = (contact.fields.baby_dob2) ? moment.utc(contact.fields.baby_dob2).format() : null;
+            var baby_dob3 = (contact.fields.baby_dob3) ? moment.utc(contact.fields.baby_dob3).format() : null;
+            var mom_edd = (contact.fields.edd) ? moment.utc(contact.fields.edd).format() : null;
             var supporter_cell = utils.normalize_msisdn(self.im.user.get_answer("state_mother_supporter_msisdn"), "ZA");
             var data = {
                 on_whatsapp: self.im.user.get_answer("on_whatsapp") ? "true" : "false",
                 supp_consent: _.toUpper(self.im.user.get_answer("state_mother_supporter_consent")) === "YES" ? "true" : "false",
                 supp_cell: supporter_cell,
                 mom_name: self.im.user.get_answer("state_mother_name"),
+                baby_dob1: baby_dob1,
+                baby_dob2: baby_dob2,
+                baby_dob3: baby_dob3,
+                mom_edd: mom_edd,
                 source: "USSD",
                 timestamp: new moment.utc(self.im.config.testing_today).format(),
                 registered_by: msisdn,
