@@ -382,7 +382,7 @@ go.app = function() {
                 ),
                 accept_labels: true,
                 choices: [
-                    new Choice("state_whatsapp_contact_check", $("Yes")),
+                    new Choice("state_supporter_language_whatsapp", $("Yes")),
                     new Choice("state_supporter_noconsent_ask_again", $("No")),
                 ],
             });
