@@ -10,7 +10,7 @@ msgstr ""
 "X-Generator: Poedit 2.4.2\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Last-Translator: \n"
-"Language: af_ZA\n"
+"Language: afr_ZA\n"
 
 #: go-app-ussd_tb_check.js:52
 msgid ""

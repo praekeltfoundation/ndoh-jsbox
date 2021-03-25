@@ -14,14 +14,6 @@ go.app = (function () {
     App.call(self, "state_start");
     var $ = self.$;
 
-    self.languages = {
-      zul: "isiZulu",
-      xho: "isiXhosa",
-      afr: "Afrikaans",
-      eng: "English",
-      sot: "Sesotho"
-  };
-
     self.calculate_risk = function () {
       var answers = self.im.user.answers;
 

@@ -9,7 +9,7 @@ msgstr ""
 "PO-Revision-Date: 2021-03-25 12:45+0200\n"
 "X-Generator: Poedit 2.4.2\n"
 "Last-Translator: \n"
-"Language: za\n"
+"Language: xho_ZA\n"
 
 #: go-app-ussd_tb_check.js:52
 msgid ""
