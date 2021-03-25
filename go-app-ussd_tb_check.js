@@ -157,7 +157,7 @@ go.app = (function () {
         ],
         next: function(choice) {
           self.im.user.set_lang(choice.value);
-          return self.states.create("state_terms")
+          return self.states.create("state_terms");
         }
       });
     });
