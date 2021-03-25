@@ -340,7 +340,7 @@ describe("ussd_mcgcc app", function() {
             return tester
                 .setup.user.state("state_trigger_mother_registration_flow")
                 .setup.user.answers({
-                    state_mother_supporter_consent: "yes",
+                    state_mother_supporter_consent: "1",
                     state_mother_supporter_msisdn: "0123456722",
                     state_mother_name: "Jane",
                     contact: {

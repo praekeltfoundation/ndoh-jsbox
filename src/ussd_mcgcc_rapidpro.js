@@ -292,9 +292,10 @@ go.app = function() {
             var baby_dob3 = (contact.fields.baby_dob3) ? moment.utc(contact.fields.baby_dob3).format() : null;
             var mom_edd = (contact.fields.edd) ? moment.utc(contact.fields.edd).format() : null;
             var supporter_cell = utils.normalize_msisdn(self.im.user.get_answer("state_mother_supporter_msisdn"), "ZA");
+            var supp_consent = _.toUpper(self.im.user.get_answer("state_mother_supporter_consent"));
             var data = {
                 on_whatsapp: self.im.user.get_answer("on_whatsapp") ? "true" : "false",
-                supp_consent: _.toUpper(self.im.user.get_answer("state_mother_supporter_consent")) === "YES" ? "true" : "false",
+                supp_consent: (supp_consent === "YES" || supp_consent === "1") ? "true" : "false",
                 supp_cell: supporter_cell,
                 mom_name: self.im.user.get_answer("state_mother_name"),
                 baby_dob1: baby_dob1,
@@ -543,8 +544,10 @@ go.app = function() {
 
         self.add("state_trigger_supporter_registration_flow", function(name, opts) {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
-            var supporter_consent;
+            var supporter_consent = _.toUpper(self.im.user.get_answer("state_supporter_consent"));
+            var supporter_no_consent = _.toUpper(self.im.user.get_answer("state_supporter_noconsent_ask_again"));
             var supporters_language;
+            var research_consent = _.toUpper(self.im.user.get_answer("state_supporter_research_consent"));
 
             if (typeof self.im.user.get_answer("state_supporter_language_whatsapp") === "undefined") {
                 supporters_language = self.im.user.get_answer("state_supporter_language_sms");
@@ -553,15 +556,15 @@ go.app = function() {
             }
 
             if (typeof self.im.user.get_answer("state_supporter_noconsent_ask_again") === "undefined") {
-                supporter_consent = _.toUpper(self.im.user.get_answer("state_supporter_consent")) === "YES" ? "true" : "false";
+                supporter_consent = (supporter_consent === "YES" || supporter_consent === "1") ? "true" : "false";
             } else {
-                supporter_consent = _.toUpper(self.im.user.get_answer("state_supporter_noconsent_ask_again")) === "YES" ? "true" : "false";
+                supporter_consent = (supporter_no_consent === "YES" || supporter_no_consent === "1") ? "true" : "false";
             }
 
             var data = {
                 on_whatsapp: self.im.user.get_answer("on_whatsapp") ? "true" : "false",
                 supp_consent: supporter_consent,
-                research_consent: _.toUpper(self.im.user.get_answer("state_supporter_research_consent")) === "YES" ? "true" : "false",
+                research_consent: (research_consent === "YES" || research_consent === "1") ? "true" : "false",
                 supp_cell: msisdn,
                 supp_language: supporters_language,
                 supp_relationship: self.im.user.get_answer("state_supporter_relationship"),
