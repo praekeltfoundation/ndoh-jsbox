@@ -6,9 +6,10 @@
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2021-03-18 13:47+0200",
+        "po-revision-date": "2021-03-25 12:45+0200",
         "x-generator": "Poedit 2.4.2",
-        "last-translator": ""
+        "last-translator": "",
+        "language": "za"
     },
     "Welcome back to the The National Department of Health's TB HealthCheck\n\nReply 1 or 2": [
         null,
@@ -64,7 +65,7 @@
     ],
     "This service only provides health info. Agree that you are responsible for your medical care and treatment.\n\nReply": [
         null,
-        "Le nkonzo inikezela kuphela ngolwazi lwezempilo. Vuma ukuba unoxanduva lokhathalelo lwezempilo kunye nonyango.\n\nPhendula"
+        "Le nkonzo inikezela kuphela ngolwazi  lwezempilo. Vuma ukuba unoxanduva lokhathalelo impilo kunye nonyango. \n\nPhendula"
     ],
     "YES": [
         null,
@@ -84,7 +85,7 @@
     ],
     "TB HealthCheck does not replace medical advice, diagnosis or treatment. Get a qualified health provider's advice on your medical condition and care.": [
         null,
-        "I-TB HealthCheck ayithathi ndawo yengcebiso zonyango, ukuxilongwa okanye unyango. Fumana iingcebiso zomboneleli wezempilo ofanelekileyo kwimeko yakho yonyango kunye nokhathalelo."
+        "TB HealthCheck ayithathi ngcebiso zonyango. Fumana ingcebiso engaphezulu kumboneleli wezempilo ofanelekileyo kwimeko yakho yonyango kunye nokunakekelwa."
     ],
     "Next": [
         null,
@@ -92,11 +93,11 @@
     ],
     "You use this info at your own risk. This tool cannot replace medical advice. Agree not to ignore or delay getting medical advice on treatment or care": [
         null,
-        "Usebenzisa olu lwazi ngokusemngciphekweni wakho. Esi sixhobo asinakuthatha indawo yeengcebiso zonyango. Vumelana nokungakuhoyi okanye ukulibazisa ukufumana iingcebiso yezempilo ngonyango okanye ngononophelo"
+        "Sebenzisa olu lwazi ngomngcipheko wakho. Vuma awuzotyeshela okanye ulibazise ukufumana amacebo ngempilo nonyango okanye unonophelo"
     ],
     "Choose your province:\n\nReply:": [
         null,
-        "Khetha iphondo lakho. \n\nPhendula ngenombolo:"
+        "Khetha iphondo:"
     ],
     "EASTERN CAPE": [
         null,
@@ -200,7 +201,7 @@
     ],
     "Let's see how you're feeling today. Do you have a cough?\n\nReply": [
         null,
-        "Masibone ukuba uziva njani namhlanje. Unokhohlokhohlo? \n\nPhendula"
+        "Masibone uziva njani namhlanje. Uyakhohlela? \n\nPhendula u-1, u-2 okanye u-3"
     ],
     "Please use numbers from list.\nDo you have a cough?\n\nReply": [
         null,
@@ -244,7 +245,7 @@
     ],
     "Now, please agree that the info you shared is correct and that you give the NDoH permission to contact you if needed?\n\nReply": [
         null,
-        "Ngoku, nceda uvume ukuba ulwazi owabelane ngalo luchanekile kwaye unika i-NDoH imvume yokunxibelelana nawe xa kufuneka njalo? \n\nPhendula"
+        "Ngoku, nceda uvume ukuba ulwazi owabelane ngalo lulo kwaye unika i-NDoH imvume yokuxhulumana nawe xa kufuneka njalo? \n\nPhendula u-1 okanye u-2"
     ],
     "RESTART": [
         null,

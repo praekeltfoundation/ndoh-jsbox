@@ -6,7 +6,7 @@
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2021-03-18 14:41+0200",
+        "po-revision-date": "2021-03-25 12:42+0200",
         "x-generator": "Poedit 2.4.2",
         "last-translator": "",
         "plural-forms": "nplurals=2; plural=(n==0 || n==1);",
@@ -66,7 +66,7 @@
     ],
     "This service only provides health info. Agree that you are responsible for your medical care and treatment.\n\nReply": [
         null,
-        "Le sevisi inikeza imininingwane yezempilo kuphela. Vuma ukuthi unesibopho sokunakekelwa nokwelashwa kwakho. \n\nPhendula"
+        "Lesevisi ikupha imininingwane yezempilo kphela. Vuma ukuthi unegunya lokunakekelwa nokwelashwa kwakho. \n\nPhendula"
     ],
     "YES": [
         null,
@@ -86,7 +86,7 @@
     ],
     "TB HealthCheck does not replace medical advice, diagnosis or treatment. Get a qualified health provider's advice on your medical condition and care.": [
         null,
-        "I-TB HealthCheck ayithathi indawo yezeluleko zezokwelapha, ukuxilongwa noma ukwelashwa. Thola izeluleko zomhlinzeki wezempilo oqeqeshiwe ngesimo sakho sezempilo nokunakekelwa."
+        "I-TB HealthCheck ayithathi indawo yezeluleko zezokwelapha. Thola izeluleko zomhlinzeki wezempilo oqeqeshiwe ngesimo sakho sezempilo nokunakekelwa."
     ],
     "Next": [
         null,
@@ -94,11 +94,11 @@
     ],
     "You use this info at your own risk. This tool cannot replace medical advice. Agree not to ignore or delay getting medical advice on treatment or care": [
         null,
-        "Usebenzisa lolu lwazi ngokuzibeka wena engcupheni. Leli thuluzi alikwazi ukufaka izeluleko zezokwelapha. Vumelana ngokungazibi noma ukubambezeleka kokuthola izeluleko zezokwelapha ekwelashweni noma ekunakekelweni"
+        "Usebenzisa lolulwazi ngokuzibeka wena egcupheni. Vuma ukungazibi nokungabambezeleli ukthola iseluleko ngokwelashwa noma ukunakekelwa"
     ],
     "Choose your province:\n\nReply:": [
         null,
-        "Khetha isifundazwe sakho Phendula ngenombolo:\n \nPhendula:"
+        "Khetha isfundazwe sakho Phendula ngenombolo:"
     ],
     "EASTERN CAPE": [
         null,
@@ -202,7 +202,7 @@
     ],
     "Let's see how you're feeling today. Do you have a cough?\n\nReply": [
         null,
-        "Asibone ukuthi uzizwa kanjani namuhla. Uyakhwehlela? \n\nPhendula 1, 2 noma 3"
+        "Asiboneuzizwa kanjani namuhla. Uyakhwehlela? \n\nPhendula 1, 2 noma 3"
     ],
     "Please use numbers from list.\nDo you have a cough?\n\nReply": [
         null,
@@ -246,7 +246,7 @@
     ],
     "Now, please agree that the info you shared is correct and that you give the NDoH permission to contact you if needed?\n\nReply": [
         null,
-        "Manje, ngicela uvume ukuthi imininingwane owabelane ngayo iyiqiniso nokuthi unikeza i-NDoH imvume yokuxhumana nawe uma kudingeka? \n\nPhendula 1 noma 2"
+        "Sesicela uvume ukuthi imininingwane osinikeze yona iyiqiniso nokuthi unikeza iNDoH imvume yokuxhumana nawe uma kudingeka?"
     ],
     "RESTART": [
         null,

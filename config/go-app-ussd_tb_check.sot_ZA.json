@@ -6,9 +6,10 @@
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2021-03-18 14:13+0200",
+        "po-revision-date": "2021-03-25 12:44+0200",
         "x-generator": "Poedit 2.4.2",
-        "last-translator": ""
+        "last-translator": "",
+        "language": "za"
     },
     "Welcome back to the The National Department of Health's TB HealthCheck\n\nReply 1 or 2": [
         null,
@@ -64,7 +65,7 @@
     ],
     "This service only provides health info. Agree that you are responsible for your medical care and treatment.\n\nReply": [
         null,
-        "Tshebeletso ena e fana feela ka lesedi la bophelo bo botle. Dumellana hore o ikarabella bakeng sa tlhokomelo ya hao ya bongaka le kalafo. \n\nAraba"
+        "Tshebeletso ena e fana feela ka lesedi la bophelo. Dumela ho nka boikarabello ka tlhokomelo ya hao ya bongaka le kalafo. \n\nAraba"
     ],
     "YES": [
         null,
@@ -80,11 +81,11 @@
     ],
     "Return to use this service at any time. Remember, if you think you have TB, avoid contact with other people and get tested at your nearest clinic.": [
         null,
-        "Kgutlela ho sebedisa tshebeletso ena neng kapa neng. Hopola, haeba o nahana hore o na le TB, qoba ho ikopanya le batho ba bang mme o etse tlhahlobo tleliniking e haufi le wena."
+        "Kgutlela tshebeletsong ena neng kapa neng. Hopola, ha o nahana hore o na le TB, qoba ho kopana le batho ba bang mme o etse tlhahlobo tleliniking e haufi."
     ],
     "TB HealthCheck does not replace medical advice, diagnosis or treatment. Get a qualified health provider's advice on your medical condition and care.": [
         null,
-        "TB HealthCheck ha e nke sebaka sa dikeletso tsa bongaka, tlhahlobo ya bolwetse kapa kalafo. Fumana keletso ya mofani wa bophelo bo botle ka boemo ba hao ba bongaka le tlhokomelo."
+        "TB HealthCheck ha e nke sebaka sa dikeletso tsa bongaka, diteko kapa kalafo. Fumana keletso ya bongaka ka boemo ba hao ba bongaka le tlhokomelo."
     ],
     "Next": [
         null,
@@ -92,7 +93,7 @@
     ],
     "You use this info at your own risk. This tool cannot replace medical advice. Agree not to ignore or delay getting medical advice on treatment or care": [
         null,
-        "O sebedisa lesedi lena ka ho ipeha kotsing. Sesebediswa sena se ke ke sa nkela dikeletso tsa bongaka sebaka. Dumellana ho se hlokomolohe kapa ho dieha ho fumana dikeletso tsa bongaka bakeng sa kalafo kapa tlhokomelo"
+        "O sebedisa lesedi lena kotsing ya hao. Dumela ho se natse kapa ho dieha ho fumana dikeletso tsa bongaka ka kalafo kapa tlhokomelo"
     ],
     "Choose your province:\n\nReply:": [
         null,
@@ -200,7 +201,7 @@
     ],
     "Let's see how you're feeling today. Do you have a cough?\n\nReply": [
         null,
-        "Ha re bone hore na o ikutlwa jwang kajeno. Na o a kgohlola? \n\nAraba"
+        "Ha re bone na o ikutlwa jwang kajeno. Na wa kgohlela? \n\nAraba 1, 2 kapa 3"
     ],
     "Please use numbers from list.\nDo you have a cough?\n\nReply": [
         null,
@@ -232,7 +233,7 @@
     ],
     "Are you at high risk of TB?\n\nRisk means you live with someone who has TB OR you had TB in the last 2 years OR you are HIV+\n\nReply": [
         null,
-        "Na o kotsing e kgolo ya TB? \n\nKotsi e bolela hore o dula le motho ya nang le TB KAPA o ne o na le TB dilemong tse 2 tse fetileng kapa o na le tshwaetso ya HIV"
+        "O kotsing e kgolo ya TB?\n\nKotsi e bolela o dula le motho ya nang le TB KAPA o bile le TB dilemong tse 2 tse fetileng KAPA o HIV+"
     ],
     "Please use numbers from list. Are you at high risk for TB?\n\nReply": [
         null,
@@ -244,7 +245,7 @@
     ],
     "Now, please agree that the info you shared is correct and that you give the NDoH permission to contact you if needed?\n\nReply": [
         null,
-        "Jwale, ka kopo dumela hore lesedi leo o le arolelaneng le nepahetse le hore o fa NDoH tumello ya ho ikopanya le wena ha ho hlokahala?’ \n\nAraba 1 kapa 2"
+        "Jwale, ka kopo dumela hore lesedi leo o le arolang le nepahetse le hore o fa NDoH tumello ya ho ikopanya le wena ha ho hlokahala?\n\nAraba 1 kapa 2"
     ],
     "RESTART": [
         null,

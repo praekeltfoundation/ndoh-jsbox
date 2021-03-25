@@ -6,7 +6,7 @@
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2021-03-18 15:46+0200",
+        "po-revision-date": "2021-03-25 12:46+0200",
         "x-generator": "Poedit 2.4.2",
         "plural-forms": "nplurals=2; plural=(n != 1);",
         "last-translator": "",
@@ -30,7 +30,7 @@
     ],
     "The National Department of Health thanks you for contributing to the health of all citizens. Stop the spread of TB.\n\nReply": [
         null,
-        "Die Nasionale Departement van Gesondheid spreek hul dank uit vir jou hulp om die gesondheid van alle SA burgers te beskerm. Stop die verspreiding van TB. \n\nAntwoord met"
+        "Die Nasionale Departement van Gesondheid bedank jou dat jy SA burgers se gesondheid beskerm. Stop TB-verspreiding. \n\nAntwoord met"
     ],
     "START": [
         null,
@@ -66,7 +66,7 @@
     ],
     "This service only provides health info. Agree that you are responsible for your medical care and treatment.\n\nReply": [
         null,
-        "Hierdie diens bied slegs inligting oor gesondheid. Stem saam dat jy verantwoordelik is vir jou mediese sorg en behandeling. \n\nAntwoord met"
+        "Hierdie diens bied gesondheidsinligting. Stem jy dat jy verantwoordelik is vir jou mediese sorg en behandeling. \n\nAntwoord met"
     ],
     "YES": [
         null,
@@ -86,7 +86,7 @@
     ],
     "TB HealthCheck does not replace medical advice, diagnosis or treatment. Get a qualified health provider's advice on your medical condition and care.": [
         null,
-        "TB GesondheidsVraelys is nie ’n plaasvervanger vir mediese advies, -diagnose of -behandeling nie. Kry advies van ’n gekwalifiseerde gesondheidsdiensverskaffer vir jou mediese toestand en behandeling."
+        "TB GesondheidsVraelys vervang nie mediese advies, -diagnose of -behandeling nie. Gaan na ’n dokter vir jou mediese toestand en behandeling."
     ],
     "Next": [
         null,
@@ -94,11 +94,11 @@
     ],
     "You use this info at your own risk. This tool cannot replace medical advice. Agree not to ignore or delay getting medical advice on treatment or care": [
         null,
-        "Jy gebruik hierdie inligting op eie risiko. Hierdie vraelys is nie ’n plaasvervanger vir mediese advies nie. Stem in om so gou moontlik mediese advies oor behandeling te kry en dit nie te ignoreer nie"
+        "Inligting word gebruik op eie risiko. Die vraelyes vervang nie mediese raad nie. Stem om binnekort behandelingsadvies te kry en nie te ignoreer nie"
     ],
     "Choose your province:\n\nReply:": [
         null,
-        "Kies jou provinsie. \n\nAntwoord met ’n nommer:"
+        "Kies jou provinsie. Kies ’n nommer:"
     ],
     "EASTERN CAPE": [
         null,
@@ -246,7 +246,7 @@
     ],
     "Now, please agree that the info you shared is correct and that you give the NDoH permission to contact you if needed?\n\nReply": [
         null,
-        "Bevestig asseblief nou dat die inligting wat jy gegee het korrek is en dat jy die NDvG toestemming gee om jou te kontak indien nodig? \n\nAntwoord 1 of 2"
+        "Bevestig asseblief dat die inligting wat jy gegee het reg is en dat jy die NDvG toestemming gee om jou te kontak indien nodig? \n\nAntwoord 1 of 2"
     ],
     "RESTART": [
         null,
