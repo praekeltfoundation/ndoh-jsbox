@@ -292,9 +292,10 @@ go.app = function() {
             var baby_dob3 = (contact.fields.baby_dob3) ? moment.utc(contact.fields.baby_dob3).format() : null;
             var mom_edd = (contact.fields.edd) ? moment.utc(contact.fields.edd).format() : null;
             var supporter_cell = utils.normalize_msisdn(self.im.user.get_answer("state_mother_supporter_msisdn"), "ZA");
+            var supp_consent = _.toUpper(self.im.user.get_answer("state_mother_supporter_consent"));
             var data = {
                 on_whatsapp: self.im.user.get_answer("on_whatsapp") ? "true" : "false",
-                supp_consent: _.toUpper(self.im.user.get_answer("state_mother_supporter_consent")) === "YES" ? "true" : "false",
+                supp_consent: (supp_consent === "YES" || supp_consent === "1") ? "true" : "false",
                 supp_cell: supporter_cell,
                 mom_name: self.im.user.get_answer("state_mother_name"),
                 baby_dob1: baby_dob1,
