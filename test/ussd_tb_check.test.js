@@ -193,8 +193,8 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_welcome",
           reply: [
-            "The National Department of Health thanks you for contributing to the health of all " +
-              "citizens. Stop the spread of TB.",
+            "The National Department of Health thanks you for helping to protect the " +
+            "health of all SA citizens. Stop the spread of TB.",
             "",
             "Reply",
             "1. START",
