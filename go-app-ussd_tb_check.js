@@ -133,9 +133,11 @@ go.app = (function () {
 
     self.states.add("state_language", function (name) {
       if (self.im.user.answers.state_language) {
-        self.im.user.set_lang(self.im.user.answers.state_language);
-        return self.states.create("state_terms");
-      } 
+        return self.im.user.set_lang(self.im.user.answers.state_language)
+        .then(function() {
+          return self.states.create("state_terms");
+        });
+      }
       return new ChoiceState(name, {
         question: $("Choose your preferred language"),
         error: $("Please reply with numbers. Choose your preferred language"),
@@ -148,9 +150,11 @@ go.app = (function () {
           new Choice("sot", $("Sesotho")),
         ],
         next: function(choice) {
-          self.im.user.set_lang(choice.value);
-          return self.states.create("state_terms");
-        }
+          return self.im.user.set_lang(choice.value)
+          .then(function() {
+            return self.states.create("state_terms");
+        });
+      }
       });
     });
 

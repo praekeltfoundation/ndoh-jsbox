@@ -272,7 +272,7 @@ describe("ussd_tb_check app", function () {
     it("should go to state_terms for in lang of the valid option", function () {
       return tester.setup.user
         .state("state_language")
-        .setup.user.answer({language: "zul"})
+        //.setup.user.answer("state_language", "zul")
         .input("2")
         .check.user.lang("zul")
         .check.user.state("state_terms")
