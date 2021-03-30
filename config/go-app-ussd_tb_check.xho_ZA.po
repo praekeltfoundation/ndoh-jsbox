@@ -35,8 +35,8 @@ msgstr "Le nkonzo isebenza kakuhle xa ukhetha inombolo kuluhlu"
 
 #: go-app-ussd_tb_check.js:117
 msgid ""
-"The National Department of Health thanks you for contributing to the health "
-"of all citizens. Stop the spread of TB.\n"
+"The National Department of Health thanks you for helping to protect the health "
+"of all SA citizens. Stop the spread of TB.\n"
 "\n"
 "Reply"
 msgstr ""
