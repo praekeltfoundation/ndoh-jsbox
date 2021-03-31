@@ -6,7 +6,7 @@
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2021-03-25 12:44+0200",
+        "po-revision-date": "2021-03-31 10:05+0200",
         "x-generator": "Poedit 2.4.2",
         "last-translator": "",
         "language": "sot_ZA"
@@ -77,7 +77,7 @@
     ],
     "MORE INFO": [
         null,
-        "BOITSEBISO BO EKETSEHILENG"
+        "LESEDI LE LENG"
     ],
     "Return to use this service at any time. Remember, if you think you have TB, avoid contact with other people and get tested at your nearest clinic.": [
         null,
@@ -101,11 +101,11 @@
     ],
     "EASTERN CAPE": [
         null,
-        "KAPA BOTJHABELA"
+        "E. CAPE"
     ],
     "FREE STATE": [
         null,
-        "FOREISETATA"
+        "FREE STATE"
     ],
     "GAUTENG": [
         null,
@@ -125,19 +125,19 @@
     ],
     "NORTH WEST": [
         null,
-        "LEBOWA BOPHIRIMA"
+        "NORTH WEST"
     ],
     "NORTHERN CAPE": [
         null,
-        "KAPA LEBOWA"
+        "N. CAPE"
     ],
     "WESTERN CAPE": [
         null,
-        "KAPA BOPHIRIMA"
+        "W. CAPE"
     ],
     "Please TYPE your home address (or the address where you are currently staying). Give the street number, street name, suburb/township/town/village (or nearest).": [
         null,
-        "Ka kopo NGOLA aterese ya lapeng (kapa aterese eo o dulang ho yona hona jwale). Fana ka nomoro ya seterata, lebitso la seterata, motse-toropong/lekeishene/ toropo/motseng (kapa haufi le moo)."
+        "Ka kopo NGOLA aterese ya lapeng (kapa aterese ya moo o dulang). Fana ka nomoro ya seterata, lebitso la seterata, suburb/lekeishene/toropo/motse (kapa haufi)."
     ],
     "Please confirm the address below based on info you shared:\n{{ address }}\n\nReply": [
         null,

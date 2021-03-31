@@ -6,7 +6,7 @@
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2021-03-25 12:45+0200",
+        "po-revision-date": "2021-03-31 10:10+0200",
         "x-generator": "Poedit 2.4.2",
         "last-translator": "",
         "language": "xho_ZA"
@@ -77,7 +77,7 @@
     ],
     "MORE INFO": [
         null,
-        "INKCUKACHA EZITHE VETSHE"
+        "ULWAZI OLUNINZI"
     ],
     "Return to use this service at any time. Remember, if you think you have TB, avoid contact with other people and get tested at your nearest clinic.": [
         null,
@@ -101,15 +101,15 @@
     ],
     "EASTERN CAPE": [
         null,
-        "IMPUMA KOLONI"
+        "MPUMA KOLONI"
     ],
     "FREE STATE": [
         null,
-        "I-FREE STATE"
+        "FREYSTATA"
     ],
     "GAUTENG": [
         null,
-        "IRHAWUTI"
+        "RHAWUTI"
     ],
     "KWAZULU NATAL": [
         null,
@@ -117,27 +117,27 @@
     ],
     "LIMPOPO": [
         null,
-        "ILIMPOMPO"
+        "LIMPOMPO"
     ],
     "MPUMALANGA": [
         null,
-        "IMPUMALANGA"
+        "MPUMALANGA"
     ],
     "NORTH WEST": [
         null,
-        "EMTLA NTSHONA"
+        "MTLA NTSHONA"
     ],
     "NORTHERN CAPE": [
         null,
-        "UMNTLA KOLONI"
+        "MNTLA KOLONI"
     ],
     "WESTERN CAPE": [
         null,
-        "INTSHONA KOLONI"
+        "NTSHONA KOLONI"
     ],
     "Please TYPE your home address (or the address where you are currently staying). Give the street number, street name, suburb/township/town/village (or nearest).": [
         null,
-        "Nceda FAKA idilesi yasekhaya (okanye idilesi ohlala kuyo ngoku). Nika inombolo yesitalato, igama lesitalato, ihlomela ledolophu / ilokishi / idolophu / ilali (okanye kufutshane)."
+        "Nceda FAKA idilesi yekhaya (okanye apho uhlala khona). Nika inombolo yesitalato, isitalato, ihlomela ledolophu / ilokishi / idolophu / ilali (okanye kufuphi)."
     ],
     "Please confirm the address below based on info you shared:\n{{ address }}\n\nReply": [
         null,

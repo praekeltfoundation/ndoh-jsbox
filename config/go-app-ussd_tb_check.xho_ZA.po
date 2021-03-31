@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2021-03-25 12:45+0200\n"
+"PO-Revision-Date: 2021-03-31 10:10+0200\n"
 "X-Generator: Poedit 2.4.2\n"
 "Last-Translator: \n"
 "Language: xho_ZA\n"
@@ -103,7 +103,7 @@ msgstr "HAYI"
 
 #: go-app-ussd_tb_check.js:179
 msgid "MORE INFO"
-msgstr "INKCUKACHA EZITHE VETSHE"
+msgstr "ULWAZI OLUNINZI"
 
 #: go-app-ussd_tb_check.js:186
 msgid ""
@@ -116,12 +116,11 @@ msgstr ""
 
 #: go-app-ussd_tb_check.js:196
 msgid ""
-"TB HealthCheck does not replace medical advice, diagnosis or treatment. Get "
-"a qualified health provider's advice on your medical condition and care."
+"TB HealthCheck does not replace medical advice, diagnosis or treatment. Get a "
+"qualified health provider's advice on your medical condition and care."
 msgstr ""
 "TB HealthCheck ayithathi ngcebiso zonyango. Fumana ingcebiso engaphezulu "
-"kumboneleli wezempilo ofanelekileyo kwimeko yakho yonyango kunye "
-"nokunakekelwa."
+"kumboneleli wezempilo ofanelekileyo kwimeko yakho yonyango kunye nokunakekelwa."
 
 #: go-app-ussd_tb_check.js:201 go-app-ussd_tb_check.js:212
 msgid "Next"
@@ -144,15 +143,15 @@ msgstr "Khetha iphondo:"
 
 #: go-app-ussd_tb_check.js:224
 msgid "EASTERN CAPE"
-msgstr "IMPUMA KOLONI"
+msgstr "MPUMA KOLONI"
 
 #: go-app-ussd_tb_check.js:225
 msgid "FREE STATE"
-msgstr "I-FREE STATE"
+msgstr "FREYSTATA"
 
 #: go-app-ussd_tb_check.js:226
 msgid "GAUTENG"
-msgstr "IRHAWUTI"
+msgstr "RHAWUTI"
 
 #: go-app-ussd_tb_check.js:227
 msgid "KWAZULU NATAL"
@@ -160,23 +159,23 @@ msgstr "KWAZULU NATAL"
 
 #: go-app-ussd_tb_check.js:228
 msgid "LIMPOPO"
-msgstr "ILIMPOMPO"
+msgstr "LIMPOMPO"
 
 #: go-app-ussd_tb_check.js:229
 msgid "MPUMALANGA"
-msgstr "IMPUMALANGA"
+msgstr "MPUMALANGA"
 
 #: go-app-ussd_tb_check.js:230
 msgid "NORTH WEST"
-msgstr "EMTLA NTSHONA"
+msgstr "MTLA NTSHONA"
 
 #: go-app-ussd_tb_check.js:231
 msgid "NORTHERN CAPE"
-msgstr "UMNTLA KOLONI"
+msgstr "MNTLA KOLONI"
 
 #: go-app-ussd_tb_check.js:232
 msgid "WESTERN CAPE"
-msgstr "INTSHONA KOLONI"
+msgstr "NTSHONA KOLONI"
 
 #: go-app-ussd_tb_check.js:245
 msgid ""
@@ -184,9 +183,9 @@ msgid ""
 "staying). Give the street number, street name, suburb/township/town/village "
 "(or nearest)."
 msgstr ""
-"Nceda FAKA idilesi yasekhaya (okanye idilesi ohlala kuyo ngoku). Nika "
-"inombolo yesitalato, igama lesitalato, ihlomela ledolophu / ilokishi / "
-"idolophu / ilali (okanye kufutshane)."
+"Nceda FAKA idilesi yekhaya (okanye apho uhlala khona). Nika inombolo "
+"yesitalato, isitalato, ihlomela ledolophu / ilokishi / idolophu / ilali "
+"(okanye kufuphi)."
 
 #: go-app-ussd_tb_check.js:300
 msgid ""
@@ -195,8 +194,8 @@ msgid ""
 "\n"
 "Reply"
 msgstr ""
-"Nceda ujonge ukuba le dilesi ingezantsi ichanekile kwaye iyahambelana "
-"nolwazi osinike lona:\n"
+"Nceda ujonge ukuba le dilesi ingezantsi ichanekile kwaye iyahambelana nolwazi "
+"osinike lona:\n"
 "{{ address }}"
 
 #: go-app-ussd_tb_check.js:310 go-app-ussd_tb_check.js:519
@@ -353,8 +352,8 @@ msgstr "Phendula ngenombolo.Ingaba uye wehla emzimbeni ngaphandle kokuzama?"
 msgid ""
 "Are you at high risk of TB?\n"
 "\n"
-"Risk means you live with someone who has TB OR you had TB in the last 2 "
-"years OR you are HIV+\n"
+"Risk means you live with someone who has TB OR you had TB in the last 2 years "
+"OR you are HIV+\n"
 "\n"
 "Reply"
 msgstr ""
@@ -384,8 +383,8 @@ msgid ""
 "\n"
 "Reply"
 msgstr ""
-"Ngoku, nceda uvume ukuba ulwazi owabelane ngalo lulo kwaye unika i-NDoH "
-"imvume yokuxhulumana nawe xa kufuneka njalo? \n"
+"Ngoku, nceda uvume ukuba ulwazi owabelane ngalo lulo kwaye unika i-NDoH imvume "
+"yokuxhulumana nawe xa kufuneka njalo? \n"
 "\n"
 "Phendula u-1 okanye u-2"
 
@@ -395,12 +394,12 @@ msgstr "QALA"
 
 #: go-app-ussd_tb_check.js:564 go-app-ussd_tb_check.js:571
 msgid ""
-"Thanks for your answers. Your result will be sent soon on SMS. Would you "
-"like to receive follow-up messages?\n"
+"Thanks for your answers. Your result will be sent soon on SMS. Would you like "
+"to receive follow-up messages?\n"
 "Reply"
 msgstr ""
-"Enkosi ngeempendulo zakho. Iziphumo zakho zizakuthunyelwa kungekudala nge-"
-"SMS Ungathanda ukufumana imiyalezo elandelelisayo? \n"
+"Enkosi ngeempendulo zakho. Iziphumo zakho zizakuthunyelwa kungekudala nge-SMS "
+"Ungathanda ukufumana imiyalezo elandelelisayo? \n"
 "Phendula"
 
 #: go-app-ussd_tb_check.js:649
@@ -409,8 +408,8 @@ msgstr "Bona Iziphumo"
 
 #: go-app-ussd_tb_check.js:656
 msgid ""
-"You don't need a TB test now, but if you develop cough, fever, weight loss "
-"or night sweats visit your nearest clinic."
+"You don't need a TB test now, but if you develop cough, fever, weight loss or "
+"night sweats visit your nearest clinic."
 msgstr ""
 "Akudingi vavanyo lwe-TB ngoku, kodwa ukuba ngaba uyakhohlela, unomkhuhlane, "
 "uncipha umzimba okanye uyabila ebusuku tyelela iklinikhi ekufutshane nawe."
@@ -432,6 +431,6 @@ msgid ""
 "Check if those you live with are on TB treatment. If you don't know your HIV "
 "status, visit the clinic for a free HIV test. Then do the TB check again."
 msgstr ""
-"Jonga ukuba abo uhlala nabo bakunyango lwe-TB na. Ukuba awusazi isimo sakho "
-"se-HIV, tyelela ikliniki ukuze wenze uvavanyo lwasimahla lwe-HIV. Emva koko "
-"hlola i-TB kwakhona."
+"Jonga ukuba abo uhlala nabo bakunyango lwe-TB na. Ukuba awusazi isimo sakho se-"
+"HIV, tyelela ikliniki ukuze wenze uvavanyo lwasimahla lwe-HIV. Emva koko hlola "
+"i-TB kwakhona."
