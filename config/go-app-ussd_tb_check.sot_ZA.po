@@ -199,7 +199,7 @@ msgid ""
 msgstr ""
 "Ka kopo netefatsa hore aterese e ka tlase e nepahetse mme e tshwana le "
 "tlhaiso-leseding eo o re fileng yona:\n"
-"{{ATERESE}}\n"
+"{{ address }}\n"
 "\n"
 "Araba"
 

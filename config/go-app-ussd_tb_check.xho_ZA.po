@@ -197,7 +197,7 @@ msgid ""
 msgstr ""
 "Nceda ujonge ukuba le dilesi ingezantsi ichanekile kwaye iyahambelana "
 "nolwazi osinike lona:\n"
-"{{IDILESI}}"
+"{{ address }}"
 
 #: go-app-ussd_tb_check.js:310 go-app-ussd_tb_check.js:519
 #: go-app-ussd_tb_check.js:578

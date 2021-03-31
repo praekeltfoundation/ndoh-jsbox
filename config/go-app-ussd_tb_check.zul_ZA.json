@@ -142,7 +142,7 @@
     ],
     "Please confirm the address below based on info you shared:\n{{ address }}\n\nReply": [
         null,
-        "Sicela ubheke ukuthi ikheli elingezansi lilungile futhi lihambisana nemininingwane osinike yona:\n{{IKHELI}}\n\nPhendula"
+        "Sicela ubheke ukuthi ikheli elingezansi lilungile futhi lihambisana nemininingwane osinike yona:\n{{ address }}\n\nPhendula"
     ],
     "Yes": [
         null,

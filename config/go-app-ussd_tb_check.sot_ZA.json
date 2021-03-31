@@ -141,7 +141,7 @@
     ],
     "Please confirm the address below based on info you shared:\n{{ address }}\n\nReply": [
         null,
-        "Ka kopo netefatsa hore aterese e ka tlase e nepahetse mme e tshwana le tlhaiso-leseding eo o re fileng yona:\n{{ATERESE}}\n\nAraba"
+        "Ka kopo netefatsa hore aterese e ka tlase e nepahetse mme e tshwana le tlhaiso-leseding eo o re fileng yona:\n{{ address }}\n\nAraba"
     ],
     "Yes": [
         null,

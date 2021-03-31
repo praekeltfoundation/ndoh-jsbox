@@ -141,7 +141,7 @@
     ],
     "Please confirm the address below based on info you shared:\n{{ address }}\n\nReply": [
         null,
-        "Nceda ujonge ukuba le dilesi ingezantsi ichanekile kwaye iyahambelana nolwazi osinike lona:\n{{IDILESI}}"
+        "Nceda ujonge ukuba le dilesi ingezantsi ichanekile kwaye iyahambelana nolwazi osinike lona:\n{{ address }}"
     ],
     "Yes": [
         null,

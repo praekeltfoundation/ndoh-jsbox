@@ -197,7 +197,7 @@ msgid ""
 msgstr ""
 "Maak asseblief seker dat onderstaande adres korrek is en ooreenstem met die "
 "inligting wat jy vir ons gegee het:\n"
-"{{ADRES}}\n"
+"{{ address }}\n"
 "\n"
 "Antwoord"
 

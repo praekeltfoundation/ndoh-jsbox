@@ -198,7 +198,7 @@ msgid ""
 msgstr ""
 "Sicela ubheke ukuthi ikheli elingezansi lilungile futhi lihambisana "
 "nemininingwane osinike yona:\n"
-"{{IKHELI}}\n"
+"{{ address }}\n"
 "\n"
 "Phendula"
 
