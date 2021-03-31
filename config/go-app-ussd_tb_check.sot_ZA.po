@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2021-03-25 12:44+0200\n"
+"PO-Revision-Date: 2021-03-31 10:05+0200\n"
 "X-Generator: Poedit 2.4.2\n"
 "Last-Translator: \n"
 "Language: sot_ZA\n"
@@ -17,8 +17,7 @@ msgid ""
 "\n"
 "Reply 1 or 2"
 msgstr ""
-"Re ya o amohela hape Lefapheng la Naha la Bophelo bo Botle ba TB "
-"HealthCheck \n"
+"Re ya o amohela hape Lefapheng la Naha la Bophelo bo Botle ba TB HealthCheck \n"
 "\n"
 "Araba 1 kapa 2"
 
@@ -42,8 +41,8 @@ msgid ""
 "\n"
 "Reply"
 msgstr ""
-"Lefapha la Naha la Bophelo le leboha ka ho thusa ho sireletsa bophelo ba "
-"baahi bohle ba SA. Emisa ho ata ha TB. \n"
+"Lefapha la Naha la Bophelo le leboha ka ho thusa ho sireletsa bophelo ba baahi "
+"bohle ba SA. Emisa ho ata ha TB. \n"
 "\n"
 "Araba"
 
@@ -86,8 +85,8 @@ msgid ""
 "\n"
 "Reply"
 msgstr ""
-"Tshebeletso ena e fana feela ka lesedi la bophelo. Dumela ho nka "
-"boikarabello ka tlhokomelo ya hao ya bongaka le kalafo. \n"
+"Tshebeletso ena e fana feela ka lesedi la bophelo. Dumela ho nka boikarabello "
+"ka tlhokomelo ya hao ya bongaka le kalafo. \n"
 "\n"
 "Araba"
 
@@ -105,7 +104,7 @@ msgstr "TJHEE"
 
 #: go-app-ussd_tb_check.js:179
 msgid "MORE INFO"
-msgstr "BOITSEBISO BO EKETSEHILENG"
+msgstr "LESEDI LE LENG"
 
 #: go-app-ussd_tb_check.js:186
 msgid ""
@@ -117,8 +116,8 @@ msgstr ""
 
 #: go-app-ussd_tb_check.js:196
 msgid ""
-"TB HealthCheck does not replace medical advice, diagnosis or treatment. Get "
-"a qualified health provider's advice on your medical condition and care."
+"TB HealthCheck does not replace medical advice, diagnosis or treatment. Get a "
+"qualified health provider's advice on your medical condition and care."
 msgstr ""
 "TB HealthCheck ha e nke sebaka sa dikeletso tsa bongaka, diteko kapa kalafo. "
 "Fumana keletso ya bongaka ka boemo ba hao ba bongaka le tlhokomelo."
@@ -146,11 +145,11 @@ msgstr ""
 
 #: go-app-ussd_tb_check.js:224
 msgid "EASTERN CAPE"
-msgstr "KAPA BOTJHABELA"
+msgstr "E. CAPE"
 
 #: go-app-ussd_tb_check.js:225
 msgid "FREE STATE"
-msgstr "FOREISETATA"
+msgstr "FREE STATE"
 
 #: go-app-ussd_tb_check.js:226
 msgid "GAUTENG"
@@ -170,15 +169,15 @@ msgstr "MPUMALANGA"
 
 #: go-app-ussd_tb_check.js:230
 msgid "NORTH WEST"
-msgstr "LEBOWA BOPHIRIMA"
+msgstr "NORTH WEST"
 
 #: go-app-ussd_tb_check.js:231
 msgid "NORTHERN CAPE"
-msgstr "KAPA LEBOWA"
+msgstr "N. CAPE"
 
 #: go-app-ussd_tb_check.js:232
 msgid "WESTERN CAPE"
-msgstr "KAPA BOPHIRIMA"
+msgstr "W. CAPE"
 
 #: go-app-ussd_tb_check.js:245
 msgid ""
@@ -186,9 +185,8 @@ msgid ""
 "staying). Give the street number, street name, suburb/township/town/village "
 "(or nearest)."
 msgstr ""
-"Ka kopo NGOLA aterese ya lapeng (kapa aterese eo o dulang ho yona hona "
-"jwale). Fana ka nomoro ya seterata, lebitso la seterata, motse-toropong/"
-"lekeishene/ toropo/motseng (kapa haufi le moo)."
+"Ka kopo NGOLA aterese ya lapeng (kapa aterese ya moo o dulang). Fana ka nomoro "
+"ya seterata, lebitso la seterata, suburb/lekeishene/toropo/motse (kapa haufi)."
 
 #: go-app-ussd_tb_check.js:300
 msgid ""
@@ -197,9 +195,9 @@ msgid ""
 "\n"
 "Reply"
 msgstr ""
-"Ka kopo netefatsa hore aterese e ka tlase e nepahetse mme e tshwana le "
-"tlhaiso-leseding eo o re fileng yona:\n"
-"{{ATERESE}}\n"
+"Ka kopo netefatsa hore aterese e ka tlase e nepahetse mme e tshwana le tlhaiso-"
+"leseding eo o re fileng yona:\n"
+"{{ address }}\n"
 "\n"
 "Araba"
 
@@ -360,15 +358,15 @@ msgstr ""
 msgid ""
 "Are you at high risk of TB?\n"
 "\n"
-"Risk means you live with someone who has TB OR you had TB in the last 2 "
-"years OR you are HIV+\n"
+"Risk means you live with someone who has TB OR you had TB in the last 2 years "
+"OR you are HIV+\n"
 "\n"
 "Reply"
 msgstr ""
 "O kotsing e kgolo ya TB?\n"
 "\n"
-"Kotsi e bolela o dula le motho ya nang le TB KAPA o bile le TB dilemong tse "
-"2 tse fetileng KAPA o HIV+"
+"Kotsi e bolela o dula le motho ya nang le TB KAPA o bile le TB dilemong tse 2 "
+"tse fetileng KAPA o HIV+"
 
 #: go-app-ussd_tb_check.js:510
 msgid ""
@@ -402,12 +400,12 @@ msgstr "QALA"
 
 #: go-app-ussd_tb_check.js:564 go-app-ussd_tb_check.js:571
 msgid ""
-"Thanks for your answers. Your result will be sent soon on SMS. Would you "
-"like to receive follow-up messages?\n"
+"Thanks for your answers. Your result will be sent soon on SMS. Would you like "
+"to receive follow-up messages?\n"
 "Reply"
 msgstr ""
-"Ke leboha dikarabo tsa hao. Sephetho sa hao se tla romellwa haufinyane ka "
-"SMS. O ka thabela ho fumana melaetsa ya tshalo-morao? \n"
+"Ke leboha dikarabo tsa hao. Sephetho sa hao se tla romellwa haufinyane ka SMS. "
+"O ka thabela ho fumana melaetsa ya tshalo-morao? \n"
 "Araba"
 
 #: go-app-ussd_tb_check.js:649
@@ -416,8 +414,8 @@ msgstr "Bona Sephetho"
 
 #: go-app-ussd_tb_check.js:656
 msgid ""
-"You don't need a TB test now, but if you develop cough, fever, weight loss "
-"or night sweats visit your nearest clinic."
+"You don't need a TB test now, but if you develop cough, fever, weight loss or "
+"night sweats visit your nearest clinic."
 msgstr ""
 "Ha o hloke tlhahlobo ya TB hona jwale, empa haeba o ba le sefuba, feberu, ho "
 "theola boima ba mmele kapa ho fufulelwa bosiu, etela tleliniki e haufinyane."
