@@ -146,10 +146,13 @@ go.app = (function () {
           new Choice("sot", $("Sesotho")),
         ],
         next: function(choice) {
+          if (choice.value != "eng"){
           return self.im.user.set_lang(choice.value)
           .then(function() {
-            return self.states.create("state_terms");
-        });
+            return self.states.create("state_terms"); 
+          });
+        }
+        return self.states.create("state_terms");
       }
       });
     });

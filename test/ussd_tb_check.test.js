@@ -277,6 +277,24 @@ describe("ussd_tb_check app", function () {
         .check.user.state("state_terms")
         .run();
     });
+    it("should go to state_terms for english lang option", function () {
+      return tester.setup.user
+        .state("state_language")
+        .input("1")
+        .check.interaction({
+          state: "state_terms",
+          reply: [
+            "This service only provides health info. Agree that you are responsible for your medical care and treatment.",
+            "",
+            "Reply",
+            "1. YES",
+            "2. NO",
+            "3. MORE INFO"
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
     it("should skip the state for users who already have this info", function () {
       return tester.setup.user
         .state("state_language")
