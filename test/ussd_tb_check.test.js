@@ -210,7 +210,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_welcome",
           reply: [
-            "This service works best when you select numbers from the list",
+            "This service works best when you choose number options from the list.",
             "1. START",
           ].join("\n"),
           char_limit: 140,
@@ -424,18 +424,16 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_province",
           reply: [
-            "Choose your province:",
-            "",
-            "Reply:",
-            "1. EASTERN CAPE",
+            "Choose your province. Reply with a number:",
+            "1. E. CAPE",
             "2. FREE STATE",
             "3. GAUTENG",
             "4. KWAZULU NATAL",
             "5. LIMPOPO",
             "6. MPUMALANGA",
             "7. NORTH WEST",
-            "8. NORTHERN CAPE",
-            "9. WESTERN CAPE",
+            "8. N. CAPE",
+            "9. W. CAPE",
           ].join("\n"),
           char_limit: 160,
         })
@@ -448,18 +446,16 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_province",
           reply: [
-            "Choose your province:",
-            "",
-            "Reply:",
-            "1. EASTERN CAPE",
+            "Choose your province. Reply with a number:",
+            "1. E. CAPE",
             "2. FREE STATE",
             "3. GAUTENG",
             "4. KWAZULU NATAL",
             "5. LIMPOPO",
             "6. MPUMALANGA",
             "7. NORTH WEST",
-            "8. NORTHERN CAPE",
-            "9. WESTERN CAPE",
+            "8. N. CAPE",
+            "9. W. CAPE",
           ].join("\n"),
           char_limit: 160,
         })
@@ -564,10 +560,8 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_confirm_city",
           reply: [
-            "Please confirm the address below based on info you shared:",
-            "54321 Fancy Apartment, 12345 Really really long address, Fresnaye, Cape Town, Sou",
-            "",
-            "Reply",
+            "Please check that the address below is correct and matches the information you gave us:",
+            "54321 Fancy Apartment, 12345 Really really long address, Fr",
             "1. Yes",
             "2. No",
           ].join("\n"),
@@ -632,10 +626,12 @@ describe("ussd_tb_check app", function () {
           state: "state_age",
           reply: [
             "How old are you?",
-            "1. <18",
+            "",
+            "Reply with a number",
+            "1. under 18",
             "2. 18-39",
             "3. 40-65",
-            "4. >65",
+            "4. over 65",
           ].join("\n"),
           char_limit: 160,
         })
@@ -651,10 +647,10 @@ describe("ussd_tb_check app", function () {
             "Please use numbers from list.",
             "",
             "How old are you?",
-            "1. <18",
+            "1. under 18",
             "2. 18-39",
             "3. 40-65",
-            "4. >65",
+            "4. over 65",
           ].join("\n"),
           char_limit: 160,
         })
@@ -682,11 +678,13 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_gender",
           reply: [
-            "Which gender do you identify as?",
-            "1. Male",
-            "2. Female",
-            "3. Other",
-            "4. Rather not say",
+            "Which gender do you identify as?:",
+            "",
+            "Reply with a number",
+            "1. MALE",
+            "2. FEMALE",
+            "3. OTHER",
+            "4. RATHER NOT SAY",
           ].join("\n"),
           char_limit: 160,
         })
@@ -701,11 +699,11 @@ describe("ussd_tb_check app", function () {
           reply: [
             "Please use numbers from list.",
             "",
-            "Which gender do you identify as?",
-            "1. Male",
-            "2. Female",
-            "3. Other",
-            "4. Rather not say",
+            "Which gender do you identify as?:",
+            "1. MALE",
+            "2. FEMALE",
+            "3. OTHER",
+            "4. RATHER NOT SAY",
           ].join("\n"),
           char_limit: 160,
         })
@@ -728,7 +726,7 @@ describe("ussd_tb_check app", function () {
           reply: [
             "Let's see how you're feeling today. Do you have a cough?",
             "",
-            "Reply",
+            "Reply 1 or 2",
             "1. YES",
             "2. NO",
           ].join("\n"),
@@ -746,7 +744,7 @@ describe("ussd_tb_check app", function () {
             "Please use numbers from list.",
             "Do you have a cough?",
             "",
-            "Reply",
+            "Reply 1 or 2",
             "1. YES",
             "2. NO",
           ].join("\n"),
@@ -771,7 +769,7 @@ describe("ussd_tb_check app", function () {
           reply: [
             "Do you have a fever? (when you touch your forehead, does it feel hot?)",
             "",
-            "Reply",
+            "Reply 1 or 2",
             "1. YES",
             "2. NO",
           ].join("\n"),
@@ -789,7 +787,7 @@ describe("ussd_tb_check app", function () {
             "Please use numbers from list. Do you have a fever? (when you touch " +
               "your forehead, does it feel hot?)",
             "",
-            "Reply",
+            "Reply 1 or 2",
             "1. YES",
             "2. NO",
           ].join("\n"),
@@ -813,8 +811,6 @@ describe("ussd_tb_check app", function () {
           state: "state_weight",
           reply: [
             "Have you been losing weight without trying?",
-            "",
-            "Reply",
             "1. YES",
             "2. NO",
           ].join("\n"),
@@ -830,8 +826,6 @@ describe("ussd_tb_check app", function () {
           state: "state_weight",
           reply: [
             "Please use numbers from list. Have you been losing weight without trying?",
-            "",
-            "Reply",
             "1. YES",
             "2. NO",
           ].join("\n"),
@@ -857,9 +851,7 @@ describe("ussd_tb_check app", function () {
             "Are you at high risk of TB?",
             "",
             "Risk means you live with someone who has TB OR you had TB in the last 2 years OR you are HIV+",
-            "",
-            "Reply",
-            "1. Yes",
+            "1. Yes high risk",
             "2. No",
             "3. Dont know",
           ].join("\n"),
@@ -875,9 +867,7 @@ describe("ussd_tb_check app", function () {
           state: "state_exposure",
           reply: [
             "Please use numbers from list. Are you at high risk for TB?",
-            "",
-            "Reply",
-            "1. Yes",
+            "1. Yes high risk",
             "2. No",
             "3. Dont know",
           ].join("\n"),
@@ -903,10 +893,9 @@ describe("ussd_tb_check app", function () {
             "Now, please agree that the info you shared is correct and that you give the NDoH" +
               " permission to contact you if needed?",
             "",
-            "Reply",
+            "Reply 1 or 2",
             "1. YES",
             "2. NO",
-            "3. RESTART",
           ].join("\n"),
           char_limit: 160,
         })
@@ -922,10 +911,9 @@ describe("ussd_tb_check app", function () {
             "Now, please agree that the info you shared is correct and that you give the NDoH" +
               " permission to contact you if needed?",
             "",
-            "Reply",
+            "Reply 1 or 2",
             "1. YES",
             "2. NO",
-            "3. RESTART",
           ].join("\n"),
           char_limit: 160,
         })
@@ -936,27 +924,6 @@ describe("ussd_tb_check app", function () {
         .state("state_tracing")
         .input("1")
         .check.user.state("state_opt_in")
-        .run();
-    });
-    it("should go to start if restart is chosen", function () {
-      return tester.setup.user
-        .state("state_tracing")
-        .setup(function (api) {
-          api.http.fixtures.add({
-            request: {
-              url: "http://healthcheck/v2/healthcheckuserprofile/+27123456789/",
-              method: "GET",
-            },
-            response: {
-              code: 404,
-              data: {
-                detail: "Not found.",
-              },
-            },
-          });
-        })
-        .input("3")
-        .check.user.state("state_welcome")
         .run();
     });
   });
