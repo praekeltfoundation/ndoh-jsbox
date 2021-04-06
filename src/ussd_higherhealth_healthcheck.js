@@ -356,7 +356,7 @@ go.app = (function () {
             return self.states.create("__error__");
           }
           var location = response.data.result.geometry.location;
-          self.im.user.answers.city_location = 
+          self.im.user.answers.city_location =
             self.pad_location(location.lat, 2) + self.pad_location(location.lng, 3) + "/";
           if(self.im.user.answers.confirmed_contact) {
             return self.states.create("state_tracing");
@@ -669,19 +669,25 @@ go.app = (function () {
         if (risk === "low") {
           text = $(
             "You are at low risk of having COVID-19. Monitor your symptoms daily. No result SMS " +
-            "will be sent. Screenshot or save this result or use the WhatsApp channel."
+            "will be sent. Screenshot or save this result or use the WhatsApp channel.",
+            "",
+            "Supported by Higher Health, Lifebouy, European Union and HWSETA"
           );
         }
         if (risk === "moderate") {
           text = $(
             "You should SELF-QUARANTINE for 10 days and do HealthCheck daily to monitor " +
-            "symptoms. Try stay and sleep alone in a room that has a window with good air flow."
+            "symptoms. Try stay and sleep alone in a room that has a window with good air flow.",
+            "",
+            "Supported by Higher Health, Lifebouy, European Union and HWSETA"
           );
         }
         if (risk === "high") {
           text = $([
             "GET TESTED to find out if you have COVID-19.  Go to a testing center or Call " +
-            "0800029999 or your healthcare practitioner for info on what to do & how to test"
+            "0800029999 or your healthcare practitioner for info on what to do & how to test",
+            "",
+            "Supported by Higher Health, Lifebouy, European Union and HWSETA"
           ].join("\n"));
         }
       } else {
