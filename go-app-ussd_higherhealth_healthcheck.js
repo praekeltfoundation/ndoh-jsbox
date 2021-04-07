@@ -2271,18 +2271,16 @@ go.app = (function () {
       if (answers.state_tracing) {
         if (risk === "low") {
           text = $(
-            "You are at low risk of having COVID-19. Monitor your symptoms daily. No result SMS " +
-            "will be sent. Screenshot or save this result or use the WhatsApp channel.",
-            "",
-            "HIGHER HEALTH supported by Lifebuoy, European Union and HWESTA"
+            "You are low risk of having COVID-19. Check your symptoms daily. "+
+            "Screenshot this result. HIGHER HEALTH supported by Lifebuoy, " + 
+            "European Union and HWESTA"
           );
         }
         if (risk === "moderate") {
           text = $(
-            "You should SELF-QUARANTINE for 10 days and do HealthCheck daily to monitor " +
-            "symptoms. Try stay and sleep alone in a room that has a window with good air flow.",
-            "",
-            "HIGHER HEALTH supported by Lifebuoy, European Union and HWESTA"
+            "SELF-QUARANTINE for 10 days and monitor yourself daily on " +
+            "HealthCheck. Stay alone in a room. HIGHER HEALTH supported "+
+            "by Lifebuoy, European Union and HWESTA."
           );
         }
         if (risk === "high") {
