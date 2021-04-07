@@ -141,7 +141,7 @@
     ],
     "Please check that the address below is correct and matches the information you gave us:\n{{ address }}": [
         null,
-        "Nceda ujonge ukuba le dilesi ingezantsi ichanekile kwaye iyahambelana nolwazi osinike lona:\n{{ IDILESI }}"
+        "Nceda ujonge ukuba le dilesi ingezantsi ichanekile kwaye iyahambelana nolwazi osinike lona:\n{{ address }}"
     ],
     "Yes": [
         null,
