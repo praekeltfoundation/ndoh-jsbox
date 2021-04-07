@@ -501,7 +501,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.user.answer("place_id", "ChIJD7fiBh9u5kcRYJSMaMOCCwQ")
                 .run();
         });
-        
+
         it("should go to state_age if value exists", function () {
             return tester
                 .setup.user.answer("state_city", "Cape Town, South Africa")
@@ -1358,9 +1358,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply: [
-                        "GET TESTED to find out if you have COVID-19.  Go to a testing center or " +
-                        "Call 0800029999 or your healthcare practitioner for info on what to do " +
-                        "& how to test"
+                        "GET TESTED for COVID-19. Go to your doctor or a testing centre or call",
+                        " +0800029999 for more info. HIGHER HEALTH supported by Lifebuoy, European Union & HWESTA"
                     ].join("\n"),
                     char_limit: 160
                 })

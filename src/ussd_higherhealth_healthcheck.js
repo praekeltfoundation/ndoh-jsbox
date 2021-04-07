@@ -671,7 +671,7 @@ go.app = (function () {
             "You are at low risk of having COVID-19. Monitor your symptoms daily. No result SMS " +
             "will be sent. Screenshot or save this result or use the WhatsApp channel.",
             "",
-            "Supported by Higher Health, Lifebouy, European Union and HWSETA"
+            "HIGHER HEALTH supported by Lifebuoy, European Union and HWESTA"
           );
         }
         if (risk === "moderate") {
@@ -679,15 +679,13 @@ go.app = (function () {
             "You should SELF-QUARANTINE for 10 days and do HealthCheck daily to monitor " +
             "symptoms. Try stay and sleep alone in a room that has a window with good air flow.",
             "",
-            "Supported by Higher Health, Lifebouy, European Union and HWSETA"
+            "HIGHER HEALTH supported by Lifebuoy, European Union and HWESTA"
           );
         }
         if (risk === "high") {
           text = $([
-            "GET TESTED to find out if you have COVID-19.  Go to a testing center or Call " +
-            "0800029999 or your healthcare practitioner for info on what to do & how to test",
-            "",
-            "Supported by Higher Health, Lifebouy, European Union and HWSETA"
+            "GET TESTED for COVID-19. Go to your doctor or a testing centre or call",
+            " +0800029999 for more info. HIGHER HEALTH supported by Lifebuoy, European Union & HWESTA"
           ].join("\n"));
         }
       } else {
