@@ -101,7 +101,7 @@ msgstr "EE"
 #: go-app-ussd_tb_check.js:464 go-app-ussd_tb_check.js:474
 #: go-app-ussd_tb_check.js:484 go-app-ussd_tb_check.js:528
 msgid "NO"
-msgstr "TJHE"
+msgstr "TJHEE"
 
 #: go-app-ussd_tb_check.js:189
 msgid "MORE INFO"
@@ -374,9 +374,7 @@ msgstr ""
 "Jwale, ka kopo dumela hore lesedi leo o le arolang le nepahetse le hore o fa "
 "NDoH tumello ya ho ikopanya le wena ha ho hlokahala? \n"
 "\n"
-"Araba 1 kapa 2\n"
-"1. EE\n"
-"2. TJHE"
+"Araba 1 kapa 2"
 
 #: go-app-ussd_tb_check.js:542 go-app-ussd_tb_check.js:549
 msgid ""
