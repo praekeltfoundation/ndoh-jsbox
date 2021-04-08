@@ -88,6 +88,12 @@ go.app = (function () {
               state_age: response.data.age,
               state_language: response.data.language,
             };
+            if (response.data.language != "eng"){
+              self.im.user.set_lang(response.data.language)
+              .then(function() {
+                return self.states.create("state_terms");
+              });
+            }
             return self.states.create("state_welcome");
           },
           function (e) {
@@ -147,13 +153,13 @@ go.app = (function () {
         ],
         next: function(choice) {
           if (choice.value != "eng"){
-          return self.im.user.set_lang(choice.value)
-          .then(function() {
-            return self.states.create("state_terms");
-          });
+            return self.im.user.set_lang(choice.value)
+            .then(function() {
+              return self.states.create("state_terms");
+            });
+          }
+          return self.states.create("state_terms");
         }
-        return self.states.create("state_terms");
-      }
       });
     });
 
@@ -608,10 +614,10 @@ go.app = (function () {
     self.states.add("state_complete", function (name) {
       var answers = self.im.user.answers;
 
-      var text = "Thanks for choosing to get our follow-up messages.";
+      var text = $("Thanks for choosing to get our follow-up messages.");
 
       if (!answers.state_opt_in) {
-        text = "Okay thanks, you won't get any follow-up messages.";
+        text = $("Okay thanks, you won't get any follow-up messages.");
       }
       var error = $(
         "This service works best when you select numbers from the list"

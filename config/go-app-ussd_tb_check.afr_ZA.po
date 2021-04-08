@@ -384,6 +384,14 @@ msgstr ""
 "\n"
 "Antwoord met"
 
+#: go-app-ussd_tb_check.js:611
+msgid "Thanks for choosing to get our follow-up messages."
+msgstr "Dankie dat jy gekies het om ons opvolg-boodskappe te ontvang."
+
+#: go-app-ussd_tb_check.js:614
+msgid "Okay thanks, you won't get any follow-up messages."
+msgstr "Reg so dankie, jy sal nie enige opvolg-boodskappe ontvang nie."
+
 #: go-app-ussd_tb_check.js:619
 msgid "This service works best when you select numbers from the list"
 msgstr ""
