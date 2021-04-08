@@ -608,10 +608,10 @@ go.app = (function () {
     self.states.add("state_complete", function (name) {
       var answers = self.im.user.answers;
 
-      var text = "Thanks for choosing to get our follow-up messages.";
+      var text = $("Thanks for choosing to get our follow-up messages.");
 
       if (!answers.state_opt_in) {
-        text = "Okay thanks, you won't get any follow-up messages.";
+        text = $("Okay thanks, you won't get any follow-up messages.");
       }
       var error = $(
         "This service works best when you select numbers from the list"

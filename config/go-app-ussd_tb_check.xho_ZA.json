@@ -255,6 +255,14 @@
         null,
         "Enkosi ngeempendulo zakho. Iziphumo zakho zizakuthunyelwa kungekudala nge-SMS Ungathanda ukufumana imiyalezo elandelelisayo? \n\nPhendula"
     ],
+    "Thanks for choosing to get our follow-up messages.": [
+        null,
+        "Enkosi ngokukhetha ukufumana imiyalezo yethu yokulandelisa."
+    ],
+    "Okay thanks, you won't get any follow-up messages.": [
+        null,
+        "Kulungile enkosi, awuzi kufumana miyalezo yokulandelelisa."
+    ],
     "This service works best when you select numbers from the list": [
         null,
         "Le nkonzo isebenza kakuhle xa ukhetha inombolo kuluhlu."

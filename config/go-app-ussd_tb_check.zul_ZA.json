@@ -10,7 +10,7 @@
         "x-generator": "Poedit 2.4.2",
         "last-translator": "",
         "plural-forms": "nplurals=2; plural=(n==0 || n==1);",
-        "language": "zul_ZA"
+        "language": "zu_ZA"
     },
     "Welcome back to the The National Department of Health's TB HealthCheck\n\nReply 1 or 2": [
         null,
@@ -255,6 +255,14 @@
     "Thanks for your answers. Your result will be sent soon on SMS. Would you like to receive follow-up messages?\nReply": [
         null,
         "Siyabonga ngempendulo yakho. Imiphumela yakho izothunyelwa ku-SMS kungekudala. Ungathanda ukuthola imilayezo ezolandelela? \n\nPhendula"
+    ],
+    "Thanks for choosing to get our follow-up messages.": [
+        null,
+        "Siyabonga ngokukhetha ukuthola imilayezo yethu ezolandelela."
+    ],
+    "Okay thanks, you won't get any follow-up messages.": [
+        null,
+        "Kulungile siyabonga, ngeke uthole imilayezo ezolandelela."
     ],
     "This service works best when you select numbers from the list": [
         null,

@@ -256,6 +256,14 @@
         null,
         "Dankie vir jou antwoorde. Jou resultate sal binnekort per sms gestuur word. Wil jy graag opvolg-boodskappe ontvang? \n\nAntwoord met"
     ],
+    "Thanks for choosing to get our follow-up messages.": [
+        null,
+        "Dankie dat jy gekies het om ons opvolg-boodskappe te ontvang."
+    ],
+    "Okay thanks, you won't get any follow-up messages.": [
+        null,
+        "Reg so dankie, jy sal nie enige opvolg-boodskappe ontvang nie."
+    ],
     "This service works best when you select numbers from the list": [
         null,
         "Hierdie diens werk die beste wanneer jy een van die nommers op die lys kies."

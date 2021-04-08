@@ -386,6 +386,14 @@ msgstr ""
 "SMS. O ka thabela ho fumana melaetsa ya tshalo-morao?\n"
 "Araba"
 
+#: go-app-ussd_tb_check.js:611
+msgid "Thanks for choosing to get our follow-up messages."
+msgstr "Re leboha ha o kgethile ho fumana melaetsa ya rona ya tshalo-morao."
+
+#: go-app-ussd_tb_check.js:614
+msgid "Okay thanks, you won't get any follow-up messages."
+msgstr "Ho lokile rea leboha, o ke ke wa fumana melaetsa ya tshalo-morao."
+
 #: go-app-ussd_tb_check.js:619
 msgid "This service works best when you select numbers from the list"
 msgstr ""

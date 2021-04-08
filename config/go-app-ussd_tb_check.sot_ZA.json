@@ -255,6 +255,14 @@
         null,
         "Ke leboha dikarabo tsa hao. Sephetho sa hao se tla romellwa haufinyane ka SMS. O ka thabela ho fumana melaetsa ya tshalo-morao?\nAraba"
     ],
+    "Thanks for choosing to get our follow-up messages.": [
+        null,
+        "Re leboha ha o kgethile ho fumana melaetsa ya rona ya tshalo-morao."
+    ],
+    "Okay thanks, you won't get any follow-up messages.": [
+        null,
+        "Ho lokile rea leboha, o ke ke wa fumana melaetsa ya tshalo-morao."
+    ],
     "This service works best when you select numbers from the list": [
         null,
         "Tshebeletso ena e sebetsa hantle ha o kgetha dikgetho tsa dinomoro lenaneng."

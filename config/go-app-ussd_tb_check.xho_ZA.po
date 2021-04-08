@@ -387,6 +387,14 @@ msgstr ""
 "\n"
 "Phendula"
 
+#: go-app-ussd_tb_check.js:611
+msgid "Thanks for choosing to get our follow-up messages."
+msgstr "Enkosi ngokukhetha ukufumana imiyalezo yethu yokulandelisa."
+
+#: go-app-ussd_tb_check.js:614
+msgid "Okay thanks, you won't get any follow-up messages."
+msgstr "Kulungile enkosi, awuzi kufumana miyalezo yokulandelelisa."
+
 #: go-app-ussd_tb_check.js:619
 msgid "This service works best when you select numbers from the list"
 msgstr "Le nkonzo isebenza kakuhle xa ukhetha inombolo kuluhlu."
