@@ -88,6 +88,12 @@ go.app = (function () {
               state_age: response.data.age,
               state_language: response.data.language,
             };
+            if (response.data.language != "eng"){
+              self.im.user.set_lang(response.data.language)
+              .then(function() {
+                return self.states.create("state_terms");
+              });
+            }
             return self.states.create("state_welcome");
           },
           function (e) {
@@ -147,13 +153,13 @@ go.app = (function () {
         ],
         next: function(choice) {
           if (choice.value != "eng"){
-          return self.im.user.set_lang(choice.value)
-          .then(function() {
-            return self.states.create("state_terms");
-          });
+            return self.im.user.set_lang(choice.value)
+            .then(function() {
+              return self.states.create("state_terms");
+            });
+          }
+          return self.states.create("state_terms");
         }
-        return self.states.create("state_terms");
-      }
       });
     });
 
