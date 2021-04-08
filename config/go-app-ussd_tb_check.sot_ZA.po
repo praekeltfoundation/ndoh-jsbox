@@ -320,7 +320,7 @@ msgstr ""
 
 #: go-app-ussd_tb_check.js:471
 msgid "Are you sweating more than usual at night?"
-msgstr ""
+msgstr "Na o fufulelwa ho feta ka moo ho tlwaelehileng bosiu?"
 
 #: go-app-ussd_tb_check.js:472
 msgid ""
