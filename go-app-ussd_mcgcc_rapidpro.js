@@ -318,7 +318,7 @@ go.app = function() {
                 next: "state_start",
                 text: $(
                     "Your supporter hasn't registered yet. " +
-                    "Remind them to dial *134*550# to complete registration."
+                    "Remind them to dial *134*550*9# to complete registration."
                 )
             });
         });
@@ -345,7 +345,7 @@ go.app = function() {
                 next: "state_start",
                 text: $(
                     "That's OK. We hope they can love and support you & baby." +
-                    "\n\nIf they change their mind, you can dial *134*550# from your " +
+                    "\n\nIf they change their mind, you can dial *134*550*9# from your " +
                     "number to sign them up for messages."
                 )
             });

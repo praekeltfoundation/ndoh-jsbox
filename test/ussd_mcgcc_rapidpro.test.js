@@ -221,7 +221,7 @@ describe("ussd_mcgcc app", function() {
                     state: "state_mother_supporter_noconsent_end",
                     reply: [
                         "That's OK. We hope they can love and support you & baby.",
-                        "\nIf they change their mind, you can dial *134*550# from your " +
+                        "\nIf they change their mind, you can dial *134*550*9# from your " +
                         "number to sign them up for messages."
                     ].join("\n")
                 })
