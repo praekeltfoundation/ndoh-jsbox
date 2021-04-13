@@ -910,7 +910,8 @@ describe("ussd_mcgcc app", function() {
                 })
                 .setup.user.answer("contact", {
                     fields: {
-                        supp_uuid: "123-456"
+                        supp_uuid: "123-456",
+                        mom_uuid: "1234-57"
                     }
                 })
                 .setup(function(api) {
@@ -919,7 +920,8 @@ describe("ussd_mcgcc app", function() {
                             "supporter-change-msisdn-uuid", null, "whatsapp:27123456722", {
                                 "supp_msisdn": "+27123456722",
                                 "old_msisdn": "+27123456789",
-                                "old_uuid": "123-456"
+                                "old_uuid": "123-456",
+                                mom_uuid: "1234-57"
                                 
                             })
                     );
