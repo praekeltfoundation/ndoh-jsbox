@@ -900,6 +900,7 @@ go.app = function() {
         self.add("state_supporter_change_msisdn_rapidpro", function(name, opts) {
             var contact = self.im.user.answers.contact;
             var supp_uuid = _.get(contact, "fields.supp_uuid");
+            var mom_uuid = _.get(contact, "fields.mom_uuid");
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             var new_supporter_msisdn = utils.normalize_msisdn(self.im.user.get_answer("state_supporter_new_msisdn"), "ZA");
             return self.rapidpro
@@ -909,7 +910,8 @@ go.app = function() {
                     "whatsapp:" + _.trim(new_supporter_msisdn, "+"), {
                         supp_msisdn: new_supporter_msisdn,
                         old_msisdn: msisdn,
-                        old_uuid: supp_uuid
+                        old_uuid: supp_uuid,
+                        mom_uuid: mom_uuid
                     })
                 .then(function() {
                     return self.states.create("state_supporter_new_msisdn_end");
