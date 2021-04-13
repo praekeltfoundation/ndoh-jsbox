@@ -1002,6 +1002,7 @@ go.app = function() {
         });
 
         self.add("state_supporter_new_msisdn", function(name) {
+            var current_number = _.get(self.im.user.get_answer("contact"), "fields.supp_cell");
             return new FreeText(name, {
                 question: $("Please reply with the new cellphone number " +
                     "you would like to get messages, e.g. 0762564733."),
@@ -1016,6 +1017,12 @@ go.app = function() {
                         return (
                             "Please try again. Reply with your new cellphone number " +
                             "as a 10-digit number."
+                        );
+                    }
+                    if (utils.normalize_msisdn(content, "ZA") === current_number) {
+                        return (
+                            "Sorry, your new number cannot be the same as " +
+                            "your old number."
                         );
                     }
                 },
@@ -1040,14 +1047,18 @@ go.app = function() {
         });
         
         self.add("state_supporter_change_msisdn_rapidpro", function(name, opts) {
+            var contact = self.im.user.answers.contact;
+            var supp_uuid = _.get(contact, "fields.supp_uuid");
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
-            var new_supporter_msisdn = utils.normalize_msisdn(self.im.user.get_answer("state_supporter_new_msisdn"), "ZA");     
+            var new_supporter_msisdn = utils.normalize_msisdn(self.im.user.get_answer("state_supporter_new_msisdn"), "ZA");
             return self.rapidpro
                 .start_flow(
                     self.im.config.supporter_change_msisdn_uuid,
                     null,
-                    "whatsapp:" + _.trim(msisdn, "+"), {
-                        supp_msisdn: new_supporter_msisdn
+                    "whatsapp:" + _.trim(new_supporter_msisdn, "+"), {
+                        supp_msisdn: new_supporter_msisdn,
+                        old_msisdn: msisdn,
+                        old_uuid: supp_uuid
                     })
                 .then(function() {
                     return self.states.create("state_supporter_new_msisdn_end");
