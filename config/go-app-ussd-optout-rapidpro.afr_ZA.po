@@ -156,7 +156,7 @@ msgstr ""
 
 #: src/ussd_optout_rapidpro.js:303
 msgid ""
-"Welcome to the Department of Health's MomConnect. Dial *154*550*2# when you "
+"Welcome to the Department of Health's MomConnect. Dial *134*550*2# when you "
 "are at a clinic to sign up to receive helpful messages for you and your baby."
 msgstr ""
 

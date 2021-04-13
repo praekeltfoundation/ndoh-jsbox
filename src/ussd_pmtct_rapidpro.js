@@ -329,7 +329,7 @@ go.app = function() {
                 text: $(
                     "Welcome to the Department of Health's MomConnect. To get msgs " +
                     "about keeping your baby HIV-negative, register to MomConnect by " +
-                    "dialing *154*550*2# at the clinic."
+                    "dialing *134*550*2# at the clinic."
                 )
             });
         });
