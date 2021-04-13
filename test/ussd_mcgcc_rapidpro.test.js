@@ -908,12 +908,19 @@ describe("ussd_mcgcc app", function() {
                 .setup.user.answers({
                     state_supporter_new_msisdn: "0123456722"
                 })
+                .setup.user.answer("contact", {
+                    fields: {
+                        supp_uuid: "123-456"
+                    }
+                })
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
-                            "supporter-change-msisdn-uuid", null, "whatsapp:27123456789", {
-                                //"on_whatsapp": "true",
-                                "supp_msisdn": "+27123456722"
+                            "supporter-change-msisdn-uuid", null, "whatsapp:27123456722", {
+                                "supp_msisdn": "+27123456722",
+                                "old_msisdn": "+27123456789",
+                                "old_uuid": "123-456"
+                                
                             })
                     );
                 })
