@@ -230,7 +230,7 @@ go.app = function() {
                         return "state_loss_optout";
                     } else {
                         return "state_delete_research_info";
-                      }  
+                      }
                 }
             });
         });
@@ -335,19 +335,19 @@ go.app = function() {
                         return "state_loss_optout";
                     } else {
                         return "state_nonloss_optout";
-                    }  
-                }  
+                    }
+                }
             });
         });
 
         self.add("state_trigger_rapidpro_flow", function(name, opts) {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             return self.rapidpro.start_flow(self.im.config.flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), {
-                babyloss_subscription: 
+                babyloss_subscription:
                     self.im.user.get_answer("state_loss_optout") === "yes" ? "TRUE" : "FALSE",
-                delete_info_for_babyloss: 
+                delete_info_for_babyloss:
                     self.im.user.get_answer("state_delete_info_for_loss") === "yes" ? "TRUE" : "FALSE",
-                delete_info_consent: 
+                delete_info_consent:
                         self.im.user.get_answer("state_delete_research_info") === "yes" ? "TRUE" : "FALSE",
                 optout_reason: self.im.user.get_answer("optout_reason"),
                 source: "Optout USSD"
@@ -358,7 +358,7 @@ go.app = function() {
                     return self.states.create("state_loss_subscription_with_info_retainment");
                 }
                 else{
-                    return self.states.create("state_nonloss_optout"); 
+                    return self.states.create("state_nonloss_optout");
                 }
             }).catch(function(e) {
                 // Go to error state after 3 failed HTTP requests
@@ -375,7 +375,7 @@ go.app = function() {
             return new EndState(name, {
                 next: "state_start",
                 text: $(
-                    "Thank you. You'll receive messages of support from MomConnect in the coming weeks." 
+                    "Thank you. You'll receive messages of support from MomConnect in the coming weeks."
                 )
             });
         });
@@ -385,7 +385,7 @@ go.app = function() {
                 next: "state_start",
                 text: $(
                     "Thank you. MomConnect will send helpful messages to you over the coming weeks. " +
-                    "All your info will be deleted 7 days after your last MC message." 
+                    "All your info will be deleted 7 days after your last MC message."
                 )
             });
         });
@@ -405,7 +405,7 @@ go.app = function() {
                 next: "state_start",
                 text: $(
                     "Welcome to the Department of Health's MomConnect. " +
-                    "Dial *154*550*2# when you are at a clinic to sign up to " +
+                    "Dial *134*550*2# when you are at a clinic to sign up to " +
                     "receive helpful messages for you and your baby."
                 )
             });
