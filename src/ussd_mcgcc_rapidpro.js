@@ -290,6 +290,8 @@ go.app = function() {
             var baby_dob1 = (contact.fields.baby_dob1) ? moment.utc(contact.fields.baby_dob1).format() : null;
             var baby_dob2 = (contact.fields.baby_dob2) ? moment.utc(contact.fields.baby_dob2).format() : null;
             var baby_dob3 = (contact.fields.baby_dob3) ? moment.utc(contact.fields.baby_dob3).format() : null;
+            var prebirth_messaging = _.get(contact, "fields.prebirth_messaging", null);
+            var postbirth_messaging = _.toUpper(_.get(contact, "fields.postbirth_messaging")) === "TRUE";
             var mom_edd = (contact.fields.edd) ? moment.utc(contact.fields.edd).format() : null;
             var supporter_cell = utils.normalize_msisdn(self.im.user.get_answer("state_mother_supporter_msisdn"), "ZA");
             var supp_consent = _.toUpper(self.im.user.get_answer("state_mother_supporter_consent"));
@@ -301,6 +303,8 @@ go.app = function() {
                 baby_dob1: baby_dob1,
                 baby_dob2: baby_dob2,
                 baby_dob3: baby_dob3,
+                prebirth_messaging: prebirth_messaging,
+                postbirth_messaging: postbirth_messaging,
                 mom_edd: mom_edd,
                 source: "USSD",
                 timestamp: new moment.utc(self.im.config.testing_today).format(),
@@ -543,11 +547,18 @@ go.app = function() {
         });
 
         self.add("state_trigger_supporter_registration_flow", function(name, opts) {
+            var contact = self.im.user.get_answer("contact");
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             var supporter_consent = _.toUpper(self.im.user.get_answer("state_supporter_consent"));
             var supporter_no_consent = _.toUpper(self.im.user.get_answer("state_supporter_noconsent_ask_again"));
             var supporters_language;
             var research_consent = _.toUpper(self.im.user.get_answer("state_supporter_research_consent"));
+            var baby_dob1 = (contact.fields.baby_dob1) ? moment.utc(contact.fields.baby_dob1).format() : null;
+            var baby_dob2 = (contact.fields.baby_dob2) ? moment.utc(contact.fields.baby_dob2).format() : null;
+            var baby_dob3 = (contact.fields.baby_dob3) ? moment.utc(contact.fields.baby_dob3).format() : null;
+            var prebirth_messaging = _.get(contact, "fields.prebirth_messaging", null);
+            var postbirth_messaging = _.toUpper(_.get(contact, "fields.postbirth_messaging")) === "TRUE";
+            var mom_edd = (contact.fields.edd) ? moment.utc(contact.fields.edd).format() : null;
 
             if (typeof self.im.user.get_answer("state_supporter_language_whatsapp") === "undefined") {
                 supporters_language = self.im.user.get_answer("state_supporter_language_sms");
@@ -565,6 +576,12 @@ go.app = function() {
                 on_whatsapp: self.im.user.get_answer("on_whatsapp") ? "true" : "false",
                 supp_consent: supporter_consent,
                 research_consent: (research_consent === "YES" || research_consent === "1") ? "true" : "false",
+                baby_dob1: baby_dob1,
+                baby_dob2: baby_dob2,
+                baby_dob3: baby_dob3,
+                prebirth_messaging: prebirth_messaging,
+                postbirth_messaging: postbirth_messaging,
+                mom_edd: mom_edd,
                 supp_cell: msisdn,
                 supp_language: supporters_language,
                 supp_relationship: self.im.user.get_answer("state_supporter_relationship"),

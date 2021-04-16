@@ -346,7 +346,8 @@ describe("ussd_mcgcc app", function() {
                     contact: {
                         fields: {
                             baby_dob1: "2021-01-06T07:07:07",
-                            edd: "2021-01-06T07:07:07"
+                            edd: "2021-01-06T07:07:07",
+                            prebirth_messaging: 1
                         }
                     }
                 })
@@ -363,6 +364,8 @@ describe("ussd_mcgcc app", function() {
                                 "baby_dob1": "2021-01-06T07:07:07Z",
                                 "baby_dob2": null,
                                 "baby_dob3": null,
+                                "prebirth_messaging": 1,
+                                "postbirth_messaging": false,
                                 "mom_edd": "2021-01-06T07:07:07Z",
                                 "source": "USSD",
                                 "timestamp": "2021-03-06T07:07:07Z",
@@ -390,7 +393,8 @@ describe("ussd_mcgcc app", function() {
                     contact: {
                         fields: {
                             baby_dob1: "2021-01-06T07:07:07",
-                            edd: "2021-01-06T07:07:07"
+                            edd: "2021-01-06T07:07:07",
+                            prebirth_messaging: 1
                         }
                     }
                 })
@@ -407,6 +411,8 @@ describe("ussd_mcgcc app", function() {
                                 "baby_dob1": "2021-01-06T07:07:07Z",
                                 "baby_dob2": null,
                                 "baby_dob3": null,
+                                "prebirth_messaging": 1,
+                                "postbirth_messaging": false,
                                 "mom_edd": "2021-01-06T07:07:07Z",
                                 "source": "USSD",
                                 "timestamp": "2021-03-06T07:07:07Z",
@@ -659,7 +665,14 @@ describe("ussd_mcgcc app", function() {
                     state_supporter_language_whatsapp: "eng_ZA",
                     state_supporter_name: "John",
                     state_supporter_research_consent: "Yes",
-                    state_supporter_relationship: "father"
+                    state_supporter_relationship: "father",
+                    contact: {
+                        fields: {
+                            baby_dob1: "2021-01-06T07:07:07",
+                            edd: "2021-01-06T07:07:07",
+                            prebirth_messaging: 1
+                        }
+                    }
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -670,6 +683,12 @@ describe("ussd_mcgcc app", function() {
                                 "on_whatsapp": "true",
                                 "supp_consent": "true",
                                 "research_consent": "true",
+                                "baby_dob1": "2021-01-06T07:07:07Z",
+                                "baby_dob2": null,
+                                "baby_dob3": null,
+                                "prebirth_messaging": 1,
+                                "postbirth_messaging": false,
+                                "mom_edd": "2021-01-06T07:07:07Z",
                                 "supp_cell": "+27123456789",
                                 "supp_language": "eng_ZA",
                                 "supp_name": "John",
@@ -698,7 +717,14 @@ describe("ussd_mcgcc app", function() {
                     state_supporter_language_whatsapp: "eng_ZA",
                     state_supporter_name: "John",
                     state_supporter_research_consent: "Yes",
-                    state_supporter_relationship: "father"
+                    state_supporter_relationship: "father",
+                    contact: {
+                        fields: {
+                            baby_dob1: "2021-01-06T07:07:07",
+                            edd: "2021-01-06T07:07:07",
+                            prebirth_messaging: 1
+                        }
+                    }
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -709,6 +735,12 @@ describe("ussd_mcgcc app", function() {
                                 "on_whatsapp": "true",
                                 "supp_consent": "true",
                                 "research_consent": "true",
+                                "baby_dob1": "2021-01-06T07:07:07Z",
+                                "baby_dob2": null,
+                                "baby_dob3": null,
+                                "prebirth_messaging": 1,
+                                "postbirth_messaging": false,
+                                "mom_edd": "2021-01-06T07:07:07Z",
                                 "supp_cell": "+27123456789",
                                 "supp_language": "eng_ZA",
                                 "supp_name": "John",
