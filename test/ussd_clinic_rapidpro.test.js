@@ -6,7 +6,7 @@ var fixtures_rapidpro = require("./fixtures_rapidpro")();
 var fixtures_openhim = require("./fixtures_jembi_dynamic")();
 var fixtures_whatsapp = require("./fixtures_pilot")();
 
-describe("ussd_public app", function() {
+describe("ussd_clinic app", function() {
     var app;
     var tester;
 
@@ -15,6 +15,8 @@ describe("ussd_public app", function() {
         tester = new AppTester(app);
         tester.setup.config.app({
             testing_today: "2014-04-04T07:07:07",
+            metric_store: 'test_metric_store',
+            env: 'test',
             services: {
                 rapidpro: {
                     base_url: "https://rapidpro",
@@ -32,6 +34,9 @@ describe("ussd_public app", function() {
             },
             prebirth_flow_uuid: "prebirth-flow-uuid",
             postbirth_flow_uuid: "postbirth-flow-uuid"
+        })
+        .setup(function(api) {
+            api.metrics.stores = {'test_metric_store': {}};
         });
     });
 
@@ -42,13 +47,18 @@ describe("ussd_public app", function() {
                 .check.interaction({
                     state: "state_start",
                     reply: [
-                        "Welcome to the Department of Health's MomConnect (MC).",
+                        "Welcome to the Department of Health's MomConnect. We only send WhatsApp msgs in English.",
                         "",
-                        "Is 0123456789 the cell number of the mother who wants to sign up?",
+                        "Is 0123456789 the no. signing up?",
                         "1. Yes",
                         "2. No"
                     ].join("\n"),
                     char_limit: 140
+                })
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['test.test_app.sum.unique_users.transient'], {agg: 'sum', values: [1]});
+                    assert.deepEqual(metrics['enter.state_start'], {agg: 'sum', values: [1]});
                 })
                 .run();
         });
@@ -64,6 +74,11 @@ describe("ussd_public app", function() {
                         "2. No"
                     ].join("\n"),
                     char_limit: 140
+                })
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['test.test_app.sum.unique_users.transient'], {agg: 'sum', values: [1]});
+                    assert.deepEqual(metrics['enter.state_start'], {agg: 'sum', values: [1]});
                 })
                 .run();
         });
@@ -83,6 +98,10 @@ describe("ussd_public app", function() {
                     ].join("\n"),
                     char_limit: 140
                 })
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_timed_out'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
         it("should display an error message on incorrect input", function() {
@@ -98,7 +117,7 @@ describe("ussd_public app", function() {
                         "2. Start a new registration"
                     ].join("\n"),
                     char_limit: 140
-                })
+                })  
                 .run();
         });
         it("should go to the user's previous state if they want to continue", function() {
@@ -106,6 +125,10 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_enter_msisdn")
                 .inputs({session_event: "new"}, "1")
                 .check.user.state("state_enter_msisdn")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_enter_msisdn'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
         it("should start a new registration if they don't want to continue", function() {
@@ -113,6 +136,10 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_enter_msisdn")
                 .inputs({session_event: "new"}, "2")
                 .check.user.state("state_start")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_start'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
     });
@@ -173,6 +200,10 @@ describe("ussd_public app", function() {
                 })
                 .setup.user.state("state_get_contact")
                 .check.user.state("state_active_subscription")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_active_subscription'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
         it("should go to state_opted_out if the user is opted out", function(){
@@ -188,6 +219,10 @@ describe("ussd_public app", function() {
                 })
                 .setup.user.state("state_get_contact")
                 .check.user.state("state_opted_out")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_opted_out'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
         it("should go to state_with_nurse if the user isn't opted out or subscribed", function() {
@@ -202,6 +237,10 @@ describe("ussd_public app", function() {
                 })
                 .setup.user.state("state_get_contact")
                 .check.user.state("state_with_nurse")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_with_nurse'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
         it("should retry HTTP call when RapidPro is down", function() {
@@ -284,6 +323,10 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_active_subscription")
                 .input("1")
                 .check.user.state("state_enter_msisdn")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_enter_msisdn'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
         it("should go to state_exit if that option is chosen", function() {
@@ -296,6 +339,10 @@ describe("ussd_public app", function() {
                     reply: 
                         "Thank you for using MomConnect. Dial *134*550*2# at any time to " +
                         "sign up. Have a lovely day!"
+                })
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_exit'], {agg: 'sum', values: [1]});
                 })
                 .check.reply.ends_session()
                 .run();
@@ -353,6 +400,10 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_opted_out")
                 .input("1")
                 .check.user.state("state_with_nurse")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_with_nurse'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
         it("should go to state_no_opt_in if the mother doesn't opt in", function() {
@@ -367,6 +418,10 @@ describe("ussd_public app", function() {
                         "lovely day!"
                 })
                 .check.reply.ends_session()
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_no_opt_in'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
     });
@@ -403,6 +458,10 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_with_nurse")
                 .input("1")
                 .check.user.state("state_info_consent")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_info_consent'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
         it("should go to state_no_nurse if the user isn't with a nurse", function() {
@@ -417,6 +476,10 @@ describe("ussd_public app", function() {
                         "Have a lovely day!"
                 })
                 .check.reply.ends_session()
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_no_nurse'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
     });
@@ -426,8 +489,8 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_info_consent")
                 .check.interaction({
                     reply: [
-                        "We need to process the mom's personal info to send her relevant " +
-                        "messages about her pregnancy/baby. Does she agree?",
+                        "Does she agree to let us process her info & to getting msgs? " +
+                        "She may get msgs on public holidays & weekends.",
                         "1. Yes",
                         "2. No",
                         "3. She needs more info to decide"
@@ -455,13 +518,21 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_info_consent")
                 .input("2")
                 .check.user.state("state_info_consent_confirm")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_info_consent_confirm'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
-        it("should go to state_message_consent if they give consent", function() {
+        it("should go to state_research_consent if they give consent", function() {
             return tester
                 .setup.user.state("state_info_consent")
                 .input("1")
-                .check.user.state("state_message_consent")
+                .check.user.state("state_research_consent")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_research_consent'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
         it("should skip the consent states if the user has already consented", function() {
@@ -469,10 +540,13 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_info_consent")
                 .setup.user.answer("contact", {"fields": {
                     "info_consent": "TRUE",
-                    "message_consent": "TRUE",
                     "research_consent": "TRUE"
                 }})
                 .check.user.state("state_clinic_code")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_clinic_code'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
         it("should go to state_more_info if the mother wants more info", function() {
@@ -480,6 +554,10 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_info_consent")
                 .input("3")
                 .check.user.state("state_more_info")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_more_info'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
     });
@@ -521,104 +599,21 @@ describe("ussd_public app", function() {
                         "Thank you for considering MomConnect. We respect the mom's decision. " +
                         "Have a lovely day."
                 })
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_no_consent'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
-        it("should go to state_message_consent if consent is given", function() {
+        it("should go to state_research_consent if consent is given", function() {
             return tester
                 .setup.user.state("state_info_consent_confirm")
                 .input("1")
-                .check.user.state("state_message_consent")
-                .run();
-        });
-    });
-    describe("state_message_consent", function() {
-        it("should ask the user for consent to send them messages", function() {
-            return tester
-                .setup.user.state("state_message_consent")
-                .check.interaction({
-                    reply: [
-                        "Does the mother agree to receive messages from MomConnect? This may " +
-                        "include receiving messages on public holidays and weekends.",
-                        "1. Yes",
-                        "2. No",
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should display an error on invalid input", function() {
-            return tester
-                .setup.user.state("state_message_consent")
-                .input("a")
-                .check.interaction({
-                    reply: [
-                        "Sorry we don't understand. Please enter the number next to the " +
-                        "mother's answer.",
-                        "1. Yes",
-                        "2. No",
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should go to state_message_consent_confirm if they don't give consent", function() {
-            return tester
-                .setup.user.state("state_message_consent")
-                .input("2")
-                .check.user.state("state_message_consent_confirm")
-                .run();
-        });
-        it("should go to state_research_consent if consent is given", function() {
-            return tester
-                .setup.user.state("state_message_consent")
-                .input("1")
                 .check.user.state("state_research_consent")
-                .run();
-        });
-    });
-    describe("state_message_consent_confirm", function() {
-        it("should confirm if the user doesn't consent", function() {
-            return tester
-                .setup.user.state("state_message_consent_confirm")
-                .check.interaction({
-                    reply: [
-                        "Unfortunately, without agreeing she can't sign up to MomConnect. " +
-                        "Does she agree to MomConnect processing her personal info?",
-                        "1. Yes",
-                        "2. No"
-                    ].join("\n"),
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_research_consent'], {agg: 'sum', values: [1]});
                 })
-                .run();
-        });
-        it("should display an error on invalid input", function() {
-            return tester
-                .setup.user.state("state_message_consent_confirm")
-                .input("a")
-                .check.interaction({
-                    reply: [
-                        "Sorry we don't understand. Please enter the number next to the " +
-                        "mother's answer.",
-                        "1. Yes",
-                        "2. No",
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should go to state_no_consent if consent isn't given", function() {
-            return tester
-                .setup.user.state("state_message_consent_confirm")
-                .input("2")
-                .check.interaction({
-                    state: "state_no_consent",
-                    reply: 
-                        "Thank you for considering MomConnect. We respect the mom's decision. " +
-                        "Have a lovely day."
-                })
-                .run();
-        });
-        it("should go to state_research_consent if consent is given", function() {
-            return tester
-                .setup.user.state("state_message_consent_confirm")
-                .input("1")
-                .check.user.state("state_research_consent")
                 .run();
         });
     });
@@ -641,6 +636,10 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_research_consent")
                 .input("1")
                 .check.user.state("state_clinic_code")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_clinic_code'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
     });
@@ -670,6 +669,10 @@ describe("ussd_public app", function() {
                         "number.",
                     state: "state_clinic_code"
                 })
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_clinic_code'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
         it("should go to state_message_type if they enter a valid clinic code", function(){
@@ -682,6 +685,10 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_clinic_code")
                 .input("222222")
                 .check.user.state("state_message_type")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_message_type'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
         it("should retry failed HTTP requests", function(){
@@ -809,10 +816,14 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_edd_month")
                 .input("1")
                 .check.user.state("state_edd_day")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_edd_day'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
     });
-    describe("state_edd_month", function() {
+    describe("state_edd_day", function() {
         it("should ask the user for the day of edd", function() {
             return tester
                 .setup.user.state("state_edd_day")
@@ -865,6 +876,10 @@ describe("ussd_public app", function() {
                 .setup.user.answer("state_edd_month", "2014-06")
                 .input("6")
                 .check.user.state("state_id_type")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_id_type'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
     });
@@ -905,6 +920,10 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_birth_year")
                 .input("4")
                 .check.user.state("state_too_old")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_too_old'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
         it("should go to state_birth_month if a year is chosen", function() {
@@ -912,6 +931,10 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_birth_year")
                 .input("2")
                 .check.user.state("state_birth_month")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_birth_month'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
     });
@@ -948,6 +971,10 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_too_old")
                 .input("1")
                 .check.user.state("state_birth_year")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_birth_year'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
         it("should go end with state_too_old_end if that option is chosen", function() {
@@ -961,6 +988,10 @@ describe("ussd_public app", function() {
                     state: "state_too_old_end"
                 })
                 .check.reply.ends_session()
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_too_old_end'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
     });
@@ -1030,6 +1061,10 @@ describe("ussd_public app", function() {
                 .setup.user.answer("state_birth_year", "2013")
                 .input("4")
                 .check.user.state("state_birth_day")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_birth_day'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
     });
@@ -1088,6 +1123,10 @@ describe("ussd_public app", function() {
                 .setup.user.answer("state_birth_month", "2013-04")
                 .input("4")
                 .check.user.state("state_id_type")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_id_type'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
     });
@@ -1125,6 +1164,10 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_id_type")
                 .input("1")
                 .check.user.state("state_sa_id_no")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_sa_id_no'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
         it("should go to state_passport_country if passport is chosen", function() {
@@ -1132,6 +1175,10 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_id_type")
                 .input("2")
                 .check.user.state("state_passport_country")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_passport_country'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
         it("should go to state_dob_year if none is chosen", function() {
@@ -1139,6 +1186,10 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_id_type")
                 .input("3")
                 .check.user.state("state_dob_year")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_dob_year'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
     });
@@ -1162,13 +1213,6 @@ describe("ussd_public app", function() {
                         "Sorry, we don't understand. Please try again by entering the mother's " +
                         "13 digit South African ID number."
                 })
-                .run();
-        });
-        it("should go to state_language if the ID number is valid", function() {
-            return tester
-                .setup.user.state("state_sa_id_no")
-                .input("9001020005087")
-                .check.user.state("state_language")
                 .run();
         });
     });
@@ -1215,6 +1259,10 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_passport_country")
                 .input("3")
                 .check.user.state("state_passport_no")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_passport_no'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
     });
@@ -1237,13 +1285,6 @@ describe("ussd_public app", function() {
                         "Sorry, we don't understand. Please try again by entering the mother's " +
                         "Passport number as it appears in her passport."
                 })
-                .run();
-        });
-        it("should go to state_language on a successful input", function() {
-            return tester
-                .setup.user.state("state_passport_no")
-                .input("A1234567890")
-                .check.user.state("state_language")
                 .run();
         });
     });
@@ -1274,6 +1315,10 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_dob_year")
                 .input("1988")
                 .check.user.state("state_dob_month")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_dob_month'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
     });
@@ -1328,6 +1373,10 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_dob_month")
                 .input("4")
                 .check.user.state("state_dob_day")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_dob_day'], {agg: 'sum', values: [1]});
+                })
                 .run();
         });
     });
@@ -1354,68 +1403,6 @@ describe("ussd_public app", function() {
                 })
                 .run();
         });
-        it("should go to state_language on a valid input", function() {
-            return tester
-                .setup.user.state("state_dob_day")
-                .setup.user.answers({state_dob_year: "1987", state_dob_month: "02"})
-                .input("22")
-                .check.user.state("state_language")
-                .run();
-        });
-    });
-    describe("state_language", function() {
-        it("should ask the user for the language", function() {
-            return tester
-                .setup.user.state("state_language")
-                .check.interaction({
-                    reply: [
-                        "What language does the mother want to receive her MomConnect messages in?",
-                        "1. isiZulu",
-                        "2. isiXhosa",
-                        "3. Afrikaans",
-                        "4. English",
-                        "5. Sesotho sa Leboa",
-                        "6. Next"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should be able to page through choices", function() {
-            return tester
-                .setup.user.state("state_language")
-                .input("6")
-                .check.interaction({
-                    reply: [
-                        "What language does the mother want to receive her MomConnect messages in?",
-                        "1. Setswana",
-                        "2. Sesotho",
-                        "3. Xitsonga",
-                        "4. siSwati",
-                        "5. Tshivenda",
-                        "6. isiNdebele",
-                        "7. Back"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should display an error for an incorrect choice", function() {
-            return tester
-                .setup.user.state("state_language")
-                .input("A")
-                .check.interaction({
-                    reply: [
-                        "Sorry we don't understand. Please enter the number next to the " +
-                        "mother's answer.",
-                        "1. isiZulu",
-                        "2. isiXhosa",
-                        "3. Afrikaans",
-                        "4. English",
-                        "5. Sesotho sa Leboa",
-                        "6. Next"
-                    ].join("\n")
-                })
-                .run();
-        });
     });
     describe("state_whatsapp_contact_check + state_trigger_rapidpro_flow", function() {
         it("should make a request to the WhatsApp and RapidPro APIs for prebirth", function() {
@@ -1425,7 +1412,6 @@ describe("ussd_public app", function() {
                     state_message_type: "state_edd_month",
                     state_research_consent: "no",
                     state_enter_msisdn: "0820001001",
-                    state_language: "zul",
                     state_id_type: "state_sa_id_no",
                     state_sa_id_no: "9001020005087",
                     state_edd_month: "201502",
@@ -1444,7 +1430,7 @@ describe("ussd_public app", function() {
                             "prebirth-flow-uuid", null, "whatsapp:27820001001", {
                                 research_consent: "FALSE",
                                 registered_by: "+27123456789",
-                                language: "zul",
+                                language: "eng",
                                 timestamp: "2014-04-04T07:07:07Z",
                                 source: "Clinic USSD",
                                 id_type: "sa_id",
@@ -1482,7 +1468,6 @@ describe("ussd_public app", function() {
                     state_message_type: "state_birth_year",
                     state_research_consent: "no",
                     state_enter_msisdn: "0820001001",
-                    state_language: "zul",
                     state_id_type: "state_sa_id_no",
                     state_sa_id_no: "9001020005087",
                     state_birth_month: "2014-02",
@@ -1501,7 +1486,7 @@ describe("ussd_public app", function() {
                             "postbirth-flow-uuid", null, "whatsapp:27820001001", {
                                 research_consent: "FALSE",
                                 registered_by: "+27123456789",
-                                language: "zul",
+                                language: "eng",
                                 timestamp: "2014-04-04T07:07:07Z",
                                 source: "Clinic USSD",
                                 id_type: "sa_id",
@@ -1521,7 +1506,7 @@ describe("ussd_public app", function() {
                         "MomConnect on WhatsApp. Thanks for signing up to MomConnect!"
                 })
                 .check.reply.ends_session()
-                .check(function(api) {
+                .check(function(api) {  
                     assert.equal(api.http.requests.length, 2);
                     var urls = _.map(api.http.requests, "url");
                     assert.deepEqual(urls, [
@@ -1568,7 +1553,6 @@ describe("ussd_public app", function() {
                     state_message_type: "state_edd_month",
                     state_research_consent: "no",
                     state_enter_msisdn: "0820001001",
-                    state_language: "zul",
                     state_id_type: "state_sa_id_no",
                     state_sa_id_no: "9001020005087",
                     state_edd_month: "201502",
@@ -1587,7 +1571,7 @@ describe("ussd_public app", function() {
                             "prebirth-flow-uuid", null, "whatsapp:27820001001", {
                                 research_consent: "FALSE",
                                 registered_by: "+27123456789",
-                                language: "zul",
+                                language: "eng",
                                 timestamp: "2014-04-04T07:07:07Z",
                                 source: "Clinic USSD",
                                 id_type: "sa_id",
@@ -1701,7 +1685,7 @@ describe("ussd_public app", function() {
                         "3. Back",
                         "4. Previous"
                     ].join("\n")
-                })
+                })  
                 .run();
         });
     });

@@ -80,7 +80,6 @@ describe("ussd_public app", function() {
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27123456789",
                             exists: true,
-                            language: "zul",
                             fields: {prebirth_messaging: "3"}
                         })
                     );
@@ -92,10 +91,9 @@ describe("ussd_public app", function() {
                         "Hello mom! You can reply to any MomConnect message with a question, compliment or complaint. Our team " +
                         "will get back to you as soon as they can."
                 })
-                .check.user.lang("zul")
                 .run();
         });
-        it("should ask the user for their language if they don't have a subscription", function() {
+        it("should welcome the user if they don't have a subscription", function() {
             return tester
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -106,10 +104,10 @@ describe("ussd_public app", function() {
                     );
                 })
                 .start()
-                .check.user.state("state_language")
+                .check.user.state("state_pregnant")
                 .run();
         });
-        it("should ask the user for their language if they don't have a contact", function() {
+        it("should welcome the user if they don't have a contact", function() {
             return tester
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -120,61 +118,6 @@ describe("ussd_public app", function() {
                     );
                 })
                 .start()
-                .check.user.state("state_language")
-                .run();
-        });
-    });
-    describe("state_language", function() {
-        it("should display the list of languages", function() {
-            return tester
-                .setup.user.state("state_language")
-                .input({session_event: "continue"})
-                .check.interaction({
-                    state: "state_language",
-                    reply: [
-                        "Welcome to the Department of Health's MomConnect (MC). Please select your language:",
-                        "1. isiZulu",
-                        "2. isiXhosa",
-                        "3. Afrikaans",
-                        "4. English",
-                        "5. Sesotho sa Leboa",
-                        "6. More"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should set the language if a language is selected", function() {
-            return tester
-                .setup.user.state("state_language")
-                .input("5")
-                .check.user.lang("nso")
-                .check.user.answer("state_language", "nso")
-                .check.user.state("state_pregnant")
-                .run();
-        });
-        it("should display an error if an incorrect input is sent", function() {
-            return tester
-                .setup.user.state("state_language")
-                .input("foo")
-                .check.interaction({
-                    state: "state_language",
-                    reply: [
-                        "Welcome to the Department of Health's MomConnect (MC). Please select your language:",
-                        "1. isiZulu",
-                        "2. isiXhosa",
-                        "3. Afrikaans",
-                        "4. English",
-                        "5. Sesotho sa Leboa",
-                        "6. More"
-                    ].join("\n"),
-                })
-                .run();
-        });
-        it("should skip asking for language if the user has previously selected a language", function() {
-            return tester
-                .setup.user.state("state_language")
-                .setup.user.answer("contact", {"language": "zul"})
-                .input({session_event: "continue"})
                 .check.user.state("state_pregnant")
                 .run();
         });
@@ -187,11 +130,10 @@ describe("ussd_public app", function() {
                 .check.interaction({
                     state: "state_pregnant",
                     reply: [
-                        "MomConnect sends free messages to help pregnant moms and babies. Are you or do you suspect that you " +
-                        "are pregnant?",
-                        "1. Yes",
-                        "2. No"
-                    ].join("\n")
+                        "Welcome to the Department of Health’s MomConnect. We only send WhatsApp msgs in English.",
+                        "1. Continue",
+                    ].join("\n"),
+                    char_limit: 140,
                 })
                 .run();
         });
@@ -202,27 +144,15 @@ describe("ussd_public app", function() {
                 .check.interaction({
                     state: "state_pregnant",
                     reply: [
-                        "Sorry, please reply with the number next to your answer. Are you or do you suspect that " +
-                        "you are pregnant?",
-                        "1. Yes",
-                        "2. No"
-                    ].join("\n")
+                        "Sorry, please reply with the number next to your answer. " +
+                        "We only send WhatsApp msgs in English.",
+                        "1. Continue",
+                    ].join("\n"),
+                    char_limit: 140,
                 })
                 .run();
         });
-        it("should turn the user away if they aren't pregnant", function() {
-            return tester
-                .setup.user.state("state_pregnant")
-                .input("2")
-                .check.interaction({
-                    state: "state_pregnant_only",
-                    reply:
-                        "We're sorry but this service is only for pregnant mothers. If you have other health concerns " +
-                        "please visit your nearest clinic. Have a lovely day!"
-                })
-                .run();
-        });
-        it("should ask them for consent if they are pregnant", function() {
+        it("should ask them for consent if they continue", function() {
             return tester
                 .setup.user.state("state_pregnant")
                 .input("1")
@@ -464,7 +394,7 @@ describe("ussd_public app", function() {
     describe("timeout testing", function() {
         it("should go to state_timed_out", function() {
             return tester
-                .setup.user.state("state_pregnant")
+                .setup.user.state("state_info_consent")
                 .inputs(
                     {session_event: "close"}
                     , {session_event: "new"}
@@ -548,7 +478,7 @@ describe("ussd_public app", function() {
             return tester
                 .setup(function(api) {
                     api.http.fixtures.add(
-                        fixtures_whatsapp.not_exists({
+                        fixtures_whatsapp.exists({
                             address: "+27123456789",
                             wait: true
                         })
@@ -559,20 +489,19 @@ describe("ussd_public app", function() {
                             null,
                             "whatsapp:27123456789",
                             {
-                                "on_whatsapp": "FALSE",
+                                "on_whatsapp": "TRUE",
                                 "research_consent": "FALSE",
-                                "language": "zul",
+                                "language": "eng",
                                 "source": "Public USSD",
                                 "timestamp": "2014-04-04T07:07:07Z",
                                 "registered_by": "+27123456789",
                                 "mha": 6,
-                                "swt": 1
+                                "swt": 7
                             }
                         )
                     );
                 })
                 .setup.user.state("state_opt_in")
-                .setup.user.lang("zul")
                 .input({session_event: "continue"})
                 .check.user.state("state_registration_complete")
                 .run();
@@ -628,7 +557,7 @@ describe("ussd_public app", function() {
                             {
                                 "on_whatsapp": "TRUE",
                                 "research_consent": "TRUE",
-                                "language": "xho",
+                                "language": "eng",
                                 "source": "Public USSD",
                                 "timestamp": "2014-04-04T07:07:07Z",
                                 "registered_by": "+27123456789",
@@ -641,7 +570,6 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_trigger_rapidpro_flow")
                 .setup.user.answer("on_whatsapp", true)
                 .setup.user.answer("state_research_consent", "yes")
-                .setup.user.lang("xho")
                 .input({session_event: "continue"})
                 .check.user.state("state_registration_complete")
                 .run();
@@ -655,23 +583,22 @@ describe("ussd_public app", function() {
                             null,
                             "whatsapp:27123456789",
                             {
-                                "on_whatsapp": "FALSE",
+                                "on_whatsapp": "TRUE",
                                 "research_consent": "FALSE",
-                                "language": "zul",
+                                "language": "eng",
                                 "source": "Public USSD",
                                 "timestamp": "2014-04-04T07:07:07Z",
                                 "registered_by": "+27123456789",
                                 "mha": 6,
-                                "swt": 1
+                                "swt": 7
                             },
                             true
                         )
                     );
                 })
                 .setup.user.state("state_trigger_rapidpro_flow")
-                .setup.user.answer("on_whatsapp", false)
+                .setup.user.answer("on_whatsapp", true)
                 .setup.user.answer("state_research_consent", "no")
-                .setup.user.lang("zul")
                 .input({session_event: "continue"})
                 .check(function(api){
                     assert.equal(api.http.requests.length, 3);
@@ -702,7 +629,7 @@ describe("ussd_public app", function() {
                             {
                                 "on_whatsapp": "TRUE",
                                 "research_consent": "FALSE",
-                                "language": "zul",
+                                "language": "eng",
                                 "source": "Public USSD",
                                 "timestamp": "2014-04-04T07:07:07Z",
                                 "registered_by": "+27123456789",
@@ -715,7 +642,6 @@ describe("ussd_public app", function() {
                 // For some reason, if we start the test on state_registration_complete, it skips to state_start,
                 // so we need to start it before
                 .setup.user.state("state_whatsapp_contact_check")
-                .setup.user.lang("zul")
                 .setup.user.answer("on_whatsapp", false)
                 .input({session_event: "continue"})
                 .check.interaction({
@@ -735,35 +661,16 @@ describe("ussd_public app", function() {
                             wait: true
                         })
                     );
-                    api.http.fixtures.add(
-                        fixtures_rapidpro.start_flow(
-                            "rapidpro-flow-uuid",
-                            null,
-                            "whatsapp:27123456789",
-                            {
-                                "on_whatsapp": "FALSE",
-                                "research_consent": "FALSE",
-                                "language": "zul",
-                                "source": "Public USSD",
-                                "timestamp": "2014-04-04T07:07:07Z",
-                                "registered_by": "+27123456789",
-                                "mha": 6,
-                                "swt": 1
-                            }
-                        )
-                    );
                 })
                 // For some reason, if we start the test on state_registration_complete, it skips to state_start,
                 // so we need to start it before
                 .setup.user.state("state_whatsapp_contact_check")
-                .setup.user.lang("zul")
-                .setup.user.answer("on_whatsapp", false)
                 .input({session_event: "continue"})
                 .check.interaction({
-                    state: "state_registration_complete",
+                    state: "state_not_on_whatsapp",
                     reply:
-                        "You're done! This number 0123456789 will get helpful messages from MomConnect on SMS. " +
-                        "You can register for the full set of FREE messages at a clinic."
+                        "Sorry, MomConnect is not available on SMS. We only send WhatsApp messages in English. " +
+                        "You can dial *134*550# again on a cell number that has WhatsApp."
                 })
                 .run();
         });

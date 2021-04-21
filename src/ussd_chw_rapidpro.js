@@ -55,9 +55,9 @@ go.app = function() {
             self.im.user.answers = {};
             return new MenuState(name, {
                 question: $([
-                    "Welcome to the Department of Health's MomConnect (MC).",
+                    "Welcome to the Department of Health's MomConnect. We only send WhatsApp msgs in English.",
                     "",
-                    "Is {{msisdn}} the cell number of the mother who wants to sign up?"
+                    "Is {{msisdn}} the no. signing up?",
                     ].join("\n")).context({msisdn: utils.readable_msisdn(self.im.user.addr, "27")}),
                 error: $(
                     "Sorry we don't understand. Please enter the number next to the mother's " +
@@ -364,7 +364,7 @@ go.app = function() {
                     }
 
                 },
-                next: "state_language"
+                next: "state_whatsapp_contact_check"
             });
         });
 
@@ -404,7 +404,7 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_language"
+                next: "state_whatsapp_contact_check"
             });
         });
 
@@ -482,36 +482,6 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_language"
-            });
-        });
-
-        self.add("state_language", function(name) {
-            return new PaginatedChoiceState(name, {
-                question: $(
-                    "What language does the mother want to receive her MomConnect messages in?"
-                ),
-                error: $(
-                    "Sorry we don't understand. Please enter the number next to the mother's " +
-                    "answer."
-                ),
-                choices: [
-                    new Choice("zul", $("isiZulu")),
-                    new Choice("xho", $("isiXhosa")),
-                    new Choice("afr", $("Afrikaans")),
-                    new Choice("eng", $("English")),
-                    new Choice("nso", $("Sesotho sa Leboa")),
-                    new Choice("tsn", $("Setswana")),
-                    new Choice("sot", $("Sesotho")),
-                    new Choice("tso", $("Xitsonga")),
-                    new Choice("ssw", $("siSwati")),
-                    new Choice("ven", $("Tshivenda")),
-                    new Choice("nbl", $("isiNdebele"))
-                ],
-                back: $("Back"),
-                more: $("Next"),
-                options_per_page: null,
-                characters_per_page: 160,
                 next: "state_whatsapp_contact_check"
             });
         });
@@ -535,13 +505,16 @@ go.app = function() {
         });
 
         self.add("state_trigger_rapidpro_flow", function(name, opts) {
+            if(!self.im.user.answers.on_whatsapp) {
+                return self.states.create("state_not_on_whatsapp");
+            }
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
             var data = {
                 research_consent:
                     self.im.user.answers.state_research_consent === "no" ? "FALSE" : "TRUE",
                 registered_by: utils.normalize_msisdn(self.im.user.addr, "ZA"),
-                language: self.im.user.answers.state_language,
+                language: "eng",
                 timestamp: new moment.utc(self.im.config.testing_today).format(),
                 source: "CHW USSD",
                 id_type: {
@@ -563,7 +536,7 @@ go.app = function() {
                     ).format(),
                 passport_origin: self.im.user.answers.state_passport_country,
                 passport_number: self.im.user.answers.state_passport_no,
-                swt: self.im.user.answers.on_whatsapp ? "7" : "1"
+                swt: "7"
             };
             return self.rapidpro
                 .start_flow(self.im.config.flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), data)
@@ -586,14 +559,19 @@ go.app = function() {
                 "You're done! {{ msisdn }} will get helpful messages from MomConnect on WhatsApp. " +
                 "To sign up for the full set of messages, visit a clinic. " +
                 "Have a lovely day!").context({msisdn: msisdn});
-            var sms_message = $(
-                "You're done! {{ msisdn }} will get helpful messages from MomConnect on SMS. " +
-                "You can register for the full set of FREE messages at a clinic. " +
-                "Have a lovely day!").context({msisdn: msisdn});
-
             return new EndState(name, {
                 next: "state_start",
-                text: self.im.user.get_answer("on_whatsapp") ? whatsapp_message : sms_message
+                text: whatsapp_message
+            });
+        });
+
+        self.states.add("state_not_on_whatsapp", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "Sorry, MomConnect is not available on SMS. We only send WhatsApp messages in English. " +
+                    "You can dial *134*550*3# again on a cell number that has WhatsApp."
+                )
             });
         });
 
@@ -613,7 +591,9 @@ go.app = function() {
                 more: $("Next"),
                 back: $("Back"),
                 next: function(choice) {
-                    return choice.value;
+                    if(choice !== undefined){
+                        return choice.value;
+                    }
                 }
             });
         });

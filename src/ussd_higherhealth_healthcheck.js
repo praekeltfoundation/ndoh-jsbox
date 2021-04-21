@@ -662,6 +662,9 @@ go.app = (function () {
     });
 
     function truncateString(str, num) {
+      if (str === null){
+        return "";
+      }
       if (str.length <= num) {
         return str;
       }
@@ -673,27 +676,27 @@ go.app = (function () {
       var answers = self.im.user.answers;
       var risk = self.calculate_risk();
       var text = "";
-      var full_name =truncateString(answers.state_first_name, 19);
+      var full_name =truncateString((answers.state_first_name + " " + answers.state_last_name), 19);
       if (answers.state_tracing) {
         if (risk === "low") {
           text = $(
-            "{{ full_name }}, you are at LOW RISK. Wear a mask and sanitize ",
-            "daily. Screenshot this result. HIGHER HEALTH supported by ",
+            "{{ full_name }}, you are at LOW RISK. Wear a mask and sanitize " +
+            "daily. Screenshot this result. HIGHER HEALTH supported by " +
             "Lifebuoy, European Union and HWESTA"
           ).context({full_name: full_name});
         }
         if (risk === "moderate") {
           text = $(
-            "{{ full_name }}, SELF-ISOLATE in your room for 10 days and monitor",
-            " symptoms on HealthCheck. HIGHER HEALTH supported by Lifebuoy, ",
+            "{{ full_name }}, SELF-ISOLATE in your room for 10 days and monitor" +
+            " symptoms on HealthCheck. HIGHER HEALTH supported by Lifebuoy, " +
             "European Union and HWESTA"
           ).context({full_name: full_name});
         }
         if (risk === "high") {
           text = $(
-            "{{ full_name }}, GET TESTED for COVID-19. Go to your testing",
-            " centre/doctor or call 0800029999. HIGHER HEALTH supported by",
-            "European Union and HWESTA"
+            "{{ full_name }}, GET TESTED for COVID-19. Go to your testing" +
+            " centre/doctor or call 0800029999. HIGHER HEALTH supported by" +
+            " Lifebuoy, European Union & HWESTA"
           ).context({full_name: full_name});
         }
       } else {

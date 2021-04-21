@@ -111,7 +111,7 @@ describe("ussd_optout_rapidpro app", function() {
                     state: "state_no_previous_optout",
                     reply: [
                         "Welcome to the Department of Health's MomConnect. " +
-                        "Dial *154*550*2# when you are at a clinic to sign up to " +
+                        "Dial *134*550*2# when you are at a clinic to sign up to " +
                         "receive helpful messages for you and your baby."
                     ].join("\n")
                 })
@@ -154,7 +154,7 @@ describe("ussd_optout_rapidpro app", function() {
                 .input("2")
                 .check.interaction({
                     state: "state_no_optout",
-                    reply: 
+                    reply:
                         "Thanks! MomConnect will continue to send you helpful messages and process your " +
                         "personal info. Have a lovely day!"
                 })
@@ -633,7 +633,7 @@ describe("ussd_optout_rapidpro app", function() {
                 .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_loss_subscription_without_info_retainment",
-                    reply: 
+                    reply:
                     "Thank you. MomConnect will send helpful messages to you over the coming weeks. " +
                     "All your info will be deleted 7 days after your last MC message."
                 })
@@ -668,7 +668,7 @@ describe("ussd_optout_rapidpro app", function() {
                 .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_loss_subscription_with_info_retainment",
-                    reply: 
+                    reply:
                         "Thank you. You'll receive messages of support from MomConnect in the coming weeks."
                 })
                 .check.reply.ends_session()
@@ -701,7 +701,7 @@ describe("ussd_optout_rapidpro app", function() {
                 .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_nonloss_optout",
-                    reply: 
+                    reply:
                     "Thank you. You'll no longer get messages from MomConnect. For any medical concerns, " +
                     "please visit a clinic. Have a lovely day."
                 })
@@ -735,7 +735,7 @@ describe("ussd_optout_rapidpro app", function() {
                 .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_nonloss_optout",
-                    reply: 
+                    reply:
                     "Thank you. You'll no longer get messages from MomConnect. For any medical concerns, " +
                     "please visit a clinic. Have a lovely day."
                 })

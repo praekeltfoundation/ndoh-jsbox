@@ -44,7 +44,7 @@ go.app = (function () {
         question: $(
           [
             "Welcome to the Department of Health's Medication Home Delivery Service.",
-            "We deliver prescription meds to your door.",
+            "We deliver prescription chronic medication to your door.",
           ].join("\n")
         ),
         error: $(
@@ -59,7 +59,7 @@ go.app = (function () {
       return new MenuState(name, {
         question: $(
           [
-            "To have your prescription medication delivered to your door, we need to process your personal info.",
+            "To have your prescription chronic medication delivered to your door, we need to process your personal info.",
             "Do you want to continue?",
           ].join("\n")
         ),
@@ -133,8 +133,7 @@ go.app = (function () {
         ),
         check: function (content) {
           var match = content.match(/^(\d{6})(\d{4})(0|1)8\d$/);
-          var today = new moment(self.im.config.testing_today).startOf("day"),
-            dob;
+          var dob;
           var validLuhn = function (content) {
             return (
               content
@@ -156,11 +155,7 @@ go.app = (function () {
             !match ||
             !validLuhn(content) ||
             !(dob = new moment(match[1], "YYMMDD")) ||
-            !dob.isValid() ||
-            !dob.isBetween(
-              today.clone().add(-130, "years"),
-              today.clone().add(-5, "years")
-            )
+            !dob.isValid()
           ) {
             return $(
               "Sorry, we don't understand. Please try again by entering the your 13 digit South African ID number."
@@ -229,7 +224,7 @@ go.app = (function () {
           "[4/10] On what day were you born? Please enter the day as a number, e.g. 12."
         ),
         check: function (content) {
-          var match = content.match(/^(\d+)$/),
+          var match = content.match(/^\d{1,2}$/),
             dob;
           if (
             !match ||
@@ -291,7 +286,7 @@ go.app = (function () {
       return new ChoiceState(name, {
         question: $("[6/10] In which District do you stay?"),
         error: $(
-          "Sorry we don't understand. Please enter the number next to your answer."
+          "Sorry we don't understand. Please enter the no."
         ),
         choices: [
           new Choice("Cape Town", $("Cape Town")),
@@ -328,7 +323,7 @@ go.app = (function () {
       return new PaginatedChoiceState(name, {
         question: $("[7/10] Select your health sub-district:"),
         error: $(
-          "Sorry we don't understand. Please enter the number next to your answer."
+          "Sorry we don't understand. Please enter the no."
         ),
         choices: [
           new Choice("Cape Town East", $("Cape Town East")),
@@ -428,8 +423,6 @@ go.app = (function () {
         },
       });
     });
-
-
 
     self.add("state_suburb", function (name) {
       return new FreeText(name, {

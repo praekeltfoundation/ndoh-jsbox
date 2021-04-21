@@ -1,0 +1,431 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2021-04-01 10:48:+0000\n"
+"Project-Id-Version: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2021-04-01 13:38+0200\n"
+"X-Generator: Poedit 2.4.2\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: afr_ZA\n"
+
+#: go-app-ussd_tb_check.js:52
+msgid ""
+"Welcome back to the The National Department of Health's TB HealthCheck\n"
+"\n"
+"Reply 1 or 2"
+msgstr ""
+"Welkom terug by Die Nasionale Departement van Gesondheid se TB "
+"Gesondheidsvraelys \n"
+"\n"
+"Antwoord 1 of 2"
+
+#: go-app-ussd_tb_check.js:61
+msgid "Continue where I left off"
+msgstr "Gaan voort waar ek laas opgehou het"
+
+#: go-app-ussd_tb_check.js:62
+msgid "Start over"
+msgstr "Begin weer oor"
+
+#: go-app-ussd_tb_check.js:114
+msgid "This service works best when you choose number options from the list."
+msgstr ""
+"Hierdie diens werk die beste wanneer jy een van die nommers op die lys kies."
+
+#: go-app-ussd_tb_check.js:117
+msgid ""
+"The National Department of Health thanks you for helping to protect the "
+"health of all SA citizens. Stop the spread of TB.\n"
+"\n"
+"Reply"
+msgstr ""
+"Die Nasionale Departement van Gesondheid bedank jou dat jy SA burgers se "
+"gesondheid beskerm. Stop TB-verspreiding. \n"
+"\n"
+"Antwoord met"
+
+#: go-app-ussd_tb_check.js:129
+msgid "START"
+msgstr "BEGIN"
+
+#: go-app-ussd_tb_check.js:141
+msgid "Choose your preferred language"
+msgstr "Kies jou taal van voorkeur."
+
+#: go-app-ussd_tb_check.js:142
+msgid "Please reply with numbers. Choose your preferred language"
+msgstr "Please reply with numbers. Kies jou taal van voorkeur."
+
+#: go-app-ussd_tb_check.js:145
+msgid "English"
+msgstr "English"
+
+#: go-app-ussd_tb_check.js:146
+msgid "isiZulu"
+msgstr "isiZulu"
+
+#: go-app-ussd_tb_check.js:147
+msgid "Afrikaans"
+msgstr "Afrikaans"
+
+#: go-app-ussd_tb_check.js:148
+msgid "isiXhosa"
+msgstr "isiXhosa"
+
+#: go-app-ussd_tb_check.js:149
+msgid "Sesotho"
+msgstr "Sesotho"
+
+#: go-app-ussd_tb_check.js:169 go-app-ussd_tb_check.js:177
+msgid ""
+"This service only provides health info. Agree that you are responsible for "
+"your medical care and treatment.\n"
+"\n"
+"Reply"
+msgstr ""
+"Hierdie diens bied gesondheidsinligting. Stem jy dat jy verantwoordelik is "
+"vir jou mediese sorg en behandeling. \n"
+"\n"
+"Antwoord met"
+
+#: go-app-ussd_tb_check.js:187 go-app-ussd_tb_check.js:441
+#: go-app-ussd_tb_check.js:464 go-app-ussd_tb_check.js:474
+#: go-app-ussd_tb_check.js:484 go-app-ussd_tb_check.js:527
+msgid "YES"
+msgstr "JA"
+
+#: go-app-ussd_tb_check.js:188 go-app-ussd_tb_check.js:441
+#: go-app-ussd_tb_check.js:464 go-app-ussd_tb_check.js:474
+#: go-app-ussd_tb_check.js:484 go-app-ussd_tb_check.js:528
+msgid "NO"
+msgstr "NEE"
+
+#: go-app-ussd_tb_check.js:189
+msgid "MORE INFO"
+msgstr "MEER INLIGTING"
+
+#: go-app-ussd_tb_check.js:196
+msgid ""
+"Return to use this service at any time. Remember, if you think you have TB, "
+"avoid contact with other people and get tested at your nearest clinic."
+msgstr ""
+"Gebruik hierdie diens enige tyd weer. Onthou, indien jy vermoed dat jy TB "
+"het, vermy kontak met ander mense en word getoets by jou naaste kliniek."
+
+#: go-app-ussd_tb_check.js:206
+msgid ""
+"TB HealthCheck does not replace medical advice, diagnosis or treatment. Get "
+"a qualified health provider's advice on your medical condition and care."
+msgstr ""
+"TB GesondheidsVraelys vervang nie mediese advies, -diagnose of -behandeling "
+"nie. Gaan na ’n dokter vir jou mediese toestand en behandeling."
+
+#: go-app-ussd_tb_check.js:211 go-app-ussd_tb_check.js:222
+msgid "Next"
+msgstr "Volgende"
+
+#: go-app-ussd_tb_check.js:217
+msgid ""
+"You use this info at your own risk. This tool cannot replace medical advice. "
+"Agree not to ignore or delay getting medical advice on treatment or care"
+msgstr ""
+"Inligting word gebruik op eie risiko. Die vraelyes vervang nie mediese raad "
+"nie. Stem om binnekort behandelingsadvies te kry en nie te ignoreer nie"
+
+#: go-app-ussd_tb_check.js:231
+msgid "Choose your province. Reply with a number:"
+msgstr "Kies jou provinsie. Kies ’n nommer:"
+
+#: go-app-ussd_tb_check.js:234
+msgid "E. CAPE"
+msgstr "O. KAAP"
+
+#: go-app-ussd_tb_check.js:235
+msgid "FREE STATE"
+msgstr "VRYSTAAT"
+
+#: go-app-ussd_tb_check.js:236
+msgid "GAUTENG"
+msgstr "GAUTENG"
+
+#: go-app-ussd_tb_check.js:237
+msgid "KWAZULU NATAL"
+msgstr "KWAZULU NATAL"
+
+#: go-app-ussd_tb_check.js:238
+msgid "LIMPOPO"
+msgstr "LIMPOPO"
+
+#: go-app-ussd_tb_check.js:239
+msgid "MPUMALANGA"
+msgstr "MPUMALANGA"
+
+#: go-app-ussd_tb_check.js:240
+msgid "NORTH WEST"
+msgstr "NOORDWES"
+
+#: go-app-ussd_tb_check.js:241
+msgid "N. CAPE"
+msgstr "N. KAAP"
+
+#: go-app-ussd_tb_check.js:242
+msgid "W. CAPE"
+msgstr "W. KAAP"
+
+#: go-app-ussd_tb_check.js:255
+msgid ""
+"Please TYPE your home address (or the address where you are currently "
+"staying). Give the street number, street name, suburb/township/town/village "
+"(or nearest)."
+msgstr ""
+"TIK asseblief jou woonadres (of die adres waar jy tans woon) in. Gee die "
+"straatnommer, straatnaam, woonbuurt/township/stad/dorp (of naaste)."
+
+#: go-app-ussd_tb_check.js:310
+msgid ""
+"Please check that the address below is correct and matches the information "
+"you gave us:\n"
+"{{ address }}"
+msgstr ""
+"Maak asseblief seker dat onderstaande adres korrek is en ooreenstem met die "
+"inligting wat jy vir ons gegee het:\n"
+"{{ address }}"
+
+#: go-app-ussd_tb_check.js:318 go-app-ussd_tb_check.js:556
+msgid "Yes"
+msgstr "Ja"
+
+#: go-app-ussd_tb_check.js:319 go-app-ussd_tb_check.js:502
+#: go-app-ussd_tb_check.js:556
+msgid "No"
+msgstr "Nee"
+
+#: go-app-ussd_tb_check.js:382
+msgid ""
+"How old are you?\n"
+"\n"
+"Reply with a number"
+msgstr ""
+"Hoe oud is jy? \n"
+"\n"
+"Antwoord met ’n nommer"
+
+#: go-app-ussd_tb_check.js:383
+msgid ""
+"Please use numbers from list.\n"
+"\n"
+"How old are you?"
+msgstr ""
+"Hoe oud is jy? \n"
+"\n"
+"Antwoord met ’n nommer"
+
+#: go-app-ussd_tb_check.js:388
+msgid "under 18"
+msgstr "onder 18"
+
+#: go-app-ussd_tb_check.js:389
+msgid "18-39"
+msgstr "18-39"
+
+#: go-app-ussd_tb_check.js:390
+msgid "40-65"
+msgstr "40-65"
+
+#: go-app-ussd_tb_check.js:391
+msgid "over 65"
+msgstr "oor 65"
+
+#: go-app-ussd_tb_check.js:402
+msgid ""
+"Which gender do you identify as?:\n"
+"\n"
+"Reply with a number"
+msgstr ""
+"As watter geslag identifiseer jy?:\n"
+" \n"
+"Antwoord met ’n nommer "
+
+#: go-app-ussd_tb_check.js:403
+msgid ""
+"Please use numbers from list.\n"
+"\n"
+"Which gender do you identify as?:"
+msgstr ""
+"As watter geslag identifiseer jy?:\n"
+" \n"
+"Antwoord met ’n nommer "
+
+#: go-app-ussd_tb_check.js:412
+msgid "MALE"
+msgstr "MANLIK"
+
+#: go-app-ussd_tb_check.js:413
+msgid "FEMALE"
+msgstr "VROULIK"
+
+#: go-app-ussd_tb_check.js:414
+msgid "OTHER"
+msgstr "ANDER"
+
+#: go-app-ussd_tb_check.js:415
+msgid "RATHER NOT SAY"
+msgstr "WIL LIEWER NIE SÊ NIE"
+
+#: go-app-ussd_tb_check.js:422
+msgid ""
+"Let's see how you're feeling today. Do you have a cough?\n"
+"\n"
+"Reply 1 or 2"
+msgstr ""
+"Kom ons kyk hoe jy vandag voel. Hoes jy? \n"
+"\n"
+"Antwoord 1 of 2 "
+
+#: go-app-ussd_tb_check.js:429
+msgid ""
+"Please use numbers from list.\n"
+"Do you have a cough?\n"
+"\n"
+"Reply 1 or 2"
+msgstr "Antwoord met ’n nommer. "
+
+#: go-app-ussd_tb_check.js:448
+msgid ""
+"Do you have a fever? (when you touch your forehead, does it feel hot?)\n"
+"\n"
+"Reply 1 or 2"
+msgstr ""
+"Het jy koors? (wanneer jy aan jou voorkop raak, voel dit warm?)\n"
+" \n"
+"Antwoord 1 of 2"
+
+#: go-app-ussd_tb_check.js:455
+msgid ""
+"Please use numbers from list. Do you have a fever? (when you touch your "
+"forehead, does it feel hot?)\n"
+"\n"
+"Reply 1 or 2"
+msgstr ""
+"Het jy koors? (wanneer jy aan jou voorkop raak, voel dit warm?)\n"
+" \n"
+"Antwoord 1 of 2"
+
+#: go-app-ussd_tb_check.js:471
+msgid "Are you sweating more than usual at night?"
+msgstr "Sweet jy meer as gewoonlik snags? "
+
+#: go-app-ussd_tb_check.js:472
+msgid ""
+"Please use numbers from list. Are you sweating more than usual at night?"
+msgstr "Sweet jy meer as gewoonlik snags? "
+
+#: go-app-ussd_tb_check.js:481
+msgid "Have you been losing weight without trying?"
+msgstr "Verloor jy gewig sonder dat jy probeer? "
+
+#: go-app-ussd_tb_check.js:482
+msgid ""
+"Please use numbers from list. Have you been losing weight without trying?"
+msgstr "Verloor jy gewig sonder dat jy probeer? "
+
+#: go-app-ussd_tb_check.js:491
+msgid ""
+"Are you at high risk of TB?\n"
+"\n"
+"Risk means you live with someone who has TB OR you had TB in the last 2 "
+"years OR you are HIV+"
+msgstr ""
+"Het jy hoë TB risiko? \n"
+"\n"
+"Risiko beteken jy woon met iemand met TB OF jy het TB gehad die agelope twee "
+"jaar OF jy is MIV+"
+
+#: go-app-ussd_tb_check.js:498
+msgid "Please use numbers from list. Are you at high risk for TB?"
+msgstr ""
+"Het jy hoë TB risiko? \n"
+"\n"
+"Risiko beteken jy woon met iemand met TB OF jy het TB gehad die agelope twee "
+"jaar OF jy is MIV+"
+
+#: go-app-ussd_tb_check.js:501
+msgid "Yes high risk"
+msgstr "Ja hoë risiko"
+
+#: go-app-ussd_tb_check.js:503
+msgid "Dont know"
+msgstr "Weet nie"
+
+#: go-app-ussd_tb_check.js:510 go-app-ussd_tb_check.js:518
+msgid ""
+"Now, please agree that the info you shared is correct and that you give the "
+"NDoH permission to contact you if needed?\n"
+"\n"
+"Reply 1 or 2"
+msgstr ""
+"Bevestig asseblief dat die inligting wat jy gegee het reg is en dat jy die "
+"NDvG toestemming gee om jou te kontak indien nodig? \n"
+"\n"
+"Antwoord 1 of 2"
+
+#: go-app-ussd_tb_check.js:542 go-app-ussd_tb_check.js:549
+msgid ""
+"Thanks for your answers. Your result will be sent soon on SMS. Would you "
+"like to receive follow-up messages?\n"
+"Reply"
+msgstr ""
+"Dankie vir jou antwoorde. Jou resultate sal binnekort per sms gestuur word. "
+"Wil jy graag opvolg-boodskappe ontvang? \n"
+"\n"
+"Antwoord met"
+
+#: go-app-ussd_tb_check.js:611
+msgid "Thanks for choosing to get our follow-up messages."
+msgstr "Dankie dat jy gekies het om ons opvolg-boodskappe te ontvang."
+
+#: go-app-ussd_tb_check.js:614
+msgid "Okay thanks, you won't get any follow-up messages."
+msgstr "Reg so dankie, jy sal nie enige opvolg-boodskappe ontvang nie."
+
+#: go-app-ussd_tb_check.js:619
+msgid "This service works best when you select numbers from the list"
+msgstr ""
+"Hierdie diens werk die beste wanneer jy een van die nommers op die lys kies."
+
+#: go-app-ussd_tb_check.js:627
+msgid "See Results"
+msgstr "Sien Uitslae"
+
+#: go-app-ussd_tb_check.js:634
+msgid ""
+"You don't need a TB test now, but if you develop cough, fever, weight loss "
+"or night sweats visit your nearest clinic."
+msgstr ""
+"Jy hoef nie nou ’n TB-toets te doen nie, maar besoek jou naaste kliniek "
+"indien jy begin hoes, koors het, gewig verloor of snags sweet."
+
+#: go-app-ussd_tb_check.js:640
+msgid ""
+"Your replies to the questions show you need a TB test this week.\n"
+"\n"
+"Go to your clinic for a free TB test. Please put on a face mask before you "
+"enter the clinic"
+msgstr ""
+"Jou antwoorde toon dat jy ’n TB-toets moet neem hierdie week. \n"
+"\n"
+"Gaan na jou kliniek vir ’n gratis TB-toets. Sit asseblief jou gesigmasker op "
+"voordat jy ingaan"
+
+#: go-app-ussd_tb_check.js:648
+msgid ""
+"Check if those you live with are on TB treatment. If you don't know your HIV "
+"status, visit the clinic for a free HIV test. Then do the TB check again."
+msgstr ""
+"Maak seker mense met wie jy woon kry TB-behandeling. As jy nie jou MIV-"
+"status ken nie, besoek die kliniek vir ’n gratis toets. Voltooi dan weer die "
+"TB-vraelys."

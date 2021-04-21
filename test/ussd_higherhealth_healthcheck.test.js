@@ -1,7 +1,8 @@
 var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
+var assert = require("assert");
 
-describe("ussd_covid19_triage app", function () {
+describe("ussd_higherhealth_healthcheck app", function () {
     var app;
     var tester;
 
@@ -13,13 +14,15 @@ describe("ussd_covid19_triage app", function () {
                 url: "http://eventstore",
                 token: "testtoken"
             },
-            turn: {
-                url: "http://turn",
-                token: "turntoken"
+            rapidpro: {
+                url: "https://rapidpro",
+                token: "testtoken",
+                sms_flow_uuid: "sms-flow-uuid"
             },
             google_places: {
                 key: "googleplaceskey"
-            }
+            },
+            testing_today: "2020-01-01T00:00:00Z"
         });
     });
 
@@ -31,7 +34,7 @@ describe("ussd_covid19_triage app", function () {
                 .check.interaction({
                     state: "state_timed_out",
                     reply: [
-                        "Welcome back to The National Department of Health's COVID-19 Service",
+                        "Welcome back to HealthCheck",
                         "",
                         "Reply",
                         "1. Continue where I left off",
@@ -48,7 +51,7 @@ describe("ussd_covid19_triage app", function () {
                 .check.interaction({
                     state: "state_timed_out",
                     reply: [
-                        "Welcome back to The National Department of Health's COVID-19 Service",
+                        "Welcome back to HealthCheck",
                         "",
                         "Reply",
                         "1. Continue where I left off",
@@ -75,36 +78,8 @@ describe("ussd_covid19_triage app", function () {
                             }
                         }
                     });
-                    api.http.fixtures.add({
-                        "request": {
-                            "url": "http://eventstore/api/v2/covid19triagestart/",
-                            "method": "POST",
-                            "data": {
-                                msisdn: "+27123456789",
-                                source: "USSD *123#"
-                            }
-                        },
-                        "response": {
-                            "code": 201,
-                            "data": {
-                                "accepted": true
-                            }
-                        }
-                    });
-                    api.http.fixtures.add({
-                        request: {
-                            url: "http://turn/v1/contacts/27123456789/profile",
-                            method: "GET"
-                        },
-                        response: {
-                            code: 200,
-                            data: {}
-                        }
-                    });
                 })
-                .input({ session_event: "new", to_addr: "*123#" })
                 .check.user.answer("returning_user", false)
-                .check.user.answer("confirmed_contact", false)
                 .check.user.state("state_welcome")
                 .run();
         });
@@ -122,51 +97,35 @@ describe("ussd_covid19_triage app", function () {
                                 msisdn: "+27123456789",
                                 province: "ZA-GT",
                                 city: "Sandton, South Africa",
-                                city_location: "+00-025/",
+                                city_location: "+12.34-56.78/",
                                 age: "18-40",
-                                preexisting_condition: "yes",
+                                first_name: "John",
+                                last_name: "Doe",
                                 data: {
-                                    age_years: "35",
+                                    university: {
+                                        name: "Other"
+                                    },
+                                    university_other: "test_uni",
+                                    campus: {
+                                        name: "Other"
+                                    },
+                                    campus_other: "test_campus",
                                 }
                             }
                         }
                     });
-                    api.http.fixtures.add({
-                        "request": {
-                            "url": "http://eventstore/api/v2/covid19triagestart/",
-                            "method": "POST",
-                            "data": {
-                                msisdn: "+27123456789",
-                                source: "USSD *123#"
-                            }
-                        },
-                        "response": {
-                            "code": 201,
-                            "data": {
-                                "accepted": true
-                            }
-                        }
-                    });
-                    api.http.fixtures.add({
-                        request: {
-                            url: "http://turn/v1/contacts/27123456789/profile",
-                            method: "GET"
-                        },
-                        response: {
-                            code: 200,
-                            data: {fields: {confirmed_contact: true}}
-                        }
-                    });
                 })
-                .input({ session_event: "new", to_addr: "*123#" })
                 .check.user.answer("returning_user", true)
                 .check.user.answer("state_province", "ZA-GT")
                 .check.user.answer("state_city", "Sandton, South Africa")
-                .check.user.answer("city_location", "+00-025/")
+                .check.user.answer("city_location", "+12.34-56.78/")
                 .check.user.answer("state_age", "18-40")
-                .check.user.answer("state_age_years", "35")
-                .check.user.answer("state_preexisting_conditions", "yes")
-                .check.user.answer("confirmed_contact", true)
+                .check.user.answer("state_first_name", "John")
+                .check.user.answer("state_last_name", "Doe")
+                .check.user.answer("state_university", "Other")
+                .check.user.answer("state_university_other", "test_uni")
+                .check.user.answer("state_campus", "Other")
+                .check.user.answer("state_campus_other", "test_campus")
                 .check.user.state("state_welcome")
                 .run();
         });
@@ -178,8 +137,8 @@ describe("ussd_covid19_triage app", function () {
                 .check.interaction({
                     state: "state_welcome",
                     reply: [
-                        "The National Department of Health thanks you for contributing to the " +
-                        "health of all citizens. Stop the spread of COVID-19",
+                        "HIGHER HEALTH HealthCheck is your risk assessment tool.",
+                        "No result SMS will be sent. Continue or WhatsApp HI to 0600110000",
                         "",
                         "Reply",
                         "1. START"
@@ -188,15 +147,15 @@ describe("ussd_covid19_triage app", function () {
                 })
                 .run();
         });
-        it("should show the returning user welcome message", function () {
+        it("should show the welcome message returning user", function () {
             return tester
-                .setup.user.answer("returning_user", true)
                 .setup.user.state("state_welcome")
+                .setup.user.answer("returning_user", true)
                 .check.interaction({
                     state: "state_welcome",
                     reply: [
-                        "Welcome back to HealthCheck, your weekly COVID-19 Risk Assesment tool. " +
-                        "Let's see how you are feeling today.",
+                        "Welcome back to HIGHER HEALTH's HealthCheck.",
+                        "No result SMS will be sent. Continue or WhatsApp HI to 0600110000",
                         "",
                         "Reply",
                         "1. START"
@@ -213,41 +172,6 @@ describe("ussd_covid19_triage app", function () {
                     state: "state_welcome",
                     reply: [
                         "This service works best when you select numbers from the list",
-                        "1. START"
-                    ].join("\n"),
-                    char_limit: 140
-                })
-                .run();
-        });
-        it("should repeat question on invalid input confirmed contact", function () {
-            return tester
-                .setup.user.state("state_welcome")
-                .setup.user.answer("confirmed_contact", true)
-                .input("A")
-                .check.interaction({
-                    state: "state_welcome",
-                    reply: [
-                        "The Dept of Health: you have been in contact with someone who has " +
-                        "COVID-19. Isolate for 10 days & answer these questions.",
-                        "",
-                        "Reply",
-                        "1. START"
-                    ].join("\n"),
-                    char_limit: 140
-                })
-                .run();
-        });
-        it("should show the confirmed contact welcome message", function () {
-            return tester
-                .setup.user.state("state_welcome")
-                .setup.user.answer("confirmed_contact", true)
-                .check.interaction({
-                    state: "state_welcome",
-                    reply: [
-                        "The Dept of Health: you have been in contact with someone who has " +
-                        "COVID-19. Isolate for 10 days & answer these questions.",
-                        "",
-                        "Reply",
                         "1. START"
                     ].join("\n"),
                     char_limit: 140
@@ -300,26 +224,18 @@ describe("ussd_covid19_triage app", function () {
                 })
                 .run();
         });
-        it("should go to state_province for yes", function () {
+        it("should go to state_first_name for yes", function () {
             return tester
                 .setup.user.state("state_terms")
                 .input("1")
-                .check.user.state("state_province")
+                .check.user.state("state_first_name")
                 .run();
         });
-        it("should go to state_fever for yes confirmed_contact", function () {
-            return tester
-                .setup.user.state("state_terms")
-                .setup.user.answer("confirmed_contact", true)
-                .input("1")
-                .check.user.state("state_fever")
-                .run();
-        });
-        it("should go to state_province for returning users", function() {
+        it("should go to state_first_name for returning users", function () {
             return tester
                 .setup.user.answer("returning_user", true)
                 .setup.user.state("state_terms")
-                .check.user.state("state_province")
+                .check.user.state("state_first_name")
                 .run();
         });
         it("should go to state_end for no", function () {
@@ -337,27 +253,85 @@ describe("ussd_covid19_triage app", function () {
                 .check.reply.ends_session()
                 .run();
         });
-        it("should go to state_end for no confirmed contact", function () {
-            return tester
-                .setup.user.state("state_terms")
-                .setup.user.answer("confirmed_contact", true)
-                .input("2")
-                .check.interaction({
-                    state: "state_end",
-                    reply:
-                        "You can return to this service at any time. Remember, if you think you " +
-                        "have COVID-19 STAY HOME, avoid contact with other people and " +
-                        "self-quarantine.",
-                    char_limit: 160
-                })
-                .check.reply.ends_session()
-                .run();
-        });
         it("should go to state_more_info for more info", function () {
             return tester
                 .setup.user.state("state_terms")
                 .input("3")
                 .check.user.state("state_more_info_pg1")
+                .run();
+        });
+    });
+    describe("state_first_name", function () {
+        it("should ask the user for their first name", function () {
+            return tester
+                .setup.user.state("state_first_name")
+                .check.interaction({
+                    state: "state_first_name",
+                    reply: "Please TYPE your first name",
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should repeat the question for invalid input", function () {
+            return tester
+                .setup.user.state("state_first_name")
+                .input("")
+                .check.interaction({
+                    state: "state_first_name",
+                    reply: "Please TYPE your first name",
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to state_last_name on valid input", function () {
+            return tester
+                .setup.user.state("state_first_name")
+                .input("first")
+                .check.user.state("state_last_name")
+                .run();
+        });
+        it("should go to state_last_name if value exists", function () {
+            return tester
+                .setup.user.answer("state_first_name", "Jane")
+                .setup.user.state("state_first_name")
+                .check.user.state("state_last_name")
+                .run();
+        });
+    });
+    describe("state_last_name", function () {
+        it("should ask the user for their surname", function () {
+            return tester
+                .setup.user.state("state_last_name")
+                .check.interaction({
+                    state: "state_last_name",
+                    reply: "Please TYPE your surname",
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should repeat the question for invalid input", function () {
+            return tester
+                .setup.user.state("state_last_name")
+                .input("")
+                .check.interaction({
+                    state: "state_last_name",
+                    reply: "Please TYPE your surname",
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to state_province on valid input", function () {
+            return tester
+                .setup.user.state("state_last_name")
+                .input("last")
+                .check.user.state("state_province")
+                .run();
+        });
+        it("should go to state_province if value exists", function () {
+            return tester
+                .setup.user.answer("state_last_name", "Doe")
+                .setup.user.state("state_last_name")
+                .check.user.state("state_province")
                 .run();
         });
     });
@@ -449,17 +423,17 @@ describe("ussd_covid19_triage app", function () {
                 })
                 .run();
         });
-        it("should skip the state for users who already have this info", function() {
-            return tester
-                .setup.user.state("state_province")
-                .setup.user.answer("state_province", "ZA-WC")
-                .check.user.state("state_city")
-                .run();
-        });
         it("should go to state_city", function () {
             return tester
                 .setup.user.state("state_province")
                 .input("1")
+                .check.user.state("state_city")
+                .run();
+        });
+        it("should go to state_city if value exists", function () {
+            return tester
+                .setup.user.answer("state_province", "ZA-WC")
+                .setup.user.state("state_province")
                 .check.user.state("state_city")
                 .run();
         });
@@ -527,25 +501,17 @@ describe("ussd_covid19_triage app", function () {
                 .check.user.answer("place_id", "ChIJD7fiBh9u5kcRYJSMaMOCCwQ")
                 .run();
         });
-        it("should skip the state for users who already have this info", function() {
+
+        it("should go to state_age if value exists", function () {
             return tester
-                .setup.user.state("state_city")
                 .setup.user.answer("state_city", "Cape Town, South Africa")
-                .setup.user.answer("city_location", "+00-025/")
+                .setup.user.answer("city_location", "+12.34-56.78/")
+                .setup.user.state("state_city")
                 .check.user.state("state_age")
                 .run();
         });
-        it("should skip the state for users who already have this info confirmed contact", function() {
-            return tester
-                .setup.user.state("state_city")
-                .setup.user.answer("confirmed_contact", true)
-                .setup.user.answer("state_city", "Cape Town, South Africa")
-                .setup.user.answer("city_location", "+00-025/")
-                .check.user.state("state_tracing")
-                .run();
-        });
     });
-    describe("state_confirm_city", function () {
+    describe("state_confirm_city", function() {
         it("should ask to confirm the city", function() {
             return tester
                 .setup.user.state("state_confirm_city")
@@ -612,52 +578,14 @@ describe("ussd_covid19_triage app", function () {
                 .check.user.answer("city_location", "-03.866651+051.195827/")
                 .run();
         });
-        it("go to state_tracing if user selects yes confirmed contact", function() {
-            return tester
-                .setup(function (api) {
-                    api.http.fixtures.add({
-                        request: {
-                            url: "https://maps.googleapis.com/maps/api/place/details/json",
-                            params: {
-                                key: "googleplaceskey",
-                                place_id: "ChIJD7fiBh9u5kcRYJSMaMOCCwQ",
-                                sessiontoken: "testsessiontoken",
-                                language: "en",
-                                fields: "geometry"
-                            },
-                            method: "GET"
-                        },
-                        response: {
-                            code: 200,
-                            data: {
-                                status: "OK",
-                                result: {
-                                    geometry: {
-                                        location: {
-                                           lat: -3.866651,
-                                           lng: 51.195827
-                                        },
-                                    }
-                                }
-                            }
-                        }
-                    });
-                })
-                .setup.user.state("state_confirm_city")
-                .setup.user.answer("confirmed_contact", true)
-                .setup.user.answer("state_city", "Cape Town, South Africa")
-                .setup.user.answer("place_id", "ChIJD7fiBh9u5kcRYJSMaMOCCwQ")
-                .setup.user.answer("google_session_token", "testsessiontoken")
-                .input("1")
-                .check.user.state("state_tracing")
-                .check.user.answer("city_location", "-03.866651+051.195827/")
-                .run();
-        });
     });
     describe("state_age", function () {
         it("should ask for their age", function () {
             return tester
                 .setup.user.state("state_age")
+                .setup.user.answers({
+                    state_province: 'ZA-GT',
+                })
                 .check.interaction({
                     state: "state_age",
                     reply: [
@@ -690,64 +618,234 @@ describe("ussd_covid19_triage app", function () {
                 })
                 .run();
         });
-        it("should go to state_fever", function () {
+        it("should go to state_university", function () {
             return tester
                 .setup.user.state("state_age")
+                .setup.user.answers({
+                    state_province: 'ZA-GT',
+                })
+                .input("1")
+                .check.user.state("state_university")
+                .run();
+        });
+    });
+    describe("state_university", function () {
+        it("should ask for a users university", function () {
+            return tester
+                .setup.user.answers({
+                    state_province: 'ZA-GT',
+                })
+                .setup.user.state("state_university")
+                .check.interaction({
+                    state: "state_university",
+                    reply: [
+                        "Select your university.",
+                        "",
+                        "Reply:",
+                        "1. AAA School of Advertising",
+                        "2. AFDA",
+                        "3. AROS",
+                        "4. Academy for Facilities Management (distance only)",
+                        "5. More"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .check.user.answer('state_province', 'ZA-GT')
+                .run();
+        });
+        it("should display an error on invalid input", function () {
+            return tester
+                .setup.user.state("state_university")
+                .setup.user.answers({
+                    state_province: 'ZA-GT'
+                })
+                .input("A")
+                .check.interaction({
+                    state: "state_university",
+                    reply: [
+                        "Select your university.",
+                        "",
+                        "Reply:",
+                        "1. AAA School of Advertising",
+                        "2. AFDA",
+                        "3. AROS",
+                        "4. Academy for Facilities Management (distance only)",
+                        "5. More"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to other free text university input", function () {
+            return tester
+                .setup.user.state("state_university")
+                .setup.user.answers({
+                    state_province: 'ZA-NC'
+                })
+                .inputs("6", "5", "5")  // Other
+                .check.interaction({
+                    state: "state_university_other",
+                    reply: [
+                        "Enter the name of your university.",
+                        "Reply:"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to state_campus", function () {
+            return tester
+                .setup.user.state("state_university")
+                .setup.user.answers({
+                    state_province: 'ZA-GT'
+                })
+                .input("1")
+                .check.user.state("state_campus")
+                .run();
+        });
+    });
+
+    describe("state_university_other", function(){
+        it("the user should be taken to next screen", function(){
+            return tester
+                .setup.user.answers({
+                    state_province: 'ZA-WC',
+                    state_university: 'Other',
+                })
+                .setup.user.state("state_university_other")
+                .input("Winelands")  // Other
+                .check.interaction({state:"state_campus"})
+                .run();
+        });
+    });
+
+    describe("state_campus", function () {
+        it("should ask for the users campus", function () {
+            return tester
+                .setup.user.state("state_campus")
+                .setup.user.answers({
+                    state_province: 'ZA-GT',
+                    state_university: 'University of Johannesburg (UJ)'
+                })
+                .check.interaction({
+                    state: "state_campus",
+                    reply: [
+                        "Select your campus.",
+                        "",
+                        "Reply:",
+                        "1. Doornfontein (DFC)",
+                        "2. Kingsway Auckland Park (APK)",
+                        "3. Kingsway Bunting Road (APB)",
+                        "4. Soweto",
+                        "5. Other"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should ask for the users campus (Unisa)", function () {
+            return tester
+                .setup.user.state("state_campus")
+                .setup.user.answers({
+                    state_province: 'ZA-GT',
+                    state_university: 'UNISA'
+                })
+                .check.interaction({
+                    state: "state_campus",
+                    reply: [
+                        "Select your campus.",
+                        "",
+                        "Reply:",
+                        "1. Brooklyn",
+                        "2. Daveyton",
+                        "3. Ekurhuleni",
+                        "4. Florida (Science Campus)",
+                        "5. Johannesburg",
+                        "6. Little Theatre",
+                        "7. Muckleneuk",
+                        "8. More"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function () {
+            return tester
+                .setup.user.state("state_campus")
+                .setup.user.answers({
+                    state_province: 'ZA-GT',
+                    state_university: 'University of Johannesburg (UJ)'
+                })
+                .input("A")
+                .check.interaction({
+                    state: "state_campus",
+                    reply: [
+                        "Select your campus.",
+                        "",
+                        "Reply:",
+                        "1. Doornfontein (DFC)",
+                        "2. Kingsway Auckland Park (APK)",
+                        "3. Kingsway Bunting Road (APB)",
+                        "4. Soweto",
+                        "5. Other"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to other free text campus input", function () {
+            return tester
+                .setup.user.state("state_campus")
+                .setup.user.answers({
+                    state_province: 'ZA-WC',
+                    state_university: 'Stellenbosch University (SU)',
+                })
+                .input("3")  // Other
+                .check.interaction({
+                    state: "state_campus_other",
+                    reply: [
+                        "Enter the name of your campus.",
+                        "Reply:"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to state_fever", function () {
+            return tester
+                .setup.user.state("state_campus")
+                .setup.user.answers({
+                    state_province: 'ZA-GT',
+                    state_university: 'University of Johannesburg (UJ)'
+                })
                 .input("1")
                 .check.user.state("state_fever")
                 .run();
         });
-        it("should skip the state for users who already have this info", function() {
+        it("should go to state_fever if value exists", function () {
             return tester
-                .setup.user.state("state_age")
                 .setup.user.answer("state_age", "18-40")
+                .setup.user.state("state_age")
                 .check.user.state("state_fever")
                 .run();
         });
     });
-    describe("state_age_years", function () {
-        it("should ask for their age", function () {
+
+    describe("state_campus_other", function(){
+        it("the user should be taken to next screen", function(){
             return tester
-                .setup.user.state("state_age_years")
-                .check.interaction({
-                    state: "state_age_years",
-                    reply: [
-                        "Please TYPE your age in years (eg. 35)"
-                    ].join("\n"),
-                    char_limit: 160
+                .setup.user.state("state_campus_other")
+                .setup.user.answers({
+                    state_province: 'ZA-WC',
+                    state_university: 'Stellenbosch University (SU)',
+                    state_campus: 'Other',
                 })
-                .run();
-        });
-        it("should repeat the question on invalid input", function () {
-            return tester
-                .setup.user.state("state_age_years")
-                .input("A")
-                .check.interaction({
-                    state: "state_age_years",
-                    reply: [
-                        "Please TYPE your age in years (eg. 35)"
-                    ].join("\n"),
-                    char_limit: 160
-                })
-                .run();
-        });
-        it("should go to state_province", function () {
-            return tester
-                .setup.user.state("state_age_years")
-                .input("22")
-                .check.user.state("state_province")
-                .check.user.answer("state_age", "18-40")
-                .run();
-        });
-        it("should skip the state for users who already have this info", function() {
-            return tester
-                .setup.user.state("state_age_years")
-                .setup.user.answer("state_age_years", "23")
-                .setup.user.answer("state_age", "18-49")
-                .check.user.state("state_province")
+                .input("Neelsie")  // Other
+                .check.interaction({state:"state_fever"})
                 .run();
         });
     });
+
     describe("state_fever", function () {
         it("should ask if they have a fever", function () {
             return tester
@@ -800,43 +898,6 @@ describe("ussd_covid19_triage app", function () {
                     state: "state_cough",
                     reply: [
                         "Do you have a cough that recently started?",
-                        "",
-                        "Reply",
-                        "1. YES",
-                        "2. NO"
-                    ].join("\n"),
-                    char_limit: 160
-                })
-                .run();
-        });
-        it("should ask if they have a cough confirmed contact", function () {
-            return tester
-                .setup.user.state("state_cough")
-                .setup.user.answer("confirmed_contact", true)
-                .check.interaction({
-                    state: "state_cough",
-                    reply: [
-                        "Do you have a cough that recently started in the last week?",
-                        "",
-                        "Reply",
-                        "1. YES",
-                        "2. NO"
-                    ].join("\n"),
-                    char_limit: 160
-                })
-                .run();
-        });
-        it("display an error on invalid input confirmed contact", function () {
-            return tester
-                .setup.user.state("state_cough")
-                .setup.user.answer("confirmed_contact", true)
-                .input("A")
-                .check.interaction({
-                    state: "state_cough",
-                    reply: [
-                        "This service works best when you select numbers from the list.",
-                        "",
-                        "Do you have a cough that recently started in the last week?",
                         "",
                         "Reply",
                         "1. YES",
@@ -922,8 +983,9 @@ describe("ussd_covid19_triage app", function () {
                 .check.interaction({
                     state: "state_breathing",
                     reply: [
-                        "Do you have breathlessness or a difficulty breathing, that you've " +
+                        "Do you have breathlessness or difficulty in breathing, that you've " +
                         "noticed recently?",
+                        "",
                         "Reply",
                         "1. YES",
                         "2. NO"
@@ -939,46 +1001,8 @@ describe("ussd_covid19_triage app", function () {
                 .check.interaction({
                     state: "state_breathing",
                     reply: [
-                        "Please use numbers from list. Do you have breathlessness or a " +
-                        "difficulty breathing, that you've noticed recently?",
-                        "Reply",
-                        "1. YES",
-                        "2. NO"
-                    ].join("\n"),
-                    char_limit: 160
-                })
-                .run();
-        });
-        it("should ask if they have difficulty breathing confirmed contact", function () {
-            return tester
-                .setup.user.state("state_breathing")
-                .setup.user.answer("confirmed_contact", true)
-                .check.interaction({
-                    state: "state_breathing",
-                    reply: [
-                        "Do you have shortness of breath while resting or difficulty breathing, " +
-                        "that you've noticed recently?",
-                        "",
-                        "Reply",
-                        "1. YES",
-                        "2. NO"
-                    ].join("\n"),
-                    char_limit: 160
-                })
-                .run();
-        });
-        it("should display an error on invalid input confirmed contact", function () {
-            return tester
-                .setup.user.state("state_breathing")
-                .setup.user.answer("confirmed_contact", true)
-                .input("A")
-                .check.interaction({
-                    state: "state_breathing",
-                    reply: [
-                        "Please use numbers from list.",
-                        "",
-                        "Do you have shortness of breath while resting or difficulty breathing, " +
-                        "that you've noticed recently?",
+                        "Please use numbers from list. Do you have breathlessness or " +
+                        "difficulty in breathing, that you've noticed recently?",
                         "",
                         "Reply",
                         "1. YES",
@@ -995,114 +1019,6 @@ describe("ussd_covid19_triage app", function () {
                 .check.user.state("state_exposure")
                 .run();
         });
-        it("should go to state_taste_and_smell confirmed contact", function () {
-            return tester
-                .setup.user.state("state_breathing")
-                .setup.user.answer("confirmed_contact", true)
-                .input("1")
-                .check.user.state("state_taste_and_smell")
-                .run();
-        });
-    });
-    describe("state_taste_and_smell", function() {
-        it("should ask if they have lost their sense of taste and smell", function () {
-            return tester
-                .setup.user.state("state_taste_and_smell")
-                .check.interaction({
-                    state: "state_taste_and_smell",
-                    reply: [
-                        "Have you noticed any recent changes in your ability to taste or smell " +
-                        "things?",
-                        "",
-                        "Reply",
-                        "1. YES",
-                        "2. NO"
-                    ].join("\n"),
-                    char_limit: 160
-                })
-                .run();
-        });
-        it("should display an error on invalid input", function () {
-            return tester
-                .setup.user.state("state_taste_and_smell")
-                .input("A")
-                .check.interaction({
-                    state: "state_taste_and_smell",
-                    reply: [
-                        "This service works best when you select numbers from the list.",
-                        "Have you noticed any recent changes in your ability to taste or smell " +
-                        "things?",
-                        "",
-                        "Reply",
-                        "1. YES",
-                        "2. NO"
-                    ].join("\n"),
-                    char_limit: 160
-                })
-                .run();
-        });
-        it("should go to state_preexisting_conditions", function () {
-            return tester
-                .setup.user.state("state_taste_and_smell")
-                .input("1")
-                .check.user.state("state_preexisting_conditions")
-                .run();
-        });
-    });
-    describe("state_preexisting_conditions", function () {
-        it("should ask if they have any preexisting conditions", function () {
-            return tester
-                .setup.user.state("state_preexisting_conditions")
-                .check.interaction({
-                    state: "state_preexisting_conditions",
-                    reply: [
-                        "Have you been diagnosed with either Obesity, Diabetes, Hypertension or " +
-                        "Cardiovascular disease?",
-                        "",
-                        "Reply",
-                        "1. YES",
-                        "2. NO",
-                        "3. NOT SURE"
-                    ].join("\n"),
-                    char_limit: 160
-                })
-                .run();
-        });
-        it("display an error on invalid input", function () {
-            return tester
-                .setup.user.state("state_preexisting_conditions")
-                .input("A")
-                .check.interaction({
-                    state: "state_preexisting_conditions",
-                    reply: [
-                        "Please use numbers from list.",
-                        "",
-                        "Have you been diagnosed with either Obesity, Diabetes, Hypertension or " +
-                        "Cardiovascular disease?",
-                        "",
-                        "Reply",
-                        "1. YES",
-                        "2. NO",
-                        "3. NOT SURE"
-                    ].join("\n"),
-                    char_limit: 160
-                })
-                .run();
-        });
-        it("should go to state_age_years", function () {
-            return tester
-                .setup.user.state("state_preexisting_conditions")
-                .input("1")
-                .check.user.state("state_age_years")
-                .run();
-        });
-        it("should skip this state if we already have this info", function () {
-            return tester
-                .setup.user.state("state_preexisting_conditions")
-                .setup.user.answer("state_preexisting_conditions", "yes")
-                .check.user.state("state_age_years")
-                .run();
-        });
     });
     describe("state_exposure", function () {
         it("should ask if they have been exposed to the virus", function () {
@@ -1111,8 +1027,8 @@ describe("ussd_covid19_triage app", function () {
                 .check.interaction({
                     state: "state_exposure",
                     reply: [
-                        "Have you been in close contact to someone confirmed to be infected with " +
-                        "COVID19?",
+                        "Have you been in close contact with someone confirmed to be infected " +
+                        "with COVID19?",
                         "",
                         "Reply",
                         "1. YES",
@@ -1189,57 +1105,22 @@ describe("ussd_covid19_triage app", function () {
                 })
                 .run();
         });
-        it("should ask that the info is correct confirmed contact", function () {
-            return tester
-                .setup.user.state("state_tracing")
-                .setup.user.answer("confirmed_contact", true)
-                .check.interaction({
-                    state: "state_tracing",
-                    reply: [
-                        "Finally, please confirm that the information you shared is ACCURATE to " +
-                        "the best of your knowledge?",
-                        "",
-                        "Reply",
-                        "1. YES",
-                        "2. NO"
-                    ].join("\n"),
-                    char_limit: 160
-                })
-                .run();
-        });
-        it("should display the error on invalid input confirmed contact", function () {
-            return tester
-                .setup.user.state("state_tracing")
-                .setup.user.answer("confirmed_contact", true)
-                .input("A")
-                .check.interaction({
-                    state: "state_tracing",
-                    reply: [
-                        "Please use numbers from the list.",
-                        "",
-                        "Finally, please confirm that the information you shared is ACCURATE to " +
-                        "the best of your knowledge?",
-                        "",
-                        "Reply",
-                        "1. YES",
-                        "2. NO"
-                    ].join("\n"),
-                    char_limit: 160
-                })
-                .run();
-        });
         it("should go to state_display_risk", function () {
             return tester
                 .setup.user.state("state_tracing")
                 .setup.user.answers({
                     state_province: "ZA-WC",
                     state_city: "Cape Town",
-                    state_age: ">65",
+                    state_age: "<18",
                     state_fever: false,
                     state_cough: false,
                     state_sore_throat: false,
                     state_breathing: false,
                     state_exposure: "No",
+                    state_first_name: "First",
+                    state_last_name: "Last",
+                    state_university: "Other",
+                    state_campus: "Other",
                 })
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -1248,10 +1129,10 @@ describe("ussd_covid19_triage app", function () {
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
-                                source: "USSD *123#",
+                                source: "USSD",
                                 province: "ZA-WC",
                                 city: "Cape Town",
-                                age: ">65",
+                                age: "<18",
                                 fever: false,
                                 cough: false,
                                 sore_throat: false,
@@ -1259,7 +1140,12 @@ describe("ussd_covid19_triage app", function () {
                                 exposure: "No",
                                 tracing: true,
                                 risk: "low",
-                                data: {}
+                                first_name: "First",
+                                last_name: "Last",
+                                data:{
+                                    university:{"name":"Other"},
+                                    campus:{"name":"Other"}
+                                }
                             }
                         },
                         "response": {
@@ -1270,54 +1156,31 @@ describe("ussd_covid19_triage app", function () {
                         }
                     });
                 })
-                .input({content: "1", to_addr: "*123#"})
+                .input("1")
                 .check.user.state("state_display_risk")
+                .check(function(api) {
+                    assert.strictEqual(api.http.requests.length, 1);
+                })
                 .run();
         });
         it("should go to start if restart is chosen", function () {
             return tester
-                .setup.user.state("state_tracing")
                 .setup(function (api) {
                     api.http.fixtures.add({
-                        "request": {
-                            "url": 'http://eventstore/api/v2/healthcheckuserprofile/+27123456789/',
-                            "method": 'GET'
-                        },
-                        "response": {
-                            "code": 404,
-                            "data": {
-                                "detail": "Not found."
-                            }
-                        }
-                    });
-                    api.http.fixtures.add({
-                        "request": {
-                            "url": "http://eventstore/api/v2/covid19triagestart/",
-                            "method": "POST",
-                            "data": {
-                                msisdn: "+27123456789",
-                                source: "USSD *123#"
-                            }
-                        },
-                        "response": {
-                            "code": 201,
-                            "data": {
-                                "accepted": true
-                            }
-                        }
-                    });
-                    api.http.fixtures.add({
                         request: {
-                            url: "http://turn/v1/contacts/27123456789/profile",
+                            url: "http://eventstore/api/v2/healthcheckuserprofile/+27123456789/",
                             method: "GET"
                         },
                         response: {
-                            code: 200,
-                            data: {}
+                            code: 404,
+                            data: {
+                                detail: "Not found."
+                            }
                         }
                     });
                 })
-                .input({content: "3", to_addr: "*123#"})
+                .setup.user.state("state_tracing")
+                .input("3")
                 .check.user.state("state_welcome")
                 .run();
         });
@@ -1329,11 +1192,16 @@ describe("ussd_covid19_triage app", function () {
                 .setup.user.answers({
                     state_province: "ZA-WC",
                     state_city: "Cape Town",
+                    state_first_name: "testin very long name >19 chars",
+                    state_last_name: "last name",
+                    city_location: "+12.34-56.78/",
                     state_age: "<18",
                     state_fever: false,
                     state_cough: false,
                     state_sore_throat: false,
                     state_exposure: "No",
+                    state_university: "Other",
+                    state_campus: "Other",
                 })
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -1342,9 +1210,12 @@ describe("ussd_covid19_triage app", function () {
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
-                                source: "USSD *123#",
+                                first_name: "testin very long name >19 chars",
+                                last_name: "last name",
+                                source: "USSD",
                                 province: "ZA-WC",
                                 city: "Cape Town",
+                                city_location: "+12.34-56.78/",
                                 age: "<18",
                                 fever: false,
                                 cough: false,
@@ -1352,7 +1223,10 @@ describe("ussd_covid19_triage app", function () {
                                 exposure: "No",
                                 tracing: true,
                                 risk: "low",
-                                data: {}
+                                data:{
+                                    university:{"name":"Other"},
+                                    campus:{"name":"Other"}
+                                }
                             }
                         },
                         "response": {
@@ -1363,15 +1237,19 @@ describe("ussd_covid19_triage app", function () {
                         }
                     });
                 })
-                .input({content: "1", to_addr: "*123#"})
+                .input("1")
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
-                        "Complete this HealthCheck again in 7 days or sooner if you feel ill or " +
-                        "you come into contact with someone infected with COVID-19",
+                        "testin very long..., you are at LOW RISK. Wear a mask and sanitize " +
+                        "daily. Screenshot this result. HIGHER HEALTH supported by Lifebuoy," +
+                        " European Union and HWESTA",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
+                .check(function(api) {
+                    assert.strictEqual(api.http.requests.length, 1);
+                })
                 .run();
         });
         it("should display the moderate risk message if moderate risk", function () {
@@ -1381,10 +1259,14 @@ describe("ussd_covid19_triage app", function () {
                     state_province: "ZA-WC",
                     state_city: "Cape Town",
                     state_age: "<18",
+                    state_first_name: "short first",
+                    state_last_name: "last",
                     state_fever: true,
                     state_cough: false,
                     state_sore_throat: false,
                     state_exposure: "not_sure",
+                    state_university: "Other",
+                    state_campus: "Other",
                 })
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -1393,9 +1275,11 @@ describe("ussd_covid19_triage app", function () {
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
-                                source: "USSD *123#",
+                                source: "USSD",
                                 province: "ZA-WC",
                                 city: "Cape Town",
+                                first_name: "short first",
+                                last_name: "last",
                                 age: "<18",
                                 fever: true,
                                 cough: false,
@@ -1403,7 +1287,10 @@ describe("ussd_covid19_triage app", function () {
                                 exposure: "not_sure",
                                 tracing: true,
                                 risk: "moderate",
-                                data: {}
+                                data:{
+                                    university:{"name":"Other"},
+                                    campus:{"name":"Other"}
+                                }
                             }
                         },
                         "response": {
@@ -1414,12 +1301,13 @@ describe("ussd_covid19_triage app", function () {
                         }
                     });
                 })
-                .input({content: "1", to_addr: "*123#"})
+                .input("1")
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
-                        "We recommend you SELF-QUARANTINE for the next 10 days and do this HealthCheck " +
-                        "daily to monitor your symptoms. Stay/sleep alone in a room with good air flow.",
+                      "short first last, SELF-ISOLATE in your room for 10 days and " +
+                      "monitor symptoms on HealthCheck. HIGHER HEALTH supported by " +
+                      "Lifebuoy, European Union and HWESTA",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
@@ -1432,10 +1320,14 @@ describe("ussd_covid19_triage app", function () {
                     state_age: ">65",
                     state_fever: true,
                     state_cough: true,
+                    state_first_name: "short first",
+                    state_last_name: "longggg last",
                     state_province: "ZA-WC",
                     state_city: "Cape Town",
                     state_sore_throat: false,
                     state_exposure: "No",
+                    state_university: "Other",
+                    state_campus: "Other",
                 })
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -1444,17 +1336,22 @@ describe("ussd_covid19_triage app", function () {
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
-                                source: "USSD *123#",
+                                source: "USSD",
                                 province: "ZA-WC",
                                 city: "Cape Town",
                                 age: ">65",
+                                first_name: "short first",
+                                last_name: "longggg last",
                                 fever: true,
                                 cough: true,
                                 sore_throat: false,
                                 exposure: "No",
                                 tracing: true,
                                 risk: "high",
-                                data: {}
+                                data:{
+                                    university:{"name":"Other"},
+                                    campus:{"name":"Other"}
+                                }
                             }
                         },
                         "response": {
@@ -1465,12 +1362,13 @@ describe("ussd_covid19_triage app", function () {
                         }
                     });
                 })
-                .input({content: "1", to_addr: "*123#"})
+                .input("1")
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
-                        "You may be ELIGIBLE FOR COVID-19 TESTING. Go to a testing center or Call " +
-                        "0800029999 or visit your healthcare practitioner for info on what to do & how to test.",
+                        "short first long..., GET TESTED for COVID-19. Go to your testing " +
+                        "centre/doctor or call 0800029999. HIGHER HEALTH supported by " +
+                        "Lifebuoy, European Union & HWESTA",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
@@ -1487,6 +1385,10 @@ describe("ussd_covid19_triage app", function () {
                     state_cough: false,
                     state_sore_throat: false,
                     state_exposure: "No",
+                    state_first_name: "first",
+                    state_last_name: "last",
+                    state_university: "Other",
+                    state_campus: "Other",
                 })
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -1495,7 +1397,7 @@ describe("ussd_covid19_triage app", function () {
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
-                                source: "USSD *123#",
+                                source: "USSD",
                                 province: "ZA-WC",
                                 city: "Cape Town",
                                 age: "<18",
@@ -1505,7 +1407,12 @@ describe("ussd_covid19_triage app", function () {
                                 exposure: "No",
                                 tracing: false,
                                 risk: "low",
-                                data: {}
+                                first_name: "first",
+                                last_name: "last",
+                                data:{
+                                    university:{"name":"Other"},
+                                    campus:{"name":"Other"}
+                                }
                             }
                         },
                         "response": {
@@ -1516,15 +1423,20 @@ describe("ussd_covid19_triage app", function () {
                         }
                     });
                 })
-                .input({content: "2", to_addr: "*123#"})
+                .input("2")
                 .check.interaction({
                     state: "state_no_tracing_low_risk",
                     reply: [
-                        "You will not be contacted. If you think you have COVID-19 please STAY " +
-                        "HOME, avoid contact with other people in your community and self-quarantine.",
+                        "You won't be contacted. If you think you have COVID-19 STAY HOME, avoid " +
+                        "contact with other people & self-quarantine.",
+                        "No result SMS will be sent.",
+                        "",
                         "1. START OVER"
                     ].join("\n"),
                     char_limit: 160
+                })
+                .check(function(api) {
+                    assert.strictEqual(api.http.requests.length, 1);
                 })
                 .run();
         });
@@ -1539,6 +1451,8 @@ describe("ussd_covid19_triage app", function () {
                     state_cough: false,
                     state_sore_throat: false,
                     state_exposure: "No",
+                    state_university: "Other",
+                    state_campus: "Other",
                 })
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -1547,7 +1461,7 @@ describe("ussd_covid19_triage app", function () {
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
-                                source: "USSD *123#",
+                                source: "USSD",
                                 province: "ZA-WC",
                                 city: "Cape Town",
                                 age: "<18",
@@ -1557,7 +1471,10 @@ describe("ussd_covid19_triage app", function () {
                                 exposure: "No",
                                 tracing: false,
                                 risk: "moderate",
-                                data: {}
+                                data:{
+                                    university:{"name":"Other"},
+                                    campus:{"name":"Other"}
+                                }
                             }
                         },
                         "response": {
@@ -1568,13 +1485,13 @@ describe("ussd_covid19_triage app", function () {
                         }
                     });
                 })
-                .input({content: "2", to_addr: "*123#"})
+                .input("2")
                 .check.interaction({
-                    state: "state_no_tracing_moderate_risk",
+                    state: "state_display_risk",
                     reply: [
-                        "You won't be contacted. SELF-QUARANTINE for 10 days, do this HealthCheck " +
-                        "daily to monitor symptoms. Stay/sleep alone in a room with good air flow.",
-                        "1. START OVER"
+                        "We won't contact you. SELF-QUARANTINE for 10 days and do this " +
+                        "HealthCheck daily to monitor symptoms. Stay/sleep alone in a room with " +
+                        "good air flowing through"
                     ].join("\n"),
                     char_limit: 160
                 })
@@ -1591,6 +1508,8 @@ describe("ussd_covid19_triage app", function () {
                     state_city: "Cape Town",
                     state_sore_throat: false,
                     state_exposure: "No",
+                    state_university: "Other",
+                    state_campus: "Other",
                 })
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -1599,7 +1518,7 @@ describe("ussd_covid19_triage app", function () {
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
-                                source: "USSD *123#",
+                                source: "USSD",
                                 province: "ZA-WC",
                                 city: "Cape Town",
                                 age: ">65",
@@ -1609,122 +1528,9 @@ describe("ussd_covid19_triage app", function () {
                                 exposure: "No",
                                 tracing: false,
                                 risk: "high",
-                                data: {}
-                            }
-                        },
-                        "response": {
-                            "code": 201,
-                            "data": {
-                                "accepted": true
-                            }
-                        }
-                    });
-                })
-                .input({content: "2", to_addr: "*123#"})
-                .check.interaction({
-                    state: "state_display_risk",
-                    reply:
-                        "You will not be contacted. You may be ELIGIBLE FOR COVID-19 TESTING. Go to a testing center or Call " +
-                        "0800029999 or your healthcare practitioner for info.",
-                    char_limit: 160
-                })
-                .check.reply.ends_session()
-                .run();
-        });
-        it("displays moderate risk message confirmed contact", function() {
-            return tester
-                .setup.user.state("state_tracing")
-                .setup.user.answers({
-                    confirmed_contact: true,
-                    state_age: ">65",
-                    state_fever: false,
-                    state_cough: false,
-                    state_province: "ZA-WC",
-                    state_city: "Cape Town",
-                    state_sore_throat: false,
-                    state_exposure: "yes",
-                })
-                .setup(function (api) {
-                    api.http.fixtures.add({
-                        "request": {
-                            "url": 'http://eventstore/api/v3/covid19triage/',
-                            "method": 'POST',
-                            "data": {
-                                msisdn: "+27123456789",
-                                source: "USSD *123#",
-                                province: "ZA-WC",
-                                city: "Cape Town",
-                                age: ">65",
-                                fever: false,
-                                cough: false,
-                                sore_throat: false,
-                                exposure: "yes",
-                                tracing: true,
-                                risk: "moderate",
-                                confirmed_contact: true,
-                                data: {}
-                            }
-                        },
-                        "response": {
-                            "code": 201,
-                            "data": {
-                                "accepted": true
-                            }
-                        }
-                    });
-                })
-                .input({content: "1", to_addr: "*123#"})
-                .check.interaction({
-                    state: "state_display_risk",
-                    reply:
-                        "We recommend you SELF-QUARANTINE for the next 10 days and do this " +
-                        "HealthCheck daily to monitor your symptoms. Stay/sleep alone in a room " +
-                        "with good air flow.",
-                    char_limit: 160
-                })
-                .check.reply.ends_session()
-                .run();
-        });
-        it("displays high risk message confirmed contact", function() {
-            return tester
-                .setup.user.state("state_tracing")
-                .setup.user.answers({
-                    confirmed_contact: true,
-                    state_age: ">65",
-                    state_fever: true,
-                    state_cough: false,
-                    state_province: "ZA-WC",
-                    state_city: "Cape Town",
-                    city_location: "-03.866651+051.195827/",
-                    state_sore_throat: false,
-                    state_exposure: "yes",
-                    state_taste_and_smell: true,
-                    state_preexisting_conditions: "yes",
-                    state_age_years: "67"
-                })
-                .setup(function (api) {
-                    api.http.fixtures.add({
-                        "request": {
-                            "url": 'http://eventstore/api/v3/covid19triage/',
-                            "method": 'POST',
-                            "data": {
-                                msisdn: "+27123456789",
-                                source: "USSD *123#",
-                                province: "ZA-WC",
-                                city: "Cape Town",
-                                city_location: "-03.866651+051.195827/",
-                                age: ">65",
-                                fever: true,
-                                cough: false,
-                                sore_throat: false,
-                                exposure: "yes",
-                                tracing: true,
-                                risk: "high",
-                                smell: true,
-                                preexisting_condition: "yes",
-                                confirmed_contact: true,
-                                data: {
-                                    age_years: "67"
+                                data:{
+                                    university:{"name":"Other"},
+                                    campus:{"name":"Other"}
                                 }
                             }
                         },
@@ -1736,13 +1542,14 @@ describe("ussd_covid19_triage app", function () {
                         }
                     });
                 })
-                .input({content: "1", to_addr: "*123#"})
+                .input("2")
                 .check.interaction({
                     state: "state_display_risk",
-                    reply:
-                        "You may be ELIGIBLE FOR COVID-19 TESTING. Go to a testing center or " +
-                        "Call 0800029999 or visit your healthcare practitioner for info on what " +
-                        "to do & how to test.",
+                    reply: [
+                        "You will not be contacted. GET TESTED to find out if you have COVID-19. " +
+                        "Go to a testing center or Call 0800029999 or your healthcare " +
+                        "practitioner for info"
+                    ].join("\n"),
                     char_limit: 160
                 })
                 .check.reply.ends_session()

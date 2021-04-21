@@ -60,3 +60,13 @@ Welcome to the Department of Health's MomConnect. Please select your language
 5. Sesotho sa Leboa
 6. More
 ```
+
+### Updating Higher Health institution data
+
+The current latest data is from: 2 November 2020
+
+You can update the list of higher health institutions, given a list of CSV files with that info, by
+using the following command, followed by updating this README:
+```
+npm run hh_update_institutions data1.csv data2.csv data3.csv
+```

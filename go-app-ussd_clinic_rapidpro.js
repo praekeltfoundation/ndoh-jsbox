@@ -250,6 +250,7 @@ go.app = function() {
     var MenuState = vumigo.states.MenuState;
     var PaginatedState = vumigo.states.PaginatedState;
     var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
+    var MetricsHelper = require('go-jsbox-metrics-helper');
 
 
     var GoNDOH = App.extend(function(self) {
@@ -273,6 +274,21 @@ go.app = function() {
                 self.im.config.services.whatsapp.base_url,
                 self.im.config.services.whatsapp.token
             );
+
+            self.env = self.im.config.env;
+            self.metric_prefix = [self.env, self.im.config.name].join('.');
+            
+            self.im.on('state:enter', function(e) {
+                return self.im.metrics.fire.sum('enter.' + e.state.name, 1);
+            });
+
+            var mh = new MetricsHelper(self.im);
+            mh
+                // Total sum of users for each state for app
+                // <env>.ussd_clinic_rapidpro.sum.unique_users last metric, 
+                // and a <env>.ussd_clinic_rapidpro.sum.unique_users.transient sum metric
+                .add.total_unique_users([self.metric_prefix, 'sum', 'unique_users'].join('.')) 
+            ;
         };
 
         self.contact_edd = function(contact) {
@@ -324,9 +340,9 @@ go.app = function() {
             self.im.user.answers = {};
             return new MenuState(name, {
                 question: $([
-                    "Welcome to the Department of Health's MomConnect (MC).",
+                    "Welcome to the Department of Health's MomConnect. We only send WhatsApp msgs in English.",
                     "",
-                    "Is {{msisdn}} the cell number of the mother who wants to sign up?"
+                    "Is {{msisdn}} the no. signing up?",
                     ].join("\n")).context({msisdn: utils.readable_msisdn(self.im.user.addr, "27")}),
                 error: $(
                     "Sorry we don't understand. Please enter the number next to the mother's " +
@@ -520,51 +536,12 @@ go.app = function() {
             // Skip to message consent if the user has already given info consent
             var consent = _.get(self.im.user.answers, "contact.fields.info_consent", "") || "";
             if(consent.toUpperCase() === "TRUE"){
-                return self.states.create("state_message_consent");
-            }
-            return new MenuState(name, {
-                question: $(
-                    "We need to process the mom's personal info to send her relevant messages " +
-                    "about her pregnancy/baby. Does she agree?"
-                ),
-                error: $(
-                    "Sorry we don't understand. Please enter the number next to the mother's " +
-                    "answer."
-                ),
-                choices: [
-                    new Choice("state_message_consent", $("Yes")),
-                    new Choice("state_info_consent_confirm", $("No")),
-                    new Choice("state_more_info", $("She needs more info to decide"))
-                ]
-            });
-        });
-
-        self.add("state_info_consent_confirm", function(name) {
-            return new MenuState(name, {
-                question: $(
-                    "Unfortunately, without agreeing she can't sign up to MomConnect. Does she " +
-                    "agree to MomConnect processing her personal info?"
-                ),
-                error: $(
-                    "Sorry we don't understand. Please enter the number next to the mother's " +
-                    "answer."
-                ),
-                choices: [
-                    new Choice("state_message_consent", $("Yes")),
-                    new Choice("state_no_consent", $("No"))
-                ]
-            });
-        });
-
-        self.add("state_message_consent", function(name) {
-            var consent = _.get(self.im.user.answers, "contact.fields.message_consent", "") || "";
-            if(consent.toUpperCase() === "TRUE"){
                 return self.states.create("state_research_consent");
             }
             return new MenuState(name, {
                 question: $(
-                    "Does the mother agree to receive messages from MomConnect? This may include " +
-                    "receiving messages on public holidays and weekends."
+                    "Does she agree to let us process her info & to getting msgs? " +
+                    "She may get msgs on public holidays & weekends."
                 ),
                 error: $(
                     "Sorry we don't understand. Please enter the number next to the mother's " +
@@ -572,12 +549,13 @@ go.app = function() {
                 ),
                 choices: [
                     new Choice("state_research_consent", $("Yes")),
-                    new Choice("state_message_consent_confirm", $("No")),
+                    new Choice("state_info_consent_confirm", $("No")),
+                    new Choice("state_more_info", $("She needs more info to decide"))
                 ]
             });
         });
 
-        self.add("state_message_consent_confirm", function(name) {
+        self.add("state_info_consent_confirm", function(name) {
             return new MenuState(name, {
                 question: $(
                     "Unfortunately, without agreeing she can't sign up to MomConnect. Does she " +
@@ -792,7 +770,7 @@ go.app = function() {
                     "Unfortunately MomConnect doesn't send messages to children older than 2 " +
                     "years."
                 ),
-                next: "states_start"
+                next: "state_start"
             });
         });
 
@@ -898,7 +876,7 @@ go.app = function() {
                     }
 
                 },
-                next: "state_language"
+                next: "state_whatsapp_contact_check"
             });
         });
 
@@ -938,7 +916,7 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_language"
+                next: "state_whatsapp_contact_check"
             });
         });
 
@@ -1016,36 +994,6 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_language"
-            });
-        });
-
-        self.add("state_language", function(name) {
-            return new PaginatedChoiceState(name, {
-                question: $(
-                    "What language does the mother want to receive her MomConnect messages in?"
-                ),
-                error: $(
-                    "Sorry we don't understand. Please enter the number next to the mother's " +
-                    "answer."
-                ),
-                choices: [
-                    new Choice("zul", $("isiZulu")),
-                    new Choice("xho", $("isiXhosa")),
-                    new Choice("afr", $("Afrikaans")),
-                    new Choice("eng", $("English")),
-                    new Choice("nso", $("Sesotho sa Leboa")),
-                    new Choice("tsn", $("Setswana")),
-                    new Choice("sot", $("Sesotho")),
-                    new Choice("tso", $("Xitsonga")),
-                    new Choice("ssw", $("siSwati")),
-                    new Choice("ven", $("Tshivenda")),
-                    new Choice("nbl", $("isiNdebele"))
-                ],
-                back: $("Back"),
-                more: $("Next"),
-                options_per_page: null,
-                characters_per_page: 160,
                 next: "state_whatsapp_contact_check"
             });
         });
@@ -1069,13 +1017,16 @@ go.app = function() {
         });
 
         self.add("state_trigger_rapidpro_flow", function(name, opts) {
+            if(!self.im.user.answers.on_whatsapp) {
+                return self.states.create("state_not_on_whatsapp");
+            }
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
             var data = {
                 research_consent:
                     self.im.user.answers.state_research_consent === "no" ? "FALSE" : "TRUE",
                 registered_by: utils.normalize_msisdn(self.im.user.addr, "ZA"),
-                language: self.im.user.answers.state_language,
+                language: "eng",
                 timestamp: new moment.utc(self.im.config.testing_today).format(),
                 source: "Clinic USSD",
                 id_type: {
@@ -1098,7 +1049,7 @@ go.app = function() {
                     ).format(),
                 passport_origin: self.im.user.answers.state_passport_country,
                 passport_number: self.im.user.answers.state_passport_no,
-                swt: self.im.user.answers.on_whatsapp ? "7" : "1"
+                swt: "7"
             };
             var flow_uuid;
             if(self.im.user.answers.state_message_type === "state_edd_month") {
@@ -1136,12 +1087,21 @@ go.app = function() {
         self.states.add("state_registration_complete", function(name) {
             var msisdn = _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr);
             msisdn = utils.readable_msisdn(msisdn, "27");
-            var channel = self.im.user.answers.on_whatsapp ? $("WhatsApp") : $("SMS");
             return new EndState(name, {
                 text: $(
                     "You're done! This number {{msisdn}} will get helpful messages from " +
                     "MomConnect on {{channel}}. Thanks for signing up to MomConnect!"
-                ).context({msisdn: msisdn, channel: channel}),
+                ).context({msisdn: msisdn, channel: $("WhatsApp")}),
+                next: "state_start"
+            });
+        });
+
+        self.states.add("state_not_on_whatsapp", function(name) {
+            return new EndState(name, {
+                text: $(
+                    "Sorry, MomConnect is not available on SMS. We only send WhatsApp messages in English. " +
+                    "You can dial *134*550*2# again on a cell number that has WhatsApp."
+                ),
                 next: "state_start"
             });
         });
@@ -1162,7 +1122,9 @@ go.app = function() {
                 more: $("Next"),
                 back: $("Previous"),
                 next: function(choice) {
-                    return choice.value;
+                    if(choice !== undefined){
+                        return choice.value;
+                    }
                 }
             });
         });
@@ -1198,7 +1160,7 @@ go.app = function() {
                 back: $("Previous"),
                 next: "state_more_info"
             });
-        }); 
+        });
 
         self.add('state_question_pi', function(name) {
             return new PaginatedState(name, {
