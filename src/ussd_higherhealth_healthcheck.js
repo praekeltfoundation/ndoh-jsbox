@@ -663,38 +663,38 @@ go.app = (function () {
 
     function truncateString(str, num) {
       if (str.length <= num) {
-        return str
+        return str;
       }
       // Return str truncated with '...' concatenated to the end of str.
-      return str.slice(0, num-3) + '...'
+      return str.slice(0, num-3) + '...';
     }
 
     self.states.add("state_display_risk", function (name) {
       var answers = self.im.user.answers;
       var risk = self.calculate_risk();
       var text = "";
-      var full_name = truncateString(answers.state_first_name, 19);
+      var full_name =truncateString(answers.state_first_name, 19);
       if (answers.state_tracing) {
         if (risk === "low") {
           text = $(
-            "${full_name}, you are at LOW RISK. Wear a mask and sanitize ",
+            "{{ full_name }}, you are at LOW RISK. Wear a mask and sanitize ",
             "daily. Screenshot this result. HIGHER HEALTH supported by ",
             "Lifebuoy, European Union and HWESTA"
-          );
+          ).context({full_name: full_name});
         }
         if (risk === "moderate") {
           text = $(
-            "${full_name}, SELF-ISOLATE in your room for 10 days and monitor",
+            "{{ full_name }}, SELF-ISOLATE in your room for 10 days and monitor",
             " symptoms on HealthCheck. HIGHER HEALTH supported by Lifebuoy, ",
             "European Union and HWESTA"
-          );
+          ).context({full_name: full_name});
         }
         if (risk === "high") {
-          text = $([
-            "${full_name}, GET TESTED for COVID-19. Go to your testing ",
-            "centre/doctor or call 0800029999. HIGHER HEALTH supported ",
-            "by Lifebuoy, European Union & HWESTA"
-          ].join("\n"));
+          text = $(
+            "{{ full_name }}, GET TESTED for COVID-19. Go to your testing",
+            " centre/doctor or call 0800029999. HIGHER HEALTH supported by",
+            "European Union and HWESTA"
+          ).context({full_name: full_name});
         }
       } else {
         if (risk === "low") {
