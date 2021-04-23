@@ -249,8 +249,8 @@ go.app = function() {
                     var supp_statuses = _.toUpper(_.get(self.im.user.get_answer("contact"), "fields.supp_status"));
                     var prebirth_messaging = _.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7);
                     var postbirth_messaging = _.toUpper(_.get(contact, "fields.postbirth_messaging")) === "TRUE";
-                    var dob1 = new moment(_.get(self.im.user.get_answer("contact"), "fields.baby_dob1", null));
-                    var supp_cell = _.get(self.im.user.get_answer("contact"), "fields.supp_cell");
+                    var supporter = _.toUpper(_.get(contact, "fields.supporter")) === "TRUE";
+
 
                     var OptionSet = ['REGISTERED', 'SUGGESTED', 'OPTEDOUT'];
                     if (supp_statuses === "") {
@@ -259,48 +259,70 @@ go.app = function() {
                         status = OptionSet.indexOf(supp_statuses);
                     }
 
-                    if (prebirth_messaging) {
-                        if (supp_cell != null && status === 1) {
-                            return self.states.create("state_mother_supporter_suggested_state");
+
+                    if (supporter) {
+                        if (status === 0) {
+                            return self.states.create("state_supporter_profile");
                         }
-                        if (supp_cell != null && status === -1) {
-                            return self.states.create("state_mother_supporter_consent");
+                        if (status === 1) {
+                            return self.states.create("state_supporter_consent");
                         }
-                        if (supp_cell != null && status === 2) {
-                            return self.states.create("state_mother_supporter_consent");
-                        }
-                        if (supp_cell === null) {
-                            return self.states.create("state_mother_supporter_consent");
-                        } else {
+                        else {
                             return self.states.create("state_supporter_unknown");
                         }
                     }
 
-                    if (postbirth_messaging) {
-                        /** Check if baby DOB is older than 5 months */
+                    if (!(supporter)) {
+                        var dob1 = _.get(self.im.user.get_answer("contact"), "fields.baby_dob1", null);
+                        var dob2 = _.get(self.im.user.get_answer("contact"), "fields.baby_dob2", null);
+                        var dob3 = _.get(self.im.user.get_answer("contact"), "fields.baby_dob3", null);
+                        var dates=[];
+                        dates.push(new Date(dob1));
+                        dates.push(new Date(dob2));
+                        dates.push(new Date(dob3));
+                        var maxDate = new Date(Math.max.apply(null,dates));
+                        var dob = new moment(maxDate.toISOString().replace(/.\d+Z$/g, ""));
                         var today = new moment(self.im.config.testing_today);
-                        var months_count = today.diff(dob1, 'months');
-                        if (months_count > 5) {
-                            return self.states.create("state_mother_supporter_5_months_end");
+                        var months_count = today.diff(dob, 'months');
+                        if (status === 0) {
+                            return self.states.create("state_mother_profile");
                         }
-                        if (months_count < 5 && supp_cell == null) {
-                            return self.states.create("state_mother_supporter_consent");
-                        }
-                        if (months_count < 5 && supp_cell != null && status === 1) {
+                        if (status === 1) {
                             return self.states.create("state_mother_supporter_suggested_state");
                         }
-                        if (months_count < 5 && supp_cell != null && status === -1) {
+                        if (status === -1 && prebirth_messaging) {
                             return self.states.create("state_mother_supporter_consent");
-                        } else {
+                        }
+                        if (status === 2 && prebirth_messaging) {
+                            return self.states.create("state_mother_supporter_consent");
+                        }
+                        if (status === 2 && postbirth_messaging && months_count > 5) {
+                            
+                            return self.states.create("state_mother_supporter_5_months_end");
+                        }
+                        if (status === -1 && postbirth_messaging && months_count > 5) {
+                            
+                            return self.states.create("state_mother_supporter_5_months_end");
+                        }
+                        if (status === 2 && postbirth_messaging && months_count > 5) {
+                            
+                            return self.states.create("state_mother_supporter_5_months_end");
+                        }
+                        if (status === -1 && postbirth_messaging && months_count < 5) {
+                            
+                            return self.states.create("state_mother_supporter_5_months_end");
+                        }
+                        if (status === 2 && postbirth_messaging && months_count < 5) {
+                            
+                            return self.states.create("state_mother_supporter_consent");
+                        }
+                        else {
                             return self.states.create("state_supporter_unknown");
                         }
-                    } else if (!(postbirth_messaging && prebirth_messaging) && status === 1) {
-                        return self.states.create("state_supporter_consent");
-                    } else if (!(postbirth_messaging && prebirth_messaging) && status === 0) {
-                        return self.states.create("state_supporter_profile");
-                    } else {
-                        return self.states.create("state_supporter_unknown");
                     }
+                    else {
+                        return self.states.create("state_supporter_unknown");
+                    }               
 
                 }).catch(function(e) {
                     // Go to error state after 3 failed HTTP requests
@@ -314,12 +336,15 @@ go.app = function() {
         });
 
         self.states.add("state_mother_supporter_suggested_state", function(name) {
+            var supp_cell = self.im.user.get_answer(("fields.supp_cell"), $("None"));
             return new EndState(name, {
                 next: "state_start",
                 text: $(
-                    "Your supporter hasn't registered yet. " +
-                    "Remind them to dial *134*550*9# to complete registration."
-                )
+                    "Your supporter {{supp_cell}} hasn't registered yet. " +
+                    "\nRemind them to dial *134*550*9# to complete registration."
+                ).context({
+                    supp_cell: supp_cell
+                })
             });
         });
 
@@ -782,7 +807,7 @@ go.app = function() {
             var mom_name = _.get(self.im.user.get_answer("contact"), "fields.mom_name");
             return new MenuState(name, {
                 question: $(
-                    "You have signed up as {{mom_name}}'s." +
+                    "You have signed up as {{mom_name}}'s supporter." +
                     "\n\nWhat would you like to do?").context({
                     mom_name: mom_name
                 }),
