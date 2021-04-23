@@ -1583,7 +1583,14 @@ describe("ussd_mcgcc app", function() {
                 .setup.user.answers({
                     state_mother_new_supporter_consent: "yes",
                     state_mother_new_supporter_msisdn: "0123456722",
-                    state_new_supporter_mother_name: "Jane"
+                    state_new_supporter_mother_name: "Jane",
+                    contact: {
+                        fields: {
+                            baby_dob1: "2021-01-06T07:07:07",
+                            edd: "2021-01-06T07:07:07",
+                            prebirth_messaging: 1
+                        }
+                    }
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1595,6 +1602,12 @@ describe("ussd_mcgcc app", function() {
                                 "supp_consent": "true",
                                 "supp_cell": "+27123456722",
                                 "mom_name": "Jane",
+                                "baby_dob1": "2021-01-06T07:07:07Z",
+                                "baby_dob2": null,
+                                "baby_dob3": null,
+                                "prebirth_messaging": 1,
+                                "postbirth_messaging": false,
+                                "mom_edd": "2021-01-06T07:07:07Z",
                                 "source": "USSD",
                                 "timestamp": "2021-03-06T07:07:07Z",
                                 "registered_by": "+27123456789",
