@@ -73,9 +73,8 @@ describe("ussd_mcgcc app", function() {
                             urn: "whatsapp:27123456789",
                             exists: true,
                             fields: {
+                                supp_status: "OTHER",
                                 prebirth_messaging: "3",
-                                supp_cell: "27123456369",
-                                supp_status: "OTHER"
                             }
                         })
                     );
@@ -84,7 +83,7 @@ describe("ussd_mcgcc app", function() {
                 .check.user.state("state_mother_supporter_consent")
                 .run();
         });
-        it("should show the supporter consent page for opted out supporter", function() {
+        it("should show the supporter consent page for opted out supporter and prebirth mother", function() {
             return tester
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -93,7 +92,6 @@ describe("ussd_mcgcc app", function() {
                             exists: true,
                             fields: {
                                 prebirth_messaging: "3",
-                                supp_cell: "27123456369",
                                 supp_status: "OPTEDOUT"
                             }
                         })
@@ -103,7 +101,7 @@ describe("ussd_mcgcc app", function() {
                 .check.user.state("state_mother_supporter_consent")
                 .run();
         });
-        it("should also show the supporter consent screen", function() {
+        it("should show the supporter consent page for opted out supporter and postbirth mother", function() {
             return tester
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -111,8 +109,47 @@ describe("ussd_mcgcc app", function() {
                             urn: "whatsapp:27123456789",
                             exists: true,
                             fields: {
-                                prebirth_messaging: "3",
-                                supp_cell: null
+                                postbirth_messaging: "true",
+                                supp_status: "OPTEDOUT",
+                                baby_dob1: "2020-12-25T10:01:52.648503+02:00"
+                            }
+                        })
+                    );
+                })
+                .start()
+                .check.user.state("state_mother_supporter_consent")
+                .run();
+        });
+        it("should show the registration end screen for opted out supporter and > 5 months baby", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "whatsapp:27123456789",
+                            exists: true,
+                            fields: {
+                                postbirth_messaging: "true",
+                                supp_status: "OPTEDOUT",
+                                baby_dob1: "2020-07-25T10:01:52.648503+02:00"
+                            }
+                        })
+                    );
+                })
+                .start()
+                .check.user.state("state_mother_supporter_5_months_end")
+                .run();
+        });
+        it("should show the consent screen for opted out supporter and < 5 months baby", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "whatsapp:27123456789",
+                            exists: true,
+                            fields: {
+                                postbirth_messaging: "true",
+                                supp_status: "OPTEDOUT",
+                                baby_dob1: "2020-12-25T10:01:52.648503+02:00"
                             }
                         })
                     );
@@ -129,8 +166,6 @@ describe("ussd_mcgcc app", function() {
                             urn: "whatsapp:27123456789",
                             exists: true,
                             fields: {
-                                prebirth_messaging: "3",
-                                supp_cell: "27123456369",
                                 supp_status: "SUGGESTED"
                             }
                         })
@@ -140,7 +175,7 @@ describe("ussd_mcgcc app", function() {
                 .check.user.state("state_mother_supporter_suggested_state")
                 .run();
         });
-        it("should also show the postbirth > 5 months screen", function() {
+        it("should show the supporter profile screen if status is registered", function() {
             return tester
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -148,26 +183,8 @@ describe("ussd_mcgcc app", function() {
                             urn: "whatsapp:27123456789",
                             exists: true,
                             fields: {
-                                postbirth_messaging: "true",
-                                supp_cell: "0903095",
-                                baby_dob1: "2020-07-25T10:01:52.648503+02:00",
-                            }
-                        })
-                    );
-                })
-                .start()
-                .check.user.state("state_mother_supporter_5_months_end")
-                .run();
-        });
-        it("should show the supporter change profile screen", function() {
-            return tester
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_rapidpro.get_contact({
-                            urn: "whatsapp:27123456789",
-                            exists: true,
-                            fields: {
-                                supp_status: "REGISTERED"
+                                supporter: "true",
+                                supp_status: "REGISTERED",
                             }
                         })
                     );
@@ -176,7 +193,7 @@ describe("ussd_mcgcc app", function() {
                 .check.user.state("state_supporter_profile")
                 .run();
         });
-        it("should show the supporter change profile screen", function() {
+        it("should show the supporter consent if status is suggested", function() {
             return tester
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -184,7 +201,44 @@ describe("ussd_mcgcc app", function() {
                             urn: "whatsapp:27123456789",
                             exists: true,
                             fields: {
+                                supporter: "true",
+                                supp_status: "SUGGESTED"
+                            }
+                        })
+                    );
+                })
+                .start()
+                .check.user.state("state_supporter_consent")
+                .run();
+        });
+        it("should show the state unknown screen if supporter status is other", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "whatsapp:27123456789",
+                            exists: true,
+                            fields: {
+                                supporter: "true",
                                 supp_status: "RANDOM"
+                            }
+                        })
+                    );
+                })
+                .start()
+                .check.user.state("state_supporter_unknown")
+                .run();
+        });
+        it("should show the state unknown screen if supporter status is optedout", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "whatsapp:27123456789",
+                            exists: true,
+                            fields: {
+                                supporter: "true",
+                                supp_status: "OPTEDOUT"
                             }
                         })
                     );
@@ -450,6 +504,7 @@ describe("ussd_mcgcc app", function() {
                             fields: {
                                 prebirth_messaging: null,
                                 postbirth_messaging: null,
+                                supporter: "true",
                                 supp_status: "SUGGESTED"
                             }
                         })
