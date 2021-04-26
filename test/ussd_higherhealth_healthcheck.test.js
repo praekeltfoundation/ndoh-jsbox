@@ -1192,14 +1192,14 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .setup.user.answers({
                     state_province: "ZA-WC",
                     state_city: "Cape Town",
+                    state_first_name: "testin very long name >19 chars",
+                    state_last_name: "last name",
                     city_location: "+12.34-56.78/",
                     state_age: "<18",
                     state_fever: false,
                     state_cough: false,
                     state_sore_throat: false,
                     state_exposure: "No",
-                    state_first_name: "first",
-                    state_last_name: "last",
                     state_university: "Other",
                     state_campus: "Other",
                 })
@@ -1210,6 +1210,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
+                                first_name: "testin very long name >19 chars",
+                                last_name: "last name",
                                 source: "USSD",
                                 province: "ZA-WC",
                                 city: "Cape Town",
@@ -1221,8 +1223,6 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 exposure: "No",
                                 tracing: true,
                                 risk: "low",
-                                first_name: "first",
-                                last_name: "last",
                                 data:{
                                     university:{"name":"Other"},
                                     campus:{"name":"Other"}
@@ -1241,9 +1241,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
-                        "You are low risk of having COVID-19. Check your " +
-                        "symptoms daily. Screenshot this result. HIGHER HEALTH" +
-                        " supported by Lifebuoy, European Union and HWESTA",
+                        "testin very long..., you are at LOW RISK. Wear a mask and sanitize " +
+                        "daily. Screenshot this result. HIGHER HEALTH supported by Lifebuoy," +
+                        " European Union and HWESTA",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
@@ -1259,6 +1259,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state_province: "ZA-WC",
                     state_city: "Cape Town",
                     state_age: "<18",
+                    state_first_name: "short first",
+                    state_last_name: "last",
                     state_fever: true,
                     state_cough: false,
                     state_sore_throat: false,
@@ -1276,6 +1278,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 source: "USSD",
                                 province: "ZA-WC",
                                 city: "Cape Town",
+                                first_name: "short first",
+                                last_name: "last",
                                 age: "<18",
                                 fever: true,
                                 cough: false,
@@ -1301,9 +1305,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
-                      "SELF-QUARANTINE for 10 days and monitor yourself daily on " +
-                      "HealthCheck. Stay alone in a room. HIGHER HEALTH supported " +
-                      "by Lifebuoy, European Union and HWESTA.",
+                      "short first last, SELF-ISOLATE in your room for 10 days and " +
+                      "monitor symptoms on HealthCheck. HIGHER HEALTH supported by " +
+                      "Lifebuoy, European Union and HWESTA",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
@@ -1316,6 +1320,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state_age: ">65",
                     state_fever: true,
                     state_cough: true,
+                    state_first_name: "short first",
+                    state_last_name: "longggg last",
                     state_province: "ZA-WC",
                     state_city: "Cape Town",
                     state_sore_throat: false,
@@ -1334,6 +1340,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 province: "ZA-WC",
                                 city: "Cape Town",
                                 age: ">65",
+                                first_name: "short first",
+                                last_name: "longggg last",
                                 fever: true,
                                 cough: true,
                                 sore_throat: false,
@@ -1357,10 +1365,10 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .input("1")
                 .check.interaction({
                     state: "state_display_risk",
-                    reply: [
-                        "GET TESTED for COVID-19. Go to your doctor or a testing centre or call",
-                        " +0800029999 for more info. HIGHER HEALTH supported by Lifebuoy, European Union & HWESTA"
-                    ].join("\n"),
+                    reply:
+                        "short first long..., GET TESTED for COVID-19. Go to your testing " +
+                        "centre/doctor or call 0800029999. HIGHER HEALTH supported by " +
+                        "Lifebuoy, European Union & HWESTA",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
