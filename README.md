@@ -63,7 +63,7 @@ Welcome to the Department of Health's MomConnect. Please select your language
 
 ### Updating Higher Health institution data
 
-The current latest data is from: 2 November 2020
+The current latest data is from: 23 March 2021
 
 You can update the list of higher health institutions, given a list of CSV files with that info, by
 using the following command, followed by updating this README:
