@@ -142,9 +142,6 @@ go.institutions = {
       "Park Avenue",
       "Thanduxolo"
     ],
-    "Eastern Cape CET College": [
-      "Eastern Cape CET College"
-    ],
     "Ed-U City Campus (Pty) Ltd": [
       "Port Elizabeth"
     ],
@@ -298,9 +295,6 @@ go.institutions = {
       "Mphohadi",
       "Sasolburg"
     ],
-    "Free State CET College": [
-      "Free State CET College"
-    ],
     "Goldfields": [
       "Central Office",
       "Muruti House",
@@ -337,6 +331,9 @@ go.institutions = {
     "Richfield Graduate School": [
       "Bloemfontein",
       "Phuthaditjhaba"
+    ],
+    "Swift Skills Academy": [
+      "Sasolburg"
     ],
     "University of the Free State (UFS)": [
       "Main Campus",
@@ -564,9 +561,6 @@ go.institutions = {
     "Foundation for Professional Development (Pty) Ltd": [
       "Pretoria"
     ],
-    "Gauteng CET College": [
-      "Gauteng CET College"
-    ],
     "Global School of Theology": [
       "Rooderpoort"
     ],
@@ -676,9 +670,6 @@ go.institutions = {
     "SANTS": [
       "Pretoria"
     ],
-    "ST Augustine College of  South Africa": [
-      "Johannesburg"
-    ],
     "STADIO Embury (Stadio School of Education)": [
       "Midrand",
       "Pretoria"
@@ -724,6 +715,9 @@ go.institutions = {
     ],
     "South African Theological Seminary": [
       "Sandton"
+    ],
+    "St Augustine College of South Africa": [
+      "Johannesburg"
     ],
     "St John Vianney Seminary": [
       "Pretoria"
@@ -859,9 +853,6 @@ go.institutions = {
       "Maake",
       "Tzaneen"
     ],
-    "Limpopo CET College": [
-      "Limpopo CET College"
-    ],
     "Mediclinic (Limpopo Mediclinic Learning Centre)": [
       "Polokwane"
     ],
@@ -970,9 +961,6 @@ go.institutions = {
     "Mediclinic (Nelspruit Mediclinic Learning Centre)": [
       "Mbombela"
     ],
-    "Mpumalanga CET College": [
-      "Mpumalanga CET College"
-    ],
     "Nkangala": [
       "CN Mahlangu",
       "Central Office",
@@ -998,9 +986,6 @@ go.institutions = {
     ],
     "Hugenote Kollege": [
       "Kimberely"
-    ],
-    "Northern Cape CET College": [
-      "Northern Cape CET College"
     ],
     "Northern Cape Rural": [
       "Central Office",
@@ -1158,9 +1143,6 @@ go.institutions = {
       "Port Shepstone",
       "Umzimkhulu"
     ],
-    "KZN CET College": [
-      "KZN CET College"
-    ],
     "Majuba": [
       "CPD",
       "Central Office",
@@ -1173,7 +1155,8 @@ go.institutions = {
       "Open Learning Unit (OPU)"
     ],
     "Mangosuthu University of Technology (MUT)": [
-      "Main Campus"
+      "Main Campus",
+      "Natural Sciences"
     ],
     "Mnambithi": [
       "Central Office",
@@ -1284,9 +1267,6 @@ go.institutions = {
       "Mafikeng",
       "Potchefstroom"
     ],
-    "North West CET College": [
-      "North West CET College"
-    ],
     "Orbit": [
       "Brits",
       "Central Office",
@@ -1371,6 +1351,10 @@ go.institutions = {
     ],
     "Richfield Graduate School": [
       "Cape Town"
+    ],
+    "Swift Skills Academy": [
+      "Killarney Gardens",
+      "Vredenburg"
     ],
     "AAA School of Advertising": [
       "Cape Town"
@@ -1544,6 +1528,9 @@ go.institutions = {
     "Mediclinic (Cape Region Mediclinic Learning Centre)": [
       "Belville"
     ],
+    "Mowbray Maternity Hospital": [
+      "Mowbray"
+    ],
     "Northlink": [
       "Belhar",
       "Bellville",
@@ -1576,11 +1563,14 @@ go.institutions = {
       "Stellenbosch"
     ],
     "Stellenbosch University (SU)": [
+      "Bellville Park",
+      "Saldanha",
       "Stellenbosch",
-      "Tygerberg"
+      "Tygerberg",
+      "Worcester"
     ],
     "The Fashion Institute of Garment Technology (Cape Town College of Fashion Design)": [
-      "Mobray"
+      "Mowbray"
     ],
     "University of Cape Town (UCT)": [
       "Rondebosch"
@@ -1595,12 +1585,10 @@ go.institutions = {
       "Malmesbury",
       "Vredenburg",
       "Vredendal"
-    ],
-    "Western Cape CET College": [
-      "Western Cape CET College"
     ]
   }
 };
+
 go.app = (function () {
   var vumigo = require("vumigo_v02");
   var _ = require("lodash");
