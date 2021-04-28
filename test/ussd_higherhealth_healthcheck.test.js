@@ -682,7 +682,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .setup.user.answers({
                     state_province: 'ZA-NC'
                 })
-                .inputs("6", "5", "5")  // Other
+                .inputs("6", "5", "5", "3")  // Other
                 .check.interaction({
                     state: "state_university_other",
                     reply: [
@@ -800,7 +800,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state_province: 'ZA-WC',
                     state_university: 'Stellenbosch University (SU)',
                 })
-                .input("3")  // Other
+                .input("6")  // Other
                 .check.interaction({
                     state: "state_campus_other",
                     reply: [
