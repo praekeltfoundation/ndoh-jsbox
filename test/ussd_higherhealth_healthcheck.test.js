@@ -158,7 +158,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                         "No result SMS will be sent. Continue or WhatsApp HI to 0600110000",
                         "",
                         "Reply",
-                        "1. START"
+                        "1. START",
+                        "2. RECEIPT"
                     ].join("\n"),
                     char_limit: 140
                 })

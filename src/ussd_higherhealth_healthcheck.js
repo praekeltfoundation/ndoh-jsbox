@@ -110,7 +110,6 @@ go.app = (function () {
         return self.states.create(name, opts);
       });
     });
-
     self.states.add("state_welcome", function(name) {
       self.im.user.answers.google_session_token = crypto.randomBytes(20).toString("hex");
       var question;
@@ -121,14 +120,22 @@ go.app = (function () {
           "",
           "Reply"
         ].join("\n"));
-      } else {
-        question = $([
-          "HIGHER HEALTH HealthCheck is your risk assessment tool.",
-          "No result SMS will be sent. Continue or WhatsApp HI to 0600110000",
-          "",
-          "Reply"
-        ].join("\n"));
+        return new MenuState(name, {
+          question: question,
+          error: $("This service works best when you select numbers from the list"),
+          accept_labels: true,
+          choices: [
+            new Choice("state_terms", $("START")),
+            new Choice("state_display_risk", $("RECEIPT"))
+          ]
+        });
       }
+      question = $([
+        "HIGHER HEALTH HealthCheck is your risk assessment tool.",
+        "No result SMS will be sent. Continue or WhatsApp HI to 0600110000",
+        "",
+        "Reply"
+      ].join("\n"));
       return new MenuState(name, {
         question: question,
         error: $("This service works best when you select numbers from the list"),
