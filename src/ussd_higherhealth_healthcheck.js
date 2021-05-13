@@ -116,7 +116,7 @@ go.app = (function () {
       var question;
       var today = new Date();
       var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-      var msisdn = self.im.user.addr
+      var msisdn = self.im.user.addr;
       new JsonApi(self.im).get(
         // use dictionary params
         self.im.config.eventstore.url + `/api/v3/covid19triage/?timestamp_gt=${date}T00:00:00+02:00&msisdn=${msisdn}`, {
@@ -125,7 +125,7 @@ go.app = (function () {
           "User-Agent": ["Jsbox/HH-Covid19-Triage-USSD"]
         }
       }).then(function (response) {
-        results = response.data.results
+        var results = response.data.results;
         if(results === []){
           if (self.im.user.answers.returning_user){
             question = $([
@@ -134,6 +134,7 @@ go.app = (function () {
               "",
               "Reply"
             ].join("\n"));
+          }
           else {
             question = $([
               "HIGHER HEALTH HealthCheck is your risk assessment tool.",
@@ -169,7 +170,7 @@ go.app = (function () {
             new Choice("state_display_risk", $("RECEIPT"))
           ]
         });
-      }, function (e) {
+      }, function (e, opts) {
         // Go to error state after 3 failed HTTP requests
         opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
         if (opts.http_error_count === 3) {
@@ -715,8 +716,9 @@ go.app = (function () {
 
     self.states.add("state_display_risk", function (name) {
       var answers = self.im.user.answers;
-      if (self.im.user.answers.risk === undefined){
-        var risk = self.calculate_risk();
+      var risk = self.im.user.answers.risk;
+      if (risk === undefined){
+        risk = self.calculate_risk();
       }
       var text = "";
       var full_name =truncateString((answers.state_first_name + " " + answers.state_last_name), 19);
