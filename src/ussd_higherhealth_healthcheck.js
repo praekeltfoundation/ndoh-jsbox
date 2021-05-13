@@ -18,6 +18,7 @@ go.app = (function () {
     var $ = self.$;
 
     self.calculate_risk = function () {
+      // if has receipt for today, send that receipt's risk
       var answers = self.im.user.answers;
 
       var symptom_count = _.filter([
@@ -113,7 +114,46 @@ go.app = (function () {
     self.states.add("state_welcome", function(name) {
       self.im.user.answers.google_session_token = crypto.randomBytes(20).toString("hex");
       var question;
-      if (self.im.user.answers.returning_user) {
+      var today = new Date();
+      var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+      var msisdn = self.im.user.addr
+      new JsonApi(self.im).get(
+        // use dictionary params
+        self.im.config.eventstore.url + `/api/v3/covid19triage/?timestamp_gt=${date}T00:00:00+02:00&msisdn=${msisdn}`, {
+        headers: {
+          "Authorization": ["Token " + self.im.config.eventstore.token],
+          "User-Agent": ["Jsbox/HH-Covid19-Triage-USSD"]
+        }
+      }).then(function (response) {
+        results = response.data.results
+        if(results === []){
+          if (self.im.user.answers.returning_user){
+            question = $([
+              "Welcome back to HIGHER HEALTH's HealthCheck.",
+              "No result SMS will be sent. Continue or WhatsApp HI to 0600110000",
+              "",
+              "Reply"
+            ].join("\n"));
+          else {
+            question = $([
+              "HIGHER HEALTH HealthCheck is your risk assessment tool.",
+              "No result SMS will be sent. Continue or WhatsApp HI to 0600110000",
+              "",
+              "Reply"
+            ].join("\n"));
+          }
+          return new MenuState(name, {
+            question: question,
+            error: $("This service works best when you select numbers from the list"),
+            accept_labels: true,
+            choices: [
+              new Choice("state_terms", $("START"))
+            ]
+          });
+        }
+        self.im.user.answers.risk = results[-1].risk;
+        self.im.user.answers.state_first_name = results[-1].first_name;
+        self.im.user.answers.state_last_name = results[-1].last_name;
         question = $([
           "Welcome back to HIGHER HEALTH's HealthCheck.",
           "No result SMS will be sent. Continue or WhatsApp HI to 0600110000",
@@ -129,20 +169,14 @@ go.app = (function () {
             new Choice("state_display_risk", $("RECEIPT"))
           ]
         });
-      }
-      question = $([
-        "HIGHER HEALTH HealthCheck is your risk assessment tool.",
-        "No result SMS will be sent. Continue or WhatsApp HI to 0600110000",
-        "",
-        "Reply"
-      ].join("\n"));
-      return new MenuState(name, {
-        question: question,
-        error: $("This service works best when you select numbers from the list"),
-        accept_labels: true,
-        choices: [
-          new Choice("state_terms", $("START"))
-        ]
+      }, function (e) {
+        // Go to error state after 3 failed HTTP requests
+        opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+        if (opts.http_error_count === 3) {
+          self.im.log.error(e.message);
+          return self.states.create("__error__", { return_state: name });
+        }
+        return self.states.create(name, opts);
       });
     });
 
@@ -681,7 +715,9 @@ go.app = (function () {
 
     self.states.add("state_display_risk", function (name) {
       var answers = self.im.user.answers;
-      var risk = self.calculate_risk();
+      if (self.im.user.answers.risk === undefined){
+        var risk = self.calculate_risk();
+      }
       var text = "";
       var full_name =truncateString((answers.state_first_name + " " + answers.state_last_name), 19);
       if (answers.state_tracing) {
