@@ -18,7 +18,6 @@ go.app = (function () {
     var $ = self.$;
 
     self.calculate_risk = function () {
-      // if has receipt for today, send that receipt's risk
       var answers = self.im.user.answers;
 
       var symptom_count = _.filter([
@@ -111,13 +110,13 @@ go.app = (function () {
         return self.states.create(name, opts);
       });
     });
-    self.states.add("state_welcome", function(name) {
+    self.states.add("state_welcome", function(name, opts) {
       self.im.user.answers.google_session_token = crypto.randomBytes(20).toString("hex");
       var question;
       var today = new Date();
       var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
       var msisdn = self.im.user.addr;
-      new JsonApi(self.im).get(
+      return new JsonApi(self.im).get(
         // use dictionary params
         self.im.config.eventstore.url + `/api/v3/covid19triage/?timestamp_gt=${date}T00:00:00+02:00&msisdn=${msisdn}`, {
         headers: {
@@ -170,12 +169,16 @@ go.app = (function () {
             new Choice("state_display_risk", $("RECEIPT"))
           ]
         });
-      }, function (e, opts) {
+      }, function (e) {
+        if(_.get(e, "response.code") === 404) {
+          self.im.user.answers = {returning_user: false};
+          return self.states.create("state_welcome");
+        }
         // Go to error state after 3 failed HTTP requests
         opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
         if (opts.http_error_count === 3) {
           self.im.log.error(e.message);
-          return self.states.create("__error__", { return_state: name });
+          return self.states.create(e.message, { return_state: name });
         }
         return self.states.create(name, opts);
       });

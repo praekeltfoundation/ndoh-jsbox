@@ -64,6 +64,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
     });
     describe("state_start", function() {
         it("should handle 404 responses to contact profile lookups", function() {
+          var today = new Date();
+          var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
             return tester
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -78,12 +80,28 @@ describe("ussd_higherhealth_healthcheck app", function () {
                             }
                         }
                     });
+                    api.http.fixtures.add({
+                        request: {
+                            url: `http://eventstore/api/v3/covid19triage/?timestamp_gt=${date}T00:00:00+02:00&msisdn=+27123456789`,
+                            method: 'GET',
+                            data: {}
+                            }
+                        ,
+                        response: {
+                            code: 200,
+                            data: {
+                              results: []
+                            }
+                        }
+                    });
                 })
                 .check.user.answer("returning_user", false)
                 .check.user.state("state_welcome")
                 .run();
         });
         it("should store user answers if returning user", function() {
+          var today = new Date();
+          var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
             return tester
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -114,6 +132,20 @@ describe("ussd_higherhealth_healthcheck app", function () {
                             }
                         }
                     });
+                    api.http.fixtures.add({
+                        request: {
+                            url: `http://eventstore/api/v3/covid19triage/?timestamp_gt=${date}T00:00:00+02:00&msisdn=+27123456789`,
+                            method: 'GET',
+                            data: {}
+                            }
+                        ,
+                        response: {
+                            code: 200,
+                            data: {
+                              results: []
+                            }
+                        }
+                    });
                 })
                 .check.user.answer("returning_user", true)
                 .check.user.answer("state_province", "ZA-GT")
@@ -132,8 +164,26 @@ describe("ussd_higherhealth_healthcheck app", function () {
     });
     describe("state_welcome", function () {
         it("should show the welcome message", function () {
+            var today = new Date();
+            var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
             return tester
                 .setup.user.state("state_welcome")
+                .setup(function (api) {
+                    api.http.fixtures.add({
+                        request: {
+                            url: `http://eventstore/api/v3/covid19triage/?timestamp_gt=${date}T00:00:00+02:00&msisdn=+27123456789`,
+                            method: 'GET',
+                            data: {}
+                            }
+                        ,
+                        response: {
+                            code: 200,
+                            data: {
+                              results: []
+                            }
+                        }
+                    });
+                })
                 .check.interaction({
                     state: "state_welcome",
                     reply: [
