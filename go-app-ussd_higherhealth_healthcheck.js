@@ -1594,6 +1594,7 @@ go.app = (function () {
   var _ = require("lodash");
   var utils = require("seed-jsbox-utils").utils;
   var crypto = require("crypto");
+  var moment = require("moment");
   var App = vumigo.App;
   var Choice = vumigo.states.Choice;
   var EndState = vumigo.states.EndState;
@@ -1704,19 +1705,22 @@ go.app = (function () {
     self.states.add("state_welcome", function(name, opts) {
       self.im.user.answers.google_session_token = crypto.randomBytes(20).toString("hex");
       var question;
-      var today = new Date();
-      var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+      var date = moment().format('YYYY-MM-DD');
       var msisdn = self.im.user.addr;
       return new JsonApi(self.im).get(
         // use dictionary params
-        self.im.config.eventstore.url + `/api/v3/covid19triage/?timestamp_gt=${date}T00:00:00+02:00&msisdn=${msisdn}`, {
+        self.im.config.eventstore.url + "/api/v3/covid19triage/", {
         headers: {
           "Authorization": ["Token " + self.im.config.eventstore.token],
           "User-Agent": ["Jsbox/HH-Covid19-Triage-USSD"]
+        },
+        params: {
+          "timestamp_gt": date + "T00:00:00+02:00",
+          "msisdn": msisdn
         }
       }).then(function (response) {
         var results = response.data.results;
-        if(results === []){
+        if(results.length === 0){
           if (self.im.user.answers.returning_user){
             question = $([
               "Welcome back to HIGHER HEALTH's HealthCheck.",
@@ -1742,9 +1746,10 @@ go.app = (function () {
             ]
           });
         }
-        self.im.user.answers.risk = results[-1].risk;
-        self.im.user.answers.state_first_name = results[-1].first_name;
-        self.im.user.answers.state_last_name = results[-1].last_name;
+        var last_result = results[results.length - 1];
+        self.im.user.answers.risk = last_result.risk;
+        self.im.user.answers.state_first_name = last_result.first_name;
+        self.im.user.answers.state_last_name = last_result.last_name;
         question = $([
           "Welcome back to HIGHER HEALTH's HealthCheck.",
           "No result SMS will be sent. Continue or WhatsApp HI to 0600110000",

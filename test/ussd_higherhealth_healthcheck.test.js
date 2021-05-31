@@ -1,4 +1,5 @@
 var vumigo = require("vumigo_v02");
+var moment = require("moment");
 var AppTester = vumigo.AppTester;
 var assert = require("assert");
 
@@ -64,8 +65,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
     });
     describe("state_start", function() {
         it("should handle 404 responses to contact profile lookups", function() {
-          var today = new Date();
-          var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+            var date = moment().format('YYYY-MM-DD') + "T00:00:00+02:00";
             return tester
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -82,9 +82,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     });
                     api.http.fixtures.add({
                         request: {
-                            url: `http://eventstore/api/v3/covid19triage/?timestamp_gt=${date}T00:00:00+02:00&msisdn=+27123456789`,
+                            url: "http://eventstore/api/v3/covid19triage/",
                             method: 'GET',
-                            data: {}
+                            params: {"timestamp_gt": date, "msisdn": "+27123456789"}
                             }
                         ,
                         response: {
@@ -100,8 +100,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .run();
         });
         it("should store user answers if returning user", function() {
-          var today = new Date();
-          var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+            var date = moment().format('YYYY-MM-DD') + "T00:00:00+02:00";
             return tester
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -134,9 +133,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     });
                     api.http.fixtures.add({
                         request: {
-                            url: `http://eventstore/api/v3/covid19triage/?timestamp_gt=${date}T00:00:00+02:00&msisdn=+27123456789`,
+                            url: "http://eventstore/api/v3/covid19triage/",
                             method: 'GET',
-                            data: {}
+                            params: {"timestamp_gt": date, "msisdn": "+27123456789"}
                             }
                         ,
                         response: {
@@ -164,16 +163,15 @@ describe("ussd_higherhealth_healthcheck app", function () {
     });
     describe("state_welcome", function () {
         it("should show the welcome message", function () {
-            var today = new Date();
-            var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+            var date = moment().format('YYYY-MM-DD') + "T00:00:00+02:00";
             return tester
                 .setup.user.state("state_welcome")
                 .setup(function (api) {
                     api.http.fixtures.add({
                         request: {
-                            url: `http://eventstore/api/v3/covid19triage/?timestamp_gt=${date}T00:00:00+02:00&msisdn=+27123456789`,
+                            url: "http://eventstore/api/v3/covid19triage/",
                             method: 'GET',
-                            data: {}
+                            params: {"timestamp_gt": date, "msisdn": "+27123456789"}
                             }
                         ,
                         response: {
@@ -198,9 +196,60 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .run();
         });
         it("should show the welcome message returning user", function () {
+            var date = moment().format('YYYY-MM-DD') + "T00:00:00+02:00";
             return tester
                 .setup.user.state("state_welcome")
                 .setup.user.answer("returning_user", true)
+                .setup(function (api) {
+                    api.http.fixtures.add({
+                        request: {
+                            url: "http://eventstore/api/v3/covid19triage/",
+                            method: 'GET',
+                            params: {"timestamp_gt": date, "msisdn": "+27123456789"}
+                            }
+                        ,
+                        response: {
+                            code: 200,
+                            data: {
+                              results: []
+                            }
+                        }
+                    });
+                })
+                .check.interaction({
+                    state: "state_welcome",
+                    reply: [
+                        "Welcome back to HIGHER HEALTH's HealthCheck.",
+                        "No result SMS will be sent. Continue or WhatsApp HI to 0600110000",
+                        "",
+                        "Reply",
+                        "1. START"
+                    ].join("\n"),
+                    char_limit: 140
+                })
+                .run();
+        });
+        it("should show the welcome message returning user and valid healthcheck done", function () {
+            var date = moment().format('YYYY-MM-DD') + "T00:00:00+02:00";
+            return tester
+                .setup.user.state("state_welcome")
+                .setup.user.answer("returning_user", true)
+                .setup(function (api) {
+                    api.http.fixtures.add({
+                        request: {
+                            url: "http://eventstore/api/v3/covid19triage/",
+                            method: 'GET',
+                            params: {"timestamp_gt": date, "msisdn": "+27123456789"}
+                            }
+                        ,
+                        response: {
+                            code: 200,
+                            data: {
+                              results: [{"risk": "low", "first_name": "test", "last_name": "last"}]
+                            }
+                        }
+                    });
+                })
                 .check.interaction({
                     state: "state_welcome",
                     reply: [
@@ -215,9 +264,51 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 })
                 .run();
         });
-        it("should display error on invalid input", function () {
+        it("should show show result receipt if valid result been done already", function () {
+            var date = moment().format('YYYY-MM-DD') + "T00:00:00+02:00";
             return tester
                 .setup.user.state("state_welcome")
+                .setup.user.answer("returning_user", true)
+                .setup(function (api) {
+                    api.http.fixtures.add({
+                        request: {
+                            url: "http://eventstore/api/v3/covid19triage/",
+                            method: 'GET',
+                            params: {"timestamp_gt": date, "msisdn": "+27123456789"}
+                            }
+                        ,
+                        response: {
+                            code: 200,
+                            data: {
+                              results: [{"risk": "low", "first_name": "test", "last_name": "last"}]
+                            }
+                        }
+                    });
+                })
+                .input("2")
+                .check.user.state("state_no_tracing_low_risk")
+                .run();
+        });
+        it("should display error on invalid input", function () {
+            var date = moment().format('YYYY-MM-DD') + "T00:00:00+02:00";
+            return tester
+                .setup.user.state("state_welcome")
+                .setup(function (api) {
+                    api.http.fixtures.add({
+                        request: {
+                            url: "http://eventstore/api/v3/covid19triage/",
+                            method: 'GET',
+                            params: {"timestamp_gt": date, "msisdn": "+27123456789"}
+                            }
+                        ,
+                        response: {
+                            code: 200,
+                            data: {
+                              results: []
+                            }
+                        }
+                    });
+                })
                 .input("A")
                 .check.interaction({
                     state: "state_welcome",
@@ -230,8 +321,25 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .run();
         });
         it("should go to state_terms", function () {
+            var date = moment().format('YYYY-MM-DD') + "T00:00:00+02:00";
             return tester
                 .setup.user.state("state_welcome")
+                .setup(function (api) {
+                    api.http.fixtures.add({
+                        request: {
+                            url: "http://eventstore/api/v3/covid19triage/",
+                            method: 'GET',
+                            params: {"timestamp_gt": date, "msisdn": "+27123456789"}
+                            }
+                        ,
+                        response: {
+                            code: 200,
+                            data: {
+                              results: []
+                            }
+                        }
+                    });
+                })
                 .input("1")
                 .check.user.state("state_terms")
                 .run();
@@ -1215,6 +1323,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .run();
         });
         it("should go to start if restart is chosen", function () {
+            var date = moment().format('YYYY-MM-DD') + "T00:00:00+02:00";
             return tester
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -1226,6 +1335,20 @@ describe("ussd_higherhealth_healthcheck app", function () {
                             code: 404,
                             data: {
                                 detail: "Not found."
+                            }
+                        }
+                    });
+                    api.http.fixtures.add({
+                        request: {
+                            url: "http://eventstore/api/v3/covid19triage/",
+                            method: 'GET',
+                            params: {"timestamp_gt": date, "msisdn": "+27123456789"}
+                            }
+                        ,
+                        response: {
+                            code: 200,
+                            data: {
+                              results: []
                             }
                         }
                     });
