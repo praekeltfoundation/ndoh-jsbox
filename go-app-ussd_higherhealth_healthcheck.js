@@ -1706,7 +1706,7 @@ go.app = (function () {
       self.im.user.answers.google_session_token = crypto.randomBytes(20).toString("hex");
       var question;
       var date = moment().format('YYYY-MM-DD');
-      var msisdn = self.im.user.addr;
+      var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
       return new JsonApi(self.im).get(
         // use dictionary params
         self.im.config.eventstore.url + "/api/v3/covid19triage/", {
@@ -1766,10 +1766,6 @@ go.app = (function () {
           ]
         });
       }, function (e) {
-        if(_.get(e, "response.code") === 404) {
-          self.im.user.answers = {returning_user: false};
-          return self.states.create("state_welcome");
-        }
         // Go to error state after 3 failed HTTP requests
         opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
         if (opts.http_error_count === 3) {
