@@ -1594,6 +1594,7 @@ go.app = (function () {
   var _ = require("lodash");
   var utils = require("seed-jsbox-utils").utils;
   var crypto = require("crypto");
+  var moment = require("moment");
   var App = vumigo.App;
   var Choice = vumigo.states.Choice;
   var EndState = vumigo.states.EndState;
@@ -1701,32 +1702,78 @@ go.app = (function () {
         return self.states.create(name, opts);
       });
     });
-
-    self.states.add("state_welcome", function(name) {
+    self.states.add("state_welcome", function(name, opts) {
       self.im.user.answers.google_session_token = crypto.randomBytes(20).toString("hex");
       var question;
-      if (self.im.user.answers.returning_user) {
+      var date = moment().format('YYYY-MM-DD');
+      var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+      return new JsonApi(self.im).get(
+        // use dictionary params
+        self.im.config.eventstore.url + "/api/v3/covid19triage/", {
+        headers: {
+          "Authorization": ["Token " + self.im.config.eventstore.token],
+          "User-Agent": ["Jsbox/HH-Covid19-Triage-USSD"]
+        },
+        params: {
+          "timestamp_gt": date + "T00:00:00+02:00",
+          "msisdn": msisdn
+        }
+      }).then(function (response) {
+        var results = response.data.results;
+        if(results.length === 0){
+          if (self.im.user.answers.returning_user){
+            question = $([
+              "Welcome back to HIGHER HEALTH's HealthCheck.",
+              "No result SMS will be sent. Continue or WhatsApp HI to 0600110000",
+              "",
+              "Reply"
+            ].join("\n"));
+          }
+          else {
+            question = $([
+              "HIGHER HEALTH HealthCheck is your risk assessment tool.",
+              "No result SMS will be sent. Continue or WhatsApp HI to 0600110000",
+              "",
+              "Reply"
+            ].join("\n"));
+          }
+          return new MenuState(name, {
+            question: question,
+            error: $("This service works best when you select numbers from the list"),
+            accept_labels: true,
+            choices: [
+              new Choice("state_terms", $("START"))
+            ]
+          });
+        }
+        var last_result = results[results.length - 1];
+        self.im.user.answers.risk = last_result.risk;
+        self.im.user.answers.state_first_name = last_result.first_name;
+        self.im.user.answers.state_last_name = last_result.last_name;
+        self.im.user.answers.state_tracing = last_result.tracing;
         question = $([
           "Welcome back to HIGHER HEALTH's HealthCheck.",
           "No result SMS will be sent. Continue or WhatsApp HI to 0600110000",
           "",
           "Reply"
         ].join("\n"));
-      } else {
-        question = $([
-          "HIGHER HEALTH HealthCheck is your risk assessment tool.",
-          "No result SMS will be sent. Continue or WhatsApp HI to 0600110000",
-          "",
-          "Reply"
-        ].join("\n"));
-      }
-      return new MenuState(name, {
-        question: question,
-        error: $("This service works best when you select numbers from the list"),
-        accept_labels: true,
-        choices: [
-          new Choice("state_terms", $("START"))
-        ]
+        return new MenuState(name, {
+          question: question,
+          error: $("This service works best when you select numbers from the list"),
+          accept_labels: true,
+          choices: [
+            new Choice("state_terms", $("START")),
+            new Choice("state_display_risk", $("RECEIPT"))
+          ]
+        });
+      }, function (e) {
+        // Go to error state after 3 failed HTTP requests
+        opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+        if (opts.http_error_count === 3) {
+          self.im.log.error(e.message);
+          return self.states.create(e.message, { return_state: name });
+        }
+        return self.states.create(name, opts);
       });
     });
 
@@ -2265,7 +2312,10 @@ go.app = (function () {
 
     self.states.add("state_display_risk", function (name) {
       var answers = self.im.user.answers;
-      var risk = self.calculate_risk();
+      var risk = self.im.user.answers.risk;
+      if (risk === undefined){
+        risk = self.calculate_risk();
+      }
       var text = "";
       var full_name =truncateString((answers.state_first_name + " " + answers.state_last_name), 19);
       if (answers.state_tracing) {
