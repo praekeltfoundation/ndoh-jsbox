@@ -1750,6 +1750,7 @@ go.app = (function () {
         self.im.user.answers.risk = last_result.risk;
         self.im.user.answers.state_first_name = last_result.first_name;
         self.im.user.answers.state_last_name = last_result.last_name;
+        self.im.user.answers.state_tracing = last_result.tracing;
         question = $([
           "Welcome back to HIGHER HEALTH's HealthCheck.",
           "No result SMS will be sent. Continue or WhatsApp HI to 0600110000",
