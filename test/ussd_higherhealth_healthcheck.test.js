@@ -23,7 +23,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
             google_places: {
                 key: "googleplaceskey"
             },
-            testing_today: "2020-01-01T00:00:00Z"
+            testing_today: "2020-01-01T00:00:00Z",
+            tb_ussd_code: "*123#"
         });
     });
 
@@ -1414,13 +1415,14 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .input("1")
                 .check.interaction({
                     state: "state_display_risk",
-                    reply:
-                        "testin very long..., you are at LOW RISK. Wear a mask and sanitize " +
+                    reply: [
+                        "testin very..., you are LOW RISK. Wear a mask and sanitize " +
                         "daily. Screenshot this result. HIGHER HEALTH supported by Lifebuoy," +
                         " European Union and HWESTA",
+                        "1. Next"
+                    ].join("\n"),
                     char_limit: 160
                 })
-                .check.reply.ends_session()
                 .check(function(api) {
                     assert.strictEqual(api.http.requests.length, 1);
                 })
@@ -1478,13 +1480,14 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .input("1")
                 .check.interaction({
                     state: "state_display_risk",
-                    reply:
-                      "short first last, SELF-ISOLATE in your room for 10 days and " +
+                    reply: [
+                      "short first, SELF-ISOLATE in your room for 10 days and " +
                       "monitor symptoms on HealthCheck. HIGHER HEALTH supported by " +
                       "Lifebuoy, European Union and HWESTA",
+                      "1. Next"
+                    ].join('\n'),
                     char_limit: 160
                 })
-                .check.reply.ends_session()
                 .run();
         });
         it("should display the high risk message if high risk", function () {
@@ -1540,7 +1543,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
-                        "short first long..., GET TESTED for COVID-19. Go to your testing " +
+                        "short first, GET TESTED for COVID-19. Go to your testing " +
                         "centre/doctor or call 0800029999. HIGHER HEALTH supported by " +
                         "Lifebuoy, European Union & HWESTA",
                     char_limit: 160
@@ -1605,7 +1608,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                         "contact with other people & self-quarantine.",
                         "No result SMS will be sent.",
                         "",
-                        "1. START OVER"
+                        "1. Next"
                     ].join("\n"),
                     char_limit: 160
                 })
@@ -1663,9 +1666,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply: [
-                        "We won't contact you. SELF-QUARANTINE for 10 days and do this " +
-                        "HealthCheck daily to monitor symptoms. Stay/sleep alone in a room with " +
-                        "good air flowing through"
+                        "We won't contact you. SELF-QUARANTINE for 10 days and do this HealthCheck daily " +
+                        "to watch symptoms. Stay/sleep alone in a room with air flowing through",
+                        "1. Next"
                     ].join("\n"),
                     char_limit: 160
                 })
@@ -1724,6 +1727,157 @@ describe("ussd_higherhealth_healthcheck app", function () {
                         "Go to a testing center or Call 0800029999 or your healthcare " +
                         "practitioner for info"
                     ].join("\n"),
+                    char_limit: 160
+                })
+                .check.reply.ends_session()
+                .run();
+        });
+    });
+    describe("state_tb_prompt_1", function() {
+        it("should prompt if low risk and tracing", function () {
+            return tester
+                .setup.user.state("state_display_risk")
+                .setup.user.answers({
+                    state_fever: false,
+                    state_cough: false,
+                    state_tracing: true
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_tb_prompt_1",
+                    reply: [
+                        "One of the less obvious signs of TB is losing weight without realising it.",
+                        "1. Next"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should prompt if moderate risk, cough and tracing", function () {
+            return tester
+                .setup.user.state("state_display_risk")
+                .setup.user.answers({
+                    state_fever: false,
+                    state_cough: true,
+                    state_tracing: true
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_tb_prompt_1",
+                    reply: [
+                        "A cough may also be a sign of TB - a dangerous but treatable disease.",
+                        "1. Next"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should prompt if moderate risk, fever and tracing", function () {
+            return tester
+                .setup.user.state("state_display_risk")
+                .setup.user.answers({
+                    state_fever: true,
+                    state_cough: false,
+                    state_tracing: true
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_tb_prompt_1",
+                    reply: [
+                        "A fever or night sweats may also be signs of TB.",
+                        "1. Next"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should prompt if low risk and no tracing", function () {
+            return tester
+                .setup.user.state("state_display_risk")
+                .setup.user.answers({
+                    state_fever: false,
+                    state_cough: false,
+                    state_tracing: false
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_tb_prompt_1",
+                    reply: [
+                        "One of the less obvious signs of TB is losing weight without realising it.",
+                        "1. Next"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should prompt if moderate risk, cough and no tracing", function () {
+            return tester
+                .setup.user.state("state_display_risk")
+                .setup.user.answers({
+                    state_fever: false,
+                    state_cough: true,
+                    state_tracing: false
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_tb_prompt_1",
+                    reply: [
+                        "A cough may also be a sign of TB - a dangerous but treatable disease.",
+                        "1. Next"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should prompt if moderate risk, fever and no tracing", function () {
+            return tester
+                .setup.user.state("state_display_risk")
+                .setup.user.answers({
+                    state_fever: true,
+                    state_cough: false,
+                    state_tracing: false
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_tb_prompt_1",
+                    reply: [
+                        "A fever or night sweats may also be signs of TB.",
+                        "1. Next"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+    });
+    describe("state_tb_prompt_2", function() {
+        it("should prompt if moderate risk", function () {
+            return tester
+                .setup.user.state("state_tb_prompt_1")
+                .setup.user.answers({
+                    state_fever: true,
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_tb_prompt_2",
+                    reply: (
+                        "Some COVID symptoms are like TB symptoms. To protect your health, we " +
+                        "recommend that you complete a TB HealthCheck. To start, please dial *123#"
+                    ),
+                    char_limit: 160
+                })
+                .check.reply.ends_session()
+                .run();
+        });
+        it("should prompt if low risk", function () {
+            return tester
+                .setup.user.state("state_tb_prompt_1")
+                .input("1")
+                .check.interaction({
+                    state: "state_tb_prompt_2",
+                    reply: (
+                        "If you or a family member has cough, fever, weight loss or night " +
+                        "sweats, please also check if you have TB by dialling *123#"
+                    ),
                     char_limit: 160
                 })
                 .check.reply.ends_session()

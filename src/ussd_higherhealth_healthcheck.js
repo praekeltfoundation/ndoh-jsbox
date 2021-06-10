@@ -726,28 +726,28 @@ go.app = (function () {
         risk = self.calculate_risk();
       }
       var text = "";
-      var full_name =truncateString((answers.state_first_name + " " + answers.state_last_name), 19);
+      var first_name = truncateString((answers.state_first_name + ""), 14);
       if (answers.state_tracing) {
         if (risk === "low") {
           text = $(
-            "{{ full_name }}, you are at LOW RISK. Wear a mask and sanitize " +
+            "{{ first_name }}, you are LOW RISK. Wear a mask and sanitize " +
             "daily. Screenshot this result. HIGHER HEALTH supported by " +
             "Lifebuoy, European Union and HWESTA"
-          ).context({full_name: full_name});
+          ).context({first_name: first_name});
         }
         if (risk === "moderate") {
           text = $(
-            "{{ full_name }}, SELF-ISOLATE in your room for 10 days and monitor" +
-            " symptoms on HealthCheck. HIGHER HEALTH supported by Lifebuoy, " +
-            "European Union and HWESTA"
-          ).context({full_name: full_name});
+            "{{ first_name }}, SELF-ISOLATE in your room for 10 days and " +
+            "monitor symptoms on HealthCheck. HIGHER HEALTH supported by " +
+            "Lifebuoy, European Union and HWESTA"
+          ).context({first_name: first_name});
         }
         if (risk === "high") {
           text = $(
-            "{{ full_name }}, GET TESTED for COVID-19. Go to your testing" +
+            "{{ first_name }}, GET TESTED for COVID-19. Go to your testing" +
             " centre/doctor or call 0800029999. HIGHER HEALTH supported by" +
             " Lifebuoy, European Union & HWESTA"
-          ).context({full_name: full_name});
+          ).context({first_name: first_name});
         }
       } else {
         if (risk === "low") {
@@ -757,7 +757,7 @@ go.app = (function () {
         if (risk === "moderate") {
           text = $([
             "We won't contact you. SELF-QUARANTINE for 10 days and do this HealthCheck daily " +
-            "to monitor symptoms. Stay/sleep alone in a room with good air flowing through"
+            "to watch symptoms. Stay/sleep alone in a room with air flowing through"
           ].join("\n"));
         }
         if (risk === "high") {
@@ -767,13 +767,23 @@ go.app = (function () {
           ].join("\n"));
         }
       }
-      return new EndState(name, {
-        next: "state_start",
-        text: text,
-      });
+      if (self.im.config.tb_ussd_code && risk !== "high") {
+          return new MenuState(name, {
+            question: text,
+            accept_labels: true,
+            choices: [new Choice("state_tb_prompt_1", $("Next"))]
+          });
+      }
+      else {
+          return new EndState(name, {text: text, next:"state_start"});
+      }
     });
 
     self.add("state_no_tracing_low_risk", function (name) {
+      var choices = [new Choice("state_start", $("START OVER"))];
+      if (self.im.config.tb_ussd_code) {
+        choices = [new Choice("state_tb_prompt_1", $("Next"))];
+      }
       return new MenuState(name, {
         question: $([
           "You won't be contacted. If you think you have COVID-19 STAY HOME, avoid contact with " +
@@ -781,8 +791,58 @@ go.app = (function () {
           "No result SMS will be sent.",
           ""
         ].join("\n")),
-        choices: [new Choice("state_start", $("START OVER"))]
+        choices: choices
       });
+    });
+
+    self.add("state_tb_prompt_1", function (name) {
+      var answers = self.im.user.answers;
+      var risk = self.calculate_risk();
+      var text = "";
+      if (risk === "moderate") {
+          if ( answers.state_cough) {
+              text = $("A cough may also be a sign of TB - a dangerous but treatable disease.");
+          }
+          else if (answers.state_fever) {
+              text = $("A fever or night sweats may also be signs of TB.");
+          }
+      }
+      else {
+          text = $("One of the less obvious signs of TB is losing weight without realising it.");
+      }
+
+      if (text !== "") {
+          return new MenuState( name, {
+              question: text,
+              choices: [new Choice("state_tb_prompt_2", $("Next"))]
+          });
+      }
+      else {
+          return self.states.create("state_tb_prompt_2");
+      }
+    });
+
+    self.add("state_tb_prompt_2", function (name) {
+        var risk = self.calculate_risk();
+        var text = "";
+        if ( risk === "moderate") {
+            text = $(
+                "Some COVID symptoms are like TB symptoms. To protect your health, we " +
+                "recommend that you complete a TB HealthCheck. To start, please dial " +
+                "{{ ussd_code }}"
+            ).context({ussd_code: self.im.config.tb_ussd_code});
+        }
+        else {
+            text = $(
+                "If you or a family member has cough, fever, weight loss or night " +
+                "sweats, please also check if you have TB by dialling {{ ussd_code }}"
+            ).context({ussd_code: self.im.config.tb_ussd_code});
+        }
+
+        return new EndState(name, {
+          next: "state_start",
+          text: text
+        });
     });
 
     self.states.creators.__error__ = function (name, opts) {
