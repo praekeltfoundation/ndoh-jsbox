@@ -1,6 +1,7 @@
 var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
 var assert = require("assert");
+var fixtures_rapidpro = require("./fixtures_rapidpro")();
 
 describe("ussd_tb_check app", function () {
   var app;
@@ -16,6 +17,11 @@ describe("ussd_tb_check app", function () {
       },
       google_places: {
         key: "googleplaceskey",
+      },
+      rapidpro: {
+        base_url: "https://rapidpro",
+        token: "rapidpro-token",
+        privacy_policy_sms_flow: "privacy-policy-flow-uuid"
       },
     });
   });
@@ -262,19 +268,19 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
-    it("should go to state_terms for valid option", function () {
+    it("should go to state_province for valid option", function () {
       return tester.setup.user
         .state("state_language")
         .input("1")
-        .check.user.state("state_terms")
+        .check.user.state("state_province")
         .run();
     });
-    it("should go to state_terms for in lang of the valid option", function () {
+    it("should go to state_province for in lang of the valid option", function () {
       return tester.setup.user
         .state("state_language")
         .input("2")
         .check.user.lang("zul")
-        .check.user.state("state_terms")
+        .check.user.state("state_province")
         .run();
     });
     it("should go to state_terms for english lang option", function () {
@@ -282,14 +288,18 @@ describe("ussd_tb_check app", function () {
         .state("state_language")
         .input("1")
         .check.interaction({
-          state: "state_terms",
+          state: "state_province",
           reply: [
-            "This service only provides health info. Agree that you are responsible for your medical care and treatment.",
-            "",
-            "Reply",
-            "1. YES",
-            "2. NO",
-            "3. MORE INFO"
+            "Choose your province. Reply with a number:",
+            "1. E. CAPE",
+            "2. FREE STATE",
+            "3. GAUTENG",
+            "4. KWAZULU NATAL",
+            "5. LIMPOPO",
+            "6. MPUMALANGA",
+            "7. NORTH WEST",
+            "8. N. CAPE",
+            "9. W. CAPE",
           ].join("\n"),
           char_limit: 160,
         })
@@ -299,7 +309,7 @@ describe("ussd_tb_check app", function () {
       return tester.setup.user
         .state("state_language")
         .setup.user.answer("state_language", "eng")
-        .check.user.state("state_terms")
+        .check.user.state("state_province")
         .run();
     });
   });
@@ -342,18 +352,32 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
-    it("should go to state_province for yes", function () {
+    it("should go to state_privacy_policy_accepted for yes", function () {
       return tester.setup.user
         .state("state_terms")
+        .setup(function(api) {
+          api.http.fixtures.add(
+            fixtures_rapidpro.start_flow(
+                "privacy-policy-flow-uuid", null, "tel:+27123456789", {"hc_type": "tb"}
+              )
+            );
+        })
         .input("1")
-        .check.user.state("state_province")
+        .check.user.state("state_privacy_policy_accepted")
         .run();
     });
-    it("should go to state_province for returning users", function () {
+    it("should go to state_privacy_policy_accepted for returning users", function () {
       return tester.setup.user
         .answer("returning_user", true)
+        .setup(function(api) {
+          api.http.fixtures.add(
+            fixtures_rapidpro.start_flow(
+                "privacy-policy-flow-uuid", null, "tel:+27123456789", {"hc_type": "tb"}
+              )
+            );
+        })
         .setup.user.state("state_terms")
-        .check.user.state("state_province")
+        .check.user.state("state_privacy_policy_accepted")
         .run();
     });
     it("should go to state_end for no", function () {
@@ -378,7 +402,51 @@ describe("ussd_tb_check app", function () {
         .run();
     });
   });
-
+  describe("state_privacy_policy_accepted", function () {
+    it("should prompt the user to accept", function() {
+      return tester.setup.user
+        .state("state_privacy_policy_accepted")
+        .check.interaction({
+          state: "state_privacy_policy_accepted",
+          reply: [
+            "Your personal information is protected under POPIA and in accordance " +
+            "with the provisions of the TBHealthCheck Privacy Notice sent to you by SMS.",
+            "1. Accept"
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should repeat the question on invalid input", function () {
+      return tester.setup.user
+        .state("state_privacy_policy_accepted")
+        .input("A")
+        .check.interaction({
+          state: "state_privacy_policy_accepted",
+          reply: [
+            "Your personal information is protected under POPIA and in accordance " +
+            "with the provisions of the TBHealthCheck Privacy Notice sent to you by SMS.",
+            "1. Accept"
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should skip the state for users who already have this info", function () {
+      return tester.setup.user
+        .state("state_privacy_policy_accepted")
+        .setup.user.answer("state_privacy_policy_accepted", "yes")
+        .check.user.state("state_language")
+        .run();
+    });
+    it("should go to state_language", function () {
+      return tester.setup.user
+        .state("state_privacy_policy_accepted")
+        .input("1")
+        .check.user.state("state_language")
+        .run();
+    });
+  });
   describe("state_more_info", function () {
     it("should display more info pg 1", function () {
       return tester.setup.user

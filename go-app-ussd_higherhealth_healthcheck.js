@@ -210,7 +210,7 @@ go.institutions = {
     "Netcare  Education (Pty Ltd)": [
       "Port Elizabeth"
     ],
-    "Pearson Instittute of Higher Education": [
+    "Pearson Institute of Higher Education  Eduvos": [
       "East London",
       "Port Elizabeth"
     ],
@@ -272,7 +272,7 @@ go.institutions = {
     "MSC Business College": [
       "Bloemfontein"
     ],
-    "Pearson Instittute of Higher Education": [
+    "Pearson Institute of Higher Education  Eduvos": [
       "Bloemfontein"
     ],
     "UNISA": [
@@ -405,7 +405,7 @@ go.institutions = {
       "Auckland Park",
       "Pretoria"
     ],
-    "Pearson Instittute of Higher Education": [
+    "Pearson Institute of Higher Education  Eduvos": [
       "Bedfordview",
       "Midrand",
       "Pretoria",
@@ -908,7 +908,7 @@ go.institutions = {
     "MSC Business College": [
       "Nelspruit"
     ],
-    "Pearson Instittute of Higher Education": [
+    "Pearson Institute of Higher Education  Eduvos": [
       "Nelspruit"
     ],
     "UNISA": [
@@ -1037,7 +1037,7 @@ go.institutions = {
     "Netcare  Education (Pty Ltd)": [
       "Durban"
     ],
-    "Pearson Instittute of Higher Education": [
+    "Pearson Institute of Higher Education  Eduvos": [
       "Umhlanga"
     ],
     "STADIO AFDA": [
@@ -1242,7 +1242,7 @@ go.institutions = {
     "MSC Business College": [
       "Rustenburg"
     ],
-    "Pearson Instittute of Higher Education": [
+    "Pearson Institute of Higher Education  Eduvos": [
       "Potchefstroom"
     ],
     "UNISA": [
@@ -1325,7 +1325,7 @@ go.institutions = {
     "Netcare  Education (Pty Ltd)": [
       "Bellville"
     ],
-    "Pearson Instittute of Higher Education": [
+    "Pearson Institute of Higher Education  Eduvos": [
       "Cape Town",
       "Durbanville"
     ],
@@ -1588,7 +1588,6 @@ go.institutions = {
     ]
   }
 };
-
 go.app = (function () {
   var vumigo = require("vumigo_v02");
   var _ = require("lodash");
