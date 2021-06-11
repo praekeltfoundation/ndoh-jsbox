@@ -87,6 +87,7 @@ go.app = (function () {
               city_location: response.data.city_location,
               state_age: response.data.age,
               state_language: response.data.language,
+              state_privacy_policy_accepted: _.get(response.data, "data.privacy_policy_accepted"),
             };
             if (response.data.language != "eng"){
               self.im.user.set_lang(response.data.language)
@@ -133,38 +134,8 @@ go.app = (function () {
       });
     });
 
-    self.states.add("state_language", function (name) {
-      if (self.im.user.answers.state_language) {
-        return self.im.user.set_lang(self.im.user.answers.state_language)
-        .then(function() {
-          return self.states.create("state_terms");
-        });
-      }
-      return new ChoiceState(name, {
-        question: $("Choose your preferred language"),
-        error: $("Please reply with numbers. Choose your preferred language"),
-        accept_labels: true,
-        choices: [
-          new Choice("eng", $("English")),
-          new Choice("zul", $("isiZulu")),
-          new Choice("afr", $("Afrikaans")),
-          new Choice("xho", $("isiXhosa")),
-          new Choice("sot", $("Sesotho")),
-        ],
-        next: function(choice) {
-          if (choice.value != "eng"){
-            return self.im.user.set_lang(choice.value)
-            .then(function() {
-              return self.states.create("state_terms");
-            });
-          }
-          return self.states.create("state_terms");
-        }
-      });
-    });
-
     self.add("state_terms", function (name) {
-      var next = "state_province";
+      var next = "state_language";
       if (self.im.user.answers.returning_user) {
         return self.states.create(next);
       }
@@ -223,6 +194,37 @@ go.app = (function () {
         ),
         accept_labels: true,
         choices: [new Choice("state_terms", $("Next"))],
+      });
+    });
+
+    self.states.add("state_language", function (name) {
+      var next_state = "state_province";
+      if (self.im.user.answers.state_language) {
+        return self.im.user.set_lang(self.im.user.answers.state_language)
+        .then(function() {
+          return self.states.create(next_state);
+        });
+      }
+      return new ChoiceState(name, {
+        question: $("Choose your preferred language"),
+        error: $("Please reply with numbers. Choose your preferred language"),
+        accept_labels: true,
+        choices: [
+          new Choice("eng", $("English")),
+          new Choice("zul", $("isiZulu")),
+          new Choice("afr", $("Afrikaans")),
+          new Choice("xho", $("isiXhosa")),
+          new Choice("sot", $("Sesotho")),
+        ],
+        next: function(choice) {
+          if (choice.value != "eng"){
+            return self.im.user.set_lang(choice.value)
+            .then(function() {
+              return self.states.create(next_state);
+            });
+          }
+          return self.states.create(next_state);
+        }
       });
     });
 

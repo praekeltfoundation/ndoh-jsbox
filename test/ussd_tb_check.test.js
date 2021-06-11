@@ -262,19 +262,19 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
-    it("should go to state_terms for valid option", function () {
+    it("should go to state_province for valid option", function () {
       return tester.setup.user
         .state("state_language")
         .input("1")
-        .check.user.state("state_terms")
+        .check.user.state("state_province")
         .run();
     });
-    it("should go to state_terms for in lang of the valid option", function () {
+    it("should go to state_province for in lang of the valid option", function () {
       return tester.setup.user
         .state("state_language")
         .input("2")
         .check.user.lang("zul")
-        .check.user.state("state_terms")
+        .check.user.state("state_province")
         .run();
     });
     it("should go to state_terms for english lang option", function () {
@@ -282,14 +282,18 @@ describe("ussd_tb_check app", function () {
         .state("state_language")
         .input("1")
         .check.interaction({
-          state: "state_terms",
+          state: "state_province",
           reply: [
-            "This service only provides health info. Agree that you are responsible for your medical care and treatment.",
-            "",
-            "Reply",
-            "1. YES",
-            "2. NO",
-            "3. MORE INFO"
+            "Choose your province. Reply with a number:",
+            "1. E. CAPE",
+            "2. FREE STATE",
+            "3. GAUTENG",
+            "4. KWAZULU NATAL",
+            "5. LIMPOPO",
+            "6. MPUMALANGA",
+            "7. NORTH WEST",
+            "8. N. CAPE",
+            "9. W. CAPE",
           ].join("\n"),
           char_limit: 160,
         })
@@ -299,7 +303,7 @@ describe("ussd_tb_check app", function () {
       return tester.setup.user
         .state("state_language")
         .setup.user.answer("state_language", "eng")
-        .check.user.state("state_terms")
+        .check.user.state("state_province")
         .run();
     });
   });
@@ -342,18 +346,18 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
-    it("should go to state_province for yes", function () {
+    it("should go to state_language for yes", function () {
       return tester.setup.user
         .state("state_terms")
         .input("1")
-        .check.user.state("state_province")
+        .check.user.state("state_language")
         .run();
     });
-    it("should go to state_province for returning users", function () {
+    it("should go to state_language for returning users", function () {
       return tester.setup.user
         .answer("returning_user", true)
         .setup.user.state("state_terms")
-        .check.user.state("state_province")
+        .check.user.state("state_language")
         .run();
     });
     it("should go to state_end for no", function () {
