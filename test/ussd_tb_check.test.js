@@ -1066,6 +1066,9 @@ describe("ussd_tb_check app", function () {
                 tracing: true,
                 follow_up_optin: true,
                 risk: "low",
+                data: {
+                  tb_privacy_policy_accepted: "yes"
+                }
               },
             },
             response: {
@@ -1119,6 +1122,9 @@ describe("ussd_tb_check app", function () {
                 tracing: true,
                 follow_up_optin: true,
                 risk: "low",
+                data: {
+                  tb_privacy_policy_accepted: "yes"
+                }
               },
             },
             response: {
@@ -1177,6 +1183,9 @@ describe("ussd_tb_check app", function () {
                 tracing: true,
                 follow_up_optin: false,
                 risk: "low",
+                data: {
+                  tb_privacy_policy_accepted: "yes"
+                }
               },
             },
             response: {

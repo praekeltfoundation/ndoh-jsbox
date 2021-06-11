@@ -94,7 +94,7 @@ go.app = function () {
               city_location: response.data.city_location,
               state_age: response.data.age,
               state_language: response.data.language,
-              state_privacy_policy_accepted: _.get(response.data, "data.privacy_policy_accepted"),
+              state_privacy_policy_accepted: _.get(response.data, "data.tb_privacy_policy_accepted"),
             };
             if (response.data.language != "eng"){
               self.im.user.set_lang(response.data.language)
@@ -642,6 +642,9 @@ go.app = function () {
             tracing: answers.state_tracing,
             follow_up_optin: answers.state_opt_in,
             risk: self.calculate_risk(),
+            data: {
+              tb_privacy_policy_accepted: "yes"
+            }
           },
           headers: {
             Authorization: ["Token " + self.im.config.healthcheck.token],
