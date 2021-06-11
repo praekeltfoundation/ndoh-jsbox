@@ -90,6 +90,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_tb_check: [
                     'src/index.js',
+                    'src/rapidpro.js',
                     '<%= paths.src.app.ussd_tb_check %>',
                     'src/init.js'
                 ],
@@ -195,6 +196,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_tb_check: [
                     'test/setup.js',
+                    'src/rapidpro.js',
                     '<%= paths.src.app.ussd_tb_check %>',
                     'test/ussd_tb_check.test.js'
                 ],

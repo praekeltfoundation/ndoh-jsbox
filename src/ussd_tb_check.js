@@ -1,4 +1,4 @@
-go.app = (function () {
+go.app = function () {
   var vumigo = require("vumigo_v02");
   var _ = require("lodash");
   var App = vumigo.App;
@@ -13,6 +13,13 @@ go.app = (function () {
   var GoNDOH = App.extend(function (self) {
     App.call(self, "state_start");
     var $ = self.$;
+    self.init = function() {
+      self.rapidpro = new go.RapidPro(
+          new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/TBCheck"]}}),
+          self.im.config.rapidpro.base_url,
+          self.im.config.rapidpro.token
+      );
+    };
 
     self.calculate_risk = function () {
       var answers = self.im.user.answers;
@@ -135,7 +142,7 @@ go.app = (function () {
     });
 
     self.add("state_terms", function (name) {
-      var next = "state_language";
+      var next = "state_send_privacy_policy_sms";
       if (self.im.user.answers.returning_user) {
         return self.states.create(next);
       }
@@ -194,6 +201,50 @@ go.app = (function () {
         ),
         accept_labels: true,
         choices: [new Choice("state_terms", $("Next"))],
+      });
+    });
+
+    self.states.add("state_send_privacy_policy_sms", function(name, opts) {
+      var next_state = "state_privacy_policy_accepted";
+      if (self.im.user.answers.state_privacy_policy_accepted == "yes") {
+        return self.states.create(next_state);
+      }
+
+      var flow_uuid = self.im.config.rapidpro.privacy_policy_sms_flow;
+      var msisdn = utils.normalize_msisdn(
+        _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
+      var data = {"hc_type": "tb"};
+      return self.rapidpro
+        .start_flow(flow_uuid, null, "tel:" + msisdn, data)
+        .then(function() {
+            return self.states.create("state_privacy_policy_accepted");
+        }).catch(function(e) {
+            // Go to error state after 3 failed HTTP requests
+            opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+            if(opts.http_error_count === 3) {
+                self.im.log.error(e.message);
+                return self.states.create("__error__", {return_state: name});
+            }
+            return self.states.create(name, opts);
+        });
+    });
+
+    self.states.add("state_privacy_policy_accepted", function(name) {
+      var next_state = "state_language";
+      if (self.im.user.answers.state_privacy_policy_accepted == "yes") {
+        return self.states.create(next_state);
+      }
+
+      return new ChoiceState(name, {
+        question: $(
+          "Your personal information is protected under POPIA and in accordance " +
+          "with the provisions of the TBHealthCheck Privacy Notice sent to you by SMS."
+        ),
+        accept_labels: true,
+        choices: [
+          new Choice("yes", $("Accept")),
+        ],
+        next: next_state,
       });
     });
 
@@ -665,4 +716,4 @@ go.app = (function () {
   return {
     GoNDOH: GoNDOH,
   };
-})();
+}();
