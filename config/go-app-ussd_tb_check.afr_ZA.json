@@ -64,9 +64,9 @@
         null,
         "Sesotho"
     ],
-    "This service only provides health info. Agree that you are responsible for your medical care and treatment.\n\nReply": [
+    "This NDoH service only provides health info. Please agree that you are responsible for your own medical care and treatment.\n\nReply": [
         null,
-        "Hierdie diens bied gesondheidsinligting. Stem jy dat jy verantwoordelik is vir jou mediese sorg en behandeling. \n\nAntwoord met"
+        "Dié NDvG-diens verskaf gesondheidsinligting. Stem jy saam dat jy verantwoordelik is vir jou mediese sorg en behandeling?\n\nAntwoord"
     ],
     "YES": [
         null,
@@ -95,6 +95,14 @@
     "You use this info at your own risk. This tool cannot replace medical advice. Agree not to ignore or delay getting medical advice on treatment or care": [
         null,
         "Inligting word gebruik op eie risiko. Die vraelyes vervang nie mediese raad nie. Stem om binnekort behandelingsadvies te kry en nie te ignoreer nie"
+    ],
+    "ACCEPT": [
+        null,
+        "AANVAAR"
+    ],
+    "Your personal information is protected under POPIA and in accordance with the provisions of the TBHealthCheck Privacy Notice sent to you by SMS.": [
+        null,
+        "Jou inligting word beskerm deur die POPI-wet, soos uiteengesit in TBHealthCheck se Privaatheidskennisgewing-SMS."
     ],
     "Choose your province. Reply with a number:": [
         null,

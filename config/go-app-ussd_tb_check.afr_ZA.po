@@ -82,15 +82,15 @@ msgstr "Sesotho"
 
 #: go-app-ussd_tb_check.js:169 go-app-ussd_tb_check.js:177
 msgid ""
-"This service only provides health info. Agree that you are responsible for "
-"your medical care and treatment.\n"
+"This NDoH service only provides health info. Please agree that you are "
+"responsible for your own medical care and treatment.\n"
 "\n"
 "Reply"
 msgstr ""
-"Hierdie diens bied gesondheidsinligting. Stem jy dat jy verantwoordelik is "
-"vir jou mediese sorg en behandeling. \n"
+"Dié NDvG-diens verskaf gesondheidsinligting. Stem jy saam dat jy "
+"verantwoordelik is vir jou mediese sorg en behandeling? \n"
 "\n"
-"Antwoord met"
+"Antwoord"
 
 #: go-app-ussd_tb_check.js:187 go-app-ussd_tb_check.js:441
 #: go-app-ussd_tb_check.js:464 go-app-ussd_tb_check.js:474
@@ -135,6 +135,14 @@ msgid ""
 msgstr ""
 "Inligting word gebruik op eie risiko. Die vraelyes vervang nie mediese raad "
 "nie. Stem om binnekort behandelingsadvies te kry en nie te ignoreer nie"
+
+#: go-app-ussd_tb_check.js:343
+msgid "Your personal information is protected under POPIA and in accordance with the provisions of the TBHealthCheck Privacy Notice sent to you by SMS."
+msgstr "Jou inligting word beskerm deur die POPI-wet, soos uiteengesit in TBHealthCheck se Privaatheidskennisgewing-SMS."
+
+#: go-app-ussd_tb_check.js:347
+msgid "ACCEPT"
+msgstr "AANVAAR"
 
 #: go-app-ussd_tb_check.js:231
 msgid "Choose your province. Reply with a number:"

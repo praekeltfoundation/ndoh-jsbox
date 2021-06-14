@@ -63,9 +63,9 @@
         null,
         "Sesotho"
     ],
-    "This service only provides health info. Agree that you are responsible for your medical care and treatment.\n\nReply": [
+    "This NDoH service only provides health info. Please agree that you are responsible for your own medical care and treatment.\n\nReply": [
         null,
-        "Le nkonzo inikezela kuphela ngolwazi  lwezempilo. Vuma ukuba unoxanduva lokhathalelo impilo kunye nonyango. \n\nPhendula"
+        "Le nkonzo ye-NDoH inikezela ngolwazi lwezempilo. Nceda uvume unoxanduva lokukhathalela impilo yakho nonyango lwakho\n\nPhendula"
     ],
     "YES": [
         null,
@@ -94,6 +94,14 @@
     "You use this info at your own risk. This tool cannot replace medical advice. Agree not to ignore or delay getting medical advice on treatment or care": [
         null,
         "Sebenzisa olu lwazi ngomngcipheko wakho. Vuma awuzotyeshela okanye ulibazise ukufumana amacebo ngempilo nonyango okanye unonophelo"
+    ],
+    "ACCEPT": [
+        null,
+        "YAMKELA"
+    ],
+    "Your personal information is protected under POPIA and in accordance with the provisions of the TBHealthCheck Privacy Notice sent to you by SMS.": [
+        null,
+        "Ulwazi lwakho lobuqu lukhuselwe nguMthetho wePOPI kwaye ngokuhambelana nemimiselo yeSaziso seMfihlo seTBHealthCheck esithunyelwe kuwe ngeSMS"
     ],
     "Choose your province. Reply with a number:": [
         null,
