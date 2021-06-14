@@ -235,16 +235,13 @@ go.app = function () {
         return self.states.create(next_state);
       }
 
-      return new ChoiceState(name, {
+      return new MenuState(name, {
         question: $(
           "Your personal information is protected under POPIA and in accordance " +
           "with the provisions of the TBHealthCheck Privacy Notice sent to you by SMS."
         ),
         accept_labels: true,
-        choices: [
-          new Choice("yes", $("Accept")),
-        ],
-        next: next_state,
+        choices: [new Choice(next_state, $("Accept"))],
       });
     });
 
