@@ -81,13 +81,13 @@ msgstr "Sesotho"
 
 #: go-app-ussd_tb_check.js:169 go-app-ussd_tb_check.js:177
 msgid ""
-"This service only provides health info. Agree that you are responsible for "
-"your medical care and treatment.\n"
+"This NDoH service only provides health info. Please agree that you are "
+"responsible for your own medical care and treatment.\n"
 "\n"
 "Reply"
 msgstr ""
-"Tshebeletso ena e fana feela ka lesedi la bophelo. Dumela ho nka "
-"boikarabello ka tlhokomelo ya hao ya bongaka le kalafo.\n"
+"Tshebeletso ena ya NDoH e fana ka lesedi la bophelo feela. Ka kopo "
+"dumela ho nka boikarabello ba tlhokomelo le kalafo ya hao.\n"
 "\n"
 "Araba"
 
@@ -134,6 +134,14 @@ msgid ""
 msgstr ""
 "O sebedisa lesedi lena kotsing ya hao. Dumela ho se natse kapa ho dieha ho "
 "fumana dikeletso tsa bongaka ka kalafo kapa tlhokomelo "
+
+#: go-app-ussd_tb_check.js:343
+msgid "Your personal information is protected under POPIA and in accordance with the provisions of the TBHealthCheck Privacy Notice sent to you by SMS."
+msgstr "Dintlha tsa hao tsa botho di sireleditswe ka molao wa POPI le ka dipehelo tsa Tsebiso ya Lekunutu la TBHealthCheck e romeletsweng wena ka SMS."
+
+#: go-app-ussd_tb_check.js:347
+msgid "ACCEPT"
+msgstr "AMOHELA"
 
 #: go-app-ussd_tb_check.js:231
 msgid "Choose your province. Reply with a number:"

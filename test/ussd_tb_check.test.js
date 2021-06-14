@@ -328,8 +328,8 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_terms",
           reply: [
-            "This service only provides health info. Agree that you are responsible for " +
-              "your medical care and treatment.",
+            "This NDoH service only provides health info. Please agree that you " +
+              "are responsible for your own medical care and treatment.",
             "",
             "Reply",
             "1. YES",
@@ -347,8 +347,8 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_terms",
           reply: [
-            "This service only provides health info. Agree " +
-              "that you are responsible for your medical care and treatment.",
+            "This NDoH service only provides health info. Please agree that you " +
+              "are responsible for your own medical care and treatment.",
             "",
             "Reply",
             "1. YES",
@@ -387,6 +387,29 @@ describe("ussd_tb_check app", function () {
         .check.user.state("state_privacy_policy_accepted")
         .run();
     });
+    it("should include language if available", function () {
+      return tester
+        .setup.user.answers({
+          returning_user: true,
+          state_language: "afr",
+        })
+        .setup(function(api) {
+          api.http.fixtures.add(
+            fixtures_rapidpro.start_flow(
+                "privacy-policy-flow-uuid",
+                null,
+                "tel:+27123456789",
+                {
+                  "hc_type": "tb",
+                  "language": "afr"
+                }
+              )
+            );
+        })
+        .setup.user.state("state_terms")
+        .check.user.state("state_privacy_policy_accepted")
+        .run();
+    });
     it("should go to state_end for no", function () {
       return tester.setup.user
         .state("state_terms")
@@ -418,7 +441,7 @@ describe("ussd_tb_check app", function () {
           reply: [
             "Your personal information is protected under POPIA and in accordance " +
             "with the provisions of the TBHealthCheck Privacy Notice sent to you by SMS.",
-            "1. Accept"
+            "1. ACCEPT"
           ].join("\n"),
           char_limit: 160,
         })
@@ -433,7 +456,7 @@ describe("ussd_tb_check app", function () {
           reply: [
             "Your personal information is protected under POPIA and in accordance " +
             "with the provisions of the TBHealthCheck Privacy Notice sent to you by SMS.",
-            "1. Accept"
+            "1. ACCEPT"
           ].join("\n"),
           char_limit: 160,
         })

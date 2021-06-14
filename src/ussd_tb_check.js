@@ -149,16 +149,16 @@ go.app = function () {
       return new MenuState(name, {
         question: $(
           [
-            "This service only provides health info. Agree that you are responsible " +
-              "for your medical care and treatment.",
+            "This NDoH service only provides health info. Please agree that you are " +
+            "responsible for your own medical care and treatment.",
             "",
             "Reply",
           ].join("\n")
         ),
         error: $(
           [
-            "This service only provides health info. Agree that you are responsible " +
-              "for your medical care and treatment.",
+            "This NDoH service only provides health info. Please agree that you are " +
+            "responsible for your own medical care and treatment.",
             "",
             "Reply",
           ].join("\n")
@@ -214,6 +214,9 @@ go.app = function () {
       var msisdn = utils.normalize_msisdn(
         _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
       var data = {"hc_type": "tb"};
+      if (self.im.user.answers.state_language) {
+        data.language = self.im.user.answers.state_language;
+      }
       return self.rapidpro
         .start_flow(flow_uuid, null, "tel:" + msisdn, data)
         .then(function() {
@@ -241,7 +244,7 @@ go.app = function () {
           "with the provisions of the TBHealthCheck Privacy Notice sent to you by SMS."
         ),
         accept_labels: true,
-        choices: [new Choice(next_state, $("Accept"))],
+        choices: [new Choice(next_state, $("ACCEPT"))],
       });
     });
 

@@ -81,13 +81,13 @@ msgstr "Sesotho"
 
 #: go-app-ussd_tb_check.js:169 go-app-ussd_tb_check.js:177
 msgid ""
-"This service only provides health info. Agree that you are responsible for "
-"your medical care and treatment.\n"
+"This NDoH service only provides health info. Please agree that you are "
+"responsible for your own medical care and treatment.\n"
 "\n"
 "Reply"
 msgstr ""
-"Lesevisi ikupha imininingwane yezempilo kphela. Vuma ukuthi unegunya "
-"lokunakekelwa nokwelashwa kwakho. \n"
+"Lesevisi ye-NDoH inikeza imininingwane yezempilo kphela. Scela uvume "
+"ukuth unegunya lokunakekelwa nokwelashwa kwakho.\n"
 "\n"
 "Phendula"
 
@@ -135,6 +135,14 @@ msgid ""
 msgstr ""
 "Usebenzisa lolulwazi ngokuzibeka wena egcupheni. Vuma ukungazibi "
 "nokungabambezeleli ukthola iseluleko ngokwelashwa noma ukunakekelwa"
+
+#: go-app-ussd_tb_check.js:343
+msgid "Your personal information is protected under POPIA and in accordance with the provisions of the TBHealthCheck Privacy Notice sent to you by SMS."
+msgstr "Imininingwane yakho ivikelwe yi-POPI Act futhi ngokuya ngemigomo yeSaziso Sobumfihlo se-TBHealthCheck esithunyelwe kuwe nge-SMS."
+
+#: go-app-ussd_tb_check.js:347
+msgid "ACCEPT"
+msgstr "YAMUKELA"
 
 #: go-app-ussd_tb_check.js:231
 msgid "Choose your province. Reply with a number:"
