@@ -226,8 +226,15 @@ describe("ussd_tb_check app", function () {
     it("should go to state_language for 1", function () {
       return tester.setup.user
         .state("state_welcome")
+        .setup(function(api) {
+          api.http.fixtures.add(
+            fixtures_rapidpro.start_flow(
+                "privacy-policy-flow-uuid", null, "tel:+27123456789", {"hc_type": "tb"}
+              )
+            );
+        })
         .input("1")
-        .check.user.state("state_language")
+        .check.user.state("state_privacy_policy_accepted")
         .run();
     });
   });
