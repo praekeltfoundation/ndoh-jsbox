@@ -137,7 +137,7 @@ go.app = function () {
         question: question,
         error: error,
         accept_labels: true,
-        choices: [new Choice("state_language", $("START"))],
+        choices: [new Choice("state_send_privacy_policy_sms", $("START"))],
       });
     });
 
