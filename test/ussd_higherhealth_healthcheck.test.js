@@ -1362,6 +1362,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
     });
     describe("state_display_risk", function () {
         it("should display the low risk message if low risk", function () {
+            var date = moment().format('YY-MM-DD');
             return tester
                 .setup.user.state("state_tracing")
                 .setup.user.answers({
@@ -1416,9 +1417,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply: [
-                        "testin very..., you are LOW RISK. Wear a mask and sanitize " +
+                        date + " tes..., You are at LOW RISK. Wear a mask, sanitize " +
                         "daily. Screenshot this result. HIGHER HEALTH supported by Lifebuoy," +
-                        " European Union and HWESTA",
+                        " European Union & HWESTA",
                         "1. Next"
                     ].join("\n"),
                     char_limit: 160
@@ -1429,6 +1430,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .run();
         });
         it("should display the moderate risk message if moderate risk", function () {
+            var date = moment().format('YY-MM-DD');
             return tester
                 .setup.user.state("state_tracing")
                 .setup.user.answers({
@@ -1481,9 +1483,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply: [
-                      "short first, SELF-ISOLATE in your room for 10 days and " +
-                      "monitor symptoms on HealthCheck. HIGHER HEALTH supported by " +
-                      "Lifebuoy, European Union and HWESTA",
+                      date + " sho..., SELF-ISOLATE in your room for 10 days. " +
+                      "Monitor symptoms on HealthCheck. HIGHER HEALTH supported by " +
+                      "Lifebuoy, European Union & HWESTA",
                       "1. Next"
                     ].join('\n'),
                     char_limit: 160
@@ -1491,6 +1493,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .run();
         });
         it("should display the high risk message if high risk", function () {
+            var date = moment().format('YY-MM-DD');
             return tester
                 .setup.user.state("state_tracing")
                 .setup.user.answers({
@@ -1543,7 +1546,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
-                        "short first, GET TESTED for COVID-19. Go to your testing " +
+                        date + " sho..., GET TESTED for COVID-19. Go to your testing " +
                         "centre/doctor or call 0800029999. HIGHER HEALTH supported by " +
                         "Lifebuoy, European Union & HWESTA",
                     char_limit: 160
