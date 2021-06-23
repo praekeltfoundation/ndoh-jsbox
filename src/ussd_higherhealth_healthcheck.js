@@ -726,28 +726,29 @@ go.app = (function () {
         risk = self.calculate_risk();
       }
       var text = "";
-      var first_name = truncateString((answers.state_first_name + ""), 14);
+      var first_name = truncateString((answers.state_first_name + ""), 6);
+      var date = moment().format('YY-MM-DD');
       if (answers.state_tracing) {
         if (risk === "low") {
           text = $(
-            "{{ first_name }}, you are LOW RISK. Wear a mask and sanitize " +
-            "daily. Screenshot this result. HIGHER HEALTH supported by " +
-            "Lifebuoy, European Union and HWESTA"
-          ).context({first_name: first_name});
+            "{{date}} {{ first_name }}, You are at LOW RISK. Wear a mask, " +
+            "sanitize daily. Screenshot this result. HIGHER HEALTH supported" +
+            " by Lifebuoy, European Union & HWESTA"
+          ).context({first_name: first_name, date: date});
         }
         if (risk === "moderate") {
           text = $(
-            "{{ first_name }}, SELF-ISOLATE in your room for 10 days and " +
-            "monitor symptoms on HealthCheck. HIGHER HEALTH supported by " +
-            "Lifebuoy, European Union and HWESTA"
-          ).context({first_name: first_name});
+            "{{date}} {{ first_name }}, SELF-ISOLATE in your room for 10 days. " +
+            "Monitor symptoms on HealthCheck. HIGHER HEALTH supported by " +
+            "Lifebuoy, European Union & HWESTA"
+          ).context({first_name: first_name, date: date});
         }
         if (risk === "high") {
           text = $(
-            "{{ first_name }}, GET TESTED for COVID-19. Go to your testing" +
+            "{{date}} {{ first_name }}, GET TESTED for COVID-19. Go to your testing" +
             " centre/doctor or call 0800029999. HIGHER HEALTH supported by" +
             " Lifebuoy, European Union & HWESTA"
-          ).context({first_name: first_name});
+          ).context({first_name: first_name, date: date});
         }
       } else {
         if (risk === "low") {

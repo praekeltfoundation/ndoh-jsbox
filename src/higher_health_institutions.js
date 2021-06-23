@@ -42,6 +42,10 @@ go.institutions = {
     "Ed-U City Campus (Pty) Ltd": [
       "Port Elizabeth"
     ],
+    "Eduvos": [
+      "East London",
+      "Port Elizabeth"
+    ],
     "Health and Fitness Professionals Academy (HFPA)": [
       "Port Elizabeth"
     ],
@@ -107,10 +111,6 @@ go.institutions = {
     "Netcare  Education (Pty Ltd)": [
       "Port Elizabeth"
     ],
-    "Pearson Institute of Higher Education  Eduvos": [
-      "East London",
-      "Port Elizabeth"
-    ],
     "Port Elizabeth": [
       "Central Office",
       "Dower",
@@ -166,10 +166,10 @@ go.institutions = {
     "Damelin": [
       "Bloemfontein"
     ],
-    "MSC Business College": [
+    "Eduvos": [
       "Bloemfontein"
     ],
-    "Pearson Institute of Higher Education  Eduvos": [
+    "MSC Business College": [
       "Bloemfontein"
     ],
     "UNISA": [
@@ -279,6 +279,12 @@ go.institutions = {
       "Randburg",
       "Vereeniging"
     ],
+    "Eduvos": [
+      "Bedfordview",
+      "Midrand",
+      "Pretoria",
+      "Vanderbijlpark"
+    ],
     "Health and Fitness Professionals Academy (HFPA)": [
       "Bedfordview",
       "Pretoria",
@@ -301,12 +307,6 @@ go.institutions = {
     "Netcare  Education (Pty Ltd)": [
       "Auckland Park",
       "Pretoria"
-    ],
-    "Pearson Institute of Higher Education  Eduvos": [
-      "Bedfordview",
-      "Midrand",
-      "Pretoria",
-      "Vanderbijlpark"
     ],
     "Production Management Institute of Southern Africa PTY LTD / PMI": [
       "Johannesburg"
@@ -796,6 +796,9 @@ go.institutions = {
     "CTU Training Solutions": [
       "Mbombela"
     ],
+    "Eduvos": [
+      "Nelspruit"
+    ],
     "Health and Fitness Professionals Academy (HFPA)": [
       "Mbombela"
     ],
@@ -803,9 +806,6 @@ go.institutions = {
       "Mbombela"
     ],
     "MSC Business College": [
-      "Nelspruit"
-    ],
-    "Pearson Institute of Higher Education  Eduvos": [
       "Nelspruit"
     ],
     "UNISA": [
@@ -924,6 +924,9 @@ go.institutions = {
       "Durban",
       "Pietermaritzburg"
     ],
+    "Eduvos": [
+      "Umhlanga"
+    ],
     "Health and Fitness Professionals Academy (HFPA)": [
       "Durban"
     ],
@@ -933,9 +936,6 @@ go.institutions = {
     ],
     "Netcare  Education (Pty Ltd)": [
       "Durban"
-    ],
-    "Pearson Institute of Higher Education  Eduvos": [
-      "Umhlanga"
     ],
     "STADIO AFDA": [
       "Durban"
@@ -1136,11 +1136,11 @@ go.institutions = {
     "CTU Training Solutions": [
       "Potchefstroom"
     ],
+    "Eduvos": [
+      "Potchefstroom"
+    ],
     "MSC Business College": [
       "Rustenburg"
-    ],
-    "Pearson Institute of Higher Education  Eduvos": [
-      "Potchefstroom"
     ],
     "UNISA": [
       "Mafikeng",
@@ -1210,6 +1210,10 @@ go.institutions = {
       "Cape Town",
       "Cape Town"
     ],
+    "Eduvos": [
+      "Cape Town",
+      "Durbanville"
+    ],
     "Health and Fitness Professionals Academy (HFPA)": [
       "Claremont"
     ],
@@ -1221,10 +1225,6 @@ go.institutions = {
     ],
     "Netcare  Education (Pty Ltd)": [
       "Bellville"
-    ],
-    "Pearson Institute of Higher Education  Eduvos": [
-      "Cape Town",
-      "Durbanville"
     ],
     "Production Management Institute of Southern Africa PTY LTD / PMI": [
       "Bellville"
