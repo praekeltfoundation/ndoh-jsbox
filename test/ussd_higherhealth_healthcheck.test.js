@@ -1368,7 +1368,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .setup.user.answers({
                     state_province: "ZA-WC",
                     state_city: "Cape Town",
-                    state_first_name: "testin very long name >19 chars",
+                    state_first_name: "testin very long name >30 chars",
                     state_last_name: "last name",
                     city_location: "+12.34-56.78/",
                     state_age: "<18",
@@ -1386,7 +1386,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                             "method": 'POST',
                             "data": {
                                 msisdn: "+27123456789",
-                                first_name: "testin very long name >19 chars",
+                                first_name: "testin very long name >30 chars",
                                 last_name: "last name",
                                 source: "USSD",
                                 province: "ZA-WC",
@@ -1417,9 +1417,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply: [
-                        date + " tes..., You are at LOW RISK. Wear a mask, sanitize " +
-                        "daily. Screenshot this result. HIGHER HEALTH supported by Lifebuoy," +
-                        " European Union & HWESTA",
+                        date + " testin very long name >3..., You are at LOW RISK. Wear a mask, sanitize " +
+                        "daily. Screenshot this result",
                         "1. Next"
                     ].join("\n"),
                     char_limit: 160
@@ -1483,9 +1482,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply: [
-                      date + " sho..., SELF-ISOLATE in your room for 10 days. " +
-                      "Monitor symptoms on HealthCheck. HIGHER HEALTH supported by " +
-                      "Lifebuoy, European Union & HWESTA",
+                      date + " short first, SELF-ISOLATE in your room for 10 days. " +
+                      "Monitor symptoms on HealthCheck",
                       "1. Next"
                     ].join('\n'),
                     char_limit: 160
@@ -1546,9 +1544,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
-                        date + " sho..., GET TESTED for COVID-19. Go to your testing " +
-                        "centre/doctor or call 0800029999. HIGHER HEALTH supported by " +
-                        "Lifebuoy, European Union & HWESTA",
+                        date + " short first, GET TESTED for COVID-19. Go to your testing " +
+                        "centre/doctor or call 0800029999",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
