@@ -666,6 +666,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
             return tester
                 .setup.user.answer("state_city", "Cape Town, South Africa")
                 .setup.user.answer("city_location", "+12.34-56.78/")
+                .setup.user.answers({
+                    state_province: 'ZA-GT',
+                })
                 .setup.user.state("state_city")
                 .check.user.state("state_university")
                 .run();
@@ -673,6 +676,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
         it("should go to state_university if age <18", function () {
             return tester
                 .setup.user.answer("state_age", "<18")
+                .setup.user.answers({
+                    state_province: 'ZA-GT',
+                })
                 .setup.user.state("state_city")
                 .check.user.state("state_university")
                 .run();
@@ -705,7 +711,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.user.state("state_city")
                 .run();
         });
-        it("go to state_age if user selects yes", function() {
+        it("go to state_university if user selects yes", function() {
             return tester
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -740,6 +746,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .setup.user.answer("state_city", "Cape Town, South Africa")
                 .setup.user.answer("place_id", "ChIJD7fiBh9u5kcRYJSMaMOCCwQ")
                 .setup.user.answer("google_session_token", "testsessiontoken")
+                .setup.user.answers({
+                    state_province: 'ZA-GT',
+                })
                 .input("1")
                 .check.user.state("state_university")
                 .check.user.answer("city_location", "-03.866651+051.195827/")
@@ -989,10 +998,14 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.user.state("state_fever")
                 .run();
         });
-        it("should go to state_fever if value exists", function () {
+        it("should go to state_fever if campus value exists", function () {
             return tester
-                .setup.user.answer("state_age", "18-40")
-                .setup.user.state("state_age")
+                .setup.user.state("state_campus")
+                .setup.user.answers({
+                    state_province: 'ZA-GT',
+                    state_university: 'University of Johannesburg (UJ)',
+                    state_campus: "Soweto",
+                })
                 .check.user.state("state_fever")
                 .run();
         });
