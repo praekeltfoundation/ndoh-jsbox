@@ -998,17 +998,6 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.user.state("state_fever")
                 .run();
         });
-        it("should go to state_fever if campus value exists", function () {
-            return tester
-                .setup.user.state("state_campus")
-                .setup.user.answers({
-                    state_province: 'ZA-GT',
-                    state_university: 'University of Johannesburg (UJ)',
-                    state_campus: "Soweto",
-                })
-                .check.user.state("state_fever")
-                .run();
-        });
     });
 
     describe("state_campus_other", function(){
