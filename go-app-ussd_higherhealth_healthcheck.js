@@ -1852,7 +1852,7 @@ go.app = (function () {
 
     self.add("state_last_name", function (name) {
       if(self.im.user.answers.state_last_name) {
-        return self.states.create("state_province");
+        return self.states.create("state_age");
       }
       var question = $("Please TYPE your surname");
       return new FreeText(name, {
@@ -1862,7 +1862,7 @@ go.app = (function () {
             return question;
           }
         },
-        next: "state_province"
+        next: "state_age"
       });
     });
 
@@ -1894,7 +1894,10 @@ go.app = (function () {
 
     self.add("state_city", function (name) {
       if(self.im.user.answers.state_city && self.im.user.answers.city_location) {
-        return self.states.create("state_age");
+        return self.states.create("state_university");
+      }
+      if(self.im.user.answers.state_age === "<18") {
+        return self.states.create("state_university");
       }
       var question = $(
         "Please TYPE the name of your Suburb, Township, Town or Village (or nearest)"
@@ -1998,7 +2001,7 @@ go.app = (function () {
           if(self.im.user.answers.confirmed_contact) {
             return self.states.create("state_tracing");
           }
-          return self.states.create("state_age");
+          return self.states.create("state_university");
         }, function (e) {
           // Go to error state after 3 failed HTTP requests
           opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
@@ -2012,7 +2015,7 @@ go.app = (function () {
 
     self.add("state_age", function (name) {
       if(self.im.user.answers.state_age) {
-        return self.states.create("state_fever");
+        return self.states.create("state_province");
       }
       return new ChoiceState(name, {
         question: $("How old are you?"),
@@ -2028,7 +2031,7 @@ go.app = (function () {
           new Choice("40-65", $("40-65")),
           new Choice(">65", $(">65"))
         ],
-        next: "state_university"
+        next: "state_province"
       });
     });
 
