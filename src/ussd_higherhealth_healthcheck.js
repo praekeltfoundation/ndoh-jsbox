@@ -543,15 +543,14 @@ go.app = (function () {
     });
 
     self.add("state_not_vaccinated", function(name){
-      return new ChoiceState(name, {
+      return new MenuState(name, {
           question: $([
             "Get vaccinated. The risk of getting severe Covid-19 is 80% higher if you are not vaccinated."+
             " Pfizer and J&J vaccines are effective at reducing risk.",
             "",
           ].join("\n")),
           accept_labels: true,
-          choices: [new Choice(true, $("Next"))],
-          next: "state_fever"
+          choices: [new Choice("state_fever", $("Next"))]
       });
     });
 
