@@ -422,7 +422,7 @@ go.app = (function () {
 
     self.add("state_age", function (name) {
       if(self.im.user.answers.state_age) {
-        return self.states.create("state_fever");
+        return self.states.create("state_vaccine_uptake");
       }
       return new ChoiceState(name, {
         question: $("How old are you?"),
@@ -501,7 +501,7 @@ go.app = (function () {
         back: $("Back"),
         choices: choices,
         next: function(){
-            return self.im.user.answers.state_campus == "Other" ? "state_campus_other" : "state_fever";
+            return self.im.user.answers.state_campus == "Other" ? "state_campus_other" : "state_vaccine_uptake";
         }
       });
     });
@@ -513,8 +513,43 @@ go.app = (function () {
               "",
               "Reply:"
             ].join("\n")),
-            next: "state_fever"
+            next: "state_vaccine_uptake"
         });
+    });
+
+    self.add("state_vaccine_uptake", function(name){
+      return new ChoiceState(name, {
+        question: $([
+          "Your opinion about COVID-19 vaccines matters to us. Have you been vaccinated?",
+          "",
+        ].join("\n")),
+        error: $([
+          "Please use numbers from list. Have you been vaccinated?",
+          "",
+        ].join("\n")),
+        accept_labels: true,
+        choices: [
+          new Choice("PARTIALLY", $("Yes, partially vaccinated")),
+          new Choice("FULLY", $("Yes, fully vaccinated")),
+          new Choice("NOT", $("Not vaccinated"))
+        ],
+        next: function(){
+          return self.im.user.answers.state_vaccine_uptake == "NOT" ? "state_not_vaccinated" : "state_fever";
+        }
+      });
+    });
+
+    self.add("state_not_vaccinated", function(name){
+      return new ChoiceState(name, {
+          question: $([
+            "Get vaccinated. The risk of getting severe Covid-19 is 80% higher if you are not vaccinated."+
+            " Pfizer and J&J vaccines are effective at reducing risk.",
+            "",
+          ].join("\n")),
+          accept_labels: true,
+          choices: [new Choice(true, $("Next"))],
+          next: "state_fever"
+      });
     });
 
     self.add("state_fever", function (name) {
@@ -689,6 +724,7 @@ go.app = (function () {
               name: answers.state_campus
             },
             campus_other: answers.state_campus_other,
+            vaccine_uptake: answers.state_vaccine_uptake,
           }
         },
         headers: {
