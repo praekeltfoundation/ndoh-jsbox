@@ -987,7 +987,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 })
                 .run();
         });
-        it("should go to state_fever", function () {
+        it("should go to state_vaccine_uptake", function () {
             return tester
                 .setup.user.state("state_campus")
                 .setup.user.answers({
@@ -995,7 +995,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state_university: 'University of Johannesburg (UJ)'
                 })
                 .input("1")
-                .check.user.state("state_fever")
+                .check.user.state("state_vaccine_uptake")
                 .run();
         });
     });
@@ -1010,7 +1010,73 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state_campus: 'Other',
                 })
                 .input("Neelsie")  // Other
-                .check.interaction({state:"state_fever"})
+                .check.interaction({state:"state_vaccine_uptake"})
+                .run();
+        });
+    });
+
+    describe("state_vaccine_uptake", function () {
+        it("should ask for the users vaccination status", function () {
+            return tester
+                .setup.user.state("state_vaccine_uptake")
+                .check.interaction({
+                    state: "state_vaccine_uptake",
+                    reply: [
+                        "Your opinion about COVID-19 vaccines matters to us. Have you been vaccinated?",
+                        "",
+                        "1. Yes, partially vaccinated",
+                        "2. Yes, fully vaccinated",
+                        "3. Not vaccinated"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function () {
+            return tester
+                .setup.user.state("state_vaccine_uptake")
+                .input("A")
+                .check.interaction({
+                    state: "state_vaccine_uptake",
+                    reply: [
+                        "Please use numbers from list. Have you been vaccinated?",
+                        "",
+                        "1. Yes, partially vaccinated",
+                        "2. Yes, fully vaccinated",
+                        "3. Not vaccinated"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to not_vaccinated screen if not vaccinated", function () {
+            return tester
+                .setup.user.state("state_vaccine_uptake")
+                .input("3")  // Other
+                .check.interaction({
+                    state: "state_not_vaccinated",
+                    reply: [
+                        "Get vaccinated. The risk of getting severe Covid-19 is 80% higher if you are not vaccinated."+
+                        " Pfizer and J&J vaccines are effective at reducing risk.",
+                        "",
+                        "1. Next"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to state_fever if vaccinated", function () {
+            return tester
+                .setup.user.state("state_vaccine_uptake")
+                .input("1")
+                .check.user.state("state_fever")
+                .run();
+        });
+        it("should go to state_fever from not_vaccinated", function () {
+            return tester
+                .setup.user.state("state_not_vaccinated")
+                .input("1")
+                .check.user.state("state_fever")
                 .run();
         });
     });
@@ -1290,6 +1356,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state_last_name: "Last",
                     state_university: "Other",
                     state_campus: "Other",
+                    state_vaccine_uptake: "NOT",
                 })
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -1313,7 +1380,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 last_name: "Last",
                                 data:{
                                     university:{"name":"Other"},
-                                    campus:{"name":"Other"}
+                                    campus:{"name":"Other"},
+                                    vaccine_uptake: "NOT",
                                 }
                             }
                         },
@@ -1387,6 +1455,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state_exposure: "No",
                     state_university: "Other",
                     state_campus: "Other",
+                    state_vaccine_uptake: "FULLY",
                 })
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -1410,7 +1479,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 risk: "low",
                                 data:{
                                     university:{"name":"Other"},
-                                    campus:{"name":"Other"}
+                                    campus:{"name":"Other"},
+                                    vaccine_uptake: "FULLY",
                                 }
                             }
                         },
@@ -1453,6 +1523,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state_exposure: "not_sure",
                     state_university: "Other",
                     state_campus: "Other",
+                    state_vaccine_uptake: "PARTIALLY",
                 })
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -1475,7 +1546,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 risk: "moderate",
                                 data:{
                                     university:{"name":"Other"},
-                                    campus:{"name":"Other"}
+                                    campus:{"name":"Other"},
+                                    vaccine_uptake: "PARTIALLY",
                                 }
                             }
                         },
@@ -1515,6 +1587,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state_exposure: "No",
                     state_university: "Other",
                     state_campus: "Other",
+                    state_vaccine_uptake: "NOT",
                 })
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -1537,7 +1610,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 risk: "high",
                                 data:{
                                     university:{"name":"Other"},
-                                    campus:{"name":"Other"}
+                                    campus:{"name":"Other"},
+                                    vaccine_uptake: "NOT",
                                 }
                             }
                         },
@@ -1575,6 +1649,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state_last_name: "last",
                     state_university: "Other",
                     state_campus: "Other",
+                    state_vaccine_uptake: "PARTIALLY",
                 })
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -1597,7 +1672,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 last_name: "last",
                                 data:{
                                     university:{"name":"Other"},
-                                    campus:{"name":"Other"}
+                                    campus:{"name":"Other"},
+                                    vaccine_uptake: "PARTIALLY",
                                 }
                             }
                         },
@@ -1639,6 +1715,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state_exposure: "No",
                     state_university: "Other",
                     state_campus: "Other",
+                    state_vaccine_uptake: "PARTIALLY",
                 })
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -1659,7 +1736,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 risk: "moderate",
                                 data:{
                                     university:{"name":"Other"},
-                                    campus:{"name":"Other"}
+                                    campus:{"name":"Other"},
+                                    vaccine_uptake: "PARTIALLY",
                                 }
                             }
                         },
@@ -1696,6 +1774,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state_exposure: "No",
                     state_university: "Other",
                     state_campus: "Other",
+                    state_vaccine_uptake: "NOT",
                 })
                 .setup(function (api) {
                     api.http.fixtures.add({
@@ -1716,7 +1795,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 risk: "high",
                                 data:{
                                     university:{"name":"Other"},
-                                    campus:{"name":"Other"}
+                                    campus:{"name":"Other"},
+                                    vaccine_uptake: "NOT",
                                 }
                             }
                         },
