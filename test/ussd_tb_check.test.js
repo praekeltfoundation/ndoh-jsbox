@@ -279,15 +279,15 @@ describe("ussd_tb_check app", function () {
       return tester.setup.user
         .state("state_language")
         .input("1")
-        .check.user.state("state_province")
+        .check.user.state("state_age")
         .run();
     });
-    it("should go to state_province for in lang of the valid option", function () {
+    it("should go to state_age for in lang of the valid option", function () {
       return tester.setup.user
         .state("state_language")
         .input("2")
         .check.user.lang("zul")
-        .check.user.state("state_province")
+        .check.user.state("state_age")
         .run();
     });
     it("should go to state_terms for english lang option", function () {
@@ -295,18 +295,15 @@ describe("ussd_tb_check app", function () {
         .state("state_language")
         .input("1")
         .check.interaction({
-          state: "state_province",
+          state: "state_age",
           reply: [
-            "Choose your province. Reply with a number:",
-            "1. E. CAPE",
-            "2. FREE STATE",
-            "3. GAUTENG",
-            "4. KWAZULU NATAL",
-            "5. LIMPOPO",
-            "6. MPUMALANGA",
-            "7. NORTH WEST",
-            "8. N. CAPE",
-            "9. W. CAPE",
+            "How old are you?",
+            "",
+            "Reply with a number",
+            "1. under 18",
+            "2. 18-39",
+            "3. 40-65",
+            "4. over 65",
           ].join("\n"),
           char_limit: 160,
         })
@@ -316,7 +313,7 @@ describe("ussd_tb_check app", function () {
       return tester.setup.user
         .state("state_language")
         .setup.user.answer("state_language", "eng")
-        .check.user.state("state_province")
+        .check.user.state("state_age")
         .run();
     });
   });
@@ -600,6 +597,26 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
+    it("should go to state_cough if age <18", function () {
+      return tester
+        .setup.user.answer("state_age", "<18")
+        .setup.user.answers({
+          state_province: 'ZA-GT'
+        })
+        .setup.user.state("state_city")
+        .check.user.state("state_cough")
+        .run();
+    });
+    it("should not skip state_city if age is not <18", function () {
+      return tester
+        .setup.user.answer("state_age", ">65")
+        .setup.user.answers({
+          state_province: 'ZA-GT'
+        })
+        .setup.user.state("state_city")
+        .check.user.state("state_city")
+        .run();
+    });
     it("should go to state_confirm_city", function () {
       return tester.setup.user
         .answer("google_session_token", "testsessiontoken")
@@ -643,7 +660,7 @@ describe("ussd_tb_check app", function () {
         .state("state_city")
         .setup.user.answer("state_city", "Cape Town, South Africa")
         .setup.user.answer("city_location", "+00-025/")
-        .check.user.state("state_age")
+        .check.user.state("state_cough")
         .run();
     });
   });
@@ -675,7 +692,7 @@ describe("ussd_tb_check app", function () {
         .check.user.state("state_city")
         .run();
     });
-    it("go to state_age if user selects yes", function () {
+    it("go to state_cough if user selects yes", function () {
       return tester
         .setup(function (api) {
           api.http.fixtures.add({
@@ -711,7 +728,7 @@ describe("ussd_tb_check app", function () {
         .setup.user.answer("place_id", "ChIJD7fiBh9u5kcRYJSMaMOCCwQ")
         .setup.user.answer("google_session_token", "testsessiontoken")
         .input("1")
-        .check.user.state("state_age")
+        .check.user.state("state_cough")
         .check.user.answer("city_location", "-03.866651+051.195827/")
         .run();
     });
@@ -807,11 +824,11 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
-    it("should go to state_fever", function () {
+    it("should go to state_province", function () {
       return tester.setup.user
         .state("state_gender")
         .input("1")
-        .check.user.state("state_cough")
+        .check.user.state("state_province")
         .run();
     });
   });
