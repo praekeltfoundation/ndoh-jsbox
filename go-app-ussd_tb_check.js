@@ -728,35 +728,43 @@ go.app = function () {
     self.add("state_submit_data", function (name, opts) {
       var answers = self.im.user.answers;
       var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+      var payload = {
+        data: {
+          msisdn: msisdn,
+          source: "USSD",
+          language: answers.state_language,
+          province: answers.state_province,
+          //city: answers.state_city,
+          //city_location: answers.city_location,
+          age: answers.state_age,
+          gender: answers.state_gender,
+          cough: answers.state_cough,
+          fever: answers.state_fever,
+          sweat: answers.state_sweat,
+          weight: answers.state_weight,
+          exposure: answers.state_exposure,
+          tracing: answers.state_tracing,
+          follow_up_optin: answers.state_opt_in,
+          risk: self.calculate_risk(),
+          data: {
+            tb_privacy_policy_accepted: "yes"
+          }
+        },
+        headers: {
+          Authorization: ["Token " + self.im.config.healthcheck.token],
+          "User-Agent": ["Jsbox/TB-Check-USSD"],
+        },
+      };
+
+      if (answers.state_city != "") {
+        payload.data.city = answers.state_city;
+      }
+      if (answers.city_location != "") {
+        payload.data.city_location = answers.city_location;
+      }
 
       return new JsonApi(self.im)
-        .post(self.im.config.healthcheck.url + "/v2/tbcheck/", {
-          data: {
-            msisdn: msisdn,
-            source: "USSD",
-            language: answers.state_language,
-            province: answers.state_province,
-            city: answers.state_city,
-            city_location: answers.city_location,
-            age: answers.state_age,
-            gender: answers.state_gender,
-            cough: answers.state_cough,
-            fever: answers.state_fever,
-            sweat: answers.state_sweat,
-            weight: answers.state_weight,
-            exposure: answers.state_exposure,
-            tracing: answers.state_tracing,
-            follow_up_optin: answers.state_opt_in,
-            risk: self.calculate_risk(),
-            data: {
-              tb_privacy_policy_accepted: "yes"
-            }
-          },
-          headers: {
-            Authorization: ["Token " + self.im.config.healthcheck.token],
-            "User-Agent": ["Jsbox/TB-Check-USSD"],
-          },
-        })
+        .post(self.im.config.healthcheck.url + "/v2/tbcheck/", payload)
         .then(
           function () {
             return self.states.create("state_complete");
