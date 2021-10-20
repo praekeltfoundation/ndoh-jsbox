@@ -352,7 +352,7 @@ go.app = function () {
     });
 
     self.states.add("state_language", function (name) {
-      var next_state = "state_province";
+      var next_state = "state_age";
       if (self.im.user.answers.state_language) {
         return self.im.user.set_lang(self.im.user.answers.state_language)
         .then(function() {
@@ -379,6 +379,50 @@ go.app = function () {
           }
           return self.states.create(next_state);
         }
+      });
+    });
+
+    self.add("state_age", function (name) {
+      if (self.im.user.answers.state_age) {
+        return self.states.create("state_gender");
+      }
+      return new ChoiceState(name, {
+        question: $(["How old are you?", "", "Reply with a number"].join("\n")),
+        error: $(
+          ["Please use numbers from list.", "", "How old are you?"].join("\n")
+        ),
+        accept_labels: true,
+        choices: [
+          new Choice("<18", $("under 18")),
+          new Choice("18-40", $("18-39")),
+          new Choice("40-65", $("40-65")),
+          new Choice(">65", $("over 65")),
+        ],
+        next: "state_gender",
+      });
+    });
+
+    self.add("state_gender", function (name) {
+      if (self.im.user.answers.state_gender) {
+        return self.states.create("state_province");
+      }
+      return new ChoiceState(name, {
+        question: $(["Which gender do you identify as?:", "", "Reply with a number"].join("\n")),
+        error: $(
+          [
+            "Please use numbers from list.",
+            "",
+            "Which gender do you identify as?:",
+          ].join("\n")
+        ),
+        accept_labels: true,
+        choices: [
+          new Choice("male", $("MALE")),
+          new Choice("female", $("FEMALE")),
+          new Choice("other", $("OTHER")),
+          new Choice("not_say", $("RATHER NOT SAY")),
+        ],
+        next: "state_province",
       });
     });
 
@@ -409,7 +453,10 @@ go.app = function () {
         self.im.user.answers.state_city &&
         self.im.user.answers.city_location
       ) {
-        return self.states.create("state_age");
+        return self.states.create("state_cough");
+      }
+      if(self.im.user.answers.state_age === "<18") {
+        return self.states.create("state_cough");
       }
       var question = $(
         "Please TYPE your home address (or the address where you are currently staying). " +
@@ -519,7 +566,7 @@ go.app = function () {
               self.pad_location(location.lat, 2) +
               self.pad_location(location.lng, 3) +
               "/";
-            return self.states.create("state_age");
+            return self.states.create("state_cough");
           },
           function (e) {
             // Go to error state after 3 failed HTTP requests
@@ -531,50 +578,6 @@ go.app = function () {
             return self.states.create(name, opts);
           }
         );
-    });
-
-    self.add("state_age", function (name) {
-      if (self.im.user.answers.state_age) {
-        return self.states.create("state_gender");
-      }
-      return new ChoiceState(name, {
-        question: $(["How old are you?", "", "Reply with a number"].join("\n")),
-        error: $(
-          ["Please use numbers from list.", "", "How old are you?"].join("\n")
-        ),
-        accept_labels: true,
-        choices: [
-          new Choice("<18", $("under 18")),
-          new Choice("18-40", $("18-39")),
-          new Choice("40-65", $("40-65")),
-          new Choice(">65", $("over 65")),
-        ],
-        next: "state_gender",
-      });
-    });
-
-    self.add("state_gender", function (name) {
-      if (self.im.user.answers.state_gender) {
-        return self.states.create("state_cough");
-      }
-      return new ChoiceState(name, {
-        question: $(["Which gender do you identify as?:", "", "Reply with a number"].join("\n")),
-        error: $(
-          [
-            "Please use numbers from list.",
-            "",
-            "Which gender do you identify as?:",
-          ].join("\n")
-        ),
-        accept_labels: true,
-        choices: [
-          new Choice("male", $("MALE")),
-          new Choice("female", $("FEMALE")),
-          new Choice("other", $("OTHER")),
-          new Choice("not_say", $("RATHER NOT SAY")),
-        ],
-        next: "state_cough",
-      });
     });
 
     self.add("state_cough", function (name) {
@@ -725,35 +728,41 @@ go.app = function () {
     self.add("state_submit_data", function (name, opts) {
       var answers = self.im.user.answers;
       var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+      var payload = {
+        data: {
+          msisdn: msisdn,
+          source: "USSD",
+          language: answers.state_language,
+          province: answers.state_province,
+          age: answers.state_age,
+          gender: answers.state_gender,
+          cough: answers.state_cough,
+          fever: answers.state_fever,
+          sweat: answers.state_sweat,
+          weight: answers.state_weight,
+          exposure: answers.state_exposure,
+          tracing: answers.state_tracing,
+          follow_up_optin: answers.state_opt_in,
+          risk: self.calculate_risk(),
+          data: {
+            tb_privacy_policy_accepted: "yes"
+          }
+        },
+        headers: {
+          Authorization: ["Token " + self.im.config.healthcheck.token],
+          "User-Agent": ["Jsbox/TB-Check-USSD"],
+        },
+      };
+
+      if (answers.state_city != "") {
+        payload.data.city = answers.state_city;
+      }
+      if (answers.city_location != "") {
+        payload.data.city_location = answers.city_location;
+      }
 
       return new JsonApi(self.im)
-        .post(self.im.config.healthcheck.url + "/v2/tbcheck/", {
-          data: {
-            msisdn: msisdn,
-            source: "USSD",
-            language: answers.state_language,
-            province: answers.state_province,
-            city: answers.state_city,
-            city_location: answers.city_location,
-            age: answers.state_age,
-            gender: answers.state_gender,
-            cough: answers.state_cough,
-            fever: answers.state_fever,
-            sweat: answers.state_sweat,
-            weight: answers.state_weight,
-            exposure: answers.state_exposure,
-            tracing: answers.state_tracing,
-            follow_up_optin: answers.state_opt_in,
-            risk: self.calculate_risk(),
-            data: {
-              tb_privacy_policy_accepted: "yes"
-            }
-          },
-          headers: {
-            Authorization: ["Token " + self.im.config.healthcheck.token],
-            "User-Agent": ["Jsbox/TB-Check-USSD"],
-          },
-        })
+        .post(self.im.config.healthcheck.url + "/v2/tbcheck/", payload)
         .then(
           function () {
             return self.states.create("state_complete");
