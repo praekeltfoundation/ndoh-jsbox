@@ -29,7 +29,7 @@ describe("ussd_pmtct app", function() {
                 .check.interaction({
                     state: 'state_start',
                     reply: [
-                    "Welcome! The Dept. of Health’s MomConnect sends Eng msgs on WhatsApp.",
+                    "Welcome! The Dept. of Health's MomConnect sends Eng msgs on WhatsApp.",
                     "Is 0123456789 the no. signing up/opting out of HIV msgs?",
                     "1. Yes",
                     "2. No"
