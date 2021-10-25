@@ -49,7 +49,7 @@ go.app = function() {
             self.im.user.answers = {};
             return new MenuState(name, {
                 question: $([
-                    "Welcome! The Dept. of Health’s MomConnect sends Eng msgs on WhatsApp.",
+                    "Welcome! The Dept. of Health's MomConnect sends Eng msgs on WhatsApp.",
                     "Is {{msisdn}} the no. signing up/opting out of HIV msgs?"
                     ].join("\n")).context({msisdn: utils.readable_msisdn(self.im.user.addr, "27")}),
                 error:
