@@ -1082,6 +1082,7 @@ describe("ussd_tb_check app", function () {
         .setup.user.answers({
           state_province: "ZA-WC",
           state_city: "Cape Town",
+          city_location: "+00-025/",
           state_age: ">65",
           state_gender: "male",
           state_cough: "no",
@@ -1103,7 +1104,62 @@ describe("ussd_tb_check app", function () {
                 language: "eng",
                 province: "ZA-WC",
                 city: "Cape Town",
+                city_location: "+00-025/",
                 age: ">65",
+                gender: "male",
+                cough: "no",
+                fever: false,
+                sweat: false,
+                weight: false,
+                exposure: "no",
+                tracing: true,
+                follow_up_optin: true,
+                risk: "low",
+                data: {
+                  tb_privacy_policy_accepted: "yes"
+                }
+              },
+            },
+            response: {
+              code: 201,
+              data: {
+                accepted: true,
+              },
+            },
+          });
+        })
+        .input("1")
+        .check.user.state("state_complete")
+        .run();
+    });
+    it("go to state_complete for valid answer and age < 18", function () {
+      return tester.setup.user
+        .state("state_opt_in")
+        .setup.user.answers({
+          state_province: "ZA-WC",
+          state_city: "<not collected>",
+          state_age: "<18",
+          state_gender: "male",
+          state_cough: "no",
+          state_fever: false,
+          state_sweat: false,
+          state_weight: false,
+          state_tracing: true,
+          state_exposure: "no",
+          state_language: "eng",
+        })
+        .setup(function (api) {
+          api.http.fixtures.add({
+            request: {
+              url: "http://healthcheck/v2/tbcheck/",
+              method: "POST",
+              data: {
+                msisdn: "+27123456789",
+                source: "USSD",
+                language: "eng",
+                province: "ZA-WC",
+                city: "<not collected>",
+                age: "<18",
                 gender: "male",
                 cough: "no",
                 fever: false,

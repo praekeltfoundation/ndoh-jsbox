@@ -353,6 +353,7 @@ go.app = function () {
         return self.states.create("state_cough");
       }
       if(self.im.user.answers.state_age === "<18") {
+        self.im.user.answers.state_city = "<not collected>";
         return self.states.create("state_cough");
       }
       var question = $(
@@ -631,6 +632,7 @@ go.app = function () {
           source: "USSD",
           language: answers.state_language,
           province: answers.state_province,
+          city: answers.state_city,
           age: answers.state_age,
           gender: answers.state_gender,
           cough: answers.state_cough,
@@ -651,10 +653,7 @@ go.app = function () {
         },
       };
 
-      if (answers.state_city != "") {
-        payload.data.city = answers.state_city;
-      }
-      if (answers.city_location != "") {
+      if(self.im.user.answers.state_age !== "<18") {
         payload.data.city_location = answers.city_location;
       }
 
