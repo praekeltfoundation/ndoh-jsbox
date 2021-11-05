@@ -427,7 +427,37 @@ go.app = function() {
                 });
         });
 
+        self.states.add("state_mother_supporter_no_WA", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "A supporter's number needs to be registered on WA. " +
+                    "Would you like to enter another number?"),
+                error: $(
+                    "Sorry, please try again.  " +
+                    "Reply with the number, e.g. 1"
+                ),
+                accept_labels: true,
+                choices: [
+                    new Choice("state_mother_supporter_msisdn", $("Yes")),
+                    new Choice("state_mother_supporter_noconsent_end", $("No")),
+                ],
+            });
+        });
+
+        self.states.add("state_mother_supporter_no_WA_end", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "You can dial the shortcode *134*550*9# anytime to nominate a supporter." +
+                    "\nA supporter's number must be registered on Whatsapp."
+                )
+            });
+        });
+
         self.add("state_mother_name", function(name) {
+            if (!self.im.user.get_answer("on_whatsapp")) {
+                return self.states.create("state_mother_supporter_no_WA");
+            }
             return new FreeText(name, {
                 question: $(
                     "What is your name? We will use your name in the invite to your " +
@@ -1643,6 +1673,9 @@ go.app = function() {
                 .contact_check(msisdn, true)
                 .then(function(result) {
                     self.im.user.set_answer("on_whatsapp", result);
+                    if (result != "true"){
+                        return self.states.create("state_mother_new_supporter_no_WA");
+                    }
                     return self.states.create("state_new_supporter_mother_name");
                 })
                 .catch(function(e) {
@@ -1658,7 +1691,37 @@ go.app = function() {
                 });
         });
 
+        self.states.add("state_mother_new_supporter_no_WA", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "The new supporter's number needs to be registered on WA. " +
+                    "Would you like to enter another number?"),
+                error: $(
+                    "Sorry, please try again.  " +
+                    "Reply with the number, e.g. 1"
+                ),
+                accept_labels: true,
+                choices: [
+                    new Choice("state_mother_new_supporter_msisdn", $("Yes")),
+                    new Choice("state_mother_new_supporter_no_WA_end", $("No")),
+                ],
+            });
+        });
+
+        self.states.add("state_mother_new_supporter_no_WA_end", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "You can register a new supporter by dialing *134*550*9#." +
+                    "\nHowever, the numbers must be registered on Whatsapp."
+                )
+            });
+        });
+
         self.add("state_new_supporter_mother_name", function(name) {
+            if (!self.im.user.get_answer("on_whatsapp")) {
+                return self.states.create("state_mother_new_supporter_no_WA");
+            }
             return new FreeText(name, {
                 question: $(
                     "What is your name? We will use your name in the invite to your " +
@@ -1670,7 +1733,7 @@ go.app = function() {
         });
 
         self.add("state_new_supporter_mother_name_confirm", function(name) {
-            var mother_name = self.im.user.answers.state_mother_name;
+            var mother_name = self.im.user.answers.state_new_supporter_mother_name;
             return new MenuState(name, {
                 question: $(
                     "Thank you! Let's make sure we got it right. " +

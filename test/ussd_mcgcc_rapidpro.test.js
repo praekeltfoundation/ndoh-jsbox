@@ -334,8 +334,19 @@ describe("ussd_mcgcc app", function() {
                 .run();
         });
         it("should ask mother to confirm the name she entered", function() {
-            return tester.setup.user
-                .state("state_mother_name")
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27123456789",
+                            wait: true
+                        })
+                    );
+                })
+
+                .setup.user.state("state_mother_name")
+                .setup.user.answer("state_mother_supporter_msisdn", "+27123456789")
+                .setup.user.answer("on_whatsapp", true)
                 .input("Mary James")
                 .check.interaction({
                     state: "state_mother_name_confirm",
@@ -1552,6 +1563,30 @@ describe("ussd_mcgcc app", function() {
                 })
                 .run();
         });
+        it ("should show the SMS message for non whatsapp users", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.not_exists({
+                            address: "+27123456789",
+                            wait: true
+                        })
+                    );
+                })
+                .setup.user.state("state_whatsapp_contact_check")
+                .setup.user.answer("state_mother_supporter_msisdn", "+27123456789")
+                .input({session_event: "continue"})
+                .check.interaction({
+                    state: "state_mother_supporter_no_WA",
+                    reply: [
+                        "A supporter's number needs to be registered on WA. " +
+                        "Would you like to enter another number?",
+                        "1. Yes",
+                        "2. No"
+                ].join("\n")
+                })
+                .run();
+        });
         it("should display an error if the mother uses the example msisdn", function() {
             return tester
                 .setup.user.state("state_mother_new_supporter_msisdn")
@@ -1575,6 +1610,56 @@ describe("ussd_mcgcc app", function() {
                 .setup.user.state("state_mother_new_supporter_whatsapp_contact_check")
                 .setup.user.answer("state_mother_new_supporter_msisdn", "+27123456789")
                 .check.user.answer("on_whatsapp", true)
+                .run();
+        });
+        it ("should show the SMS message for non whatsapp supporter msisdn", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.not_exists({
+                            address: "+27123456789",
+                            wait: true
+                        })
+                    );
+                })
+                .setup.user.state("state_mother_new_supporter_whatsapp_contact_check")
+                .setup.user.answer("state_mother_new_supporter_msisdn", "+27123456789")
+                .input({session_event: "continue"})
+                .check.interaction({
+                    state: "state_mother_new_supporter_no_WA",
+                    reply: [
+                        "The new supporter's number needs to be registered on WA. " +
+                        "Would you like to enter another number?",
+                        "1. Yes",
+                        "2. No"
+                ].join("\n")
+                })
+                .run();
+        });
+        it("should ask mother to confirm the name she entered", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27123456789",
+                            wait: true
+                        })
+                    );
+                })
+
+                .setup.user.state("state_new_supporter_mother_name")
+                .setup.user.answer("state_mother_new_supporter_msisdn", "+27123456789")
+                .setup.user.answer("on_whatsapp", true)
+                .input("Mary James")
+                .check.interaction({
+                    state: "state_new_supporter_mother_name_confirm",
+                    reply: [
+                        "Thank you! Let's make sure we got it right. " +
+                        "Is your name Mary James?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
                 .run();
         });
         it("should start a flow with the correct new supporter's metadata", function() {
