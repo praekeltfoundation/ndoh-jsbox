@@ -949,23 +949,65 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_supporter_new_msisdn_display"
+                next: "state_supporter_new_msisdn_whatsapp_contact_check"
             });
+        });
+
+        self.add("state_supporter_new_msisdn_whatsapp_contact_check", function(name, opts) {
+            var content = self.im.user.answers.state_supporter_new_msisdn;
+            var msisdn = utils.normalize_msisdn(content, "ZA");
+            return self.whatsapp
+                .contact_check(msisdn, true)
+                .then(function(result) {
+                    self.im.user.set_answer("on_whatsapp", result);
+                    return self.states.create("state_supporter_new_msisdn_display");
+                })
+                .catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if (opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {
+                            return_state: "state_whatsapp_contact_check"
+                        });
+                    }
+                    return self.states.create("state_whatsapp_contact_check", opts);
+                });
         });
         
         self.add("state_supporter_new_msisdn_display", function(name) {
+            if (!self.im.user.get_answer("on_whatsapp")) {
+                return self.states.create("state_supporter_new_msisdn_no_WA");
+            }
             var new_cell = self.im.user.answers.state_supporter_new_msisdn;
             return new MenuState(name, {
                 question: $("Thank you! Let's make sure we got it right." +
                     "\n\nIs your new number {{new_cell}}?").context({
                     new_cell: new_cell
                 }),
-                error: $("Please try again. Reply with the nr that matchs your answer, e.g. 1").context(),
+                error: $("Please try again. Reply with the nr that matches your answer, e.g. 1").context(),
                 accept_labels: true,
                 choices: [
                     new Choice("state_supporter_change_msisdn_rapidpro", $("Yes")),
                     new Choice("state_supporter_new_msisdn", $("No, I want to retype my number"))
                 ]
+            });
+        });
+
+        self.states.add("state_supporter_new_msisdn_no_WA", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "The new number is not registered on WA. " +
+                    "Would you like to enter another number?"),
+                error: $(
+                    "Sorry, please try again.  " +
+                    "Reply with the number, e.g. 1"
+                ),
+                accept_labels: true,
+                choices: [
+                    new Choice("state_supporter_new_msisdn", $("Yes")),
+                    new Choice("state_mother_supporter_noconsent_end", $("No")),
+                ],
             });
         });
         
@@ -1005,7 +1047,6 @@ go.app = function() {
             var supp_msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_supporter_new_msisdn"), "ZA"
               );
-            //var supp_msisdn = utils.normalize_msisdn(self.im.user.get_answer("state_supporter_new_msisdn"), "ZA");
             return new EndState(name, {
                 next: "state_start",
                 text: $(
