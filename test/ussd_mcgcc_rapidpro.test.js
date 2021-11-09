@@ -985,12 +985,11 @@ describe("ussd_mcgcc app", function() {
                 })
                 .run();
         });
-        it("should display an a confirmation screen if the supporter enters a valid msisdn", function() {
+        it("should display an a confirmation screen if the supporter enters a valid msisdn that is on Whatsapp", function() {
             return tester
                 .setup.user.state("state_supporter_new_msisdn_display")
-                .setup.user.answers({
-                    state_supporter_new_msisdn: "0123456722"
-                })
+                .setup.user.answer("state_supporter_new_msisdn", "0123456722")
+                .setup.user.answer("on_whatsapp", true)
                 .check.interaction({
                     reply: ["Thank you! Let's make sure we got it right." +
                     "\n\nIs your new number 0123456722?",
@@ -1000,12 +999,25 @@ describe("ussd_mcgcc app", function() {
                 })
                 .run();
         });
+        it("should display an error if new msisdn is not on Whatsapp", function() {
+            return tester
+                .setup.user.state("state_supporter_new_msisdn_display")
+                .setup.user.answer("state_supporter_new_msisdn", "0123456722")
+                .setup.user.answer("on_whatsapp", false)
+                .check.interaction({
+                    reply: ["The new number is not registered on WA. " +
+                    "Would you like to enter another number?",
+                    "1. Yes",
+                    "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
         it("should submit the new supporter msisdn", function() {
             return tester
                 .setup.user.state("state_supporter_new_msisdn_display")
-                .setup.user.answers({
-                    state_supporter_new_msisdn: "0123456722"
-                })
+                .setup.user.answer("state_supporter_new_msisdn", "0123456722")
+                .setup.user.answer("on_whatsapp", true)
                 .setup.user.answer("contact", {
                     fields: {
                         supp_uuid: "123-456",
