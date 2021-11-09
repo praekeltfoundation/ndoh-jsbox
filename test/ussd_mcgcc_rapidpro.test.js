@@ -1013,6 +1013,54 @@ describe("ussd_mcgcc app", function() {
                 })
                 .run();
         });
+        it ("should show the message for non whatsapp msisdn", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.not_exists({
+                            address: "+27123456789",
+                            wait: true
+                        })
+                    );
+                })
+                .setup.user.state("state_supporter_new_msisdn_whatsapp_contact_check")
+                .setup.user.answer("state_supporter_new_msisdn", "+27123456789")
+                .input({session_event: "continue"})
+                .check.interaction({
+                    state: "state_supporter_new_msisdn_no_WA",
+                    reply: [
+                        "The new number is not registered on WA. " +
+                        "Would you like to enter another number?",
+                        "1. Yes",
+                        "2. No"
+                ].join("\n")
+                })
+                .run();
+        });
+        it ("should show the msisdn confirm screen for msisdn that's on WA", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27123456789",
+                            wait: true
+                        })
+                    );
+                })
+                .setup.user.state("state_supporter_new_msisdn_whatsapp_contact_check")
+                .setup.user.answer("state_supporter_new_msisdn", "+27123456789")
+                .input({session_event: "continue"})
+                .check.interaction({
+                    state: "state_supporter_new_msisdn_display",
+                    reply: [
+                        "Thank you! Let's make sure we got it right.",
+                        "\nIs your new number +27123456789?",
+                        "1. Yes",
+                        "2. No, I want to retype my number"
+                ].join("\n")
+                })
+                .run();
+        });
         it("should submit the new supporter msisdn", function() {
             return tester
                 .setup.user.state("state_supporter_new_msisdn_display")
