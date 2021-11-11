@@ -39,7 +39,7 @@ go.app = function() {
 
             self.env = self.im.config.env;
             self.metric_prefix = [self.env, self.im.config.name].join('.');
-            
+
             self.im.on('state:enter', function(e) {
                 return self.im.metrics.fire.sum('enter.' + e.state.name, 1);
             });
@@ -47,9 +47,9 @@ go.app = function() {
             var mh = new MetricsHelper(self.im);
             mh
                 // Total sum of users for each state for app
-                // <env>.ussd_clinic_rapidpro.sum.unique_users last metric, 
+                // <env>.ussd_clinic_rapidpro.sum.unique_users last metric,
                 // and a <env>.ussd_clinic_rapidpro.sum.unique_users.transient sum metric
-                .add.total_unique_users([self.metric_prefix, 'sum', 'unique_users'].join('.')) 
+                .add.total_unique_users([self.metric_prefix, 'sum', 'unique_users'].join('.'))
             ;
         };
 
@@ -102,9 +102,12 @@ go.app = function() {
             self.im.user.answers = {};
             return new MenuState(name, {
                 question: $([
-                    "Welcome to the Department of Health's MomConnect. We only send WhatsApp msgs in English.",
+                    "Welcome to MomConnect.",
                     "",
-                    "Is {{msisdn}} the no. signing up?",
+                    "To get WhatsApp messages in English, please confirm:",
+                    "",
+                    "Is {{msisdn}} the number signing up?",
+
                     ].join("\n")).context({msisdn: utils.readable_msisdn(self.im.user.addr, "27")}),
                 error: $(
                     "Sorry we don't understand. Please enter the number next to the mother's " +
@@ -120,19 +123,21 @@ go.app = function() {
         self.add("state_enter_msisdn", function(name) {
             return new FreeText(name, {
                 question: $(
-                    "Please enter the cell number of the mother who would like to sign up to " +
-                    "receive messages from MomConnect, e.g. 0813547654."),
+                    "Please enter the cell number of the mom who wants to " +
+                    "get MomConnect messages, for example 0762564733"),
                 check: function(content) {
                     if(!utils.is_valid_msisdn(content, "ZA")) {
-                        return $(
-                            "Sorry, we don't understand that cell number. Please enter 10 digit " +
-                            "cell number that the mother would like to get MomConnect messages " +
-                            "on, e.g. 0813547654.");
+                        return $([
+                            "Sorry, we don't understand that cell number.",
+                            "",
+                            "Enter a 10 digit cell number that mom would like to get " +
+                            "MomConnect messages on. For example, 0813547654"
+                        ].join("\n"));
                     }
                     if(utils.normalize_msisdn(content, "ZA") === "+27813547654") {
                         return $(
-                            "We're looking for the mother's information. Please avoid entering " +
-                            "the examples in the messages. Enter the mother's details."
+                            "We need your personal information. Please don't enter the " +
+                            "information given in the examples. Enter your own details."
                         );
                     }
                 },
@@ -171,22 +176,65 @@ go.app = function() {
         self.add("state_active_subscription", function(name) {
             var msisdn = utils.readable_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "27");
-            var choices = [new Choice("state_enter_msisdn", $("Use a different number"))];
             var contact = self.im.user.answers.contact;
-            if(!self.contact_edd(contact) || self.contact_postbirth_dobs(contact).length < 3){
-                choices.push(new Choice("state_child_list", $("Add another child")));
+            var edd = self.contact_edd(contact);
+            var dobs = self.contact_postbirth_dobs(contact);
+            var context = {msisdn: msisdn};
+
+            var subscriptions = [];
+            if (edd) {
+                subscriptions.push("baby due on {{edd}}");
+                context.edd = edd.format("DD/MM/YYYY");
             }
-            choices.push(new Choice("state_exit", $("Exit")));
+
+            if (dobs.length > 0) {
+                if (dobs.length == 1) {
+                    subscriptions.push("baby born on {{dob}}");
+                    context.dob = dobs[0].format("DD/MM/YYYY");
+                } else {
+                    var babies = [];
+                    dobs.forEach(function(dob, i) {
+                        babies.push("{{dob" + i + "}}");
+                        context["dob" + i] = dob.format("DD/MM/YYYY");
+                    });
+
+                    subscriptions.push(
+                        "babies born on " +
+                        babies.slice(0,-1).join(", ") +
+                        " and " +
+                        babies.slice(-1)[0]
+                    );
+                }
+            }
 
             return new MenuState(name, {
                 question: $(
-                    "The cell number {{msisdn}} is already signed up to MomConnect. What would " +
-                    "you like to do?"
-                ).context({msisdn: msisdn}),
+                    "The number {{msisdn}} is already receiving messages from MomConnect for " +
+                    subscriptions.join(" and ")).context(context),
                 error: $(
                     "Sorry we don't understand. Please enter the number next to the mother's " +
                     "answer."
                 ),
+                choices: [new Choice("state_active_subscription_2", $("Next"))],
+            });
+        });
+
+        self.add("state_active_subscription_2", function(name) {
+            var choices = [];
+            var contact = self.im.user.answers.contact;
+            if(!self.contact_edd(contact)) {
+                choices.push(new Choice("state_edd_month", $("Register a new pregnancy")));
+            }
+            if(!self.contact_edd(contact) || self.contact_postbirth_dobs(contact).length < 3){
+                choices.push(new Choice("state_child_list", $("Register a baby age 0-2")));
+            }
+            choices.push(new Choice("state_enter_msisdn", $("Register a different cell number")));
+            choices.push(new Choice("state_exit", $("Exit")));
+            return new MenuState(name, {
+                question: $("What would you like to do?"),
+                error: $([
+                    "Sorry, we don't understand. Please enter the number.",
+                ].join("\n")),
                 choices: choices,
             });
         });
@@ -860,10 +908,13 @@ go.app = function() {
 
         self.states.add("state_not_on_whatsapp", function(name) {
             return new EndState(name, {
-                text: $(
-                    "Sorry, MomConnect is not available on SMS. We only send WhatsApp messages in English. " +
-                    "You can dial *134*550*2# again on a cell number that has WhatsApp."
-                ),
+                text: $([
+                    "Sorry, MomConnect can only send WhatsApp messages.",
+                    "",
+                    "You can dial *134*550*2# again to sign up a cell number that has WhatsApp.",
+                    "",
+                    "Have a lovely day!"
+                ].join("\n")),
                 next: "state_start"
             });
         });

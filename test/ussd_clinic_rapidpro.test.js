@@ -47,11 +47,13 @@ describe("ussd_clinic app", function() {
                 .check.interaction({
                     state: "state_start",
                     reply: [
-                        "Welcome to the Department of Health's MomConnect. We only send WhatsApp msgs in English.",
-                        "",
-                        "Is 0123456789 the no. signing up?",
-                        "1. Yes",
-                        "2. No"
+                    "Welcome to MomConnect.",
+                    "",
+                    "To get WhatsApp messages in English, please confirm:",
+                    "",
+                    "Is 0123456789 the number signing up?",
+                    "1. Yes",
+                    "2. No",
                     ].join("\n"),
                     char_limit: 140
                 })
@@ -117,7 +119,7 @@ describe("ussd_clinic app", function() {
                         "2. Start a new registration"
                     ].join("\n"),
                     char_limit: 140
-                })  
+                })
                 .run();
         });
         it("should go to the user's previous state if they want to continue", function() {
@@ -151,8 +153,8 @@ describe("ussd_clinic app", function() {
                 .check.interaction({
                     state: "state_enter_msisdn",
                     reply: (
-                        "Please enter the cell number of the mother who would like to sign up " +
-                        "to receive messages from MomConnect, e.g. 0813547654."
+                        "Please enter the cell number of the mom who wants to " +
+                        "get MomConnect messages, for example 0762564733"
                     )
                 })
                 .run();
@@ -163,11 +165,11 @@ describe("ussd_clinic app", function() {
                 .input("123abc")
                 .check.interaction({
                     state: "state_enter_msisdn",
-                    reply: (
-                        "Sorry, we don't understand that cell number. Please enter 10 digit cell " +
-                        "number that the mother would like to get MomConnect messages on, " +
-                        "e.g. 0813547654."
-                    )
+                    reply: [
+                        "Sorry, we don't understand that cell number.",
+                        "",
+                        "Enter a 10 digit cell number that mom would like to get MomConnect messages on. For example, 0813547654"
+                    ].join("\n")
                 })
                 .run();
         });
@@ -178,8 +180,8 @@ describe("ussd_clinic app", function() {
                 .check.interaction({
                     state: "state_enter_msisdn",
                     reply: (
-                        "We're looking for the mother's information. Please avoid entering the " +
-                        "examples in the messages. Enter the mother's details."
+                        "We need your personal information. Please don't enter the " +
+                        "information given in the examples. Enter your own details."
                     )
                 })
                 .run();
@@ -256,7 +258,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_get_contact")
                 .check.interaction({
                     state: "__error__",
-                    reply: 
+                    reply:
                         "Sorry, something went wrong. We have been notified. Please try again " +
                         "later"
                 })
@@ -273,16 +275,66 @@ describe("ussd_clinic app", function() {
         });
     });
     describe("state_active_subscription", function() {
-        it("should give the user options for what to do next", function() {
+        it("should display the correct message for edd only", function() {
             return tester
                 .setup.user.state("state_active_subscription")
+                .setup.user.answer("contact", {fields: {edd: "2014-09-10"}})
                 .check.interaction({
                     reply: [
-                        "The cell number 0123456789 is already signed up to MomConnect. " +
-                        "What would you like to do?",
-                        "1. Use a different number",
-                        "2. Add another child",
-                        "3. Exit"
+                        "The number 0123456789 is already receiving messages from " +
+                        "MomConnect for baby due on 10/09/2014",
+                        "1. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display the correct message for single dob", function() {
+            return tester
+                .setup.user.state("state_active_subscription")
+                .setup.user.answer("contact", {fields: {
+                    baby_dob1: "2012-04-10"
+                }})
+                .check.interaction({
+                    reply: [
+                        "The number 0123456789 is already receiving messages from " +
+                        "MomConnect for baby born on 10/04/2012",
+                        "1. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display the correct message for multiple dob", function() {
+            return tester
+                .setup.user.state("state_active_subscription")
+                .setup.user.answer("contact", {fields: {
+                    baby_dob1: "2012-04-10",
+                    baby_dob2: "2013-01-10",
+                    baby_dob3: "2013-10-10"
+                }})
+                .check.interaction({
+                    reply: [
+                        "The number 0123456789 is already receiving messages from " +
+                        "MomConnect for babies born on 10/04/2012, 10/01/2013 and 10/10/2013",
+                        "1. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display the correct message for edd and dob", function() {
+            return tester
+                .setup.user.state("state_active_subscription")
+                .setup.user.answer("contact", {fields: {
+                    edd: "2014-09-10",
+                    baby_dob1: "2012-04-10",
+                    baby_dob2: "2013-01-10",
+                    baby_dob3: "2013-10-10"
+                }})
+                .check.interaction({
+                    reply: [
+                        "The number 0123456789 is already receiving messages from " +
+                        "MomConnect for baby due on 10/09/2014 and babies born on " +
+                        "10/04/2012, 10/01/2013 and 10/10/2013",
+                        "1. Next"
                     ].join("\n")
                 })
                 .run();
@@ -291,13 +343,12 @@ describe("ussd_clinic app", function() {
             return tester
                 .setup.user.state("state_active_subscription")
                 .setup.user.answer("state_enter_msisdn", "0820001001")
+                .setup.user.answer("contact", {fields: {edd: "2014-09-10"}})
                 .check.interaction({
                     reply: [
-                        "The cell number 0820001001 is already signed up to MomConnect. " +
-                        "What would you like to do?",
-                        "1. Use a different number",
-                        "2. Add another child",
-                        "3. Exit"
+                        "The number 0820001001 is already receiving messages from " +
+                        "MomConnect for baby due on 10/09/2014",
+                        "1. Next"
                     ].join("\n")
                 })
                 .run();
@@ -305,23 +356,62 @@ describe("ussd_clinic app", function() {
         it("should display an error to the user on invalid input", function() {
             return tester
                 .setup.user.state("state_active_subscription")
+                .setup.user.answer("contact", {fields: {edd: "2014-09-10"}})
                 .input("a")
                 .check.interaction({
                     state: "state_active_subscription",
                     reply: [
                         "Sorry we don't understand. Please enter the number next to the " +
                         "mother's answer.",
-                        "1. Use a different number",
-                        "2. Add another child",
-                        "3. Exit"
+                        "1. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_active_subscription_2", function() {
+            return tester
+                .setup.user.state("state_active_subscription")
+                .setup.user.answer("contact", {fields: {edd: "2014-09-10"}})
+                .input("1")
+                .check.interaction({state: "state_active_subscription_2"})
+                .run();
+        });
+    });
+    describe("state_active_subscription_2", function() {
+        it("should give the user options for what to do next", function() {
+            return tester
+                .setup.user.state("state_active_subscription_2")
+                .check.interaction({
+                    reply: [
+                        "What would you like to do?",
+                        "1. Register a new pregnancy",
+                        "2. Register a baby age 0-2",
+                        "3. Register a different cell number",
+                        "4. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error to the user on invalid input", function() {
+            return tester
+                .setup.user.state("state_active_subscription_2")
+                .input("a")
+                .check.interaction({
+                    state: "state_active_subscription_2",
+                    reply: [
+                        "Sorry, we don't understand. Please enter the number.",
+                        "1. Register a new pregnancy",
+                        "2. Register a baby age 0-2",
+                        "3. Register a different cell number",
+                        "4. Exit"
                     ].join("\n")
                 })
                 .run();
         });
         it("should go to state_enter_msisdn if that option is chosen", function() {
             return tester
-                .setup.user.state("state_active_subscription")
-                .input("1")
+                .setup.user.state("state_active_subscription_2")
+                .input("3")
                 .check.user.state("state_enter_msisdn")
                 .check(function(api) {
                     var metrics = api.metrics.stores.test_metric_store;
@@ -331,12 +421,12 @@ describe("ussd_clinic app", function() {
         });
         it("should go to state_exit if that option is chosen", function() {
             return tester
-                .setup.user.state("state_active_subscription")
-                .input("3")
+                .setup.user.state("state_active_subscription_2")
+                .input("4")
                 .check.user.state("state_exit")
                 .check.interaction({
                     state: "state_exit",
-                    reply: 
+                    reply:
                         "Thank you for using MomConnect. Dial *134*550*2# at any time to " +
                         "sign up. Have a lovely day!"
                 })
@@ -349,7 +439,7 @@ describe("ussd_clinic app", function() {
         });
         it("should not display the choice for adding a child if not allowed", function(){
             return tester
-                .setup.user.state("state_active_subscription")
+                .setup.user.state("state_active_subscription_2")
                 .setup.user.answer("contact", {fields: {
                     edd: "2014-09-10",
                     baby_dob1: "2012-04-10",
@@ -358,9 +448,8 @@ describe("ussd_clinic app", function() {
                 }})
                 .check.interaction({
                     reply: [
-                        "The cell number 0123456789 is already signed up to MomConnect. " +
                         "What would you like to do?",
-                        "1. Use a different number",
+                        "1. Register a different cell number",
                         "2. Exit"
                     ].join("\n")
                 })
@@ -470,7 +559,7 @@ describe("ussd_clinic app", function() {
                 .input("2")
                 .check.interaction({
                     state: "state_no_nurse",
-                    reply: 
+                    reply:
                         "The mother can only register for the full set of MomConnect messages " +
                         "with a nurse at a clinic. Dial *134*550*2# at a clinic to sign up. " +
                         "Have a lovely day!"
@@ -595,7 +684,7 @@ describe("ussd_clinic app", function() {
                 .input("2")
                 .check.interaction({
                     state: "state_no_consent",
-                    reply: 
+                    reply:
                         "Thank you for considering MomConnect. We respect the mom's decision. " +
                         "Have a lovely day."
                 })
@@ -648,7 +737,7 @@ describe("ussd_clinic app", function() {
             return tester
                 .setup.user.state("state_clinic_code")
                 .check.interaction({
-                    reply: 
+                    reply:
                         "Please enter the 6 digit clinic code for the facility where the mother " +
                         "is being registered, e.g. 535970."
                 })
@@ -664,7 +753,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_clinic_code")
                 .input("111111")
                 .check.interaction({
-                    reply: 
+                    reply:
                         "Sorry, the clinic number did not validate. Please reenter the clinic " +
                         "number.",
                     state: "state_clinic_code"
@@ -982,7 +1071,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_too_old")
                 .input("2")
                 .check.interaction({
-                    reply: 
+                    reply:
                         "Unfortunately MomConnect doesn't send messages to children older than " +
                         "2 years.",
                     state: "state_too_old_end"
@@ -1198,7 +1287,7 @@ describe("ussd_clinic app", function() {
             return tester
                 .setup.user.state("state_sa_id_no")
                 .check.interaction({
-                    reply: 
+                    reply:
                         "Please reply with the mother's ID number as she finds it in her " +
                         "Identity Document."
                 })
@@ -1271,7 +1360,7 @@ describe("ussd_clinic app", function() {
             return tester
                 .setup.user.state("state_passport_no")
                 .check.interaction({
-                    reply: 
+                    reply:
                         "Please enter the mother's Passport number as it appears in her passport."
                 })
                 .run();
@@ -1281,7 +1370,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_passport_no")
                 .input("$")
                 .check.interaction({
-                    reply: 
+                    reply:
                         "Sorry, we don't understand. Please try again by entering the mother's " +
                         "Passport number as it appears in her passport."
                 })
@@ -1304,7 +1393,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_dob_year")
                 .input("22")
                 .check.interaction({
-                    reply: 
+                    reply:
                         "Sorry, we don't understand. Please try again by entering the year the " +
                         "mother was born as 4 digits in the format YYYY, e.g. 1910."
                 })
@@ -1445,7 +1534,7 @@ describe("ussd_clinic app", function() {
                 })
                 .check.interaction({
                     state: "state_registration_complete",
-                    reply: 
+                    reply:
                         "You're done! This number 0820001001 will get helpful messages from " +
                         "MomConnect on WhatsApp. Thanks for signing up to MomConnect!"
                 })
@@ -1501,12 +1590,12 @@ describe("ussd_clinic app", function() {
                 })
                 .check.interaction({
                     state: "state_registration_complete",
-                    reply: 
+                    reply:
                         "You're done! This number 0820001001 will get helpful messages from " +
                         "MomConnect on WhatsApp. Thanks for signing up to MomConnect!"
                 })
                 .check.reply.ends_session()
-                .check(function(api) {  
+                .check(function(api) {
                     assert.equal(api.http.requests.length, 2);
                     var urls = _.map(api.http.requests, "url");
                     assert.deepEqual(urls, [
@@ -1531,7 +1620,7 @@ describe("ussd_clinic app", function() {
                 })
                 .check.interaction({
                     state: "__error__",
-                    reply: 
+                    reply:
                         "Sorry, something went wrong. We have been notified. Please try again " +
                         "later"
                 })
@@ -1586,7 +1675,7 @@ describe("ussd_clinic app", function() {
                 })
                 .check.interaction({
                     state: "__error__",
-                    reply: 
+                    reply:
                         "Sorry, something went wrong. We have been notified. Please try again " +
                         "later"
                 })
@@ -1685,7 +1774,7 @@ describe("ussd_clinic app", function() {
                         "3. Back",
                         "4. Previous"
                     ].join("\n")
-                })  
+                })
                 .run();
         });
     });
