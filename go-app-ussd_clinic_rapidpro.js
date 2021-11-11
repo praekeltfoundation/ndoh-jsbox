@@ -832,11 +832,16 @@ go.app = function() {
 
         self.add("state_id_type", function(name) {
             return new MenuState(name, {
-                question: $("What type of identification does the mother have?"),
-                error: $(
-                    "Sorry we don't understand. Please enter the number next to the mother's " +
-                    "answer."
-                ),
+                question: $([
+                    "What type of identification do you have?",
+                    "",
+                    "Reply with a number."
+                ].join("\n")),
+                error: $([
+                    "Sorry, we don’t understand. Please try again.",
+                    "",
+                    "Enter the number that matches your answer."
+                ].join("\n")),
                 choices: [
                     new Choice("state_sa_id_no", $("SA ID")),
                     new Choice("state_passport_country", $("Passport")),
@@ -848,8 +853,8 @@ go.app = function() {
         self.add("state_sa_id_no", function(name) {
             return new FreeText(name, {
                 question: $(
-                    "Please reply with the mother's ID number as she finds it in her Identity " +
-                    "Document."
+                    "Please enter your ID number as it is in your Identity Document " +
+                    "(no spaces between numbers)"
                 ),
                 check: function(content) {
                     var match = content.match(/^(\d{6})(\d{4})(0|1)8\d$/);
@@ -870,10 +875,11 @@ go.app = function() {
                         ) ||
                         _.parseInt(match[2]) >= 5000
                     ) {
-                        return $(
-                            "Sorry, we don't understand. Please try again by entering the " +
-                            "mother's 13 digit South African ID number."
-                        );
+                        return $([
+                            "Sorry, we don’t understand. Please try again.",
+                            "",
+                            "Enter your 13 digit South African ID number. For example, 8910121231234"
+                        ].join("\n"));
                     }
 
                 },
@@ -883,14 +889,16 @@ go.app = function() {
 
         self.add("state_passport_country", function(name) {
             return new ChoiceState(name, {
-                question: $(
-                    "What is her passport's country of origin? Enter the number matching her " +
-                    "answer e.g. 1."
-                ),
-                error: $(
-                    "Sorry we don't understand. Please enter the number next to the mother's " +
-                    "answer."
-                ),
+                question: $([
+                    "What country issued your passport?",
+                    "",
+                    "Reply with a number."
+                ].join("\n")),
+                error: $([
+                    "Sorry, we don’t understand. Please try again.",
+                    "",
+                    "Reply with a number."
+                ].join("\n")),
                 choices: [
                     new Choice("zw", $("Zimbabwe")),
                     new Choice("mz", $("Mozambique")),
@@ -907,14 +915,16 @@ go.app = function() {
         self.add("state_passport_no", function(name) {
             return new FreeText(name, {
                 question: $(
-                    "Please enter the mother's Passport number as it appears in her passport."
+                    "Please enter your Passport number as it in your passport " +
+                    "(no spaces between numbers)"
                 ),
                 check: function(content) {
                     if(!content.match(/^\w+$/)){
-                        return $(
-                            "Sorry, we don't understand. Please try again by entering the " +
-                            "mother's Passport number as it appears in her passport."
-                        );
+                        return $([
+                            "Sorry, we don’t understand. Please try again.",
+                            "",
+                            "Enter your Passport number as it appears in your passport."
+                        ].join("\n"));
                     }
                 },
                 next: "state_whatsapp_contact_check"

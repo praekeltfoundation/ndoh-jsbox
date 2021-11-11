@@ -1214,7 +1214,9 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_id_type")
                 .check.interaction({
                     reply: [
-                        "What type of identification does the mother have?",
+                        "What type of identification do you have?",
+                        "",
+                        "Reply with a number.",
                         "1. SA ID",
                         "2. Passport",
                         "3. None"
@@ -1228,8 +1230,9 @@ describe("ussd_clinic app", function() {
                 .input("a")
                 .check.interaction({
                     reply: [
-                        "Sorry we don't understand. Please enter the number next to the mother's " +
-                        "answer.",
+                        "Sorry, we don’t understand. Please try again.",
+                        "",
+                        "Enter the number that matches your answer.",
                         "1. SA ID",
                         "2. Passport",
                         "3. None"
@@ -1277,8 +1280,8 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_sa_id_no")
                 .check.interaction({
                     reply:
-                        "Please reply with the mother's ID number as she finds it in her " +
-                        "Identity Document."
+                        "Please enter your ID number as it is in your Identity Document " +
+                        "(no spaces between numbers)"
                 })
                 .run();
         });
@@ -1287,9 +1290,11 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_sa_id_no")
                 .input("9001020005081")
                 .check.interaction({
-                    reply:
-                        "Sorry, we don't understand. Please try again by entering the mother's " +
-                        "13 digit South African ID number."
+                    reply: [
+                        "Sorry, we don’t understand. Please try again.",
+                        "",
+                        "Enter your 13 digit South African ID number. For example, 8910121231234"
+                    ].join("\n")
                 })
                 .run();
         });
@@ -1300,8 +1305,9 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_passport_country")
                 .check.interaction({
                     reply: [
-                        "What is her passport's country of origin? Enter the number matching her " +
-                        "answer e.g. 1.",
+                        "What country issued your passport?",
+                        "",
+                        "Reply with a number.",
                         "1. Zimbabwe",
                         "2. Mozambique",
                         "3. Malawi",
@@ -1319,8 +1325,9 @@ describe("ussd_clinic app", function() {
                 .input("A")
                 .check.interaction({
                     reply: [
-                        "Sorry we don't understand. Please enter the number next to the mother's " +
-                        "answer.",
+                        "Sorry, we don’t understand. Please try again.",
+                        "",
+                        "Reply with a number.",
                         "1. Zimbabwe",
                         "2. Mozambique",
                         "3. Malawi",
@@ -1350,7 +1357,8 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_passport_no")
                 .check.interaction({
                     reply:
-                        "Please enter the mother's Passport number as it appears in her passport."
+                        "Please enter your Passport number as it in your passport " +
+                        "(no spaces between numbers)"
                 })
                 .run();
         });
@@ -1359,9 +1367,11 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_passport_no")
                 .input("$")
                 .check.interaction({
-                    reply:
-                        "Sorry, we don't understand. Please try again by entering the mother's " +
-                        "Passport number as it appears in her passport."
+                    reply: [
+                        "Sorry, we don’t understand. Please try again.",
+                        "",
+                        "Enter your Passport number as it appears in your passport."
+                    ].join("\n")
                 })
                 .run();
         });
