@@ -176,18 +176,12 @@ go.app = function() {
         self.add("state_active_subscription", function(name) {
             var msisdn = utils.readable_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "27");
-            // var choices = [new Choice("state_enter_msisdn", $("Use a different number"))];
             var contact = self.im.user.answers.contact;
-            // if(!self.contact_edd(contact) || self.contact_postbirth_dobs(contact).length < 3){
-            //     choices.push(new Choice("state_child_list", $("Add another child")));
-            // }
-            // choices.push(new Choice("state_exit", $("Exit")));
-
             var edd = self.contact_edd(contact);
             var dobs = self.contact_postbirth_dobs(contact);
+            var context = {msisdn: msisdn};
 
             var subscriptions = [];
-            var context = {msisdn: msisdn};
             if (edd) {
                 subscriptions.push("baby due on {{edd}}");
                 context.edd = edd.format("DD/MM/YYYY");
