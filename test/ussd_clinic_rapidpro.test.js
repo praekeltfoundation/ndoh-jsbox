@@ -408,6 +408,20 @@ describe("ussd_clinic app", function() {
                 })
                 .run();
         });
+        it("should go to state_edd_month id new pregnancy is selected", function() {
+            return tester
+                .setup.user.state("state_active_subscription_2")
+                .input("1")
+                .check.user.state("state_edd_month")
+                .run();
+        });
+        it("should go to state_birth_year id new baby is selected", function() {
+            return tester
+                .setup.user.state("state_active_subscription_2")
+                .input("2")
+                .check.user.state("state_birth_year")
+                .run();
+        });
         it("should go to state_enter_msisdn if that option is chosen", function() {
             return tester
                 .setup.user.state("state_active_subscription_2")
@@ -862,18 +876,21 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_edd_month")
                 .check.interaction({
                     reply: [
-                        "What month is the baby due? Please enter the number that matches your " +
-                        "answer, e.g. 1.",
-                        "1. Apr",
-                        "2. May",
-                        "3. Jun",
-                        "4. Jul",
-                        "5. Aug",
-                        "6. Sep",
-                        "7. Oct",
-                        "8. Nov",
-                        "9. Dec",
-                        "10. Jan"
+                        "What month is baby due?",
+                        "",
+                        "Reply with a number.",
+                        "1. Jan",
+                        "2. Feb",
+                        "3. Mar",
+                        "4. Apr",
+                        "5. May",
+                        "6. Jun",
+                        "7. Jul",
+                        "8. Aug",
+                        "9. Sep",
+                        "10. Oct",
+                        "11. Nov",
+                        "12. Dec"
                     ].join("\n")
                 })
                 .run();
@@ -884,18 +901,21 @@ describe("ussd_clinic app", function() {
                 .input("A")
                 .check.interaction({
                     reply: [
-                        "Sorry we don't understand. Please enter the number next to the mother's " +
-                        "answer.",
-                        "1. Apr",
-                        "2. May",
-                        "3. Jun",
-                        "4. Jul",
-                        "5. Aug",
-                        "6. Sep",
-                        "7. Oct",
-                        "8. Nov",
-                        "9. Dec",
-                        "10. Jan"
+                        "Sorry, we don’t understand.",
+                        "",
+                        "Reply with a number.",
+                        "1. Jan",
+                        "2. Feb",
+                        "3. Mar",
+                        "4. Apr",
+                        "5. May",
+                        "6. Jun",
+                        "7. Jul",
+                        "8. Aug",
+                        "9. Sep",
+                        "10. Oct",
+                        "11. Nov",
+                        "12. Dec"
                     ].join("\n")
                 })
                 .run();
@@ -911,15 +931,28 @@ describe("ussd_clinic app", function() {
                 })
                 .run();
         });
+        it("should go to state_edd_day text answer", function() {
+            return tester
+                .setup.user.state("state_edd_month")
+                .input("Jan")
+                .check.user.state("state_edd_day")
+                .check(function(api) {
+                    var metrics = api.metrics.stores.test_metric_store;
+                    assert.deepEqual(metrics['enter.state_edd_day'], {agg: 'sum', values: [1]});
+                })
+                .run();
+        });
     });
     describe("state_edd_day", function() {
         it("should ask the user for the day of edd", function() {
             return tester
                 .setup.user.state("state_edd_day")
                 .check.interaction({
-                    reply:
-                        "What is the estimated day that the baby is due? Please enter the day as " +
-                        "a number, e.g. 12."
+                    reply: [
+                        "What is the estimated day that the baby is due?",
+                        "",
+                        "Reply with the day as a number, for example 12"
+                    ].join("\n")
                 })
                 .run();
         });
@@ -929,9 +962,11 @@ describe("ussd_clinic app", function() {
                 .setup.user.answer("state_edd_month", "2014-04")
                 .input("99")
                 .check.interaction({
-                    reply:
-                        "Sorry, we don't understand. Please try again by entering the day the " +
-                        "baby was born as a number, e.g. 12."
+                    reply:[
+                        "Sorry, we don’t understand. Please try again.",
+                        "",
+                        "Enter the day that baby was born as a number. For example if baby was born on 12th May, type in 12"
+                    ].join("\n")
                 })
                 .run();
         });
@@ -941,9 +976,11 @@ describe("ussd_clinic app", function() {
                 .setup.user.answer("state_edd_month", "2014-04")
                 .input("4")
                 .check.interaction({
-                    reply:
-                        "Sorry, we don't understand. Please try again by entering the day the " +
-                        "baby was born as a number, e.g. 12."
+                    reply:[
+                        "Sorry, we don’t understand. Please try again.",
+                        "",
+                        "Enter the day that baby was born as a number. For example if baby was born on 12th May, type in 12"
+                    ].join("\n")
                 })
                 .run();
         });
@@ -953,9 +990,11 @@ describe("ussd_clinic app", function() {
                 .setup.user.answer("state_edd_month", "2015-01")
                 .input("30")
                 .check.interaction({
-                    reply:
-                        "Sorry, we don't understand. Please try again by entering the day the " +
-                        "baby was born as a number, e.g. 12."
+                    reply:[
+                        "Sorry, we don’t understand. Please try again.",
+                        "",
+                        "Enter the day that baby was born as a number. For example if baby was born on 12th May, type in 12"
+                    ].join("\n")
                 })
                 .run();
         });
@@ -978,8 +1017,9 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_birth_year")
                 .check.interaction({
                     reply: [
-                        "What year was the baby born? Please enter the number that matches your " +
-                        "answer, e.g. 1.",
+                        "What year was the baby born?",
+                        "",
+                        "Please enter the number that matches your answer, for example 3.",
                         "1. 2014",
                         "2. 2013",
                         "3. 2012",
@@ -1164,7 +1204,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.answer("state_birth_month", "2013-04")
                 .check.interaction({
                     reply:
-                        "On what day was the baby born? Please enter the day as a number, e.g. 12."
+                        "On what day was baby born? Please enter the day as a number, for example 12"
                 })
                 .run();
         });
@@ -1174,9 +1214,11 @@ describe("ussd_clinic app", function() {
                 .setup.user.answer("state_birth_month", "2013-04")
                 .input("99")
                 .check.interaction({
-                    reply:
-                        "Sorry, we don't understand. Please try again by entering the day the " +
-                        "baby was born as a number, e.g. 12."
+                    reply:[
+                        "Sorry, we don’t understand. Please try again.",
+                        "",
+                        "Enter the day that baby was born as a number. For example if baby was born on 12th May, type in 12"
+                    ].join("\n")
                 })
                 .run();
         });
@@ -1689,61 +1731,6 @@ describe("ussd_clinic app", function() {
                     assert.equal(api.log.error.length, 1);
                     assert(api.log.error[0].includes("HttpResponseError"));
                 })
-                .run();
-        });
-    });
-    describe("state_child_list", function() {
-        it("should ask the user if they want to add a child", function() {
-            return tester
-                .setup.user.state("state_child_list")
-                .setup.user.answer("contact", {fields: {
-                    edd: "2014-09-10",
-                    baby_dob1: "2012-04-10",
-                    baby_dob2: "2013-01-10",
-                    baby_dob3: "2013-10-10"
-                }})
-                .check.interaction({
-                    reply: [
-                        "The mother is receiving messages for baby born on 12-04-10 and baby " +
-                        "born on 13-01-10 and baby born on 13-10-10 and baby born on 14-09-10.",
-                        "1. Continue"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("continue should go to state_add_child", function() {
-            return tester
-                .setup.user.state("state_child_list")
-                .input("1")
-                .check.user.state("state_add_child")
-                .run();
-        });
-    });
-    describe("state_add_child", function() {
-        it("should ask if they want to add a child or not", function() {
-            return tester
-                .setup.user.state("state_add_child")
-                .check.interaction({
-                    reply: [
-                        "Does she want to get messages for another pregnancy or baby?",
-                        "1. Yes",
-                        "2. No"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("continue should go to state_clinic_code if yes is chosen", function() {
-            return tester
-                .setup.user.state("state_add_child")
-                .input("1")
-                .check.user.state("state_clinic_code")
-                .run();
-        });
-        it("continue should go back to state_active_subscription if no is chosen", function() {
-            return tester
-                .setup.user.state("state_add_child")
-                .input("2")
-                .check.user.state("state_active_subscription")
                 .run();
         });
     });

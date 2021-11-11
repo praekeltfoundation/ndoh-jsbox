@@ -464,7 +464,7 @@ go.app = function() {
                 choices.push(new Choice("state_edd_month", $("Register a new pregnancy")));
             }
             if(!self.contact_edd(contact) || self.contact_postbirth_dobs(contact).length < 3){
-                choices.push(new Choice("state_child_list", $("Register a baby age 0-2")));
+                choices.push(new Choice("state_birth_year", $("Register a baby age 0-2")));
             }
             choices.push(new Choice("state_enter_msisdn", $("Register a different cell number")));
             choices.push(new Choice("state_exit", $("Exit")));
@@ -474,44 +474,6 @@ go.app = function() {
                     "Sorry, we don't understand. Please enter the number.",
                 ].join("\n")),
                 choices: choices,
-            });
-        });
-
-        self.add("state_child_list", function(name) {
-            var contact = self.im.user.answers.contact, dates = [];
-            _.forEach(self.contact_postbirth_dobs(contact), function(d) {
-                dates.push(d.format("YY-MM-DD"));
-            });
-            var edd = self.contact_edd(contact);
-            if(edd) {
-                dates.push(edd.format("YY-MM-DD"));
-            }
-
-            return new MenuState(name, {
-                question: $(
-                    "The mother is receiving messages for baby born on {{ dates }}." //+
-                ).context({dates: dates.join(" and baby born on ")}),
-                error: $(
-                    "Sorry we don't understand. Please enter the number next to the mother's " +
-                    "answer."
-                ),
-                choices: [
-                    new Choice("state_add_child", $("Continue"))
-                ]
-            });
-        });
-
-        self.add("state_add_child", function(name) {
-            return new MenuState(name, {
-                question: $("Does she want to get messages for another pregnancy or baby?"),
-                error: $(
-                    "Sorry we don't understand. Please enter the number next to the mother's " +
-                    "answer."
-                ),
-                choices: [
-                    new Choice("state_clinic_code", $("Yes")),
-                    new Choice("state_active_subscription", $("No"))
-                ]
             });
         });
 
@@ -715,36 +677,45 @@ go.app = function() {
 
         self.add("state_edd_month", function(name) {
             var today = new moment(self.im.config.testing_today).startOf("day");
-            // Must be after today, but before 43 weeks in the future
             var start_date = today.clone().add(1, "days");
-            var end_date = today.clone().add(43, "weeks").add(-1, "days");
+            var end_date = today.clone().add(52, "weeks").add(-1, "days");
+
+            var dates = _.map(_.range(end_date.diff(start_date, "months") + 1), function(i) {
+                return start_date.clone().add(i, "months");
+            });
+            var sortedDates = _.sortBy(dates, function(d){return d.format("MM");});
+            var choices = _.map(sortedDates, function(date) {
+                return new Choice(date.format("YYYYMM"), $(date.format("MMM")));
+            });
+
             return new PaginatedChoiceState(name, {
-                question: $(
-                    "What month is the baby due? Please enter the number that matches your " +
-                    "answer, e.g. 1."
-                ),
-                error: $(
-                    "Sorry we don't understand. Please enter the number next to the mother's " +
-                    "answer."
-                ),
-                choices: _.map(_.range(end_date.diff(start_date, "months") + 1), function(i) {
-                    var d = start_date.clone().add(i, "months");
-                    return new Choice(d.format("YYYYMM"), $(d.format("MMM")));
-                }),
+                question: $([
+                    "What month is baby due?",
+                    "",
+                    "Reply with a number."
+                ].join("\n")),
+                error: $([
+                    "Sorry, we don’t understand.",
+                    "",
+                    "Reply with a number."
+                ].join("\n")),
+                choices: choices,
                 back: $("Back"),
                 more: $("Next"),
                 options_per_page: null,
                 characters_per_page: 160,
-                next: "state_edd_day"
+                next: "state_edd_day",
+                accept_labels: true
             });
         });
 
         self.add("state_edd_day", function(name){
             return new FreeText(name, {
-                question: $(
-                    "What is the estimated day that the baby is due? Please enter the day as a " +
-                    "number, e.g. 12."
-                ),
+                question: $([
+                    "What is the estimated day that the baby is due?",
+                    "",
+                    "Reply with the day as a number, for example 12"
+                ].join("\n")),
                 check: function(content) {
                     var date = new moment(
                         self.im.user.answers.state_edd_month + content,
@@ -755,10 +726,11 @@ go.app = function() {
                         !date.isValid() ||
                         !date.isBetween(current_date, current_date.clone().add(43, "weeks"))
                       ) {
-                        return $(
-                            "Sorry, we don't understand. Please try again by entering the day " +
-                            "the baby was born as a number, e.g. 12."
-                        );
+                        return $([
+                            "Sorry, we don’t understand. Please try again.",
+                            "",
+                            "Enter the day that baby was born as a number. For example if baby was born on 12th May, type in 12"
+                        ].join("\n"));
                     }
                 },
                 next: "state_id_type"
@@ -777,10 +749,11 @@ go.app = function() {
             );
             choices.push(new Choice("older", $("Older")));
             return new ChoiceState(name, {
-                question: $(
-                    "What year was the baby born? Please enter the number that matches your " +
-                    "answer, e.g. 1."
-                ),
+                question: $([
+                    "What year was the baby born?",
+                    "",
+                    "Please enter the number that matches your answer, for example 3."
+                ].join("\n")),
                 error: $(
                     "Sorry we don't understand. Please enter the number next to the mother's " +
                     "answer."
@@ -851,7 +824,7 @@ go.app = function() {
         self.add("state_birth_day", function(name) {
             return new FreeText(name, {
                 question: $(
-                    "On what day was the baby born? Please enter the day as a number, e.g. 12."
+                    "On what day was baby born? Please enter the day as a number, for example 12"
                 ),
                 check: function(content) {
                     var date = new moment(
@@ -860,10 +833,11 @@ go.app = function() {
                     );
                     var current_date = new moment(self.im.config.testing_today).startOf("day");
                     if(!date.isValid()) {
-                        return $(
-                            "Sorry, we don't understand. Please try again by entering the day " +
-                            "the baby was born as a number, e.g. 12."
-                        );
+                        return $([
+                            "Sorry, we don’t understand. Please try again.",
+                            "",
+                            "Enter the day that baby was born as a number. For example if baby was born on 12th May, type in 12"
+                        ].join("\n"));
                     }
                     if(!date.isBetween(current_date.clone().add(-2, "years"), current_date)) {
                         return $(
