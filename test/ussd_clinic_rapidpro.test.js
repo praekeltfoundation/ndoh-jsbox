@@ -227,7 +227,7 @@ describe("ussd_clinic app", function() {
                 })
                 .run();
         });
-        it("should go to state_with_nurse if the user isn't opted out or subscribed", function() {
+        it("should go to state_clinic_code if the user isn't opted out or subscribed", function() {
             return tester
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -238,10 +238,10 @@ describe("ussd_clinic app", function() {
                     );
                 })
                 .setup.user.state("state_get_contact")
-                .check.user.state("state_with_nurse")
+                .check.user.state("state_clinic_code")
                 .check(function(api) {
                     var metrics = api.metrics.stores.test_metric_store;
-                    assert.deepEqual(metrics['enter.state_with_nurse'], {agg: 'sum', values: [1]});
+                    assert.deepEqual(metrics['enter.state_clinic_code'], {agg: 'sum', values: [1]});
                 })
                 .run();
         });
@@ -476,8 +476,8 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_opted_out")
                 .check.interaction({
                     reply: [
-                        "This number previously asked us to stop sending MomConnect messages. " +
-                        "Is the mother sure she wants to get messages from us again?",
+                        "This number previously asked MomConnect to stop sending messages. " +
+                        "Are you sure that you want to get messages from MomConnect again?",
                         "1. Yes",
                         "2. No"
                     ].join("\n")
@@ -490,22 +490,23 @@ describe("ussd_clinic app", function() {
                 .input("a")
                 .check.interaction({
                     reply: [
-                        "Sorry we don't understand. Please enter the number next to the mother's " +
-                        "answer.",
+                        "Sorry, we don’t understand. Please try again.",
+                        "",
+                        "Enter the number that matches your answer.",
                         "1. Yes",
                         "2. No"
                     ].join("\n")
                 })
                 .run();
         });
-        it("should go to state_with_nurse if the mother opts in", function() {
+        it("should go to state_clinic_code if the mother opts in", function() {
             return tester
                 .setup.user.state("state_opted_out")
                 .input("1")
-                .check.user.state("state_with_nurse")
+                .check.user.state("state_clinic_code")
                 .check(function(api) {
                     var metrics = api.metrics.stores.test_metric_store;
-                    assert.deepEqual(metrics['enter.state_with_nurse'], {agg: 'sum', values: [1]});
+                    assert.deepEqual(metrics['enter.state_clinic_code'], {agg: 'sum', values: [1]});
                 })
                 .run();
         });
@@ -516,72 +517,13 @@ describe("ussd_clinic app", function() {
                 .check.interaction({
                     state: "state_no_opt_in",
                     reply:
-                        "This number has chosen not to receive MomConnect messages. If she " +
-                        "changes her mind, she can dial *134*550*2# to register any time. Have a " +
-                        "lovely day!"
+                        "Thank you for using MomConnect. Dial *134*550*2# at any " +
+                        "time to sign up. Have a lovely day!"
                 })
                 .check.reply.ends_session()
                 .check(function(api) {
                     var metrics = api.metrics.stores.test_metric_store;
                     assert.deepEqual(metrics['enter.state_no_opt_in'], {agg: 'sum', values: [1]});
-                })
-                .run();
-        });
-    });
-    describe("state_with_nurse", function() {
-        it("should ask the user if the nurse is with the mother", function(){
-            return tester
-                .setup.user.state("state_with_nurse")
-                .check.interaction({
-                    reply: [
-                        "Is the mother signing up at a clinic with a nurse? A nurse has to " +
-                        "help her sign up for the full set of MomConnect messages.",
-                        "1. Yes",
-                        "2. No"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should handling invalid inputs", function(){
-            return tester
-                .setup.user.state("state_with_nurse")
-                .input("a")
-                .check.interaction({
-                    reply: [
-                        "Sorry we don't understand. Please enter the number next to the " +
-                        "mother's answer.",
-                        "1. Yes",
-                        "2. No"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should go to state_info_consent if the user is with a nurse", function() {
-            return tester
-                .setup.user.state("state_with_nurse")
-                .input("1")
-                .check.user.state("state_info_consent")
-                .check(function(api) {
-                    var metrics = api.metrics.stores.test_metric_store;
-                    assert.deepEqual(metrics['enter.state_info_consent'], {agg: 'sum', values: [1]});
-                })
-                .run();
-        });
-        it("should go to state_no_nurse if the user isn't with a nurse", function() {
-            return tester
-                .setup.user.state("state_with_nurse")
-                .input("2")
-                .check.interaction({
-                    state: "state_no_nurse",
-                    reply:
-                        "The mother can only register for the full set of MomConnect messages " +
-                        "with a nurse at a clinic. Dial *134*550*2# at a clinic to sign up. " +
-                        "Have a lovely day!"
-                })
-                .check.reply.ends_session()
-                .check(function(api) {
-                    var metrics = api.metrics.stores.test_metric_store;
-                    assert.deepEqual(metrics['enter.state_no_nurse'], {agg: 'sum', values: [1]});
                 })
                 .run();
         });
@@ -751,9 +693,11 @@ describe("ussd_clinic app", function() {
             return tester
                 .setup.user.state("state_clinic_code")
                 .check.interaction({
-                    reply:
-                        "Please enter the 6 digit clinic code for the facility where the mother " +
-                        "is being registered, e.g. 535970."
+                    reply:[
+                        "Enter the 6 digit clinic code for the facility where you are being registered, e.g. 535970",
+                        "",
+                        "If you don't know the code, ask the nurse who is helping you sign up"
+                    ].join("\n")
                 })
                 .run();
         });
@@ -767,9 +711,11 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_clinic_code")
                 .input("111111")
                 .check.interaction({
-                    reply:
-                        "Sorry, the clinic number did not validate. Please reenter the clinic " +
-                        "number.",
+                    reply:[
+                        "Sorry, we don't know that clinic number.",
+                        "",
+                        "Please enter the 6 digit clinic number again."
+                    ].join("\n"),
                     state: "state_clinic_code"
                 })
                 .check(function(api) {
@@ -820,9 +766,9 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_message_type")
                 .check.interaction({
                     reply: [
-                        "What type of messages does the mom want to get?",
-                        "1. Pregnancy (plus baby messages once baby is born)",
-                        "2. Baby (no pregnancy messages)"
+                        "What would you like to do?",
+                        "1. Register a new pregnancy",
+                        "2. Register a baby age 0-2"
                     ].join("\n"),
                 })
                 .run();
@@ -833,10 +779,11 @@ describe("ussd_clinic app", function() {
                 .input("a")
                 .check.interaction({
                     reply: [
-                        "Sorry we don't understand. Please enter the number next to the mom's " +
-                        "answer.",
-                        "1. Pregnancy (plus baby messages once baby is born)",
-                        "2. Baby (no pregnancy messages)"
+                        "Sorry, we don’t understand. Please try again.",
+                        "",
+                        "Enter the number that matches your answer.",
+                        "1. Register a new pregnancy",
+                        "2. Register a baby age 0-2"
                     ].join("\n")
                 })
                 .run();
@@ -847,8 +794,8 @@ describe("ussd_clinic app", function() {
                 .setup.user.answer("contact", {fields: {edd: "2014-09-10"}})
                 .check.interaction({
                     reply: [
-                        "What type of messages does the mom want to get?",
-                        "1. Baby (no pregnancy messages)"
+                        "What would you like to do?",
+                        "1. Register a baby age 0-2"
                     ].join("\n"),
                 })
                 .run();
@@ -863,8 +810,8 @@ describe("ussd_clinic app", function() {
                 }})
                 .check.interaction({
                     reply: [
-                        "What type of messages does the mom want to get?",
-                        "1. Pregnancy (plus baby messages once baby is born)",
+                        "What would you like to do?",
+                        "1. Register a new pregnancy",
                     ].join("\n"),
                 })
                 .run();
