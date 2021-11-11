@@ -160,7 +160,7 @@ go.app = function() {
                     } else if (_.toUpper(_.get(contact, "fields.opted_out")) === "TRUE") {
                         return self.states.create("state_opted_out");
                     } else {
-                        return self.states.create("state_with_nurse");
+                        return self.states.create("state_clinic_code");
                     }
                 }).catch(function(e) {
                     // Go to error state after 3 failed HTTP requests
@@ -252,15 +252,16 @@ go.app = function() {
         self.add("state_opted_out", function(name) {
             return new MenuState(name, {
                 question: $(
-                    "This number previously asked us to stop sending MomConnect messages. Is the " +
-                    "mother sure she wants to get messages from us again?"
+                    "This number previously asked MomConnect to stop sending messages. " +
+                    "Are you sure that you want to get messages from MomConnect again?"
                 ),
-                error: $(
-                    "Sorry we don't understand. Please enter the number next to the mother's " +
-                    "answer."
-                ),
+                error: $([
+                    "Sorry, we don’t understand. Please try again.",
+                    "",
+                    "Enter the number that matches your answer."
+                ].join("\n")),
                 choices: [
-                    new Choice("state_with_nurse", $("Yes")),
+                    new Choice("state_clinic_code", $("Yes")),
                     new Choice("state_no_opt_in", $("No"))
                 ]
             });
@@ -270,36 +271,8 @@ go.app = function() {
             return new EndState(name, {
                 next: "state_start",
                 text: $(
-                    "This number has chosen not to receive MomConnect messages. If she changes " +
-                    "her mind, she can dial *134*550*2# to register any time. Have a lovely day!"
-                )
-            });
-        });
-
-        self.add("state_with_nurse", function(name) {
-            return new MenuState(name, {
-                question: $(
-                    "Is the mother signing up at a clinic with a nurse? A nurse has to help her " +
-                    "sign up for the full set of MomConnect messages."
-                ),
-                error: $(
-                    "Sorry we don't understand. Please enter the number next to the mother's " +
-                    "answer."
-                ),
-                choices: [
-                    new Choice("state_info_consent", $("Yes")),
-                    new Choice("state_no_nurse", $("No"))
-                ]
-            });
-        });
-
-        self.states.add("state_no_nurse", function(name) {
-            return new EndState(name, {
-                next: "state_start",
-                text: $(
-                    "The mother can only register for the full set of MomConnect messages with " +
-                    "a nurse at a clinic. Dial *134*550*2# at a clinic to sign up. Have a lovely " +
-                    "day!"
+                    "Thank you for using MomConnect. Dial *134*550*2# at any " +
+                    "time to sign up. Have a lovely day!"
                 )
             });
         });
@@ -379,14 +352,17 @@ go.app = function() {
         self.add("state_clinic_code", function(name, opts) {
             var text;
             if(opts.error) {
-                text = $(
-                    "Sorry, the clinic number did not validate. Please reenter the clinic number."
-                );
+                text = $([
+                    "Sorry, we don't know that clinic number.",
+                    "",
+                    "Please enter the 6 digit clinic number again."
+                ].join("\n"));
             } else {
-                text = $(
-                    "Please enter the 6 digit clinic code for the facility where the mother is " +
-                    "being registered, e.g. 535970."
-                );
+                text = $([
+                    "Enter the 6 digit clinic code for the facility where you are being registered, e.g. 535970",
+                    "",
+                    "If you don't know the code, ask the nurse who is helping you sign up"
+                ].join("\n"));
             }
             return new FreeText(name, {
                 question: text,
@@ -419,20 +395,23 @@ go.app = function() {
             if(!self.contact_edd(contact)){
                 choices.push(new Choice(
                     "state_edd_month",
-                    $("Pregnancy (plus baby messages once baby is born)")
+                    $("Register a new pregnancy")
                     ));
             }
             if(self.contact_postbirth_dobs(contact).length < 3){
                 choices.push(new Choice(
                     "state_birth_year",
-                    $("Baby (no pregnancy messages)")
+                    $("Register a baby age 0-2")
                 ));
             }
             return new MenuState(name, {
-                question: $("What type of messages does the mom want to get?"),
-                error: $(
-                    "Sorry we don't understand. Please enter the number next to the mom's answer."
-                ),
+                question: $("What would you like to do?"),
+                error: $([
+                    "Sorry, we don’t understand. Please try again.",
+                    "",
+                    "Enter the number that matches your answer."
+
+                ].join("\n")),
                 choices: choices,
             });
         });
