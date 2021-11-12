@@ -134,7 +134,7 @@ go.app = function() {
                             "MomConnect messages on. For example, 0813547654"
                         ].join("\n"));
                     }
-                    if(utils.normalize_msisdn(content, "ZA") === "+27813547654") {
+                    if(utils.normalize_msisdn(content, "ZA") === "+27762564733") {
                         return $(
                             "We need your personal information. Please don't enter the " +
                             "information given in the examples. Enter your own details."

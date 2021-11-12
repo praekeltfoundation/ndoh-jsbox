@@ -177,7 +177,7 @@ describe("ussd_clinic app", function() {
         it("should not allow the example msisdn", function() {
             return tester
                 .setup.user.state("state_enter_msisdn")
-                .input("0813547654")
+                .input("0762564733")
                 .check.interaction({
                     state: "state_enter_msisdn",
                     reply: (
