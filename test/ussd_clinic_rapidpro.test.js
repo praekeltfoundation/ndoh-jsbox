@@ -177,7 +177,7 @@ describe("ussd_clinic app", function() {
         it("should not allow the example msisdn", function() {
             return tester
                 .setup.user.state("state_enter_msisdn")
-                .input("0813547654")
+                .input("0762564733")
                 .check.interaction({
                     state: "state_enter_msisdn",
                     reply: (
@@ -491,7 +491,7 @@ describe("ussd_clinic app", function() {
                 .input("a")
                 .check.interaction({
                     reply: [
-                        "Sorry, we don’t understand. Please try again.",
+                        "Sorry, we don't understand. Please try again.",
                         "",
                         "Enter the number that matches your answer.",
                         "1. Yes",
@@ -780,7 +780,7 @@ describe("ussd_clinic app", function() {
                 .input("a")
                 .check.interaction({
                     reply: [
-                        "Sorry, we don’t understand. Please try again.",
+                        "Sorry, we don't understand. Please try again.",
                         "",
                         "Enter the number that matches your answer.",
                         "1. Register a new pregnancy",
@@ -849,7 +849,7 @@ describe("ussd_clinic app", function() {
                 .input("A")
                 .check.interaction({
                     reply: [
-                        "Sorry, we don’t understand.",
+                        "Sorry, we don't understand.",
                         "",
                         "Reply with a number.",
                         "1. Jan",
@@ -911,7 +911,7 @@ describe("ussd_clinic app", function() {
                 .input("99")
                 .check.interaction({
                     reply:[
-                        "Sorry, we don’t understand. Please try again.",
+                        "Sorry, we don't understand. Please try again.",
                         "",
                         "Enter the day that baby was born as a number. For example if baby was born on 12th May, type in 12"
                     ].join("\n")
@@ -925,7 +925,7 @@ describe("ussd_clinic app", function() {
                 .input("4")
                 .check.interaction({
                     reply:[
-                        "Sorry, we don’t understand. Please try again.",
+                        "Sorry, we don't understand. Please try again.",
                         "",
                         "Enter the day that baby was born as a number. For example if baby was born on 12th May, type in 12"
                     ].join("\n")
@@ -939,7 +939,7 @@ describe("ussd_clinic app", function() {
                 .input("30")
                 .check.interaction({
                     reply:[
-                        "Sorry, we don’t understand. Please try again.",
+                        "Sorry, we don't understand. Please try again.",
                         "",
                         "Enter the day that baby was born as a number. For example if baby was born on 12th May, type in 12"
                     ].join("\n")
@@ -1163,7 +1163,7 @@ describe("ussd_clinic app", function() {
                 .input("99")
                 .check.interaction({
                     reply:[
-                        "Sorry, we don’t understand. Please try again.",
+                        "Sorry, we don't understand. Please try again.",
                         "",
                         "Enter the day that baby was born as a number. For example if baby was born on 12th May, type in 12"
                     ].join("\n")
@@ -1231,7 +1231,7 @@ describe("ussd_clinic app", function() {
                 .input("a")
                 .check.interaction({
                     reply: [
-                        "Sorry, we don’t understand. Please try again.",
+                        "Sorry, we don't understand. Please try again.",
                         "",
                         "Enter the number that matches your answer.",
                         "1. SA ID",
@@ -1292,7 +1292,7 @@ describe("ussd_clinic app", function() {
                 .input("9001020005081")
                 .check.interaction({
                     reply: [
-                        "Sorry, we don’t understand. Please try again.",
+                        "Sorry, we don't understand. Please try again.",
                         "",
                         "Enter your 13 digit South African ID number. For example, 8910121231234"
                     ].join("\n")
@@ -1326,7 +1326,7 @@ describe("ussd_clinic app", function() {
                 .input("A")
                 .check.interaction({
                     reply: [
-                        "Sorry, we don’t understand. Please try again.",
+                        "Sorry, we don't understand. Please try again.",
                         "",
                         "Reply with a number.",
                         "1. Zimbabwe",
@@ -1369,7 +1369,7 @@ describe("ussd_clinic app", function() {
                 .input("$")
                 .check.interaction({
                     reply: [
-                        "Sorry, we don’t understand. Please try again.",
+                        "Sorry, we don't understand. Please try again.",
                         "",
                         "Enter your Passport number as it appears in your passport."
                     ].join("\n")
@@ -1624,7 +1624,7 @@ describe("ussd_clinic app", function() {
                 .input("a")
                 .check.interaction({
                     reply: [
-                        "Sorry, we don’t understand. Please try again.",
+                        "Sorry, we don't understand. Please try again.",
                         "",
                         "Enter the number that matches your answer.",
                         "1. Next"
@@ -1672,7 +1672,7 @@ describe("ussd_clinic app", function() {
                 .input("a")
                 .check.interaction({
                     reply: [
-                        "Sorry, we don’t understand. Please try again.",
+                        "Sorry, we don't understand. Please try again.",
                         "",
                         "Enter the number that matches your answer.",
                         "1. Go Back",
@@ -1712,7 +1712,7 @@ describe("ussd_clinic app", function() {
                 .input("a")
                 .check.interaction({
                     reply: [
-                        "Sorry, we don’t understand. Please try again.",
+                        "Sorry, we don't understand. Please try again.",
                         "",
                         "Enter the number that matches your answer.",
                         "1. Accept",
