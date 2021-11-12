@@ -33,7 +33,8 @@ describe("ussd_clinic app", function() {
                 }
             },
             prebirth_flow_uuid: "prebirth-flow-uuid",
-            postbirth_flow_uuid: "postbirth-flow-uuid"
+            postbirth_flow_uuid: "postbirth-flow-uuid",
+            popi_flow_uuid: "popi-flow-uuid"
         })
         .setup(function(api) {
             api.metrics.stores = {'test_metric_store': {}};
@@ -1492,20 +1493,11 @@ describe("ussd_clinic app", function() {
                 .run();
         });
     });
-    describe("state_whatsapp_contact_check + state_trigger_rapidpro_flow", function() {
-        it("should make a request to the WhatsApp and RapidPro APIs for prebirth", function() {
+    describe("state_whatsapp_contact_check + state_start_popi_flow", function() {
+        it("should request to the Whatsapp and RapidPro API", function() {
             return tester
                 .setup.user.state("state_whatsapp_contact_check")
-                .setup.user.answers({
-                    state_message_type: "state_edd_month",
-                    state_research_consent: "no",
-                    state_enter_msisdn: "0820001001",
-                    state_id_type: "state_sa_id_no",
-                    state_sa_id_no: "9001020005087",
-                    state_edd_month: "201502",
-                    state_edd_day: "13",
-                    state_clinic_code: "123456"
-                })
+                .setup.user.answers({state_enter_msisdn: "0820001001"})
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_whatsapp.exists({
@@ -1515,85 +1507,18 @@ describe("ussd_clinic app", function() {
                     );
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
-                            "prebirth-flow-uuid", null, "whatsapp:27820001001", {
-                                research_consent: "FALSE",
-                                registered_by: "+27123456789",
-                                language: "eng",
-                                timestamp: "2014-04-04T07:07:07Z",
-                                source: "Clinic USSD",
-                                id_type: "sa_id",
-                                edd: "2015-02-13T00:00:00Z",
-                                clinic_code: "123456",
-                                sa_id_number: "9001020005087",
-                                dob: "1990-01-02T00:00:00Z",
-                                swt: "7",
-                            }
+                            "popi-flow-uuid", null, "whatsapp:27820001001"
                         )
                     );
                 })
                 .check.interaction({
-                    state: "state_registration_complete",
-                    reply:
-                        "You're done! This number 0820001001 will get helpful messages from " +
-                        "MomConnect on WhatsApp. Thanks for signing up to MomConnect!"
+                    state: "state_accept_popi",
+                    reply: [
+                        "Your personal information is protected by law (POPIA) and by the " +
+                        "MomConnect Privacy Policy that was just sent to you on WhatsApp.",
+                        "1. Next"
+                    ].join("\n")
                 })
-                .check.reply.ends_session()
-                .check(function(api) {
-                    assert.equal(api.http.requests.length, 2);
-                    var urls = _.map(api.http.requests, "url");
-                    assert.deepEqual(urls, [
-                        "http://pilot.example.org/v1/contacts",
-                        "https://rapidpro/api/v2/flow_starts.json"
-                    ]);
-                    assert.equal(api.log.error.length, 0);
-                })
-                .run();
-        });
-        it("should make a request to the WhatsApp and RapidPro APIs for postbirth", function() {
-            return tester
-                .setup.user.state("state_whatsapp_contact_check")
-                .setup.user.answers({
-                    state_message_type: "state_birth_year",
-                    state_research_consent: "no",
-                    state_enter_msisdn: "0820001001",
-                    state_id_type: "state_sa_id_no",
-                    state_sa_id_no: "9001020005087",
-                    state_birth_month: "2014-02",
-                    state_birth_day: "13",
-                    state_clinic_code: "123456"
-                })
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27820001001",
-                            wait: true
-                        })
-                    );
-                    api.http.fixtures.add(
-                        fixtures_rapidpro.start_flow(
-                            "postbirth-flow-uuid", null, "whatsapp:27820001001", {
-                                research_consent: "FALSE",
-                                registered_by: "+27123456789",
-                                language: "eng",
-                                timestamp: "2014-04-04T07:07:07Z",
-                                source: "Clinic USSD",
-                                id_type: "sa_id",
-                                baby_dob: "2014-02-13T00:00:00Z",
-                                clinic_code: "123456",
-                                sa_id_number: "9001020005087",
-                                dob: "1990-01-02T00:00:00Z",
-                                swt: "7",
-                            }
-                        )
-                    );
-                })
-                .check.interaction({
-                    state: "state_registration_complete",
-                    reply:
-                        "You're done! This number 0820001001 will get helpful messages from " +
-                        "MomConnect on WhatsApp. Thanks for signing up to MomConnect!"
-                })
-                .check.reply.ends_session()
                 .check(function(api) {
                     assert.equal(api.http.requests.length, 2);
                     var urls = _.map(api.http.requests, "url");
@@ -1637,6 +1562,168 @@ describe("ussd_clinic app", function() {
         it("should retry HTTP call when RapidPro is down", function() {
             return tester
                 .setup.user.state("state_whatsapp_contact_check")
+                .setup.user.answers({state_enter_msisdn: "0820001001"})
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27820001001",
+                            wait: true
+                        })
+                    );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "popi-flow-uuid", null, "whatsapp:27820001001", null, true
+                        )
+                    );
+                })
+                .input("1")
+                .check.interaction({
+                    state: "__error__",
+                    reply:
+                        "Sorry, something went wrong. We have been notified. Please try again " +
+                        "later"
+                })
+                .check.reply.ends_session()
+                .check(function(api){
+                    assert.equal(api.http.requests.length, 4);
+                    assert.equal(api.http.requests[0].url, "http://pilot.example.org/v1/contacts");
+                    api.http.requests.slice(-1).forEach(function(request){
+                        assert.equal(request.url, "https://rapidpro/api/v2/flow_starts.json");
+                    });
+                    assert.equal(api.log.error.length, 1);
+                    assert(api.log.error[0].includes("HttpResponseError"));
+                })
+                .run();
+        });
+    });
+    describe("state_accept_popi", function() {
+        it("should inform the user about popia", function() {
+            return tester
+                .setup.user.state("state_accept_popi")
+                .check.interaction({
+                    reply: [
+                        "Your personal information is protected by law (POPIA) and by the " +
+                        "MomConnect Privacy Policy that was just sent to you on WhatsApp.",
+                        "1. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_accept_popi_2 on correct input", function() {
+            return tester
+                .setup.user.state("state_accept_popi")
+                .input("1")
+                .check.interaction({
+                    state: "state_accept_popi_2",
+                })
+                .run();
+        });
+        it("should display an error message on incorrect input", function() {
+            return tester
+                .setup.user.state("state_accept_popi")
+                .input("a")
+                .check.interaction({
+                    reply: [
+                        "Sorry, we don’t understand. Please try again.",
+                        "",
+                        "Enter the number that matches your answer.",
+                        "1. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_accept_popi_confirm", function() {
+        it("should confirm the user wants to exit", function() {
+            return tester
+                .setup.user.state("state_accept_popi_confirm")
+                .check.interaction({
+                    reply: [
+                        "Unfortunately, if you don't accept, you can't sign up to MomConnect.",
+                        "",
+                        "If you made a mistake, go back.",
+                        "1. Go Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_accept_popi_2 when selected", function() {
+            return tester
+                .setup.user.state("state_accept_popi_confirm")
+                .input("1")
+                .check.interaction({
+                    state: "state_accept_popi_2",
+                })
+                .run();
+        });
+        it("should go to state_no_consent when selected", function() {
+            return tester
+                .setup.user.state("state_accept_popi_confirm")
+                .input("2")
+                .check.interaction({
+                    state: "state_no_consent",
+                })
+                .run();
+        });
+        it("should display an error message on incorrect input", function() {
+            return tester
+                .setup.user.state("state_accept_popi_confirm")
+                .input("a")
+                .check.interaction({
+                    reply: [
+                        "Sorry, we don’t understand. Please try again.",
+                        "",
+                        "Enter the number that matches your answer.",
+                        "1. Go Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_accept_popi_2 + state_trigger_rapidpro_flow", function() {
+        it("should ask the user to accept the privacy policy", function() {
+            return tester
+                .setup.user.state("state_accept_popi_2")
+                .check.interaction({
+                    reply: [
+                        "Do you accept the MomConnect Privacy Policy?",
+                        "",
+                        "Remember, you can opt out at any time",
+                        "1. Accept",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_accept_popi_confirm on exit selection", function() {
+            return tester
+                .setup.user.state("state_accept_popi_2")
+                .input("2")
+                .check.interaction({
+                    state: "state_accept_popi_confirm"
+                })
+                .run();
+        });
+        it("should display an error message on incorrect input", function() {
+            return tester
+                .setup.user.state("state_accept_popi_2")
+                .input("a")
+                .check.interaction({
+                    reply: [
+                        "Sorry, we don’t understand. Please try again.",
+                        "",
+                        "Enter the number that matches your answer.",
+                        "1. Accept",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should make a request to the RapidPro APIs for prebirth on accept selection", function() {
+            return tester
+                .setup.user.state("state_accept_popi_2")
                 .setup.user.answers({
                     state_message_type: "state_edd_month",
                     state_research_consent: "no",
@@ -1649,11 +1736,105 @@ describe("ussd_clinic app", function() {
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27820001001",
-                            wait: true,
-                        })
+                        fixtures_rapidpro.start_flow(
+                            "prebirth-flow-uuid", null, "whatsapp:27820001001", {
+                                research_consent: "FALSE",
+                                registered_by: "+27123456789",
+                                language: "eng",
+                                timestamp: "2014-04-04T07:07:07Z",
+                                source: "Clinic USSD",
+                                id_type: "sa_id",
+                                edd: "2015-02-13T00:00:00Z",
+                                clinic_code: "123456",
+                                sa_id_number: "9001020005087",
+                                dob: "1990-01-02T00:00:00Z",
+                                swt: "7",
+                            }
+                        )
                     );
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_registration_complete",
+                    reply:
+                        "You're done! This number 0820001001 will get helpful messages from " +
+                        "MomConnect on WhatsApp. Thanks for signing up to MomConnect!"
+                })
+                .check.reply.ends_session()
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    var urls = _.map(api.http.requests, "url");
+                    assert.deepEqual(urls, [
+                        "https://rapidpro/api/v2/flow_starts.json"
+                    ]);
+                    assert.equal(api.log.error.length, 0);
+                })
+                .run();
+        });
+        it("should make a request to the WhatsApp and RapidPro APIs for postbirth", function() {
+            return tester
+                .setup.user.state("state_accept_popi_2")
+                .setup.user.answers({
+                    state_message_type: "state_birth_year",
+                    state_research_consent: "no",
+                    state_enter_msisdn: "0820001001",
+                    state_id_type: "state_sa_id_no",
+                    state_sa_id_no: "9001020005087",
+                    state_birth_month: "2014-02",
+                    state_birth_day: "13",
+                    state_clinic_code: "123456"
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "postbirth-flow-uuid", null, "whatsapp:27820001001", {
+                                research_consent: "FALSE",
+                                registered_by: "+27123456789",
+                                language: "eng",
+                                timestamp: "2014-04-04T07:07:07Z",
+                                source: "Clinic USSD",
+                                id_type: "sa_id",
+                                baby_dob: "2014-02-13T00:00:00Z",
+                                clinic_code: "123456",
+                                sa_id_number: "9001020005087",
+                                dob: "1990-01-02T00:00:00Z",
+                                swt: "7",
+                            }
+                        )
+                    );
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_registration_complete",
+                    reply:
+                        "You're done! This number 0820001001 will get helpful messages from " +
+                        "MomConnect on WhatsApp. Thanks for signing up to MomConnect!"
+                })
+                .check.reply.ends_session()
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    var urls = _.map(api.http.requests, "url");
+                    assert.deepEqual(urls, [
+                        "https://rapidpro/api/v2/flow_starts.json"
+                    ]);
+                    assert.equal(api.log.error.length, 0);
+                })
+                .run();
+        });
+        it("should retry HTTP call when RapidPro is down", function() {
+            return tester
+                .setup.user.state("state_accept_popi_2")
+                .setup.user.answers({
+                    state_message_type: "state_edd_month",
+                    state_research_consent: "no",
+                    state_enter_msisdn: "0820001001",
+                    state_id_type: "state_sa_id_no",
+                    state_sa_id_no: "9001020005087",
+                    state_edd_month: "201502",
+                    state_edd_day: "13",
+                    state_clinic_code: "123456"
+                })
+                .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
                             "prebirth-flow-uuid", null, "whatsapp:27820001001", {
@@ -1672,6 +1853,7 @@ describe("ussd_clinic app", function() {
                         )
                     );
                 })
+                .input("1")
                 .check.interaction({
                     state: "__error__",
                     reply:
@@ -1680,9 +1862,8 @@ describe("ussd_clinic app", function() {
                 })
                 .check.reply.ends_session()
                 .check(function(api){
-                    assert.equal(api.http.requests.length, 4);
-                    assert.equal(api.http.requests[0].url, "http://pilot.example.org/v1/contacts");
-                    api.http.requests.slice(1).forEach(function(request){
+                    assert.equal(api.http.requests.length, 3);
+                    api.http.requests.forEach(function(request){
                         assert.equal(request.url, "https://rapidpro/api/v2/flow_starts.json");
                     });
                     assert.equal(api.log.error.length, 1);

@@ -1015,7 +1015,7 @@ go.app = function() {
             return self.whatsapp.contact_check(msisdn, true)
                 .then(function(result) {
                     self.im.user.set_answer("on_whatsapp", result);
-                    return self.states.create("state_trigger_rapidpro_flow");
+                    return self.states.create("state_start_popi_flow");
                 }).catch(function(e) {
                     // Go to error state after 3 failed HTTP requests
                     opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
@@ -1027,10 +1027,85 @@ go.app = function() {
                 });
         });
 
-        self.add("state_trigger_rapidpro_flow", function(name, opts) {
+        self.add("state_start_popi_flow", function(name, opts) {
             if(!self.im.user.answers.on_whatsapp) {
                 return self.states.create("state_not_on_whatsapp");
             }
+            var msisdn = utils.normalize_msisdn(
+                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
+
+            return self.rapidpro
+                .start_flow(
+                    self.im.config.popi_flow_uuid,
+                    null,
+                    "whatsapp:" + _.trim(msisdn, "+"))
+                .then(function() {
+                    return self.states.create("state_accept_popi");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+        self.add("state_accept_popi", function(name, opts) {
+            return new MenuState(name, {
+                question: $(
+                    "Your personal information is protected by law (POPIA) and by the " +
+                    "MomConnect Privacy Policy that was just sent to you on WhatsApp."
+                ),
+                error: $([
+                    "Sorry, we don’t understand. Please try again.",
+                    "",
+                    "Enter the number that matches your answer."
+                ].join("\n")),
+                choices: [new Choice("state_accept_popi_2", $("Next"))],
+            });
+        });
+
+        self.add("state_accept_popi_2", function(name, opts) {
+            return new MenuState(name, {
+                question: $([
+                    "Do you accept the MomConnect Privacy Policy?",
+                    "",
+                    "Remember, you can opt out at any time"
+                ].join("\n")),
+                error: $([
+                    "Sorry, we don’t understand. Please try again.",
+                    "",
+                    "Enter the number that matches your answer."
+                ].join("\n")),
+                choices: [
+                    new Choice("state_trigger_rapidpro_flow", $("Accept")),
+                    new Choice("state_accept_popi_confirm", $("Exit"))
+                ],
+            });
+        });
+
+        self.add("state_accept_popi_confirm", function(name, opts) {
+            return new MenuState(name, {
+                question: $([
+                    "Unfortunately, if you don't accept, you can't sign up to MomConnect.",
+                    "",
+                    "If you made a mistake, go back."
+                ].join("\n")),
+                error: $([
+                    "Sorry, we don’t understand. Please try again.",
+                    "",
+                    "Enter the number that matches your answer."
+                ].join("\n")),
+                choices: [
+                    new Choice("state_accept_popi_2", $("Go Back")),
+                    new Choice("state_no_consent", $("Exit"))
+                ],
+            });
+        });
+
+        self.add("state_trigger_rapidpro_flow", function(name, opts) {
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
             var data = {
