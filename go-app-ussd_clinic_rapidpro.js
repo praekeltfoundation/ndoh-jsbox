@@ -494,7 +494,7 @@ go.app = function() {
                     "Are you sure that you want to get messages from MomConnect again?"
                 ),
                 error: $([
-                    "Sorry, we don’t understand. Please try again.",
+                    "Sorry, we don't understand. Please try again.",
                     "",
                     "Enter the number that matches your answer."
                 ].join("\n")),
@@ -645,7 +645,7 @@ go.app = function() {
             return new MenuState(name, {
                 question: $("What would you like to do?"),
                 error: $([
-                    "Sorry, we don’t understand. Please try again.",
+                    "Sorry, we don't understand. Please try again.",
                     "",
                     "Enter the number that matches your answer."
 
@@ -674,7 +674,7 @@ go.app = function() {
                     "Reply with a number."
                 ].join("\n")),
                 error: $([
-                    "Sorry, we don’t understand.",
+                    "Sorry, we don't understand.",
                     "",
                     "Reply with a number."
                 ].join("\n")),
@@ -706,7 +706,7 @@ go.app = function() {
                         !date.isBetween(current_date, current_date.clone().add(43, "weeks"))
                       ) {
                         return $([
-                            "Sorry, we don’t understand. Please try again.",
+                            "Sorry, we don't understand. Please try again.",
                             "",
                             "Enter the day that baby was born as a number. For example if baby was born on 12th May, type in 12"
                         ].join("\n"));
@@ -813,7 +813,7 @@ go.app = function() {
                     var current_date = new moment(self.im.config.testing_today).startOf("day");
                     if(!date.isValid()) {
                         return $([
-                            "Sorry, we don’t understand. Please try again.",
+                            "Sorry, we don't understand. Please try again.",
                             "",
                             "Enter the day that baby was born as a number. For example if baby was born on 12th May, type in 12"
                         ].join("\n"));
@@ -838,7 +838,7 @@ go.app = function() {
                     "Reply with a number."
                 ].join("\n")),
                 error: $([
-                    "Sorry, we don’t understand. Please try again.",
+                    "Sorry, we don't understand. Please try again.",
                     "",
                     "Enter the number that matches your answer."
                 ].join("\n")),
@@ -876,7 +876,7 @@ go.app = function() {
                         _.parseInt(match[2]) >= 5000
                     ) {
                         return $([
-                            "Sorry, we don’t understand. Please try again.",
+                            "Sorry, we don't understand. Please try again.",
                             "",
                             "Enter your 13 digit South African ID number. For example, 8910121231234"
                         ].join("\n"));
@@ -895,7 +895,7 @@ go.app = function() {
                     "Reply with a number."
                 ].join("\n")),
                 error: $([
-                    "Sorry, we don’t understand. Please try again.",
+                    "Sorry, we don't understand. Please try again.",
                     "",
                     "Reply with a number."
                 ].join("\n")),
@@ -921,7 +921,7 @@ go.app = function() {
                 check: function(content) {
                     if(!content.match(/^\w+$/)){
                         return $([
-                            "Sorry, we don’t understand. Please try again.",
+                            "Sorry, we don't understand. Please try again.",
                             "",
                             "Enter your Passport number as it appears in your passport."
                         ].join("\n"));
@@ -1059,7 +1059,7 @@ go.app = function() {
                     "MomConnect Privacy Policy that was just sent to you on WhatsApp."
                 ),
                 error: $([
-                    "Sorry, we don’t understand. Please try again.",
+                    "Sorry, we don't understand. Please try again.",
                     "",
                     "Enter the number that matches your answer."
                 ].join("\n")),
@@ -1075,7 +1075,7 @@ go.app = function() {
                     "Remember, you can opt out at any time"
                 ].join("\n")),
                 error: $([
-                    "Sorry, we don’t understand. Please try again.",
+                    "Sorry, we don't understand. Please try again.",
                     "",
                     "Enter the number that matches your answer."
                 ].join("\n")),
@@ -1094,7 +1094,7 @@ go.app = function() {
                     "If you made a mistake, go back."
                 ].join("\n")),
                 error: $([
-                    "Sorry, we don’t understand. Please try again.",
+                    "Sorry, we don't understand. Please try again.",
                     "",
                     "Enter the number that matches your answer."
                 ].join("\n")),
