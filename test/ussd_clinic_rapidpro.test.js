@@ -529,166 +529,6 @@ describe("ussd_clinic app", function() {
                 .run();
         });
     });
-    describe("state_info_consent", function() {
-        it("should ask the user for consent to processing their info", function() {
-            return tester
-                .setup.user.state("state_info_consent")
-                .check.interaction({
-                    reply: [
-                        "Does she agree to let us process her info & to getting msgs? " +
-                        "She may get msgs on public holidays & weekends.",
-                        "1. Yes",
-                        "2. No",
-                        "3. She needs more info to decide"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should display an error on invalid input", function() {
-            return tester
-                .setup.user.state("state_info_consent")
-                .input("a")
-                .check.interaction({
-                    reply: [
-                        "Sorry we don't understand. Please enter the number next to the " +
-                        "mother's answer.",
-                        "1. Yes",
-                        "2. No",
-                        "3. She needs more info to decide"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should go to state_info_consent_confirm if they don't give consent", function() {
-            return tester
-                .setup.user.state("state_info_consent")
-                .input("2")
-                .check.user.state("state_info_consent_confirm")
-                .check(function(api) {
-                    var metrics = api.metrics.stores.test_metric_store;
-                    assert.deepEqual(metrics['enter.state_info_consent_confirm'], {agg: 'sum', values: [1]});
-                })
-                .run();
-        });
-        it("should go to state_research_consent if they give consent", function() {
-            return tester
-                .setup.user.state("state_info_consent")
-                .input("1")
-                .check.user.state("state_research_consent")
-                .check(function(api) {
-                    var metrics = api.metrics.stores.test_metric_store;
-                    assert.deepEqual(metrics['enter.state_research_consent'], {agg: 'sum', values: [1]});
-                })
-                .run();
-        });
-        it("should skip the consent states if the user has already consented", function() {
-            return tester
-                .setup.user.state("state_info_consent")
-                .setup.user.answer("contact", {"fields": {
-                    "info_consent": "TRUE",
-                    "research_consent": "TRUE"
-                }})
-                .check.user.state("state_clinic_code")
-                .check(function(api) {
-                    var metrics = api.metrics.stores.test_metric_store;
-                    assert.deepEqual(metrics['enter.state_clinic_code'], {agg: 'sum', values: [1]});
-                })
-                .run();
-        });
-        it("should go to state_more_info if the mother wants more info", function() {
-            return tester
-                .setup.user.state("state_info_consent")
-                .input("3")
-                .check.user.state("state_more_info")
-                .check(function(api) {
-                    var metrics = api.metrics.stores.test_metric_store;
-                    assert.deepEqual(metrics['enter.state_more_info'], {agg: 'sum', values: [1]});
-                })
-                .run();
-        });
-    });
-    describe("state_info_consent_confirm", function() {
-        it("should confirm if the user doesn't consent", function() {
-            return tester
-                .setup.user.state("state_info_consent_confirm")
-                .check.interaction({
-                    reply: [
-                        "Unfortunately, without agreeing she can't sign up to MomConnect. " +
-                        "Does she agree to MomConnect processing her personal info?",
-                        "1. Yes",
-                        "2. No"
-                    ].join("\n"),
-                })
-                .run();
-        });
-        it("should display an error on invalid input", function() {
-            return tester
-                .setup.user.state("state_info_consent_confirm")
-                .input("a")
-                .check.interaction({
-                    reply: [
-                        "Sorry we don't understand. Please enter the number next to the " +
-                        "mother's answer.",
-                        "1. Yes",
-                        "2. No",
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should go to state_no_consent if consent isn't given", function() {
-            return tester
-                .setup.user.state("state_info_consent_confirm")
-                .input("2")
-                .check.interaction({
-                    state: "state_no_consent",
-                    reply:
-                        "Thank you for considering MomConnect. We respect the mom's decision. " +
-                        "Have a lovely day."
-                })
-                .check(function(api) {
-                    var metrics = api.metrics.stores.test_metric_store;
-                    assert.deepEqual(metrics['enter.state_no_consent'], {agg: 'sum', values: [1]});
-                })
-                .run();
-        });
-        it("should go to state_research_consent if consent is given", function() {
-            return tester
-                .setup.user.state("state_info_consent_confirm")
-                .input("1")
-                .check.user.state("state_research_consent")
-                .check(function(api) {
-                    var metrics = api.metrics.stores.test_metric_store;
-                    assert.deepEqual(metrics['enter.state_research_consent'], {agg: 'sum', values: [1]});
-                })
-                .run();
-        });
-    });
-    describe("state_research_consent", function() {
-        it("should ask the user for consent for research purposes", function() {
-            return tester
-                .setup.user.state("state_research_consent")
-                .check.interaction({
-                    reply: [
-                        "We may occasionally send messages for historical, statistical, or " +
-                        "research reasons. We'll keep her info safe. Does she agree?",
-                        "1. Yes",
-                        "2. No, only send MC msgs"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should go to state_clinic_code after the user selects an option", function() {
-            return tester
-                .setup.user.state("state_research_consent")
-                .input("1")
-                .check.user.state("state_clinic_code")
-                .check(function(api) {
-                    var metrics = api.metrics.stores.test_metric_store;
-                    assert.deepEqual(metrics['enter.state_clinic_code'], {agg: 'sum', values: [1]});
-                })
-                .run();
-        });
-    });
     describe("state_clinic_code", function() {
         it("should ask the user for a clinic code", function() {
             return tester
@@ -1738,7 +1578,7 @@ describe("ussd_clinic app", function() {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
                             "prebirth-flow-uuid", null, "whatsapp:27820001001", {
-                                research_consent: "FALSE",
+                                research_consent: "TRUE",
                                 registered_by: "+27123456789",
                                 language: "eng",
                                 timestamp: "2014-04-04T07:07:07Z",
@@ -1788,7 +1628,7 @@ describe("ussd_clinic app", function() {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
                             "postbirth-flow-uuid", null, "whatsapp:27820001001", {
-                                research_consent: "FALSE",
+                                research_consent: "TRUE",
                                 registered_by: "+27123456789",
                                 language: "eng",
                                 timestamp: "2014-04-04T07:07:07Z",
@@ -1838,7 +1678,7 @@ describe("ussd_clinic app", function() {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
                             "prebirth-flow-uuid", null, "whatsapp:27820001001", {
-                                research_consent: "FALSE",
+                                research_consent: "TRUE",
                                 registered_by: "+27123456789",
                                 language: "eng",
                                 timestamp: "2014-04-04T07:07:07Z",
@@ -1868,165 +1708,6 @@ describe("ussd_clinic app", function() {
                     });
                     assert.equal(api.log.error.length, 1);
                     assert(api.log.error[0].includes("HttpResponseError"));
-                })
-                .run();
-        });
-    });
-    describe("state_more_info", function() {
-        it("should display the list of questions to the user page 1", function() {
-            return tester
-                .setup.user.state("state_more_info")
-                .check.interaction({
-                    reply: [
-                        "Choose a question you're interested in:",
-                        "1. What is MomConnect?",
-                        "2. Why does MomConnect need my info?",
-                        "3. What personal info is collected?",
-                        "4. Next"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should display the list of questions to the user page 2", function() {
-            return tester
-                .setup.user.state("state_more_info")
-                .input("4")
-                .check.interaction({
-                    reply: [
-                        "Choose a question you're interested in:",
-                        "1. Who can see my personal info?",
-                        "2. How long does MC keep my info?",
-                        "3. Back",
-                        "4. Previous"
-                    ].join("\n")
-                })
-                .run();
-        });
-    });
-    describe("state_question_what", function() {
-        it("should display the info to the user", function() {
-            return tester
-                .setup.user.state("state_question_what")
-                .check.interaction({
-                    reply: [
-                        "MomConnect is a Health Department programme. It sends helpful messages " +
-                        "for you and your baby.",
-                        "1. Back"
-                    ].join("\n")
-                })
-                .run();
-        });
-    });
-    describe("state_question_why", function() {
-        it("should tell the user why we need their info", function() {
-            return tester
-                .setup.user.state("state_question_why")
-                .check.interaction({
-                    reply: [
-                        "MomConnect needs your personal info to send you messages that are " +
-                        "relevant to your pregnancy or your baby's age. By knowing where",
-                        "1. Next",
-                        "2. Back"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should show the second page", function() {
-            return tester
-                .setup.user.state("state_question_why")
-                .input("1")
-                .check.interaction({
-                    reply: [
-                        "you registered for MomConnect, the Health Department can make sure " +
-                        "that the service is being offered to women at your clinic. Your",
-                        "1. Next",
-                        "2. Previous",
-                        "3. Back"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should show the third page", function() {
-            return tester
-                .setup.user.state("state_question_why")
-                .inputs("1", "1")
-                .check.interaction({
-                    reply: [
-                        "info assists the Health Department to improve its services, understand " +
-                        "your needs better and provide even better messaging.",
-                        "1. Previous",
-                        "2. Back"
-                    ].join("\n")
-                })
-                .run();
-        });
-    });
-    describe("state_question_pi", function() {
-        it("should tell the user what personal info is collected", function() {
-            return tester
-                .setup.user.state("state_question_pi")
-                .check.interaction({
-                    reply: [
-                        "MomConnect collects your cell and ID numbers, clinic location, and info " +
-                        "about how your pregnancy or baby is progressing.",
-                        "1. Back"
-                    ].join("\n")
-                })
-                .run();
-        });
-    });
-    describe("state_question_who", function() {
-        it("should tell the user who processes their info", function() {
-            return tester
-                .setup.user.state("state_question_who")
-                .check.interaction({
-                    reply: [
-                        "MomConnect is owned by the Health Department. Your data is protected. " +
-                        "It's processed by MTN, Cell C, Telkom, Vodacom, Praekelt,",
-                        "1. Next",
-                        "2. Back"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should show the second page", function() {
-            return tester
-                .setup.user.state("state_question_who")
-                .input("1")
-                .check.interaction({
-                    reply: [
-                        "Jembi, HISP & WhatsApp.",
-                        "1. Previous",
-                        "2. Back"
-                    ].join("\n")
-                })
-                .run();
-        });
-    });
-    describe("state_question_duration", function() {
-        it("should tell the user how long we're keeping their info", function() {
-            return tester
-                .setup.user.state("state_question_duration")
-                .check.interaction({
-                    reply: [
-                        "MomConnect holds your info while you're registered. If you opt out, " +
-                        "we'll use your info for historical, research & statistical",
-                        "1. Next",
-                        "2. Back"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should show the second page", function() {
-            return tester
-                .setup.user.state("state_question_duration")
-                .input("1")
-                .check.interaction({
-                    reply: [
-                        "reasons with your consent.",
-                        "1. Previous",
-                        "2. Back"
-                    ].join("\n")
                 })
                 .run();
         });
