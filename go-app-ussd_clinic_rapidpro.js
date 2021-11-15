@@ -248,7 +248,6 @@ go.app = function() {
     var FreeText = vumigo.states.FreeText;
     var JsonApi = vumigo.http.api.JsonApi;
     var MenuState = vumigo.states.MenuState;
-    var PaginatedState = vumigo.states.PaginatedState;
     var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
     var MetricsHelper = require('go-jsbox-metrics-helper');
 
@@ -515,46 +514,6 @@ go.app = function() {
             });
         });
 
-        self.add("state_info_consent", function(name) {
-            // Skip to message consent if the user has already given info consent
-            var consent = _.get(self.im.user.answers, "contact.fields.info_consent", "") || "";
-            if(consent.toUpperCase() === "TRUE"){
-                return self.states.create("state_research_consent");
-            }
-            return new MenuState(name, {
-                question: $(
-                    "Does she agree to let us process her info & to getting msgs? " +
-                    "She may get msgs on public holidays & weekends."
-                ),
-                error: $(
-                    "Sorry we don't understand. Please enter the number next to the mother's " +
-                    "answer."
-                ),
-                choices: [
-                    new Choice("state_research_consent", $("Yes")),
-                    new Choice("state_info_consent_confirm", $("No")),
-                    new Choice("state_more_info", $("She needs more info to decide"))
-                ]
-            });
-        });
-
-        self.add("state_info_consent_confirm", function(name) {
-            return new MenuState(name, {
-                question: $(
-                    "Unfortunately, without agreeing she can't sign up to MomConnect. Does she " +
-                    "agree to MomConnect processing her personal info?"
-                ),
-                error: $(
-                    "Sorry we don't understand. Please enter the number next to the mother's " +
-                    "answer."
-                ),
-                choices: [
-                    new Choice("state_research_consent", $("Yes")),
-                    new Choice("state_no_consent", $("No"))
-                ]
-            });
-        });
-
         self.states.add("state_no_consent", function(name) {
             return new EndState(name, {
                 next: "state_start",
@@ -562,28 +521,6 @@ go.app = function() {
                     "Thank you for considering MomConnect. We respect the mom's decision. " +
                     "Have a lovely day."
                 )
-            });
-        });
-
-        self.add("state_research_consent", function(name) {
-            var consent = _.get(self.im.user.answers, "contact.fields.research_consent", "") || "";
-            if(consent.toUpperCase() === "TRUE"){
-                return self.states.create("state_clinic_code");
-            }
-            return new ChoiceState(name, {
-                question: $(
-                    "We may occasionally send messages for historical, statistical, or research " +
-                    "reasons. We'll keep her info safe. Does she agree?"
-                ),
-                error: $(
-                    "Sorry we don't understand. Please enter the number next to the mother's " +
-                    "answer."
-                ),
-                choices: [
-                    new Choice("yes", $("Yes")),
-                    new Choice("no", $("No, only send MC msgs")),
-                ],
-                next: "state_clinic_code"
             });
         });
 
@@ -1109,8 +1046,7 @@ go.app = function() {
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
             var data = {
-                research_consent:
-                    self.im.user.answers.state_research_consent === "no" ? "FALSE" : "TRUE",
+                research_consent: "TRUE",
                 registered_by: utils.normalize_msisdn(self.im.user.addr, "ZA"),
                 language: "eng",
                 timestamp: new moment.utc(self.im.config.testing_today).format(),
@@ -1215,82 +1151,6 @@ go.app = function() {
                         return choice.value;
                     }
                 }
-            });
-        });
-
-        self.add('state_question_what', function(name) {
-            return new PaginatedState(name, {
-                text: $(
-                    "MomConnect is a Health Department programme. It sends helpful messages for " +
-                    "you and your baby."
-                ),
-                characters_per_page: 160,
-                exit: $("Back"),
-                more: $("Next"),
-                back: $("Previous"),
-                next: "state_more_info"
-            });
-        });
-
-
-        self.add('state_question_why', function(name) {
-            return new PaginatedState(name, {
-                text: $(
-                    "MomConnect needs your personal info to send you messages that are relevant " +
-                    "to your pregnancy or your baby's age. By knowing where you registered for " +
-                    "MomConnect, the Health Department can make sure that the service is being " +
-                    "offered to women at your clinic. Your info assists the Health Department to " +
-                    "improve its services, understand your needs better and provide even better " +
-                    "messaging."
-                ),
-                characters_per_page: 160,
-                exit: $("Back"),
-                more: $("Next"),
-                back: $("Previous"),
-                next: "state_more_info"
-            });
-        });
-
-        self.add('state_question_pi', function(name) {
-            return new PaginatedState(name, {
-                text: $(
-                    "MomConnect collects your cell and ID numbers, clinic location, and info " +
-                    "about how your pregnancy or baby is progressing."
-                ),
-                characters_per_page: 160,
-                exit: $("Back"),
-                more: $("Next"),
-                back: $("Previous"),
-                next: "state_more_info"
-            });
-        });
-
-        self.add('state_question_who', function(name) {
-            return new PaginatedState(name, {
-                text: $(
-                    "MomConnect is owned by the Health Department. Your data is protected. It's " +
-                    "processed by MTN, Cell C, Telkom, Vodacom, Praekelt, Jembi, HISP & WhatsApp."
-                ),
-                characters_per_page: 160,
-                exit: $("Back"),
-                more: $("Next"),
-                back: $("Previous"),
-                next: "state_more_info"
-            });
-        });
-
-        self.add('state_question_duration', function(name) {
-            return new PaginatedState(name, {
-                text: $(
-                    "MomConnect holds your info while you're registered. If you opt out, we'll " +
-                    "use your info for historical, research & statistical reasons with your " +
-                    "consent."
-                ),
-                characters_per_page: 160,
-                exit: $("Back"),
-                more: $("Next"),
-                back: $("Previous"),
-                next: "state_more_info"
             });
         });
 
