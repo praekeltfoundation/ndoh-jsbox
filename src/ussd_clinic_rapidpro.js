@@ -140,16 +140,31 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_clinic_code"
+                next: "state_whatsapp_check"
             });
+        });
+
+        self.add("state_whatsapp_contact_check", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(
+                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
+            self.whatsapp.contact_check(msisdn, false).then(_.noop, _.noop);
+            return self.whatsapp.contact_check(msisdn, true)
+                .then(function(result) {
+                    self.im.user.set_answer("on_whatsapp", result);
+                    return self.states.create("state_clinic_code");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
         });
 
         self.add("state_clinic_code", function(name, opts) {
             var text;
-            // Run a no-wait contact check in the background to populate the cache
-            var msisdn = utils.normalize_msisdn(
-                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
-            self.whatsapp.contact_check(msisdn, false).then(_.noop, _.noop);
             if(!self.im.user.answers.on_whatsapp) {
                 return self.states.create("state_not_on_whatsapp");
             }
@@ -587,7 +602,7 @@ go.app = function() {
                     }
 
                 },
-                next: "state_whatsapp_contact_check"
+                next: "state_start_popi_flow"
             });
         });
 
@@ -631,7 +646,7 @@ go.app = function() {
                         ].join("\n"));
                     }
                 },
-                next: "state_whatsapp_contact_check"
+                next: "state_start_popi_flow"
             });
         });
 
@@ -709,26 +724,8 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_whatsapp_contact_check"
+                next: "state_start_popi_flow"
             });
-        });
-
-        self.add("state_whatsapp_contact_check", function(name, opts) {
-            var msisdn = utils.normalize_msisdn(
-                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
-            return self.whatsapp.contact_check(msisdn, true)
-                .then(function(result) {
-                    self.im.user.set_answer("on_whatsapp", result);
-                    return self.states.create("state_start_popi_flow");
-                }).catch(function(e) {
-                    // Go to error state after 3 failed HTTP requests
-                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-                    if(opts.http_error_count === 3) {
-                        self.im.log.error(e.message);
-                        return self.states.create("__error__", {return_state: name});
-                    }
-                    return self.states.create(name, opts);
-                });
         });
 
         self.add("state_start_popi_flow", function(name, opts) {
