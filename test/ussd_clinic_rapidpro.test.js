@@ -228,7 +228,7 @@ describe("ussd_clinic app", function() {
                 })
                 .run();
         });
-        it("should go to state_clinic_code if the user isn't opted out or subscribed", function() {
+        it("should go to state_message_type if the user isn't opted out or subscribed", function() {
             return tester
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -239,10 +239,10 @@ describe("ussd_clinic app", function() {
                     );
                 })
                 .setup.user.state("state_get_contact")
-                .check.user.state("state_clinic_code")
+                .check.user.state("state_message_type")
                 .check(function(api) {
                     var metrics = api.metrics.stores.test_metric_store;
-                    assert.deepEqual(metrics['enter.state_clinic_code'], {agg: 'sum', values: [1]});
+                    assert.deepEqual(metrics['enter.state_message_type'], {agg: 'sum', values: [1]});
                 })
                 .run();
         });
@@ -500,14 +500,14 @@ describe("ussd_clinic app", function() {
                 })
                 .run();
         });
-        it("should go to state_clinic_code if the mother opts in", function() {
+        it("should go to state_message_type if the mother opts in", function() {
             return tester
                 .setup.user.state("state_opted_out")
                 .input("1")
-                .check.user.state("state_clinic_code")
+                .check.user.state("state_message_type")
                 .check(function(api) {
                     var metrics = api.metrics.stores.test_metric_store;
-                    assert.deepEqual(metrics['enter.state_clinic_code'], {agg: 'sum', values: [1]});
+                    assert.deepEqual(metrics['enter.state_message_type'], {agg: 'sum', values: [1]});
                 })
                 .run();
         });
@@ -533,6 +533,7 @@ describe("ussd_clinic app", function() {
         it("should ask the user for a clinic code", function() {
             return tester
                 .setup.user.state("state_clinic_code")
+                .setup.user.answer("on_whatsapp", true)
                 .check.interaction({
                     reply:[
                         "Enter the 6 digit clinic code for the facility where you are being registered, e.g. 535970",
@@ -550,6 +551,7 @@ describe("ussd_clinic app", function() {
                     );
                 })
                 .setup.user.state("state_clinic_code")
+                .setup.user.answer("on_whatsapp", true)
                 .input("111111")
                 .check.interaction({
                     reply:[
@@ -565,14 +567,22 @@ describe("ussd_clinic app", function() {
                 })
                 .run();
         });
-        it("should go to state_message_type if they enter a valid clinic code", function(){
+        it("should go to state_message_type if they enter a valid clinic code and not active or opted out", function(){
             return tester
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_openhim.exists("222222", "test", "facilityCheck")
                     );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "whatsapp:27123456789",
+                            exists: true
+                        })
+                    );
                 })
                 .setup.user.state("state_clinic_code")
+                .setup.user.answer("on_whatsapp", true)
+                .setup.user.answer("state_enter_msisdn", "0123456789")
                 .input("222222")
                 .check.user.state("state_message_type")
                 .check(function(api) {
@@ -589,6 +599,7 @@ describe("ussd_clinic app", function() {
                     );
                 })
                 .setup.user.state("state_clinic_code")
+                .setup.user.answer("on_whatsapp", true)
                 .input("333333")
                 .check(function(api){
                     assert.equal(api.http.requests.length, 3);
