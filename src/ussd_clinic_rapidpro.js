@@ -113,7 +113,7 @@ go.app = function() {
                     "answer."
                 ),
                 choices: [
-                    new Choice("state_get_contact", "Yes"),
+                    new Choice("state_whatsapp_contact_check", "Yes"),
                     new Choice("state_enter_msisdn", "No")
                 ]
             });
@@ -140,16 +140,76 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_get_contact"
+                next: "state_whatsapp_check"
             });
+        });
+
+        self.add("state_whatsapp_contact_check", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(
+                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
+            return self.whatsapp.contact_check(msisdn, true)
+                .then(function(result) {
+                    self.im.user.set_answer("on_whatsapp", result);
+                    return self.states.create("state_clinic_code");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+        self.add("state_clinic_code", function(name, opts) {
+            var text;
+            if(!self.im.user.answers.on_whatsapp) {
+                return self.states.create("state_not_on_whatsapp");
+            }
+            if(opts.error) {
+                text = $([
+                    "Sorry, we don't know that clinic number.",
+                    "",
+                    "Please enter the 6 digit clinic number again."
+                ].join("\n"));
+            } else {
+                text = $([
+                    "Enter the 6 digit clinic code for the facility where you are being registered, e.g. 535970",
+                    "",
+                    "If you don't know the code, ask the nurse who is helping you sign up"
+                ].join("\n"));
+            }
+            return new FreeText(name, {
+                question: text,
+                next: "state_clinic_code_check"
+            });
+        });
+
+        self.add("state_clinic_code_check", function(name, opts) {
+            return self.openhim.validate_mc_clinic_code(self.im.user.answers.state_clinic_code)
+                .then(function(clinic_name) {
+                    if(!clinic_name) {
+                        return self.states.create("state_clinic_code", {error: true});
+                    }
+                    else {
+                        return self.states.create("state_get_contact");
+                    }
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
         });
 
         self.add("state_get_contact", function(name, opts) {
             // Fetches the contact from RapidPro, and delegates to the correct state
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
-            // Run a no-wait contact check in the background to populate the cache
-            self.whatsapp.contact_check(msisdn, false).then(_.noop, _.noop);
 
             return self.rapidpro.get_contact({urn: "whatsapp:" + _.trim(msisdn, "+")})
                 .then(function(contact) {
@@ -159,7 +219,7 @@ go.app = function() {
                     } else if (_.toUpper(_.get(contact, "fields.opted_out")) === "TRUE") {
                         return self.states.create("state_opted_out");
                     } else {
-                        return self.states.create("state_clinic_code");
+                        return self.states.create("state_message_type");
                     }
                 }).catch(function(e) {
                     // Go to error state after 3 failed HTTP requests
@@ -260,7 +320,7 @@ go.app = function() {
                     "Enter the number that matches your answer."
                 ].join("\n")),
                 choices: [
-                    new Choice("state_clinic_code", $("Yes")),
+                    new Choice("state_message_type", $("Yes")),
                     new Choice("state_no_opt_in", $("No"))
                 ]
             });
@@ -284,47 +344,6 @@ go.app = function() {
                     "Have a lovely day."
                 )
             });
-        });
-
-        self.add("state_clinic_code", function(name, opts) {
-            var text;
-            if(opts.error) {
-                text = $([
-                    "Sorry, we don't know that clinic number.",
-                    "",
-                    "Please enter the 6 digit clinic number again."
-                ].join("\n"));
-            } else {
-                text = $([
-                    "Enter the 6 digit clinic code for the facility where you are being registered, e.g. 535970",
-                    "",
-                    "If you don't know the code, ask the nurse who is helping you sign up"
-                ].join("\n"));
-            }
-            return new FreeText(name, {
-                question: text,
-                next: "state_clinic_code_check"
-            });
-        });
-
-        self.add("state_clinic_code_check", function(name, opts) {
-            return self.openhim.validate_mc_clinic_code(self.im.user.answers.state_clinic_code)
-                .then(function(clinic_name) {
-                    if(!clinic_name) {
-                        return self.states.create("state_clinic_code", {error: true});
-                    }
-                    else {
-                        return self.states.create("state_message_type");
-                    }
-                }).catch(function(e) {
-                    // Go to error state after 3 failed HTTP requests
-                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-                    if(opts.http_error_count === 3) {
-                        self.im.log.error(e.message);
-                        return self.states.create("__error__", {return_state: name});
-                    }
-                    return self.states.create(name, opts);
-                });
         });
 
         self.add("state_message_type", function(name) {
@@ -582,7 +601,7 @@ go.app = function() {
                     }
 
                 },
-                next: "state_whatsapp_contact_check"
+                next: "state_start_popi_flow"
             });
         });
 
@@ -626,7 +645,7 @@ go.app = function() {
                         ].join("\n"));
                     }
                 },
-                next: "state_whatsapp_contact_check"
+                next: "state_start_popi_flow"
             });
         });
 
@@ -704,32 +723,11 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_whatsapp_contact_check"
+                next: "state_start_popi_flow"
             });
         });
 
-        self.add("state_whatsapp_contact_check", function(name, opts) {
-            var msisdn = utils.normalize_msisdn(
-                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
-            return self.whatsapp.contact_check(msisdn, true)
-                .then(function(result) {
-                    self.im.user.set_answer("on_whatsapp", result);
-                    return self.states.create("state_start_popi_flow");
-                }).catch(function(e) {
-                    // Go to error state after 3 failed HTTP requests
-                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-                    if(opts.http_error_count === 3) {
-                        self.im.log.error(e.message);
-                        return self.states.create("__error__", {return_state: name});
-                    }
-                    return self.states.create(name, opts);
-                });
-        });
-
         self.add("state_start_popi_flow", function(name, opts) {
-            if(!self.im.user.answers.on_whatsapp) {
-                return self.states.create("state_not_on_whatsapp");
-            }
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
 

@@ -228,7 +228,7 @@ describe("ussd_clinic app", function() {
                 })
                 .run();
         });
-        it("should go to state_clinic_code if the user isn't opted out or subscribed", function() {
+        it("should go to state_message_type if the user isn't opted out or subscribed", function() {
             return tester
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -239,10 +239,10 @@ describe("ussd_clinic app", function() {
                     );
                 })
                 .setup.user.state("state_get_contact")
-                .check.user.state("state_clinic_code")
+                .check.user.state("state_message_type")
                 .check(function(api) {
                     var metrics = api.metrics.stores.test_metric_store;
-                    assert.deepEqual(metrics['enter.state_clinic_code'], {agg: 'sum', values: [1]});
+                    assert.deepEqual(metrics['enter.state_message_type'], {agg: 'sum', values: [1]});
                 })
                 .run();
         });
@@ -500,14 +500,14 @@ describe("ussd_clinic app", function() {
                 })
                 .run();
         });
-        it("should go to state_clinic_code if the mother opts in", function() {
+        it("should go to state_message_type if the mother opts in", function() {
             return tester
                 .setup.user.state("state_opted_out")
                 .input("1")
-                .check.user.state("state_clinic_code")
+                .check.user.state("state_message_type")
                 .check(function(api) {
                     var metrics = api.metrics.stores.test_metric_store;
-                    assert.deepEqual(metrics['enter.state_clinic_code'], {agg: 'sum', values: [1]});
+                    assert.deepEqual(metrics['enter.state_message_type'], {agg: 'sum', values: [1]});
                 })
                 .run();
         });
@@ -533,6 +533,7 @@ describe("ussd_clinic app", function() {
         it("should ask the user for a clinic code", function() {
             return tester
                 .setup.user.state("state_clinic_code")
+                .setup.user.answer("on_whatsapp", true)
                 .check.interaction({
                     reply:[
                         "Enter the 6 digit clinic code for the facility where you are being registered, e.g. 535970",
@@ -550,6 +551,7 @@ describe("ussd_clinic app", function() {
                     );
                 })
                 .setup.user.state("state_clinic_code")
+                .setup.user.answer("on_whatsapp", true)
                 .input("111111")
                 .check.interaction({
                     reply:[
@@ -565,14 +567,22 @@ describe("ussd_clinic app", function() {
                 })
                 .run();
         });
-        it("should go to state_message_type if they enter a valid clinic code", function(){
+        it("should go to state_message_type if they enter a valid clinic code and not active or opted out", function(){
             return tester
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_openhim.exists("222222", "test", "facilityCheck")
                     );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "whatsapp:27123456789",
+                            exists: true
+                        })
+                    );
                 })
                 .setup.user.state("state_clinic_code")
+                .setup.user.answer("on_whatsapp", true)
+                .setup.user.answer("state_enter_msisdn", "0123456789")
                 .input("222222")
                 .check.user.state("state_message_type")
                 .check(function(api) {
@@ -589,6 +599,7 @@ describe("ussd_clinic app", function() {
                     );
                 })
                 .setup.user.state("state_clinic_code")
+                .setup.user.answer("on_whatsapp", true)
                 .input("333333")
                 .check(function(api){
                     assert.equal(api.http.requests.length, 3);
@@ -1334,7 +1345,7 @@ describe("ussd_clinic app", function() {
         });
     });
     describe("state_whatsapp_contact_check + state_start_popi_flow", function() {
-        it("should request to the Whatsapp and RapidPro API", function() {
+        it("should request for a clinic code", function() {
             return tester
                 .setup.user.state("state_whatsapp_contact_check")
                 .setup.user.answers({state_enter_msisdn: "0820001001"})
@@ -1345,6 +1356,21 @@ describe("ussd_clinic app", function() {
                             wait: true
                         })
                     );
+                })
+                .check.interaction({
+                    state: "state_clinic_code",
+                    reply: [
+                        "Enter the 6 digit clinic code for the facility where you are being registered, e.g. 535970\n",
+                        "If you don't know the code, ask the nurse who is helping you sign up"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should request to the RapidPro API", function() {
+            return tester
+                .setup.user.state("state_start_popi_flow")
+                .setup.user.answers({state_enter_msisdn: "0820001001"})
+                .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
                             "popi-flow-uuid", null, "whatsapp:27820001001"
@@ -1360,11 +1386,39 @@ describe("ussd_clinic app", function() {
                     ].join("\n")
                 })
                 .check(function(api) {
-                    assert.equal(api.http.requests.length, 2);
+                    assert.equal(api.http.requests.length, 1);
                     var urls = _.map(api.http.requests, "url");
                     assert.deepEqual(urls, [
-                        "http://pilot.example.org/v1/contacts",
                         "https://rapidpro/api/v2/flow_starts.json"
+                    ]);
+                    assert.equal(api.log.error.length, 0);
+                })
+                .run();
+        });
+        it("should request to the Whatsapp API for a contact check", function() {
+            return tester
+                .setup.user.state("state_whatsapp_contact_check")
+                .setup.user.answers({state_enter_msisdn: "0820001001"})
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27820001001",
+                            wait: true
+                        })
+                    );
+                })
+                .check.interaction({
+                    state: "state_clinic_code",
+                    reply: [
+                        "Enter the 6 digit clinic code for the facility where you are being registered, e.g. 535970\n",
+                        "If you don't know the code, ask the nurse who is helping you sign up"
+                    ].join("\n")
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    var urls = _.map(api.http.requests, "url");
+                    assert.deepEqual(urls, [
+                        "http://pilot.example.org/v1/contacts"
                     ]);
                     assert.equal(api.log.error.length, 0);
                 })
@@ -1401,15 +1455,9 @@ describe("ussd_clinic app", function() {
         });
         it("should retry HTTP call when RapidPro is down", function() {
             return tester
-                .setup.user.state("state_whatsapp_contact_check")
+                .setup.user.state("state_start_popi_flow")
                 .setup.user.answers({state_enter_msisdn: "0820001001"})
                 .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27820001001",
-                            wait: true
-                        })
-                    );
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
                             "popi-flow-uuid", null, "whatsapp:27820001001", null, true
@@ -1425,8 +1473,7 @@ describe("ussd_clinic app", function() {
                 })
                 .check.reply.ends_session()
                 .check(function(api){
-                    assert.equal(api.http.requests.length, 4);
-                    assert.equal(api.http.requests[0].url, "http://pilot.example.org/v1/contacts");
+                    assert.equal(api.http.requests.length, 3);
                     api.http.requests.slice(-1).forEach(function(request){
                         assert.equal(request.url, "https://rapidpro/api/v2/flow_starts.json");
                     });
