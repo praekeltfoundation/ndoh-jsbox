@@ -351,7 +351,7 @@ go.app = function() {
                     "answer."
                 ),
                 choices: [
-                    new Choice("state_clinic_code", "Yes"),
+                    new Choice("state_whatsapp_contact_check", "Yes"),
                     new Choice("state_enter_msisdn", "No")
                 ]
             });
@@ -385,7 +385,6 @@ go.app = function() {
         self.add("state_whatsapp_contact_check", function(name, opts) {
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
-            self.whatsapp.contact_check(msisdn, false).then(_.noop, _.noop);
             return self.whatsapp.contact_check(msisdn, true)
                 .then(function(result) {
                     self.im.user.set_answer("on_whatsapp", result);
@@ -967,9 +966,6 @@ go.app = function() {
         });
 
         self.add("state_start_popi_flow", function(name, opts) {
-            /*if(!self.im.user.answers.on_whatsapp) {
-                return self.states.create("state_not_on_whatsapp");
-            }*/
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
 
