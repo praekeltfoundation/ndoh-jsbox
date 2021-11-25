@@ -729,9 +729,9 @@ go.app = function() {
         });
 
         self.add("state_start_popi_flow", function(name, opts) {
-            if(!self.im.user.answers.on_whatsapp) {
+            /*if(!self.im.user.answers.on_whatsapp) {
                 return self.states.create("state_not_on_whatsapp");
-            }
+            }*/
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
 

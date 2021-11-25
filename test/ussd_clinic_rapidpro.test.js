@@ -1366,7 +1366,64 @@ describe("ussd_clinic app", function() {
                 })
                 .run();
         });
-        /*
+        it("should request to the RapidPro API", function() {
+            return tester
+                .setup.user.state("state_start_popi_flow")
+                .setup.user.answers({state_enter_msisdn: "0820001001"})
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "popi-flow-uuid", null, "whatsapp:27820001001"
+                        )
+                    );
+                })
+                .check.interaction({
+                    state: "state_accept_popi",
+                    reply: [
+                        "Your personal information is protected by law (POPIA) and by the " +
+                        "MomConnect Privacy Policy that was just sent to you on WhatsApp.",
+                        "1. Next"
+                    ].join("\n")
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    var urls = _.map(api.http.requests, "url");
+                    assert.deepEqual(urls, [
+                        "https://rapidpro/api/v2/flow_starts.json"
+                    ]);
+                    assert.equal(api.log.error.length, 0);
+                })
+                .run();
+        });
+        it("should request to the Whatsapp API for a contact check", function() {
+            return tester
+                .setup.user.state("state_whatsapp_contact_check")
+                .setup.user.answers({state_enter_msisdn: "0820001001"})
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27820001001",
+                            wait: true
+                        })
+                    );
+                })
+                .check.interaction({
+                    state: "state_clinic_code",
+                    reply: [
+                        "Enter the 6 digit clinic code for the facility where you are being registered, e.g. 535970\n",
+                        "If you don't know the code, ask the nurse who is helping you sign up"
+                    ].join("\n")
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    var urls = _.map(api.http.requests, "url");
+                    assert.deepEqual(urls, [
+                        "http://pilot.example.org/v1/contacts"
+                    ]);
+                    assert.equal(api.log.error.length, 0);
+                })
+                .run();
+        });
         it("should retry HTTP call when WhatsApp is down", function() {
             return tester
                 .setup.user.state("state_whatsapp_contact_check")
@@ -1398,15 +1455,9 @@ describe("ussd_clinic app", function() {
         });
         it("should retry HTTP call when RapidPro is down", function() {
             return tester
-                .setup.user.state("state_whatsapp_contact_check")
+                .setup.user.state("state_start_popi_flow")
                 .setup.user.answers({state_enter_msisdn: "0820001001"})
                 .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27820001001",
-                            wait: true
-                        })
-                    );
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
                             "popi-flow-uuid", null, "whatsapp:27820001001", null, true
@@ -1422,8 +1473,7 @@ describe("ussd_clinic app", function() {
                 })
                 .check.reply.ends_session()
                 .check(function(api){
-                    assert.equal(api.http.requests.length, 4);
-                    assert.equal(api.http.requests[0].url, "http://pilot.example.org/v1/contacts");
+                    assert.equal(api.http.requests.length, 3);
                     api.http.requests.slice(-1).forEach(function(request){
                         assert.equal(request.url, "https://rapidpro/api/v2/flow_starts.json");
                     });
@@ -1431,7 +1481,7 @@ describe("ussd_clinic app", function() {
                     assert(api.log.error[0].includes("HttpResponseError"));
                 })
                 .run();
-        });*/
+        });
     });
     describe("state_accept_popi", function() {
         it("should inform the user about popia", function() {
