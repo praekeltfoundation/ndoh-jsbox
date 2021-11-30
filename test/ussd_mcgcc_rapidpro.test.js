@@ -247,6 +247,33 @@ describe("ussd_mcgcc app", function() {
                 .check.user.state("state_supporter_unknown")
                 .run();
         });
+        it("should show the content of state unknown", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "whatsapp:27123456789",
+                            exists: true,
+                            fields: {
+                                prebirth_messaging: null,
+                                postbirth_messaging: null,
+                                supporter: null,
+                                supp_status: null
+                            }
+                        })
+                    );
+                })    
+                .start()
+                .check.interaction({
+                    state: "state_supporter_unknown",
+                    reply: [
+                        "Welcome to Dept. of Health's MomConnect!",
+                        "We support moms during & after pregnancy. " +
+                        "If you are a mom, you can signup for messages at a clinic."
+                    ].join("\n")
+                })
+                .run();
+        });
     });
 
     describe("mother_registration", function() {
