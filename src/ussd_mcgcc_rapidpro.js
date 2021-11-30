@@ -415,7 +415,7 @@ go.app = function() {
                 next: "state_start",
                 text: $(
                     "Welcome to Dept. of Health's MomConnect!" +
-                    "\nWe support moms during & after pregnancy.  " +
+                    "\nWe support moms during & after pregnancy. " +
                     "If you are a mom, you can signup for messages at a clinic."
                 )
             });
