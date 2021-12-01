@@ -1448,7 +1448,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state_first_name: "testin very long name >30 chars",
                     state_last_name: "last name",
                     city_location: "+12.34-56.78/",
-                    state_age: "<18",
+                    state_age: ">65",
                     state_fever: false,
                     state_cough: false,
                     state_sore_throat: false,
@@ -1470,7 +1470,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 province: "ZA-WC",
                                 city: "Cape Town",
                                 city_location: "+12.34-56.78/",
-                                age: "<18",
+                                age: ">65",
                                 fever: false,
                                 cough: false,
                                 sore_throat: false,
@@ -1513,10 +1513,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .setup.user.state("state_tracing")
                 .setup.user.answers({
                     state_province: "ZA-WC",
-                    state_city: "Cape Town",
                     state_age: "<18",
-                    state_first_name: "short first",
-                    state_last_name: "last",
                     state_fever: true,
                     state_cough: false,
                     state_sore_throat: false,
@@ -1534,9 +1531,6 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 msisdn: "+27123456789",
                                 source: "USSD",
                                 province: "ZA-WC",
-                                city: "Cape Town",
-                                first_name: "short first",
-                                last_name: "last",
                                 age: "<18",
                                 fever: true,
                                 cough: false,
@@ -1563,7 +1557,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply: [
-                      date + " short first, SELF-ISOLATE in your room for 10 days. " +
+                      date + " , SELF-ISOLATE in your room for 10 days. " +
                       "Monitor symptoms on HealthCheck",
                       "1. Next"
                     ].join('\n'),
@@ -1645,8 +1639,6 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state_cough: false,
                     state_sore_throat: false,
                     state_exposure: "No",
-                    state_first_name: "first",
-                    state_last_name: "last",
                     state_university: "Other",
                     state_campus: "Other",
                     state_vaccine_uptake: "PARTIALLY",
@@ -1668,8 +1660,6 @@ describe("ussd_higherhealth_healthcheck app", function () {
                                 exposure: "No",
                                 tracing: false,
                                 risk: "low",
-                                first_name: "first",
-                                last_name: "last",
                                 data:{
                                     university:{"name":"Other"},
                                     campus:{"name":"Other"},

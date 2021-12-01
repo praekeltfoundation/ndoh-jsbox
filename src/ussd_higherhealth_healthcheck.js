@@ -770,7 +770,10 @@ go.app = (function () {
         risk = self.calculate_risk();
       }
       var text = "";
-      var first_name = truncateString((answers.state_first_name + ""), 27);
+      var first_name = "";
+      if (answers.state_age != "<18"){
+        first_name = truncateString((answers.state_first_name + ""), 27);
+      }
       var date = moment().format('YY-MM-DD');
       if (answers.state_tracing) {
         if (risk === "low") {
