@@ -384,18 +384,18 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 })
                 .run();
         });
-        it("should go to state_first_name for yes", function () {
+        it("should go to state_age for yes", function () {
             return tester
                 .setup.user.state("state_terms")
                 .input("1")
-                .check.user.state("state_first_name")
+                .check.user.state("state_age")
                 .run();
         });
-        it("should go to state_first_name for returning users", function () {
+        it("should go to state_age for returning users", function () {
             return tester
                 .setup.user.answer("returning_user", true)
                 .setup.user.state("state_terms")
-                .check.user.state("state_first_name")
+                .check.user.state("state_age")
                 .run();
         });
         it("should go to state_end for no", function () {
@@ -480,18 +480,18 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 })
                 .run();
         });
-        it("should go to state_age on valid input", function () {
+        it("should go to state_province on valid input", function () {
             return tester
                 .setup.user.state("state_last_name")
                 .input("last")
-                .check.user.state("state_age")
+                .check.user.state("state_province")
                 .run();
         });
-        it("should go to state_age if value exists", function () {
+        it("should go to state_province if value exists", function () {
             return tester
                 .setup.user.answer("state_last_name", "Doe")
                 .setup.user.state("state_last_name")
-                .check.user.state("state_age")
+                .check.user.state("state_province")
                 .run();
         });
     });
