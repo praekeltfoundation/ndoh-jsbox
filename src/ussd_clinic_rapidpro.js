@@ -140,7 +140,7 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_whatsapp_check"
+                next: "state_whatsapp_contact_check"
             });
         });
 
