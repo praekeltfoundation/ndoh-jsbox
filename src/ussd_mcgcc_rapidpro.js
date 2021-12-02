@@ -730,7 +730,7 @@ go.app = function() {
                 ]
             });
         });
-        
+
         self.add('state_supporter_change_info', function(name) {
             var contact = self.im.user.answers.contact;
             if (_.toUpper(_.get(contact, "fields.preferred_channel")) === "WHATSAPP") {
@@ -867,8 +867,6 @@ go.app = function() {
                 next: "state_supporter_change_language_rapidpro"
             });
         });
-
-
 
         self.add("state_supporter_new_language_sms", function(name) {
             return new ChoiceState(name, {
