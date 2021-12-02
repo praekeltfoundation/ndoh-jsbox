@@ -882,44 +882,30 @@ go.app = function() {
 
         self.add('state_supporter_change_info', function(name) {
             var contact = self.im.user.answers.contact;
-            if (_.toUpper(_.get(contact, "fields.preferred_channel")) === "WHATSAPP") {
-                return self.states.create("state_supporter_change_info_WA");
-              }
+            var choices = [
+                new Choice("state_supporter_new_name", $("Name")),
+                new Choice("state_supporter_new_language_whatsapp", $("Language")),
+                new Choice("state_supporter_new_msisdn", $("Cellphone Number")),
+                
+                new Choice("state_supporter_channel_switch_confirm",
+                    $("Change from {{current_channel}} to {{alternative_channel}}").context({
+                        current_channel: self.contact_current_channel(contact),
+                        alternative_channel: self.contact_alternative_channel(contact),
+                    })),
+                new Choice("state_supporter_new_research_consent", $("Research Consent")),
+                new Choice("state_supporter_profile", $("Back"))
+            ];
+            var preferred_channel = (_.toUpper(_.get(contact, "fields.preferred_channel")));
+            if (preferred_channel === "WHATSAPP"){
+                choices.splice(3,1);
+            }
             return new MenuState(name, {
                 question: $(
                     "What would you like to change?"),
                 error: $(
                     "Please try again. Reply with the nr that matches your answer."),
                 accept_labels: true,
-                choices: [
-                    new Choice("state_supporter_new_name", $("Name")),
-                    new Choice("state_supporter_new_language_whatsapp", $("Language")),
-                    new Choice("state_supporter_new_msisdn", $("Cellphone Number")),
-                    new Choice("state_supporter_channel_switch_confirm",
-                        $("Change from {{current_channel}} to {{alternative_channel}}").context({
-                            current_channel: self.contact_current_channel(contact),
-                            alternative_channel: self.contact_alternative_channel(contact),
-                        })),
-                    new Choice("state_supporter_new_research_consent", $("Research Consent")),
-                    new Choice("state_supporter_profile", $("Back"))
-                ]
-            });
-        });
-
-        self.add('state_supporter_change_info_WA', function(name) {
-            return new MenuState(name, {
-                question: $(
-                    "What would you like to change?"),
-                error: $(
-                    "Please try again. Reply with the nr that matches your answer."),
-                accept_labels: true,
-                choices: [
-                    new Choice("state_supporter_new_name", $("Name")),
-                    new Choice("state_supporter_new_language_whatsapp", $("Language")),
-                    new Choice("state_supporter_new_msisdn", $("Cellphone Number")),
-                    new Choice("state_supporter_new_research_consent", $("Research Consent")),
-                    new Choice("state_supporter_profile", $("Back"))
-                ]
+                choices: choices
             });
         });
 

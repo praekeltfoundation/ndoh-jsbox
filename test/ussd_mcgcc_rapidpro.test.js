@@ -922,7 +922,7 @@ describe("ussd_mcgcc app", function() {
                 })
                 .input("2")
                 .check.interaction({
-                    state: "state_supporter_change_info_WA",
+                    state: "state_supporter_change_info",
                     reply: [
                         "What would you like to change?",
                         "1. Name",
