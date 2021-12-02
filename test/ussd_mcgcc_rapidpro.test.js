@@ -912,7 +912,7 @@ describe("ussd_mcgcc app", function() {
                 })
                 .run();
         });
-        it("should show a list of options to change", function() {
+        it("should show a list of options to change without channel for contact on Whatsapp", function() {
             return tester.setup.user
                 .state("state_supporter_profile")
                 .setup.user.answer("contact", {
@@ -928,7 +928,29 @@ describe("ussd_mcgcc app", function() {
                         "1. Name",
                         "2. Language",
                         "3. Cellphone Number",
-                        "4. Change from WhatsApp to SMS",
+                        "4. Research Consent",
+                        "5. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show a list of options to change with channel for contact on SMS", function() {
+            return tester.setup.user
+                .state("state_supporter_profile")
+                .setup.user.answer("contact", {
+                    fields: {
+                        preferred_channel: "SMS"
+                    }
+                })
+                .input("2")
+                .check.interaction({
+                    state: "state_supporter_change_info",
+                    reply: [
+                        "What would you like to change?",
+                        "1. Name",
+                        "2. Language",
+                        "3. Cellphone Number",
+                        "4. Change from SMS to WhatsApp",
                         "5. Research Consent",
                         "6. Back"
                     ].join("\n")
