@@ -912,12 +912,34 @@ describe("ussd_mcgcc app", function() {
                 })
                 .run();
         });
-        it("should show a list of options to change", function() {
+        it("should show a list of options to change without channel for contact on Whatsapp", function() {
             return tester.setup.user
                 .state("state_supporter_profile")
                 .setup.user.answer("contact", {
                     fields: {
                         preferred_channel: "WhatsApp"
+                    }
+                })
+                .input("2")
+                .check.interaction({
+                    state: "state_supporter_change_info_WA",
+                    reply: [
+                        "What would you like to change?",
+                        "1. Name",
+                        "2. Language",
+                        "3. Cellphone Number",
+                        "4. Research Consent",
+                        "5. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show a list of options to change with channel for contact on SMS", function() {
+            return tester.setup.user
+                .state("state_supporter_profile")
+                .setup.user.answer("contact", {
+                    fields: {
+                        preferred_channel: "SMS"
                     }
                 })
                 .input("2")
@@ -928,8 +950,9 @@ describe("ussd_mcgcc app", function() {
                         "1. Name",
                         "2. Language",
                         "3. Cellphone Number",
-                        "4. Research Consent",
-                        "5. Back"
+                        "4. Change from SMS to WhatsApp",
+                        "5. Research Consent",
+                        "6. Back"
                     ].join("\n")
                 })
                 .run();
@@ -1229,10 +1252,67 @@ describe("ussd_mcgcc app", function() {
                 })
                 .run();
         });
+        it("should ask the user if they want to switch channels", function() {
+            return tester
+              .setup.user.state("state_supporter_channel_switch_confirm")
+              .setup.user.answer("contact", {fields: {preferred_channel: "SMS"}})
+              .check.interaction({
+                reply: [
+                  "Are you sure you want to get your MomConnect messages on WhatsApp?",
+                  "1. Yes",
+                  "2. No"
+                ].join("\n")
+              })
+              .run();
+          });
+          it("should show the user an error on invalid input", function() {
+            return tester
+              .setup.user.state("state_supporter_channel_switch_confirm")
+              .setup.user.answer("contact", {fields: {preferred_channel: "SMS"}})
+              .input("A")
+              .check.interaction({
+                reply: [
+                  "Sorry we don't recognise that reply. Please enter the number next to " +
+                  "your answer.",
+                  "1. Yes",
+                  "2. No"
+                ].join("\n")
+              })
+              .run();
+          });
+          it("should submit the channel switch if they choose yes", function() {
+            return tester
+              .setup.user.state("state_supporter_channel_switch_confirm")
+              .setup.user.answer("contact", {fields: {preferred_channel: "SMS"}})
+              .setup(function(api) {
+                api.http.fixtures.add(
+                  fixtures_rapidpro.start_flow(
+                    "whatsapp-switch-flow-uuid", null, "whatsapp:27123456789"
+                  )
+                );
+              })
+              .input("1")
+              .check.interaction({
+                reply: [
+                  "Okay. I'll send you MomConnect messages on WhatsApp. " +
+                  "To move back to SMS, dial *134*550*9#.",
+                  "1. Back",
+                  "2. Exit"
+                ].join("\n"),
+                state: "state_supporter_channel_switch_success"
+                })
+                .check(function(api) {
+                assert.equal(api.http.requests.length, 1);
+                assert.equal(
+                api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
+                );
+              })
+              .run();
+          }); 
         it("should ask for research consent", function() {
             return tester.setup.user
                 .state("state_supporter_change_info")
-                .input("4")
+                .input("5")
                 .check.interaction({
                     state: "state_supporter_new_research_consent",
                     reply: [

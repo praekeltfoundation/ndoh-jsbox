@@ -879,8 +879,34 @@ go.app = function() {
                 ]
             });
         });
-
+        
         self.add('state_supporter_change_info', function(name) {
+            var contact = self.im.user.answers.contact;
+            if (_.toUpper(_.get(contact, "fields.preferred_channel")) === "WHATSAPP") {
+                return self.states.create("state_supporter_change_info_WA");
+              }
+            return new MenuState(name, {
+                question: $(
+                    "What would you like to change?"),
+                error: $(
+                    "Please try again. Reply with the nr that matches your answer."),
+                accept_labels: true,
+                choices: [
+                    new Choice("state_supporter_new_name", $("Name")),
+                    new Choice("state_supporter_new_language_whatsapp", $("Language")),
+                    new Choice("state_supporter_new_msisdn", $("Cellphone Number")),
+                    new Choice("state_supporter_channel_switch_confirm",
+                        $("Change from {{current_channel}} to {{alternative_channel}}").context({
+                            current_channel: self.contact_current_channel(contact),
+                            alternative_channel: self.contact_alternative_channel(contact),
+                        })),
+                    new Choice("state_supporter_new_research_consent", $("Research Consent")),
+                    new Choice("state_supporter_profile", $("Back"))
+                ]
+            });
+        });
+
+        self.add('state_supporter_change_info_WA', function(name) {
             return new MenuState(name, {
                 question: $(
                     "What would you like to change?"),
@@ -1199,6 +1225,83 @@ go.app = function() {
                 }),
             });
         });
+
+        self.add("state_supporter_channel_switch_confirm", function (name) {
+            var contact = self.im.user.answers.contact;
+            return new MenuState(name, {
+                question: $("Are you sure you want to get your MomConnect messages on " +
+                "{{alternative_channel}}?").context({
+                    alternative_channel: self.contact_alternative_channel(contact)
+                }),
+                choices: [
+                    new Choice("state_supporter_channel_switch_rapidpro", $("Yes")),
+                    new Choice("state_no_channel_switch", $("No")),
+                ],
+                error: $("Sorry we don't recognise that reply. " + 
+                "Please enter the number next to your answer.")
+            });
+        });
+
+        self.add("state_no_channel_switch", function (name) {
+            var contact = self.im.user.answers.contact;
+            return new MenuState(name, {
+              question: $(
+                "You'll keep getting your messages on {{channel}}. If you change your mind, " +
+                "dial *134*550*9#. What would you like to do?"
+              ).context({ channel: self.contact_current_channel(contact) }),
+              choices: [
+                new Choice("state_start", $("Back to main menu")),
+                new Choice("state_exit", $("Exit"))
+              ],
+              error: $("Sorry we don't recognise that reply. " + 
+                "Please enter the number next to your answer.")
+            });
+        });
+
+        self.add("state_supporter_channel_switch_rapidpro", function (name, opts) {
+            var contact = self.im.user.answers.contact, flow_uuid;
+            if (_.toUpper(_.get(contact, "fields.preferred_channel")) === "WHATSAPP") {
+              flow_uuid = self.im.config.sms_switch_flow_uuid;
+            } else {
+              flow_uuid = self.im.config.whatsapp_switch_flow_uuid;
+            }
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+      
+            return self.rapidpro
+              .start_flow(flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"))
+              .then(function () {
+                return self.states.create("state_supporter_channel_switch_success");
+              }).catch(function (e) {
+                // Go to error state after 3 failed HTTP requests
+                opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                if (opts.http_error_count === 3) {
+                  self.im.log.error(e.message);
+                  return self.states.create("__error__", { return_state: name });
+                }
+                return self.states.create(name, opts);
+              });
+        });
+
+        self.add("state_supporter_channel_switch_success", function (name) {
+            var contact = self.im.user.answers.contact;
+            return new MenuState(name, {
+              question: $(
+                "Okay. I'll send you MomConnect messages on {{alternative_channel}}. " +
+                "To move back to {{current_channel}}, dial *134*550*9#."
+              ).context({
+                alternative_channel: self.contact_alternative_channel(contact),
+                current_channel: self.contact_current_channel(contact)
+              }),
+              choices: [
+                new Choice("state_supporter_profile", $("Back")),
+                new Choice("state_exit", $("Exit"))
+              ],
+              error: $(
+                "Sorry we don't recognise that reply. Please enter the number next to your " +
+                "answer."
+              )
+            });
+          });
 
         self.add("state_supporter_new_research_consent", function(name) {
             return new ChoiceState(name, {
