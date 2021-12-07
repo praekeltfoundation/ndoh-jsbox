@@ -1778,7 +1778,7 @@ go.app = (function () {
 
     self.add("state_terms", function (name) {
       if(self.im.user.answers.returning_user) {
-        return self.states.create("state_first_name");
+        return self.states.create("state_age");
       }
       return new MenuState(name, {
         question: $([
@@ -1795,7 +1795,7 @@ go.app = (function () {
         ].join("\n")),
         accept_labels: true,
         choices: [
-          new Choice("state_first_name", $("YES")),
+          new Choice("state_age", $("YES")),
           new Choice("state_end", $("NO")),
           new Choice("state_more_info_pg1", $("MORE INFO")),
         ]
@@ -1835,6 +1835,9 @@ go.app = (function () {
     });
 
     self.add("state_first_name", function (name) {
+      if(self.im.user.answers.state_age === "<18") {
+        return self.states.create("state_province");
+      }
       if(self.im.user.answers.state_first_name) {
         return self.states.create("state_last_name");
       }
@@ -1851,8 +1854,11 @@ go.app = (function () {
     });
 
     self.add("state_last_name", function (name) {
+      if(self.im.user.answers.state_age === "<18") {
+        return self.states.create("state_province");
+      }
       if(self.im.user.answers.state_last_name) {
-        return self.states.create("state_age");
+        return self.states.create("state_province");
       }
       var question = $("Please TYPE your surname");
       return new FreeText(name, {
@@ -1862,7 +1868,7 @@ go.app = (function () {
             return question;
           }
         },
-        next: "state_age"
+        next: "state_province"
       });
     });
 
@@ -2031,7 +2037,7 @@ go.app = (function () {
           new Choice("40-65", $("40-65")),
           new Choice(">65", $(">65"))
         ],
-        next: "state_province"
+        next: "state_first_name"
       });
     });
 
@@ -2354,7 +2360,10 @@ go.app = (function () {
         risk = self.calculate_risk();
       }
       var text = "";
-      var first_name = truncateString((answers.state_first_name + ""), 27);
+      var first_name = "";
+      if (answers.state_age != "<18"){
+        first_name = truncateString((answers.state_first_name + ""), 27);
+      }
       var date = moment().format('YY-MM-DD');
       if (answers.state_tracing) {
         if (risk === "low") {
