@@ -600,91 +600,6 @@ describe("ussd_mcgcc app", function() {
                 })
                 .run();
         });
-        it("should show the Whatsapp language screen for Whatsapp preferred channel", function() {
-            return tester.setup.user
-                .state("state_supporter_language_whatsapp")
-                .setup.user.answer("contact", {
-                    fields: {
-                        preferred_channel: "WhatsApp"
-                    }
-                })
-                .check.interaction({
-                    reply: [
-                        "[2/5]",
-                        "What language would you like to get messages in?",
-                        "1. English",
-                        "2. Afrikaans",
-                        "3. isiZulu"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should show the SMS language screen for SMS preferred channel", function() {
-            return tester.setup.user
-                .state("state_supporter_language_whatsapp")
-                .setup.user.answer("contact", {
-                    fields: {
-                        preferred_channel: "SMS"
-                    }
-                })
-                .check.interaction({
-                    reply: [
-                        "[2/5]",
-                        "What language would you like to get msgs in?",
-                        "1. Zulu",
-                        "2. Xhosa",
-                        "3. Afrikaans",
-                        "4. Eng",
-                        "5. Sepedi",
-                        "6. Tswana",
-                        "7. Sotho",
-                        "8. Tsonga",
-                        "9. siSwati",
-                        "10. Venda",
-                        "11. Ndebele"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should throw an error on invalid input", function() {
-            return tester.setup.user
-                .state("state_supporter_language_sms")
-                .input("14")
-                .check.interaction({
-                    state: "state_supporter_language_sms",
-                    reply: [
-                        "Please try again. Reply with the no, e.g. 1.",
-                        "1. Zulu",
-                        "2. Xhosa",
-                        "3. Afrikaans",
-                        "4. Eng",
-                        "5. Sepedi",
-                        "6. Tswana",
-                        "7. Sotho",
-                        "8. Tsonga",
-                        "9. siSwati",
-                        "10. Venda",
-                        "11. Ndebele"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should show the research content screen on valid language choice", function() {
-            return tester.setup.user
-                .state("state_supporter_language_sms")
-                .input("4")
-                .check.interaction({
-                    state: "state_supporter_research_consent",
-                    reply: [
-                        "[3/5]",
-                        "May we also send messages for historical, statistical, or research reasons?",
-                        "We won't contact you unnecessarily and we'll keep your info safe.",
-                        "1. Yes",
-                        "2. No"
-                    ].join("\n")
-                })
-                .run();
-        });
         it("should show the relationship screen valid after consent or non-consent", function() {
             return tester.setup.user
                 .state("state_supporter_research_consent")
@@ -755,7 +670,7 @@ describe("ussd_mcgcc app", function() {
                 .setup.user.state("state_trigger_supporter_registration_flow")
                 .setup.user.answers({
                     state_supporter_consent: "yes",
-                    state_supporter_language_whatsapp: "eng_ZA",
+                    //state_supporter_language_whatsapp: "eng_ZA",
                     state_supporter_name: "John",
                     state_supporter_research_consent: "Yes",
                     state_supporter_relationship: "father",
@@ -953,6 +868,73 @@ describe("ussd_mcgcc app", function() {
                         "4. Change from SMS to WhatsApp",
                         "5. Research Consent",
                         "6. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should hide language and channel change options if ENG and WA", function() {
+            return tester.setup.user
+                .state("state_supporter_profile")
+                .setup.user.answer("contact", {
+                    language: "ENG_ZA",
+                    fields: {
+                        preferred_channel: "WHATSAPP"
+                    }
+                })
+                .input("2")
+                .check.interaction({
+                    state: "state_supporter_change_info",
+                    reply: [
+                        "What would you like to change?",
+                        "1. Name",
+                        "2. Cellphone Number",
+                        "3. Research Consent",
+                        "4. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should hide language change option if ENG but not WA", function() {
+            return tester.setup.user
+                .state("state_supporter_profile")
+                .setup.user.answer("contact", {
+                    language: "ENG_ZA",
+                    fields: {
+                        preferred_channel: "SMS"
+                    }
+                })
+                .input("2")
+                .check.interaction({
+                    state: "state_supporter_change_info",
+                    reply: [
+                        "What would you like to change?",
+                        "1. Name",
+                        "2. Cellphone Number",
+                        "3. Change from SMS to WhatsApp",
+                        "4. Research Consent",
+                        "5. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should hide channel change option if WA and ENG", function() {
+            return tester.setup.user
+                .state("state_supporter_profile")
+                .setup.user.answer("contact", {
+                    fields: {
+                        preferred_channel: "WHATSAPP"
+                    }
+                })
+                .input("2")
+                .check.interaction({
+                    state: "state_supporter_change_info",
+                    reply: [
+                        "What would you like to change?",
+                        "1. Name",
+                        "2. Language",
+                        "3. Cellphone Number",
+                        "4. Research Consent",
+                        "5. Back"
                     ].join("\n")
                 })
                 .run();
@@ -1160,10 +1142,8 @@ describe("ussd_mcgcc app", function() {
                 .check.interaction({
                     state: "state_supporter_new_language_whatsapp",
                     reply: [
-                        "What language would you like to get messages in?",
-                        "1. English",
-                        "2. Afrikaans",
-                        "3. isiZulu"
+                        "Reply 1 to get messages in English.",
+                        "1. English"
                     ].join("\n")
                 })
                 .run();

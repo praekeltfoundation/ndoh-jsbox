@@ -459,7 +459,7 @@ go.app = function() {
                 ),
                 accept_labels: true,
                 choices: [
-                    new Choice("state_supporter_language_whatsapp", $("Yes")),
+                    new Choice("state_supporter_research_consent", $("Yes")),
                     new Choice("state_supporter_noconsent_end_confirm", $("No")),
                 ],
             });
@@ -473,57 +473,6 @@ go.app = function() {
                     "\n\nIf you change your mind, dial [USSD#] to signup for supporter messages." +
                     "\n\nHave a lovely day!"
                 )
-            });
-        });
-
-        self.add("state_supporter_language_whatsapp", function(name) {
-            var contact = self.im.user.get_answer("contact");
-            var channel = _.toUpper(_.get(contact, "fields.preferred_channel")) === "SMS";
-            if (channel) {
-                return self.states.create("state_supporter_language_sms");
-            }
-            return new ChoiceState(name, {
-                question: $(
-                    "[2/5]" +
-                    "\nWhat language would you like to get messages in?"),
-                error: $(
-                    "Sorry, please try again. " +
-                    "Reply with the number, e.g. 1."
-                ),
-                accept_labels: true,
-                choices: [
-                    new Choice("eng_ZA", $("English")),
-                    new Choice("afrikaans", $("Afrikaans")),
-                    new Choice("zul_ZA", $("isiZulu")),
-                ],
-                next: "state_supporter_research_consent"
-            });
-        });
-
-        self.add("state_supporter_language_sms", function(name) {
-            return new ChoiceState(name, {
-                question: $(
-                    "[2/5]" +
-                    "\nWhat language would you like to get msgs in?"),
-                error: $(
-                    "Please try again. " +
-                    "Reply with the no, e.g. 1."
-                ),
-                accept_labels: true,
-                choices: [
-                    new Choice("zul_ZA", $("Zulu")),
-                    new Choice("xho", $("Xhosa")),
-                    new Choice("afrikaans", $("Afrikaans")),
-                    new Choice("eng_ZA", $("Eng")),
-                    new Choice("nso", $("Sepedi")),
-                    new Choice("tsn", $("Tswana")),
-                    new Choice("sot", $("Sotho")),
-                    new Choice("tso", $("Tsonga")),
-                    new Choice("ssw", $("siSwati")),
-                    new Choice("ven", $("Venda")),
-                    new Choice("nde", $("Ndebele"))
-                ],
-                next: "state_supporter_research_consent"
             });
         });
 
@@ -606,7 +555,6 @@ go.app = function() {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             var supporter_consent = _.toUpper(self.im.user.get_answer("state_supporter_consent"));
             var supporter_no_consent = _.toUpper(self.im.user.get_answer("state_supporter_noconsent_ask_again"));
-            var supporters_language;
             var research_consent = _.toUpper(self.im.user.get_answer("state_supporter_research_consent"));
             var baby_dob1 = (contact.fields.baby_dob1) ? moment.utc(contact.fields.baby_dob1).format() : null;
             var baby_dob2 = (contact.fields.baby_dob2) ? moment.utc(contact.fields.baby_dob2).format() : null;
@@ -614,12 +562,6 @@ go.app = function() {
             var prebirth_messaging = _.get(contact, "fields.prebirth_messaging", null);
             var postbirth_messaging = _.toUpper(_.get(contact, "fields.postbirth_messaging")) === "TRUE";
             var mom_edd = (contact.fields.edd) ? moment.utc(contact.fields.edd).format() : null;
-
-            if (typeof self.im.user.get_answer("state_supporter_language_whatsapp") === "undefined") {
-                supporters_language = self.im.user.get_answer("state_supporter_language_sms");
-            } else {
-                supporters_language = self.im.user.get_answer("state_supporter_language_whatsapp");
-            }
 
             if (typeof self.im.user.get_answer("state_supporter_noconsent_ask_again") === "undefined") {
                 supporter_consent = (supporter_consent === "YES" || supporter_consent === "1") ? "true" : "false";
@@ -638,7 +580,7 @@ go.app = function() {
                 postbirth_messaging: postbirth_messaging,
                 mom_edd: mom_edd,
                 supp_cell: msisdn,
-                supp_language: supporters_language,
+                supp_language: "eng_ZA",
                 supp_relationship: self.im.user.get_answer("state_supporter_relationship"),
                 supp_name: self.im.user.get_answer("state_supporter_name"),
                 source: "USSD",
@@ -747,7 +689,15 @@ go.app = function() {
                 new Choice("state_supporter_profile", $("Back"))
             ];
             var preferred_channel = (_.toUpper(_.get(contact, "fields.preferred_channel")));
-            if (preferred_channel === "WHATSAPP"){
+            var language = (_.toUpper(_.get(contact, "language")));
+            if (preferred_channel === "WHATSAPP" && language === "ENG_ZA"){
+                choices.splice(1,1);
+                choices.splice(2,1);
+            }
+            else if (preferred_channel != "WHATSAPP" && language === "ENG_ZA"){
+                choices.splice(1,1);
+            }
+            else if (preferred_channel === "WHATSAPP" && language != "ENG_ZA"){
                 choices.splice(3,1);
             }
             return new MenuState(name, {
@@ -840,15 +790,13 @@ go.app = function() {
             }
             return new ChoiceState(name, {
                 question: $(
-                    "What language would you like to get messages in?"),
+                    "Reply 1 to get messages in English."),
                 error: $(
-                    "Reply with the nr that matches your answer, e.g. 1."
+                    "Reply 1 for English."
                 ),
                 accept_labels: true,
                 choices: [
-                    new Choice("eng_ZA", $("English")),
-                    new Choice("afrikaans", $("Afrikaans")),
-                    new Choice("zul_ZA", $("isiZulu")),
+                    new Choice("eng_ZA", $("English"))
                 ],
                 next: "state_supporter_change_language_rapidpro"
             });
