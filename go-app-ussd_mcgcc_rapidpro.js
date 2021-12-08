@@ -704,7 +704,6 @@ go.app = function() {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             var supporter_consent = _.toUpper(self.im.user.get_answer("state_supporter_consent"));
             var supporter_no_consent = _.toUpper(self.im.user.get_answer("state_supporter_noconsent_ask_again"));
-            //var supporters_language;
             var research_consent = _.toUpper(self.im.user.get_answer("state_supporter_research_consent"));
             var baby_dob1 = (contact.fields.baby_dob1) ? moment.utc(contact.fields.baby_dob1).format() : null;
             var baby_dob2 = (contact.fields.baby_dob2) ? moment.utc(contact.fields.baby_dob2).format() : null;
