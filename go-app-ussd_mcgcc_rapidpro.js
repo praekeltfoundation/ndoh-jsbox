@@ -591,7 +591,7 @@ go.app = function() {
                 ),
                 accept_labels: true,
                 choices: [
-                    new Choice("state_supporter_language_whatsapp", $("Yes")),
+                    new Choice("state_supporter_research_consent", $("Yes")),
                     new Choice("state_supporter_noconsent_ask_again", $("No")),
                 ],
             });
@@ -1843,6 +1843,7 @@ go.app = function() {
         GoNDOH: GoNDOH
     };
 }();
+
 /* globals api */
 
 go.init = function() {
