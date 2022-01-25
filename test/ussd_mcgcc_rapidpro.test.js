@@ -571,6 +571,22 @@ describe("ussd_mcgcc app", function() {
                 })
                 .run();
         });
+        it("should show research consent screen if supporter consents", function() {
+            return tester.setup.user
+                .state("state_supporter_consent")
+                .input("1")
+                .check.interaction({
+                    state: "state_supporter_research_consent",
+                    reply: [
+                        "[3/5]",
+                        "May we also send messages for historical, statistical, or research reasons?",
+                        "We won't contact you unnecessarily and we'll keep your info safe.",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
         it("should ask again the supporter declines consent the first time", function() {
             return tester.setup.user
                 .state("state_supporter_consent")
