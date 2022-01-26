@@ -1227,6 +1227,171 @@ describe("ussd_clinic app", function() {
                 })
                 .run();
         });
+        it("should start popi flow on valid age for passport holder", function() {
+            return tester
+                .setup.user.state("state_start_popi_flow")
+                .setup.user.answers({
+                    state_enter_msisdn: "0820001001",
+                    state_passport_holder_age: "25",
+            })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "popi-flow-uuid", null, "whatsapp:27820001001"
+                        )
+                    );
+                })
+                .check.interaction({
+                    state: "state_accept_popi",
+                    reply: [
+                        "Your personal information is protected by law (POPIA) and by the " +
+                        "MomConnect Privacy Policy that was just sent to you on WhatsApp.",
+                        "1. Next"
+                    ].join("\n")
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    var urls = _.map(api.http.requests, "url");
+                    assert.deepEqual(urls, [
+                        "https://rapidpro/api/v2/flow_starts.json"
+                    ]);
+                    assert.equal(api.log.error.length, 0);
+                })
+                .run();
+        });
+        it("should start popi flow for underage passport holder who confirms the basic healthcare prompt", function() {
+            return tester
+                .setup.user.state("state_start_popi_flow")
+                .setup.user.answers({
+                    state_enter_msisdn: "0820001001",
+                    state_passport_holder_age: "15" ,
+                    state_basic_healthcare: "Confirm"   
+            })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "popi-flow-uuid", null, "whatsapp:27820001001"
+                        )
+                    );
+                })
+                .check.interaction({
+                    state: "state_accept_popi",
+                    reply: [
+                        "Your personal information is protected by law (POPIA) and by the " +
+                        "MomConnect Privacy Policy that was just sent to you on WhatsApp.",
+                        "1. Next"
+                    ].join("\n")
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    var urls = _.map(api.http.requests, "url");
+                    assert.deepEqual(urls, [
+                        "https://rapidpro/api/v2/flow_starts.json"
+                    ]);
+                    assert.equal(api.log.error.length, 0);
+                })
+                .run();
+        });
+        it("should start popi flow for underage passport holder who confirmed that a HCW is assisting them with self-registration", function() {
+            return tester
+                .setup.user.state("state_start_popi_flow")
+                .setup.user.answers({
+                    state_passport_holder_age: "15",
+                    state_underage_mother: "Yes"   
+            })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "popi-flow-uuid", null, "whatsapp:27123456789"
+                        )
+                    );
+                })
+                .check.interaction({
+                    state: "state_accept_popi",
+                    reply: [
+                        "Your personal information is protected by law (POPIA) and by the " +
+                        "MomConnect Privacy Policy that was just sent to you on WhatsApp.",
+                        "1. Next"
+                    ].join("\n")
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    var urls = _.map(api.http.requests, "url");
+                    assert.deepEqual(urls, [
+                        "https://rapidpro/api/v2/flow_starts.json"
+                    ]);
+                    assert.equal(api.log.error.length, 0);
+                })
+                .run();
+        });
+        it("should start popi flow for underage passport holder who is being assisted by an adult", function() {
+            return tester
+                .setup.user.state("state_start_popi_flow")
+                .setup.user.answers({
+                    state_enter_msisdn: "0820001001",
+                    state_passport_holder_age: "15",
+                    state_underage_registree: "Yes"   
+            })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "popi-flow-uuid", null, "whatsapp:27820001001"
+                        )
+                    );
+                })
+                .check.interaction({
+                    state: "state_accept_popi",
+                    reply: [
+                        "Your personal information is protected by law (POPIA) and by the " +
+                        "MomConnect Privacy Policy that was just sent to you on WhatsApp.",
+                        "1. Next"
+                    ].join("\n")
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    var urls = _.map(api.http.requests, "url");
+                    assert.deepEqual(urls, [
+                        "https://rapidpro/api/v2/flow_starts.json"
+                    ]);
+                    assert.equal(api.log.error.length, 0);
+                })
+                .run();
+        });
+        it("should show underage screen if passport holder is underage", function() {
+            return tester
+                .setup.user.state("state_start_popi_flow")
+                .setup.user.answers({
+                    state_enter_msisdn: "0820001001",
+                    state_passport_holder_age: "15"   
+            })
+                .check.interaction({
+                    state: "state_underage_registree",
+                    reply: [
+                        "We see that the mom is under 18.",
+                        "\nDo you confirm that you are an adult assisting this under 18 mom to register?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show underage self-registration screen if passport holder is underage", function() {
+            return tester
+                .setup.user.state("state_start_popi_flow")
+                .setup.user.answers({
+                    state_passport_holder_age: "15"   
+            })
+                .check.interaction({
+                    state: "state_underage_mother",
+                    reply: [
+                        "We noticed that you are under 18.",
+                        "\nIs a healthcare worker at the clinic helping you sign up for MomConnect?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
     });
     describe("state_dob_year", function() {
         it("should ask the user for the year of the date of birth", function() {
@@ -1234,7 +1399,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_dob_year")
                 .check.interaction({
                     reply:
-                        "What year was the mother born? Please reply with the year as 4 digits " +
+                        "What year were you born? Please reply with the year as 4 digits " +
                         "in the format YYYY."
                 })
                 .run();
@@ -1268,7 +1433,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_dob_month")
                 .check.interaction({
                     reply: [
-                        "What month was the mother born?",
+                        "What month were you born?",
                         "1. Jan",
                         "2. Feb",
                         "3. Mar",
@@ -1326,7 +1491,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_dob_day")
                 .check.interaction({
                     reply:
-                        "On what day was the mother born? Please enter the day as a number, e.g. " +
+                        "On what day were you born? Please enter the day as a number, e.g. " +
                         "12."
                 })
                 .run();
@@ -1340,6 +1505,114 @@ describe("ussd_clinic app", function() {
                     reply:
                         "Sorry, we don't understand. Please try again by entering the day the " +
                         "mother was born as a number, e.g. 12."
+                })
+                .run();
+        });
+        it("should show non self registration underage screen if no ID contact is underage", function() {
+            return tester
+                .setup.user.state("state_start_popi_flow")
+                .setup.user.answers({
+                    state_enter_msisdn: "0820001001",
+                    state_dob_year: "2015",
+                    state_dob_month: "02",
+                    state_dob_day: "20"
+                })
+                .check.interaction({
+                    state: "state_underage_registree",
+                    reply: [
+                        "We see that the mom is under 18.",
+                        "\nDo you confirm that you are an adult assisting this under 18 mom to register?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should show self registration underage screen if no ID contact is underage", function() {
+            return tester
+                .setup.user.state("state_start_popi_flow")
+                .setup.user.answers({
+                    state_dob_year: "2015",
+                    state_dob_month: "02",
+                    state_dob_day: "20"
+                })
+                .check.interaction({
+                    state: "state_underage_mother",
+                    reply: [
+                        "We noticed that you are under 18.",
+                        "\nIs a healthcare worker at the clinic helping you sign up for MomConnect?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should start self popi flow if an adult confirms assistance of the non ID underage contact", function() {
+            return tester
+                .setup.user.state("state_start_popi_flow")
+                .setup.user.answers({
+                    state_enter_msisdn: "0820001001",
+                    state_dob_year: "2015",
+                    state_dob_month: "02",
+                    state_dob_day: "20",
+                    state_underage_registree: "YES"
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "popi-flow-uuid", null, "whatsapp:27820001001"
+                        )
+                    );
+                })
+                .check.interaction({
+                    state: "state_accept_popi",
+                    reply: [
+                        "Your personal information is protected by law (POPIA) and by the " +
+                        "MomConnect Privacy Policy that was just sent to you on WhatsApp.",
+                        "1. Next"
+                    ].join("\n")
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    var urls = _.map(api.http.requests, "url");
+                    assert.deepEqual(urls, [
+                        "https://rapidpro/api/v2/flow_starts.json"
+                    ]);
+                    assert.equal(api.log.error.length, 0);
+                })
+                .run();
+        });
+        it("should start self popi flow if non ID underage contact confirms that they are being assisted by a HCW for self registration", function() {
+            return tester
+                .setup.user.state("state_start_popi_flow")
+                .setup.user.answers({
+                    state_dob_year: "2015",
+                    state_dob_month: "02",
+                    state_dob_day: "20",
+                    state_underage_mother: "YES"
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "popi-flow-uuid", null, "whatsapp:27123456789"
+                        )
+                    );
+                })
+                .check.interaction({
+                    state: "state_accept_popi",
+                    reply: [
+                        "Your personal information is protected by law (POPIA) and by the " +
+                        "MomConnect Privacy Policy that was just sent to you on WhatsApp.",
+                        "1. Next"
+                    ].join("\n")
+                })
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    var urls = _.map(api.http.requests, "url");
+                    assert.deepEqual(urls, [
+                        "https://rapidpro/api/v2/flow_starts.json"
+                    ]);
+                    assert.equal(api.log.error.length, 0);
                 })
                 .run();
         });
@@ -1369,7 +1642,10 @@ describe("ussd_clinic app", function() {
         it("should request to the RapidPro API", function() {
             return tester
                 .setup.user.state("state_start_popi_flow")
-                .setup.user.answers({state_enter_msisdn: "0820001001"})
+                .setup.user.answers({
+                    state_enter_msisdn: "0820001001",
+                    state_sa_id_no: "95010221222"     
+            })
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
@@ -1392,6 +1668,43 @@ describe("ussd_clinic app", function() {
                         "https://rapidpro/api/v2/flow_starts.json"
                     ]);
                     assert.equal(api.log.error.length, 0);
+                })
+                .run();
+        });
+        it("should display underage screen for self-registration", function() {
+            return tester
+                .setup.user.state("state_start_popi_flow")
+                .setup.user.answers({
+                    state_sa_id_no: "21010221222"     
+            })
+
+                .check.interaction({
+                    state: "state_underage_mother",
+                    reply: [
+                        "We noticed that you are under 18.",
+                        "\nIs a healthcare worker at the clinic helping you sign up for MomConnect?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display underage screen for non self-registration", function() {
+            return tester
+                .setup.user.state("state_start_popi_flow")
+                .setup.user.answers({
+                    state_enter_msisdn: "07123456789",
+                    state_sa_id_no: "21010221222"     
+            })
+
+                .check.interaction({
+                    state: "state_underage_registree",
+                    reply: [
+                        "We see that the mom is under 18.",
+                        "\nDo you confirm that you are an adult assisting this under 18 mom to register?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
                 })
                 .run();
         });
@@ -1456,7 +1769,10 @@ describe("ussd_clinic app", function() {
         it("should retry HTTP call when RapidPro is down", function() {
             return tester
                 .setup.user.state("state_start_popi_flow")
-                .setup.user.answers({state_enter_msisdn: "0820001001"})
+                .setup.user.answers({
+                    state_enter_msisdn: "0820001001",
+                    state_sa_id_no: "82010221222"
+                })
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
@@ -1636,6 +1952,166 @@ describe("ussd_clinic app", function() {
                                 sa_id_number: "9001020005087",
                                 dob: "1990-01-02T00:00:00Z",
                                 swt: "7",
+                            }
+                        )
+                    );
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_registration_complete",
+                    reply:
+                        "You're done! This number 0820001001 will get helpful messages from " +
+                        "MomConnect on WhatsApp. Thanks for signing up to MomConnect!"
+                })
+                .check.reply.ends_session()
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    var urls = _.map(api.http.requests, "url");
+                    assert.deepEqual(urls, [
+                        "https://rapidpro/api/v2/flow_starts.json"
+                    ]);
+                    assert.equal(api.log.error.length, 0);
+                })
+                .run();
+        });
+        it("should make a request to the RapidPro APIs for prebirth underage registree mom with sa_id on accept selection", function() {
+            return tester
+                .setup.user.state("state_accept_popi_2")
+                .setup.user.answers({
+                    state_message_type: "state_edd_month",
+                    state_research_consent: "no",
+                    state_enter_msisdn: "0820001001",
+                    state_id_type: "state_sa_id_no",
+                    state_sa_id_no: "1301020005087",
+                    state_edd_month: "201502",
+                    state_edd_day: "13",
+                    state_clinic_code: "123456",
+                    state_underage_registree: "Yes",
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "prebirth-flow-uuid", null, "whatsapp:27820001001", {
+                                research_consent: "TRUE",
+                                registered_by: "+27123456789",
+                                language: "eng",
+                                timestamp: "2014-04-04T07:07:07Z",
+                                source: "Clinic USSD",
+                                id_type: "sa_id",
+                                edd: "2015-02-13T00:00:00Z",
+                                clinic_code: "123456",
+                                sa_id_number: "1301020005087",
+                                underage: "TRUE",
+                                dob: "2013-01-02T00:00:00Z",
+                                swt: "7",
+                            }
+                        )
+                    );
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_registration_complete",
+                    reply:
+                        "You're done! This number 0820001001 will get helpful messages from " +
+                        "MomConnect on WhatsApp. Thanks for signing up to MomConnect!"
+                })
+                .check.reply.ends_session()
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    var urls = _.map(api.http.requests, "url");
+                    assert.deepEqual(urls, [
+                        "https://rapidpro/api/v2/flow_starts.json"
+                    ]);
+                    assert.equal(api.log.error.length, 0);
+                })
+                .run();
+        });
+        it("should make a request to the RapidPro APIs for prebirth underage registree mom with passport ID on accept selection", function() {
+            return tester
+                .setup.user.state("state_accept_popi_2")
+                .setup.user.answers({
+                    state_message_type: "state_edd_month",
+                    state_research_consent: "no",
+                    state_enter_msisdn: "0820001001",
+                    state_id_type: "state_passport_country",
+                    state_passport_country: "ng",
+                    state_passport_no: "M00000001",
+                    state_passport_holder_age: "16",
+                    state_edd_month: "201502",
+                    state_edd_day: "13",
+                    state_clinic_code: "123456",
+                    state_underage_registree: "Yes",
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "prebirth-flow-uuid", null, "whatsapp:27820001001", {
+                                research_consent: "TRUE",
+                                registered_by: "+27123456789",
+                                language: "eng",
+                                timestamp: "2014-04-04T07:07:07Z",
+                                source: "Clinic USSD",
+                                id_type: "passport",
+                                edd: "2015-02-13T00:00:00Z",
+                                clinic_code: "123456",
+                                passport_origin: "ng",
+                                passport_number: "M00000001",
+                                underage: "TRUE",
+                                swt: "7",
+                                age: "16",
+                            }
+                        )
+                    );
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_registration_complete",
+                    reply:
+                        "You're done! This number 0820001001 will get helpful messages from " +
+                        "MomConnect on WhatsApp. Thanks for signing up to MomConnect!"
+                })
+                .check.reply.ends_session()
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    var urls = _.map(api.http.requests, "url");
+                    assert.deepEqual(urls, [
+                        "https://rapidpro/api/v2/flow_starts.json"
+                    ]);
+                    assert.equal(api.log.error.length, 0);
+                })
+                .run();
+        });
+        it("should make a request to the RapidPro APIs for prebirth underage registree mom with no ID on accept selection", function() {
+            return tester
+                .setup.user.state("state_accept_popi_2")
+                .setup.user.answers({
+                    state_message_type: "state_edd_month",
+                    state_research_consent: "no",
+                    state_enter_msisdn: "0820001001",
+                    state_id_type: "state_dob_year",
+                    state_dob_year: "2014",
+                    state_dob_month: "10",
+                    state_dob_day: "25",
+                    state_edd_month: "201502",
+                    state_edd_day: "13",
+                    state_clinic_code: "123456",
+                    state_underage_registree: "Yes",
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "prebirth-flow-uuid", null, "whatsapp:27820001001", {
+                                research_consent: "TRUE",
+                                registered_by: "+27123456789",
+                                language: "eng",
+                                timestamp: "2014-04-04T07:07:07Z",
+                                source: "Clinic USSD",
+                                id_type: "dob",
+                                edd: "2015-02-13T00:00:00Z",
+                                clinic_code: "123456",
+                                underage: "TRUE",
+                                swt: "7",
+                                dob: "2014-10-25T00:00:00Z",
                             }
                         )
                     );

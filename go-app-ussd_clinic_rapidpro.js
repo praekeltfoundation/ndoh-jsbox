@@ -883,6 +883,25 @@ go.app = function() {
                         ].join("\n"));
                     }
                 },
+                next: "state_passport_holder_age"
+            });
+        });
+
+        self.add("state_passport_holder_age", function(name) {
+            return new FreeText(name, {
+                question: $(
+                    "How old are you? " +
+                    "\n\nPlease enter the number, for example 25."
+                ),
+                check: function(content) {
+                    if(!content.match(/^(?:|1[2-9]|[2-9][0-9])$/)){
+                        return $([
+                            "Sorry, we don't understand. Please try again.",
+                            "",
+                            "Enter your age, for example 25."
+                        ].join("\n"));
+                    }
+                },
                 next: "state_start_popi_flow"
             });
         });
@@ -890,7 +909,7 @@ go.app = function() {
         self.add("state_dob_year", function(name) {
             return new FreeText(name, {
                 question: $(
-                    "What year was the mother born? Please reply with the year as 4 digits in " +
+                    "What year were you born? Please reply with the year as 4 digits in " +
                     "the format YYYY."
                 ),
                 check: function(content) {
@@ -916,7 +935,7 @@ go.app = function() {
 
         self.add("state_dob_month", function(name) {
             return new ChoiceState(name, {
-                question: $("What month was the mother born?"),
+                question: $("What month were you born?"),
                 error: $(
                     "Sorry we don't understand. Please enter the no. next to the mom's answer."
                 ),
@@ -941,7 +960,7 @@ go.app = function() {
         self.add("state_dob_day", function(name) {
             return new FreeText(name, {
                 question: $(
-                    "On what day was the mother born? Please enter the day as a number, e.g. 12."
+                    "On what day were you born? Please enter the day as a number, e.g. 12."
                 ),
                 check: function(content) {
                     var match = content.match(/^(\d+)$/), dob;
@@ -966,9 +985,85 @@ go.app = function() {
         });
 
         self.add("state_start_popi_flow", function(name, opts) {
-            var msisdn = utils.normalize_msisdn(
-                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
+            /*******************
+             * SA-ID Holders
+            *******************/
+            var msisdn, self_registration, age;
+            if (typeof self.im.user.get_answer("state_enter_msisdn") === "undefined"){
+                msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+                self_registration = true;
+            }
+            else{
+                msisdn = utils.normalize_msisdn(self.im.user.get_answer("state_enter_msisdn"), "ZA");
+                self_registration = false;
+            }
+            if (((typeof self.im.user.get_answer("state_sa_id_no")!= "undefined") && (_.toUpper(self.im.user.get_answer("state_basic_healthcare")) != "CONFIRM"))
+                || ((typeof self.im.user.get_answer("state_sa_id_no")!= "undefined") && (_.toUpper(self.im.user.get_answer("state_underage_mother")) != "YES")) 
+                || ((typeof self.im.user.get_answer("state_sa_id_no")!= "undefined") && (_.toUpper(self.im.user.get_answer("state_underage_registree")) != "YES"))
+                || ((typeof self.im.user.get_answer("state_sa_id_no")!= "undefined") && (typeof self.im.user.get_answer("state_basic_healthcare") != "undefined"))
+                )
+            {
+                var rawdateStr = self.im.user.get_answer("state_sa_id_no");
+        
+                var match, dateStr, getyear;
+                getyear = rawdateStr.slice(0,1);
 
+                if (getyear == 2 || getyear == 1 || getyear == 0){
+                    rawdateStr = "20".concat(rawdateStr);
+ 
+                    match = rawdateStr.match(/(\d{4})(\d{2})(\d{2})/);
+   
+                }
+                else{
+                rawdateStr = "19".concat(rawdateStr);
+                match = rawdateStr.match(/(\d{4})(\d{2})(\d{2})/);
+                }
+                dateStr = match[1] + match[2] + match[3];
+                age = moment().diff(moment(dateStr, 'YYYYMMDD'), 'years');
+
+                if (age < 18 && self_registration){
+                    return self.states.create("state_underage_mother"); //underage self registration 
+                }
+                else if (age < 18 && !self_registration){
+                    return self.states.create("state_underage_registree"); //underage non self registration 
+                }
+            }
+            /*******************
+             * Passport Holders
+            *******************/
+            if ((typeof self.im.user.get_answer("state_passport_holder_age")!= "undefined")){
+                if ((self.im.user.get_answer("state_passport_holder_age") < 18) && (self_registration) && ((_.toUpper(self.im.user.get_answer("state_basic_healthcare")) != "CONFIRM"))){
+                    if (_.toUpper(self.im.user.get_answer("state_underage_mother")) != "YES"){
+                        return self.states.create("state_underage_mother");
+                    }   
+                }
+                if ((self.im.user.get_answer("state_passport_holder_age") < 18) && !(self_registration) && ((_.toUpper(self.im.user.get_answer("state_basic_healthcare")) != "CONFIRM"))){
+                    if (_.toUpper(self.im.user.get_answer("state_underage_registree")) != "YES"){
+                        return self.states.create("state_underage_registree");
+                    }
+                }
+            }          
+            /*******************
+             * No ID Holders
+            *******************/
+            if ((typeof self.im.user.get_answer("state_dob_day")!= "undefined")){
+                var year = self.im.user.answers.state_dob_year;
+                var month = self.im.user.answers.state_dob_month;
+                var day = self.im.user.answers.state_dob_day;
+                var dob = year.concat(month).concat(day);
+                age = moment().diff(moment(dob, 'YYYYMMDD'), 'years');
+                if ((age < 18) && (self_registration) && ((_.toUpper(self.im.user.get_answer("state_basic_healthcare")) != "CONFIRM"))){
+                    if (_.toUpper(self.im.user.get_answer("state_underage_mother")) != "YES"){
+                        return self.states.create("state_underage_mother");
+                    }
+                }
+                if ((age < 18) && !(self_registration) && ((_.toUpper(self.im.user.get_answer("state_basic_healthcare")) != "CONFIRM"))){
+                    if (_.toUpper(self.im.user.get_answer("state_underage_registree")) != "YES"){
+                        return self.states.create("state_underage_registree");
+                    }
+                }
+
+            }
             return self.rapidpro
                 .start_flow(
                     self.im.config.popi_flow_uuid,
@@ -985,6 +1080,59 @@ go.app = function() {
                     }
                     return self.states.create(name, opts);
                 });
+        });
+
+        self.states.add("state_underage_mother", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "We noticed that you are under 18." +
+                    "\n\nIs a healthcare worker at the clinic helping you sign up for MomConnect?"),
+                error: $(
+                    "Sorry, we don't understand. Please try again.",
+                    "",
+                    "Enter the number that matches your answer."
+                ),
+                accept_labels: true,
+                choices: [
+                    new Choice("state_start_popi_flow", $("Yes")),
+                    new Choice("state_basic_healthcare", $("No")),
+                ],
+            });
+        });
+
+        self.states.add("state_underage_registree", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "We see that the mom is under 18." +
+                    "\n\nDo you confirm that you are an adult assisting this under 18 mom to register?"),
+                error: $(
+                    "Sorry, we don't understand. Please try again.",
+                    "",
+                    "Enter the number that matches your answer."
+                ),
+                accept_labels: true,
+                choices: [
+                    new Choice("state_start_popi_flow", $("Yes")),
+                    new Choice("state_basic_healthcare", $("No")),
+                ],
+            });
+        });
+
+        self.states.add("state_basic_healthcare", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "Please confirm that you are signing up to receive information from MomConnect to exercise your ",
+                    "right to basic helthcare."),
+                error: $(
+                    "Sorry, we don't understand. Please try again.",
+                    "",
+                    "Enter the number that matches your answer."
+                ),
+                accept_labels: true,
+                choices: [
+                    new Choice("state_start_popi_flow", $("Confirm")),
+                ],
+            });
         });
 
         self.add("state_accept_popi", function(name, opts) {
@@ -1055,20 +1203,6 @@ go.app = function() {
                     state_dob_year: "dob"
                 }[self.im.user.answers.state_id_type],
                 clinic_code: self.im.user.answers.state_clinic_code,
-                sa_id_number: self.im.user.answers.state_sa_id_no,
-                dob: self.im.user.answers.state_id_type === "state_sa_id_no"
-                    ? new moment.utc(
-                        self.im.user.answers.state_sa_id_no.slice(0, 6),
-                        "YYMMDD"
-                    ).format()
-                    : new moment.utc(
-                        self.im.user.answers.state_dob_year +
-                        self.im.user.answers.state_dob_month +
-                        self.im.user.answers.state_dob_day,
-                        "YYYYMMDD"
-                    ).format(),
-                passport_origin: self.im.user.answers.state_passport_country,
-                passport_number: self.im.user.answers.state_passport_no,
                 swt: "7"
             };
             var flow_uuid;
@@ -1088,7 +1222,32 @@ go.app = function() {
                     "YYYYMMDD"
                 ).format();
             }
-
+            if(self.im.user.answers.state_underage_mother === "Yes" 
+                || self.im.user.answers.state_underage_registree === "Yes") {
+                data.underage = "TRUE";
+            }
+            if(self.im.user.answers.state_id_type === "state_passport_country") {
+                data.age = self.im.user.answers.state_passport_holder_age;
+                data.passport_origin = self.im.user.answers.state_passport_country;
+                data.passport_number = self.im.user.answers.state_passport_no;
+            }
+            if(self.im.user.answers.state_id_type != "state_passport_country") {
+                data.dob = self.im.user.answers.state_id_type === "state_sa_id_no"
+                ? new moment.utc(
+                    self.im.user.answers.state_sa_id_no.slice(0, 6),
+                    "YYMMDD"
+                ).format()
+                : new moment.utc(
+                    self.im.user.answers.state_dob_year +
+                    self.im.user.answers.state_dob_month +
+                    self.im.user.answers.state_dob_day,
+                    "YYYYMMDD"
+                ).format();
+                if (self.im.user.answers.state_id_type === "state_sa_id_no"){
+                    data.sa_id_number = self.im.user.answers.state_sa_id_no;
+                }
+                
+            }
             return self.rapidpro
                 .start_flow(flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), data)
                 .then(function() {
