@@ -806,7 +806,7 @@ go.app = function() {
                 }
             }          
             /*******************
-             * No ID Holders
+             * No ID Contacts
             *******************/
             if ((typeof self.im.user.get_answer("state_dob_day")!= "undefined")){
                 var year = self.im.user.answers.state_dob_year;
@@ -824,7 +824,6 @@ go.app = function() {
                         return self.states.create("state_underage_registree");
                     }
                 }
-
             }
             return self.rapidpro
                 .start_flow(
@@ -898,11 +897,12 @@ go.app = function() {
         });
 
         self.add("state_accept_popi", function(name, opts) {
+            var msisdn = _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr);
             return new MenuState(name, {
                 question: $(
                     "Your personal information is protected by law (POPIA) and by the " +
-                    "MomConnect Privacy Policy that was just sent to you on WhatsApp."
-                ),
+                    "MomConnect Privacy Policy that was just sent to {{msisdn}} on WhatsApp."
+                ).context({msisdn: msisdn}),
                 error: $([
                     "Sorry, we don't understand. Please try again.",
                     "",

@@ -1245,7 +1245,7 @@ describe("ussd_clinic app", function() {
                     state: "state_accept_popi",
                     reply: [
                         "Your personal information is protected by law (POPIA) and by the " +
-                        "MomConnect Privacy Policy that was just sent to you on WhatsApp.",
+                        "MomConnect Privacy Policy that was just sent to 0820001001 on WhatsApp.",
                         "1. Next"
                     ].join("\n")
                 })
@@ -1278,7 +1278,7 @@ describe("ussd_clinic app", function() {
                     state: "state_accept_popi",
                     reply: [
                         "Your personal information is protected by law (POPIA) and by the " +
-                        "MomConnect Privacy Policy that was just sent to you on WhatsApp.",
+                        "MomConnect Privacy Policy that was just sent to 0820001001 on WhatsApp.",
                         "1. Next"
                     ].join("\n")
                 })
@@ -1310,7 +1310,7 @@ describe("ussd_clinic app", function() {
                     state: "state_accept_popi",
                     reply: [
                         "Your personal information is protected by law (POPIA) and by the " +
-                        "MomConnect Privacy Policy that was just sent to you on WhatsApp.",
+                        "MomConnect Privacy Policy that was just sent to +27123456789 on WhatsApp.",
                         "1. Next"
                     ].join("\n")
                 })
@@ -1343,7 +1343,7 @@ describe("ussd_clinic app", function() {
                     state: "state_accept_popi",
                     reply: [
                         "Your personal information is protected by law (POPIA) and by the " +
-                        "MomConnect Privacy Policy that was just sent to you on WhatsApp.",
+                        "MomConnect Privacy Policy that was just sent to 0820001001 on WhatsApp.",
                         "1. Next"
                     ].join("\n")
                 })
@@ -1568,7 +1568,7 @@ describe("ussd_clinic app", function() {
                     state: "state_accept_popi",
                     reply: [
                         "Your personal information is protected by law (POPIA) and by the " +
-                        "MomConnect Privacy Policy that was just sent to you on WhatsApp.",
+                        "MomConnect Privacy Policy that was just sent to 0820001001 on WhatsApp.",
                         "1. Next"
                     ].join("\n")
                 })
@@ -1602,7 +1602,7 @@ describe("ussd_clinic app", function() {
                     state: "state_accept_popi",
                     reply: [
                         "Your personal information is protected by law (POPIA) and by the " +
-                        "MomConnect Privacy Policy that was just sent to you on WhatsApp.",
+                        "MomConnect Privacy Policy that was just sent to +27123456789 on WhatsApp.",
                         "1. Next"
                     ].join("\n")
                 })
@@ -1657,7 +1657,7 @@ describe("ussd_clinic app", function() {
                     state: "state_accept_popi",
                     reply: [
                         "Your personal information is protected by law (POPIA) and by the " +
-                        "MomConnect Privacy Policy that was just sent to you on WhatsApp.",
+                        "MomConnect Privacy Policy that was just sent to 0820001001 on WhatsApp.",
                         "1. Next"
                     ].join("\n")
                 })
@@ -1806,7 +1806,7 @@ describe("ussd_clinic app", function() {
                 .check.interaction({
                     reply: [
                         "Your personal information is protected by law (POPIA) and by the " +
-                        "MomConnect Privacy Policy that was just sent to you on WhatsApp.",
+                        "MomConnect Privacy Policy that was just sent to +27123456789 on WhatsApp.",
                         "1. Next"
                     ].join("\n")
                 })
