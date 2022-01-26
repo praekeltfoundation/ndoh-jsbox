@@ -601,7 +601,7 @@ go.app = function() {
                     }
 
                 },
-                next: "state_start_popi_flow"
+                next: "state_mother_age_calc"
             });
         });
 
@@ -664,7 +664,7 @@ go.app = function() {
                         ].join("\n"));
                     }
                 },
-                next: "state_start_popi_flow"
+                next: "state_mother_age_calc"
             });
         });
 
@@ -742,14 +742,11 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_start_popi_flow"
+                next: "state_mother_age_calc"
             });
         });
 
-        self.add("state_start_popi_flow", function(name, opts) {
-            /*******************
-             * SA-ID Holders
-            *******************/
+        self.add("state_mother_age_calc", function(name) {
             var msisdn, self_registration, age;
             if (typeof self.im.user.get_answer("state_enter_msisdn") === "undefined"){
                 msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
@@ -759,72 +756,62 @@ go.app = function() {
                 msisdn = utils.normalize_msisdn(self.im.user.get_answer("state_enter_msisdn"), "ZA");
                 self_registration = false;
             }
-            if (((self.im.user.get_answer("state_id_type")=== "state_sa_id_no") && (_.toUpper(self.im.user.get_answer("state_basic_healthcare")) != "CONFIRM"))
-                || ((self.im.user.get_answer("state_id_type")=== "state_sa_id_no") && (_.toUpper(self.im.user.get_answer("state_underage_mother")) != "YES")) 
-                || ((self.im.user.get_answer("state_id_type")=== "state_sa_id_no") && (_.toUpper(self.im.user.get_answer("state_underage_registree")) != "YES"))
-                || ((self.im.user.get_answer("state_id_type")=== "state_sa_id_no") && (typeof self.im.user.get_answer("state_basic_healthcare") != "undefined"))
-                )
+
+            /*******************
+             * SA-ID Holders
+            *******************/
+            if (self.im.user.get_answer("state_id_type") === "state_sa_id_no"){
             {
                 var rawdateStr = self.im.user.get_answer("state_sa_id_no");
-        
                 var match, dateStr, getyear;
                 getyear = rawdateStr.slice(0,1);
-
                 if (getyear == 2 || getyear == 1 || getyear == 0){
                     rawdateStr = "20".concat(rawdateStr);
- 
-                    match = rawdateStr.match(/(\d{4})(\d{2})(\d{2})/);
-   
+                    match = rawdateStr.match(/(\d{4})(\d{2})(\d{2})/); 
                 }
                 else{
                 rawdateStr = "19".concat(rawdateStr);
                 match = rawdateStr.match(/(\d{4})(\d{2})(\d{2})/);
                 }
                 dateStr = match[1] + match[2] + match[3];
-                age = moment().diff(moment(dateStr, 'YYYYMMDD'), 'years');
-
-                if (age < 18 && self_registration){
-                    return self.states.create("state_underage_mother"); //underage self registration 
-                }
-                else if (age < 18 && !self_registration){
-                    return self.states.create("state_underage_registree"); //underage non self registration 
-                }
+                age = moment().diff(moment(dateStr, 'YYYYMMDD'), 'years');   
             }
+        }
+
             /*******************
              * Passport Holders
             *******************/
-            if ((typeof self.im.user.get_answer("state_passport_holder_age")!= "undefined")){
-                if ((self.im.user.get_answer("state_passport_holder_age") < 18) && (self_registration) && ((_.toUpper(self.im.user.get_answer("state_basic_healthcare")) != "CONFIRM"))){
-                    if (_.toUpper(self.im.user.get_answer("state_underage_mother")) != "YES"){
-                        return self.states.create("state_underage_mother");
-                    }   
-                }
-                if ((self.im.user.get_answer("state_passport_holder_age") < 18) && !(self_registration) && ((_.toUpper(self.im.user.get_answer("state_basic_healthcare")) != "CONFIRM"))){
-                    if (_.toUpper(self.im.user.get_answer("state_underage_registree")) != "YES"){
-                        return self.states.create("state_underage_registree");
-                    }
-                }
-            }          
+            if (self.im.user.get_answer("state_id_type") === "state_passport_country"){
+                age = self.im.user.get_answer("state_passport_holder_age");
+                console.log("age is..." + age);
+            }
+
             /*******************
              * No ID Contacts
             *******************/
-            if ((typeof self.im.user.get_answer("state_dob_day")!= "undefined")){
+            if (self.im.user.get_answer("state_id_type") === "state_dob_year"){
                 var year = self.im.user.answers.state_dob_year;
                 var month = self.im.user.answers.state_dob_month;
                 var day = self.im.user.answers.state_dob_day;
                 var dob = year.concat(month).concat(day);
                 age = moment().diff(moment(dob, 'YYYYMMDD'), 'years');
-                if ((age < 18) && (self_registration) && ((_.toUpper(self.im.user.get_answer("state_basic_healthcare")) != "CONFIRM"))){
-                    if (_.toUpper(self.im.user.get_answer("state_underage_mother")) != "YES"){
-                        return self.states.create("state_underage_mother");
-                    }
-                }
-                if ((age < 18) && !(self_registration) && ((_.toUpper(self.im.user.get_answer("state_basic_healthcare")) != "CONFIRM"))){
-                    if (_.toUpper(self.im.user.get_answer("state_underage_registree")) != "YES"){
-                        return self.states.create("state_underage_registree");
-                    }
-                }
             }
+            
+            if ((age < 18) && (self_registration)){
+                return self.states.create("state_underage_mother");
+            }
+            else if ((age < 18) && !(self_registration)){
+                return self.states.create("state_underage_registree");
+            }
+        return self.states.create("state_start_popi_flow");
+        });
+
+        self.add("state_start_popi_flow", function(name, opts) {
+            /*******************
+             * SA-ID Holders
+            *******************/
+             var msisdn = utils.normalize_msisdn(
+                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
             return self.rapidpro
                 .start_flow(
                     self.im.config.popi_flow_uuid,

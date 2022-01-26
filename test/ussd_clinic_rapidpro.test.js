@@ -1359,9 +1359,10 @@ describe("ussd_clinic app", function() {
         });
         it("should show underage screen if passport holder is underage", function() {
             return tester
-                .setup.user.state("state_start_popi_flow")
+                .setup.user.state("state_mother_age_calc")
                 .setup.user.answers({
                     state_enter_msisdn: "0820001001",
+                    state_id_type: "state_passport_country",
                     state_passport_holder_age: "15"   
             })
                 .check.interaction({
@@ -1377,9 +1378,10 @@ describe("ussd_clinic app", function() {
         });
         it("should show underage self-registration screen if passport holder is underage", function() {
             return tester
-                .setup.user.state("state_start_popi_flow")
+                .setup.user.state("state_mother_age_calc")
                 .setup.user.answers({
-                    state_passport_holder_age: "15"   
+                    state_passport_holder_age: "15",
+                    state_id_type: "state_passport_country",   
             })
                 .check.interaction({
                     state: "state_underage_mother",
@@ -1510,12 +1512,13 @@ describe("ussd_clinic app", function() {
         });
         it("should show non self registration underage screen if no ID contact is underage", function() {
             return tester
-                .setup.user.state("state_start_popi_flow")
+                .setup.user.state("state_mother_age_calc")
                 .setup.user.answers({
                     state_enter_msisdn: "0820001001",
                     state_dob_year: "2015",
                     state_dob_month: "02",
-                    state_dob_day: "20"
+                    state_dob_day: "20",
+                    state_id_type:"state_dob_year"
                 })
                 .check.interaction({
                     state: "state_underage_registree",
@@ -1530,11 +1533,12 @@ describe("ussd_clinic app", function() {
         });
         it("should show self registration underage screen if no ID contact is underage", function() {
             return tester
-                .setup.user.state("state_start_popi_flow")
+                .setup.user.state("state_mother_age_calc")
                 .setup.user.answers({
                     state_dob_year: "2015",
                     state_dob_month: "02",
-                    state_dob_day: "20"
+                    state_dob_day: "20",
+                    state_id_type:"state_dob_year"
                 })
                 .check.interaction({
                     state: "state_underage_mother",
@@ -1673,7 +1677,7 @@ describe("ussd_clinic app", function() {
         });
         it("should display underage screen for self-registration", function() {
             return tester
-                .setup.user.state("state_start_popi_flow")
+                .setup.user.state("state_mother_age_calc")
                 .setup.user.answers({
                     state_sa_id_no: "21010221222",
                     state_id_type: "state_sa_id_no"    
@@ -1692,7 +1696,7 @@ describe("ussd_clinic app", function() {
         });
         it("should display underage screen for non self-registration", function() {
             return tester
-                .setup.user.state("state_start_popi_flow")
+                .setup.user.state("state_mother_age_calc")
                 .setup.user.answers({
                     state_enter_msisdn: "07123456789",
                     state_sa_id_no: "21010221222",
