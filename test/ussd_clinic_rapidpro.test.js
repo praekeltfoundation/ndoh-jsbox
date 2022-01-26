@@ -1675,7 +1675,8 @@ describe("ussd_clinic app", function() {
             return tester
                 .setup.user.state("state_start_popi_flow")
                 .setup.user.answers({
-                    state_sa_id_no: "21010221222"     
+                    state_sa_id_no: "21010221222",
+                    state_id_type: "state_sa_id_no"    
             })
 
                 .check.interaction({
@@ -1694,7 +1695,8 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_start_popi_flow")
                 .setup.user.answers({
                     state_enter_msisdn: "07123456789",
-                    state_sa_id_no: "21010221222"     
+                    state_sa_id_no: "21010221222",
+                    state_id_type: "state_sa_id_no"     
             })
 
                 .check.interaction({

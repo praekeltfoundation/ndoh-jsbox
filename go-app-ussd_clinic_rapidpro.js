@@ -997,10 +997,10 @@ go.app = function() {
                 msisdn = utils.normalize_msisdn(self.im.user.get_answer("state_enter_msisdn"), "ZA");
                 self_registration = false;
             }
-            if (((typeof self.im.user.get_answer("state_sa_id_no")!= "undefined") && (_.toUpper(self.im.user.get_answer("state_basic_healthcare")) != "CONFIRM"))
-                || ((typeof self.im.user.get_answer("state_sa_id_no")!= "undefined") && (_.toUpper(self.im.user.get_answer("state_underage_mother")) != "YES")) 
-                || ((typeof self.im.user.get_answer("state_sa_id_no")!= "undefined") && (_.toUpper(self.im.user.get_answer("state_underage_registree")) != "YES"))
-                || ((typeof self.im.user.get_answer("state_sa_id_no")!= "undefined") && (typeof self.im.user.get_answer("state_basic_healthcare") != "undefined"))
+            if (((self.im.user.get_answer("state_id_type")=== "state_sa_id_no") && (_.toUpper(self.im.user.get_answer("state_basic_healthcare")) != "CONFIRM"))
+                || ((self.im.user.get_answer("state_id_type")=== "state_sa_id_no") && (_.toUpper(self.im.user.get_answer("state_underage_mother")) != "YES")) 
+                || ((self.im.user.get_answer("state_id_type")=== "state_sa_id_no") && (_.toUpper(self.im.user.get_answer("state_underage_registree")) != "YES"))
+                || ((self.im.user.get_answer("state_id_type")=== "state_sa_id_no") && (typeof self.im.user.get_answer("state_basic_healthcare") != "undefined"))
                 )
             {
                 var rawdateStr = self.im.user.get_answer("state_sa_id_no");
