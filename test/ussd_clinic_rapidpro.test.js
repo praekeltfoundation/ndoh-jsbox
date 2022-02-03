@@ -276,6 +276,21 @@ describe("ussd_clinic app", function() {
         });
     });
     describe("state_active_subscription", function() {
+        it("should display the end screen for active prebirth", function() {
+            return tester
+                .setup.user.state("state_edd_month")
+                .setup.user.answer("state_active_subscription", "Yes")
+                .setup.user.answer("contact", {fields: {edd: "2014-09-10"}})
+                .check.interaction({
+                    state: "state_active_prebirth_end",
+                    reply: [
+                        "You are already receiving messages for baby due 2014-09-10. " +
+                        "To register a new pregnancy, opt out of your current subscription by dialing *134*550*7#.",
+                        "1. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
         it("should display the correct message for edd only", function() {
             return tester
                 .setup.user.state("state_active_subscription")
@@ -464,8 +479,9 @@ describe("ussd_clinic app", function() {
                 .check.interaction({
                     reply: [
                         "What would you like to do?",
-                        "1. Register a different cell number",
-                        "2. Exit"
+                        "1. Register a new pregnancy",
+                        "2. Register a different cell number",
+                        "3. Exit"
                     ].join("\n")
                 })
                 .run();

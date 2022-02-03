@@ -310,9 +310,7 @@ go.app = function() {
         self.add("state_active_subscription_2", function(name) {
             var choices = [];
             var contact = self.im.user.answers.contact;
-            if (!self.contact_edd(contact)) {
-                choices.push(new Choice("state_edd_month", $("Register a new pregnancy")));
-            }
+            choices.push(new Choice("state_edd_month", $("Register a new pregnancy")));
             if (!self.contact_edd(contact) || self.contact_postbirth_dobs(contact).length < 3) {
                 choices.push(new Choice("state_birth_year", $("Register a baby age 0-2")));
             }
@@ -403,6 +401,9 @@ go.app = function() {
         });
 
         self.add("state_edd_month", function(name) {
+            if (typeof self.im.user.get_answer("state_active_subscription") != "undefined") {
+                return self.states.create("state_active_prebirth_end");
+            }
             var today = new moment(self.im.config.testing_today).startOf("day");
             var start_date = today.clone().add(1, "days");
             var end_date = today.clone().add(52, "weeks").add(-1, "days");
@@ -435,6 +436,20 @@ go.app = function() {
                 characters_per_page: 160,
                 next: "state_edd_day",
                 accept_labels: true
+            });
+        });
+
+        self.states.add("state_active_prebirth_end", function(name) {
+            var edd = _.get(self.im.user.get_answer("contact"), "fields.edd");
+            return new EndState(name, {
+                text: $(
+                    "You are already receiving messages for baby due {{edd}}. " +
+                    "To register a new pregnancy, opt out of your current subscription by dialing *134*550*7#." +
+                    "\n1. Next"
+                ).context({
+                    edd: edd
+                }),
+                next: "state_start"
             });
         });
 
