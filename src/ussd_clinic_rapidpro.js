@@ -401,7 +401,8 @@ go.app = function() {
         });
 
         self.add("state_edd_month", function(name) {
-            if (typeof self.im.user.get_answer("state_active_subscription") != "undefined") {
+            var contact = self.im.user.answers.contact;
+            if (self.contact_edd(contact)) {
                 return self.states.create("state_active_prebirth_end");
             }
             var today = new moment(self.im.config.testing_today).startOf("day");
@@ -440,7 +441,9 @@ go.app = function() {
         });
 
         self.states.add("state_active_prebirth_end", function(name) {
-            var edd = _.get(self.im.user.get_answer("contact"), "fields.edd");
+            var contact = self.im.user.answers.contact;
+            var edd = self.contact_edd(contact);
+            edd = edd.format("YYYY-MM-DD");
             return new EndState(name, {
                 text: $(
                     "You are already receiving messages for baby due {{edd}}. " +

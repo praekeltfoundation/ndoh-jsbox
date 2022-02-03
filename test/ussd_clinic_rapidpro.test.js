@@ -279,7 +279,6 @@ describe("ussd_clinic app", function() {
         it("should display the end screen for active prebirth", function() {
             return tester
                 .setup.user.state("state_edd_month")
-                .setup.user.answer("state_active_subscription", "Yes")
                 .setup.user.answer("contact", {fields: {edd: "2014-09-10"}})
                 .check.interaction({
                     state: "state_active_prebirth_end",
