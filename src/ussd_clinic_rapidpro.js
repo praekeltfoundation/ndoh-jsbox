@@ -270,7 +270,7 @@ go.app = function() {
             };
 
             var subscriptions = [];
-            if (!(isNaN(edd)) ){
+            if (!(isNaN(edd))) {
                 subscriptions.push("baby due on {{edd}}");
                 context.edd = edd.format("DD/MM/YYYY");
             }
