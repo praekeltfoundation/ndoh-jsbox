@@ -303,6 +303,19 @@ describe("ussd_clinic app", function() {
                 })
                 .run();
         });
+        it("should display the correct message for edd only if more than 42 weeks", function() {
+            return tester
+                .setup.user.state("state_active_subscription")
+                .setup.user.answer("contact", {fields: {edd: "2012-09-10"}})
+                .check.interaction({
+                    reply: [
+                        "The number 0123456789 is already receiving messages from " +
+                        "MomConnect for baby due on 10/09/2012",
+                        "1. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
         it("should display the correct message for single dob", function() {
             return tester
                 .setup.user.state("state_active_subscription")
@@ -1950,6 +1963,55 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_accept_popi_2")
                 .setup.user.answers({
                     state_message_type: "state_edd_month",
+                    state_research_consent: "no",
+                    state_enter_msisdn: "0820001001",
+                    state_id_type: "state_sa_id_no",
+                    state_sa_id_no: "9001020005087",
+                    state_edd_month: "201502",
+                    state_edd_day: "13",
+                    state_clinic_code: "123456"
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "prebirth-flow-uuid", null, "whatsapp:27820001001", {
+                                research_consent: "TRUE",
+                                registered_by: "+27123456789",
+                                language: "eng",
+                                timestamp: "2014-04-04T07:07:07Z",
+                                source: "Clinic USSD",
+                                id_type: "sa_id",
+                                edd: "2015-02-13T00:00:00Z",
+                                clinic_code: "123456",
+                                sa_id_number: "9001020005087",
+                                dob: "1990-01-02T00:00:00Z",
+                                swt: "7",
+                            }
+                        )
+                    );
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_registration_complete",
+                    reply:
+                        "You're done! This number 0820001001 will get helpful messages from " +
+                        "MomConnect on WhatsApp. Thanks for signing up to MomConnect!"
+                })
+                .check.reply.ends_session()
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    var urls = _.map(api.http.requests, "url");
+                    assert.deepEqual(urls, [
+                        "https://rapidpro/api/v2/flow_starts.json"
+                    ]);
+                    assert.equal(api.log.error.length, 0);
+                })
+                .run();
+        });
+        it("should make a request to the RapidPro APIs for prebirth if message type is skipped", function() {
+            return tester
+                .setup.user.state("state_accept_popi_2")
+                .setup.user.answers({
                     state_research_consent: "no",
                     state_enter_msisdn: "0820001001",
                     state_id_type: "state_sa_id_no",

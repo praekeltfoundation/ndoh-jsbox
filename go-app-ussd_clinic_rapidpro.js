@@ -501,14 +501,14 @@ go.app = function() {
             var msisdn = utils.readable_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "27");
             var contact = self.im.user.answers.contact;
-            var edd = self.contact_edd(contact);
+            var edd = new moment(_.get(contact, "fields.edd", null));
             var dobs = self.contact_postbirth_dobs(contact);
             var context = {
                 msisdn: msisdn
             };
 
             var subscriptions = [];
-            if (edd) {
+            if (!(isNaN(edd))) {
                 subscriptions.push("baby due on {{edd}}");
                 context.edd = edd.format("DD/MM/YYYY");
             }
@@ -1246,7 +1246,9 @@ go.app = function() {
                 swt: "7"
             };
             var flow_uuid;
-            if (self.im.user.answers.state_message_type === "state_edd_month") {
+            
+            if (self.im.user.answers.state_message_type === "state_edd_month" 
+                || typeof self.im.user.answers.state_edd_month != "undefined") {   
                 flow_uuid = self.im.config.prebirth_flow_uuid;
                 data.edd = new moment.utc(
                     self.im.user.answers.state_edd_month +
