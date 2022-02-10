@@ -507,11 +507,11 @@ go.app = function() {
         self.states.add("state_edd_out_of_range_past", function(name) {
             return new MenuState(name, {
                 question: $(
-                    "The date you entered has already passed. " +
-                    "Please try again by entering a date that is still coming"
+                    "The date you entered is in the past. " +
+                    "Please enter a date that is in the future."
                 ),
                 error: $(
-                    "Sorry, we don't understand. Please enter the number that matches the answer."
+                    "Sorry, we don't understand. Please try again."
                 ),
                 choices: [
                     new Choice("state_edd_month", $("Back")),
@@ -523,10 +523,10 @@ go.app = function() {
         self.states.add("state_edd_out_of_range_future", function(name) {
             return new MenuState(name, {
                 question: $(
-                    "The date you entered is too far into the future. Please try again"
+                    "The date you entered is more than 9 months into the future. Please try again."
                 ),
                 error: $(
-                    "Sorry, we don't understand. Please enter the number that matches the answer."
+                    "Sorry, we don't understand. Please try again."
                 ),
                 choices: [
                     new Choice("state_edd_month", $("Back")),
