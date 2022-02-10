@@ -792,37 +792,33 @@ describe("ussd_clinic app", function() {
                     reply:[
                         "Sorry, we don't understand. Please try again.",
                         "",
-                        "Enter the day that baby was born as a number. For example if baby was born on 12th May, type in 12"
+                        "Enter the day that baby is due as a number. For example if baby is due on 12th May, type in 12"
                     ].join("\n")
                 })
                 .run();
         });
-        it("should return an error for days on or before today", function() {
+        it("should return an error for date that has passed", function() {
             return tester
                 .setup.user.state("state_edd_day")
-                .setup.user.answer("state_edd_month", "2014-04")
+                .setup.user.answer("state_edd_month", "2014-03")
+                .input("1")
+                .check.user.state("state_edd_out_of_range_past")
+                .run();
+        });
+        it("should return an error for days >43 weeks from today", function() {
+            return tester
+                .setup.user.state("state_edd_day")
+                .setup.user.answer("state_edd_month", "2015-04")
                 .input("4")
-                .check.interaction({
-                    reply:[
-                        "Sorry, we don't understand. Please try again.",
-                        "",
-                        "Enter the day that baby was born as a number. For example if baby was born on 12th May, type in 12"
-                    ].join("\n")
-                })
+                .check.user.state("state_edd_out_of_range_future")
                 .run();
         });
-        it("should return an error for days after or on 43 weeks from now", function() {
+        it("should pass for days within the range", function() {
             return tester
                 .setup.user.state("state_edd_day")
-                .setup.user.answer("state_edd_month", "2015-01")
+                .setup.user.answer("state_edd_month", "2014-06")
                 .input("30")
-                .check.interaction({
-                    reply:[
-                        "Sorry, we don't understand. Please try again.",
-                        "",
-                        "Enter the day that baby was born as a number. For example if baby was born on 12th May, type in 12"
-                    ].join("\n")
-                })
+                .check.user.state("state_id_type")
                 .run();
         });
         it("should go to state_id_type if the date is valid", function() {
