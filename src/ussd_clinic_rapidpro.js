@@ -468,19 +468,70 @@ go.app = function() {
                         self.im.user.answers.state_edd_month + content,
                         "YYYYMMDD"
                     );
-                    var current_date = new moment(self.im.config.testing_today).startOf("day");
                     if (
-                        !date.isValid() ||
-                        !date.isBetween(current_date, current_date.clone().add(43, "weeks"))
+                        !date.isValid()
                     ) {
                         return $([
                             "Sorry, we don't understand. Please try again.",
                             "",
-                            "Enter the day that baby was born as a number. For example if baby was born on 12th May, type in 12"
+                            "Enter the day that baby is due as a number. For example if baby is due on 12th May, type in 12"
                         ].join("\n"));
                     }
+                    
                 },
-                next: "state_id_type"
+                next: "state_edd_calc"
+            });
+        });
+
+        self.add("state_edd_calc", function(name) {
+            var date = new moment(
+                self.im.user.answers.state_edd_month + self.im.user.answers.state_edd_day,
+                "YYYYMMDD"
+            ); 
+            var current_date = new moment(self.im.config.testing_today).startOf("day");
+            var diff = date.diff(current_date);
+            if (
+                !date.isBetween(current_date, current_date.clone().add(43, "weeks"))
+            ) {
+                if(diff < 0){
+                    return self.states.create("state_edd_out_of_range_past"); 
+                }
+                if(diff > 0){
+                    return self.states.create("state_edd_out_of_range_future"); 
+                }
+                return self.states.create("state_edd_invalid_date");
+            }
+            return self.states.create("state_id_type");
+        });
+
+        self.states.add("state_edd_out_of_range_past", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "The date you entered has already passed. " +
+                    "Please try again by entering a date that is still coming"
+                ),
+                error: $(
+                    "Sorry, we don't understand. Please enter the number that matches the answer."
+                ),
+                choices: [
+                    new Choice("state_edd_month", $("Back")),
+                    new Choice("state_exit", $("Exit"))
+                ]
+            });
+        });
+
+        self.states.add("state_edd_out_of_range_future", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "The date you entered is too far into the future. Please try again"
+                ),
+                error: $(
+                    "Sorry, we don't understand. Please enter the number that matches the answer."
+                ),
+                choices: [
+                    new Choice("state_edd_month", $("Back")),
+                    new Choice("state_exit", $("Exit"))
+                ]
             });
         });
 
