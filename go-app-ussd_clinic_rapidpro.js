@@ -638,6 +638,33 @@ go.app = function() {
             });
         });
 
+        self.add("state_edd_year", function(name) {
+            var today = new moment(self.im.config.testing_today).startOf("day");
+            var choices = _.map(
+                // For this year and next year, we need 2 options
+                _.range(2),
+                function(i) {
+                    var y = today.clone().add(i, "years").format("YYYY");
+                    return new Choice(y, $(y));
+                }
+            );
+            return new ChoiceState(name, {
+                question: $([
+                    "What year is the baby due?",
+                    "",
+                    "Please enter the number that matches your answer, for example 3."
+                ].join("\n")),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
+                choices: choices,
+                next: function(choice) {
+                    return "state_edd_month";
+                }
+            });
+        });
+
         self.add("state_edd_month", function(name) {
             var contact = self.im.user.answers.contact;
             if (self.contact_edd(contact)) {
@@ -703,6 +730,7 @@ go.app = function() {
                 ].join("\n")),
                 check: function(content) {
                     var date = new moment(
+                        self.im.user.answers.state_edd_year + 
                         self.im.user.answers.state_edd_month + content,
                         "YYYYMMDD"
                     );
@@ -723,9 +751,10 @@ go.app = function() {
 
         self.add("state_edd_calc", function(name) {
             var date = new moment(
-                self.im.user.answers.state_edd_month + self.im.user.answers.state_edd_day,
+                self.im.user.answers.state_edd_year + self.im.user.answers.state_edd_month 
+                    + self.im.user.answers.state_edd_day,
                 "YYYYMMDD"
-            ); 
+            );
             var current_date = new moment(self.im.config.testing_today).startOf("day");
             var diff = date.diff(current_date);
             if (
@@ -737,7 +766,6 @@ go.app = function() {
                 if(diff > 0){
                     return self.states.create("state_edd_out_of_range_future"); 
                 }
-                return self.states.create("state_edd_invalid_date");
             }
             return self.states.create("state_id_type");
         });
@@ -752,7 +780,7 @@ go.app = function() {
                     "Sorry, we don't understand. Please try again."
                 ),
                 choices: [
-                    new Choice("state_edd_month", $("Back")),
+                    new Choice("state_edd_year", $("Back")),
                     new Choice("state_exit", $("Exit"))
                 ]
             });
@@ -767,7 +795,7 @@ go.app = function() {
                     "Sorry, we don't understand. Please try again."
                 ),
                 choices: [
-                    new Choice("state_edd_month", $("Back")),
+                    new Choice("state_edd_year", $("Back")),
                     new Choice("state_exit", $("Exit"))
                 ]
             });
@@ -1302,6 +1330,7 @@ go.app = function() {
                 || typeof self.im.user.answers.state_edd_month != "undefined") {   
                 flow_uuid = self.im.config.prebirth_flow_uuid;
                 data.edd = new moment.utc(
+                    self.im.user.answers.state_edd_year +
                     self.im.user.answers.state_edd_month +
                     self.im.user.answers.state_edd_day,
                     "YYYYMMDD"

@@ -774,6 +774,7 @@ describe("ussd_clinic app", function() {
         it("should ask the user for the day of edd", function() {
             return tester
                 .setup.user.state("state_edd_day")
+                .setup.user.answer("state_edd_month", "2014-04")
                 .check.interaction({
                     reply: [
                         "What is the estimated day that the baby is due?",
@@ -786,7 +787,8 @@ describe("ussd_clinic app", function() {
         it("should return an error for invalid days", function() {
             return tester
                 .setup.user.state("state_edd_day")
-                .setup.user.answer("state_edd_month", "2014-04")
+                .setup.user.answer("state_edd_year", "2014")
+                .setup.user.answer("state_edd_month", "04")
                 .input("99")
                 .check.interaction({
                     reply:[
@@ -800,23 +802,42 @@ describe("ussd_clinic app", function() {
         it("should return an error for date that has passed", function() {
             return tester
                 .setup.user.state("state_edd_day")
-                .setup.user.answer("state_edd_month", "2014-03")
+                .setup.user.answer("state_edd_year", "2014")
+                .setup.user.answer("state_edd_month", "03")
                 .input("1")
                 .check.user.state("state_edd_out_of_range_past")
                 .run();
         });
         it("should return an error for days >43 weeks from today", function() {
             return tester
+                .setup.user.answer("state_edd_year", "2015")
                 .setup.user.state("state_edd_day")
-                .setup.user.answer("state_edd_month", "2015-04")
+                .setup.user.answer("state_edd_month", "02")
                 .input("4")
                 .check.user.state("state_edd_out_of_range_future")
                 .run();
         });
+
+        it("should check state EDD Year", function() {
+            return tester
+                .setup.user.state("state_edd_year")
+                .check.interaction({
+                    reply: [
+                        "What year is the baby due?",
+                        "",
+                        "Please enter the number that matches your answer, for example 3.",
+                        "1. 2014",
+                        "2. 2015"
+                    ].join("\n")
+                })
+                .run();
+        });
+
         it("should pass for days within the range", function() {
             return tester
                 .setup.user.state("state_edd_day")
-                .setup.user.answer("state_edd_month", "2014-06")
+                .setup.user.answer("state_edd_year", "2014")
+                .setup.user.answer("state_edd_month", "06")
                 .input("30")
                 .check.user.state("state_id_type")
                 .run();
@@ -824,7 +845,8 @@ describe("ussd_clinic app", function() {
         it("should go to state_id_type if the date is valid", function() {
             return tester
                 .setup.user.state("state_edd_day")
-                .setup.user.answer("state_edd_month", "2014-06")
+                .setup.user.answer("state_edd_year", "2014")
+                .setup.user.answer("state_edd_month", "06")
                 .input("6")
                 .check.user.state("state_id_type")
                 .check(function(api) {
