@@ -443,7 +443,7 @@ go.app = function() {
                 return d.format("MM");
             });
             var choices = _.map(sortedDates, function(date) {
-                return new Choice(date.format("YYYYMM"), $(date.format("MMM")));
+                return new Choice(date.format("MM"), $(date.format("MMM")));
             });
 
             return new PaginatedChoiceState(name, {
@@ -502,8 +502,11 @@ go.app = function() {
                         return $([
                             "Sorry, we don't understand. Please try again.",
                             "",
-                            "Enter the day that baby is due as a number. For example if baby is due on 12th May, type in 12"
+                            "Enter the day that baby is due as a number. " +
+                            "For example if baby is due on 12th May, type in 12"
                         ].join("\n"));
+                    }
+                    else{
                     }
                     
                 },

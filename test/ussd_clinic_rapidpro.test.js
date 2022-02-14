@@ -701,6 +701,7 @@ describe("ussd_clinic app", function() {
         it("should display the list of month choices", function() {
             return tester
                 .setup.user.state("state_edd_month")
+                .setup.user.answer("state_edd_year", "2014")
                 .check.interaction({
                     reply: [
                         "What month is baby due?",
@@ -817,7 +818,6 @@ describe("ussd_clinic app", function() {
                 .check.user.state("state_edd_out_of_range_future")
                 .run();
         });
-
         it("should check state EDD Year", function() {
             return tester
                 .setup.user.state("state_edd_year")
@@ -832,7 +832,36 @@ describe("ussd_clinic app", function() {
                 })
                 .run();
         });
-
+        it("should return an error for invalid year", function() {
+            return tester
+                .setup.user.state("state_edd_year")
+                .input("2014")
+                .check.interaction({
+                    state: "state_edd_year",
+                    reply:[
+                    "Sorry we don't understand. Please enter the number next to the mother's answer.",
+                    "1. 2014",
+                    "2. 2015"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should return an error for invalid date", function() {
+            return tester
+                .setup.user.state("state_edd_day")
+                .setup.user.answer("state_edd_year", "20")
+                .setup.user.answer("state_edd_month", "05")
+                .input("13")
+                .check.interaction({
+                    state: "state_edd_day",
+                    reply:[
+                    "Sorry, we don't understand. Please try again.",
+                    "",
+                    "Enter the day that baby is due as a number. For example if baby is due on 12th May, type in 12",
+                    ].join("\n")
+                })
+                .run();
+        });
         it("should pass for days within the range", function() {
             return tester
                 .setup.user.state("state_edd_day")
