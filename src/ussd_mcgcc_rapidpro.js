@@ -431,7 +431,7 @@ go.app = function() {
             return new MenuState(name, {
                 question: $(
                         "Welcome to the Dept. of Health's MomConnect." +
-                        "\n\n[1/4]" +
+                        "\n\n[1/5]" +
                         "\nDo you agree to get messages to help {{mom_name}} during and after pregnancy?")
                     .context({
                         mom_name: mom_name
@@ -535,7 +535,7 @@ go.app = function() {
             return new MenuState(name, {
                 question: $(
                     "[5/5]" +
-                    "Thank you! Let's make sure we got it right." +
+                    "\nThank you! Let's make sure we got it right." +
                     "\n\nIs your name {{supporter_name}}?").context({
                     supporter_name: supporter_name
                 }),
@@ -695,7 +695,7 @@ go.app = function() {
                 choices.splice(1,1);
                 choices.splice(2,1);
             }
-            else if ((preferred_channel != "WHATSAPP") && (language === "ENG" || language === "ENG")){
+            else if ((preferred_channel != "WHATSAPP") && (language === "ENG_ZA" || language === "ENG")){
                 choices.splice(1,1);
             }
             else if ((preferred_channel === "WHATSAPP") && (language != "ENG_ZA" || language != "ENG")){
