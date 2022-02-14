@@ -479,7 +479,7 @@ go.app = function() {
         self.add("state_supporter_research_consent", function(name) {
             return new ChoiceState(name, {
                 question: $(
-                    "[3/5]" +
+                    "[2/5]" +
                     "\nMay we also send messages for historical, statistical, or research reasons?" +
                     "\nWe won't contact you unnecessarily and we'll keep your info safe."),
                 error: $(
@@ -498,7 +498,7 @@ go.app = function() {
         self.add("state_supporter_relationship", function(name) {
             return new ChoiceState(name, {
                 question: $(
-                    "[4/5]" +
+                    "[3/5]" +
                     "\nHow are you related to the baby? You are the baby's ..."),
                 error: $(
                     "Sorry, please try again. " +
@@ -520,7 +520,7 @@ go.app = function() {
         self.add("state_supporter_name", function(name) {
             return new FreeText(name, {
                 question: $(
-                    "[5/5]" +
+                    "[4/5]" +
                     "\nWhat is your name?" +
                     "\n\nWe will use this in the messages we send to you. " +
                     "We won't share your name with anyone."),
@@ -698,7 +698,7 @@ go.app = function() {
             else if ((preferred_channel != "WHATSAPP") && (language === "ENG_ZA" || language === "ENG")){
                 choices.splice(1,1);
             }
-            else if (preferred_channel === "WHATSAPP" && language != "ENG_ZA"){
+            else if ((preferred_channel === "WHATSAPP") && (language != "ENG_ZA" || language === "ENG")){
                 choices.splice(3,1);
             }
             return new MenuState(name, {

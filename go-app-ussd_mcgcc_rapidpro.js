@@ -840,14 +840,14 @@ go.app = function() {
             ];
             var preferred_channel = (_.toUpper(_.get(contact, "fields.preferred_channel")));
             var language = (_.toUpper(_.get(contact, "language")));
-            if ((preferred_channel === "WHATSAPP") && (language === "ENG_ZA" || language === "ENG")){
+            if (preferred_channel === "WHATSAPP" && language === "ENG_ZA"){
                 choices.splice(1,1);
                 choices.splice(2,1);
             }
             else if ((preferred_channel != "WHATSAPP") && (language === "ENG_ZA" || language === "ENG")){
                 choices.splice(1,1);
             }
-            else if ((preferred_channel === "WHATSAPP") && (language != "ENG_ZA" || language != "ENG")){
+            else if ((preferred_channel === "WHATSAPP") && (language != "ENG_ZA" || language === "ENG")){
                 choices.splice(3,1);
             }
             return new MenuState(name, {
