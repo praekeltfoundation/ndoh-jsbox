@@ -687,7 +687,6 @@ describe("ussd_mcgcc app", function() {
                 .setup.user.state("state_trigger_supporter_registration_flow")
                 .setup.user.answers({
                     state_supporter_consent: "yes",
-                    //state_supporter_language_whatsapp: "eng_ZA",
                     state_supporter_name: "John",
                     state_supporter_research_consent: "Yes",
                     state_supporter_relationship: "father",
