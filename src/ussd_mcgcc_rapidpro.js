@@ -534,7 +534,8 @@ go.app = function() {
             var supporter_name = self.im.user.answers.state_supporter_name;
             return new MenuState(name, {
                 question: $(
-                    "Thank you! Let's make sure we got it right." +
+                    "[5/5]" +
+                    "\nThank you! Let's make sure we got it right." +
                     "\n\nIs your name {{supporter_name}}?").context({
                     supporter_name: supporter_name
                 }),
@@ -694,7 +695,7 @@ go.app = function() {
                 choices.splice(1,1);
                 choices.splice(2,1);
             }
-            else if (preferred_channel != "WHATSAPP" && language === "ENG_ZA"){
+            else if ((preferred_channel != "WHATSAPP") && (language === "ENG_ZA" || language === "ENG")){
                 choices.splice(1,1);
             }
             else if (preferred_channel === "WHATSAPP" && language != "ENG_ZA"){

@@ -578,7 +578,7 @@ describe("ussd_mcgcc app", function() {
                 .check.interaction({
                     state: "state_supporter_research_consent",
                     reply: [
-                        "[3/5]",
+                        "[2/5]",
                         "May we also send messages for historical, statistical, or research reasons?",
                         "We won't contact you unnecessarily and we'll keep your info safe.",
                         "1. Yes",
@@ -623,7 +623,7 @@ describe("ussd_mcgcc app", function() {
                 .check.interaction({
                     state: "state_supporter_relationship",
                     reply: [
-                        "[4/5]",
+                        "[3/5]",
                         "How are you related to the baby? You are the baby's ...",
                         "1. Father",
                         "2. Uncle",
@@ -641,7 +641,7 @@ describe("ussd_mcgcc app", function() {
                 .check.interaction({
                     state: "state_supporter_name",
                     reply: [
-                        "[5/5]",
+                        "[4/5]",
                         "What is your name?",
                         "\nWe will use this in the messages we send to you. " +
                         "We won't share your name with anyone."
@@ -656,6 +656,7 @@ describe("ussd_mcgcc app", function() {
                 .check.interaction({
                     state: "state_supporter_name_confirm",
                     reply: [
+                        "[5/5]",
                         "Thank you! Let's make sure we got it right.",
                         "\nIs your name Jonathan?",
                         "1. Yes",
@@ -671,7 +672,7 @@ describe("ussd_mcgcc app", function() {
                 .check.interaction({
                     state: "state_supporter_name",
                     reply: [
-                        "[5/5]",
+                        "[4/5]",
                         "What is your name?",
                         "\nWe will use this in the messages we send to you. " +
                         "We won't share your name with anyone."
