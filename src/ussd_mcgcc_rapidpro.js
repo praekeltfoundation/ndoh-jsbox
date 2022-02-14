@@ -691,7 +691,7 @@ go.app = function() {
             ];
             var preferred_channel = (_.toUpper(_.get(contact, "fields.preferred_channel")));
             var language = (_.toUpper(_.get(contact, "language")));
-            if (preferred_channel === "WHATSAPP" && language === "ENG_ZA"){
+            if ((preferred_channel === "WHATSAPP") && (language === "ENG_ZA" || language === "ENG")){
                 choices.splice(1,1);
                 choices.splice(2,1);
             }
