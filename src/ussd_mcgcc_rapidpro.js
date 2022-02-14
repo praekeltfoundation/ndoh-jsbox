@@ -431,7 +431,7 @@ go.app = function() {
             return new MenuState(name, {
                 question: $(
                         "Welcome to the Dept. of Health's MomConnect." +
-                        "\n\n[1/4]" +
+                        "\n\n[1/5]" +
                         "\nDo you agree to get messages to help {{mom_name}} during and after pregnancy?")
                     .context({
                         mom_name: mom_name
@@ -479,7 +479,7 @@ go.app = function() {
         self.add("state_supporter_research_consent", function(name) {
             return new ChoiceState(name, {
                 question: $(
-                    "[2/5]" +
+                    "[3/5]" +
                     "\nMay we also send messages for historical, statistical, or research reasons?" +
                     "\nWe won't contact you unnecessarily and we'll keep your info safe."),
                 error: $(
@@ -498,7 +498,7 @@ go.app = function() {
         self.add("state_supporter_relationship", function(name) {
             return new ChoiceState(name, {
                 question: $(
-                    "[3/5]" +
+                    "[4/5]" +
                     "\nHow are you related to the baby? You are the baby's ..."),
                 error: $(
                     "Sorry, please try again. " +
@@ -520,7 +520,7 @@ go.app = function() {
         self.add("state_supporter_name", function(name) {
             return new FreeText(name, {
                 question: $(
-                    "[4/5]" +
+                    "[5/5]" +
                     "\nWhat is your name?" +
                     "\n\nWe will use this in the messages we send to you. " +
                     "We won't share your name with anyone."),
@@ -534,7 +534,6 @@ go.app = function() {
             var supporter_name = self.im.user.answers.state_supporter_name;
             return new MenuState(name, {
                 question: $(
-                    "[5/5]" +
                     "Thank you! Let's make sure we got it right." +
                     "\n\nIs your name {{supporter_name}}?").context({
                     supporter_name: supporter_name
@@ -691,14 +690,14 @@ go.app = function() {
             ];
             var preferred_channel = (_.toUpper(_.get(contact, "fields.preferred_channel")));
             var language = (_.toUpper(_.get(contact, "language")));
-            if ((preferred_channel === "WHATSAPP") && (language === "ENG_ZA" || language === "ENG")){
+            if (preferred_channel === "WHATSAPP" && language === "ENG_ZA"){
                 choices.splice(1,1);
                 choices.splice(2,1);
             }
-            else if ((preferred_channel != "WHATSAPP") && (language === "ENG" || language === "ENG")){
+            else if (preferred_channel != "WHATSAPP" && language === "ENG_ZA"){
                 choices.splice(1,1);
             }
-            else if ((preferred_channel === "WHATSAPP") && (language != "ENG_ZA" || language != "ENG")){
+            else if (preferred_channel === "WHATSAPP" && language != "ENG_ZA"){
                 choices.splice(3,1);
             }
             return new MenuState(name, {
