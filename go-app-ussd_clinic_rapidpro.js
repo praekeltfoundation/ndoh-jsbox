@@ -548,7 +548,7 @@ go.app = function() {
         self.add("state_active_subscription_2", function(name) {
             var choices = [];
             var contact = self.im.user.answers.contact;
-            choices.push(new Choice("state_edd_month", $("Register a new pregnancy")));
+            choices.push(new Choice("state_edd_year", $("Register a new pregnancy")));
             if (!self.contact_edd(contact) || self.contact_postbirth_dobs(contact).length < 3) {
                 choices.push(new Choice("state_birth_year", $("Register a baby age 0-2")));
             }
@@ -616,7 +616,7 @@ go.app = function() {
                 contact = self.im.user.answers.contact;
             if (!self.contact_edd(contact)) {
                 choices.push(new Choice(
-                    "state_edd_month",
+                    "state_edd_year",
                     $("Register a new pregnancy")
                 ));
             }
