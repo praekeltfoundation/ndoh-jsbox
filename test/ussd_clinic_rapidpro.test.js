@@ -436,11 +436,11 @@ describe("ussd_clinic app", function() {
                 })
                 .run();
         });
-        it("should go to state_edd_month id new pregnancy is selected", function() {
+        it("should go to state_edd_year if new pregnancy is selected", function() {
             return tester
                 .setup.user.state("state_active_subscription_2")
                 .input("1")
-                .check.user.state("state_edd_month")
+                .check.user.state("state_edd_year")
                 .run();
         });
         it("should go to state_birth_year id new baby is selected", function() {
