@@ -401,6 +401,10 @@ go.app = function() {
         });
 
         self.add("state_edd_year", function(name) {
+            var contact = self.im.user.answers.contact;
+            if (self.contact_edd(contact)) {
+                return self.states.create("state_active_prebirth_end");
+            }
             var today = new moment(self.im.config.testing_today).startOf("day");
             var choices = _.map(
                 // For this year and next year, we need 2 options
@@ -428,10 +432,6 @@ go.app = function() {
         });
 
         self.add("state_edd_month", function(name) {
-            var contact = self.im.user.answers.contact;
-            if (self.contact_edd(contact)) {
-                return self.states.create("state_active_prebirth_end");
-            }
             var today = new moment(self.im.config.testing_today).startOf("day");
             var start_date = today.clone().add(1, "days");
             var end_date = today.clone().add(52, "weeks").add(-1, "days");
