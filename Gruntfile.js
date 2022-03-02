@@ -19,7 +19,8 @@ module.exports = function (grunt) {
                     ussd_covid19_triage: "src/ussd_covid19_triage.js",
                     ussd_higherhealth_healthcheck: "src/ussd_higherhealth_healthcheck.js",
                     ussd_tb_check: "src/ussd_tb_check.js",
-                    ussd_mcgcc_rapidpro: 'src/ussd_mcgcc_rapidpro.js'
+                    ussd_mcgcc_rapidpro: 'src/ussd_mcgcc_rapidpro.js',
+                    ussd_mqr_faqs: 'src/ussd_mqr_faqs.js'
                 },
                 ussd_nurse_rapidpro: [
                     'src/index.js',
@@ -101,6 +102,13 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.ussd_mcgcc_rapidpro %>',
                     'src/init.js'
                 ],
+                ussd_mqr_faqs: [
+                    'src/index.js',
+                    'src/contentrepo.js',
+                    'src/rapidpro.js',
+                    '<%= paths.src.app.ussd_mqr_faqs %>',
+                    'src/init.js'
+                ],
                 all: [
                     'src/**/*.js'
                 ]
@@ -118,6 +126,7 @@ module.exports = function (grunt) {
                 ussd_higherhealth_healthcheck: 'go-app-ussd_higherhealth_healthcheck.js',
                 ussd_tb_check: 'go-app-ussd_tb_check.js',
                 ussd_mcgcc_rapidpro: 'go-app-ussd_mcgcc_rapidpro.js',
+                ussd_mqr_faqs: 'go-app-ussd_mqr_faqs.js',
             },
             test: {
                 ussd_nurse_rapidpro: [
@@ -194,6 +203,13 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.ussd_mcgcc_rapidpro %>',
                     'test/ussd_mcgcc_rapidpro.test.js'
                 ],
+                ussd_mqr_faqs: [
+                    'test/setup.js',
+                    'src/contentrepo.js',
+                    'src/rapidpro.js',
+                    '<%= paths.src.app.ussd_mqr_faqs %>',
+                    'test/ussd_mqr_faqs.test.js'
+                ],
                 ussd_tb_check: [
                     'test/setup.js',
                     'src/rapidpro.js',
@@ -264,6 +280,10 @@ module.exports = function (grunt) {
                 src: ['<%= paths.src.ussd_mcgcc_rapidpro %>'],
                 dest: '<%= paths.dest.ussd_mcgcc_rapidpro %>'
             },
+            ussd_mqr_faqs: {
+                src: ['<%= paths.src.ussd_mqr_faqs %>'],
+                dest: '<%= paths.dest.ussd_mqr_faqs %>'
+            },
             ussd_tb_check: {
                 src: ['<%= paths.src.ussd_tb_check %>'],
                 dest: '<%= paths.dest.ussd_tb_check %>'
@@ -308,6 +328,9 @@ module.exports = function (grunt) {
             },
             test_ussd_mcgcc_rapidpro: {
                 src: ['<%= paths.test.ussd_mcgcc_rapidpro %>']
+            },
+            test_ussd_mqr_faqs: {
+                src: ['<%= paths.test.ussd_mqr_faqs %>']
             },
             test_ussd_tb_check: {
                 src: ['<%= paths.test.ussd_tb_check %>']
