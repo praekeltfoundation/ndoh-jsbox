@@ -16,7 +16,6 @@ module.exports = function (grunt) {
                     ussd_optout_rapidpro: 'src/ussd_optout_rapidpro.js',
                     ussd_pmtct_rapidpro: 'src/ussd_pmtct_rapidpro.js',
                     ussd_ccmdd_wc_address_update: "src/ussd_ccmdd_wc_address_update.js",
-                    ussd_covid19_triage: "src/ussd_covid19_triage.js",
                     ussd_higherhealth_healthcheck: "src/ussd_higherhealth_healthcheck.js",
                     ussd_tb_check: "src/ussd_tb_check.js",
                     ussd_mcgcc_rapidpro: 'src/ussd_mcgcc_rapidpro.js',
@@ -77,11 +76,6 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.ussd_ccmdd_wc_address_update %>',
                     'src/init.js'
                 ],
-                ussd_covid19_triage: [
-                    'src/index.js',
-                    '<%= paths.src.app.ussd_covid19_triage %>',
-                    'src/init.js'
-                ],
                 ussd_higherhealth_healthcheck: [
                     'src/index.js',
                     'src/rapidpro.js',
@@ -122,7 +116,6 @@ module.exports = function (grunt) {
                 ussd_optout_rapidpro: 'go-app-ussd_optout_rapidpro.js',
                 ussd_pmtct_rapidpro: 'go-app-ussd_pmtct_rapidpro.js',
                 ussd_ccmdd_wc_address_update: 'go-app-ussd_ccmdd_wc_address_update.js',
-                ussd_covid19_triage: 'go-app-ussd_covid19_triage.js',
                 ussd_higherhealth_healthcheck: 'go-app-ussd_higherhealth_healthcheck.js',
                 ussd_tb_check: 'go-app-ussd_tb_check.js',
                 ussd_mcgcc_rapidpro: 'go-app-ussd_mcgcc_rapidpro.js',
@@ -183,11 +176,6 @@ module.exports = function (grunt) {
                     'src/rapidpro.js',
                     '<%= paths.src.app.ussd_ccmdd_wc_address_update %>',
                     'test/ussd_ccmdd_wc_address_update.test.js'
-                ],
-                ussd_covid19_triage: [
-                    'test/setup.js',
-                    '<%= paths.src.app.ussd_covid19_triage %>',
-                    'test/ussd_covid19_triage.test.js'
                 ],
                 ussd_higherhealth_healthcheck: [
                     'test/setup.js',
@@ -268,10 +256,6 @@ module.exports = function (grunt) {
                 src: ['<%= paths.src.ussd_ccmdd_wc_address_update %>'],
                 dest: '<%= paths.dest.ussd_ccmdd_wc_address_update %>'
             },
-            ussd_covid19_triage: {
-                src: ['<%= paths.src.ussd_covid19_triage %>'],
-                dest: '<%= paths.dest.ussd_covid19_triage %>'
-            },
             ussd_higherhealth_healthcheck: {
                 src: ['<%= paths.src.ussd_higherhealth_healthcheck %>'],
                 dest: '<%= paths.dest.ussd_higherhealth_healthcheck %>'
@@ -319,9 +303,6 @@ module.exports = function (grunt) {
             },
             test_ussd_ccmdd_wc_address_update: {
                 src: ['<%= paths.test.ussd_ccmdd_wc_address_update %>']
-            },
-            test_ussd_covid19_triage: {
-                src: ['<%= paths.test.ussd_covid19_triage %>']
             },
             test_ussd_higherhealth_healthcheck: {
                 src: ['<%= paths.test.ussd_higherhealth_healthcheck %>']
