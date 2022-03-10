@@ -175,8 +175,8 @@ go.app = function() {
         self.states.add("state_show_faq_detail", function(name) {
             var message = self.im.user.get_answer("faq_message");
             return new MenuState(name, {
-                question: [message, "", "Reply:"].join("\n"),
-                error: [message, "", "Reply:"].join("\n"),
+                question: $(message),
+                error: $(message),
                 choices: [new Choice("state_faq_menu", "Back")]
             });
         });

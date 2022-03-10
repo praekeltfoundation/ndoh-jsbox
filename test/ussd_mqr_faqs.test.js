@@ -195,7 +195,7 @@ describe("ussd_mqr_faqs app", function () {
                 reply: [
                     "Test content for this faq",
                     "",
-                    "Reply:",
+                    "Reply",
                     "1. Back"
                 ].join("\n"),
                 char_limit: 160
@@ -204,7 +204,11 @@ describe("ussd_mqr_faqs app", function () {
               {
                 state_faq_menu: 1,
                 viewed: [1],
-                faq_message: "Test content for this faq",
+                faq_message: [
+                  "Test content for this faq",
+                  "",
+                  "Reply"
+                ].join("\n"),
                 contact: {uuid: "contact-uuid", fields: {mqr_last_tag: "RCM_TEST"}},
                 faq_main_menu: [
                     "Reply with a number to learn about these topics:",
@@ -259,7 +263,11 @@ describe("ussd_mqr_faqs app", function () {
                 state_faq_menu: 1,
                 viewed: [1],
                 state_show_faq_detail: "state_faq_menu",
-                faq_message: "Test content for this faq",
+                faq_message: [
+                  "Test content for this faq",
+                  "",
+                  "Reply"
+                ].join("\n"),
                 contact: {uuid: "contact-uuid", fields: {mqr_last_tag: "RCM_TEST"}},
                 faq_main_menu: [
                     "Reply with a number to learn about these topics:",
@@ -309,7 +317,11 @@ describe("ussd_mqr_faqs app", function () {
                 state_faq_menu: 1,
                 viewed: [2, 3, 1],
                 state_show_faq_detail: "state_faq_menu",
-                faq_message: "Test content for this faq",
+                faq_message: [
+                  "Test content for this faq",
+                  "",
+                  "Reply"
+                ].join("\n"),
                 contact: {uuid: "contact-uuid", fields: {mqr_last_tag: "RCM_TEST"}},
                 faq_main_menu: [
                     "Reply with a number to learn about these topics:",
