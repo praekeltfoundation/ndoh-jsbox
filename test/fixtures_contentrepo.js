@@ -74,7 +74,11 @@ module.exports = function() {
                         "body": {
                             "text": {
                                 "value": {
-                                    "message": "Test content for this faq"
+                                    "message": [
+                                        "Test content for this faq",
+                                        "",
+                                        "Reply"
+                                    ].join("\n")
                                 }
                             }
                         }
