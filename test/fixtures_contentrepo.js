@@ -1,28 +1,55 @@
 module.exports = function() {
     return {
-        list_faqs: function(tag) {
-            var tags = [];
-            for(var i=1; i<4; i++){
-                tags.push(tag + i);
-            }
+        get_faq_id: function(tag) {
+            return {
+                "repeatable": true,
+                "request": {
+                    "url": 'https://contentrepo/api/v2/pages',
+                    "params": {'tag': tag},
+                    "method": 'GET'
+                },
+                "response": {
+                    "code": 200,
+                    "data": {
+                        "results": [
+                            {
+                                "id": 111
+                            }
+                        ]
+                    }
+                }
+            };
+        },
 
+        get_faq_text_menu: function(page_id, contact_uuid) {
             var params = {
-                tags: tags.join(",")
+                whatsapp: "True",
+                data__contact_uuid: contact_uuid
             };
 
             return {
                 "repeatable": true,
                 "request": {
-                    "url": 'https://contentrepo/randommenu',
+                    "url": 'https://contentrepo/api/v2/pages/' + page_id,
                     "method": 'GET',
                     "params": params
                 },
                 "response": {
                     "code": 200,
                     "data": {
-                        "ids": "111,222,333",
-                        "titles": "Title 1,Title 2,Title 3",
-                        "count": 3
+                        "body": {
+                            "text": {
+                                "value": {
+                                    "message": [
+                                        "Reply with a number to learn about these topics:",
+                                        "",
+                                        "1 - Title 1",
+                                        "2 - Title 2",
+                                        "3 - Title 3"
+                                    ].join("\n")
+                                }
+                            }
+                        }
                     }
                 }
             };

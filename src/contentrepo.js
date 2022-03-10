@@ -17,11 +17,11 @@ go.ContentRepo = function() {
             });
         };
 
-        self.list_faqs = function(tags) {
-            var params = {
-                tags: tags.join(",")
-            };
-            return self.get("randommenu", params);
+        self.get_faq_id = function(tag) {
+            return self.get("/api/v2/pages", {tag: tag})
+                .then(function(result){
+                    return result.results[0].id;
+                });
         };
 
         self.get_faq_text = function(id, contact_uuid) {

@@ -28,6 +28,7 @@ describe("ussd_mqr_faqs app", function () {
             .setup(function(api) {
                 api.http.fixtures.add(
                     fixtures_rapidpro.get_contact({
+                        uuid: "contact-uuid",
                         urn: "whatsapp:27123456789",
                         exists: true,
                         fields: {
@@ -38,13 +39,17 @@ describe("ussd_mqr_faqs app", function () {
                     })
                 );
                 api.http.fixtures.add(
-                    fixtures_contentrepo.list_faqs("RCM_TEST")
+                    fixtures_contentrepo.get_faq_id("RCM_TEST_faq0")
+                );
+                api.http.fixtures.add(
+                    fixtures_contentrepo.get_faq_text_menu(111, "contact-uuid")
                 );
             })
             .check.interaction({
                 state: "state_faq_menu",
                 reply: [
-                    "Good to know this week:",
+                    "Reply with a number to learn about these topics:",
+                    "",
                     "1. Title 1",
                     "2. Title 2",
                     "3. Title 3"
@@ -77,6 +82,7 @@ describe("ussd_mqr_faqs app", function () {
             .setup(function(api) {
                 api.http.fixtures.add(
                     fixtures_rapidpro.get_contact({
+                        uuid: "contact-uuid",
                         urn: "whatsapp:27123456789",
                         exists: true,
                         fields: {
@@ -87,14 +93,18 @@ describe("ussd_mqr_faqs app", function () {
                     })
                 );
                 api.http.fixtures.add(
-                    fixtures_contentrepo.list_faqs("RCM_TEST")
+                    fixtures_contentrepo.get_faq_id("RCM_TEST_faq0")
+                );
+                api.http.fixtures.add(
+                    fixtures_contentrepo.get_faq_text_menu(111, "contact-uuid")
                 );
             })
             .input("A")
             .check.interaction({
                 state: "state_faq_menu",
                 reply: [
-                  "Good to know this week:",
+                  "Reply with a number to learn about these topics:",
+                  "",
                   "1. Title 1",
                   "2. Title 2",
                   "3. Title 3"
@@ -135,13 +145,19 @@ describe("ussd_mqr_faqs app", function () {
             .setup.user.state("state_faq_menu")
             .setup.user.answers({
               viewed: [],
-              titles: ["Title 1", "Title 2", "Title 3"],
-              ids: [111, 222, 333]
+              faq_main_menu: [
+                  "Reply with a number to learn about these topics:",
+                  "",
+                  "1 - Title 1",
+                  "2 - Title 2",
+                  "3 - Title 3"
+              ].join("\n")
             })
             .check.interaction({
                 state: "state_faq_menu",
                 reply: [
-                    "Good to know this week:",
+                    "Reply with a number to learn about these topics:",
+                    "",
                     "1. Title 1",
                     "2. Title 2",
                     "3. Title 3"
@@ -155,15 +171,23 @@ describe("ussd_mqr_faqs app", function () {
       return tester
             .setup(function(api) {
                 api.http.fixtures.add(
+                    fixtures_contentrepo.get_faq_id("RCM_TEST_faq1")
+                );
+                api.http.fixtures.add(
                     fixtures_contentrepo.get_faq_text(111, "contact-uuid")
                 );
             })
             .setup.user.state("state_faq_menu")
             .setup.user.answers({
               viewed: [],
-              titles: ["Title 1", "Title 2", "Title 3"],
-              ids: [111, 222, 333],
-              contact: {uuid: "contact-uuid"}
+              faq_main_menu: [
+                  "Reply with a number to learn about these topics:",
+                  "",
+                  "1 - Title 1",
+                  "2 - Title 2",
+                  "3 - Title 3"
+              ].join("\n"),
+              contact: {uuid: "contact-uuid", fields: {mqr_last_tag: "RCM_TEST"}}
             })
             .input("1")
             .check.interaction({
@@ -178,12 +202,17 @@ describe("ussd_mqr_faqs app", function () {
             })
             .check.user.answers(
               {
-                titles: ["Title 1", "Title 2", "Title 3"],
-                ids: [111, 222, 333],
-                state_faq_menu: 111,
-                viewed: [111],
+                state_faq_menu: 1,
+                viewed: [1],
                 faq_message: "Test content for this faq",
-                contact: {uuid: "contact-uuid"}
+                contact: {uuid: "contact-uuid", fields: {mqr_last_tag: "RCM_TEST"}},
+                faq_main_menu: [
+                    "Reply with a number to learn about these topics:",
+                    "",
+                    "1 - Title 1",
+                    "2 - Title 2",
+                    "3 - Title 3"
+                ].join("\n")
               }
             )
             .run();
@@ -193,23 +222,32 @@ describe("ussd_mqr_faqs app", function () {
     it("should go back to state_faq_menu", function() {
       return tester
             .setup(function(api) {
-                api.http.fixtures.add(
-                    fixtures_contentrepo.get_faq_text(111, "contact-uuid")
-                );
+              api.http.fixtures.add(
+                  fixtures_contentrepo.get_faq_id("RCM_TEST_faq1")
+              );
+              api.http.fixtures.add(
+                  fixtures_contentrepo.get_faq_text(111, "contact-uuid")
+              );
             })
             .setup.user.state("state_get_faq_detail")
             .setup.user.answers({
               viewed: [],
-              titles: ["Title 1", "Title 2", "Title 3"],
-              ids: [111, 222, 333],
-              state_faq_menu: 111,
-              contact: {uuid: "contact-uuid"}
+              state_faq_menu: 1,
+              contact: {uuid: "contact-uuid", fields: {mqr_last_tag: "RCM_TEST"}},
+              faq_main_menu: [
+                  "Reply with a number to learn about these topics:",
+                  "",
+                  "1 - Title 1",
+                  "2 - Title 2",
+                  "3 - Title 3"
+              ].join("\n")
             })
             .input("1")
             .check.interaction({
                 state: "state_faq_menu",
                 reply: [
-                    "Good to know this week:",
+                    "Reply with a number to learn about these topics:",
+                    "",
                     "1. Title 1",
                     "2. Title 2",
                     "3. Title 3"
@@ -218,13 +256,18 @@ describe("ussd_mqr_faqs app", function () {
             })
             .check.user.answers(
               {
-                titles: ["Title 1", "Title 2", "Title 3"],
-                ids: [111, 222, 333],
-                state_faq_menu: 111,
-                viewed: [111],
+                state_faq_menu: 1,
+                viewed: [1],
                 state_show_faq_detail: "state_faq_menu",
                 faq_message: "Test content for this faq",
-                contact: {uuid: "contact-uuid"}
+                contact: {uuid: "contact-uuid", fields: {mqr_last_tag: "RCM_TEST"}},
+                faq_main_menu: [
+                    "Reply with a number to learn about these topics:",
+                    "",
+                    "1 - Title 1",
+                    "2 - Title 2",
+                    "3 - Title 3"
+                ].join("\n")
               }
             )
             .run();
@@ -232,17 +275,25 @@ describe("ussd_mqr_faqs app", function () {
     it("should go to state_all_topics_viewed if all topics viewed", function() {
       return tester
             .setup(function(api) {
-                api.http.fixtures.add(
-                    fixtures_contentrepo.get_faq_text(333, "contact-uuid")
-                );
+              api.http.fixtures.add(
+                  fixtures_contentrepo.get_faq_id("RCM_TEST_faq1")
+              );
+              api.http.fixtures.add(
+                  fixtures_contentrepo.get_faq_text(111, "contact-uuid")
+              );
             })
             .setup.user.state("state_get_faq_detail")
             .setup.user.answers({
-              viewed: [111, 222],
-              titles: ["Title 1", "Title 2", "Title 3"],
-              ids: [111, 222, 333],
-              state_faq_menu: 333,
-              contact: {uuid: "contact-uuid"}
+              viewed: [2, 3],
+              state_faq_menu: 1,
+              contact: {uuid: "contact-uuid", fields: {mqr_last_tag: "RCM_TEST"}},
+              faq_main_menu: [
+                  "Reply with a number to learn about these topics:",
+                  "",
+                  "1 - Title 1",
+                  "2 - Title 2",
+                  "3 - Title 3"
+              ].join("\n")
             })
             .input("1")
             .check.interaction({
@@ -255,13 +306,18 @@ describe("ussd_mqr_faqs app", function () {
             })
             .check.user.answers(
               {
-                titles: ["Title 1", "Title 2", "Title 3"],
-                ids: [111, 222, 333],
-                state_faq_menu: 333,
-                viewed: [111, 222, 333],
+                state_faq_menu: 1,
+                viewed: [2, 3, 1],
                 state_show_faq_detail: "state_faq_menu",
                 faq_message: "Test content for this faq",
-                contact: {uuid: "contact-uuid"}
+                contact: {uuid: "contact-uuid", fields: {mqr_last_tag: "RCM_TEST"}},
+                faq_main_menu: [
+                    "Reply with a number to learn about these topics:",
+                    "",
+                    "1 - Title 1",
+                    "2 - Title 2",
+                    "3 - Title 3"
+                ].join("\n")
               }
             )
             .run();

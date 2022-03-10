@@ -59,14 +59,13 @@ go.app = function() {
                     }
                 }).then(function() {
                     var contact = self.im.user.get_answer("contact");
-                    var in_public = _.toUpper(_.get(contact, "fields.public_messaging")) === "TRUE";
                     var in_prebirth = _.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7);
                     var in_postbirth =
                         _.toUpper(_.get(contact, "fields.postbirth_messaging")) === "TRUE";
 
                     var in_mqr_arm = _.toUpper(_.get(contact, "fields.mqr_arm")) === "RCM_SMS";
 
-                    if((in_public || in_prebirth || in_postbirth) && in_mqr_arm) {
+                    if((in_prebirth || in_postbirth) && in_mqr_arm) {
                         return self.states.create("state_get_faqs");
                     } else {
                         return self.states.create("state_not_registered");
@@ -85,30 +84,32 @@ go.app = function() {
         self.states.add("state_get_faqs", function(name, opts) {
             var contact = self.im.user.get_answer("contact");
             var last_tag = _.get(contact, "fields.mqr_last_tag");
-            var tags = [];
-            for(var i=1; i<4; i++){
-                tags.push(last_tag + i);
-            }
+            self.im.user.set_answer("viewed", []);
 
-            return self.contentrepo.list_faqs(tags)
-                .then(function(results) {
-                    var titles = results.titles.split(",");
-                    var ids = results.ids.split(",");
-
-                    self.im.user.set_answer("titles", titles);
-                    self.im.user.set_answer("ids", ids);
-                    self.im.user.set_answer("viewed", []);
-
-                    return self.states.create("state_faq_menu");
-                }).catch(function(e) {
-                    // Go to error state after 3 failed HTTP requests
-                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-                    if(opts.http_error_count === 3) {
-                        self.im.log.error(e.message);
-                        return self.states.create("__error__");
-                    }
-                    return self.states.create(name, opts);
-                });
+            return self.contentrepo.get_faq_id(last_tag + "_faq0")
+                .then(function(page_id) {
+                    return self.contentrepo.get_faq_text(page_id, contact.uuid)
+                        .then(function(message) {
+                            self.im.user.set_answer("faq_main_menu", message);
+                            return self.states.create("state_faq_menu");
+                        }).catch(function(e) {
+                            // Go to error state after 3 failed HTTP requests
+                            opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                            if(opts.http_error_count === 3) {
+                                self.im.log.error(e.message);
+                                return self.states.create("__error__");
+                            }
+                            return self.states.create(name, opts);
+                        });
+                    }).catch(function(e) {
+                        // Go to error state after 3 failed HTTP requests
+                        opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                        if(opts.http_error_count === 3) {
+                            self.im.log.error(e.message);
+                            return self.states.create("__error__");
+                        }
+                        return self.states.create(name, opts);
+                    });
         });
 
         self.states.add("state_faq_menu", function(name) {
@@ -117,20 +118,17 @@ go.app = function() {
                 return self.states.create("state_all_topics_viewed");
             }
 
-            var titles = self.im.user.answers.titles;
-            var ids = self.im.user.answers.ids;
+            var message_parts = self.im.user.answers.faq_main_menu.split("\n");
+            var message = message_parts[0] + "\n";
             var choices = [];
-            for(var i=0; i<ids.length; i++){
-                choices.push(new Choice(ids[i], titles[i]));
+            for(var i=2; i<message_parts.length; i++){
+                var text = message_parts[i].split(" - ")[1];
+                choices.push(new Choice(i-1, text));
             }
 
             return new ChoiceState(name, {
-                question: $([
-                    "Good to know this week:"
-                ].join("\n")),
-                error: $(
-                    "Good to know this week:"
-                ),
+                question: $(message),
+                error: $(message),
                 choices: choices,
                 next: "state_get_faq_detail"
             });
@@ -138,18 +136,31 @@ go.app = function() {
 
         self.states.add("state_get_faq_detail", function(name, opts) {
             var contact = self.im.user.get_answer("contact");
-            var page_id = self.im.user.get_answer("state_faq_menu");
+            var last_tag = _.get(contact, "fields.mqr_last_tag");
+            var faq_id = self.im.user.get_answer("state_faq_menu");
             var viewed = self.im.user.answers.viewed;
+            var faq_tag = last_tag + "_faq" + faq_id;
 
-            if (viewed.indexOf(page_id) == -1) {
-                viewed.push(page_id);
+            if (viewed.indexOf(faq_id) == -1) {
+                viewed.push(faq_id);
                 self.im.user.set_answer("viewed", viewed);
             }
 
-            return self.contentrepo.get_faq_text(page_id, contact.uuid)
-                .then(function(message) {
-                    self.im.user.set_answer("faq_message", message);
-                    return self.states.create("state_show_faq_detail");
+            return self.contentrepo.get_faq_id(faq_tag)
+                .then(function(page_id) {
+                return self.contentrepo.get_faq_text(page_id, contact.uuid)
+                    .then(function(message) {
+                        self.im.user.set_answer("faq_message", message);
+                        return self.states.create("state_show_faq_detail");
+                    }).catch(function(e) {
+                        // Go to error state after 3 failed HTTP requests
+                        opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                        if(opts.http_error_count === 3) {
+                            self.im.log.error(e.message);
+                            return self.states.create("__error__");
+                        }
+                        return self.states.create(name, opts);
+                    });
                 }).catch(function(e) {
                     // Go to error state after 3 failed HTTP requests
                     opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
