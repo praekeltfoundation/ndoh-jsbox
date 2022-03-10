@@ -1557,8 +1557,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply: [
-                      date + " , SELF-ISOLATE in your room for 10 days. " +
-                      "Monitor symptoms on HealthCheck",
+                      date + " , MONITOR symptoms on HealthCheck. You do not need to " +
+                      "isolate at this stage. If you develop symptoms, get tested.",
                       "1. Next"
                     ].join('\n'),
                     char_limit: 160
@@ -1621,8 +1621,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply:
-                        date + " short first, GET TESTED for COVID-19. Go to your testing " +
-                        "centre/doctor or call 0800029999",
+                        date + " short first, GET TESTED for COVID-19. Call 0800029999 " +
+                        "for advice. Self-isolate for 7 days if you test positive and " +
+                        "have symptoms",
                     char_limit: 160
                 })
                 .check.reply.ends_session()
@@ -1743,8 +1744,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply: [
-                        "We won't contact you. SELF-QUARANTINE for 10 days and do this HealthCheck daily " +
-                        "to watch symptoms. Stay/sleep alone in a room with air flowing through",
+                        "You will not be contacted. Use HealthCheck to check for COVID symptoms. " +
+                        "You do not need to isolate. If symptoms develop please isolate for 7 days.",
                         "1. Next"
                     ].join("\n"),
                     char_limit: 160

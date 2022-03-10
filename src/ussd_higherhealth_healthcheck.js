@@ -784,14 +784,14 @@ go.app = (function () {
         }
         if (risk === "moderate") {
           text = $(
-            "{{date}} {{ first_name }}, SELF-ISOLATE in your room for 10 days. " +
-            "Monitor symptoms on HealthCheck"
+            "{{date}} {{ first_name }}, MONITOR symptoms on HealthCheck. You do not " +
+            "need to isolate at this stage. If you develop symptoms, get tested."
           ).context({first_name: first_name, date: date});
         }
         if (risk === "high") {
           text = $(
-            "{{date}} {{ first_name }}, GET TESTED for COVID-19. Go to your testing" +
-            " centre/doctor or call 0800029999"
+            "{{date}} {{ first_name }}, GET TESTED for COVID-19. Call 0800029999 for " +
+            "advice. Self-isolate for 7 days if you test positive and have symptoms"
           ).context({first_name: first_name, date: date});
         }
       } else {
@@ -800,10 +800,10 @@ go.app = (function () {
           return self.states.create("state_no_tracing_low_risk");
         }
         if (risk === "moderate") {
-          text = $([
-            "We won't contact you. SELF-QUARANTINE for 10 days and do this HealthCheck daily " +
-            "to watch symptoms. Stay/sleep alone in a room with air flowing through"
-          ].join("\n"));
+          text = $(
+            "You will not be contacted. Use HealthCheck to check for COVID symptoms. " +
+            "You do not need to isolate. If symptoms develop please isolate for 7 days."
+          );
         }
         if (risk === "high") {
           text = $([
