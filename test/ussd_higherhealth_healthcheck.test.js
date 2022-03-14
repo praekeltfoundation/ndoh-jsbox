@@ -1081,6 +1081,143 @@ describe("ussd_higherhealth_healthcheck app", function () {
         });
     });
 
+    describe("state_honesty_t1", function () {
+        it("should ask about protecting others", function () {
+            return tester
+                .setup.user.state("state_honesty_t1")
+                .check.interaction({
+                    state: "state_honesty_t1",
+                    reply: [
+                        "Your campus community relies on you to report symptoms honestly. Can " +
+                        "you promise to protect others by giving honest answers?",
+                        "",
+                        "Reply",
+                        "1. I agree",
+                        "2. I don't agree"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function () {
+            return this.skip("Content too long");
+            // return tester
+            //     .setup.user.state("state_honesty_t1")
+            //     .input("A")
+            //     .check.interaction({
+            //         state: "state_honesty_t1",
+            //         reply: [
+            //             "Please use numbers from list. Your campus community relies on you to report symptoms honestly. Can " +
+            //             "you promise to protect others by giving honest answers?",
+            //             "",
+            //             "Reply",
+            //             "1. I agree",
+            //             "2. I don't agree"
+            //         ].join("\n"),
+            //         char_limit: 160
+            //     })
+            //     .run();
+        });
+        it("should go to state_fever", function () {
+            return tester
+                .setup.user.state("state_honesty_t1")
+                .input("1")
+                .check.user.state("state_fever")
+                .run();
+        });
+    });
+
+    describe("state_honesty_t2", function () {
+        it("should ask about regret", function () {
+            return tester
+                .setup.user.state("state_honesty_t2")
+                .check.interaction({
+                    state: "state_honesty_t2",
+                    reply: [
+                        "You would always regret passing COVID to others. Do you agree to " +
+                        "answer a few questions honestly and to the best of your ability?",
+                        "",
+                        "Reply",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function () {
+            return this.skip("Content too long");
+            // return tester
+            //     .setup.user.state("state_honesty_t2")
+            //     .input("A")
+            //     .check.interaction({
+            //         state: "state_honesty_t2",
+            //         reply: [
+            //             "Please use numbers from list. You would always regret passing COVID to others. Do you agree to " +
+            //             "answer a few questions honestly and to the best of your ability?",
+            //             "",
+            //             "Reply",
+            //             "1. I agree",
+            //             "2. I don't agree"
+            //         ].join("\n"),
+            //         char_limit: 160
+            //     })
+            //     .run();
+        });
+        it("should go to state_fever", function () {
+            return tester
+                .setup.user.state("state_honesty_t2")
+                .input("1")
+                .check.user.state("state_fever")
+                .run();
+        });
+    });
+
+    describe("state_honesty_t3", function () {
+        it("should ask about honour", function () {
+            return tester
+                .setup.user.state("state_honesty_t3")
+                .check.interaction({
+                    state: "state_honesty_t3",
+                    reply: [
+                        "Your honesty matters. Can you promise on your honour to " +
+                        "report your symptoms truthfully?",
+                        "",
+                        "Reply",
+                        "1. I agree",
+                        "2. I don't agree"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should display an error on invalid input", function () {
+            return tester
+                .setup.user.state("state_honesty_t3")
+                .input("A")
+                .check.interaction({
+                    state: "state_honesty_t3",
+                    reply: [
+                        "Please use numbers from list. Your honesty matters. Can you " +
+                        "promise on your honour to report your symptoms truthfully?",
+                        "",
+                        "Reply",
+                        "1. I agree",
+                        "2. I don't agree"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to state_fever", function () {
+            return tester
+                .setup.user.state("state_honesty_t3")
+                .input("1")
+                .check.user.state("state_fever")
+                .run();
+        });
+    });
+
     describe("state_fever", function () {
         it("should ask if they have a fever", function () {
             return tester

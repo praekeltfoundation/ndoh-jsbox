@@ -560,6 +560,77 @@ go.app = (function () {
       });
     });
 
+    self.add("state_honesty_t1", function (name) {
+      return new ChoiceState(name, {
+        question: $([
+          "Your campus community relies on you to report symptoms honestly. Can " +
+          "you promise to protect others by giving honest answers?",
+          "",
+          "Reply"
+        ].join("\n")),
+        // FIXME: Content is too long.
+        error: $([
+          "Please use numbers from list. Your campus community relies on you to report symptoms honestly. Can " +
+          "you promise to protect others by giving honest answers?",
+          "",
+          "Reply",
+        ].join("\n")),
+        accept_labels: true,
+        choices: [
+          new Choice(true, $("I agree")),
+          new Choice(false, $("I don't agree")),
+        ],
+        next: "state_fever"
+      });
+    });
+
+    self.add("state_honesty_t2", function (name) {
+      return new ChoiceState(name, {
+        question: $([
+          "You would always regret passing COVID to others. Do you agree to " +
+          "answer a few questions honestly and to the best of your ability?",
+          "",
+          "Reply"
+        ].join("\n")),
+        // FIXME: Content is too long.
+        error: $([
+          "Please use numbers from list. You would always regret passing COVID to others. Do you agree to " +
+          "answer a few questions honestly and to the best of your ability?",
+          "",
+          "Reply",
+        ].join("\n")),
+        accept_labels: true,
+        choices: [
+          new Choice(true, $("Yes")),
+          new Choice(false, $("No")),
+        ],
+        next: "state_fever"
+      });
+    });
+
+    self.add("state_honesty_t3", function (name) {
+      return new ChoiceState(name, {
+        question: $([
+          "Your honesty matters. Can you promise on your honour to " +
+          "report your symptoms truthfully?",
+          "",
+          "Reply"
+        ].join("\n")),
+        error: $([
+          "Please use numbers from list. Your honesty matters. Can you " +
+          "promise on your honour to report your symptoms truthfully?",
+          "",
+          "Reply",
+        ].join("\n")),
+        accept_labels: true,
+        choices: [
+          new Choice(true, $("I agree")),
+          new Choice(false, $("I don't agree")),
+        ],
+        next: "state_fever"
+      });
+    });
+
     self.add("state_fever", function (name) {
       return new ChoiceState(name, {
         question: $([
