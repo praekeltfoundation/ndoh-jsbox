@@ -1081,6 +1081,58 @@ describe("ussd_higherhealth_healthcheck app", function () {
         });
     });
 
+    describe("state_start_triage", function () {
+        it("should skip to state_age if study b is disabled", function () {
+            return tester
+                .setup.config.app({study_b_enabled: false})
+                .setup.user.state("state_start_triage")
+                .check.user.state("state_age")
+                .run();
+        });
+        it("should fetch start timestamp if necessary", function () {
+            return tester
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_start_triage")
+                .setup(function (api) {
+                    api.http.fixtures.add({
+                        request: {
+                            url: "http://eventstore/api/v2/covid19triagestart/",
+                            method: "POST",
+                            data: {"msisdn": "+27123456789", "source": "USSD"}
+                        },
+                        response: {
+                            code: 200,
+                            data: {
+                                msisdn: "+27123456789",
+                                source: "USSD",
+                                timestamp: "2022-03-16T12:30:45.000000Z"
+                            }
+                        }
+                    });
+                })
+                .check.user.answer("hc_start_timestamp", "2022-03-16T12:30:45.000000Z")
+                .check.user.state("state_age")
+                .run();
+        });
+        it("should go to the error state if too many calls fail", function () {
+            return tester
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_start_triage")
+                .setup(function (api) {
+                    api.http.fixtures.add({
+                        request: {
+                            url: "http://eventstore/api/v2/covid19triagestart/",
+                            method: "POST",
+                            data: {"msisdn": "+27123456789", "source": "USSD"}
+                        },
+                        response: {code: 400}
+                    });
+                })
+                .check.user.state("__error__")
+                .run();
+        });
+    });
+
     describe("state_honesty", function () {
         it("should skip to state_fever if disabled", function () {
             return tester

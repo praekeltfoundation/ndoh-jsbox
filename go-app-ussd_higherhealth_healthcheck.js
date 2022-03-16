@@ -1795,7 +1795,7 @@ go.app = (function () {
         ].join("\n")),
         accept_labels: true,
         choices: [
-          new Choice("state_age", $("YES")),
+          new Choice("state_start_triage", $("YES")),
           new Choice("state_end", $("NO")),
           new Choice("state_more_info_pg1", $("MORE INFO")),
         ]
@@ -1832,6 +1832,37 @@ go.app = (function () {
         accept_labels: true,
         choices: [new Choice("state_terms", $("Next"))]
       });
+    });
+
+    self.add("state_start_triage", function (name, opts) {
+      if (!self.im.config.study_b_enabled) {
+        return self.states.create("state_age");
+      }
+
+      if (self.im.user.answers.hc_start_timestamp === undefined) {
+        var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+        return new JsonApi(self.im).post(
+          self.im.config.eventstore.url + "/api/v2/covid19triagestart/", {
+            headers: {
+              "Authorization": ["Token " + self.im.config.eventstore.token],
+              "User-Agent": ["Jsbox/HH-Covid19-Triage-USSD"]
+            },
+            data: {"msisdn": msisdn, "source": "USSD"}
+          }).then(function (response) {
+            self.im.user.answers.hc_start_timestamp = response.data.timestamp;
+            return self.states.create("state_age");
+          }, function (e) {
+            // Go to error state after 3 failed HTTP requests
+            opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+            console.log("err count:", opts.http_error_count);
+            if (opts.http_error_count === 3) {
+              self.im.log.error(e.message);
+              return self.states.create("__error__", { return_state: name });
+            }
+            return self.states.create(name, opts);
+          });
+      }
+      return self.states.create("state_age");
     });
 
     self.add("state_first_name", function (name) {
@@ -2439,6 +2470,7 @@ go.app = (function () {
       if (answers.study_b_arm) {
         data.hcs_study_b_arm = answers.study_b_arm;
         data.hcs_study_b_honesty = answers["state_honesty_" + answers.study_b_arm.toLowerCase()];
+        data.hc_start_timestamp = answers.hc_start_timestamp;
       }
 
       return new JsonApi(self.im).post(
