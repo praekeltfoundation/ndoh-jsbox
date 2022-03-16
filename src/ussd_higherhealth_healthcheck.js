@@ -809,37 +809,42 @@ go.app = (function () {
 
     self.add("state_submit_data", function (name, opts) {
       var answers = self.im.user.answers;
+      var data = {
+        msisdn: self.im.user.addr,
+        source: "USSD",
+        province: answers.state_province,
+        city: answers.state_city,
+        city_location: answers.city_location,
+        age: answers.state_age,
+        fever: answers.state_fever,
+        cough: answers.state_cough,
+        sore_throat: answers.state_sore_throat,
+        difficulty_breathing: answers.state_breathing,
+        exposure: answers.state_exposure,
+        tracing: answers.state_tracing,
+        risk: self.calculate_risk(),
+        first_name: answers.state_first_name,
+        last_name: answers.state_last_name,
+        data: {
+          university: {
+            name: answers.state_university
+          },
+          university_other: answers.state_university_other,
+          campus: {
+            name: answers.state_campus
+          },
+          campus_other: answers.state_campus_other,
+          vaccine_uptake: answers.state_vaccine_uptake,
+        }
+      };
+      if (answers.study_b_arm) {
+        data.hcs_study_b_arm = answers.study_b_arm;
+        data.hcs_study_b_honesty = answers["state_honesty_" + answers.study_b_arm.toLowerCase()];
+      }
 
       return new JsonApi(self.im).post(
         self.im.config.eventstore.url + "/api/v3/covid19triage/", {
-        data: {
-          msisdn: self.im.user.addr,
-          source: "USSD",
-          province: answers.state_province,
-          city: answers.state_city,
-          city_location: answers.city_location,
-          age: answers.state_age,
-          fever: answers.state_fever,
-          cough: answers.state_cough,
-          sore_throat: answers.state_sore_throat,
-          difficulty_breathing: answers.state_breathing,
-          exposure: answers.state_exposure,
-          tracing: answers.state_tracing,
-          risk: self.calculate_risk(),
-          first_name: answers.state_first_name,
-          last_name: answers.state_last_name,
-          data: {
-            university: {
-              name: answers.state_university
-            },
-            university_other: answers.state_university_other,
-            campus: {
-              name: answers.state_campus
-            },
-            campus_other: answers.state_campus_other,
-            vaccine_uptake: answers.state_vaccine_uptake,
-          }
-        },
+        data: data,
         headers: {
           "Authorization": ["Token " + self.im.config.eventstore.token],
           "User-Agent": ["Jsbox/HH-Covid19-Triage-USSD"]
