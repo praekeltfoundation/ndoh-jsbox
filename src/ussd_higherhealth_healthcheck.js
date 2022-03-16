@@ -560,7 +560,7 @@ go.app = (function () {
       });
     });
 
-    self.add("state_honesty", function (name) {
+    self.add("state_honesty", function (name, opts) {
       if (!self.im.config.study_b_enabled) {
         return self.states.create("state_fever");
       }
@@ -589,6 +589,15 @@ go.app = (function () {
           }).then(function (response) {
             self.im.user.answers.study_b_arm = response.data.study_b_arm;
             return choose_state();
+          }, function (e) {
+            // Go to error state after 3 failed HTTP requests
+            opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+            console.log("err count:", opts.http_error_count);
+            if (opts.http_error_count === 3) {
+              self.im.log.error(e.message);
+              return self.states.create("__error__", { return_state: name });
+            }
+            return self.states.create(name, opts);
           });
       }
       return choose_state();
