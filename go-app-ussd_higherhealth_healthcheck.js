@@ -2391,8 +2391,8 @@ go.app = (function () {
         }
         if (risk === "moderate") {
           text = $(
-            "You will not be contacted. Use HealthCheck to check for COVID symptoms. " +
-            "You do not need to isolate. If symptoms develop please isolate for 7 days."
+            "We won't contact you. Use HealthCheck to check for COVID symptoms. You " +
+            "do not need to isolate. If symptoms develop please see a healthcare professional."
           );
         }
         if (risk === "high") {

@@ -1744,8 +1744,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_display_risk",
                     reply: [
-                        "You will not be contacted. Use HealthCheck to check for COVID symptoms. " +
-                        "You do not need to isolate. If symptoms develop please isolate for 7 days.",
+                        "We won't contact you. Use HealthCheck to check for COVID symptoms. You do " +
+                        "not need to isolate. If symptoms develop please see a healthcare professional.",
                         "1. Next"
                     ].join("\n"),
                     char_limit: 160
