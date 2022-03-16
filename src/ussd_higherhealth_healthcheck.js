@@ -543,7 +543,7 @@ go.app = (function () {
           new Choice("NOT", $("Not vaccinated"))
         ],
         next: function(){
-          return self.im.user.answers.state_vaccine_uptake == "NOT" ? "state_not_vaccinated" : "state_fever";
+          return self.im.user.answers.state_vaccine_uptake == "NOT" ? "state_not_vaccinated" : "state_honesty";
         }
       });
     });
@@ -556,7 +556,7 @@ go.app = (function () {
             "",
           ].join("\n")),
           accept_labels: true,
-          choices: [new Choice("state_fever", $("Next"))]
+          choices: [new Choice("state_honesty", $("Next"))]
       });
     });
 
