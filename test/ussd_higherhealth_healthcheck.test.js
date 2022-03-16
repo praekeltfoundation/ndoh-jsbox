@@ -1081,10 +1081,60 @@ describe("ussd_higherhealth_healthcheck app", function () {
         });
     });
 
-    describe("state_honesty_t1", function () {
-        it("should ask about protecting others", function () {
+    describe("state_honesty", function () {
+        it("should skip to state_fever if disabled", function () {
             return tester
-                .setup.user.state("state_honesty_t1")
+                .setup.config.app({study_b_enabled: false})
+                .setup.user.state("state_honesty")
+                .check.user.state("state_fever")
+                .run();
+        });
+
+        it("should fetch study data if necessary", function () {
+            return tester
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_honesty")
+                .setup.user.answers({province: "ZA-WC"})
+                .setup(function (api) {
+                    api.http.fixtures.add({
+                        request: {
+                            url: "http://eventstore/api/v2/hcsstudybrandomarm/",
+                            method: "POST",
+                            data: {
+                                "msisdn": "+27123456789",
+                                "source": "USSD",
+                                "province": "ZA-WC"
+                            }
+                        },
+                        response: {
+                            code: 200,
+                            data: {
+                                msisdn: "+27123456789",
+                                source: "USSD",
+                                province: "ZA-WC",
+                                study_b_arm: "T1"
+                            }
+                        }
+                    });
+                })
+                .check.user.state("state_honesty_t1")
+                .run();
+        });
+
+        it("should skip to state_fever in c", function () {
+            return tester
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_honesty")
+                .setup.user.answers({study_b_arm: "C"})
+                .check.user.state("state_fever")
+                .run();
+        });
+
+        it("should ask about protecting others in t1", function () {
+            return tester
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_honesty")
+                .setup.user.answers({study_b_arm: "T1"})
                 .check.interaction({
                     state: "state_honesty_t1",
                     reply: [
@@ -1099,10 +1149,12 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 })
                 .run();
         });
-        it("should display an error on invalid input", function () {
-            return this.skip("Content too long");
+        it("should display an error on invalid input in t1", function () {
+            return this.skip("FIXME: Content too long");
             // return tester
-            //     .setup.user.state("state_honesty_t1")
+            //     .setup.config.app({study_b_enabled: true})
+            //     .setup.user.state("state_honesty")
+            //     .setup.user.answers({study_b_arm: "T1"})
             //     .input("A")
             //     .check.interaction({
             //         state: "state_honesty_t1",
@@ -1118,19 +1170,21 @@ describe("ussd_higherhealth_healthcheck app", function () {
             //     })
             //     .run();
         });
-        it("should go to state_fever", function () {
+        it("should go to state_fever from t1", function () {
             return tester
-                .setup.user.state("state_honesty_t1")
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_honesty")
+                .setup.user.answers({study_b_arm: "T1"})
                 .input("1")
                 .check.user.state("state_fever")
                 .run();
         });
-    });
 
-    describe("state_honesty_t2", function () {
-        it("should ask about regret", function () {
+        it("should ask about regret in t2", function () {
             return tester
-                .setup.user.state("state_honesty_t2")
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_honesty")
+                .setup.user.answers({study_b_arm: "T2"})
                 .check.interaction({
                     state: "state_honesty_t2",
                     reply: [
@@ -1145,10 +1199,12 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 })
                 .run();
         });
-        it("should display an error on invalid input", function () {
-            return this.skip("Content too long");
+        it("should display an error on invalid input in t2", function () {
+            return this.skip("FIXME: Content too long");
             // return tester
-            //     .setup.user.state("state_honesty_t2")
+            //     .setup.config.app({study_b_enabled: true})
+            //     .setup.user.state("state_honesty")
+            //     .setup.user.answers({study_b_arm: "T2"})
             //     .input("A")
             //     .check.interaction({
             //         state: "state_honesty_t2",
@@ -1164,19 +1220,21 @@ describe("ussd_higherhealth_healthcheck app", function () {
             //     })
             //     .run();
         });
-        it("should go to state_fever", function () {
+        it("should go to state_fever from t2", function () {
             return tester
-                .setup.user.state("state_honesty_t2")
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_honesty")
+                .setup.user.answers({study_b_arm: "T2"})
                 .input("1")
                 .check.user.state("state_fever")
                 .run();
         });
-    });
 
-    describe("state_honesty_t3", function () {
-        it("should ask about honour", function () {
+        it("should ask about honour in t3", function () {
             return tester
-                .setup.user.state("state_honesty_t3")
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_honesty")
+                .setup.user.answers({study_b_arm: "T3"})
                 .check.interaction({
                     state: "state_honesty_t3",
                     reply: [
@@ -1191,9 +1249,11 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 })
                 .run();
         });
-        it("should display an error on invalid input", function () {
+        it("should display an error on invalid input in t3", function () {
             return tester
-                .setup.user.state("state_honesty_t3")
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_honesty")
+                .setup.user.answers({study_b_arm: "T3"})
                 .input("A")
                 .check.interaction({
                     state: "state_honesty_t3",
@@ -1209,9 +1269,11 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 })
                 .run();
         });
-        it("should go to state_fever", function () {
+        it("should go to state_fever from t3", function () {
             return tester
-                .setup.user.state("state_honesty_t3")
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_honesty")
+                .setup.user.answers({study_b_arm: "T3"})
                 .input("1")
                 .check.user.state("state_fever")
                 .run();

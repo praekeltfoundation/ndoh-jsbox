@@ -560,6 +560,40 @@ go.app = (function () {
       });
     });
 
+    self.add("state_honesty", function (name) {
+      if (!self.im.config.study_b_enabled) {
+        return self.states.create("state_fever");
+      }
+
+      var choose_state = function() {
+        var arm = self.im.user.answers.study_b_arm.toLowerCase();
+        if (arm === "c") {
+          return self.states.create("state_fever");
+        }
+        return self.states.create("state_honesty_" + arm);
+      };
+
+      if (self.im.user.answers.study_b_arm === undefined) {
+        var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+        return new JsonApi(self.im).post(
+          self.im.config.eventstore.url + "/api/v2/hcsstudybrandomarm/", {
+            headers: {
+              "Authorization": ["Token " + self.im.config.eventstore.token],
+              "User-Agent": ["Jsbox/HH-Covid19-Triage-USSD"]
+            },
+            data: {
+              "msisdn": msisdn,
+              "province": self.im.user.answers.province,
+              "source": "USSD"
+            }
+          }).then(function (response) {
+            self.im.user.answers.study_b_arm = response.data.study_b_arm;
+            return choose_state();
+          });
+      }
+      return choose_state();
+    });
+
     self.add("state_honesty_t1", function (name) {
       return new ChoiceState(name, {
         question: $([
