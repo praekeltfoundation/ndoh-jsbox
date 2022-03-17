@@ -618,6 +618,10 @@ go.app = (function () {
               "source": "USSD"
             }
           }).then(function (response) {
+            // If the study's disabled in the eventstore we won't get an arm.
+            if (!response.data.study_b_arm) {
+              return self.states.create("state_fever");
+            }
             self.im.user.answers.study_b_arm = response.data.study_b_arm;
             return choose_state();
           }, function (e) {

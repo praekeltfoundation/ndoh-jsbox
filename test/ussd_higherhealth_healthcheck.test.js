@@ -1171,6 +1171,35 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.user.state("state_honesty_t1")
                 .run();
         });
+        it("should skip to state_fever if no arm is provided", function () {
+            return tester
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_honesty")
+                .setup.user.answers({province: "ZA-WC"})
+                .setup(function (api) {
+                    api.http.fixtures.add({
+                        request: {
+                            url: "http://eventstore/api/v2/hcsstudybrandomarm/",
+                            method: "POST",
+                            data: {
+                                "msisdn": "+27123456789",
+                                "source": "USSD",
+                                "province": "ZA-WC"
+                            }
+                        },
+                        response: {
+                            code: 200,
+                            data: {
+                                msisdn: "+27123456789",
+                                source: "USSD",
+                                province: "ZA-WC"
+                            }
+                        }
+                    });
+                })
+                .check.user.state("state_fever")
+                .run();
+        });
         it("should go to the error state if too many calls fail", function () {
             return tester
                 .setup.config.app({study_b_enabled: true})
