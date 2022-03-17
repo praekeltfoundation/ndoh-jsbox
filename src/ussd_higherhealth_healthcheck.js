@@ -880,9 +880,9 @@ go.app = (function () {
         }
       };
       if (answers.study_b_arm) {
-        data.hcs_study_b_arm = answers.study_b_arm;
-        data.hcs_study_b_honesty = answers["state_honesty_" + answers.study_b_arm.toLowerCase()];
-        data.hc_start_timestamp = answers.hc_start_timestamp;
+        data.data.hcs_study_b_arm = answers.study_b_arm;
+        data.data.hcs_study_b_honesty = answers["state_honesty_" + answers.study_b_arm.toLowerCase()];
+        data.data.hc_start_timestamp = answers.hc_start_timestamp;
       }
 
       return new JsonApi(self.im).post(
