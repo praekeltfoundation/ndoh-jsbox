@@ -1795,7 +1795,7 @@ go.app = (function () {
         ].join("\n")),
         accept_labels: true,
         choices: [
-          new Choice("state_age", $("YES")),
+          new Choice("state_start_triage", $("YES")),
           new Choice("state_end", $("NO")),
           new Choice("state_more_info_pg1", $("MORE INFO")),
         ]
@@ -1832,6 +1832,36 @@ go.app = (function () {
         accept_labels: true,
         choices: [new Choice("state_terms", $("Next"))]
       });
+    });
+
+    self.add("state_start_triage", function (name, opts) {
+      if (!self.im.config.study_b_enabled) {
+        return self.states.create("state_age");
+      }
+
+      if (self.im.user.answers.hc_start_timestamp === undefined) {
+        var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+        return new JsonApi(self.im).post(
+          self.im.config.eventstore.url + "/api/v2/covid19triagestart/", {
+            headers: {
+              "Authorization": ["Token " + self.im.config.eventstore.token],
+              "User-Agent": ["Jsbox/HH-Covid19-Triage-USSD"]
+            },
+            data: {"msisdn": msisdn, "source": "USSD"}
+          }).then(function (response) {
+            self.im.user.answers.hc_start_timestamp = response.data.timestamp;
+            return self.states.create("state_age");
+          }, function (e) {
+            // Go to error state after 3 failed HTTP requests
+            opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+            if (opts.http_error_count === 3) {
+              self.im.log.error(e.message);
+              return self.states.create("__error__", { return_state: name });
+            }
+            return self.states.create(name, opts);
+          });
+      }
+      return self.states.create("state_age");
     });
 
     self.add("state_first_name", function (name) {
@@ -2133,7 +2163,7 @@ go.app = (function () {
           new Choice("NOT", $("Not vaccinated"))
         ],
         next: function(){
-          return self.im.user.answers.state_vaccine_uptake == "NOT" ? "state_not_vaccinated" : "state_fever";
+          return self.im.user.answers.state_vaccine_uptake == "NOT" ? "state_not_vaccinated" : "state_honesty";
         }
       });
     });
@@ -2146,7 +2176,124 @@ go.app = (function () {
             "",
           ].join("\n")),
           accept_labels: true,
-          choices: [new Choice("state_fever", $("Next"))]
+          choices: [new Choice("state_honesty", $("Next"))]
+      });
+    });
+
+    self.add("state_honesty", function (name, opts) {
+      if (!self.im.config.study_b_enabled) {
+        return self.states.create("state_fever");
+      }
+
+      var choose_state = function() {
+        var arm = self.im.user.answers.study_b_arm.toLowerCase();
+        if (arm === "c") {
+          return self.states.create("state_fever");
+        }
+        return self.states.create("state_honesty_" + arm);
+      };
+
+      if (self.im.user.answers.study_b_arm === undefined) {
+        var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+        return new JsonApi(self.im).post(
+          self.im.config.eventstore.url + "/api/v2/hcsstudybrandomarm/", {
+            headers: {
+              "Authorization": ["Token " + self.im.config.eventstore.token],
+              "User-Agent": ["Jsbox/HH-Covid19-Triage-USSD"]
+            },
+            data: {
+              "msisdn": msisdn,
+              "province": self.im.user.answers.province,
+              "source": "USSD"
+            }
+          }).then(function (response) {
+            // If the study's disabled in the eventstore we won't get an arm.
+            if (!response.data.study_b_arm) {
+              return self.states.create("state_fever");
+            }
+            self.im.user.answers.study_b_arm = response.data.study_b_arm;
+            return choose_state();
+          }, function (e) {
+            // Go to error state after 3 failed HTTP requests
+            opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+            if (opts.http_error_count === 3) {
+              self.im.log.error(e.message);
+              return self.states.create("__error__", { return_state: name });
+            }
+            return self.states.create(name, opts);
+          });
+      }
+      return choose_state();
+    });
+
+    self.add("state_honesty_t1", function (name) {
+      return new ChoiceState(name, {
+        question: $([
+          "Your campus community relies on you to report symptoms honestly. Can " +
+          "you promise to protect others by giving honest answers?",
+          "",
+          "Reply"
+        ].join("\n")),
+        error: $([
+          "The campus community relies on you to report symptoms honestly. " +
+          "Do you promise to answer honestly?",
+          "Please reply with a number",
+          "",
+          "Reply",
+        ].join("\n")),
+        accept_labels: true,
+        choices: [
+          new Choice(true, $("I agree")),
+          new Choice(false, $("I don't agree")),
+        ],
+        next: "state_fever"
+      });
+    });
+
+    self.add("state_honesty_t2", function (name) {
+      return new ChoiceState(name, {
+        question: $([
+          "You would always regret passing COVID to others. Do you agree to " +
+          "answer a few questions honestly and to the best of your ability?",
+          "",
+          "Reply"
+        ].join("\n")),
+        error: $([
+          "You would always regret passing COVID to others. Do you " +
+          "agree to answer honestly and to the best of your ability?",
+          "Please reply with a number",
+          "",
+          "Reply",
+        ].join("\n")),
+        accept_labels: true,
+        choices: [
+          new Choice(true, $("Yes")),
+          new Choice(false, $("No")),
+        ],
+        next: "state_fever"
+      });
+    });
+
+    self.add("state_honesty_t3", function (name) {
+      return new ChoiceState(name, {
+        question: $([
+          "Your honesty matters. Can you promise on your honour to " +
+          "report your symptoms truthfully?",
+          "",
+          "Reply"
+        ].join("\n")),
+        error: $([
+          "Please use numbers from list. Your honesty matters. Can you " +
+          "promise on your honour to report your symptoms truthfully?",
+          "",
+          "Reply",
+        ].join("\n")),
+        accept_labels: true,
+        choices: [
+          new Choice(true, $("I agree")),
+          new Choice(false, $("I don't agree")),
+        ],
+        next: "state_fever"
       });
     });
 
@@ -2294,37 +2441,43 @@ go.app = (function () {
 
     self.add("state_submit_data", function (name, opts) {
       var answers = self.im.user.answers;
+      var data = {
+        msisdn: self.im.user.addr,
+        source: "USSD",
+        province: answers.state_province,
+        city: answers.state_city,
+        city_location: answers.city_location,
+        age: answers.state_age,
+        fever: answers.state_fever,
+        cough: answers.state_cough,
+        sore_throat: answers.state_sore_throat,
+        difficulty_breathing: answers.state_breathing,
+        exposure: answers.state_exposure,
+        tracing: answers.state_tracing,
+        risk: self.calculate_risk(),
+        first_name: answers.state_first_name,
+        last_name: answers.state_last_name,
+        data: {
+          university: {
+            name: answers.state_university
+          },
+          university_other: answers.state_university_other,
+          campus: {
+            name: answers.state_campus
+          },
+          campus_other: answers.state_campus_other,
+          vaccine_uptake: answers.state_vaccine_uptake,
+        }
+      };
+      if (answers.study_b_arm) {
+        data.data.hcs_study_b_arm = answers.study_b_arm;
+        data.data.hcs_study_b_honesty = answers["state_honesty_" + answers.study_b_arm.toLowerCase()];
+        data.data.hc_start_timestamp = answers.hc_start_timestamp;
+      }
 
       return new JsonApi(self.im).post(
         self.im.config.eventstore.url + "/api/v3/covid19triage/", {
-        data: {
-          msisdn: self.im.user.addr,
-          source: "USSD",
-          province: answers.state_province,
-          city: answers.state_city,
-          city_location: answers.city_location,
-          age: answers.state_age,
-          fever: answers.state_fever,
-          cough: answers.state_cough,
-          sore_throat: answers.state_sore_throat,
-          difficulty_breathing: answers.state_breathing,
-          exposure: answers.state_exposure,
-          tracing: answers.state_tracing,
-          risk: self.calculate_risk(),
-          first_name: answers.state_first_name,
-          last_name: answers.state_last_name,
-          data: {
-            university: {
-              name: answers.state_university
-            },
-            university_other: answers.state_university_other,
-            campus: {
-              name: answers.state_campus
-            },
-            campus_other: answers.state_campus_other,
-            vaccine_uptake: answers.state_vaccine_uptake,
-          }
-        },
+        data: data,
         headers: {
           "Authorization": ["Token " + self.im.config.eventstore.token],
           "User-Agent": ["Jsbox/HH-Covid19-Triage-USSD"]

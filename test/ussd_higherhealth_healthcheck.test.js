@@ -1081,6 +1081,307 @@ describe("ussd_higherhealth_healthcheck app", function () {
         });
     });
 
+    describe("state_start_triage", function () {
+        it("should skip to state_age if study b is disabled", function () {
+            return tester
+                .setup.config.app({study_b_enabled: false})
+                .setup.user.state("state_start_triage")
+                .check.user.state("state_age")
+                .run();
+        });
+        it("should fetch start timestamp if necessary", function () {
+            return tester
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_start_triage")
+                .setup(function (api) {
+                    api.http.fixtures.add({
+                        request: {
+                            url: "http://eventstore/api/v2/covid19triagestart/",
+                            method: "POST",
+                            data: {"msisdn": "+27123456789", "source": "USSD"}
+                        },
+                        response: {
+                            code: 200,
+                            data: {
+                                msisdn: "+27123456789",
+                                source: "USSD",
+                                timestamp: "2022-03-16T12:30:45.000000Z"
+                            }
+                        }
+                    });
+                })
+                .check.user.answer("hc_start_timestamp", "2022-03-16T12:30:45.000000Z")
+                .check.user.state("state_age")
+                .run();
+        });
+        it("should go to the error state if too many calls fail", function () {
+            return tester
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_start_triage")
+                .setup(function (api) {
+                    api.http.fixtures.add({
+                        request: {
+                            url: "http://eventstore/api/v2/covid19triagestart/",
+                            method: "POST",
+                            data: {"msisdn": "+27123456789", "source": "USSD"}
+                        },
+                        response: {code: 400}
+                    });
+                })
+                .check.user.state("__error__")
+                .run();
+        });
+    });
+
+    describe("state_honesty", function () {
+        it("should skip to state_fever if disabled", function () {
+            return tester
+                .setup.config.app({study_b_enabled: false})
+                .setup.user.state("state_honesty")
+                .check.user.state("state_fever")
+                .run();
+        });
+        it("should fetch study data if necessary", function () {
+            return tester
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_honesty")
+                .setup.user.answers({province: "ZA-WC"})
+                .setup(function (api) {
+                    api.http.fixtures.add({
+                        request: {
+                            url: "http://eventstore/api/v2/hcsstudybrandomarm/",
+                            method: "POST",
+                            data: {
+                                "msisdn": "+27123456789",
+                                "source": "USSD",
+                                "province": "ZA-WC"
+                            }
+                        },
+                        response: {
+                            code: 200,
+                            data: {
+                                msisdn: "+27123456789",
+                                source: "USSD",
+                                province: "ZA-WC",
+                                study_b_arm: "T1"
+                            }
+                        }
+                    });
+                })
+                .check.user.state("state_honesty_t1")
+                .run();
+        });
+        it("should skip to state_fever if no arm is provided", function () {
+            return tester
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_honesty")
+                .setup.user.answers({province: "ZA-WC"})
+                .setup(function (api) {
+                    api.http.fixtures.add({
+                        request: {
+                            url: "http://eventstore/api/v2/hcsstudybrandomarm/",
+                            method: "POST",
+                            data: {
+                                "msisdn": "+27123456789",
+                                "source": "USSD",
+                                "province": "ZA-WC"
+                            }
+                        },
+                        response: {
+                            code: 200,
+                            data: {
+                                msisdn: "+27123456789",
+                                source: "USSD",
+                                province: "ZA-WC"
+                            }
+                        }
+                    });
+                })
+                .check.user.state("state_fever")
+                .run();
+        });
+        it("should go to the error state if too many calls fail", function () {
+            return tester
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_honesty")
+                .setup.user.answers({province: "ZA-WC"})
+                .setup(function (api) {
+                    api.http.fixtures.add({
+                        request: {
+                            url: "http://eventstore/api/v2/hcsstudybrandomarm/",
+                            method: "POST",
+                            data: {
+                                "msisdn": "+27123456789",
+                                "source": "USSD",
+                                "province": "ZA-WC"
+                            }
+                        },
+                        response: {code: 400}
+                    });
+                })
+                .check.user.state("__error__")
+                .run();
+        });
+
+        it("should skip to state_fever in c", function () {
+            return tester
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_honesty")
+                .setup.user.answers({study_b_arm: "C"})
+                .check.user.state("state_fever")
+                .run();
+        });
+
+        it("should ask about protecting others in t1", function () {
+            return tester
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_honesty")
+                .setup.user.answers({study_b_arm: "T1"})
+                .check.interaction({
+                    state: "state_honesty_t1",
+                    reply: [
+                        "Your campus community relies on you to report symptoms honestly. Can " +
+                        "you promise to protect others by giving honest answers?",
+                        "",
+                        "Reply",
+                        "1. I agree",
+                        "2. I don't agree"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should display an error on invalid input in t1", function () {
+            return tester
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_honesty")
+                .setup.user.answers({study_b_arm: "T1"})
+                .input("A")
+                .check.interaction({
+                    state: "state_honesty_t1",
+                    reply: [
+                        "The campus community relies on you to report symptoms honestly. " +
+                        "Do you promise to answer honestly?",
+                        "Please reply with a number",
+                        "",
+                        "Reply",
+                        "1. I agree",
+                        "2. I don't agree"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to state_fever from t1", function () {
+            return tester
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_honesty")
+                .setup.user.answers({study_b_arm: "T1"})
+                .input("1")
+                .check.user.state("state_fever")
+                .run();
+        });
+
+        it("should ask about regret in t2", function () {
+            return tester
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_honesty")
+                .setup.user.answers({study_b_arm: "T2"})
+                .check.interaction({
+                    state: "state_honesty_t2",
+                    reply: [
+                        "You would always regret passing COVID to others. Do you agree to " +
+                        "answer a few questions honestly and to the best of your ability?",
+                        "",
+                        "Reply",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should display an error on invalid input in t2", function () {
+            return tester
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_honesty")
+                .setup.user.answers({study_b_arm: "T2"})
+                .input("A")
+                .check.interaction({
+                    state: "state_honesty_t2",
+                    reply: [
+                        "You would always regret passing COVID to others. Do you " +
+                        "agree to answer honestly and to the best of your ability?",
+                        "Please reply with a number",
+                        "",
+                        "Reply",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to state_fever from t2", function () {
+            return tester
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_honesty")
+                .setup.user.answers({study_b_arm: "T2"})
+                .input("1")
+                .check.user.state("state_fever")
+                .run();
+        });
+
+        it("should ask about honour in t3", function () {
+            return tester
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_honesty")
+                .setup.user.answers({study_b_arm: "T3"})
+                .check.interaction({
+                    state: "state_honesty_t3",
+                    reply: [
+                        "Your honesty matters. Can you promise on your honour to " +
+                        "report your symptoms truthfully?",
+                        "",
+                        "Reply",
+                        "1. I agree",
+                        "2. I don't agree"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should display an error on invalid input in t3", function () {
+            return tester
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_honesty")
+                .setup.user.answers({study_b_arm: "T3"})
+                .input("A")
+                .check.interaction({
+                    state: "state_honesty_t3",
+                    reply: [
+                        "Please use numbers from list. Your honesty matters. Can you " +
+                        "promise on your honour to report your symptoms truthfully?",
+                        "",
+                        "Reply",
+                        "1. I agree",
+                        "2. I don't agree"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
+        });
+        it("should go to state_fever from t3", function () {
+            return tester
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_honesty")
+                .setup.user.answers({study_b_arm: "T3"})
+                .input("1")
+                .check.user.state("state_fever")
+                .run();
+        });
+    });
+
     describe("state_fever", function () {
         it("should ask if they have a fever", function () {
             return tester
