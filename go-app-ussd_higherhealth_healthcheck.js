@@ -1854,7 +1854,6 @@ go.app = (function () {
           }, function (e) {
             // Go to error state after 3 failed HTTP requests
             opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-            console.log("err count:", opts.http_error_count);
             if (opts.http_error_count === 3) {
               self.im.log.error(e.message);
               return self.states.create("__error__", { return_state: name });
@@ -2217,7 +2216,6 @@ go.app = (function () {
           }, function (e) {
             // Go to error state after 3 failed HTTP requests
             opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-            console.log("err count:", opts.http_error_count);
             if (opts.http_error_count === 3) {
               self.im.log.error(e.message);
               return self.states.create("__error__", { return_state: name });
