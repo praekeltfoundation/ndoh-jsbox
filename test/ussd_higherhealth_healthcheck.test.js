@@ -1252,25 +1252,25 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .run();
         });
         it("should display an error on invalid input in t1", function () {
-            return this.skip("FIXME: Content too long");
-            // return tester
-            //     .setup.config.app({study_b_enabled: true})
-            //     .setup.user.state("state_honesty")
-            //     .setup.user.answers({study_b_arm: "T1"})
-            //     .input("A")
-            //     .check.interaction({
-            //         state: "state_honesty_t1",
-            //         reply: [
-            //             "Please use numbers from list. Your campus community relies on you to report symptoms honestly. Can " +
-            //             "you promise to protect others by giving honest answers?",
-            //             "",
-            //             "Reply",
-            //             "1. I agree",
-            //             "2. I don't agree"
-            //         ].join("\n"),
-            //         char_limit: 160
-            //     })
-            //     .run();
+            return tester
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_honesty")
+                .setup.user.answers({study_b_arm: "T1"})
+                .input("A")
+                .check.interaction({
+                    state: "state_honesty_t1",
+                    reply: [
+                        "The campus community relies on you to report symptoms honestly. " +
+                        "Do you promise to answer honestly?",
+                        "Please reply with a number",
+                        "",
+                        "Reply",
+                        "1. I agree",
+                        "2. I don't agree"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
         });
         it("should go to state_fever from t1", function () {
             return tester
@@ -1302,25 +1302,25 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .run();
         });
         it("should display an error on invalid input in t2", function () {
-            return this.skip("FIXME: Content too long");
-            // return tester
-            //     .setup.config.app({study_b_enabled: true})
-            //     .setup.user.state("state_honesty")
-            //     .setup.user.answers({study_b_arm: "T2"})
-            //     .input("A")
-            //     .check.interaction({
-            //         state: "state_honesty_t2",
-            //         reply: [
-            //             "Please use numbers from list. You would always regret passing COVID to others. Do you agree to " +
-            //             "answer a few questions honestly and to the best of your ability?",
-            //             "",
-            //             "Reply",
-            //             "1. I agree",
-            //             "2. I don't agree"
-            //         ].join("\n"),
-            //         char_limit: 160
-            //     })
-            //     .run();
+            return tester
+                .setup.config.app({study_b_enabled: true})
+                .setup.user.state("state_honesty")
+                .setup.user.answers({study_b_arm: "T2"})
+                .input("A")
+                .check.interaction({
+                    state: "state_honesty_t2",
+                    reply: [
+                        "You would always regret passing COVID to others. Do you " +
+                        "agree to answer honestly and to the best of your ability?",
+                        "Please reply with a number",
+                        "",
+                        "Reply",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .run();
         });
         it("should go to state_fever from t2", function () {
             return tester

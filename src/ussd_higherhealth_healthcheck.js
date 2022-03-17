@@ -646,10 +646,10 @@ go.app = (function () {
           "",
           "Reply"
         ].join("\n")),
-        // FIXME: Content is too long.
         error: $([
-          "Please use numbers from list. Your campus community relies on you to report symptoms honestly. Can " +
-          "you promise to protect others by giving honest answers?",
+          "The campus community relies on you to report symptoms honestly. " +
+          "Do you promise to answer honestly?",
+          "Please reply with a number",
           "",
           "Reply",
         ].join("\n")),
@@ -670,10 +670,10 @@ go.app = (function () {
           "",
           "Reply"
         ].join("\n")),
-        // FIXME: Content is too long.
         error: $([
-          "Please use numbers from list. You would always regret passing COVID to others. Do you agree to " +
-          "answer a few questions honestly and to the best of your ability?",
+          "You would always regret passing COVID to others. Do you " +
+          "agree to answer honestly and to the best of your ability?",
+          "Please reply with a number",
           "",
           "Reply",
         ].join("\n")),
