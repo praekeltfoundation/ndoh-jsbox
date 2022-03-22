@@ -1145,7 +1145,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
             return tester
                 .setup.config.app({study_b_enabled: true})
                 .setup.user.state("state_honesty")
-                .setup.user.answers({province: "ZA-WC"})
+                .setup.user.answers({state_province: "ZA-WC"})
                 .setup(function (api) {
                     api.http.fixtures.add({
                         request: {
@@ -1175,7 +1175,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
             return tester
                 .setup.config.app({study_b_enabled: true})
                 .setup.user.state("state_honesty")
-                .setup.user.answers({province: "ZA-WC"})
+                .setup.user.answers({state_province: "ZA-WC"})
                 .setup(function (api) {
                     api.http.fixtures.add({
                         request: {
@@ -1204,7 +1204,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
             return tester
                 .setup.config.app({study_b_enabled: true})
                 .setup.user.state("state_honesty")
-                .setup.user.answers({province: "ZA-WC"})
+                .setup.user.answers({state_province: "ZA-WC"})
                 .setup(function (api) {
                     api.http.fixtures.add({
                         request: {

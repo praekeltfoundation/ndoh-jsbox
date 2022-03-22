@@ -613,7 +613,7 @@ go.app = (function () {
             },
             data: {
               "msisdn": msisdn,
-              "province": self.im.user.answers.province,
+              "province": self.im.user.answers.state_province,
               "source": "USSD"
             }
           }).then(function (response) {
