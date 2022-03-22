@@ -1145,7 +1145,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
             return tester
                 .setup.config.app({study_b_enabled: true})
                 .setup.user.state("state_honesty")
-                .setup.user.answers({province: "ZA-WC"})
+                .setup.user.answers({state_province: "ZA-WC"})
                 .setup(function (api) {
                     api.http.fixtures.add({
                         request: {
@@ -1175,7 +1175,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
             return tester
                 .setup.config.app({study_b_enabled: true})
                 .setup.user.state("state_honesty")
-                .setup.user.answers({province: "ZA-WC"})
+                .setup.user.answers({state_province: "ZA-WC"})
                 .setup(function (api) {
                     api.http.fixtures.add({
                         request: {
@@ -1204,7 +1204,7 @@ describe("ussd_higherhealth_healthcheck app", function () {
             return tester
                 .setup.config.app({study_b_enabled: true})
                 .setup.user.state("state_honesty")
-                .setup.user.answers({province: "ZA-WC"})
+                .setup.user.answers({state_province: "ZA-WC"})
                 .setup(function (api) {
                     api.http.fixtures.add({
                         request: {
@@ -1240,12 +1240,12 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_honesty_t1",
                     reply: [
-                        "Your campus community relies on you to report symptoms honestly. Can " +
-                        "you promise to protect others by giving honest answers?",
+                        "The campus community relies on you to report symptoms honestly. " +
+                        "Do you promise to answer honestly to protect them?",
                         "",
                         "Reply",
-                        "1. I agree",
-                        "2. I don't agree"
+                        "1. Yes",
+                        "2. No"
                     ].join("\n"),
                     char_limit: 160
                 })
@@ -1261,12 +1261,12 @@ describe("ussd_higherhealth_healthcheck app", function () {
                     state: "state_honesty_t1",
                     reply: [
                         "The campus community relies on you to report symptoms honestly. " +
-                        "Do you promise to answer honestly?",
-                        "Please reply with a number",
+                        "Do you promise to answer honestly to protect them?",
+                        "Reply with a number",
                         "",
                         "Reply",
-                        "1. I agree",
-                        "2. I don't agree"
+                        "1. Yes",
+                        "2. No"
                     ].join("\n"),
                     char_limit: 160
                 })
@@ -1290,8 +1290,8 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_honesty_t2",
                     reply: [
-                        "You would always regret passing COVID to others. Do you agree to " +
-                        "answer a few questions honestly and to the best of your ability?",
+                        "You would always regret passing COVID to someone vulnerable. " +
+                        "Do you agree to answer the next questions honestly?",
                         "",
                         "Reply",
                         "1. Yes",
@@ -1310,9 +1310,9 @@ describe("ussd_higherhealth_healthcheck app", function () {
                 .check.interaction({
                     state: "state_honesty_t2",
                     reply: [
-                        "You would always regret passing COVID to others. Do you " +
-                        "agree to answer honestly and to the best of your ability?",
-                        "Please reply with a number",
+                        "You would always regret passing COVID to someone vulnerable. " +
+                        "Do you agree to answer the next questions honestly?",
+                        "Reply with a number",
                         "",
                         "Reply",
                         "1. Yes",
