@@ -1778,7 +1778,7 @@ go.app = (function () {
 
     self.add("state_terms", function (name) {
       if(self.im.user.answers.returning_user) {
-        return self.states.create("state_age");
+        return self.states.create("state_start_triage");
       }
       return new MenuState(name, {
         question: $([
