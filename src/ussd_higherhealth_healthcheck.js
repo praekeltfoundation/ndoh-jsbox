@@ -639,22 +639,22 @@ go.app = (function () {
     self.add("state_honesty_t1", function (name) {
       return new ChoiceState(name, {
         question: $([
-          "Your campus community relies on you to report symptoms honestly. Can " +
-          "you promise to protect others by giving honest answers?",
+          "The campus community relies on you to report symptoms honestly. " +
+          "Do you promise to answer honestly to protect them?",
           "",
           "Reply"
         ].join("\n")),
         error: $([
           "The campus community relies on you to report symptoms honestly. " +
-          "Do you promise to answer honestly?",
-          "Please reply with a number",
+          "Do you promise to answer honestly to protect them?",
+          "Reply with a number",
           "",
           "Reply",
         ].join("\n")),
         accept_labels: true,
         choices: [
-          new Choice(true, $("I agree")),
-          new Choice(false, $("I don't agree")),
+          new Choice(true, $("Yes")),
+          new Choice(false, $("No")),
         ],
         next: "state_fever"
       });
@@ -663,15 +663,15 @@ go.app = (function () {
     self.add("state_honesty_t2", function (name) {
       return new ChoiceState(name, {
         question: $([
-          "You would always regret passing COVID to others. Do you agree to " +
-          "answer a few questions honestly and to the best of your ability?",
+          "You would always regret passing COVID to someone vulnerable. " +
+          "Do you agree to answer the next questions honestly?",
           "",
           "Reply"
         ].join("\n")),
         error: $([
-          "You would always regret passing COVID to others. Do you " +
-          "agree to answer honestly and to the best of your ability?",
-          "Please reply with a number",
+          "You would always regret passing COVID to someone vulnerable. " +
+          "Do you agree to answer the next questions honestly?",
+          "Reply with a number",
           "",
           "Reply",
         ].join("\n")),
