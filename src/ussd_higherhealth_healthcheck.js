@@ -188,7 +188,7 @@ go.app = (function () {
 
     self.add("state_terms", function (name) {
       if(self.im.user.answers.returning_user) {
-        return self.states.create("state_age");
+        return self.states.create("state_start_triage");
       }
       return new MenuState(name, {
         question: $([
@@ -653,8 +653,8 @@ go.app = (function () {
         ].join("\n")),
         accept_labels: true,
         choices: [
-          new Choice(true, $("Yes")),
-          new Choice(false, $("No")),
+          new Choice("yes", $("Yes")),
+          new Choice("no", $("No")),
         ],
         next: "state_fever"
       });
@@ -677,8 +677,8 @@ go.app = (function () {
         ].join("\n")),
         accept_labels: true,
         choices: [
-          new Choice(true, $("Yes")),
-          new Choice(false, $("No")),
+          new Choice("yes", $("Yes")),
+          new Choice("no", $("No")),
         ],
         next: "state_fever"
       });
@@ -700,8 +700,8 @@ go.app = (function () {
         ].join("\n")),
         accept_labels: true,
         choices: [
-          new Choice(true, $("I agree")),
-          new Choice(false, $("I don't agree")),
+          new Choice("yes", $("I agree")),
+          new Choice("no", $("I don't agree")),
         ],
         next: "state_fever"
       });
