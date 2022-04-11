@@ -927,6 +927,104 @@ go.app = function() {
             });
         });
 
+        self.states.add("state_optout_menu", function(name) {
+            return new MenuState(name, {
+                question: $("What would you like to do?"),
+                choices: [
+                    new Choice("state_user_active_subscription", $("Stop getting messages")),
+                    new Choice("state_stop_being_part", $("Stop being part of research")),
+                    new Choice("state_anonymous_data", $("Make my data anonymous")),
+                    new Choice("state_no_optout", $("Nothing. I still want to get messages"))
+                ],
+                error: $("Sorry we don't understand. Please try again.")
+            });
+        });
+
+//        self.add("state_user_active_subscription", function(name) {
+//            /* Add dynamic subscriptions here */
+//            return new MenuState(name, {
+//                question: $(
+//                    "What would you like to do?"
+//                ),
+//                error: $(
+//                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+//                    "answer."
+//                    ),
+//                choices: [
+//                    new Choice("state_start", $("Stop getting all MomConnect messages")),
+//                    new Choice("", $("")) /* append each subscription */
+//                ]
+//            });
+//        });
+
+        self.add("state_stop_being_part", function(name) {
+           return new MenuState(name, {
+                question: $("If you stop being part of the research, you'll keep getting MomConnect " +
+                "messages, but they might look a little different."),
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_stop_being_part_optout", $("Ok, continue")),
+                    new Choice("state_optout_menu", $("Go back"))
+                ]
+            });
+        });
+
+        self.add("state_anonymous_data", function(name) {
+            return new MenuState(name, {
+                question: $("If you make your data anonymous, we'll delete your phone number," +
+                            "and we won't be able to send you messages." +
+                            " " +
+                            "Do you want to continue?"),
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_anonymous_data_optout", $("Yes")),
+                    new Choice("state_optout_menu", $("No"))
+                ]
+            });
+        });
+
+        self.add("state_no_optout", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "Thanks! MomConnect will continue to send you helpful messages." +
+                    " " +
+                    "Have a lovely day!"
+                )
+            });
+        });
+
+        self.add("state_stop_being_part_optout", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "Your research consent has been withdrawn, and you have been removed from all research." +
+                    " " +
+                    "MomConnect will continue to send you helpful messages." +
+                    " " +
+                    "Goodbye."
+                )
+            });
+        });
+
+        self.add("state_anonymous_data_optout", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "You won't get any more messages from MomConnect and " +
+                    "all of your info will be deleted in the next 7 days." +
+                    "\n" +
+                    "For any medical problems, please visit a clinic."
+                )
+            });
+        });
+
         self.add("state_opt_out", function(name) {
             return new MenuState(name, {
                 question: $("Do you want to stop getting MomConnect messages?"),
@@ -940,7 +1038,7 @@ go.app = function() {
                 ]
             });
         });
-
+/*
         self.add("state_no_optout", function(name) {
             return new MenuState(name, {
                 question: $(
@@ -955,6 +1053,72 @@ go.app = function() {
                     new Choice("state_start", $("Back to main menu")),
                     new Choice("state_exit", $("Exit"))
                 ]
+            });
+        });
+*/
+        self.add("state_user_active_subscription", function(name) {
+            var msisdn = utils.readable_msisdn(
+                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "27");
+            var contact = self.im.user.answers.contact;
+            var edd = new moment(_.get(contact, "fields.edd", null));
+            var dobs = self.contact_postbirth_dobs(contact);
+            var context = {
+                msisdn: msisdn
+            };
+
+            var subscriptions = [];
+            if (!(isNaN(edd))) {
+                subscriptions.push("baby due on {{edd}}");
+                context.edd = edd.format("DD/MM/YYYY");
+            }
+
+            if (dobs.length > 0) {
+                if (dobs.length == 1) {
+                    subscriptions.push("baby born on {{dob}}");
+                    context.dob = dobs[0].format("DD/MM/YYYY");
+                } else {
+                    var babies = [];
+                    dobs.forEach(function(dob, i) {
+                        babies.push("{{dob" + i + "}}");
+                        context["dob" + i] = dob.format("DD/MM/YYYY");
+                    });
+
+                    subscriptions.push(
+                        "babies born on " +
+                        babies.slice(0, -1).join(", ") +
+                        " and " +
+                        babies.slice(-1)[0]
+                    );
+                }
+            }
+
+            return new MenuState(name, {
+                question: $(
+                    "The number {{msisdn}} is already receiving messages from MomConnect for " +
+                    subscriptions.join(" and ")).context(context),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
+                choices: [new Choice("state_active_subscription_2", $("Next"))],
+            });
+        });
+
+        self.add("state_active_subscription_2", function(name) {
+            var choices = [];
+            var contact = self.im.user.answers.contact;
+            choices.push(new Choice("state_edd_year", $("Register a new pregnancy")));
+            if (!self.contact_edd(contact) || self.contact_postbirth_dobs(contact).length < 3) {
+                choices.push(new Choice("state_birth_year", $("Register a baby age 0-2")));
+            }
+            choices.push(new Choice("state_enter_msisdn", $("Register a different cell number")));
+            choices.push(new Choice("state_exit", $("Exit")));
+            return new MenuState(name, {
+                question: $("What would you like to do?"),
+                error: $([
+                    "Sorry, we don't understand. Please enter the number.",
+                ].join("\n")),
+                choices: choices,
             });
         });
 
@@ -978,7 +1142,7 @@ go.app = function() {
                     } else if(_.includes(["not_useful", "unknown"], choice.value)) {
                         return "state_message_unhelpful_or_unknown";
                     } else {
-                        return "state_delete_data";
+                        return "state_submit_opt_out";
                     }
                 }
             });
