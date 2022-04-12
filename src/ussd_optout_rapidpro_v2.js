@@ -1056,34 +1056,6 @@ go.app = function() {
             });
         });
 */
-
-        self.add("state_msisdn_change_get_contact", function(name, opts) {
-            // Fetches the contact from RapidPro, and delegates to the correct state
-            var msisdn = utils.normalize_msisdn(
-                _.get(self.im.user.answers, "state_msisdn_change_enter"), "ZA");
-
-            return self.rapidpro.get_contact({urn: "whatsapp:" + _.trim(msisdn, "+")})
-                .then(function(contact) {
-                    var public = _.toUpper(_.get(contact, "fields.public_messaging")) === "TRUE";
-                    var prebirth = _.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7);
-                    var postbirth =
-                        _.toUpper(_.get(contact, "fields.postbirth_messaging")) === "TRUE";
-                    if(public || prebirth || postbirth) {
-                        return self.states.create("state_active_subscription");
-                    } else {
-                        return self.states.create("state_msisdn_change_confirm");
-                    }
-                }).catch(function(e) {
-                    // Go to error state after 3 failed HTTP requests
-                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-                    if(opts.http_error_count === 3) {
-                        self.im.log.error(e.message);
-                        return self.states.create("__error__", {return_state: name});
-                    }
-                    return self.states.create(name, opts);
-                });
-        });
-
         self.add("state_user_active_subscription", function(name) {
             var msisdn = utils.readable_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "27");
