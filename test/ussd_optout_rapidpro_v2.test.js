@@ -1405,14 +1405,18 @@ describe("ussd_optout_rapidpro_v2 app", function() {
                 })
                 .run();
         });
-        it("should display an error on invalid input1", function() {
+        it("should display an error on invalid input", function() {
             return tester
                 .setup.user.state("state_optout_menu")
                 .input("A")
                 .check.interaction({
                     state: "state_optout_menu",
                     reply: [
-                        "Sorry we don't understand. Please try again.",
+                        "Sorry we don't understand.",
+                        "1. Stop getting messages",
+                        "2. Stop being part of research",
+                        "3. Make my data anonymous",
+                        "4. Nothing. I still want to get messages"
                     ].join("\n")
                 })
                 .run();
@@ -2052,27 +2056,44 @@ describe("ussd_optout_rapidpro_v2 app", function() {
         });
     });
 
-    describe("state_active_subscription", function() {
+    describe("state_user_active_subscription", function() {
         it("should show the user active subscription", function() {
             return tester
-                .setup.user.state("state_active_subscription")
+                .setup.user.answer("contact", {fields: {edd: "2021-09-10"}})
+                .setup.user.state("state_user_active_subscription")
                 .check.interaction({
                     reply: [
-                        "What would you like to do?" +
+                        "What would you like to do?",
                         "1. Stop getting all MomConnect messages",
-                        "2. Stop getting messages about "
+                        "2. Stop getting messages about baby due on 10/09/2021"
                     ].join("\n"),
                 })
                 .run();
         });
+        it("should show user their active subscription", function() {
+            return tester
+                .setup.user.answer("contact", {fields: {edd: "2022-09-10",
+                    baby_dob1: "2021-03-10"}})
+                .setup.user.state("state_user_active_subscription")
+                .check.interaction({
+                    reply: [
+                        "What would you like to do?",
+                        "1. Stop getting all MomConnect messages",
+                        "2. Stop getting messages about baby due on 10/09/2022",
+                        "3. Next"
+                    ].join("\n"),
+                })
+                .run();
+        });
+
         it("should give an error on invalid input", function() {
             return tester
-                .setup.user.state("state_active_subscription")
+                .setup.user.state("state_user_active_subscription")
                 .input("A")
                 .check.interaction({
                     reply: [
-                        "Sorry we don't understand. Please enter the number next to the mother's " +
-                        "answer."
+                        "Sorry we don't understand. Please try again.",
+                        "1. Stop getting all MomConnect messages"
                     ].join("\n"),
                 })
                 .run();

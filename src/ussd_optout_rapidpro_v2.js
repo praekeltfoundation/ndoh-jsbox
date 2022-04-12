@@ -936,26 +936,9 @@ go.app = function() {
                     new Choice("state_anonymous_data", $("Make my data anonymous")),
                     new Choice("state_no_optout", $("Nothing. I still want to get messages"))
                 ],
-                error: $("Sorry we don't understand. Please try again.")
+                error: $("Sorry we don't understand"),
             });
         });
-
-//        self.add("state_user_active_subscription", function(name) {
-//            /* Add dynamic subscriptions here */
-//            return new MenuState(name, {
-//                question: $(
-//                    "What would you like to do?"
-//                ),
-//                error: $(
-//                    "Sorry we don't recognise that reply. Please enter the number next to your " +
-//                    "answer."
-//                    ),
-//                choices: [
-//                    new Choice("state_start", $("Stop getting all MomConnect messages")),
-//                    new Choice("", $("")) /* append each subscription */
-//                ]
-//            });
-//        });
 
         self.add("state_stop_being_part", function(name) {
            return new MenuState(name, {
@@ -1000,7 +983,17 @@ go.app = function() {
             });
         });
 
-        self.add("state_stop_being_part_optout", function(name) {
+        self.add("state_anonymous_data_optout", function(name){
+            // To Do state_anonymous_data_optout_success
+
+        });
+
+        self.add("state_stop_being_part_optout", function(name){
+            //To Do state_stop_being_part_optout_success
+
+        });
+
+        self.add("state_stop_being_part_optout_success", function(name) {
             return new EndState(name, {
                 next: "state_start",
                 text: $(
@@ -1013,13 +1006,13 @@ go.app = function() {
             });
         });
 
-        self.add("state_anonymous_data_optout", function(name) {
+        self.add("state_anonymous_data_optout_success", function(name) {
             return new EndState(name, {
                 next: "state_start",
                 text: $(
                     "You won't get any more messages from MomConnect and " +
                     "all of your info will be deleted in the next 7 days." +
-                    "\n" +
+                    " " +
                     "For any medical problems, please visit a clinic."
                 )
             });
@@ -1038,75 +1031,64 @@ go.app = function() {
                 ]
             });
         });
-/*
-        self.add("state_no_optout", function(name) {
-            return new MenuState(name, {
-                question: $(
-                    "Thanks! MomConnect will continue to send helpful messages and process " +
-                    "your personal info. What would you like to do?"
-                ),
-                error: $(
-                    "Sorry we don't recognise that reply. Please enter the number next to your " +
-                    "answer."
-                ),
-                choices: [
-                    new Choice("state_start", $("Back to main menu")),
-                    new Choice("state_exit", $("Exit"))
-                ]
+
+        self.contact_postbirth_dobs = function(contact) {
+            var today = new moment(self.im.config.testing_today),
+                dates = [];
+            _.forEach(["baby_dob1", "baby_dob2", "baby_dob3"], function(f) {
+                var d = new moment(_.get(contact, "fields." + f, null));
+                if (d && d.isValid() && d.isBetween(today.clone().add(-2, "years"), today)) {
+                    dates.push(d);
+                }
             });
-        });
-*/
+            return dates;
+        };
+
         self.add("state_user_active_subscription", function(name) {
-            var msisdn = utils.readable_msisdn(
-                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "27");
             var contact = self.im.user.answers.contact;
+            console.log("contact: ", contact);
             var edd = new moment(_.get(contact, "fields.edd", null));
             var dobs = self.contact_postbirth_dobs(contact);
-            var context = {
-                msisdn: msisdn
-            };
             var choices = [];
-            choices.push(new Choice("state_edd_year", $("Stop getting all MomConnect messages")));
-
+            choices.push(new Choice("state_opt_out_reason", $("Stop getting all MomConnect messages")));
 
             var subscriptions = [];
             if (!(isNaN(edd))) {
-                subscriptions.push("baby due on {{edd}}");
-                context.edd = edd.format("DD/MM/YYYY");
+                subscriptions.push("baby due on " + edd.format("DD/MM/YYYY"));
             }
 
             if (dobs.length > 0) {
+                console.log('dobs.length > 0');
                 if (dobs.length == 1) {
-                    subscriptions.push("baby born on {{dob}}");
-                    context.dob = dobs[0].format("DD/MM/YYYY");
+                    subscriptions.push("baby born on " + dobs[0].format("DD/MM/YYYY"));
                 } else {
-                    var babies = [];
                     dobs.forEach(function(dob, i) {
-                        babies.push("{{dob" + i + "}}");
-                        context["dob" + i] = dob.format("DD/MM/YYYY");
+                        subscriptions.push("baby born on " + dob.format("DD/MM/YYYY"));
                     });
-
-                    subscriptions.push(
-                        "babies born on " +
-                        babies.slice(0, -1).join(", ") +
-                        " and " +
-                        babies.slice(-1)[0]
-                    );
                 }
             }
 
             // Iterate through all active subscriptions
-            choices.push(new Choice("", $("Stop getting messages about"))
+            if (subscriptions.length > 0) {
+                console.log('subscriptions.length: ', subscriptions.length);
+                subscriptions.forEach(function(sub, i) {
+                            choices.push(new Choice("state_opt_out_reason", $("Stop getting messages about " + sub)));
+                        });
+            }
 
-            return new MenuState(name, {
-                question: $(
-                    "What would you like to do?"
-                    ),
-                error: $(
-                    "Sorry we don't understand. Please enter the number next to the mother's " +
-                    "answer."
-                ),
+            return new PaginatedChoiceState(name, {
+                question: $("What would you like to do?"),
+                error: $("Sorry we don't understand. Please try again."),
+                options_per_page: null,
+                characters_per_page: 160,
                 choices: choices,
+                more: $("Next"),
+                back: $("Previous"),
+                next: function(choice) {
+                    if (choice !== undefined) {
+                        return choice.value;
+                    }
+                }
             });
         });
 
@@ -1642,106 +1624,7 @@ go.app = function() {
                 ]
             });
         });
-/*
-        self.add("state_all_questions_view", function(name) {
-            return new PaginatedChoiceState(name, {
-                question: $("Choose a question you're interested in:"),
-                options_per_page: null,
-                characters_per_page: 160,
-                choices: [
-                    new Choice("state_question_1", $("What is MomConnect?")),
-                    new Choice("state_question_2", $("Why does MomConnect need my info?")),
-                    new Choice("state_question_3", $("What personal info is collected?")),
-                    new Choice("state_question_4", $("Who can see my personal info?")),
-                    new Choice("state_question_5", $("How long does MC keep my info?")),
-                    new Choice("state_main_menu", $("Back to main menu"))
-                ],
-                more: $("Next"),
-                back: $("Previous"),
-                next: function(choice) {
-                    if(choice !== undefined){
-                        return choice.value;
-                    }
-                }
-            });
-        });
 
-        self.add('state_question_1', function(name) {
-            return new PaginatedState(name, {
-                text: $(
-                    "MomConnect is a Health Department programme. It sends helpful messages for " +
-                    "you and your baby."
-                ),
-                characters_per_page: 160,
-                exit: $("Back"),
-                more: $("Next"),
-                back: $("Previous"),
-                next: "state_all_questions_view"
-            });
-        });
-
-
-        self.add('state_question_2', function(name) {
-            return new PaginatedState(name, {
-                text: $(
-                    "MomConnect needs your personal info to send you messages that are relevant " +
-                    "to your pregnancy or your baby's age. By knowing where you registered for " +
-                    "MomConnect, the Health Department can make sure that the service is being " +
-                    "offered to women at your clinic. Your info assists the Health Department to " +
-                    "improve its services, understand your needs better and provide even better " +
-                    "messaging."
-                ),
-                characters_per_page: 160,
-                exit: $("Back"),
-                more: $("Next"),
-                back: $("Previous"),
-                next: "state_all_questions_view"
-            });
-        });
-
-        self.add('state_question_3', function(name) {
-            return new PaginatedState(name, {
-                text: $(
-                    "MomConnect collects your cell and ID numbers, clinic location, and info " +
-                    "about how your pregnancy or baby is progressing."
-                ),
-                characters_per_page: 160,
-                exit: $("Back"),
-                more: $("Next"),
-                back: $("Previous"),
-                next: "state_all_questions_view"
-            });
-        });
-
-        self.add('state_question_4', function(name) {
-            return new PaginatedState(name, {
-                text: $(
-                    "MomConnect is owned by the Health Department. Your data is protected. It's " +
-                    "processed by MTN, Cell C, Telkom, Vodacom, Praekelt, Jembi, HISP & WhatsApp."
-                ),
-                characters_per_page: 160,
-                exit: $("Back"),
-                more: $("Next"),
-                back: $("Previous"),
-                next: "state_all_questions_view"
-            });
-        });
-
-        self.add('state_question_5', function(name) {
-            return new PaginatedState(name, {
-                text: $(
-                    "MomConnect holds your info while you're registered. If you opt out, we'll " +
-                    "use your info for historical, research & statistical reasons with your " +
-                    "consent."
-                ),
-                characters_per_page: 160,
-                exit: $("Back"),
-                more: $("Next"),
-                back: $("Previous"),
-                next: "state_all_questions_view"
-            });
-        });
-*/
         self.states.creators.__error__ = function(name, opts) {
             var return_state = opts.return_state || "state_start";
             return new EndState(name, {
