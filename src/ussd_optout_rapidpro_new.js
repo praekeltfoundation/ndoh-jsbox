@@ -936,7 +936,7 @@ go.app = function() {
                     new Choice("state_anonymous_data", $("Make my data anonymous")),
                     new Choice("state_no_optout", $("Nothing. I still want to get messages"))
                 ],
-                error: $("Sorry we don't understand"),
+                error: $("Try again, don't understand."),
             });
         });
 

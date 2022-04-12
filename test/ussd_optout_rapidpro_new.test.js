@@ -1412,7 +1412,7 @@ describe("ussd_optout_rapidpro_v2 app", function() {
                 .check.interaction({
                     state: "state_optout_menu",
                     reply: [
-                        "Sorry we don't understand.",
+                        "Try again, don't understand.",
                         "1. Stop getting messages",
                         "2. Stop being part of research",
                         "3. Make my data anonymous",
