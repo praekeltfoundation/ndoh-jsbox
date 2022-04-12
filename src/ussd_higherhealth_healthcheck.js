@@ -851,6 +851,10 @@ go.app = (function () {
 
     self.add("state_submit_data", function (name, opts) {
       var answers = self.im.user.answers;
+      if(answers.age === "<18"){
+        answers.first_name = "<not collected>";
+        answers.last_name = "<not collected>";
+      }
       var data = {
         msisdn: self.im.user.addr,
         source: "USSD",
