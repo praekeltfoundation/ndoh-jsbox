@@ -943,7 +943,7 @@ go.app = function() {
         self.add("state_stop_being_part", function(name) {
            return new MenuState(name, {
                 question: $("If you stop being part of the research, you'll keep getting MomConnect " +
-                "messages, but they might look a little different."),
+                            "messages, but they might look a little different."),
                 error: $(
                     "Sorry we don't recognise that reply. Please enter the number next to your " +
                     "answer."
@@ -957,9 +957,9 @@ go.app = function() {
 
         self.add("state_anonymous_data", function(name) {
             return new MenuState(name, {
-                question: $("If you make your data anonymous, we'll delete your phone number," +
-                            "and we won't be able to send you messages." +
-                            " " +
+                question: $("If you make your data anonymous, we'll delete your phone number, " +
+                            "and we won't be able to send you messages." ,
+                            " " ,
                             "Do you want to continue?"),
                 error: $(
                     "Sorry we don't recognise that reply. Please enter the number next to your " +
@@ -1110,6 +1110,7 @@ go.app = function() {
                     if(_.includes(["miscarriage", "stillbirth", "babyloss"], choice.value)) {
                         return "state_loss_messages";
                     } else if(_.includes(["not_useful", "unknown"], choice.value)) {
+                        console.log('Reason: ', not_useful);
                         return "state_message_unhelpful_or_unknown";
                     } else {
                         return "state_submit_opt_out";

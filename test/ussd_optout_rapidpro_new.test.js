@@ -4,7 +4,7 @@ var assert = require("assert");
 var fixtures_rapidpro = require("./fixtures_rapidpro")();
 var fixtures_whatsapp = require("./fixtures_pilot")();
 
-describe("ussd_optout_rapidpro_v2 app", function() {
+describe("ussd_optout_rapidpro_new app", function() {
     var app;
     var tester;
 
@@ -1459,9 +1459,9 @@ describe("ussd_optout_rapidpro_v2 app", function() {
                 .setup.user.state("state_anonymous_data")
                 .check.interaction({
                     reply: [
-                        "If you make your data anonymous, we'll delete your phone number," +
-                        "and we won't be able to send you messages." +
-                        "1. Yes" +
+                        "If you make your data anonymous, we'll delete your phone number, " +
+                        "and we won't be able to send you messages.",
+                        "1. Yes" ,
                         "2. No"
                     ]
                 })
