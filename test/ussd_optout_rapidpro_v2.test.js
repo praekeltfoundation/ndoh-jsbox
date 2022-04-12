@@ -2021,7 +2021,7 @@ describe("ussd_optout_rapidpro_v2 app", function() {
                 .run();
         });
     });
-    -
+
     describe("state_nosim_change_success", function() {
         it("should display success to the user", function() {
             return tester
@@ -2047,6 +2047,33 @@ describe("ussd_optout_rapidpro_v2 app", function() {
                         "1. Back",
                         "2. Exit"
                     ].join("\n")
+                })
+                .run();
+        });
+    });
+
+    describe("state_active_subscription", function() {
+        it("should show the user active subscription", function() {
+            return tester
+                .setup.user.state("state_active_subscription")
+                .check.interaction({
+                    reply: [
+                        "What would you like to do?" +
+                        "1. Stop getting all MomConnect messages",
+                        "2. Stop getting messages about "
+                    ].join("\n"),
+                })
+                .run();
+        });
+        it("should give an error on invalid input", function() {
+            return tester
+                .setup.user.state("state_active_subscription")
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "Sorry we don't understand. Please enter the number next to the mother's " +
+                        "answer."
+                    ].join("\n"),
                 })
                 .run();
         });

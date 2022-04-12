@@ -1068,6 +1068,7 @@ go.app = function() {
             var choices = [];
             choices.push(new Choice("state_edd_year", $("Stop getting all MomConnect messages")));
 
+
             var subscriptions = [];
             if (!(isNaN(edd))) {
                 subscriptions.push("baby due on {{edd}}");
@@ -1094,14 +1095,17 @@ go.app = function() {
                 }
             }
 
+            // Iterate through all active subscriptions
+            choices.push(new Choice("", $("Stop getting messages about"))
+
             return new MenuState(name, {
                 question: $(
-                    "The number {{msisdn}} is already receiving messages from MomConnect for " +
-                    subscriptions.join(" and ")).context(context),
+                    "What would you like to do?"
+                    ),
                 error: $(
                     "Sorry we don't understand. Please enter the number next to the mother's " +
                     "answer."
-                ), //Stop getting all MomConnect messages
+                ),
                 choices: choices,
             });
         });
