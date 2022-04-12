@@ -1110,7 +1110,6 @@ go.app = function() {
                     if(_.includes(["miscarriage", "stillbirth", "babyloss"], choice.value)) {
                         return "state_loss_messages";
                     } else if(_.includes(["not_useful", "unknown"], choice.value)) {
-                        console.log('Reason: ', not_useful);
                         return "state_message_unhelpful_or_unknown";
                     } else {
                         return "state_submit_opt_out";
@@ -1149,15 +1148,14 @@ go.app = function() {
         self.add("state_submit_opt_out", function(name, opts) {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             var answers = self.im.user.answers;
-            var forget = answers.state_delete_data === "state_delete_confirm";
-            var loss = answers.state_loss_messages === "state_loss_delete_data";
-            var loss_forget = answers.state_loss_delete_data === "yes";
+            var loss = answers.state_loss_messages === "state_submit_opt_out";
+            var loss_forget = answers.state_submit_opt_out === "yes";
+
             return self.rapidpro
                 .start_flow(
                     self.im.config.optout_flow_id, null, "whatsapp:" + _.trim(msisdn, "+"), {
                         babyloss_subscription: loss ? "TRUE" : "FALSE",
                         delete_info_for_babyloss: loss_forget ? "TRUE" : "FALSE",
-                        delete_info_consent: forget ? "TRUE" : "FALSE",
                         optout_reason: answers.state_opt_out_reason,
                     }
                 )

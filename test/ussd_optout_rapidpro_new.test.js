@@ -1344,18 +1344,18 @@ describe("ussd_optout_rapidpro_new app", function() {
                 .check.user.state("state_message_unhelpful_or_unknown")
                 .run();
         });
-        it("should go to state_submit_opt_out on non-loss selection", function() {
-            return tester
-                .setup.user.state("state_opt_out_reason")
-                .input("5")
-                .check.user.state("state_submit_opt_out")
-                .run();
-        });
-        it("should go to state_message_unhelpful_or_unknown on not helpful_or_unknown selection", function() {
+//        it("should go to state_submit_opt_out on non-loss selection", function() {
+//            return tester
+//                .setup.user.state("state_opt_out_reason")
+//                .input("5")
+//                .check.user.state("state_submit_opt_out")
+//                .run();
+//        });
+        it("should go to state_opt_out_reason on not helpful_or_unknown selection", function() {
             return tester
                 .setup.user.state("state_opt_out_reason")
                 .input("6")
-                .check.user.state("state_message_unhelpful_or_unknown")
+                .check.user.state("state_opt_out_reason")
                 .run();
         });
     });
@@ -1429,10 +1429,10 @@ describe("ussd_optout_rapidpro_new app", function() {
                 .check.interaction({
                     reply: [
                         "If you stop being part of the research, you'll keep getting MomConnect " +
-                        "messages, but they might look a little different." +
-                        "1. Ok, continue" +
+                        "messages, but they might look a little different.",
+                        "1. Ok, continue",
                         "2. Go back"
-                    ]
+                    ].join("\n")
                 })
                 .run();
         });
@@ -1463,7 +1463,7 @@ describe("ussd_optout_rapidpro_new app", function() {
                         "and we won't be able to send you messages.",
                         "1. Yes" ,
                         "2. No"
-                    ]
+                    ].join("\n")
                 })
                 .run();
         });
