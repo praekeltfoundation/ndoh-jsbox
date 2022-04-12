@@ -1056,6 +1056,34 @@ go.app = function() {
             });
         });
 */
+
+        self.add("state_msisdn_change_get_contact", function(name, opts) {
+            // Fetches the contact from RapidPro, and delegates to the correct state
+            var msisdn = utils.normalize_msisdn(
+                _.get(self.im.user.answers, "state_msisdn_change_enter"), "ZA");
+
+            return self.rapidpro.get_contact({urn: "whatsapp:" + _.trim(msisdn, "+")})
+                .then(function(contact) {
+                    var public = _.toUpper(_.get(contact, "fields.public_messaging")) === "TRUE";
+                    var prebirth = _.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7);
+                    var postbirth =
+                        _.toUpper(_.get(contact, "fields.postbirth_messaging")) === "TRUE";
+                    if(public || prebirth || postbirth) {
+                        return self.states.create("state_active_subscription");
+                    } else {
+                        return self.states.create("state_msisdn_change_confirm");
+                    }
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
         self.add("state_user_active_subscription", function(name) {
             var msisdn = utils.readable_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "27");
@@ -1065,6 +1093,8 @@ go.app = function() {
             var context = {
                 msisdn: msisdn
             };
+            var choices = [];
+            choices.push(new Choice("state_edd_year", $("Stop getting all MomConnect messages")));
 
             var subscriptions = [];
             if (!(isNaN(edd))) {
@@ -1099,25 +1129,7 @@ go.app = function() {
                 error: $(
                     "Sorry we don't understand. Please enter the number next to the mother's " +
                     "answer."
-                ),
-                choices: [new Choice("state_active_subscription_2", $("Next"))],
-            });
-        });
-
-        self.add("state_active_subscription_2", function(name) {
-            var choices = [];
-            var contact = self.im.user.answers.contact;
-            choices.push(new Choice("state_edd_year", $("Register a new pregnancy")));
-            if (!self.contact_edd(contact) || self.contact_postbirth_dobs(contact).length < 3) {
-                choices.push(new Choice("state_birth_year", $("Register a baby age 0-2")));
-            }
-            choices.push(new Choice("state_enter_msisdn", $("Register a different cell number")));
-            choices.push(new Choice("state_exit", $("Exit")));
-            return new MenuState(name, {
-                question: $("What would you like to do?"),
-                error: $([
-                    "Sorry, we don't understand. Please enter the number.",
-                ].join("\n")),
+                ), //Stop getting all MomConnect messages
                 choices: choices,
             });
         });
@@ -1174,58 +1186,6 @@ go.app = function() {
                 )
             });
         });
-
-//        self.add("state_loss_delete_data", function(name) {
-//            return new ChoiceState(name, {
-//                question: $(
-//                    "You'll get support msgs. We hold your info for " +
-//                    "historical/research/statistical reasons. Do you want us to delete it after " +
-//                    "you stop getting msgs?"
-//                ),
-//                error: $(
-//                    "Sorry we don't recognise that reply. Please enter the number next to your " +
-//                    "answer."
-//                ),
-//                choices: [
-//                    new Choice("yes", $("Yes")),
-//                    new Choice("no", $("No"))
-//                ],
-//                next: "state_submit_opt_out"
-//            });
-//        });
-
-//        self.add("state_delete_data", function(name) {
-//            return new MenuState(name, {
-//                question: $(
-//                    "We hold your info for historical/research/statistical reasons after you " +
-//                    "opt out. Do you want to delete your info after you stop getting messages?"
-//                ),
-//                error: $(
-//                    "Sorry we don't recognise that reply. Please enter the number next to your " +
-//                    "answer."
-//                ),
-//                choices: [
-//                    new Choice("state_delete_confirm", $("Yes")),
-//                    new Choice("state_submit_opt_out", $("No"))
-//                ]
-//            });
-//        });
-
-//        self.add("state_delete_confirm", function(name) {
-//            return new MenuState(name, {
-//                question: $(
-//                    "All your info will be permanently deleted in the next 7 days. We'll stop " +
-//                    "sending you messages. Please select Next to continue:"
-//                ),
-//                error: $(
-//                    "Sorry we don't recognise that reply. Please enter the number next to your " +
-//                    "answer."
-//                ),
-//                choices: [
-//                    new Choice("state_submit_opt_out", $("Next"))
-//                ]
-//            });
-//        });
 
         self.add("state_submit_opt_out", function(name, opts) {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
@@ -1304,7 +1264,6 @@ go.app = function() {
                     "Sorry we don't recognise that reply. Please enter the number next to your " +
                     "answer."
                 )
-
             });
         });
 
