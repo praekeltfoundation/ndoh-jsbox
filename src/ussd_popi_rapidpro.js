@@ -996,7 +996,7 @@ go.app = function() {
                     }
                 )
                 .then(function() {
-                    return self.states.create("state_anonymous_data_optout_success");
+                    return self.states.create("state_opt_out_reason");
                 }).catch(function(e) {
                     console.log(e.message);
                     // Go to error state after 3 failed HTTP requests
@@ -1038,18 +1038,6 @@ go.app = function() {
                     "MomConnect will continue to send you helpful messages." +
                     " " +
                     "Goodbye."
-                )
-            });
-        });
-
-        self.add("state_anonymous_data_optout_success", function(name) {
-            return new EndState(name, {
-                next: "state_start",
-                text: $(
-                    "You won't get any more messages from MomConnect and " +
-                    "all of your info will be deleted in the next 7 days." +
-                    " " +
-                    "For any medical problems, please visit a clinic."
                 )
             });
         });

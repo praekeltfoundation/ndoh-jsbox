@@ -1511,7 +1511,7 @@ describe("ussd_optout_rapidpro app", function() {
                 })
                 .setup.user.state("state_anonymous_data_optout")
                 .input("1")
-                .check.user.state("state_anonymous_data_optout_success")
+                .check.user.state("state_loss_messages")
                 .check(function(api) {
                     assert.equal(api.http.requests.length, 1);
                     assert.equal(
