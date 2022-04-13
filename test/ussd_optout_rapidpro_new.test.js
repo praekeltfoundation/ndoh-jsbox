@@ -28,7 +28,8 @@ describe("ussd_optout_rapidpro_new app", function() {
             language_change_flow_id: "language-change-flow",
             identification_change_flow_id: "identification-change-flow",
             research_consent_change_flow_id: "research-change-flow",
-            optout_flow_id: "optout-flow"
+            optout_flow_id: "optout-flow",
+            clear_pii_flow: "clear-pii-flow"
         });
     });
 
@@ -1344,13 +1345,28 @@ describe("ussd_optout_rapidpro_new app", function() {
                 .check.user.state("state_message_unhelpful_or_unknown")
                 .run();
         });
-//        it("should go to state_submit_opt_out on non-loss selection", function() {
-//            return tester
-//                .setup.user.state("state_opt_out_reason")
-//                .input("5")
-//                .check.user.state("state_submit_opt_out")
-//                .run();
-//        });
+        it("should go to state_optout_success on non-loss selection", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "optout-flow", null, "whatsapp:27123456789",
+                            {"babyloss_subscription":"FALSE",
+                            "delete_info_for_babyloss":"FALSE",
+                            "optout_reason":"other"})
+                    );
+                })
+                .setup.user.state("state_opt_out_reason")
+                .input("5")
+                .check.user.state("state_optout_success")
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(
+                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
+                    );
+                })
+                .run();
+        });
         it("should go to state_opt_out_reason on not helpful_or_unknown selection", function() {
             return tester
                 .setup.user.state("state_opt_out_reason")
@@ -1482,6 +1498,54 @@ describe("ussd_optout_rapidpro_new app", function() {
                 })
                 .run();
         });
+        it("should go to state_anonymous_data_optout_success on anonymous selection", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "optout-flow", null, "whatsapp:27123456789",
+                            {"opt_out":"FALSE",
+                            "mqr_consent":"Denied",
+                            "research_consent":"FALSE"})
+                    );
+                })
+                .setup.user.state("state_anonymous_data_optout")
+                .input("1")
+                .check.user.state("state_anonymous_data_optout_success")
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(
+                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
+                    );
+                })
+                .run();
+            });
+            it("should go to state_opt_out_reason on not helpful_or_unknown selection", function() {
+                return tester
+                    .setup.user.state("state_opt_out_reason")
+                    .input("6")
+                    .check.user.state("state_opt_out_reason")
+                    .run();
+            });
+            it("should go to state_stop_being_part_optout on optout selection", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "clear-pii-flow", null, "whatsapp:27123456789")
+                    );
+                })
+                .setup.user.state("state_stop_being_part_optout")
+                .input("1")
+                .check.user.state("state_stop_being_part_optout_success")
+                .check(function(api) {
+                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(
+                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
+                    );
+                })
+                .run();
+            });
     });
 
     describe("state_confirm_change_other", function() {

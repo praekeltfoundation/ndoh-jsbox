@@ -983,13 +983,49 @@ go.app = function() {
             });
         });
 
-        self.add("state_anonymous_data_optout", function(name){
-            // To Do state_anonymous_data_optout_success
-
+        self.add("state_anonymous_data_optout", function(name, opts){
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            var answers = self.im.user.answers;
+            var opt_out = answers.state_stop_being_part === "yes";
+            return self.rapidpro
+                .start_flow(
+                    self.im.config.optout_flow_id, null, "whatsapp:" + _.trim(msisdn, "+"), {
+                        opt_out: opt_out ? "TRUE" : "FALSE",
+                        mqr_consent: "Denied",
+                        research_consent: "FALSE"
+                    }
+                )
+                .then(function() {
+                    return self.states.create("state_anonymous_data_optout_success");
+                }).catch(function(e) {
+                    console.log(e.message);
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
         });
 
-        self.add("state_stop_being_part_optout", function(name){
-            //To Do state_stop_being_part_optout_success
+        self.add("state_stop_being_part_optout", function(name, opts){
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            return self.rapidpro
+                .start_flow(
+                    self.im.config.clear_pii_flow, null, "whatsapp:" + _.trim(msisdn, "+")
+                )
+                .then(function() {
+                    return self.states.create("state_stop_being_part_optout_success");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
 
         });
 
@@ -1192,7 +1228,9 @@ go.app = function() {
             return new EndState(name, {
                 next: "state_start",
                 text: $(
-                    "Thank you. MomConnect will send helpful messages to you over the coming weeks."
+                    "Thank you.",
+                    " ",
+                    "MomConnect will send you supportive messages for the next 5 days."
                 )
             });
         });
@@ -1201,8 +1239,9 @@ go.app = function() {
             return new EndState(name, {
                 next: "state_start",
                 text: $(
-                    "Thank you. You'll no longer get messages from MomConnect. For any medical " +
-                    "concerns, please visit a clinic. Have a lovely day."
+                    "Thank you for supporting MomConnect. You won't get any more messages from us.",
+                    " ",
+                    "For any medical concerns, please visit a clinic."
                 )
             });
         });
