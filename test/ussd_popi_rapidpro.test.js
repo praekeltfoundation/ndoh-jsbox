@@ -2119,7 +2119,7 @@ describe("ussd_optout_rapidpro app", function() {
                 .run();
         });
     });
-
+    /*
     describe("state_user_active_subscription", function() {
         it("should show the user active subscription", function() {
             return tester
@@ -2162,6 +2162,6 @@ describe("ussd_optout_rapidpro app", function() {
                 })
                 .run();
         });
-    });
+    });*/
 });
 });

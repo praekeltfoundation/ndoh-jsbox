@@ -1080,7 +1080,7 @@ go.app = function() {
             return new MenuState(name, {
                 question: $("What would you like to do?"),
                 choices: [
-                    new Choice("state_user_active_subscription", $("Stop getting messages")),
+                    new Choice("state_opt_out_reason", $("Stop getting messages")),
                     new Choice("state_stop_being_part", $("Stop being part of research")),
                     new Choice("state_anonymous_data", $("Make my data anonymous")),
                     new Choice("state_no_optout", $("Nothing. I still want to get messages"))
@@ -1228,7 +1228,7 @@ go.app = function() {
             });
             return dates;
         };
-
+        /*
         self.add("state_user_active_subscription", function(name) {
             var contact = self.im.user.answers.contact;
             console.log("contact: ", contact);
@@ -1276,7 +1276,7 @@ go.app = function() {
                 }
             });
         });
-
+        */
         self.add("state_opt_out_reason", function(name) {
             return new PaginatedChoiceState(name, {
                 question: $("We'll stop sending msgs. Why do you want to stop your MC msgs?"),
