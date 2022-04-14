@@ -1339,13 +1339,6 @@ describe("ussd_popi_rapidpro app", function() {
                 .check.user.state("state_loss_messages")
                 .run();
         });
-        it("should go to state_message_unhelpful_or_unknown on not helpful_or_unknown selection", function() {
-            return tester
-                .setup.user.state("state_opt_out_reason")
-                .input("4")
-                .check.user.state("state_message_unhelpful_or_unknown")
-                .run();
-        });
         it("should go to state_optout_success on non-loss selection", function() {
             return tester
                 .setup(function(api) {

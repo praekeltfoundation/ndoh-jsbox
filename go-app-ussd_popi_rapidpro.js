@@ -1271,8 +1271,6 @@ go.app = function() {
                 next: function(choice) {
                     if(_.includes(["miscarriage", "stillbirth", "babyloss"], choice.value)) {
                         return "state_loss_messages";
-                    } else if(_.includes(["not_useful", "unknown"], choice.value)) {
-                        return "state_message_unhelpful_or_unknown";
                     } else {
                         return "state_submit_opt_out";
                     }
@@ -1297,21 +1295,11 @@ go.app = function() {
             });
         });
 
-        self.add("state_message_unhelpful_or_unknown", function(name) {
-            return new EndState(name, {
-                next: "state_start",
-                text: $("Thank you for supporting MomConnect. You won't get any more messages from us." +
-                        "\n" +
-                        "For any medical concerns, please visit a clinic."
-                )
-            });
-        });
-
         self.add("state_submit_opt_out", function(name, opts) {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             var answers = self.im.user.answers;
-            var forget = _.toUpper(answers.state_anonymous_data) === "YES";
-            var loss = _.toUpper(answers.state_loss_messages) === "YES";
+            var forget = answers.state_anonymous_data === "state_anonymous_data_optout";
+            var loss = answers.state_loss_messages === "state_submit_opt_out";
             var loss_forget = _.toUpper(answers.state_submit_opt_out) === "YES";
             var optout_reason_loss = answers.state_opt_out_reason === "state_loss_messages";
 
