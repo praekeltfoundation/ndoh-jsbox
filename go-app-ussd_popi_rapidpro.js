@@ -187,7 +187,7 @@ go.app = function() {
             "ng": $("Nigeria"),
             "cd": $("DRC"),
             "so": $("Somalia"),
-            "other": $("Other") 
+            "other": $("Other")
         };
 
         self.init = function() {
@@ -271,13 +271,13 @@ go.app = function() {
                 choices: [
                     new Choice("state_personal_info", $("See my info")),
                     new Choice("state_change_info", $("Change my info")),
-                    new Choice("state_opt_out", $("Opt-out & delete info")),
+                    new Choice("state_optout_menu", $("Opt-out or delete info")),
                     new Choice("state_all_questions_view", $("How is my info processed?"))
                 ],
                 error: $("Sorry we don't understand. Please try again.")
             });
         });
-        
+
         self.add("state_personal_info", function(name) {
             var contact = self.im.user.answers.contact;
             var id_type = _.get(contact, "fields.identification_type");
@@ -296,12 +296,12 @@ go.app = function() {
                         $("{{passport_number}} {{passport_origin}}").context({
                             passport_number: _.get(contact, "fields.passport_number", $("None")),
                             passport_origin: _.get(
-                                self.passport_countries, 
+                                self.passport_countries,
                                 _.get(contact, "fields.passport_origin"), "")}),
                     dob: _.get(contact, "fields.mother_dob", $("None")),
                     sa_id: _.get(contact, "fields.id_number", $("None"))
                 }, id_type, $("None")),
-                message_type: 
+                message_type:
                     _.toUpper(_.get(contact, "fields.public_messaging")) === "TRUE" ? $("Public") :
                     _.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7) ? $("Pregnancy") :
                     _.toUpper(_.get(contact, "fields.postbirth_messaging")) === "TRUE" ? $("Baby") :
@@ -355,7 +355,7 @@ go.app = function() {
                 page: page_slice
             });
         });
-        
+
         self.add("state_change_info", function(name) {
             var contact = self.im.user.answers.contact;
             var channel = _.get(contact, "fields.preferred_channel");
@@ -374,7 +374,7 @@ go.app = function() {
                 new Choice("state_change_research_confirm", $("Research messages")),
                 new Choice("state_main_menu", $("Back"))
             ];
-            
+
             return new MenuState(name, {
                 question: $("What would you like to change?"),
                 error: $("Sorry we don't understand. Please try again."),
@@ -778,7 +778,7 @@ go.app = function() {
                 ]
             });
         });
-        
+
         self.add("state_identification_change_type", function(name) {
             return new MenuState(name, {
                 question: $("What kind of identification do you have?"),
@@ -809,7 +809,7 @@ go.app = function() {
                         !match ||
                         !validLuhn(content) ||
                         !(dob = new moment(match[1], "YYMMDD")) ||
-                        !dob.isValid() || 
+                        !dob.isValid() ||
                         !dob.isBetween(
                             today.clone().add(-130, "years"),
                             today.clone().add(-5, "years")
@@ -925,9 +925,9 @@ go.app = function() {
                     if(
                         !match ||
                         !(dob = new moment(
-                            self.im.user.answers.state_dob_year + 
-                            self.im.user.answers.state_dob_month + 
-                            match[1], 
+                            self.im.user.answers.state_dob_year +
+                            self.im.user.answers.state_dob_month +
+                            match[1],
                             "YYYYMMDD")
                         ) ||
                         !dob.isValid()
@@ -1076,6 +1076,99 @@ go.app = function() {
             });
         });
 
+        self.add("state_optout_menu", function(name) {
+            return new MenuState(name, {
+                question: $("What would you like to do?"),
+                choices: [
+                    new Choice("state_opt_out_reason", $("Stop getting messages")),
+                    new Choice("state_stop_research", $("Stop being part of research")),
+                    new Choice("state_anonymous_data", $("Make my data anonymous")),
+                    new Choice("state_no_optout", $("Nothing. I still want to get messages"))
+                ],
+                error: $("Sorry we don't understand. Try again."),
+            });
+        });
+
+        self.add("state_stop_research", function(name) {
+           return new MenuState(name, {
+                question: $("If you stop being part of the research, you'll keep getting MomConnect " +
+                            "messages, but they might look a little different."),
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_stop_research_optout", $("Ok, continue")),
+                    new Choice("state_optout_menu", $("Go back"))
+                ]
+            });
+        });
+
+        self.add("state_anonymous_data", function(name) {
+            return new MenuState(name, {
+                question: $("If you make your data anonymous, we'll delete your phone number, " +
+                            "and we won't be able to send you messages." ,
+                            "\n" ,
+                            "Do you want to continue?"),
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_anonymous_data_optout", $("Yes")),
+                    new Choice("state_optout_menu", $("No"))
+                ]
+            });
+        });
+
+        self.add("state_no_optout", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "Thanks! MomConnect will continue to send you helpful messages. " +
+                    "Have a lovely day!"
+                )
+            });
+        });
+
+        self.add("state_anonymous_data_optout", function(){
+            self.im.user.answers.forget_optout = true;
+            return self.states.create("state_opt_out_reason");
+        });
+
+        self.add("state_stop_research_optout", function(name, opts){
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            return self.rapidpro
+                .start_flow(
+                    self.im.config.research_optout_flow, null, "whatsapp:" + _.trim(msisdn, "+")
+                )
+                .then(function() {
+                    return self.states.create("state_stop_research_optout_success");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
+                    }
+                    return self.states.create(name, opts);
+                });
+
+        });
+
+        self.add("state_stop_research_optout_success", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "Your research consent has been withdrawn, and you have been removed from all research." +
+                    "\n" +
+                    "MomConnect will continue to send you helpful messages." +
+                    "\n" +
+                    "Goodbye."
+                )
+            });
+        });
+
         self.add("state_opt_out", function(name) {
             return new MenuState(name, {
                 question: $("Do you want to stop getting MomConnect messages?"),
@@ -1090,23 +1183,63 @@ go.app = function() {
             });
         });
 
-        self.add("state_no_optout", function(name) {
-            return new MenuState(name, {
-                question: $(
-                    "Thanks! MomConnect will continue to send helpful messages and process " +
-                    "your personal info. What would you like to do?"
-                ),
-                error: $(
-                    "Sorry we don't recognise that reply. Please enter the number next to your " +
-                    "answer."
-                ),
-                choices: [
-                    new Choice("state_start", $("Back to main menu")),
-                    new Choice("state_exit", $("Exit"))
-                ]
+        /*
+        self.contact_postbirth_dobs = function(contact) {
+            var today = new moment(self.im.config.testing_today),
+                dates = [];
+            _.forEach(["baby_dob1", "baby_dob2", "baby_dob3"], function(f) {
+                var d = new moment(_.get(contact, "fields." + f, null));
+                if (d && d.isValid() && d.isBetween(today.clone().add(-2, "years"), today)) {
+                    dates.push(d);
+                }
+            });
+            return dates;
+        };
+        self.add("state_user_active_subscription", function(name) {
+            var contact = self.im.user.answers.contact;
+            var edd = new moment(_.get(contact, "fields.edd", null));
+            var dobs = self.contact_postbirth_dobs(contact);
+            var choices = [];
+            choices.push(new Choice("state_opt_out_reason", $("Stop getting all MomConnect messages")));
+
+            var subscriptions = [];
+            if (!(isNaN(edd))) {
+                subscriptions.push("baby due on " + edd.format("DD/MM/YYYY"));
+            }
+
+            if (dobs.length > 0) {
+                if (dobs.length == 1) {
+                    subscriptions.push("baby born on " + dobs[0].format("DD/MM/YYYY"));
+                } else {
+                    dobs.forEach(function(dob, i) {
+                        subscriptions.push("baby born on " + dob.format("DD/MM/YYYY"));
+                    });
+                }
+            }
+
+            // Iterate through all active subscriptions
+            if (subscriptions.length > 0) {
+                subscriptions.forEach(function(sub, i) {
+                            choices.push(new Choice("state_opt_out_reason", $("Stop getting messages about " + sub)));
+                        });
+            }
+
+            return new PaginatedChoiceState(name, {
+                question: $("What would you like to do?"),
+                error: $("Sorry we don't understand. Please try again."),
+                options_per_page: null,
+                characters_per_page: 160,
+                choices: choices,
+                more: $("Next"),
+                back: $("Previous"),
+                next: function(choice) {
+                    if (choice !== undefined) {
+                        return choice.value;
+                    }
+                }
             });
         });
-
+        */
         self.add("state_opt_out_reason", function(name) {
             return new PaginatedChoiceState(name, {
                 question: $("We'll stop sending msgs. Why do you want to stop your MC msgs?"),
@@ -1125,7 +1258,7 @@ go.app = function() {
                     if(_.includes(["miscarriage", "stillbirth", "babyloss"], choice.value)) {
                         return "state_loss_messages";
                     } else {
-                        return "state_delete_data";
+                        return "state_submit_opt_out";
                     }
                 }
             });
@@ -1142,60 +1275,8 @@ go.app = function() {
                     "answer."
                 ),
                 choices: [
-                    new Choice("state_loss_delete_data", $("Yes")),
-                    new Choice("state_delete_data", $("No"))
-                ]
-            });
-        });
-
-        self.add("state_loss_delete_data", function(name) {
-            return new ChoiceState(name, {
-                question: $(
-                    "You'll get support msgs. We hold your info for " +
-                    "historical/research/statistical reasons. Do you want us to delete it after " +
-                    "you stop getting msgs?"
-                ),
-                error: $(
-                    "Sorry we don't recognise that reply. Please enter the number next to your " +
-                    "answer."
-                ),
-                choices: [
-                    new Choice("yes", $("Yes")),
-                    new Choice("no", $("No"))
-                ],
-                next: "state_submit_opt_out"
-            });
-        });
-
-        self.add("state_delete_data", function(name) {
-            return new MenuState(name, {
-                question: $(
-                    "We hold your info for historical/research/statistical reasons after you " +
-                    "opt out. Do you want to delete your info after you stop getting messages?"
-                ),
-                error: $(
-                    "Sorry we don't recognise that reply. Please enter the number next to your " +
-                    "answer."
-                ),
-                choices: [
-                    new Choice("state_delete_confirm", $("Yes")),
+                    new Choice("state_submit_opt_out", $("Yes")),
                     new Choice("state_submit_opt_out", $("No"))
-                ]
-            });
-        });
-
-        self.add("state_delete_confirm", function(name) {
-            return new MenuState(name, {
-                question: $(
-                    "All your info will be permanently deleted in the next 7 days. We'll stop " +
-                    "sending you messages. Please select Next to continue:"
-                ),
-                error: $(
-                    "Sorry we don't recognise that reply. Please enter the number next to your " +
-                    "answer."
-                ),
-                choices: [
-                    new Choice("state_submit_opt_out", $("Next"))
                 ]
             });
         });
@@ -1203,9 +1284,11 @@ go.app = function() {
         self.add("state_submit_opt_out", function(name, opts) {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             var answers = self.im.user.answers;
-            var forget = answers.state_delete_data === "state_delete_confirm";
-            var loss = answers.state_loss_messages === "state_loss_delete_data";
-            var loss_forget = answers.state_loss_delete_data === "yes";
+            var forget = answers.forget_optout;
+            var loss = answers.state_loss_messages === "state_submit_opt_out";
+            var loss_forget = _.toUpper(answers.state_submit_opt_out) === "YES";
+            var optout_reason_loss = answers.state_opt_out_reason === "state_loss_messages";
+
             return self.rapidpro
                 .start_flow(
                     self.im.config.optout_flow_id, null, "whatsapp:" + _.trim(msisdn, "+"), {
@@ -1213,6 +1296,7 @@ go.app = function() {
                         delete_info_for_babyloss: loss_forget ? "TRUE" : "FALSE",
                         delete_info_consent: forget ? "TRUE" : "FALSE",
                         optout_reason: answers.state_opt_out_reason,
+                        optout_type: optout_reason_loss ? "loss": "stop",
                     }
                 )
                 .then(function() {
@@ -1248,7 +1332,9 @@ go.app = function() {
             return new EndState(name, {
                 next: "state_start",
                 text: $(
-                    "Thank you. MomConnect will send helpful messages to you over the coming weeks."
+                    "Thank you.",
+                    " ",
+                    "MomConnect will send you supportive messages for the next 5 days."
                 )
             });
         });
@@ -1257,8 +1343,9 @@ go.app = function() {
             return new EndState(name, {
                 next: "state_start",
                 text: $(
-                    "Thank you. You'll no longer get messages from MomConnect. For any medical " +
-                    "concerns, please visit a clinic. Have a lovely day."
+                    "Thank you for supporting MomConnect. You won't get any more messages from us.",
+                    " ",
+                    "For any medical concerns, please visit a clinic."
                 )
             });
         });
@@ -1277,7 +1364,6 @@ go.app = function() {
                     "Sorry we don't recognise that reply. Please enter the number next to your " +
                     "answer."
                 )
-                
             });
         });
 
@@ -1394,7 +1480,7 @@ go.app = function() {
                 }
             });
         });
-        
+
         self.add("state_confirm_passport", function(name) {
             return new FreeText(name, {
                 question: $(
@@ -1735,7 +1821,7 @@ go.app = function() {
                 back: $("Previous"),
                 next: "state_all_questions_view"
             });
-        }); 
+        });
 
         self.add('state_question_3', function(name) {
             return new PaginatedState(name, {
