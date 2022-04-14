@@ -29,7 +29,8 @@ describe("ussd_popi_rapidpro app", function() {
             identification_change_flow_id: "identification-change-flow",
             research_consent_change_flow_id: "research-change-flow",
             optout_flow_id: "optout-flow",
-            clear_pii_flow: "clear-pii-flow"
+            clear_pii_flow: "clear-pii-flow",
+            research_optout_flow: "research-optout-flow"
         });
     });
 
@@ -53,7 +54,7 @@ describe("ussd_popi_rapidpro app", function() {
                         "Welcome to MomConnect. What would you like to do?",
                         "1. See my info",
                         "2. Change my info",
-                        "3. Opt-out & delete info",
+                        "3. Opt-out or delete info",
                         "4. How is my info processed?"
                     ].join("\n"),
                     char_limit: 140
@@ -125,7 +126,7 @@ describe("ussd_popi_rapidpro app", function() {
                         "Sorry we don't understand. Please try again.",
                         "1. See my info",
                         "2. Change my info",
-                        "3. Opt-out & delete info",
+                        "3. Opt-out or delete info",
                         "4. How is my info processed?"
                     ].join("\n"),
                     char_limit: 140
@@ -1353,7 +1354,9 @@ describe("ussd_popi_rapidpro app", function() {
                             "optout-flow", null, "whatsapp:27123456789",
                             {"babyloss_subscription":"FALSE",
                             "delete_info_for_babyloss":"FALSE",
-                            "optout_reason":"other"})
+                            "delete_info_consent": "FALSE",
+                            "optout_reason":"other",
+                            "optout_type":"stop"})
                     );
                 })
                 .setup.user.state("state_opt_out_reason")
@@ -1498,20 +1501,16 @@ describe("ussd_popi_rapidpro app", function() {
                 })
                 .run();
         });
-        it("should go to state_anonymous_data_optout_success on anonymous selection", function() {
+        it("should go to state_opt_out_reason on anonymous selection", function() {
             return tester
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
-                            "optout-flow", null, "whatsapp:27123456789",
-                            {"opt_out":"FALSE",
-                            "mqr_consent":"Denied",
-                            "research_consent":"FALSE"})
+                            "clear-pii-flow", null, "whatsapp:27123456789")
                     );
                 })
                 .setup.user.state("state_anonymous_data_optout")
                 .input("1")
-                .check.user.state("state_loss_messages")
                 .check(function(api) {
                     assert.equal(api.http.requests.length, 1);
                     assert.equal(
@@ -1532,7 +1531,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
-                            "clear-pii-flow", null, "whatsapp:27123456789")
+                            "research-optout-flow", null, "whatsapp:27123456789")
                     );
                 })
                 .setup.user.state("state_stop_research_optout")

@@ -271,7 +271,7 @@ go.app = function() {
                 choices: [
                     new Choice("state_personal_info", $("See my info")),
                     new Choice("state_change_info", $("Change my info")),
-                    new Choice("state_opt_out", $("Opt-out & delete info")),
+                    new Choice("state_optout_menu", $("Opt-out or delete info")),
                     new Choice("state_all_questions_view", $("How is my info processed?"))
                 ],
                 error: $("Sorry we don't understand. Please try again.")
@@ -1108,7 +1108,7 @@ go.app = function() {
             return new MenuState(name, {
                 question: $("If you make your data anonymous, we'll delete your phone number, " +
                             "and we won't be able to send you messages." ,
-                            " " ,
+                            "\n" ,
                             "Do you want to continue?"),
                 error: $(
                     "Sorry we don't recognise that reply. Please enter the number next to your " +
@@ -1133,20 +1133,13 @@ go.app = function() {
 
         self.add("state_anonymous_data_optout", function(name, opts){
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
-            var answers = self.im.user.answers;
-            var opt_out = _.toUpper(answers.state_stop_research) === "YES";
             return self.rapidpro
                 .start_flow(
-                    self.im.config.optout_flow_id, null, "whatsapp:" + _.trim(msisdn, "+"), {
-                        opt_out: opt_out ? "TRUE" : "FALSE",
-                        mqr_consent: "Denied",
-                        research_consent: "FALSE"
-                    }
+                    self.im.config.clear_pii_flow, null, "whatsapp:" + _.trim(msisdn, "+")
                 )
                 .then(function() {
                     return self.states.create("state_opt_out_reason");
                 }).catch(function(e) {
-                    console.log(e.message);
                     // Go to error state after 3 failed HTTP requests
                     opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
                     if(opts.http_error_count === 3) {
@@ -1161,7 +1154,7 @@ go.app = function() {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             return self.rapidpro
                 .start_flow(
-                    self.im.config.clear_pii_flow, null, "whatsapp:" + _.trim(msisdn, "+")
+                    self.im.config.research_optout_flow, null, "whatsapp:" + _.trim(msisdn, "+")
                 )
                 .then(function() {
                     return self.states.create("state_stop_research_optout_success");
@@ -1218,7 +1211,6 @@ go.app = function() {
         /*
         self.add("state_user_active_subscription", function(name) {
             var contact = self.im.user.answers.contact;
-            console.log("contact: ", contact);
             var edd = new moment(_.get(contact, "fields.edd", null));
             var dobs = self.contact_postbirth_dobs(contact);
             var choices = [];
@@ -1230,7 +1222,6 @@ go.app = function() {
             }
 
             if (dobs.length > 0) {
-                console.log('dobs.length > 0');
                 if (dobs.length == 1) {
                     subscriptions.push("baby born on " + dobs[0].format("DD/MM/YYYY"));
                 } else {
@@ -1242,7 +1233,6 @@ go.app = function() {
 
             // Iterate through all active subscriptions
             if (subscriptions.length > 0) {
-                console.log('subscriptions.length: ', subscriptions.length);
                 subscriptions.forEach(function(sub, i) {
                             choices.push(new Choice("state_opt_out_reason", $("Stop getting messages about " + sub)));
                         });
@@ -1320,15 +1310,19 @@ go.app = function() {
         self.add("state_submit_opt_out", function(name, opts) {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             var answers = self.im.user.answers;
-            var loss = answers.state_loss_messages === "state_submit_opt_out";
+            var forget = _.toUpper(answers.state_anonymous_data) === "YES";
+            var loss = _.toUpper(answers.state_loss_messages) === "YES";
             var loss_forget = _.toUpper(answers.state_submit_opt_out) === "YES";
+            var optout_reason_loss = answers.state_opt_out_reason === "state_loss_messages";
 
             return self.rapidpro
                 .start_flow(
                     self.im.config.optout_flow_id, null, "whatsapp:" + _.trim(msisdn, "+"), {
                         babyloss_subscription: loss ? "TRUE" : "FALSE",
                         delete_info_for_babyloss: loss_forget ? "TRUE" : "FALSE",
+                        delete_info_consent: forget ? "TRUE" : "FALSE",
                         optout_reason: answers.state_opt_out_reason,
+                        optout_type: optout_reason_loss ? "loss": "stop",
                     }
                 )
                 .then(function() {
