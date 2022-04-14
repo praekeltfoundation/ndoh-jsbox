@@ -982,23 +982,9 @@ go.app = function() {
             });
         });
 
-        self.add("state_anonymous_data_optout", function(name, opts){
-            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
-            return self.rapidpro
-                .start_flow(
-                    self.im.config.clear_pii_flow, null, "whatsapp:" + _.trim(msisdn, "+")
-                )
-                .then(function() {
-                    return self.states.create("state_opt_out_reason");
-                }).catch(function(e) {
-                    // Go to error state after 3 failed HTTP requests
-                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-                    if(opts.http_error_count === 3) {
-                        self.im.log.error(e.message);
-                        return self.states.create("__error__", {return_state: name});
-                    }
-                    return self.states.create(name, opts);
-                });
+        self.add("state_anonymous_data_optout", function(){
+            self.im.user.answers.forget_optout = true;
+            return self.states.create("state_opt_out_reason");
         });
 
         self.add("state_stop_research_optout", function(name, opts){
@@ -1048,6 +1034,7 @@ go.app = function() {
             });
         });
 
+        /*
         self.contact_postbirth_dobs = function(contact) {
             var today = new moment(self.im.config.testing_today),
                 dates = [];
@@ -1059,7 +1046,6 @@ go.app = function() {
             });
             return dates;
         };
-        /*
         self.add("state_user_active_subscription", function(name) {
             var contact = self.im.user.answers.contact;
             var edd = new moment(_.get(contact, "fields.edd", null));
@@ -1149,7 +1135,7 @@ go.app = function() {
         self.add("state_submit_opt_out", function(name, opts) {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             var answers = self.im.user.answers;
-            var forget = answers.state_anonymous_data === "state_anonymous_data_optout";
+            var forget = answers.forget_optout;
             var loss = answers.state_loss_messages === "state_submit_opt_out";
             var loss_forget = _.toUpper(answers.state_submit_opt_out) === "YES";
             var optout_reason_loss = answers.state_opt_out_reason === "state_loss_messages";

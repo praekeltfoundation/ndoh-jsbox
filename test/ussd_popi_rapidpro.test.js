@@ -29,7 +29,6 @@ describe("ussd_popi_rapidpro app", function() {
             identification_change_flow_id: "identification-change-flow",
             research_consent_change_flow_id: "research-change-flow",
             optout_flow_id: "optout-flow",
-            clear_pii_flow: "clear-pii-flow",
             research_optout_flow: "research-optout-flow"
         });
     });
@@ -1496,20 +1495,9 @@ describe("ussd_popi_rapidpro app", function() {
         });
         it("should go to state_opt_out_reason on anonymous selection", function() {
             return tester
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_rapidpro.start_flow(
-                            "clear-pii-flow", null, "whatsapp:27123456789")
-                    );
-                })
-                .setup.user.state("state_anonymous_data_optout")
+                .setup.user.state("state_anonymous_data")
                 .input("1")
-                .check(function(api) {
-                    assert.equal(api.http.requests.length, 1);
-                    assert.equal(
-                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
-                    );
-                })
+                .check.user.state("state_opt_out_reason")
                 .run();
             });
             it("should go to state_opt_out_reason on not helpful_or_unknown selection", function() {
