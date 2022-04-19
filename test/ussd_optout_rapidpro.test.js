@@ -50,7 +50,7 @@ describe("ussd_optout_rapidpro app", function() {
                 })
                 .run();
         });
-        it("should ask user to optout if they have an active public subscription", function() {
+        it("should show menu if they have an active public subscription", function() {
             return tester
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -63,16 +63,18 @@ describe("ussd_optout_rapidpro app", function() {
                 })
                 .start()
                 .check.interaction({
-                    state: "state_opt_out",
+                    state: "state_optout_menu",
                     reply: [
-                        "Hello mom! Do you want to stop getting MomConnect (MC) messages?",
-                        "1. Yes",
-                        "2. No"
+                        "What would you like to do?",
+                        "1. Stop getting messages",
+                        "2. Stop being part of research",
+                        "3. Make my data anonymous",
+                        "4. Nothing. I still want to get messages",
                     ].join("\n")
                 })
                 .run();
         });
-        it("should ask user to optout if they have an active clinic subscription", function() {
+        it("should show menu if they have an active clinic subscription", function() {
             return tester
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -85,11 +87,13 @@ describe("ussd_optout_rapidpro app", function() {
                 })
                 .start()
                 .check.interaction({
-                    state: "state_opt_out",
+                    state: "state_optout_menu",
                     reply: [
-                        "Hello mom! Do you want to stop getting MomConnect (MC) messages?",
-                        "1. Yes",
-                        "2. No"
+                        "What would you like to do?",
+                        "1. Stop getting messages",
+                        "2. Stop being part of research",
+                        "3. Make my data anonymous",
+                        "4. Nothing. I still want to get messages",
                     ].join("\n")
                 })
                 .run();
@@ -117,121 +121,33 @@ describe("ussd_optout_rapidpro app", function() {
                 })
                 .run();
         });
-    });
-    describe("state_opt_out", function() {
-        it("should display the options to the user", function() {
+        it("should ask for reason if they opted out without a reason", function() {
             return tester
-                .setup.user.state("state_opt_out")
-                .input({session_event: "continue"})
-                .check.interaction({
-                    state: "state_opt_out",
-                    reply: [
-                        "Hello mom! Do you want to stop getting MomConnect (MC) messages?",
-                        "1. Yes",
-                        "2. No"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should display the error pretext if the user types an invalid choice", function() {
-            return tester
-                .setup.user.state("state_opt_out")
-                .input("foo")
-                .check.interaction({
-                    state: "state_opt_out",
-                    reply: [
-                        "Sorry, please reply with the number next to your answer. " +
-                        "Do you want to stop getting MomConnect (MC) messages?",
-                        "1. Yes",
-                        "2. No"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should go to state_no_optout if they choose no", function() {
-            return tester
-                .setup.user.state("state_opt_out")
-                .input("2")
-                .check.interaction({
-                    state: "state_no_optout",
-                    reply:
-                        "Thanks! MomConnect will continue to send you helpful messages and process your " +
-                        "personal info. Have a lovely day!"
-                })
-                .run();
-        });
-        it("should go to state_optout_reason if they choose yes", function() {
-            return tester
-                .setup.user.state("state_opt_out")
-                .input("1")
-                .check.user.state("state_optout_reason")
-                .run();
-        });
-    });
-    describe("state_delete_research_info", function() {
-        it("should display the options to the user", function() {
-            return tester
-                .setup.user.state("state_delete_research_info")
-                .input({session_event: "continue"})
-                .check.interaction({
-                    state: "state_delete_research_info",
-                    reply: [
-                        "We hold your info for historical/research/statistical reasons after " +
-                        "you opt out. Do you want to delete your info after you stop getting messages?",
-                        "1. Yes",
-                        "2. No"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should display the error pretext if the user types an invalid choice", function() {
-            return tester
-                .setup.user.state("state_delete_research_info")
-                .input("foo")
-                .check.interaction({
-                    state: "state_delete_research_info",
-                    reply: [
-                        "Sorry, please reply with the number next to your answer. " +
-                        "Do you want to delete your info after you stop getting messages?",
-                        "1. Yes",
-                        "2. No"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should go to state_nonloss_optout if they choose no", function() {
-            return tester
-                .setup.user.state("state_delete_research_info")
                 .setup(function(api) {
                     api.http.fixtures.add(
-                        fixtures_rapidpro.start_flow(
-                            "rapidpro-flow-uuid",
-                            null,
-                            "whatsapp:27123456789",
-                            {
-                                babyloss_subscription:  "FALSE",
-                                delete_info_for_babyloss: "FALSE",
-                                delete_info_consent: "FALSE",
-                                source: "Optout USSD"
+                        fixtures_rapidpro.get_contact({
+                            urn: "whatsapp:27123456789",
+                            exists: true,
+                            groups: [{
+                                uuid: "id-2",
+                                name: "Optout"
+                            }],
+                            fields: {
+                                optout_reason: "",
                             }
-                        )
+                        })
                     );
                 })
-                .input("2")
-                .check.user.state("state_nonloss_optout")
-                .run();
-        });
-        it("should go to state_info_deleted if they choose yes", function() {
-            return tester
-                .setup.user.state("state_delete_research_info")
-                .input("1")
+                .start()
                 .check.interaction({
-                    state: "state_info_deleted",
+                    state: "state_get_optout_reason",
                     reply: [
-                        "All your info will be permanently deleted in the next 7 days. " +
-                        "We'll stop sending messages. Please select Next to continue:",
-                        "1. Next"
-                    ].join("\n")
+                        "Welcome MomConnect. You've opted out of receiving messages from us. Please tell us why:",
+                        "1. Miscarriage",
+                        "2. Baby was stillborn",
+                        "3. Baby passed away",
+                        "4. More"
+                    ].join("\n"),
                 })
                 .run();
         });
@@ -276,11 +192,27 @@ describe("ussd_optout_rapidpro app", function() {
                 .check.user.state("state_loss_optout")
                 .run();
         });
-        it("should go to state_delete_research_info if any of the last 3 options are chosen", function() {
+        it("should go to state_optout_success if any of the last 3 options are chosen", function() {
             return tester
                 .setup.user.state("state_optout_reason")
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "rapidpro-flow-uuid",
+                            null,
+                            "whatsapp:27123456789",
+                            {
+                                babyloss_subscription:  "FALSE",
+                                delete_info_for_babyloss: "FALSE",
+                                delete_info_consent: "FALSE",
+                                optout_reason: "other",
+                                source: "Optout USSD"
+                            }
+                        )
+                    );
+                })
                 .input("5")
-                .check.user.state("state_delete_research_info")
+                .check.user.state("state_optout_success")
                 .run();
         });
         it("should display the question if an incorrect input is sent", function() {
@@ -333,143 +265,9 @@ describe("ussd_optout_rapidpro app", function() {
                 })
                 .run();
         });
-        it("should go to state_nonloss_optout if they choose no", function() {
+        it("should go to state_optout_success if they choose no", function() {
             return tester
                 .setup.user.state("state_loss_optout")
-                .input("2")
-                .check.interaction({
-                    state: "state_delete_research_info",
-                    reply: [
-                        "We hold your info for historical/research/statistical reasons after you opt out. " +
-                        "Do you want to delete your info after you stop getting messages?",
-                        "1. Yes",
-                        "2. No"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should go to state_delete_info_for_loss if they choose yes", function() {
-            return tester
-                .setup.user.state("state_loss_optout")
-                .input("1")
-                .check.user.state("state_delete_info_for_loss")
-                .run();
-        });
-    });
-    describe("state_delete_info_for_loss", function() {
-        it("should display the options to the user", function() {
-            return tester
-                .setup.user.state("state_delete_info_for_loss")
-                .input({session_event: "continue"})
-                .check.interaction({
-                    state: "state_delete_info_for_loss",
-                    reply: [
-                        "You'll get support msgs. We hold your info for historical/research/statistical " +
-                        "reasons. Do you want us to delete it after you stop getting msgs?",
-                        "1. Yes",
-                        "2. No"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should display the error pretext if the user types an invalid choice", function() {
-            return tester
-                .setup.user.state("state_delete_info_for_loss")
-                .input("foo")
-                .check.interaction({
-                    state: "state_delete_info_for_loss",
-                    reply: [
-                        "Sorry, please reply with the number next to your answer. " +
-                        "Do you want us to delete it after you stop getting msgs?",
-                        "1. Yes",
-                        "2. No"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should go to state_loss_subscription_with_info_retainment if they choose no", function() {
-            return tester
-                .setup.user.state("state_delete_info_for_loss")
-                .setup.user.answers({
-                    state_loss_optout: "yes"
-                })
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_rapidpro.start_flow(
-                            "rapidpro-flow-uuid",
-                            null,
-                            "whatsapp:27123456789",
-                            {
-                                babyloss_subscription:  "TRUE",
-                                delete_info_for_babyloss: "FALSE",
-                                delete_info_consent: "FALSE",
-                                source: "Optout USSD"
-                            }
-                        )
-                    );
-                })
-                .input("2")
-                .check.user.state("state_loss_subscription_with_info_retainment")
-                .run();
-        });
-        it("should go to state_loss_subscription_without_info_retainment if they choose yes", function() {
-            return tester
-                .setup.user.state("state_delete_info_for_loss")
-                .setup.user.answers({
-                    state_loss_optout: "yes"
-                })
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_rapidpro.start_flow(
-                            "rapidpro-flow-uuid",
-                            null,
-                            "whatsapp:27123456789",
-                            {
-                                babyloss_subscription:  "TRUE",
-                                delete_info_for_babyloss: "TRUE",
-                                delete_info_consent: "FALSE",
-                                source: "Optout USSD"
-                            }
-                        )
-                    );
-                })
-                .input("1")
-                .check.user.state("state_loss_subscription_without_info_retainment")
-                .run();
-        });
-    });
-    describe("state_info_deleted", function() {
-        it("should display the message to the user and option to go next", function() {
-            return tester
-                .setup.user.state("state_info_deleted")
-                .input({session_event: "continue"})
-                .check.interaction({
-                    state: "state_info_deleted",
-                    reply: [
-                        "All your info will be permanently deleted in the next 7 days. " +
-                        "We'll stop sending messages. Please select Next to continue:",
-                        "1. Next"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should display the error pretext if the user types an invalid choice", function() {
-            return tester
-                .setup.user.state("state_info_deleted")
-                .input("foo")
-                .check.interaction({
-                    state: "state_info_deleted",
-                    reply: [
-                        "Sorry, please reply with the number next to your answer. " +
-                        "Please select Next to continue:",
-                        "1. Next",
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should go to state_nonloss_optout if they choose Next", function() {
-            return tester
-                .setup.user.state("state_info_deleted")
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
@@ -485,8 +283,30 @@ describe("ussd_optout_rapidpro app", function() {
                         )
                     );
                 })
+                .input("2")
+                .check.user.state("state_optout_success")
+                .run();
+        });
+        it("should go to state_loss_success if they choose yes", function() {
+            return tester
+                .setup.user.state("state_loss_optout")
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "rapidpro-flow-uuid",
+                            null,
+                            "whatsapp:27123456789",
+                            {
+                                babyloss_subscription:  "TRUE",
+                                delete_info_for_babyloss: "FALSE",
+                                delete_info_consent: "FALSE",
+                                source: "Optout USSD"
+                            }
+                        )
+                    );
+                })
                 .input("1")
-                .check.user.state("state_nonloss_optout")
+                .check.user.state("state_loss_success")
                 .run();
         });
     });
@@ -519,23 +339,25 @@ describe("ussd_optout_rapidpro app", function() {
                         })
                     );
                 })
-                .setup.user.state("state_nonloss_optout")
+                .setup.user.state("state_optout_success")
                 .input({session_event: "continue"})
                 .check.interaction({
-                    state: "state_opt_out",
+                    state: "state_optout_menu",
                     reply: [
-                        "Hello mom! Do you want to stop getting MomConnect (MC) messages?",
-                        "1. Yes",
-                        "2. No"
+                        "What would you like to do?",
+                        "1. Stop getting messages",
+                        "2. Stop being part of research",
+                        "3. Make my data anonymous",
+                        "4. Nothing. I still want to get messages",
                     ].join("\n")
                 })
                 .run();
         });
     });
-    describe("state_check_previous_optout", function() {
+    describe("state_get_optout_reason", function() {
         it("should display the list of options if the optout_reason is an empty string", function() {
             return tester
-                .setup.user.state("state_check_previous_optout")
+                .setup.user.state("state_get_optout_reason")
                 .setup.user.answer("contact", {
                     groups: [{"uuid": "id-2"}],
                     fields: {
@@ -544,7 +366,7 @@ describe("ussd_optout_rapidpro app", function() {
                 })
                 .input({session_event: "continue"})
                 .check.interaction({
-                    state: "state_check_previous_optout",
+                    state: "state_get_optout_reason",
                     reply: [
                         "Welcome MomConnect. You've opted out of receiving messages from us. Please tell us why:",
                         "1. Miscarriage",
@@ -557,7 +379,7 @@ describe("ussd_optout_rapidpro app", function() {
         });
         it("should display the other options when the more option is chosen", function() {
             return tester
-                .setup.user.state("state_check_previous_optout")
+                .setup.user.state("state_get_optout_reason")
                 .setup.user.answer("contact", {
                     groups: [{"uuid": "id-2"}],
                     fields: {
@@ -566,7 +388,7 @@ describe("ussd_optout_rapidpro app", function() {
                 })
                 .input("4")
                 .check.interaction({
-                    state: "state_check_previous_optout",
+                    state: "state_get_optout_reason",
                     reply: [
                         "Welcome MomConnect. You've opted out of receiving messages from us. Please tell us why:",
                         "1. Msgs aren't helpful",
@@ -579,7 +401,7 @@ describe("ussd_optout_rapidpro app", function() {
         });
         it("should go to state_loss_optout if any of the first 3 options are chosen", function() {
             return tester
-                .setup.user.state("state_check_previous_optout")
+                .setup.user.state("state_get_optout_reason")
                 .setup.user.answer("contact", {
                     groups: [{"uuid": "id-2"}],
                     fields: {
@@ -590,17 +412,33 @@ describe("ussd_optout_rapidpro app", function() {
                 .check.user.state("state_loss_optout")
                 .run();
         });
-        it("should go to state_nonloss_optout if any of the last 3 options are chosen", function() {
+        it("should go to state_optout_success if any of the last 3 options are chosen", function() {
             return tester
-                .setup.user.state("state_check_previous_optout")
+                .setup.user.state("state_get_optout_reason")
                 .setup.user.answer("contact", {
                     groups: [{"uuid": "id-2"}],
                     fields: {
                         optout_reason: "",
                     }
                 })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "rapidpro-flow-uuid",
+                            null,
+                            "whatsapp:27123456789",
+                            {
+                                babyloss_subscription:  "FALSE",
+                                delete_info_for_babyloss: "FALSE",
+                                delete_info_consent: "FALSE",
+                                optout_reason: "not_useful",
+                                source: "Optout USSD"
+                            }
+                        )
+                    );
+                })
                 .inputs("4", "1")
-                .check.user.state("state_nonloss_optout")
+                .check.user.state("state_optout_success")
                 .run();
         });
     });
@@ -611,7 +449,7 @@ describe("ussd_optout_rapidpro app", function() {
                 .setup.user.state("state_trigger_rapidpro_flow")
                 .setup.user.answers({
                     state_loss_optout: "yes",
-                    state_delete_info_for_loss: "yes",
+                    forget_optout: true,
                     optout_reason: "miscarriage"
                 })
                 .setup(function(api) {
@@ -623,7 +461,7 @@ describe("ussd_optout_rapidpro app", function() {
                             {
                                 babyloss_subscription:  "TRUE",
                                 delete_info_for_babyloss: "TRUE",
-                                delete_info_consent: "FALSE",
+                                delete_info_consent: "TRUE",
                                 optout_reason: "miscarriage",
                                 source: "Optout USSD",
                             }
@@ -632,7 +470,7 @@ describe("ussd_optout_rapidpro app", function() {
                 })
                 .input({session_event: "continue"})
                 .check.interaction({
-                    state: "state_loss_subscription_without_info_retainment",
+                    state: "state_loss_forget_success",
                     reply:
                     "Thank you. MomConnect will send helpful messages to you over the coming weeks. " +
                     "All your info will be deleted 7 days after your last MC message."
@@ -646,7 +484,7 @@ describe("ussd_optout_rapidpro app", function() {
                 .setup.user.state("state_trigger_rapidpro_flow")
                 .setup.user.answers({
                     state_loss_optout: "yes",
-                    state_delete_info_for_loss: "no",
+                    forget_optout: false,
                     optout_reason: "miscarriage"
                 })
                 .setup(function(api) {
@@ -667,9 +505,9 @@ describe("ussd_optout_rapidpro app", function() {
                 })
                 .input({session_event: "continue"})
                 .check.interaction({
-                    state: "state_loss_subscription_with_info_retainment",
+                    state: "state_loss_success",
                     reply:
-                        "Thank you. You'll receive messages of support from MomConnect in the coming weeks."
+                        "Thank you. MomConnect will send you supportive messages for the next 5 days."
                 })
                 .check.reply.ends_session()
                 .run();
@@ -679,7 +517,6 @@ describe("ussd_optout_rapidpro app", function() {
             return tester
                 .setup.user.state("state_trigger_rapidpro_flow")
                 .setup.user.answers({
-                    state_delete_research_info: "no",
                     optout_reason: "other"
                 })
                 .setup(function(api) {
@@ -700,10 +537,11 @@ describe("ussd_optout_rapidpro app", function() {
                 })
                 .input({session_event: "continue"})
                 .check.interaction({
-                    state: "state_nonloss_optout",
+                    state: "state_optout_success",
                     reply:
-                    "Thank you. You'll no longer get messages from MomConnect. For any medical concerns, " +
-                    "please visit a clinic. Have a lovely day."
+                        "Thank you for supporting MomConnect. You won't get any more messages from us." +
+                        " " +
+                        "For any medical concerns, please visit a clinic."
                 })
                 .check.reply.ends_session()
                 .run();
@@ -713,7 +551,7 @@ describe("ussd_optout_rapidpro app", function() {
             return tester
                 .setup.user.state("state_trigger_rapidpro_flow")
                 .setup.user.answers({
-                    state_delete_research_info: "yes",
+                    forget_optout: true,
                     optout_reason: "other"
                 })
                 .setup(function(api) {
@@ -723,8 +561,8 @@ describe("ussd_optout_rapidpro app", function() {
                             null,
                             "whatsapp:27123456789",
                             {
-                                babyloss_subscription:  "FALSE",
-                                delete_info_for_babyloss: "FALSE",
+                                babyloss_subscription: "FALSE",
+                                delete_info_for_babyloss: "TRUE",
                                 delete_info_consent: "TRUE",
                                 optout_reason: "other",
                                 source: "Optout USSD",
@@ -734,10 +572,11 @@ describe("ussd_optout_rapidpro app", function() {
                 })
                 .input({session_event: "continue"})
                 .check.interaction({
-                    state: "state_nonloss_optout",
+                    state: "state_optout_success",
                     reply:
-                    "Thank you. You'll no longer get messages from MomConnect. For any medical concerns, " +
-                    "please visit a clinic. Have a lovely day."
+                        "Thank you for supporting MomConnect. You won't get any more messages from us." +
+                        " " +
+                        "For any medical concerns, please visit a clinic."
                 })
                 .check.reply.ends_session()
                 .run();
@@ -746,7 +585,7 @@ describe("ussd_optout_rapidpro app", function() {
             return tester
                 .setup.user.state("state_trigger_rapidpro_flow")
                 .setup.user.answers({
-                    state_delete_research_info: "yes",
+                    forget_optout: true,
                     optout_reason: "other"
                 })
             .setup(function(api) {
@@ -757,7 +596,7 @@ describe("ussd_optout_rapidpro app", function() {
                         "whatsapp:27123456789",
                         {
                             babyloss_subscription:  "FALSE",
-                            delete_info_for_babyloss: "FALSE",
+                            delete_info_for_babyloss: "TRUE",
                             delete_info_consent: "TRUE",
                             optout_reason: "other",
                             source: "Optout USSD",

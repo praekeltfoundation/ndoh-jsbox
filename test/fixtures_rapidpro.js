@@ -8,10 +8,14 @@ module.exports = function() {
             var status_code = params.failure ? 500 : 200;
             var groups = params.groups || [];
             groups = groups.map(function(value, index) {
-                return {
-                    uuid: "id-" + index,
-                    name: value
-                };
+                if (typeof value === 'string') {
+                    return {
+                        uuid: "id-" + index,
+                        name: value
+                    };
+                } else {
+                    return value;
+                }
             });
 
             if(exists) {
