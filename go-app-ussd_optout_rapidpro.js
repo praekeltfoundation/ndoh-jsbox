@@ -354,18 +354,18 @@ go.app = function() {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
             var answers = self.im.user.answers;
 
-            var forget = answers.forget_optout;
+            var forget = answers.forget_optout ? "TRUE" : "FALSE";
             var loss = answers.state_loss_optout === "yes" ? "TRUE" : "FALSE";
 
             return self.rapidpro.start_flow(self.im.config.flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), {
                 babyloss_subscription: loss,
-                delete_info_for_babyloss: forget ? "TRUE" : "FALSE",
-                delete_info_consent: forget ? "TRUE" : "FALSE",
+                delete_info_for_babyloss: forget,
+                delete_info_consent: forget,
                 optout_reason: self.im.user.get_answer("optout_reason"),
                 source: "Optout USSD"
             }).then(function() {
                 if (loss === "TRUE") {
-                    if (forget) {
+                    if (forget === "TRUE") {
                         return self.states.create("state_loss_forget_success");
                     }
                     return self.states.create("state_loss_success");
