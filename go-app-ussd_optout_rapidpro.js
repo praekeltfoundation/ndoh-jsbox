@@ -235,22 +235,21 @@ go.app = function() {
         self.states.add("state_stop_research_optout_success", function(name) {
             return new EndState(name, {
                 next: "state_start",
-                text: $(
-                    "Your research consent has been withdrawn, and you have been removed from all research." +
-                    "\n" +
-                    "MomConnect will continue to send you helpful messages." +
-                    "\n" +
+                text: $([
+                    "Your research consent has been withdrawn, and you have been removed from all research.",
+                    "MomConnect will continue to send you helpful messages.",
                     "Goodbye."
-                )
+                ].join("\n"))
             });
         });
 
         self.states.add("state_anonymous_data", function(name) {
             return new MenuState(name, {
-                question: $("If you make your data anonymous, we'll delete your phone number, " +
-                            "and we won't be able to send you messages." ,
-                            "\n" ,
-                            "Do you want to continue?"),
+                question: $([
+                    "If you make your data anonymous, we'll delete your phone number, " +
+                        "and we won't be able to send you messages." ,
+                    "Do you want to continue?"
+                ].join("\n")),
                 error: $(
                     "Sorry we don't recognise that reply. Please enter the number next to your " +
                     "answer."

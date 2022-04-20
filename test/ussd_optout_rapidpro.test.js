@@ -20,7 +20,8 @@ describe("ussd_optout_rapidpro app", function() {
             clinic_group_ids: ["id-0"],
             public_group_ids: ["id-1"],
             optout_group_ids: ["id-2"],
-            flow_uuid: "rapidpro-flow-uuid"
+            flow_uuid: "rapidpro-flow-uuid",
+            research_optout_flow: "research-optout-flow-uuid"
         });
     });
 
@@ -149,6 +150,132 @@ describe("ussd_optout_rapidpro app", function() {
                         "4. More"
                     ].join("\n"),
                 })
+                .run();
+        });
+    });
+    describe("state_optout_menu", function() {
+        it("should display the list of options", function(){
+            return tester
+                .setup.user.state("state_optout_menu")
+                .input({session_event: "continue"})
+                .check.interaction({
+                    state: "state_optout_menu",
+                    reply: [
+                        "What would you like to do?",
+                        "1. Stop getting messages",
+                        "2. Stop being part of research",
+                        "3. Make my data anonymous",
+                        "4. Nothing. I still want to get messages",
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_optout_reason if selected", function(){
+            return tester
+                .setup.user.state("state_optout_menu")
+                .input("1")
+                .check.user.state("state_optout_reason")
+                .run();
+        });
+        it("should go to state_stop_research if selected", function(){
+            return tester
+                .setup.user.state("state_optout_menu")
+                .input("2")
+                .check.user.state("state_stop_research")
+                .run();
+        });
+        it("should go to state_anonymous_data if selected", function(){
+            return tester
+                .setup.user.state("state_optout_menu")
+                .input("3")
+                .check.user.state("state_anonymous_data")
+                .run();
+        });
+        it("should go to state_no_optout if selected", function(){
+            return tester
+                .setup.user.state("state_optout_menu")
+                .input("4")
+                .check.user.state("state_no_optout")
+                .run();
+        });
+    });
+    describe("state_stop_research", function() {
+        it("should prompt the user to confirm", function() {
+            return tester
+                .setup.user.state("state_stop_research")
+                .input({session_event: "continue"})
+                .check.interaction({
+                    state: "state_stop_research",
+                    reply: [
+                        "If you stop being part of the research, you'll keep getting MomConnect " +
+                             "messages, but they might look a little different.",
+                        "1. Ok, continue",
+                        "2. Go back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go back to menu if user cancels", function() {
+            return tester
+                .setup.user.state("state_stop_research")
+                .input("2")
+                .check.user.state("state_optout_menu")
+                .run();
+        });
+        it("should submit and go to state_stop_research_optout_success if user confirms", function() {
+            return tester
+                .setup.user.state("state_stop_research")
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "research-optout-flow-uuid",
+                            null,
+                            "whatsapp:27123456789"
+                        )
+                    );
+                })
+                .input("1")
+                .check.interaction({
+                    state: "state_stop_research_optout_success",
+                    reply: [
+                        "Your research consent has been withdrawn, and you have been removed from all research.",
+                        "MomConnect will continue to send you helpful messages.",
+                        "Goodbye."
+                    ].join("\n")
+                })
+                .run();
+        });
+    });
+    describe("state_anonymous_data", function() {
+        it("should prompt the user to confirm", function() {
+            return tester
+                .setup.user.state("state_anonymous_data")
+                .input({session_event: "continue"})
+                .check.interaction({
+                    state: "state_anonymous_data",
+                    reply: [
+                        "If you make your data anonymous, we'll delete your phone number, " +
+                        "and we won't be able to send you messages." ,
+                        "Do you want to continue?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go back to menu if user cancels", function() {
+            return tester
+                .setup.user.state("state_anonymous_data")
+                .input("2")
+                .check.user.state("state_optout_menu")
+                .run();
+        });
+        it("should save value and go to state_optout_reason if user confirms", function() {
+            return tester
+                .setup.user.state("state_anonymous_data")
+                .input("1")
+                .check.user.state("state_optout_reason")
+                .check.user.answer("forget_optout", true)
                 .run();
         });
     });
