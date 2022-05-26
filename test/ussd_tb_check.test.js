@@ -1124,6 +1124,8 @@ describe("ussd_tb_check app", function () {
               code: 201,
               data: {
                 accepted: true,
+                tbconnect_group_arm: "control",
+                id: 10,
               },
             },
           });
@@ -1178,6 +1180,8 @@ describe("ussd_tb_check app", function () {
               code: 201,
               data: {
                 accepted: true,
+                tbconnect_group_arm: "control",
+                id: 20,
               },
             },
           });
@@ -1234,6 +1238,8 @@ describe("ussd_tb_check app", function () {
               code: 201,
               data: {
                 accepted: true,
+                tbconnect_group_arm: "health_consequence",
+                id: 45,
               },
             },
           });
@@ -1295,6 +1301,8 @@ describe("ussd_tb_check app", function () {
               code: 201,
               data: {
                 accepted: true,
+                tbconnect_group_arm: "control",
+                id: 22,
               },
             },
           });
@@ -1325,65 +1333,183 @@ describe("ussd_tb_check app", function () {
         .run();
     });
   });
-  describe("state_show_results", function () {
-    it("should show the correct low risk message", function () {
+  describe("state_display_arm_message", function () {
+    it("should show the control message", function () {
       return tester.setup.user
-        .state("state_complete")
+        .state("state_display_arm_message")
         .setup.user.answers({
-          state_cough: "no",
-          state_fever: false,
-          state_sweat: false,
-          state_weight: false,
-          state_exposure: "no",
+          group_arm: "control"
         })
-        .input("1")
         .check.interaction({
-          state: "state_show_results",
+          state: "state_control",
           reply:
             "You don't need a TB test now, but if you develop cough, fever, weight loss " +
             "or night sweats visit your nearest clinic.",
-          char_limit: 160,
         })
         .run();
     });
-    it("should show the correct moderate/high risk message", function () {
+    it("should show the state_health_consequence message", function () {
       return tester.setup.user
-        .state("state_complete")
+        .state("state_display_arm_message")
         .setup.user.answers({
-          state_cough: "yes",
-          state_fever: false,
-          state_sweat: false,
-          state_weight: false,
-          state_exposure: "no",
+          group_arm: "health_consequence"
         })
-        .input("1")
         .check.interaction({
-          state: "state_show_results",
+          state: "state_health_consequence",
           reply: [
-            "Your replies to the questions show you need a TB test this week.",
-            "",
-            "Go to your clinic for a free TB test. Please put on a face mask before you enter the clinic",
+            "Your replies to the questions show that you need a TB test this week.",
+            "1. Next",
           ].join("\n"),
           char_limit: 160,
         })
         .run();
     });
-    it("should show the correct low risk, unknown exposure message", function () {
+    it("should show the planning_prompt message", function () {
       return tester.setup.user
-        .state("state_complete")
+        .state("state_display_arm_message")
         .setup.user.answers({
-          state_cough: "no",
-          state_fever: false,
-          state_sweat: false,
-          state_weight: false,
-          state_exposure: "not_sure",
+          group_arm: "planning_prompt",
         })
+        .check.interaction({
+          state: "state_planning_prompt",
+          reply:[
+            "Your replies to the questions show that you need a TB test this week.",
+            "",
+            "Here are some tips to help you plan:",
+            "1. Next",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should show the state_health_consequence message", function () {
+      return tester.setup.user
+        .state("state_display_arm_message")
+        .setup.user.answers({
+          group_arm: "health_consequence"
+        })
+        .check.interaction({
+          state: "state_health_consequence",
+          reply: [
+            "Your replies to the questions show that you need a TB test this week.",
+            "1. Next",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should show the soft_commitment message", function () {
+      return tester.setup.user
+        .state("state_display_arm_message")
+        .setup.user.answers({
+          group_arm: "soft_commitment",
+        })
+        .check.interaction({
+          state: "state_soft_commitment",
+          reply:
+            [
+            "Your replies to the questions show that you need a TB test this week.",
+            "",
+            "* Go to your local clinic for a free TB test.",
+            "* Please put on a face mask before you enter the clinic!",
+          ].join("\n"),
+        })
+        .run();
+    });
+    it("should show the soft_commitment_plus next message", function () {
+      return tester.setup.user
+        .state("state_soft_commitment_plus")
         .input("1")
         .check.interaction({
-          state: "state_show_results",
+          state: "state_commitment_incentive",
+          reply: [
+            "* Go to a local clinic for a free TB test.",
+            "* Please put on a face mask before entering the clinic.",
+            "* You will get R10 airtime within 1 hour if you commit to get tested.",
+            "1. Next",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should show the state_soft_commitment_plus message", function () {
+      return tester.setup.user
+        .state("state_display_arm_message")
+        .setup.user.answers({
+          group_arm: "soft_commitment_plus",
+        })
+        .check.interaction({
+          state: "state_soft_commitment_plus",
+          reply:[
+            "Your replies to the questions show that you need a TB test this week.",
+            "1. Next",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+  });
+  describe("state_submit_test_commit", function () {
+    it("should say well done when user commit to get tested", function () {
+      return tester.setup.user
+        .state("state_submit_test_commit")
+        .setup.user.answers({
+          tbcheck_id: 22,
+          state_commit_to_get_tested: true,
+        })
+        .setup(function (api) {
+          api.http.fixtures.add({
+            request: {
+              url: "http://healthcheck/v2/tbcheck/" + 22 + "/",
+              method: "PATCH",
+              data: {
+                commit_get_tested: "yes",
+              },
+            },
+            response: {
+              code: 200,
+              data: {
+                accepted: true,
+              },
+            },
+          });
+        })
+        .check.interaction({
+          state: "state_commitment",
           reply:
-            "Check if those you live with are on TB treatment. If you don't know " +
-            "your HIV status, visit the clinic for a free HIV test. Then do the TB check again.",
+            "Well done for committing to your health!",
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should say can't commit now when user not commit to get tested", function () {
+      return tester.setup.user
+        .state("state_submit_test_commit")
+        .setup.user.answers({
+          tbcheck_id: 22,
+          state_commit_to_get_tested: false,
+        })
+        .setup(function (api) {
+          api.http.fixtures.add({
+            request: {
+              url: "http://healthcheck/v2/tbcheck/" + 22 + "/",
+              method: "PATCH",
+              data: {
+                commit_get_tested: "no",
+              },
+            },
+            response: {
+              code: 200,
+              data: {
+                accepted: true,
+              },
+            },
+          });
+        })
+        .check.interaction({
+          state: "state_commitment",
+          reply:
+            "Even if you can’t commit now, it is still important to get tested.",
           char_limit: 160,
         })
         .run();

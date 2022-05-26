@@ -660,7 +660,11 @@ go.app = function () {
       return new JsonApi(self.im)
         .post(self.im.config.healthcheck.url + "/v2/tbcheck/", payload)
         .then(
-          function () {
+          function (response) {
+            self.im.user.answers = {
+                group_arm: response.data.tbconnect_group_arm.toLowerCase(),
+                tbcheck_id: response.data.id,
+            };
             return self.states.create("state_complete");
           },
           function (e) {
@@ -677,7 +681,6 @@ go.app = function () {
 
     self.states.add("state_complete", function (name) {
       var answers = self.im.user.answers;
-
       var text = $("Thanks for choosing to get our follow-up messages.");
 
       if (!answers.state_opt_in) {
@@ -691,35 +694,223 @@ go.app = function () {
         question: text,
         error: error,
         accept_labels: true,
-        choices: [new Choice("state_show_results", $("See Results"))],
+        choices: [new Choice("state_display_arm_message", $("See Results"))],
       });
     });
 
-    self.states.add("state_show_results", function (name) {
+    self.states.add("state_display_arm_message", function (name) {
       var answers = self.im.user.answers;
-      var risk = self.calculate_risk();
-      var text = $(
-        "You don't need a TB test now, but if you develop cough, fever, weight loss " +
-          "or night sweats visit your nearest clinic."
-      );
+      var arm = answers.group_arm;
+      return self.states.create("state_" + arm);
+    });
 
-      if (risk == "high" || risk == "moderate") {
-        text = $(
-          [
-            "Your replies to the questions show you need a TB test this week.",
+    self.states.add("state_control", function(name) {
+        return new EndState(name, {
+            next: "state_start",
+            text: $([
+                "Your replies to the questions show that you need a TB test this week.",
+                "",
+                "Visit your local clinic for a free TB test. Please put on a face mask before you enter the clinic."
+            ].join("\n")
+            )
+        });
+    });
+
+    self.add("state_health_consequence", function (name) {
+      return new MenuState(name, {
+        question: $(
+          "Your replies to the questions show that you need a TB test this week."
+        ),
+        accept_labels: true,
+        choices: [new Choice("state_early_diagnosis", $("Next"))],
+      });
+    });
+
+    self.states.add("state_early_diagnosis", function(name) {
+        return new EndState(name, {
+            next: "state_start",
+            text: $([
+                "With early diagnosis, TB can be cured. Don’t delay, test today!",
+                "",
+                "Visit your local clinic for a free TB test. "+
+                "Please put on a face mask before you enter the clinic."
+            ].join("\n")
+            )
+        });
+    });
+
+    self.add("state_planning_prompt", function (name) {
+      return new MenuState(name, {
+        question: $([
+            "Your replies to the questions show that you need a TB test this week.",
             "",
-            "Go to your clinic for a free TB test. Please put on a face mask before you enter the clinic",
-          ].join("\n")
+            "Here are some tips to help you plan:"
+            ].join("\n")
+        ),
+        accept_labels: true,
+        choices: [new Choice("state_pick_convenient_clinic", $("Next"))],
+      });
+    });
+
+    self.add("state_pick_convenient_clinic", function (name) {
+      return new MenuState(name, {
+        question: $([
+            "Make the time. Your health is a priority!",
+            "",
+            "Pick the most convenient clinic for your test."+
+            " Below are the 5 clinics nearest to you."
+            ].join("\n")
+        ),
+        accept_labels: true,
+        choices: [new Choice("state_clinic_opens", $("Next"))],
+      });
+    });
+
+    self.add("state_clinic_opens", function (name) {
+      return new MenuState(name, {
+        question: $([
+            "Please put on a face mask before you enter the clinic.",
+            "",
+            "Get there early! Clinics are open for TB testing Monday to Friday mornings."
+            ].join("\n")
+        ),
+        accept_labels: true,
+        choices: [new Choice("state_clinic_list", $("Next"))],
+      });
+    });
+
+    self.add("state_clinic_list", function (name) {
+      return new MenuState(name, {
+        question: $(
+          "TB HealthCheck does not replace medical advice, diagnosis or treatment. Get" +
+            " a qualified health provider's advice on your medical condition and care."
+        ),
+        accept_labels: true,
+        choices: [
+            new Choice("state_day_of_visit", $("Next")),
+            new Choice("state_start", $("Next")),
+            new Choice("state_start", $("Next")),
+            new Choice("state_start", $("Next")),
+            new Choice("state_start", $("Next"))
+            ],
+      });
+    });
+
+    self.add("state_day_of_visit", function (name) {
+      return new MenuState(name, {
+        question: $(
+          "TB HealthCheck does not replace medical advice, diagnosis or treatment. Get" +
+            " a qualified health provider's advice on your medical condition and care."
+        ),
+        accept_labels: true,
+        choices: [
+            new Choice("state_more_info_pg2", $("MONDAY")),
+            new Choice("state_more_info_pg2", $("TUESDAY")),
+            new Choice("state_more_info_pg2", $("WEDNESDAY")),
+            new Choice("state_more_info_pg2", $("THURSDAY")),
+            new Choice("state_more_info_pg2", $("FRIDAY"))
+            ],
+      });
+    });
+
+    self.states.add("state_soft_commitment", function(name) {
+        return new EndState(name, {
+            next: "state_commit_to_get_tested",
+            text: $([
+                "Your replies to the questions show that you need a TB test this week.",
+                "",
+                "* Go to your local clinic for a free TB test.",
+                "* Please put on a face mask before you enter the clinic!"
+            ].join("\n")
+            )
+        });
+    });
+
+    self.states.add("state_soft_commitment_plus", function (name) {
+      return new MenuState(name, {
+        question: $(
+            "Your replies to the questions show that you need a TB test this week."
+        ),
+        accept_labels: true,
+        choices: [new Choice("state_commitment_incentive", $("Next"))],
+      });
+    });
+
+    self.states.add("state_commitment_incentive", function (name) {
+      return new MenuState(name, {
+        question: $([
+            "* Go to a local clinic for a free TB test.",
+            "* Please put on a face mask before entering the clinic.",
+            "* You will get R10 airtime within 1 hour if you commit to get tested.",
+            ].join("\n")
+        ),
+        accept_labels: true,
+        choices: [new Choice("state_go_for_test", $("Next"))],
+      });
+    });
+
+    self.states.add("state_go_for_test", function (name) {
+      return new MenuState(name, {
+        question: $(
+            "Your replies to the questions show that you need a TB test this week."
+        ),
+        accept_labels: true,
+        choices: [new Choice("state_commit_to_get_tested", $("Next"))],
+      });
+    });
+
+    self.states.add("state_commit_to_get_tested", function (name) {
+      return new ChoiceState(name, {
+        question: $("Do you commit to getting tested?"),
+        error: $("Please use numbers from list. Do you commit to getting tested?"),
+        accept_labels: true,
+        choices: [new Choice(true, $("YES")), new Choice(false, $("NO"))],
+        next: "state_commitment",
+      });
+    });
+
+    self.states.add("state_submit_test_commit", function (name, opts) {
+      var answers = self.im.user.answers;
+      var id = answers.tbcheck_id;
+
+      var payload = {
+        data: {
+          commit_get_tested: answers.state_commit_to_get_tested ? "yes" : "no",
+        },
+        headers: {
+          Authorization: ["Token " + self.im.config.healthcheck.token],
+          "User-Agent": ["Jsbox/TB-Check-USSD"],
+        },
+      };
+      return new JsonApi(self.im)
+        .patch(self.im.config.healthcheck.url + "/v2/tbcheck/"+ id +"/", payload)
+        .then(
+          function () {
+            return self.states.create("state_commitment");
+          },
+          function (e) {
+            // Go to error state after 3 failed HTTP requests
+            opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+            if (opts.http_error_count === 3) {
+              self.im.log.error(e.message);
+              return self.states.create("__error__", { return_state: name });
+            }
+            return self.states.create(name, opts);
+          }
         );
-      } else if (answers.state_exposure == "not_sure") {
-        text = $(
-          "Check if those you live with are on TB treatment. If you don't know " +
-            "your HIV status, visit the clinic for a free HIV test. Then do the TB check again."
-        );
+      });
+
+    self.states.add("state_commitment", function (name) {
+      var answers = self.im.user.answers;
+      var text = $("Well done for committing to your health!");
+
+      if (!answers.state_commit_to_get_tested) {
+        text = $("Even if you can’t commit now, it is still important to get tested.");
       }
+
       return new EndState(name, {
-        next: "state_start",
         text: text,
+        next: "state_start",
       });
     });
   });
