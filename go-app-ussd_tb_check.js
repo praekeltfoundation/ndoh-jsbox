@@ -813,6 +813,7 @@ go.app = function () {
             self.im.user.answers = {
                 group_arm: response.data.tbconnect_group_arm.toLowerCase(),
                 tbcheck_id: response.data.id,
+                state_opt_in: answers.state_opt_in,
             };
             return self.states.create("state_complete");
           },
@@ -859,7 +860,7 @@ go.app = function () {
             text: $([
                 "Your replies to the questions show that you need a TB test this week.",
                 "",
-                "Visit your local clinic for a free TB test. Please put on a face mask before you enter the clinic."
+                "Visit your local clinic for a free TB test."
             ].join("\n")
             )
         });
@@ -969,7 +970,6 @@ go.app = function () {
                 "Your replies to the questions show that you need a TB test this week.",
                 "",
                 "* Go to your local clinic for a free TB test.",
-                "* Please put on a face mask before you enter the clinic!"
             ].join("\n")
             )
         });
@@ -989,7 +989,6 @@ go.app = function () {
       return new MenuState(name, {
         question: $([
             "* Go to a local clinic for a free TB test.",
-            "* Please put on a face mask before entering the clinic.",
             "* You will get R10 airtime within 1 hour if you commit to get tested.",
             ].join("\n")
         ),
@@ -1021,7 +1020,7 @@ go.app = function () {
     self.states.add("state_submit_test_commit", function (name, opts) {
       var answers = self.im.user.answers;
       var id = answers.tbcheck_id;
-      console.log("#######", id, ">>>>>", answers.state_commit_to_get_tested ? "yes" : "no");
+
       var payload = {
         data: {
           commit_get_tested: answers.state_commit_to_get_tested ? "yes" : "no",
@@ -1034,8 +1033,7 @@ go.app = function () {
       return new JsonApi(self.im)
         .patch(self.im.config.healthcheck.url + "/v2/tbcheck/"+ id +"/", payload)
         .then(
-          function (response) {
-            console.log("Response: ", response.data);
+          function () {
             return self.states.create("state_commitment");
           },
           function (e) {
@@ -1043,7 +1041,6 @@ go.app = function () {
             opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
             if (opts.http_error_count === 3) {
               self.im.log.error(e.message);
-              console.log("Error: ", e.message);
               return self.states.create("__error__", { return_state: name });
             }
             return self.states.create(name, opts);
@@ -1053,7 +1050,6 @@ go.app = function () {
 
     self.states.add("state_commitment", function (name) {
       var answers = self.im.user.answers;
-      console.log(">?>?>?>?>?", answers.state_commit_to_get_tested);
       var text = $("Well done for committing to your health!");
 
       if (!answers.state_commit_to_get_tested) {

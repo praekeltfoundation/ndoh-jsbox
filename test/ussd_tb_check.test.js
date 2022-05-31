@@ -1342,9 +1342,11 @@ describe("ussd_tb_check app", function () {
         })
         .check.interaction({
           state: "state_control",
-          reply:
-            "You don't need a TB test now, but if you develop cough, fever, weight loss " +
-            "or night sweats visit your nearest clinic.",
+          reply:[
+            "Your replies to the questions show that you need a TB test this week.",
+            "",
+            "Visit your local clinic for a free TB test.",
+            ].join("\n"),
         })
         .run();
     });
@@ -1411,7 +1413,6 @@ describe("ussd_tb_check app", function () {
             "Your replies to the questions show that you need a TB test this week.",
             "",
             "* Go to your local clinic for a free TB test.",
-            "* Please put on a face mask before you enter the clinic!",
           ].join("\n"),
         })
         .run();
@@ -1424,7 +1425,6 @@ describe("ussd_tb_check app", function () {
           state: "state_commitment_incentive",
           reply: [
             "* Go to a local clinic for a free TB test.",
-            "* Please put on a face mask before entering the clinic.",
             "* You will get R10 airtime within 1 hour if you commit to get tested.",
             "1. Next",
           ].join("\n"),

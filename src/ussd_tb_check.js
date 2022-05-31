@@ -664,6 +664,7 @@ go.app = function () {
             self.im.user.answers = {
                 group_arm: response.data.tbconnect_group_arm.toLowerCase(),
                 tbcheck_id: response.data.id,
+                state_opt_in: answers.state_opt_in,
             };
             return self.states.create("state_complete");
           },
@@ -710,7 +711,7 @@ go.app = function () {
             text: $([
                 "Your replies to the questions show that you need a TB test this week.",
                 "",
-                "Visit your local clinic for a free TB test. Please put on a face mask before you enter the clinic."
+                "Visit your local clinic for a free TB test."
             ].join("\n")
             )
         });
@@ -820,7 +821,6 @@ go.app = function () {
                 "Your replies to the questions show that you need a TB test this week.",
                 "",
                 "* Go to your local clinic for a free TB test.",
-                "* Please put on a face mask before you enter the clinic!"
             ].join("\n")
             )
         });
@@ -840,7 +840,6 @@ go.app = function () {
       return new MenuState(name, {
         question: $([
             "* Go to a local clinic for a free TB test.",
-            "* Please put on a face mask before entering the clinic.",
             "* You will get R10 airtime within 1 hour if you commit to get tested.",
             ].join("\n")
         ),
