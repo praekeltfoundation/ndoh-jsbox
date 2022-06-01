@@ -1448,6 +1448,20 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
+    it("should show the state_show_results message if user is not assigned to any arm", function () {
+      return tester.setup.user
+        .state("state_display_arm_message")
+        .setup.user.answers({
+          group_arm: null,
+        })
+        .check.interaction({
+          state: "state_show_results",
+          reply:
+            "You don't need a TB test now, but if you develop cough, fever, weight loss or night sweats visit your nearest clinic.",
+          char_limit: 160,
+        })
+        .run();
+    });
   });
   describe("state_submit_test_commit", function () {
     it("should say well done when user commit to get tested", function () {

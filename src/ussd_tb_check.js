@@ -661,11 +661,13 @@ go.app = function () {
         .post(self.im.config.healthcheck.url + "/v2/tbcheck/", payload)
         .then(
           function (response) {
-            self.im.user.answers = {
+            answers.group_arm = response.data.tbconnect_group_arm.toLowerCase();
+            answers.tbcheck_id = response.data.id;
+            /*self.im.user.answers = {
                 group_arm: response.data.tbconnect_group_arm.toLowerCase(),
                 tbcheck_id: response.data.id,
                 state_opt_in: answers.state_opt_in,
-            };
+            };*/
             return self.states.create("state_complete");
           },
           function (e) {
@@ -682,6 +684,7 @@ go.app = function () {
 
     self.states.add("state_complete", function (name) {
       var answers = self.im.user.answers;
+
       var text = $("Thanks for choosing to get our follow-up messages.");
 
       if (!answers.state_opt_in) {
@@ -702,7 +705,11 @@ go.app = function () {
     self.states.add("state_display_arm_message", function (name) {
       var answers = self.im.user.answers;
       var arm = answers.group_arm;
-      return self.states.create("state_" + arm);
+
+      if (arm){
+        return self.states.create("state_" + arm);
+      }
+      return self.states.create("state_show_results");
     });
 
     self.states.add("state_control", function(name) {
@@ -910,6 +917,33 @@ go.app = function () {
       return new EndState(name, {
         text: text,
         next: "state_start",
+      });
+    });
+    self.states.add("state_show_results", function (name) {
+      var answers = self.im.user.answers;
+      var risk = self.calculate_risk();
+      var text = $(
+        "You don't need a TB test now, but if you develop cough, fever, weight loss " +
+          "or night sweats visit your nearest clinic."
+      );
+
+      if (risk == "high" || risk == "moderate") {
+        text = $(
+          [
+            "Your replies to the questions show you need a TB test this week.",
+            "",
+            "Go to your clinic for a free TB test. Please put on a face mask before you enter the clinic",
+          ].join("\n")
+        );
+      } else if (answers.state_exposure == "not_sure") {
+        text = $(
+          "Check if those you live with are on TB treatment. If you don't know " +
+            "your HIV status, visit the clinic for a free HIV test. Then do the TB check again."
+        );
+      }
+      return new EndState(name, {
+        next: "state_start",
+        text: text,
       });
     });
   });
