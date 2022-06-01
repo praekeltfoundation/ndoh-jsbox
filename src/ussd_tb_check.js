@@ -663,11 +663,7 @@ go.app = function () {
           function (response) {
             answers.group_arm = response.data.tbconnect_group_arm.toLowerCase();
             answers.tbcheck_id = response.data.id;
-            /*self.im.user.answers = {
-                group_arm: response.data.tbconnect_group_arm.toLowerCase(),
-                tbcheck_id: response.data.id,
-                state_opt_in: answers.state_opt_in,
-            };*/
+
             return self.states.create("state_complete");
           },
           function (e) {
