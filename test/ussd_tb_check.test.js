@@ -26,6 +26,78 @@ describe("ussd_tb_check app", function () {
     });
   });
 
+  describe("set_activation", function() {
+    it("should set activation for new user", function() {
+      return tester
+      .setup(function (api) {
+        api.http.fixtures.add({
+          request: {
+              url: "http://healthcheck/v2/healthcheckuserprofile/+27123456789/",
+              method: "GET"
+          },
+          response: {
+              code: 404,
+              data: {
+                  detail: "Not found."
+              }
+          }
+      });
+      })
+      .input({ session_event: "new", to_addr: "*123*123*8#" })
+      .check.user.answer("activation", "tb_soccer_1_2022")
+      .check.user.state("state_welcome")
+      .run();
+    });
+    it("should set activation for returning user", function() {
+      return tester
+      .setup(function (api) {
+        api.http.fixtures.add({
+          request: {
+              url: "http://healthcheck/v2/healthcheckuserprofile/+27123456789/",
+              method: "GET"
+          },
+          response: {
+              code: 200,
+              data: {
+                activation: null,
+                state_gender: "MALE",
+                state_province: "ZA-WC",
+                state_city: "Cape Town, South Arica",
+                city_location: "+00-025/",
+                state_age: "18-39",
+                state_language: "eng",
+                data: {tb_privacy_policy_accepted: "yes"},
+              }
+          }
+      });
+      })
+      .input({ session_event: "new", to_addr: "*123*123*8#" })
+      .check.user.answer("activation", "tb_soccer_1_2022")
+      .check.user.state("state_welcome")
+      .run();
+    });
+    it("should not set activation for non activation", function() {
+      return tester
+      .setup(function (api) {
+        api.http.fixtures.add({
+          request: {
+              url: "http://healthcheck/v2/healthcheckuserprofile/+27123456789/",
+              method: "GET"
+          },
+          response: {
+              code: 404,
+              data: {
+                  detail: "Not found."
+              }
+          }
+      });
+      })
+      .input({ session_event: "new", to_addr: "*123*123*5#" })
+      .check.user.answer("activation", null)
+      .check.user.state("state_welcome")
+      .run();
+    });
+  });
   describe("calculate_risk", function () {
     it("No cough, no symptoms, no exposure", function () {
       return tester.setup.user
@@ -1115,6 +1187,7 @@ describe("ussd_tb_check app", function () {
                 tracing: true,
                 follow_up_optin: true,
                 risk: "low",
+                activation: null,
                 data: {
                   tb_privacy_policy_accepted: "yes"
                 }
@@ -1169,6 +1242,7 @@ describe("ussd_tb_check app", function () {
                 tracing: true,
                 follow_up_optin: true,
                 risk: "low",
+                activation: null,
                 data: {
                   tb_privacy_policy_accepted: "yes"
                 }
@@ -1225,6 +1299,7 @@ describe("ussd_tb_check app", function () {
                 tracing: true,
                 follow_up_optin: true,
                 risk: "low",
+                activation: null,
                 data: {
                   tb_privacy_policy_accepted: "yes"
                 }
@@ -1286,6 +1361,7 @@ describe("ussd_tb_check app", function () {
                 tracing: true,
                 follow_up_optin: false,
                 risk: "low",
+                activation: null,
                 data: {
                   tb_privacy_policy_accepted: "yes"
                 }

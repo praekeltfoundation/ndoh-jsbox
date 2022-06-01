@@ -41,6 +41,24 @@ go.app = function () {
       return "low";
     };
 
+    self.get_activation = function () {
+      var regex = /\*\d+\*\d+\*([\d]+)#/;
+      var to_addr = self.im.msg.to_addr;
+
+      if (!to_addr) return null;
+      var groups = to_addr.match(regex);
+      if (!groups) return null;
+      var activations = {
+        "8": "tb_soccer_1_2022",
+        "9": "tb_soccer_2_2022"
+      };
+
+      if (!activations[groups[1]]) return null;
+
+      return activations[groups[1]];
+
+    };
+
     self.add = function (name, creator) {
       self.states.add(name, function (name, opts) {
         if (self.im.msg.session_event !== "new") return creator(name, opts);
@@ -70,6 +88,7 @@ go.app = function () {
 
     self.states.add("state_start", function (name, opts) {
       var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+      var activation = self.get_activation();
 
       return new JsonApi(self.im)
         .get(
@@ -87,6 +106,7 @@ go.app = function () {
         .then(
           function (response) {
             self.im.user.answers = {
+              activation: activation,
               returning_user: true,
               state_gender: response.data.gender,
               state_province: response.data.province,
@@ -107,7 +127,7 @@ go.app = function () {
           function (e) {
             // If it's 404, new user
             if (_.get(e, "response.code") === 404) {
-              self.im.user.answers = { returning_user: false };
+              self.im.user.answers = { returning_user: false, activation: activation };
               return self.states.create("state_welcome");
             }
             // Go to error state after 3 failed HTTP requests
@@ -626,6 +646,7 @@ go.app = function () {
     self.add("state_submit_data", function (name, opts) {
       var answers = self.im.user.answers;
       var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+      var activation = self.get_activation();
       var payload = {
         data: {
           msisdn: msisdn,
@@ -643,6 +664,7 @@ go.app = function () {
           tracing: answers.state_tracing,
           follow_up_optin: answers.state_opt_in,
           risk: self.calculate_risk(),
+          activation: activation,
           data: {
             tb_privacy_policy_accepted: "yes"
           }
