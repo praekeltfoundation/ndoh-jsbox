@@ -23,6 +23,13 @@ describe("ussd_tb_check app", function () {
         token: "rapidpro-token",
         privacy_policy_sms_flow: "privacy-policy-flow-uuid"
       },
+      activations: {
+        to_regex: "\\\*\\d\+\\\*\\d\+\\\*\(\[\\d\]\+\)#",
+        code_map: {
+          "8": "tb_soccer_1_2022",
+          "9": "tb_soccer_2_2022",
+        }
+      }
     });
   });
 

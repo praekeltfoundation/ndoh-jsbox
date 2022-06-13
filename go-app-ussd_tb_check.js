@@ -145,21 +145,21 @@ go.app = function () {
     };
 
     self.get_activation = function () {
-      var regex = /\*\d+\*\d+\*([\d]+)#/;
+      if (!self.im.config.activations) return null;
+      var to_regex = new RegExp(self.im.config.activations.to_regex);
       var to_addr = self.im.msg.to_addr;
 
       if (!to_addr) return null;
-      var groups = to_addr.match(regex);
+
+      var groups = to_addr.match(to_regex);
       if (!groups) return null;
-      var activations = {
-        "8": "tb_soccer_1_2022",
-        "9": "tb_soccer_2_2022"
-      };
 
-      if (!activations[groups[1]]) return null;
+      var code_map = self.im.config.activations.code_map;
+      var to_code = groups[1];
 
-      return activations[groups[1]];
+      if (!(to_code in code_map)) return null;
 
+      return code_map[to_code];
     };
 
     self.add = function (name, creator) {
