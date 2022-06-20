@@ -484,8 +484,8 @@ go.app = function () {
               self.pad_location(location.lat, 2) +
               self.pad_location(location.lng, 3) +
               "/";
-            self.im.user.location_lat = location.lat;
-            self.im.user.location_lng = location.lng;
+            answers.location_lat = location.lat;
+            answers.location_lng = location.lng;
             return self.states.create("state_cough");
           },
           function (e) {
