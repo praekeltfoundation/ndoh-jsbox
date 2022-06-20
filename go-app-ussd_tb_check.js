@@ -960,11 +960,8 @@ go.app = function () {
       var answers = self.im.user.answers;
       var lng = answers.location_lng;
       var lat = answers.location_lat;
-      console.log(typeof lat, typeof lng);
-//      self.im.config.healthcheck.url + "/v1/clinic_finder?longitude="+ lng +"&latitude="+ lat);
 
       return new JsonApi(self.im)
-        /*.get(self.im.config.healthcheck.url + "/v1/clinic_finder?longitude="+ lng +"&latitude="+ lat,*/
         .get(self.im.config.healthcheck.url + "/v1/clinic_finder",
                 {
                 headers: {
@@ -979,7 +976,6 @@ go.app = function () {
         )
         .then(
           function (response) {
-            console.log("@#$%^&*(" );
             answers.nearest_clinic = response.data.locations;
             answers.tbcheck_id = response.data.id;
 
@@ -987,7 +983,6 @@ go.app = function () {
           },
           function (e) {
             // Go to error state after 3 failed HTTP requests
-            console.log('Error state_get_nearest_clinic: ', e);
             opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
             if (opts.http_error_count === 3) {
               self.im.log.error(e.message);
@@ -1109,7 +1104,6 @@ go.app = function () {
           },
           function (e) {
             // Go to error state after 3 failed HTTP requests
-            console.log('Error state_submit_test_commit: ', e);
             opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
             if (opts.http_error_count === 3) {
               self.im.log.error(e.message);
@@ -1142,7 +1136,6 @@ go.app = function () {
           },
           function (e) {
             // Go to error state after 3 failed HTTP requests
-            console.log('Error state_submit_clinic_option: ', e);
             opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
             if (opts.http_error_count === 3) {
               self.im.log.error(e.message);
