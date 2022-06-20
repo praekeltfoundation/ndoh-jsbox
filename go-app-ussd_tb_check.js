@@ -610,6 +610,8 @@ go.app = function () {
     };
 
     self.add("state_place_details_lookup", function (name, opts) {
+      var answers = self.im.user.answers;
+
       return new JsonApi(self.im)
         .get("https://maps.googleapis.com/maps/api/place/details/json", {
           params: {
@@ -633,8 +635,8 @@ go.app = function () {
               self.pad_location(location.lat, 2) +
               self.pad_location(location.lng, 3) +
               "/";
-            self.im.user.location_lat = location.lat;
-            self.im.user.location_lng = location.lng;
+            answers.location_lat = location.lat;
+            answers.location_lng = location.lng;
             return self.states.create("state_cough");
           },
           function (e) {

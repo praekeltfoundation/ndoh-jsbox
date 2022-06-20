@@ -461,6 +461,8 @@ go.app = function () {
     };
 
     self.add("state_place_details_lookup", function (name, opts) {
+      var answers = self.im.user.answers;
+
       return new JsonApi(self.im)
         .get("https://maps.googleapis.com/maps/api/place/details/json", {
           params: {
