@@ -1545,6 +1545,39 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
+    it("should show the state_show_results message if user is not assigned to any arm and activation", function () {
+      return tester.setup.user
+        .state("state_display_arm_message")
+        .setup.user.answers({
+          group_arm: "control",
+          activation: "tb_test",
+        })
+        .check.interaction({
+          state: "state_show_results",
+          reply:
+            "You don't need a TB test now, but if you develop cough, fever, weight loss or night sweats visit your nearest clinic.",
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should show the state_control message if user is not assigned to any arm", function () {
+      return tester.setup.user
+        .state("state_display_arm_message")
+        .setup.user.answers({
+          group_arm: "control",
+          activation: null,
+        })
+        .check.interaction({
+          state: "state_control",
+          reply:[
+            "Your replies to the questions show that you need a TB test this week.",
+            "",
+            "Visit your local clinic for a free TB test."
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
     it("should get nearest clinics", function () {
       return tester.setup.user
         .state("state_get_nearest_clinic")

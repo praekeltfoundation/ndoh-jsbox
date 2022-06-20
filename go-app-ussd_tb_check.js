@@ -874,8 +874,9 @@ go.app = function () {
     self.states.add("state_display_arm_message", function (name) {
       var answers = self.im.user.answers;
       var arm = answers.group_arm;
+      var activation = answers.activation;
 
-      if (arm){
+      if (arm && ! activation){
         return self.states.create("state_" + arm);
       }
       return self.states.create("state_show_results");
