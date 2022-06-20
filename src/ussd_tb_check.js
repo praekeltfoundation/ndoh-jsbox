@@ -464,6 +464,8 @@ go.app = function () {
               self.pad_location(location.lat, 2) +
               self.pad_location(location.lng, 3) +
               "/";
+            self.im.user.location_lat = location.lat;
+            self.im.user.location_lng = location.lng;
             return self.states.create("state_cough");
           },
           function (e) {
@@ -779,40 +781,79 @@ go.app = function () {
             ].join("\n")
         ),
         accept_labels: true,
-        choices: [new Choice("state_clinic_list", $("Next"))],
+        choices: [new Choice("state_get_nearest_clinic", $("Next"))],
       });
     });
 
-    self.add("state_clinic_list", function (name) {
+    self.add("state_get_nearest_clinic", function (name, opts) {
+      var answers = self.im.user.answers;
+      var lng = answers.location_lng;
+      var lat = answers.location_lat;
+
+      return new JsonApi(self.im)
+        .get(self.im.config.healthcheck.url + "/v1/clinic_finder",
+                {
+                headers: {
+                  Authorization: ["Token " + self.im.config.healthcheck.token],
+                  "User-Agent": ["Jsbox/TB-Check-USSD"],
+                },
+                params: {
+                    longitude: lng.toString(),
+                    latitude: lat.toString()
+                }
+                }
+        )
+        .then(
+          function (response) {
+            answers.nearest_clinic = response.data.locations;
+            answers.tbcheck_id = response.data.id;
+
+            return self.states.create("state_clinic_to_visit");
+          },
+          function (e) {
+            // Go to error state after 3 failed HTTP requests
+            opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+            if (opts.http_error_count === 3) {
+              self.im.log.error(e.message);
+              return self.states.create("__error__", { return_state: name });
+            }
+            return self.states.create(name, opts);
+          }
+        );
+    });
+
+    self.add("state_clinic_to_visit", function (name) {
+      var answers = self.im.user.answers;
+      var nearest_clinic = answers.nearest_clinic;
+      var choice_list = [];
+
+      nearest_clinic.forEach(function(clinic){
+        // append clinic to choices
+        choice_list.push(new Choice("state_clinic_visit_day", $(clinic.short_name)));
+      });
+
       return new MenuState(name, {
         question: $(
-          "TB HealthCheck does not replace medical advice, diagnosis or treatment. Get" +
-            " a qualified health provider's advice on your medical condition and care."
+          "Where will you go for your test? Reply with the clinic"
         ),
         accept_labels: true,
-        choices: [
-            new Choice("state_day_of_visit", $("Next")),
-            new Choice("state_start", $("Next")),
-            new Choice("state_start", $("Next")),
-            new Choice("state_start", $("Next")),
-            new Choice("state_start", $("Next"))
-            ],
+        choices:
+            choice_list,
       });
     });
 
-    self.add("state_day_of_visit", function (name) {
+    self.add("state_clinic_visit_day", function (name) {
       return new MenuState(name, {
         question: $(
-          "TB HealthCheck does not replace medical advice, diagnosis or treatment. Get" +
-            " a qualified health provider's advice on your medical condition and care."
+          "When will you go for your test? Reply with the day"
         ),
         accept_labels: true,
         choices: [
-            new Choice("state_more_info_pg2", $("MONDAY")),
-            new Choice("state_more_info_pg2", $("TUESDAY")),
-            new Choice("state_more_info_pg2", $("WEDNESDAY")),
-            new Choice("state_more_info_pg2", $("THURSDAY")),
-            new Choice("state_more_info_pg2", $("FRIDAY"))
+            new Choice("state_submit_clinic_option", $("MONDAY")),
+            new Choice("state_submit_clinic_option", $("TUESDAY")),
+            new Choice("state_submit_clinic_option", $("WEDNESDAY")),
+            new Choice("state_submit_clinic_option", $("THURSDAY")),
+            new Choice("state_submit_clinic_option", $("FRIDAY"))
             ],
       });
     });
@@ -902,6 +943,38 @@ go.app = function () {
         );
       });
 
+    self.states.add("state_submit_clinic_option", function (name, opts) {
+      var answers = self.im.user.answers;
+      var id = answers.tbcheck_id;
+
+      var payload = {
+        data: {
+          clinic_to_visit: answers.clinic_to_visit,
+          clinic_visit_day: answers.clinic_visit_day,
+        },
+        headers: {
+          Authorization: ["Token " + self.im.config.healthcheck.token],
+          "User-Agent": ["Jsbox/TB-Check-USSD"],
+        },
+      };
+      return new JsonApi(self.im)
+        .patch(self.im.config.healthcheck.url + "/v2/tbcheck/"+ id +"/", payload)
+        .then(
+          function () {
+            return self.states.create("state_end");
+          },
+          function (e) {
+            // Go to error state after 3 failed HTTP requests
+            opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+            if (opts.http_error_count === 3) {
+              self.im.log.error(e.message);
+              return self.states.create("__error__", { return_state: name });
+            }
+            return self.states.create(name, opts);
+          }
+        );
+      });
+
     self.states.add("state_commitment", function (name) {
       var answers = self.im.user.answers;
       var text = $("Well done for committing to your health!");
@@ -915,6 +988,7 @@ go.app = function () {
         next: "state_start",
       });
     });
+
     self.states.add("state_show_results", function (name) {
       var answers = self.im.user.answers;
       var risk = self.calculate_risk();

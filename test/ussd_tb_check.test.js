@@ -1462,6 +1462,150 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
+    it("should get nearest clinics", function () {
+      return tester.setup.user
+        .state("state_get_nearest_clinic")
+        .setup.user.answers({
+          location_lng: 26.68533,
+          location_lat: -27.87308,
+        })
+        .setup(function (api) {
+          api.http.fixtures.add({
+            request: {
+              url: "http://healthcheck/v1/clinic_finder",
+              method: "GET",
+              params: {
+                longitude: "26.68533",
+                latitude: "-27.87308",
+              },
+            },
+            response: {
+              code: 200,
+              data:{
+                  id: 68,
+                  locations:
+                    [{
+                      "address": "203 Mark Street",
+                      "code": 853642,
+                      "latitude": -27.873,
+                      "location": "POINT (26.68533 -27.87308)",
+                      "longitude": 26.68533,
+                      "name": "fs AM Kruger Clinic",
+                      "province": "Free State",
+                      "short_name": "AM Kruger Clinic"
+                    },
+                    {
+                      "address": "4 Olifant Street",
+                      "code": 734833,
+                      "latitude": -27.7533,
+                      "location": "POINT (26.64478 -27.75332)",
+                      "longitude": 26.64478,
+                      "name": "fs Allanridge Clinic",
+                      "province": "Free State",
+                      "short_name": "Allanridge Clinic"
+                    },
+                    ],
+              }
+            },
+          });
+        })
+        .check.user.state("state_clinic_to_visit")
+        .run();
+    });
+    it("should show the day of visit options message", function () {
+      return tester.setup.user
+        .state("state_clinic_visit_day")
+        .check.interaction({
+          state: "state_clinic_visit_day",
+          reply:[
+            "When will you go for your test? Reply with the day",
+            "1. MONDAY",
+            "2. TUESDAY",
+            "3. WEDNESDAY",
+            "4. THURSDAY",
+             "5. FRIDAY",
+            ].join("\n"),
+        })
+        .run();
+    });
+    it("should show the clinic lists message", function () {
+      return tester.setup.user
+        .state("state_clinic_to_visit")
+        .setup.user.answers({
+          nearest_clinic: [{
+                  "address": "203 Mark Street",
+                  "code": 853642,
+                  "latitude": -27.873,
+                  "location": "POINT (26.68533 -27.87308)",
+                  "longitude": 26.68533,
+                  "name": "fs AM Kruger Clinic",
+                  "province": "Free State",
+                  "short_name": "AM Kruger Clinic"
+                },
+                {
+                  "address": "565 Vorster Street, Wesselsbron, 9680",
+                  "code": 897151,
+                  "latitude": -27.8362,
+                  "location": "POINT (26.3668 -27.8362)",
+                  "longitude": 26.3668,
+                  "name": "fs Albert Luthuli Memorial Clinic",
+                  "province": "Free State",
+                  "short_name": "Albert Luthuli Mem Clinic"
+                },
+                {
+                  "address": "4 Olifant Street",
+                  "code": 734833,
+                  "latitude": -27.7533,
+                  "location": "POINT (26.64478 -27.75332)",
+                  "longitude": 26.64478,
+                  "name": "fs Allanridge Clinic",
+                  "province": "Free State",
+                  "short_name": "Allanridge Clinic"
+                },
+                ],
+        })
+        .check.interaction({
+          state: "state_clinic_to_visit",
+          reply:[
+            "Where will you go for your test? Reply with the clinic",
+            "1. AM Kruger Clinic",
+            "2. Albert Luthuli Mem Clinic",
+            "3. Allanridge Clinic",
+            ].join("\n"),
+        })
+        .run();
+    });
+    it("should submit user clinic options", function () {
+      return tester.setup.user
+        .state("state_submit_clinic_option")
+        .setup.user.answers({
+          tbcheck_id: 54,
+          clinic_to_visit: "Addo Clinic",
+          clinic_visit_day: "mon",
+        })
+        .setup(function (api) {
+          api.http.fixtures.add({
+            request: {
+              url: "http://healthcheck/v2/tbcheck/" + 54 + "/",
+              method: "PATCH",
+              data: {
+                clinic_to_visit: 'Addo Clinic',
+                clinic_visit_day: 'mon'
+              }
+            },
+            response: {
+              code: 200,
+              data: {
+                accepted: true,
+              },
+            },
+          });
+        })
+        .check.interaction({
+          state: "state_end",
+        })
+        .run();
+    });
   });
   describe("state_submit_test_commit", function () {
     it("should say well done when user commit to get tested", function () {
