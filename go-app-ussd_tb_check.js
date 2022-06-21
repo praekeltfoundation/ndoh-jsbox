@@ -912,8 +912,7 @@ go.app = function () {
             text: $([
                 "With early diagnosis, TB can be cured. Don’t delay, test today!",
                 "",
-                "Visit your local clinic for a free TB test. "+
-                "Please put on a face mask before you enter the clinic."
+                "Visit your local clinic for a free TB test. "
             ].join("\n")
             )
         });
@@ -949,8 +948,6 @@ go.app = function () {
     self.add("state_clinic_opens", function (name) {
       return new MenuState(name, {
         question: $([
-            "Please put on a face mask before you enter the clinic.",
-            "",
             "Get there early! Clinics are open for TB testing Monday to Friday mornings."
             ].join("\n")
         ),
@@ -1176,7 +1173,7 @@ go.app = function () {
           [
             "Your replies to the questions show you need a TB test this week.",
             "",
-            "Go to your clinic for a free TB test. Please put on a face mask before you enter the clinic",
+            "Go to your clinic for a free TB test.",
           ].join("\n")
         );
       } else if (answers.state_exposure == "not_sure") {

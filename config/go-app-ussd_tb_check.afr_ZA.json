@@ -1,16 +1,16 @@
 {
     "": {
-        "pot-creation-date": "2021-04-01 10:48:+0000",
         "project-id-version": "",
+        "pot-creation-date": "2022-06-21 11:52:+0000",
+        "po-revision-date": "2022-06-21 16:45+0200",
+        "last-translator": "",
         "language-team": "",
+        "language": "afr_ZA",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2021-04-01 13:38+0200",
-        "x-generator": "Poedit 2.4.2",
-        "last-translator": "",
         "plural-forms": "nplurals=2; plural=(n != 1);",
-        "language": "afr_ZA"
+        "x-generator": "Poedit 3.1"
     },
     "Welcome back to the The National Department of Health's TB HealthCheck\n\nReply 1 or 2": [
         null,
@@ -36,37 +36,9 @@
         null,
         "BEGIN"
     ],
-    "Choose your preferred language": [
-        null,
-        "Kies jou taal van voorkeur."
-    ],
-    "Please reply with numbers. Choose your preferred language": [
-        null,
-        "Please reply with numbers. Kies jou taal van voorkeur."
-    ],
-    "English": [
-        null,
-        "English"
-    ],
-    "isiZulu": [
-        null,
-        "isiZulu"
-    ],
-    "Afrikaans": [
-        null,
-        "Afrikaans"
-    ],
-    "isiXhosa": [
-        null,
-        "isiXhosa"
-    ],
-    "Sesotho": [
-        null,
-        "Sesotho"
-    ],
     "This NDoH service only provides health info. Please agree that you are responsible for your own medical care and treatment.\n\nReply": [
         null,
-        "Dié NDvG-diens verskaf gesondheidsinligting. Stem jy saam dat jy verantwoordelik is vir jou mediese sorg en behandeling?\n\nAntwoord"
+        "Dié NDvG-diens verskaf gesondheidsinligting. Stem jy saam dat jy verantwoordelik is vir jou mediese sorg en behandeling? \n\nAntwoord"
     ],
     "YES": [
         null,
@@ -96,13 +68,89 @@
         null,
         "Inligting word gebruik op eie risiko. Die vraelyes vervang nie mediese raad nie. Stem om binnekort behandelingsadvies te kry en nie te ignoreer nie"
     ],
+    "Your personal information is protected under POPIA and in accordance with the provisions of the TBHealthCheck Privacy Notice sent to you by SMS.": [
+        null,
+        "Jou inligting word beskerm deur die POPI-wet, soos uiteengesit in TBHealthCheck se Privaatheidskennisgewing-SMS."
+    ],
     "ACCEPT": [
         null,
         "AANVAAR"
     ],
-    "Your personal information is protected under POPIA and in accordance with the provisions of the TBHealthCheck Privacy Notice sent to you by SMS.": [
+    "Choose your preferred language": [
         null,
-        "Jou inligting word beskerm deur die POPI-wet, soos uiteengesit in TBHealthCheck se Privaatheidskennisgewing-SMS."
+        "Kies jou taal van voorkeur."
+    ],
+    "Please reply with numbers. Choose your preferred language": [
+        null,
+        "Please reply with numbers. Kies jou taal van voorkeur."
+    ],
+    "English": [
+        null,
+        "English"
+    ],
+    "isiZulu": [
+        null,
+        "isiZulu"
+    ],
+    "Afrikaans": [
+        null,
+        "Afrikaans"
+    ],
+    "isiXhosa": [
+        null,
+        "isiXhosa"
+    ],
+    "Sesotho": [
+        null,
+        "Sesotho"
+    ],
+    "How old are you?\n\nReply with a number": [
+        null,
+        "Hoe oud is jy? \n\nAntwoord met ’n nommer"
+    ],
+    "Please use numbers from list.\n\nHow old are you?": [
+        null,
+        "Hoe oud is jy? \n\nAntwoord met ’n nommer"
+    ],
+    "under 18": [
+        null,
+        "onder 18"
+    ],
+    "18-39": [
+        null,
+        "18-39"
+    ],
+    "40-65": [
+        null,
+        "40-65"
+    ],
+    "over 65": [
+        null,
+        "oor 65"
+    ],
+    "Which gender do you identify as?:\n\nReply with a number": [
+        null,
+        "As watter geslag identifiseer jy?:\n \nAntwoord met ’n nommer "
+    ],
+    "Please use numbers from list.\n\nWhich gender do you identify as?:": [
+        null,
+        "As watter geslag identifiseer jy?:\n \nAntwoord met ’n nommer "
+    ],
+    "MALE": [
+        null,
+        "MANLIK"
+    ],
+    "FEMALE": [
+        null,
+        "VROULIK"
+    ],
+    "OTHER": [
+        null,
+        "ANDER"
+    ],
+    "RATHER NOT SAY": [
+        null,
+        "WIL LIEWER NIE SÊ NIE"
     ],
     "Choose your province. Reply with a number:": [
         null,
@@ -159,54 +207,6 @@
     "No": [
         null,
         "Nee"
-    ],
-    "How old are you?\n\nReply with a number": [
-        null,
-        "Hoe oud is jy? \n\nAntwoord met ’n nommer"
-    ],
-    "Please use numbers from list.\n\nHow old are you?": [
-        null,
-        "Hoe oud is jy? \n\nAntwoord met ’n nommer"
-    ],
-    "under 18": [
-        null,
-        "onder 18"
-    ],
-    "18-39": [
-        null,
-        "18-39"
-    ],
-    "40-65": [
-        null,
-        "40-65"
-    ],
-    "over 65": [
-        null,
-        "oor 65"
-    ],
-    "Which gender do you identify as?:\n\nReply with a number": [
-        null,
-        "As watter geslag identifiseer jy?:\n \nAntwoord met ’n nommer "
-    ],
-    "Please use numbers from list.\n\nWhich gender do you identify as?:": [
-        null,
-        "As watter geslag identifiseer jy?:\n \nAntwoord met ’n nommer "
-    ],
-    "MALE": [
-        null,
-        "MANLIK"
-    ],
-    "FEMALE": [
-        null,
-        "VROULIK"
-    ],
-    "OTHER": [
-        null,
-        "ANDER"
-    ],
-    "RATHER NOT SAY": [
-        null,
-        "WIL LIEWER NIE SÊ NIE"
     ],
     "Let's see how you're feeling today. Do you have a cough?\n\nReply 1 or 2": [
         null,
@@ -280,13 +280,69 @@
         null,
         "Sien Uitslae"
     ],
+    "Your replies to the questions show that you need a TB test this week.": [
+        null,
+        "Jou antwoorde op die vrae dui aan dat jy hierdie week 'n TB-toets moet laat doen."
+    ],
+    "With early diagnosis, TB can be cured. Don’t delay, test today!\n\nVisit your local clinic for a free TB test. ": [
+        null,
+        "As TB vroeg gediagnoseer word, kan dit genees word. Hoekom wag? Laat toets jou vandag!\n\nBesoek jou plaaslike kliniek vir 'n gratis TB-toets."
+    ],
+    "Make the time. Your health is a priority!\n\nPick the most convenient clinic for your test. Below are the 5 clinics nearest to you.": [
+        null,
+        "Maak tyd. Jou gesondheid is belangrik!\n\nKies die gerieflikste kliniek vir jou toets. Hier is die 5 klinieke naaste aan jou"
+    ],
+    "Get there early! Clinics are open for TB testing Monday to Friday mornings.": [
+        null,
+        "Wees vroeg! Klinieke is van Maandag- tot Vrydagoggend oop vir TB-toetse."
+    ],
+    "Where will you go for your test? Reply with the clinic": [
+        null,
+        "Waar sal jy gaan vir jou toets? Antwoord met die kliniek"
+    ],
+    "When will you go for your test? Reply with the day": [
+        null,
+        "Wanneer sal jy gaan vir jou toets? Antwoord met die dag"
+    ],
+    "MONDAY": [
+        null,
+        "MAANDAG"
+    ],
+    "TUESDAY": [
+        null,
+        "DINSDAG"
+    ],
+    "WEDNESDAY": [
+        null,
+        "WOENSDAG"
+    ],
+    "THURSDAY": [
+        null,
+        "DONDERDAG"
+    ],
+    "FRIDAY": [
+        null,
+        "VRYDAG"
+    ],
+    "* Go to a local clinic for a free TB test.\n* You will get R10 airtime within 1 hour if you commit to get tested.": [
+        null,
+        "* Gaan na jou plaaslike kliniek vir 'n gratis TB-toets.\n* Jy sal R10 lugtyd kry as jy onderneem om jou te laat toets."
+    ],
+    "Do you commit to getting tested?": [
+        null,
+        "Neem jy voor om jou te laat toets?"
+    ],
+    "Well done for committing to your health!": [
+        null,
+        "Geluk omdat jy jou gesondheid eerste stel!"
+    ],
+    "Even if you can’t commit now, it is still important to get tested.": [
+        null,
+        "Al kan jy nie nou voorneem om dit te doen nie, is dit steeds belangrik om getoets te word."
+    ],
     "You don't need a TB test now, but if you develop cough, fever, weight loss or night sweats visit your nearest clinic.": [
         null,
         "Jy hoef nie nou ’n TB-toets te doen nie, maar besoek jou naaste kliniek indien jy begin hoes, koors het, gewig verloor of snags sweet."
-    ],
-    "Your replies to the questions show you need a TB test this week.\n\nGo to your clinic for a free TB test. Please put on a face mask before you enter the clinic": [
-        null,
-        "Jou antwoorde toon dat jy ’n TB-toets moet neem hierdie week. \n\nGaan na jou kliniek vir ’n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan"
     ],
     "Check if those you live with are on TB treatment. If you don't know your HIV status, visit the clinic for a free HIV test. Then do the TB check again.": [
         null,
