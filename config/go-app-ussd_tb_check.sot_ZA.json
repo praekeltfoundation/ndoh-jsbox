@@ -1,15 +1,15 @@
 {
     "": {
-        "pot-creation-date": "2021-04-01 10:48:+0000",
         "project-id-version": "",
+        "pot-creation-date": "2022-06-21 11:52:+0000",
+        "po-revision-date": "2022-06-21 16:45+0200",
+        "last-translator": "",
         "language-team": "",
+        "language": "sot_ZA",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2021-04-06 10:38+0200",
-        "x-generator": "Poedit 2.4.2",
-        "last-translator": "",
-        "language": "sot_ZA"
+        "x-generator": "Poedit 3.1"
     },
     "Welcome back to the The National Department of Health's TB HealthCheck\n\nReply 1 or 2": [
         null,
@@ -34,34 +34,6 @@
     "START": [
         null,
         "QALA"
-    ],
-    "Choose your preferred language": [
-        null,
-        "Kgetha puo eo o ikgethela "
-    ],
-    "Please reply with numbers. Choose your preferred language": [
-        null,
-        "Kgetha puo eo o ikgethela "
-    ],
-    "English": [
-        null,
-        "English"
-    ],
-    "isiZulu": [
-        null,
-        "isiZulu"
-    ],
-    "Afrikaans": [
-        null,
-        "Afrikaans"
-    ],
-    "isiXhosa": [
-        null,
-        "isiXhosa"
-    ],
-    "Sesotho": [
-        null,
-        "Sesotho"
     ],
     "This NDoH service only provides health info. Please agree that you are responsible for your own medical care and treatment.\n\nReply": [
         null,
@@ -95,13 +67,89 @@
         null,
         "O sebedisa lesedi lena kotsing ya hao. Dumela ho se natse kapa ho dieha ho fumana dikeletso tsa bongaka ka kalafo kapa tlhokomelo "
     ],
+    "Your personal information is protected under POPIA and in accordance with the provisions of the TBHealthCheck Privacy Notice sent to you by SMS.": [
+        null,
+        "Dintlha tsa hao tsa botho di sireleditswe ka molao wa POPI le ka dipehelo tsa Tsebiso ya Lekunutu la TBHealthCheck e romeletsweng wena ka SMS."
+    ],
     "ACCEPT": [
         null,
         "AMOHELA"
     ],
-    "Your personal information is protected under POPIA and in accordance with the provisions of the TBHealthCheck Privacy Notice sent to you by SMS.": [
+    "Choose your preferred language": [
         null,
-        "Dintlha tsa hao tsa botho di sireleditswe ka molao wa POPI le ka dipehelo tsa Tsebiso ya Lekunutu la TBHealthCheck e romeletsweng wena ka SMS."
+        "Kgetha puo eo o ikgethela "
+    ],
+    "Please reply with numbers. Choose your preferred language": [
+        null,
+        "Kgetha puo eo o ikgethela "
+    ],
+    "English": [
+        null,
+        "English"
+    ],
+    "isiZulu": [
+        null,
+        "isiZulu"
+    ],
+    "Afrikaans": [
+        null,
+        "Afrikaans"
+    ],
+    "isiXhosa": [
+        null,
+        "isiXhosa"
+    ],
+    "Sesotho": [
+        null,
+        "Sesotho"
+    ],
+    "How old are you?\n\nReply with a number": [
+        null,
+        "O dilemo di kae? \n\nAraba ka nomoro"
+    ],
+    "Please use numbers from list.\n\nHow old are you?": [
+        null,
+        "O dilemo di kae? \n\nAraba ka nomoro"
+    ],
+    "under 18": [
+        null,
+        "ka tlase ho dilemo tse 18"
+    ],
+    "18-39": [
+        null,
+        "18-39"
+    ],
+    "40-65": [
+        null,
+        "40-65"
+    ],
+    "over 65": [
+        null,
+        "tse fetang 65"
+    ],
+    "Which gender do you identify as?:\n\nReply with a number": [
+        null,
+        "O kgetha bong bofe?:\n \nAraba ka nomoro"
+    ],
+    "Please use numbers from list.\n\nWhich gender do you identify as?:": [
+        null,
+        "O kgetha bong bofe?:\n \nAraba ka nomoro"
+    ],
+    "MALE": [
+        null,
+        "MONNA"
+    ],
+    "FEMALE": [
+        null,
+        "MOSADI"
+    ],
+    "OTHER": [
+        null,
+        "HO HONG"
+    ],
+    "RATHER NOT SAY": [
+        null,
+        "HA KE RATE HO TJHO"
     ],
     "Choose your province. Reply with a number:": [
         null,
@@ -158,54 +206,6 @@
     "No": [
         null,
         "Tjhee"
-    ],
-    "How old are you?\n\nReply with a number": [
-        null,
-        "O dilemo di kae? \n\nAraba ka nomoro"
-    ],
-    "Please use numbers from list.\n\nHow old are you?": [
-        null,
-        "O dilemo di kae? \n\nAraba ka nomoro"
-    ],
-    "under 18": [
-        null,
-        "ka tlase ho dilemo tse 18"
-    ],
-    "18-39": [
-        null,
-        "18-39"
-    ],
-    "40-65": [
-        null,
-        "40-65"
-    ],
-    "over 65": [
-        null,
-        "tse fetang 65"
-    ],
-    "Which gender do you identify as?:\n\nReply with a number": [
-        null,
-        "O kgetha bong bofe?:\n \nAraba ka nomoro"
-    ],
-    "Please use numbers from list.\n\nWhich gender do you identify as?:": [
-        null,
-        "O kgetha bong bofe?:\n \nAraba ka nomoro"
-    ],
-    "MALE": [
-        null,
-        "MONNA"
-    ],
-    "FEMALE": [
-        null,
-        "MOSADI"
-    ],
-    "OTHER": [
-        null,
-        "HO HONG"
-    ],
-    "RATHER NOT SAY": [
-        null,
-        "HA KE RATE HO TJHO"
     ],
     "Let's see how you're feeling today. Do you have a cough?\n\nReply 1 or 2": [
         null,
@@ -279,13 +279,69 @@
         null,
         "Bona Sephetho"
     ],
+    "Your replies to the questions show that you need a TB test this week.": [
+        null,
+        "Dikarabo tsa hao ho dipotso di bontsha hore o hloka tlhahlobo ea LEFUBA bekeng ena."
+    ],
+    "With early diagnosis, TB can be cured. Don’t delay, test today!\n\nVisit your local clinic for a free TB test. ": [
+        null,
+        "Ka tlhatlhobo ya kapele, LEFUBA le ka phekoleha. Se ke wa dieha, hlahloba kajeno!\n\nEtela tleliniki ya heno ho etsa tlhahlobo ya mahala ya LEFUBA."
+    ],
+    "Make the time. Your health is a priority!\n\nPick the most convenient clinic for your test. Below are the 5 clinics nearest to you.": [
+        null,
+        "Etsa nako. Bophelo ba hao bo tla pele!\n\nKgetha tleliniki e loketseng tlhahlobo ya hao. Ka tlase ke ditleliniki tse 5 tse haufi le wena."
+    ],
+    "Get there early! Clinics are open for TB testing Monday to Friday mornings.": [
+        null,
+        "Tsohella! Ditleliniki di butswe bakeng sa tlhahlobo ya TB hoseng Mantaha ho isa Labohlano."
+    ],
+    "Where will you go for your test? Reply with the clinic": [
+        null,
+        "O tla ya hokae bakeng sa tlhahlobo ya hao? Araba ka tliliniki "
+    ],
+    "When will you go for your test? Reply with the day": [
+        null,
+        "O tla ya tlhatlhobong ya hao neng? Araba ka letsatsi "
+    ],
+    "MONDAY": [
+        null,
+        "MANTAHA"
+    ],
+    "TUESDAY": [
+        null,
+        "LABOBELI"
+    ],
+    "WEDNESDAY": [
+        null,
+        "LABORARO"
+    ],
+    "THURSDAY": [
+        null,
+        "LABONE"
+    ],
+    "FRIDAY": [
+        null,
+        "LABOHLANO"
+    ],
+    "* Go to a local clinic for a free TB test.\n* You will get R10 airtime within 1 hour if you commit to get tested.": [
+        null,
+        "* Eya tleliniking ya heno ho etsa tlhahlobo ya mahala ya LEFUBA.\n* O tla fumana airtime ya R10 ha o itlama ho hlahloba."
+    ],
+    "Do you commit to getting tested?": [
+        null,
+        "Na o itlama ho hlahloba?"
+    ],
+    "Well done for committing to your health!": [
+        null,
+        "O entse hantle ka ho itlamo ka bophelo bo botle ba hao!"
+    ],
+    "Even if you can’t commit now, it is still important to get tested.": [
+        null,
+        "Leha o sa kgone ho itlama hona jwale, ho ntso le bohlokwa ho etsa tlhahlobo."
+    ],
     "You don't need a TB test now, but if you develop cough, fever, weight loss or night sweats visit your nearest clinic.": [
         null,
         "Ha o hloke tlhahlobo ya TB hona jwale, empa haeba o ba le sefuba, feberu, ho theola boima ba mmele kapa ho fufulelwa bosiu, etela tleliniki e haufinyane."
-    ],
-    "Your replies to the questions show you need a TB test this week.\n\nGo to your clinic for a free TB test. Please put on a face mask before you enter the clinic": [
-        null,
-        "Dikarabo tsa hao dipotsong di supa o hloka tlhahlobo ya TB bekeng ena.\n\nE-ya tleliniking bakeng sa tlhahlobo ya TB. Ka kopo, rwala mask pele o kena tleliniking"
     ],
     "Check if those you live with are on TB treatment. If you don't know your HIV status, visit the clinic for a free HIV test. Then do the TB check again.": [
         null,
