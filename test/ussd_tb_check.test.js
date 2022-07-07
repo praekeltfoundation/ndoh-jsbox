@@ -635,18 +635,18 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
-    it("should skip the state for users who already have this info", function () {
+    it("should skip the state for users who already have this info...", function () {
       return tester.setup.user
         .state("state_province")
         .setup.user.answer("state_province", "ZA-WC")
         .check.user.state("state_city")
         .run();
     });
-    it("should go to state_city", function () {
+    it("should go to state_street_name", function () {
       return tester.setup.user
         .state("state_province")
         .input("1")
-        .check.user.state("state_city")
+        .check.user.state("state_street_name")
         .run();
     });
   });
@@ -657,8 +657,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_city",
           reply:
-            "Please TYPE your home address (or the address where you are currently staying). " +
-            "Give the street number, street name, suburb/township/town/village (or nearest).",
+            "Please type the name of the city where you live.",
           char_limit: 160,
         })
         .run();
@@ -670,8 +669,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_city",
           reply:
-            "Please TYPE your home address (or the address where you are currently staying). " +
-            "Give the street number, street name, suburb/township/town/village (or nearest).",
+            "Please type the name of the city where you live.",
           char_limit: 160,
         })
         .run();
@@ -737,25 +735,83 @@ describe("ussd_tb_check app", function () {
     it("should skip the state for users who already have this info", function () {
       return tester.setup.user
         .state("state_city")
+        .setup.user.answer("state_street_name", "54321 Fancy Apartment")
+        .setup.user.answer("state_suburb_name", "Fresnaye")
         .setup.user.answer("state_city", "Cape Town, South Africa")
         .setup.user.answer("city_location", "+00-025/")
         .check.user.state("state_cough")
         .run();
     });
   });
+  it("should ask for the city", function () {
+      return tester.setup.user
+        .state("state_street_name")
+        .input(" \t\n")
+        .check.interaction({
+          state: "state_street_name",
+          reply:
+            "Please type the name of the street where you live.",
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should ask again for invalid input", function () {
+      return tester.setup.user
+        .state("state_suburb_name")
+        .input(" \t\n")
+        .check.interaction({
+          state: "state_suburb_name",
+          reply:
+            "Please type the name of the suburb/township/village where you live.",
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should ask again for invalid input", function () {
+      return tester.setup.user
+        .state("state_city")
+        .input(" \t\n")
+        .check.interaction({
+          state: "state_city",
+          reply:
+            "Please type the name of the city where you live.",
+          char_limit: 160,
+        })
+        .run();
+    });
   describe("state_confirm_city", function () {
     it("should ask to confirm the city", function () {
       return tester.setup.user
         .state("state_confirm_city")
+        .setup.user.answer("state_street_name", "54321 Fancy Apartment")
+        .setup.user.answer("state_suburb_name", "Fresnaye")
         .setup.user.answer(
-          "state_city",
-          "54321 Fancy Apartment, 12345 Really really long address, Fresnaye, Cape Town, South Africa"
+          "state_city", "Cape Town")
+        .check.interaction({
+          state: "state_confirm_city",
+          reply: [
+            "Please check that the address below is correct and matches the information you gave us:",
+            "54321 Fancy Apartment,Fresnaye,Cape Town",
+            "1. Yes",
+            "2. No",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should ask to confirm the city with long address", function () {
+      return tester.setup.user
+        .state("state_confirm_city")
+        .setup.user.answer("state_street_name", "54321 Fancy Apartment")
+        .setup.user.answer("state_suburb_name", "12345 Really really long address,Fresnaye")
+        .setup.user.answer(
+          "state_city", "Cape Town, South Africa"
         )
         .check.interaction({
           state: "state_confirm_city",
           reply: [
             "Please check that the address below is correct and matches the information you gave us:",
-            "54321 Fancy Apartment, 12345 Really really long address, Fr",
+            "54321 Fancy Apartment,12345 Really really long address,Fres",
             "1. Yes",
             "2. No",
           ].join("\n"),
@@ -768,7 +824,7 @@ describe("ussd_tb_check app", function () {
         .state("state_confirm_city")
         .setup.user.answer("state_city", "Cape Town, South Africa")
         .input("2")
-        .check.user.state("state_city")
+        .check.user.state("state_street_name")
         .run();
     });
     it("go to state_cough if user selects yes", function () {

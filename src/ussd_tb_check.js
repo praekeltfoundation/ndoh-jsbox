@@ -361,12 +361,46 @@ go.app = function () {
           new Choice("ZA-NC", $("N. CAPE")),
           new Choice("ZA-WC", $("W. CAPE")),
         ],
+        next: "state_street_name",
+      });
+    });
+
+    self.add("state_street_name", function (name) {
+      var question = $(
+        "Please type the name of the street where you live."
+      );
+      return new FreeText(name, {
+        question: question,
+        check: function (content) {
+          // Ensure that they're not giving an empty response
+          if (!content.trim()) {
+            return question;
+          }
+        },
+        next: "state_suburb_name",
+      });
+    });
+
+    self.add("state_suburb_name", function (name) {
+      var question = $(
+        "Please type the name of the suburb/township/village where you live."
+      );
+      return new FreeText(name, {
+        question: question,
+        check: function (content) {
+          // Ensure that they're not giving an empty response
+          if (!content.trim()) {
+            return question;
+          }
+        },
         next: "state_city",
       });
     });
 
     self.add("state_city", function (name) {
       if (
+        self.im.user.answers.state_street_name &&
+        self.im.user.answers.state_suburb_name &&
         self.im.user.answers.state_city &&
         self.im.user.answers.city_location
       ) {
@@ -377,8 +411,7 @@ go.app = function () {
         return self.states.create("state_cough");
       }
       var question = $(
-        "Please TYPE your home address (or the address where you are currently staying). " +
-          "Give the street number, street name, suburb/township/town/village (or nearest)."
+        "Please type the name of the city where you live."
       );
       return new FreeText(name, {
         question: question,
@@ -429,18 +462,22 @@ go.app = function () {
     });
 
     self.add("state_confirm_city", function (name, opts) {
-      var city_trunc = self.im.user.answers.state_city.slice(0, 160 - 101);
+      var street_name = self.im.user.answers.state_street_name;
+      var suburb = self.im.user.answers.state_suburb_name;
+      var city_trunc = self.im.user.answers.state_city;
+      var full_address = (street_name + ',' + suburb + ',' + city_trunc).slice(0, 160 - 101);
+      console.log(street_name + suburb + city_trunc);
       return new MenuState(name, {
         question: $(
           [
             "Please check that the address below is correct and matches the information you gave us:",
             "{{ address }}"
           ].join("\n")
-        ).context({ address: city_trunc }),
+        ).context({ address: full_address }),
         accept_labels: true,
         choices: [
           new Choice("state_place_details_lookup", $("Yes")),
-          new Choice("state_city", $("No")),
+          new Choice("state_street_name", $("No")),
         ],
       });
     });
@@ -687,8 +724,7 @@ go.app = function () {
         .post(self.im.config.healthcheck.url + "/v2/tbcheck/", payload)
         .then(
           function (response) {
-            if (response.data.tbconnect_group_arm != null)
-                answers.group_arm = response.data.tbconnect_group_arm.toLowerCase();
+            answers.group_arm = response.data.tbconnect_group_arm;
             answers.tbcheck_id = response.data.id;
 
             return self.states.create("state_complete");
