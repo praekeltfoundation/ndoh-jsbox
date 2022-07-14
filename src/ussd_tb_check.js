@@ -344,6 +344,13 @@ go.app = function () {
     });
 
     self.add("state_province", function (name) {
+      var activation = self.im.user.answers.activation;
+      var next = "state_street_name";
+
+      if (activation === "skip_location_2022"){
+        next = "state_cough";
+      }
+
       if (self.im.user.answers.state_province) {
         return self.states.create("state_city");
       }
@@ -361,7 +368,7 @@ go.app = function () {
           new Choice("ZA-NC", $("N. CAPE")),
           new Choice("ZA-WC", $("W. CAPE")),
         ],
-        next: "state_street_name",
+        next: next,
       });
     });
 

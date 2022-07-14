@@ -28,6 +28,7 @@ describe("ussd_tb_check app", function () {
         code_map: {
           "8": "tb_soccer_1_2022",
           "9": "tb_soccer_2_2022",
+          "6": "skip_location_2022",
         }
       }
     });
@@ -101,6 +102,27 @@ describe("ussd_tb_check app", function () {
       })
       .input({ session_event: "new", to_addr: "*123*123*5#" })
       .check.user.answer("activation", null)
+      .check.user.state("state_welcome")
+      .run();
+    });
+    it("should set activation for new user to skip location", function() {
+      return tester
+      .setup(function (api) {
+        api.http.fixtures.add({
+          request: {
+              url: "http://healthcheck/v2/healthcheckuserprofile/+27123456789/",
+              method: "GET"
+          },
+          response: {
+              code: 404,
+              data: {
+                  detail: "Not found."
+              }
+          }
+      });
+      })
+      .input({ session_event: "new", to_addr: "*123*123*6#" })
+      .check.user.answer("activation", "skip_location_2022")
       .check.user.state("state_welcome")
       .run();
     });
