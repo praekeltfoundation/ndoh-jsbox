@@ -1866,5 +1866,34 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
+  describe("state_start_and _city", function () {
+    it("should set city to not collected for null city", function() {
+      return tester
+      .setup(function (api) {
+        api.http.fixtures.add({
+          request: {
+              url: "http://healthcheck/v2/healthcheckuserprofile/+27123456789/",
+              method: "GET"
+          },
+          response: {
+              code: 200,
+              data: {
+                activation: null,
+                state_gender: "MALE",
+                state_province: "ZA-WC",
+                state_city: null,
+                city_location: "+00-025/",
+                state_age: "18-39",
+                state_language: "eng",
+                data: {tb_privacy_policy_accepted: "yes"},
+              }
+          }
+      });
+      })
+      .check.user.answer("state_city", "<not collected>")
+      .check.user.state("state_welcome")
+      .run();
+    });
+    });
   });
 });

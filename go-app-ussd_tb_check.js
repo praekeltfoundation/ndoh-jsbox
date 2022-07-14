@@ -259,7 +259,7 @@ go.app = function () {
               returning_user: true,
               state_gender: response.data.gender,
               state_province: response.data.province,
-              state_city: response.data.city,
+              state_city: response.data.city ? response.data.city : "<not collected>",
               city_location: response.data.city_location,
               state_age: response.data.age,
               state_language: response.data.language,
