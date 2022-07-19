@@ -469,7 +469,9 @@ go.app = function () {
     });
 
     self.add("state_gender", function (name) {
-      if (self.im.user.answers.state_gender) {
+      var activation = self.im.user.answers.activation;
+
+      if (self.im.user.answers.state_gender && activation !== "skip_location_2022") {
         return self.states.create("state_province");
       }
       return new ChoiceState(name, {

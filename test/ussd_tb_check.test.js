@@ -810,6 +810,22 @@ describe("ussd_tb_check app", function () {
         .check.user.state("state_province")
         .run();
     });
+    it("should skip the state for users who already have gender and are from activation skip_location_2022", function () {
+      return tester.setup.user
+        .state("state_gender")
+        .setup.user.answer("state_gender", "male")
+        .setup.user.answer("activation", "skip_location_2022")
+        .check.user.state("state_gender")
+        .run();
+    });
+    it("should skip the state for users who already have gender and are from activation tb_soccer_2_2022", function () {
+      return tester.setup.user
+        .state("state_gender")
+        .setup.user.answer("state_gender", "female")
+        .setup.user.answer("activation", "tb_soccer_2_2022")
+        .check.user.state("state_province")
+        .run();
+    });
   describe("state_confirm_city", function () {
     it("should ask to confirm the city", function () {
       return tester.setup.user
