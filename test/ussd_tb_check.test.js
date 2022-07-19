@@ -802,7 +802,7 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
-    it("should skip the state for users who already have province", function () {
+    it("should skip the state for users who already have province and are from activation skip_location_2022", function () {
       return tester.setup.user
         .state("state_province")
         .setup.user.answer("state_province", "ZA-GP")
