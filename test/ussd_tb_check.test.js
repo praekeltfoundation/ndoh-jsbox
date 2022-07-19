@@ -661,6 +661,7 @@ describe("ussd_tb_check app", function () {
       return tester.setup.user
         .state("state_province")
         .setup.user.answer("state_province", "ZA-WC")
+        .setup.user.answer("activation", "tb_soccer_2_2022")
         .check.user.state("state_city")
         .run();
     });
@@ -799,6 +800,14 @@ describe("ussd_tb_check app", function () {
             "Please type the name of the city where you live.",
           char_limit: 160,
         })
+        .run();
+    });
+    it("should skip the state for users who already have province and are from activation skip_location_2022", function () {
+      return tester.setup.user
+        .state("state_province")
+        .setup.user.answer("state_province", "ZA-GP")
+        .setup.user.answer("activation", "skip_location_2022")
+        .check.user.state("state_province")
         .run();
     });
   describe("state_confirm_city", function () {

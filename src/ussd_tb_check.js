@@ -351,7 +351,7 @@ go.app = function () {
         next = "state_cough";
       }
 
-      if (self.im.user.answers.state_province) {
+      if (self.im.user.answers.state_province && activation !== "skip_location_2022") {
         return self.states.create("state_city");
       }
       return new ChoiceState(name, {
