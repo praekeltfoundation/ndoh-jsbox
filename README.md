@@ -12,6 +12,15 @@ the JSON files when the PO catalogs change:
 find . -name "go-app-ussd_popi_faq.*po" -exec jspot json {} \;
 ```
 
+To generate pot file run this command on config directory
+
+Run ```jspot extract file.js -k '$'```
+
+Use Poedit to edit .po files, and run this command to sync the changes to .json file
+```
+jspot json go-app-ussd_tb_check.xho_ZA.po
+```
+
 ## Trying out the applications
 
 There is a docker compose setup that should allow someone to easily get all the

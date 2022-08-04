@@ -473,7 +473,7 @@ go.app = function () {
       var suburb = self.im.user.answers.state_suburb_name;
       var city_trunc = self.im.user.answers.state_city;
       var full_address = (street_name + ',' + suburb + ',' + city_trunc).slice(0, 160 - 101);
-      console.log(street_name + suburb + city_trunc);
+
       return new MenuState(name, {
         question: $(
           [

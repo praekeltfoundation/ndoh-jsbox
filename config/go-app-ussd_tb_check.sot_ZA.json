@@ -1,15 +1,15 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-06-21 11:52:+0000",
-        "po-revision-date": "2022-06-21 16:45+0200",
+        "pot-creation-date": "2022-08-03 02:43:+0000",
+        "po-revision-date": "2022-08-04 06:36+0200",
         "last-translator": "",
         "language-team": "",
         "language": "sot_ZA",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 3.1"
+        "x-generator": "Poedit 3.1.1"
     },
     "Welcome back to the The National Department of Health's TB HealthCheck\n\nReply 1 or 2": [
         null,
@@ -191,9 +191,17 @@
         null,
         "W. CAPE"
     ],
-    "Please TYPE your home address (or the address where you are currently staying). Give the street number, street name, suburb/township/town/village (or nearest).": [
+    "Please type the name of the street where you live.": [
         null,
-        "Ka kopo NGOLA aterese ya lapeng (kapa aterese ya moo o dulang). Fana ka nomoro ya seterata, lebitso la seterata, suburb/lekeishene/ toropo/motse (kapa haufi)."
+        "Ka kopo ngola lebitso la seterata seo o dulang ho sona."
+    ],
+    "Please type the name of the suburb/township/village where you live.": [
+        null,
+        "Ka kopo ngola lebitso la toropo / lekeishene / motsana oo o dulang ho wona."
+    ],
+    "Please type the name of the city where you live.": [
+        null,
+        "Ka kopo ngola lebitso la toropo eo o dulang ho eona."
     ],
     "Please check that the address below is correct and matches the information you gave us:\n{{ address }}": [
         null,
@@ -279,6 +287,10 @@
         null,
         "Bona Sephetho"
     ],
+    "Your replies to the questions show that you need a TB test this week.\n\nVisit your local clinic for a free TB test.": [
+        null,
+        "Dikarabo tsa hao dipotsong di supa o hloka tlhahlobo ya TB bekeng ena.\n\nE-ya tleliniking bakeng sa tlhahlobo ya TB. Ka kopo, rwala mask pele o kena tleliniking."
+    ],
     "Your replies to the questions show that you need a TB test this week.": [
         null,
         "Dikarabo tsa hao ho dipotso di bontsha hore o hloka tlhahlobo ea LEFUBA bekeng ena."
@@ -286,6 +298,10 @@
     "With early diagnosis, TB can be cured. Don’t delay, test today!\n\nVisit your local clinic for a free TB test. ": [
         null,
         "Ka tlhatlhobo ya kapele, LEFUBA le ka phekoleha. Se ke wa dieha, hlahloba kajeno!\n\nEtela tleliniki ya heno ho etsa tlhahlobo ya mahala ya LEFUBA."
+    ],
+    "Your replies to the questions show that you need a TB test this week.\n\nHere are some tips to help you plan:": [
+        null,
+        "Dikarabo tsa hao dipotsong di supa o hloka tlhahlobo ya TB bekeng ena.\n\nE-ya tleliniking bakeng sa tlhahlobo ya TB. Ka kopo, rwala mask pele o kena tleliniking:"
     ],
     "Make the time. Your health is a priority!\n\nPick the most convenient clinic for your test. Below are the 5 clinics nearest to you.": [
         null,
@@ -323,6 +339,10 @@
         null,
         "LABOHLANO"
     ],
+    "Your replies to the questions show that you need a TB test this week.\n\n* Go to your local clinic for a free TB test.": [
+        null,
+        "Dikarabo tsa hao dipotsong di supa o hloka tlhahlobo ya TB bekeng ena.\n\nE-ya tleliniking bakeng sa tlhahlobo ya TB. Ka kopo, rwala mask pele o kena tleliniking."
+    ],
     "* Go to a local clinic for a free TB test.\n* You will get R10 airtime within 1 hour if you commit to get tested.": [
         null,
         "* Eya tleliniking ya heno ho etsa tlhahlobo ya mahala ya LEFUBA.\n* O tla fumana airtime ya R10 ha o itlama ho hlahloba."
@@ -342,6 +362,10 @@
     "You don't need a TB test now, but if you develop cough, fever, weight loss or night sweats visit your nearest clinic.": [
         null,
         "Ha o hloke tlhahlobo ya TB hona jwale, empa haeba o ba le sefuba, feberu, ho theola boima ba mmele kapa ho fufulelwa bosiu, etela tleliniki e haufinyane."
+    ],
+    "Your replies to the questions show you need a TB test this week.\n\nGo to your clinic for a free TB test.": [
+        null,
+        "Dikarabo tsa hao dipotsong di supa o hloka tlhahlobo ya TB bekeng ena.\n\nE-ya tleliniking bakeng sa tlhahlobo ya TB. Ka kopo, rwala mask pele o kena tleliniking."
     ],
     "Check if those you live with are on TB treatment. If you don't know your HIV status, visit the clinic for a free HIV test. Then do the TB check again.": [
         null,

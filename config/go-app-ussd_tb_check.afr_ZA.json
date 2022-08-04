@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-06-21 11:52:+0000",
-        "po-revision-date": "2022-06-21 16:45+0200",
+        "pot-creation-date": "2022-08-03 02:43:+0000",
+        "po-revision-date": "2022-08-04 06:39+0200",
         "last-translator": "",
         "language-team": "",
         "language": "afr_ZA",
@@ -10,7 +10,7 @@
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
         "plural-forms": "nplurals=2; plural=(n != 1);",
-        "x-generator": "Poedit 3.1"
+        "x-generator": "Poedit 3.1.1"
     },
     "Welcome back to the The National Department of Health's TB HealthCheck\n\nReply 1 or 2": [
         null,
@@ -78,11 +78,11 @@
     ],
     "Choose your preferred language": [
         null,
-        "Kies jou taal van voorkeur."
+        "Kies jou taal van voorkeur"
     ],
     "Please reply with numbers. Choose your preferred language": [
         null,
-        "Please reply with numbers. Kies jou taal van voorkeur."
+        "Please reply with numbers. Kies jou taal van voorkeur"
     ],
     "English": [
         null,
@@ -192,9 +192,17 @@
         null,
         "W. KAAP"
     ],
-    "Please TYPE your home address (or the address where you are currently staying). Give the street number, street name, suburb/township/town/village (or nearest).": [
+    "Please type the name of the street where you live.": [
         null,
-        "TIK asseblief jou woonadres (of die adres waar jy tans woon) in. Gee die straatnommer, straatnaam, woonbuurt/township/stad/dorp (of naaste)."
+        "Tik asseblief die naam van die straat waar jy bly in."
+    ],
+    "Please type the name of the suburb/township/village where you live.": [
+        null,
+        "Tik asseblief die naam van die woonbuurt/township/dorp waar jy bly in."
+    ],
+    "Please type the name of the city where you live.": [
+        null,
+        "Tik asb die naam van die stad waar jy bly in."
     ],
     "Please check that the address below is correct and matches the information you gave us:\n{{ address }}": [
         null,
