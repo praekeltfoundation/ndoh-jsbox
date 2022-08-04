@@ -1,8 +1,8 @@
- {
+{
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-06-21 11:52:+0000",
-        "po-revision-date": "2022-06-21 15:48+0200",
+        "pot-creation-date": "2022-08-03 02:43:+0000",
+        "po-revision-date": "2022-08-04 06:43+0200",
         "last-translator": "",
         "language-team": "",
         "language": "zu_ZA",
@@ -10,7 +10,7 @@
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
         "plural-forms": "nplurals=2; plural=(n==0 || n==1);",
-        "x-generator": "Poedit 3.1"
+        "x-generator": "Poedit 3.1.1"
     },
     "Welcome back to the The National Department of Health's TB HealthCheck\n\nReply 1 or 2": [
         null,
@@ -110,7 +110,7 @@
     ],
     "Please use numbers from list.\n\nHow old are you?": [
         null,
-        "Phendula ngenombolo\n\nUneminyaka emingaki "
+        "Phendula ngenombolo\n\nUneminyaka emingaki ?"
     ],
     "under 18": [
         null,
@@ -192,9 +192,17 @@
         null,
         "W. CAPE"
     ],
-    "Please TYPE your home address (or the address where you are currently staying). Give the street number, street name, suburb/township/town/village (or nearest).": [
+    "Please type the name of the street where you live.": [
         null,
-        "Scela UFAKE ikheli lasekhaya kini (noma ikheli ohlala kulo manje). Faka inombolo yomgwaqo, igama lomgwaqo, indawo / ilokishi / idolobha/ isigodi (noma eduzane)."
+        "Sicela uthayiphe igama lomgwaqo walapho ohlala khona."
+    ],
+    "Please type the name of the suburb/township/village where you live.": [
+        null,
+        "Sicela uthayiphe igama ledolobha/ilokishi/isigodi salapho ohlala khona."
+    ],
+    "Please type the name of the city where you live.": [
+        null,
+        "Sicela uthayiphe igama ledolobha lalapho ohlala khona."
     ],
     "Please check that the address below is correct and matches the information you gave us:\n{{ address }}": [
         null,
