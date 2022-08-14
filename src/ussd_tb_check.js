@@ -114,6 +114,7 @@ go.app = function () {
               city_location: response.data.city_location,
               state_age: response.data.age,
               state_language: response.data.language,
+              state_research_consent: response.data.research_consent,
               state_privacy_policy_accepted: _.get(response.data, "data.tb_privacy_policy_accepted"),
             };
             if (response.data.language != "eng"){
@@ -253,7 +254,7 @@ go.app = function () {
     });
 
     self.states.add("state_privacy_policy_accepted", function(name) {
-      var next_state = "state_language";
+      var next_state = "state_research_consent";
       if (self.im.user.answers.state_privacy_policy_accepted == "yes") {
         return self.states.create(next_state);
       }
@@ -267,6 +268,30 @@ go.app = function () {
         choices: [new Choice(next_state, $("ACCEPT"))],
       });
     });
+
+    self.add("state_research_consent", function(name) {
+      var next_state = "state_language";
+      if (_.toUpper(self.im.user.answers.state_privacy_policy_accepted) === "YES") {
+        return self.states.create(next_state);
+      }
+      return new ChoiceState(name, {
+          question: $(
+              "We may ask you a few questions for research after you've completed " +
+              "your TB HealthCheck." +
+              "\nAre you willing to take part?" +
+              "\n\nReply:"
+              ),
+          error: $(
+              "Please reply with numbers. Are you willing to take part?"
+          ),
+          accept_labels: true,
+          choices: [
+              new Choice("yes", $("YES")),
+              new Choice("no", $("NO, thank you")),
+          ],
+          next: "next_state"
+      });
+  });
 
     self.states.add("state_language", function (name) {
       var next_state = "state_age";
@@ -711,6 +736,7 @@ go.app = function () {
           exposure: answers.state_exposure,
           tracing: answers.state_tracing,
           follow_up_optin: answers.state_opt_in,
+          research_consent: answers.state_research_consent,
           risk: self.calculate_risk(),
           activation: activation,
           data: {
