@@ -571,8 +571,32 @@ describe("ussd_tb_check app", function () {
       return tester.setup.user
         .state("state_privacy_policy_accepted")
         .input("1")
-        .check.user.state("state_language")
+        .check.user.state("state_research_consent")
         .run();
+    });
+    it("should skip research consent", function () {
+      return tester.setup.user
+        .state("state_research_consent")
+        .setup.user.answer("state_research_consent", "yes")
+        .check.user.state("state_research_consent")
+        .run();
+    });
+    it("display research consent", function () {
+      return tester.setup.user
+        .state("state_privacy_policy_accepted")
+        .input("1")
+        .check.interaction({
+          state: "state_research_consent",
+          reply: [
+            "We may ask you a few questions for research after you've completed your TB HealthCheck.",
+            "Are you willing to take part?",
+            "\nReply:",
+            "1. YES",
+            "2. NO, thank you"
+          ].join("\n"),
+          char_limit: 160,
+      })
+      .run();
     });
   });
   describe("state_more_info", function () {
@@ -1258,6 +1282,7 @@ describe("ussd_tb_check app", function () {
           state_tracing: true,
           state_exposure: "no",
           state_language: "eng",
+          state_research_consent: "yes"
         })
         .setup(function (api) {
           api.http.fixtures.add({
@@ -1282,6 +1307,7 @@ describe("ussd_tb_check app", function () {
                 follow_up_optin: true,
                 risk: "low",
                 activation: null,
+                research_consent: "yes",
                 data: {
                   tb_privacy_policy_accepted: "yes"
                 }
