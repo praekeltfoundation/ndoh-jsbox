@@ -289,7 +289,7 @@ go.app = function () {
               new Choice("yes", $("YES")),
               new Choice("no", $("NO, thank you")),
           ],
-          next: "next_state"
+          next: next_state
       });
   });
 
