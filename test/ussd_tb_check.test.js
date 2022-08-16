@@ -564,7 +564,7 @@ describe("ussd_tb_check app", function () {
       return tester.setup.user
         .state("state_privacy_policy_accepted")
         .setup.user.answer("state_privacy_policy_accepted", "yes")
-        .check.user.state("state_language")
+        .check.user.state("state_research_consent")
         .run();
     });
     it("should go to state_language", function () {
@@ -578,6 +578,13 @@ describe("ussd_tb_check app", function () {
       return tester.setup.user
         .state("state_research_consent")
         .setup.user.answer("state_research_consent", "yes")
+        .check.user.state("state_language")
+        .run();
+    });
+    it("should show research consent if NO", function () {
+      return tester.setup.user
+        .state("state_research_consent")
+        .setup.user.answer("state_research_consent", "no")
         .check.user.state("state_research_consent")
         .run();
     });

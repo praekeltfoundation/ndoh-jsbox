@@ -420,7 +420,7 @@ go.app = function () {
 
     self.add("state_research_consent", function(name) {
       var next_state = "state_language";
-      if (_.toUpper(self.im.user.answers.state_privacy_policy_accepted) === "YES") {
+      if (_.toUpper(self.im.user.answers.state_research_consent) === "YES") {
         return self.states.create(next_state);
       }
       return new ChoiceState(name, {
