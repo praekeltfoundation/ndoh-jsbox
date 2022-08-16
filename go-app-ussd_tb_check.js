@@ -885,7 +885,6 @@ go.app = function () {
           exposure: answers.state_exposure,
           tracing: answers.state_tracing,
           follow_up_optin: answers.state_opt_in,
-          research_consent: answers.state_research_consent,
           risk: self.calculate_risk(),
           activation: activation,
           data: {
@@ -897,6 +896,10 @@ go.app = function () {
           "User-Agent": ["Jsbox/TB-Check-USSD"],
         },
       };
+
+      if (typeof self.im.user.answers.state_research_consent != "undefined"){
+        payload.data.research_consent = answers.state_research_consent;
+      }
 
       if(self.im.user.answers.state_age !== "<18") {
         payload.data.city_location = answers.city_location;
