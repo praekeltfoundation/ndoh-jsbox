@@ -605,6 +605,24 @@ describe("ussd_tb_check app", function () {
       })
       .run();
     });
+    it("display language", function () {
+      return tester.setup.user
+        .state("state_research_consent")
+        .input("1")
+        .check.interaction({
+          state: "state_language",
+          reply: [
+            "Choose your preferred language",
+            "1. English",
+            "2. isiZulu",
+            "3. Afrikaans",
+            "4. isiXhosa",
+            "5. Sesotho"
+          ].join("\n"),
+          char_limit: 160,
+      })
+      .run();
+    });
   });
   describe("state_more_info", function () {
     it("should display more info pg 1", function () {
