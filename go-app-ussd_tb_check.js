@@ -907,7 +907,7 @@ go.app = function () {
       };
 
       if (typeof self.im.user.answers.state_research_consent != "undefined"){
-        payload.data.research_consent = true;
+        payload.data.research_consent = answers.state_research_consent;
       }
 
       if(self.im.user.answers.state_age !== "<18") {
