@@ -1347,7 +1347,7 @@ describe("ussd_tb_check app", function () {
                 follow_up_optin: true,
                 risk: "low",
                 activation: null,
-                research_consent: true,
+                research_consent: "yes",
                 data: {
                   tb_privacy_policy_accepted: "yes"
                 }
