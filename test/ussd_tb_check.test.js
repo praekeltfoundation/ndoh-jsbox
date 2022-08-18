@@ -598,14 +598,14 @@ describe("ussd_tb_check app", function () {
             "We may ask you a few questions for research after you've completed your TB HealthCheck.",
             "Are you willing to take part?",
             "\nReply:",
-            "1. YES",
-            "2. NO, thank you"
+            "1. Yes",
+            "2. No, thank you"
           ].join("\n"),
           char_limit: 160,
       })
       .run();
     });
-    it("display language", function () {
+    it("should display language", function () {
       return tester.setup.user
         .state("state_research_consent")
         .input("1")
@@ -618,6 +618,21 @@ describe("ussd_tb_check app", function () {
             "3. Afrikaans",
             "4. isiXhosa",
             "5. Sesotho"
+          ].join("\n"),
+          char_limit: 160,
+      })
+      .run();
+    });
+    it("should exit on no consent", function () {
+      return tester.setup.user
+        .state("state_research_consent")
+        .input("2")
+        .check.interaction({
+          state: "state_no_research_consent",
+          reply: [
+            "Return to use this service at any time. " +
+            "Remember, if you think you have TB, avoid contact with other people " +
+            "and get tested at your nearest clinic."
           ].join("\n"),
           char_limit: 160,
       })

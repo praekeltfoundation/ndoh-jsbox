@@ -423,7 +423,7 @@ go.app = function () {
       if (_.toUpper(self.im.user.answers.state_research_consent) === "YES") {
         return self.states.create(next_state);
       }
-      return new ChoiceState(name, {
+      return new MenuState(name, {
           question: $(
               "We may ask you a few questions for research after you've completed " +
               "your TB HealthCheck." +
@@ -435,10 +435,19 @@ go.app = function () {
           ),
           accept_labels: true,
           choices: [
-              new Choice("yes", $("YES")),
-              new Choice("no", $("NO, thank you")),
+              new Choice("state_language", $("Yes")),
+              new Choice("state_no_research_consent", $("No, thank you")),
           ],
-          next: next_state
+      });
+  });
+
+    self.add("state_no_research_consent", function(name) {
+      return new EndState(name, {
+          next: "state_start",
+          text: $(
+              "Return to use this service at any time. Remember, if you think you have TB, " +
+              "avoid contact with other people and get tested at your nearest clinic."
+          )
       });
   });
 
