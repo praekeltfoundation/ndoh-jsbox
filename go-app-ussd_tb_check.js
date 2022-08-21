@@ -263,6 +263,7 @@ go.app = function () {
               city_location: response.data.city_location,
               state_age: response.data.age,
               state_language: response.data.language,
+              state_research_consent: response.data.research_consent,
               state_privacy_policy_accepted: _.get(response.data, "data.tb_privacy_policy_accepted"),
             };
             if (response.data.language != "eng"){
@@ -402,7 +403,7 @@ go.app = function () {
     });
 
     self.states.add("state_privacy_policy_accepted", function(name) {
-      var next_state = "state_language";
+      var next_state = "state_research_consent";
       if (self.im.user.answers.state_privacy_policy_accepted == "yes") {
         return self.states.create(next_state);
       }
@@ -416,6 +417,39 @@ go.app = function () {
         choices: [new Choice(next_state, $("ACCEPT"))],
       });
     });
+
+    self.add("state_research_consent", function(name) {
+      var next_state = "state_language";
+      if (_.toUpper(self.im.user.answers.state_research_consent) === "YES") {
+        return self.states.create(next_state);
+      }
+      return new MenuState(name, {
+          question: $(
+              "We may ask you a few questions for research after you've completed " +
+              "your TB HealthCheck." +
+              "\nAre you willing to take part?" +
+              "\n\nReply:"
+              ),
+          error: $(
+              "Please reply with numbers. Are you willing to take part?"
+          ),
+          accept_labels: true,
+          choices: [
+              new Choice("state_language", $("Yes")),
+              new Choice("state_no_research_consent", $("No, thank you")),
+          ],
+      });
+  });
+
+    self.add("state_no_research_consent", function(name) {
+      return new EndState(name, {
+          next: "state_start",
+          text: $(
+              "Return to use this service at any time. Remember, if you think you have TB, " +
+              "avoid contact with other people and get tested at your nearest clinic."
+          )
+      });
+  });
 
     self.states.add("state_language", function (name) {
       var next_state = "state_age";
@@ -871,6 +905,10 @@ go.app = function () {
           "User-Agent": ["Jsbox/TB-Check-USSD"],
         },
       };
+
+      if (typeof self.im.user.answers.state_research_consent != "undefined"){
+        payload.data.research_consent = true;
+      }
 
       if(self.im.user.answers.state_age !== "<18") {
         payload.data.city_location = answers.city_location;

@@ -564,15 +564,79 @@ describe("ussd_tb_check app", function () {
       return tester.setup.user
         .state("state_privacy_policy_accepted")
         .setup.user.answer("state_privacy_policy_accepted", "yes")
-        .check.user.state("state_language")
+        .check.user.state("state_research_consent")
         .run();
     });
     it("should go to state_language", function () {
       return tester.setup.user
         .state("state_privacy_policy_accepted")
         .input("1")
+        .check.user.state("state_research_consent")
+        .run();
+    });
+    it("should skip research consent", function () {
+      return tester.setup.user
+        .state("state_research_consent")
+        .setup.user.answer("state_research_consent", "yes")
         .check.user.state("state_language")
         .run();
+    });
+    it("should show research consent if NO", function () {
+      return tester.setup.user
+        .state("state_research_consent")
+        .setup.user.answer("state_research_consent", "no")
+        .check.user.state("state_research_consent")
+        .run();
+    });
+    it("display research consent", function () {
+      return tester.setup.user
+        .state("state_privacy_policy_accepted")
+        .input("1")
+        .check.interaction({
+          state: "state_research_consent",
+          reply: [
+            "We may ask you a few questions for research after you've completed your TB HealthCheck.",
+            "Are you willing to take part?",
+            "\nReply:",
+            "1. Yes",
+            "2. No, thank you"
+          ].join("\n"),
+          char_limit: 160,
+      })
+      .run();
+    });
+    it("should display language", function () {
+      return tester.setup.user
+        .state("state_research_consent")
+        .input("1")
+        .check.interaction({
+          state: "state_language",
+          reply: [
+            "Choose your preferred language",
+            "1. English",
+            "2. isiZulu",
+            "3. Afrikaans",
+            "4. isiXhosa",
+            "5. Sesotho"
+          ].join("\n"),
+          char_limit: 160,
+      })
+      .run();
+    });
+    it("should exit on no consent", function () {
+      return tester.setup.user
+        .state("state_research_consent")
+        .input("2")
+        .check.interaction({
+          state: "state_no_research_consent",
+          reply: [
+            "Return to use this service at any time. " +
+            "Remember, if you think you have TB, avoid contact with other people " +
+            "and get tested at your nearest clinic."
+          ].join("\n"),
+          char_limit: 160,
+      })
+      .run();
     });
   });
   describe("state_more_info", function () {
@@ -1258,6 +1322,7 @@ describe("ussd_tb_check app", function () {
           state_tracing: true,
           state_exposure: "no",
           state_language: "eng",
+          state_research_consent: "yes"
         })
         .setup(function (api) {
           api.http.fixtures.add({
@@ -1282,6 +1347,7 @@ describe("ussd_tb_check app", function () {
                 follow_up_optin: true,
                 risk: "low",
                 activation: null,
+                research_consent: true,
                 data: {
                   tb_privacy_policy_accepted: "yes"
                 }
