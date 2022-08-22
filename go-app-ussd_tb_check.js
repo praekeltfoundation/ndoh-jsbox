@@ -530,7 +530,7 @@ go.app = function () {
       var activation = self.im.user.answers.activation;
       var next = "state_street_name";
 
-      if (activation === "skip_location_2022"){
+      if (activation === "skip_location_2022" || self.im.user.answers.state_age === "<18"){
         next = "state_cough";
       }
 
