@@ -560,16 +560,25 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
-    it("should skip the state for users who already have this info", function () {
+    it("should skip the state for users who already have this info for original", function () {
       return tester.setup.user
         .state("state_privacy_policy_accepted")
         .setup.user.answer("state_privacy_policy_accepted", "yes")
+        .check.user.state("state_language")
+        .run();
+    });
+    it("should skip the state for users who already have this info for a study", function () {
+      return tester.setup.user
+        .state("state_privacy_policy_accepted")
+        .setup.user.answer("state_privacy_policy_accepted", "yes")
+        .setup.user.answer("activation", "tb_study_a")
         .check.user.state("state_research_consent")
         .run();
     });
-    it("should go to state_language", function () {
+    it("should go to state_language if study is active", function () {
       return tester.setup.user
         .state("state_privacy_policy_accepted")
+        .setup.user.answer("activation", "tb_study_a")
         .input("1")
         .check.user.state("state_research_consent")
         .run();
@@ -591,6 +600,7 @@ describe("ussd_tb_check app", function () {
     it("display research consent", function () {
       return tester.setup.user
         .state("state_privacy_policy_accepted")
+        .setup.user.answer("activation", "tb_study_a")
         .input("1")
         .check.interaction({
           state: "state_research_consent",
@@ -1574,7 +1584,8 @@ describe("ussd_tb_check app", function () {
       return tester.setup.user
         .state("state_display_arm_message")
         .setup.user.answers({
-          group_arm: "control"
+          group_arm: "control",
+          research_consent: true,
         })
         .check.interaction({
           state: "state_control",
@@ -1590,7 +1601,8 @@ describe("ussd_tb_check app", function () {
       return tester.setup.user
         .state("state_display_arm_message")
         .setup.user.answers({
-          group_arm: "health_consequence"
+          group_arm: "health_consequence",
+          research_consent: true,
         })
         .check.interaction({
           state: "state_health_consequence",
@@ -1607,6 +1619,7 @@ describe("ussd_tb_check app", function () {
         .state("state_display_arm_message")
         .setup.user.answers({
           group_arm: "planning_prompt",
+          research_consent: true,
         })
         .check.interaction({
           state: "state_planning_prompt",
@@ -1624,7 +1637,8 @@ describe("ussd_tb_check app", function () {
       return tester.setup.user
         .state("state_display_arm_message")
         .setup.user.answers({
-          group_arm: "health_consequence"
+          group_arm: "health_consequence",
+          research_consent: true,
         })
         .check.interaction({
           state: "state_health_consequence",
@@ -1641,6 +1655,7 @@ describe("ussd_tb_check app", function () {
         .state("state_display_arm_message")
         .setup.user.answers({
           group_arm: "soft_commitment",
+          research_consent: true,
         })
         .check.interaction({
           state: "state_soft_commitment",
@@ -1673,6 +1688,7 @@ describe("ussd_tb_check app", function () {
         .state("state_display_arm_message")
         .setup.user.answers({
           group_arm: "soft_commitment_plus",
+          research_consent: true,
         })
         .check.interaction({
           state: "state_soft_commitment_plus",
@@ -1713,12 +1729,13 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
-    it("should show the state_control message if user is not assigned to any arm", function () {
+    it("should show state_control message if user is did gave consent", function () {
       return tester.setup.user
         .state("state_display_arm_message")
         .setup.user.answers({
           group_arm: "control",
           activation: null,
+          research_consent: true,
         })
         .check.interaction({
           state: "state_control",
@@ -1729,6 +1746,17 @@ describe("ussd_tb_check app", function () {
           ].join("\n"),
           char_limit: 160,
         })
+        .run();
+    });
+    it("should show state_show_results message if user is did not give consent", function () {
+      return tester.setup.user
+        .state("state_display_arm_message")
+        .setup.user.answers({
+          group_arm: "control",
+          activation: null,
+          research_consent: null,
+        })
+        .check.user.state("state_show_results")
         .run();
     });
     it("should get nearest clinics", function () {

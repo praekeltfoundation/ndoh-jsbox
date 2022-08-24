@@ -403,7 +403,13 @@ go.app = function () {
     });
 
     self.states.add("state_privacy_policy_accepted", function(name) {
-      var next_state = "state_research_consent";
+      var activation = self.im.user.answers.activation;
+      var next_state = "state_language";
+
+      if (activation === "tb_study_a") {
+        next_state = "state_research_consent";
+      }
+
       if (self.im.user.answers.state_privacy_policy_accepted == "yes") {
         return self.states.create(next_state);
       }
@@ -958,9 +964,9 @@ go.app = function () {
     self.states.add("state_display_arm_message", function (name) {
       var answers = self.im.user.answers;
       var arm = answers.group_arm;
-      var activation = answers.activation;
+      var consent = answers.research_consent;
 
-      if (arm && ! activation){
+      if (consent || consent==="Yes"){
         return self.states.create("state_" + arm);
       }
       return self.states.create("state_show_results");
