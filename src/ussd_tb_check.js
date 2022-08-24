@@ -308,7 +308,8 @@ go.app = function () {
 
     self.add("state_research_consent", function(name) {
       var next_state = "state_language";
-      if (_.toUpper(self.im.user.answers.state_research_consent) === "YES") {
+      var answers = self.im.user.answers;
+      if (_.toUpper(answers.state_research_consent) === "YES" || answers.state_research_consent === true) {
         return self.states.create(next_state);
       }
       return new MenuState(name, {
@@ -805,10 +806,12 @@ go.app = function () {
     self.states.add("state_display_arm_message", function (name) {
       var answers = self.im.user.answers;
       var arm = answers.group_arm;
-      var consent = answers.research_consent;
-
-      if (consent || consent==="Yes"){
-        return self.states.create("state_" + arm);
+      var consent = answers.state_research_consent || answers.research_consent;
+      
+      if (consent === true || _.toUpper(answers.consent) === "YES"){
+        if (arm != null){
+          return self.states.create("state_" + arm);
+        }
       }
       return self.states.create("state_show_results");
     });

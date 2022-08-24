@@ -1708,6 +1708,7 @@ describe("ussd_tb_check app", function () {
         .state("state_display_arm_message")
         .setup.user.answers({
           group_arm: null,
+          state_research_consent: true,
         })
         .check.interaction({
           state: "state_show_results",
@@ -1721,8 +1722,8 @@ describe("ussd_tb_check app", function () {
       return tester.setup.user
         .state("state_display_arm_message")
         .setup.user.answers({
-          group_arm: "control",
-          activation: "tb_test",
+          group_arm: null,
+          activation: null,
         })
         .check.interaction({
           state: "state_show_results",
