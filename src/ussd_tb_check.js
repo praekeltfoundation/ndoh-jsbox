@@ -268,12 +268,6 @@ go.app = function () {
         choices: [new Choice(next_state, $("ACCEPT"))],
       });
     });
-    /* var activation = self.im.user.answers.activation;
-      var next_state = "state_language";
-
-      if (activation === "tb_study_a") {
-        next_state = "state_research_consent";
-      }*/
 
     self.states.add("state_language", function (name) {
       var activation = self.im.user.answers.activation;
