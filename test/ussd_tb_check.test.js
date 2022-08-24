@@ -572,15 +572,14 @@ describe("ussd_tb_check app", function () {
         .state("state_privacy_policy_accepted")
         .setup.user.answer("state_privacy_policy_accepted", "yes")
         .setup.user.answer("activation", "tb_study_a")
-        .check.user.state("state_research_consent")
+        .check.user.state("state_language")
         .run();
     });
     it("should go to state_language if study is active", function () {
       return tester.setup.user
         .state("state_privacy_policy_accepted")
-        .setup.user.answer("activation", "tb_study_a")
         .input("1")
-        .check.user.state("state_research_consent")
+        .check.user.state("state_language")
         .run();
     });
     it("should skip research consent", function () {
@@ -599,7 +598,7 @@ describe("ussd_tb_check app", function () {
     });
     it("display research consent", function () {
       return tester.setup.user
-        .state("state_privacy_policy_accepted")
+        .state("state_language")
         .setup.user.answer("activation", "tb_study_a")
         .input("1")
         .check.interaction({
@@ -617,7 +616,7 @@ describe("ussd_tb_check app", function () {
     });
     it("should display language", function () {
       return tester.setup.user
-        .state("state_research_consent")
+        .state("state_privacy_policy_accepted")
         .input("1")
         .check.interaction({
           state: "state_language",
@@ -638,11 +637,15 @@ describe("ussd_tb_check app", function () {
         .state("state_research_consent")
         .input("2")
         .check.interaction({
-          state: "state_no_research_consent",
+          state: "state_age",
           reply: [
-            "Return to use this service at any time. " +
-            "Remember, if you think you have TB, avoid contact with other people " +
-            "and get tested at your nearest clinic."
+            "How old are you?",
+            "",
+            "Reply with a number",
+            "1. under 18",
+            "2. 18-39",
+            "3. 40-65",
+            "4. over 65"
           ].join("\n"),
           char_limit: 160,
       })
