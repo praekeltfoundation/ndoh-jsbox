@@ -403,7 +403,7 @@ go.app = function () {
     });
 
     self.states.add("state_privacy_policy_accepted", function(name) {
-      var next_state = "state_research_consent";
+      var next_state = "state_language";
       if (self.im.user.answers.state_privacy_policy_accepted == "yes") {
         return self.states.create(next_state);
       }
@@ -417,42 +417,21 @@ go.app = function () {
         choices: [new Choice(next_state, $("ACCEPT"))],
       });
     });
-
-    self.add("state_research_consent", function(name) {
+    /* var activation = self.im.user.answers.activation;
       var next_state = "state_language";
-      if (_.toUpper(self.im.user.answers.state_research_consent) === "YES") {
-        return self.states.create(next_state);
-      }
-      return new MenuState(name, {
-          question: $(
-              "We may ask you a few questions for research after you've completed " +
-              "your TB HealthCheck." +
-              "\nAre you willing to take part?" +
-              "\n\nReply:"
-              ),
-          error: $(
-              "Please reply with numbers. Are you willing to take part?"
-          ),
-          accept_labels: true,
-          choices: [
-              new Choice("state_language", $("Yes")),
-              new Choice("state_no_research_consent", $("No, thank you")),
-          ],
-      });
-  });
 
-    self.add("state_no_research_consent", function(name) {
-      return new EndState(name, {
-          next: "state_start",
-          text: $(
-              "Return to use this service at any time. Remember, if you think you have TB, " +
-              "avoid contact with other people and get tested at your nearest clinic."
-          )
-      });
-  });
+      if (activation === "tb_study_a") {
+        next_state = "state_research_consent";
+      }*/
 
     self.states.add("state_language", function (name) {
+      var activation = self.im.user.answers.activation;
       var next_state = "state_age";
+
+      if (activation === "tb_study_a") {
+        next_state = "state_research_consent";
+      }
+
       if (self.im.user.answers.state_language) {
         return self.im.user.set_lang(self.im.user.answers.state_language)
         .then(function() {
@@ -481,6 +460,29 @@ go.app = function () {
         }
       });
     });
+
+    self.add("state_research_consent", function(name) {
+      var next_state = "state_language";
+      if (_.toUpper(self.im.user.answers.state_research_consent) === "YES") {
+        return self.states.create(next_state);
+      }
+      return new MenuState(name, {
+          question: $(
+              "We may ask you a few questions for research after you've completed " +
+              "your TB HealthCheck." +
+              "\nAre you willing to take part?" +
+              "\n\nReply:"
+              ),
+          error: $(
+              "Please reply with numbers. Are you willing to take part?"
+          ),
+          accept_labels: true,
+          choices: [
+              new Choice("state_age", $("Yes")),
+              new Choice("state_age", $("No, thank you")),
+          ],
+      });
+  });
 
     self.add("state_age", function (name) {
       if (self.im.user.answers.state_age) {
@@ -958,9 +960,9 @@ go.app = function () {
     self.states.add("state_display_arm_message", function (name) {
       var answers = self.im.user.answers;
       var arm = answers.group_arm;
-      var activation = answers.activation;
+      var consent = answers.research_consent;
 
-      if (arm && ! activation){
+      if (consent || consent==="Yes"){
         return self.states.create("state_" + arm);
       }
       return self.states.create("state_show_results");
