@@ -458,7 +458,7 @@ go.app = function () {
     self.add("state_research_consent", function(name) {
       var next_state = "state_language";
       var answers = self.im.user.answers;
-      if (_.toUpper(answers.state_research_consent) === "YES" || answers.state_research_consent === true) {
+      if (answers.state_research_consent === "Yes" || answers.state_research_consent === true) {
         return self.states.create(next_state);
       }
       return new MenuState(name, {
@@ -957,7 +957,7 @@ go.app = function () {
       var arm = answers.group_arm;
       var consent = answers.state_research_consent || answers.research_consent;
       
-      if (consent === true || _.toUpper(answers.consent) === "YES"){
+      if (consent === true || answers.consent === "Yes"){
         if (arm != null){
           return self.states.create("state_" + arm);
         }

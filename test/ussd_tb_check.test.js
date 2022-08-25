@@ -585,7 +585,7 @@ describe("ussd_tb_check app", function () {
     it("should skip research consent", function () {
       return tester.setup.user
         .state("state_research_consent")
-        .setup.user.answer("state_research_consent", "yes")
+        .setup.user.answer("state_research_consent", "Yes")
         .check.user.state("state_language")
         .run();
     });
