@@ -812,6 +812,10 @@ go.app = function () {
       var answers = self.im.user.answers;
       var arm = answers.group_arm;
       var consent = answers.state_research_consent || answers.research_consent;
+
+      console.log("************************************************");
+      console.log("Group_arm" + arm);
+      console.log("Consent" + arm);
       
       if (consent === true || answers.consent === "Yes"){
         if (arm != null){
