@@ -903,9 +903,13 @@ go.app = function () {
           "User-Agent": ["Jsbox/TB-Check-USSD"],
         },
       };
-
-      if (typeof self.im.user.answers.state_research_consent != "undefined"){
-        payload.data.research_consent = true;
+      if (typeof answers.state_research_consent != "undefined"){
+        if(answers.state_research_consent === "yes"){
+          payload.data.research_consent = true;
+        }
+        else{
+          payload.data.research_consent = false;
+        }
       }
 
       if(self.im.user.answers.state_age !== "<18") {
