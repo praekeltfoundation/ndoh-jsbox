@@ -754,9 +754,13 @@ go.app = function () {
           "User-Agent": ["Jsbox/TB-Check-USSD"],
         },
       };
-
-      if (typeof self.im.user.answers.state_research_consent != "undefined"){
-        payload.data.research_consent = true;
+      if (typeof answers.state_research_consent != "undefined"){
+        if(_.toUpper(answers.state_research_consent) === "YES"){
+          payload.data.research_consent = true;
+        }
+        else{
+          payload.data.research_consent = false;
+        }
       }
 
       if(self.im.user.answers.state_age !== "<18") {
@@ -808,6 +812,10 @@ go.app = function () {
       var answers = self.im.user.answers;
       var arm = answers.group_arm;
       var consent = answers.state_research_consent || answers.research_consent;
+
+      console.log("************************************************");
+      console.log("Group_arm" + arm);
+      console.log("Consent" + arm);
       
       if (consent === true || answers.consent === "Yes"){
         if (arm != null){
