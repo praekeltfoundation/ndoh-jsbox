@@ -525,15 +525,14 @@ go.app = function () {
     });
 
     self.add("state_province", function (name) {
-      var activation = self.im.user.answers.activation;
       var next = "state_street_name";
 
-      if (activation === "skip_location_2022" || self.im.user.answers.state_age === "<18"){
+      if (self.im.user.answers.state_age === "<18"){
         next = "state_cough";
       }
 
-      if (self.im.user.answers.state_province && activation !== "skip_location_2022") {
-        return self.states.create("state_city");
+      if (self.im.user.answers.state_province) {
+        return self.states.create("state_street_name");
       }
       return new ChoiceState(name, {
         question: $("Choose your province. Reply with a number:"),
@@ -554,6 +553,11 @@ go.app = function () {
     });
 
     self.add("state_street_name", function (name) {
+      if (self.im.user.answers.state_street_name &&
+          self.im.user.answers.state_suburb_name) {
+        return self.states.create("state_city");
+      }
+
       var question = $(
         "Please type the name of the street where you live."
       );
