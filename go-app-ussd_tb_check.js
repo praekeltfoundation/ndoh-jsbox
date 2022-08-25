@@ -904,7 +904,7 @@ go.app = function () {
         },
       };
       if (typeof answers.state_research_consent != "undefined"){
-        if(answers.state_research_consent === "yes"){
+        if(_.toUpper(answers.state_research_consent) === "YES"){
           payload.data.research_consent = true;
         }
         else{
