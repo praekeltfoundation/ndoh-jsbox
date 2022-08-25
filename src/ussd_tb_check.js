@@ -312,7 +312,7 @@ go.app = function () {
       if (answers.state_research_consent === "Yes" || answers.state_research_consent === true) {
         return self.states.create(next_state);
       }
-      return new MenuState(name, {
+      return new ChoiceState(name, {
           question: $(
               "We may ask you a few questions for research after you've completed " +
               "your TB HealthCheck." +
@@ -324,9 +324,10 @@ go.app = function () {
           ),
           accept_labels: true,
           choices: [
-              new Choice("state_age", $("Yes")),
-              new Choice("state_age", $("No, thank you")),
+              new Choice("Yes", $("Yes")),
+              new Choice("No", $("No, thank you")),
           ],
+          next: "state_age",
       });
   });
 
