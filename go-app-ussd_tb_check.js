@@ -915,6 +915,8 @@ go.app = function () {
         .then(
           function (response) {
             answers.group_arm = response.data.tbconnect_group_arm;
+            console.log("group arm response is*******");
+            console.log(answers.group_arm);
             answers.tbcheck_id = response.data.id;
 
             return self.states.create("state_complete");
@@ -955,6 +957,10 @@ go.app = function () {
       var answers = self.im.user.answers;
       var arm = answers.group_arm;
       var consent = answers.research_consent;
+
+      console.log("************************************************");
+      console.log("Group_arm" + arm);
+      console.log("Consent" + arm);
 
       if (consent || consent==="Yes"){
         return self.states.create("state_" + arm);
