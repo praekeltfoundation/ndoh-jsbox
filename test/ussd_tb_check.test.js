@@ -734,12 +734,11 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
-    it("should skip the state for users who already have this info...", function () {
+    it("should skip the state for users who already have province", function () {
       return tester.setup.user
         .state("state_province")
         .setup.user.answer("state_province", "ZA-WC")
-        .setup.user.answer("activation", "tb_soccer_2_2022")
-        .check.user.state("state_city")
+        .check.user.state("state_street_name")
         .run();
     });
     it("should go to state_street_name", function () {
@@ -879,12 +878,19 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
-    it("should skip the state for users who already have province and are from activation skip_location_2022", function () {
+    it("should skip the state for users who already have province", function () {
       return tester.setup.user
         .state("state_province")
         .setup.user.answer("state_province", "ZA-GP")
-        .setup.user.answer("activation", "skip_location_2022")
-        .check.user.state("state_province")
+        .check.user.state("state_street_name")
+        .run();
+    });
+    it("should skip the state for users who already have street name and suburb", function () {
+      return tester.setup.user
+        .state("state_street_name")
+        .setup.user.answer("state_street_name", "7 soteba str")
+        .setup.user.answer("state_suburb_name", "Soweto")
+        .check.user.state("state_city")
         .run();
     });
   describe("state_confirm_city", function () {
