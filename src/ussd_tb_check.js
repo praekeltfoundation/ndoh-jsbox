@@ -755,7 +755,13 @@ go.app = function () {
       };
 
       if (typeof self.im.user.answers.state_research_consent != "undefined"){
-        payload.data.research_consent = true;
+        if (_.toUpper(answers.state_research_consent) === "YES"){
+          payload.data.research_consent = true;
+        }
+        else{
+          payload.data.research_consent = false;
+        }
+        
       }
 
       if(self.im.user.answers.state_age !== "<18") {
@@ -806,9 +812,16 @@ go.app = function () {
     self.states.add("state_display_arm_message", function (name) {
       var answers = self.im.user.answers;
       var arm = answers.group_arm;
-      var consent = answers.research_consent;
+      var consent;
 
-      if (consent || consent==="Yes"){
+      if (typeof self.im.user.answers.state_research_consent === "undefined"){
+        consent = answers.research_consent;
+      }
+      else {
+        consent = answers.state_researh_consent;
+      }
+
+      if (consent===true || consent==="Yes"){
         return self.states.create("state_" + arm);
       }
       return self.states.create("state_show_results");
@@ -1095,7 +1108,13 @@ go.app = function () {
       var risk = self.calculate_risk();
       var arm = answers.group_arm;
       var tbcheck_id = answers.tbcheck_id;
-      var consent = answers.research_consent;
+      var consent;
+      if (typeof self.im.user.answers.state_research_consent === "undefined"){
+        consent = answers.research_consent;
+      }
+      else {
+        consent = answers.state_researh_consent;
+      }
       var text = $(
         "You don't need a TB test now, but if you develop cough, fever, weight loss " +
           "or night sweats visit your nearest clinic."
