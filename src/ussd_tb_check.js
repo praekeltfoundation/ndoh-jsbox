@@ -812,9 +812,16 @@ go.app = function () {
     self.states.add("state_display_arm_message", function (name) {
       var answers = self.im.user.answers;
       var arm = answers.group_arm;
-      var consent = answers.research_consent;
+      var consent;
 
-      if (consent || consent==="Yes"){
+      if (typeof self.im.user.answers.state_research_consent === "undefined"){
+        consent = answers.research_consent;
+      }
+      else {
+        consent = answers.state_researh_consent;
+      }
+
+      if (consent===true || consent==="Yes"){
         return self.states.create("state_" + arm);
       }
       return self.states.create("state_show_results");
