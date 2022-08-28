@@ -915,8 +915,6 @@ go.app = function () {
         .then(
           function (response) {
             answers.group_arm = response.data.tbconnect_group_arm;
-            console.log("group arm response is*******");
-            console.log(answers.group_arm);
             answers.tbcheck_id = response.data.id;
 
             return self.states.create("state_complete");
@@ -957,10 +955,6 @@ go.app = function () {
       var answers = self.im.user.answers;
       var arm = answers.group_arm;
       var consent = answers.research_consent;
-
-      console.log("************************************************");
-      console.log("Group_arm" + arm);
-      console.log("Consent" + arm);
 
       if (consent || consent==="Yes"){
         return self.states.create("state_" + arm);
@@ -1247,6 +1241,8 @@ go.app = function () {
     self.states.add("state_show_results", function (name) {
       var answers = self.im.user.answers;
       var risk = self.calculate_risk();
+      var arm = answers.group_arm;
+      var consent = answers.research_consent;
       var text = $(
         "You don't need a TB test now, but if you develop cough, fever, weight loss " +
           "or night sweats visit your nearest clinic."
@@ -1258,8 +1254,15 @@ go.app = function () {
             "Your replies to the questions show you need a TB test this week.",
             "",
             "Go to your clinic for a free TB test.",
+            "",
+            "Group arm is {{arm}}",
+            "",
+            "Consent is {{}}"
           ].join("\n")
-        );
+        ).context({
+          arm: arm,
+          consent: consent
+        });
       } else if (answers.state_exposure == "not_sure") {
         text = $(
           "Check if those you live with are on TB treatment. If you don't know " +
