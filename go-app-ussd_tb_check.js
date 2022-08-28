@@ -1171,7 +1171,7 @@ go.app = function () {
         error: $("Please use numbers from list. Do you commit to getting tested?"),
         accept_labels: true,
         choices: [new Choice(true, $("YES")), new Choice(false, $("NO"))],
-        next: "state_commitment_test_commit",
+        next: "state_submit_test_commit",
       });
     });
 
