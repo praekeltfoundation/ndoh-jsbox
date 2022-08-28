@@ -914,8 +914,8 @@ go.app = function () {
         .post(self.im.config.healthcheck.url + "/v2/tbcheck/", payload)
         .then(
           function (response) {
-            answers.group_arm = response.data.tbconnect_group_arm;
-            answers.tbcheck_id = response.data.id;
+            answers.group_arm = response.tbconnect_group_arm;
+            answers.tbcheck_id = response.id;
 
             return self.states.create("state_complete");
           },
