@@ -1369,9 +1369,11 @@ describe("ussd_tb_check app", function () {
             response: {
               code: 201,
               data: {
+                id: 10,
+                profile: {
                 accepted: true,
                 tbconnect_group_arm: "control",
-                id: 10,
+                },
               },
             },
           });
@@ -1426,9 +1428,11 @@ describe("ussd_tb_check app", function () {
             response: {
               code: 201,
               data: {
+                id: 20,
+                profile: {
                 accepted: true,
                 tbconnect_group_arm: "control",
-                id: 20,
+                },
               },
             },
           });
@@ -1485,9 +1489,11 @@ describe("ussd_tb_check app", function () {
             response: {
               code: 201,
               data: {
+                id: 45,
+                profile: {
                 accepted: true,
                 tbconnect_group_arm: "health_consequence",
-                id: 45,
+                },
               },
             },
           });
@@ -1549,9 +1555,11 @@ describe("ussd_tb_check app", function () {
             response: {
               code: 201,
               data: {
+                id: 22,
+                profile: {
                 accepted: true,
                 tbconnect_group_arm: "control",
-                id: 22,
+                },
               },
             },
           });
