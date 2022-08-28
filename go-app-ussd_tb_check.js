@@ -915,8 +915,8 @@ go.app = function () {
         .post(self.im.config.healthcheck.url + "/v2/tbcheck/", payload)
         .then(
           function (response) {
-            answers.group_arm = response.tbconnect_group_arm;
-            answers.tbcheck_id = response.id;
+            answers.group_arm = response.data.profile.tbconnect_group_arm;
+            answers.tbcheck_id = response.data.id;
 
             return self.states.create("state_complete");
           },
@@ -1243,6 +1243,7 @@ go.app = function () {
       var answers = self.im.user.answers;
       var risk = self.calculate_risk();
       var arm = answers.group_arm;
+      var tbcheck_id = answers.tbcheck_id;
       var consent = answers.research_consent;
       var text = $(
         "You don't need a TB test now, but if you develop cough, fever, weight loss " +
@@ -1258,11 +1259,14 @@ go.app = function () {
             "",
             "Group arm is {{arm}}",
             "",
-            "Consent is {{}}"
+            "Consent is {{consent}}",
+            "",
+            "TBCheck_ID is {{tbcheck_id}}"
           ].join("\n")
         ).context({
           arm: arm,
-          consent: consent
+          consent: consent,
+          tbcheck_id: tbcheck_id
         });
       } else if (answers.state_exposure == "not_sure") {
         text = $(
