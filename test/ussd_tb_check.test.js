@@ -585,7 +585,7 @@ describe("ussd_tb_check app", function () {
     it("should skip research consent", function () {
       return tester.setup.user
         .state("state_research_consent")
-        .setup.user.answer("state_research_consent", "Yes")
+        .setup.user.answer("state_research_consent", "yes")
         .check.user.state("state_language")
         .run();
     });
@@ -734,11 +734,12 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
-    it("should skip the state for users who already have province", function () {
+    it("should skip the state for users who already have this info...", function () {
       return tester.setup.user
         .state("state_province")
         .setup.user.answer("state_province", "ZA-WC")
-        .check.user.state("state_street_name")
+        .setup.user.answer("activation", "tb_soccer_2_2022")
+        .check.user.state("state_city")
         .run();
     });
     it("should go to state_street_name", function () {
@@ -878,19 +879,12 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
-    it("should skip the state for users who already have province", function () {
+    it("should skip the state for users who already have province and are from activation skip_location_2022", function () {
       return tester.setup.user
         .state("state_province")
         .setup.user.answer("state_province", "ZA-GP")
-        .check.user.state("state_street_name")
-        .run();
-    });
-    it("should skip the state for users who already have street name and suburb", function () {
-      return tester.setup.user
-        .state("state_street_name")
-        .setup.user.answer("state_street_name", "7 soteba str")
-        .setup.user.answer("state_suburb_name", "Soweto")
-        .check.user.state("state_city")
+        .setup.user.answer("activation", "skip_location_2022")
+        .check.user.state("state_province")
         .run();
     });
   describe("state_confirm_city", function () {
@@ -1714,7 +1708,6 @@ describe("ussd_tb_check app", function () {
         .state("state_display_arm_message")
         .setup.user.answers({
           group_arm: null,
-          state_research_consent: true,
         })
         .check.interaction({
           state: "state_show_results",
@@ -1728,8 +1721,8 @@ describe("ussd_tb_check app", function () {
       return tester.setup.user
         .state("state_display_arm_message")
         .setup.user.answers({
-          group_arm: null,
-          activation: null,
+          group_arm: "control",
+          activation: "tb_test",
         })
         .check.interaction({
           state: "state_show_results",

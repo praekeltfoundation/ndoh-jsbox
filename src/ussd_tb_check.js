@@ -308,11 +308,10 @@ go.app = function () {
 
     self.add("state_research_consent", function(name) {
       var next_state = "state_language";
-      var answers = self.im.user.answers;
-      if (answers.state_research_consent === "Yes" || answers.state_research_consent === true) {
+      if (_.toUpper(self.im.user.answers.state_research_consent) === "YES") {
         return self.states.create(next_state);
       }
-      return new ChoiceState(name, {
+      return new MenuState(name, {
           question: $(
               "We may ask you a few questions for research after you've completed " +
               "your TB HealthCheck." +
@@ -324,10 +323,9 @@ go.app = function () {
           ),
           accept_labels: true,
           choices: [
-              new Choice("Yes", $("Yes")),
-              new Choice("No", $("No, thank you")),
+              new Choice("state_age", $("Yes")),
+              new Choice("state_age", $("No, thank you")),
           ],
-          next: "state_age",
       });
   });
 
@@ -376,14 +374,15 @@ go.app = function () {
     });
 
     self.add("state_province", function (name) {
+      var activation = self.im.user.answers.activation;
       var next = "state_street_name";
 
-      if (self.im.user.answers.state_age === "<18"){
+      if (activation === "skip_location_2022" || self.im.user.answers.state_age === "<18"){
         next = "state_cough";
       }
 
-      if (self.im.user.answers.state_province) {
-        return self.states.create("state_street_name");
+      if (self.im.user.answers.state_province && activation !== "skip_location_2022") {
+        return self.states.create("state_city");
       }
       return new ChoiceState(name, {
         question: $("Choose your province. Reply with a number:"),
@@ -404,11 +403,6 @@ go.app = function () {
     });
 
     self.add("state_street_name", function (name) {
-      if (self.im.user.answers.state_street_name &&
-          self.im.user.answers.state_suburb_name) {
-        return self.states.create("state_city");
-      }
-
       var question = $(
         "Please type the name of the street where you live."
       );
@@ -758,13 +752,9 @@ go.app = function () {
           "User-Agent": ["Jsbox/TB-Check-USSD"],
         },
       };
-      if (typeof answers.state_research_consent != "undefined"){
-        if(_.toUpper(answers.state_research_consent) === "YES"){
-          payload.data.research_consent = true;
-        }
-        else{
-          payload.data.research_consent = false;
-        }
+
+      if (typeof self.im.user.answers.state_research_consent != "undefined"){
+        payload.data.research_consent = true;
       }
 
       if(self.im.user.answers.state_age !== "<18") {
@@ -815,16 +805,10 @@ go.app = function () {
     self.states.add("state_display_arm_message", function (name) {
       var answers = self.im.user.answers;
       var arm = answers.group_arm;
-      var consent = answers.state_research_consent || answers.research_consent;
+      var consent = answers.research_consent;
 
-      console.log("************************************************");
-      console.log("Group_arm" + arm);
-      console.log("Consent" + arm);
-      
-      if (consent === true || answers.consent === "Yes"){
-        if (arm != null){
-          return self.states.create("state_" + arm);
-        }
+      if (consent || consent==="Yes"){
+        return self.states.create("state_" + arm);
       }
       return self.states.create("state_show_results");
     });
