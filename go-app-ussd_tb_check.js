@@ -967,7 +967,7 @@ go.app = function () {
         consent = answers.research_consent;
       }
       else {
-        consent = answers.state_researh_consent;
+        consent = answers.state_research_consent;
       }
 
       if (consent===true || consent==="Yes"){
@@ -1262,7 +1262,7 @@ go.app = function () {
         consent = answers.research_consent;
       }
       else {
-        consent = answers.state_researh_consent;
+        consent = answers.state_research_consent;
       }
       var text = $(
         "You don't need a TB test now, but if you develop cough, fever, weight loss " +
