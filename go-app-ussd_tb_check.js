@@ -681,14 +681,14 @@ go.app = function () {
       var suburb = self.im.user.answers.state_suburb_name;
       var city_trunc = self.im.user.answers.state_city;
       var activation = self.im.user.answers.activation;
-      var full_address = (street_name + ',' + suburb + ',' + city_trunc).slice(0, 160 - 101);
+      var full_address = (suburb + ',' + city_trunc).slice(0, 160 - 101);
       var no_next_state = "state_suburb_name";
 
       if (activation === "tb_study_a") {
-        full_address = (suburb + ',' + city_trunc).slice(0, 160 - 101);
+        full_address = (street_name + ',' + suburb + ',' + city_trunc).slice(0, 160 - 101);
         no_next_state = "state_street_name";
       }
-
+      console.log(">>>>>>>>", full_address);
       return new MenuState(name, {
         question: $(
           [

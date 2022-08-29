@@ -924,6 +924,7 @@ describe("ussd_tb_check app", function () {
     it("should ask to confirm the city", function () {
       return tester.setup.user
         .state("state_confirm_city")
+        .setup.user.answer("activation", "tb_study_a")
         .setup.user.answer("state_street_name", "54321 Fancy Apartment")
         .setup.user.answer("state_suburb_name", "Fresnaye")
         .setup.user.answer(
@@ -943,7 +944,6 @@ describe("ussd_tb_check app", function () {
     it("should ask to confirm the city without street name", function () {
       return tester.setup.user
         .state("state_confirm_city")
-        .setup.user.answer("activation", "tb_study_a")
         .setup.user.answer("state_suburb_name", "Fresnaye")
         .setup.user.answer("state_city", "Cape Town")
         .check.interaction({
@@ -961,6 +961,7 @@ describe("ussd_tb_check app", function () {
     it("should ask to confirm the city with long address", function () {
       return tester.setup.user
         .state("state_confirm_city")
+        .setup.user.answer("activation", "tb_study_a")
         .setup.user.answer("state_street_name", "54321 Fancy Apartment")
         .setup.user.answer("state_suburb_name", "12345 Really really long address,Fresnaye")
         .setup.user.answer(
