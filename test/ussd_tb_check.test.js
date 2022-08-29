@@ -410,7 +410,7 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
-    it("should skip the state for users who already have this info", function () {
+    it("should skip the state for users who already have this info for language", function () {
       return tester.setup.user
         .state("state_language")
         .setup.user.answer("state_language", "eng")
@@ -738,12 +738,28 @@ describe("ussd_tb_check app", function () {
       return tester.setup.user
         .state("state_province")
         .setup.user.answer("state_province", "ZA-WC")
+        .check.user.state("state_suburb_name")
+        .run();
+    });
+    it("should skip province state for users who already have province and using a study", function () {
+      return tester.setup.user
+        .state("state_province")
+        .setup.user.answer("state_province", "ZA-WC")
+        .setup.user.answer("activation", "tb_study_a")
         .check.user.state("state_street_name")
         .run();
     });
     it("should go to state_street_name", function () {
       return tester.setup.user
         .state("state_province")
+        .input("1")
+        .check.user.state("state_suburb_name")
+        .run();
+    });
+    it("should go to state_street_name for the study", function () {
+      return tester.setup.user
+        .state("state_province")
+        .setup.user.answer("activation", "tb_study_a")
         .input("1")
         .check.user.state("state_street_name")
         .run();
@@ -831,9 +847,19 @@ describe("ussd_tb_check app", function () {
         .check.user.answer("place_id", "ChIJD7fiBh9u5kcRYJSMaMOCCwQ")
         .run();
     });
-    it("should skip the state for users who already have this info", function () {
+    it("should skip the state for users who already have this info for the city", function () {
       return tester.setup.user
         .state("state_city")
+        .setup.user.answer("state_suburb_name", "Fresnaye")
+        .setup.user.answer("state_city", "Cape Town, South Africa")
+        .setup.user.answer("city_location", "+00-025/")
+        .check.user.state("state_cough")
+        .run();
+    });
+    it("should skip the state for users who already have this info for the city for the study", function () {
+      return tester.setup.user
+        .state("state_city")
+        .setup.user.answer("activation", "tb_study_a")
         .setup.user.answer("state_street_name", "54321 Fancy Apartment")
         .setup.user.answer("state_suburb_name", "Fresnaye")
         .setup.user.answer("state_city", "Cape Town, South Africa")
@@ -878,11 +904,12 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
-    it("should skip the state for users who already have province", function () {
+    it("should skip the state for users who already have province with null fof study", function () {
       return tester.setup.user
         .state("state_province")
         .setup.user.answer("state_province", "ZA-GP")
-        .check.user.state("state_street_name")
+        .setup.user.answer("activation", null)
+        .check.user.state("state_suburb_name")
         .run();
     });
     it("should skip the state for users who already have street name and suburb", function () {
@@ -913,6 +940,24 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
+    it("should ask to confirm the city without street name", function () {
+      return tester.setup.user
+        .state("state_confirm_city")
+        .setup.user.answer("activation", "tb_study_a")
+        .setup.user.answer("state_suburb_name", "Fresnaye")
+        .setup.user.answer("state_city", "Cape Town")
+        .check.interaction({
+          state: "state_confirm_city",
+          reply: [
+            "Please check that the address below is correct and matches the information you gave us:",
+            "Fresnaye,Cape Town",
+            "1. Yes",
+            "2. No",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
     it("should ask to confirm the city with long address", function () {
       return tester.setup.user
         .state("state_confirm_city")
@@ -936,6 +981,15 @@ describe("ussd_tb_check app", function () {
     it("go back to state_city if user selects no", function () {
       return tester.setup.user
         .state("state_confirm_city")
+        .setup.user.answer("state_city", "Cape Town, South Africa")
+        .input("2")
+        .check.user.state("state_suburb_name")
+        .run();
+    });
+    it("go back to state_city if user selects no for the study", function () {
+      return tester.setup.user
+        .state("state_confirm_city")
+        .setup.user.answer("activation", "tb_study_a")
         .setup.user.answer("state_city", "Cape Town, South Africa")
         .input("2")
         .check.user.state("state_street_name")
@@ -1027,7 +1081,7 @@ describe("ussd_tb_check app", function () {
         .check.user.state("state_gender")
         .run();
     });
-    it("should skip the state for users who already have this info", function () {
+    it("should skip the state for users who already have this info for age", function () {
       return tester.setup.user
         .state("state_age")
         .setup.user.answer("state_age", "18-40")
