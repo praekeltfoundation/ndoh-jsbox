@@ -376,15 +376,24 @@ go.app = function () {
     });
 
     self.add("state_province", function (name) {
-      var next = "state_street_name";
+      var activation = self.im.user.answers.activation;
+      var next = "state_suburb_name";
+
+      if (activation === "tb_study_a") {
+        next = "state_street_name";
+      }
 
       if (self.im.user.answers.state_age === "<18"){
         next = "state_cough";
       }
 
-      if (self.im.user.answers.state_province) {
+      if (self.im.user.answers.state_province && activation === "tb_study_a") {
         return self.states.create("state_street_name");
       }
+      else if (self.im.user.answers.state_province) {
+        return self.states.create("state_suburb_name");
+      }
+
       return new ChoiceState(name, {
         question: $("Choose your province. Reply with a number:"),
         accept_labels: true,
@@ -425,6 +434,9 @@ go.app = function () {
     });
 
     self.add("state_suburb_name", function (name) {
+      if (self.im.user.answers.state_suburb_name) {
+        return self.states.create("state_city");
+      }
       var question = $(
         "Please type the name of the suburb/township/village where you live."
       );
@@ -441,14 +453,27 @@ go.app = function () {
     });
 
     self.add("state_city", function (name) {
-      if (
-        self.im.user.answers.state_street_name &&
-        self.im.user.answers.state_suburb_name &&
-        self.im.user.answers.state_city &&
-        self.im.user.answers.city_location
-      ) {
-        return self.states.create("state_cough");
+      var activation = self.im.user.answers.activation;
+
+      if (activation === "tb_study_a") {
+          if (
+            self.im.user.answers.state_street_name &&
+            self.im.user.answers.state_suburb_name &&
+            self.im.user.answers.state_city &&
+            self.im.user.answers.city_location
+          ) {
+            return self.states.create("state_cough");
+          }
       }
+
+      if (
+            self.im.user.answers.state_suburb_name &&
+            self.im.user.answers.state_city &&
+            self.im.user.answers.city_location
+          ) {
+            return self.states.create("state_cough");
+          }
+
       if(self.im.user.answers.state_age === "<18") {
         self.im.user.answers.state_city = "<not collected>";
         return self.states.create("state_cough");
@@ -508,7 +533,14 @@ go.app = function () {
       var street_name = self.im.user.answers.state_street_name;
       var suburb = self.im.user.answers.state_suburb_name;
       var city_trunc = self.im.user.answers.state_city;
+      var activation = self.im.user.answers.activation;
       var full_address = (street_name + ',' + suburb + ',' + city_trunc).slice(0, 160 - 101);
+      var no_next_state = "state_suburb_name";
+
+      if (activation === "tb_study_a") {
+        full_address = (suburb + ',' + city_trunc).slice(0, 160 - 101);
+        no_next_state = "state_street_name";
+      }
 
       return new MenuState(name, {
         question: $(
@@ -520,7 +552,7 @@ go.app = function () {
         accept_labels: true,
         choices: [
           new Choice("state_place_details_lookup", $("Yes")),
-          new Choice("state_street_name", $("No")),
+          new Choice(no_next_state, $("No")),
         ],
       });
     });
