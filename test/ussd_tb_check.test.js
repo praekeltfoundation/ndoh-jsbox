@@ -1990,6 +1990,7 @@ describe("ussd_tb_check app", function () {
               method: "PATCH",
               data: {
                 commit_get_tested: "yes",
+                source: "USSD",
               },
             },
             response: {
@@ -2022,6 +2023,7 @@ describe("ussd_tb_check app", function () {
               method: "PATCH",
               data: {
                 commit_get_tested: "no",
+                source: "USSD",
               },
             },
             response: {
