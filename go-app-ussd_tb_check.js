@@ -688,7 +688,7 @@ go.app = function () {
         full_address = (street_name + ',' + suburb + ',' + city_trunc).slice(0, 160 - 101);
         no_next_state = "state_street_name";
       }
-      console.log(">>>>>>>>", full_address);
+
       return new MenuState(name, {
         question: $(
           [
