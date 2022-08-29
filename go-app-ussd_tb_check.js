@@ -1217,6 +1217,7 @@ go.app = function () {
       var payload = {
         data: {
           commit_get_tested: answers.state_commit_to_get_tested ? "yes" : "no",
+          "source": "USSD"
         },
         headers: {
           Authorization: ["Token " + self.im.config.healthcheck.token],
