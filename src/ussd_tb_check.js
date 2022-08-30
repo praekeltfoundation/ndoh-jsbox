@@ -1161,13 +1161,7 @@ go.app = function () {
           [
             "Your replies to the questions show you need a TB test this week.",
             "",
-            "Go to your clinic for a free TB test.",
-            "",
-            "Group arm is {{arm}}",
-            "",
-            "Consent is {{consent}}",
-            "",
-            "TBCheck_ID is {{tbcheck_id}}"
+            "Go to your clinic for a free TB test."
           ].join("\n")
         ).context({
           arm: arm,
