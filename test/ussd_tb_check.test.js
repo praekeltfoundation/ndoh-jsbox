@@ -22,7 +22,8 @@ describe("ussd_tb_check app", function () {
       rapidpro: {
         base_url: "https://rapidpro",
         token: "rapidpro-token",
-        privacy_policy_sms_flow: "privacy-policy-flow-uuid"
+        privacy_policy_sms_flow: "privacy-policy-flow-uuid",
+        tbcheck_survey_flow_uuid: "tbcheck-survey-flow-uuid"
       },
       activations: {
         to_regex: "\\\*\\d\+\\\*\\d\+\\\*\(\[\\d\]\+\)#",
@@ -32,7 +33,6 @@ describe("ussd_tb_check app", function () {
           "6": "skip_location_2022",
         }
       },
-      tbcheck_survey_flow_uuid: "tbcheck-survey-flow-uuid"
     });
   });
 

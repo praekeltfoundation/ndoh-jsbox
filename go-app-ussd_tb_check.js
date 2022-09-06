@@ -1480,7 +1480,7 @@ go.app = function () {
       };
       return self.rapidpro
           .start_flow(
-            self.im.config.tbcheck_survey_flow_uuid, 
+            self.im.config.rapidpro.tbcheck_survey_flow_uuid, 
             null, 
             "whatsapp:" + _.trim(msisdn, "+"), data)
           .then(function() {
