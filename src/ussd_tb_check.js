@@ -270,12 +270,7 @@ go.app = function () {
     });
 
     self.states.add("state_language", function (name) {
-      var activation = self.im.user.answers.activation;
       var next_state = "state_age";
-
-      if (activation === "tb_study_a") {
-        next_state = "state_research_consent";
-      }
 
       if (self.im.user.answers.state_language) {
         return self.im.user.set_lang(self.im.user.answers.state_language)
@@ -307,10 +302,10 @@ go.app = function () {
     });
 
     self.add("state_research_consent", function(name) {
-      var next_state = "state_language";
-      if (_.toUpper(self.im.user.answers.state_research_consent) === "YES") {
-        return self.states.create(next_state);
+      if (self.im.user.answers.state_age === "<18" || _.toUpper(self.im.user.answers.state_research_consent) === "YES") {
+        return self.states.create("state_gender");
       }
+
       return new ChoiceState(name, {
           question: $(
               "We may ask you a few questions for research after you've completed " +
@@ -326,11 +321,17 @@ go.app = function () {
               new Choice("Yes", $("Yes")),
               new Choice("No", $("No, thank you")),
           ],
-          next: "state_age",
+          next: "state_gender",
       });
   });
 
     self.add("state_age", function (name) {
+      var activation = self.im.user.answers.activation;
+      var next_state = "state_gender";
+
+      if (activation === "tb_study_a") {
+        next_state = "state_research_consent";
+      }
       if (self.im.user.answers.state_age) {
         return self.states.create("state_gender");
       }
@@ -346,7 +347,7 @@ go.app = function () {
           new Choice("40-65", $("40-65")),
           new Choice(">65", $("over 65")),
         ],
-        next: "state_gender",
+        next: next_state,
       });
     });
 
