@@ -239,6 +239,10 @@ go.app = function () {
       var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
       var activation = self.get_activation();
 
+      if (activation === "tb_study_a_survey") {
+        return self.states.create("state_survey_start");
+      }
+
       return new JsonApi(self.im)
         .get(
           self.im.config.healthcheck.url +
@@ -272,6 +276,7 @@ go.app = function () {
                 return self.states.create("state_terms");
               });
             }
+            
             return self.states.create("state_welcome");
           },
           function (e) {
@@ -382,7 +387,8 @@ go.app = function () {
 
       var flow_uuid = self.im.config.rapidpro.privacy_policy_sms_flow;
       var msisdn = utils.normalize_msisdn(
-        _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
+        _.get(
+          self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
       var data = {"hc_type": "tb"};
       if (self.im.user.answers.state_language) {
         data.language = self.im.user.answers.state_language;
@@ -426,10 +432,6 @@ go.app = function () {
         next_state = "state_research_consent";
       }
 
-      if (activation === "tb_study_a_survey") {
-        next_state = "state_survey_start";
-      }
-
       if (self.im.user.answers.state_language) {
         return self.im.user.set_lang(self.im.user.answers.state_language)
         .then(function() {
@@ -460,10 +462,10 @@ go.app = function () {
     });
 
     self.add("state_research_consent", function(name) {
-      var next_state = "state_language";
-      if (_.toUpper(self.im.user.answers.state_research_consent) === "YES") {
-        return self.states.create(next_state);
+      if (self.im.user.answers.state_age === "<18" || _.toUpper(self.im.user.answers.state_research_consent) === "YES") {
+        return self.states.create("state_gender");
       }
+
       return new ChoiceState(name, {
           question: $(
               "We may ask you a few questions for research after you've completed " +
@@ -479,11 +481,17 @@ go.app = function () {
               new Choice("Yes", $("Yes")),
               new Choice("No", $("No, thank you")),
           ],
-          next: "state_age",
+          next: "state_gender",
       });
   });
 
     self.add("state_age", function (name) {
+      var activation = self.im.user.answers.activation;
+      var next_state = "state_gender";
+
+      if (activation === "tb_study_a") {
+        next_state = "state_research_consent";
+      }
       if (self.im.user.answers.state_age) {
         return self.states.create("state_gender");
       }
@@ -499,7 +507,7 @@ go.app = function () {
           new Choice("40-65", $("40-65")),
           new Choice(">65", $("over 65")),
         ],
-        next: "state_gender",
+        next: next_state,
       });
     });
 
@@ -1314,13 +1322,7 @@ go.app = function () {
           [
             "Your replies to the questions show you need a TB test this week.",
             "",
-            "Go to your clinic for a free TB test.",
-            "",
-            "Group arm is {{arm}}",
-            "",
-            "Consent is {{consent}}",
-            "",
-            "TBCheck_ID is {{tbcheck_id}}"
+            "Go to your clinic for a free TB test."
           ].join("\n")
         ).context({
           arm: arm,
@@ -1340,6 +1342,11 @@ go.app = function () {
     });
 
     self.add("state_survey_start", function (name) {
+      var end = "state_survey_double_participation";
+      var survey_complete = _.toUpper(_.get(self.im.user.get_answer("contact"), "fields.survey_complete", $("None")));
+      if (survey_complete === "TRUE") {
+        return self.states.create(end);
+      }
       return new MenuState(name, {
         question: $(
           "We will use this information to see if TB HealthCheck helps people. " +
@@ -1782,13 +1789,20 @@ go.app = function () {
     });
 
     self.states.add("state_survey_end", function (name) {
-      //var rapidpro = "state_trigger_rapidpro_survey_flow";
-      //if (typeof self.im.user.answers.state_submit_clinic_feedback != "undefined"){
-      //  return self.states.create(rapidpro);
-      //}
       var text = $(
         "Thank you for taking part in the survey. " +
         "Many people don't realise that TB is cureable and test too late."
+        );
+      return new EndState(name, {
+        text: text,
+        next: "state_start",
+      });
+    });
+    self.states.add("state_survey_double_participation", function (name) {
+      var text = $(
+        "Unfortunately, you cannot participate in the study more than " +
+        "once. You can still continue with a TB Check but you will not " +
+        "be included in the study."
         );
       return new EndState(name, {
         text: text,

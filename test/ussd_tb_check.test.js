@@ -588,7 +588,14 @@ describe("ussd_tb_check app", function () {
       return tester.setup.user
         .state("state_research_consent")
         .setup.user.answer("state_research_consent", "yes")
-        .check.user.state("state_language")
+        .check.user.state("state_gender")
+        .run();
+    });
+    it("should skip research consent for minor", function () {
+      return tester.setup.user
+        .state("state_research_consent")
+        .setup.user.answer("state_age", "<18")
+        .check.user.state("state_gender")
         .run();
     });
     it("should show research consent if NO", function () {
@@ -598,11 +605,11 @@ describe("ussd_tb_check app", function () {
         .check.user.state("state_research_consent")
         .run();
     });
-    it("display research consent", function () {
+    it("display research consent for the study", function () {
       return tester.setup.user
-        .state("state_language")
+        .state("state_research_consent")
+        .setup.user.answer("state_age", "18-39")
         .setup.user.answer("activation", "tb_study_a")
-        .input("1")
         .check.interaction({
           state: "state_research_consent",
           reply: [
@@ -611,6 +618,27 @@ describe("ussd_tb_check app", function () {
             "\nReply:",
             "1. Yes",
             "2. No, thank you"
+          ].join("\n"),
+          char_limit: 160,
+      })
+      .run();
+    });
+    it("display research consent", function () {
+      return tester.setup.user
+        .state("state_research_consent")
+        .setup.user.answer("state_age", "18-39")
+        .setup.user.answer("activation", "tb_study_a")
+        .input("1")
+        .check.interaction({
+          state: "state_gender",
+          reply: [
+            "Which gender do you identify as?:",
+            "",
+            "Reply with a number",
+            "1. MALE",
+            "2. FEMALE",
+            "3. OTHER",
+            "4. RATHER NOT SAY"
           ].join("\n"),
           char_limit: 160,
       })
@@ -639,15 +667,15 @@ describe("ussd_tb_check app", function () {
         .state("state_research_consent")
         .input("2")
         .check.interaction({
-          state: "state_age",
+          state: "state_gender",
           reply: [
-            "How old are you?",
+            "Which gender do you identify as?:",
             "",
             "Reply with a number",
-            "1. under 18",
-            "2. 18-39",
-            "3. 40-65",
-            "4. over 65"
+            "1. MALE",
+            "2. FEMALE",
+            "3. OTHER",
+            "4. RATHER NOT SAY"
           ].join("\n"),
           char_limit: 160,
       })
