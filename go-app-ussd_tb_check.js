@@ -426,6 +426,10 @@ go.app = function () {
         next_state = "state_research_consent";
       }
 
+      if (activation === "tb_study_a_survey") {
+        next_state = "state_survey_start";
+      }
+
       if (self.im.user.answers.state_language) {
         return self.im.user.set_lang(self.im.user.answers.state_language)
         .then(function() {
@@ -1332,6 +1336,463 @@ go.app = function () {
       return new EndState(name, {
         next: "state_start",
         text: text,
+      });
+    });
+
+    self.add("state_survey_start", function (name) {
+      return new MenuState(name, {
+        question: $(
+          "We will use this information to see if TB HealthCheck helps people. " +
+          "To continue, reply YES. For more on TB HealthCheck and the research, " +
+          "reply MORE."
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("state_submit_tb_check_efficacy_option", $("Yes")),
+            new Choice("state_faq", $("More"))
+            ],
+      });
+    });
+
+    self.add("state_submit_tb_check_efficacy_option", function (name) {
+      return new ChoiceState(name, {
+        question: $(
+          "Did you find TB HealthCheck useful?"
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("no", $("No")),
+            new Choice("unsure", $("Don't know")),
+            new Choice("yes", $("Yes"))
+            ],
+        next: "state_submit_clinic_delay",
+      });
+    });
+
+    self.add("state_submit_clinic_delay", function (name) {
+      return new ChoiceState(name, {
+        question: $(
+          "I did not go to the clinic for a TB test because " +
+          "it takes too much time. Do you agree?"
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("yes", $("Agree")),
+            new Choice("unsure", $("Don't know")),
+            new Choice("no", $("Disagree"))
+            ],
+        next: "state_submit_clinic_proximity",
+      });
+    });
+
+    self.add("state_submit_clinic_proximity", function (name) {
+      return new ChoiceState(name, {
+        question: $(
+          "I did not go to the clinic for a TB test because " +
+          "there are no clinics close to me."
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("yes", $("Agree")),
+            new Choice("unsure", $("Don't know")),
+            new Choice("no", $("Disagree"))
+            ],
+        next: "state_submit_trauma",
+      });
+    });
+
+    self.add("state_submit_trauma", function (name) {
+      return new ChoiceState(name, {
+        question: $(
+          "I did not go to the clinic for a TB test because " +
+          "I do not want to think about having TB. " +
+          "Do you agree?"
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("yes", $("Agree")),
+            new Choice("unsure", $("Don't know")),
+            new Choice("no", $("Disagree"))
+            ],
+        next: "state_submit_clinic_feedback",
+      });
+    });
+
+    self.add("state_submit_clinic_feedback", function (name) {
+      return new FreeText(name, {
+        question: $(
+          "Are there any other reasons why you did not go " +
+          "to the clinic for a TB test?" +
+          "Reply in your own words."
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        next: "state_trigger_rapidpro_survey_flow",
+      });
+    });
+
+    self.add("state_trigger_rapidpro_survey_flow", function(name, opts) {
+      var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+      var answers = self.im.user.answers;
+      var activation = self.get_activation();
+      var data = {
+          activation: activation,
+          efficacy: answers.state_submit_tb_check_efficacy_option,
+          clinic_delay: answers.state_submit_tb_check_efficacy_option,
+          proximity: answers.state_submit_clinic_proximity,
+          trauma: answers.state_submit_trauma,
+          clinic_feedback: answers.state_submit_clinic_feedback
+      };
+      return self.rapidpro
+          .start_flow(
+            self.im.config.tbcheck_survey_flow_uuid, 
+            null, 
+            "whatsapp:" + _.trim(msisdn, "+"), data)
+          .then(function() {
+              return self.states.create("state_survey_thanks_airtime");
+          }).catch(function(e) {
+              // Go to error state after 3 failed HTTP requests
+              opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+              if (opts.http_error_count === 3) {
+                  self.im.log.error(e.message);
+                  return self.states.create("__error__", {
+                      return_state: name
+                  });
+              }
+              return self.states.create(name, opts);
+          });
+  });
+
+    self.add("state_survey_thanks_airtime", function (name) {
+      return new MenuState(name, {
+        question: $(
+          "Thank you for taking part in the survey. " +
+          "Your R10 in airtime is on its way!"
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("state_survey_end", $("Next"))
+            ],
+      });
+    });
+
+    self.add("state_faq", function (name) {
+      return new MenuState(name, {
+        question: $(
+          "What would you like to know?"
+        ),
+        error: $([
+          "Please reply with the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("state_faq_research", $("More about the research?")),
+            new Choice("state_faq_information", $("What information will you ask me for?")),
+            new Choice("state_faq_sms", $("Why did I get the SMS?")),
+            new Choice("state_faq_next_steps", $("What I'll need to do?")),
+            new Choice("state_faq_2", $("Next")),
+            ],
+      });
+    });
+
+    self.add("state_faq_2", function (name) {
+      return new MenuState(name, {
+        question: $(
+          "What would you like to know?"
+        ),
+        error: $([
+          "Please reply with the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("state_faq_midway", $("Can I stop halfway through the survey?")),
+            new Choice("state_faq_risks", $("Are there costs or risks to me?")),
+            new Choice("state_faq_privacy", $("What happens to the information?")),
+            new Choice("state_faq", $("Back")),
+            new Choice("state_faq_unhappy", $("Next")),
+            ],
+      });
+    });
+
+    self.add("state_faq_research", function (name) {
+      return new MenuState(name, {
+        question: $(
+          "We are conducting a study about the TB HealthCheck tool. " +
+          "We will ask you about your choices in relation to the tool."
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("state_faq", $("Back")),
+            ],
+      });
+    });
+
+    self.add("state_faq_information", function (name) {
+      return new MenuState(name, {
+        question: $(
+          "We'll never ask your name, but may ask your ID number " +
+          "so that we can help to link you to a facility to get tested."
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("state_faq_sms", $("Next")),
+            new Choice("state_faq", $("Back")),
+            ],
+      });
+    });
+
+    self.add("state_faq_sms", function (name) {
+      return new MenuState(name, {
+        question: $(
+          "We have chosen you at random from a database hosted " +
+          "by the Western Cape Department of Health."
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("state_faq", $("Back")),
+            ],
+      });
+    });
+
+    self.add("state_faq_next_steps", function (name) {
+      return new MenuState(name, {
+        question: $(
+          "We will ask you a few questions and it will take about " +
+          "6 minutes of your time."
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("state_faq", $("Back")),
+            ],
+      });
+    });
+
+    self.add("state_faq_midway", function (name) {
+      return new MenuState(name, {
+        question: $(
+          "That's OK. You can stop at " +
+          "any point."
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("state_faq", $("Back to all questions")),
+            ],
+      });
+    });
+
+    self.add("state_faq_risks", function (name) {
+      return new MenuState(name, {
+        question: $(
+          "That's OK. You can stop at " +
+          "any point."
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("state_faq", $("Back to all questions")),
+            ],
+      });
+    });
+
+    self.add("state_faq_privacy", function (name) {
+      return new MenuState(name, {
+        question: $(
+          "We will store it safely as required by law and it will only " +
+          "be used by the Stellenbosch University and Erasmus " +
+          "University researchers."
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("state_faq_privacy_2", $("Next")),
+            new Choice("state_faq", $("Back to all questions")),
+            ],
+      });
+    });
+
+    self.add("state_faq_privacy_2", function (name) {
+      return new MenuState(name, {
+        question: $(
+          "The information is stored without your " +
+          "name and ID."
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("state_faq_privacy_3", $("Next")),
+            new Choice("state_faq", $("Back to all questions")),
+            ],
+      });
+    });
+
+    self.add("state_faq_privacy_3", function (name) {
+      return new MenuState(name, {
+        question: $(
+          "We will share what we find with other researchers and journals, " +
+          "but what we share will be based on averages and totals from the " +
+          "full group of participants."
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("state_faq", $("Back to all questions")),
+            ],
+      });
+    });
+    
+    self.add("state_faq_unhappy", function (name) {
+      return new MenuState(name, {
+        question: $(
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("state_unhappy_2", $("What can I do if I am unhappy?")),
+            new Choice("state_survey_sort", $("Return to the survey")),
+            new Choice("state_faq_2", $("Back")),
+            ],
+      });
+    });
+
+    self.add("state_faq_unhappy_2", function (name) {
+      return new MenuState(name, {
+        question: $(
+          "If you have questions or doubts about this invitation, " +
+          "please contact Ronelle Burger on 0838863016 or at rburger@sun.ac.za." 
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("state_unhappy_3", $("Next")),
+            new Choice("state_faq", $("Back to all questions")),
+            ],
+      });
+    });
+
+    self.add("state_faq_unhappy_3", function (name) {
+      return new MenuState(name, {
+        question: $(
+          "If you have questions or doubts about this invitation, " +
+          "please contact Ronelle Burger on 0838863016 or at rburger@sun.ac.za." 
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("state_faq", $("Back to all questions")),
+            ],
+      });
+    });
+
+    self.add("state_survey_sort", function (name) {
+      var end = "state_survey_end";
+      var start = "state_survey_start";
+      var survey_complete = _.toUpper(_.get(self.im.user.get_answer("contact"), "fields.survey_complete", $("None")));
+      if (survey_complete === "TRUE") {
+        return self.states.create(end);
+      }
+      else {
+        return self.states.create(start);
+      }
+    });
+
+    self.states.add("state_survey_end", function (name) {
+      //var rapidpro = "state_trigger_rapidpro_survey_flow";
+      //if (typeof self.im.user.answers.state_submit_clinic_feedback != "undefined"){
+      //  return self.states.create(rapidpro);
+      //}
+      var text = $(
+        "Thank you for taking part in the survey. " +
+        "Many people don't realise that TB is cureable and test too late."
+        );
+      return new EndState(name, {
+        text: text,
+        next: "state_start",
       });
     });
   });
