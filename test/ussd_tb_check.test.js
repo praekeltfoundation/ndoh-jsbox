@@ -31,6 +31,7 @@ describe("ussd_tb_check app", function () {
           "8": "tb_soccer_1_2022",
           "9": "tb_soccer_2_2022",
           "6": "skip_location_2022",
+          "7": "tb_study_a_survey",
         }
       },
     });
@@ -2119,6 +2120,14 @@ describe("ussd_tb_check app", function () {
           char_limit: 160,
         })
         .run();
+    });
+    it("state_start skip to survey", function() {
+      
+      return tester
+      .setup.user.state("state_start")
+      .inputs({ session_event: "continue", to_addr: "*123*123*7#" })
+      .check.user.state("state_survey_start")
+      .run();
     });
     it("should show FAQ menu < 160", function () {
       return tester.setup.user

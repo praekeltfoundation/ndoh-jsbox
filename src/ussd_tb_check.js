@@ -64,6 +64,7 @@ go.app = function () {
         if (self.im.msg.session_event !== "new") return creator(name, opts);
 
         var timeout_opts = opts || {};
+
         timeout_opts.name = name;
         return self.states.create("state_timed_out", timeout_opts);
       });
@@ -89,7 +90,6 @@ go.app = function () {
     self.states.add("state_start", function (name, opts) {
       var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
       var activation = self.get_activation();
-
       if (activation === "tb_study_a_survey") {
         return self.states.create("state_survey_start");
       }
