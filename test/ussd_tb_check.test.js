@@ -104,7 +104,7 @@ describe("ussd_tb_check app", function () {
           }
       });
       })
-      .input({ session_event: "new", to_addr: "*123*123*5#" })
+      .input({ session_event: "new", to_addr: "*123*123*4#" })
       .check.user.answer("activation", null)
       .check.user.state("state_welcome")
       .run();
@@ -2207,7 +2207,7 @@ describe("ussd_tb_check app", function () {
 
       return tester
       .setup.user.state("state_start")
-      .inputs({ session_event: "continue", to_addr: "*123*123*7#" })
+      .inputs({ session_event: "continue", to_addr: "*123*123*5#" })
       .check.user.state("state_survey_start")
       .run();
     });
