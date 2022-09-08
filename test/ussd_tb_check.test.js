@@ -32,9 +32,10 @@ describe("ussd_tb_check app", function () {
           "8": "tb_soccer_1_2022",
           "9": "tb_soccer_2_2022",
           "6": "skip_location_2022",
-          "7": "tb_study_a_survey",
+          "7": "tb_study_a",
+          "5": "tb_study_a_survey",
         }
-      },
+      }
     });
   });
 
@@ -104,7 +105,7 @@ describe("ussd_tb_check app", function () {
           }
       });
       })
-      .input({ session_event: "new", to_addr: "*123*123*5#" })
+      .input({ session_event: "new", to_addr: "*123*123*4#" })
       .check.user.answer("activation", null)
       .check.user.state("state_welcome")
       .run();
@@ -586,25 +587,76 @@ describe("ussd_tb_check app", function () {
         .check.user.state("state_language")
         .run();
     });
-    it("should skip research consent", function () {
-      return tester.setup.user
-        .state("state_research_consent")
-        .setup.user.answer("state_research_consent", "yes")
-        .check.user.state("state_gender")
-        .run();
+    it("should show an error if users already completed a study", function () {
+      return tester
+      .setup(function (api) {
+        api.http.fixtures.add({
+          request: {
+              url: "http://healthcheck/v2/healthcheckuserprofile/+27123456789/",
+              method: "GET"
+          },
+          response: {
+              code: 200,
+              data: {
+                activation: "tb_study_a",
+                state_gender: "MALE",
+                state_province: "ZA-WC",
+                state_city: null,
+                city_location: "+00-025/",
+                state_age: "18-39",
+                state_language: "eng",
+                data: {tb_privacy_policy_accepted: "yes"},
+              }
+          }
+      });
+      })
+      .input({ session_event: "new", to_addr: "*123*123*7#" })
+      .check.interaction({
+          state: "state_study_already_completed",
+          reply: [
+            "Unfortunately, you cannot participate in the study "+
+            "more than once. You can still continue with a TB Check "+
+            "but you will not be included in the study.",
+            "1. Continue"
+          ].join("\n"),
+          char_limit: 160,
+      })
+      .run();
     });
-    it("should skip research consent for minor", function () {
+    it("should skip give minor error message", function () {
       return tester.setup.user
         .state("state_research_consent")
         .setup.user.answer("state_age", "<18")
+        .check.user.state("state_study_minor_error_p1")
+        .run();
+    });
+    it("should display error message for minor", function () {
+      return tester.setup.user
+        .state("state_research_consent")
+        .setup.user.answer("state_age", "<18")
+        .check.interaction({
+          state: "state_study_minor_error_p1",
+          reply: [
+            "Unfortunately you cant participate in the study if you are "+
+            "younger than 18.",
+            "1. Next"
+          ].join("\n"),
+          char_limit: 160,
+      })
+        .run();
+    });
+    it("should show state_research_consent_no for research consent NO", function () {
+      return tester.setup.user
+        .state("state_research_consent")
+        .input("1")
         .check.user.state("state_gender")
         .run();
     });
-    it("should show research consent if NO", function () {
+    it("should show research consent after research consent no", function () {
       return tester.setup.user
-        .state("state_research_consent")
-        .setup.user.answer("state_research_consent", "no")
-        .check.user.state("state_research_consent")
+        .state("state_research_consent_no")
+        .input("1")
+        .check.user.state("state_gender")
         .run();
     });
     it("display research consent for the study", function () {
@@ -619,13 +671,14 @@ describe("ussd_tb_check app", function () {
             "Are you willing to take part?",
             "\nReply:",
             "1. Yes",
-            "2. No, thank you"
+            "2. No",
+            "3. More info"
           ].join("\n"),
           char_limit: 160,
       })
       .run();
     });
-    it("display research consent", function () {
+    it("display research consent for user older than 18", function () {
       return tester.setup.user
         .state("state_research_consent")
         .setup.user.answer("state_age", "18-39")
@@ -664,10 +717,10 @@ describe("ussd_tb_check app", function () {
       })
       .run();
     });
-    it("should exit on no consent", function () {
+    it("should show state_research_consent on yes consent", function () {
       return tester.setup.user
         .state("state_research_consent")
-        .input("2")
+        .input("1")
         .check.interaction({
           state: "state_gender",
           reply: [
@@ -678,6 +731,35 @@ describe("ussd_tb_check app", function () {
             "2. FEMALE",
             "3. OTHER",
             "4. RATHER NOT SAY"
+          ].join("\n"),
+          char_limit: 160,
+      })
+      .run();
+    });
+  it("should show state_research_consent_no on no consent", function () {
+      return tester.setup.user
+        .state("state_research_consent")
+        .input("2")
+        .check.interaction({
+          state: "state_research_consent_no",
+          reply: [
+            "Okay, no problem. You will not be included in the research, "+
+            "but you can still continue to check if you need to take a TB test.",
+            "1. Next"
+          ].join("\n"),
+          char_limit: 160,
+      })
+      .run();
+    });
+    it("should show state_research_consent_more on more consent info", function () {
+      return tester.setup.user
+        .state("state_research_consent")
+        .input("3")
+        .check.interaction({
+          state: "state_research_consent_more",
+          reply: [
+            "This is the placeholder for more research consent.",
+            "1. Next"
           ].join("\n"),
           char_limit: 160,
       })
@@ -2123,10 +2205,10 @@ describe("ussd_tb_check app", function () {
         .run();
     });
     it("state_start skip to survey", function() {
-      
+
       return tester
       .setup.user.state("state_start")
-      .inputs({ session_event: "continue", to_addr: "*123*123*7#" })
+      .inputs({ session_event: "continue", to_addr: "*123*123*5#" })
       .check.user.state("state_survey_start")
       .run();
     });
