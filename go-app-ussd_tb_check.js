@@ -265,7 +265,13 @@ go.app = function () {
               state_language: response.data.language,
               state_research_consent: response.data.research_consent,
               state_privacy_policy_accepted: _.get(response.data, "data.tb_privacy_policy_accepted"),
+              study_completed: response.data.activation,
             };
+
+            if (activation === "tb_study_a" && response.data.activation === "tb_study_a") {
+                return self.states.create("state_study_already_completed");
+            }
+
             if (response.data.language != "eng"){
               self.im.user.set_lang(response.data.language)
               .then(function() {
@@ -289,6 +295,20 @@ go.app = function () {
             return self.states.create(name, opts);
           }
         );
+    });
+
+    self.states.add("state_study_already_completed", function(name) {
+      self.im.user.answers = { activation: null };
+      return new MenuState(name, {
+        question: $(
+          "Unfortunately, you cannot participate in the study more " +
+          "than once. You can still continue with a TB Check but " +
+          "you will not be included in the study."
+        ),
+        accept_labels: true,
+        choices: [
+            new Choice("state_welcome", $("Continue"))]
+      });
     });
 
     self.states.add("state_welcome", function (name) {
@@ -451,11 +471,11 @@ go.app = function () {
     });
 
     self.add("state_research_consent", function(name) {
-      if (self.im.user.answers.state_age === "<18" || _.toUpper(self.im.user.answers.state_research_consent) === "YES") {
-        return self.states.create("state_gender");
+      if (self.im.user.answers.state_age === "<18"){
+        return self.states.create("state_study_minor_error_p1");
       }
 
-      return new ChoiceState(name, {
+      return new MenuState(name, {
           question: $(
               "We may ask you a few questions for research after you've completed " +
               "your TB HealthCheck." +
@@ -467,10 +487,10 @@ go.app = function () {
           ),
           accept_labels: true,
           choices: [
-              new Choice("Yes", $("Yes")),
-              new Choice("No", $("No, thank you")),
+              new Choice("state_gender", $("Yes")),
+              new Choice("state_research_consent_no", $("No")),
+              new Choice("state_research_consent_more", $("More info")),
           ],
-          next: "state_gender",
       });
   });
 
@@ -497,6 +517,53 @@ go.app = function () {
           new Choice(">65", $("over 65")),
         ],
         next: next_state,
+      });
+    });
+
+    self.states.add("state_study_minor_error_p1", function(name) {
+      return new MenuState(name, {
+        question: $(
+          "Unfortunately you cant participate in the study "+
+          "if you are younger than 18."
+        ),
+        accept_labels: true,
+        choices: [
+            new Choice("state_study_minor_error_p2", $("Next"))],
+      });
+    });
+
+    self.states.add("state_study_minor_error_p2", function(name) {
+      return new MenuState(name, {
+        question: $(
+          "You can still continue with a "+
+          "TB Check but you will not be included in the study"
+        ),
+        accept_labels: true,
+        choices: [
+            new Choice("state_gender", $("Next"))],
+      });
+    });
+
+    self.states.add("state_research_consent_no", function(name) {
+      return new MenuState(name, {
+        question: $(
+          "Okay, no problem. You will not be included in the research, "+
+          "but you can still continue to check if you need to take a TB test."
+        ),
+        accept_labels: true,
+        choices: [
+            new Choice("state_gender", $("Next"))],
+      });
+    });
+
+    self.states.add("state_research_consent_more", function(name) {
+      return new MenuState(name, {
+        question: $(
+          "This is the placeholder for more research consent."
+        ),
+        accept_labels: true,
+        choices: [
+            new Choice("state_research_consent", $("Next"))],
       });
     });
 
