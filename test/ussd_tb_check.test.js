@@ -1,3 +1,4 @@
+var _ = require("lodash");
 var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
 var assert = require("assert");
@@ -21,7 +22,8 @@ describe("ussd_tb_check app", function () {
       rapidpro: {
         base_url: "https://rapidpro",
         token: "rapidpro-token",
-        privacy_policy_sms_flow: "privacy-policy-flow-uuid"
+        privacy_policy_sms_flow: "privacy-policy-flow-uuid",
+        tbcheck_survey_flow_uuid: "tbcheck-survey-flow-uuid"
       },
       activations: {
         to_regex: "\\\*\\d\+\\\*\\d\+\\\*\(\[\\d\]\+\)#",
@@ -30,6 +32,7 @@ describe("ussd_tb_check app", function () {
           "9": "tb_soccer_2_2022",
           "6": "skip_location_2022",
           "7": "tb_study_a",
+          "5": "tb_study_a_survey",
         }
       }
     });
@@ -2182,5 +2185,122 @@ describe("ussd_tb_check app", function () {
       .run();
     });
     });
+  });
+  describe("survey_states", function () {
+    it("should show efficacy state", function () {
+      return tester.setup.user
+        .state("state_survey_start")
+        .input("Yes")
+        .check.interaction({
+          state: "state_submit_tb_check_efficacy_option",
+          reply: [
+            "Did you find TB HealthCheck useful?",
+            "1. No",
+            "2. Don't know",
+            "3. Yes",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("state_start skip to survey", function() {
+
+      return tester
+      .setup.user.state("state_start")
+      .inputs({ session_event: "continue", to_addr: "*123*123*7#" })
+      .check.user.state("state_survey_start")
+      .run();
+    });
+    it("should show FAQ menu < 160", function () {
+      return tester.setup.user
+        .state("state_survey_start")
+        .input("More")
+        .check.interaction({
+          state: "state_faq",
+          reply: [
+            "What would you like to know?",
+            "1. More about the research?",
+            "2. What information will you ask me for?",
+            "3. Why did I get the SMS?",
+            "4. What I'll need to do?",
+            "5. Next"
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should show FAQ_2 menu < 160", function () {
+      return tester.setup.user
+        .state("state_faq")
+        .input("5")
+        .check.interaction({
+          state: "state_faq_2",
+          reply: [
+            "What would you like to know?",
+            "1. Can I stop halfway through the survey?",
+            "2. Are there costs or risks to me?",
+            "3. What happens to the information?",
+            "4. Back",
+            "5. Next"
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should end if contact has already completed the survey", function () {
+      return tester.setup.user
+        .state("state_survey_sort")
+        .setup.user.answer("contact", {fields: {survey_complete: "TRUE"}})
+        .check.interaction({
+          state: "state_survey_end",
+          reply: [
+            "Thank you for taking part in the survey. " +
+            "Many people don't realise that TB is cureable and test too late."
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should submit survey replies to Rapidpro", function() {
+      return tester
+          .setup.user.state("state_submit_clinic_feedback")
+          .setup.user.answers({
+              state_submit_tb_check_efficacy_option: "yes",
+              state_submit_clinic_delay: "yes",
+              state_submit_clinic_proximity: "yes",
+              state_submit_trauma: "yes"
+          })
+          .setup(function(api) {
+              api.http.fixtures.add(
+                  fixtures_rapidpro.start_flow(
+                      "tbcheck-survey-flow-uuid", null, "whatsapp:27123456789", {
+                        activation: null,
+                        efficacy: "yes",
+                        clinic_delay: "yes",
+                        proximity: "yes",
+                        trauma: "yes",
+                        clinic_feedback: "The long waiting time discourages me",
+                      }
+                  )
+              );
+          })
+          .input("The long waiting time discourages me")
+          .check.interaction({
+              state: "state_survey_thanks_airtime",
+              reply:
+                  "Thank you for taking part in the survey. " +
+                  "Your R10 in airtime is on its way!\n" +
+                  "1. Next"
+          })
+          .check(function(api) {
+              assert.equal(api.http.requests.length, 1);
+              var urls = _.map(api.http.requests, "url");
+              assert.deepEqual(urls, [
+                  "https://rapidpro/api/v2/flow_starts.json"
+              ]);
+              assert.equal(api.log.error.length, 0);
+          })
+          .run();
+  });
   });
 });
