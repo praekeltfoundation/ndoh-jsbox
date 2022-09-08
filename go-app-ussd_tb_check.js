@@ -1693,7 +1693,7 @@ go.app = function () {
     });
 
     self.add("state_faq_privacy", function (name) {
-      self.im.user.answers.faq = "state_faq_risks";
+      self.im.user.answers.faq = "state_faq_privacy";
       return self.states.create("state_send_faq_sms");
     });
     
