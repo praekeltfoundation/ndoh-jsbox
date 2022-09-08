@@ -23,7 +23,8 @@ describe("ussd_tb_check app", function () {
         base_url: "https://rapidpro",
         token: "rapidpro-token",
         privacy_policy_sms_flow: "privacy-policy-flow-uuid",
-        tbcheck_survey_flow_uuid: "tbcheck-survey-flow-uuid"
+        tbcheck_survey_flow_uuid: "tbcheck-survey-flow-uuid",
+        faq_sms_flow_uuid: "faq-sms-flow-uuid"
       },
       activations: {
         to_regex: "\\\*\\d\+\\\*\\d\+\\\*\(\[\\d\]\+\)#",
@@ -2163,6 +2164,20 @@ describe("ussd_tb_check app", function () {
           ].join("\n"),
           char_limit: 160,
         })
+        .run();
+    });
+    it("should show FAQ sms complete screen", function () {
+      return tester.setup.user
+        .state("state_faq")
+        .setup(function(api) {
+          api.http.fixtures.add(
+            fixtures_rapidpro.start_flow(
+                "faq-sms-flow-uuid", null, "tel:+27123456789", {"faq": "state_faq_research"}
+              )
+            );
+        })
+        .input("1")
+        .check.user.state("state_sms_complete")
         .run();
     });
     it("should end if contact has already completed the survey", function () {
