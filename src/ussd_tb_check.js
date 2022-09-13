@@ -1430,6 +1430,47 @@ go.app = function () {
       });
     });
 
+    self.states.add("state_send_faq_sms", function(name, opts) {
+      var next_state = "state_sms_complete";
+      var flow_uuid = self.im.config.rapidpro.faq_sms_flow_uuid;
+      var faq = self.im.user.answers.faq;
+      var msisdn = utils.normalize_msisdn(
+        _.get(
+          self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
+      var data = {"faq": faq};
+      return self.rapidpro
+        .start_flow(flow_uuid, null, "tel:" + msisdn, data)
+        .then(function() {
+            return self.states.create(next_state);
+        }).catch(function(e) {
+            // Go to error state after 3 failed HTTP requests
+            opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+            if(opts.http_error_count === 3) {
+                self.im.log.error(e.message);
+                return self.states.create("__error__", {return_state: name});
+            }
+            return self.states.create(name, opts);
+        });
+    });
+
+    self.add("state_sms_complete", function (name) {
+      return new MenuState(name, {
+        question: $(
+          "The FAQ has been sent to you on SMS. " +
+          "What would you like to do?"
+        ),
+        error: $([
+          "Please reply with the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("state_faq", $("Back to all questions")),
+            new Choice("state_survey_start", $("Back to survey")),
+            new Choice("state_end", $("Exit")),
+            ],
+      });
+    });
+
     self.add("state_faq", function (name) {
       return new MenuState(name, {
         question: $(
@@ -1469,225 +1510,43 @@ go.app = function () {
     });
 
     self.add("state_faq_research", function (name) {
-      return new MenuState(name, {
-        question: $(
-          "We are conducting a study about the TB HealthCheck tool. " +
-          "We will ask you about your choices in relation to the tool."
-        ),
-        error: $([
-          "Sorry, we don't understand. Please try again.",
-          "",
-          "Enter the number that matches your answer."
-      ].join("\n")),
-        accept_labels: true,
-        choices: [
-            new Choice("state_faq", $("Back")),
-            ],
-      });
+      self.im.user.answers.faq = "state_faq_research";
+      return self.states.create("state_send_faq_sms");
     });
 
     self.add("state_faq_information", function (name) {
-      return new MenuState(name, {
-        question: $(
-          "We'll never ask your name, but may ask your ID number " +
-          "so that we can help to link you to a facility to get tested."
-        ),
-        error: $([
-          "Sorry, we don't understand. Please try again.",
-          "",
-          "Enter the number that matches your answer."
-      ].join("\n")),
-        accept_labels: true,
-        choices: [
-            new Choice("state_faq_sms", $("Next")),
-            new Choice("state_faq", $("Back")),
-            ],
-      });
+      self.im.user.answers.faq = "state_faq_information";
+      return self.states.create("state_send_faq_sms");
     });
 
     self.add("state_faq_sms", function (name) {
-      return new MenuState(name, {
-        question: $(
-          "We have chosen you at random from a database hosted " +
-          "by the Western Cape Department of Health."
-        ),
-        error: $([
-          "Sorry, we don't understand. Please try again.",
-          "",
-          "Enter the number that matches your answer."
-      ].join("\n")),
-        accept_labels: true,
-        choices: [
-            new Choice("state_faq", $("Back")),
-            ],
-      });
+      self.im.user.answers.faq = "state_faq_sms";
+      return self.states.create("state_send_faq_sms");
     });
 
     self.add("state_faq_next_steps", function (name) {
-      return new MenuState(name, {
-        question: $(
-          "We will ask you a few questions and it will take about " +
-          "6 minutes of your time."
-        ),
-        error: $([
-          "Sorry, we don't understand. Please try again.",
-          "",
-          "Enter the number that matches your answer."
-      ].join("\n")),
-        accept_labels: true,
-        choices: [
-            new Choice("state_faq", $("Back")),
-            ],
-      });
+      self.im.user.answers.faq = "state_faq_next_steps";
+      return self.states.create("state_send_faq_sms");
     });
 
     self.add("state_faq_midway", function (name) {
-      return new MenuState(name, {
-        question: $(
-          "That's OK. You can stop at " +
-          "any point."
-        ),
-        error: $([
-          "Sorry, we don't understand. Please try again.",
-          "",
-          "Enter the number that matches your answer."
-      ].join("\n")),
-        accept_labels: true,
-        choices: [
-            new Choice("state_faq", $("Back to all questions")),
-            ],
-      });
+      self.im.user.answers.faq = "state_faq_midway";
+      return self.states.create("state_send_faq_sms");
     });
 
     self.add("state_faq_risks", function (name) {
-      return new MenuState(name, {
-        question: $(
-          "That's OK. You can stop at " +
-          "any point."
-        ),
-        error: $([
-          "Sorry, we don't understand. Please try again.",
-          "",
-          "Enter the number that matches your answer."
-      ].join("\n")),
-        accept_labels: true,
-        choices: [
-            new Choice("state_faq", $("Back to all questions")),
-            ],
-      });
+      self.im.user.answers.faq = "state_faq_risks";
+      return self.states.create("state_send_faq_sms");
     });
 
     self.add("state_faq_privacy", function (name) {
-      return new MenuState(name, {
-        question: $(
-          "We will store it safely as required by law and it will only " +
-          "be used by the Stellenbosch University and Erasmus " +
-          "University researchers."
-        ),
-        error: $([
-          "Sorry, we don't understand. Please try again.",
-          "",
-          "Enter the number that matches your answer."
-      ].join("\n")),
-        accept_labels: true,
-        choices: [
-            new Choice("state_faq_privacy_2", $("Next")),
-            new Choice("state_faq", $("Back to all questions")),
-            ],
-      });
-    });
-
-    self.add("state_faq_privacy_2", function (name) {
-      return new MenuState(name, {
-        question: $(
-          "The information is stored without your " +
-          "name and ID."
-        ),
-        error: $([
-          "Sorry, we don't understand. Please try again.",
-          "",
-          "Enter the number that matches your answer."
-      ].join("\n")),
-        accept_labels: true,
-        choices: [
-            new Choice("state_faq_privacy_3", $("Next")),
-            new Choice("state_faq", $("Back to all questions")),
-            ],
-      });
-    });
-
-    self.add("state_faq_privacy_3", function (name) {
-      return new MenuState(name, {
-        question: $(
-          "We will share what we find with other researchers and journals, " +
-          "but what we share will be based on averages and totals from the " +
-          "full group of participants."
-        ),
-        error: $([
-          "Sorry, we don't understand. Please try again.",
-          "",
-          "Enter the number that matches your answer."
-      ].join("\n")),
-        accept_labels: true,
-        choices: [
-            new Choice("state_faq", $("Back to all questions")),
-            ],
-      });
+      self.im.user.answers.faq = "state_faq_privacy";
+      return self.states.create("state_send_faq_sms");
     });
     
     self.add("state_faq_unhappy", function (name) {
-      return new MenuState(name, {
-        question: $(
-        ),
-        error: $([
-          "Sorry, we don't understand. Please try again.",
-          "",
-          "Enter the number that matches your answer."
-      ].join("\n")),
-        accept_labels: true,
-        choices: [
-            new Choice("state_unhappy_2", $("What can I do if I am unhappy?")),
-            new Choice("state_survey_sort", $("Return to the survey")),
-            new Choice("state_faq_2", $("Back")),
-            ],
-      });
-    });
-
-    self.add("state_faq_unhappy_2", function (name) {
-      return new MenuState(name, {
-        question: $(
-          "If you have questions or doubts about this invitation, " +
-          "please contact Ronelle Burger on 0838863016 or at rburger@sun.ac.za." 
-        ),
-        error: $([
-          "Sorry, we don't understand. Please try again.",
-          "",
-          "Enter the number that matches your answer."
-      ].join("\n")),
-        accept_labels: true,
-        choices: [
-            new Choice("state_unhappy_3", $("Next")),
-            new Choice("state_faq", $("Back to all questions")),
-            ],
-      });
-    });
-
-    self.add("state_faq_unhappy_3", function (name) {
-      return new MenuState(name, {
-        question: $(
-          "If you have questions or doubts about this invitation, " +
-          "please contact Ronelle Burger on 0838863016 or at rburger@sun.ac.za." 
-        ),
-        error: $([
-          "Sorry, we don't understand. Please try again.",
-          "",
-          "Enter the number that matches your answer."
-      ].join("\n")),
-        accept_labels: true,
-        choices: [
-            new Choice("state_faq", $("Back to all questions")),
-            ],
-      });
+      self.im.user.answers.faq = "state_faq_unhappy";
+      return self.states.create("state_send_faq_sms");
     });
 
     self.add("state_survey_sort", function (name) {
@@ -1712,6 +1571,7 @@ go.app = function () {
         next: "state_start",
       });
     });
+
     self.states.add("state_survey_double_participation", function (name) {
       var text = $(
         "Unfortunately, you cannot participate in the study more than " +
