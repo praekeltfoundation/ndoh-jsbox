@@ -346,20 +346,20 @@ go.app = function () {
           choices: [
               new Choice("state_gender", $("Yes")),
               new Choice("state_research_consent_no", $("No")),
-              new Choice("state_research_consent_more", $("More info")),
+              new Choice("state_send_faq_sms", $("More info")),
           ],
       });
   });
 
     self.add("state_age", function (name) {
       var activation = self.im.user.answers.activation;
-      var age = self.im.user.answers.state_age;
       var next_state = "state_gender";
 
-      if (activation === "tb_study_a" && age !== "<18") {
+      if (activation === "tb_study_a") {
         next_state = "state_research_consent";
       }
-      if (age && activation !== "tb_study_a") {
+
+      if (self.im.user.answers.state_age && activation !== "tb_study_a") {
         return self.states.create("state_gender");
       }
       return new ChoiceState(name, {
@@ -411,17 +411,6 @@ go.app = function () {
         accept_labels: true,
         choices: [
             new Choice("state_gender", $("Next"))],
-      });
-    });
-
-    self.states.add("state_research_consent_more", function(name) {
-      return new MenuState(name, {
-        question: $(
-          "This is the placeholder for more research consent."
-        ),
-        accept_labels: true,
-        choices: [
-            new Choice("state_research_consent", $("Next"))],
       });
     });
 
