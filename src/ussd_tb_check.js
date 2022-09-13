@@ -296,12 +296,7 @@ go.app = function () {
     });
 
     self.states.add("state_language", function (name) {
-      var activation = self.im.user.answers.activation;
       var next_state = "state_age";
-
-      if (activation === "tb_study_a") {
-        next_state = "state_research_consent";
-      }
 
       if (self.im.user.answers.state_language) {
         return self.im.user.set_lang(self.im.user.answers.state_language)
@@ -358,12 +353,13 @@ go.app = function () {
 
     self.add("state_age", function (name) {
       var activation = self.im.user.answers.activation;
+      var age = self.im.user.answers.state_age;
       var next_state = "state_gender";
 
-      if (activation === "tb_study_a") {
+      if (activation === "tb_study_a" && age !== "<18") {
         next_state = "state_research_consent";
       }
-      if (self.im.user.answers.state_age) {
+      if (age && activation !== "tb_study_a") {
         return self.states.create("state_gender");
       }
       return new ChoiceState(name, {
