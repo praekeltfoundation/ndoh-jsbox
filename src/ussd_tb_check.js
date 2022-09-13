@@ -296,12 +296,7 @@ go.app = function () {
     });
 
     self.states.add("state_language", function (name) {
-      var activation = self.im.user.answers.activation;
       var next_state = "state_age";
-
-      if (activation === "tb_study_a") {
-        next_state = "state_research_consent";
-      }
 
       if (self.im.user.answers.state_language) {
         return self.im.user.set_lang(self.im.user.answers.state_language)
@@ -351,7 +346,7 @@ go.app = function () {
           choices: [
               new Choice("state_gender", $("Yes")),
               new Choice("state_research_consent_no", $("No")),
-              new Choice("state_research_consent_more", $("More info")),
+              new Choice("state_send_faq_sms", $("More info")),
           ],
       });
   });
@@ -363,7 +358,8 @@ go.app = function () {
       if (activation === "tb_study_a") {
         next_state = "state_research_consent";
       }
-      if (self.im.user.answers.state_age) {
+
+      if (self.im.user.answers.state_age && activation !== "tb_study_a") {
         return self.states.create("state_gender");
       }
       return new ChoiceState(name, {
@@ -415,17 +411,6 @@ go.app = function () {
         accept_labels: true,
         choices: [
             new Choice("state_gender", $("Next"))],
-      });
-    });
-
-    self.states.add("state_research_consent_more", function(name) {
-      return new MenuState(name, {
-        question: $(
-          "This is the placeholder for more research consent."
-        ),
-        accept_labels: true,
-        choices: [
-            new Choice("state_research_consent", $("Next"))],
       });
     });
 

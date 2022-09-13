@@ -623,17 +623,25 @@ describe("ussd_tb_check app", function () {
       })
       .run();
     });
-    it("should skip give minor error message", function () {
+    it("should show minor error message for the study", function () {
       return tester.setup.user
         .state("state_research_consent")
         .setup.user.answer("state_age", "<18")
         .check.user.state("state_study_minor_error_p1")
         .run();
     });
+     it("should skip minor error message for the study", function () {
+      return tester.setup.user
+        .state("state_research_consent")
+        .setup.user.answer("state_age", "18-40")
+        .check.user.state("state_research_consent")
+        .run();
+    });
     it("should display error message for minor", function () {
       return tester.setup.user
         .state("state_research_consent")
         .setup.user.answer("state_age", "<18")
+        .setup.user.answer("activation", "tb_study_a")
         .check.interaction({
           state: "state_study_minor_error_p1",
           reply: [
@@ -745,20 +753,6 @@ describe("ussd_tb_check app", function () {
           reply: [
             "Okay, no problem. You will not be included in the research, "+
             "but you can still continue to check if you need to take a TB test.",
-            "1. Next"
-          ].join("\n"),
-          char_limit: 160,
-      })
-      .run();
-    });
-    it("should show state_research_consent_more on more consent info", function () {
-      return tester.setup.user
-        .state("state_research_consent")
-        .input("3")
-        .check.interaction({
-          state: "state_research_consent_more",
-          reply: [
-            "This is the placeholder for more research consent.",
             "1. Next"
           ].join("\n"),
           char_limit: 160,
@@ -1194,6 +1188,14 @@ describe("ussd_tb_check app", function () {
         .state("state_age")
         .input("1")
         .check.user.state("state_gender")
+        .run();
+    });
+    it("should go to state_research_consent for the study", function () {
+      return tester.setup.user
+        .state("state_age")
+        .setup.user.answer("activation", "tb_study_a")
+        .input("2")
+        .check.user.state("state_research_consent")
         .run();
     });
     it("should skip the state for users who already have this info for age", function () {
