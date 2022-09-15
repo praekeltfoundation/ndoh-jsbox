@@ -21,6 +21,10 @@ go.app = function () {
       );
     };
 
+    self.sessionID = function () {
+      return '_' + Math.random().toString(36).substr(2, 10);
+    };
+
     self.calculate_risk = function () {
       var answers = self.im.user.answers;
 
@@ -1264,7 +1268,7 @@ go.app = function () {
         accept_labels: true,
         choices: [
             new Choice("state_submit_tb_check_efficacy_option", $("Yes")),
-            new Choice("state_faq", $("More"))
+            new Choice("state_faq_metrics", $("More"))
             ],
       });
     });
@@ -1458,6 +1462,16 @@ go.app = function () {
             new Choice("state_end", $("Exit")),
             ],
       });
+    });
+
+    self.add("state_faq_metrics", function (name) {
+      self.im.log("Logging FAQ metrics");
+      var sessionID = self.sessionID();
+      var msisdn = utils.normalize_msisdn(
+        _.get(
+          self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
+      self.im.log("source: " + "USSD", "msisdn: " + msisdn, "sessionID: " + sessionID);
+      return self.states.create("state_faq");
     });
 
     self.add("state_faq", function (name) {
