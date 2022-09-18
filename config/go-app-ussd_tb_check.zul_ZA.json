@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-08-03 02:43:+0000",
-        "po-revision-date": "2022-08-04 06:43+0200",
+        "pot-creation-date": "2022-09-14 08:34:+0000",
+        "po-revision-date": "2022-09-18 19:48+0200",
         "last-translator": "",
         "language-team": "",
         "language": "zu_ZA",
@@ -23,6 +23,14 @@
     "Start over": [
         null,
         "Qala phansi"
+    ],
+    "Unfortunately, you cannot participate in the study more than once. You can still continue with a TB Check but you will not be included in the study.": [
+        null,
+        "Ngeshwa, awukwazi ukubamba iqhaza ocwaningweni ngaphezu kokukodwa.Ungaqhubeka nge TB Check kodwa ngeke ufakwe ocwaningweni. "
+    ],
+    "Continue": [
+        null,
+        ""
     ],
     "This service works best when you choose number options from the list.": [
         null,
@@ -104,6 +112,22 @@
         null,
         "Sesotho"
     ],
+    "We may ask you a few questions for research after you've completed your TB HealthCheck.\nAre you willing to take part?\n\nReply:": [
+        null,
+        ""
+    ],
+    "Yes": [
+        null,
+        "Yebo"
+    ],
+    "No": [
+        null,
+        "Cha"
+    ],
+    "More info": [
+        null,
+        ""
+    ],
     "How old are you?\n\nReply with a number": [
         null,
         "Uneminyaka emingaki \n\nPhendula ngenombolo"
@@ -127,6 +151,18 @@
     "over 65": [
         null,
         "ngaphezu kwa-65"
+    ],
+    "Unfortunately you cant participate in the study if you are younger than 18.": [
+        null,
+        ""
+    ],
+    "You can still continue with a TB Check but you will not be included in the study": [
+        null,
+        ""
+    ],
+    "Okay, no problem. You will not be included in the research, but you can still continue to check if you need to take a TB test.": [
+        null,
+        ""
     ],
     "Which gender do you identify as?:\n\nReply with a number": [
         null,
@@ -207,14 +243,6 @@
     "Please check that the address below is correct and matches the information you gave us:\n{{ address }}": [
         null,
         "Sicela ubheke ukuthi ikheli elingezansi lilungile futhi lihambisana nemininingwane osinike yona:\n{{ address }}"
-    ],
-    "Yes": [
-        null,
-        "Yebo"
-    ],
-    "No": [
-        null,
-        "Cha"
     ],
     "Let's see how you're feeling today. Do you have a cough?\n\nReply 1 or 2": [
         null,
@@ -304,10 +332,6 @@
         null,
         "Izimpendulo zakho kulembuzo zibonisa ukuth udinga ukuhlolelwa i-TB kuleviki. \n\nNawa amathiphu angakusiza ukuthi uhlele:"
     ],
-    "Make the time. Your health is a priority!\n\nPick the most convenient clinic for your test. Below are the 5 clinics nearest to you.": [
-        null,
-        "Yenza isikhathi. Impilo yakho ibalulekile!\n\nKhetha umtholampilo okulungele. Ngezansi imitholampilo eseduze nawe."
-    ],
     "Get there early! Clinics are open for TB testing Monday to Friday mornings.": [
         null,
         "Fika kusenesikhathi! Imitholampilo ivulelwa ukuhlola i-TB ngoMsombuluko kuya kuLwesihlanu ekuseni."
@@ -371,5 +395,109 @@
     "Check if those you live with are on TB treatment. If you don't know your HIV status, visit the clinic for a free HIV test. Then do the TB check again.": [
         null,
         "Bheka ukuthi labo ohlala nabo balashelwa i-TB na. Uma ungasazi isimo sakho se-HIV, vakashela umtholampilo uyohlolelwa i-HIV mahhala. Bese uphinde uhlole i-TB."
+    ],
+    "None": [
+        null,
+        ""
+    ],
+    "We will use this information to see if TB HealthCheck helps people. To continue, reply YES. For more on TB HealthCheck and the research, reply MORE.": [
+        null,
+        ""
+    ],
+    "Sorry, we don't understand. Please try again.\n\nEnter the number that matches your answer.": [
+        null,
+        ""
+    ],
+    "More": [
+        null,
+        ""
+    ],
+    "Did you find TB HealthCheck useful?": [
+        null,
+        ""
+    ],
+    "I did not go to the clinic for a TB test because it takes too much time. Do you agree?": [
+        null,
+        ""
+    ],
+    "Agree": [
+        null,
+        ""
+    ],
+    "Disagree": [
+        null,
+        ""
+    ],
+    "I did not go to the clinic for a TB test because there are no clinics close to me.": [
+        null,
+        ""
+    ],
+    "I did not go to the clinic for a TB test because I do not want to think about having TB. Do you agree?": [
+        null,
+        ""
+    ],
+    "Are there any other reasons why you did not go to the clinic for a TB test?Reply in your own words.": [
+        null,
+        ""
+    ],
+    "Thank you for taking part in the survey. Your R10 in airtime is on its way!": [
+        null,
+        ""
+    ],
+    "The FAQ has been sent to you on SMS. What would you like to do?": [
+        null,
+        ""
+    ],
+    "Back to all questions": [
+        null,
+        ""
+    ],
+    "Back to survey": [
+        null,
+        ""
+    ],
+    "Exit": [
+        null,
+        ""
+    ],
+    "What would you like to know?": [
+        null,
+        ""
+    ],
+    "More about the research?": [
+        null,
+        ""
+    ],
+    "What information will you ask me for?": [
+        null,
+        "Imiphi imininingwane ozongibuza ngako?"
+    ],
+    "Why did I get the SMS?": [
+        null,
+        "Kungani ngithole le SMS?"
+    ],
+    "What I'll need to do?": [
+        null,
+        "Yini engizodinga ukuyenza?"
+    ],
+    "Can I stop halfway through the survey?": [
+        null,
+        "Kutheni uma ngifuna ukuyeka ngisaphakathi kwenhlolovo?"
+    ],
+    "Are there costs or risks to me?": [
+        null,
+        "Ingabe zikhona izindleko noma ubungozi kimi?"
+    ],
+    "What happens to the information?": [
+        null,
+        "Kuzokwenzekani ngemininingwane?"
+    ],
+    "Back": [
+        null,
+        ""
+    ],
+    "Thank you for taking part in the survey. Many people don't realise that TB is cureable and test too late.": [
+        null,
+        ""
     ]
 }

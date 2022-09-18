@@ -507,7 +507,7 @@ go.app = function () {
       if (activation === "tb_study_a") {
         next_state = "state_research_consent";
       }
-      console.log(">>>> Next state >>>", next_state, activation);
+
       if (self.im.user.answers.state_age && activation !== "tb_study_a") {
         return self.states.create("state_gender");
       }
@@ -1003,19 +1003,21 @@ go.app = function () {
       };
 
       if (typeof self.im.user.answers.state_research_consent != "undefined"){
+        console.log(">>>>>", answers.state_research_consent);
         if (_.toUpper(answers.state_research_consent) === "YES"){
+          console.log("888888888888");
           payload.data.research_consent = true;
         }
         else{
           payload.data.research_consent = false;
         }
-        
       }
+      console.log("*****", payload);
 
       if(self.im.user.answers.state_age !== "<18") {
         payload.data.city_location = answers.city_location;
       }
-
+      console.log("@@@@@@@@", payload);
       return new JsonApi(self.im)
         .post(self.im.config.healthcheck.url + "/v2/tbcheck/", payload)
         .then(
@@ -1125,10 +1127,10 @@ go.app = function () {
     self.add("state_pick_convenient_clinic", function (name) {
       return new MenuState(name, {
         question: $([
-            "Make the time. Your health is a priority!",
-            "",
-            "Pick the most convenient clinic for your test."+
-            " Below are the 5 clinics nearest to you."
+            "* Make the time. Your health is a priority!",
+            "* Pick the most convenient clinic for your test",
+            "* Get there early! Clinics are open for TB testing",
+             "Monday to Friday mornings."
             ].join("\n")
         ),
         accept_labels: true,
