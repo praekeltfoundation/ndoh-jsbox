@@ -1003,21 +1003,17 @@ go.app = function () {
       };
 
       if (typeof self.im.user.answers.state_research_consent != "undefined"){
-        console.log(">>>>>", answers.state_research_consent);
         if (_.toUpper(answers.state_research_consent) === "YES"){
-          console.log("888888888888");
           payload.data.research_consent = true;
         }
         else{
           payload.data.research_consent = false;
         }
       }
-      console.log("*****", payload);
 
       if(self.im.user.answers.state_age !== "<18") {
         payload.data.city_location = answers.city_location;
       }
-      console.log("@@@@@@@@", payload);
       return new JsonApi(self.im)
         .post(self.im.config.healthcheck.url + "/v2/tbcheck/", payload)
         .then(
