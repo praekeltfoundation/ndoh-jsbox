@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-08-03 02:43:+0000",
-        "po-revision-date": "2022-08-04 06:36+0200",
+        "pot-creation-date": "2022-09-14 08:34:+0000",
+        "po-revision-date": "2022-09-18 19:51+0200",
         "last-translator": "",
         "language-team": "",
         "language": "sot_ZA",
@@ -22,6 +22,14 @@
     "Start over": [
         null,
         "Qala hape"
+    ],
+    "Unfortunately, you cannot participate in the study more than once. You can still continue with a TB Check but you will not be included in the study.": [
+        null,
+        "Ka bomalimabe, u ke ke ua nka karolo phuputsong ho feta hang. O ntse o ka tswela pele ka TB CHECK empa o ke ke wa kenyelletswa diphuputsong. "
+    ],
+    "Continue": [
+        null,
+        ""
     ],
     "This service works best when you choose number options from the list.": [
         null,
@@ -103,6 +111,22 @@
         null,
         "Sesotho"
     ],
+    "We may ask you a few questions for research after you've completed your TB HealthCheck.\nAre you willing to take part?\n\nReply:": [
+        null,
+        ""
+    ],
+    "Yes": [
+        null,
+        "Ee"
+    ],
+    "No": [
+        null,
+        "Tjhee"
+    ],
+    "More info": [
+        null,
+        ""
+    ],
     "How old are you?\n\nReply with a number": [
         null,
         "O dilemo di kae? \n\nAraba ka nomoro"
@@ -126,6 +150,18 @@
     "over 65": [
         null,
         "tse fetang 65"
+    ],
+    "Unfortunately you cant participate in the study if you are younger than 18.": [
+        null,
+        ""
+    ],
+    "You can still continue with a TB Check but you will not be included in the study": [
+        null,
+        ""
+    ],
+    "Okay, no problem. You will not be included in the research, but you can still continue to check if you need to take a TB test.": [
+        null,
+        ""
     ],
     "Which gender do you identify as?:\n\nReply with a number": [
         null,
@@ -206,14 +242,6 @@
     "Please check that the address below is correct and matches the information you gave us:\n{{ address }}": [
         null,
         "Ka kopo netefatsa hore aterese e ka tlase e nepahetse mme e tshwana le tlhaiso-leseding eo o re fileng yona: \n{{ address }}"
-    ],
-    "Yes": [
-        null,
-        "Ee"
-    ],
-    "No": [
-        null,
-        "Tjhee"
     ],
     "Let's see how you're feeling today. Do you have a cough?\n\nReply 1 or 2": [
         null,
@@ -303,10 +331,6 @@
         null,
         "Dikarabo tsa hao dipotsong di supa o hloka tlhahlobo ya TB bekeng ena.\n\nE-ya tleliniking bakeng sa tlhahlobo ya TB. Ka kopo, rwala mask pele o kena tleliniking:"
     ],
-    "Make the time. Your health is a priority!\n\nPick the most convenient clinic for your test. Below are the 5 clinics nearest to you.": [
-        null,
-        "Etsa nako. Bophelo ba hao bo tla pele!\n\nKgetha tleliniki e loketseng tlhahlobo ya hao. Ka tlase ke ditleliniki tse 5 tse haufi le wena."
-    ],
     "Get there early! Clinics are open for TB testing Monday to Friday mornings.": [
         null,
         "Tsohella! Ditleliniki di butswe bakeng sa tlhahlobo ya TB hoseng Mantaha ho isa Labohlano."
@@ -370,5 +394,109 @@
     "Check if those you live with are on TB treatment. If you don't know your HIV status, visit the clinic for a free HIV test. Then do the TB check again.": [
         null,
         "Bona haeba bao o phelang le bona ba kalafong ya TB. Ha o sa tsebe boemo ba hao ba HIV, etela tleliniki ho hlahlobela HIV. Ebe o etsa tlhahlobo ya TB hape."
+    ],
+    "None": [
+        null,
+        ""
+    ],
+    "We will use this information to see if TB HealthCheck helps people. To continue, reply YES. For more on TB HealthCheck and the research, reply MORE.": [
+        null,
+        ""
+    ],
+    "Sorry, we don't understand. Please try again.\n\nEnter the number that matches your answer.": [
+        null,
+        ""
+    ],
+    "More": [
+        null,
+        ""
+    ],
+    "Did you find TB HealthCheck useful?": [
+        null,
+        ""
+    ],
+    "I did not go to the clinic for a TB test because it takes too much time. Do you agree?": [
+        null,
+        ""
+    ],
+    "Agree": [
+        null,
+        ""
+    ],
+    "Disagree": [
+        null,
+        ""
+    ],
+    "I did not go to the clinic for a TB test because there are no clinics close to me.": [
+        null,
+        ""
+    ],
+    "I did not go to the clinic for a TB test because I do not want to think about having TB. Do you agree?": [
+        null,
+        ""
+    ],
+    "Are there any other reasons why you did not go to the clinic for a TB test?Reply in your own words.": [
+        null,
+        ""
+    ],
+    "Thank you for taking part in the survey. Your R10 in airtime is on its way!": [
+        null,
+        ""
+    ],
+    "The FAQ has been sent to you on SMS. What would you like to do?": [
+        null,
+        ""
+    ],
+    "Back to all questions": [
+        null,
+        ""
+    ],
+    "Back to survey": [
+        null,
+        ""
+    ],
+    "Exit": [
+        null,
+        ""
+    ],
+    "What would you like to know?": [
+        null,
+        ""
+    ],
+    "More about the research?": [
+        null,
+        ""
+    ],
+    "What information will you ask me for?": [
+        null,
+        "O tla mpotsa dintlha dife?"
+    ],
+    "Why did I get the SMS?": [
+        null,
+        "Hobaneng ke fumane SMS ee?"
+    ],
+    "What I'll need to do?": [
+        null,
+        "Ke tla hloka ho etsa eng?"
+    ],
+    "Can I stop halfway through the survey?": [
+        null,
+        "Ho thweng haeba ke batla ho emisa bohareng ba diphuputso?"
+    ],
+    "Are there costs or risks to me?": [
+        null,
+        "Na ho na le ditshenyehelo kapa dikotsi ho nna?"
+    ],
+    "What happens to the information?": [
+        null,
+        "Ho tla etsahalang ka dintlha tseo?"
+    ],
+    "Back": [
+        null,
+        ""
+    ],
+    "Thank you for taking part in the survey. Many people don't realise that TB is cureable and test too late.": [
+        null,
+        ""
     ]
 }

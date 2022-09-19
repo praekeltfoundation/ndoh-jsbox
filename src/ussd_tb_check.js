@@ -864,13 +864,11 @@ go.app = function () {
         else{
           payload.data.research_consent = false;
         }
-        
       }
 
       if(self.im.user.answers.state_age !== "<18") {
         payload.data.city_location = answers.city_location;
       }
-
       return new JsonApi(self.im)
         .post(self.im.config.healthcheck.url + "/v2/tbcheck/", payload)
         .then(
@@ -980,10 +978,10 @@ go.app = function () {
     self.add("state_pick_convenient_clinic", function (name) {
       return new MenuState(name, {
         question: $([
-            "Make the time. Your health is a priority!",
-            "",
-            "Pick the most convenient clinic for your test."+
-            " Below are the 5 clinics nearest to you."
+            "* Make the time. Your health is a priority!",
+            "* Pick the most convenient clinic for your test",
+            "* Get there early! Clinics are open for TB testing",
+             "Monday to Friday mornings."
             ].join("\n")
         ),
         accept_labels: true,
