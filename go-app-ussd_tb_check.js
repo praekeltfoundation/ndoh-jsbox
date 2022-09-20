@@ -568,6 +568,7 @@ go.app = function () {
     });
 
     self.add("state_gender", function (name) {
+      self.im.log("Research consent answer: ", self.im.user.answers.state_research_consent);
       if (self.im.user.answers.state_gender) {
         return self.states.create("state_province");
       }
@@ -1007,7 +1008,8 @@ go.app = function () {
       };
 
       if (typeof self.im.user.answers.state_research_consent != "undefined"){
-        if (_.toUpper(answers.state_research_consent) === "YES" || answers.state_research_consent === "1"){
+        if (_.toUpper(answers.state_research_consent) === "YES" || answers.state_research_consent === "1"
+            || answers.state_research_consent === 1){
           payload.data.research_consent = true;
         }
         else{
