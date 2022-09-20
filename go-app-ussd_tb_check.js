@@ -568,7 +568,6 @@ go.app = function () {
     });
 
     self.add("state_gender", function (name) {
-      self.im.log("Research consent answer: ", self.im.user.answers.state_research_consent);
       if (self.im.user.answers.state_gender) {
         return self.states.create("state_province");
       }
@@ -1008,8 +1007,7 @@ go.app = function () {
       };
 
       if (typeof self.im.user.answers.state_research_consent != "undefined"){
-        if (_.toUpper(answers.state_research_consent) === "YES" || answers.state_research_consent === "1"
-            || answers.state_research_consent === 1){
+        if (answers.state_research_consent === "state_gender"){
           payload.data.research_consent = true;
         }
         else{
@@ -1073,7 +1071,7 @@ go.app = function () {
         consent = answers.state_research_consent;
       }
 
-      if (consent===true || consent==="Yes"){
+      if (consent===true && arm){
         return self.states.create("state_" + arm);
       }
       return self.states.create("state_show_results");
@@ -1195,32 +1193,33 @@ go.app = function () {
 
       nearest_clinic.forEach(function(clinic){
         // append clinic to choices
-        choice_list.push(new Choice("state_clinic_visit_day", $(clinic.short_name)));
+        choice_list.push(new Choice(clinic.shortname, $(clinic.short_name)));
       });
 
-      return new MenuState(name, {
+      return new ChoiceState(name, {
         question: $(
           "Where will you go for your test? Reply with the clinic"
         ),
         accept_labels: true,
-        choices:
-            choice_list,
+        choices: choice_list,
+        next: "state_clinic_visit_day",
       });
     });
 
     self.add("state_clinic_visit_day", function (name) {
-      return new MenuState(name, {
+      return new ChoiceState(name, {
         question: $(
           "When will you go for your test? Reply with the day"
         ),
         accept_labels: true,
         choices: [
-            new Choice("state_submit_clinic_option", $("MONDAY")),
-            new Choice("state_submit_clinic_option", $("TUESDAY")),
-            new Choice("state_submit_clinic_option", $("WEDNESDAY")),
-            new Choice("state_submit_clinic_option", $("THURSDAY")),
-            new Choice("state_submit_clinic_option", $("FRIDAY"))
+            new Choice("mon", $("MONDAY")),
+            new Choice("tue", $("TUESDAY")),
+            new Choice("wed", $("WEDNESDAY")),
+            new Choice("thu", $("THURSDAY")),
+            new Choice("fri", $("FRIDAY"))
             ],
+        next: "state_submit_clinic_option"
       });
     });
 

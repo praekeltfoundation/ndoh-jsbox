@@ -1512,7 +1512,7 @@ describe("ussd_tb_check app", function () {
           state_tracing: true,
           state_exposure: "no",
           state_language: "eng",
-          state_research_consent: "yes"
+          state_research_consent: "state_gender"
         })
         .setup(function (api) {
           api.http.fixtures.add({
