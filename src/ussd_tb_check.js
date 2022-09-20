@@ -858,7 +858,7 @@ go.app = function () {
       };
 
       if (typeof self.im.user.answers.state_research_consent != "undefined"){
-        if (_.toUpper(answers.state_research_consent) === "YES"){
+        if (_.toUpper(answers.state_research_consent) === "YES" || answers.state_research_consent === "1"){
           payload.data.research_consent = true;
         }
         else{
