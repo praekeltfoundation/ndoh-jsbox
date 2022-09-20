@@ -1778,7 +1778,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_control",
           reply:[
-            "Your replies to the questions show that you need a TB test this week.",
+            "Your replies to the questions show that you need a TB test this week!",
             "",
             "Visit your local clinic for a free TB test.",
             ].join("\n"),
@@ -1795,7 +1795,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_health_consequence",
           reply: [
-            "Your replies to the questions show that you need a TB test this week.",
+            "Your replies to the questions show that you need a TB test this week!",
             "1. Next",
           ].join("\n"),
           char_limit: 160,
@@ -1812,7 +1812,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_planning_prompt",
           reply:[
-            "Your replies to the questions show that you need a TB test this week.",
+            "Your replies to the questions show that you need a TB test this week!",
             "",
             "Here are some tips to help you plan:",
             "1. Next",
@@ -1831,7 +1831,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_health_consequence",
           reply: [
-            "Your replies to the questions show that you need a TB test this week.",
+            "Your replies to the questions show that you need a TB test this week!",
             "1. Next",
           ].join("\n"),
           char_limit: 160,
@@ -1849,7 +1849,7 @@ describe("ussd_tb_check app", function () {
           state: "state_soft_commitment",
           reply:
             [
-            "Your replies to the questions show that you need a TB test this week.",
+            "Your replies to the questions show that you need a TB test this week!",
             "",
             "* Go to your local clinic for a free TB test.",
           ].join("\n"),
@@ -1881,7 +1881,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_soft_commitment_plus",
           reply:[
-            "Your replies to the questions show that you need a TB test this week.",
+            "Your replies to the questions show that you need a TB test this week!",
             "1. Next",
           ].join("\n"),
           char_limit: 160,
@@ -1928,7 +1928,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_control",
           reply:[
-            "Your replies to the questions show that you need a TB test this week.",
+            "Your replies to the questions show that you need a TB test this week!",
             "",
             "Visit your local clinic for a free TB test."
           ].join("\n"),

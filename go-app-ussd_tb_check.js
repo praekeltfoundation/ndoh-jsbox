@@ -1081,7 +1081,7 @@ go.app = function () {
         return new EndState(name, {
             next: "state_start",
             text: $([
-                "Your replies to the questions show that you need a TB test this week.",
+                "Your replies to the questions show that you need a TB test this week!",
                 "",
                 "Visit your local clinic for a free TB test."
             ].join("\n")
@@ -1092,7 +1092,7 @@ go.app = function () {
     self.add("state_health_consequence", function (name) {
       return new MenuState(name, {
         question: $(
-          "Your replies to the questions show that you need a TB test this week."
+          "Your replies to the questions show that you need a TB test this week!"
         ),
         accept_labels: true,
         choices: [new Choice("state_early_diagnosis", $("Next"))],
@@ -1114,7 +1114,7 @@ go.app = function () {
     self.add("state_planning_prompt", function (name) {
       return new MenuState(name, {
         question: $([
-            "Your replies to the questions show that you need a TB test this week.",
+            "Your replies to the questions show that you need a TB test this week!",
             "",
             "Here are some tips to help you plan:"
             ].join("\n")
@@ -1227,7 +1227,7 @@ go.app = function () {
         return new EndState(name, {
             next: "state_commit_to_get_tested",
             text: $([
-                "Your replies to the questions show that you need a TB test this week.",
+                "Your replies to the questions show that you need a TB test this week!",
                 "",
                 "* Go to your local clinic for a free TB test.",
             ].join("\n")
@@ -1238,7 +1238,7 @@ go.app = function () {
     self.states.add("state_soft_commitment_plus", function (name) {
       return new MenuState(name, {
         question: $(
-            "Your replies to the questions show that you need a TB test this week."
+            "Your replies to the questions show that you need a TB test this week!"
         ),
         accept_labels: true,
         choices: [new Choice("state_commitment_incentive", $("Next"))],
