@@ -1,0 +1,82 @@
+{
+    "": {
+        "project-id-version": "POPI_FAQ",
+        "pot-creation-date": "2018-10-03 10:00:+0000",
+        "po-revision-date": "2018-10-25 15:57+0200",
+        "last-translator": "Alex Muller <alex@praekelt.org>",
+        "language-team": "Afrikaans <LL@li.org>",
+        "language": "af",
+        "mime-version": "1.0",
+        "content-type": "text/plain; charset=UTF-8",
+        "content-transfer-encoding": "8bit",
+        "x-generator": "Poedit 2.2"
+    },
+    "Choose a question about MomConnect (MC):": [
+        null,
+        "Kies 'n vraag oor MomConnect (MC):"
+    ],
+    "What is MomConnect?": [
+        null,
+        "Wat is MomConnect?"
+    ],
+    "Why does MC need my personal info?": [
+        null,
+        "Hoekom benodig MC my persoonlike info?"
+    ],
+    "What personal info is collected?": [
+        null,
+        "Watter persoonlike info word  versamel?"
+    ],
+    "Who can see my personal info?": [
+        null,
+        "Wie kan my persoonlike info sien?"
+    ],
+    "How can I see, change or delete my personal info?": [
+        null,
+        "Hoe kan ek my persoonlike info sien, verander of skrap?"
+    ],
+    "How long does MC keep my info?": [
+        null,
+        "Vir hoe lank sal MC my info bewaar?"
+    ],
+    "Next": [
+        null,
+        "Volgende"
+    ],
+    "Back": [
+        null,
+        "Terug"
+    ],
+    "MC is a Health Department programme. It sends messages for you & your baby. To see, change or delete your info dial *134*550*7#": [
+        null,
+        "MomConnect is ’n program van die Dept van Gesondheid. Ons stuur boodskappe vir jou en jou baba. Skakel *134*550*7# om jou info te sien, te verander of te skrap."
+    ],
+    "Menu": [
+        null,
+        "Spyskaart"
+    ],
+    "MomConnect needs your personal info to send you messages that are relevant to your pregnancy stage or your baby's age. By knowing where you registered for MC, the Health Department can make sure that the service is being offered to women at your clinic. Knowing where you registered helps the Health Department act on the compliments or complaints you may send to MomConnect about your clinic experience.": [
+        null,
+        "MomConnect benodig jou persoonlike info om relevante SMSse vir jou te stuur oor hoe jou swangerskap vorder of jou baba se ouderdom. As die Dept van Gesondheid weet waar jy vir MC geregistreer het, kan hulle sorg dat die diens vir swanger vroue by jou kliniek aangebied word. As die Dept v. Gesondheid weet waar jy vir MC geregistreer het, kan hulle reageer op klagtes/komplimente oor jou ervaring by jou kliniek."
+    ],
+    "MomConnect collects your phone and ID numbers, clinic location, and information about how your pregnancy is progressing.": [
+        null,
+        "MomConnect benodig jou foon- en ID-nommer, die naam van jou kliniek en hoe jou swangerskap vorder."
+    ],
+    "MomConnect is owned and run by the Health Department. MTN, Cell C, Telkom, Vodacom, Praekelt, Jembi, HISP and WhatsApp (owned by Facebook) collect and process your data on their behalf.": [
+        null,
+        "MomConnect word besit en bestuur deur die Dept v Gesondheid. MTN, Cell C, Telkom, Vodacom, Praekelt, Jembi, HISP en WhatsApp (wat aan Facebook behoort) versamel en verwerk jou data namens hulle."
+    ],
+    "You can see, change, or ask us to delete your information by dialing *134*550*7#": [
+        null,
+        "Jy kan jou inligting sien, verander of vra dat ons dit skrap deur *134*550*7# te skakel"
+    ],
+    "MomConnect will automatically delete your personal information 7 years and 9 months after you registered.": [
+        null,
+        "MomConnect sal outomaties al jou persoonlike info skrap 7  jaar en 9 maande nadat jy vir die diens geregistreer het."
+    ],
+    "Sorry, that number is not recognised. Dial in with the number you first used to register. To update your number, dial *134*550*7# or register again at a clinic.": [
+        null,
+        "Jammer nommer bestaan nie.  Gebruik selfde nommer waarmee jy geregistreer het. Skakel *134*550*7# of registreer weer by 'n kliniek om jou nommer by te werk."
+    ]
+}

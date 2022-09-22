@@ -1,0 +1,82 @@
+{
+    "": {
+        "project-id-version": "POPI_FAQ",
+        "pot-creation-date": "2018-10-03 10:00:+0000",
+        "po-revision-date": "2018-10-29 12:08+0200",
+        "last-translator": "Alex Muller <alex@praekelt.org>",
+        "language-team": "Zulu <LL@li.org>",
+        "language": "zul",
+        "mime-version": "1.0",
+        "content-type": "text/plain; charset=UTF-8",
+        "content-transfer-encoding": "8bit",
+        "x-generator": "Poedit 2.2"
+    },
+    "Choose a question about MomConnect (MC):": [
+        null,
+        "Khetha umbuzo ngeMomConnect (MC):"
+    ],
+    "What is MomConnect?": [
+        null,
+        "Yini iMomConnect?"
+    ],
+    "Why does MC need my personal info?": [
+        null,
+        "Ifunani olwazini lwami i-MC?"
+    ],
+    "What personal info is collected?": [
+        null,
+        "Ifuna luphi ulwazi lwami?"
+    ],
+    "Who can see my personal info?": [
+        null,
+        "Ubani obona ulwazi lwami?"
+    ],
+    "How can I see, change or delete my personal info?": [
+        null,
+        "Ngenzani ukubona, ukushintsha, ukusula ulwazi lwami?"
+    ],
+    "How long does MC keep my info?": [
+        null,
+        "I-MC ilugcina kuze kube nini ulwazi lwami?"
+    ],
+    "Next": [
+        null,
+        "Okulandelayo"
+    ],
+    "Back": [
+        null,
+        "Emuva"
+    ],
+    "MC is a Health Department programme. It sends messages for you & your baby. To see, change or delete your info dial *134*550*7#": [
+        null,
+        "IMomConnect iwuhlelo loMnyango Wezempilo. Ithumelela wena nengane yakho imiyalezo. Ukubona, ukushintsha noma ukusula imininingwane, dayela *134*550*7#"
+    ],
+    "Menu": [
+        null,
+        "Okuqukethwe"
+    ],
+    "MomConnect needs your personal info to send you messages that are relevant to your pregnancy stage or your baby's age. By knowing where you registered for MC, the Health Department can make sure that the service is being offered to women at your clinic. Knowing where you registered helps the Health Department act on the compliments or complaints you may send to MomConnect about your clinic experience.": [
+        null,
+        "IMomConnect idinga ulwazi lwakho ukuthumela imiyalezo ngesigaba sokukhulelwa noma ngokukhula kwengane yakho. Ngokwazi ukubhi ubhalise ku-MomConnect, uMnyango Wezempilo uqinisekisa ukuthi lo sizo lutholwa abesimame eklinikhi lakho. Ukwazi ukuthi ubhalisaphi kusiza uMnyango Wezempilo usebenze ngezincomo noma izikhalo ongazithumelela i-MomConnect ngeklinikhi lakho."
+    ],
+    "MomConnect collects your phone and ID numbers, clinic location, and information about how your pregnancy is progressing.": [
+        null,
+        "I-MomConnect iqoqa izinombolo zakho zefoni neze-ID, indawo yeklinikhi, nolwazi ngokukhulelwa kwakho."
+    ],
+    "MomConnect is owned and run by the Health Department. MTN, Cell C, Telkom, Vodacom, Praekelt, Jembi, HISP and WhatsApp (owned by Facebook) collect and process your data on their behalf.": [
+        null,
+        "IMomConnect ingeyoMnyango Wezempilo futhi iqhutshwa yiwo. U-MTN, Cell C, Telkom, Vodacom, Praekelt, Jembi, HISP noWhatsApp (ongoweFacebook) yiyo ewuqoqela futhi iwuqhubele imininingo yakho."
+    ],
+    "You can see, change, or ask us to delete your information by dialing *134*550*7#": [
+        null,
+        "Ungabona, ushintshe noma ucele sisule ulwazi lwakho ngokushaya *134*550*7#"
+    ],
+    "MomConnect will automatically delete your personal information 7 years and 9 months after you registered.": [
+        null,
+        "I-MomConnect izozisulela ulwazi lakho emuva kweminyaka ewu-7 nezinyanga eziwu-9 ubhalisile."
+    ],
+    "Sorry, that number is not recognised. Dial in with the number you first used to register. To update your number, dial *134*550*7# or register again at a clinic.": [
+        null,
+        "Uxolo, leyo nombolo ayaziwa. Faka inombolo owayisebenzisa mhla uqala ukubhalisa. Ukubukeza inombolo yakho, shayela *134*550*7# noma uphinde ubhalise eklinikhi."
+    ]
+}

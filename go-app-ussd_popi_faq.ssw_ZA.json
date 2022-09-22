@@ -1,0 +1,82 @@
+{
+    "": {
+        "project-id-version": "POPI_FAQ",
+        "pot-creation-date": "2018-10-03 10:00:+0000",
+        "po-revision-date": "2018-10-25 16:54+0200",
+        "last-translator": "Alex Muller <alex@praekelt.org>",
+        "language-team": "Siswati <LL@li.org>",
+        "language": "ssw",
+        "mime-version": "1.0",
+        "content-type": "text/plain; charset=UTF-8",
+        "content-transfer-encoding": "8bit",
+        "x-generator": "Poedit 2.2"
+    },
+    "Choose a question about MomConnect (MC):": [
+        null,
+        "Khetsa umbuto lomayelana neMomConnect (MC):"
+    ],
+    "What is MomConnect?": [
+        null,
+        "Yini iMomConnect?"
+    ],
+    "Why does MC need my personal info?": [
+        null,
+        "Kungani i-MC ifuna imininingwane yami?"
+    ],
+    "What personal info is collected?": [
+        null,
+        "Nguyiphi imininingwane legcogcwako?"
+    ],
+    "Who can see my personal info?": [
+        null,
+        "Imininingwane yami ibukwa ngubani?"
+    ],
+    "How can I see, change or delete my personal info?": [
+        null,
+        "Imininingwane ngiyayibona, ngiyintjintje, ngiyisuse njani?"
+    ],
+    "How long does MC keep my info?": [
+        null,
+        "I-MC ibeka imininingwane kube ngunini?"
+    ],
+    "Next": [
+        null,
+        "Lokunye"
+    ],
+    "Back": [
+        null,
+        "Emuva"
+    ],
+    "MC is a Health Department programme. It sends messages for you & your baby. To see, change or delete your info dial *134*550*7#": [
+        null,
+        "IMomConnect luhlelo lweLitiko Letemphilo. Lutfumela imilayeto yakho nemntfwana wakho. Kubona, ntjintja noma ususe imininingwne yakho, shaya *134*550*7#"
+    ],
+    "Menu": [
+        null,
+        "Imenyu"
+    ],
+    "MomConnect needs your personal info to send you messages that are relevant to your pregnancy stage or your baby's age. By knowing where you registered for MC, the Health Department can make sure that the service is being offered to women at your clinic. Knowing where you registered helps the Health Department act on the compliments or complaints you may send to MomConnect about your clinic experience.": [
+        null,
+        "I-MomConnect idzinga imininingwane yakho kute ikwati kukutfumelela imilayeto yesigaba sekukhulelwa kwakho noma kukhula kwemntfwanakho. Ngekwati lapho wabhalisela khona iMomConnect, Litiko Letemphilo litawucinisekisa kutsi bomake bayanikwa lensita emtfolamphilo wakho. Kwati lapho wabhalisa khona kusita Litiko Letemphilo liphendvulo kutincomo nakutikhalo longatitfumela kuMomConnect mayelana nalohlangabetene nako."
+    ],
+    "MomConnect collects your phone and ID numbers, clinic location, and information about how your pregnancy is progressing.": [
+        null,
+        "IMomConnect igcogca tinombolo takho telucingo ne-ID, indzawo umtfolamphilo lokuyo, nelwatiso lwenchubekelembili yekukhulelwa kwakho."
+    ],
+    "MomConnect is owned and run by the Health Department. MTN, Cell C, Telkom, Vodacom, Praekelt, Jembi, HISP and WhatsApp (owned by Facebook) collect and process your data on their behalf.": [
+        null,
+        "IMomConnect yeLitiko Letemphilo futsi ichutjwa ngilo.MTN,Cell C,Telkom,Vodacom,Praekelt,Jembi,HISP neWhatsApp(kweFacebook) iyagcogca futsi yendlulise imininingwane yakho egameni labo."
+    ],
+    "You can see, change, or ask us to delete your information by dialing *134*550*7#": [
+        null,
+        "Ungabuka, untjintje noma-ke ususe imininingwane yakho ngekushaya *134*550*7#"
+    ],
+    "MomConnect will automatically delete your personal information 7 years and 9 months after you registered.": [
+        null,
+        "IMomConnect itawuvele nje iyisuse imininingwane yakho eminyakeni le-7 netinyanga leti-9 ngemuva kwekubhalisa."
+    ],
+    "Sorry, that number is not recognised. Dial in with the number you first used to register. To update your number, dial *134*550*7# or register again at a clinic.": [
+        null,
+        "Ncesi, lenombolo ayatiwa. Shaya ngenombolo lowayibhalisa. Lungisa inombolo yakho, shaya *134*550*7# noma uphindze futsi ubhalise emtfolamphilo."
+    ]
+}
