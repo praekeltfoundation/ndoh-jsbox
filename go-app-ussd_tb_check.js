@@ -226,7 +226,11 @@ go.app = function () {
     self.states.add("state_timed_out", function (name, creator_opts) {
       return new MenuState(name, {
         question: $(
-            "Welcome back to the The National Department of Health's TB HealthCheck"
+          [
+            "Welcome back to the The National Department of Health's TB HealthCheck",
+            "",
+            "Reply 1 or 2",
+          ].join("\n")
         ),
         accept_labels: true,
         choices: [
@@ -321,7 +325,11 @@ go.app = function () {
         "This service works best when you choose number options from the list."
       );
       var question = $(
-          "The National Department of Health thanks you for helping to protect the health of all SA citizens. Stop the spread of TB."
+        [
+          "The National Department of Health thanks you for helping to protect the health of all SA citizens. Stop the spread of TB.",
+          "",
+          "Reply",
+        ].join("\n")
       );
 
       return new MenuState(name, {
@@ -341,13 +349,17 @@ go.app = function () {
         question: $(
           [
             "This NDoH service only provides health info. Please agree that you are " +
-            "responsible for your own medical care and treatment."
+            "responsible for your own medical care and treatment.",
+            "",
+            "Reply",
           ].join("\n")
         ),
         error: $(
           [
             "This NDoH service only provides health info. Please agree that you are " +
-            "responsible for your own medical care and treatment."
+            "responsible for your own medical care and treatment.",
+            "",
+            "Reply",
           ].join("\n")
         ),
         accept_labels: true,
@@ -477,7 +489,8 @@ go.app = function () {
           question: $(
               "We may ask you a few questions for research after you've completed " +
               "your TB HealthCheck." +
-              "\nAre you willing to take part?"
+              "\nAre you willing to take part?" +
+              "\n\nReply:"
               ),
           error: $(
               "Please reply with numbers. Are you willing to take part?"
@@ -503,8 +516,10 @@ go.app = function () {
         return self.states.create("state_gender");
       }
       return new ChoiceState(name, {
-        question: $("How old are you?"),
-        error: $(["Please use numbers from list.", "", "How old are you?"].join("\n")),
+        question: $(["How old are you?", "", "Reply with a number"].join("\n")),
+        error: $(
+          ["Please use numbers from list.", "", "How old are you?"].join("\n")
+        ),
         accept_labels: true,
         choices: [
           new Choice("<18", $("under 18")),
@@ -557,12 +572,12 @@ go.app = function () {
         return self.states.create("state_province");
       }
       return new ChoiceState(name, {
-        question: $("Which gender do you identify as?"),
+        question: $(["Which gender do you identify as?:", "", "Reply with a number"].join("\n")),
         error: $(
           [
             "Please use numbers from list.",
             "",
-            "Which gender do you identify as?",
+            "Which gender do you identify as?:",
           ].join("\n")
         ),
         accept_labels: true,
@@ -596,7 +611,7 @@ go.app = function () {
       }
 
       return new ChoiceState(name, {
-        question: $("Choose your province"),
+        question: $("Choose your province. Reply with a number:"),
         accept_labels: true,
         choices: [
           new Choice("ZA-EC", $("E. CAPE")),
@@ -816,12 +831,18 @@ go.app = function () {
 
     self.add("state_cough", function (name) {
       var question = $(
-          "Let's see how you're feeling today. Do you have a cough?"
+        [
+          "Let's see how you're feeling today. Do you have a cough?",
+          "",
+          "Reply 1 or 2",
+        ].join("\n")
       );
       var error = $(
         [
           "Please use numbers from list.",
-          "Do you have a cough?"
+          "Do you have a cough?",
+          "",
+          "Reply 1 or 2",
         ].join("\n")
       );
       return new ChoiceState(name, {
@@ -836,12 +857,18 @@ go.app = function () {
     self.add("state_fever", function (name) {
       return new ChoiceState(name, {
         question: $(
-            "Do you have a fever? (when you touch your forehead, does it feel hot?)"
+          [
+            "Do you have a fever? (when you touch your forehead, does it feel hot?)",
+            "",
+            "Reply 1 or 2",
+          ].join("\n")
         ),
         error: $(
           [
             "Please use numbers from list. Do you have a fever? (when you touch your " +
               "forehead, does it feel hot?)",
+            "",
+            "Reply 1 or 2",
           ].join("\n")
         ),
         accept_labels: true,
@@ -892,13 +919,19 @@ go.app = function () {
 
     self.add("state_tracing", function (name) {
       var question = $(
+        [
           "Now, please agree that the info you shared is correct and that you give " +
-            "the NDoH permission to contact you if needed?"
+            "the NDoH permission to contact you if needed?",
+          "",
+          "Reply 1 or 2",
+        ].join("\n")
       );
       var error = $(
         [
           "Now, please agree that the info you shared is correct and that you give " +
-            "the NDoH permission to contact you if needed?"
+            "the NDoH permission to contact you if needed?",
+          "",
+          "Reply 1 or 2",
         ].join("\n")
       );
       var choices = [
@@ -920,13 +953,15 @@ go.app = function () {
       var question = $(
         [
           "Thanks for your answers. Your result will be sent soon on SMS. Would you like " +
-            "to receive follow-up messages?"
+            "to receive follow-up messages?",
+          "Reply",
         ].join("\n")
       );
       var error = $(
         [
           "Thanks for your answers. Your result will be sent soon on SMS. Would you like " +
-            "to receive follow-up messages?"
+            "to receive follow-up messages?",
+          "Reply",
         ].join("\n")
       );
       var choices = [new Choice(true, $("Yes")), new Choice(false, $("No"))];
@@ -1036,7 +1071,7 @@ go.app = function () {
         consent = answers.state_research_consent;
       }
 
-      if (consent===true || consent === "state_gender" && arm){
+      if (consent===true && arm){
         return self.states.create("state_" + arm);
       }
       return self.states.create("state_show_results");
@@ -1105,8 +1140,9 @@ go.app = function () {
 
     self.add("state_clinic_opens", function (name) {
       return new MenuState(name, {
-        question: $(
+        question: $([
             "Get there early! Clinics are open for TB testing Monday to Friday mornings."
+            ].join("\n")
         ),
         accept_labels: true,
         choices: [new Choice("state_get_nearest_clinic", $("Next"))],
@@ -1610,8 +1646,9 @@ go.app = function () {
         question: $(
           "What would you like to know?"
         ),
-        error: $(
-          "Please reply with the number that matches your answer."),
+        error: $([
+          "Please reply with the number that matches your answer."
+      ].join("\n")),
         accept_labels: true,
         choices: [
             new Choice("state_faq_midway", $("Can I stop halfway through the survey?")),

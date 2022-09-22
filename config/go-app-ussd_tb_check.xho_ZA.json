@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-09-21 04:09:+0000",
-        "po-revision-date": "2022-09-22 07:32+0200",
+        "pot-creation-date": "2022-09-14 08:34:+0000",
+        "po-revision-date": "2022-09-18 19:54+0200",
         "last-translator": "",
         "language-team": "",
         "language": "xho_ZA",
@@ -11,9 +11,9 @@
         "content-transfer-encoding": "8bit",
         "x-generator": "Poedit 3.1.1"
     },
-    "Welcome back to the The National Department of Health's TB HealthCheck": [
+    "Welcome back to the The National Department of Health's TB HealthCheck\n\nReply 1 or 2": [
         null,
-        "Wamnkelekile kwakhona kwiSebe lezeMpilo likaZwelonke leMpilo yeTB"
+        "Wamnkelekile kwakhona kwiSebe lezeMpilo likaZwelonke leMpilo yeTB\n \nPhendula u-1 okanye u-2"
     ],
     "Continue where I left off": [
         null,
@@ -29,23 +29,23 @@
     ],
     "Continue": [
         null,
-        "Qhubeka"
+        ""
     ],
     "This service works best when you choose number options from the list.": [
         null,
         "Le nkonzo isebenza kakuhle xa ukhetha inombolo kuluhlu."
     ],
-    "The National Department of Health thanks you for helping to protect the health of all SA citizens. Stop the spread of TB.": [
+    "The National Department of Health thanks you for helping to protect the health of all SA citizens. Stop the spread of TB.\n\nReply": [
         null,
-        "ISebe lezeMpilo leSizwe liyakubulela ngokunceda ukukhusela impilo yabo bonke abemi boMzantsi Afrika. Nqanda ukwanda TB."
+        "ISebe lezeMpilo leSizwe liyakubulela ngokunceda ukukhusela impilo yabo bonke abemi boMzantsi Afrika. Nqanda ukwanda TB. \n\nPhendula"
     ],
     "START": [
         null,
         "QALA"
     ],
-    "This NDoH service only provides health info. Please agree that you are responsible for your own medical care and treatment.": [
+    "This NDoH service only provides health info. Please agree that you are responsible for your own medical care and treatment.\n\nReply": [
         null,
-        "Le nkonzo ye-NDoH inikezela ngolwazi lwezempilo. Nceda uvume unoxanduva lokukhathalela impilo yakho nonyango lwakho."
+        "Le nkonzo ye-NDoH inikezela ngolwazi lwezempilo. Nceda uvume unoxanduva lokukhathalela impilo yakho nonyango lwakho\n\nPhendula"
     ],
     "YES": [
         null,
@@ -111,9 +111,9 @@
         null,
         "Sesotho"
     ],
-    "We may ask you a few questions for research after you've completed your TB HealthCheck.\nAre you willing to take part?": [
+    "We may ask you a few questions for research after you've completed your TB HealthCheck.\nAre you willing to take part?\n\nReply:": [
         null,
-        "Singakubuza imibuzo embalwa yophando emva kokuba ugqibe i-TB HealthCheck yakho.\nNgaba uzimisele ukuthatha inxaxheba? "
+        ""
     ],
     "Yes": [
         null,
@@ -125,11 +125,11 @@
     ],
     "More info": [
         null,
-        "Iinkcukacha ezithe vetshe"
+        ""
     ],
-    "How old are you?": [
+    "How old are you?\n\nReply with a number": [
         null,
-        "Unangaphi?"
+        "Unangaphi? \n\nPhendula ngenombolo"
     ],
     "Please use numbers from list.\n\nHow old are you?": [
         null,
@@ -153,23 +153,23 @@
     ],
     "Unfortunately you cant participate in the study if you are younger than 18.": [
         null,
-        "Ngelishwa awunakuthatha inxaxheba kuphononongo ukuba ungaphantsi kweminyaka eyi-18. "
+        ""
     ],
     "You can still continue with a TB Check but you will not be included in the study": [
         null,
-        "Usenako ukuqhubeka nokuhlolwa kwe-TB kodwa awuzukuqukwa kuphononongo."
+        ""
     ],
     "Okay, no problem. You will not be included in the research, but you can still continue to check if you need to take a TB test.": [
         null,
-        "Kulungile, akukho ngxaki. Awuyi kufakwa kuphando, kodwa usenako ukuqhubeka ukujonga ukuba ngaba kufuneka wenze uvavanyo lwe-TB."
+        ""
     ],
-    "Which gender do you identify as?": [
+    "Which gender do you identify as?:\n\nReply with a number": [
         null,
-        "Sesiphi isini ozichonga njengaso?"
+        "Sesiphi isini ozichonga njengaso?:\n \nPhendula ngenombolo"
     ],
-    "Please use numbers from list.\n\nWhich gender do you identify as?": [
+    "Please use numbers from list.\n\nWhich gender do you identify as?:": [
         null,
-        "Sesiphi isini ozichonga njengaso?"
+        "Sesiphi isini ozichonga njengaso?:\n \nPhendula ngenombolo"
     ],
     "MALE": [
         null,
@@ -187,9 +187,9 @@
         null,
         "UKHETHA UKUNGATSHO"
     ],
-    "Choose your province": [
+    "Choose your province. Reply with a number:": [
         null,
-        "Khetha iphondo"
+        "Khetha iphondo:"
     ],
     "E. CAPE": [
         null,
@@ -243,21 +243,21 @@
         null,
         "Nceda ujonge ukuba le dilesi ingezantsi ichanekile kwaye iyahambelana nolwazi osinike lona:\n{{ address }}"
     ],
-    "Let's see how you're feeling today. Do you have a cough?": [
+    "Let's see how you're feeling today. Do you have a cough?\n\nReply 1 or 2": [
         null,
-        "Masibone uziva njani namhlanje. Uyakhohlela?"
+        "Masibone uziva njani namhlanje. Uyakhohlela? \n\nPhendula u-1 okanye u-2"
     ],
-    "Please use numbers from list.\nDo you have a cough?": [
+    "Please use numbers from list.\nDo you have a cough?\n\nReply 1 or 2": [
         null,
-        "Masibone uziva njani namhlanje. Uyakhohlela?"
+        "Masibone uziva njani namhlanje. Uyakhohlela? \n\nPhendula u-1 okanye u-2"
     ],
-    "Do you have a fever? (when you touch your forehead, does it feel hot?)": [
+    "Do you have a fever? (when you touch your forehead, does it feel hot?)\n\nReply 1 or 2": [
         null,
-        "Unobushushu unefiva? (xa uchukumisa ibunzi lakho, ngaba uziva ushushu?)"
+        "Unobushushu unefiva? (xa uchukumisa ibunzi lakho, ngaba uziva ushushu?)\n \nPhendula u-1 okanye u-2"
     ],
-    "Please use numbers from list. Do you have a fever? (when you touch your forehead, does it feel hot?)": [
+    "Please use numbers from list. Do you have a fever? (when you touch your forehead, does it feel hot?)\n\nReply 1 or 2": [
         null,
-        "Unobushushu unefiva? (xa uchukumisa ibunzi lakho, ngaba uziva ushushu?)"
+        "Unobushushu unefiva? (xa uchukumisa ibunzi lakho, ngaba uziva ushushu?)\n \nPhendula u-1 okanye u-2"
     ],
     "Are you sweating more than usual at night?": [
         null,
@@ -291,13 +291,13 @@
         null,
         "Andiyazi"
     ],
-    "Now, please agree that the info you shared is correct and that you give the NDoH permission to contact you if needed?": [
+    "Now, please agree that the info you shared is correct and that you give the NDoH permission to contact you if needed?\n\nReply 1 or 2": [
         null,
-        "Ngoku, nceda uvume ukuba ulwazi owabelane ngalo lulo kwaye unika i-NDoH imvume yokuxhulumana nawe xa kufuneka njalo?"
+        "Ngoku, nceda uvume ukuba ulwazi owabelane ngalo lulo kwaye unika i-NDoH imvume yokuxhulumana nawe xa kufuneka njalo? \n\nPhendula u-1 okanye u-2"
     ],
-    "Thanks for your answers. Your result will be sent soon on SMS. Would you like to receive follow-up messages?": [
+    "Thanks for your answers. Your result will be sent soon on SMS. Would you like to receive follow-up messages?\nReply": [
         null,
-        "Enkosi ngeempendulo zakho. Iziphumo zakho zizakuthunyelwa kungekudala nge-SMS Ungathanda ukufumana imiyalezo elandelelisayo?"
+        "Enkosi ngeempendulo zakho. Iziphumo zakho zizakuthunyelwa kungekudala nge-SMS Ungathanda ukufumana imiyalezo elandelelisayo? \n\nPhendula"
     ],
     "Thanks for choosing to get our follow-up messages.": [
         null,
@@ -315,21 +315,13 @@
         null,
         "Bona Iziphumo"
     ],
-    "Your replies to the questions show that you need a TB test this week!\n\nVisit your local clinic for a free TB test.": [
+    "Your replies to the questions show that you need a TB test this week.": [
         null,
-        "Iimpendulo zakho zibonisa ukuba udinga uxilongo lwe TB kule veki!\n\nYiya ekliniki uyokuvavanya i-TB simahla. Nceda unxibe imaski phambi kokuba ungene eklinikhi"
-    ],
-    "Your replies to the questions show that you need a TB test this week!": [
-        null,
-        "Dikarabo tsa hao ho dipotso di bontsha hore o hloka tlhahlobo ea TB bekeng ena!"
+        "Dikarabo tsa hao ho dipotso di bontsha hore o hloka tlhahlobo ea TB bekeng ena."
     ],
     "With early diagnosis, TB can be cured. Don’t delay, test today!\n\nVisit your local clinic for a free TB test. ": [
         null,
         "Ukufunywanwa ngethuba, i-TB inokunyangeka. Ungalibazisi, vavanya namhlanje!\n\nNdwendwela ikliniki yengingqi yakho ukwenza uvavanyo lwe-TB lwamahala."
-    ],
-    "Your replies to the questions show that you need a TB test this week!\n\nHere are some tips to help you plan:": [
-        null,
-        "Iimpendulo zakho zibonisa ukuba udinga uxilongo lwe TB kule veki!\n\nYiya ekliniki uyokuvavanya i-TB simahla. Nceda unxibe imaski phambi kokuba ungene eklinikhi"
     ],
     "Get there early! Clinics are open for TB testing Monday to Friday mornings.": [
         null,
@@ -363,17 +355,9 @@
         null,
         "LWESIHLANU"
     ],
-    "Your replies to the questions show that you need a TB test this week!\n\n* Go to your local clinic for a free TB test.": [
-        null,
-        "Iimpendulo zakho zibonisa ukuba udinga uxilongo lwe TB kule veki!\n\nYiya ekliniki uyokuvavanya i-TB simahla. Nceda unxibe imaski phambi kokuba ungene eklinikhi"
-    ],
     "* Go to a local clinic for a free TB test.\n* You will get R10 airtime within 1 hour if you commit to get tested.": [
         null,
         "* Yiya kwiklinikhi yengingqi yakho ukufumana uvavanyo lwamahala lwe-TB.\n* Uya kufumana i-airtime ye-R10 ukuba uyazibophelela ukuba uvavanywe."
-    ],
-    "Your replies to the questions show that you need a TB test this week.": [
-        null,
-        "Dikarabo tsa hao ho dipotso di bontsha hore o hloka tlhahlobo ea TB bekeng ena."
     ],
     "Do you commit to getting tested?": [
         null,
@@ -391,10 +375,6 @@
         null,
         "Akudingi vavanyo lwe-TB ngoku, kodwa ukuba ngaba uyakhohlela, unomkhuhlane, uncipha umzimba okanye uyabila ebusuku tyelela iklinikhi ekufutshane nawe."
     ],
-    "Your replies to the questions show you need a TB test this week.\n\nGo to your clinic for a free TB test.": [
-        null,
-        "Iimpendulo zakho zibonisa ukuba udinga uxilongo lwe TB kule veki.\n\nYiya ekliniki uyokuvavanya i-TB simahla. Nceda unxibe imaski phambi kokuba ungene eklinikhi."
-    ],
     "Check if those you live with are on TB treatment. If you don't know your HIV status, visit the clinic for a free HIV test. Then do the TB check again.": [
         null,
         "Jonga abo uhlala nabo bakunyango lwe-TB na. Ukuba awusazi isimo sakho se-HIV, yiya ekliniki wenze uvavanyo lwasimahla lwe-HIV. Emva koko hlola i-TB kwakhona."
@@ -405,7 +385,7 @@
     ],
     "We will use this information to see if TB HealthCheck helps people. To continue, reply YES. For more on TB HealthCheck and the research, reply MORE.": [
         null,
-        "Siza kusebenzisa olu lwazi ukubona ukuba le-TB HealthCheck inceda abantu.\nUkuqhubeka phendula u EWE. Ukuze ufumane okungakumbi ngeTB HealthCheck kunye nophando, phendula NGAKUMBI."
+        ""
     ],
     "Sorry, we don't understand. Please try again.\n\nEnter the number that matches your answer.": [
         null,
@@ -413,35 +393,35 @@
     ],
     "More": [
         null,
-        "Ngakumbi"
+        ""
     ],
     "Did you find TB HealthCheck useful?": [
         null,
-        "Ingaba ufumene i-TB HealthCheck iluncedo? "
+        ""
     ],
     "I did not go to the clinic for a TB test because it takes too much time. Do you agree?": [
         null,
-        "Khange ndiye ekliniki kuvavanyo lwe-TB kuba kuthatha ixesha elininzi.\nUyavuma?"
+        ""
     ],
     "Agree": [
         null,
-        "Vuma"
+        ""
     ],
     "Disagree": [
         null,
-        "Andivumelani"
+        ""
     ],
     "I did not go to the clinic for a TB test because there are no clinics close to me.": [
         null,
-        "Khange ndiye ekliniki kuvavanyo lwe-TB kuba akukho ziklinikhi ezikufutshane kum.\nUyavuma?"
+        ""
     ],
     "I did not go to the clinic for a TB test because I do not want to think about having TB. Do you agree?": [
         null,
-        "Khange ndiye ekliniki kuvavanyo lwe-TB kuba andifuni ukucinga malunga ne-TB.\nUyavuma? "
+        ""
     ],
     "Are there any other reasons why you did not go to the clinic for a TB test?Reply in your own words.": [
         null,
-        "Ngaba zikho ezinye izizathu zokuba ungayi ekliniki kuvavanyo lwe-TB? Phendula ngamazwi akho."
+        ""
     ],
     "Thank you for taking part in the survey. Your R10 in airtime is on its way!": [
         null,
@@ -451,17 +431,13 @@
         null,
         ""
     ],
-    "Please reply with the number that matches your answer.": [
-        null,
-        "Khetha ulwimi ngokombono wakho."
-    ],
     "Back to all questions": [
         null,
-        "Buyela kuyo yonke imibuzo"
+        ""
     ],
     "Back to survey": [
         null,
-        "Buyela kuphando"
+        ""
     ],
     "Exit": [
         null,
@@ -469,7 +445,7 @@
     ],
     "What would you like to know?": [
         null,
-        "Yintoni ongathanda ukuyazi?"
+        ""
     ],
     "More about the research?": [
         null,
@@ -501,10 +477,10 @@
     ],
     "Back": [
         null,
-        "Buya umva"
+        ""
     ],
     "Thank you for taking part in the survey. Many people don't realise that TB is cureable and test too late.": [
         null,
-        "Enkosi ngokuthatha inxaxheba kuphando.\nAbantu abaninzi abayazi ukuba i-TB iyanyangeka kwaye bavavanya emva kwexesha."
+        ""
     ]
 }

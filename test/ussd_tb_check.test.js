@@ -270,6 +270,8 @@ describe("ussd_tb_check app", function () {
           state: "state_timed_out",
           reply: [
             "Welcome back to the The National Department of Health's TB HealthCheck",
+            "",
+            "Reply 1 or 2",
             "1. Continue where I left off",
             "2. Start over",
           ].join("\n"),
@@ -285,6 +287,8 @@ describe("ussd_tb_check app", function () {
           state: "state_timed_out",
           reply: [
             "Welcome back to the The National Department of Health's TB HealthCheck",
+            "",
+            "Reply 1 or 2",
             "1. Continue where I left off",
             "2. Start over",
           ].join("\n"),
@@ -303,6 +307,8 @@ describe("ussd_tb_check app", function () {
           reply: [
             "The National Department of Health thanks you for helping to protect the " +
             "health of all SA citizens. Stop the spread of TB.",
+            "",
+            "Reply",
             "1. START",
           ].join("\n"),
           char_limit: 140,
@@ -398,6 +404,8 @@ describe("ussd_tb_check app", function () {
           state: "state_age",
           reply: [
             "How old are you?",
+            "",
+            "Reply with a number",
             "1. under 18",
             "2. 18-39",
             "3. 40-65",
@@ -425,6 +433,8 @@ describe("ussd_tb_check app", function () {
           reply: [
             "This NDoH service only provides health info. Please agree that you " +
               "are responsible for your own medical care and treatment.",
+            "",
+            "Reply",
             "1. YES",
             "2. NO",
             "3. MORE INFO",
@@ -442,6 +452,8 @@ describe("ussd_tb_check app", function () {
           reply: [
             "This NDoH service only provides health info. Please agree that you " +
               "are responsible for your own medical care and treatment.",
+            "",
+            "Reply",
             "1. YES",
             "2. NO",
             "3. MORE INFO",
@@ -665,6 +677,7 @@ describe("ussd_tb_check app", function () {
           reply: [
             "We may ask you a few questions for research after you've completed your TB HealthCheck.",
             "Are you willing to take part?",
+            "\nReply:",
             "1. Yes",
             "2. No",
             "3. More info"
@@ -682,7 +695,9 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_gender",
           reply: [
-            "Which gender do you identify as?",
+            "Which gender do you identify as?:",
+            "",
+            "Reply with a number",
             "1. MALE",
             "2. FEMALE",
             "3. OTHER",
@@ -717,7 +732,9 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_gender",
           reply: [
-            "Which gender do you identify as?",
+            "Which gender do you identify as?:",
+            "",
+            "Reply with a number",
             "1. MALE",
             "2. FEMALE",
             "3. OTHER",
@@ -788,7 +805,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_province",
           reply: [
-            "Choose your province",
+            "Choose your province. Reply with a number:",
             "1. E. CAPE",
             "2. FREE STATE",
             "3. GAUTENG",
@@ -810,7 +827,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_province",
           reply: [
-            "Choose your province",
+            "Choose your province. Reply with a number:",
             "1. E. CAPE",
             "2. FREE STATE",
             "3. GAUTENG",
@@ -1136,6 +1153,8 @@ describe("ussd_tb_check app", function () {
           state: "state_age",
           reply: [
             "How old are you?",
+            "",
+            "Reply with a number",
             "1. under 18",
             "2. 18-39",
             "3. 40-65",
@@ -1194,7 +1213,9 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_gender",
           reply: [
-            "Which gender do you identify as?",
+            "Which gender do you identify as?:",
+            "",
+            "Reply with a number",
             "1. MALE",
             "2. FEMALE",
             "3. OTHER",
@@ -1213,7 +1234,7 @@ describe("ussd_tb_check app", function () {
           reply: [
             "Please use numbers from list.",
             "",
-            "Which gender do you identify as?",
+            "Which gender do you identify as?:",
             "1. MALE",
             "2. FEMALE",
             "3. OTHER",
@@ -1239,6 +1260,8 @@ describe("ussd_tb_check app", function () {
           state: "state_cough",
           reply: [
             "Let's see how you're feeling today. Do you have a cough?",
+            "",
+            "Reply 1 or 2",
             "1. YES",
             "2. NO",
           ].join("\n"),
@@ -1255,6 +1278,8 @@ describe("ussd_tb_check app", function () {
           reply: [
             "Please use numbers from list.",
             "Do you have a cough?",
+            "",
+            "Reply 1 or 2",
             "1. YES",
             "2. NO",
           ].join("\n"),
@@ -1278,6 +1303,8 @@ describe("ussd_tb_check app", function () {
           state: "state_fever",
           reply: [
             "Do you have a fever? (when you touch your forehead, does it feel hot?)",
+            "",
+            "Reply 1 or 2",
             "1. YES",
             "2. NO",
           ].join("\n"),
@@ -1294,6 +1321,8 @@ describe("ussd_tb_check app", function () {
           reply: [
             "Please use numbers from list. Do you have a fever? (when you touch " +
               "your forehead, does it feel hot?)",
+            "",
+            "Reply 1 or 2",
             "1. YES",
             "2. NO",
           ].join("\n"),
@@ -1398,6 +1427,8 @@ describe("ussd_tb_check app", function () {
           reply: [
             "Now, please agree that the info you shared is correct and that you give the NDoH" +
               " permission to contact you if needed?",
+            "",
+            "Reply 1 or 2",
             "1. YES",
             "2. NO",
           ].join("\n"),
@@ -1414,6 +1445,8 @@ describe("ussd_tb_check app", function () {
           reply: [
             "Now, please agree that the info you shared is correct and that you give the NDoH" +
               " permission to contact you if needed?",
+            "",
+            "Reply 1 or 2",
             "1. YES",
             "2. NO",
           ].join("\n"),
@@ -1438,6 +1471,7 @@ describe("ussd_tb_check app", function () {
           reply: [
             "Thanks for your answers. Your result will be sent soon on SMS. Would you like " +
               "to receive follow-up messages?",
+            "Reply",
             "1. Yes",
             "2. No",
           ].join("\n"),
@@ -1454,6 +1488,7 @@ describe("ussd_tb_check app", function () {
           reply: [
             "Thanks for your answers. Your result will be sent soon on SMS. Would you like " +
               "to receive follow-up messages?",
+            "Reply",
             "1. Yes",
             "2. No",
           ].join("\n"),
