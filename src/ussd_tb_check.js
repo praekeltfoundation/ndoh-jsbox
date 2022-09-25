@@ -90,7 +90,7 @@ go.app = function () {
     self.states.add("state_start", function (name, opts) {
       var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
       var activation = self.get_activation();
-      if (activation === "tb_study_a_survey") {
+      if (activation === "tb_study_a_survey_group1" || activation === "tb_study_a_survey_group2") {
         return self.states.create("state_survey_start");
       }
 
@@ -1237,6 +1237,12 @@ go.app = function () {
     });
 
     self.add("state_submit_tb_check_efficacy_option", function (name) {
+      var activation = self.im.user.answers.activation;
+      var next = "state_submit_clinic_delay";
+
+      if (activation === "tb_study_a_survey_group2"){
+        next = "state_encouraged_to_test";
+      }
       return new ChoiceState(name, {
         question: $(
           "Did you find TB HealthCheck useful?"
@@ -1252,7 +1258,7 @@ go.app = function () {
             new Choice("unsure", $("Don't know")),
             new Choice("yes", $("Yes"))
             ],
-        next: "state_submit_clinic_delay",
+        next: next,
       });
     });
 
@@ -1346,7 +1352,15 @@ go.app = function () {
           clinic_delay: answers.state_submit_tb_check_efficacy_option,
           proximity: answers.state_submit_clinic_proximity,
           trauma: answers.state_submit_trauma,
-          clinic_feedback: answers.state_submit_clinic_feedback
+          clinic_feedback: answers.state_submit_clinic_feedback,
+          encouraged_to_test: answers.state_encouraged_to_test,
+          tested_without_tb: answers.state_tested_without_tb,
+          further_delayed: answers.state_further_delayed,
+          clinic_waiting_time: answers.state_clinic_waiting_time,
+          clinic_experience: answers.state_clinic_experience,
+          clinic_experience_feedback: answers.state_clinic_experience_feedback,
+          reason_for_testing: answers.state_reason_for_testing,
+          contact_for_more_info: answers.state_contact_for_more_info
       };
       return self.rapidpro
           .start_flow(
@@ -1546,6 +1560,157 @@ go.app = function () {
       return new EndState(name, {
         text: text,
         next: "state_start",
+      });
+    });
+
+    self.add("state_encouraged_to_test", function (name) {
+      return new ChoiceState(name, {
+        question: $(
+          "Did TB HealthCheck encourage you to get tested?"
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("yes", $("Yes")),
+            new Choice("unsure", $("Don't know")),
+            new Choice("no", $("No"))
+            ],
+        next: "state_tested_without_tbcheck",
+      });
+    });
+
+    self.add("state_tested_without_tbcheck", function (name) {
+      return new ChoiceState(name, {
+        question: $(
+          "Would you have tested without TB HealthCheck?"
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("yes", $("Yes")),
+            new Choice("unsure", $("Don't know")),
+            new Choice("no", $("No"))
+            ],
+        next: "state_further_delayed",
+      });
+    });
+
+    self.add("state_further_delayed", function (name) {
+      return new ChoiceState(name, {
+        question: $(
+          "Would you have further delayed testing without TB HealthCheck?"
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("yes", $("Yes")),
+            new Choice("unsure", $("Don't know")),
+            new Choice("no", $("No"))
+            ],
+        next: "state_clinic_waiting_time",
+      });
+    });
+
+    self.add("state_clinic_waiting_time", function (name) {
+      return new ChoiceState(name, {
+        question: $([
+          "The waiting times at the clinic were too long.",
+          "",
+          "Do you agree?"
+        ].join("\n")),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("yes", $("Agree")),
+            new Choice("unsure", $("Don't know")),
+            new Choice("no", $("Disagree"))
+            ],
+        next: "state_clinic_experience",
+      });
+    });
+
+    self.add("state_clinic_experience", function (name) {
+      return new ChoiceState(name, {
+        question: $(
+          "How was your experience at the clinic?"
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("bad", $("Bad")),
+            new Choice("ok", $("Ok")),
+            new Choice("good", $("Good"))
+            ],
+        next: "state_clinic_experience_feedback",
+      });
+    });
+
+    self.add("state_clinic_experience_feedback", function (name) {
+      return new FreeText(name, {
+        question: $(
+          "Was it difficult to get access to a TB test? "+
+          "Please reply with details of any problems you experienced."
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        next: "state_reason_for_testing",
+      });
+    });
+
+    self.add("state_reason_for_testing", function (name) {
+      return new FreeText(name, {
+        question: $(
+          "Why did you go to the clinic for a TB test?" +
+          "Can we phone you to get more information?"
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        next: "state_contact_for_more_info",
+      });
+    });
+
+    self.add("state_contact_for_more_info", function (name) {
+      return new ChoiceState(name, {
+        question: $(
+          "Can we phone you to get more information?"
+        ),
+        error: $([
+          "Sorry, we don't understand. Please try again.",
+          "",
+          "Enter the number that matches your answer."
+      ].join("\n")),
+        accept_labels: true,
+        choices: [
+            new Choice("yes", $("Yes")),
+            new Choice("no", $("No"))
+            ],
+        next: "state_trigger_rapidpro_survey_flow",
       });
     });
   });
