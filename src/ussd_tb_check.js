@@ -1034,6 +1034,13 @@ go.app = function () {
             new Choice("thu", $("THURSDAY")),
             new Choice("fri", $("FRIDAY"))
             ],
+        next: "state_planning_to_test"
+      });
+    });
+
+    self.states.add("state_planning_to_test", function (name) {
+      return new EndState(name, {
+        text: $("Well done for planning to get your test!"),
         next: "state_submit_clinic_option"
       });
     });
