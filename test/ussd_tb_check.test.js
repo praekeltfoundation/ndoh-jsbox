@@ -33,7 +33,8 @@ describe("ussd_tb_check app", function () {
           "9": "tb_soccer_2_2022",
           "6": "skip_location_2022",
           "7": "tb_study_a",
-          "5": "tb_study_a_survey",
+          "5": "tb_study_a_survey_group1",
+          "4": "tb_study_a_survey_group2",
         }
       }
     });
@@ -91,6 +92,9 @@ describe("ussd_tb_check app", function () {
     });
     it("should not set activation for non activation", function() {
       return tester
+      .setup.user.answers({
+          activation: null,
+        })
       .setup(function (api) {
         api.http.fixtures.add({
           request: {
@@ -105,7 +109,7 @@ describe("ussd_tb_check app", function () {
           }
       });
       })
-      .input({ session_event: "new", to_addr: "*123*123*4#" })
+      .input({ session_event: "new", to_addr: "*123*123*0#" })
       .check.user.answer("activation", null)
       .check.user.state("state_welcome")
       .run();
@@ -2284,5 +2288,141 @@ describe("ussd_tb_check app", function () {
           })
           .run();
   });
+    it("should show state_encouraged_to_test", function () {
+      return tester.setup.user
+        .state("state_encouraged_to_test")
+        .check.interaction({
+          state: "state_encouraged_to_test",
+          reply: [
+            "Did TB HealthCheck encourage you to get tested?",
+            "1. Yes",
+            "2. Don't know",
+            "3. No"
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should show state_tested_without_tbcheck as next state", function () {
+      return tester.setup.user
+        .state("state_encouraged_to_test")
+        .input("1")
+        .check.interaction({
+          state: "state_tested_without_tbcheck",
+        })
+        .run();
+    });
+    it("should show state_tested_without_tbcheck", function () {
+      return tester.setup.user
+        .state("state_tested_without_tbcheck")
+        .check.interaction({
+          state: "state_tested_without_tbcheck",
+          reply: [
+            "Would you have tested without TB HealthCheck?",
+            "1. Yes",
+            "2. Don't know",
+            "3. No"
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should show state_further_delayed as next state", function () {
+      return tester.setup.user
+        .state("state_tested_without_tbcheck")
+        .input("1")
+        .check.interaction({
+          state: "state_further_delayed",
+        })
+        .run();
+    });
+    it("should show state_further_delayed", function () {
+      return tester.setup.user
+        .state("state_further_delayed")
+        .check.interaction({
+          state: "state_further_delayed",
+          reply: [
+            "Would you have further delayed testing without TB HealthCheck?",
+            "1. Yes",
+            "2. Don't know",
+            "3. No"
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should show state_clinic_waiting_time as next state", function () {
+      return tester.setup.user
+        .state("state_further_delayed")
+        .input("1")
+        .check.interaction({
+          state: "state_clinic_waiting_time",
+        })
+        .run();
+    });
+    it("should show state_clinic_waiting_time", function () {
+      return tester.setup.user
+        .state("state_clinic_waiting_time")
+        .check.interaction({
+          state: "state_clinic_waiting_time",
+          reply: [
+            "The waiting times at the clinic were too long.",
+            "",
+            "Do you agree?",
+            "1. Agree",
+            "2. Don't know",
+            "3. Disagree"
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should show state_further_delayed as next state", function () {
+      return tester.setup.user
+        .state("state_clinic_waiting_time")
+        .input("1")
+        .check.interaction({
+          state: "state_clinic_experience",
+        })
+        .run();
+    });
+    it("should show state_clinic_experience", function () {
+      return tester.setup.user
+        .state("state_clinic_experience")
+        .check.interaction({
+          state: "state_clinic_experience",
+          reply: [
+            "How was your experience at the clinic?",
+            "1. Bad",
+            "2. Ok",
+            "3. Good"
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should show state_clinic_experience_feedback as next state", function () {
+      return tester.setup.user
+        .state("state_clinic_experience")
+        .input("1")
+        .check.interaction({
+          state: "state_clinic_experience_feedback",
+        })
+        .run();
+    });
+    it("should show state_contact_for_more_info", function () {
+      return tester.setup.user
+        .state("state_contact_for_more_info")
+        .check.interaction({
+          state: "state_contact_for_more_info",
+          reply: [
+            "Can we phone you to get more information?",
+            "1. Yes",
+            "2. No"
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
   });
 });
