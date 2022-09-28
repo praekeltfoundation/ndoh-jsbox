@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-09-21 04:09:+0000",
-        "po-revision-date": "2022-09-28 08:45+0200",
+        "pot-creation-date": "2022-09-28 09:43:+0000",
+        "po-revision-date": "2022-09-28 11:48+0200",
         "last-translator": "",
         "language-team": "",
         "language": "afr_ZA",
@@ -252,6 +252,10 @@
         null,
         "Kom ons kyk hoe jy vandag voel. Hoes jy?"
     ],
+    "Please use numbers from list.\nDo you have a cough?": [
+        null,
+        "Antwoord met ’n nommer?"
+    ],
     "Do you have a fever? (when you touch your forehead, does it feel hot?)": [
         null,
         "Het jy koors? (wanneer jy aan jou voorkop raak, voel dit warm?)"
@@ -384,6 +388,10 @@
         null,
         "Neem jy voor om jou te laat toets?"
     ],
+    "Please use numbers from list. Do you commit to getting tested?": [
+        null,
+        "Het jy hoë TB risiko? Risiko beteken jy woon met iemand met TB OF jy het TB gehad die agelope twee jaar OF jy is MIV+"
+    ],
     "Well done for committing to your health!": [
         null,
         "Geluk omdat jy jou gesondheid eerste stel!"
@@ -423,6 +431,10 @@
     "Did you find TB HealthCheck useful?": [
         null,
         "Het jy die TB HealthCheck nuttig gevind? "
+    ],
+    "Don't know": [
+        null,
+        "Weet nie "
     ],
     "I did not go to the clinic for a TB test because it takes too much time. Do you agree?": [
         null,
@@ -511,5 +523,41 @@
     "Thank you for taking part in the survey. Many people don't realise that TB is cureable and test too late.": [
         null,
         "Dankie dat jy deelgeneem het aan die opname.\nKlomp mense besef nie dat TB geneesbaar is nie en toets te laat."
+    ],
+    "Did TB HealthCheck encourage you to get tested?": [
+        null,
+        ""
+    ],
+    "Would you have tested without TB HealthCheck?": [
+        null,
+        ""
+    ],
+    "Would you have further delayed testing without TB HealthCheck?": [
+        null,
+        ""
+    ],
+    "The waiting times at the clinic were too long.\n\nDo you agree?": [
+        null,
+        ""
+    ],
+    "How was your experience at the clinic?": [
+        null,
+        ""
+    ],
+    "Bad": [
+        null,
+        ""
+    ],
+    "Ok": [
+        null,
+        ""
+    ],
+    "Good": [
+        null,
+        ""
+    ],
+    "Was it difficult to get access to a TB test? Please reply with details of any problems you experienced.": [
+        null,
+        ""
     ]
 }

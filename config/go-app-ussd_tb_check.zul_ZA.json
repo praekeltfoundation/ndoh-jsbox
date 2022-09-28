@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-09-21 04:09:+0000",
-        "po-revision-date": "2022-09-22 07:33+0200",
+        "pot-creation-date": "2022-09-28 09:43:+0000",
+        "po-revision-date": "2022-09-28 11:48+0200",
         "last-translator": "",
         "language-team": "",
         "language": "zu_ZA",
@@ -36,9 +36,17 @@
         null,
         "Le sevisi isebenza kahle kakhulu uma ukhetha izinketho zezinombolo ohlwini."
     ],
+    "The National Department of Health thanks you for helping to protect the health of all SA citizens. Stop the spread of TB.": [
+        null,
+        "UMnyango Wezempilo Kazwelonke uyabonga ngokusiza ukuvikela impilo yezakhamizi zaseNingizimu Afrika. Misa ukusabalala TB."
+    ],
     "START": [
         null,
         "QALA"
+    ],
+    "This NDoH service only provides health info. Please agree that you are responsible for your own medical care and treatment.": [
+        null,
+        "Lesevisi ye-NDoH inikeza imininingwane yezempilo kphela. Scela uvume ukuth unegunya lokunakekelwa nokwelashwa kwakho. "
     ],
     "YES": [
         null,
@@ -108,6 +116,10 @@
         null,
         "Singase sikubuze imibuzo embalwa ukuze sizocwaninga ngemva kokuqeda eyakho iTB HealthCheck.\nUzimisele ukubamba iqhaza?"
     ],
+    "Please reply with numbers. Are you willing to take part?": [
+        null,
+        ""
+    ],
     "Yes": [
         null,
         "Yebo"
@@ -159,6 +171,10 @@
     "Which gender do you identify as?": [
         null,
         "Ubuphi ubulili ozibona uyibo?"
+    ],
+    "Please use numbers from list.\n\nWhich gender do you identify as?": [
+        null,
+        "Phendula ngenombolo.\n\nUbuphi ubulili ozibona uyibo?"
     ],
     "MALE": [
         null,
@@ -320,6 +336,10 @@
         null,
         "Izimpendulo zakho kulembuzo zibonisa ukuth udinga ukuhlolelwa i-TB kuleviki! \n\nNawa amathiphu angakusiza ukuthi uhlele:"
     ],
+    "* Make the time. Your health is a priority!\n* Pick the most convenient clinic for your test\n* Get there early! Clinics are open for TB testing\nMonday to Friday mornings.": [
+        null,
+        "Yenza isikhathi. Impilo yakho ibalulekile!\n\nKhetha umtholampilo okulungele. Ngezansi imitholampilo eseduze nawe. "
+    ],
     "Get there early! Clinics are open for TB testing Monday to Friday mornings.": [
         null,
         "Fika kusenesikhathi! Imitholampilo ivulelwa ukuhlola i-TB ngoMsombuluko kuya kuLwesihlanu ekuseni."
@@ -412,6 +432,10 @@
         null,
         "Ingabe uthole ukuthi i-TB HealthCheck iwusizo?"
     ],
+    "Don't know": [
+        null,
+        "Angazi "
+    ],
     "I did not go to the clinic for a TB test because it takes too much time. Do you agree?": [
         null,
         "Angizange ngiye emtholampilo ukuyohlola i-TB ngoba kuthatha isikhathi eside. \nIngabe uyavuma?"
@@ -499,5 +523,41 @@
     "Thank you for taking part in the survey. Many people don't realise that TB is cureable and test too late.": [
         null,
         "Siyabonga ngokubamba iqhaza kwinhlolovo.\nAbantu abaningi ababoni ukuthi i-TB iyelapheka bese behlola sekuhambe iskhathi eside."
+    ],
+    "Did TB HealthCheck encourage you to get tested?": [
+        null,
+        ""
+    ],
+    "Would you have tested without TB HealthCheck?": [
+        null,
+        ""
+    ],
+    "Would you have further delayed testing without TB HealthCheck?": [
+        null,
+        ""
+    ],
+    "The waiting times at the clinic were too long.\n\nDo you agree?": [
+        null,
+        ""
+    ],
+    "How was your experience at the clinic?": [
+        null,
+        ""
+    ],
+    "Bad": [
+        null,
+        ""
+    ],
+    "Ok": [
+        null,
+        ""
+    ],
+    "Good": [
+        null,
+        ""
+    ],
+    "Was it difficult to get access to a TB test? Please reply with details of any problems you experienced.": [
+        null,
+        ""
     ]
 }

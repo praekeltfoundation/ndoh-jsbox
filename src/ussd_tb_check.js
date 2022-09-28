@@ -1008,7 +1008,7 @@ go.app = function () {
 
       nearest_clinic.forEach(function(clinic){
         // append clinic to choices
-        choice_list.push(new Choice(clinic.shortname, $(clinic.short_name)));
+//        choice_list.push(new Choice(clinic.shortname, $(clinic.short_name)));
       });
 
       return new ChoiceState(name, {
