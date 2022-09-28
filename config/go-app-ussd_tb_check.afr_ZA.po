@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2022-09-21 04:09:+0000\n"
-"PO-Revision-Date: 2022-09-22 07:32+0200\n"
+"PO-Revision-Date: 2022-09-28 08:45+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: afr_ZA\n"
@@ -16,7 +16,7 @@ msgstr ""
 msgid "Welcome back to the The National Department of Health's TB HealthCheck"
 msgstr ""
 "Welkom terug by Die Nasionale Departement van Gesondheid se TB "
-"Gesondheidsvraelys "
+"Gesondheidsvraelys"
 
 #: src/ussd_tb_check.js:84
 msgid "Continue where I left off"
@@ -572,12 +572,6 @@ msgstr ""
 "indien jy begin hoes, koors het, gewig verloor of snags sweet."
 
 #: src/ussd_tb_check.js:1191
-#, fuzzy
-#| msgid ""
-#| "Your replies to the questions show you need a TB test this week.\n"
-#| "\n"
-#| "Go to your clinic for a free TB test. Please put on a face mask before "
-#| "you enter the clinic"
 msgid ""
 "Your replies to the questions show you need a TB test this week.\n"
 "\n"
@@ -586,7 +580,7 @@ msgstr ""
 "Jou antwoorde toon dat jy ’n TB-toets moet neem hierdie week. \n"
 "\n"
 "Gaan na jou kliniek vir ’n gratis TB-toets. Sit asseblief jou gesigmasker op "
-"voordat jy ingaan"
+"voordat jy ingaan."
 
 #: src/ussd_tb_check.js:1203
 msgid ""
@@ -690,10 +684,8 @@ msgstr ""
 
 #: src/ussd_tb_check.js:1418 src/ussd_tb_check.js:1445
 #: src/ussd_tb_check.js:1464
-#, fuzzy
-#| msgid "Please reply with numbers. Choose your preferred language"
 msgid "Please reply with the number that matches your answer."
-msgstr "Please reply with numbers. Kies jou taal van voorkeur"
+msgstr "Please reply with numbers. Kies jou taal van voorkeur."
 
 #: src/ussd_tb_check.js:1423
 msgid "Back to all questions"
