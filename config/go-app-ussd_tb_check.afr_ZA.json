@@ -2,7 +2,7 @@
     "": {
         "project-id-version": "",
         "pot-creation-date": "2022-09-21 04:09:+0000",
-        "po-revision-date": "2022-09-22 07:32+0200",
+        "po-revision-date": "2022-09-28 08:45+0200",
         "last-translator": "",
         "language-team": "",
         "language": "afr_ZA",
@@ -14,7 +14,7 @@
     },
     "Welcome back to the The National Department of Health's TB HealthCheck": [
         null,
-        "Welkom terug by Die Nasionale Departement van Gesondheid se TB Gesondheidsvraelys "
+        "Welkom terug by Die Nasionale Departement van Gesondheid se TB Gesondheidsvraelys"
     ],
     "Continue where I left off": [
         null,
@@ -396,6 +396,10 @@
         null,
         "Jy hoef nie nou ’n TB-toets te doen nie, maar besoek jou naaste kliniek indien jy begin hoes, koors het, gewig verloor of snags sweet."
     ],
+    "Your replies to the questions show you need a TB test this week.\n\nGo to your clinic for a free TB test.": [
+        null,
+        "Jou antwoorde toon dat jy ’n TB-toets moet neem hierdie week. \n\nGaan na jou kliniek vir ’n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan."
+    ],
     "Check if those you live with are on TB treatment. If you don't know your HIV status, visit the clinic for a free HIV test. Then do the TB check again.": [
         null,
         "Maak seker mense met wie jy woon kry TB-behandeling. As jy nie jou MIV-status ken nie, besoek die kliniek vir ’n gratis toets. Voltooi dan weer die TB-vraelys."
@@ -451,6 +455,10 @@
     "The FAQ has been sent to you on SMS. What would you like to do?": [
         null,
         ""
+    ],
+    "Please reply with the number that matches your answer.": [
+        null,
+        "Please reply with numbers. Kies jou taal van voorkeur."
     ],
     "Back to all questions": [
         null,
