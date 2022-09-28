@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-09-21 04:09:+0000",
-        "po-revision-date": "2022-09-22 07:32+0200",
+        "pot-creation-date": "2022-09-28 09:43:+0000",
+        "po-revision-date": "2022-09-28 11:48+0200",
         "last-translator": "",
         "language-team": "",
         "language": "sot_ZA",
@@ -89,7 +89,7 @@
     ],
     "Please reply with numbers. Choose your preferred language": [
         null,
-        "Kgetha puo eo o ikgethela "
+        "Kgetha puo eo o ikgethela"
     ],
     "English": [
         null,
@@ -331,6 +331,10 @@
         null,
         "Dikarabo tsa hao dipotsong di supa o hloka tlhahlobo ya TB bekeng ena!\n\nE-ya tleliniking bakeng sa tlhahlobo ya TB. Ka kopo, rwala mask pele o kena tleliniking:"
     ],
+    "* Make the time. Your health is a priority!\n* Pick the most convenient clinic for your test\n* Get there early! Clinics are open for TB testing\nMonday to Friday mornings.": [
+        null,
+        "Etsa nako. Bophelo ba hao bo tla pele!\nKgetha tleliniki e loketseng tlhahlobo ya hao.\n Ka tlase ke ditleliniki tse 5 tse haufi le wena."
+    ],
     "Get there early! Clinics are open for TB testing Monday to Friday mornings.": [
         null,
         "Tsohella! Ditleliniki di butswe bakeng sa tlhahlobo ya TB hoseng Mantaha ho isa Labohlano."
@@ -423,6 +427,10 @@
         null,
         "A na o fumane TB HealthCheck e le molemo? "
     ],
+    "Don't know": [
+        null,
+        "Ha ke tsebe "
+    ],
     "I did not go to the clinic for a TB test because it takes too much time. Do you agree?": [
         null,
         "Ha keya ya tleliniking bakeng sa tlhahlobo ya LEFUBA hobane ho nka nako e telele haholo.\nNa o ya dumela?"
@@ -510,5 +518,41 @@
     "Thank you for taking part in the survey. Many people don't realise that TB is cureable and test too late.": [
         null,
         "Kea o leboha ka ho nka karolo diphuputsong.\nBatho ba bangata ha ba elelloe hore TB ya phekoleha ebe ba etsa tlhahlobo e se e le morao haholo."
+    ],
+    "Did TB HealthCheck encourage you to get tested?": [
+        null,
+        ""
+    ],
+    "Would you have tested without TB HealthCheck?": [
+        null,
+        ""
+    ],
+    "Would you have further delayed testing without TB HealthCheck?": [
+        null,
+        ""
+    ],
+    "The waiting times at the clinic were too long.\n\nDo you agree?": [
+        null,
+        ""
+    ],
+    "How was your experience at the clinic?": [
+        null,
+        ""
+    ],
+    "Bad": [
+        null,
+        ""
+    ],
+    "Ok": [
+        null,
+        ""
+    ],
+    "Good": [
+        null,
+        ""
+    ],
+    "Was it difficult to get access to a TB test? Please reply with details of any problems you experienced.": [
+        null,
+        ""
     ]
 }
