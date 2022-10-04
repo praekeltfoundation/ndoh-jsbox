@@ -1690,8 +1690,7 @@ go.app = function () {
     self.add("state_reason_for_testing", function (name) {
       return new FreeText(name, {
         question: $(
-          "Why did you go to the clinic for a TB test?" +
-          "Can we phone you to get more information?"
+          "Why did you go to the clinic for a TB test?"
         ),
         error: $([
           "Sorry, we don't understand. Please try again.",
