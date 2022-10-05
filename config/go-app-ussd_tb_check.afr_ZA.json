@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-09-28 09:43:+0000",
-        "po-revision-date": "2022-09-28 11:48+0200",
+        "pot-creation-date": "2022-10-04 09:24:+0000",
+        "po-revision-date": "2022-10-05 00:19+0200",
         "last-translator": "",
         "language-team": "",
         "language": "afr_ZA",
@@ -26,7 +26,7 @@
     ],
     "Unfortunately, you cannot participate in the study more than once. You can still continue with a TB Check but you will not be included in the study.": [
         null,
-        "Ongelukkig kan jy nie deelneem aan die studie meer as een keer. Jy kan wel voortgaan met 'n TB Check wat nie by die studie ingesluit sal word nie. "
+        "Ongelukkig kan jy nie deelneem aan die studie meer as een keer. Jy kan wel voortgaan met 'n TB Check wat nie by die studie ingesluit sal word nie."
     ],
     "Continue": [
         null,
@@ -422,7 +422,7 @@
     ],
     "Sorry, we don't understand. Please try again.\n\nEnter the number that matches your answer.": [
         null,
-        ""
+        "Jammer, ons verstaan nie. Probeer asseblief weer.\n\nVoer die nommer in wat ooreenstem met jou antwoord."
     ],
     "More": [
         null,
@@ -462,11 +462,11 @@
     ],
     "Thank you for taking part in the survey. Your R10 in airtime is on its way!": [
         null,
-        ""
+        "Dankie dat jy deelgeneem het aan die opname. Jou R10 lugtyd is op pad!"
     ],
     "The FAQ has been sent to you on SMS. What would you like to do?": [
         null,
-        ""
+        "Die FAQ is na jou gestuur in 'n SMS. Wat verkies jy om te doen?"
     ],
     "Please reply with the number that matches your answer.": [
         null,
@@ -482,7 +482,7 @@
     ],
     "Exit": [
         null,
-        ""
+        "Verlaat"
     ],
     "What would you like to know?": [
         null,
@@ -490,7 +490,7 @@
     ],
     "More about the research?": [
         null,
-        ""
+        "Meer oor die navorsing?"
     ],
     "What information will you ask me for?": [
         null,
@@ -522,42 +522,50 @@
     ],
     "Thank you for taking part in the survey. Many people don't realise that TB is cureable and test too late.": [
         null,
-        "Dankie dat jy deelgeneem het aan die opname.\nKlomp mense besef nie dat TB geneesbaar is nie en toets te laat."
+        "Dankie dat jy deelgeneem het aan die opname. Klomp mense besef nie dat TB geneesbaar is nie en toets te laat."
     ],
     "Did TB HealthCheck encourage you to get tested?": [
         null,
-        ""
+        "Het TB HealthCheck jou aangespoor om jou te laat toets?"
     ],
     "Would you have tested without TB HealthCheck?": [
         null,
-        ""
+        "Sou jy jou laat toets het sonder TB HealthCheck?"
     ],
     "Would you have further delayed testing without TB HealthCheck?": [
         null,
-        ""
+        "Sou jy toetsing langer uitgestel het sonder TB HealthCheck?"
     ],
     "The waiting times at the clinic were too long.\n\nDo you agree?": [
         null,
-        ""
+        "Die wagtyd by die kliniek was te lank. \n\nStem jy saam?"
     ],
     "How was your experience at the clinic?": [
         null,
-        ""
+        "Hoe was jou ervaring by die kliniek?"
     ],
     "Bad": [
         null,
-        ""
+        "Sleg"
     ],
     "Ok": [
         null,
-        ""
+        "Ok"
     ],
     "Good": [
         null,
-        ""
+        "Goed"
     ],
     "Was it difficult to get access to a TB test? Please reply with details of any problems you experienced.": [
         null,
-        ""
+        "Was dit moeilik om toegang te kry tot 'n TB-toets? Gee asseblief besonderhede van enige probleme wat jy ervaar het."
+    ],
+    "Why did you go to the clinic for a TB test?": [
+        null,
+        "Waarom het jy kliniek toe gegaan vir 'n TB-toets?"
+    ],
+    "Can we phone you to get more information?": [
+        null,
+        "Kan ons jou skakel om meer inligting te kry?"
     ]
 }

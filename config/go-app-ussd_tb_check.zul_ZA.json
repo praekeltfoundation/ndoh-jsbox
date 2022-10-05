@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-09-28 09:43:+0000",
-        "po-revision-date": "2022-09-28 11:48+0200",
+        "pot-creation-date": "2022-10-04 09:24:+0000",
+        "po-revision-date": "2022-10-04 23:26+0200",
         "last-translator": "",
         "language-team": "",
         "language": "zu_ZA",
@@ -26,7 +26,7 @@
     ],
     "Unfortunately, you cannot participate in the study more than once. You can still continue with a TB Check but you will not be included in the study.": [
         null,
-        "Ngeshwa, awukwazi ukubamba iqhaza ocwaningweni ngaphezu kokukodwa.Ungaqhubeka nge TB Check kodwa ngeke ufakwe ocwaningweni. "
+        "Ngeshwa, awukwazi ukubamba iqhaza ocwaningweni ngaphezu kokukodwa.Ungaqhubeka nge TB Check kodwa ngeke ufakwe ocwaningweni."
     ],
     "Continue": [
         null,
@@ -90,7 +90,7 @@
     ],
     "Please reply with numbers. Choose your preferred language": [
         null,
-        "Khetha ulimi lwakho oluthandayo"
+        "Sicela usebenzise izinombolo ezisohlwini. Khetha ulimi lwakho oluthandayo"
     ],
     "English": [
         null,
@@ -118,7 +118,7 @@
     ],
     "Please reply with numbers. Are you willing to take part?": [
         null,
-        ""
+        "Sicela usebenzise izinombolo ezisohlwini. Ingabe uzimisele ukuba yingxenye?"
     ],
     "Yes": [
         null,
@@ -138,7 +138,7 @@
     ],
     "Please use numbers from list.\n\nHow old are you?": [
         null,
-        "Phendula ngenombolo\n\nUneminyaka emingaki ?"
+        "Sicela usebenzise izinombolo ezisohlwini.\n\nUneminyaka emingaki ?"
     ],
     "under 18": [
         null,
@@ -174,7 +174,7 @@
     ],
     "Please use numbers from list.\n\nWhich gender do you identify as?": [
         null,
-        "Phendula ngenombolo.\n\nUbuphi ubulili ozibona uyibo?"
+        "Sicela usebenzise izinombolo ezisohlwini.\n\nUbuphi ubulili ozikhomba kubo?"
     ],
     "MALE": [
         null,
@@ -198,15 +198,15 @@
     ],
     "E. CAPE": [
         null,
-        "E. CAPE"
+        "EMPUMALANGA KAPA"
     ],
     "FREE STATE": [
         null,
-        "FREE STATE"
+        "EFULEYISITATA"
     ],
     "GAUTENG": [
         null,
-        "GAUTENG"
+        "EGOLI"
     ],
     "KWAZULU NATAL": [
         null,
@@ -222,15 +222,15 @@
     ],
     "NORTH WEST": [
         null,
-        "NORTH WEST"
+        "ENYAKATHO-NTSHONALANGA"
     ],
     "N. CAPE": [
         null,
-        "N. CAPE"
+        "ENYAKATHO KAPA"
     ],
     "W. CAPE": [
         null,
-        "W. CAPE"
+        "ENTSHONALANGA KAPA"
     ],
     "Please type the name of the street where you live.": [
         null,
@@ -282,7 +282,7 @@
     ],
     "Are you at high risk of TB?\n\nRisk means you live with someone who has TB OR you had TB in the last 2 years OR you are HIV+": [
         null,
-        "Ingabe usengozini enkulu ye-TB? \nIngozi isho ukuhlala nomuntu one-TB NOMA ubene-TB kuminyaka emi-2 edlule NOMA u-HIV+"
+        "Ingabe usengozini enkulu ye-TB? \n\nIngozi isho ukuhlala nomuntu one-TB NOMA ubene-TB kuminyaka emi-2 edlule NOMA u-HIV+"
     ],
     "Please use numbers from list. Are you at high risk for TB?": [
         null,
@@ -350,7 +350,7 @@
     ],
     "When will you go for your test? Reply with the day": [
         null,
-        "Uzoya nini ukuyohlolwa kwakho? Phendula ngosuku (1-5)"
+        "Uzoya nini ukuyohlolwa kwakho? Phendula ngosuku "
     ],
     "MONDAY": [
         null,
@@ -371,6 +371,10 @@
     "FRIDAY": [
         null,
         "LWESIHLANU"
+    ],
+    "Well done for planning to get your test!": [
+        null,
+        "Wenze kahle ngokubophezela impilo yakho! Wenze kahle ngokuhlosa ukuthola ukuhlolwa kwakho! 👏"
     ],
     "Your replies to the questions show that you need a TB test this week!\n\n* Go to your local clinic for a free TB test.": [
         null,
@@ -422,7 +426,7 @@
     ],
     "Sorry, we don't understand. Please try again.\n\nEnter the number that matches your answer.": [
         null,
-        ""
+        "Siyaxolisa, asiqondi. Ngicela uzame futhi.\n\nFaka inombolo ehambisana nempendulo yakho."
     ],
     "More": [
         null,
@@ -454,7 +458,7 @@
     ],
     "I did not go to the clinic for a TB test because I do not want to think about having TB. Do you agree?": [
         null,
-        "Angizange ngiye emtholampilo ukuyohlola i-TB ngoba angifuni ukuyicabanga indaba yokuba ne-TB. \nIngabe uyavuma? "
+        "Angizange ngiye emtholampilo ukuyohlola i-TB ngoba angifuni ukuyicabanga indaba yokuba ne-TB.Ingabe uyavuma? "
     ],
     "Are there any other reasons why you did not go to the clinic for a TB test?Reply in your own words.": [
         null,
@@ -462,11 +466,11 @@
     ],
     "Thank you for taking part in the survey. Your R10 in airtime is on its way!": [
         null,
-        ""
+        "Siyabonga ngokubamba iqhaza kuhlolovo. U-R10 wakho we-airtime usendleleni!"
     ],
     "The FAQ has been sent to you on SMS. What would you like to do?": [
         null,
-        ""
+        "I-FAQ ithunyelwe kuwe nge-SMS. Ungathanda ukwenzani?"
     ],
     "Please reply with the number that matches your answer.": [
         null,
@@ -482,7 +486,7 @@
     ],
     "Exit": [
         null,
-        ""
+        "Phuma"
     ],
     "What would you like to know?": [
         null,
@@ -490,7 +494,7 @@
     ],
     "More about the research?": [
         null,
-        ""
+        "Okunye okuningi ngocwaningo?"
     ],
     "What information will you ask me for?": [
         null,
@@ -526,38 +530,42 @@
     ],
     "Did TB HealthCheck encourage you to get tested?": [
         null,
-        ""
+        "Ubuzohlola na ngaphandle kwe-TB HealthCheck?"
     ],
     "Would you have tested without TB HealthCheck?": [
         null,
-        ""
+        "Ubuzohlola na ngaphandle kwe-TB HealthCheck?"
     ],
     "Would you have further delayed testing without TB HealthCheck?": [
         null,
-        ""
+        "Ubuzokuhlehlisa ukuhlola ngaphandle kwe-TB HealthCheck?"
     ],
     "The waiting times at the clinic were too long.\n\nDo you agree?": [
         null,
-        ""
+        "Isikhathi sokulinda emtholampilo besiside kakhulu. \n\nIngabe uyavuma?"
     ],
     "How was your experience at the clinic?": [
         null,
-        ""
+        "Besinjani isikhathi sakho emtholampilo? "
     ],
     "Bad": [
         null,
-        ""
+        "Kubi"
     ],
     "Ok": [
         null,
-        ""
+        "Kulungile"
     ],
     "Good": [
         null,
-        ""
+        "Kuhle"
     ],
     "Was it difficult to get access to a TB test? Please reply with details of any problems you experienced.": [
         null,
-        ""
+        "Kwakunzima ukufinyelela ukuhlolwa kwe-TB? Sicela uphendule ngemininingwane yanoma yiziphi izinkinga ohlangabezane nazo."
+    ],
+    "Can we phone you to get more information?": [
+        null,
+        "Singakwazi ukuk'fonela ukuze sithole kabanzi ulwazi? "
     ]
 }

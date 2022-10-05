@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-09-28 09:43:+0000",
-        "po-revision-date": "2022-09-28 11:48+0200",
+        "pot-creation-date": "2022-10-04 09:24:+0000",
+        "po-revision-date": "2022-10-05 00:19+0200",
         "last-translator": "",
         "language-team": "",
         "language": "sot_ZA",
@@ -115,6 +115,10 @@
         null,
         "Re ka o botsa dipotso tse mmalwa bakeng sa dipatlisiso ka mor'a hore o qete tlhahlobo ya hao ya TB HealthCheck.\nNa o ikemiseditse ho nka karolo?"
     ],
+    "Please reply with numbers. Are you willing to take part?": [
+        null,
+        ""
+    ],
     "Yes": [
         null,
         "Ee"
@@ -193,7 +197,7 @@
     ],
     "E. CAPE": [
         null,
-        "E. CAPE"
+        "KAPA BOTJHABELA"
     ],
     "FREE STATE": [
         null,
@@ -217,15 +221,15 @@
     ],
     "NORTH WEST": [
         null,
-        "NORTH WEST"
+        "LEBOYA BOPHIRIMELA"
     ],
     "N. CAPE": [
         null,
-        "N. CAPE"
+        "KAPA LEBOYA "
     ],
     "W. CAPE": [
         null,
-        "W. CAPE"
+        "KAPA BOPHIRIMELA"
     ],
     "Please type the name of the street where you live.": [
         null,
@@ -367,6 +371,10 @@
         null,
         "LABOHLANO"
     ],
+    "Well done for planning to get your test!": [
+        null,
+        "Rea o thoholetsa ka ho rera ho fumana teko ya hao!"
+    ],
     "Your replies to the questions show that you need a TB test this week!\n\n* Go to your local clinic for a free TB test.": [
         null,
         "Dikarabo tsa hao dipotsong di supa o hloka tlhahlobo ya TB bekeng ena!\n\nE-ya tleliniking bakeng sa tlhahlobo ya TB. Ka kopo, rwala mask pele o kena tleliniking."
@@ -385,7 +393,7 @@
     ],
     "Please use numbers from list. Do you commit to getting tested?": [
         null,
-        ""
+        "Na o itlama ho hlahloba?"
     ],
     "Well done for committing to your health!": [
         null,
@@ -417,7 +425,7 @@
     ],
     "Sorry, we don't understand. Please try again.\n\nEnter the number that matches your answer.": [
         null,
-        ""
+        "Tshoarelo, ha re utlwisise. Ka kopo leka hape.\n\nKenya nomoro e tsamaellanang le karabo ya hao."
     ],
     "More": [
         null,
@@ -457,11 +465,11 @@
     ],
     "Thank you for taking part in the survey. Your R10 in airtime is on its way!": [
         null,
-        ""
+        "Rea leboha ha o nkile karolo phuputsong. R10 ya hao ya airtime e tseleng!"
     ],
     "The FAQ has been sent to you on SMS. What would you like to do?": [
         null,
-        ""
+        "FAQ e rometswe ho wena ka SMS. O ka rata ho etsa eng?"
     ],
     "Please reply with the number that matches your answer.": [
         null,
@@ -477,7 +485,7 @@
     ],
     "Exit": [
         null,
-        ""
+        "Etswa"
     ],
     "What would you like to know?": [
         null,
@@ -521,38 +529,46 @@
     ],
     "Did TB HealthCheck encourage you to get tested?": [
         null,
-        ""
+        "Na TB HealthCheck e o kgothalelitse ho hlahloba?"
     ],
     "Would you have tested without TB HealthCheck?": [
         null,
-        ""
+        "Na o ka be u hlahlobile ntle le TB HealthCheck?"
     ],
     "Would you have further delayed testing without TB HealthCheck?": [
         null,
-        ""
+        "Na o ka bo diehile ho hlahloba ntle le TB HealthCheck?"
     ],
     "The waiting times at the clinic were too long.\n\nDo you agree?": [
         null,
-        ""
+        "Dinako tsa ho ema tleliniking di ne di le telele haholo. \n\nNa o ya dumela?"
     ],
     "How was your experience at the clinic?": [
         null,
-        ""
+        "Boiphihlelo ba hao bo bile jwang tleliniking?"
     ],
     "Bad": [
         null,
-        ""
+        "E mpe"
     ],
     "Ok": [
         null,
-        ""
+        "Ok"
     ],
     "Good": [
         null,
-        ""
+        "E ntle"
     ],
     "Was it difficult to get access to a TB test? Please reply with details of any problems you experienced.": [
         null,
-        ""
+        "Na ho ne ho le thata ho fumana tlhahlobo ya LEFUBA? Ka kopo araba ka dintlha tsa mathata afe kapa afe ao o bileng le ona."
+    ],
+    "Why did you go to the clinic for a TB test?": [
+        null,
+        "Hobaneng o ile tleliniking bakeng sa tlhahlobo ya LEFUBA?"
+    ],
+    "Can we phone you to get more information?": [
+        null,
+        "Na re ka o letsetsa ho fumana dintlha tse ding?"
     ]
 }
