@@ -1821,6 +1821,7 @@ describe("ussd_tb_check app", function () {
             "Your replies to the questions show that you need a TB test this week!",
             "",
             "* Go to your local clinic for a free TB test.",
+            "1. Next"
           ].join("\n"),
         })
         .run();
