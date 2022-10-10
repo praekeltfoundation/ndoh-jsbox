@@ -950,7 +950,7 @@ go.app = function () {
       var answers = self.im.user.answers;
       var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
       var activation = self.get_activation();
-      console.log(">>>>>>>>", activation);
+
       var payload = {
         data: {
           msisdn: msisdn,
@@ -981,20 +981,20 @@ go.app = function () {
       if (typeof self.im.user.answers.state_research_consent != "undefined"){
         if (answers.state_research_consent === "state_gender"){
           payload.data.research_consent = true;
+          payload.data.follow_up_optin = true;
         }
         else{
           payload.data.research_consent = false;
+          payload.data.follow_up_optin = false;
         }
+      }
+      else{
+        payload.data.follow_up_optin = answers.state_opt_in;
       }
 
       if(self.im.user.answers.state_age !== "<18") {
         payload.data.city_location = answers.city_location;
       }
-
-      if (activation === "tb_study_a"){
-        payload.data.follow_up_optin = "yes";
-      }
-      payload.data.follow_up_optin = answers.state_opt_in;
 
       return new JsonApi(self.im)
         .post(self.im.config.healthcheck.url + "/v2/tbcheck/", payload)
@@ -1007,7 +1007,6 @@ go.app = function () {
           },
           function (e) {
             // Go to error state after 3 failed HTTP requests
-            console.log("*******", e.message);
             opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
             if (opts.http_error_count === 3) {
               self.im.log.error(e.message);
