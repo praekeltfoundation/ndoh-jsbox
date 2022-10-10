@@ -1202,14 +1202,15 @@ go.app = function () {
     });
 
     self.states.add("state_soft_commitment", function(name) {
-        return new EndState(name, {
-            next: "state_commit_to_get_tested",
-            text: $([
+        return new MenuState(name, {
+            question: $([
                 "Your replies to the questions show that you need a TB test this week!",
                 "",
                 "* Go to your local clinic for a free TB test.",
             ].join("\n")
-            )
+            ),
+            accept_labels: true,
+            choices: [new Choice("state_commit_to_get_tested", $("Next"))],
         });
     });
 
