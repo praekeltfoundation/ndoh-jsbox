@@ -891,6 +891,13 @@ go.app = function () {
     });
 
     self.add("state_tracing", function (name) {
+      var next_state = "state_opt_in";
+      var activation = self.im.user.answers.activation;
+
+      if (activation === "tb_study_a"){
+        next_state = "state_submit_data";
+      }
+
       var question = $(
           "Now, please agree that the info you shared is correct and that you give " +
             "the NDoH permission to contact you if needed?"
@@ -911,7 +918,7 @@ go.app = function () {
         accept_labels: true,
         choices: choices,
         next: function (response) {
-          return "state_opt_in";
+          return next_state;
         },
       });
     });
@@ -943,6 +950,7 @@ go.app = function () {
       var answers = self.im.user.answers;
       var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
       var activation = self.get_activation();
+
       var payload = {
         data: {
           msisdn: msisdn,
@@ -958,7 +966,6 @@ go.app = function () {
           weight: answers.state_weight,
           exposure: answers.state_exposure,
           tracing: answers.state_tracing,
-          follow_up_optin: answers.state_opt_in,
           risk: self.calculate_risk(),
           activation: activation,
           data: {
@@ -974,15 +981,21 @@ go.app = function () {
       if (typeof self.im.user.answers.state_research_consent != "undefined"){
         if (answers.state_research_consent === "state_gender"){
           payload.data.research_consent = true;
+          payload.data.follow_up_optin = true;
         }
         else{
           payload.data.research_consent = false;
+          payload.data.follow_up_optin = false;
         }
+      }
+      else{
+        payload.data.follow_up_optin = answers.state_opt_in;
       }
 
       if(self.im.user.answers.state_age !== "<18") {
         payload.data.city_location = answers.city_location;
       }
+
       return new JsonApi(self.im)
         .post(self.im.config.healthcheck.url + "/v2/tbcheck/", payload)
         .then(
@@ -1008,6 +1021,10 @@ go.app = function () {
       var answers = self.im.user.answers;
 
       var text = $("Thanks for choosing to get our follow-up messages.");
+
+      if (answers.activation === "tb_study_a"){
+        text = $("Thanks for your answers. Your result will be sent soon on SMS.");
+      }
 
       if (!answers.state_opt_in) {
         text = $("Okay thanks, you won't get any follow-up messages.");
@@ -1097,16 +1114,6 @@ go.app = function () {
             "* Get there early! Clinics are open for TB testing",
              "Monday to Friday mornings."
             ].join("\n")
-        ),
-        accept_labels: true,
-        choices: [new Choice("state_clinic_opens", $("Next"))],
-      });
-    });
-
-    self.add("state_clinic_opens", function (name) {
-      return new MenuState(name, {
-        question: $(
-            "Get there early! Clinics are open for TB testing Monday to Friday mornings."
         ),
         accept_labels: true,
         choices: [new Choice("state_get_nearest_clinic", $("Next"))],
@@ -1219,7 +1226,7 @@ go.app = function () {
     self.states.add("state_commitment_incentive", function (name) {
       return new MenuState(name, {
         question: $([
-            "* Go to a local clinic for a free TB test.",
+            "* Visit your local clinic for a free TB test.",
             "* You will get R10 airtime within 1 hour if you commit to get tested.",
             ].join("\n")
         ),
@@ -1839,8 +1846,7 @@ go.app = function () {
     self.add("state_reason_for_testing", function (name) {
       return new FreeText(name, {
         question: $(
-          "Why did you go to the clinic for a TB test?" +
-          "Can we phone you to get more information?"
+          "Why did you go to the clinic for a TB test?"
         ),
         error: $([
           "Sorry, we don't understand. Please try again.",

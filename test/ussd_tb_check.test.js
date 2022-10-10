@@ -1832,7 +1832,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_commitment_incentive",
           reply: [
-            "* Go to a local clinic for a free TB test.",
+            "* Visit your local clinic for a free TB test.",
             "* You will get R10 airtime within 1 hour if you commit to get tested.",
             "1. Next",
           ].join("\n"),
