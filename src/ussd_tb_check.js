@@ -873,13 +873,14 @@ go.app = function () {
 
       var text = $("Thanks for choosing to get our follow-up messages.");
 
+      if (!answers.state_opt_in) {
+        text = $("Okay thanks, you won't get any follow-up messages.");
+      }
+
       if (answers.activation === "tb_study_a"){
         text = $("Thanks for your answers. Your result will be sent soon on SMS.");
       }
 
-      if (!answers.state_opt_in) {
-        text = $("Okay thanks, you won't get any follow-up messages.");
-      }
       var error = $(
         "This service works best when you select numbers from the list"
       );
