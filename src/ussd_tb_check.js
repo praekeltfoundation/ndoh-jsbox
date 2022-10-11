@@ -870,6 +870,7 @@ go.app = function () {
 
     self.states.add("state_complete", function (name) {
       var answers = self.im.user.answers;
+      var activation = self.get_activation();
 
       var text = $("Thanks for choosing to get our follow-up messages.");
 
@@ -877,7 +878,7 @@ go.app = function () {
         text = $("Okay thanks, you won't get any follow-up messages.");
       }
 
-      if (answers.activation === "tb_study_a"){
+      if (activation === "tb_study_a"){
         text = $("Thanks for your answers. Your result will be sent soon on SMS.");
       }
 
