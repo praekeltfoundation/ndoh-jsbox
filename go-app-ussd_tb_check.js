@@ -1402,7 +1402,7 @@ go.app = function () {
     });
 
     self.add("state_submit_tb_check_efficacy_option", function (name) {
-      var activation = self.im.user.answers.activation;
+      var activation = self.get_activation();
       var next = "state_submit_clinic_delay";
 
       if (activation === "tb_study_a_survey_group2"){
