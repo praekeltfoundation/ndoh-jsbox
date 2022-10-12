@@ -1019,16 +1019,18 @@ go.app = function () {
 
     self.states.add("state_complete", function (name) {
       var answers = self.im.user.answers;
+      var activation = self.get_activation();
 
       var text = $("Thanks for choosing to get our follow-up messages.");
-
-      if (answers.activation === "tb_study_a"){
-        text = $("Thanks for your answers. Your result will be sent soon on SMS.");
-      }
 
       if (!answers.state_opt_in) {
         text = $("Okay thanks, you won't get any follow-up messages.");
       }
+
+      if (activation === "tb_study_a"){
+        text = $("Thanks for your answers. Your result will be sent soon on SMS.");
+      }
+
       var error = $(
         "This service works best when you select numbers from the list"
       );
@@ -1401,7 +1403,7 @@ go.app = function () {
     });
 
     self.add("state_submit_tb_check_efficacy_option", function (name) {
-      var activation = self.im.user.answers.activation;
+      var activation = self.get_activation();
       var next = "state_submit_clinic_delay";
 
       if (activation === "tb_study_a_survey_group2"){
