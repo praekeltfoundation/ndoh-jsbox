@@ -2241,8 +2241,8 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_survey_end",
           reply: [
-            "Thank you for taking part in the survey. " +
-            "Many people don't realise that TB is cureable and test too late."
+            "Many people don't realise that TB is cureable and test too late. " +
+            "Your answers will help us understand whether TB HealthCheck really helps people."
           ].join("\n"),
           char_limit: 160,
         })

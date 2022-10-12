@@ -1559,8 +1559,8 @@ go.app = function () {
 
     self.states.add("state_survey_end", function (name) {
       var text = $(
-        "Thank you for taking part in the survey. " +
-        "Many people don't realise that TB is cureable and test too late."
+        "Many people don't realise that TB is cureable and test too late. " +
+        "Your answers will help us understand whether TB HealthCheck really helps people."
         );
       return new EndState(name, {
         text: text,
