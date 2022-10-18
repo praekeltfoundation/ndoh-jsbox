@@ -1590,6 +1590,19 @@ go.app = function () {
     });
 
     self.add("state_sms_complete", function (name) {
+        var activation = self.get_activation();
+
+        var choice_list = [
+            new Choice("state_survey_start", $("Back")),
+            new Choice("state_end", $("Exit")),
+            ];
+
+        if (activation === "tb_study_a"){
+            choice_list = [
+            new Choice("state_research_consent", $("Back")),
+            new Choice("state_end", $("Exit")),
+            ];
+        }
       return new MenuState(name, {
         question: $(
           "The FAQ has been sent to you on SMS. " +
@@ -1599,11 +1612,7 @@ go.app = function () {
           "Please reply with the number that matches your answer."
       ].join("\n")),
         accept_labels: true,
-        choices: [
-            new Choice("state_faq", $("Back to all questions")),
-            new Choice("state_survey_start", $("Back to survey")),
-            new Choice("state_end", $("Exit")),
-            ],
+        choices: choice_list,
       });
     });
 
