@@ -1,15 +1,15 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-10-04 09:24:+0000",
-        "po-revision-date": "2022-10-05 00:19+0200",
+        "pot-creation-date": "2022-10-25 02:47:+0000",
+        "po-revision-date": "2022-10-25 18:29+0200",
         "last-translator": "",
         "language-team": "",
         "language": "xho_ZA",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 3.1.1"
+        "x-generator": "Poedit 3.2"
     },
     "Welcome back to the The National Department of Health's TB HealthCheck": [
         null,
@@ -111,9 +111,9 @@
         null,
         "Sesotho"
     ],
-    "We may ask you a few questions for research after you've completed your TB HealthCheck.\nAre you willing to take part?": [
+    "If you agree, we will use your information to see if this TB Check helps people.\nDo you agree?": [
         null,
-        "Singakubuza imibuzo embalwa yophando emva kokuba ugqibe i-TB HealthCheck yakho.\nNgaba uzimisele ukuthatha inxaxheba?"
+        "Xa uvuma, siya kusebenzisa ulwazi lwakho ukubona ukuba le-TB Check iyabanceda na abantu.\nuyavuma?"
     ],
     "Please reply with numbers. Are you willing to take part?": [
         null,
@@ -127,9 +127,9 @@
         null,
         "Hayi"
     ],
-    "More info": [
+    "FAQ for more info on TBCheck and the research.": [
         null,
-        "Iinkcukacha ezithe vetshe"
+        "FAQ malunga ne - TB Check kunye nophando."
     ],
     "How old are you?": [
         null,
@@ -311,6 +311,10 @@
         null,
         "Kulungile enkosi, awuzi kufumana miyalezo yokulandelelisa."
     ],
+    "Thanks for your answers. Your result will be sent soon on SMS.": [
+        null,
+        "Enkosi ngeempendulo zakho. Iziphumo zakho zizakuthunyelwa kungekudala nge-SMS."
+    ],
     "This service works best when you select numbers from the list": [
         null,
         "Le nkonzo isebenza kakuhle xa ukhetha inombolo kuluhlu."
@@ -338,10 +342,6 @@
     "* Make the time. Your health is a priority!\n* Pick the most convenient clinic for your test\n* Get there early! Clinics are open for TB testing\nMonday to Friday mornings.": [
         null,
         "Yenza ixesha. Impilo yakho ibalulekile!\nKhetha eyona klinikhi elula kakhulu kuwe ukwenza uvavanyo lwakho.\n Ngezantsi ziikliniki ezi-5 ezikufutshane kuwe."
-    ],
-    "Get there early! Clinics are open for TB testing Monday to Friday mornings.": [
-        null,
-        "Fika kwangexesha! iiKlinikhi zivulwa ukuba ufumane uvavanyo lweTB ngoMvulo ukuya ngoLwesihlanu kusasa."
     ],
     "Where will you go for your test? Reply with the clinic": [
         null,
@@ -371,13 +371,17 @@
         null,
         "LWESIHLANU"
     ],
+    "Well done for planning to get your test!": [
+        null,
+        "Wenze kakuhle ngokuzibophelela ekunakekeleni impilo yakho! "
+    ],
     "Your replies to the questions show that you need a TB test this week!\n\n* Go to your local clinic for a free TB test.": [
         null,
         "Iimpendulo zakho zibonisa ukuba udinga uxilongo lwe TB kule veki!\n\nYiya ekliniki uyokuvavanya i-TB simahla. Nceda unxibe imaski phambi kokuba ungene eklinikhi"
     ],
-    "* Go to a local clinic for a free TB test.\n* You will get R10 airtime within 1 hour if you commit to get tested.": [
+    "* Visit your local clinic for a free TB test.\n* You will get R10 airtime within 1 hour if you commit to get tested.": [
         null,
-        "* Yiya kwiklinikhi yengingqi yakho ukufumana uvavanyo lwamahala lwe-TB.\n* Uya kufumana i-airtime ye-R10 ukuba uyazibophelela ukuba uvavanywe."
+        "* Yiya kwiklinikhi yengingqi yakho ukufumana uvavanyo lwamahala lwe-TB.\n* Uya kufumana i-airtime ye-R10 ukuba uyazibophelela ukuba uvavanywe. "
     ],
     "Your replies to the questions show that you need a TB test this week.": [
         null,
@@ -463,6 +467,14 @@
         null,
         "Enkosi ngokuthatha inxaxheba kuphando. I - airtime yakho ye - R10 isendleleni!"
     ],
+    "Back": [
+        null,
+        "Buya umva"
+    ],
+    "Exit": [
+        null,
+        "Phuma"
+    ],
     "The FAQ has been sent to you on SMS. What would you like to do?": [
         null,
         "I-FAQ ithunyelwe kuwe ngeSMS. Ingaba ungathanda ukwenza ntoni?"
@@ -471,25 +483,13 @@
         null,
         "Khetha ulwimi ngokombono wakho."
     ],
-    "Back to all questions": [
-        null,
-        "Buyela kuyo yonke imibuzo"
-    ],
-    "Back to survey": [
-        null,
-        "Buyela kuphando"
-    ],
-    "Exit": [
-        null,
-        ""
-    ],
     "What would you like to know?": [
         null,
         "Yintoni ongathanda ukuyazi?"
     ],
     "More about the research?": [
         null,
-        ""
+        "Okunye malunga nophando?"
     ],
     "What information will you ask me for?": [
         null,
@@ -515,13 +515,9 @@
         null,
         "Kuya kwenzeka ntoni kulwazi?"
     ],
-    "Back": [
+    "Many people don't realise that TB is cureable and test too late. Your answers will help us understand whether TB HealthCheck really helps people.": [
         null,
-        "Buya umva"
-    ],
-    "Thank you for taking part in the survey. Many people don't realise that TB is cureable and test too late.": [
-        null,
-        "Enkosi ngokuthatha inxaxheba kuphando.\nAbantu abaninzi abayazi ukuba i-TB iyanyangeka kwaye bavavanya emva kwexesha."
+        "Abantu abaninzi abayiqondi into yokuba i-TB iyanyangeka kwaye bathatha uvavanyo emva kwexesha elide kakhulu. Iimpendulo zakho ziya kusinceda siqonde ukuba ngaba i-TB HealthCheck iyabanceda ngenene na abantu.  "
     ],
     "Did TB HealthCheck encourage you to get tested?": [
         null,

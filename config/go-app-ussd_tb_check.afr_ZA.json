@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-10-04 09:24:+0000",
-        "po-revision-date": "2022-10-05 00:19+0200",
+        "pot-creation-date": "2022-10-25 02:47:+0000",
+        "po-revision-date": "2022-10-25 18:03+0200",
         "last-translator": "",
         "language-team": "",
         "language": "afr_ZA",
@@ -10,7 +10,7 @@
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
         "plural-forms": "nplurals=2; plural=(n != 1);",
-        "x-generator": "Poedit 3.1.1"
+        "x-generator": "Poedit 3.2"
     },
     "Welcome back to the The National Department of Health's TB HealthCheck": [
         null,
@@ -112,9 +112,9 @@
         null,
         "Sesotho"
     ],
-    "We may ask you a few questions for research after you've completed your TB HealthCheck.\nAre you willing to take part?": [
+    "If you agree, we will use your information to see if this TB Check helps people.\nDo you agree?": [
         null,
-        "Ons mag jou dalk 'n paar vrae vra vir navorsing nadat jy jou TB HealthCheck voltooi het. \nIs jy gewillig om deel te neem?"
+        "Indien jy instem sal ons jou inligting om te bepaal of TB Check mense help.\nStem jy in?"
     ],
     "Please reply with numbers. Are you willing to take part?": [
         null,
@@ -128,9 +128,9 @@
         null,
         "Nee"
     ],
-    "More info": [
+    "FAQ for more info on TBCheck and the research.": [
         null,
-        "Meer inligting"
+        "FAQ, vir meer oor TBCheck asook die navorsing daaroor."
     ],
     "How old are you?": [
         null,
@@ -312,6 +312,10 @@
         null,
         "Reg so dankie, jy sal nie enige opvolg-boodskappe ontvang nie."
     ],
+    "Thanks for your answers. Your result will be sent soon on SMS.": [
+        null,
+        "Dankie vir jou antwoorde. Jou resultate sal binnekort per sms gestuur word."
+    ],
     "This service works best when you select numbers from the list": [
         null,
         "Hierdie diens werk die beste wanneer jy een van die nommers op die lys kies."
@@ -339,10 +343,6 @@
     "* Make the time. Your health is a priority!\n* Pick the most convenient clinic for your test\n* Get there early! Clinics are open for TB testing\nMonday to Friday mornings.": [
         null,
         "Maak tyd. Jou gesondheid is belangrik!\nKies die gerieflikste kliniek vir jou toets. Hier is die 5 klinieke naaste aan jou"
-    ],
-    "Get there early! Clinics are open for TB testing Monday to Friday mornings.": [
-        null,
-        "Wees vroeg! Klinieke is van Maandag- tot Vrydagoggend oop vir TB-toetse."
     ],
     "Where will you go for your test? Reply with the clinic": [
         null,
@@ -372,13 +372,17 @@
         null,
         "VRYDAG"
     ],
+    "Well done for planning to get your test!": [
+        null,
+        "Geluk omdat jy jou gesondheid eerste stel! "
+    ],
     "Your replies to the questions show that you need a TB test this week!\n\n* Go to your local clinic for a free TB test.": [
         null,
         "Jou antwoorde toon dat jy ’n TB-toets moet neem hierdie week! \n\nGaan na jou kliniek vir ’n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan"
     ],
-    "* Go to a local clinic for a free TB test.\n* You will get R10 airtime within 1 hour if you commit to get tested.": [
+    "* Visit your local clinic for a free TB test.\n* You will get R10 airtime within 1 hour if you commit to get tested.": [
         null,
-        "* Gaan na jou plaaslike kliniek vir 'n gratis TB-toets.\n* Jy sal R10 lugtyd kry as jy onderneem om jou te laat toets."
+        "* Gaan na jou plaaslike kliniek vir 'n gratis TB-toets.\n* Jy sal R10 lugtyd kry as jy onderneem om jou te laat toets. "
     ],
     "Your replies to the questions show that you need a TB test this week.": [
         null,
@@ -464,6 +468,14 @@
         null,
         "Dankie dat jy deelgeneem het aan die opname. Jou R10 lugtyd is op pad!"
     ],
+    "Back": [
+        null,
+        "Keer terug"
+    ],
+    "Exit": [
+        null,
+        "Verlaat"
+    ],
     "The FAQ has been sent to you on SMS. What would you like to do?": [
         null,
         "Die FAQ is na jou gestuur in 'n SMS. Wat verkies jy om te doen?"
@@ -471,18 +483,6 @@
     "Please reply with the number that matches your answer.": [
         null,
         "Please reply with numbers. Kies jou taal van voorkeur."
-    ],
-    "Back to all questions": [
-        null,
-        "Keer terug na al die vrae"
-    ],
-    "Back to survey": [
-        null,
-        "Keer terug na die opname"
-    ],
-    "Exit": [
-        null,
-        "Verlaat"
     ],
     "What would you like to know?": [
         null,
@@ -516,13 +516,9 @@
         null,
         "Wat gebeur met die inligting?"
     ],
-    "Back": [
+    "Many people don't realise that TB is cureable and test too late. Your answers will help us understand whether TB HealthCheck really helps people.": [
         null,
-        "Keer terug"
-    ],
-    "Thank you for taking part in the survey. Many people don't realise that TB is cureable and test too late.": [
-        null,
-        "Dankie dat jy deelgeneem het aan die opname. Klomp mense besef nie dat TB geneesbaar is nie en toets te laat."
+        "Baie mense word te laat getoets want hulle besef nie dat TB geneesbaar is nie. Jou antwoorde sal ons help verstaan of TB HealthCheck mense regtig help."
     ],
     "Did TB HealthCheck encourage you to get tested?": [
         null,
