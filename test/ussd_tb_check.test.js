@@ -667,11 +667,11 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_research_consent",
           reply: [
-            "We may ask you a few questions for research after you've completed your TB HealthCheck.",
-            "Are you willing to take part?",
+            "If you agree, we will use your information to see if this TB Check helps people.",
+            "Do you agree?",
             "1. Yes",
             "2. No",
-            "3. More info"
+            "3. FAQ for more info on TBCheck and the research."
           ].join("\n"),
           char_limit: 160,
       })

@@ -326,9 +326,8 @@ go.app = function () {
 
       return new MenuState(name, {
           question: $(
-              "We may ask you a few questions for research after you've completed " +
-              "your TB HealthCheck." +
-              "\nAre you willing to take part?"
+              "If you agree, we will use your information to see if this TB Check helps people."+
+              "\nDo you agree?"
               ),
           error: $(
               "Please reply with numbers. Are you willing to take part?"
@@ -337,7 +336,7 @@ go.app = function () {
           choices: [
               new Choice("state_gender", $("Yes")),
               new Choice("state_research_consent_no", $("No")),
-              new Choice("state_send_faq_sms", $("More info")),
+              new Choice("state_send_faq_sms", $("FAQ for more info on TBCheck and the research.")),
           ],
       });
   });
