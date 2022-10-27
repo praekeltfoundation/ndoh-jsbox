@@ -485,7 +485,7 @@ go.app = function () {
           choices: [
               new Choice("state_gender", $("Yes")),
               new Choice("state_research_consent_no", $("No")),
-              new Choice("state_send_faq_sms", $("FAQ for more info on TBCheck and the research.")),
+              new Choice("state_faq", $("FAQ for more info on TBCheck and the research.")),
           ],
       });
   });
