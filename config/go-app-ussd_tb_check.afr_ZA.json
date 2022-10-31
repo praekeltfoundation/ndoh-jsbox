@@ -2,7 +2,7 @@
     "": {
         "project-id-version": "",
         "pot-creation-date": "2022-10-25 02:47:+0000",
-        "po-revision-date": "2022-10-25 18:03+0200",
+        "po-revision-date": "2022-10-31 09:55+0200",
         "last-translator": "",
         "language-team": "",
         "language": "afr_ZA",
@@ -10,7 +10,7 @@
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
         "plural-forms": "nplurals=2; plural=(n != 1);",
-        "x-generator": "Poedit 3.2"
+        "x-generator": "Poedit 3.2.1"
     },
     "Welcome back to the The National Department of Health's TB HealthCheck": [
         null,
@@ -30,7 +30,7 @@
     ],
     "Continue": [
         null,
-        "Gaan voort "
+        "Gaan voort"
     ],
     "This service works best when you choose number options from the list.": [
         null,
@@ -66,7 +66,7 @@
     ],
     "TB HealthCheck does not replace medical advice, diagnosis or treatment. Get a qualified health provider's advice on your medical condition and care.": [
         null,
-        "TB GesondheidsVraelys vervang nie mediese advies, -diagnose of -behandeling nie. Gaan na ’n dokter vir jou mediese toestand en behandeling."
+        "TB GesondheidsVraelys vervang nie mediese advies, -diagnose of -behandeling nie. Gaan na 'n dokter vir jou mediese toestand en behandeling."
     ],
     "Next": [
         null,
@@ -138,7 +138,7 @@
     ],
     "Please use numbers from list.\n\nHow old are you?": [
         null,
-        "Hoe oud is jy? \n\nAntwoord met ’n nommer"
+        "Hoe oud is jy? \n\nAntwoord met 'n nommer"
     ],
     "under 18": [
         null,
@@ -174,7 +174,7 @@
     ],
     "Please use numbers from list.\n\nWhich gender do you identify as?": [
         null,
-        "As watter geslag identifiseer jy?\n \nAntwoord met ’n nommer "
+        "As watter geslag identifiseer jy?\n \nAntwoord met 'n nommer "
     ],
     "MALE": [
         null,
@@ -254,7 +254,7 @@
     ],
     "Please use numbers from list.\nDo you have a cough?": [
         null,
-        "Antwoord met ’n nommer?"
+        "Antwoord met 'n nommer?"
     ],
     "Do you have a fever? (when you touch your forehead, does it feel hot?)": [
         null,
@@ -326,19 +326,19 @@
     ],
     "Your replies to the questions show that you need a TB test this week!\n\nVisit your local clinic for a free TB test.": [
         null,
-        "Jou antwoorde toon dat jy ’n TB-toets moet neem hierdie week! \n\nGaan na jou kliniek vir ’n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan."
+        "Jou antwoorde toon dat jy 'n TB-toets moet neem hierdie week! \n\nGaan na jou kliniek vir 'n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan."
     ],
     "Your replies to the questions show that you need a TB test this week!": [
         null,
         "Jou antwoorde op die vrae dui aan dat jy hierdie week 'n TB-toets moet laat doen!"
     ],
-    "With early diagnosis, TB can be cured. Don’t delay, test today!\n\nVisit your local clinic for a free TB test. ": [
+    "With early diagnosis, TB can be cured. Don't delay, test today!\n\nVisit your local clinic for a free TB test. ": [
         null,
         "As TB vroeg gediagnoseer word, kan dit genees word. Hoekom wag? Laat toets jou vandag!\n\nBesoek jou plaaslike kliniek vir 'n gratis TB-toets."
     ],
     "Your replies to the questions show that you need a TB test this week!\n\nHere are some tips to help you plan:": [
         null,
-        "Jou antwoorde toon dat jy ’n TB-toets moet neem hierdie week! \n\nGaan na jou kliniek vir ’n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan"
+        "Jou antwoorde toon dat jy 'n TB-toets moet neem hierdie week! \n\nGaan na jou kliniek vir 'n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan"
     ],
     "* Make the time. Your health is a priority!\n* Pick the most convenient clinic for your test\n* Get there early! Clinics are open for TB testing\nMonday to Friday mornings.": [
         null,
@@ -378,7 +378,7 @@
     ],
     "Your replies to the questions show that you need a TB test this week!\n\n* Go to your local clinic for a free TB test.": [
         null,
-        "Jou antwoorde toon dat jy ’n TB-toets moet neem hierdie week! \n\nGaan na jou kliniek vir ’n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan"
+        "Jou antwoorde toon dat jy 'n TB-toets moet neem hierdie week! \n\nGaan na jou kliniek vir 'n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan"
     ],
     "* Visit your local clinic for a free TB test.\n* You will get R10 airtime within 1 hour if you commit to get tested.": [
         null,
@@ -400,21 +400,21 @@
         null,
         "Geluk omdat jy jou gesondheid eerste stel!"
     ],
-    "Even if you can’t commit now, it is still important to get tested.": [
+    "Even if you can't commit now, it is still important to get tested.": [
         null,
         "Al kan jy nie nou voorneem om dit te doen nie, is dit steeds belangrik om getoets te word."
     ],
     "You don't need a TB test now, but if you develop cough, fever, weight loss or night sweats visit your nearest clinic.": [
         null,
-        "Jy hoef nie nou ’n TB-toets te doen nie, maar besoek jou naaste kliniek indien jy begin hoes, koors het, gewig verloor of snags sweet."
+        "Jy hoef nie nou 'n TB-toets te doen nie, maar besoek jou naaste kliniek indien jy begin hoes, koors het, gewig verloor of snags sweet."
     ],
     "Your replies to the questions show you need a TB test this week.\n\nGo to your clinic for a free TB test.": [
         null,
-        "Jou antwoorde toon dat jy ’n TB-toets moet neem hierdie week. \n\nGaan na jou kliniek vir ’n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan."
+        "Jou antwoorde toon dat jy 'n TB-toets moet neem hierdie week. \n\nGaan na jou kliniek vir 'n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan."
     ],
     "Check if those you live with are on TB treatment. If you don't know your HIV status, visit the clinic for a free HIV test. Then do the TB check again.": [
         null,
-        "Maak seker mense met wie jy woon kry TB-behandeling. As jy nie jou MIV-status ken nie, besoek die kliniek vir ’n gratis toets. Voltooi dan weer die TB-vraelys."
+        "Maak seker mense met wie jy woon kry TB-behandeling. As jy nie jou MIV-status ken nie, besoek die kliniek vir 'n gratis toets. Voltooi dan weer die TB-vraelys."
     ],
     "None": [
         null,

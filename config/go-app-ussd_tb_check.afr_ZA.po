@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2022-10-25 02:47:+0000\n"
-"PO-Revision-Date: 2022-10-25 18:03+0200\n"
+"PO-Revision-Date: 2022-10-31 09:55+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: afr_ZA\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.2\n"
+"X-Generator: Poedit 3.2.1\n"
 
 #: src/ussd_tb_check.js:79
 msgid "Welcome back to the The National Department of Health's TB HealthCheck"
@@ -30,7 +30,7 @@ msgstr "Ongelukkig kan jy nie deelneem aan die studie meer as een keer. Jy kan w
 
 #: src/ussd_tb_check.js:166
 msgid "Continue"
-msgstr "Gaan voort "
+msgstr "Gaan voort"
 
 #: src/ussd_tb_check.js:171
 msgid "This service works best when you choose number options from the list."
@@ -70,7 +70,7 @@ msgstr "Gebruik hierdie diens enige tyd weer. Onthou, indien jy vermoed dat jy T
 
 #: src/ussd_tb_check.js:225
 msgid "TB HealthCheck does not replace medical advice, diagnosis or treatment. Get a qualified health provider's advice on your medical condition and care."
-msgstr "TB GesondheidsVraelys vervang nie mediese advies, -diagnose of -behandeling nie. Gaan na ’n dokter vir jou mediese toestand en behandeling."
+msgstr "TB GesondheidsVraelys vervang nie mediese advies, -diagnose of -behandeling nie. Gaan na 'n dokter vir jou mediese toestand en behandeling."
 
 #: src/ussd_tb_check.js:230 src/ussd_tb_check.js:241 src/ussd_tb_check.js:377
 #: src/ussd_tb_check.js:389 src/ussd_tb_check.js:401 src/ussd_tb_check.js:932
@@ -122,9 +122,11 @@ msgid "Sesotho"
 msgstr "Sesotho"
 
 #: src/ussd_tb_check.js:328
-msgid "If you agree, we will use your information to see if this TB Check helps people.\n"
+msgid ""
+"If you agree, we will use your information to see if this TB Check helps people.\n"
 "Do you agree?"
-msgstr "Indien jy instem sal ons jou inligting om te bepaal of TB Check mense help.\n"
+msgstr ""
+"Indien jy instem sal ons jou inligting om te bepaal of TB Check mense help.\n"
 "Stem jy in?"
 
 #: src/ussd_tb_check.js:332
@@ -154,12 +156,14 @@ msgid "How old are you?"
 msgstr "Hoe oud is jy?"
 
 #: src/ussd_tb_check.js:357
-msgid "Please use numbers from list.\n"
+msgid ""
+"Please use numbers from list.\n"
 "\n"
 "How old are you?"
-msgstr "Hoe oud is jy? \n"
+msgstr ""
+"Hoe oud is jy? \n"
 "\n"
-"Antwoord met ’n nommer"
+"Antwoord met 'n nommer"
 
 #: src/ussd_tb_check.js:360
 msgid "under 18"
@@ -194,12 +198,14 @@ msgid "Which gender do you identify as?"
 msgstr "As watter geslag identifiseer jy?"
 
 #: src/ussd_tb_check.js:411
-msgid "Please use numbers from list.\n"
+msgid ""
+"Please use numbers from list.\n"
 "\n"
 "Which gender do you identify as?"
-msgstr "As watter geslag identifiseer jy?\n"
+msgstr ""
+"As watter geslag identifiseer jy?\n"
 " \n"
-"Antwoord met ’n nommer "
+"Antwoord met 'n nommer "
 
 #: src/ussd_tb_check.js:420
 msgid "MALE"
@@ -270,9 +276,11 @@ msgid "Please type the name of the city where you live."
 msgstr "Tik asb die naam van die stad waar jy bly in."
 
 #: src/ussd_tb_check.js:596
-msgid "Please check that the address below is correct and matches the information you gave us:\n"
+msgid ""
+"Please check that the address below is correct and matches the information you gave us:\n"
 "{{ address }}"
-msgstr "Maak asseblief seker dat onderstaande adres korrek is en ooreenstem met die inligting wat jy vir ons gegee het:\n"
+msgstr ""
+"Maak asseblief seker dat onderstaande adres korrek is en ooreenstem met die inligting wat jy vir ons gegee het:\n"
 "{{ address }}"
 
 #: src/ussd_tb_check.js:668
@@ -280,9 +288,10 @@ msgid "Let's see how you're feeling today. Do you have a cough?"
 msgstr "Kom ons kyk hoe jy vandag voel. Hoes jy?"
 
 #: src/ussd_tb_check.js:671
-msgid "Please use numbers from list.\n"
+msgid ""
+"Please use numbers from list.\n"
 "Do you have a cough?"
-msgstr "Antwoord met ’n nommer?"
+msgstr "Antwoord met 'n nommer?"
 
 #: src/ussd_tb_check.js:688
 msgid "Do you have a fever? (when you touch your forehead, does it feel hot?)"
@@ -309,16 +318,19 @@ msgid "Please use numbers from list. Have you been losing weight without trying?
 msgstr "Verloor jy gewig sonder dat jy probeer? "
 
 #: src/ussd_tb_check.js:725
-msgid "Are you at high risk of TB?\n"
+msgid ""
+"Are you at high risk of TB?\n"
 "\n"
 "Risk means you live with someone who has TB OR you had TB in the last 2 years OR you are HIV+"
-msgstr "Het jy hoë TB risiko? \n"
+msgstr ""
+"Het jy hoë TB risiko? \n"
 "\n"
 "Risiko beteken jy woon met iemand met TB OF jy het TB gehad die agelope twee jaar OF jy is MIV+"
 
 #: src/ussd_tb_check.js:732
 msgid "Please use numbers from list. Are you at high risk for TB?"
-msgstr "Het jy hoë TB risiko? \n"
+msgstr ""
+"Het jy hoë TB risiko? \n"
 "\n"
 "Risiko beteken jy woon met iemand met TB OF jy het TB gehad die agelope twee jaar OF jy is MIV+"
 
@@ -359,39 +371,47 @@ msgid "See Results"
 msgstr "Sien Uitslae"
 
 #: src/ussd_tb_check.js:917
-msgid "Your replies to the questions show that you need a TB test this week!\n"
+msgid ""
+"Your replies to the questions show that you need a TB test this week!\n"
 "\n"
 "Visit your local clinic for a free TB test."
-msgstr "Jou antwoorde toon dat jy ’n TB-toets moet neem hierdie week! \n"
+msgstr ""
+"Jou antwoorde toon dat jy 'n TB-toets moet neem hierdie week! \n"
 "\n"
-"Gaan na jou kliniek vir ’n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan."
+"Gaan na jou kliniek vir 'n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan."
 
 #: src/ussd_tb_check.js:928 src/ussd_tb_check.js:1071
 msgid "Your replies to the questions show that you need a TB test this week!"
 msgstr "Jou antwoorde op die vrae dui aan dat jy hierdie week 'n TB-toets moet laat doen!"
 
 #: src/ussd_tb_check.js:939
-msgid "With early diagnosis, TB can be cured. Don’t delay, test today!\n"
+msgid ""
+"With early diagnosis, TB can be cured. Don't delay, test today!\n"
 "\n"
 "Visit your local clinic for a free TB test. "
-msgstr "As TB vroeg gediagnoseer word, kan dit genees word. Hoekom wag? Laat toets jou vandag!\n"
+msgstr ""
+"As TB vroeg gediagnoseer word, kan dit genees word. Hoekom wag? Laat toets jou vandag!\n"
 "\n"
 "Besoek jou plaaslike kliniek vir 'n gratis TB-toets."
 
 #: src/ussd_tb_check.js:950
-msgid "Your replies to the questions show that you need a TB test this week!\n"
+msgid ""
+"Your replies to the questions show that you need a TB test this week!\n"
 "\n"
 "Here are some tips to help you plan:"
-msgstr "Jou antwoorde toon dat jy ’n TB-toets moet neem hierdie week! \n"
+msgstr ""
+"Jou antwoorde toon dat jy 'n TB-toets moet neem hierdie week! \n"
 "\n"
-"Gaan na jou kliniek vir ’n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan"
+"Gaan na jou kliniek vir 'n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan"
 
 #: src/ussd_tb_check.js:963
-msgid "* Make the time. Your health is a priority!\n"
+msgid ""
+"* Make the time. Your health is a priority!\n"
 "* Pick the most convenient clinic for your test\n"
 "* Get there early! Clinics are open for TB testing\n"
 "Monday to Friday mornings."
-msgstr "Maak tyd. Jou gesondheid is belangrik!\n"
+msgstr ""
+"Maak tyd. Jou gesondheid is belangrik!\n"
 "Kies die gerieflikste kliniek vir jou toets. Hier is die 5 klinieke naaste aan jou"
 
 #: src/ussd_tb_check.js:1023
@@ -427,17 +447,21 @@ msgid "Well done for planning to get your test!"
 msgstr "Geluk omdat jy jou gesondheid eerste stel! "
 
 #: src/ussd_tb_check.js:1058
-msgid "Your replies to the questions show that you need a TB test this week!\n"
+msgid ""
+"Your replies to the questions show that you need a TB test this week!\n"
 "\n"
 "* Go to your local clinic for a free TB test."
-msgstr "Jou antwoorde toon dat jy ’n TB-toets moet neem hierdie week! \n"
+msgstr ""
+"Jou antwoorde toon dat jy 'n TB-toets moet neem hierdie week! \n"
 "\n"
-"Gaan na jou kliniek vir ’n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan"
+"Gaan na jou kliniek vir 'n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan"
 
 #: src/ussd_tb_check.js:1081
-msgid "* Visit your local clinic for a free TB test.\n"
+msgid ""
+"* Visit your local clinic for a free TB test.\n"
 "* You will get R10 airtime within 1 hour if you commit to get tested."
-msgstr "* Gaan na jou plaaslike kliniek vir 'n gratis TB-toets.\n"
+msgstr ""
+"* Gaan na jou plaaslike kliniek vir 'n gratis TB-toets.\n"
 "* Jy sal R10 lugtyd kry as jy onderneem om jou te laat toets. "
 
 #: src/ussd_tb_check.js:1093
@@ -457,24 +481,26 @@ msgid "Well done for committing to your health!"
 msgstr "Geluk omdat jy jou gesondheid eerste stel!"
 
 #: src/ussd_tb_check.js:1180
-msgid "Even if you can’t commit now, it is still important to get tested."
+msgid "Even if you can't commit now, it is still important to get tested."
 msgstr "Al kan jy nie nou voorneem om dit te doen nie, is dit steeds belangrik om getoets te word."
 
 #: src/ussd_tb_check.js:1201
 msgid "You don't need a TB test now, but if you develop cough, fever, weight loss or night sweats visit your nearest clinic."
-msgstr "Jy hoef nie nou ’n TB-toets te doen nie, maar besoek jou naaste kliniek indien jy begin hoes, koors het, gewig verloor of snags sweet."
+msgstr "Jy hoef nie nou 'n TB-toets te doen nie, maar besoek jou naaste kliniek indien jy begin hoes, koors het, gewig verloor of snags sweet."
 
 #: src/ussd_tb_check.js:1207
-msgid "Your replies to the questions show you need a TB test this week.\n"
+msgid ""
+"Your replies to the questions show you need a TB test this week.\n"
 "\n"
 "Go to your clinic for a free TB test."
-msgstr "Jou antwoorde toon dat jy ’n TB-toets moet neem hierdie week. \n"
+msgstr ""
+"Jou antwoorde toon dat jy 'n TB-toets moet neem hierdie week. \n"
 "\n"
-"Gaan na jou kliniek vir ’n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan."
+"Gaan na jou kliniek vir 'n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan."
 
 #: src/ussd_tb_check.js:1219
 msgid "Check if those you live with are on TB treatment. If you don't know your HIV status, visit the clinic for a free HIV test. Then do the TB check again."
-msgstr "Maak seker mense met wie jy woon kry TB-behandeling. As jy nie jou MIV-status ken nie, besoek die kliniek vir ’n gratis toets. Voltooi dan weer die TB-vraelys."
+msgstr "Maak seker mense met wie jy woon kry TB-behandeling. As jy nie jou MIV-status ken nie, besoek die kliniek vir 'n gratis toets. Voltooi dan weer die TB-vraelys."
 
 #: src/ussd_tb_check.js:1232 src/ussd_tb_check.js:1559
 msgid "None"
@@ -482,7 +508,8 @@ msgstr ""
 
 #: src/ussd_tb_check.js:1237
 msgid "We will use this information to see if TB HealthCheck helps people. To continue, reply YES. For more on TB HealthCheck and the research, reply MORE."
-msgstr "Ons sal hierdie inligting gebruik om te bepaal of TB HealthCheck mense help.\n"
+msgstr ""
+"Ons sal hierdie inligting gebruik om te bepaal of TB HealthCheck mense help.\n"
 "Antwoord \"JA\" om voort te gaan. Vir meer oor TB HealthCheck en die navorsing, antwoord MEER."
 
 #: src/ussd_tb_check.js:1242 src/ussd_tb_check.js:1266
@@ -493,10 +520,12 @@ msgstr "Ons sal hierdie inligting gebruik om te bepaal of TB HealthCheck mense h
 #: src/ussd_tb_check.js:1658 src/ussd_tb_check.js:1678
 #: src/ussd_tb_check.js:1699 src/ussd_tb_check.js:1713
 #: src/ussd_tb_check.js:1727
-msgid "Sorry, we don't understand. Please try again.\n"
+msgid ""
+"Sorry, we don't understand. Please try again.\n"
 "\n"
 "Enter the number that matches your answer."
-msgstr "Jammer, ons verstaan nie. Probeer asseblief weer.\n"
+msgstr ""
+"Jammer, ons verstaan nie. Probeer asseblief weer.\n"
 "\n"
 "Voer die nommer in wat ooreenstem met jou antwoord."
 
@@ -517,7 +546,8 @@ msgstr "Weet nie "
 
 #: src/ussd_tb_check.js:1283
 msgid "I did not go to the clinic for a TB test because it takes too much time. Do you agree?"
-msgstr "Ek het nie kliniek toe gegaan vir 'n TB-toets nie, want dit neem te lank. \n"
+msgstr ""
+"Ek het nie kliniek toe gegaan vir 'n TB-toets nie, want dit neem te lank. \n"
 "Stem jy saam?"
 
 #: src/ussd_tb_check.js:1294 src/ussd_tb_check.js:1315
@@ -536,7 +566,8 @@ msgstr "Ek het nie kliniek toe gegaan vir 'n TB-toets nie, want daar is nie 'n k
 
 #: src/ussd_tb_check.js:1325
 msgid "I did not go to the clinic for a TB test because I do not want to think about having TB. Do you agree?"
-msgstr "Ek het nie kliniek toe gegaan vir 'n TB-toets nie, want ek wil nie daaraan dink dat ek dalk TB het nie. \n"
+msgstr ""
+"Ek het nie kliniek toe gegaan vir 'n TB-toets nie, want ek wil nie daaraan dink dat ek dalk TB het nie. \n"
 "Stem jy saam? "
 
 #: src/ussd_tb_check.js:1347
@@ -614,10 +645,12 @@ msgid "Would you have further delayed testing without TB HealthCheck?"
 msgstr "Sou jy toetsing langer uitgestel het sonder TB HealthCheck?"
 
 #: src/ussd_tb_check.js:1653
-msgid "The waiting times at the clinic were too long.\n"
+msgid ""
+"The waiting times at the clinic were too long.\n"
 "\n"
 "Do you agree?"
-msgstr "Die wagtyd by die kliniek was te lank. \n"
+msgstr ""
+"Die wagtyd by die kliniek was te lank. \n"
 "\n"
 "Stem jy saam?"
 
@@ -650,22 +683,17 @@ msgid "Can we phone you to get more information?"
 msgstr "Kan ons jou skakel om meer inligting te kry?"
 
 #~ msgid ""
-#~ "We may ask you a few questions for research after you've completed your "
-#~ "TB HealthCheck.\n"
+#~ "We may ask you a few questions for research after you've completed your TB HealthCheck.\n"
 #~ "Are you willing to take part?"
 #~ msgstr ""
-#~ "Ons mag jou dalk 'n paar vrae vra vir navorsing nadat jy jou TB "
-#~ "HealthCheck voltooi het. \n"
+#~ "Ons mag jou dalk 'n paar vrae vra vir navorsing nadat jy jou TB HealthCheck voltooi het. \n"
 #~ "Is jy gewillig om deel te neem?"
 
 #~ msgid "More info"
 #~ msgstr "Meer inligting"
 
-#~ msgid ""
-#~ "Get there early! Clinics are open for TB testing Monday to Friday "
-#~ "mornings."
-#~ msgstr ""
-#~ "Wees vroeg! Klinieke is van Maandag- tot Vrydagoggend oop vir TB-toetse."
+#~ msgid "Get there early! Clinics are open for TB testing Monday to Friday mornings."
+#~ msgstr "Wees vroeg! Klinieke is van Maandag- tot Vrydagoggend oop vir TB-toetse."
 
 #~ msgid "Back to all questions"
 #~ msgstr "Keer terug na al die vrae"
@@ -673,33 +701,19 @@ msgstr "Kan ons jou skakel om meer inligting te kry?"
 #~ msgid "Back to survey"
 #~ msgstr "Keer terug na die opname"
 
-#~ msgid ""
-#~ "Thank you for taking part in the survey. Many people don't realise that "
-#~ "TB is cureable and test too late."
-#~ msgstr ""
-#~ "Dankie dat jy deelgeneem het aan die opname. Klomp mense besef nie dat TB "
-#~ "geneesbaar is nie en toets te laat."
+#~ msgid "Thank you for taking part in the survey. Many people don't realise that TB is cureable and test too late."
+#~ msgstr "Dankie dat jy deelgeneem het aan die opname. Klomp mense besef nie dat TB geneesbaar is nie en toets te laat."
 
 #, fuzzy
 #~| msgid ""
-#~| "Now, please agree that the info you shared is correct and that you give "
-#~| "the NDoH permission to contact you if needed?\n"
+#~| "Now, please agree that the info you shared is correct and that you give the NDoH permission to contact you if needed?\n"
 #~| "\n"
 #~| "Reply 1 or 2"
-
-#~ msgid ""
-#~ "Now, please agree that the info you shared is correct and that you give "
-#~ "the NDoH permission to contact you if needed?\n"
+#~ msgid "Now, please agree that the info you shared is correct and that you give the NDoH permission to contact you if needed?\n"
 #~ msgstr ""
-#~ "Bevestig asseblief dat die inligting wat jy gegee het reg is en dat jy "
-#~ "die NDvG toestemming gee om jou te kontak indien nodig? \n"
+#~ "Bevestig asseblief dat die inligting wat jy gegee het reg is en dat jy die NDvG toestemming gee om jou te kontak indien nodig? \n"
 #~ "\n"
 #~ "Antwoord 1 of 2"
 
-#~ msgid ""
-#~ "Please TYPE your home address (or the address where you are currently "
-#~ "staying). Give the street number, street name, suburb/township/town/"
-#~ "village (or nearest)."
-#~ msgstr ""
-#~ "TIK asseblief jou woonadres (of die adres waar jy tans woon) in. Gee die "
-#~ "straatnommer, straatnaam, woonbuurt/township/stad/dorp (of naaste)."
+#~ msgid "Please TYPE your home address (or the address where you are currently staying). Give the street number, street name, suburb/township/town/village (or nearest)."
+#~ msgstr "TIK asseblief jou woonadres (of die adres waar jy tans woon) in. Gee die straatnommer, straatnaam, woonbuurt/township/stad/dorp (of naaste)."

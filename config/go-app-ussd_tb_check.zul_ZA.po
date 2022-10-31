@@ -371,7 +371,7 @@ msgid "Your replies to the questions show that you need a TB test this week!"
 msgstr "Izimpendulo zakho zemibuzo zibonisa ukuthi udinga ukuhlolwa kwe-TB kuleli viki!"
 
 #: src/ussd_tb_check.js:939
-msgid "With early diagnosis, TB can be cured. Don’t delay, test today!\n"
+msgid "With early diagnosis, TB can be cured. Don't delay, test today!\n"
 "\n"
 "Visit your local clinic for a free TB test. "
 msgstr "Ngokuxilonga kusenesikhathi, i-TB ingelapheka. Ungalibali, hlola namuhla!\n"
@@ -458,7 +458,7 @@ msgid "Well done for committing to your health!"
 msgstr "Wenze kahle ngokubophezela impilo yakho!"
 
 #: src/ussd_tb_check.js:1180
-msgid "Even if you can’t commit now, it is still important to get tested."
+msgid "Even if you can't commit now, it is still important to get tested."
 msgstr "Ngisho noma ungakwazi ukuzinikelela manje, kusabalulekile ukuthi uhlole."
 
 #: src/ussd_tb_check.js:1201
@@ -713,7 +713,7 @@ msgstr "Singakwazi ukuk'fonela ukuze sithole kabanzi ulwazi? "
 #~ "Go to your clinic for a free TB test. Please put on a face mask before "
 #~ "you enter the clinic"
 #~ msgstr ""
-#~ "I’mpendulo zakho kulembuzo zibonisa ukuth udinga ukuhlolelwa i-TB "
+#~ "I'mpendulo zakho kulembuzo zibonisa ukuth udinga ukuhlolelwa i-TB "
 #~ "kuleviki. \n"
 #~ "\n"
 #~ "Iya e-Clinic yakho ukuhlola i-TB mahhala. Cela ufake isfonyo ungakangeni "
