@@ -937,7 +937,7 @@ go.app = function () {
         return new EndState(name, {
             next: "state_start",
             text: $([
-                "With early diagnosis, TB can be cured. Don’t delay, test today!",
+                "With early diagnosis, TB can be cured. Don't delay, test today!",
                 "",
                 "Visit your local clinic for a free TB test. "
             ].join("\n")
@@ -1177,7 +1177,7 @@ go.app = function () {
       var text = $("Well done for committing to your health!");
 
       if (!answers.state_commit_to_get_tested) {
-        text = $("Even if you can’t commit now, it is still important to get tested.");
+        text = $("Even if you can't commit now, it is still important to get tested.");
       }
 
       return new EndState(name, {

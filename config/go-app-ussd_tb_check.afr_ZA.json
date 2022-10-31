@@ -2,7 +2,7 @@
     "": {
         "project-id-version": "",
         "pot-creation-date": "2022-10-25 02:47:+0000",
-        "po-revision-date": "2022-10-25 18:03+0200",
+        "po-revision-date": "2022-10-31 09:55+0200",
         "last-translator": "",
         "language-team": "",
         "language": "afr_ZA",
@@ -10,7 +10,7 @@
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
         "plural-forms": "nplurals=2; plural=(n != 1);",
-        "x-generator": "Poedit 3.2"
+        "x-generator": "Poedit 3.2.1"
     },
     "Welcome back to the The National Department of Health's TB HealthCheck": [
         null,
@@ -30,7 +30,7 @@
     ],
     "Continue": [
         null,
-        "Gaan voort "
+        "Gaan voort"
     ],
     "This service works best when you choose number options from the list.": [
         null,
@@ -338,7 +338,7 @@
     ],
     "Your replies to the questions show that you need a TB test this week!\n\nHere are some tips to help you plan:": [
         null,
-        "Jou antwoorde toon dat jy ’n TB-toets moet neem hierdie week! \n\nGaan na jou kliniek vir ’n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan"
+        "Jou antwoorde toon dat jy 'n TB-toets moet neem hierdie week! \n\nGaan na jou kliniek vir 'n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan"
     ],
     "* Make the time. Your health is a priority!\n* Pick the most convenient clinic for your test\n* Get there early! Clinics are open for TB testing\nMonday to Friday mornings.": [
         null,
