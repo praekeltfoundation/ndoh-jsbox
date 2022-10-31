@@ -70,7 +70,7 @@ msgstr "Gebruik hierdie diens enige tyd weer. Onthou, indien jy vermoed dat jy T
 
 #: src/ussd_tb_check.js:225
 msgid "TB HealthCheck does not replace medical advice, diagnosis or treatment. Get a qualified health provider's advice on your medical condition and care."
-msgstr "TB GesondheidsVraelys vervang nie mediese advies, -diagnose of -behandeling nie. Gaan na ’n dokter vir jou mediese toestand en behandeling."
+msgstr "TB GesondheidsVraelys vervang nie mediese advies, -diagnose of -behandeling nie. Gaan na 'n dokter vir jou mediese toestand en behandeling."
 
 #: src/ussd_tb_check.js:230 src/ussd_tb_check.js:241 src/ussd_tb_check.js:377
 #: src/ussd_tb_check.js:389 src/ussd_tb_check.js:401 src/ussd_tb_check.js:932
@@ -163,7 +163,7 @@ msgid ""
 msgstr ""
 "Hoe oud is jy? \n"
 "\n"
-"Antwoord met ’n nommer"
+"Antwoord met 'n nommer"
 
 #: src/ussd_tb_check.js:360
 msgid "under 18"
@@ -205,7 +205,7 @@ msgid ""
 msgstr ""
 "As watter geslag identifiseer jy?\n"
 " \n"
-"Antwoord met ’n nommer "
+"Antwoord met 'n nommer "
 
 #: src/ussd_tb_check.js:420
 msgid "MALE"
@@ -291,7 +291,7 @@ msgstr "Kom ons kyk hoe jy vandag voel. Hoes jy?"
 msgid ""
 "Please use numbers from list.\n"
 "Do you have a cough?"
-msgstr "Antwoord met ’n nommer?"
+msgstr "Antwoord met 'n nommer?"
 
 #: src/ussd_tb_check.js:688
 msgid "Do you have a fever? (when you touch your forehead, does it feel hot?)"
@@ -376,9 +376,9 @@ msgid ""
 "\n"
 "Visit your local clinic for a free TB test."
 msgstr ""
-"Jou antwoorde toon dat jy ’n TB-toets moet neem hierdie week! \n"
+"Jou antwoorde toon dat jy 'n TB-toets moet neem hierdie week! \n"
 "\n"
-"Gaan na jou kliniek vir ’n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan."
+"Gaan na jou kliniek vir 'n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan."
 
 #: src/ussd_tb_check.js:928 src/ussd_tb_check.js:1071
 msgid "Your replies to the questions show that you need a TB test this week!"
@@ -386,7 +386,7 @@ msgstr "Jou antwoorde op die vrae dui aan dat jy hierdie week 'n TB-toets moet l
 
 #: src/ussd_tb_check.js:939
 msgid ""
-"With early diagnosis, TB can be cured. Don’t delay, test today!\n"
+"With early diagnosis, TB can be cured. Don't delay, test today!\n"
 "\n"
 "Visit your local clinic for a free TB test. "
 msgstr ""
@@ -452,9 +452,9 @@ msgid ""
 "\n"
 "* Go to your local clinic for a free TB test."
 msgstr ""
-"Jou antwoorde toon dat jy ’n TB-toets moet neem hierdie week! \n"
+"Jou antwoorde toon dat jy 'n TB-toets moet neem hierdie week! \n"
 "\n"
-"Gaan na jou kliniek vir ’n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan"
+"Gaan na jou kliniek vir 'n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan"
 
 #: src/ussd_tb_check.js:1081
 msgid ""
@@ -481,12 +481,12 @@ msgid "Well done for committing to your health!"
 msgstr "Geluk omdat jy jou gesondheid eerste stel!"
 
 #: src/ussd_tb_check.js:1180
-msgid "Even if you can’t commit now, it is still important to get tested."
+msgid "Even if you can't commit now, it is still important to get tested."
 msgstr "Al kan jy nie nou voorneem om dit te doen nie, is dit steeds belangrik om getoets te word."
 
 #: src/ussd_tb_check.js:1201
 msgid "You don't need a TB test now, but if you develop cough, fever, weight loss or night sweats visit your nearest clinic."
-msgstr "Jy hoef nie nou ’n TB-toets te doen nie, maar besoek jou naaste kliniek indien jy begin hoes, koors het, gewig verloor of snags sweet."
+msgstr "Jy hoef nie nou 'n TB-toets te doen nie, maar besoek jou naaste kliniek indien jy begin hoes, koors het, gewig verloor of snags sweet."
 
 #: src/ussd_tb_check.js:1207
 msgid ""
@@ -494,13 +494,13 @@ msgid ""
 "\n"
 "Go to your clinic for a free TB test."
 msgstr ""
-"Jou antwoorde toon dat jy ’n TB-toets moet neem hierdie week. \n"
+"Jou antwoorde toon dat jy 'n TB-toets moet neem hierdie week. \n"
 "\n"
-"Gaan na jou kliniek vir ’n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan."
+"Gaan na jou kliniek vir 'n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan."
 
 #: src/ussd_tb_check.js:1219
 msgid "Check if those you live with are on TB treatment. If you don't know your HIV status, visit the clinic for a free HIV test. Then do the TB check again."
-msgstr "Maak seker mense met wie jy woon kry TB-behandeling. As jy nie jou MIV-status ken nie, besoek die kliniek vir ’n gratis toets. Voltooi dan weer die TB-vraelys."
+msgstr "Maak seker mense met wie jy woon kry TB-behandeling. As jy nie jou MIV-status ken nie, besoek die kliniek vir 'n gratis toets. Voltooi dan weer die TB-vraelys."
 
 #: src/ussd_tb_check.js:1232 src/ussd_tb_check.js:1559
 msgid "None"

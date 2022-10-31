@@ -2124,7 +2124,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_commitment",
           reply:
-            "Even if you can’t commit now, it is still important to get tested.",
+            "Even if you can't commit now, it is still important to get tested.",
           char_limit: 160,
         })
         .run();
