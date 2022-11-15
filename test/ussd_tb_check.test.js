@@ -1834,7 +1834,7 @@ describe("ussd_tb_check app", function () {
           state: "state_commitment_incentive",
           reply: [
             "* Visit your local clinic for a free TB test.",
-            "* You will get R10 airtime within 1 hour if you commit to get tested.",
+            "* You will get R15 airtime within 1 hour if you commit to get tested.",
             "1. Next",
           ].join("\n"),
           char_limit: 160,
@@ -2276,7 +2276,7 @@ describe("ussd_tb_check app", function () {
               state: "state_survey_thanks_airtime",
               reply:
                   "Thank you for taking part in the survey. " +
-                  "Your R10 in airtime is on its way!\n" +
+                  "Your R15 in airtime is on its way!\n" +
                   "1. Next"
           })
           .check(function(api) {

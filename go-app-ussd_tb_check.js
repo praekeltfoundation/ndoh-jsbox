@@ -1,52 +1,6 @@
 var go = {};
 go;
 
-go.Engage = function() {
-    var vumigo = require('vumigo_v02');
-    var events = vumigo.events;
-    var Eventable = events.Eventable;
-    var _ = require('lodash');
-    var url = require('url');
-
-    var Engage = Eventable.extend(function(self, json_api, base_url, token) {
-        self.json_api = json_api;
-        self.base_url = base_url;
-        self.json_api.defaults.headers.Authorization = ['Bearer ' + token];
-        self.json_api.defaults.headers['Content-Type'] = ['application/json'];
-
-        self.contact_check = function(msisdn, block) {
-            return self.json_api.post(url.resolve(self.base_url, 'v1/contacts'), {
-                data: {
-                    blocking: block ? 'wait' : 'no_wait',
-                    contacts: [msisdn]
-                }
-            }).then(function(response) {
-                var existing = _.filter(response.data.contacts, function(obj) {
-                    return obj.status === "valid";
-                });
-                return !_.isEmpty(existing);
-            });
-        };
-
-          self.LANG_MAP = {zul_ZA: "en",
-                          xho_ZA: "en",
-                          afr_ZA: "af",
-                          eng_ZA: "en",
-                          nso_ZA: "en",
-                          tsn_ZA: "en",
-                          sot_ZA: "en",
-                          tso_ZA: "en",
-                          ssw_ZA: "en",
-                          ven_ZA: "en",
-                          nbl_ZA: "en",
-                        };
-    });
-
-
-
-    return Engage;
-}();
-
 go.RapidPro = function() {
     var vumigo = require('vumigo_v02');
     var url_utils = require('url');
@@ -1229,7 +1183,7 @@ go.app = function () {
       return new MenuState(name, {
         question: $([
             "* Visit your local clinic for a free TB test.",
-            "* You will get R10 airtime within 1 hour if you commit to get tested.",
+            "* You will get R15 airtime within 1 hour if you commit to get tested.",
             ].join("\n")
         ),
         accept_labels: true,
@@ -1551,7 +1505,7 @@ go.app = function () {
       return new MenuState(name, {
         question: $(
           "Thank you for taking part in the survey. " +
-          "Your R10 in airtime is on its way!"
+          "Your R15 in airtime is on its way!"
         ),
         error: $([
           "Sorry, we don't understand. Please try again.",
