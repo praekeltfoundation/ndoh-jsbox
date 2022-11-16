@@ -1,15 +1,15 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-10-25 02:47:+0000",
-        "po-revision-date": "2022-10-25 18:02+0200",
+        "pot-creation-date": "2022-11-15 11:04:+0000",
+        "po-revision-date": "2022-11-15 13:18+0200",
         "last-translator": "",
         "language-team": "",
         "language": "sot_ZA",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 3.2"
+        "x-generator": "Poedit 3.2.1"
     },
     "Welcome back to the The National Department of Health's TB HealthCheck": [
         null,
@@ -379,9 +379,9 @@
         null,
         "Dikarabo tsa hao dipotsong di supa o hloka tlhahlobo ya TB bekeng ena!\n\nE-ya tleliniking bakeng sa tlhahlobo ya TB. Ka kopo, rwala mask pele o kena tleliniking."
     ],
-    "* Visit your local clinic for a free TB test.\n* You will get R10 airtime within 1 hour if you commit to get tested.": [
+    "* Visit your local clinic for a free TB test.\n* You will get R15 airtime within 1 hour if you commit to get tested.": [
         null,
-        "* Eya tleliniking ya heno ho etsa tlhahlobo ya mahala ya LEFUBA.\n* O tla fumana airtime ya R10 ha o itlama ho hlahloba. "
+        "* Eya tleliniking ya heno ho etsa tlhahlobo ya mahala ya LEFUBA.\n* O tla fumana airtime ya R15 ha o itlama ho hlahloba. "
     ],
     "Your replies to the questions show that you need a TB test this week.": [
         null,
@@ -463,9 +463,9 @@
         null,
         "Na ho na le mabakang a mang a entseng hore o se ke wa ya tleliniking bakeng sa tlhahlobo ya LEFUBA? Araba ka mantswe a hao."
     ],
-    "Thank you for taking part in the survey. Your R10 in airtime is on its way!": [
+    "Thank you for taking part in the survey. Your R15 in airtime is on its way!": [
         null,
-        "Rea leboha ha o nkile karolo phuputsong. R10 ya hao ya airtime e tseleng!"
+        "Rea leboha ha o nkile karolo phuputsong. R15 ya hao ya airtime e tseleng!"
     ],
     "Back": [
         null,

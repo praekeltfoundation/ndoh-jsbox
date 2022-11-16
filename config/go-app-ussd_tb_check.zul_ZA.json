@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-10-25 02:47:+0000",
-        "po-revision-date": "2022-10-25 18:30+0200",
+        "pot-creation-date": "2022-11-15 11:04:+0000",
+        "po-revision-date": "2022-11-15 13:19+0200",
         "last-translator": "",
         "language-team": "",
         "language": "zu_ZA",
@@ -10,7 +10,7 @@
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
         "plural-forms": "nplurals=2; plural=(n==0 || n==1);",
-        "x-generator": "Poedit 3.2"
+        "x-generator": "Poedit 3.2.1"
     },
     "Welcome back to the The National Department of Health's TB HealthCheck": [
         null,
@@ -380,9 +380,9 @@
         null,
         "Izimpendulo zakho zemibuzo zibonisa ukuthi udinga ukuhlolelwa i-TB kuleli viki!\n\n* Hamba emtholampilo wangakini uyohlolelwa i-TB mahhala."
     ],
-    "* Visit your local clinic for a free TB test.\n* You will get R10 airtime within 1 hour if you commit to get tested.": [
+    "* Visit your local clinic for a free TB test.\n* You will get R15 airtime within 1 hour if you commit to get tested.": [
         null,
-        "* Hamba emtholampilo wangakini uyohlola i-TB mahhala.\n* Uzothola i-airtime ye-R10 uma uzibophezela ukuthi uzohlola."
+        "* Hamba emtholampilo wangakini uyohlola i-TB mahhala.\n* Uzothola i-airtime ye-R15 uma uzibophezela ukuthi uzohlola."
     ],
     "Your replies to the questions show that you need a TB test this week.": [
         null,
@@ -464,9 +464,9 @@
         null,
         "Zikhona ezinye izizathu ezichaza ukuthi kungani ungayanga emtholampilo ukuyohlola i-TB? Phendula ngamazwi akho."
     ],
-    "Thank you for taking part in the survey. Your R10 in airtime is on its way!": [
+    "Thank you for taking part in the survey. Your R15 in airtime is on its way!": [
         null,
-        "Siyabonga ngokubamba iqhaza kuhlolovo. U-R10 wakho we-airtime usendleleni!"
+        "Siyabonga ngokubamba iqhaza kuhlolovo. U-R15 wakho we-airtime usendleleni!"
     ],
     "Back": [
         null,

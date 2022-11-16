@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-10-25 02:47:+0000",
-        "po-revision-date": "2022-10-31 09:55+0200",
+        "pot-creation-date": "2022-11-15 11:04:+0000",
+        "po-revision-date": "2022-11-15 13:17+0200",
         "last-translator": "",
         "language-team": "",
         "language": "afr_ZA",
@@ -380,9 +380,9 @@
         null,
         "Jou antwoorde toon dat jy 'n TB-toets moet neem hierdie week! \n\nGaan na jou kliniek vir 'n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan"
     ],
-    "* Visit your local clinic for a free TB test.\n* You will get R10 airtime within 1 hour if you commit to get tested.": [
+    "* Visit your local clinic for a free TB test.\n* You will get R15 airtime within 1 hour if you commit to get tested.": [
         null,
-        "* Gaan na jou plaaslike kliniek vir 'n gratis TB-toets.\n* Jy sal R10 lugtyd kry as jy onderneem om jou te laat toets. "
+        "* Gaan na jou plaaslike kliniek vir 'n gratis TB-toets.\n* Jy sal R15 lugtyd kry as jy onderneem om jou te laat toets. "
     ],
     "Your replies to the questions show that you need a TB test this week.": [
         null,
@@ -464,9 +464,9 @@
         null,
         "Is daar enige ander redes waarom jy nie kliniek toe gegaan het vir 'n TB-toets nie? Antwoord in jou eie woorde."
     ],
-    "Thank you for taking part in the survey. Your R10 in airtime is on its way!": [
+    "Thank you for taking part in the survey. Your R15 in airtime is on its way!": [
         null,
-        "Dankie dat jy deelgeneem het aan die opname. Jou R10 lugtyd is op pad!"
+        "Dankie dat jy deelgeneem het aan die opname. Jou R15 lugtyd is op pad!"
     ],
     "Back": [
         null,

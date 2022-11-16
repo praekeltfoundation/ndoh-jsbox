@@ -1,15 +1,15 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-10-25 02:47:+0000",
-        "po-revision-date": "2022-10-25 18:29+0200",
+        "pot-creation-date": "2022-11-15 11:04:+0000",
+        "po-revision-date": "2022-11-15 13:18+0200",
         "last-translator": "",
         "language-team": "",
         "language": "xho_ZA",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 3.2"
+        "x-generator": "Poedit 3.2.1"
     },
     "Welcome back to the The National Department of Health's TB HealthCheck": [
         null,
@@ -379,9 +379,9 @@
         null,
         "Iimpendulo zakho zibonisa ukuba udinga uxilongo lwe TB kule veki!\n\nYiya ekliniki uyokuvavanya i-TB simahla. Nceda unxibe imaski phambi kokuba ungene eklinikhi"
     ],
-    "* Visit your local clinic for a free TB test.\n* You will get R10 airtime within 1 hour if you commit to get tested.": [
+    "* Visit your local clinic for a free TB test.\n* You will get R15 airtime within 1 hour if you commit to get tested.": [
         null,
-        "* Yiya kwiklinikhi yengingqi yakho ukufumana uvavanyo lwamahala lwe-TB.\n* Uya kufumana i-airtime ye-R10 ukuba uyazibophelela ukuba uvavanywe. "
+        "* Yiya kwiklinikhi yengingqi yakho ukufumana uvavanyo lwamahala lwe-TB.\n* Uya kufumana i-airtime ye-R15 ukuba uyazibophelela ukuba uvavanywe. "
     ],
     "Your replies to the questions show that you need a TB test this week.": [
         null,
@@ -463,9 +463,9 @@
         null,
         "Ngaba zikho ezinye izizathu zokuba ungayi ekliniki kuvavanyo lwe-TB? Phendula ngamazwi akho."
     ],
-    "Thank you for taking part in the survey. Your R10 in airtime is on its way!": [
+    "Thank you for taking part in the survey. Your R15 in airtime is on its way!": [
         null,
-        "Enkosi ngokuthatha inxaxheba kuphando. I - airtime yakho ye - R10 isendleleni!"
+        "Enkosi ngokuthatha inxaxheba kuphando. I - airtime yakho ye - R15 isendleleni!"
     ],
     "Back": [
         null,
