@@ -942,7 +942,6 @@ describe("ussd_tb_check app", function () {
         .check.user.answer("place_id", "ChIJD7fiBh9u5kcRYJSMaMOCCwQ")
         .run();
     });
-    //xxxxxx
     it("should go to state_confirm_city and check context", function () {
       return tester.setup.user
         .answer("google_session_token", "testsessiontoken")
