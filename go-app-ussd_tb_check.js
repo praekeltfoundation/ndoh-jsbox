@@ -701,8 +701,8 @@ go.app = function () {
 
       if (activation === "tb_study_a") {
         full_address = (street_name + ',' + suburb + ',' + city_trunc).slice(0, 160 - 101);
-        self.im.user.answers.state_city = full_address;
       }
+      self.im.user.answers.state_city = full_address;
 
       return new JsonApi(self.im)
         .get("https://maps.googleapis.com/maps/api/place/autocomplete/json", {

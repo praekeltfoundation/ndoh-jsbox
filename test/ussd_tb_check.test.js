@@ -913,7 +913,7 @@ describe("ussd_tb_check app", function () {
               url:
                 "https://maps.googleapis.com/maps/api/place/autocomplete/json",
               params: {
-                input: "cape town",
+                input: "Fresnaye,cape town",
                 key: "googleplaceskey",
                 sessiontoken: "testsessiontoken",
                 language: "en",
@@ -927,7 +927,7 @@ describe("ussd_tb_check app", function () {
                 status: "OK",
                 predictions: [
                   {
-                    description: "Cape Town, South Africa",
+                    description: "Fresnaye, Cape Town, South Africa",
                     place_id: "ChIJD7fiBh9u5kcRYJSMaMOCCwQ",
                   },
                 ],
@@ -936,9 +936,10 @@ describe("ussd_tb_check app", function () {
           });
         })
         .setup.user.state("state_city")
+        .setup.user.answer("state_suburb_name", "Fresnaye")
         .input("cape town")
         .check.user.state("state_confirm_city")
-        .check.user.answer("state_city", "Cape Town, South Africa")
+        .check.user.answer("state_city", "Fresnaye, Cape Town, South Africa")
         .check.user.answer("place_id", "ChIJD7fiBh9u5kcRYJSMaMOCCwQ")
         .run();
     });
@@ -965,7 +966,7 @@ describe("ussd_tb_check app", function () {
                 status: "OK",
                 predictions: [
                   {
-                    description: "54321 Fancy Apartment,Fresnaye,Cape Town",
+                    description: "54321 Fancy Apartment,Fresnaye,Cape Town, South Africa",
                     place_id: "ChIJD7fiBh9u5kcRYJSMaMOCCwQ",
                   },
                 ],
@@ -974,15 +975,18 @@ describe("ussd_tb_check app", function () {
           });
         })
         .setup.user.state("state_city")
-        .input("Fancy Apartment,Fresnaye,Cape Town")
+        .setup.user.answer("state_suburb_name", "Fresnaye")
+        .setup.user.answer("state_street_name", "Fancy Apartment")
+        .setup.user.answer("activation", "tb_study_a")
+        .input("Cape Town")
         .check.user.state("state_confirm_city")
-        .check.user.answer("state_city", "54321 Fancy Apartment,Fresnaye,Cape Town")
+        .check.user.answer("state_city", "54321 Fancy Apartment,Fresnaye,Cape Town, South Africa")
         .check.user.answer("place_id", "ChIJD7fiBh9u5kcRYJSMaMOCCwQ")
         .check.interaction({
           state: "state_confirm_city",
           reply: [
             "Please check that the address below is correct and matches the information you gave us:",
-            "54321 Fancy Apartment,Fresnaye,Cape Town",
+            "54321 Fancy Apartment,Fresnaye,Cape Town, South Africa",
             "1. Yes",
             "2. No",
           ].join("\n"),
