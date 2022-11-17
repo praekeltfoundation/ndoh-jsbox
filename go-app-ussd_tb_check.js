@@ -693,6 +693,17 @@ go.app = function () {
     });
 
     self.add("state_google_places_lookup", function (name, opts) {
+      var street_name = self.im.user.answers.state_street_name;
+      var suburb = self.im.user.answers.state_suburb_name;
+      var city_trunc = self.im.user.answers.state_city;
+      var full_address = (suburb + ',' + city_trunc).slice(0, 160 - 101);
+      var activation = self.im.user.answers.activation;
+
+      if (activation === "tb_study_a") {
+        full_address = (street_name + ',' + suburb + ',' + city_trunc).slice(0, 160 - 101);
+        self.im.user.answers.state_city = full_address;
+      }
+
       return new JsonApi(self.im)
         .get("https://maps.googleapis.com/maps/api/place/autocomplete/json", {
           params: {
@@ -729,15 +740,12 @@ go.app = function () {
     });
 
     self.add("state_confirm_city", function (name, opts) {
-      var street_name = self.im.user.answers.state_street_name;
-      var suburb = self.im.user.answers.state_suburb_name;
-      var city_trunc = self.im.user.answers.state_city;
+
+      var state_city = self.im.user.answers.state_city;
       var activation = self.im.user.answers.activation;
-      var full_address = (suburb + ',' + city_trunc).slice(0, 160 - 101);
       var no_next_state = "state_suburb_name";
 
       if (activation === "tb_study_a") {
-        full_address = (street_name + ',' + suburb + ',' + city_trunc).slice(0, 160 - 101);
         no_next_state = "state_street_name";
       }
 
@@ -747,7 +755,7 @@ go.app = function () {
             "Please check that the address below is correct and matches the information you gave us:",
             "{{ address }}"
           ].join("\n")
-        ).context({ address: full_address }),
+        ).context({ address: state_city }),
         accept_labels: true,
         choices: [
           new Choice("state_place_details_lookup", $("Yes")),

@@ -942,6 +942,55 @@ describe("ussd_tb_check app", function () {
         .check.user.answer("place_id", "ChIJD7fiBh9u5kcRYJSMaMOCCwQ")
         .run();
     });
+    //xxxxxx
+    it("should go to state_confirm_city and check context", function () {
+      return tester.setup.user
+        .answer("google_session_token", "testsessiontoken")
+        .setup(function (api) {
+          api.http.fixtures.add({
+            request: {
+              url:
+                "https://maps.googleapis.com/maps/api/place/autocomplete/json",
+              params: {
+                input: "Fancy Apartment,Fresnaye,Cape Town",
+                key: "googleplaceskey",
+                sessiontoken: "testsessiontoken",
+                language: "en",
+                components: "country:za",
+              },
+              method: "GET",
+            },
+            response: {
+              code: 200,
+              data: {
+                status: "OK",
+                predictions: [
+                  {
+                    description: "54321 Fancy Apartment,Fresnaye,Cape Town",
+                    place_id: "ChIJD7fiBh9u5kcRYJSMaMOCCwQ",
+                  },
+                ],
+              },
+            },
+          });
+        })
+        .setup.user.state("state_city")
+        .input("Fancy Apartment,Fresnaye,Cape Town")
+        .check.user.state("state_confirm_city")
+        .check.user.answer("state_city", "54321 Fancy Apartment,Fresnaye,Cape Town")
+        .check.user.answer("place_id", "ChIJD7fiBh9u5kcRYJSMaMOCCwQ")
+        .check.interaction({
+          state: "state_confirm_city",
+          reply: [
+            "Please check that the address below is correct and matches the information you gave us:",
+            "54321 Fancy Apartment,Fresnaye,Cape Town",
+            "1. Yes",
+            "2. No",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
     it("should skip the state for users who already have this info for the city", function () {
       return tester.setup.user
         .state("state_city")
@@ -1020,10 +1069,8 @@ describe("ussd_tb_check app", function () {
       return tester.setup.user
         .state("state_confirm_city")
         .setup.user.answer("activation", "tb_study_a")
-        .setup.user.answer("state_street_name", "54321 Fancy Apartment")
-        .setup.user.answer("state_suburb_name", "Fresnaye")
         .setup.user.answer(
-          "state_city", "Cape Town")
+          "state_city", "54321 Fancy Apartment,Fresnaye,Cape Town")
         .check.interaction({
           state: "state_confirm_city",
           reply: [
@@ -1039,8 +1086,7 @@ describe("ussd_tb_check app", function () {
     it("should ask to confirm the city without street name", function () {
       return tester.setup.user
         .state("state_confirm_city")
-        .setup.user.answer("state_suburb_name", "Fresnaye")
-        .setup.user.answer("state_city", "Cape Town")
+        .setup.user.answer("state_city", "Fresnaye,Cape Town")
         .check.interaction({
           state: "state_confirm_city",
           reply: [
@@ -1057,10 +1103,8 @@ describe("ussd_tb_check app", function () {
       return tester.setup.user
         .state("state_confirm_city")
         .setup.user.answer("activation", "tb_study_a")
-        .setup.user.answer("state_street_name", "54321 Fancy Apartment")
-        .setup.user.answer("state_suburb_name", "12345 Really really long address,Fresnaye")
         .setup.user.answer(
-          "state_city", "Cape Town, South Africa"
+          "state_city", "54321 Fancy Apartment,12345 Really really long address,Fres"
         )
         .check.interaction({
           state: "state_confirm_city",
