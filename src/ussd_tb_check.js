@@ -321,7 +321,7 @@ go.app = function () {
 
     self.add("state_research_consent", function(name) {
       if (self.im.user.answers.state_age === "<18"){
-        return self.states.create("state_study_minor_error_p1");
+        return self.states.create("state_gender");
       }
 
       return new MenuState(name, {
