@@ -619,7 +619,7 @@ describe("ussd_tb_check app", function () {
       return tester.setup.user
         .state("state_research_consent")
         .setup.user.answer("state_age", "<18")
-        .check.user.state("state_study_minor_error_p1")
+        .check.user.state("state_gender")
         .run();
     });
      it("should skip minor error message for the study", function () {
@@ -629,17 +629,19 @@ describe("ussd_tb_check app", function () {
         .check.user.state("state_research_consent")
         .run();
     });
-    it("should display error message for minor", function () {
+    it("should display gender for minor", function () {
       return tester.setup.user
         .state("state_research_consent")
         .setup.user.answer("state_age", "<18")
         .setup.user.answer("activation", "tb_study_a")
         .check.interaction({
-          state: "state_study_minor_error_p1",
+          state: "state_gender",
           reply: [
-            "Unfortunately you cant participate in the study if you are "+
-            "younger than 18.",
-            "1. Next"
+            "Which gender do you identify as?",
+            "1. MALE",
+            "2. FEMALE",
+            "3. OTHER",
+            "4. RATHER NOT SAY"
           ].join("\n"),
           char_limit: 160,
       })
@@ -1834,7 +1836,7 @@ describe("ussd_tb_check app", function () {
           state: "state_commitment_incentive",
           reply: [
             "* Visit your local clinic for a free TB test.",
-            "* You will get R10 airtime within 1 hour if you commit to get tested.",
+            "* You will get R15 airtime within 1 hour if you commit to get tested.",
             "1. Next",
           ].join("\n"),
           char_limit: 160,
@@ -2276,7 +2278,7 @@ describe("ussd_tb_check app", function () {
               state: "state_survey_thanks_airtime",
               reply:
                   "Thank you for taking part in the survey. " +
-                  "Your R10 in airtime is on its way!\n" +
+                  "Your R15 in airtime is on its way!\n" +
                   "1. Next"
           })
           .check(function(api) {

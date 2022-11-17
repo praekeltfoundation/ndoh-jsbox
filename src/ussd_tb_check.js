@@ -321,7 +321,7 @@ go.app = function () {
 
     self.add("state_research_consent", function(name) {
       if (self.im.user.answers.state_age === "<18"){
-        return self.states.create("state_study_minor_error_p1");
+        return self.states.create("state_gender");
       }
 
       return new MenuState(name, {
@@ -1080,7 +1080,7 @@ go.app = function () {
       return new MenuState(name, {
         question: $([
             "* Visit your local clinic for a free TB test.",
-            "* You will get R10 airtime within 1 hour if you commit to get tested.",
+            "* You will get R15 airtime within 1 hour if you commit to get tested.",
             ].join("\n")
         ),
         accept_labels: true,
@@ -1402,7 +1402,7 @@ go.app = function () {
       return new MenuState(name, {
         question: $(
           "Thank you for taking part in the survey. " +
-          "Your R10 in airtime is on its way!"
+          "Your R15 in airtime is on its way!"
         ),
         error: $([
           "Sorry, we don't understand. Please try again.",
