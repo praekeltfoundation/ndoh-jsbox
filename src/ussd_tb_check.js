@@ -464,10 +464,14 @@ go.app = function () {
     });
 
     self.add("state_street_name", function (name) {
-      if (self.im.user.answers.state_street_name &&
-        self.im.user.answers.state_suburb_name) {
-      return self.states.create("state_city");
-    }
+      if ((_.toUpper(self.im.user.answers.state_confirm_city)) != "NO")
+      {
+        if (self.im.user.answers.state_street_name &&
+          self.im.user.answers.state_suburb_name) {
+        return self.states.create("state_city");
+        }
+      }
+      
       var question = $(
         "Please type the name of the street where you live."
       );
@@ -484,9 +488,13 @@ go.app = function () {
     });
 
     self.add("state_suburb_name", function (name) {
-      if (self.im.user.answers.state_suburb_name) {
-        return self.states.create("state_city");
+      if (self.im.user.answers.state_confirm_city != "No")
+      {
+        if (self.im.user.answers.state_suburb_name) {
+          return self.states.create("state_city");
+        }
       }
+      
       var question = $(
         "Please type the name of the suburb/township/village where you live."
       );

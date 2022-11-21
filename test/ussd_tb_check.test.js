@@ -1069,6 +1069,24 @@ describe("ussd_tb_check app", function () {
         .check.user.state("state_city")
         .run();
     });
+    it("should not skip street name for users who want to change it", function () {
+      return tester.setup.user
+        .state("state_street_name")
+        .setup.user.answer("state_street_name", "7 soteba str")
+        .setup.user.answer("state_suburb_name", "Soweto")
+        .setup.user.answer("state_confirm_city", "No")
+        .check.user.state("state_street_name")
+        .run();
+    });
+    it("should not skip suburb name for users who want to change it", function () {
+      return tester.setup.user
+        .state("state_suburb_name")
+        .setup.user.answer("state_street_name", "7 soteba str")
+        .setup.user.answer("state_suburb_name", "Soweto")
+        .setup.user.answer("state_confirm_city", "No")
+        .check.user.state("state_suburb_name")
+        .run();
+    });
   describe("state_confirm_city", function () {
     it("should ask to confirm the city", function () {
       return tester.setup.user
