@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-11-15 11:04:+0000",
-        "po-revision-date": "2022-11-15 13:17+0200",
+        "pot-creation-date": "2022-11-21 03:54:+0000",
+        "po-revision-date": "2022-11-21 18:15+0200",
         "last-translator": "",
         "language-team": "",
         "language": "afr_ZA",
@@ -300,6 +300,10 @@
         null,
         "Bevestig asseblief dat die inligting wat jy gegee het reg is en dat jy die NDvG toestemming gee om jou te kontak indien nodig?"
     ],
+    "Finally, please agree that the info you shared is correct": [
+        null,
+        "Laastens, bevestig asseblief dat, sover jy weet, die inligting wat jy gegee het korrek is."
+    ],
     "Thanks for your answers. Your result will be sent soon on SMS. Would you like to receive follow-up messages?": [
         null,
         "Dankie vir jou antwoorde. Jou resultate sal binnekort per sms gestuur word. Wil jy graag opvolg-boodskappe ontvang?"
@@ -504,17 +508,21 @@
         null,
         "Wat moet ek doen?"
     ],
-    "Can I stop halfway through the survey?": [
+    "What if I want to stop halfway?": [
         null,
-        "Wat as ek halfpad deur die opname wil ophou?"
+        "Wat as ek halfpad deur die opname wil stop?"
     ],
     "Are there costs or risks to me?": [
         null,
         "Is daar enige onkoste of risiko vir my?"
     ],
-    "What happens to the information?": [
+    "What happens to the info?": [
         null,
-        "Wat gebeur met die inligting?"
+        "Wat sal met die inligting gebeur?"
+    ],
+    "What to do if I am unhappy?": [
+        null,
+        "Wat kan ek doen as ek ongelukkig is?"
     ],
     "Many people don't realise that TB is cureable and test too late. Your answers will help us understand whether TB HealthCheck really helps people.": [
         null,

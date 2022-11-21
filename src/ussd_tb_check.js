@@ -1562,8 +1562,8 @@ go.app = function () {
           "Please reply with the number that matches your answer."),
         accept_labels: true,
         choices: [
-            new Choice("state_faq_midway", $("Can I stop halfway through?")),
-            new Choice("state_faq_risks", $("Are there costs or risks?")),
+            new Choice("state_faq_midway", $("What if I want to stop halfway?")),
+            new Choice("state_faq_risks", $("Are there costs or risks to me?")),
             new Choice("state_faq_privacy", $("What happens to the info?")),
             new Choice("state_faq_unhappy", $("What to do if I am unhappy?")),
             new Choice("state_faq", $("Back")),

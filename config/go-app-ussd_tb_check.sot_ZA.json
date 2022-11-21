@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-11-15 11:04:+0000",
-        "po-revision-date": "2022-11-15 13:18+0200",
+        "pot-creation-date": "2022-11-21 03:54:+0000",
+        "po-revision-date": "2022-11-21 18:14+0200",
         "last-translator": "",
         "language-team": "",
         "language": "sot_ZA",
@@ -299,6 +299,10 @@
         null,
         "Jwale, ka kopo dumela hore lesedi leo o le arolang le nepahetse le hore o fa NDoH tumello ya ho ikopanya le wena ha ho hlokahala?"
     ],
+    "Finally, please agree that the info you shared is correct": [
+        null,
+        "Qetellong, ka kopo dumela hore tlhaiso-leseding eo o e arolelaneng e nepahetse ho latela tsebo ya hao."
+    ],
     "Thanks for your answers. Your result will be sent soon on SMS. Would you like to receive follow-up messages?": [
         null,
         "Ke leboha dikarabo tsa hao. Sephetho sa hao se tla romellwa haufinyane ka SMS. O ka thabela ho fumana melaetsa ya tshalo-morao?"
@@ -503,17 +507,21 @@
         null,
         "Ke tla hloka ho etsa eng?"
     ],
-    "Can I stop halfway through the survey?": [
+    "What if I want to stop halfway?": [
         null,
-        "Ho thweng haeba ke batla ho emisa bohareng ba diphuputso?"
+        "Ho thwe eng haeba ke batla ho emisa bohareng?"
     ],
     "Are there costs or risks to me?": [
         null,
         "Na ho na le ditshenyehelo kapa dikotsi ho nna?"
     ],
-    "What happens to the information?": [
+    "What happens to the info?": [
         null,
-        "Ho tla etsahalang ka dintlha tseo?"
+        "Ho tla etsahalang ka tlhahisoleseding?"
+    ],
+    "What to do if I am unhappy?": [
+        null,
+        "Nka etsa eng ha ke sa thaba?"
     ],
     "Many people don't realise that TB is cureable and test too late. Your answers will help us understand whether TB HealthCheck really helps people.": [
         null,

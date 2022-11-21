@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-11-15 11:04:+0000",
-        "po-revision-date": "2022-11-15 13:18+0200",
+        "pot-creation-date": "2022-11-21 03:54:+0000",
+        "po-revision-date": "2022-11-21 18:14+0200",
         "last-translator": "",
         "language-team": "",
         "language": "xho_ZA",
@@ -299,6 +299,10 @@
         null,
         "Ngoku, nceda uvume ukuba ulwazi owabelane ngalo lulo kwaye unika i-NDoH imvume yokuxhulumana nawe xa kufuneka njalo?"
     ],
+    "Finally, please agree that the info you shared is correct": [
+        null,
+        "Okokugqibela, nceda uvume ukuba ulwazi owabelane ngalo luchanekile ngokolwazi lwakho lonke"
+    ],
     "Thanks for your answers. Your result will be sent soon on SMS. Would you like to receive follow-up messages?": [
         null,
         "Enkosi ngeempendulo zakho. Iziphumo zakho zizakuthunyelwa kungekudala nge-SMS Ungathanda ukufumana imiyalezo elandelelisayo?"
@@ -503,17 +507,21 @@
         null,
         "Kufuneka ndenze ntoni?"
     ],
-    "Can I stop halfway through the survey?": [
+    "What if I want to stop halfway?": [
         null,
-        "Ndithini ukuba ndifuna ukuyeka phakathi kwisaveyi?"
+        "Kuthekani ukuba ndifuna ukuyeka phakathi kuphando?"
     ],
     "Are there costs or risks to me?": [
         null,
         "Ngaba zikho iindleko okanye iingozi kum?"
     ],
-    "What happens to the information?": [
+    "What happens to the info?": [
         null,
         "Kuya kwenzeka ntoni kulwazi?"
+    ],
+    "What to do if I am unhappy?": [
+        null,
+        "Ndingenza ntoni xa ndingonwabanga? "
     ],
     "Many people don't realise that TB is cureable and test too late. Your answers will help us understand whether TB HealthCheck really helps people.": [
         null,

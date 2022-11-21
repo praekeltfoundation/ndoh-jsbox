@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-11-15 11:04:+0000",
-        "po-revision-date": "2022-11-15 13:19+0200",
+        "pot-creation-date": "2022-11-21 03:54:+0000",
+        "po-revision-date": "2022-11-21 18:14+0200",
         "last-translator": "",
         "language-team": "",
         "language": "zu_ZA",
@@ -300,6 +300,10 @@
         null,
         "Sesicela uvume ukuthi imininingwane osinikeze yona iyiqiniso nokuthi unikeza iNDoH imvume yokuxhumana nawe uma kudingeka?"
     ],
+    "Finally, please agree that the info you shared is correct": [
+        null,
+        "Ekugcineni, ngicela uvume ukuthi imininingwane owabelane ngayo iyiqiniso ngokwazi kwakho"
+    ],
     "Thanks for your answers. Your result will be sent soon on SMS. Would you like to receive follow-up messages?": [
         null,
         "Siyabonga ngempendulo yakho. Imiphumela yakho izothunyelwa ku-SMS kungekudala. Ungathanda ukuthola imilayezo ezolandelela?"
@@ -504,17 +508,21 @@
         null,
         "Yini engizodinga ukuyenza?"
     ],
-    "Can I stop halfway through the survey?": [
+    "What if I want to stop halfway?": [
         null,
-        "Kutheni uma ngifuna ukuyeka ngisaphakathi kwenhlolovo?"
+        "Kuthiwani uma ngifuna ukuyeka phakathi kwenhlolovo?"
     ],
     "Are there costs or risks to me?": [
         null,
         "Ingabe zikhona izindleko noma ubungozi kimi?"
     ],
-    "What happens to the information?": [
+    "What happens to the info?": [
         null,
-        "Kuzokwenzekani ngemininingwane?"
+        "Kuzokwenzekani ngolwazi?"
+    ],
+    "What to do if I am unhappy?": [
+        null,
+        "Yini engingayenza uma ngingeneme?"
     ],
     "Many people don't realise that TB is cureable and test too late. Your answers will help us understand whether TB HealthCheck really helps people.": [
         null,
