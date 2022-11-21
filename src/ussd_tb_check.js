@@ -737,6 +737,13 @@ go.app = function () {
     });
 
     self.add("state_exposure", function (name) {
+      var next_state = "state_tracing";
+      var activation = self.im.user.answers.activation;
+
+      if (activation === "tb_study_a"){
+        next_state = "state_study_tracing";
+      }
+
       return new ChoiceState(name, {
         question: $(
           [
@@ -752,7 +759,7 @@ go.app = function () {
           new Choice("no", $("No")),
           new Choice("not_sure", $("Dont know")),
         ],
-        next: "state_tracing",
+        next: next_state,
       });
     });
 
@@ -772,6 +779,37 @@ go.app = function () {
         [
           "Now, please agree that the info you shared is correct and that you give " +
             "the NDoH permission to contact you if needed?"
+        ].join("\n")
+      );
+      var choices = [
+        new Choice(true, $("YES")),
+        new Choice(false, $("NO")),
+      ];
+      return new ChoiceState(name, {
+        question: question,
+        error: error,
+        accept_labels: true,
+        choices: choices,
+        next: function (response) {
+          return next_state;
+        },
+      });
+    });
+
+    self.add("state_study_tracing", function (name) {
+      var next_state = "state_opt_in";
+      var activation = self.im.user.answers.activation;
+
+      if (activation === "tb_study_a"){
+        next_state = "state_submit_data";
+      }
+
+      var question = $(
+          "Finally, please agree that the info you shared is correct"
+      );
+      var error = $(
+        [
+          "Finally, please agree that the info you shared is correct"
         ].join("\n")
       );
       var choices = [
@@ -816,6 +854,10 @@ go.app = function () {
       var answers = self.im.user.answers;
       var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
       var activation = self.get_activation();
+
+      if (activation === "tb_study_a"){
+        self.im.user.answers.state_tracing = answers.state_study_tracing;
+      }
 
       var payload = {
         data: {
