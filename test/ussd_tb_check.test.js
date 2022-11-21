@@ -1074,7 +1074,7 @@ describe("ussd_tb_check app", function () {
         .state("state_street_name")
         .setup.user.answer("state_street_name", "7 soteba str")
         .setup.user.answer("state_suburb_name", "Soweto")
-        .setup.user.answer("state_confirm_city", "No")
+        .setup.user.answer("state_confirm_city", "state_street_name")
         .check.user.state("state_street_name")
         .run();
     });
@@ -1083,7 +1083,7 @@ describe("ussd_tb_check app", function () {
         .state("state_suburb_name")
         .setup.user.answer("state_street_name", "7 soteba str")
         .setup.user.answer("state_suburb_name", "Soweto")
-        .setup.user.answer("state_confirm_city", "No")
+        .setup.user.answer("state_confirm_city", "state_street_name")
         .check.user.state("state_suburb_name")
         .run();
     });
