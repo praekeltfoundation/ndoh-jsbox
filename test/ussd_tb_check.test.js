@@ -2285,8 +2285,8 @@ describe("ussd_tb_check app", function () {
           state: "state_faq_2",
           reply: [
             "What would you like to know?",
-            "1. Can I stop halfway through?",
-            "2. Are there costs or risks?",
+            "1. What if I want to stop halfway?",
+            "2. Are there costs or risks to me?",
             "3. What happens to the info?",
             "4. What to do if I am unhappy?",
             "5. Back"
