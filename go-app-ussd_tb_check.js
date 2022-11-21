@@ -613,12 +613,12 @@ go.app = function () {
     });
 
     self.add("state_street_name", function (name) {
-      if ((_.toUpper(self.im.user.answers.state_confirm_city)) != "NO")
+      if ((_.toUpper(self.im.user.answers.state_confirm_city)) != "STATE_STREET_NAME")
       {
         if (self.im.user.answers.state_street_name &&
           self.im.user.answers.state_suburb_name) {
         return self.states.create("state_city");
-        }
+      }
       }
       
       var question = $(
@@ -637,7 +637,7 @@ go.app = function () {
     });
 
     self.add("state_suburb_name", function (name) {
-      if (self.im.user.answers.state_confirm_city != "No")
+      if ((_.toUpper(self.im.user.answers.state_confirm_city)) != "STATE_STREET_NAME")
       {
         if (self.im.user.answers.state_suburb_name) {
           return self.states.create("state_city");
