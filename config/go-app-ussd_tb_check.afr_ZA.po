@@ -720,16 +720,20 @@ msgid "What I'll need to do?"
 msgstr "Wat moet ek doen?"
 
 #: src/ussd_tb_check.js:1507
-msgid "Can I stop halfway through the survey?"
-msgstr "Wat as ek halfpad deur die opname wil ophou?"
+msgid "Can I stop halfway through?"
+msgstr "Kan ek halfpad stop?"
 
 #: src/ussd_tb_check.js:1508
-msgid "Are there costs or risks to me?"
+msgid "Are there costs or risks?"
 msgstr "Is daar enige onkoste of risiko vir my?"
 
 #: src/ussd_tb_check.js:1509
-msgid "What happens to the information?"
+msgid "What happens to the info?"
 msgstr "Wat gebeur met die inligting?"
+
+#: src/ussd_tb_check.js:1526
+msgid "What to do if I am unhappy?"
+msgstr "Ongelukkig?"
 
 #: src/ussd_tb_check.js:1569
 msgid ""
