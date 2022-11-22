@@ -716,16 +716,20 @@ msgid "What I'll need to do?"
 msgstr "Ke tla hloka ho etsa eng?"
 
 #: src/ussd_tb_check.js:1507
-msgid "Can I stop halfway through the survey?"
-msgstr "Ho thweng haeba ke batla ho emisa bohareng ba diphuputso?"
+msgid "Can I stop halfway through?"
+msgstr "Ho thwe eng haeba ke batla ho emisa bohareng?"
 
 #: src/ussd_tb_check.js:1508
-msgid "Are there costs or risks to me?"
-msgstr "Na ho na le ditshenyehelo kapa dikotsi ho nna?"
+msgid "Are there costs or risks?"
+msgstr "Litsenyehelo kapa likotsi?"
 
 #: src/ussd_tb_check.js:1509
-msgid "What happens to the information?"
-msgstr "Ho tla etsahalang ka dintlha tseo?"
+msgid "What happens to the info?"
+msgstr "Ho tla etsahalang ka tlhahisoleseding?"
+
+#: src/ussd_tb_check.js:1526
+msgid "What to do if I am unhappy?"
+msgstr "Ha wa thaba?"
 
 #: src/ussd_tb_check.js:1569
 msgid ""

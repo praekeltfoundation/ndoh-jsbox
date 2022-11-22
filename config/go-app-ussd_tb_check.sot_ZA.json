@@ -503,17 +503,21 @@
         null,
         "Ke tla hloka ho etsa eng?"
     ],
-    "Can I stop halfway through the survey?": [
+    "Can I stop halfway through?": [
         null,
-        "Ho thweng haeba ke batla ho emisa bohareng ba diphuputso?"
+        "Ho thwe eng haeba ke batla ho emisa bohareng?"
     ],
-    "Are there costs or risks to me?": [
+    "Are there costs or risks?": [
         null,
-        "Na ho na le ditshenyehelo kapa dikotsi ho nna?"
+        "Litsenyehelo kapa likotsi?"
     ],
-    "What happens to the information?": [
+    "What happens to the info?": [
         null,
-        "Ho tla etsahalang ka dintlha tseo?"
+        "Ho tla etsahalang ka tlhahisoleseding?"
+    ],
+    "What to do if I am unhappy?": [
+        null,
+        "Ha wa thaba?"
     ],
     "Many people don't realise that TB is cureable and test too late. Your answers will help us understand whether TB HealthCheck really helps people.": [
         null,
