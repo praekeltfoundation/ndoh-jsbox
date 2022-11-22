@@ -707,11 +707,11 @@ msgstr "O ka rata ho tseba eng?"
 
 #: src/ussd_tb_check.js:1547
 msgid "More about the research?"
-msgstr "Ho eketsehileng ka dipatlisiso?"
+msgstr "Na o ka mpolella haholwanyane ka dipatlisiso?"
 
 #: src/ussd_tb_check.js:1548
 msgid "What information will you ask me for?"
-msgstr "O tla mpotsa dintlha dife?"
+msgstr "Ke tlhahisoleseding e feng eo o tla nkopa yona?"
 
 #: src/ussd_tb_check.js:1549
 msgid "Why did I get the SMS?"
@@ -719,7 +719,7 @@ msgstr "Hobaneng ke fumane SMS ee?"
 
 #: src/ussd_tb_check.js:1550
 msgid "What I'll need to do?"
-msgstr "U batla ho tseba eng?"
+msgstr "Ke hloka ho etsa eng?"
 
 #: src/ussd_tb_check.js:1565
 msgid "Can I stop halfway through?"

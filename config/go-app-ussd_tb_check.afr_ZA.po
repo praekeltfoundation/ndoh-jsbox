@@ -711,19 +711,19 @@ msgstr "Wat wil jy graag weet?"
 
 #: src/ussd_tb_check.js:1547
 msgid "More about the research?"
-msgstr "Meer oor die navorsing?"
+msgstr "Kan julle my meer vertel oor die navorsing?"
 
 #: src/ussd_tb_check.js:1548
 msgid "What information will you ask me for?"
-msgstr "Watter inligting sal ek moet verskaf?"
+msgstr "Watter inligting sal julle my vra?"
 
 #: src/ussd_tb_check.js:1549
 msgid "Why did I get the SMS?"
-msgstr "Hoekom het ek hierdie SMS ontvang?"
+msgstr "Waarom het ek hierdie SMS gekry?"
 
 #: src/ussd_tb_check.js:1550
 msgid "What I'll need to do?"
-msgstr "Wat wil jy weet?"
+msgstr "Wat sal ek moet doen?"
 
 #: src/ussd_tb_check.js:1565
 msgid "Can I stop halfway through?"
