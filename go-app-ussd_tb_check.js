@@ -954,11 +954,11 @@ go.app = function () {
       }
 
       var question = $(
-          "Finally, please agree that the info you shared is correct"
+          "Finally, please agree that the info you shared is correct."
       );
       var error = $(
         [
-          "Finally, please agree that the info you shared is correct"
+          "Finally, please agree that the info you shared is correct."
         ].join("\n")
       );
       var choices = [
