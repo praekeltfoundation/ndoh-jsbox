@@ -805,11 +805,11 @@ go.app = function () {
       }
 
       var question = $(
-          "Finally, please agree that the info you shared is correct"
+          "Finally, please agree that the info you shared is correct."
       );
       var error = $(
         [
-          "Finally, please agree that the info you shared is correct"
+          "Finally, please agree that the info you shared is correct."
         ].join("\n")
       );
       var choices = [
@@ -1074,7 +1074,7 @@ go.app = function () {
 
       nearest_clinic.forEach(function(clinic){
         // append clinic to choices
-        choice_list.push(new Choice(clinic.shortname, $(clinic.short_name)));
+//        choice_list.push(new Choice(clinic.shortname, $(clinic.short_name)));
       });
 
       return new ChoiceState(name, {
