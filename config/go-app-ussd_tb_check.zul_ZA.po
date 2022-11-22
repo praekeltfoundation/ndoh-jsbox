@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2022-11-15 11:04:+0000\n"
-"PO-Revision-Date: 2022-11-15 13:19+0200\n"
+"POT-Creation-Date: 2022-11-22 11:29:+0000\n"
+"PO-Revision-Date: 2022-11-22 13:36+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zu_ZA\n"
@@ -25,7 +25,7 @@ msgstr "Qhubeka la engigcine khona"
 msgid "Start over"
 msgstr "Qala phansi"
 
-#: src/ussd_tb_check.js:159 src/ussd_tb_check.js:1580
+#: src/ussd_tb_check.js:159 src/ussd_tb_check.js:1638
 msgid ""
 "Unfortunately, you cannot participate in the study more than once. You can "
 "still continue with a TB Check but you will not be included in the study."
@@ -62,15 +62,15 @@ msgstr ""
 "Lesevisi ye-NDoH inikeza imininingwane yezempilo kphela. Scela uvume ukuth "
 "unegunya lokunakekelwa nokwelashwa kwakho. "
 
-#: src/ussd_tb_check.js:206 src/ussd_tb_check.js:681 src/ussd_tb_check.js:698
-#: src/ussd_tb_check.js:708 src/ussd_tb_check.js:718 src/ussd_tb_check.js:762
-#: src/ussd_tb_check.js:1106
+#: src/ussd_tb_check.js:206 src/ussd_tb_check.js:697 src/ussd_tb_check.js:714
+#: src/ussd_tb_check.js:724 src/ussd_tb_check.js:734 src/ussd_tb_check.js:785
+#: src/ussd_tb_check.js:816 src/ussd_tb_check.js:1164
 msgid "YES"
 msgstr "YEBO"
 
-#: src/ussd_tb_check.js:207 src/ussd_tb_check.js:681 src/ussd_tb_check.js:698
-#: src/ussd_tb_check.js:708 src/ussd_tb_check.js:718 src/ussd_tb_check.js:763
-#: src/ussd_tb_check.js:1106
+#: src/ussd_tb_check.js:207 src/ussd_tb_check.js:697 src/ussd_tb_check.js:714
+#: src/ussd_tb_check.js:724 src/ussd_tb_check.js:734 src/ussd_tb_check.js:786
+#: src/ussd_tb_check.js:817 src/ussd_tb_check.js:1164
 msgid "NO"
 msgstr "CHA"
 
@@ -96,11 +96,11 @@ msgstr ""
 "zomhlinzeki wezempilo oqeqeshiwe ngesimo sakho sezempilo nokunakekelwa."
 
 #: src/ussd_tb_check.js:230 src/ussd_tb_check.js:241 src/ussd_tb_check.js:377
-#: src/ussd_tb_check.js:389 src/ussd_tb_check.js:401 src/ussd_tb_check.js:932
-#: src/ussd_tb_check.js:957 src/ussd_tb_check.js:971 src/ussd_tb_check.js:1065
-#: src/ussd_tb_check.js:1075 src/ussd_tb_check.js:1087
-#: src/ussd_tb_check.js:1097 src/ussd_tb_check.js:1414
-#: src/ussd_tb_check.js:1493 src/ussd_tb_check.js:1511
+#: src/ussd_tb_check.js:389 src/ussd_tb_check.js:401 src/ussd_tb_check.js:990
+#: src/ussd_tb_check.js:1015 src/ussd_tb_check.js:1029
+#: src/ussd_tb_check.js:1123 src/ussd_tb_check.js:1133
+#: src/ussd_tb_check.js:1145 src/ussd_tb_check.js:1155
+#: src/ussd_tb_check.js:1472 src/ussd_tb_check.js:1551
 msgid "Next"
 msgstr "Okulandelayo"
 
@@ -168,17 +168,17 @@ msgid "Please reply with numbers. Are you willing to take part?"
 msgstr ""
 "Sicela usebenzise izinombolo ezisohlwini. Ingabe uzimisele ukuba yingxenye?"
 
-#: src/ussd_tb_check.js:337 src/ussd_tb_check.js:604 src/ussd_tb_check.js:789
-#: src/ussd_tb_check.js:1249 src/ussd_tb_check.js:1275
-#: src/ussd_tb_check.js:1603 src/ussd_tb_check.js:1623
-#: src/ussd_tb_check.js:1643 src/ussd_tb_check.js:1734
+#: src/ussd_tb_check.js:337 src/ussd_tb_check.js:620 src/ussd_tb_check.js:843
+#: src/ussd_tb_check.js:1307 src/ussd_tb_check.js:1333
+#: src/ussd_tb_check.js:1661 src/ussd_tb_check.js:1681
+#: src/ussd_tb_check.js:1701 src/ussd_tb_check.js:1792
 msgid "Yes"
 msgstr "Yebo"
 
-#: src/ussd_tb_check.js:338 src/ussd_tb_check.js:605 src/ussd_tb_check.js:736
-#: src/ussd_tb_check.js:789 src/ussd_tb_check.js:1273 src/ussd_tb_check.js:1605
-#: src/ussd_tb_check.js:1625 src/ussd_tb_check.js:1645
-#: src/ussd_tb_check.js:1735
+#: src/ussd_tb_check.js:338 src/ussd_tb_check.js:621 src/ussd_tb_check.js:759
+#: src/ussd_tb_check.js:843 src/ussd_tb_check.js:1331 src/ussd_tb_check.js:1663
+#: src/ussd_tb_check.js:1683 src/ussd_tb_check.js:1703
+#: src/ussd_tb_check.js:1793
 msgid "No"
 msgstr "Cha"
 
@@ -307,20 +307,20 @@ msgstr "ENYAKATHO KAPA"
 msgid "W. CAPE"
 msgstr "ENTSHONALANGA KAPA"
 
-#: src/ussd_tb_check.js:471
+#: src/ussd_tb_check.js:475
 msgid "Please type the name of the street where you live."
 msgstr "Sicela uthayiphe igama lomgwaqo walapho ohlala khona."
 
-#: src/ussd_tb_check.js:490
+#: src/ussd_tb_check.js:498
 msgid "Please type the name of the suburb/township/village where you live."
 msgstr ""
 "Sicela uthayiphe igama ledolobha/ilokishi/isigodi salapho ohlala khona."
 
-#: src/ussd_tb_check.js:531
+#: src/ussd_tb_check.js:539
 msgid "Please type the name of the city where you live."
 msgstr "Sicela uthayiphe igama ledolobha lalapho ohlala khona."
 
-#: src/ussd_tb_check.js:596
+#: src/ussd_tb_check.js:612
 msgid ""
 "Please check that the address below is correct and matches the information "
 "you gave us:\n"
@@ -330,45 +330,45 @@ msgstr ""
 "nemininingwane osinike yona:\n"
 "{{ address }}"
 
-#: src/ussd_tb_check.js:668
+#: src/ussd_tb_check.js:684
 msgid "Let's see how you're feeling today. Do you have a cough?"
 msgstr "Asiboneuzizwa kanjani namuhla. Uyakhwehlela?"
 
-#: src/ussd_tb_check.js:671
+#: src/ussd_tb_check.js:687
 msgid ""
 "Please use numbers from list.\n"
 "Do you have a cough?"
 msgstr "Asiboneuzizwa kanjani namuhla. Uyakhwehlela?"
 
-#: src/ussd_tb_check.js:688
+#: src/ussd_tb_check.js:704
 msgid "Do you have a fever? (when you touch your forehead, does it feel hot?)"
 msgstr "Unemfiva? (uma uthina isiphongo sakho, usizwa sishisa?)"
 
-#: src/ussd_tb_check.js:691
+#: src/ussd_tb_check.js:707
 msgid ""
 "Please use numbers from list. Do you have a fever? (when you touch your "
 "forehead, does it feel hot?)"
 msgstr "Unemfiva? (uma uthina isiphongo sakho, usizwa sishisa?)"
 
-#: src/ussd_tb_check.js:705
+#: src/ussd_tb_check.js:721
 msgid "Are you sweating more than usual at night?"
 msgstr "Ingabe ujuluka ngaphezu kokujwayelekile ebusuku?"
 
-#: src/ussd_tb_check.js:706
+#: src/ussd_tb_check.js:722
 msgid ""
 "Please use numbers from list. Are you sweating more than usual at night?"
 msgstr "Ingabe ujuluka ngaphezu kokujwayelekile ebusuku?"
 
-#: src/ussd_tb_check.js:715
+#: src/ussd_tb_check.js:731
 msgid "Have you been losing weight without trying?"
 msgstr "Ngabe uyancipha emzimbeni ngaphandle kokuzama?"
 
-#: src/ussd_tb_check.js:716
+#: src/ussd_tb_check.js:732
 msgid ""
 "Please use numbers from list. Have you been losing weight without trying?"
 msgstr "Ngabe uyancipha emzimbeni ngaphandle kokuzama?"
 
-#: src/ussd_tb_check.js:725
+#: src/ussd_tb_check.js:748
 msgid ""
 "Are you at high risk of TB?\n"
 "\n"
@@ -380,22 +380,22 @@ msgstr ""
 "Ingozi isho ukuhlala nomuntu one-TB NOMA ubene-TB kuminyaka emi-2 edlule "
 "NOMA u-HIV+"
 
-#: src/ussd_tb_check.js:732
+#: src/ussd_tb_check.js:755
 msgid "Please use numbers from list. Are you at high risk for TB?"
 msgstr ""
 "Phendula ngenombolo\n"
 "\n"
 "Ingabe usengozini enkulu ye-TB?"
 
-#: src/ussd_tb_check.js:735
+#: src/ussd_tb_check.js:758
 msgid "Yes high risk"
 msgstr "Yebo ingozi inkulu"
 
-#: src/ussd_tb_check.js:737
+#: src/ussd_tb_check.js:760
 msgid "Dont know"
 msgstr "Angazi"
 
-#: src/ussd_tb_check.js:751 src/ussd_tb_check.js:755
+#: src/ussd_tb_check.js:774 src/ussd_tb_check.js:778
 msgid ""
 "Now, please agree that the info you shared is correct and that you give the "
 "NDoH permission to contact you if needed?"
@@ -403,7 +403,13 @@ msgstr ""
 "Sesicela uvume ukuthi imininingwane osinikeze yona iyiqiniso nokuthi unikeza "
 "iNDoH imvume yokuxhumana nawe uma kudingeka?"
 
-#: src/ussd_tb_check.js:777 src/ussd_tb_check.js:783
+#: src/ussd_tb_check.js:807 src/ussd_tb_check.js:810
+msgid "Finally, please agree that the info you shared is correct."
+msgstr ""
+"Ekugcineni, ngicela uvume ukuthi imininingwane owabelane ngayo iyiqiniso "
+"ngokwazi kwakho."
+
+#: src/ussd_tb_check.js:831 src/ussd_tb_check.js:837
 msgid ""
 "Thanks for your answers. Your result will be sent soon on SMS. Would you "
 "like to receive follow-up messages?"
@@ -411,30 +417,30 @@ msgstr ""
 "Siyabonga ngempendulo yakho. Imiphumela yakho izothunyelwa ku-SMS "
 "kungekudala. Ungathanda ukuthola imilayezo ezolandelela?"
 
-#: src/ussd_tb_check.js:874
+#: src/ussd_tb_check.js:932
 msgid "Thanks for choosing to get our follow-up messages."
 msgstr "Siyabonga ngokukhetha ukuthola imilayezo yethu ezolandelela."
 
-#: src/ussd_tb_check.js:877
+#: src/ussd_tb_check.js:935
 msgid "Okay thanks, you won't get any follow-up messages."
 msgstr "Kulungile siyabonga, ngeke uthole imilayezo ezolandelela."
 
-#: src/ussd_tb_check.js:881
+#: src/ussd_tb_check.js:939
 msgid "Thanks for your answers. Your result will be sent soon on SMS."
 msgstr ""
 "Siyabonga ngempendulo yakho. Imiphumela yakho izothunyelwa ku-SMS "
 "kungekudala."
 
-#: src/ussd_tb_check.js:884
+#: src/ussd_tb_check.js:942
 msgid "This service works best when you select numbers from the list"
 msgstr ""
 "Le sevisi isebenza kahle kakhulu uma ukhetha izinketho zezinombolo ohlwini"
 
-#: src/ussd_tb_check.js:892
+#: src/ussd_tb_check.js:950
 msgid "See Results"
 msgstr "Bona imiphumela"
 
-#: src/ussd_tb_check.js:917
+#: src/ussd_tb_check.js:975
 msgid ""
 "Your replies to the questions show that you need a TB test this week!\n"
 "\n"
@@ -445,13 +451,13 @@ msgstr ""
 "\n"
 "Vakashela umtholampilo wangakini ukuze uhlolelwe i-TB mahhala."
 
-#: src/ussd_tb_check.js:928 src/ussd_tb_check.js:1071
+#: src/ussd_tb_check.js:986 src/ussd_tb_check.js:1129
 msgid "Your replies to the questions show that you need a TB test this week!"
 msgstr ""
 "Izimpendulo zakho zemibuzo zibonisa ukuthi udinga ukuhlolwa kwe-TB kuleli "
 "viki!"
 
-#: src/ussd_tb_check.js:939
+#: src/ussd_tb_check.js:997
 msgid ""
 "With early diagnosis, TB can be cured. Don't delay, test today!\n"
 "\n"
@@ -461,7 +467,7 @@ msgstr ""
 "\n"
 "Vakashela umtholampilo wangakini ukuze uhlolelwe i-TB mahhala. "
 
-#: src/ussd_tb_check.js:950
+#: src/ussd_tb_check.js:1008
 msgid ""
 "Your replies to the questions show that you need a TB test this week!\n"
 "\n"
@@ -472,7 +478,7 @@ msgstr ""
 "\n"
 "Nawa amathiphu angakusiza ukuthi uhlele:"
 
-#: src/ussd_tb_check.js:963
+#: src/ussd_tb_check.js:1021
 msgid ""
 "* Make the time. Your health is a priority!\n"
 "* Pick the most convenient clinic for your test\n"
@@ -483,41 +489,41 @@ msgstr ""
 "\n"
 "Khetha umtholampilo okulungele. Ngezansi imitholampilo eseduze nawe. "
 
-#: src/ussd_tb_check.js:1023
+#: src/ussd_tb_check.js:1081
 msgid "Where will you go for your test? Reply with the clinic"
 msgstr "Uzoya kuphi lapho uhlolwa? Phendula ngomtholampilo"
 
-#: src/ussd_tb_check.js:1034
+#: src/ussd_tb_check.js:1092
 msgid "When will you go for your test? Reply with the day"
 msgstr "Uzoya nini ukuyohlolwa kwakho? Phendula ngosuku "
 
-#: src/ussd_tb_check.js:1039
+#: src/ussd_tb_check.js:1097
 msgid "MONDAY"
 msgstr "MSOMBULUKO"
 
-#: src/ussd_tb_check.js:1040
+#: src/ussd_tb_check.js:1098
 msgid "TUESDAY"
 msgstr "LWESIBILI"
 
-#: src/ussd_tb_check.js:1041
+#: src/ussd_tb_check.js:1099
 msgid "WEDNESDAY"
 msgstr "LWESITHATHU"
 
-#: src/ussd_tb_check.js:1042
+#: src/ussd_tb_check.js:1100
 msgid "THURSDAY"
 msgstr "ULWESINE"
 
-#: src/ussd_tb_check.js:1043
+#: src/ussd_tb_check.js:1101
 msgid "FRIDAY"
 msgstr "LWESIHLANU"
 
-#: src/ussd_tb_check.js:1051
+#: src/ussd_tb_check.js:1109
 msgid "Well done for planning to get your test!"
 msgstr ""
 "Wenze kahle ngokubophezela impilo yakho! Wenze kahle ngokuhlosa ukuthola "
 "ukuhlolwa kwakho! 👏"
 
-#: src/ussd_tb_check.js:1058
+#: src/ussd_tb_check.js:1116
 msgid ""
 "Your replies to the questions show that you need a TB test this week!\n"
 "\n"
@@ -528,7 +534,7 @@ msgstr ""
 "\n"
 "* Hamba emtholampilo wangakini uyohlolelwa i-TB mahhala."
 
-#: src/ussd_tb_check.js:1081
+#: src/ussd_tb_check.js:1139
 msgid ""
 "* Visit your local clinic for a free TB test.\n"
 "* You will get R15 airtime within 1 hour if you commit to get tested."
@@ -536,31 +542,31 @@ msgstr ""
 "* Hamba emtholampilo wangakini uyohlola i-TB mahhala.\n"
 "* Uzothola i-airtime ye-R15 uma uzibophezela ukuthi uzohlola."
 
-#: src/ussd_tb_check.js:1093
+#: src/ussd_tb_check.js:1151
 msgid "Your replies to the questions show that you need a TB test this week."
 msgstr ""
 "Izimpendulo zakho zemibuzo zibonisa ukuthi udinga ukuhlolwa kwe-TB kuleli "
 "viki."
 
-#: src/ussd_tb_check.js:1103
+#: src/ussd_tb_check.js:1161
 msgid "Do you commit to getting tested?"
 msgstr "Ingabe uyazibophezela ukuthi uhlole?"
 
-#: src/ussd_tb_check.js:1104
+#: src/ussd_tb_check.js:1162
 msgid "Please use numbers from list. Do you commit to getting tested?"
 msgstr ""
 "Sicela usebenzise izinombolo ezisohlwini. Ingabe uyazibophezela ekuhlolweni?"
 
-#: src/ussd_tb_check.js:1177
+#: src/ussd_tb_check.js:1235
 msgid "Well done for committing to your health!"
 msgstr "Wenze kahle ngokubophezela impilo yakho!"
 
-#: src/ussd_tb_check.js:1180
+#: src/ussd_tb_check.js:1238
 msgid "Even if you can't commit now, it is still important to get tested."
 msgstr ""
 "Ngisho noma ungakwazi ukuzinikelela manje, kusabalulekile ukuthi uhlole."
 
-#: src/ussd_tb_check.js:1201
+#: src/ussd_tb_check.js:1259
 msgid ""
 "You don't need a TB test now, but if you develop cough, fever, weight loss "
 "or night sweats visit your nearest clinic."
@@ -569,7 +575,7 @@ msgstr ""
 "ukuncipha ngokomzimba noma ukujuluka ebusuku vakashela umtholampilo "
 "oseduzane nawe."
 
-#: src/ussd_tb_check.js:1207
+#: src/ussd_tb_check.js:1265
 msgid ""
 "Your replies to the questions show you need a TB test this week.\n"
 "\n"
@@ -580,7 +586,7 @@ msgstr ""
 "\n"
 "* Hamba emtholampilo wangakini uyohlolelwa i-TB mahhala."
 
-#: src/ussd_tb_check.js:1219
+#: src/ussd_tb_check.js:1277
 msgid ""
 "Check if those you live with are on TB treatment. If you don't know your HIV "
 "status, visit the clinic for a free HIV test. Then do the TB check again."
@@ -589,11 +595,11 @@ msgstr ""
 "se-HIV, vakashela umtholampilo uyohlolelwa i-HIV mahhala. Bese uphinde "
 "uhlole i-TB."
 
-#: src/ussd_tb_check.js:1232 src/ussd_tb_check.js:1559
+#: src/ussd_tb_check.js:1290 src/ussd_tb_check.js:1617
 msgid "None"
 msgstr "Lutho"
 
-#: src/ussd_tb_check.js:1237
+#: src/ussd_tb_check.js:1295
 msgid ""
 "We will use this information to see if TB HealthCheck helps people. To "
 "continue, reply YES. For more on TB HealthCheck and the research, reply MORE."
@@ -603,14 +609,14 @@ msgstr ""
 "Ukuze uqhubeke phendula ngo-\"YEBO\". Ukuze uthole kabanzi nge-TB "
 "HealthCheck kanye nocwaningo, phendula OKWENGEZIWE."
 
-#: src/ussd_tb_check.js:1242 src/ussd_tb_check.js:1266
-#: src/ussd_tb_check.js:1287 src/ussd_tb_check.js:1308
-#: src/ussd_tb_check.js:1330 src/ussd_tb_check.js:1352
-#: src/ussd_tb_check.js:1407 src/ussd_tb_check.js:1596
-#: src/ussd_tb_check.js:1616 src/ussd_tb_check.js:1636
-#: src/ussd_tb_check.js:1658 src/ussd_tb_check.js:1678
-#: src/ussd_tb_check.js:1699 src/ussd_tb_check.js:1713
-#: src/ussd_tb_check.js:1727
+#: src/ussd_tb_check.js:1300 src/ussd_tb_check.js:1324
+#: src/ussd_tb_check.js:1345 src/ussd_tb_check.js:1366
+#: src/ussd_tb_check.js:1388 src/ussd_tb_check.js:1410
+#: src/ussd_tb_check.js:1465 src/ussd_tb_check.js:1654
+#: src/ussd_tb_check.js:1674 src/ussd_tb_check.js:1694
+#: src/ussd_tb_check.js:1716 src/ussd_tb_check.js:1736
+#: src/ussd_tb_check.js:1757 src/ussd_tb_check.js:1771
+#: src/ussd_tb_check.js:1785
 msgid ""
 "Sorry, we don't understand. Please try again.\n"
 "\n"
@@ -620,22 +626,22 @@ msgstr ""
 "\n"
 "Faka inombolo ehambisana nempendulo yakho."
 
-#: src/ussd_tb_check.js:1250
+#: src/ussd_tb_check.js:1308
 msgid "More"
 msgstr "Okwengeziwe"
 
-#: src/ussd_tb_check.js:1263
+#: src/ussd_tb_check.js:1321
 msgid "Did you find TB HealthCheck useful?"
 msgstr "Ingabe uthole ukuthi i-TB HealthCheck iwusizo?"
 
-#: src/ussd_tb_check.js:1274 src/ussd_tb_check.js:1295
-#: src/ussd_tb_check.js:1316 src/ussd_tb_check.js:1338
-#: src/ussd_tb_check.js:1604 src/ussd_tb_check.js:1624
-#: src/ussd_tb_check.js:1644 src/ussd_tb_check.js:1666
+#: src/ussd_tb_check.js:1332 src/ussd_tb_check.js:1353
+#: src/ussd_tb_check.js:1374 src/ussd_tb_check.js:1396
+#: src/ussd_tb_check.js:1662 src/ussd_tb_check.js:1682
+#: src/ussd_tb_check.js:1702 src/ussd_tb_check.js:1724
 msgid "Don't know"
 msgstr "Angazi "
 
-#: src/ussd_tb_check.js:1283
+#: src/ussd_tb_check.js:1341
 msgid ""
 "I did not go to the clinic for a TB test because it takes too much time. Do "
 "you agree?"
@@ -644,17 +650,17 @@ msgstr ""
 "eside. \n"
 "Ingabe uyavuma?"
 
-#: src/ussd_tb_check.js:1294 src/ussd_tb_check.js:1315
-#: src/ussd_tb_check.js:1337 src/ussd_tb_check.js:1665
+#: src/ussd_tb_check.js:1352 src/ussd_tb_check.js:1373
+#: src/ussd_tb_check.js:1395 src/ussd_tb_check.js:1723
 msgid "Agree"
 msgstr "Ngiyavuma"
 
-#: src/ussd_tb_check.js:1296 src/ussd_tb_check.js:1317
-#: src/ussd_tb_check.js:1339 src/ussd_tb_check.js:1667
+#: src/ussd_tb_check.js:1354 src/ussd_tb_check.js:1375
+#: src/ussd_tb_check.js:1397 src/ussd_tb_check.js:1725
 msgid "Disagree"
 msgstr "Angivumi"
 
-#: src/ussd_tb_check.js:1304
+#: src/ussd_tb_check.js:1362
 msgid ""
 "I did not go to the clinic for a TB test because there are no clinics close "
 "to me."
@@ -662,7 +668,7 @@ msgstr ""
 "Ha keya ya tleliniking bakeng sa tlhahlobo ya LEFUBA hobane ha ho na "
 "ditleliniki tse haufi le nna."
 
-#: src/ussd_tb_check.js:1325
+#: src/ussd_tb_check.js:1383
 msgid ""
 "I did not go to the clinic for a TB test because I do not want to think "
 "about having TB. Do you agree?"
@@ -670,7 +676,7 @@ msgstr ""
 "Angizange ngiye emtholampilo ukuyohlola i-TB ngoba angifuni ukuyicabanga "
 "indaba yokuba ne-TB.Ingabe uyavuma? "
 
-#: src/ussd_tb_check.js:1347
+#: src/ussd_tb_check.js:1405
 msgid ""
 "Are there any other reasons why you did not go to the clinic for a TB test?"
 "Reply in your own words."
@@ -678,67 +684,67 @@ msgstr ""
 "Zikhona ezinye izizathu ezichaza ukuthi kungani ungayanga emtholampilo "
 "ukuyohlola i-TB? Phendula ngamazwi akho."
 
-#: src/ussd_tb_check.js:1403
+#: src/ussd_tb_check.js:1461
 msgid ""
 "Thank you for taking part in the survey. Your R15 in airtime is on its way!"
 msgstr ""
 "Siyabonga ngokubamba iqhaza kuhlolovo. U-R15 wakho we-airtime usendleleni!"
 
-#: src/ussd_tb_check.js:1446 src/ussd_tb_check.js:1452
-#: src/ussd_tb_check.js:1510
+#: src/ussd_tb_check.js:1504 src/ussd_tb_check.js:1510
+#: src/ussd_tb_check.js:1569
 msgid "Back"
 msgstr "Buyela emuva"
 
-#: src/ussd_tb_check.js:1447 src/ussd_tb_check.js:1453
+#: src/ussd_tb_check.js:1505 src/ussd_tb_check.js:1511
 msgid "Exit"
 msgstr "Phuma"
 
-#: src/ussd_tb_check.js:1457
+#: src/ussd_tb_check.js:1515
 msgid "The FAQ has been sent to you on SMS. What would you like to do?"
 msgstr "I-FAQ ithunyelwe kuwe nge-SMS. Ungathanda ukwenzani?"
 
-#: src/ussd_tb_check.js:1461 src/ussd_tb_check.js:1484
-#: src/ussd_tb_check.js:1503
+#: src/ussd_tb_check.js:1519 src/ussd_tb_check.js:1542
+#: src/ussd_tb_check.js:1561
 msgid "Please reply with the number that matches your answer."
 msgstr "Khetha ulimi lwakho oluthandayo."
 
-#: src/ussd_tb_check.js:1481 src/ussd_tb_check.js:1500
+#: src/ussd_tb_check.js:1539 src/ussd_tb_check.js:1558
 msgid "What would you like to know?"
 msgstr "Yini ongathanda ukuyazi?"
 
-#: src/ussd_tb_check.js:1489
+#: src/ussd_tb_check.js:1547
 msgid "More about the research?"
 msgstr "Okunye okuningi ngocwaningo?"
 
-#: src/ussd_tb_check.js:1490
+#: src/ussd_tb_check.js:1548
 msgid "What information will you ask me for?"
 msgstr "Imiphi imininingwane ozongibuza ngako?"
 
-#: src/ussd_tb_check.js:1491
+#: src/ussd_tb_check.js:1549
 msgid "Why did I get the SMS?"
 msgstr "Kungani ngithole le SMS?"
 
-#: src/ussd_tb_check.js:1492
+#: src/ussd_tb_check.js:1550
 msgid "What I'll need to do?"
 msgstr "Yini ofuna ukuyazi?"
 
-#: src/ussd_tb_check.js:1507
+#: src/ussd_tb_check.js:1565
 msgid "Can I stop halfway through?"
 msgstr "Ngingayeka yini phakathi?"
 
-#: src/ussd_tb_check.js:1508
+#: src/ussd_tb_check.js:1566
 msgid "Are there costs or risks?"
 msgstr "Ingabe kukhona izindleko/ubungozi?"
 
-#: src/ussd_tb_check.js:1509
-msgid "Kwenzekani ngolwazi?"
+#: src/ussd_tb_check.js:1567
+msgid "What happens to the info?"
 msgstr "Kuzokwenzekani ngemininingwane?"
 
-#: src/ussd_tb_check.js:1526
+#: src/ussd_tb_check.js:1568
 msgid "What to do if I am unhappy?"
 msgstr "Kuthiwani uma ngingajabuli?"
 
-#: src/ussd_tb_check.js:1569
+#: src/ussd_tb_check.js:1627
 msgid ""
 "Many people don't realise that TB is cureable and test too late. Your "
 "answers will help us understand whether TB HealthCheck really helps people."
@@ -747,19 +753,19 @@ msgstr ""
 "isikhathi eside. Impendulo yakho izosisiza siqonde ukuba i-TB HealthCheck "
 "ibasiza ngempela yini abantu."
 
-#: src/ussd_tb_check.js:1593
+#: src/ussd_tb_check.js:1651
 msgid "Did TB HealthCheck encourage you to get tested?"
 msgstr "Ubuzohlola na ngaphandle kwe-TB HealthCheck?"
 
-#: src/ussd_tb_check.js:1613
+#: src/ussd_tb_check.js:1671
 msgid "Would you have tested without TB HealthCheck?"
 msgstr "Ubuzohlola na ngaphandle kwe-TB HealthCheck?"
 
-#: src/ussd_tb_check.js:1633
+#: src/ussd_tb_check.js:1691
 msgid "Would you have further delayed testing without TB HealthCheck?"
 msgstr "Ubuzokuhlehlisa ukuhlola ngaphandle kwe-TB HealthCheck?"
 
-#: src/ussd_tb_check.js:1653
+#: src/ussd_tb_check.js:1711
 msgid ""
 "The waiting times at the clinic were too long.\n"
 "\n"
@@ -769,23 +775,23 @@ msgstr ""
 "\n"
 "Ingabe uyavuma?"
 
-#: src/ussd_tb_check.js:1675
+#: src/ussd_tb_check.js:1733
 msgid "How was your experience at the clinic?"
 msgstr "Besinjani isikhathi sakho emtholampilo? "
 
-#: src/ussd_tb_check.js:1685
+#: src/ussd_tb_check.js:1743
 msgid "Bad"
 msgstr "Kubi"
 
-#: src/ussd_tb_check.js:1686
+#: src/ussd_tb_check.js:1744
 msgid "Ok"
 msgstr "Kulungile"
 
-#: src/ussd_tb_check.js:1687
+#: src/ussd_tb_check.js:1745
 msgid "Good"
 msgstr "Kuhle"
 
-#: src/ussd_tb_check.js:1695
+#: src/ussd_tb_check.js:1753
 msgid ""
 "Was it difficult to get access to a TB test? Please reply with details of "
 "any problems you experienced."
@@ -793,11 +799,11 @@ msgstr ""
 "Kwakunzima ukufinyelela ukuhlolwa kwe-TB? Sicela uphendule ngemininingwane "
 "yanoma yiziphi izinkinga ohlangabezane nazo."
 
-#: src/ussd_tb_check.js:1710
+#: src/ussd_tb_check.js:1768
 msgid "Why did you go to the clinic for a TB test?"
 msgstr "Kungani uye emtholampilo ukuyohlola i-TB? "
 
-#: src/ussd_tb_check.js:1724
+#: src/ussd_tb_check.js:1782
 msgid "Can we phone you to get more information?"
 msgstr "Singakwazi ukuk'fonela ukuze sithole kabanzi ulwazi? "
 
