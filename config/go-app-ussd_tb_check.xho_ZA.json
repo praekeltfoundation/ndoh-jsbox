@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-11-15 11:04:+0000",
-        "po-revision-date": "2022-11-15 13:18+0200",
+        "pot-creation-date": "2022-11-22 11:29:+0000",
+        "po-revision-date": "2022-11-22 13:36+0200",
         "last-translator": "",
         "language-team": "",
         "language": "xho_ZA",
@@ -298,6 +298,10 @@
     "Now, please agree that the info you shared is correct and that you give the NDoH permission to contact you if needed?": [
         null,
         "Ngoku, nceda uvume ukuba ulwazi owabelane ngalo lulo kwaye unika i-NDoH imvume yokuxhulumana nawe xa kufuneka njalo?"
+    ],
+    "Finally, please agree that the info you shared is correct.": [
+        null,
+        "Okokugqibela, nceda uvume ukuba ulwazi owabelane ngalo luchanekile ngokolwazi lwakho lonke."
     ],
     "Thanks for your answers. Your result will be sent soon on SMS. Would you like to receive follow-up messages?": [
         null,

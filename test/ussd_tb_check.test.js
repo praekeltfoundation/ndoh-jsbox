@@ -1459,6 +1459,14 @@ describe("ussd_tb_check app", function () {
         .check.user.state("state_tracing")
         .run();
     });
+    it("should go to state_study_tracing", function () {
+      return tester.setup.user
+        .state("state_exposure")
+        .setup.user.answer("activation", "tb_study_a")
+        .input("1")
+        .check.user.state("state_study_tracing")
+        .run();
+    });
   });
   describe("state_tracing", function () {
     it("should ask if the DoH can trace them", function () {
