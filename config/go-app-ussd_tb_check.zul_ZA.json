@@ -504,17 +504,21 @@
         null,
         "Yini engizodinga ukuyenza?"
     ],
-    "Can I stop halfway through the survey?": [
+    "Can I stop halfway through?": [
         null,
-        "Kutheni uma ngifuna ukuyeka ngisaphakathi kwenhlolovo?"
+        "Ngingakwazi yini ukuyeka phakathi? "
     ],
-    "Are there costs or risks to me?": [
+    "Are there costs or risks?": [
         null,
-        "Ingabe zikhona izindleko noma ubungozi kimi?"
+        "Izindleko Nezingozi?"
     ],
-    "What happens to the information?": [
+    "What happens to the info?": [
         null,
         "Kuzokwenzekani ngemininingwane?"
+    ],
+    "What to do if I am unhappy?": [
+        null,
+        "Aweneme?"
     ],
     "Many people don't realise that TB is cureable and test too late. Your answers will help us understand whether TB HealthCheck really helps people.": [
         null,

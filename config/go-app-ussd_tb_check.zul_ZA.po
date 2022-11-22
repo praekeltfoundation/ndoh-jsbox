@@ -723,16 +723,20 @@ msgid "What I'll need to do?"
 msgstr "Yini engizodinga ukuyenza?"
 
 #: src/ussd_tb_check.js:1507
-msgid "Can I stop halfway through the survey?"
-msgstr "Kutheni uma ngifuna ukuyeka ngisaphakathi kwenhlolovo?"
+msgid "Can I stop halfway through?"
+msgstr "Ngingakwazi yini ukuyeka phakathi? "
 
 #: src/ussd_tb_check.js:1508
-msgid "Are there costs or risks to me?"
-msgstr "Ingabe zikhona izindleko noma ubungozi kimi?"
+msgid "Are there costs or risks?"
+msgstr "Izindleko Nezingozi?"
 
 #: src/ussd_tb_check.js:1509
-msgid "What happens to the information?"
+msgid "What happens to the info?"
 msgstr "Kuzokwenzekani ngemininingwane?"
+
+#: src/ussd_tb_check.js:1526
+msgid "What to do if I am unhappy?"
+msgstr "Aweneme?"
 
 #: src/ussd_tb_check.js:1569
 msgid ""

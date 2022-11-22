@@ -504,17 +504,21 @@
         null,
         "Wat moet ek doen?"
     ],
-    "Can I stop halfway through the survey?": [
+    "Can I stop halfway through?": [
         null,
-        "Wat as ek halfpad deur die opname wil ophou?"
+        "Kan ek halfpad stop?"
     ],
-    "Are there costs or risks to me?": [
+    "Are there costs or risks?": [
         null,
         "Is daar enige onkoste of risiko vir my?"
     ],
-    "What happens to the information?": [
+    "What happens to the info?": [
         null,
         "Wat gebeur met die inligting?"
+    ],
+    "What to do if I am unhappy?": [
+        null,
+        "Ongelukkig?"
     ],
     "Many people don't realise that TB is cureable and test too late. Your answers will help us understand whether TB HealthCheck really helps people.": [
         null,
