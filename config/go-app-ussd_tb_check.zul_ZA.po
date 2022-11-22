@@ -714,19 +714,19 @@ msgstr "Yini ongathanda ukuyazi?"
 
 #: src/ussd_tb_check.js:1547
 msgid "More about the research?"
-msgstr "Ungangitshela kabanzi ngocwaningo?"
+msgstr "Okuningi ngocwaningo?"
 
 #: src/ussd_tb_check.js:1548
 msgid "What information will you ask me for?"
-msgstr "Imiphi imininingwane ozongibuza yona?"
+msgstr "Ke tlhahisoleseding e feng eo o tla nkopa yona?"
 
 #: src/ussd_tb_check.js:1549
 msgid "Why did I get the SMS?"
-msgstr "Kungani ngithole le-SMS?"
+msgstr "Hobaneng ke fumane SMS ee?"
 
 #: src/ussd_tb_check.js:1550
 msgid "What I'll need to do?"
-msgstr "Yini okuzodingeka ngiyenze?"
+msgstr "Ke hloka ho etsa eng?"
 
 #: src/ussd_tb_check.js:1565
 msgid "Can I stop halfway through?"
