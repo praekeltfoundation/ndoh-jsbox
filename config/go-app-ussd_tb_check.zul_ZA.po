@@ -726,23 +726,23 @@ msgstr "Kungani ngithole le SMS?"
 
 #: src/ussd_tb_check.js:1550
 msgid "What I'll need to do?"
-msgstr "Yini engizodinga ukuyenza?"
+msgstr "Yini ofuna ukuyazi?"
 
 #: src/ussd_tb_check.js:1565
 msgid "Can I stop halfway through?"
-msgstr "Ngingakwazi yini ukuyeka phakathi? "
+msgstr "Ngingayeka yini phakathi?"
 
 #: src/ussd_tb_check.js:1566
 msgid "Are there costs or risks?"
-msgstr "Izindleko Nezingozi?"
+msgstr "Ingabe kukhona izindleko/ubungozi?"
 
 #: src/ussd_tb_check.js:1567
 msgid "What happens to the info?"
-msgstr "Kuzokwenzekani ngemininingwane?"
+msgstr "Kwenzekani ngolwazi?"
 
 #: src/ussd_tb_check.js:1568
 msgid "What to do if I am unhappy?"
-msgstr "Aweneme?"
+msgstr "Kuthiwani uma ngingajabuli?"
 
 #: src/ussd_tb_check.js:1627
 msgid ""

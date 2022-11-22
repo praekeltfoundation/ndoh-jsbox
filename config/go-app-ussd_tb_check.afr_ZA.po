@@ -723,7 +723,7 @@ msgstr "Hoekom het ek hierdie SMS ontvang?"
 
 #: src/ussd_tb_check.js:1550
 msgid "What I'll need to do?"
-msgstr "Wat moet ek doen?"
+msgstr "Wat wil jy weet?"
 
 #: src/ussd_tb_check.js:1565
 msgid "Can I stop halfway through?"
@@ -731,11 +731,11 @@ msgstr "Kan ek halfpad stop?"
 
 #: src/ussd_tb_check.js:1566
 msgid "Are there costs or risks?"
-msgstr "Is daar enige onkoste of risiko vir my?"
+msgstr "Is daar kostes of risiko's?"
 
 #: src/ussd_tb_check.js:1567
 msgid "What happens to the info?"
-msgstr "Wat gebeur met die inligting?"
+msgstr "Wat doen ek as ek ongelukkig is?"
 
 #: src/ussd_tb_check.js:1568
 msgid "What to do if I am unhappy?"
