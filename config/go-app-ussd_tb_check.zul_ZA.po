@@ -727,8 +727,8 @@ msgid "Can I stop halfway through?"
 msgstr "Ngingayeka yini phakathi?"
 
 #: src/ussd_tb_check.js:1508
-msgid "Ingabe kukhona izindleko/ubungozi?"
-msgstr "Izindleko Nezingozi?"
+msgid "Are there costs or risks?"
+msgstr "Ingabe kukhona izindleko/ubungozi?"
 
 #: src/ussd_tb_check.js:1509
 msgid "Kwenzekani ngolwazi?"
