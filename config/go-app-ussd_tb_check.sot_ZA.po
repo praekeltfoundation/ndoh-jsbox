@@ -713,23 +713,23 @@ msgstr "Hobaneng ke fumane SMS ee?"
 
 #: src/ussd_tb_check.js:1492
 msgid "What I'll need to do?"
-msgstr "Ke tla hloka ho etsa eng?"
+msgstr "U batla ho tseba eng?"
 
 #: src/ussd_tb_check.js:1507
 msgid "Can I stop halfway through?"
-msgstr "Ho thwe eng haeba ke batla ho emisa bohareng?"
+msgstr "Nka emisa halofo ea pele?"
 
 #: src/ussd_tb_check.js:1508
 msgid "Are there costs or risks?"
-msgstr "Litsenyehelo kapa likotsi?"
+msgstr "Na ho na le litšenyehelo/likotsi?"
 
 #: src/ussd_tb_check.js:1509
 msgid "What happens to the info?"
-msgstr "Ho tla etsahalang ka tlhahisoleseding?"
+msgstr "Ho etsahalang ka leseli?"
 
 #: src/ussd_tb_check.js:1526
 msgid "What to do if I am unhappy?"
-msgstr "Ha wa thaba?"
+msgstr "Ke reng he ke sa thaba?"
 
 #: src/ussd_tb_check.js:1569
 msgid ""

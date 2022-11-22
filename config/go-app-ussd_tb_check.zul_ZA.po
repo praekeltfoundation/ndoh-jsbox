@@ -720,23 +720,23 @@ msgstr "Kungani ngithole le SMS?"
 
 #: src/ussd_tb_check.js:1492
 msgid "What I'll need to do?"
-msgstr "Yini engizodinga ukuyenza?"
+msgstr "Yini ofuna ukuyazi?"
 
 #: src/ussd_tb_check.js:1507
 msgid "Can I stop halfway through?"
-msgstr "Ngingakwazi yini ukuyeka phakathi? "
+msgstr "Ngingayeka yini phakathi?"
 
 #: src/ussd_tb_check.js:1508
-msgid "Are there costs or risks?"
+msgid "Ingabe kukhona izindleko/ubungozi?"
 msgstr "Izindleko Nezingozi?"
 
 #: src/ussd_tb_check.js:1509
-msgid "What happens to the info?"
+msgid "Kwenzekani ngolwazi?"
 msgstr "Kuzokwenzekani ngemininingwane?"
 
 #: src/ussd_tb_check.js:1526
 msgid "What to do if I am unhappy?"
-msgstr "Aweneme?"
+msgstr "Kuthiwani uma ngingajabuli?"
 
 #: src/ussd_tb_check.js:1569
 msgid ""
