@@ -887,7 +887,6 @@ go.app = function () {
 
     self.add("state_exposure", function (name) {
       var next_state = "state_tracing";
-//      var activation = self.get_activation();
       var activation = self.im.user.answers.activation;
 
       if (activation === "tb_study_a"){
