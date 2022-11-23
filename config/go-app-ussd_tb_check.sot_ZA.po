@@ -100,7 +100,7 @@ msgstr ""
 #: src/ussd_tb_check.js:1145 src/ussd_tb_check.js:1155
 #: src/ussd_tb_check.js:1472 src/ussd_tb_check.js:1551
 msgid "Next"
-msgstr "Ho latelang"
+msgstr "Khutlela"
 
 #: src/ussd_tb_check.js:236
 msgid ""
@@ -703,7 +703,7 @@ msgstr "Kgetha puo eo o ikgethela."
 
 #: src/ussd_tb_check.js:1539 src/ussd_tb_check.js:1558
 msgid "What would you like to know?"
-msgstr "O ka rata ho tseba eng?"
+msgstr "U batla ho tseba eng?"
 
 #: src/ussd_tb_check.js:1547
 msgid "More about the research?"

@@ -690,7 +690,7 @@ msgstr "Dankie dat jy deelgeneem het aan die opname. Jou R15 lugtyd is op pad!"
 #: src/ussd_tb_check.js:1504 src/ussd_tb_check.js:1510
 #: src/ussd_tb_check.js:1569
 msgid "Back"
-msgstr "Keer terug"
+msgstr "Terug"
 
 #: src/ussd_tb_check.js:1505 src/ussd_tb_check.js:1511
 msgid "Exit"
@@ -707,7 +707,7 @@ msgstr "Please reply with numbers. Kies jou taal van voorkeur."
 
 #: src/ussd_tb_check.js:1539 src/ussd_tb_check.js:1558
 msgid "What would you like to know?"
-msgstr "Wat wil jy graag weet?"
+msgstr "Wat wil jy weet?"
 
 #: src/ussd_tb_check.js:1547
 msgid "More about the research?"
@@ -735,11 +735,11 @@ msgstr "Is daar kostes of risiko's?"
 
 #: src/ussd_tb_check.js:1567
 msgid "What happens to the info?"
-msgstr "Wat doen ek as ek ongelukkig is?"
+msgstr "Wat gebeur met die inligting?"
 
 #: src/ussd_tb_check.js:1568
 msgid "What to do if I am unhappy?"
-msgstr "Ongelukkig?"
+msgstr "Wat doen ek as ek ongelukkig is?"
 
 #: src/ussd_tb_check.js:1627
 msgid ""

@@ -474,7 +474,7 @@
     ],
     "Back": [
         null,
-        "Keer terug"
+        "Terug"
     ],
     "Exit": [
         null,
@@ -490,7 +490,7 @@
     ],
     "What would you like to know?": [
         null,
-        "Wat wil jy graag weet?"
+        "Wat wil jy weet?"
     ],
     "More about the research?": [
         null,
@@ -518,11 +518,11 @@
     ],
     "What happens to the info?": [
         null,
-        "Wat doen ek as ek ongelukkig is?"
+        "Wat gebeur met die inligting?"
     ],
     "What to do if I am unhappy?": [
         null,
-        "Ongelukkig?"
+        "Wat doen ek as ek ongelukkig is?"
     ],
     "Many people don't realise that TB is cureable and test too late. Your answers will help us understand whether TB HealthCheck really helps people.": [
         null,

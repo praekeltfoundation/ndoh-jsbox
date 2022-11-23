@@ -102,7 +102,7 @@ msgstr ""
 #: src/ussd_tb_check.js:1145 src/ussd_tb_check.js:1155
 #: src/ussd_tb_check.js:1472 src/ussd_tb_check.js:1551
 msgid "Next"
-msgstr "Okulandelayo"
+msgstr "Olandelayo"
 
 #: src/ussd_tb_check.js:236
 msgid ""
@@ -692,7 +692,7 @@ msgstr ""
 #: src/ussd_tb_check.js:1504 src/ussd_tb_check.js:1510
 #: src/ussd_tb_check.js:1569
 msgid "Back"
-msgstr "Buyela emuva"
+msgstr "Emuva"
 
 #: src/ussd_tb_check.js:1505 src/ussd_tb_check.js:1511
 msgid "Exit"
@@ -709,7 +709,7 @@ msgstr "Khetha ulimi lwakho oluthandayo."
 
 #: src/ussd_tb_check.js:1539 src/ussd_tb_check.js:1558
 msgid "What would you like to know?"
-msgstr "Yini ongathanda ukuyazi?"
+msgstr "Yini ofuna ukuyazi?"
 
 #: src/ussd_tb_check.js:1547
 msgid "More about the research?"
