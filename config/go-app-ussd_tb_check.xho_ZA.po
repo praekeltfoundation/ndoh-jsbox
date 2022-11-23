@@ -513,7 +513,7 @@ msgstr "LWESIHLANU"
 
 #: src/ussd_tb_check.js:1109
 msgid "Well done for planning to get your test!"
-msgstr "Wenze kakuhle ngokuzibophelela ekunakekeleni impilo yakho! "
+msgstr "Wenze kakuhle ngokucwangcisa ukufumana uvavanyo lwe-TB!"
 
 #: src/ussd_tb_check.js:1116
 msgid ""

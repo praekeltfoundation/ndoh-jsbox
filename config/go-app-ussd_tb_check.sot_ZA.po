@@ -514,7 +514,7 @@ msgstr "LABOHLANO"
 
 #: src/ussd_tb_check.js:1109
 msgid "Well done for planning to get your test!"
-msgstr "Rea o thoholetsa ka ho rera ho fumana teko ya hao!"
+msgstr "U entse hantle ka ho rera ho nka tlhahlobo ea lefuba!"
 
 #: src/ussd_tb_check.js:1116
 msgid ""
