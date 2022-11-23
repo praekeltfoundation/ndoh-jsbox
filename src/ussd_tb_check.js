@@ -1478,10 +1478,14 @@ go.app = function () {
       var next_state = "state_sms_complete";
       var flow_uuid = self.im.config.rapidpro.faq_sms_flow_uuid;
       var faq = self.im.user.answers.faq;
+      var language = self.im.user.answers.state_language;
       var msisdn = utils.normalize_msisdn(
         _.get(
           self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
-      var data = {"faq": faq};
+      var data = {
+          faq: faq,
+          language: language
+        };
       return self.rapidpro
         .start_flow(flow_uuid, null, "tel:" + msisdn, data)
         .then(function() {
