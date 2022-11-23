@@ -719,7 +719,7 @@ msgstr "Watter inligting sal julle my vra?"
 
 #: src/ussd_tb_check.js:1549
 msgid "Why did I get the SMS?"
-msgstr "Waarom het ek hierdie SMS gekry?"
+msgstr "Waarom het ek die SMS gekry?"
 
 #: src/ussd_tb_check.js:1550
 msgid "What I'll need to do?"

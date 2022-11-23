@@ -707,7 +707,7 @@ msgstr "O ka rata ho tseba eng?"
 
 #: src/ussd_tb_check.js:1547
 msgid "More about the research?"
-msgstr "Na o ka mpolella haholwanyane ka dipatlisiso?"
+msgstr "Haholoanyane ka lipatlisiso?"
 
 #: src/ussd_tb_check.js:1548
 msgid "What information will you ask me for?"

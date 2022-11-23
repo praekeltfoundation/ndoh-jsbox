@@ -704,7 +704,7 @@ msgstr "Yintoni ongathanda ukuyazi?"
 
 #: src/ussd_tb_check.js:1547
 msgid "More about the research?"
-msgstr "Ingaba ungandixelela ngakumbi malunga nophando?"
+msgstr "Ngaba ungandixelela ngakumbi malunga nophando?"
 
 #: src/ussd_tb_check.js:1548
 msgid "What information will you ask me for?"
@@ -712,11 +712,11 @@ msgstr "Luluphi ulwazi oza kundibuza ngalo?"
 
 #: src/ussd_tb_check.js:1549
 msgid "Why did I get the SMS?"
-msgstr "Kutheni ndifumana le-SMS?"
+msgstr "Kutheni ndifumene le SMS?"
 
 #: src/ussd_tb_check.js:1550
 msgid "What I'll need to do?"
-msgstr "Kuza kufuneka ndenze ntoni?"
+msgstr "Ndiza kwenza ntoni?"
 
 #: src/ussd_tb_check.js:1565
 msgid "Can I stop halfway through?"
