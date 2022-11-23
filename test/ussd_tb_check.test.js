@@ -2298,10 +2298,16 @@ describe("ussd_tb_check app", function () {
     it("should show FAQ sms complete screen", function () {
       return tester.setup.user
         .state("state_faq")
+        .setup.user.answers({
+          state_language: "zul"
+        })
         .setup(function(api) {
           api.http.fixtures.add(
             fixtures_rapidpro.start_flow(
-                "faq-sms-flow-uuid", null, "tel:+27123456789", {"faq": "state_faq_research"}
+                "faq-sms-flow-uuid", null, "tel:+27123456789", {
+                  "faq": "state_faq_research",
+                  "language": "zul"
+              }
               )
             );
         })
