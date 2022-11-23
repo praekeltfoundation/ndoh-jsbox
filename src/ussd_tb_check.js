@@ -257,7 +257,7 @@ go.app = function () {
         data.language = self.im.user.answers.state_language;
       }
       return self.rapidpro
-        .start_flow(flow_uuid, null, "tel:" + msisdn, data)
+        .start_flow(flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), data)
         .then(function() {
             return self.states.create("state_privacy_policy_accepted");
         }).catch(function(e) {
@@ -1483,7 +1483,7 @@ go.app = function () {
           self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
       var data = {"faq": faq};
       return self.rapidpro
-        .start_flow(flow_uuid, null, "tel:" + msisdn, data)
+        .start_flow(flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), data)
         .then(function() {
             return self.states.create(next_state);
         }).catch(function(e) {

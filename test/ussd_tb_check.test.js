@@ -333,7 +333,7 @@ describe("ussd_tb_check app", function () {
         .setup(function(api) {
           api.http.fixtures.add(
             fixtures_rapidpro.start_flow(
-                "privacy-policy-flow-uuid", null, "tel:+27123456789", {"hc_type": "tb"}
+                "privacy-policy-flow-uuid", null, "whatsapp:27123456789", {"hc_type": "tb"}
               )
             );
         })
@@ -460,7 +460,7 @@ describe("ussd_tb_check app", function () {
         .setup(function(api) {
           api.http.fixtures.add(
             fixtures_rapidpro.start_flow(
-                "privacy-policy-flow-uuid", null, "tel:+27123456789", {"hc_type": "tb"}
+                "privacy-policy-flow-uuid", null, "whatsapp:27123456789", {"hc_type": "tb"}
               )
             );
         })
@@ -474,7 +474,7 @@ describe("ussd_tb_check app", function () {
         .setup(function(api) {
           api.http.fixtures.add(
             fixtures_rapidpro.start_flow(
-                "privacy-policy-flow-uuid", null, "tel:+27123456789", {"hc_type": "tb"}
+                "privacy-policy-flow-uuid", null, "whatsapp:27123456789", {"hc_type": "tb"}
               )
             );
         })
@@ -493,7 +493,7 @@ describe("ussd_tb_check app", function () {
             fixtures_rapidpro.start_flow(
                 "privacy-policy-flow-uuid",
                 null,
-                "tel:+27123456789",
+                "whatsapp:27123456789",
                 {
                   "hc_type": "tb",
                   "language": "afr"
@@ -2301,7 +2301,7 @@ describe("ussd_tb_check app", function () {
         .setup(function(api) {
           api.http.fixtures.add(
             fixtures_rapidpro.start_flow(
-                "faq-sms-flow-uuid", null, "tel:+27123456789", {"faq": "state_faq_research"}
+                "faq-sms-flow-uuid", null, "whatsapp:27123456789", {"faq": "state_faq_research"}
               )
             );
         })
