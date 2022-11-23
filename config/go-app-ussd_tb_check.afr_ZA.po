@@ -518,7 +518,7 @@ msgstr "VRYDAG"
 
 #: src/ussd_tb_check.js:1109
 msgid "Well done for planning to get your test!"
-msgstr "Geluk omdat jy jou gesondheid eerste stel! "
+msgstr "Welgedaan omdat jy beplan om te gaan vir 'n TB toets!"
 
 #: src/ussd_tb_check.js:1116
 msgid ""
