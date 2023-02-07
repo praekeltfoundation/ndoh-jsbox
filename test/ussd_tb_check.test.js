@@ -35,6 +35,16 @@ describe("ussd_tb_check app", function () {
           "7": "tb_study_a",
           "5": "tb_study_a_survey_group1",
           "4": "tb_study_a_survey_group2",
+          "11": "tb_school_1",
+          "12": "tb_school_2",
+          "13": "tb_school_3",
+          "14": "tb_school_4",
+          "15": "tb_school_5",
+          "16": "tb_school_6",
+          "17": "tb_school_7",
+          "18": "tb_school_8",
+          "19": "tb_school_9",
+          "20": "tb_school_10",
         }
       }
     });
@@ -132,6 +142,55 @@ describe("ussd_tb_check app", function () {
       })
       .input({ session_event: "new", to_addr: "*123*123*6#" })
       .check.user.answer("activation", "skip_location_2022")
+      .check.user.state("state_welcome")
+      .run();
+    });
+    it("should set activation for new user using school activation", function() {
+      return tester
+      .setup(function (api) {
+        api.http.fixtures.add({
+          request: {
+              url: "http://healthcheck/v2/healthcheckuserprofile/+27123456789/",
+              method: "GET"
+          },
+          response: {
+              code: 404,
+              data: {
+                  detail: "Not found."
+              }
+          }
+      });
+      })
+      .input({ session_event: "new", to_addr: "*123*123*11#" })
+      .check.user.answer("activation", "tb_school_1")
+      .check.user.state("state_welcome")
+      .run();
+    });
+    it("should set school activation for returning user", function() {
+      return tester
+      .setup(function (api) {
+        api.http.fixtures.add({
+          request: {
+              url: "http://healthcheck/v2/healthcheckuserprofile/+27123456789/",
+              method: "GET"
+          },
+          response: {
+              code: 200,
+              data: {
+                activation: null,
+                state_gender: "MALE",
+                state_province: "ZA-WC",
+                state_city: "KZN, South Arica",
+                city_location: "+00-025/",
+                state_age: "18-39",
+                state_language: "eng",
+                data: {tb_privacy_policy_accepted: "yes"},
+              }
+          }
+      });
+      })
+      .input({ session_event: "new", to_addr: "*123*123*15#" })
+      .check.user.answer("activation", "tb_school_5")
       .check.user.state("state_welcome")
       .run();
     });
