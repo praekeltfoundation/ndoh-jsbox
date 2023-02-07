@@ -70,7 +70,7 @@
     ],
     "Next": [
         null,
-        "Okulandelayo"
+        "Olandelayo"
     ],
     "You use this info at your own risk. This tool cannot replace medical advice. Agree not to ignore or delay getting medical advice on treatment or care": [
         null,
@@ -378,7 +378,7 @@
     ],
     "Well done for planning to get your test!": [
         null,
-        "Wenze kahle ngokubophezela impilo yakho! Wenze kahle ngokuhlosa ukuthola ukuhlolwa kwakho! 👏"
+        "Wenze kahle ngokukhetha usuku lokuyohlolelwa isifo sofuba (i-TB)"
     ],
     "Your replies to the questions show that you need a TB test this week!\n\n* Go to your local clinic for a free TB test.": [
         null,
@@ -474,7 +474,7 @@
     ],
     "Back": [
         null,
-        "Buyela emuva"
+        "Emuva"
     ],
     "Exit": [
         null,
@@ -490,39 +490,39 @@
     ],
     "What would you like to know?": [
         null,
-        "Yini ongathanda ukuyazi?"
+        "Yini ofuna ukuyazi?"
     ],
     "More about the research?": [
         null,
-        "Okunye okuningi ngocwaningo?"
+        "Ungangitshela kabanzi ngocwaningo?"
     ],
     "What information will you ask me for?": [
         null,
-        "Imiphi imininingwane ozongibuza ngako?"
+        "Imiphi imininingwane ozongibuza yona?"
     ],
     "Why did I get the SMS?": [
         null,
-        "Kungani ngithole le SMS?"
+        "Kungani ngithole i-SMS?"
     ],
     "What I'll need to do?": [
         null,
-        "Yini engizodinga ukuyenza?"
+        "Yini okuzodingeka ngiyenze?"
     ],
     "Can I stop halfway through?": [
         null,
-        "Ngingakwazi yini ukuyeka phakathi? "
+        "Ngingayeka yini phakathi?"
     ],
     "Are there costs or risks?": [
         null,
-        "Izindleko Nezingozi?"
+        "Ingabe kukhona izindleko/ubungozi?"
     ],
     "What happens to the info?": [
         null,
-        "Kuzokwenzekani ngemininingwane?"
+        "Kwenzekani ngolwazi?"
     ],
     "What to do if I am unhappy?": [
         null,
-        "Aweneme?"
+        "Kuthiwani uma ngingajabuli?"
     ],
     "Many people don't realise that TB is cureable and test too late. Your answers will help us understand whether TB HealthCheck really helps people.": [
         null,

@@ -100,7 +100,7 @@ msgstr ""
 #: src/ussd_tb_check.js:1145 src/ussd_tb_check.js:1155
 #: src/ussd_tb_check.js:1472 src/ussd_tb_check.js:1551
 msgid "Next"
-msgstr "Ho latelang"
+msgstr "E 'ngoe"
 
 #: src/ussd_tb_check.js:236
 msgid ""
@@ -514,7 +514,7 @@ msgstr "LABOHLANO"
 
 #: src/ussd_tb_check.js:1109
 msgid "Well done for planning to get your test!"
-msgstr "Rea o thoholetsa ka ho rera ho fumana teko ya hao!"
+msgstr "U entse hantle ka ho rera ho nka tlhahlobo ea lefuba!"
 
 #: src/ussd_tb_check.js:1116
 msgid ""
@@ -686,7 +686,7 @@ msgstr ""
 #: src/ussd_tb_check.js:1504 src/ussd_tb_check.js:1510
 #: src/ussd_tb_check.js:1569
 msgid "Back"
-msgstr "Kgutlela "
+msgstr "Khutlela"
 
 #: src/ussd_tb_check.js:1505 src/ussd_tb_check.js:1511
 msgid "Exit"
@@ -703,15 +703,15 @@ msgstr "Kgetha puo eo o ikgethela."
 
 #: src/ussd_tb_check.js:1539 src/ussd_tb_check.js:1558
 msgid "What would you like to know?"
-msgstr "O ka rata ho tseba eng?"
+msgstr "U batla ho tseba eng?"
 
 #: src/ussd_tb_check.js:1547
 msgid "More about the research?"
-msgstr "Ho eketsehileng ka dipatlisiso?"
+msgstr "Haholoanyane ka lipatlisiso?"
 
 #: src/ussd_tb_check.js:1548
 msgid "What information will you ask me for?"
-msgstr "O tla mpotsa dintlha dife?"
+msgstr "Ke tlhahisoleseding e feng eo o tla nkopa yona?"
 
 #: src/ussd_tb_check.js:1549
 msgid "Why did I get the SMS?"
@@ -719,23 +719,23 @@ msgstr "Hobaneng ke fumane SMS ee?"
 
 #: src/ussd_tb_check.js:1550
 msgid "What I'll need to do?"
-msgstr "Ke tla hloka ho etsa eng?"
+msgstr "Ke hloka ho etsa eng?"
 
 #: src/ussd_tb_check.js:1565
 msgid "Can I stop halfway through?"
-msgstr "Ho thwe eng haeba ke batla ho emisa bohareng?"
+msgstr "Nka emisa halofo ea pele?"
 
 #: src/ussd_tb_check.js:1566
 msgid "Are there costs or risks?"
-msgstr "Litsenyehelo kapa likotsi?"
+msgstr "Na ho na le litšenyehelo/likotsi?"
 
 #: src/ussd_tb_check.js:1567
 msgid "What happens to the info?"
-msgstr "Ho tla etsahalang ka tlhahisoleseding?"
+msgstr "Ho etsahalang ka leseli?"
 
 #: src/ussd_tb_check.js:1568
 msgid "What to do if I am unhappy?"
-msgstr "Ha wa thaba?"
+msgstr "Ke reng he ke sa thaba?"
 
 #: src/ussd_tb_check.js:1627
 msgid ""

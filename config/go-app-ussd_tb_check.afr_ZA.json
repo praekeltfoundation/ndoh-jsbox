@@ -378,7 +378,7 @@
     ],
     "Well done for planning to get your test!": [
         null,
-        "Geluk omdat jy jou gesondheid eerste stel! "
+        "Welgedaan omdat jy beplan om te gaan vir 'n TB toets!"
     ],
     "Your replies to the questions show that you need a TB test this week!\n\n* Go to your local clinic for a free TB test.": [
         null,
@@ -474,7 +474,7 @@
     ],
     "Back": [
         null,
-        "Keer terug"
+        "Terug"
     ],
     "Exit": [
         null,
@@ -490,23 +490,23 @@
     ],
     "What would you like to know?": [
         null,
-        "Wat wil jy graag weet?"
+        "Wat wil jy weet?"
     ],
     "More about the research?": [
         null,
-        "Meer oor die navorsing?"
+        "Kan julle my meer vertel oor die navorsing?"
     ],
     "What information will you ask me for?": [
         null,
-        "Watter inligting sal ek moet verskaf?"
+        "Watter inligting sal julle my vra?"
     ],
     "Why did I get the SMS?": [
         null,
-        "Hoekom het ek hierdie SMS ontvang?"
+        "Waarom het ek die SMS gekry?"
     ],
     "What I'll need to do?": [
         null,
-        "Wat moet ek doen?"
+        "Wat sal ek moet doen?"
     ],
     "Can I stop halfway through?": [
         null,
@@ -514,7 +514,7 @@
     ],
     "Are there costs or risks?": [
         null,
-        "Is daar enige onkoste of risiko vir my?"
+        "Is daar kostes of risiko's?"
     ],
     "What happens to the info?": [
         null,
@@ -522,7 +522,7 @@
     ],
     "What to do if I am unhappy?": [
         null,
-        "Ongelukkig?"
+        "Wat doen ek as ek ongelukkig is?"
     ],
     "Many people don't realise that TB is cureable and test too late. Your answers will help us understand whether TB HealthCheck really helps people.": [
         null,

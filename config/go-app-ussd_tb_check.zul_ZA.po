@@ -102,7 +102,7 @@ msgstr ""
 #: src/ussd_tb_check.js:1145 src/ussd_tb_check.js:1155
 #: src/ussd_tb_check.js:1472 src/ussd_tb_check.js:1551
 msgid "Next"
-msgstr "Okulandelayo"
+msgstr "Olandelayo"
 
 #: src/ussd_tb_check.js:236
 msgid ""
@@ -520,8 +520,7 @@ msgstr "LWESIHLANU"
 #: src/ussd_tb_check.js:1109
 msgid "Well done for planning to get your test!"
 msgstr ""
-"Wenze kahle ngokubophezela impilo yakho! Wenze kahle ngokuhlosa ukuthola "
-"ukuhlolwa kwakho! 👏"
+"Wenze kahle ngokukhetha usuku lokuyohlolelwa isifo sofuba (i-TB)"
 
 #: src/ussd_tb_check.js:1116
 msgid ""
@@ -693,7 +692,7 @@ msgstr ""
 #: src/ussd_tb_check.js:1504 src/ussd_tb_check.js:1510
 #: src/ussd_tb_check.js:1569
 msgid "Back"
-msgstr "Buyela emuva"
+msgstr "Emuva"
 
 #: src/ussd_tb_check.js:1505 src/ussd_tb_check.js:1511
 msgid "Exit"
@@ -710,39 +709,39 @@ msgstr "Khetha ulimi lwakho oluthandayo."
 
 #: src/ussd_tb_check.js:1539 src/ussd_tb_check.js:1558
 msgid "What would you like to know?"
-msgstr "Yini ongathanda ukuyazi?"
+msgstr "Yini ofuna ukuyazi?"
 
 #: src/ussd_tb_check.js:1547
 msgid "More about the research?"
-msgstr "Okunye okuningi ngocwaningo?"
+msgstr "Ungangitshela kabanzi ngocwaningo?"
 
 #: src/ussd_tb_check.js:1548
 msgid "What information will you ask me for?"
-msgstr "Imiphi imininingwane ozongibuza ngako?"
+msgstr "Imiphi imininingwane ozongibuza yona?"
 
 #: src/ussd_tb_check.js:1549
 msgid "Why did I get the SMS?"
-msgstr "Kungani ngithole le SMS?"
+msgstr "Kungani ngithole i-SMS?"
 
 #: src/ussd_tb_check.js:1550
 msgid "What I'll need to do?"
-msgstr "Yini engizodinga ukuyenza?"
+msgstr "Yini okuzodingeka ngiyenze?"
 
 #: src/ussd_tb_check.js:1565
 msgid "Can I stop halfway through?"
-msgstr "Ngingakwazi yini ukuyeka phakathi? "
+msgstr "Ngingayeka yini phakathi?"
 
 #: src/ussd_tb_check.js:1566
 msgid "Are there costs or risks?"
-msgstr "Izindleko Nezingozi?"
+msgstr "Ingabe kukhona izindleko/ubungozi?"
 
 #: src/ussd_tb_check.js:1567
 msgid "What happens to the info?"
-msgstr "Kuzokwenzekani ngemininingwane?"
+msgstr "Kwenzekani ngolwazi?"
 
 #: src/ussd_tb_check.js:1568
 msgid "What to do if I am unhappy?"
-msgstr "Aweneme?"
+msgstr "Kuthiwani uma ngingajabuli?"
 
 #: src/ussd_tb_check.js:1627
 msgid ""

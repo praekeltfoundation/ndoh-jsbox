@@ -69,7 +69,7 @@
     ],
     "Next": [
         null,
-        "Elandelayo"
+        "Okulandelayo"
     ],
     "You use this info at your own risk. This tool cannot replace medical advice. Agree not to ignore or delay getting medical advice on treatment or care": [
         null,
@@ -377,7 +377,7 @@
     ],
     "Well done for planning to get your test!": [
         null,
-        "Wenze kakuhle ngokuzibophelela ekunakekeleni impilo yakho! "
+        "Wenze kakuhle ngokucwangcisa ukufumana uvavanyo lwe-TB!"
     ],
     "Your replies to the questions show that you need a TB test this week!\n\n* Go to your local clinic for a free TB test.": [
         null,
@@ -473,7 +473,7 @@
     ],
     "Back": [
         null,
-        "Buya umva"
+        "Buyela"
     ],
     "Exit": [
         null,
@@ -489,39 +489,39 @@
     ],
     "What would you like to know?": [
         null,
-        "Yintoni ongathanda ukuyazi?"
+        "Ungathanda ukwazi ntoni?"
     ],
     "More about the research?": [
         null,
-        "Okunye malunga nophando?"
+        "Ngaba ungandixelela ngakumbi malunga nophando?"
     ],
     "What information will you ask me for?": [
         null,
-        "Luluphi ulwazi onokuthi undibuze ngalo?"
+        "Luluphi ulwazi oza kundibuza ngalo?"
     ],
     "Why did I get the SMS?": [
         null,
-        "Kutheni ndifumene le-SMS?"
+        "Kutheni ndifumene le SMS?"
     ],
     "What I'll need to do?": [
         null,
-        "Kufuneka ndenze ntoni?"
+        "Ndiza kwenza ntoni?"
     ],
     "Can I stop halfway through?": [
         null,
-        "Ndingamisa embindini"
+        "Ndingayeka phakathi?"
     ],
     "Are there costs or risks?": [
         null,
-        "Ngaba zikho iindleko okanye iingozi kum?"
+        "Ngaba zikho iindleko/umngcipheko?"
     ],
     "What happens to the info?": [
         null,
-        "Kuya kwenzeka ntoni kulwazi?"
+        "Kwenzeka ntoni kulwazi?"
     ],
     "What to do if I am unhappy?": [
         null,
-        "Akonwabanga?"
+        "Kuthekani ukuba andingonwabanga?"
     ],
     "Many people don't realise that TB is cureable and test too late. Your answers will help us understand whether TB HealthCheck really helps people.": [
         null,
