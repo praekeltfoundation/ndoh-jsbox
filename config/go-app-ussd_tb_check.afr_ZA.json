@@ -2,7 +2,7 @@
     "": {
         "project-id-version": "",
         "pot-creation-date": "2022-11-22 11:29:+0000",
-        "po-revision-date": "2022-11-22 13:34+0200",
+        "po-revision-date": "2023-02-08 14:53+0200",
         "last-translator": "",
         "language-team": "",
         "language": "afr_ZA",
@@ -10,7 +10,7 @@
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
         "plural-forms": "nplurals=2; plural=(n != 1);",
-        "x-generator": "Poedit 3.2.1"
+        "x-generator": "Poedit 3.2.2"
     },
     "Welcome back to the The National Department of Health's TB HealthCheck": [
         null,
@@ -114,7 +114,7 @@
     ],
     "If you agree, we will use your information to see if this TB Check helps people.\nDo you agree?": [
         null,
-        "Indien jy instem sal ons jou inligting om te bepaal of TB Check mense help.\nStem jy in?"
+        "Indien jy instem sal ons jou inligting asook jou toep-verbruik gebruik om te bepaal of TB Check mense help.\nStem jy in?"
     ],
     "Please reply with numbers. Are you willing to take part?": [
         null,
