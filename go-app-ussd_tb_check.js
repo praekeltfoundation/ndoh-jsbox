@@ -697,9 +697,6 @@ go.app = function () {
          }
       return new FreeText(name, {
         question: question,
-        error: $("Sorry, we don't understand. Please try again.",
-        "",
-         "Please type the name of the city where you live"),
         check: function (content) {
           // Ensure that they're not giving an empty response
           if (!content.trim()) {
