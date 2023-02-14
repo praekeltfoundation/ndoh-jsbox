@@ -1047,7 +1047,7 @@ describe("ussd_tb_check app", function () {
           state: "state_confirm_city",
           reply: [
             "Please check that the address below is correct and matches the information you gave us:",
-            "54321 Fancy Apartment,Fresnaye,Cape Town, South Africa",
+            "54321 Fancy Apartment,Fresnaye,Cape ",
             "1. Yes",
             "2. No",
           ].join("\n"),
@@ -1146,6 +1146,91 @@ describe("ussd_tb_check app", function () {
         .check.user.state("state_suburb_name")
         .run();
     });
+    it("should go to state_city for incorrect input place lookup", function () {
+      return tester.setup.user
+        .answer("google_session_token", "testsessiontoken")
+        .setup(function (api) {
+          api.http.fixtures.add({
+            request: {
+              url:
+                "https://maps.googleapis.com/maps/api/place/autocomplete/json",
+              params: {
+                input: "Greater Tuang,cape town",
+                key: "googleplaceskey",
+                sessiontoken: "testsessiontoken",
+                language: "en",
+                components: "country:za",
+              },
+              method: "GET",
+            },
+            response: {
+              code: 200,
+              data: {
+                status: "ERROR",
+                predictions: [
+                  {
+                    description: "Greater Tuang,cape town, South Africa",
+                    place_id: "ChIJD7fiBh9u5kcRYJSMaMOCCwQ",
+                  },
+                ],
+              },
+            },
+          });
+        })
+        .setup.user.state("state_city")
+        .setup.user.answer("state_suburb_name", "Greater Tuang")
+        .input("cape town")
+        .check.user.state("state_city")
+        .check.interaction({
+          state: "state_city",
+          reply: [
+            "Sorry, we don't understand. Please try again.",
+            "",
+            "Please type the name of the city where you live"
+          ].join("\n"),
+          char_limit: 160,
+          })
+        .run();
+    });
+    it("should go to state_confirm_city", function () {
+      return tester.setup.user
+        .answer("google_session_token", "testsessiontoken")
+        .setup(function (api) {
+          api.http.fixtures.add({
+            request: {
+              url:
+                "https://maps.googleapis.com/maps/api/place/autocomplete/json",
+              params: {
+                input: "Fresnaye,cape town",
+                key: "googleplaceskey",
+                sessiontoken: "testsessiontoken",
+                language: "en",
+                components: "country:za",
+              },
+              method: "GET",
+            },
+            response: {
+              code: 200,
+              data: {
+                status: "OK",
+                predictions: [
+                  {
+                    description: "Fresnaye, Cape Town, South Africa",
+                    place_id: "ChIJD7fiBh9u5kcRYJSMaMOCCwQ",
+                  },
+                ],
+              },
+            },
+          });
+        })
+        .setup.user.state("state_city")
+        .setup.user.answer("state_suburb_name", "Fresnaye")
+        .input("cape town")
+        .check.user.state("state_confirm_city")
+        .check.user.answer("state_city", "Fresnaye, Cape Town, South Africa")
+        .check.user.answer("place_id", "ChIJD7fiBh9u5kcRYJSMaMOCCwQ")
+        .run();
+    });
   describe("state_confirm_city", function () {
     it("should ask to confirm the city", function () {
       return tester.setup.user
@@ -1157,7 +1242,7 @@ describe("ussd_tb_check app", function () {
           state: "state_confirm_city",
           reply: [
             "Please check that the address below is correct and matches the information you gave us:",
-            "54321 Fancy Apartment,Fresnaye,Cape Town",
+            "54321 Fancy Apartment,Fresnaye,Cape ",
             "1. Yes",
             "2. No",
           ].join("\n"),
@@ -1192,7 +1277,7 @@ describe("ussd_tb_check app", function () {
           state: "state_confirm_city",
           reply: [
             "Please check that the address below is correct and matches the information you gave us:",
-            "54321 Fancy Apartment,12345 Really really long address,Fres",
+            "54321 Fancy Apartment,12345 Really r",
             "1. Yes",
             "2. No",
           ].join("\n"),
@@ -1255,6 +1340,24 @@ describe("ussd_tb_check app", function () {
         .input("1")
         .check.user.state("state_cough")
         .check.user.answer("city_location", "-03.866651+051.195827/")
+        .run();
+    });
+    it("should ask to confirm the city with longer then 36 characters", function () {
+      return tester.setup.user
+        .state("state_confirm_city")
+        .setup.user.answer(
+          "state_city", "15 voortrekker road, goodwood estate,Cape Town, South africa"
+        )
+        .check.interaction({
+          state: "state_confirm_city",
+          reply: [
+            "Please check that the address below is correct and matches the information you gave us:",
+            "15 voortrekker road, goodwood estate",
+            "1. Yes",
+            "2. No",
+          ].join("\n"),
+          char_limit: 160,
+        })
         .run();
     });
   });
