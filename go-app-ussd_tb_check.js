@@ -688,6 +688,13 @@ go.app = function () {
       var question = $(
         "Please type the name of the city where you live."
       );
+      if (self.im.user.answers.state_city_error === "TRUE"){
+        question = $([
+            "Sorry, we don't understand. Please try again.",
+            "",
+            "Please type the name of the city where you live"
+        ].join("\n"));
+         }
       return new FreeText(name, {
         question: question,
         check: function (content) {
@@ -728,6 +735,7 @@ go.app = function () {
         .then(
           function (response) {
             if (_.get(response.data, "status") !== "OK") {
+              self.im.user.answers.state_city_error = "TRUE";
               return self.states.create("state_city");
             }
             var first_result = response.data.predictions[0];
@@ -749,7 +757,7 @@ go.app = function () {
 
     self.add("state_confirm_city", function (name, opts) {
 
-      var state_city = self.im.user.answers.state_city;
+      var state_city = (self.im.user.answers.state_city).slice(0, 36);
       var activation = self.im.user.answers.activation;
       var no_next_state = "state_suburb_name";
 
