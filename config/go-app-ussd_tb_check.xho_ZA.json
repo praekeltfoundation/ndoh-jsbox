@@ -1,15 +1,15 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-11-22 11:29:+0000",
-        "po-revision-date": "2022-11-22 13:36+0200",
+        "pot-creation-date": "2023-02-15 09:12:+0000",
+        "po-revision-date": "2023-02-15 11:35+0200",
         "last-translator": "",
         "language-team": "",
         "language": "xho_ZA",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 3.2.1"
+        "x-generator": "Poedit 3.2.2"
     },
     "Welcome back to the The National Department of Health's TB HealthCheck": [
         null,
@@ -242,6 +242,10 @@
     "Please type the name of the city where you live.": [
         null,
         "Nceda uchwetheze igama lesixeko ohlala kuso."
+    ],
+    "Sorry, we don't understand. Please try again.\n\nPlease type the name of the city where you live": [
+        null,
+        "Uxolo, asiqondi. Nceda zama kwakhona. \n\nNceda uchwetheze igama lesixeko ohlala kuso"
     ],
     "Please check that the address below is correct and matches the information you gave us:\n{{ address }}": [
         null,
