@@ -2,7 +2,7 @@
     "": {
         "project-id-version": "",
         "pot-creation-date": "2023-02-15 09:12:+0000",
-        "po-revision-date": "2023-02-16 13:29+0200",
+        "po-revision-date": "2023-02-16 13:35+0200",
         "last-translator": "",
         "language-team": "",
         "language": "afr_ZA",
@@ -114,7 +114,7 @@
     ],
     "If you agree, we will use your information to see if this TB Check helps people.\nDo you agree?": [
         null,
-        "Indien jy instem sal ons jou inligting gebruik om te bepaal of TB Check mense help. \nStem jy in?"
+        "Indien jy instem sal ons jou inligting gebruik om te bepaal of TB Check mense help.\nStem jy in?"
     ],
     "Please reply with numbers. Are you willing to take part?": [
         null,
