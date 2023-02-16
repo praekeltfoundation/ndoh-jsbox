@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-02-15 09:12:+0000\n"
-"PO-Revision-Date: 2023-02-15 13:59+0200\n"
+"PO-Revision-Date: 2023-02-16 14:22+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: afr_ZA\n"
@@ -158,8 +158,8 @@ msgid ""
 "people.\n"
 "Do you agree?"
 msgstr ""
-"Indien jy instem sal ons jou inligting asook jou toep-verbruik gebruik om te "
-"bepaal of TB Check mense help.\n"
+"Indien jy instem sal ons jou inligting gebruik om te bepaal of TB Check "
+"mense help.\n"
 "Stem jy in?"
 
 #: src/ussd_tb_check.js:332
@@ -182,7 +182,7 @@ msgstr "Nee"
 
 #: src/ussd_tb_check.js:339
 msgid "FAQ for more info on TBCheck and the research."
-msgstr "FAQ, vir meer oor TBCheck asook die navorsing daaroor."
+msgstr "FAQ vir meer inligting."
 
 #: src/ussd_tb_check.js:356
 msgid "How old are you?"
@@ -384,10 +384,10 @@ msgid ""
 "Risk means you live with someone who has TB OR you had TB in the last 2 "
 "years OR you are HIV+"
 msgstr ""
-"Het jy hoe TB risiko? \n"
+"My TB risiko \n"
 "\n"
-"Risiko beteken jy bly saam met iemand met TB OF jy het TB gehad die afgelope "
-"twee jaar OF jy is MIV+"
+"Jou risiko om TB te he is hoog as jou huismaat TB het OF jy het TB gehad die "
+"afgelope 2 jaar OF jy's MIV+"
 
 #: src/ussd_tb_check.js:763
 msgid "Please use numbers from list. Are you at high risk for TB?"
