@@ -2,7 +2,7 @@
     "": {
         "project-id-version": "",
         "pot-creation-date": "2023-02-15 09:12:+0000",
-        "po-revision-date": "2023-02-15 13:59+0200",
+        "po-revision-date": "2023-02-16 13:18+0200",
         "last-translator": "",
         "language-team": "",
         "language": "afr_ZA",
@@ -114,7 +114,7 @@
     ],
     "If you agree, we will use your information to see if this TB Check helps people.\nDo you agree?": [
         null,
-        "Indien jy instem sal ons jou inligting asook jou toep-verbruik gebruik om te bepaal of TB Check mense help.\nStem jy in?"
+        "Indien jy instem sal ons jou inligting gebruik om te bepaal of TB Check mense help. \nStem jy in?"
     ],
     "Please reply with numbers. Are you willing to take part?": [
         null,
@@ -130,7 +130,7 @@
     ],
     "FAQ for more info on TBCheck and the research.": [
         null,
-        "FAQ, vir meer oor TBCheck asook die navorsing daaroor."
+        "FAQ vir meer information."
     ],
     "How old are you?": [
         null,
@@ -286,7 +286,7 @@
     ],
     "Are you at high risk of TB?\n\nRisk means you live with someone who has TB OR you had TB in the last 2 years OR you are HIV+": [
         null,
-        "Het jy hoe TB risiko? \n\nRisiko beteken jy bly saam met iemand met TB OF jy het TB gehad die afgelope twee jaar OF jy is MIV+"
+        "Het jy hoe TB risiko? \n\nJou risiko om TB te he is hoog as jou huismaat TB het OF jy het TB gehad die afgelope 2 jaar OF jy's MIV+"
     ],
     "Please use numbers from list. Are you at high risk for TB?": [
         null,
