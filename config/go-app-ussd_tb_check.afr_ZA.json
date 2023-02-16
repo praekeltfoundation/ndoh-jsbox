@@ -2,7 +2,7 @@
     "": {
         "project-id-version": "",
         "pot-creation-date": "2023-02-15 09:12:+0000",
-        "po-revision-date": "2023-02-16 13:18+0200",
+        "po-revision-date": "2023-02-16 13:29+0200",
         "last-translator": "",
         "language-team": "",
         "language": "afr_ZA",
@@ -286,7 +286,7 @@
     ],
     "Are you at high risk of TB?\n\nRisk means you live with someone who has TB OR you had TB in the last 2 years OR you are HIV+": [
         null,
-        "Het jy hoe TB risiko? \n\nJou risiko om TB te he is hoog as jou huismaat TB het OF jy het TB gehad die afgelope 2 jaar OF jy's MIV+"
+        "My TB risiko \n\nJou risiko om TB te he is hoog as jou huismaat TB het OF jy het TB gehad die afgelope 2 jaar OF jy's MIV+"
     ],
     "Please use numbers from list. Are you at high risk for TB?": [
         null,
