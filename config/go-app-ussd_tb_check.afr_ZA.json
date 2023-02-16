@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2023-02-15 09:12:+0000",
-        "po-revision-date": "2023-02-16 14:22+0200",
+        "pot-creation-date": "2023-02-16 04:40:+0000",
+        "po-revision-date": "2023-02-16 19:35+0200",
         "last-translator": "",
         "language-team": "",
         "language": "afr_ZA",
@@ -90,7 +90,7 @@
     ],
     "Please reply with numbers. Choose your preferred language": [
         null,
-        "Please reply with numbers. Kies jou taal van voorkeur"
+        "Antwoord met 'n nommer. Kies jou taal van voorkeur"
     ],
     "English": [
         null,
@@ -116,9 +116,9 @@
         null,
         "Indien jy instem sal ons jou inligting gebruik om te bepaal of TB Check mense help.\nStem jy in?"
     ],
-    "Please reply with numbers. Are you willing to take part?": [
+    "Please reply with numbers. Do you agree?": [
         null,
-        "Please reply with numbers. Kies jou taal van voorkeur?"
+        "Antwoord met 'n nommer. Stem jy in?"
     ],
     "Yes": [
         null,
@@ -138,7 +138,7 @@
     ],
     "Please use numbers from list.\n\nHow old are you?": [
         null,
-        "Hoe oud is jy? \n\nAntwoord met 'n nommer"
+        "Antwoord met 'n nommer uit die lys.\n\nHoe oud is jy? "
     ],
     "under 18": [
         null,
@@ -174,7 +174,7 @@
     ],
     "Please use numbers from list.\n\nWhich gender do you identify as?": [
         null,
-        "As watter geslag identifiseer jy?\n \nAntwoord met 'n nommer "
+        "Antwoord met 'n nommer uit die lys.\n\nAs watter geslag identifiseer jy?"
     ],
     "MALE": [
         null,
@@ -258,7 +258,7 @@
     ],
     "Please use numbers from list.\nDo you have a cough?": [
         null,
-        "Antwoord met 'n nommer?"
+        "Antwoord met 'n nommer uit die lys.\nHoes jy?"
     ],
     "Do you have a fever? (when you touch your forehead, does it feel hot?)": [
         null,
@@ -266,7 +266,7 @@
     ],
     "Please use numbers from list. Do you have a fever? (when you touch your forehead, does it feel hot?)": [
         null,
-        "Het jy koors? (wanneer jy aan jou voorkop raak, voel dit warm?)"
+        "Antwoord met 'n nommer uit die lys. Het jy koors? "
     ],
     "Are you sweating more than usual at night?": [
         null,
@@ -274,7 +274,7 @@
     ],
     "Please use numbers from list. Are you sweating more than usual at night?": [
         null,
-        "Sweet jy meer as gewoonlik snags? "
+        "Antwoord met 'n nommer uit die lys. Sweet jy meer as gewoonlik snags? "
     ],
     "Have you been losing weight without trying?": [
         null,
@@ -282,7 +282,7 @@
     ],
     "Please use numbers from list. Have you been losing weight without trying?": [
         null,
-        "Verloor jy gewig sonder dat jy probeer? "
+        "Antwoord met 'n nommer uit die lys. Verloor jy gewig sonder dat jy probeer? "
     ],
     "Are you at high risk of TB?\n\nRisk means you live with someone who has TB OR you had TB in the last 2 years OR you are HIV+": [
         null,
@@ -290,7 +290,7 @@
     ],
     "Please use numbers from list. Are you at high risk for TB?": [
         null,
-        "Het jy hoë TB risiko? \n\nRisiko beteken jy woon met iemand met TB OF jy het TB gehad die agelope twee jaar OF jy is MIV+"
+        "Antwoord met 'n nommer uit die lys. Het jy 'n hoë risiko vir TB?"
     ],
     "Yes high risk": [
         null,
@@ -402,7 +402,7 @@
     ],
     "Please use numbers from list. Do you commit to getting tested?": [
         null,
-        "Het jy hoë TB risiko? Risiko beteken jy woon met iemand met TB OF jy het TB gehad die agelope twee jaar OF jy is MIV+"
+        "Antwoord met 'n nommer uit die lys. Neem jy voor om jou te laat toets?"
     ],
     "Well done for committing to your health!": [
         null,
@@ -490,7 +490,7 @@
     ],
     "Please reply with the number that matches your answer.": [
         null,
-        "Please reply with numbers. Kies jou taal van voorkeur."
+        "Antwoord asseblief met die nommer wat by jou antwoord pas."
     ],
     "What would you like to know?": [
         null,

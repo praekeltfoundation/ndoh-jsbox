@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2023-02-15 09:12:+0000\n"
-"PO-Revision-Date: 2023-02-16 14:22+0200\n"
+"POT-Creation-Date: 2023-02-16 04:40:+0000\n"
+"PO-Revision-Date: 2023-02-16 19:35+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: afr_ZA\n"
@@ -130,7 +130,7 @@ msgstr "Kies jou taal van voorkeur"
 
 #: src/ussd_tb_check.js:301
 msgid "Please reply with numbers. Choose your preferred language"
-msgstr "Please reply with numbers. Kies jou taal van voorkeur"
+msgstr "Antwoord met 'n nommer. Kies jou taal van voorkeur"
 
 #: src/ussd_tb_check.js:304
 msgid "English"
@@ -163,8 +163,8 @@ msgstr ""
 "Stem jy in?"
 
 #: src/ussd_tb_check.js:332
-msgid "Please reply with numbers. Are you willing to take part?"
-msgstr "Please reply with numbers. Kies jou taal van voorkeur?"
+msgid "Please reply with numbers. Do you agree?"
+msgstr "Antwoord met 'n nommer. Stem jy in?"
 
 #: src/ussd_tb_check.js:337 src/ussd_tb_check.js:628 src/ussd_tb_check.js:851
 #: src/ussd_tb_check.js:1315 src/ussd_tb_check.js:1341
@@ -194,9 +194,9 @@ msgid ""
 "\n"
 "How old are you?"
 msgstr ""
-"Hoe oud is jy? \n"
+"Antwoord met 'n nommer uit die lys.\n"
 "\n"
-"Antwoord met 'n nommer"
+"Hoe oud is jy? "
 
 #: src/ussd_tb_check.js:360
 msgid "under 18"
@@ -247,9 +247,9 @@ msgid ""
 "\n"
 "Which gender do you identify as?"
 msgstr ""
-"As watter geslag identifiseer jy?\n"
-" \n"
-"Antwoord met 'n nommer "
+"Antwoord met 'n nommer uit die lys.\n"
+"\n"
+"As watter geslag identifiseer jy?"
 
 #: src/ussd_tb_check.js:420
 msgid "MALE"
@@ -347,17 +347,21 @@ msgstr "Kom ons kyk hoe jy vandag voel. Hoes jy?"
 msgid ""
 "Please use numbers from list.\n"
 "Do you have a cough?"
-msgstr "Antwoord met 'n nommer?"
+msgstr ""
+"Antwoord met 'n nommer uit die lys.\n"
+"Hoes jy?"
 
 #: src/ussd_tb_check.js:712
 msgid "Do you have a fever? (when you touch your forehead, does it feel hot?)"
-msgstr "Het jy koors? (wanneer jy aan jou voorkop raak, voel dit warm?)"
+msgstr "Het jy
+-+
+koors? (wanneer jy aan jou voorkop raak, voel dit warm?)"
 
 #: src/ussd_tb_check.js:715
 msgid ""
 "Please use numbers from list. Do you have a fever? (when you touch your "
 "forehead, does it feel hot?)"
-msgstr "Het jy koors? (wanneer jy aan jou voorkop raak, voel dit warm?)"
+msgstr "Antwoord met 'n nommer uit die lys. Het jy koors? "
 
 #: src/ussd_tb_check.js:729
 msgid "Are you sweating more than usual at night?"
@@ -366,7 +370,7 @@ msgstr "Sweet jy meer as gewoonlik snags? "
 #: src/ussd_tb_check.js:730
 msgid ""
 "Please use numbers from list. Are you sweating more than usual at night?"
-msgstr "Sweet jy meer as gewoonlik snags? "
+msgstr "Antwoord met 'n nommer uit die lys. Sweet jy meer as gewoonlik snags? "
 
 #: src/ussd_tb_check.js:739
 msgid "Have you been losing weight without trying?"
@@ -375,7 +379,8 @@ msgstr "Verloor jy gewig sonder dat jy probeer? "
 #: src/ussd_tb_check.js:740
 msgid ""
 "Please use numbers from list. Have you been losing weight without trying?"
-msgstr "Verloor jy gewig sonder dat jy probeer? "
+msgstr ""
+"Antwoord met 'n nommer uit die lys. Verloor jy gewig sonder dat jy probeer? "
 
 #: src/ussd_tb_check.js:756
 msgid ""
@@ -391,11 +396,7 @@ msgstr ""
 
 #: src/ussd_tb_check.js:763
 msgid "Please use numbers from list. Are you at high risk for TB?"
-msgstr ""
-"Het jy hoë TB risiko? \n"
-"\n"
-"Risiko beteken jy woon met iemand met TB OF jy het TB gehad die agelope twee "
-"jaar OF jy is MIV+"
+msgstr "Antwoord met 'n nommer uit die lys. Het jy 'n hoë risiko vir TB?"
 
 #: src/ussd_tb_check.js:766
 msgid "Yes high risk"
@@ -562,9 +563,7 @@ msgstr "Neem jy voor om jou te laat toets?"
 
 #: src/ussd_tb_check.js:1170
 msgid "Please use numbers from list. Do you commit to getting tested?"
-msgstr ""
-"Het jy hoë TB risiko? Risiko beteken jy woon met iemand met TB OF jy het TB "
-"gehad die agelope twee jaar OF jy is MIV+"
+msgstr "Antwoord met 'n nommer uit die lys. Neem jy voor om jou te laat toets?"
 
 #: src/ussd_tb_check.js:1243
 msgid "Well done for committing to your health!"
@@ -714,7 +713,7 @@ msgstr "Die FAQ is na jou gestuur in 'n SMS. Wat verkies jy om te doen?"
 #: src/ussd_tb_check.js:1531 src/ussd_tb_check.js:1554
 #: src/ussd_tb_check.js:1573
 msgid "Please reply with the number that matches your answer."
-msgstr "Please reply with numbers. Kies jou taal van voorkeur."
+msgstr "Antwoord asseblief met die nommer wat by jou antwoord pas."
 
 #: src/ussd_tb_check.js:1551 src/ussd_tb_check.js:1570
 msgid "What would you like to know?"
@@ -813,6 +812,9 @@ msgstr "Waarom het jy kliniek toe gegaan vir 'n TB-toets?"
 #: src/ussd_tb_check.js:1794
 msgid "Can we phone you to get more information?"
 msgstr "Kan ons jou skakel om meer inligting te kry?"
+
+#~ msgid "Please reply with numbers. Are you willing to take part?"
+#~ msgstr "Please reply with numbers. Kies jou taal van voorkeur?"
 
 #~ msgid ""
 #~ "We may ask you a few questions for research after you've completed your "

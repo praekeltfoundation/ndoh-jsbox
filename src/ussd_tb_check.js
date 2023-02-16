@@ -330,7 +330,7 @@ go.app = function () {
               "\nDo you agree?"
               ),
           error: $(
-              "Please reply with numbers. Are you willing to take part?"
+              "Please reply with numbers. Do you agree?"
           ),
           accept_labels: true,
           choices: [
