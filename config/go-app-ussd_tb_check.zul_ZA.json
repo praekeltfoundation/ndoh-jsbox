@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2023-02-15 09:12:+0000",
-        "po-revision-date": "2023-02-15 11:34+0200",
+        "pot-creation-date": "2023-02-16 04:40:+0000",
+        "po-revision-date": "2023-02-20 09:59+0200",
         "last-translator": "",
         "language-team": "",
         "language": "zu_ZA",
@@ -114,11 +114,11 @@
     ],
     "If you agree, we will use your information to see if this TB Check helps people.\nDo you agree?": [
         null,
-        "Uma uvuma sizosebenzisa ulwazi lwakho ukubona ukuthi i-TB Check iyabasiza yini abantu.\nUyavuma na?"
+        "Uma uvuma sizosebenzisa ulwazi lwakho ukubona ukuthi i-TB Check iyabasiza yini abantu.\nIngabe uyavuma?"
     ],
-    "Please reply with numbers. Are you willing to take part?": [
+    "Please reply with numbers. Do you agree?": [
         null,
-        "Sicela usebenzise izinombolo ezisohlwini. Ingabe uzimisele ukuba yingxenye?"
+        "Sicela usebenzise izinombolo ezisohlwini. Ingabe uyavuma?"
     ],
     "Yes": [
         null,
