@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2023-02-15 09:12:+0000",
-        "po-revision-date": "2023-02-15 11:35+0200",
+        "pot-creation-date": "2023-02-16 04:40:+0000",
+        "po-revision-date": "2023-02-20 10:03+0200",
         "last-translator": "",
         "language-team": "",
         "language": "xho_ZA",
@@ -115,9 +115,9 @@
         null,
         "Xa uvuma, siya kusebenzisa ulwazi lwakho ukubona ukuba le-TB Check iyabanceda na abantu.\nuyavuma?"
     ],
-    "Please reply with numbers. Are you willing to take part?": [
+    "Please reply with numbers. Do you agree?": [
         null,
-        "Ngaba uzimisele ukuthatha inxaxheba?"
+        "Phendula ngenombolo. uyavuma?"
     ],
     "Yes": [
         null,

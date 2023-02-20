@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2023-02-15 09:12:+0000",
-        "po-revision-date": "2023-02-15 11:36+0200",
+        "pot-creation-date": "2023-02-16 04:40:+0000",
+        "po-revision-date": "2023-02-20 10:08+0200",
         "last-translator": "",
         "language-team": "",
         "language": "sot_ZA",
@@ -25,7 +25,7 @@
     ],
     "Unfortunately, you cannot participate in the study more than once. You can still continue with a TB Check but you will not be included in the study.": [
         null,
-        "Ka bomalimabe, u ke ke ua nka karolo phuputsong ho feta hang. O ntse o ka tswela pele ka TB CHECK empa o ke ke wa kenyelletswa diphuputsong. "
+        "Ka bomalimabe, u ke ke ua nka karolo phuputsong ho feta hang. O ntse o ka tswela pele ka TB CHECK empa o ke ke wa kenyelletswa diphuputsong."
     ],
     "Continue": [
         null,
@@ -115,9 +115,9 @@
         null,
         "Ha o dumela re tla sebedisa dintlha ho bona na TB Check e thusa batho.\nNa wa dumela?"
     ],
-    "Please reply with numbers. Are you willing to take part?": [
+    "Please reply with numbers. Do you agree?": [
         null,
-        "Araba ka nomoro"
+        "Araba ka nomoro. Na o ya dumela?"
     ],
     "Yes": [
         null,

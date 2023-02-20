@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2023-02-15 09:12:+0000\n"
-"PO-Revision-Date: 2023-02-15 11:36+0200\n"
+"POT-Creation-Date: 2023-02-16 04:40:+0000\n"
+"PO-Revision-Date: 2023-02-20 10:08+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sot_ZA\n"
@@ -30,7 +30,7 @@ msgid ""
 "still continue with a TB Check but you will not be included in the study."
 msgstr ""
 "Ka bomalimabe, u ke ke ua nka karolo phuputsong ho feta hang. O ntse o ka "
-"tswela pele ka TB CHECK empa o ke ke wa kenyelletswa diphuputsong. "
+"tswela pele ka TB CHECK empa o ke ke wa kenyelletswa diphuputsong."
 
 #: src/ussd_tb_check.js:166
 msgid "Continue"
@@ -160,8 +160,8 @@ msgstr ""
 "Na wa dumela?"
 
 #: src/ussd_tb_check.js:332
-msgid "Please reply with numbers. Are you willing to take part?"
-msgstr "Araba ka nomoro"
+msgid "Please reply with numbers. Do you agree?"
+msgstr "Araba ka nomoro. Na o ya dumela?"
 
 #: src/ussd_tb_check.js:337 src/ussd_tb_check.js:628 src/ussd_tb_check.js:851
 #: src/ussd_tb_check.js:1315 src/ussd_tb_check.js:1341
@@ -809,6 +809,9 @@ msgstr "Hobaneng o ile tleliniking bakeng sa tlhahlobo ya LEFUBA?"
 #: src/ussd_tb_check.js:1794
 msgid "Can we phone you to get more information?"
 msgstr "Na re ka o letsetsa ho fumana dintlha tse ding?"
+
+#~ msgid "Please reply with numbers. Are you willing to take part?"
+#~ msgstr "Araba ka nomoro"
 
 #~ msgid ""
 #~ "We may ask you a few questions for research after you've completed your "
