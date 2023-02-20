@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-02-16 04:40:+0000\n"
-"PO-Revision-Date: 2023-02-16 19:50+0200\n"
+"PO-Revision-Date: 2023-02-20 09:03+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: afr_ZA\n"
@@ -359,11 +359,11 @@ msgstr "Het jy koors? (wanneer jy aan jou voorkop raak, voel dit warm?)"
 msgid ""
 "Please use numbers from list. Do you have a fever? (when you touch your "
 "forehead, does it feel hot?)"
-msgstr "Antwoord met 'n nommer uit die lys. Het jy koors? "
+msgstr "Antwoord met 'n nommer uit die lys. Het jy koors?"
 
 #: src/ussd_tb_check.js:729
 msgid "Are you sweating more than usual at night?"
-msgstr "Sweet jy meer as gewoonlik snags? "
+msgstr "Sweet jy meer as gewoonlik snags?"
 
 #: src/ussd_tb_check.js:730
 msgid ""
@@ -394,7 +394,7 @@ msgstr ""
 
 #: src/ussd_tb_check.js:763
 msgid "Please use numbers from list. Are you at high risk for TB?"
-msgstr "Antwoord met 'n nommer uit die lys. Het jy 'n hoë risiko vir TB?"
+msgstr "Antwoord met 'n nommer uit die lys. Het jy 'n hoe risiko vir TB?"
 
 #: src/ussd_tb_check.js:766
 msgid "Yes high risk"

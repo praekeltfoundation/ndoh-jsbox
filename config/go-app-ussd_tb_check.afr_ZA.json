@@ -2,7 +2,7 @@
     "": {
         "project-id-version": "",
         "pot-creation-date": "2023-02-16 04:40:+0000",
-        "po-revision-date": "2023-02-16 19:50+0200",
+        "po-revision-date": "2023-02-20 09:03+0200",
         "last-translator": "",
         "language-team": "",
         "language": "afr_ZA",
@@ -266,11 +266,11 @@
     ],
     "Please use numbers from list. Do you have a fever? (when you touch your forehead, does it feel hot?)": [
         null,
-        "Antwoord met 'n nommer uit die lys. Het jy koors? "
+        "Antwoord met 'n nommer uit die lys. Het jy koors?"
     ],
     "Are you sweating more than usual at night?": [
         null,
-        "Sweet jy meer as gewoonlik snags? "
+        "Sweet jy meer as gewoonlik snags?"
     ],
     "Please use numbers from list. Are you sweating more than usual at night?": [
         null,
@@ -290,7 +290,7 @@
     ],
     "Please use numbers from list. Are you at high risk for TB?": [
         null,
-        "Antwoord met 'n nommer uit die lys. Het jy 'n hoë risiko vir TB?"
+        "Antwoord met 'n nommer uit die lys. Het jy 'n hoe risiko vir TB?"
     ],
     "Yes high risk": [
         null,
