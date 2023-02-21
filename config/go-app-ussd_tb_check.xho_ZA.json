@@ -2,7 +2,7 @@
     "": {
         "project-id-version": "",
         "pot-creation-date": "2023-02-21 11:51:+0000",
-        "po-revision-date": "2023-02-21 15:46+0200",
+        "po-revision-date": "2023-02-21 16:16+0200",
         "last-translator": "",
         "language-team": "",
         "language": "xho_ZA",
@@ -307,6 +307,10 @@
         null,
         "Okokugqibela, nceda uvume ukuba ulwazi owabelane ngalo luchanekile ngokolwazi lwakho lonke."
     ],
+    "Thanks for your answers. Your result will be sent soon by SMS. Would you like to receive follow-up messages?": [
+        null,
+        "Enkosi ngeempendulo zakho. Iziphumo zakho zizakuthunyelwa kungekudala nge-SMS Ungathanda ukufumana imiyalezo elandelelisayo? "
+    ],
     "Thanks for choosing to get our follow-up messages.": [
         null,
         "Enkosi ngokukhetha ukufumana imiyalezo yethu yokulandelisa."
@@ -314,6 +318,10 @@
     "Okay thanks, you won't get any follow-up messages.": [
         null,
         "Kulungile enkosi, awuzi kufumana miyalezo yokulandelelisa."
+    ],
+    "Thanks for your answers. Your result will be sent soon by SMS.": [
+        null,
+        "Enkosi ngeempendulo zakho. Iziphumo zakho zizakuthunyelwa kungekudala nge-SMS. "
     ],
     "This service works best when you select numbers from the list": [
         null,

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-02-21 11:51:+0000\n"
-"PO-Revision-Date: 2023-02-21 15:46+0200\n"
+"PO-Revision-Date: 2023-02-21 16:16+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: xho_ZA\n"
@@ -415,16 +415,12 @@ msgstr ""
 "ngokolwazi lwakho lonke."
 
 #: src/ussd_tb_check.js:839 src/ussd_tb_check.js:845
-#, fuzzy
-#| msgid ""
-#| "Thanks for your answers. Your result will be sent soon on SMS. Would you "
-#| "like to receive follow-up messages?"
 msgid ""
 "Thanks for your answers. Your result will be sent soon by SMS. Would you "
 "like to receive follow-up messages?"
 msgstr ""
 "Enkosi ngeempendulo zakho. Iziphumo zakho zizakuthunyelwa kungekudala nge-"
-"SMS Ungathanda ukufumana imiyalezo elandelelisayo?"
+"SMS Ungathanda ukufumana imiyalezo elandelelisayo? "
 
 #: src/ussd_tb_check.js:940
 msgid "Thanks for choosing to get our follow-up messages."
@@ -435,12 +431,10 @@ msgid "Okay thanks, you won't get any follow-up messages."
 msgstr "Kulungile enkosi, awuzi kufumana miyalezo yokulandelelisa."
 
 #: src/ussd_tb_check.js:947
-#, fuzzy
-#| msgid "Thanks for your answers. Your result will be sent soon on SMS."
 msgid "Thanks for your answers. Your result will be sent soon by SMS."
 msgstr ""
 "Enkosi ngeempendulo zakho. Iziphumo zakho zizakuthunyelwa kungekudala nge-"
-"SMS."
+"SMS. "
 
 #: src/ussd_tb_check.js:950
 msgid "This service works best when you select numbers from the list"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-02-21 11:51:+0000\n"
-"PO-Revision-Date: 2023-02-21 15:45+0200\n"
+"PO-Revision-Date: 2023-02-21 16:14+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zu_ZA\n"
@@ -713,10 +713,8 @@ msgid "Exit"
 msgstr "Phuma"
 
 #: src/ussd_tb_check.js:1527
-#, fuzzy
-#| msgid "The FAQ has been sent to you on SMS. What would you like to do?"
 msgid "The FAQ has been sent to you by SMS. What would you like to do?"
-msgstr "I-FAQ ithunyelwe kuwe nge-SMS. Ungathanda ukwenzani?"
+msgstr "I-FAQ ithunyelwe kuwe nge-SMS. Ungathanda ukwenzani? "
 
 #: src/ussd_tb_check.js:1531 src/ussd_tb_check.js:1554
 #: src/ussd_tb_check.js:1573

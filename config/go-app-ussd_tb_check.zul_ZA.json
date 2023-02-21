@@ -2,7 +2,7 @@
     "": {
         "project-id-version": "",
         "pot-creation-date": "2023-02-21 11:51:+0000",
-        "po-revision-date": "2023-02-21 15:45+0200",
+        "po-revision-date": "2023-02-21 16:14+0200",
         "last-translator": "",
         "language-team": "",
         "language": "zu_ZA",
@@ -483,6 +483,10 @@
     "Exit": [
         null,
         "Phuma"
+    ],
+    "The FAQ has been sent to you by SMS. What would you like to do?": [
+        null,
+        "I-FAQ ithunyelwe kuwe nge-SMS. Ungathanda ukwenzani? "
     ],
     "Please reply with the number that matches your answer.": [
         null,

@@ -2,7 +2,7 @@
     "": {
         "project-id-version": "",
         "pot-creation-date": "2023-02-21 11:51:+0000",
-        "po-revision-date": "2023-02-21 16:09+0200",
+        "po-revision-date": "2023-02-21 16:16+0200",
         "last-translator": "",
         "language-team": "",
         "language": "afr_ZA",
@@ -308,6 +308,10 @@
         null,
         "Laastens, bevestig asseblief dat, sover jy weet, die inligting wat jy gegee het korrek is."
     ],
+    "Thanks for your answers. Your result will be sent soon by SMS. Would you like to receive follow-up messages?": [
+        null,
+        "Dankie vir jou antwoorde. Jou resultate sal binnekort per sms gestuur word. Wil jy graag opvolg-boodskappe ontvang? "
+    ],
     "Thanks for choosing to get our follow-up messages.": [
         null,
         "Dankie dat jy gekies het om ons opvolg-boodskappe te ontvang."
@@ -315,6 +319,10 @@
     "Okay thanks, you won't get any follow-up messages.": [
         null,
         "Reg so dankie, jy sal nie enige opvolg-boodskappe ontvang nie."
+    ],
+    "Thanks for your answers. Your result will be sent soon by SMS.": [
+        null,
+        "Dankie vir jou antwoorde. Jou resultate sal binnekort per sms gestuur word. "
     ],
     "This service works best when you select numbers from the list": [
         null,
