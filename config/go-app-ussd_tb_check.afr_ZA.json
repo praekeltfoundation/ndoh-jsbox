@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2023-02-16 04:40:+0000",
-        "po-revision-date": "2023-02-20 09:52+0200",
+        "pot-creation-date": "2023-02-21 11:51:+0000",
+        "po-revision-date": "2023-02-21 15:54+0200",
         "last-translator": "",
         "language-team": "",
         "language": "afr_ZA",
@@ -46,7 +46,7 @@
     ],
     "This NDoH service only provides health info. Please agree that you are responsible for your own medical care and treatment.": [
         null,
-        "Dié NDvG-diens verskaf gesondheidsinligting. Stem jy saam dat jy verantwoordelik is vir jou mediese sorg en behandeling?"
+        "Die NDvG-diens verskaf gesondheidsinligting. Stem jy saam dat jy verantwoordelik is vir jou mediese sorg en behandeling?"
     ],
     "YES": [
         null,
@@ -138,7 +138,7 @@
     ],
     "Please use numbers from list.\n\nHow old are you?": [
         null,
-        "Antwoord met 'n nommer uit die lys.\n\nHoe oud is jy? "
+        "Antwoord met 'n nommer uit die lys.\n\nHoe oud is jy?"
     ],
     "under 18": [
         null,
@@ -166,7 +166,7 @@
     ],
     "Okay, no problem. You will not be included in the research, but you can still continue to check if you need to take a TB test.": [
         null,
-        "Regso, geen probleem nie. Jy sal nie ingesluit word in die navorsing nie, maar jy kan nogsteeds voortgaan om te bepaal of jy 'n TB- toets moet laat doen. "
+        "Regso, geen probleem nie. Jy sal nie ingesluit word in die navorsing nie, maar jy kan nogsteeds voortgaan om te bepaal of jy 'n TB- toets moet laat doen."
     ],
     "Which gender do you identify as?": [
         null,
@@ -190,11 +190,11 @@
     ],
     "RATHER NOT SAY": [
         null,
-        "WIL LIEWER NIE SÊ NIE"
+        "WIL LIEWER NIE SE NIE"
     ],
     "Choose your province": [
         null,
-        "Kies jou provinsie."
+        "Kies jou provinsie"
     ],
     "E. CAPE": [
         null,
@@ -234,15 +234,15 @@
     ],
     "Please type the name of the street where you live.": [
         null,
-        "Tik asseblief die naam van die straat waar jy bly in."
+        "In watter straat bly jy?"
     ],
     "Please type the name of the suburb/township/village where you live.": [
         null,
-        "Tik asseblief die naam van die woonbuurt/township/dorp waar jy bly in."
+        "In watter woonbuurt/township/dorp bly jy?"
     ],
     "Please type the name of the city where you live.": [
         null,
-        "Tik asb die naam van die stad waar jy bly in."
+        "In watter straat bly jy?"
     ],
     "Sorry, we don't understand. Please try again.\n\nPlease type the name of the city where you live": [
         null,
@@ -274,15 +274,15 @@
     ],
     "Please use numbers from list. Are you sweating more than usual at night?": [
         null,
-        "Antwoord met 'n nommer uit die lys. Sweet jy meer as gewoonlik snags? "
+        "Antwoord met 'n nommer uit die lys. Sweet jy meer as gewoonlik snags?"
     ],
     "Have you been losing weight without trying?": [
         null,
-        "Verloor jy gewig sonder dat jy probeer? "
+        "Verloor jy gewig sonder dat jy probeer?"
     ],
     "Please use numbers from list. Have you been losing weight without trying?": [
         null,
-        "Antwoord met 'n nommer uit die lys. Verloor jy gewig sonder dat jy probeer? "
+        "Antwoord met 'n nommer uit die lys. Verloor jy gewig sonder dat jy probeer?"
     ],
     "Are you at high risk of TB?\n\nRisk means you live with someone who has TB OR you had TB in the last 2 years OR you are HIV+": [
         null,
@@ -308,10 +308,6 @@
         null,
         "Laastens, bevestig asseblief dat, sover jy weet, die inligting wat jy gegee het korrek is."
     ],
-    "Thanks for your answers. Your result will be sent soon on SMS. Would you like to receive follow-up messages?": [
-        null,
-        "Dankie vir jou antwoorde. Jou resultate sal binnekort per sms gestuur word. Wil jy graag opvolg-boodskappe ontvang?"
-    ],
     "Thanks for choosing to get our follow-up messages.": [
         null,
         "Dankie dat jy gekies het om ons opvolg-boodskappe te ontvang."
@@ -319,10 +315,6 @@
     "Okay thanks, you won't get any follow-up messages.": [
         null,
         "Reg so dankie, jy sal nie enige opvolg-boodskappe ontvang nie."
-    ],
-    "Thanks for your answers. Your result will be sent soon on SMS.": [
-        null,
-        "Dankie vir jou antwoorde. Jou resultate sal binnekort per sms gestuur word."
     ],
     "This service works best when you select numbers from the list": [
         null,
@@ -346,11 +338,11 @@
     ],
     "Your replies to the questions show that you need a TB test this week!\n\nHere are some tips to help you plan:": [
         null,
-        "Jou antwoorde toon dat jy 'n TB-toets moet neem hierdie week! \n\nGaan na jou kliniek vir 'n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan"
+        "Jou antwoorde toon dat jy 'n TB-toets moet neem hierdie week! \n\nGaan na jou kliniek vir 'n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan:"
     ],
     "* Make the time. Your health is a priority!\n* Pick the most convenient clinic for your test\n* Get there early! Clinics are open for TB testing\nMonday to Friday mornings.": [
         null,
-        "Maak tyd. Jou gesondheid is belangrik!\nKies die gerieflikste kliniek vir jou toets. Hier is die 5 klinieke naaste aan jou"
+        "* Maak tyd. Jou gesondheid is belangrik!\n* Kies die gerieflikste kliniek vir jou toets. \n* Hier is die 5 klinieke naaste aan jou"
     ],
     "Where will you go for your test? Reply with the clinic": [
         null,
@@ -390,7 +382,7 @@
     ],
     "* Visit your local clinic for a free TB test.\n* You will get R15 airtime within 1 hour if you commit to get tested.": [
         null,
-        "* Gaan na jou plaaslike kliniek vir 'n gratis TB-toets.\n* Jy sal R15 lugtyd kry as jy onderneem om jou te laat toets. "
+        "* Gaan na jou plaaslike kliniek vir 'n gratis TB-toets.\n* Jy sal R15 lugtyd kry as jy onderneem om jou te laat toets."
     ],
     "Your replies to the questions show that you need a TB test this week.": [
         null,
@@ -442,11 +434,11 @@
     ],
     "Did you find TB HealthCheck useful?": [
         null,
-        "Het jy die TB HealthCheck nuttig gevind? "
+        "Het jy die TB HealthCheck nuttig gevind?"
     ],
     "Don't know": [
         null,
-        "Weet nie "
+        "Weet nie"
     ],
     "I did not go to the clinic for a TB test because it takes too much time. Do you agree?": [
         null,
@@ -466,7 +458,7 @@
     ],
     "I did not go to the clinic for a TB test because I do not want to think about having TB. Do you agree?": [
         null,
-        "Ek het nie kliniek toe gegaan vir 'n TB-toets nie, want ek wil nie daaraan dink dat ek dalk TB het nie. \nStem jy saam? "
+        "Ek het nie kliniek toe gegaan vir 'n TB-toets nie, want ek wil nie daaraan dink dat ek dalk TB het nie. Stem jy saam?"
     ],
     "Are there any other reasons why you did not go to the clinic for a TB test?Reply in your own words.": [
         null,
@@ -484,7 +476,7 @@
         null,
         "Verlaat"
     ],
-    "The FAQ has been sent to you on SMS. What would you like to do?": [
+    "The FAQ has been sent to you by SMS. What would you like to do?": [
         null,
         "Die FAQ is na jou gestuur in 'n SMS. Wat verkies jy om te doen?"
     ],
