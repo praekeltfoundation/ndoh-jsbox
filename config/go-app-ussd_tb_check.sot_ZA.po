@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2023-02-16 04:40:+0000\n"
-"PO-Revision-Date: 2023-02-20 10:08+0200\n"
+"POT-Creation-Date: 2023-02-21 11:51:+0000\n"
+"PO-Revision-Date: 2023-02-21 15:47+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sot_ZA\n"
@@ -34,7 +34,7 @@ msgstr ""
 
 #: src/ussd_tb_check.js:166
 msgid "Continue"
-msgstr "Tswela pele "
+msgstr "Tswela pele"
 
 #: src/ussd_tb_check.js:171
 msgid "This service works best when you choose number options from the list."
@@ -414,8 +414,12 @@ msgstr ""
 "nepahetse ho latela tsebo ya hao."
 
 #: src/ussd_tb_check.js:839 src/ussd_tb_check.js:845
+#, fuzzy
+#| msgid ""
+#| "Thanks for your answers. Your result will be sent soon on SMS. Would you "
+#| "like to receive follow-up messages?"
 msgid ""
-"Thanks for your answers. Your result will be sent soon on SMS. Would you "
+"Thanks for your answers. Your result will be sent soon by SMS. Would you "
 "like to receive follow-up messages?"
 msgstr ""
 "Ke leboha dikarabo tsa hao. Sephetho sa hao se tla romellwa haufinyane ka "
@@ -430,7 +434,9 @@ msgid "Okay thanks, you won't get any follow-up messages."
 msgstr "Ho lokile rea leboha, o ke ke wa fumana melaetsa ya tshalo-morao."
 
 #: src/ussd_tb_check.js:947
-msgid "Thanks for your answers. Your result will be sent soon on SMS."
+#, fuzzy
+#| msgid "Thanks for your answers. Your result will be sent soon on SMS."
+msgid "Thanks for your answers. Your result will be sent soon by SMS."
 msgstr ""
 "Ke leboha dikarabo tsa hao. Sephetho sa hao se tla romellwa haufinyane ka "
 "SMS."
@@ -703,7 +709,9 @@ msgid "Exit"
 msgstr "Etswa"
 
 #: src/ussd_tb_check.js:1527
-msgid "The FAQ has been sent to you on SMS. What would you like to do?"
+#, fuzzy
+#| msgid "The FAQ has been sent to you on SMS. What would you like to do?"
+msgid "The FAQ has been sent to you by SMS. What would you like to do?"
 msgstr "FAQ e rometswe ho wena ka SMS. O ka rata ho etsa eng?"
 
 #: src/ussd_tb_check.js:1531 src/ussd_tb_check.js:1554
