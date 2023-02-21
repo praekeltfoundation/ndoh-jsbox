@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2023-02-16 04:40:+0000\n"
-"PO-Revision-Date: 2023-02-20 09:52+0200\n"
+"POT-Creation-Date: 2023-02-21 11:51:+0000\n"
+"PO-Revision-Date: 2023-02-21 16:16+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: afr_ZA\n"
@@ -60,7 +60,7 @@ msgid ""
 "This NDoH service only provides health info. Please agree that you are "
 "responsible for your own medical care and treatment."
 msgstr ""
-"Dié NDvG-diens verskaf gesondheidsinligting. Stem jy saam dat jy "
+"Die NDvG-diens verskaf gesondheidsinligting. Stem jy saam dat jy "
 "verantwoordelik is vir jou mediese sorg en behandeling?"
 
 #: src/ussd_tb_check.js:206 src/ussd_tb_check.js:705 src/ussd_tb_check.js:722
@@ -196,7 +196,7 @@ msgid ""
 msgstr ""
 "Antwoord met 'n nommer uit die lys.\n"
 "\n"
-"Hoe oud is jy? "
+"Hoe oud is jy?"
 
 #: src/ussd_tb_check.js:360
 msgid "under 18"
@@ -235,7 +235,7 @@ msgid ""
 msgstr ""
 "Regso, geen probleem nie. Jy sal nie ingesluit word in die navorsing nie, "
 "maar jy kan nogsteeds voortgaan om te bepaal of jy 'n TB- toets moet laat "
-"doen. "
+"doen."
 
 #: src/ussd_tb_check.js:410
 msgid "Which gender do you identify as?"
@@ -265,11 +265,11 @@ msgstr "ANDER"
 
 #: src/ussd_tb_check.js:423
 msgid "RATHER NOT SAY"
-msgstr "WIL LIEWER NIE SÊ NIE"
+msgstr "WIL LIEWER NIE SE NIE"
 
 #: src/ussd_tb_check.js:449
 msgid "Choose your province"
-msgstr "Kies jou provinsie."
+msgstr "Kies jou provinsie"
 
 #: src/ussd_tb_check.js:452
 msgid "E. CAPE"
@@ -309,15 +309,15 @@ msgstr "W. KAAP"
 
 #: src/ussd_tb_check.js:475
 msgid "Please type the name of the street where you live."
-msgstr "Tik asseblief die naam van die straat waar jy bly in."
+msgstr "In watter straat bly jy?"
 
 #: src/ussd_tb_check.js:498
 msgid "Please type the name of the suburb/township/village where you live."
-msgstr "Tik asseblief die naam van die woonbuurt/township/dorp waar jy bly in."
+msgstr "In watter woonbuurt/township/dorp bly jy?"
 
 #: src/ussd_tb_check.js:539
 msgid "Please type the name of the city where you live."
-msgstr "Tik asb die naam van die stad waar jy bly in."
+msgstr "In watter straat bly jy?"
 
 #: src/ussd_tb_check.js:543
 msgid ""
@@ -368,17 +368,17 @@ msgstr "Sweet jy meer as gewoonlik snags?"
 #: src/ussd_tb_check.js:730
 msgid ""
 "Please use numbers from list. Are you sweating more than usual at night?"
-msgstr "Antwoord met 'n nommer uit die lys. Sweet jy meer as gewoonlik snags? "
+msgstr "Antwoord met 'n nommer uit die lys. Sweet jy meer as gewoonlik snags?"
 
 #: src/ussd_tb_check.js:739
 msgid "Have you been losing weight without trying?"
-msgstr "Verloor jy gewig sonder dat jy probeer? "
+msgstr "Verloor jy gewig sonder dat jy probeer?"
 
 #: src/ussd_tb_check.js:740
 msgid ""
 "Please use numbers from list. Have you been losing weight without trying?"
 msgstr ""
-"Antwoord met 'n nommer uit die lys. Verloor jy gewig sonder dat jy probeer? "
+"Antwoord met 'n nommer uit die lys. Verloor jy gewig sonder dat jy probeer?"
 
 #: src/ussd_tb_check.js:756
 msgid ""
@@ -420,11 +420,11 @@ msgstr ""
 
 #: src/ussd_tb_check.js:839 src/ussd_tb_check.js:845
 msgid ""
-"Thanks for your answers. Your result will be sent soon on SMS. Would you "
+"Thanks for your answers. Your result will be sent soon by SMS. Would you "
 "like to receive follow-up messages?"
 msgstr ""
 "Dankie vir jou antwoorde. Jou resultate sal binnekort per sms gestuur word. "
-"Wil jy graag opvolg-boodskappe ontvang?"
+"Wil jy graag opvolg-boodskappe ontvang? "
 
 #: src/ussd_tb_check.js:940
 msgid "Thanks for choosing to get our follow-up messages."
@@ -435,9 +435,9 @@ msgid "Okay thanks, you won't get any follow-up messages."
 msgstr "Reg so dankie, jy sal nie enige opvolg-boodskappe ontvang nie."
 
 #: src/ussd_tb_check.js:947
-msgid "Thanks for your answers. Your result will be sent soon on SMS."
+msgid "Thanks for your answers. Your result will be sent soon by SMS."
 msgstr ""
-"Dankie vir jou antwoorde. Jou resultate sal binnekort per sms gestuur word."
+"Dankie vir jou antwoorde. Jou resultate sal binnekort per sms gestuur word. "
 
 #: src/ussd_tb_check.js:950
 msgid "This service works best when you select numbers from the list"
@@ -485,7 +485,7 @@ msgstr ""
 "Jou antwoorde toon dat jy 'n TB-toets moet neem hierdie week! \n"
 "\n"
 "Gaan na jou kliniek vir 'n gratis TB-toets. Sit asseblief jou gesigmasker op "
-"voordat jy ingaan"
+"voordat jy ingaan:"
 
 #: src/ussd_tb_check.js:1029
 msgid ""
@@ -494,9 +494,9 @@ msgid ""
 "* Get there early! Clinics are open for TB testing\n"
 "Monday to Friday mornings."
 msgstr ""
-"Maak tyd. Jou gesondheid is belangrik!\n"
-"Kies die gerieflikste kliniek vir jou toets. Hier is die 5 klinieke naaste "
-"aan jou"
+"* Maak tyd. Jou gesondheid is belangrik!\n"
+"* Kies die gerieflikste kliniek vir jou toets. \n"
+"* Hier is die 5 klinieke naaste aan jou"
 
 #: src/ussd_tb_check.js:1089
 msgid "Where will you go for your test? Reply with the clinic"
@@ -547,7 +547,7 @@ msgid ""
 "* You will get R15 airtime within 1 hour if you commit to get tested."
 msgstr ""
 "* Gaan na jou plaaslike kliniek vir 'n gratis TB-toets.\n"
-"* Jy sal R15 lugtyd kry as jy onderneem om jou te laat toets. "
+"* Jy sal R15 lugtyd kry as jy onderneem om jou te laat toets."
 
 #: src/ussd_tb_check.js:1159
 msgid "Your replies to the questions show that you need a TB test this week."
@@ -638,14 +638,14 @@ msgstr "Meer"
 
 #: src/ussd_tb_check.js:1329
 msgid "Did you find TB HealthCheck useful?"
-msgstr "Het jy die TB HealthCheck nuttig gevind? "
+msgstr "Het jy die TB HealthCheck nuttig gevind?"
 
 #: src/ussd_tb_check.js:1340 src/ussd_tb_check.js:1361
 #: src/ussd_tb_check.js:1382 src/ussd_tb_check.js:1404
 #: src/ussd_tb_check.js:1674 src/ussd_tb_check.js:1694
 #: src/ussd_tb_check.js:1714 src/ussd_tb_check.js:1736
 msgid "Don't know"
-msgstr "Weet nie "
+msgstr "Weet nie"
 
 #: src/ussd_tb_check.js:1349
 msgid ""
@@ -679,8 +679,7 @@ msgid ""
 "about having TB. Do you agree?"
 msgstr ""
 "Ek het nie kliniek toe gegaan vir 'n TB-toets nie, want ek wil nie daaraan "
-"dink dat ek dalk TB het nie. \n"
-"Stem jy saam? "
+"dink dat ek dalk TB het nie. Stem jy saam?"
 
 #: src/ussd_tb_check.js:1413
 msgid ""
@@ -705,7 +704,7 @@ msgid "Exit"
 msgstr "Verlaat"
 
 #: src/ussd_tb_check.js:1527
-msgid "The FAQ has been sent to you on SMS. What would you like to do?"
+msgid "The FAQ has been sent to you by SMS. What would you like to do?"
 msgstr "Die FAQ is na jou gestuur in 'n SMS. Wat verkies jy om te doen?"
 
 #: src/ussd_tb_check.js:1531 src/ussd_tb_check.js:1554

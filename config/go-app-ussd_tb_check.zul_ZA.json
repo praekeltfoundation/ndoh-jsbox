@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2023-02-16 04:40:+0000",
-        "po-revision-date": "2023-02-20 09:59+0200",
+        "pot-creation-date": "2023-02-21 11:51:+0000",
+        "po-revision-date": "2023-02-21 16:14+0200",
         "last-translator": "",
         "language-team": "",
         "language": "zu_ZA",
@@ -46,7 +46,7 @@
     ],
     "This NDoH service only provides health info. Please agree that you are responsible for your own medical care and treatment.": [
         null,
-        "Lesevisi ye-NDoH inikeza imininingwane yezempilo kphela. Scela uvume ukuth unegunya lokunakekelwa nokwelashwa kwakho. "
+        "Lesevisi ye-NDoH inikeza imininingwane yezempilo kphela. Scela uvume ukuth unegunya lokunakekelwa nokwelashwa kwakho."
     ],
     "YES": [
         null,
@@ -258,15 +258,15 @@
     ],
     "Please use numbers from list.\nDo you have a cough?": [
         null,
-        "Asiboneuzizwa kanjani namuhla. Uyakhwehlela?"
+        "Sicela usebenzise izinombolo ezisohlwini.\nUyakhwehlela?"
     ],
     "Do you have a fever? (when you touch your forehead, does it feel hot?)": [
         null,
-        "Unemfiva? (uma uthina isiphongo sakho, usizwa sishisa?)"
+        "Unemfiva? (uma uthinta isiphongo sakho, usizwa sishisa?)"
     ],
     "Please use numbers from list. Do you have a fever? (when you touch your forehead, does it feel hot?)": [
         null,
-        "Unemfiva? (uma uthina isiphongo sakho, usizwa sishisa?)"
+        "Sicela usebenzise izinombolo ezisohlwini. Unemfiva? (uma uthinta isiphongo sakho, usizwa sishisa?)"
     ],
     "Are you sweating more than usual at night?": [
         null,
@@ -274,7 +274,7 @@
     ],
     "Please use numbers from list. Are you sweating more than usual at night?": [
         null,
-        "Ingabe ujuluka ngaphezu kokujwayelekile ebusuku?"
+        "Sicela usebenzise izinombolo ezisohlwini. Ingabe ujuluka ngaphezu kokujwayelekile ebusuku?"
     ],
     "Have you been losing weight without trying?": [
         null,
@@ -282,7 +282,7 @@
     ],
     "Please use numbers from list. Have you been losing weight without trying?": [
         null,
-        "Ngabe uyancipha emzimbeni ngaphandle kokuzama?"
+        "Sicela usebenzise izinombolo ezisohlwini. Ngabe uyancipha emzimbeni ngaphandle kokuzama?"
     ],
     "Are you at high risk of TB?\n\nRisk means you live with someone who has TB OR you had TB in the last 2 years OR you are HIV+": [
         null,
@@ -290,7 +290,7 @@
     ],
     "Please use numbers from list. Are you at high risk for TB?": [
         null,
-        "Phendula ngenombolo\n\nIngabe usengozini enkulu ye-TB?"
+        "Sicela usebenzise izinombolo ezisohlwini. Ingabe usengozini enkulu ye-TB?"
     ],
     "Yes high risk": [
         null,
@@ -308,9 +308,9 @@
         null,
         "Ekugcineni, ngicela uvume ukuthi imininingwane owabelane ngayo iyiqiniso ngokwazi kwakho."
     ],
-    "Thanks for your answers. Your result will be sent soon on SMS. Would you like to receive follow-up messages?": [
+    "Thanks for your answers. Your result will be sent soon by SMS. Would you like to receive follow-up messages?": [
         null,
-        "Siyabonga ngempendulo yakho. Imiphumela yakho izothunyelwa ku-SMS kungekudala. Ungathanda ukuthola imilayezo ezolandelela?"
+        "Siyabonga ngempendulo yakho. Imiphumela yakho izothunyelwa nge-SMS kungekudala. Ungathanda ukuthola imilayezo ezolandelela?"
     ],
     "Thanks for choosing to get our follow-up messages.": [
         null,
@@ -320,9 +320,9 @@
         null,
         "Kulungile siyabonga, ngeke uthole imilayezo ezolandelela."
     ],
-    "Thanks for your answers. Your result will be sent soon on SMS.": [
+    "Thanks for your answers. Your result will be sent soon by SMS.": [
         null,
-        "Siyabonga ngempendulo yakho. Imiphumela yakho izothunyelwa ku-SMS kungekudala."
+        "Siyabonga ngempendulo yakho. Imiphumela yakho izothunyelwa nge-SMS kungekudala."
     ],
     "This service works best when you select numbers from the list": [
         null,
@@ -484,9 +484,9 @@
         null,
         "Phuma"
     ],
-    "The FAQ has been sent to you on SMS. What would you like to do?": [
+    "The FAQ has been sent to you by SMS. What would you like to do?": [
         null,
-        "I-FAQ ithunyelwe kuwe nge-SMS. Ungathanda ukwenzani?"
+        "I-FAQ ithunyelwe kuwe nge-SMS. Ungathanda ukwenzani? "
     ],
     "Please reply with the number that matches your answer.": [
         null,

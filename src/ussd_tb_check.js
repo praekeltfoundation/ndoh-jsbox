@@ -838,13 +838,13 @@ go.app = function () {
     self.states.add("state_opt_in", function (name) {
       var question = $(
         [
-          "Thanks for your answers. Your result will be sent soon on SMS. Would you like " +
+          "Thanks for your answers. Your result will be sent soon by SMS. Would you like " +
             "to receive follow-up messages?"
         ].join("\n")
       );
       var error = $(
         [
-          "Thanks for your answers. Your result will be sent soon on SMS. Would you like " +
+          "Thanks for your answers. Your result will be sent soon by SMS. Would you like " +
             "to receive follow-up messages?"
         ].join("\n")
       );
@@ -944,7 +944,7 @@ go.app = function () {
       }
 
       if (activation === "tb_study_a"){
-        text = $("Thanks for your answers. Your result will be sent soon on SMS.");
+        text = $("Thanks for your answers. Your result will be sent soon by SMS.");
       }
 
       var error = $(
@@ -1525,7 +1525,7 @@ go.app = function () {
         }
       return new MenuState(name, {
         question: $(
-          "The FAQ has been sent to you on SMS. " +
+          "The FAQ has been sent to you by SMS. " +
           "What would you like to do?"
         ),
         error: $([

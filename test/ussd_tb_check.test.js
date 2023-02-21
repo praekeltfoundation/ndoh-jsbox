@@ -1677,7 +1677,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_opt_in",
           reply: [
-            "Thanks for your answers. Your result will be sent soon on SMS. Would you like " +
+            "Thanks for your answers. Your result will be sent soon by SMS. Would you like " +
               "to receive follow-up messages?",
             "1. Yes",
             "2. No",
@@ -1693,7 +1693,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_opt_in",
           reply: [
-            "Thanks for your answers. Your result will be sent soon on SMS. Would you like " +
+            "Thanks for your answers. Your result will be sent soon by SMS. Would you like " +
               "to receive follow-up messages?",
             "1. Yes",
             "2. No",
