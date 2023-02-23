@@ -1,0 +1,576 @@
+{
+    "": {
+        "pot-creation-date": "2023-02-21 11:51:+0000",
+        "project-id-version": "PACKAGE VERSION",
+        "language-team": "LANGUAGE <LL@li.org>",
+        "language": "",
+        "mime-version": "1.0",
+        "content-type": "text/plain; charset=utf-8",
+        "content-transfer-encoding": "8bit",
+        "po-revision-date": "YEAR-MO-DA HO:MI+ZONE"
+    },
+    "Welcome back to the The National Department of Health's TB HealthCheck": [
+        null,
+        ""
+    ],
+    "Continue where I left off": [
+        null,
+        ""
+    ],
+    "Start over": [
+        null,
+        ""
+    ],
+    "Unfortunately, you cannot participate in the study more than once. You can still continue with a TB Check but you will not be included in the study.": [
+        null,
+        ""
+    ],
+    "Continue": [
+        null,
+        ""
+    ],
+    "This service works best when you choose number options from the list.": [
+        null,
+        ""
+    ],
+    "The National Department of Health thanks you for helping to protect the health of all SA citizens. Stop the spread of TB.": [
+        null,
+        ""
+    ],
+    "START": [
+        null,
+        ""
+    ],
+    "This NDoH service only provides health info. Please agree that you are responsible for your own medical care and treatment.": [
+        null,
+        ""
+    ],
+    "YES": [
+        null,
+        ""
+    ],
+    "NO": [
+        null,
+        ""
+    ],
+    "MORE INFO": [
+        null,
+        ""
+    ],
+    "Return to use this service at any time. Remember, if you think you have TB, avoid contact with other people and get tested at your nearest clinic.": [
+        null,
+        ""
+    ],
+    "TB HealthCheck does not replace medical advice, diagnosis or treatment. Get a qualified health provider's advice on your medical condition and care.": [
+        null,
+        ""
+    ],
+    "Next": [
+        null,
+        ""
+    ],
+    "You use this info at your own risk. This tool cannot replace medical advice. Agree not to ignore or delay getting medical advice on treatment or care": [
+        null,
+        ""
+    ],
+    "Your personal information is protected under POPIA and in accordance with the provisions of the TBHealthCheck Privacy Notice sent to you by SMS.": [
+        null,
+        ""
+    ],
+    "ACCEPT": [
+        null,
+        ""
+    ],
+    "Choose your preferred language": [
+        null,
+        ""
+    ],
+    "Please reply with numbers. Choose your preferred language": [
+        null,
+        ""
+    ],
+    "English": [
+        null,
+        ""
+    ],
+    "isiZulu": [
+        null,
+        ""
+    ],
+    "Afrikaans": [
+        null,
+        ""
+    ],
+    "isiXhosa": [
+        null,
+        ""
+    ],
+    "Sesotho": [
+        null,
+        ""
+    ],
+    "If you agree, we will use your information to see if this TB Check helps people.\nDo you agree?": [
+        null,
+        ""
+    ],
+    "Please reply with numbers. Do you agree?": [
+        null,
+        ""
+    ],
+    "Yes": [
+        null,
+        ""
+    ],
+    "No": [
+        null,
+        ""
+    ],
+    "FAQ for more info on TBCheck and the research.": [
+        null,
+        ""
+    ],
+    "How old are you?": [
+        null,
+        ""
+    ],
+    "Please use numbers from list.\n\nHow old are you?": [
+        null,
+        ""
+    ],
+    "under 18": [
+        null,
+        ""
+    ],
+    "18-39": [
+        null,
+        ""
+    ],
+    "40-65": [
+        null,
+        ""
+    ],
+    "over 65": [
+        null,
+        ""
+    ],
+    "Unfortunately you cant participate in the study if you are younger than 18.": [
+        null,
+        ""
+    ],
+    "You can still continue with a TB Check but you will not be included in the study": [
+        null,
+        ""
+    ],
+    "Okay, no problem. You will not be included in the research, but you can still continue to check if you need to take a TB test.": [
+        null,
+        ""
+    ],
+    "Which gender do you identify as?": [
+        null,
+        ""
+    ],
+    "Please use numbers from list.\n\nWhich gender do you identify as?": [
+        null,
+        ""
+    ],
+    "MALE": [
+        null,
+        ""
+    ],
+    "FEMALE": [
+        null,
+        ""
+    ],
+    "OTHER": [
+        null,
+        ""
+    ],
+    "RATHER NOT SAY": [
+        null,
+        ""
+    ],
+    "Choose your province": [
+        null,
+        ""
+    ],
+    "E. CAPE": [
+        null,
+        ""
+    ],
+    "FREE STATE": [
+        null,
+        ""
+    ],
+    "GAUTENG": [
+        null,
+        ""
+    ],
+    "KWAZULU NATAL": [
+        null,
+        ""
+    ],
+    "LIMPOPO": [
+        null,
+        ""
+    ],
+    "MPUMALANGA": [
+        null,
+        ""
+    ],
+    "NORTH WEST": [
+        null,
+        ""
+    ],
+    "N. CAPE": [
+        null,
+        ""
+    ],
+    "W. CAPE": [
+        null,
+        ""
+    ],
+    "Please type the name of the street where you live.": [
+        null,
+        ""
+    ],
+    "Please type the name of the suburb/township/village where you live.": [
+        null,
+        ""
+    ],
+    "Please type the name of the city where you live.": [
+        null,
+        ""
+    ],
+    "Sorry, we don't understand. Please try again.\n\nPlease type the name of the city where you live": [
+        null,
+        ""
+    ],
+    "Please check that the address below is correct and matches the information you gave us:\n{{ address }}": [
+        null,
+        ""
+    ],
+    "Let's see how you're feeling today. Do you have a cough?": [
+        null,
+        ""
+    ],
+    "Please use numbers from list.\nDo you have a cough?": [
+        null,
+        ""
+    ],
+    "Do you have a fever? (when you touch your forehead, does it feel hot?)": [
+        null,
+        ""
+    ],
+    "Please use numbers from list. Do you have a fever? (when you touch your forehead, does it feel hot?)": [
+        null,
+        ""
+    ],
+    "Are you sweating more than usual at night?": [
+        null,
+        ""
+    ],
+    "Please use numbers from list. Are you sweating more than usual at night?": [
+        null,
+        ""
+    ],
+    "Have you been losing weight without trying?": [
+        null,
+        ""
+    ],
+    "Please use numbers from list. Have you been losing weight without trying?": [
+        null,
+        ""
+    ],
+    "Are you at high risk of TB?\n\nRisk means you live with someone who has TB OR you had TB in the last 2 years OR you are HIV+": [
+        null,
+        ""
+    ],
+    "Please use numbers from list. Are you at high risk for TB?": [
+        null,
+        ""
+    ],
+    "Yes high risk": [
+        null,
+        ""
+    ],
+    "Dont know": [
+        null,
+        ""
+    ],
+    "Now, please agree that the info you shared is correct and that you give the NDoH permission to contact you if needed?": [
+        null,
+        ""
+    ],
+    "Finally, please agree that the info you shared is correct.": [
+        null,
+        ""
+    ],
+    "Thanks for your answers. Your result will be sent soon by SMS. Would you like to receive follow-up messages?": [
+        null,
+        ""
+    ],
+    "Thanks for choosing to get our follow-up messages.": [
+        null,
+        ""
+    ],
+    "Okay thanks, you won't get any follow-up messages.": [
+        null,
+        ""
+    ],
+    "Thanks for your answers. Your result will be sent soon by SMS.": [
+        null,
+        ""
+    ],
+    "This service works best when you select numbers from the list": [
+        null,
+        ""
+    ],
+    "See Results": [
+        null,
+        ""
+    ],
+    "Your replies to the questions show that you need a TB test this week!\n\nVisit your local clinic for a free TB test.": [
+        null,
+        ""
+    ],
+    "Your replies to the questions show that you need a TB test this week!": [
+        null,
+        ""
+    ],
+    "With early diagnosis, TB can be cured. Don't delay, test today!\n\nVisit your local clinic for a free TB test. ": [
+        null,
+        ""
+    ],
+    "Your replies to the questions show that you need a TB test this week!\n\nHere are some tips to help you plan:": [
+        null,
+        ""
+    ],
+    "* Make the time. Your health is a priority!\n* Pick the most convenient clinic for your test\n* Get there early! Clinics are open for TB testing\nMonday to Friday mornings.": [
+        null,
+        ""
+    ],
+    "Where will you go for your test? Reply with the clinic": [
+        null,
+        ""
+    ],
+    "When will you go for your test? Reply with the day": [
+        null,
+        ""
+    ],
+    "MONDAY": [
+        null,
+        ""
+    ],
+    "TUESDAY": [
+        null,
+        ""
+    ],
+    "WEDNESDAY": [
+        null,
+        ""
+    ],
+    "THURSDAY": [
+        null,
+        ""
+    ],
+    "FRIDAY": [
+        null,
+        ""
+    ],
+    "Well done for planning to get your test!": [
+        null,
+        ""
+    ],
+    "Your replies to the questions show that you need a TB test this week!\n\n* Go to your local clinic for a free TB test.": [
+        null,
+        ""
+    ],
+    "* Visit your local clinic for a free TB test.\n* You will get R15 airtime within 1 hour if you commit to get tested.": [
+        null,
+        ""
+    ],
+    "Your replies to the questions show that you need a TB test this week.": [
+        null,
+        ""
+    ],
+    "Do you commit to getting tested?": [
+        null,
+        ""
+    ],
+    "Please use numbers from list. Do you commit to getting tested?": [
+        null,
+        ""
+    ],
+    "Well done for committing to your health!": [
+        null,
+        ""
+    ],
+    "Even if you can't commit now, it is still important to get tested.": [
+        null,
+        ""
+    ],
+    "You don't need a TB test now, but if you develop cough, fever, weight loss or night sweats visit your nearest clinic.": [
+        null,
+        ""
+    ],
+    "Your replies to the questions show you need a TB test this week.\n\nGo to your clinic for a free TB test.": [
+        null,
+        ""
+    ],
+    "Check if those you live with are on TB treatment. If you don't know your HIV status, visit the clinic for a free HIV test. Then do the TB check again.": [
+        null,
+        ""
+    ],
+    "None": [
+        null,
+        ""
+    ],
+    "We will use this information to see if TB HealthCheck helps people. To continue, reply YES. For more on TB HealthCheck and the research, reply MORE.": [
+        null,
+        ""
+    ],
+    "Sorry, we don't understand. Please try again.\n\nEnter the number that matches your answer.": [
+        null,
+        ""
+    ],
+    "More": [
+        null,
+        ""
+    ],
+    "Did you find TB HealthCheck useful?": [
+        null,
+        ""
+    ],
+    "Don't know": [
+        null,
+        ""
+    ],
+    "I did not go to the clinic for a TB test because it takes too much time. Do you agree?": [
+        null,
+        ""
+    ],
+    "Agree": [
+        null,
+        ""
+    ],
+    "Disagree": [
+        null,
+        ""
+    ],
+    "I did not go to the clinic for a TB test because there are no clinics close to me.": [
+        null,
+        ""
+    ],
+    "I did not go to the clinic for a TB test because I do not want to think about having TB. Do you agree?": [
+        null,
+        ""
+    ],
+    "Are there any other reasons why you did not go to the clinic for a TB test?Reply in your own words.": [
+        null,
+        ""
+    ],
+    "Thank you for taking part in the survey. Your R15 in airtime is on its way!": [
+        null,
+        ""
+    ],
+    "Back": [
+        null,
+        ""
+    ],
+    "Exit": [
+        null,
+        ""
+    ],
+    "The FAQ has been sent to you by SMS. What would you like to do?": [
+        null,
+        ""
+    ],
+    "Please reply with the number that matches your answer.": [
+        null,
+        ""
+    ],
+    "What would you like to know?": [
+        null,
+        ""
+    ],
+    "More about the research?": [
+        null,
+        ""
+    ],
+    "What information will you ask me for?": [
+        null,
+        ""
+    ],
+    "Why did I get the SMS?": [
+        null,
+        ""
+    ],
+    "What I'll need to do?": [
+        null,
+        ""
+    ],
+    "Can I stop halfway through?": [
+        null,
+        ""
+    ],
+    "Are there costs or risks?": [
+        null,
+        ""
+    ],
+    "What happens to the info?": [
+        null,
+        ""
+    ],
+    "What to do if I am unhappy?": [
+        null,
+        ""
+    ],
+    "Many people don't realise that TB is cureable and test too late. Your answers will help us understand whether TB HealthCheck really helps people.": [
+        null,
+        ""
+    ],
+    "Did TB HealthCheck encourage you to get tested?": [
+        null,
+        ""
+    ],
+    "Would you have tested without TB HealthCheck?": [
+        null,
+        ""
+    ],
+    "Would you have further delayed testing without TB HealthCheck?": [
+        null,
+        ""
+    ],
+    "The waiting times at the clinic were too long.\n\nDo you agree?": [
+        null,
+        ""
+    ],
+    "How was your experience at the clinic?": [
+        null,
+        ""
+    ],
+    "Bad": [
+        null,
+        ""
+    ],
+    "Ok": [
+        null,
+        ""
+    ],
+    "Good": [
+        null,
+        ""
+    ],
+    "Was it difficult to get access to a TB test? Please reply with details of any problems you experienced.": [
+        null,
+        ""
+    ],
+    "Why did you go to the clinic for a TB test?": [
+        null,
+        ""
+    ],
+    "Can we phone you to get more information?": [
+        null,
+        ""
+    ]
+}
