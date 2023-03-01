@@ -2,7 +2,7 @@
     "": {
         "project-id-version": "",
         "pot-creation-date": "2023-02-21 11:51:+0000",
-        "po-revision-date": "2023-02-21 16:15+0200",
+        "po-revision-date": "2023-03-01 11:01+0200",
         "last-translator": "",
         "language-team": "",
         "language": "sot_ZA",
@@ -37,7 +37,7 @@
     ],
     "The National Department of Health thanks you for helping to protect the health of all SA citizens. Stop the spread of TB.": [
         null,
-        "Lefapha la Naha la Bophelo le leboha ka ho thusa ho sireletsa bophelo ba baahi bohle ba SA. Emisa ho ata ha TB. "
+        "Lefapha la Naha la Bophelo le leboha ka ho thusa ho sireletsa bophelo ba baahi bohle ba SA. Emisa ho ata ha TB."
     ],
     "START": [
         null,
@@ -482,6 +482,10 @@
     "Exit": [
         null,
         "Etswa"
+    ],
+    "The FAQ has been sent to you by SMS. What would you like to do?": [
+        null,
+        "FAQ e rometswe ho wena ka SMS. O ka rata ho etsa eng? "
     ],
     "Please reply with the number that matches your answer.": [
         null,
