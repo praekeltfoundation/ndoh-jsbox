@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-02-21 11:51:+0000\n"
-"PO-Revision-Date: 2023-02-21 16:15+0200\n"
+"PO-Revision-Date: 2023-03-01 11:01+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sot_ZA\n"
@@ -47,7 +47,7 @@ msgid ""
 "health of all SA citizens. Stop the spread of TB."
 msgstr ""
 "Lefapha la Naha la Bophelo le leboha ka ho thusa ho sireletsa bophelo ba "
-"baahi bohle ba SA. Emisa ho ata ha TB. "
+"baahi bohle ba SA. Emisa ho ata ha TB."
 
 #: src/ussd_tb_check.js:182
 msgid "START"
@@ -703,10 +703,8 @@ msgid "Exit"
 msgstr "Etswa"
 
 #: src/ussd_tb_check.js:1527
-#, fuzzy
-#| msgid "The FAQ has been sent to you on SMS. What would you like to do?"
 msgid "The FAQ has been sent to you by SMS. What would you like to do?"
-msgstr "FAQ e rometswe ho wena ka SMS. O ka rata ho etsa eng?"
+msgstr "FAQ e rometswe ho wena ka SMS. O ka rata ho etsa eng? "
 
 #: src/ussd_tb_check.js:1531 src/ussd_tb_check.js:1554
 #: src/ussd_tb_check.js:1573
