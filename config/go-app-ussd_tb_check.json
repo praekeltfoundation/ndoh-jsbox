@@ -1,6 +1,6 @@
 {
     "": {
-        "pot-creation-date": "2023-02-21 11:51:+0000",
+        "pot-creation-date": "2023-03-16 12:00:+0000",
         "project-id-version": "PACKAGE VERSION",
         "language-team": "LANGUAGE <LL@li.org>",
         "language": "",
@@ -106,6 +106,10 @@
         ""
     ],
     "Sesotho": [
+        null,
+        ""
+    ],
+    "Setswana": [
         null,
         ""
     ],

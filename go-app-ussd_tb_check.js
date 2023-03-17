@@ -39,6 +39,7 @@ go.Engage = function() {
                           ssw_ZA: "en",
                           ven_ZA: "en",
                           nbl_ZA: "en",
+                          set_ZA: "en",
                         };
     });
 
@@ -422,6 +423,11 @@ go.app = function () {
 
     self.states.add("state_privacy_policy_accepted", function(name) {
       var next_state = "state_language";
+      var activation = self.im.user.answers.activation;
+
+      if(!activation){
+        next_state = "state_core_language";
+      }
       if (self.im.user.answers.state_privacy_policy_accepted == "yes") {
         return self.states.create(next_state);
       }
@@ -433,6 +439,40 @@ go.app = function () {
         ),
         accept_labels: true,
         choices: [new Choice(next_state, $("ACCEPT"))],
+      });
+    });
+
+    self.states.add("state_core_language", function (name) {
+      var next_state = "state_age";
+
+      if (self.im.user.answers.state_language) {
+        return self.im.user.set_lang(self.im.user.answers.state_language)
+        .then(function() {
+          return self.states.create(next_state);
+        });
+      }
+      return new ChoiceState(name, {
+        question: $("Choose your preferred language"),
+        error: $("Please reply with numbers. Choose your preferred language"),
+        accept_labels: true,
+        choices: [
+          new Choice("eng", $("English")),
+          new Choice("zul", $("isiZulu")),
+          new Choice("afr", $("Afrikaans")),
+          new Choice("xho", $("isiXhosa")),
+          new Choice("sot", $("Sesotho")),
+          new Choice("set", $("Setswana")),
+        ],
+        next: function(choice) {
+          self.im.user.answers.state_language = choice.value;
+          if (choice.value != "eng"){
+            return self.im.user.set_lang(choice.value)
+            .then(function() {
+              return self.states.create(next_state);
+            });
+          }
+          return self.states.create(next_state);
+        }
       });
     });
 
