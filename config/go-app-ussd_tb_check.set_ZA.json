@@ -2,7 +2,7 @@
     "": {
         "project-id-version": "",
         "pot-creation-date": "2023-03-16 12:00:+0000",
-        "po-revision-date": "2023-03-17 23:06+0200",
+        "po-revision-date": "2023-03-19 01:01+0200",
         "last-translator": "",
         "language-team": "",
         "language": "set_ZA",
@@ -77,7 +77,7 @@
     ],
     "Your personal information is protected under POPIA and in accordance with the provisions of the TBHealthCheck Privacy Notice sent to you by SMS.": [
         null,
-        "Dintlha tsa hao tsa botho di sireleditswe ka molao wa POPI le ka dipehelo tsa Tsebiso ya Lekunutu la TBHealthCheck e romeletsweng wena ka SMS."
+        "Tshedimosetso ya gago ya botho e sireleditswe ke POPI Act go ya ka melao ya TBHealthCheck, kitiso ya sephiri e tla romelwa go wena ka SMS."
     ],
     "ACCEPT": [
         null,
