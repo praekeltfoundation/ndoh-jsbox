@@ -1,0 +1,671 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2023-03-16 12:00:+0000\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+
+#: src/ussd_tb_check.js:79
+msgid "Welcome back to the The National Department of Health's TB HealthCheck"
+msgstr ""
+
+#: src/ussd_tb_check.js:84
+msgid "Continue where I left off"
+msgstr ""
+
+#: src/ussd_tb_check.js:85
+msgid "Start over"
+msgstr ""
+
+#: src/ussd_tb_check.js:159 src/ussd_tb_check.js:1683
+msgid ""
+"Unfortunately, you cannot participate in the study more than once. You can "
+"still continue with a TB Check but you will not be included in the study."
+msgstr ""
+
+#: src/ussd_tb_check.js:166
+msgid "Continue"
+msgstr ""
+
+#: src/ussd_tb_check.js:171
+msgid "This service works best when you choose number options from the list."
+msgstr ""
+
+#: src/ussd_tb_check.js:174
+msgid ""
+"The National Department of Health thanks you for helping to protect the "
+"health of all SA citizens. Stop the spread of TB."
+msgstr ""
+
+#: src/ussd_tb_check.js:182
+msgid "START"
+msgstr ""
+
+#: src/ussd_tb_check.js:192 src/ussd_tb_check.js:198
+msgid ""
+"This NDoH service only provides health info. Please agree that you are "
+"responsible for your own medical care and treatment."
+msgstr ""
+
+#: src/ussd_tb_check.js:206 src/ussd_tb_check.js:738 src/ussd_tb_check.js:755 src/ussd_tb_check.js:765 src/ussd_tb_check.js:775 src/ussd_tb_check.js:826 src/ussd_tb_check.js:857 src/ussd_tb_check.js:1205
+msgid "YES"
+msgstr ""
+
+#: src/ussd_tb_check.js:207 src/ussd_tb_check.js:738 src/ussd_tb_check.js:755 src/ussd_tb_check.js:765 src/ussd_tb_check.js:775 src/ussd_tb_check.js:827 src/ussd_tb_check.js:858 src/ussd_tb_check.js:1205
+msgid "NO"
+msgstr ""
+
+#: src/ussd_tb_check.js:208
+msgid "MORE INFO"
+msgstr ""
+
+#: src/ussd_tb_check.js:215
+msgid ""
+"Return to use this service at any time. Remember, if you think you have TB, "
+"avoid contact with other people and get tested at your nearest clinic."
+msgstr ""
+
+#: src/ussd_tb_check.js:225
+msgid ""
+"TB HealthCheck does not replace medical advice, diagnosis or treatment. Get "
+"a qualified health provider's advice on your medical condition and care."
+msgstr ""
+
+#: src/ussd_tb_check.js:230 src/ussd_tb_check.js:241 src/ussd_tb_check.js:410 src/ussd_tb_check.js:422 src/ussd_tb_check.js:434 src/ussd_tb_check.js:1031 src/ussd_tb_check.js:1056 src/ussd_tb_check.js:1070 src/ussd_tb_check.js:1164 src/ussd_tb_check.js:1174 src/ussd_tb_check.js:1186 src/ussd_tb_check.js:1196 src/ussd_tb_check.js:1513 src/ussd_tb_check.js:1596
+msgid "Next"
+msgstr ""
+
+#: src/ussd_tb_check.js:236
+msgid ""
+"You use this info at your own risk. This tool cannot replace medical "
+"advice. Agree not to ignore or delay getting medical advice on treatment or "
+"care"
+msgstr ""
+
+#: src/ussd_tb_check.js:281
+msgid ""
+"Your personal information is protected under POPIA and in accordance with "
+"the provisions of the TBHealthCheck Privacy Notice sent to you by SMS."
+msgstr ""
+
+#: src/ussd_tb_check.js:286
+msgid "ACCEPT"
+msgstr ""
+
+#: src/ussd_tb_check.js:300 src/ussd_tb_check.js:333
+msgid "Choose your preferred language"
+msgstr ""
+
+#: src/ussd_tb_check.js:301 src/ussd_tb_check.js:334
+msgid "Please reply with numbers. Choose your preferred language"
+msgstr ""
+
+#: src/ussd_tb_check.js:304 src/ussd_tb_check.js:337
+msgid "English"
+msgstr ""
+
+#: src/ussd_tb_check.js:305 src/ussd_tb_check.js:338
+msgid "isiZulu"
+msgstr ""
+
+#: src/ussd_tb_check.js:306 src/ussd_tb_check.js:339
+msgid "Afrikaans"
+msgstr ""
+
+#: src/ussd_tb_check.js:307 src/ussd_tb_check.js:340
+msgid "isiXhosa"
+msgstr ""
+
+#: src/ussd_tb_check.js:308 src/ussd_tb_check.js:341
+msgid "Sesotho"
+msgstr ""
+
+#: src/ussd_tb_check.js:309
+msgid "Setswana"
+msgstr ""
+
+#: src/ussd_tb_check.js:361
+msgid ""
+"If you agree, we will use your information to see if this TB Check helps "
+"people.\n"
+"Do you agree?"
+msgstr ""
+
+#: src/ussd_tb_check.js:365
+msgid "Please reply with numbers. Do you agree?"
+msgstr ""
+
+#: src/ussd_tb_check.js:370 src/ussd_tb_check.js:661 src/ussd_tb_check.js:884 src/ussd_tb_check.js:1348 src/ussd_tb_check.js:1374 src/ussd_tb_check.js:1706 src/ussd_tb_check.js:1726 src/ussd_tb_check.js:1746 src/ussd_tb_check.js:1837
+msgid "Yes"
+msgstr ""
+
+#: src/ussd_tb_check.js:371 src/ussd_tb_check.js:662 src/ussd_tb_check.js:800 src/ussd_tb_check.js:884 src/ussd_tb_check.js:1372 src/ussd_tb_check.js:1708 src/ussd_tb_check.js:1728 src/ussd_tb_check.js:1748 src/ussd_tb_check.js:1838
+msgid "No"
+msgstr ""
+
+#: src/ussd_tb_check.js:372
+msgid "FAQ for more info on TBCheck and the research."
+msgstr ""
+
+#: src/ussd_tb_check.js:389
+msgid "How old are you?"
+msgstr ""
+
+#: src/ussd_tb_check.js:390
+msgid ""
+"Please use numbers from list.\n"
+"\n"
+"How old are you?"
+msgstr ""
+
+#: src/ussd_tb_check.js:393
+msgid "under 18"
+msgstr ""
+
+#: src/ussd_tb_check.js:394
+msgid "18-39"
+msgstr ""
+
+#: src/ussd_tb_check.js:395
+msgid "40-65"
+msgstr ""
+
+#: src/ussd_tb_check.js:396
+msgid "over 65"
+msgstr ""
+
+#: src/ussd_tb_check.js:404
+msgid "Unfortunately you cant participate in the study if you are younger than 18."
+msgstr ""
+
+#: src/ussd_tb_check.js:416
+msgid ""
+"You can still continue with a TB Check but you will not be included in the "
+"study"
+msgstr ""
+
+#: src/ussd_tb_check.js:428
+msgid ""
+"Okay, no problem. You will not be included in the research, but you can "
+"still continue to check if you need to take a TB test."
+msgstr ""
+
+#: src/ussd_tb_check.js:443
+msgid "Which gender do you identify as?"
+msgstr ""
+
+#: src/ussd_tb_check.js:444
+msgid ""
+"Please use numbers from list.\n"
+"\n"
+"Which gender do you identify as?"
+msgstr ""
+
+#: src/ussd_tb_check.js:453
+msgid "MALE"
+msgstr ""
+
+#: src/ussd_tb_check.js:454
+msgid "FEMALE"
+msgstr ""
+
+#: src/ussd_tb_check.js:455
+msgid "OTHER"
+msgstr ""
+
+#: src/ussd_tb_check.js:456
+msgid "RATHER NOT SAY"
+msgstr ""
+
+#: src/ussd_tb_check.js:482
+msgid "Choose your province"
+msgstr ""
+
+#: src/ussd_tb_check.js:485
+msgid "E. CAPE"
+msgstr ""
+
+#: src/ussd_tb_check.js:486
+msgid "FREE STATE"
+msgstr ""
+
+#: src/ussd_tb_check.js:487
+msgid "GAUTENG"
+msgstr ""
+
+#: src/ussd_tb_check.js:488
+msgid "KWAZULU NATAL"
+msgstr ""
+
+#: src/ussd_tb_check.js:489
+msgid "LIMPOPO"
+msgstr ""
+
+#: src/ussd_tb_check.js:490
+msgid "MPUMALANGA"
+msgstr ""
+
+#: src/ussd_tb_check.js:491
+msgid "NORTH WEST"
+msgstr ""
+
+#: src/ussd_tb_check.js:492
+msgid "N. CAPE"
+msgstr ""
+
+#: src/ussd_tb_check.js:493
+msgid "W. CAPE"
+msgstr ""
+
+#: src/ussd_tb_check.js:508
+msgid "Please type the name of the street where you live."
+msgstr ""
+
+#: src/ussd_tb_check.js:531
+msgid "Please type the name of the suburb/township/village where you live."
+msgstr ""
+
+#: src/ussd_tb_check.js:572
+msgid "Please type the name of the city where you live."
+msgstr ""
+
+#: src/ussd_tb_check.js:576
+msgid ""
+"Sorry, we don't understand. Please try again.\n"
+"\n"
+"Please type the name of the city where you live"
+msgstr ""
+
+#: src/ussd_tb_check.js:653
+msgid ""
+"Please check that the address below is correct and matches the information "
+"you gave us:\n"
+"{{ address }}"
+msgstr ""
+
+#: src/ussd_tb_check.js:725
+msgid "Let's see how you're feeling today. Do you have a cough?"
+msgstr ""
+
+#: src/ussd_tb_check.js:728
+msgid ""
+"Please use numbers from list.\n"
+"Do you have a cough?"
+msgstr ""
+
+#: src/ussd_tb_check.js:745
+msgid "Do you have a fever? (when you touch your forehead, does it feel hot?)"
+msgstr ""
+
+#: src/ussd_tb_check.js:748
+msgid ""
+"Please use numbers from list. Do you have a fever? (when you touch your "
+"forehead, does it feel hot?)"
+msgstr ""
+
+#: src/ussd_tb_check.js:762
+msgid "Are you sweating more than usual at night?"
+msgstr ""
+
+#: src/ussd_tb_check.js:763
+msgid "Please use numbers from list. Are you sweating more than usual at night?"
+msgstr ""
+
+#: src/ussd_tb_check.js:772
+msgid "Have you been losing weight without trying?"
+msgstr ""
+
+#: src/ussd_tb_check.js:773
+msgid "Please use numbers from list. Have you been losing weight without trying?"
+msgstr ""
+
+#: src/ussd_tb_check.js:789
+msgid ""
+"Are you at high risk of TB?\n"
+"\n"
+"Risk means you live with someone who has TB OR you had TB in the last 2 "
+"years OR you are HIV+"
+msgstr ""
+
+#: src/ussd_tb_check.js:796
+msgid "Please use numbers from list. Are you at high risk for TB?"
+msgstr ""
+
+#: src/ussd_tb_check.js:799
+msgid "Yes high risk"
+msgstr ""
+
+#: src/ussd_tb_check.js:801
+msgid "Dont know"
+msgstr ""
+
+#: src/ussd_tb_check.js:815 src/ussd_tb_check.js:819
+msgid ""
+"Now, please agree that the info you shared is correct and that you give the "
+"NDoH permission to contact you if needed?"
+msgstr ""
+
+#: src/ussd_tb_check.js:848 src/ussd_tb_check.js:851
+msgid "Finally, please agree that the info you shared is correct."
+msgstr ""
+
+#: src/ussd_tb_check.js:872 src/ussd_tb_check.js:878
+msgid ""
+"Thanks for your answers. Your result will be sent soon by SMS. Would you "
+"like to receive follow-up messages?"
+msgstr ""
+
+#: src/ussd_tb_check.js:973
+msgid "Thanks for choosing to get our follow-up messages."
+msgstr ""
+
+#: src/ussd_tb_check.js:976
+msgid "Okay thanks, you won't get any follow-up messages."
+msgstr ""
+
+#: src/ussd_tb_check.js:980
+msgid "Thanks for your answers. Your result will be sent soon by SMS."
+msgstr ""
+
+#: src/ussd_tb_check.js:983
+msgid "This service works best when you select numbers from the list"
+msgstr ""
+
+#: src/ussd_tb_check.js:991
+msgid "See Results"
+msgstr ""
+
+#: src/ussd_tb_check.js:1016
+msgid ""
+"Your replies to the questions show that you need a TB test this week!\n"
+"\n"
+"Visit your local clinic for a free TB test."
+msgstr ""
+
+#: src/ussd_tb_check.js:1027 src/ussd_tb_check.js:1170
+msgid "Your replies to the questions show that you need a TB test this week!"
+msgstr ""
+
+#: src/ussd_tb_check.js:1038
+msgid ""
+"With early diagnosis, TB can be cured. Don't delay, test today!\n"
+"\n"
+"Visit your local clinic for a free TB test. "
+msgstr ""
+
+#: src/ussd_tb_check.js:1049
+msgid ""
+"Your replies to the questions show that you need a TB test this week!\n"
+"\n"
+"Here are some tips to help you plan:"
+msgstr ""
+
+#: src/ussd_tb_check.js:1062
+msgid ""
+"* Make the time. Your health is a priority!\n"
+"* Pick the most convenient clinic for your test\n"
+"* Get there early! Clinics are open for TB testing\n"
+"Monday to Friday mornings."
+msgstr ""
+
+#: src/ussd_tb_check.js:1122
+msgid "Where will you go for your test? Reply with the clinic"
+msgstr ""
+
+#: src/ussd_tb_check.js:1133
+msgid "When will you go for your test? Reply with the day"
+msgstr ""
+
+#: src/ussd_tb_check.js:1138
+msgid "MONDAY"
+msgstr ""
+
+#: src/ussd_tb_check.js:1139
+msgid "TUESDAY"
+msgstr ""
+
+#: src/ussd_tb_check.js:1140
+msgid "WEDNESDAY"
+msgstr ""
+
+#: src/ussd_tb_check.js:1141
+msgid "THURSDAY"
+msgstr ""
+
+#: src/ussd_tb_check.js:1142
+msgid "FRIDAY"
+msgstr ""
+
+#: src/ussd_tb_check.js:1150
+msgid "Well done for planning to get your test!"
+msgstr ""
+
+#: src/ussd_tb_check.js:1157
+msgid ""
+"Your replies to the questions show that you need a TB test this week!\n"
+"\n"
+"* Go to your local clinic for a free TB test."
+msgstr ""
+
+#: src/ussd_tb_check.js:1180
+msgid ""
+"* Visit your local clinic for a free TB test.\n"
+"* You will get R15 airtime within 1 hour if you commit to get tested."
+msgstr ""
+
+#: src/ussd_tb_check.js:1192
+msgid "Your replies to the questions show that you need a TB test this week."
+msgstr ""
+
+#: src/ussd_tb_check.js:1202
+msgid "Do you commit to getting tested?"
+msgstr ""
+
+#: src/ussd_tb_check.js:1203
+msgid "Please use numbers from list. Do you commit to getting tested?"
+msgstr ""
+
+#: src/ussd_tb_check.js:1276
+msgid "Well done for committing to your health!"
+msgstr ""
+
+#: src/ussd_tb_check.js:1279
+msgid "Even if you can't commit now, it is still important to get tested."
+msgstr ""
+
+#: src/ussd_tb_check.js:1300
+msgid ""
+"You don't need a TB test now, but if you develop cough, fever, weight loss "
+"or night sweats visit your nearest clinic."
+msgstr ""
+
+#: src/ussd_tb_check.js:1306
+msgid ""
+"Your replies to the questions show you need a TB test this week.\n"
+"\n"
+"Go to your clinic for a free TB test."
+msgstr ""
+
+#: src/ussd_tb_check.js:1318
+msgid ""
+"Check if those you live with are on TB treatment. If you don't know your "
+"HIV status, visit the clinic for a free HIV test. Then do the TB check "
+"again."
+msgstr ""
+
+#: src/ussd_tb_check.js:1331 src/ussd_tb_check.js:1662
+msgid "None"
+msgstr ""
+
+#: src/ussd_tb_check.js:1336
+msgid ""
+"We will use this information to see if TB HealthCheck helps people. To "
+"continue, reply YES. For more on TB HealthCheck and the research, reply "
+"MORE."
+msgstr ""
+
+#: src/ussd_tb_check.js:1341 src/ussd_tb_check.js:1365 src/ussd_tb_check.js:1386 src/ussd_tb_check.js:1407 src/ussd_tb_check.js:1429 src/ussd_tb_check.js:1451 src/ussd_tb_check.js:1506 src/ussd_tb_check.js:1699 src/ussd_tb_check.js:1719 src/ussd_tb_check.js:1739 src/ussd_tb_check.js:1761 src/ussd_tb_check.js:1781 src/ussd_tb_check.js:1802 src/ussd_tb_check.js:1816 src/ussd_tb_check.js:1830
+msgid ""
+"Sorry, we don't understand. Please try again.\n"
+"\n"
+"Enter the number that matches your answer."
+msgstr ""
+
+#: src/ussd_tb_check.js:1349
+msgid "More"
+msgstr ""
+
+#: src/ussd_tb_check.js:1362
+msgid "Did you find TB HealthCheck useful?"
+msgstr ""
+
+#: src/ussd_tb_check.js:1373 src/ussd_tb_check.js:1394 src/ussd_tb_check.js:1415 src/ussd_tb_check.js:1437 src/ussd_tb_check.js:1707 src/ussd_tb_check.js:1727 src/ussd_tb_check.js:1747 src/ussd_tb_check.js:1769
+msgid "Don't know"
+msgstr ""
+
+#: src/ussd_tb_check.js:1382
+msgid ""
+"I did not go to the clinic for a TB test because it takes too much time. Do "
+"you agree?"
+msgstr ""
+
+#: src/ussd_tb_check.js:1393 src/ussd_tb_check.js:1414 src/ussd_tb_check.js:1436 src/ussd_tb_check.js:1768
+msgid "Agree"
+msgstr ""
+
+#: src/ussd_tb_check.js:1395 src/ussd_tb_check.js:1416 src/ussd_tb_check.js:1438 src/ussd_tb_check.js:1770
+msgid "Disagree"
+msgstr ""
+
+#: src/ussd_tb_check.js:1403
+msgid ""
+"I did not go to the clinic for a TB test because there are no clinics close "
+"to me."
+msgstr ""
+
+#: src/ussd_tb_check.js:1424
+msgid ""
+"I did not go to the clinic for a TB test because I do not want to think "
+"about having TB. Do you agree?"
+msgstr ""
+
+#: src/ussd_tb_check.js:1446
+msgid ""
+"Are there any other reasons why you did not go to the clinic for a TB "
+"test?Reply in your own words."
+msgstr ""
+
+#: src/ussd_tb_check.js:1502
+msgid "Thank you for taking part in the survey. Your R15 in airtime is on its way!"
+msgstr ""
+
+#: src/ussd_tb_check.js:1549 src/ussd_tb_check.js:1555 src/ussd_tb_check.js:1614
+msgid "Back"
+msgstr ""
+
+#: src/ussd_tb_check.js:1550 src/ussd_tb_check.js:1556
+msgid "Exit"
+msgstr ""
+
+#: src/ussd_tb_check.js:1560
+msgid "The FAQ has been sent to you by SMS. What would you like to do?"
+msgstr ""
+
+#: src/ussd_tb_check.js:1564 src/ussd_tb_check.js:1587 src/ussd_tb_check.js:1606
+msgid "Please reply with the number that matches your answer."
+msgstr ""
+
+#: src/ussd_tb_check.js:1584 src/ussd_tb_check.js:1603
+msgid "What would you like to know?"
+msgstr ""
+
+#: src/ussd_tb_check.js:1592
+msgid "More about the research?"
+msgstr ""
+
+#: src/ussd_tb_check.js:1593
+msgid "What information will you ask me for?"
+msgstr ""
+
+#: src/ussd_tb_check.js:1594
+msgid "Why did I get the SMS?"
+msgstr ""
+
+#: src/ussd_tb_check.js:1595
+msgid "What I'll need to do?"
+msgstr ""
+
+#: src/ussd_tb_check.js:1610
+msgid "Can I stop halfway through?"
+msgstr ""
+
+#: src/ussd_tb_check.js:1611
+msgid "Are there costs or risks?"
+msgstr ""
+
+#: src/ussd_tb_check.js:1612
+msgid "What happens to the info?"
+msgstr ""
+
+#: src/ussd_tb_check.js:1613
+msgid "What to do if I am unhappy?"
+msgstr ""
+
+#: src/ussd_tb_check.js:1672
+msgid ""
+"Many people don't realise that TB is cureable and test too late. Your "
+"answers will help us understand whether TB HealthCheck really helps people."
+msgstr ""
+
+#: src/ussd_tb_check.js:1696
+msgid "Did TB HealthCheck encourage you to get tested?"
+msgstr ""
+
+#: src/ussd_tb_check.js:1716
+msgid "Would you have tested without TB HealthCheck?"
+msgstr ""
+
+#: src/ussd_tb_check.js:1736
+msgid "Would you have further delayed testing without TB HealthCheck?"
+msgstr ""
+
+#: src/ussd_tb_check.js:1756
+msgid ""
+"The waiting times at the clinic were too long.\n"
+"\n"
+"Do you agree?"
+msgstr ""
+
+#: src/ussd_tb_check.js:1778
+msgid "How was your experience at the clinic?"
+msgstr ""
+
+#: src/ussd_tb_check.js:1788
+msgid "Bad"
+msgstr ""
+
+#: src/ussd_tb_check.js:1789
+msgid "Ok"
+msgstr ""
+
+#: src/ussd_tb_check.js:1790
+msgid "Good"
+msgstr ""
+
+#: src/ussd_tb_check.js:1798
+msgid ""
+"Was it difficult to get access to a TB test? Please reply with details of "
+"any problems you experienced."
+msgstr ""
+
+#: src/ussd_tb_check.js:1813
+msgid "Why did you go to the clinic for a TB test?"
+msgstr ""
+
+#: src/ussd_tb_check.js:1827
+msgid "Can we phone you to get more information?"
+msgstr ""

@@ -620,7 +620,15 @@ describe("ussd_tb_check app", function () {
       return tester.setup.user
         .state("state_privacy_policy_accepted")
         .setup.user.answer("state_privacy_policy_accepted", "yes")
+        .setup.user.answer("activation", "tb_study_a")
         .check.user.state("state_language")
+        .run();
+    });
+    it("should skip the state for users who already have this info for core line", function () {
+      return tester.setup.user
+        .state("state_privacy_policy_accepted")
+        .setup.user.answer("state_privacy_policy_accepted", "yes")
+        .check.user.state("state_core_language")
         .run();
     });
     it("should skip the state for users who already have this info for a study", function () {
@@ -634,6 +642,7 @@ describe("ussd_tb_check app", function () {
     it("should go to state_language if study is active", function () {
       return tester.setup.user
         .state("state_privacy_policy_accepted")
+        .setup.user.answer("activation", "tb_study_a")
         .input("1")
         .check.user.state("state_language")
         .run();
@@ -760,6 +769,7 @@ describe("ussd_tb_check app", function () {
     it("should display language", function () {
       return tester.setup.user
         .state("state_privacy_policy_accepted")
+        .setup.user.answer("activation", "tb_study_a")
         .input("1")
         .check.interaction({
           state: "state_language",
@@ -770,6 +780,26 @@ describe("ussd_tb_check app", function () {
             "3. Afrikaans",
             "4. isiXhosa",
             "5. Sesotho"
+          ].join("\n"),
+          char_limit: 160,
+      })
+      .run();
+    });
+    it("should display core languages", function () {
+      return tester.setup.user
+        .state("state_privacy_policy_accepted")
+        .setup.user.answer("activation", null)
+        .input("1")
+        .check.interaction({
+          state: "state_core_language",
+          reply: [
+            "Choose your preferred language",
+            "1. English",
+            "2. isiZulu",
+            "3. Afrikaans",
+            "4. isiXhosa",
+            "5. Sesotho",
+            "6. Setswana",
           ].join("\n"),
           char_limit: 160,
       })
@@ -2666,6 +2696,33 @@ describe("ussd_tb_check app", function () {
           ].join("\n"),
           char_limit: 160,
         })
+        .run();
+    });
+    it("should skip the state_privacy_policy_accepted for users who already have this info and go to state_core_language", function () {
+      return tester.setup.user
+        .state("state_privacy_policy_accepted")
+        .setup.user.answer("state_privacy_policy_accepted", "yes")
+        .setup.user.answer("activation", null)
+        .check.user.state("state_core_language")
+        .run();
+    });
+    it("should skip the state for users who already have this info for a study", function () {
+      return tester.setup.user
+        .state("state_privacy_policy_accepted")
+        .setup.user.answer("state_privacy_policy_accepted", "yes")
+        .setup.user.answer("activation", null)
+        .check.interaction({
+        state: "state_core_language",
+        reply: [
+            "Choose your preferred language",
+            "1. English",
+            "2. isiZulu",
+            "3. Afrikaans",
+            "4. isiXhosa",
+            "5. Sesotho",
+            "6. Setswana",
+          ].join("\n"),
+          char_limit: 160,})
         .run();
     });
   });

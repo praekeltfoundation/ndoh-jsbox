@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2023-02-21 11:51:+0000",
-        "po-revision-date": "2023-03-01 11:01+0200",
+        "pot-creation-date": "2023-03-16 12:00:+0000",
+        "po-revision-date": "2023-03-16 14:21+0200",
         "last-translator": "",
         "language-team": "",
         "language": "afr_ZA",
@@ -111,6 +111,10 @@
     "Sesotho": [
         null,
         "Sesotho"
+    ],
+    "Setswana": [
+        null,
+        "Setswana"
     ],
     "If you agree, we will use your information to see if this TB Check helps people.\nDo you agree?": [
         null,
