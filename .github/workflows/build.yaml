@@ -1,20 +1,42 @@
-name: Docker Image
+name: Build and push images
 
 on:
   push:
     branches:
-      - develop
+      - '*'
+    tags:
+      - 'v*'
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # TODO: Once we know which node version we want, only build that one.
+        nodejs_version: ['18', '12']
     steps:
-      - uses: actions/checkout@v2
-      - uses: docker/build-push-action@v1
+      - uses: actions/checkout@v3
+      - uses: docker/setup-buildx-action@v2
+      - name: construct image metadata
+        id: meta
+        uses: docker/metadata-action@v4
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: praekeltfoundation/ndoh-jsbox
-          dockerfile: node_12.x.dockerfile
-          tag_with_ref: true
-          tag_with_sha: true
+          images: |
+            ghcr.io/${{ github.repository }}
+          tags: |
+            type=semver,pattern={{version}},suffix=-node${{ matrix.nodejs_version }}
+            type=sha,prefix={{branch}}-,suffix=-node${{ matrix.nodejs_version }}
+      - name: login to ghcr
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          build-args: |
+            NODEJS_VERSION=${{ matrix.nodejs_version }}
