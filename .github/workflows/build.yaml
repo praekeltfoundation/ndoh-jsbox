@@ -11,6 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         # TODO: Once we know which node version we want, only build that one.
         nodejs_version: ['18', '12']
