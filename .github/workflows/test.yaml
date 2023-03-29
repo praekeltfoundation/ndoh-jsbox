@@ -5,13 +5,16 @@ on: [pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    strategy:
+      fail-fast: false
+      matrix:
+        # TODO: Once we know which node version we want, only build that one.
+        nodejs_version: ['18', '12']
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js 12.x
-        uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 12.x
+          node-version: ${{ matrix.nodejs_version }}.x
       - name: Install dependencies
         run: npm install
       - name: Test
