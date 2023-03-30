@@ -1,5 +1,4 @@
-# TODO: Switch to versioned base image.
-FROM ghcr.io/praekeltfoundation/vumi-sandbox:node18-no-wheelhouse-04d4044
+FROM ghcr.io/praekeltfoundation/vumi-sandbox:node18-v0.1.0
 MAINTAINER Praekelt Foundation <dev@praekeltfoundation.org>
 
 # Install nodejs dependencies
