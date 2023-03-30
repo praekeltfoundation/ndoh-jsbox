@@ -1,6 +1,5 @@
-# TODO: Replace this with a non-parameterized "production" image before merging
-ARG NODEJS_VERSION="18"
-FROM ghcr.io/praekeltfoundation/vumi-sandbox:node${NODEJS_VERSION}-no-wheelhouse-7802484
+# TODO: Switch to versioned base image.
+FROM ghcr.io/praekeltfoundation/vumi-sandbox:node18-no-wheelhouse-04d4044
 MAINTAINER Praekelt Foundation <dev@praekeltfoundation.org>
 
 # Install nodejs dependencies

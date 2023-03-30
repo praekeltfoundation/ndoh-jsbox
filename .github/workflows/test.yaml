@@ -8,8 +8,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # TODO: Once we know which node version we want, only build that one.
-        nodejs_version: ['18', '12']
+        nodejs_version: ['18']
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
