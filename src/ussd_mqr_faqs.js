@@ -1,5 +1,6 @@
 go.app = function() {
     var _ = require("lodash");
+    var moment = require("moment");
     var utils = require("seed-jsbox-utils").utils;
     var vumigo = require("vumigo_v02");
     var App = vumigo.App;
@@ -66,6 +67,14 @@ go.app = function() {
                     var in_mqr_arm = _.toUpper(_.get(contact, "fields.mqr_arm")) === "RCM_SMS";
 
                     if((in_prebirth || in_postbirth) && in_mqr_arm) {
+                        var next_send_date = _.get(contact, "fields.mqr_next_send_date", null);
+
+                        if (next_send_date) {
+                            self.im.user.set_answer("timeout", next_send_date);
+                        }
+                        else {
+                            self.im.user.set_answer("timeout", null);
+                        }
                         return self.states.create("state_get_faqs");
                     } else {
                         return self.states.create("state_not_registered");
@@ -80,6 +89,24 @@ go.app = function() {
                     return self.states.create(name, opts);
                 });
         });
+
+        self.is_content_stale = function() {
+            var timeout = self.im.user.answers.timeout;
+
+            if (!timeout) return true;
+
+            var parts = timeout.split(" ")[0].split("-");
+            var timeoutDate = new Date(parts[2], parts[1]-1, parts[0]);
+            var today = new moment(self.im.config.testing_today).toDate();
+
+            timeoutDate.setHours(0, 0, 0, 0);
+            today.setHours(0, 0, 0, 0);
+
+            if (timeoutDate <= today) return true;
+
+            return false;
+        };
+
 
         self.states.add("state_get_faqs", function(name, opts) {
             var contact = self.im.user.get_answer("contact");
@@ -113,6 +140,10 @@ go.app = function() {
         });
 
         self.states.add("state_faq_menu", function(name) {
+            if (self.is_content_stale()){
+                return self.states.create("state_start");
+            }
+
             var viewed = self.im.user.answers.viewed;
             if (viewed.length == 3) {
                 return self.states.create("state_all_topics_viewed");
@@ -135,6 +166,10 @@ go.app = function() {
         });
 
         self.states.add("state_get_faq_detail", function(name, opts) {
+            if (self.is_content_stale()){
+                return self.states.create("state_start");
+            }
+
             var contact = self.im.user.get_answer("contact");
             var last_tag = _.get(contact, "fields.mqr_last_tag");
             var faq_id = self.im.user.get_answer("state_faq_menu");
@@ -173,6 +208,10 @@ go.app = function() {
         });
 
         self.states.add("state_show_faq_detail", function(name) {
+            if (self.is_content_stale()){
+                return self.states.create("state_start");
+            }
+
             var message = self.im.user.get_answer("faq_message");
             return new MenuState(name, {
                 question: $(message),

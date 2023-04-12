@@ -12,6 +12,7 @@ describe("ussd_mqr_faqs app", function () {
     app = new go.app.GoNDOH();
     tester = new AppTester(app);
     tester.setup.config.app({
+      testing_today: "2023-04-04T07:07:07",
       contentrepo: {
         base_url: "https://contentrepo",
       },
@@ -34,7 +35,8 @@ describe("ussd_mqr_faqs app", function () {
                         fields: {
                             prebirth_messaging: "1",
                             mqr_last_tag: "RCM_TEST",
-                            mqr_arm: "RCM_SMS"
+                            mqr_arm: "RCM_SMS",
+                            mqr_next_send_date: "17-04-2023 12:00"
                         }
                     })
                 );
@@ -56,6 +58,7 @@ describe("ussd_mqr_faqs app", function () {
                 ].join("\n"),
                 char_limit: 140
             })
+            .check.user.answer("timeout", "17-04-2023 12:00")
             .run();
     });
     it("should give message if they're not subscribed", function() {
@@ -88,7 +91,8 @@ describe("ussd_mqr_faqs app", function () {
                         fields: {
                             prebirth_messaging: "1",
                             mqr_last_tag: "RCM_TEST",
-                            mqr_arm: "RCM_SMS"
+                            mqr_arm: "RCM_SMS",
+                            mqr_next_send_date: "17-04-2023 12:00"
                         }
                     })
                 );
@@ -151,7 +155,49 @@ describe("ussd_mqr_faqs app", function () {
                   "1 - Title 1",
                   "2 - Title 2",
                   "3 - Title 3"
-              ].join("\n")
+              ].join("\n"),
+              timeout: "17-04-2023 12:00"
+            })
+            .check.interaction({
+                state: "state_faq_menu",
+                reply: [
+                    "Reply with a number to learn about these topics:",
+                    "",
+                    "1. Title 1",
+                    "2. Title 2",
+                    "3. Title 3"
+                ].join("\n"),
+                char_limit: 140
+            })
+            .run();
+    });
+
+    it("should redirect to state_start if timeout reached", function() {
+      return tester
+            .setup(function(api) {
+              api.http.fixtures.add(
+                  fixtures_rapidpro.get_contact({
+                      uuid: "contact-uuid",
+                      urn: "whatsapp:27123456789",
+                      exists: true,
+                      fields: {
+                          prebirth_messaging: "1",
+                          mqr_last_tag: "RCM_TEST",
+                          mqr_arm: "RCM_SMS",
+                          mqr_next_send_date: "11-04-2023 12:00"
+                      }
+                  })
+              );
+              api.http.fixtures.add(
+                  fixtures_contentrepo.get_faq_id("RCM_TEST_faq0")
+              );
+              api.http.fixtures.add(
+                  fixtures_contentrepo.get_faq_text_menu(111, "contact-uuid")
+              );
+            })
+            .setup.user.state("state_faq_menu")
+            .setup.user.answers({
+              timeout: "04-04-2023 12:00"
             })
             .check.interaction({
                 state: "state_faq_menu",
@@ -187,7 +233,8 @@ describe("ussd_mqr_faqs app", function () {
                   "2 - Title 2",
                   "3 - Title 3"
               ].join("\n"),
-              contact: {uuid: "contact-uuid", fields: {mqr_last_tag: "RCM_TEST"}}
+              contact: {uuid: "contact-uuid", fields: {mqr_last_tag: "RCM_TEST"}},
+              timeout: "17-04-2023 12:00"
             })
             .input("1")
             .check.interaction({
@@ -216,7 +263,8 @@ describe("ussd_mqr_faqs app", function () {
                     "1 - Title 1",
                     "2 - Title 2",
                     "3 - Title 3"
-                ].join("\n")
+                ].join("\n"),
+                timeout: "17-04-2023 12:00"
               }
             )
             .run();
@@ -244,7 +292,8 @@ describe("ussd_mqr_faqs app", function () {
                   "1 - Title 1",
                   "2 - Title 2",
                   "3 - Title 3"
-              ].join("\n")
+              ].join("\n"),
+              timeout: "17-04-2023 12:00"
             })
             .input("1")
             .check.interaction({
@@ -275,7 +324,8 @@ describe("ussd_mqr_faqs app", function () {
                     "1 - Title 1",
                     "2 - Title 2",
                     "3 - Title 3"
-                ].join("\n")
+                ].join("\n"),
+                timeout: "17-04-2023 12:00"
               }
             )
             .run();
@@ -301,7 +351,8 @@ describe("ussd_mqr_faqs app", function () {
                   "1 - Title 1",
                   "2 - Title 2",
                   "3 - Title 3"
-              ].join("\n")
+              ].join("\n"),
+              timeout: "17-04-2023 12:00"
             })
             .input("1")
             .check.interaction({
@@ -329,9 +380,51 @@ describe("ussd_mqr_faqs app", function () {
                     "1 - Title 1",
                     "2 - Title 2",
                     "3 - Title 3"
-                ].join("\n")
+                ].join("\n"),
+                timeout: "17-04-2023 12:00"
               }
             )
+            .run();
+    });
+    it("should go back to state_start if timeout reached", function() {
+      return tester
+            .setup(function(api) {
+              api.http.fixtures.add(
+                  fixtures_rapidpro.get_contact({
+                      uuid: "contact-uuid",
+                      urn: "whatsapp:27123456789",
+                      exists: true,
+                      fields: {
+                          prebirth_messaging: "1",
+                          mqr_last_tag: "RCM_TEST",
+                          mqr_arm: "RCM_SMS",
+                          mqr_next_send_date: "11-04-2023 12:00"
+                      }
+                  })
+              );
+              api.http.fixtures.add(
+                  fixtures_contentrepo.get_faq_id("RCM_TEST_faq0")
+              );
+              api.http.fixtures.add(
+                  fixtures_contentrepo.get_faq_text_menu(111, "contact-uuid")
+              );
+            })
+            .setup.user.state("state_get_faq_detail")
+            .setup.user.answers({
+              timeout: "04-04-2023 12:00"
+            })
+            .check.interaction({
+                state: "state_faq_menu",
+                reply: [
+                    "Reply with a number to learn about these topics:",
+                    "",
+                    "1. Title 1",
+                    "2. Title 2",
+                    "3. Title 3"
+                ].join("\n"),
+                char_limit: 140
+            })
+            .check.user.answer("timeout", "11-04-2023 12:00")
             .run();
     });
   });
