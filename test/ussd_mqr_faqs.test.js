@@ -80,6 +80,32 @@ describe("ussd_mqr_faqs app", function () {
             })
             .run();
     });
+    it("should give message if they haven't reveived their first message", function() {
+      return tester
+          .setup(function(api) {
+              api.http.fixtures.add(
+                  fixtures_rapidpro.get_contact({
+                      urn: "whatsapp:27123456789",
+                      exists: true,
+                      fields: {
+                          prebirth_messaging: "1",
+                          mqr_arm: "RCM_SMS",
+                          mqr_next_send_date: "17-04-2023 12:00"
+                      }
+                  })
+              );
+          })
+          .check.interaction({
+              state: "state_nothing_yet",
+              reply: [
+                "Please wait for your first message.",
+                "",
+                "Dial *134*550*7# for the main menu at any time."
+              ].join("\n"),
+              char_limit: 160
+          })
+          .run();
+  });
     it("should display an error on invalid input", function() {
         return tester
             .setup(function(api) {
