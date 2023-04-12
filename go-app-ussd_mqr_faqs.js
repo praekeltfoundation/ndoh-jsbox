@@ -21,7 +21,7 @@ go.ContentRepo = function() {
         };
 
         self.get_faq_id = function(tag) {
-            return self.get("/api/v2/pages", {tag: tag})
+            return self.get("/api/v2/pages/", {tag: tag})
                 .then(function(result){
                     return result.results[0].id;
                 });
@@ -32,7 +32,7 @@ go.ContentRepo = function() {
                 whatsapp: "True",
                 data__contact_uuid: contact_uuid
             };
-            return self.get("/api/v2/pages/" + id, params)
+            return self.get("/api/v2/pages/" + id + "/", params)
                 .then(function(result){
                     return result.body.text.value.message;
                 });
