@@ -67,6 +67,11 @@ go.app = function() {
                     var in_mqr_arm = _.toUpper(_.get(contact, "fields.mqr_arm")) === "RCM_SMS";
 
                     if((in_prebirth || in_postbirth) && in_mqr_arm) {
+                        var last_tag = _.get(contact, "fields.mqr_last_tag", null);
+                        if (!last_tag) {
+                            return self.states.create("state_nothing_yet");
+                        }
+
                         var next_send_date = _.get(contact, "fields.mqr_next_send_date", null);
 
                         if (next_send_date) {
@@ -225,6 +230,16 @@ go.app = function() {
                 next: "state_start",
                 text: [
                     "That's it for this week.",
+                    "",
+                    "Dial *134*550*7# for the main menu at any time."].join("\n")
+            });
+        });
+
+        self.states.add("state_nothing_yet", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: [
+                    "Please wait for your first message.",
                     "",
                     "Dial *134*550*7# for the main menu at any time."].join("\n")
             });
