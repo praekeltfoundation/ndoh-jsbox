@@ -241,19 +241,30 @@ go.app = function() {
         });
 
         self.is_content_stale = function() {
+            console.log(">>> is_content_stale");
             var timeout = self.im.user.answers.timeout;
 
-            if (!timeout) return true;
+            if (!timeout) {
+                console.log(true);
+                return true;
+            }
 
-            var parts = timeout.split(" ")[0].split("-");
-            var timeoutDate = new Date(parts[2], parts[1]-1, parts[0]);
+            var parts = timeout.split("T")[0].split("-");
+            var timeoutDate = new Date(parts[0], parts[1]-1, parts[2]);
             var today = new moment(self.im.config.testing_today).toDate();
 
             timeoutDate.setHours(0, 0, 0, 0);
             today.setHours(0, 0, 0, 0);
 
-            if (timeoutDate <= today) return true;
+            console.log("timeoutDate:", timeoutDate);
+            console.log("today:", today);
 
+            if (timeoutDate <= today) {
+                console.log(true);
+                return true;
+            }
+
+            console.log(false);
             return false;
         };
 
