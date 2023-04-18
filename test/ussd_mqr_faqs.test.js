@@ -210,7 +210,7 @@ describe("ussd_mqr_faqs app", function () {
                           prebirth_messaging: "1",
                           mqr_last_tag: "RCM_TEST",
                           mqr_arm: "RCM_SMS",
-                          mqr_next_send_date: "11-04-2023 12:00"
+                          mqr_next_send_date: "2023-04-11T12:00:12.069328+02:00"
                       }
                   })
               );
@@ -223,7 +223,7 @@ describe("ussd_mqr_faqs app", function () {
             })
             .setup.user.state("state_faq_menu")
             .setup.user.answers({
-              timeout: "04-04-2023 12:00"
+                timeout: "2023-04-04T12:00:12.069328+02:00"
             })
             .check.interaction({
                 state: "state_faq_menu",
@@ -424,7 +424,7 @@ describe("ussd_mqr_faqs app", function () {
                           prebirth_messaging: "1",
                           mqr_last_tag: "RCM_TEST",
                           mqr_arm: "RCM_SMS",
-                          mqr_next_send_date: "11-04-2023 12:00"
+                          mqr_next_send_date: "2023-04-11T12:00:12.069328+02:00"
                       }
                   })
               );
@@ -437,7 +437,7 @@ describe("ussd_mqr_faqs app", function () {
             })
             .setup.user.state("state_get_faq_detail")
             .setup.user.answers({
-              timeout: "04-04-2023 12:00"
+              timeout: "2023-04-04T12:00:12.069328+02:00"
             })
             .check.interaction({
                 state: "state_faq_menu",
@@ -450,7 +450,7 @@ describe("ussd_mqr_faqs app", function () {
                 ].join("\n"),
                 char_limit: 140
             })
-            .check.user.answer("timeout", "11-04-2023 12:00")
+            .check.user.answer("timeout", "2023-04-11T12:00:12.069328+02:00")
             .run();
     });
   });
