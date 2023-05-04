@@ -39,6 +39,7 @@ go.Engage = function() {
                           ssw_ZA: "en",
                           ven_ZA: "en",
                           nbl_ZA: "en",
+                          set_ZA: "en",
                         };
     });
 

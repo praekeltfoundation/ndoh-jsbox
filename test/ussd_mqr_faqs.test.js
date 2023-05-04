@@ -259,7 +259,8 @@ describe("ussd_mqr_faqs app", function () {
                   "2 - Title 2",
                   "3 - Title 3"
               ].join("\n"),
-              contact: {uuid: "contact-uuid", fields: {mqr_last_tag: "RCM_TEST"}},
+              contact_uuid: "contact-uuid",
+              mqr_last_tag: "RCM_TEST",
               timeout: "17-04-2023 12:00"
             })
             .input("1")
@@ -282,7 +283,8 @@ describe("ussd_mqr_faqs app", function () {
                   "",
                   "Reply"
                 ].join("\n"),
-                contact: {uuid: "contact-uuid", fields: {mqr_last_tag: "RCM_TEST"}},
+                contact_uuid: "contact-uuid",
+                mqr_last_tag: "RCM_TEST",
                 faq_main_menu: [
                     "Reply with a number to learn about these topics:",
                     "",
@@ -311,7 +313,8 @@ describe("ussd_mqr_faqs app", function () {
             .setup.user.answers({
               viewed: [],
               state_faq_menu: 1,
-              contact: {uuid: "contact-uuid", fields: {mqr_last_tag: "RCM_TEST"}},
+              contact_uuid: "contact-uuid",
+              mqr_last_tag: "RCM_TEST",
               faq_main_menu: [
                   "Reply with a number to learn about these topics:",
                   "",
@@ -343,7 +346,8 @@ describe("ussd_mqr_faqs app", function () {
                   "",
                   "Reply"
                 ].join("\n"),
-                contact: {uuid: "contact-uuid", fields: {mqr_last_tag: "RCM_TEST"}},
+                contact_uuid: "contact-uuid",
+                mqr_last_tag: "RCM_TEST",
                 faq_main_menu: [
                     "Reply with a number to learn about these topics:",
                     "",
@@ -370,7 +374,8 @@ describe("ussd_mqr_faqs app", function () {
             .setup.user.answers({
               viewed: [2, 3],
               state_faq_menu: 1,
-              contact: {uuid: "contact-uuid", fields: {mqr_last_tag: "RCM_TEST"}},
+              contact_uuid: "contact-uuid",
+              mqr_last_tag: "RCM_TEST",
               faq_main_menu: [
                   "Reply with a number to learn about these topics:",
                   "",
@@ -399,7 +404,8 @@ describe("ussd_mqr_faqs app", function () {
                   "",
                   "Reply"
                 ].join("\n"),
-                contact: {uuid: "contact-uuid", fields: {mqr_last_tag: "RCM_TEST"}},
+                contact_uuid: "contact-uuid",
+                mqr_last_tag: "RCM_TEST",
                 faq_main_menu: [
                     "Reply with a number to learn about these topics:",
                     "",
