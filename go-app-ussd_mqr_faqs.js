@@ -198,18 +198,20 @@ go.app = function() {
 
             return self.rapidpro.get_contact({urn: "whatsapp:" + _.trim(msisdn, "+")})
                 .then(function(contact) {
-                    self.im.user.set_answer("contact", contact);
+
                     // Set the language if we have it
                     if(_.get(self.languages, _.get(contact, "language"))) {
                         return self.im.user.set_lang(contact.language);
                     }
-                }).then(function() {
-                    var contact = self.im.user.get_answer("contact");
+
                     var in_prebirth = _.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7);
                     var in_postbirth =
                         _.toUpper(_.get(contact, "fields.postbirth_messaging")) === "TRUE";
 
                     var in_mqr_arm = _.toUpper(_.get(contact, "fields.mqr_arm")) === "RCM_SMS";
+
+                    self.im.user.set_answer("mqr_last_tag", _.get(contact, "fields.mqr_last_tag"));
+                    self.im.user.set_answer("contact_uuid", contact.uuid);
 
                     if((in_prebirth || in_postbirth) && in_mqr_arm) {
                         var last_tag = _.get(contact, "fields.mqr_last_tag", null);
@@ -270,13 +272,13 @@ go.app = function() {
 
 
         self.states.add("state_get_faqs", function(name, opts) {
-            var contact = self.im.user.get_answer("contact");
-            var last_tag = _.get(contact, "fields.mqr_last_tag");
+            var last_tag = self.im.user.get_answer("mqr_last_tag");
+            var contact_uuid = self.im.user.get_answer("contact_uuid");
             self.im.user.set_answer("viewed", []);
 
             return self.contentrepo.get_faq_id(last_tag + "_faq0")
                 .then(function(page_id) {
-                    return self.contentrepo.get_faq_text(page_id, contact.uuid)
+                    return self.contentrepo.get_faq_text(page_id, contact_uuid)
                         .then(function(message) {
                             self.im.user.set_answer("faq_main_menu", message);
                             return self.states.create("state_faq_menu");
@@ -331,8 +333,8 @@ go.app = function() {
                 return self.states.create("state_start");
             }
 
-            var contact = self.im.user.get_answer("contact");
-            var last_tag = _.get(contact, "fields.mqr_last_tag");
+            var last_tag = self.im.user.get_answer("mqr_last_tag");
+            var contact_uuid = self.im.user.get_answer("contact_uuid");
             var faq_id = self.im.user.get_answer("state_faq_menu");
             var viewed = self.im.user.answers.viewed;
             var faq_tag = last_tag + "_faq" + faq_id;
@@ -344,7 +346,7 @@ go.app = function() {
 
             return self.contentrepo.get_faq_id(faq_tag)
                 .then(function(page_id) {
-                return self.contentrepo.get_faq_text(page_id, contact.uuid)
+                return self.contentrepo.get_faq_text(page_id, contact_uuid)
                     .then(function(message) {
                         self.im.user.set_answer("faq_message", message);
                         return self.states.create("state_show_faq_detail");
