@@ -48,6 +48,16 @@ go.app = function() {
                 self.im.config.services.whatsapp.token
             );
 
+            self.hub = new go.Hub(
+                new JsonApi(self.im, {
+                    headers: {
+                        'User-Agent': ["Jsbox/NDoH-Clinic"]
+                    }
+                }),
+                self.im.config.services.whatsapp.base_url,
+                self.im.config.services.whatsapp.token
+            );
+
             self.env = self.im.config.env;
             self.metric_prefix = [self.env, self.im.config.name].join('.');
 
@@ -119,7 +129,7 @@ go.app = function() {
                 question: $([
                     "Welcome to MomConnect.",
                     "",
-                    "To get WhatsApp messages in English, please confirm:",
+                    "To get WhatsApp or SMS messages, please confirm:",
                     "",
                     "Is {{msisdn}} the number signing up?",
 
@@ -131,7 +141,7 @@ go.app = function() {
                     "answer."
                 ),
                 choices: [
-                    new Choice("state_whatsapp_contact_check", "Yes"),
+                    new Choice("state_clinic_code", "Yes"),
                     new Choice("state_enter_msisdn", "No")
                 ]
             });
@@ -158,7 +168,7 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_whatsapp_contact_check"
+                next: "state_clinic_code"
             });
         });
 
@@ -770,7 +780,7 @@ go.app = function() {
         self.add("state_passport_no", function(name) {
             return new FreeText(name, {
                 question: $(
-                    "Please enter your Passport number as it in your passport " +
+                    "Please enter your Passport number as it is in your passport " +
                     "(no spaces between numbers)"
                 ),
                 check: function(content) {
@@ -940,6 +950,30 @@ go.app = function() {
             return self.states.create("state_start_popi_flow");
         });
 
+
+        self.add("state_send_whatsapp_template_message", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(
+                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
+            return self.hub
+                .send_whatsapp_template_message(msisdn, namespace, template_name, parameters)
+                .then(function(result) {
+                    self.im.user.set_answer("prefered_channel", result);
+                    // trigger SMS to be sent to the msidn
+                    return self.states.create("state_accept_popi");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if (opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {
+                            return_state: name
+                        });
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+
         self.add("state_start_popi_flow", function(name, opts) {
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
@@ -964,6 +998,8 @@ go.app = function() {
         });
 
         self.states.add("state_underage_mother", function(name) {
+            var next_state = (self.im.user.answers.language) ? "state_send_whatsapp_template_message" : "state_language_one";
+
             return new MenuState(name, {
                 question: $(
                     "We noticed that you are under 18." +
@@ -975,13 +1011,15 @@ go.app = function() {
                 ),
                 accept_labels: true,
                 choices: [
-                    new Choice("state_start_popi_flow", $("Yes")),
+                    new Choice(next_state, $("Yes")),
                     new Choice("state_basic_healthcare", $("No")),
                 ],
             });
         });
 
         self.states.add("state_underage_registree", function(name) {
+            var next_state = (self.im.user.answers.language) ? "state_send_whatsapp_template_message" : "state_language_one";
+
             return new MenuState(name, {
                 question: $(
                     "We see that the mom is under 18." +
@@ -993,13 +1031,67 @@ go.app = function() {
                 ),
                 accept_labels: true,
                 choices: [
-                    new Choice("state_start_popi_flow", $("Yes")),
+                    new Choice(next_state, $("Yes")),
                     new Choice("state_basic_healthcare", $("No")),
                 ],
             });
         });
 
+
+        self.states.add("state_language_one", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "What is your home language?" +
+                    "" +
+                    "Reply with a number." +
+                    ""+
+                    "1. isiZulu" +
+                    "2. isiXhosa" +
+                    "3. Afrikaans" +
+                    "4. English" +
+                    "5. Sesotho sa Leboa" +
+                    "6. Next."),
+                error: $(
+                    "Sorry, we don't understand. Please try again.",
+                    "",
+                    "Enter the number that matches your answer."
+                ),
+                accept_labels: true,
+                choices: [
+                    new Choice("state_language_two", $("Next")),
+                ],
+            });
+        });
+
+
+        self.states.add("state_language_two", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "Here are more language options." +
+                    "" +
+                    "Answer with a number." +
+                    "" +
+                    "6. Setswana" +
+                    "7. Sesotho" +
+                    "8. Xitsonga" +
+                    "9. siSwati" +
+                    "10. Tshivenda"+
+                    "11. isiNdebele"),
+                error: $(
+                    "Sorry, we don't understand. Please try again.",
+                    "",
+                    "Enter the number that matches your answer."
+                ),
+                accept_labels: true,
+                choices: [
+                    new Choice("state_start_popi_flow", $("Next")),
+                ],
+            });
+        });
+
         self.states.add("state_basic_healthcare", function(name) {
+            var next_state = (self.im.user.answers.language) ? "state_send_whatsapp_template_message" : "state_language_one";
+
             return new MenuState(name, {
                 question: $(
                     "Please confirm that you are signing up to receive information from MomConnect to exercise your ",
@@ -1011,7 +1103,7 @@ go.app = function() {
                 ),
                 accept_labels: true,
                 choices: [
-                    new Choice("state_start_popi_flow", $("Confirm")),
+                    new Choice(next_state, $("Confirm")),
                 ],
             });
         });
@@ -1160,7 +1252,7 @@ go.app = function() {
                     "MomConnect on {{channel}}. Thanks for signing up to MomConnect!"
                 ).context({
                     msisdn: msisdn,
-                    channel: $("WhatsApp")
+                    channel: self.im.user.answers.language
                 }),
                 next: "state_start"
             });

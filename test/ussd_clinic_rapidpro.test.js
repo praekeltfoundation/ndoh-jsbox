@@ -50,7 +50,7 @@ describe("ussd_clinic app", function() {
                     reply: [
                     "Welcome to MomConnect.",
                     "",
-                    "To get WhatsApp messages in English, please confirm:",
+                    "To get WhatsApp or SMS messages, please confirm:",
                     "",
                     "Is 0123456789 the number signing up?",
                     "1. Yes",
@@ -1284,7 +1284,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_passport_no")
                 .check.interaction({
                     reply:
-                        "Please enter your Passport number as it in your passport " +
+                        "Please enter your Passport number as it is in your passport " +
                         "(no spaces between numbers)"
                 })
                 .run();
