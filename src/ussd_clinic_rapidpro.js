@@ -1264,7 +1264,7 @@ go.app = function() {
                     "MomConnect on {{channel}}. Thanks for signing up to MomConnect!"
                 ).context({
                     msisdn: msisdn,
-                    channel: self.im.user.prefered_channel
+                    channel: $("WhatsApp")
                 }),
                 next: "state_start"
             });
