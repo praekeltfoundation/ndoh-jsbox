@@ -287,6 +287,17 @@ go.app = function() {
                 self.im.config.services.whatsapp.token
             );
 
+            // self.hub = new go.Hub(
+            //     new JsonApi(self.im, {
+            //         headers: {
+            //             'User-Agent': ["Jsbox/NDoH-Clinic"]
+            //         }
+            //     }),
+            //     self.im.config.services.whatsapp.base_url,
+            //     self.im.config.services.whatsapp.token
+            // );
+
+            self.namespace = self.im.config.services.namespace;
             self.env = self.im.config.env;
             self.metric_prefix = [self.env, self.im.config.name].join('.');
 
@@ -397,29 +408,10 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_whatsapp_contact_check"
+                next: "state_clinic_code"
             });
         });
 
-        self.add("state_whatsapp_contact_check", function(name, opts) {
-            var msisdn = utils.normalize_msisdn(
-                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
-            return self.whatsapp.contact_check(msisdn, true)
-                .then(function(result) {
-                    self.im.user.set_answer("on_whatsapp", result);
-                    return self.states.create("state_clinic_code");
-                }).catch(function(e) {
-                    // Go to error state after 3 failed HTTP requests
-                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-                    if (opts.http_error_count === 3) {
-                        self.im.log.error(e.message);
-                        return self.states.create("__error__", {
-                            return_state: name
-                        });
-                    }
-                    return self.states.create(name, opts);
-                });
-        });
 
         self.add("state_clinic_code", function(name, opts) {
             var text;
@@ -1221,7 +1213,6 @@ go.app = function() {
         });
 
         self.states.add("state_underage_registree", function(name) {
-            var next_state = (self.im.user.answers.language) ? "state_send_whatsapp_template_message" : "state_language_1";
             return new MenuState(name, {
                 question: $(
                     "We see that the mom is under 18." +
@@ -1233,25 +1224,20 @@ go.app = function() {
                 ),
                 accept_labels: true,
                 choices: [
-                    new Choice(next_state, $("Yes")),
+                    new Choice("state_language_1", $("Yes")),
                     new Choice("state_basic_healthcare", $("No")),
                 ],
             });
         });
 
         self.states.add("state_language_1", function(name) {
-            return new MenuState(name, {
-                question: $(
-                    "What is your home language?" +
-                    "" +
-                    "Reply with a number." +
-                    ""+
-                    "1. isiZulu" +
-                    "2. isiXhosa" +
-                    "3. Afrikaans" +
-                    "4. English" +
-                    "5. Sesotho sa Leboa" +
-                    "6. Next."),
+            return new ChoiceState(name, {
+                question: $([
+                    "What is your home language?",
+                    "",
+                    "Reply with a number.",
+                    "",
+                ].join("\n")),
                 error: $(
                     "Sorry, we don't understand. Please try again.",
                     "",
@@ -1259,24 +1245,24 @@ go.app = function() {
                 ),
                 accept_labels: true,
                 choices: [
+                    new Choice("state_send_whatsapp_template_message", $("isiZulu")),
+                    new Choice("state_send_whatsapp_template_message", $("isiXhosa")),
+                    new Choice("state_send_whatsapp_template_message", $("Afrikaans")),
+                    new Choice("state_send_whatsapp_template_message", $("English")),
+                    new Choice("state_send_whatsapp_template_message", $("Sesotho sa Leboa")),
                     new Choice("state_language_2", $("Next")),
                 ],
             });
         });
 
         self.states.add("state_language_2", function(name) {
-            return new MenuState(name, {
-                question: $(
-                    "Here are more language options." +
-                    "" +
-                    "Answer with a number." +
-                    "" +
-                    "6. Setswana" +
-                    "7. Sesotho" +
-                    "8. Xitsonga" +
-                    "9. siSwati" +
-                    "10. Tshivenda"+
-                    "11. isiNdebele"),
+            return new ChoiceState(name, {
+                question: $([
+                    "Here are more language options.",
+                    "",
+                    "Answer with a number.",
+                    "",
+                ].join("\n")),
                 error: $(
                     "Sorry, we don't understand. Please try again.",
                     "",
@@ -1284,7 +1270,11 @@ go.app = function() {
                 ),
                 accept_labels: true,
                 choices: [
-                    new Choice("state_start_popi_flow", $("Next")),
+                    new Choice("state_send_whatsapp_template_message", $("Setswana")),
+                    new Choice("state_send_whatsapp_template_message", $("Sesotho")),
+                    new Choice("state_send_whatsapp_template_message", $("Xitsonga")),
+                    new Choice("state_send_whatsapp_template_message", $("siSwati")),
+                    new Choice("state_send_whatsapp_template_message", $("isiNdebele")),
                 ],
             });
         });
@@ -1293,7 +1283,7 @@ go.app = function() {
         self.add("state_send_whatsapp_template_message", function(name, opts) {
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
-            var namespace = '';
+            var namespace = self.namespace;
             var template_name = '';
             var parameters = '';
             return self.hub
