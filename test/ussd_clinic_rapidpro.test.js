@@ -35,7 +35,8 @@ describe("ussd_clinic app", function() {
             prebirth_flow_uuid: "prebirth-flow-uuid",
             postbirth_flow_uuid: "postbirth-flow-uuid",
             popi_flow_uuid: "popi-flow-uuid",
-            popi_template: "popi_template"
+            popi_template: "popi_template",
+            send_sms_flow_uuid: "send_sms_flow_uuid"
         })
         .setup(function(api) {
             api.metrics.stores = {'test_metric_store': {}};
@@ -2349,58 +2350,6 @@ describe("ussd_clinic app", function() {
                 })
                 .run();
         });
-        // it("should go to state_send_whatsapp_template_message after selecting language", function() {
-        //     return tester
-        //         .setup.user.state("state_language_1")
-        //         .input("6")
-        //         .check.user.state("state_language_2")
-        //         .run();
-        // });
-        // it("should display language 2 list of languages", function() {
-        //     return tester
-        //         .setup.user.state("state_language_2")
-        //         .check.interaction({
-        //             state: "state_language_2",
-        //             reply: [
-        //                 "Here are more language options.",
-        //                 "" ,
-        //                 "Answer with a number.",
-        //                 "",
-        //                 "1. Setswana",
-        //                 "2. Sesotho",
-        //                 "3. Xitsonga",
-        //                 "4. siSwati",
-        //                 "5. isiNdebele"
-        //             ].join("\n")
-        //         })
-        //         .run();
-        // });
-        // it("should give an error on invalid inputs", function() {
-        //     return tester
-        //         .setup.user.state("state_language")
-        //         .input("20")
-        //         .check.interaction({
-        //             reply:[
-        //                 "Sorry, we don't understand.",
-        //                 "",
-        //                 "Enter the number that matches your answer.",
-        //                 "1. Setswana",
-        //                 "2. Sesotho",
-        //                 "3. Xitsonga",
-        //                 "4. siSwati",
-        //                 "5. isiNdebele"
-        //             ].join("\n")
-        //         })
-        //         .run();
-        // });
-        // it("should go to state_send_whatsapp_template_message after selecting language", function() {
-        //     return tester
-        //         .setup.user.state("state_language_2")
-        //         .input("5")
-        //         .check.user.state("state_send_whatsapp_template_message")
-        //         .run();
-        // });
-
 
     });
     describe("state_send_whatsapp_template_message", function() {
@@ -2419,6 +2368,28 @@ describe("ussd_clinic app", function() {
             .setup.user.state("state_send_whatsapp_template_message")
             .check.user.state("state_accept_popi")
             .check.user.answer("prefered_channel", "WhatsApp")
+            .run();
+        });
+        it("should send a whatsapp template and fail", function() {
+            return tester
+            .setup(function(api) {
+              api.http.fixtures.add(
+                  fixtures_hub.send_whatsapp_template_message(
+                    "+27123456789",
+                    "ff7348dc_a184_4ec1_bf0a_47dc38679d42",
+                    "popi_template",
+                    "SMS"
+                  )
+              );
+              api.http.fixtures.add(
+                fixtures_rapidpro.start_flow(
+                    "send_sms_flow_uuid", null, "whatsapp:27123456789"
+                )
+              );
+            })
+            .setup.user.state("state_send_whatsapp_template_message")
+            .check.user.state("state_accept_popi")
+            .check.user.answer("prefered_channel", "SMS")
             .run();
         });
     });
