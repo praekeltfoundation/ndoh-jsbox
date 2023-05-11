@@ -723,7 +723,7 @@ go.app = function() {
                 ].join("\n")),
                 check: function(content) {
                     var date = new moment(
-                        self.im.user.answers.state_edd_year + 
+                        self.im.user.answers.state_edd_year +
                         self.im.user.answers.state_edd_month + content,
                         "YYYYMMDD"
                     );
@@ -739,7 +739,7 @@ go.app = function() {
                     }
                     else{
                     }
-                    
+
                 },
                 next: "state_edd_calc"
             });
@@ -747,7 +747,7 @@ go.app = function() {
 
         self.add("state_edd_calc", function(name) {
             var date = new moment(
-                self.im.user.answers.state_edd_year + self.im.user.answers.state_edd_month 
+                self.im.user.answers.state_edd_year + self.im.user.answers.state_edd_month
                     + self.im.user.answers.state_edd_day,
                 "YYYYMMDD"
             );
@@ -757,10 +757,10 @@ go.app = function() {
                 !date.isBetween(current_date, current_date.clone().add(43, "weeks"))
             ) {
                 if(diff < 0){
-                    return self.states.create("state_edd_out_of_range_past"); 
+                    return self.states.create("state_edd_out_of_range_past");
                 }
                 if(diff > 0){
-                    return self.states.create("state_edd_out_of_range_future"); 
+                    return self.states.create("state_edd_out_of_range_future");
                 }
             }
             return self.states.create("state_id_type");
@@ -1224,14 +1224,14 @@ go.app = function() {
                 ),
                 accept_labels: true,
                 choices: [
-                    new Choice("state_language_1", $("Yes")),
+                    new Choice("state_language", $("Yes")),
                     new Choice("state_basic_healthcare", $("No")),
                 ],
             });
         });
 
-        self.states.add("state_language_1", function(name) {
-            return new ChoiceState(name, {
+        self.states.add("state_language", function(name) {
+            return new PaginatedChoiceState(name, {
                 question: $([
                     "What is your home language?",
                     "",
@@ -1244,46 +1244,50 @@ go.app = function() {
                     "Enter the number that matches your answer."
                 ].join("\n")),
                 accept_labels: true,
-                next: function (response) {
-                    if ("next") {
-                      return "state_language_2";
-                    }
-                    return "state_send_whatsapp_template_message";
-                },
+                options_per_page: 6,
+                characters_per_page: 160,
+                next: "state_send_whatsapp_template_message",
                 choices: [
                     new Choice("zul", $("isiZulu")),
                     new Choice("xho", $("isiXhosa")),
                     new Choice("afr", $("Afrikaans")),
                     new Choice("eng", $("English")),
                     new Choice("sot", $("Sesotho sa Leboa")),
-                    new Choice("next", $("Next")),
-                ],
-            });
-        });
-
-        self.states.add("state_language_2", function(name) {
-            return new ChoiceState(name, {
-                question: $([
-                    "Here are more language options.",
-                    "",
-                    "Answer with a number.",
-                    "",
-                ].join("\n")),
-                error: $([
-                    "Sorry, we don't understand. Please try again.",
-                    "",
-                    "Enter the number that matches your answer."
-                ].join("\n")),
-                accept_labels: true,
-                choices: [
                     new Choice("set", $("Setswana")),
                     new Choice("sot", $("Sesotho")),
                     new Choice("tso", $("Xitsonga")),
                     new Choice("ssw", $("siSwati")),
                     new Choice("nde", $("isiNdebele")),
                 ],
+                back: $("Back"),
+                more: $("Next"),
             });
         });
+
+        // self.states.add("state_language_2", function(name) {
+        //     return new ChoiceState(name, {
+        //         question: $([
+        //             "Here are more language options.",
+        //             "",
+        //             "Answer with a number.",
+        //             "",
+        //         ].join("\n")),
+        //         error: $([
+        //             "Sorry, we don't understand.",
+        //             "",
+        //             "Enter the number that matches your answer."
+        //         ].join("\n")),
+        //         accept_labels: true,
+        //         next: "state_send_whatsapp_template_message",
+        //         choices: [
+        //             new Choice("set", $("Setswana")),
+        //             new Choice("sot", $("Sesotho")),
+        //             new Choice("tso", $("Xitsonga")),
+        //             new Choice("ssw", $("siSwati")),
+        //             new Choice("nde", $("isiNdebele")),
+        //         ],
+        //     });
+        // });
 
 
         self.add("state_send_whatsapp_template_message", function(name, opts) {
@@ -1329,7 +1333,7 @@ go.app = function() {
                 ],
             });
         });
-        
+
 
         self.add("state_start_send_sms_flow", function(name, opts) {
             var msisdn = utils.normalize_msisdn(
@@ -1429,9 +1433,9 @@ go.app = function() {
                 swt: "7"
             };
             var flow_uuid;
-            
-            if (self.im.user.answers.state_message_type === "state_edd_month" 
-                || typeof self.im.user.answers.state_edd_month != "undefined") {   
+
+            if (self.im.user.answers.state_message_type === "state_edd_month"
+                || typeof self.im.user.answers.state_edd_month != "undefined") {
                 flow_uuid = self.im.config.prebirth_flow_uuid;
                 data.edd = new moment.utc(
                     self.im.user.answers.state_edd_year +

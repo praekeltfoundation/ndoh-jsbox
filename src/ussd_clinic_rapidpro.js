@@ -484,7 +484,7 @@ go.app = function() {
                 ].join("\n")),
                 check: function(content) {
                     var date = new moment(
-                        self.im.user.answers.state_edd_year + 
+                        self.im.user.answers.state_edd_year +
                         self.im.user.answers.state_edd_month + content,
                         "YYYYMMDD"
                     );
@@ -500,7 +500,7 @@ go.app = function() {
                     }
                     else{
                     }
-                    
+
                 },
                 next: "state_edd_calc"
             });
@@ -508,7 +508,7 @@ go.app = function() {
 
         self.add("state_edd_calc", function(name) {
             var date = new moment(
-                self.im.user.answers.state_edd_year + self.im.user.answers.state_edd_month 
+                self.im.user.answers.state_edd_year + self.im.user.answers.state_edd_month
                     + self.im.user.answers.state_edd_day,
                 "YYYYMMDD"
             );
@@ -518,10 +518,10 @@ go.app = function() {
                 !date.isBetween(current_date, current_date.clone().add(43, "weeks"))
             ) {
                 if(diff < 0){
-                    return self.states.create("state_edd_out_of_range_past"); 
+                    return self.states.create("state_edd_out_of_range_past");
                 }
                 if(diff > 0){
-                    return self.states.create("state_edd_out_of_range_future"); 
+                    return self.states.create("state_edd_out_of_range_future");
                 }
             }
             return self.states.create("state_id_type");
@@ -1005,6 +1005,8 @@ go.app = function() {
                     "Enter the number that matches your answer."
                 ].join("\n")),
                 accept_labels: true,
+                options_per_page: 6,
+                characters_per_page: 160,
                 next: "state_send_whatsapp_template_message",
                 choices: [
                     new Choice("zul", $("isiZulu")),
@@ -1092,7 +1094,7 @@ go.app = function() {
                 ],
             });
         });
-        
+
 
         self.add("state_start_send_sms_flow", function(name, opts) {
             var msisdn = utils.normalize_msisdn(
@@ -1192,9 +1194,9 @@ go.app = function() {
                 swt: "7"
             };
             var flow_uuid;
-            
-            if (self.im.user.answers.state_message_type === "state_edd_month" 
-                || typeof self.im.user.answers.state_edd_month != "undefined") {   
+
+            if (self.im.user.answers.state_message_type === "state_edd_month"
+                || typeof self.im.user.answers.state_edd_month != "undefined") {
                 flow_uuid = self.im.config.prebirth_flow_uuid;
                 data.edd = new moment.utc(
                     self.im.user.answers.state_edd_year +

@@ -1340,7 +1340,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.answers({
                     state_enter_msisdn: "0820001001",
                     state_passport_holder_age: "15" ,
-                    state_basic_healthcare: "Confirm"   
+                    state_basic_healthcare: "Confirm"
             })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1372,7 +1372,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_start_popi_flow")
                 .setup.user.answers({
                     state_passport_holder_age: "15",
-                    state_underage_mother: "Yes"   
+                    state_underage_mother: "Yes"
             })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1405,7 +1405,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.answers({
                     state_enter_msisdn: "0820001001",
                     state_passport_holder_age: "15",
-                    state_underage_registree: "Yes"   
+                    state_underage_registree: "Yes"
             })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1438,7 +1438,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.answers({
                     state_enter_msisdn: "0820001001",
                     state_id_type: "state_passport_country",
-                    state_passport_holder_age: "15"   
+                    state_passport_holder_age: "15"
             })
                 .check.interaction({
                     state: "state_underage_registree",
@@ -1456,7 +1456,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_mother_age_calc")
                 .setup.user.answers({
                     state_passport_holder_age: "15",
-                    state_id_type: "state_passport_country",   
+                    state_id_type: "state_passport_country",
             })
                 .check.interaction({
                     state: "state_underage_mother",
@@ -1702,7 +1702,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_start_popi_flow")
                 .setup.user.answers({
                     state_enter_msisdn: "0820001001",
-                    state_sa_id_no: "95010221222"     
+                    state_sa_id_no: "95010221222"
             })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1734,7 +1734,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_mother_age_calc")
                 .setup.user.answers({
                     state_sa_id_no: "21010221222",
-                    state_id_type: "state_sa_id_no"    
+                    state_id_type: "state_sa_id_no"
             })
 
                 .check.interaction({
@@ -1754,7 +1754,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.answers({
                     state_enter_msisdn: "07123456789",
                     state_sa_id_no: "21010221222",
-                    state_id_type: "state_sa_id_no"     
+                    state_id_type: "state_sa_id_no"
             })
 
                 .check.interaction({
@@ -2292,7 +2292,7 @@ describe("ussd_clinic app", function() {
             return tester
                 .setup.user.state("state_language")
                 .check.interaction({
-                    state: "state_language_1",
+                    state: "state_language",
                     reply: [
                         "What is your home language?",
                         "" ,
@@ -2304,10 +2304,7 @@ describe("ussd_clinic app", function() {
                         "4. English",
                         "5. Sesotho sa Leboa",
                         "6. Setswana",
-                        "7. Sesotho",
-                        "8. Xitsonga",
-                        "9. siSwati",
-                        "10. isiNdebele"
+                        "7. Next"
                     ].join("\n")
                 })
                 .run();
@@ -2327,10 +2324,26 @@ describe("ussd_clinic app", function() {
                         "4. English",
                         "5. Sesotho sa Leboa",
                         "6. Setswana",
-                        "7. Sesotho",
-                        "8. Xitsonga",
-                        "9. siSwati",
-                        "10. isiNdebele"
+                        "7. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to the next page", function() {
+            return tester
+                .setup.user.state("state_language")
+                .input("7")
+                .check.interaction({
+                    reply:[
+                        "What is your home language?",
+                        "" ,
+                        "Reply with a number.",
+                        "",
+                        "1. Sesotho",
+                        "2. Xitsonga",
+                        "3. siSwati",
+                        "4. isiNdebele",
+                        "5. Back",
                     ].join("\n")
                 })
                 .run();
