@@ -38,27 +38,16 @@ go.app = function() {
                 self.im.config.services.openhim.username,
                 self.im.config.services.openhim.password
             );
-            self.whatsapp = new go.Engage(
+            self.hub = new go.Hub(
                 new JsonApi(self.im, {
                     headers: {
                         'User-Agent': ["Jsbox/NDoH-Clinic"]
                     }
                 }),
-                self.im.config.services.whatsapp.base_url,
-                self.im.config.services.whatsapp.token
+                self.im.config.services.hub.base_url,
+                self.im.config.services.hub.token
             );
 
-            // self.hub = new go.Hub(
-            //     new JsonApi(self.im, {
-            //         headers: {
-            //             'User-Agent': ["Jsbox/NDoH-Clinic"]
-            //         }
-            //     }),
-            //     self.im.config.services.whatsapp.base_url,
-            //     self.im.config.services.whatsapp.token
-            // );
-
-            self.namespace = self.im.config.services.namespace;
             self.env = self.im.config.env;
             self.metric_prefix = [self.env, self.im.config.name].join('.');
 
@@ -932,6 +921,7 @@ go.app = function() {
             return self.states.create("state_start_popi_flow");
         });
 
+        // TODO: remove, this ahppens a bit later using hub api
         self.add("state_start_popi_flow", function(name, opts) {
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
@@ -1025,44 +1015,20 @@ go.app = function() {
             });
         });
 
-        // self.states.add("state_language_2", function(name) {
-        //     return new ChoiceState(name, {
-        //         question: $([
-        //             "Here are more language options.",
-        //             "",
-        //             "Answer with a number.",
-        //             "",
-        //         ].join("\n")),
-        //         error: $([
-        //             "Sorry, we don't understand.",
-        //             "",
-        //             "Enter the number that matches your answer."
-        //         ].join("\n")),
-        //         accept_labels: true,
-        //         next: "state_send_whatsapp_template_message",
-        //         choices: [
-        //             new Choice("set", $("Setswana")),
-        //             new Choice("sot", $("Sesotho")),
-        //             new Choice("tso", $("Xitsonga")),
-        //             new Choice("ssw", $("siSwati")),
-        //             new Choice("nde", $("isiNdebele")),
-        //         ],
-        //     });
-        // });
-
-
         self.add("state_send_whatsapp_template_message", function(name, opts) {
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
-            var namespace = self.namespace;
-            var template_name = '';
-            var parameters = '';
+            var namespace = self.im.config.namespace || "ff7348dc_a184_4ec1_bf0a_47dc38679d42";
+            var template_name = self.im.config.popi_template;
+            // TODO: add PDF filename and media UUID to attach to template
             return self.hub
-                .send_whatsapp_template_message(msisdn, namespace, template_name, parameters)
-                .then(function(result) {
-                    self.im.user.set_answer("prefered_channel", result);
-                    var next_state =  self.im.user.answers.prefered_channel == "SMS" ? "state_start_send_sms_flow":"state_accept_popi";
-                    return self.states.create(next_state);
+                .send_whatsapp_template_message(msisdn, namespace, template_name)
+                .then(function(preferred_channel) {
+                    self.im.user.set_answer("prefered_channel", preferred_channel);
+                    if (preferred_channel == "SMS") {
+                        return self.states.create("state_start_send_sms_flow");
+                    }
+                    return self.states.create("state_accept_popi");
                 }).catch(function(e) {
                     // Go to error state after 3 failed HTTP requests
                     opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;

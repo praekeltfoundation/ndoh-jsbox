@@ -1,25 +1,21 @@
 module.exports = function() {
     return {
-        send_whatsapp_template_message: function(msisdn, namespace, template_name, parameters) {
+        send_whatsapp_template_message: function(msisdn, namespace, template_name, preferred_channel) {
             return {
                 "repeatable": true,
                 "request": {
-                    "url": 'http://turn/v1/messages',
-                    "params": {"msisdn": msisdn,
-                            "namespace": namespace,
-                            "template_name":template_name,
-                            "parameters": parameters
+                    "url": 'http://hub/api/v1/sendwhatsapptemplate',
+                    "params": {
+                        "msisdn": msisdn,
+                        "template_name":template_name,
+                        "namespace": namespace
                     },
-                    "method": 'GET'
+                    "method": 'POST'
                 },
                 "response": {
                     "code": 200,
-                    "json": {
-                        "messages": [
-                            {
-                                "id": "gBEGkYiEB1VXAglK1ZEqA1YKPrU"
-                            }
-                        ]
+                    "data": {
+                        "preferred_channel": preferred_channel
                     }
                 }
             };

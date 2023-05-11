@@ -2,7 +2,7 @@ var _ = require("lodash");
 var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
 var assert = require("assert");
-// var fixtures_hub = require("./fixtures_hub")();
+var fixtures_hub = require("./fixtures_hub")();
 var fixtures_rapidpro = require("./fixtures_rapidpro")();
 var fixtures_openhim = require("./fixtures_jembi_dynamic")();
 
@@ -27,14 +27,15 @@ describe("ussd_clinic app", function() {
                     username: "openhim-user",
                     password: "openhim-pass"
                 },
-                whatsapp: {
-                    base_url: "http://pilot.example.org",
-                    token: "engage-token"
+                hub: {
+                    base_url: "http://hub",
+                    token: "hub-token"
                 }
             },
             prebirth_flow_uuid: "prebirth-flow-uuid",
             postbirth_flow_uuid: "postbirth-flow-uuid",
-            popi_flow_uuid: "popi-flow-uuid"
+            popi_flow_uuid: "popi-flow-uuid",
+            popi_template: "popi_template"
         })
         .setup(function(api) {
             api.metrics.stores = {'test_metric_store': {}};
@@ -2402,24 +2403,23 @@ describe("ussd_clinic app", function() {
 
 
     });
-    // describe("state_send_whatsapp_template_message", function() {
-    //     it("should send a whatsapp template", function() {
-    //         return tester
-    //         .setup(function(api) {
-    //           api.http.fixtures.add(
-    //               fixtures_hub.send_whatsapp_template_message({
-    //                 msisdn: "27123456789d",
-    //                 namespace: "test name space",
-    //                 template_name: "test name",
-    //                 parameters: {
-    //                     type: "text",
-    //                     text: "test data",
-    //                 }
-    //               })
-    //           );
-    //         })
-    //         .setup.user.state("state_send_whatsapp_template_message")
-    //         .run();
-    // });
-//   });
+    describe("state_send_whatsapp_template_message", function() {
+        it("should send a whatsapp template", function() {
+            return tester
+            .setup(function(api) {
+              api.http.fixtures.add(
+                  fixtures_hub.send_whatsapp_template_message(
+                    "+27123456789",
+                    "ff7348dc_a184_4ec1_bf0a_47dc38679d42",
+                    "popi_template",
+                    "WhatsApp"
+                  )
+              );
+            })
+            .setup.user.state("state_send_whatsapp_template_message")
+            .check.user.state("state_accept_popi")
+            .check.user.answer("prefered_channel", "WhatsApp")
+            .run();
+        });
+    });
 });

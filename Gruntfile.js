@@ -37,7 +37,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_clinic_rapidpro: [
                     'src/index.js',
-                    'src/engage.js',
+                    'src/hub.js',
                     'src/rapidpro.js',
                     'src/openhim.js',
                     '<%= paths.src.app.ussd_clinic_rapidpro %>',
@@ -138,7 +138,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_clinic_rapidpro: [
                     'test/setup.js',
-                    'src/engage.js',
+                    'src/hub.js',
                     'src/rapidpro.js',
                     'src/openhim.js',
                     '<%= paths.src.app.ussd_clinic_rapidpro %>',
