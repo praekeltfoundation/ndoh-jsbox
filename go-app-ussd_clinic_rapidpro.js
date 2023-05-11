@@ -1,51 +1,35 @@
 var go = {};
 go;
 
-go.Engage = function() {
+go.Hub = function() {
     var vumigo = require('vumigo_v02');
     var events = vumigo.events;
     var Eventable = events.Eventable;
-    var _ = require('lodash');
-    var url = require('url');
+    var url = require("url");
 
-    var Engage = Eventable.extend(function(self, json_api, base_url, token) {
+    var Hub = Eventable.extend(function(self, json_api, base_url, auth_token) {
         self.json_api = json_api;
         self.base_url = base_url;
-        self.json_api.defaults.headers.Authorization = ['Bearer ' + token];
-        self.json_api.defaults.headers['Content-Type'] = ['application/json'];
+        self.auth_token = auth_token;
+        self.json_api.defaults.headers.Authorization = ['Token ' + self.auth_token];
 
-        self.contact_check = function(msisdn, block) {
-            return self.json_api.post(url.resolve(self.base_url, 'v1/contacts'), {
-                data: {
-                    blocking: block ? 'wait' : 'no_wait',
-                    contacts: [msisdn]
-                }
-            }).then(function(response) {
-                var existing = _.filter(response.data.contacts, function(obj) {
-                    return obj.status === "valid";
+        self.send_whatsapp_template_message = function(msisdn, namespace, template_name) {
+            var api_url = url.resolve(self.base_url, "/api/v1/sendwhatsapptemplate");
+            var data = {
+                "msisdn": msisdn,
+                "namespace": namespace,
+                "template_name": template_name
+            };
+
+            return self.json_api.post(api_url, {params: data})
+                .then(function(response){
+                    return response.data.preferred_channel;
+
                 });
-                return !_.isEmpty(existing);
-            });
         };
 
-          self.LANG_MAP = {zul_ZA: "en",
-                          xho_ZA: "en",
-                          afr_ZA: "af",
-                          eng_ZA: "en",
-                          nso_ZA: "en",
-                          tsn_ZA: "en",
-                          sot_ZA: "en",
-                          tso_ZA: "en",
-                          ssw_ZA: "en",
-                          ven_ZA: "en",
-                          nbl_ZA: "en",
-                          set_ZA: "en",
-                        };
     });
-
-
-
-    return Engage;
+    return Hub;
 }();
 
 go.RapidPro = function() {
@@ -277,14 +261,14 @@ go.app = function() {
                 self.im.config.services.openhim.username,
                 self.im.config.services.openhim.password
             );
-            self.whatsapp = new go.Engage(
+            self.hub = new go.Hub(
                 new JsonApi(self.im, {
                     headers: {
                         'User-Agent': ["Jsbox/NDoH-Clinic"]
                     }
                 }),
-                self.im.config.services.whatsapp.base_url,
-                self.im.config.services.whatsapp.token
+                self.im.config.services.hub.base_url,
+                self.im.config.services.hub.token
             );
 
             self.env = self.im.config.env;
@@ -358,7 +342,7 @@ go.app = function() {
                 question: $([
                     "Welcome to MomConnect.",
                     "",
-                    "To get WhatsApp messages in English, please confirm:",
+                    "To get WhatsApp or SMS messages, please confirm:",
                     "",
                     "Is {{msisdn}} the number signing up?",
 
@@ -370,7 +354,7 @@ go.app = function() {
                     "answer."
                 ),
                 choices: [
-                    new Choice("state_whatsapp_contact_check", "Yes"),
+                    new Choice("state_clinic_code", "Yes"),
                     new Choice("state_enter_msisdn", "No")
                 ]
             });
@@ -397,29 +381,10 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_whatsapp_contact_check"
+                next: "state_clinic_code"
             });
         });
 
-        self.add("state_whatsapp_contact_check", function(name, opts) {
-            var msisdn = utils.normalize_msisdn(
-                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
-            return self.whatsapp.contact_check(msisdn, true)
-                .then(function(result) {
-                    self.im.user.set_answer("on_whatsapp", result);
-                    return self.states.create("state_clinic_code");
-                }).catch(function(e) {
-                    // Go to error state after 3 failed HTTP requests
-                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-                    if (opts.http_error_count === 3) {
-                        self.im.log.error(e.message);
-                        return self.states.create("__error__", {
-                            return_state: name
-                        });
-                    }
-                    return self.states.create(name, opts);
-                });
-        });
 
         self.add("state_clinic_code", function(name, opts) {
             var text;
@@ -731,7 +696,7 @@ go.app = function() {
                 ].join("\n")),
                 check: function(content) {
                     var date = new moment(
-                        self.im.user.answers.state_edd_year + 
+                        self.im.user.answers.state_edd_year +
                         self.im.user.answers.state_edd_month + content,
                         "YYYYMMDD"
                     );
@@ -747,7 +712,7 @@ go.app = function() {
                     }
                     else{
                     }
-                    
+
                 },
                 next: "state_edd_calc"
             });
@@ -755,7 +720,7 @@ go.app = function() {
 
         self.add("state_edd_calc", function(name) {
             var date = new moment(
-                self.im.user.answers.state_edd_year + self.im.user.answers.state_edd_month 
+                self.im.user.answers.state_edd_year + self.im.user.answers.state_edd_month
                     + self.im.user.answers.state_edd_day,
                 "YYYYMMDD"
             );
@@ -765,10 +730,10 @@ go.app = function() {
                 !date.isBetween(current_date, current_date.clone().add(43, "weeks"))
             ) {
                 if(diff < 0){
-                    return self.states.create("state_edd_out_of_range_past"); 
+                    return self.states.create("state_edd_out_of_range_past");
                 }
                 if(diff > 0){
-                    return self.states.create("state_edd_out_of_range_future"); 
+                    return self.states.create("state_edd_out_of_range_future");
                 }
             }
             return self.states.create("state_id_type");
@@ -1009,7 +974,7 @@ go.app = function() {
         self.add("state_passport_no", function(name) {
             return new FreeText(name, {
                 question: $(
-                    "Please enter your Passport number as it in your passport " +
+                    "Please enter your Passport number as it is in your passport " +
                     "(no spaces between numbers)"
                 ),
                 check: function(content) {
@@ -1179,6 +1144,7 @@ go.app = function() {
             return self.states.create("state_start_popi_flow");
         });
 
+        // TODO: remove, this ahppens a bit later using hub api
         self.add("state_start_popi_flow", function(name, opts) {
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
@@ -1232,13 +1198,76 @@ go.app = function() {
                 ),
                 accept_labels: true,
                 choices: [
-                    new Choice("state_start_popi_flow", $("Yes")),
+                    new Choice("state_language", $("Yes")),
                     new Choice("state_basic_healthcare", $("No")),
                 ],
             });
         });
 
+        self.states.add("state_language", function(name) {
+            return new PaginatedChoiceState(name, {
+                question: $([
+                    "What is your home language?",
+                    "",
+                    "Reply with a number.",
+                    "",
+                ].join("\n")),
+                error: $([
+                    "Sorry, we don't understand.",
+                    "",
+                    "Enter the number that matches your answer."
+                ].join("\n")),
+                accept_labels: true,
+                options_per_page: 6,
+                characters_per_page: 160,
+                next: "state_send_whatsapp_template_message",
+                choices: [
+                    new Choice("zul", $("isiZulu")),
+                    new Choice("xho", $("isiXhosa")),
+                    new Choice("afr", $("Afrikaans")),
+                    new Choice("eng", $("English")),
+                    new Choice("sot", $("Sesotho sa Leboa")),
+                    new Choice("set", $("Setswana")),
+                    new Choice("sot", $("Sesotho")),
+                    new Choice("tso", $("Xitsonga")),
+                    new Choice("ssw", $("siSwati")),
+                    new Choice("nde", $("isiNdebele")),
+                ],
+                back: $("Back"),
+                more: $("Next"),
+            });
+        });
+
+        self.add("state_send_whatsapp_template_message", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(
+                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
+            var namespace = self.im.config.namespace || "ff7348dc_a184_4ec1_bf0a_47dc38679d42";
+            var template_name = self.im.config.popi_template;
+            // TODO: add PDF filename and media UUID to attach to template
+            return self.hub
+                .send_whatsapp_template_message(msisdn, namespace, template_name)
+                .then(function(preferred_channel) {
+                    self.im.user.set_answer("prefered_channel", preferred_channel);
+                    if (preferred_channel == "SMS") {
+                        return self.states.create("state_start_send_sms_flow");
+                    }
+                    return self.states.create("state_accept_popi");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if (opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {
+                            return_state: name
+                        });
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
         self.states.add("state_basic_healthcare", function(name) {
+            var next_state = (self.im.user.answers.language) ? "state_send_whatsapp_template_message" : "state_start_popi_flow";
+
             return new MenuState(name, {
                 question: $(
                     "Please confirm that you are signing up to receive information from MomConnect to exercise your ",
@@ -1250,10 +1279,35 @@ go.app = function() {
                 ),
                 accept_labels: true,
                 choices: [
-                    new Choice("state_start_popi_flow", $("Confirm")),
+                    new Choice(next_state, $("Confirm")),
                 ],
             });
         });
+
+
+        self.add("state_start_send_sms_flow", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(
+                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
+            return self.rapidpro
+                .start_flow(
+                    self.im.config.send_sms_flow_uuid,
+                    null,
+                    "whatsapp:" + _.trim(msisdn, "+"))
+                .then(function() {
+                    return self.states.create("state_accept_popi");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if (opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {
+                            return_state: name
+                        });
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
 
         self.add("state_accept_popi", function(name, opts) {
             var msisdn = _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr);
@@ -1329,9 +1383,9 @@ go.app = function() {
                 swt: "7"
             };
             var flow_uuid;
-            
-            if (self.im.user.answers.state_message_type === "state_edd_month" 
-                || typeof self.im.user.answers.state_edd_month != "undefined") {   
+
+            if (self.im.user.answers.state_message_type === "state_edd_month"
+                || typeof self.im.user.answers.state_edd_month != "undefined") {
                 flow_uuid = self.im.config.prebirth_flow_uuid;
                 data.edd = new moment.utc(
                     self.im.user.answers.state_edd_year +

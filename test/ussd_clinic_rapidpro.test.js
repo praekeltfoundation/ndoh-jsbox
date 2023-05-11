@@ -2,9 +2,9 @@ var _ = require("lodash");
 var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
 var assert = require("assert");
+var fixtures_hub = require("./fixtures_hub")();
 var fixtures_rapidpro = require("./fixtures_rapidpro")();
 var fixtures_openhim = require("./fixtures_jembi_dynamic")();
-var fixtures_whatsapp = require("./fixtures_pilot")();
 
 describe("ussd_clinic app", function() {
     var app;
@@ -27,14 +27,16 @@ describe("ussd_clinic app", function() {
                     username: "openhim-user",
                     password: "openhim-pass"
                 },
-                whatsapp: {
-                    base_url: "http://pilot.example.org",
-                    token: "engage-token"
+                hub: {
+                    base_url: "http://hub",
+                    token: "hub-token"
                 }
             },
             prebirth_flow_uuid: "prebirth-flow-uuid",
             postbirth_flow_uuid: "postbirth-flow-uuid",
-            popi_flow_uuid: "popi-flow-uuid"
+            popi_flow_uuid: "popi-flow-uuid",
+            popi_template: "popi_template",
+            send_sms_flow_uuid: "send_sms_flow_uuid"
         })
         .setup(function(api) {
             api.metrics.stores = {'test_metric_store': {}};
@@ -50,7 +52,7 @@ describe("ussd_clinic app", function() {
                     reply: [
                     "Welcome to MomConnect.",
                     "",
-                    "To get WhatsApp messages in English, please confirm:",
+                    "To get WhatsApp or SMS messages, please confirm:",
                     "",
                     "Is 0123456789 the number signing up?",
                     "1. Yes",
@@ -1284,7 +1286,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_passport_no")
                 .check.interaction({
                     reply:
-                        "Please enter your Passport number as it in your passport " +
+                        "Please enter your Passport number as it is in your passport " +
                         "(no spaces between numbers)"
                 })
                 .run();
@@ -1340,7 +1342,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.answers({
                     state_enter_msisdn: "0820001001",
                     state_passport_holder_age: "15" ,
-                    state_basic_healthcare: "Confirm"   
+                    state_basic_healthcare: "Confirm"
             })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1372,7 +1374,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_start_popi_flow")
                 .setup.user.answers({
                     state_passport_holder_age: "15",
-                    state_underage_mother: "Yes"   
+                    state_underage_mother: "Yes"
             })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1405,7 +1407,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.answers({
                     state_enter_msisdn: "0820001001",
                     state_passport_holder_age: "15",
-                    state_underage_registree: "Yes"   
+                    state_underage_registree: "Yes"
             })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1438,7 +1440,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.answers({
                     state_enter_msisdn: "0820001001",
                     state_id_type: "state_passport_country",
-                    state_passport_holder_age: "15"   
+                    state_passport_holder_age: "15"
             })
                 .check.interaction({
                     state: "state_underage_registree",
@@ -1456,7 +1458,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_mother_age_calc")
                 .setup.user.answers({
                     state_passport_holder_age: "15",
-                    state_id_type: "state_passport_country",   
+                    state_id_type: "state_passport_country",
             })
                 .check.interaction({
                     state: "state_underage_mother",
@@ -1696,34 +1698,13 @@ describe("ussd_clinic app", function() {
                 .run();
         });
     });
-    describe("state_whatsapp_contact_check + state_start_popi_flow", function() {
-        it("should request for a clinic code", function() {
-            return tester
-                .setup.user.state("state_whatsapp_contact_check")
-                .setup.user.answers({state_enter_msisdn: "0820001001"})
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27820001001",
-                            wait: true
-                        })
-                    );
-                })
-                .check.interaction({
-                    state: "state_clinic_code",
-                    reply: [
-                        "Enter the 6 digit clinic code for the facility where you are being registered, e.g. 535970\n",
-                        "If you don't know the code, ask the nurse who is helping you sign up"
-                    ].join("\n")
-                })
-                .run();
-        });
+    describe("state_start_popi_flow", function() {
         it("should request to the RapidPro API", function() {
             return tester
                 .setup.user.state("state_start_popi_flow")
                 .setup.user.answers({
                     state_enter_msisdn: "0820001001",
-                    state_sa_id_no: "95010221222"     
+                    state_sa_id_no: "95010221222"
             })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1755,7 +1736,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.state("state_mother_age_calc")
                 .setup.user.answers({
                     state_sa_id_no: "21010221222",
-                    state_id_type: "state_sa_id_no"    
+                    state_id_type: "state_sa_id_no"
             })
 
                 .check.interaction({
@@ -1775,7 +1756,7 @@ describe("ussd_clinic app", function() {
                 .setup.user.answers({
                     state_enter_msisdn: "07123456789",
                     state_sa_id_no: "21010221222",
-                    state_id_type: "state_sa_id_no"     
+                    state_id_type: "state_sa_id_no"
             })
 
                 .check.interaction({
@@ -1786,64 +1767,6 @@ describe("ussd_clinic app", function() {
                         "1. Yes",
                         "2. No"
                     ].join("\n")
-                })
-                .run();
-        });
-        it("should request to the Whatsapp API for a contact check", function() {
-            return tester
-                .setup.user.state("state_whatsapp_contact_check")
-                .setup.user.answers({state_enter_msisdn: "0820001001"})
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27820001001",
-                            wait: true
-                        })
-                    );
-                })
-                .check.interaction({
-                    state: "state_clinic_code",
-                    reply: [
-                        "Enter the 6 digit clinic code for the facility where you are being registered, e.g. 535970\n",
-                        "If you don't know the code, ask the nurse who is helping you sign up"
-                    ].join("\n")
-                })
-                .check(function(api) {
-                    assert.equal(api.http.requests.length, 1);
-                    var urls = _.map(api.http.requests, "url");
-                    assert.deepEqual(urls, [
-                        "http://pilot.example.org/v1/contacts"
-                    ]);
-                    assert.equal(api.log.error.length, 0);
-                })
-                .run();
-        });
-        it("should retry HTTP call when WhatsApp is down", function() {
-            return tester
-                .setup.user.state("state_whatsapp_contact_check")
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27123456789",
-                            wait: true,
-                            fail: true
-                        })
-                    );
-                })
-                .check.interaction({
-                    state: "__error__",
-                    reply:
-                        "Sorry, something went wrong. We have been notified. Please try again " +
-                        "later"
-                })
-                .check.reply.ends_session()
-                .check(function(api){
-                    assert.equal(api.http.requests.length, 3);
-                    api.http.requests.forEach(function(request){
-                        assert.equal(request.url, "http://pilot.example.org/v1/contacts");
-                    });
-                    assert.equal(api.log.error.length, 1);
-                    assert(api.log.error[0].includes("HttpResponseError"));
                 })
                 .run();
         });
@@ -2363,6 +2286,111 @@ describe("ussd_clinic app", function() {
                     assert(api.log.error[0].includes("HttpResponseError"));
                 })
                 .run();
+        });
+    });
+
+    describe("state_language", function() {
+        it("should display language 1 list of languages", function() {
+            return tester
+                .setup.user.state("state_language")
+                .check.interaction({
+                    state: "state_language",
+                    reply: [
+                        "What is your home language?",
+                        "" ,
+                        "Reply with a number.",
+                        "",
+                        "1. isiZulu",
+                        "2. isiXhosa",
+                        "3. Afrikaans",
+                        "4. English",
+                        "5. Sesotho sa Leboa",
+                        "6. Setswana",
+                        "7. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should give an error on invalid inputs", function() {
+            return tester
+                .setup.user.state("state_language")
+                .input("20")
+                .check.interaction({
+                    reply:[
+                        "Sorry, we don't understand.",
+                        "",
+                        "Enter the number that matches your answer.",
+                        "1. isiZulu",
+                        "2. isiXhosa",
+                        "3. Afrikaans",
+                        "4. English",
+                        "5. Sesotho sa Leboa",
+                        "6. Setswana",
+                        "7. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to the next page", function() {
+            return tester
+                .setup.user.state("state_language")
+                .input("7")
+                .check.interaction({
+                    reply:[
+                        "What is your home language?",
+                        "" ,
+                        "Reply with a number.",
+                        "",
+                        "1. Sesotho",
+                        "2. Xitsonga",
+                        "3. siSwati",
+                        "4. isiNdebele",
+                        "5. Back",
+                    ].join("\n")
+                })
+                .run();
+        });
+
+    });
+    describe("state_send_whatsapp_template_message", function() {
+        it("should send a whatsapp template", function() {
+            return tester
+            .setup(function(api) {
+              api.http.fixtures.add(
+                  fixtures_hub.send_whatsapp_template_message(
+                    "+27123456789",
+                    "ff7348dc_a184_4ec1_bf0a_47dc38679d42",
+                    "popi_template",
+                    "WhatsApp"
+                  )
+              );
+            })
+            .setup.user.state("state_send_whatsapp_template_message")
+            .check.user.state("state_accept_popi")
+            .check.user.answer("prefered_channel", "WhatsApp")
+            .run();
+        });
+        it("should send a whatsapp template and fail", function() {
+            return tester
+            .setup(function(api) {
+              api.http.fixtures.add(
+                  fixtures_hub.send_whatsapp_template_message(
+                    "+27123456789",
+                    "ff7348dc_a184_4ec1_bf0a_47dc38679d42",
+                    "popi_template",
+                    "SMS"
+                  )
+              );
+              api.http.fixtures.add(
+                fixtures_rapidpro.start_flow(
+                    "send_sms_flow_uuid", null, "whatsapp:27123456789"
+                )
+              );
+            })
+            .setup.user.state("state_send_whatsapp_template_message")
+            .check.user.state("state_accept_popi")
+            .check.user.answer("prefered_channel", "SMS")
+            .run();
         });
     });
 });
