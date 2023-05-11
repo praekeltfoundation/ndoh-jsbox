@@ -2287,10 +2287,10 @@ describe("ussd_clinic app", function() {
         });
     });
 
-    describe("state_language_1", function() {
+    describe("state_language", function() {
         it("should display language 1 list of languages", function() {
             return tester
-                .setup.user.state("state_language_1")
+                .setup.user.state("state_language")
                 .check.interaction({
                     state: "state_language_1",
                     reply: [
@@ -2303,26 +2303,34 @@ describe("ussd_clinic app", function() {
                         "3. Afrikaans",
                         "4. English",
                         "5. Sesotho sa Leboa",
-                        "6. Next"
+                        "6. Setswana",
+                        "7. Sesotho",
+                        "8. Xitsonga",
+                        "9. siSwati",
+                        "10. isiNdebele"
                     ].join("\n")
                 })
                 .run();
         });
         it("should give an error on invalid inputs", function() {
             return tester
-                .setup.user.state("state_language_1")
+                .setup.user.state("state_language")
                 .input("20")
                 .check.interaction({
                     reply:[
-                        "Sorry, we don't understand. Please try again.",
-                        // "",
-                        // "Enter the number that matches your answer.",
+                        "Sorry, we don't understand.",
+                        "",
+                        "Enter the number that matches your answer.",
                         "1. isiZulu",
                         "2. isiXhosa",
                         "3. Afrikaans",
                         "4. English",
                         "5. Sesotho sa Leboa",
-                        "6. Next"
+                        "6. Setswana",
+                        "7. Sesotho",
+                        "8. Xitsonga",
+                        "9. siSwati",
+                        "10. isiNdebele"
                     ].join("\n")
                 })
                 .run();
@@ -2331,46 +2339,46 @@ describe("ussd_clinic app", function() {
         //     return tester
         //         .setup.user.state("state_language_1")
         //         .input("6")
-        //         .check.user.state("state_send_whatsapp_template_message")
+        //         .check.user.state("state_language_2")
         //         .run();
         // });
-        it("should display language 2 list of languages", function() {
-            return tester
-                .setup.user.state("state_language_2")
-                .check.interaction({
-                    state: "state_language_2",
-                    reply: [
-                        "Here are more language options.",
-                        "" ,
-                        "Answer with a number.",
-                        "",
-                        "1. Setswana",
-                        "2. Sesotho",
-                        "3. Xitsonga",
-                        "4. siSwati",
-                        "5. isiNdebele"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should give an error on invalid inputs", function() {
-            return tester
-                .setup.user.state("state_language_2")
-                .input("20")
-                .check.interaction({
-                    reply:[
-                        "Sorry, we don't understand. Please try again.",
-                        // "",
-                        // "Enter the number that matches your answer.",
-                        "1. Setswana",
-                        "2. Sesotho",
-                        "3. Xitsonga",
-                        "4. siSwati",
-                        "5. isiNdebele"
-                    ].join("\n")
-                })
-                .run();
-        });
+        // it("should display language 2 list of languages", function() {
+        //     return tester
+        //         .setup.user.state("state_language_2")
+        //         .check.interaction({
+        //             state: "state_language_2",
+        //             reply: [
+        //                 "Here are more language options.",
+        //                 "" ,
+        //                 "Answer with a number.",
+        //                 "",
+        //                 "1. Setswana",
+        //                 "2. Sesotho",
+        //                 "3. Xitsonga",
+        //                 "4. siSwati",
+        //                 "5. isiNdebele"
+        //             ].join("\n")
+        //         })
+        //         .run();
+        // });
+        // it("should give an error on invalid inputs", function() {
+        //     return tester
+        //         .setup.user.state("state_language")
+        //         .input("20")
+        //         .check.interaction({
+        //             reply:[
+        //                 "Sorry, we don't understand.",
+        //                 "",
+        //                 "Enter the number that matches your answer.",
+        //                 "1. Setswana",
+        //                 "2. Sesotho",
+        //                 "3. Xitsonga",
+        //                 "4. siSwati",
+        //                 "5. isiNdebele"
+        //             ].join("\n")
+        //         })
+        //         .run();
+        // });
         // it("should go to state_send_whatsapp_template_message after selecting language", function() {
         //     return tester
         //         .setup.user.state("state_language_2")

@@ -985,60 +985,68 @@ go.app = function() {
                 ),
                 accept_labels: true,
                 choices: [
-                    new Choice("state_language_1", $("Yes")),
+                    new Choice("state_language", $("Yes")),
                     new Choice("state_basic_healthcare", $("No")),
                 ],
             });
         });
 
-        self.states.add("state_language_1", function(name) {
-            return new ChoiceState(name, {
+        self.states.add("state_language", function(name) {
+            return new PaginatedChoiceState(name, {
                 question: $([
                     "What is your home language?",
                     "",
                     "Reply with a number.",
                     "",
                 ].join("\n")),
-                error: $(
-                    "Sorry, we don't understand. Please try again.",
+                error: $([
+                    "Sorry, we don't understand.",
                     "",
                     "Enter the number that matches your answer."
-                ),
+                ].join("\n")),
                 accept_labels: true,
+                next: "state_send_whatsapp_template_message",
                 choices: [
-                    new Choice("state_send_whatsapp_template_message", $("isiZulu")),
-                    new Choice("state_send_whatsapp_template_message", $("isiXhosa")),
-                    new Choice("state_send_whatsapp_template_message", $("Afrikaans")),
-                    new Choice("state_send_whatsapp_template_message", $("English")),
-                    new Choice("state_send_whatsapp_template_message", $("Sesotho sa Leboa")),
-                    new Choice("state_language_2", $("Next")),
+                    new Choice("zul", $("isiZulu")),
+                    new Choice("xho", $("isiXhosa")),
+                    new Choice("afr", $("Afrikaans")),
+                    new Choice("eng", $("English")),
+                    new Choice("sot", $("Sesotho sa Leboa")),
+                    new Choice("set", $("Setswana")),
+                    new Choice("sot", $("Sesotho")),
+                    new Choice("tso", $("Xitsonga")),
+                    new Choice("ssw", $("siSwati")),
+                    new Choice("nde", $("isiNdebele")),
                 ],
+                back: $("Back"),
+                more: $("Next"),
             });
         });
 
-        self.states.add("state_language_2", function(name) {
-            return new ChoiceState(name, {
-                question: $([
-                    "Here are more language options.",
-                    "",
-                    "Answer with a number.",
-                    "",
-                ].join("\n")),
-                error: $(
-                    "Sorry, we don't understand. Please try again.",
-                    "",
-                    "Enter the number that matches your answer."
-                ),
-                accept_labels: true,
-                choices: [
-                    new Choice("state_send_whatsapp_template_message", $("Setswana")),
-                    new Choice("state_send_whatsapp_template_message", $("Sesotho")),
-                    new Choice("state_send_whatsapp_template_message", $("Xitsonga")),
-                    new Choice("state_send_whatsapp_template_message", $("siSwati")),
-                    new Choice("state_send_whatsapp_template_message", $("isiNdebele")),
-                ],
-            });
-        });
+        // self.states.add("state_language_2", function(name) {
+        //     return new ChoiceState(name, {
+        //         question: $([
+        //             "Here are more language options.",
+        //             "",
+        //             "Answer with a number.",
+        //             "",
+        //         ].join("\n")),
+        //         error: $([
+        //             "Sorry, we don't understand.",
+        //             "",
+        //             "Enter the number that matches your answer."
+        //         ].join("\n")),
+        //         accept_labels: true,
+        //         next: "state_send_whatsapp_template_message",
+        //         choices: [
+        //             new Choice("set", $("Setswana")),
+        //             new Choice("sot", $("Sesotho")),
+        //             new Choice("tso", $("Xitsonga")),
+        //             new Choice("ssw", $("siSwati")),
+        //             new Choice("nde", $("isiNdebele")),
+        //         ],
+        //     });
+        // });
 
 
         self.add("state_send_whatsapp_template_message", function(name, opts) {
