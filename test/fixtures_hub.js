@@ -1,6 +1,6 @@
 module.exports = function() {
     return {
-        send_whatsapp_template_message: function(msisdn, namespace, template_name, preferred_channel) {
+        send_whatsapp_template_message: function(msisdn, namespace, template_name, media, preferred_channel) {
             return {
                 "repeatable": true,
                 "request": {
@@ -8,7 +8,8 @@ module.exports = function() {
                     "params": {
                         "msisdn": msisdn,
                         "template_name":template_name,
-                        "namespace": namespace
+                        "namespace": namespace,
+                        "media": media
                     },
                     "method": 'POST'
                 },

@@ -13,12 +13,13 @@ go.Hub = function() {
         self.auth_token = auth_token;
         self.json_api.defaults.headers.Authorization = ['Token ' + self.auth_token];
 
-        self.send_whatsapp_template_message = function(msisdn, namespace, template_name) {
+        self.send_whatsapp_template_message = function(msisdn, namespace, template_name, media) {
             var api_url = url.resolve(self.base_url, "/api/v1/sendwhatsapptemplate");
             var data = {
                 "msisdn": msisdn,
                 "namespace": namespace,
-                "template_name": template_name
+                "template_name": template_name,
+                "media": media
             };
 
             return self.json_api.post(api_url, {params: data})
@@ -1243,9 +1244,12 @@ go.app = function() {
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
             var namespace = self.im.config.namespace || "ff7348dc_a184_4ec1_bf0a_47dc38679d42";
             var template_name = self.im.config.popi_template;
-            // TODO: add PDF filename and media UUID to attach to template
+            var media = {
+                "filename": "test.pdf",
+                "id": "test uuid"
+            };
             return self.hub
-                .send_whatsapp_template_message(msisdn, namespace, template_name)
+                .send_whatsapp_template_message(msisdn, namespace, template_name, media)
                 .then(function(preferred_channel) {
                     self.im.user.set_answer("prefered_channel", preferred_channel);
                     if (preferred_channel == "SMS") {
@@ -1253,6 +1257,7 @@ go.app = function() {
                     }
                     return self.states.create("state_accept_popi");
                 }).catch(function(e) {
+                    console.log(e.message);
                     // Go to error state after 3 failed HTTP requests
                     opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
                     if (opts.http_error_count === 3) {

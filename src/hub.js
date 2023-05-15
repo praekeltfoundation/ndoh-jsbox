@@ -10,12 +10,13 @@ go.Hub = function() {
         self.auth_token = auth_token;
         self.json_api.defaults.headers.Authorization = ['Token ' + self.auth_token];
 
-        self.send_whatsapp_template_message = function(msisdn, namespace, template_name) {
+        self.send_whatsapp_template_message = function(msisdn, namespace, template_name, media) {
             var api_url = url.resolve(self.base_url, "/api/v1/sendwhatsapptemplate");
             var data = {
                 "msisdn": msisdn,
                 "namespace": namespace,
-                "template_name": template_name
+                "template_name": template_name,
+                "media": media
             };
 
             return self.json_api.post(api_url, {params: data})
