@@ -389,9 +389,6 @@ go.app = function() {
 
         self.add("state_clinic_code", function(name, opts) {
             var text;
-            if (!self.im.user.answers.on_whatsapp) {
-                return self.states.create("state_not_on_whatsapp");
-            }
             if (opts.error) {
                 text = $([
                     "Sorry, we don't know that clinic number.",
@@ -1434,19 +1431,6 @@ go.app = function() {
                     msisdn: msisdn,
                     channel: $(channel)
                 }),
-                next: "state_start"
-            });
-        });
-
-        self.states.add("state_not_on_whatsapp", function(name) {
-            return new EndState(name, {
-                text: $([
-                    "Sorry, MomConnect can only send WhatsApp messages.",
-                    "",
-                    "You can dial *134*550*2# again to sign up a cell number that has WhatsApp.",
-                    "",
-                    "Have a lovely day!"
-                ].join("\n")),
                 next: "state_start"
             });
         });

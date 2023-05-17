@@ -564,7 +564,6 @@ describe("ussd_clinic app", function() {
         it("should ask the user for a clinic code", function() {
             return tester
                 .setup.user.state("state_clinic_code")
-                .setup.user.answer("on_whatsapp", true)
                 .check.interaction({
                     reply:[
                         "Enter the 6 digit clinic code for the facility where you are being registered, e.g. 535970",
@@ -582,7 +581,6 @@ describe("ussd_clinic app", function() {
                     );
                 })
                 .setup.user.state("state_clinic_code")
-                .setup.user.answer("on_whatsapp", true)
                 .input("111111")
                 .check.interaction({
                     reply:[
@@ -612,7 +610,6 @@ describe("ussd_clinic app", function() {
                     );
                 })
                 .setup.user.state("state_clinic_code")
-                .setup.user.answer("on_whatsapp", true)
                 .setup.user.answer("state_enter_msisdn", "0123456789")
                 .input("222222")
                 .check.user.state("state_message_type")
@@ -630,7 +627,6 @@ describe("ussd_clinic app", function() {
                     );
                 })
                 .setup.user.state("state_clinic_code")
-                .setup.user.answer("on_whatsapp", true)
                 .input("333333")
                 .check(function(api){
                     assert.equal(api.http.requests.length, 3);
