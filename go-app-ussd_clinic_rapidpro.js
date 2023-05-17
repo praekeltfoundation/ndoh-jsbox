@@ -13,15 +13,16 @@ go.Hub = function() {
         self.auth_token = auth_token;
         self.json_api.defaults.headers.Authorization = ['Token ' + self.auth_token];
 
-        self.send_whatsapp_template_message = function(msisdn, namespace, template_name) {
+        self.send_whatsapp_template_message = function(msisdn, template_name, media) {
             var api_url = url.resolve(self.base_url, "/api/v1/sendwhatsapptemplate");
             var data = {
                 "msisdn": msisdn,
-                "namespace": namespace,
                 "template_name": template_name
             };
-
-            return self.json_api.post(api_url, {params: data})
+            if(media) {
+                data.media = media;
+            }
+            return self.json_api.post(api_url, {data: data})
                 .then(function(response){
                     return response.data.preferred_channel;
 
@@ -1217,11 +1218,13 @@ go.app = function() {
         self.add("state_send_whatsapp_template_message", function(name, opts) {
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
-            var namespace = self.im.config.namespace || "ff7348dc_a184_4ec1_bf0a_47dc38679d42";
             var template_name = self.im.config.popi_template;
-            // TODO: add PDF filename and media UUID to attach to template
+            var media = {
+                "filename": self.im.config.popi_filename,
+                "id": self.im.config.popi_media_uuid
+            };
             return self.hub
-                .send_whatsapp_template_message(msisdn, namespace, template_name)
+                .send_whatsapp_template_message(msisdn, template_name, media)
                 .then(function(preferred_channel) {
                     self.im.user.set_answer("prefered_channel", preferred_channel);
                     if (preferred_channel == "SMS") {
