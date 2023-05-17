@@ -165,9 +165,6 @@ go.app = function() {
 
         self.add("state_clinic_code", function(name, opts) {
             var text;
-            if (!self.im.user.answers.on_whatsapp) {
-                return self.states.create("state_not_on_whatsapp");
-            }
             if (opts.error) {
                 text = $([
                     "Sorry, we don't know that clinic number.",
@@ -973,7 +970,7 @@ go.app = function() {
                 accept_labels: true,
                 options_per_page: 6,
                 characters_per_page: 160,
-                next: "state_send_whatsapp_template_message",
+                next: "state_send_popi_template_message",
                 choices: [
                     new Choice("zul", $("isiZulu")),
                     new Choice("xho", $("isiXhosa")),
@@ -991,7 +988,7 @@ go.app = function() {
             });
         });
 
-        self.add("state_send_whatsapp_template_message", function(name, opts) {
+        self.add("state_send_popi_template_message", function(name, opts) {
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
             var template_name = self.im.config.popi_template;
@@ -1004,7 +1001,7 @@ go.app = function() {
                 .then(function(preferred_channel) {
                     self.im.user.set_answer("prefered_channel", preferred_channel);
                     if (preferred_channel == "SMS") {
-                        return self.states.create("state_start_send_sms_flow");
+                        return self.states.create("state_send_popi_sms_flow");
                     }
                     return self.states.create("state_accept_popi");
                 }).catch(function(e) {
@@ -1021,7 +1018,7 @@ go.app = function() {
         });
 
         self.states.add("state_basic_healthcare", function(name) {
-            var next_state = (self.im.user.answers.language) ? "state_send_whatsapp_template_message" : "state_language";
+            var next_state = (self.im.user.answers.language) ? "state_send_popi_template_message" : "state_language";
 
             return new MenuState(name, {
                 question: $(
@@ -1040,12 +1037,12 @@ go.app = function() {
         });
 
 
-        self.add("state_start_send_sms_flow", function(name, opts) {
+        self.add("state_send_popi_sms_flow", function(name, opts) {
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
             return self.rapidpro
                 .start_flow(
-                    self.im.config.send_sms_flow_uuid,
+                    self.im.config.popi_sms_flow_uuid,
                     null,
                     "whatsapp:" + _.trim(msisdn, "+"))
                 .then(function() {
@@ -1065,14 +1062,11 @@ go.app = function() {
 
 
         self.add("state_accept_popi", function(name, opts) {
-            var msisdn = _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr);
             return new MenuState(name, {
                 question: $(
                     "Your personal information is protected by law (POPIA) and by the " +
-                    "MomConnect Privacy Policy that was just sent to {{msisdn}} on WhatsApp."
-                ).context({
-                    msisdn: msisdn
-                }),
+                    "MomConnect Privacy Policy that was just sent to you."
+                ),
                 error: $([
                     "Sorry, we don't understand. Please try again.",
                     "",
@@ -1202,27 +1196,17 @@ go.app = function() {
         self.states.add("state_registration_complete", function(name) {
             var msisdn = _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr);
             msisdn = utils.readable_msisdn(msisdn, "27");
-            return new EndState(name, {
-                text: $(
-                    "You're done! This number {{msisdn}} will get helpful messages from " +
-                    "MomConnect on {{channel}}. Thanks for signing up to MomConnect!"
-                ).context({
-                    msisdn: msisdn,
-                    channel: $("WhatsApp")
-                }),
-                next: "state_start"
-            });
-        });
-
-        self.states.add("state_not_on_whatsapp", function(name) {
+            var channel = self.im.user.answers.preferred_channel;
             return new EndState(name, {
                 text: $([
-                    "Sorry, MomConnect can only send WhatsApp messages.",
+                    "You're done!",
                     "",
-                    "You can dial *134*550*2# again to sign up a cell number that has WhatsApp.",
-                    "",
-                    "Have a lovely day!"
-                ].join("\n")),
+                    "This number {{msisdn}} will start getting messages from " +
+                    "MomConnect on {{channel}}."
+                ].join("\n")).context({
+                    msisdn: msisdn,
+                    channel: $(channel)
+                }),
                 next: "state_start"
             });
         });
