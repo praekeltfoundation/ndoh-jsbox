@@ -37,7 +37,7 @@ describe("ussd_clinic app", function() {
             popi_template: "popi_template",
             popi_filename: "privacy_policy.pdf",
             popi_media_uuid: "media-uuid",
-            send_sms_flow_uuid: "send_sms_flow_uuid"
+            popi_sms_flow_uuid: "popi-sms-flow-uuid"
         })
         .setup(function(api) {
             api.metrics.stores = {'test_metric_store': {}};
@@ -1507,7 +1507,7 @@ describe("ussd_clinic app", function() {
                 .check.interaction({
                     reply: [
                         "Your personal information is protected by law (POPIA) and by the " +
-                        "MomConnect Privacy Policy that was just sent to +27123456789 on WhatsApp.",
+                        "MomConnect Privacy Policy that was just sent to you.",
                         "1. Next"
                     ].join("\n")
                 })
@@ -1636,7 +1636,8 @@ describe("ussd_clinic app", function() {
                     state_sa_id_no: "9001020005087",
                     state_edd_month: "201502",
                     state_edd_day: "13",
-                    state_clinic_code: "123456"
+                    state_clinic_code: "123456",
+                    preferred_channel: "SMS",
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1660,9 +1661,12 @@ describe("ussd_clinic app", function() {
                 .input("1")
                 .check.interaction({
                     state: "state_registration_complete",
-                    reply:
-                        "You're done! This number 0820001001 will get helpful messages from " +
-                        "MomConnect on WhatsApp. Thanks for signing up to MomConnect!"
+                    reply: [
+                        "You're done!",
+                        "",
+                        "This number 0820001001 will start getting messages from " +
+                        "MomConnect on SMS."
+                    ].join("\n")
                 })
                 .check.reply.ends_session()
                 .check(function(api) {
@@ -1685,7 +1689,8 @@ describe("ussd_clinic app", function() {
                     state_sa_id_no: "9001020005087",
                     state_edd_month: "201502",
                     state_edd_day: "13",
-                    state_clinic_code: "123456"
+                    state_clinic_code: "123456",
+                    preferred_channel: "SMS",
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1709,9 +1714,12 @@ describe("ussd_clinic app", function() {
                 .input("1")
                 .check.interaction({
                     state: "state_registration_complete",
-                    reply:
-                        "You're done! This number 0820001001 will get helpful messages from " +
-                        "MomConnect on WhatsApp. Thanks for signing up to MomConnect!"
+                    reply: [
+                        "You're done!",
+                        "",
+                        "This number 0820001001 will start getting messages from " +
+                        "MomConnect on SMS."
+                    ].join("\n")
                 })
                 .check.reply.ends_session()
                 .check(function(api) {
@@ -1737,6 +1745,7 @@ describe("ussd_clinic app", function() {
                     state_edd_day: "13",
                     state_clinic_code: "123456",
                     state_underage_registree: "Yes",
+                    preferred_channel: "SMS",
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1761,9 +1770,12 @@ describe("ussd_clinic app", function() {
                 .input("1")
                 .check.interaction({
                     state: "state_registration_complete",
-                    reply:
-                        "You're done! This number 0820001001 will get helpful messages from " +
-                        "MomConnect on WhatsApp. Thanks for signing up to MomConnect!"
+                    reply: [
+                        "You're done!",
+                        "",
+                        "This number 0820001001 will start getting messages from " +
+                        "MomConnect on SMS."
+                    ].join("\n")
                 })
                 .check.reply.ends_session()
                 .check(function(api) {
@@ -1791,6 +1803,7 @@ describe("ussd_clinic app", function() {
                     state_edd_day: "13",
                     state_clinic_code: "123456",
                     state_underage_registree: "Yes",
+                    preferred_channel: "SMS",
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1816,9 +1829,12 @@ describe("ussd_clinic app", function() {
                 .input("1")
                 .check.interaction({
                     state: "state_registration_complete",
-                    reply:
-                        "You're done! This number 0820001001 will get helpful messages from " +
-                        "MomConnect on WhatsApp. Thanks for signing up to MomConnect!"
+                    reply: [
+                        "You're done!",
+                        "",
+                        "This number 0820001001 will start getting messages from " +
+                        "MomConnect on SMS."
+                    ].join("\n")
                 })
                 .check.reply.ends_session()
                 .check(function(api) {
@@ -1846,6 +1862,7 @@ describe("ussd_clinic app", function() {
                     state_edd_day: "13",
                     state_clinic_code: "123456",
                     state_underage_registree: "Yes",
+                    preferred_channel: "SMS"
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1869,9 +1886,12 @@ describe("ussd_clinic app", function() {
                 .input("1")
                 .check.interaction({
                     state: "state_registration_complete",
-                    reply:
-                        "You're done! This number 0820001001 will get helpful messages from " +
-                        "MomConnect on WhatsApp. Thanks for signing up to MomConnect!"
+                    reply:[
+                        "You're done!",
+                        "",
+                        "This number 0820001001 will start getting messages from " +
+                        "MomConnect on SMS."
+                    ].join("\n")
                 })
                 .check.reply.ends_session()
                 .check(function(api) {
@@ -1895,7 +1915,8 @@ describe("ussd_clinic app", function() {
                     state_sa_id_no: "9001020005087",
                     state_birth_month: "2014-02",
                     state_birth_day: "13",
-                    state_clinic_code: "123456"
+                    state_clinic_code: "123456",
+                    preferred_channel: "WhatsApp"
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1919,9 +1940,12 @@ describe("ussd_clinic app", function() {
                 .input("1")
                 .check.interaction({
                     state: "state_registration_complete",
-                    reply:
-                        "You're done! This number 0820001001 will get helpful messages from " +
-                        "MomConnect on WhatsApp. Thanks for signing up to MomConnect!"
+                    reply:[
+                        "You're done!",
+                        "",
+                        "This number 0820001001 will start getting messages from " +
+                        "MomConnect on WhatsApp."
+                    ].join("\n")
                 })
                 .check.reply.ends_session()
                 .check(function(api) {
@@ -2049,7 +2073,7 @@ describe("ussd_clinic app", function() {
         });
 
     });
-    describe("state_send_whatsapp_template_message", function() {
+    describe("state_send_popi_template_message", function() {
         it("should send a whatsapp template", function() {
             return tester
             .setup(function(api) {
@@ -2065,7 +2089,7 @@ describe("ussd_clinic app", function() {
                   )
               );
             })
-            .setup.user.state("state_send_whatsapp_template_message")
+            .setup.user.state("state_send_popi_template_message")
             .check.user.state("state_accept_popi")
             .check.user.answer("prefered_channel", "WhatsApp")
             .run();
@@ -2086,11 +2110,11 @@ describe("ussd_clinic app", function() {
               );
               api.http.fixtures.add(
                 fixtures_rapidpro.start_flow(
-                    "send_sms_flow_uuid", null, "whatsapp:27123456789"
+                    "popi-sms-flow-uuid", null, "whatsapp:27123456789"
                 )
               );
             })
-            .setup.user.state("state_send_whatsapp_template_message")
+            .setup.user.state("state_send_popi_template_message")
             .check.user.state("state_accept_popi")
             .check.user.answer("prefered_channel", "SMS")
             .run();
