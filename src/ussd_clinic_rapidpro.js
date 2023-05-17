@@ -918,31 +918,7 @@ go.app = function() {
             } else if ((age < 18) && !(self_registration)) {
                 return self.states.create("state_underage_registree");
             }
-            return self.states.create("state_start_popi_flow");
-        });
-
-        // TODO: remove, this ahppens a bit later using hub api
-        self.add("state_start_popi_flow", function(name, opts) {
-            var msisdn = utils.normalize_msisdn(
-                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
-            return self.rapidpro
-                .start_flow(
-                    self.im.config.popi_flow_uuid,
-                    null,
-                    "whatsapp:" + _.trim(msisdn, "+"))
-                .then(function() {
-                    return self.states.create("state_accept_popi");
-                }).catch(function(e) {
-                    // Go to error state after 3 failed HTTP requests
-                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-                    if (opts.http_error_count === 3) {
-                        self.im.log.error(e.message);
-                        return self.states.create("__error__", {
-                            return_state: name
-                        });
-                    }
-                    return self.states.create(name, opts);
-                });
+            return self.states.create("state_language");
         });
 
         self.states.add("state_underage_mother", function(name) {
@@ -957,7 +933,7 @@ go.app = function() {
                 ),
                 accept_labels: true,
                 choices: [
-                    new Choice("state_start_popi_flow", $("Yes")),
+                    new Choice("state_language", $("Yes")),
                     new Choice("state_basic_healthcare", $("No")),
                 ],
             });
@@ -1043,7 +1019,7 @@ go.app = function() {
         });
 
         self.states.add("state_basic_healthcare", function(name) {
-            var next_state = (self.im.user.answers.language) ? "state_send_whatsapp_template_message" : "state_start_popi_flow";
+            var next_state = (self.im.user.answers.language) ? "state_send_whatsapp_template_message" : "state_language";
 
             return new MenuState(name, {
                 question: $(
