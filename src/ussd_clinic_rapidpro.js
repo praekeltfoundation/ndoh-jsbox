@@ -994,11 +994,13 @@ go.app = function() {
         self.add("state_send_whatsapp_template_message", function(name, opts) {
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
-            var namespace = self.im.config.namespace || "ff7348dc_a184_4ec1_bf0a_47dc38679d42";
             var template_name = self.im.config.popi_template;
-            // TODO: add PDF filename and media UUID to attach to template
+            var media = {
+                "filename": self.im.config.popi_filename,
+                "id": self.im.config.popi_media_uuid
+            };
             return self.hub
-                .send_whatsapp_template_message(msisdn, namespace, template_name)
+                .send_whatsapp_template_message(msisdn, template_name, media)
                 .then(function(preferred_channel) {
                     self.im.user.set_answer("prefered_channel", preferred_channel);
                     if (preferred_channel == "SMS") {

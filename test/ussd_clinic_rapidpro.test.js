@@ -34,8 +34,9 @@ describe("ussd_clinic app", function() {
             },
             prebirth_flow_uuid: "prebirth-flow-uuid",
             postbirth_flow_uuid: "postbirth-flow-uuid",
-            popi_flow_uuid: "popi-flow-uuid",
             popi_template: "popi_template",
+            popi_filename: "privacy_policy.pdf",
+            popi_media_uuid: "media-uuid",
             send_sms_flow_uuid: "send_sms_flow_uuid"
         })
         .setup(function(api) {
@@ -2055,8 +2056,11 @@ describe("ussd_clinic app", function() {
               api.http.fixtures.add(
                   fixtures_hub.send_whatsapp_template_message(
                     "+27123456789",
-                    "ff7348dc_a184_4ec1_bf0a_47dc38679d42",
                     "popi_template",
+                    {
+                        "filename": "privacy_policy.pdf",
+                        "id": "media-uuid"
+                    },
                     "WhatsApp"
                   )
               );
@@ -2072,8 +2076,11 @@ describe("ussd_clinic app", function() {
               api.http.fixtures.add(
                   fixtures_hub.send_whatsapp_template_message(
                     "+27123456789",
-                    "ff7348dc_a184_4ec1_bf0a_47dc38679d42",
                     "popi_template",
+                    {
+                        "filename": "privacy_policy.pdf",
+                        "id": "media-uuid"
+                    },
                     "SMS"
                   )
               );
