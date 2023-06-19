@@ -1353,7 +1353,7 @@ go.app = function() {
                     state_dob_year: "dob"
                 } [self.im.user.answers.state_id_type],
                 clinic_code: self.im.user.answers.state_clinic_code,
-                swt: "7"
+                swt: self.im.user.answers.preferred_channel == "SMS" ? "1" : "7"
             };
             var flow_uuid;
 
