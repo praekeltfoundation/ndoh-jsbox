@@ -1650,7 +1650,7 @@ describe("ussd_clinic app", function() {
                                 clinic_code: "123456",
                                 sa_id_number: "9001020005087",
                                 dob: "1990-01-02T00:00:00Z",
-                                swt: "7",
+                                swt: "1",
                             }
                         )
                     );
@@ -1704,7 +1704,7 @@ describe("ussd_clinic app", function() {
                                 clinic_code: "123456",
                                 sa_id_number: "9001020005087",
                                 dob: "1990-01-02T00:00:00Z",
-                                swt: "7",
+                                swt: "1",
                             }
                         )
                     );
@@ -1761,7 +1761,7 @@ describe("ussd_clinic app", function() {
                                 sa_id_number: "1301020005087",
                                 underage: "TRUE",
                                 dob: "2013-01-02T00:00:00Z",
-                                swt: "7",
+                                swt: "1",
                             }
                         )
                     );
@@ -1820,7 +1820,7 @@ describe("ussd_clinic app", function() {
                                 passport_origin: "ng",
                                 passport_number: "M00000001",
                                 underage: "TRUE",
-                                swt: "7",
+                                swt: "1",
                                 age: "16",
                             }
                         )
@@ -1878,7 +1878,7 @@ describe("ussd_clinic app", function() {
                                 edd: "2015-02-13T00:00:00Z",
                                 clinic_code: "123456",
                                 underage: "TRUE",
-                                swt: "7",
+                                swt: "1",
                                 dob: "2014-10-25T00:00:00Z",
                             }
                         )
@@ -1972,6 +1972,7 @@ describe("ussd_clinic app", function() {
                     state_edd_month: "201502",
                     state_edd_day: "13",
                     state_clinic_code: "123456",
+                    preferred_channel: "WhatsApp",
                     state_language: "eng",
                 })
                 .setup(function(api) {
