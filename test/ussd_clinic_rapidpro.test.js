@@ -1634,6 +1634,7 @@ describe("ussd_clinic app", function() {
                     state_edd_day: "13",
                     state_clinic_code: "123456",
                     preferred_channel: "SMS",
+                    state_language: "eng",
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1687,6 +1688,7 @@ describe("ussd_clinic app", function() {
                     state_edd_day: "13",
                     state_clinic_code: "123456",
                     preferred_channel: "SMS",
+                    state_language: "eng",
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1742,6 +1744,7 @@ describe("ussd_clinic app", function() {
                     state_clinic_code: "123456",
                     state_underage_registree: "Yes",
                     preferred_channel: "SMS",
+                    state_language: "eng",
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1800,6 +1803,7 @@ describe("ussd_clinic app", function() {
                     state_clinic_code: "123456",
                     state_underage_registree: "Yes",
                     preferred_channel: "SMS",
+                    state_language: "eng",
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1858,7 +1862,8 @@ describe("ussd_clinic app", function() {
                     state_edd_day: "13",
                     state_clinic_code: "123456",
                     state_underage_registree: "Yes",
-                    preferred_channel: "SMS"
+                    preferred_channel: "SMS",
+                    state_language: "eng",
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1912,7 +1917,8 @@ describe("ussd_clinic app", function() {
                     state_birth_month: "2014-02",
                     state_birth_day: "13",
                     state_clinic_code: "123456",
-                    preferred_channel: "WhatsApp"
+                    preferred_channel: "WhatsApp",
+                    state_language: "eng",
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1965,7 +1971,8 @@ describe("ussd_clinic app", function() {
                     state_sa_id_no: "9001020005087",
                     state_edd_month: "201502",
                     state_edd_day: "13",
-                    state_clinic_code: "123456"
+                    state_clinic_code: "123456",
+                    state_language: "eng",
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(

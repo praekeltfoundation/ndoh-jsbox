@@ -1120,7 +1120,7 @@ go.app = function() {
             var data = {
                 research_consent: "TRUE",
                 registered_by: utils.normalize_msisdn(self.im.user.addr, "ZA"),
-                language: "eng",
+                language: self.im.user.answers.state_language,
                 timestamp: new moment.utc(self.im.config.testing_today).format(),
                 source: "Clinic USSD",
                 id_type: {
