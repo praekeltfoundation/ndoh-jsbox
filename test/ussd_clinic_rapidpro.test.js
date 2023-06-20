@@ -1651,6 +1651,7 @@ describe("ussd_clinic app", function() {
                                 sa_id_number: "9001020005087",
                                 dob: "1990-01-02T00:00:00Z",
                                 swt: "1",
+                                preferred_channel: "SMS",
                             }
                         )
                     );
@@ -1705,6 +1706,7 @@ describe("ussd_clinic app", function() {
                                 sa_id_number: "9001020005087",
                                 dob: "1990-01-02T00:00:00Z",
                                 swt: "1",
+                                preferred_channel: "SMS",
                             }
                         )
                     );
@@ -1762,6 +1764,7 @@ describe("ussd_clinic app", function() {
                                 underage: "TRUE",
                                 dob: "2013-01-02T00:00:00Z",
                                 swt: "1",
+                                preferred_channel: "SMS",
                             }
                         )
                     );
@@ -1822,6 +1825,7 @@ describe("ussd_clinic app", function() {
                                 underage: "TRUE",
                                 swt: "1",
                                 age: "16",
+                                preferred_channel: "SMS",
                             }
                         )
                     );
@@ -1880,6 +1884,7 @@ describe("ussd_clinic app", function() {
                                 underage: "TRUE",
                                 swt: "1",
                                 dob: "2014-10-25T00:00:00Z",
+                                preferred_channel: "SMS",
                             }
                         )
                     );
@@ -1935,6 +1940,7 @@ describe("ussd_clinic app", function() {
                                 sa_id_number: "9001020005087",
                                 dob: "1990-01-02T00:00:00Z",
                                 swt: "7",
+                                preferred_channel: "WhatsApp",
                             }
                         )
                     );
@@ -1990,6 +1996,7 @@ describe("ussd_clinic app", function() {
                                 sa_id_number: "9001020005087",
                                 dob: "1990-01-02T00:00:00Z",
                                 swt: "7",
+                                preferred_channel: "WhatsApp",
                             }, true
                         )
                     );
