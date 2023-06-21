@@ -1179,7 +1179,6 @@ go.app = function() {
         });
 
         self.states.add("state_language", function(name) {
-            self.im.log(">>> state_language");
             return new PaginatedChoiceState(name, {
                 question: $([
                     "What is your home language?",
@@ -1214,7 +1213,6 @@ go.app = function() {
         });
 
         self.add("state_send_popi_template_message", function(name, opts) {
-            self.im.log(">>> state_send_popi_template_message");
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
             var template_name = self.im.config.popi_template;
@@ -1225,7 +1223,7 @@ go.app = function() {
             return self.hub
                 .send_whatsapp_template_message(msisdn, template_name, media)
                 .then(function(preferred_channel) {
-                    self.im.user.set_answer("prefered_channel", preferred_channel);
+                    self.im.user.set_answer("preferred_channel", preferred_channel);
                     if (preferred_channel == "SMS") {
                         return self.states.create("state_send_popi_sms_flow");
                     }
@@ -1288,7 +1286,6 @@ go.app = function() {
 
 
         self.add("state_accept_popi", function(name, opts) {
-            self.im.log(">>> state_accept_popi");
             return new MenuState(name, {
                 question: $(
                     "Your personal information is protected by law (POPIA) and by the " +
@@ -1304,7 +1301,6 @@ go.app = function() {
         });
 
         self.add("state_accept_popi_2", function(name, opts) {
-            self.im.log(">>> state_accept_popi_2");
             return new MenuState(name, {
                 question: $([
                     "Do you accept the MomConnect Privacy Policy?",
@@ -1343,8 +1339,6 @@ go.app = function() {
         });
 
         self.add("state_trigger_rapidpro_flow", function(name, opts) {
-            self.im.log(">>> state_trigger_rapidpro_flow");
-            self.im.log(self.im.user.lang);
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
             var data = {
@@ -1407,14 +1401,11 @@ go.app = function() {
                 }
 
             }
-            self.im.log("whatsapp:" + _.trim(msisdn, "+"));
-            self.im.log(data);
             return self.rapidpro
                 .start_flow(flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), data)
                 .then(function() {
                     return self.states.create("state_registration_complete");
                 }).catch(function(e) {
-                    self.im.log(e);
                     // Go to error state after 3 failed HTTP requests
                     opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
                     if (opts.http_error_count === 3) {
@@ -1428,21 +1419,9 @@ go.app = function() {
         });
 
         self.states.add("state_registration_complete", function(name) {
-            self.im.log(">>> state_registration_complete");
             var msisdn = _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr);
             msisdn = utils.readable_msisdn(msisdn, "27");
             var channel = self.im.user.answers.preferred_channel;
-            self.im.log(msisdn);
-            self.im.log(channel);
-            self.im.log($([
-                "You're done!",
-                "",
-                "This number {{msisdn}} will start getting messages from " +
-                "MomConnect on {{channel}}."
-            ].join("\n")).context({
-                msisdn: msisdn,
-                channel: $(channel)
-            }));
             return new EndState(name, {
                 text: $([
                     "You're done!",

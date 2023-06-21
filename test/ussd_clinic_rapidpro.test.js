@@ -2082,7 +2082,63 @@ describe("ussd_clinic app", function() {
                 })
                 .run();
         });
-
+        it("should go to all the way to state_registration_complete", function() {
+            return tester
+                .setup.user.answers({
+                    state_message_type: "state_edd_month",
+                    state_research_consent: "no",
+                    state_id_type: "state_sa_id_no",
+                    state_sa_id_no: "9001020005088",
+                    state_edd_month: "201502",
+                    state_edd_day: "13",
+                    state_clinic_code: "123456",
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_hub.send_whatsapp_template_message(
+                        "+27123456789",
+                        "popi_template",
+                        {
+                            "filename": "privacy_policy.pdf",
+                            "id": "media-uuid"
+                        },
+                        "WhatsApp"
+                        )
+                    );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "prebirth-flow-uuid", null, "whatsapp:27123456789", {
+                                research_consent: "TRUE",
+                                registered_by: "+27123456789",
+                                language: "zul",
+                                timestamp: "2014-04-04T07:07:07Z",
+                                source: "Clinic USSD",
+                                id_type: "sa_id",
+                                edd: "2015-02-13T00:00:00Z",
+                                clinic_code: "123456",
+                                sa_id_number: "9001020005088",
+                                dob: "1990-01-02T00:00:00Z",
+                                swt: "7",
+                                preferred_channel: "WhatsApp",
+                            }
+                        )
+                    );
+                })
+                .setup.user.state("state_language")
+                .inputs("1", "1", "1")
+                .check.interaction({
+                    state: "state_registration_complete",
+                    reply:[
+                        "You're done!",
+                        "",
+                        "This number 0123456789 will start getting messages from " +
+                        "MomConnect on WhatsApp."
+                    ].join("\n")
+                })
+                .check.reply.ends_session()
+                .check.user.answer("state_language", "zul")
+                .run();
+        });
     });
     describe("state_send_popi_template_message", function() {
         it("should send a whatsapp template", function() {
@@ -2102,7 +2158,7 @@ describe("ussd_clinic app", function() {
             })
             .setup.user.state("state_send_popi_template_message")
             .check.user.state("state_accept_popi")
-            .check.user.answer("prefered_channel", "WhatsApp")
+            .check.user.answer("preferred_channel", "WhatsApp")
             .run();
         });
         it("should send a whatsapp template and fail", function() {
@@ -2127,7 +2183,7 @@ describe("ussd_clinic app", function() {
             })
             .setup.user.state("state_send_popi_template_message")
             .check.user.state("state_accept_popi")
-            .check.user.answer("prefered_channel", "SMS")
+            .check.user.answer("preferred_channel", "SMS")
             .run();
         });
     });
