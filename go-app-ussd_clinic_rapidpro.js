@@ -1179,6 +1179,7 @@ go.app = function() {
         });
 
         self.states.add("state_language", function(name) {
+            console.log(">>> state_language");
             return new PaginatedChoiceState(name, {
                 question: $([
                     "What is your home language?",
@@ -1213,6 +1214,7 @@ go.app = function() {
         });
 
         self.add("state_send_popi_template_message", function(name, opts) {
+            console.log(">>> state_send_popi_template_message");
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
             var template_name = self.im.config.popi_template;
@@ -1286,6 +1288,7 @@ go.app = function() {
 
 
         self.add("state_accept_popi", function(name, opts) {
+            console.log(">>> state_accept_popi");
             return new MenuState(name, {
                 question: $(
                     "Your personal information is protected by law (POPIA) and by the " +
@@ -1301,6 +1304,7 @@ go.app = function() {
         });
 
         self.add("state_accept_popi_2", function(name, opts) {
+            console.log(">>> state_accept_popi_2");
             return new MenuState(name, {
                 question: $([
                     "Do you accept the MomConnect Privacy Policy?",
@@ -1339,6 +1343,7 @@ go.app = function() {
         });
 
         self.add("state_trigger_rapidpro_flow", function(name, opts) {
+            console.log(">>> state_trigger_rapidpro_flow");
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
             var data = {
@@ -1401,11 +1406,14 @@ go.app = function() {
                 }
 
             }
+            console.log("whatsapp:" + _.trim(msisdn, "+"));
+            console.log(data);
             return self.rapidpro
                 .start_flow(flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), data)
                 .then(function() {
                     return self.states.create("state_registration_complete");
                 }).catch(function(e) {
+                    console.log(e);
                     // Go to error state after 3 failed HTTP requests
                     opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
                     if (opts.http_error_count === 3) {
