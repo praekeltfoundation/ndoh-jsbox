@@ -1120,6 +1120,7 @@ go.app = function() {
 
         self.add("state_trigger_rapidpro_flow", function(name, opts) {
             self.im.log(">>> state_trigger_rapidpro_flow");
+            self.im.log(self.im.user.lang);
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
             var data = {
@@ -1203,9 +1204,21 @@ go.app = function() {
         });
 
         self.states.add("state_registration_complete", function(name) {
+            self.im.log(">>> state_registration_complete");
             var msisdn = _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr);
             msisdn = utils.readable_msisdn(msisdn, "27");
             var channel = self.im.user.answers.preferred_channel;
+            self.im.log(msisdn);
+            self.im.log(channel);
+            self.im.log($([
+                "You're done!",
+                "",
+                "This number {{msisdn}} will start getting messages from " +
+                "MomConnect on {{channel}}."
+            ].join("\n")).context({
+                msisdn: msisdn,
+                channel: $(channel)
+            }));
             return new EndState(name, {
                 text: $([
                     "You're done!",
