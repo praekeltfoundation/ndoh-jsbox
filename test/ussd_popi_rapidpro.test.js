@@ -29,7 +29,8 @@ describe("ussd_popi_rapidpro app", function() {
             identification_change_flow_id: "identification-change-flow",
             research_consent_change_flow_id: "research-change-flow",
             optout_flow_id: "optout-flow",
-            research_optout_flow: "research-optout-flow"
+            research_optout_flow: "research-optout-flow",
+            sms_engagement_flow_id: "sms-engagement-flow"
         });
     });
 
@@ -154,6 +155,66 @@ describe("ussd_popi_rapidpro app", function() {
                     });
                     assert.equal(api.log.error.length, 1);
                     assert(api.log.error[0].includes("HttpResponseError"));
+                })
+                .run();
+        });
+        it("should start the engagement flow then display the main menu", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "whatsapp:27123456789",
+                            exists: true,
+                            fields: {
+                                prebirth_messaging: "1",
+                                preferred_channel: "SMS",
+                            }
+                        })
+                    );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "sms-engagement-flow", null, "whatsapp:27123456789", {source: "POPI USSD"}
+                        )
+                    );
+                })
+                .check.interaction({
+                    state: "state_main_menu",
+                    reply: [
+                        "Welcome to MomConnect. What would you like to do?",
+                        "1. See my info",
+                        "2. Change my info",
+                        "3. Opt-out or delete info",
+                        "4. How is my info processed?"
+                    ].join("\n"),
+                    char_limit: 140
+                })
+                .run();
+        });
+        it("should not start the engagement flow if already engaged", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "whatsapp:27123456789",
+                            exists: true,
+                            fields: {
+                                prebirth_messaging: "1",
+                                preferred_channel: "SMS",
+                                sms_engaged: "TRUE"
+                            }
+                        })
+                    );
+                })
+                .check.interaction({
+                    state: "state_main_menu",
+                    reply: [
+                        "Welcome to MomConnect. What would you like to do?",
+                        "1. See my info",
+                        "2. Change my info",
+                        "3. Opt-out or delete info",
+                        "4. How is my info processed?"
+                    ].join("\n"),
+                    char_limit: 140
                 })
                 .run();
         });
