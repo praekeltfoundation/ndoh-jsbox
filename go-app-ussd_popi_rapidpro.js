@@ -250,8 +250,18 @@ go.app = function() {
                     var in_prebirth = _.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7);
                     var in_postbirth =
                         _.toUpper(_.get(contact, "fields.postbirth_messaging")) === "TRUE";
+                    var preferred_channel = _.get(contact, "fields.preferred_channel");
+                    var sms_engaged = true;
+                    if (preferred_channel === "SMS") {
+                        sms_engaged = _.toUpper(_.get(contact, "fields.sms_engaged")) === "TRUE";
+                    }
                     if(in_public || in_prebirth || in_postbirth) {
-                        return self.states.create("state_main_menu");
+                        if (sms_engaged) {
+                            return self.states.create("state_main_menu");
+                        }
+                        else {
+                            return self.states.create("state_update_sms_engaged");
+                        }
                     } else {
                         return self.states.create("state_not_registered");
                     }
@@ -261,6 +271,26 @@ go.app = function() {
                     if(opts.http_error_count === 3) {
                         self.im.log.error(e.message);
                         return self.states.create("__error__");
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+        self.states.add("state_update_sms_engaged", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            var flow_uuid = self.im.config.sms_engagement_flow_id;
+            return self.rapidpro
+                .start_flow(flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), {
+                    source: "POPI USSD"
+                })
+                .then(function() {
+                    return self.states.create("state_main_menu");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
                     }
                     return self.states.create(name, opts);
                 });
