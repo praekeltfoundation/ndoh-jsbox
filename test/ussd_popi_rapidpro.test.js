@@ -483,12 +483,6 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup.user.answer("contact", {fields: {preferred_channel: "SMS"}})
                 .setup(function(api) {
                     api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27123456789",
-                            wait: true
-                        })
-                    );
-                    api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
                             "whatsapp-switch-flow", null, "whatsapp:27123456789"
                         )
@@ -505,32 +499,10 @@ describe("ussd_popi_rapidpro app", function() {
                     state: "state_channel_switch_success"
                 })
                 .check(function(api){
-                    assert.equal(api.http.requests.length, 2);
+                    assert.equal(api.http.requests.length, 1);
                     assert.equal(
-                        api.http.requests[1].url, "https://rapidpro/api/v2/flow_starts.json"
+                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
                     );
-                })
-                .run();
-        });
-        it("should display an error if they're not on WhatsApp", function() {
-            return tester
-                .setup.user.state("state_channel_switch_confirm")
-                .setup.user.answer("contact", {fields: {preferred_channel: "SMS"}})
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.not_exists({
-                            address: "+27123456789",
-                            wait: true
-                        })
-                    );
-                })
-                .input("1")
-                .check.interaction({
-                    reply: [
-                        "This number doesn’t have a WhatsApp account. You’ll keep getting your " +
-                        "messages on SMS. Dial *134*550*7# to switch to a number that has WhatsApp."
-                    ].join("\n"),
-                    state: "state_not_on_whatsapp_channel"
                 })
                 .run();
         });
