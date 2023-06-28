@@ -461,8 +461,8 @@ go.app = function() {
             var contact = self.im.user.answers.contact;
             return new MenuState(name, {
                 question: $(
-                    "Thank you! We'll send your MomConnect messages to {{channel}}. What would " +
-                    "you like to do?").context({
+                    "Thank you! We'll send your MomConnect messages on {{channel}}.\n\nWhat " +
+                    "would you like to do?").context({
                         channel: self.contact_alternative_channel(contact)
                     }),
                 choices: [
