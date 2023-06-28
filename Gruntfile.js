@@ -280,42 +280,42 @@ module.exports = function (grunt) {
             },
             /*
             */
-            // test_ussd_nurse_rapidpro: {
-            //     src: ['<%= paths.test.ussd_nurse_rapidpro %>']
-            // },
-            // test_ussd_public_rapidpro: {
-            //     src: ['<%= paths.test.ussd_public_rapidpro %>']
-            // },
-            // test_ussd_clinic_rapidpro: {
-            //     src: ['<%= paths.test.ussd_clinic_rapidpro %>']
-            // },
+            test_ussd_nurse_rapidpro: {
+                src: ['<%= paths.test.ussd_nurse_rapidpro %>']
+            },
+            test_ussd_public_rapidpro: {
+                src: ['<%= paths.test.ussd_public_rapidpro %>']
+            },
+            test_ussd_clinic_rapidpro: {
+                src: ['<%= paths.test.ussd_clinic_rapidpro %>']
+            },
             test_ussd_popi_rapidpro: {
                 src: ['<%= paths.test.ussd_popi_rapidpro %>']
             },
-            // test_ussd_chw_rapidpro: {
-            //     src: ['<%= paths.test.ussd_chw_rapidpro %>']
-            // },
-            // test_ussd_optout_rapidpro: {
-            //     src: ['<%= paths.test.ussd_optout_rapidpro %>']
-            // },
-            // test_ussd_pmtct_rapidpro: {
-            //     src: ['<%= paths.test.ussd_pmtct_rapidpro %>']
-            // },
-            // test_ussd_ccmdd_wc_address_update: {
-            //     src: ['<%= paths.test.ussd_ccmdd_wc_address_update %>']
-            // },
-            // test_ussd_higherhealth_healthcheck: {
-            //     src: ['<%= paths.test.ussd_higherhealth_healthcheck %>']
-            // },
-            // test_ussd_mcgcc_rapidpro: {
-            //     src: ['<%= paths.test.ussd_mcgcc_rapidpro %>']
-            // },
-            // test_ussd_mqr_faqs: {
-            //     src: ['<%= paths.test.ussd_mqr_faqs %>']
-            // },
-            // test_ussd_tb_check: {
-            //     src: ['<%= paths.test.ussd_tb_check %>']
-            // }
+            test_ussd_chw_rapidpro: {
+                src: ['<%= paths.test.ussd_chw_rapidpro %>']
+            },
+            test_ussd_optout_rapidpro: {
+                src: ['<%= paths.test.ussd_optout_rapidpro %>']
+            },
+            test_ussd_pmtct_rapidpro: {
+                src: ['<%= paths.test.ussd_pmtct_rapidpro %>']
+            },
+            test_ussd_ccmdd_wc_address_update: {
+                src: ['<%= paths.test.ussd_ccmdd_wc_address_update %>']
+            },
+            test_ussd_higherhealth_healthcheck: {
+                src: ['<%= paths.test.ussd_higherhealth_healthcheck %>']
+            },
+            test_ussd_mcgcc_rapidpro: {
+                src: ['<%= paths.test.ussd_mcgcc_rapidpro %>']
+            },
+            test_ussd_mqr_faqs: {
+                src: ['<%= paths.test.ussd_mqr_faqs %>']
+            },
+            test_ussd_tb_check: {
+                src: ['<%= paths.test.ussd_tb_check %>']
+            }
             /*
             */
         }

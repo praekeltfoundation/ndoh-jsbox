@@ -491,8 +491,8 @@ describe("ussd_popi_rapidpro app", function() {
                 .input("1")
                 .check.interaction({
                     reply: [
-                        "Thank you! We'll send your MomConnect messages to WhatsApp. What would " +
-                        "you like to do?",
+                        "Thank you! We'll send your MomConnect messages on WhatsApp.\n\nWhat " +
+                        "would you like to do?",
                         "1. Back to main menu",
                         "2. Exit"
                     ].join("\n"),
@@ -532,8 +532,8 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup.user.state("state_channel_switch_success")
                 .check.interaction({
                     reply: [
-                        "Thank you! We'll send your MomConnect messages to WhatsApp. What would " +
-                        "you like to do?",
+                        "Thank you! We'll send your MomConnect messages on WhatsApp.\n\nWhat " +
+                        "would you like to do?",
                         "1. Back to main menu",
                         "2. Exit"
                     ].join("\n")
