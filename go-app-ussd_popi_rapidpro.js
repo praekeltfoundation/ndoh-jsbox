@@ -1,6 +1,49 @@
 var go = {};
 go;
 
+go.Hub = function() {
+    var vumigo = require('vumigo_v02');
+    var events = vumigo.events;
+    var Eventable = events.Eventable;
+    var url = require("url");
+
+    var Hub = Eventable.extend(function(self, json_api, base_url, auth_token) {
+        self.json_api = json_api;
+        self.base_url = base_url;
+        self.auth_token = auth_token;
+        self.json_api.defaults.headers.Authorization = ['Token ' + self.auth_token];
+
+        self.send_whatsapp_template_message = function(msisdn, template_name, media) {
+            var api_url = url.resolve(self.base_url, "/api/v1/sendwhatsapptemplate");
+            var data = {
+                "msisdn": msisdn,
+                "template_name": template_name
+            };
+            if(media) {
+                data.media = media;
+            }
+            return self.json_api.post(api_url, {data: data})
+                .then(function(response){
+                    return response.data.preferred_channel;
+
+                });
+        };
+
+        self.get_whatsapp_failure_count = function(msisdn) {
+            var api_url = url.resolve(self.base_url, "/api/v2/deliveryfailure/" + msisdn + "/");
+
+            return self.json_api.get(api_url)
+                .then(
+                    function(response){
+                        return response.data.number_of_failures;
+                    }
+                );
+        };
+
+    });
+    return Hub;
+}();
+
 go.Engage = function() {
     var vumigo = require('vumigo_v02');
     var events = vumigo.events;
@@ -202,6 +245,15 @@ go.app = function() {
                 self.im.config.services.whatsapp.base_url,
                 self.im.config.services.whatsapp.token
             );
+            self.hub = new go.Hub(
+                new JsonApi(self.im, {
+                    headers: {
+                        'User-Agent': ["Jsbox/NDoH-Popi"]
+                    }
+                }),
+                self.im.config.services.hub.base_url,
+                self.im.config.services.hub.token
+            );
         };
 
         self.contact_current_channel = function(contact) {
@@ -400,6 +452,7 @@ go.app = function() {
                 new Choice("state_main_menu", $("Back"))
             ];
             var whatsapp_choices = [
+                new Choice("state_check_whatsapp_errors", $("Change from WhatsApp to SMS")),
                 new Choice("state_msisdn_change_enter", $("Cell number")),
                 new Choice("state_identification_change_type", $("Identification")),
                 new Choice("state_change_research_confirm", $("Research messages")),
@@ -410,6 +463,55 @@ go.app = function() {
                 question: $("What would you like to change?"),
                 error: $("Sorry we don't understand. Please try again."),
                 choices: channel == "WhatsApp" ? whatsapp_choices : sms_choices
+            });
+        });
+
+        self.add("state_check_whatsapp_errors", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            return self.hub
+                .get_whatsapp_failure_count(_.trim(msisdn, "+"))
+                .then(
+                    function(error_count) {
+                        if (error_count >= 3) {
+                            return self.states.create("state_channel_switch_confirm");
+                        }
+                        else {
+                            return self.states.create("state_sms_not_available");
+                        }
+                    },
+                    function (e) {
+                        // If it's 404, delivery failure doesn't exist
+                        if (e.response.code === 404) {
+                            return self.states.create("state_sms_not_available");
+                        }
+                        // Go to error state after 3 failed HTTP requests
+                        opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                        if (opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", { return_state: name });
+                        }
+                        return self.states.create(name, opts);
+                    }
+                );
+        });
+
+        self.add("state_sms_not_available", function(name) {
+            return new MenuState(name, {
+                question: $([
+                    "Sorry, this number cannot receive messages via SMS.",
+                    "",
+                    "You'll still get your messages on WhatsApp.",
+                    "",
+                    "What would you like to do?"
+                ].join("\n")),
+                choices: [
+                    new Choice("state_start", $("Back to main menu")),
+                    new Choice("state_exit", $("Exit"))
+                ],
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                )
             });
         });
 
