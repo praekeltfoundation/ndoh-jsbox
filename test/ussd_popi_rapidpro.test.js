@@ -1,6 +1,7 @@
 var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
 var assert = require("assert");
+var fixtures_hub = require("./fixtures_hub")();
 var fixtures_rapidpro = require("./fixtures_rapidpro")();
 var fixtures_whatsapp = require("./fixtures_pilot")();
 
@@ -20,6 +21,10 @@ describe("ussd_popi_rapidpro app", function() {
                 whatsapp: {
                     base_url: "http://pilot.example.org",
                     token: "engage-token"
+                },
+                hub: {
+                    base_url: "http://hub",
+                    token: "hub-token"
                 }
             },
             sms_switch_flow_id: "sms-switch-flow",
@@ -381,10 +386,11 @@ describe("ussd_popi_rapidpro app", function() {
                 .check.interaction({
                     reply: [
                         "What would you like to change?",
-                        "1. Cell number",
-                        "2. Identification",
-                        "3. Research messages",
-                        "4. Back"
+                        "1. Change from WhatsApp to SMS",
+                        "2. Cell number",
+                        "3. Identification",
+                        "4. Research messages",
+                        "5. Back"
                     ].join("\n")
                 })
                 .run();
@@ -427,7 +433,7 @@ describe("ussd_popi_rapidpro app", function() {
             return tester
                 .setup.user.state("state_change_info")
                 .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
-                .input("1")
+                .input("2")
                 .check.user.state("state_msisdn_change_enter")
                 .run();
         });
@@ -443,8 +449,75 @@ describe("ussd_popi_rapidpro app", function() {
             return tester
                 .setup.user.state("state_change_info")
                 .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
-                .input("2")
+                .input("3")
                 .check.user.state("state_identification_change_type")
+                .run();
+        });
+        it("should go to state_channel_switch_confirm if enough failures exist", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_hub.get_whatsapp_failure_count(
+                            "27123456789", 4, true
+                        )
+                    );
+                })
+                .input("1")
+                .check.user.state("state_channel_switch_confirm")
+                .run();
+        });
+        it("should go to state_sms_not_available if not enough failures exist", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_hub.get_whatsapp_failure_count(
+                            "27123456789", 2, true
+                        )
+                    );
+                })
+                .input("1")
+                .check.user.state("state_sms_not_available")
+                .check.interaction({
+                    reply: [
+                        "Sorry, this number cannot receive messages via SMS.",
+                        "",
+                        "You'll still get your messages on WhatsApp.",
+                        "",
+                        "What would you like to do?",
+                        "1. Back to main menu",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_sms_not_available if no failures found", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_hub.get_whatsapp_failure_count(
+                            "27123456789", 0, false
+                        )
+                    );
+                })
+                .input("1")
+                .check.user.state("state_sms_not_available")
+                .check.interaction({
+                    reply: [
+                        "Sorry, this number cannot receive messages via SMS.",
+                        "",
+                        "You'll still get your messages on WhatsApp.",
+                        "",
+                        "What would you like to do?",
+                        "1. Back to main menu",
+                        "2. Exit"
+                    ].join("\n")
+                })
                 .run();
         });
     });
