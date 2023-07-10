@@ -12,6 +12,7 @@ describe("ussd_popi_rapidpro app", function() {
         app = new go.app.GoNDOH();
         tester = new AppTester(app);
         tester.setup.config.app({
+            testing_today: "2022-04-04T07:07:07",
             services: {
                 rapidpro: {
                     base_url: "https://rapidpro",
@@ -29,7 +30,8 @@ describe("ussd_popi_rapidpro app", function() {
             identification_change_flow_id: "identification-change-flow",
             research_consent_change_flow_id: "research-change-flow",
             optout_flow_id: "optout-flow",
-            research_optout_flow: "research-optout-flow"
+            research_optout_flow: "research-optout-flow",
+            edd_dob_change_flow_uuid: "edd-dob-change-flow-uuid"
         });
     });
 
@@ -203,7 +205,7 @@ describe("ussd_popi_rapidpro app", function() {
                         "Language: None",
                         "None: None",
                         "Type: None",
-                        "Research messages: None",
+                        "Research consent: None",
                         "Baby's birthday: None",
                         "1. Back"
                     ].join("\n")
@@ -232,7 +234,7 @@ describe("ussd_popi_rapidpro app", function() {
                         "Passport: A12345 Malawi",
                         "Type: Pregnancy",
                         "Research messages: Yes",
-                        "Baby's birthday: 18-03-02, 20-06-04",
+                        "Baby's birthday: 18-03-01, 20-06-03",
                         "1. Back"
                     ].join("\n")
                 })
@@ -261,7 +263,7 @@ describe("ussd_popi_rapidpro app", function() {
                         "Language: isiZulu",
                         "Passport: A12345 Malawi",
                         "Type: Pregnancy",
-                        "Research messages: Yes",
+                        "Research consent: Yes",
                         "1. Next",
                         "2. Back"
                     ].join("\n")
@@ -287,7 +289,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .input("1")
                 .check.interaction({
                     reply: [
-                        "Baby's birthday: 18-03-02, 20-06-04",
+                        "Baby's birthday: 18-03-01, 20-06-03",
                         "1. Previous",
                         "2. Back"
                     ].join("\n")
@@ -296,52 +298,499 @@ describe("ussd_popi_rapidpro app", function() {
         });
     });
     describe("state_change_info", function(){
-        it("should display the list of options to the user SMS", function() {
+        it("should display the list of options to the user SMS page 1", function() {
             return tester
                 .setup.user.state("state_change_info")
-                .setup.user.answer("contact", {fields: {preferred_channel: "SMS"}})
-                .check.interaction({
-                    reply: [
-                        "What would you like to change?",
-                        "1. Change from SMS to WhatsApp",
-                        "2. Cell number",
-                        "3. Language",
-                        "4. Identification",
-                        "5. Research messages",
-                        "6. Back"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should display the list of options to the user WhatsApp", function() {
-            return tester
-                .setup.user.state("state_change_info")
-                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
+                .setup.user.answer("contact", {fields: {preferred_channel: "SMS",
+                    baby_dob1: "2021-03-10T00:00:00Z",
+                    baby_dob2: "2021-11-11T00:00:00Z",
+                    baby_dob3: "2022-07-07T00:00:00Z",
+                    edd: "2020-06-04T00:00:00Z",
+                }})
                 .check.interaction({
                     reply: [
                         "What would you like to change?",
                         "1. Cell number",
-                        "2. Identification",
-                        "3. Research messages",
-                        "4. Back"
+                        "2. Change SMS to WhatsApp",
+                        "3. Baby's Expected Due Date: 20-06-03",
+                        "4. 1st Baby's DoB: 21-03-09",
+                        "5. Next"
                     ].join("\n")
                 })
+                .run();
+        });
+        it("should display the list of options to the user SMS page 2", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "SMS",
+                    baby_dob1: "2021-03-10T00:00:00Z",
+                    baby_dob2: "2021-11-11T00:00:00Z",
+                    baby_dob3: "2022-07-07T00:00:00Z",
+                    edd: "2020-06-04T00:00:00Z"
+                },
+                })
+                .input("5")
+                .check.interaction({
+                    reply: [
+                        "What would you like to change?",
+                        "1. 2nd Baby's DoB: 21-11-10",
+                        "2. 3rd Baby's DoB: 22-07-06",
+                        "3. Language",
+                        "4. ID",
+                        "5. Research msgs",
+                        "6. Back",
+                        "7. Previous"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display the list of options to the user WhatsApp page 1", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp",
+                    baby_dob1: "2021-03-10T00:00:00Z",
+                    baby_dob2: "2021-11-11T00:00:00Z",
+                    baby_dob3: "2022-07-07T00:00:00Z",
+                    edd: "2020-06-04T00:00:00Z"
+                }})
+                .check.interaction({
+                    reply: [
+                        "What would you like to change?",
+                        "1. Cell number",
+                        "2. Change WhatsApp to SMS",
+                        "3. Baby's Expected Due Date: 20-06-03",
+                        "4. 1st Baby's DoB: 21-03-09",
+                        "5. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display the list of options to the user WhatsApp page 2", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp",
+                    baby_dob1: "2021-03-10T00:00:00Z",
+                    baby_dob2: "2021-11-11T00:00:00Z",
+                    baby_dob3: "2022-07-07T00:00:00Z",
+                    edd: "2020-06-04T00:00:00Z"
+                },
+                })
+                .input("5")
+                .check.interaction({
+                    reply: [
+                        "What would you like to change?",
+                        "1. 2nd Baby's DoB: 21-11-10",
+                        "2. 3rd Baby's DoB: 22-07-06",
+                        "3. ID",
+                        "4. Research msgs",
+                        "5. Back",
+                        "6. Previous"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to edd endstate if no prebirth", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp",
+                    baby_dob1: "2021-03-10T00:00:00Z",
+                    baby_dob2: "2021-11-11T00:00:00Z",
+                    baby_dob3: "2022-03-07T00:00:00Z",
+                    edd: "2022-03-07T00:00:00Z"
+                },
+                })
+                .input("3")
+                .check.interaction({
+                    reply: [
+                        "You are not currently receiving messages about another pregnancy.",
+                        "",
+                        "To register a new pregnancy on MomConnect, please dial *134*550*2#",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go ask if baby is born for existing prebirth", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp",
+                    baby_dob1: "2021-03-10T00:00:00Z",
+                    baby_dob2: "2021-11-11T00:00:00Z",
+                    baby_dob3: "2022-03-07T00:00:00Z",
+                    edd: "2022-06-06T00:00:00Z"
+                },
+                })
+                .input("3")
+                .check.interaction({
+                    reply: [
+                        "You are currently receiving pregnancy messages for a baby due on " +
+                        "2022-06-05.",
+                        "",
+                        "Has this baby been born?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should ask for baby year of birth if baby is already born", function() {
+            return tester
+                .setup.user.state("state_active_prebirth_check")
+                .setup.user.answer("contact", {fields: {
+                    edd: "2022-06-06T00:00:00Z"
+                },
+                })
+                .input("1")
+                .check.interaction({
+                    reply: [
+                        "Which year was the baby born? " +
+                        "Please reply with a number that matches your answer, " +
+                        "not the year e.g. 1.",
+                        "1. 2023",
+                        "2. 2022",
+                        "3. 2021",
+                        "4. Other"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should return baby too old if user selected other", function() {
+            return tester
+                .setup.user.state("state_baby_born_year")
+                .input("4")
+                .check.interaction({
+                    reply: [
+                        "Unfortunately MomConnect doesn't send messages " +
+                        "to children older than 2 years.",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should ask for baby month of birth if valid year", function() {
+            return tester
+                .setup.user.state("state_baby_born_year")
+                .input("1")
+                .check.interaction({
+                    reply: [
+                        "What month was  your baby born? ",
+                        "Please reply with the number that matches your answer, " +
+                        "not the year e.g. 1",
+                        "1. Jan",
+                        "2. Feb",
+                        "3. Mar",
+                        "4. Apr",
+                        "5. May",
+                        "6. Jun",
+                        "7. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should ask for baby day of birth if valid month and year", function() {
+            return tester
+                .setup.user.state("state_baby_born_month")
+                .input("1")
+                .check.interaction({
+                    reply: [
+                        "What is the estimated day that the baby is due?",
+                        "",
+                        "Reply with the day as a number, for example 12"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should should return an error for an invalid DoB", function() {
+            return tester
+                .setup.user.state("state_baby_born_day", "15")
+                .setup.user.answer("state_baby_born_year", "2022")
+                .setup.user.answer("state_baby_born_month", "04")
+                .input("99")
+                .check.interaction({
+                    reply: [
+                        "Sorry, the day you entered is not a valid day of the month.",
+                        "Please try again."
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should should return an error for an out of range future date", function() {
+            return tester
+                .setup.user.state("state_baby_born_day")
+                .setup.user.answer("state_baby_born_year", "2023")
+                .setup.user.answer("state_baby_born_month", "04")
+                .input("4")
+                .check.interaction({
+                    reply: [
+                        "You have entered a date in the future.",
+                        "",
+                        "1. Try again",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should return an error for an out of range past date", function() {
+            return tester
+                .setup.user.state("state_baby_born_day")
+                .setup.user.answer("state_baby_born_year", "2017")
+                .setup.user.answer("state_baby_born_month", "04")
+                .input("4")
+                .check.interaction({
+                    reply: [
+                        "Unfortunately, Momconnect does not send messages for children " +
+                        "older than 2 years.",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should proceed for valid date", function() {
+            return tester
+                .setup.user.state("state_baby_born_day")
+                .setup.user.answer("state_baby_born_year", "2022")
+                .setup.user.answer("state_baby_born_month", "02")
+                .input("4")
+                .check.interaction({
+                    reply: [
+                        "Your baby's date of birth will be changed " +
+                        "to 2022-02-04.",
+                        "\nIs this correct?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should trigger the baby dob change on confirm", function() {
+            return tester
+                .setup.user.state("state_baby_born_confirm_date")
+                .setup.user.answer("state_baby_born_year", "2022")
+                .setup.user.answer("state_baby_born_month", "04")
+                .setup.user.answer("state_baby_born_day", "4")
+
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27123456789",
+                            wait: true
+                        })
+                    );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "edd-dob-change-flow-uuid", null, "whatsapp:27123456789", {
+                                timestamp: "2022-04-04T07:07:07Z",
+                                change_type: "baby_born",
+                                baby_dob: '2022-04-04T00:00:00Z'
+                            }
+                        )
+                    );
+                })
+                .input("1")
+                .check.user.state("state_baby_born_complete")
+                .run();
+        });
+
+        /***************************
+         ***Edd Baby Unborn Tests***
+        ****************************/
+
+        it("should ask for baby expected year", function() {
+            return tester
+                .setup.user.state("state_active_prebirth_check")
+                .setup.user.answer("contact", {fields: {
+                    edd: "2022-06-06T00:00:00Z"
+                },
+                })
+                .input("2")
+                .check.interaction({
+                    reply: [
+                        "In which year is your baby expected?",
+                        "\nPlease reply with the number that matches your answer, " +
+                        "not the year e.g. 1",
+                        "1. 2022",
+                        "2. 2023"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should ask for expected month of birth if year is valid", function() {
+            return tester
+                .setup.user.state("state_edd_baby_unborn_year")
+                .input("1")
+                .check.interaction({
+                    reply: [
+                        "In which month is your baby expected? " +
+                        "Please reply with the number that matches your answer, " +
+                        "not the year e.g. 1",
+                        "1. Jan",
+                        "2. Feb",
+                        "3. Mar",
+                        "4. Apr",
+                        "5. May",
+                        "6. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should ask for baby day of delivery if valid month and year", function() {
+            return tester
+                .setup.user.state("state_edd_baby_unborn_month")
+                .input("1")
+                .check.interaction({
+                    reply: [
+                        "On which day of the month is your baby expected? " +
+                        "Please reply with the day as a number, e.g. 12."
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should ask for expected month of birth if year is valid", function() {
+            return tester
+                .setup.user.state("state_edd_baby_unborn_year")
+                .input("1")
+                .check.interaction({
+                    reply: [
+                        "In which month is your baby expected? " +
+                        "Please reply with the number that matches your answer, " +
+                        "not the year e.g. 1",
+                        "1. Jan",
+                        "2. Feb",
+                        "3. Mar",
+                        "4. Apr",
+                        "5. May",
+                        "6. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should return an error for invalid EDD date", function() {
+            return tester
+                .setup.user.state("state_edd_baby_unborn_day")
+                .setup.user.answer("state_edd_baby_unborn_year", "2022")
+                .setup.user.answer("state_edd_baby_unborn_month", "04")
+                .input("99")
+                .check.interaction({
+                    reply: [
+                        "Sorry, the day you entered is not a valid day of the month.",
+                        "Please try again."
+                    ].join("\n")
+                })
+                .run();  
+        });
+        it("should should return an error for an out of range future date", function() {
+            return tester
+                .setup.user.state("state_edd_baby_unborn_day")
+                .setup.user.answer("state_edd_baby_unborn_year", "2024")
+                .setup.user.answer("state_edd_baby_unborn_month", "04")
+                .setup.user.answer("contact", {fields: {
+                    edd: "2022-06-06"
+                },
+                })
+                .input("4")
+                .check.interaction({
+                    reply: [
+                        "The date you entered is more than 40 weeks " +
+                        "into the future.",
+                        "1. Try again",
+                        "2. Exit"
+                    ].join("\n")
+                }) 
+                .run();
+        });
+        it("should return an error for an out of range past date", function() {
+            return tester
+                .setup.user.state("state_edd_baby_unborn_day")
+                .setup.user.answer("state_edd_baby_unborn_year", "2017")
+                .setup.user.answer("state_edd_baby_unborn_month", "04")
+                .setup.user.answer("contact", {fields: {
+                    edd: "2022-06-06"
+                },
+                })
+                .input("4")
+                .check.interaction({
+                    reply: [
+                        "The date you entered is in the past. " +
+                        "so I cannot update your Expected Due Date.",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should should confirm if new EDD is 2 weeks after", function() {
+            return tester
+                .setup.user.state("state_edd_baby_unborn_day")
+                .setup.user.answer("state_edd_baby_unborn_year", "2022")
+                .setup.user.answer("state_edd_baby_unborn_month", "04")
+                .setup.user.answer("contact", {fields: {
+                    edd: "2022-04-28"
+                }
+                })
+                .input("4")
+                .check.interaction({
+                    reply: [
+                        "This will change your Expected Due Date by more " +
+                        "than 2 weeks.",
+                        "",
+                        "Only continue if you are sure this is accurate.",
+                        "1. Continue",
+                        "2. Go back"
+                    ].join("\n")
+                }) 
+                .run();
+        });
+        it("should trigger the edd change if valid date and 14 days before edd", function() {
+            return tester
+                .setup.user.state("state_edd_baby_unborn_day")
+                .setup.user.answer("state_edd_baby_unborn_year", "2022")
+                .setup.user.answer("state_edd_baby_unborn_month", "04")
+                .setup.user.answer("contact", {fields: {
+                    edd: "2022-03-28"
+                }
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_whatsapp.exists({
+                            address: "+27123456789",
+                            wait: true
+                        })
+                    );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "edd-dob-change-flow-uuid", null, "whatsapp:27123456789", {
+                                timestamp: "2022-04-04T07:07:07Z",
+                                change_type: "edd_baby_expected",
+                                baby_edd: "2022-04-04T00:00:00Z"
+                            }
+                        )
+                    );
+                })
+                .input("4")
+                .check.user.state("state_edd_baby_unborn_complete")
                 .run();
         });
         it("should display an error on invalid input", function() {
             return tester
                 .setup.user.state("state_change_info")
-                .setup.user.answer("contact", {fields: {preferred_channel: "SMS"}})
+                .setup.user.answer("contact", {fields: {preferred_channel: "SMS",
+                    baby_dob1: "2021-03-10T00:00:00Z",
+                    baby_dob2: "2021-11-11T00:00:00Z",
+                    baby_dob3: "2022-07-07T00:00:00Z",
+                    edd: "2020-06-04T00:00:00Z"
+                }})
                 .input("A")
                 .check.interaction({
                     reply: [
                         "Sorry we don't understand. Please try again.",
-                        "1. Change from SMS to WhatsApp",
-                        "2. Cell number",
-                        "3. Language",
-                        "4. Identification",
-                        "5. Research messages",
-                        "6. Back"
+                        "1. Cell number",
+                        "2. Change SMS to WhatsApp",
+                        "3. Baby's Expected Due Date: 20-06-03",
+                        "4. 1st Baby's DoB: 21-03-09",
+                        "5. Next"
                     ].join("\n")
                 })
                 .run();
@@ -349,7 +798,12 @@ describe("ussd_popi_rapidpro app", function() {
         it("should go to state_channel_switch_confirm if that option is chosen", function() {
             return tester
                 .setup.user.state("state_change_info")
-                .setup.user.answer("contact", {fields: {preferred_channel: "SMS"}})
+                .setup.user.answer("contact", {fields: {preferred_channel: "SMS",
+                    baby_dob1: "2021-03-10T00:00:00Z",
+                    baby_dob2: "2021-11-11T00:00:00Z",
+                    baby_dob3: "2022-07-07T00:00:00Z",
+                    edd: "2020-06-04T00:00:00Z"
+                }})
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_whatsapp.exists({
@@ -358,14 +812,19 @@ describe("ussd_popi_rapidpro app", function() {
                         })
                     );
                 })
-                .input("1")
+                .input("2")
                 .check.user.state("state_channel_switch_confirm")
                 .run();
         });
         it("should go to state_msisdn_change_enter if that option is chosen", function() {
             return tester
                 .setup.user.state("state_change_info")
-                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
+                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp",
+                    baby_dob1: "2021-03-10T00:00:00Z",
+                    baby_dob2: "2021-11-11T00:00:00Z",
+                    baby_dob3: "2022-07-07T00:00:00Z",
+                    edd: "2020-06-04T00:00:00Z"
+                }})
                 .input("1")
                 .check.user.state("state_msisdn_change_enter")
                 .run();
@@ -373,16 +832,26 @@ describe("ussd_popi_rapidpro app", function() {
         it("should go to state_language_change_enter if that option is chosen and channel is SMS", function() {
             return tester
                 .setup.user.state("state_change_info")
-                .setup.user.answer("contact", {fields: {preferred_channel: "SMS"}})
-                .input("3")
+                .setup.user.answer("contact", {fields: {preferred_channel: "SMS",
+                    baby_dob1: "2021-03-10T00:00:00Z",
+                    baby_dob2: "2021-11-11T00:00:00Z",
+                    baby_dob3: "2022-07-07T00:00:00Z",
+                    edd: "2020-06-04T00:00:00Z"
+                }})
+                .inputs("5", "3")
                 .check.user.state("state_language_change_enter")
                 .run();
         });
         it("should go to state_identification_change_type if that option is chosen", function() {
             return tester
                 .setup.user.state("state_change_info")
-                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
-                .input("2")
+                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp",
+                    baby_dob1: "2021-03-10T00:00:00Z",
+                    baby_dob2: "2021-11-11T00:00:00Z",
+                    baby_dob3: "2022-07-07T00:00:00Z",
+                    edd: "2020-06-04T00:00:00Z"
+                }})
+                .inputs("5", "3")
                 .check.user.state("state_identification_change_type")
                 .run();
         });

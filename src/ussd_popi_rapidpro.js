@@ -175,7 +175,7 @@ go.app = function() {
                 "Language: {{language}}",
                 "{{id_type}}: {{id_details}}",
                 "Type: {{message_type}}",
-                "Research messages: {{research}}",
+                "Research consent: {{research}}",
                 "Baby's birthday: {{dobs}}"
             ].join("\n")).context(context);
             var whatsapp_text = $([
@@ -210,26 +210,660 @@ go.app = function() {
         self.add("state_change_info", function(name) {
             var contact = self.im.user.answers.contact;
             var channel = _.get(contact, "fields.preferred_channel");
+            var context = {
+                dobs: _.map(_.filter([
+                    new moment(_.get(contact, "fields.edd", null)),
+                    new moment(_.get(contact, "fields.baby_dob1", null)),
+                    new moment(_.get(contact, "fields.baby_dob2", null)),
+                    new moment(_.get(contact, "fields.baby_dob3", null)),
+                ], _.method("isValid")), _.method("format", "YY-MM-DD")).join(", ") || $("None")
+             };
+            var mydates = Object.values(context);
+            var dates_list = mydates[0].trim().split(/\s*,\s*/);
+            var dates_count = dates_list.length;
+            var edd = dates_list[0] || null;
+            var baby_dob1 = dates_list[1] || null;
+            var baby_dob2 = dates_list[2] || null;
+            var baby_dob3 = dates_list[3] || null;
 
+            var dob_choices = [
+                new Choice("state_active_prebirth_check", $(
+                    "Baby's Expected Due Date: {{edd}}").context({
+                        edd: edd
+                    })),
+                new Choice("state_active_postbirth_check", $(
+                    "1st Baby's DoB: {{baby_dob1}}").context({
+                        baby_dob1: baby_dob1
+
+                    })),
+                new Choice("state_active_postbirth_check", $(
+                    "2nd Baby's DoB: {{baby_dob2}}").context({
+                        baby_dob2: baby_dob2
+
+                    })),
+                new Choice("state_active_postbirth_check", $(
+                    "3rd Baby's DoB: {{baby_dob3}}").context({
+                        baby_dob3: baby_dob3
+
+                    }))
+            ];
             var sms_choices = [
-                new Choice("state_channel_switch_whatsapp_contact_bg", $("Change from SMS to WhatsApp")),
                 new Choice("state_msisdn_change_enter", $("Cell number")),
+                new Choice("state_channel_switch_whatsapp_contact_bg", $("Change SMS to WhatsApp")),
                 new Choice("state_language_change_enter", $("Language")),
-                new Choice("state_identification_change_type", $("Identification")),
-                new Choice("state_change_research_confirm", $("Research messages")),
-                new Choice("state_main_menu", $("Back"))
+                new Choice("state_identification_change_type", $("ID")),
+                new Choice("state_change_research_confirm", $("Research msgs")),
+                new Choice("state_main_menu", $("Back")),
             ];
             var whatsapp_choices = [
                 new Choice("state_msisdn_change_enter", $("Cell number")),
-                new Choice("state_identification_change_type", $("Identification")),
-                new Choice("state_change_research_confirm", $("Research messages")),
+                new Choice("state_channel_switch_whatsapp_contact_bg", $("Change WhatsApp to SMS")),
+                new Choice("state_identification_change_type", $("ID")),
+                new Choice("state_change_research_confirm", $("Research msgs")),
                 new Choice("state_main_menu", $("Back"))
             ];
+            push_dob(sms_choices, dob_choices, dates_count);
+            push_dob(whatsapp_choices, dob_choices, dates_count);
 
-            return new MenuState(name, {
+            function push_dob(channel_list, dob_list, dob_count)
+            {
+                for (var i = 0; i < (dob_count); i++) {
+                    channel_list.splice(i+2, 0, dob_list[i]);
+                }
+
+            }
+            return new PaginatedChoiceState(name, {
                 question: $("What would you like to change?"),
+                accept_labels: true,
+                options_per_page: null,
+                characters_per_page: 160,
                 error: $("Sorry we don't understand. Please try again."),
-                choices: channel == "WhatsApp" ? whatsapp_choices : sms_choices
+                choices: channel == "WhatsApp" ? whatsapp_choices : sms_choices,
+                more: $("Next"),
+                back: $("Previous"),
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+        self.add("state_active_prebirth_check", function(name){
+            var contact = self.im.user.answers.contact;
+            var edd = new moment(_.get(contact, "fields.edd", null)).format("YYYY-MM-DD");
+            
+            if (!self.contact_edd(contact)) {
+                return self.states.create("state_edd_change_end");
+            }
+            return new MenuState(name, {
+                question: $(
+                    "You are currently receiving pregnancy messages " +
+                    "for a baby due on {{edd}}." +
+                    "\n\nHas this baby been born?"
+                ).context({
+                    edd:edd
+                }),
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                ),
+                accept_labels: true,
+                choices: [
+                    new Choice("state_baby_born_year", $("Yes")),
+                    new Choice("state_edd_baby_unborn_year", $("No")),
+                ],
+            });
+        });
+
+        self.add("state_active_postbirth_check", function(name){
+            var contact = self.im.user.answers.contact;
+            var postbirth = _.toUpper(_.get(contact, "fields.postbirth_messaging")) === "TRUE";
+            if (postbirth) {
+                return self.states.create("state_baby_born_year");
+            }
+            return new MenuState(name, {
+                question: $(
+                    "You are not currently receiving messages about another baby. " +
+                    "\n\n" +
+                    "To register another baby on MonConnect (age 0-2) ",
+                    "dial *134*550*2#"
+                ),
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                ),
+                accept_labels: true,
+                choices: [
+                    new Choice("state_main_menu", $("Back")),
+                    new Choice("state_exit", $("Exit")),
+                ],
+            });
+        });
+
+        self.states.add("state_dob_change_end", function(name) {
+            return new MenuState(name, {
+                question: $([
+                    "You are not currently receiving messages about ",
+                    "another pregnancy.", 
+                    "", 
+                    "To register a new pregnancy on MomcConnect, please go ",
+                    "to the clinic, and ask a nurse to help you sign up by ",
+                    "dialing *134*550*2#"
+                ].join("\n")),
+                error: $(
+                    "Sorry, we don't understand. Please try again."
+                ),
+                choices: [
+                    new Choice("state_main_menu", $("Back")),
+                    new Choice("state_exit", $("Exit"))
+                ]
+            });
+        });
+
+        self.states.add("state_edd_change_end", function(name) {
+            return new MenuState(name, {
+                question: $([
+                    "You are not currently receiving messages about " +
+                    "another pregnancy.", 
+                    "", 
+                    "To register a new pregnancy on MomConnect, please " +
+                    "dial *134*550*2#"
+                ].join("\n")),
+                error: $(
+                    "Sorry, we don't understand. Please try again."
+                ),
+                choices: [
+                    new Choice("state_main_menu", $("Back")),
+                    new Choice("state_exit", $("Exit"))
+                ]
+            });
+        });
+
+        /*******************
+        * Baby Born Change
+        *******************/
+
+        self.add("state_baby_born_year", function(name) {
+            var today = new moment(self.im.config.testing_today).startOf("day");
+            var choices = _.map(
+                // For this year and the past two years, we need 3 options
+                _.range(3),
+                function(i) {
+                    var y = today.clone().subtract(i-1, "years").format("YYYY");
+                    return new Choice(y, $(y));
+                }
+            );
+            choices.push(new Choice("Other", $("Other")));
+            return new ChoiceState(name, {
+                question: $([
+                    "Which year was the baby born? " +
+                    "Please reply with a number that matches your answer, not the year e.g. 1."
+                ].join("\n")),
+                error: $(
+                    "Sorry we don't understand. Please enter the number that matches " +
+                    "your answer."
+                ),
+                choices: choices,
+                next: function(choice) {
+                    if (choice.value === "Other"){
+                        return "state_baby_too_old";
+                    }
+                    return "state_baby_born_month";
+                }
+            });
+        });
+
+        self.add("state_baby_too_old", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "Unfortunately MomConnect doesn't send messages to children older than 2 " +
+                    "years."
+                ),
+                error: $(
+                    "Sorry we don't understand. Please enter the number next to the mother's " +
+                    "answer."
+                ),
+                choices: [
+                    new Choice("state_main_menu", $("Back")),
+                    new Choice("state_start", $("Exit"))
+                ]
+            });
+        });
+
+        self.add("state_baby_born_month", function(name) {
+            var today = new moment(self.im.config.testing_today).startOf("day");
+            var start_date = today.clone().add(1, "days");
+            var end_date = today.clone().add(52, "weeks").add(-1, "days");
+
+            var dates = _.map(_.range(end_date.diff(start_date, "months") + 1), function(i) {
+                return start_date.clone().add(i, "months");
+            });
+            var sortedDates = _.sortBy(dates, function(d) {
+                return d.format("MM");
+            });
+            var choices = _.map(sortedDates, function(date) {
+                return new Choice(date.format("MM"), $(date.format("MMM")));
+            });
+
+            return new PaginatedChoiceState(name, {
+                question: $([
+                    "What month was  your baby born? ",
+                    "Please reply with the number that matches your answer, " +
+                    "not the year e.g. 1"
+                ].join("\n")),
+                error: $([
+                    "Sorry, we don't understand.",
+                    "",
+                    "Reply with a number."
+                ].join("\n")),
+                choices: choices,
+                back: $("Back"),
+                more: $("Next"),
+                options_per_page: null,
+                characters_per_page: 160,
+                next: "state_baby_born_day",
+                accept_labels: true
+            });
+        });
+
+        self.add("state_baby_born_day", function(name) {
+            return new FreeText(name, {
+                question: $([
+                    "What is the estimated day that the baby is due?",
+                    "",
+                    "Reply with the day as a number, for example 12"
+                ].join("\n")),
+                check: function(content) {
+                    var date = new moment(
+                        self.im.user.answers.state_baby_born_year +
+                        self.im.user.answers.state_baby_born_month + content,
+                        "YYYYMMDD"
+                    );
+                    if (
+                        !date.isValid()
+                    ) {
+                        return $([
+                            "Sorry, the day you entered is not a valid day of the month.",
+                            "Please try again."
+                        ].join("\n"));
+                    }
+                    else{
+                    }
+
+                },
+                next: "state_baby_born_calc"
+            });
+        });
+
+        self.states.add("state_baby_born_invalid_date", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "Sorry, the day you entered is not a ",
+                    "valid day of the month."
+                ),
+                error: $(
+                    "Sorry, we don't understand. Please try again."
+                ),
+                choices: [
+                    new Choice("state_baby_born_year", $("Try again")),
+                    new Choice("state_exit", $("Exit"))
+                ]
+            });
+        });
+
+        self.add("state_baby_born_calc", function(name) {
+            var date = new moment(
+                self.im.user.answers.state_baby_born_year + self.im.user.answers.state_baby_born_month
+                    + self.im.user.answers.state_baby_born_day,
+                "YYYYMMDD"
+            );
+            var current_date = new moment(self.im.config.testing_today).startOf("day");
+            var diff = date.diff(current_date, "days");
+            if (
+                !date.isBetween(current_date.clone().subtract(2, "years"),current_date)
+            ) {
+                if(diff > 0){
+                    return self.states.create("state_baby_born_out_of_range_future");
+                }
+                else{
+                    return self.states.create("state_baby_born_out_of_range_past");
+                
+                }
+            }
+            return self.states.create("state_baby_born_confirm_date");
+        });
+
+        self.states.add("state_baby_born_confirm_date", function(name) {
+            var answers = self.im.user.answers;
+            var year = answers.state_baby_born_year;
+            var month = answers.state_baby_born_month;
+            var day = answers.state_baby_born_day;
+            var date = new moment(
+                year + month + day, "YYYYMMDD"
+            ).format('YYYY-MM-DD');
+            return new MenuState(name, {
+                question: $([
+                    "Your baby's date of birth will be changed to {{date}}.",
+                    "",
+                    "Is this correct?" 
+                ].join("\n")).context({
+                    date: date
+                }),
+                error: $(
+                    "Sorry, we don't understand. Please try again."
+                ),
+                choices: [
+                    new Choice("state_trigger_rapidpro_flow_edd_dob_change", $("Yes")),
+                    new Choice("sstate_baby_born_year", $("No"))
+                ]
+            });
+        });
+
+        self.states.add("state_baby_born_out_of_range_future", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "You have entered a date in the future.\n",
+                    ""
+                ),
+                error: $(
+                    "Sorry, we don't understand. Please try again."
+                ),
+                choices: [
+                    new Choice("state_baby_born_year", $("Try again")),
+                    new Choice("state_exit", $("Exit"))
+                ]
+            });
+        });
+
+        self.states.add("state_baby_born_out_of_range_past", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "Unfortunately, Momconnect does not send messages for children " +
+                    "older than 2 years."
+                ),
+                error: $(
+                    "Sorry, we don't understand. Please try again."
+                ),
+                choices: [
+                    new Choice("state_main_menu", $("Back")),
+                    new Choice("state_exit", $("Exit"))
+                ]
+            });
+        });
+
+        self.add("state_trigger_rapidpro_flow_edd_dob_change", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            var data = {
+                timestamp: new moment.utc(self.im.config.testing_today).format(),
+            };
+            var answers = self.im.user.answers;
+            var flow_uuid = self.im.config.edd_dob_change_flow_uuid;
+            var end_flow;
+            var year = answers.state_edd_baby_unborn_year || answers.state_baby_born_year;
+            var month = answers.state_edd_baby_unborn_month || answers.state_baby_born_month;
+            var day = answers.state_edd_baby_unborn_day || answers.state_baby_born_day;
+
+            if ((typeof answers.state_edd_baby_unborn_month != "undefined")){
+                data.change_type = "edd_baby_expected";
+                data.baby_edd = new moment.utc(
+                    year +
+                    month +
+                    day,
+                    "YYYYMMDD"
+                ).format(),
+                end_flow = "state_edd_baby_unborn_complete";
+            }
+            else {
+                data.change_type = "baby_born";
+                data.baby_dob = new moment.utc(
+                    year +
+                    month +
+                    day,
+                    "YYYYMMDD"
+                    ).format(),
+                end_flow = "state_baby_born_complete";
+            }
+
+            return self.rapidpro
+                .start_flow(flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), data)
+                .then(function() {
+                    return self.states.create(end_flow);
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if (opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {
+                            return_state: name
+                        });
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+        self.states.add("state_baby_born_complete", function(name) {
+            var baby_dob = new moment.utc(
+                self.im.user.answers.state_baby_born_year +
+                self.im.user.answers.state_baby_born_month +
+                self.im.user.answers.state_baby_born_day,
+                "YYYYMMDD"
+            ).format();
+            return new MenuState(name, {
+                question: $(
+                    "Your baby's date of birth has been updated to ",
+                    "{{baby_dob}} and you will start receiving messages based on ",
+                    "this schedule."
+                ).context({
+                    baby_dob: baby_dob
+                }),
+                error: $(
+                    "Sorry, we don't understand. Please try again."
+                ),
+                choices: [
+                    new Choice("state_main_menu", $("Back")),
+                    new Choice("state_exit", $("Exit"))
+                ]
+            });
+        });
+
+        /*******************
+        * EDD Baby Unborn
+        ********************/
+
+        self.add("state_edd_baby_unborn_year", function(name) {
+            var today = new moment(self.im.config.testing_today).startOf("day");
+            var choices = _.map(
+                // For this year and next year, we need 2 options
+                _.range(2),
+                function(i) {
+                    var y = today.clone().add(i, "years").format("YYYY");
+                    return new Choice(y, $(y));
+                }
+            );
+            return new ChoiceState(name, {
+                question: $([
+                    "In which year is your baby expected?",
+                    "",
+                    "Please reply with the number that matches your answer, not the year e.g. 1"
+                ].join("\n")),
+                error: $(
+                    "Sorry we don't understand. Please reply with the number that " +
+                    "matches your answer."
+                ),
+                choices: choices,
+                next: function(choice) {
+                    return "state_edd_baby_unborn_month";
+                }
+            });
+        });
+
+        self.add("state_edd_baby_unborn_month", function(name) {
+            var today = new moment(self.im.config.testing_today).startOf("day");
+            var start_date = today.clone().add(1, "days");
+            var end_date = today.clone().add(52, "weeks").add(-1, "days");
+
+            var dates = _.map(_.range(end_date.diff(start_date, "months") + 1), function(i) {
+                return start_date.clone().add(i, "months");
+            });
+            var sortedDates = _.sortBy(dates, function(d) {
+                return d.format("MM");
+            });
+            var choices = _.map(sortedDates, function(date) {
+                return new Choice(date.format("MM"), $(date.format("MMM")));
+            });
+
+            return new PaginatedChoiceState(name, {
+                question: $([
+                    "In which month is your baby expected? " +
+                    "Please reply with the number that matches " +
+                    "your answer, not the year e.g. 1"
+                ].join("\n")),
+                error: $([
+                    "Sorry, we don't understand.",
+                    "",
+                    "Reply with a number."
+                ].join("\n")),
+                choices: choices,
+                back: $("Back"),
+                more: $("Next"),
+                options_per_page: null,
+                characters_per_page: 160,
+                next: "state_edd_baby_unborn_day",
+                accept_labels: true
+            });
+        });
+
+        self.add("state_edd_baby_unborn_day", function(name) {
+            return new FreeText(name, {
+                question: $([
+                    "On which day of the month is your baby expected? " +
+                    "Please reply with the day as a number, e.g. 12."
+                ].join("\n")),
+                check: function(content) {
+                    var date = new moment(
+                        self.im.user.answers.state_edd_baby_unborn_year +
+                        self.im.user.answers.state_edd_baby_unborn_month + content,
+                        "YYYYMMDD"
+                    );
+                    if (
+                        !date.isValid()
+                    ) {
+                        return $([
+                            "Sorry, the day you entered is not a valid day of the month.",
+                            "Please try again."
+                        ].join("\n"));
+                    }
+                    else{
+                    }
+
+                },
+                next: "state_edd_baby_unborn_calc"
+            });
+        });
+
+        self.add("state_edd_baby_unborn_calc", function(name) {
+            var contact = self.im.user.answers.contact;
+            var edd = new moment(_.get(contact, "fields.edd", null));
+            var date = new moment(
+                self.im.user.answers.state_edd_baby_unborn_year + 
+                self.im.user.answers.state_edd_baby_unborn_month + 
+                self.im.user.answers.state_edd_baby_unborn_day,
+                "YYYYMMDD"
+            );
+            var current_date = new moment(self.im.config.testing_today).startOf("day");
+            var diff = date.diff(current_date, "days");
+            var diff_days = edd.diff(date, "days");
+            if (
+                !date.isBetween(current_date.clone().add(40, "weeks"), current_date)
+            ) {
+                if(diff < 0){
+                    return self.states.create("state_edd_baby_unborn_out_of_range_past");
+                }
+                if(diff > 0){
+                    return self.states.create("state_edd_baby_unborn_out_of_range_future");
+                }
+            }
+            if(diff_days > 14){
+                return self.states.create("state_confirm_edd_baby_unborn_2wks_after");
+            }
+            else 
+                return self.states.create("state_trigger_rapidpro_flow_edd_dob_change");
+        });
+
+        self.states.add("state_edd_baby_unborn_out_of_range_past", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "The date you entered is in the past. " +
+                    "so I cannot update your " +
+                    "Expected Due Date."
+                ),
+                error: $(
+                    "Sorry, we don't understand. Please try again."
+                ),
+                choices: [
+                    new Choice("state_edd_year", $("Back")),
+                    new Choice("state_exit", $("Exit"))
+                ]
+            });
+        });
+
+        self.states.add("state_edd_baby_unborn_out_of_range_future", function(name) {
+            return new MenuState(name, {
+                question: $(
+                    "The date you entered is more than 40 weeks " +
+                    "into the future."
+                ),
+                error: $(
+                    "Sorry, we don't understand. Please try again."
+                ),
+                choices: [
+                    new Choice("state_edd_year", $("Try again")),
+                    new Choice("state_exit", $("Exit"))
+                ]
+            });
+        });
+
+        self.states.add("state_confirm_edd_baby_unborn_2wks_after", function(name) {
+            return new MenuState(name, {
+                question: $([
+                    "This will change your Expected Due Date by more than " +
+                    "2 weeks.",
+                    "",
+                    "Only continue if you are sure this is accurate." 
+                ].join("\n")),
+                error: $(
+                    "Sorry, we don't understand. Please try again."
+                ),
+                choices: [
+                    new Choice("state_trigger_rapidpro_flow_edd_dob_change", $("Continue")),
+                    new Choice("state_edd_baby_unborn_year", $("Go back"))
+                ]
+            });
+        });
+
+        self.states.add("state_edd_baby_unborn_complete", function(name) {
+            var answers = self.im.user.answers;
+            var year = answers.state_edd_baby_unborn_year;
+            var month = answers.state_edd_baby_unborn_month;
+            var day = answers.state_edd_baby_unborn_day;
+            var date = new moment(
+                year + month + day,
+                "YYYYMMDD"
+            ).format('YYYY-MM-DD');
+            return new MenuState(name, {
+                question: $([
+                    "Your Expected Due Date has been updated to {{date}}.",
+                    "and you will start receiving messages based on this ",
+                    "schedule" 
+                ].join("\n")).context({
+                    date: date
+                }),
+                error: $(
+                    "Sorry, we don't understand. Please try again."
+                ),
+                choices: [
+                    new Choice("state_main_menu", $("Back to menu")),
+                    new Choice("state_exit", $("Exit"))
+                ]
             });
         });
 
@@ -1218,6 +1852,26 @@ go.app = function() {
             });
         });
 
+        self.contact_edd = function(contact) {
+            var today = new moment(self.im.config.testing_today);
+            var edd = new moment(_.get(contact, "fields.edd", null));
+            if (edd && edd.isValid() && edd.isBetween(today, today.clone().add(42, "weeks"))) {
+                return edd;
+            }
+        };
+
+        self.contact_postbirth_dobs = function(contact) {
+            var today = new moment(self.im.config.testing_today),
+                dates = [];
+            _.forEach(["baby_dob1", "baby_dob2", "baby_dob3"], function(f) {
+                var d = new moment(_.get(contact, "fields." + f, null));
+                if (d && d.isValid() && d.isBetween(today.clone().add(-2, "years"), today)) {
+                    dates.push(d);
+                }
+            });
+            return dates;
+        };
+
         self.add("state_confirm_change_other", function(name) {
             return new MenuState(name, {
                 question: $(
@@ -1234,6 +1888,8 @@ go.app = function() {
                 )
             });
         });
+
+
 
         self.add("state_enter_origin_msisdn", function(name) {
             return new FreeText(name, {
