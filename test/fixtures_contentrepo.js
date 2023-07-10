@@ -4,7 +4,7 @@ module.exports = function() {
             return {
                 "repeatable": true,
                 "request": {
-                    "url": 'https://contentrepo/api/v2/pages',
+                    "url": 'https://contentrepo/api/v2/pages/',
                     "params": {'tag': tag},
                     "method": 'GET'
                 },
@@ -30,7 +30,7 @@ module.exports = function() {
             return {
                 "repeatable": true,
                 "request": {
-                    "url": 'https://contentrepo/api/v2/pages/' + page_id,
+                    "url": 'https://contentrepo/api/v2/pages/' + page_id + "/",
                     "method": 'GET',
                     "params": params
                 },
@@ -64,7 +64,7 @@ module.exports = function() {
             return {
                 "repeatable": true,
                 "request": {
-                    "url": 'https://contentrepo/api/v2/pages/' + page_id,
+                    "url": 'https://contentrepo/api/v2/pages/' + page_id + "/",
                     "method": 'GET',
                     "params": params
                 },

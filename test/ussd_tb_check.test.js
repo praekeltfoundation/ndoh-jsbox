@@ -35,6 +35,16 @@ describe("ussd_tb_check app", function () {
           "7": "tb_study_a",
           "5": "tb_study_a_survey_group1",
           "4": "tb_study_a_survey_group2",
+          "11": "tb_school_1",
+          "12": "tb_school_2",
+          "13": "tb_school_3",
+          "14": "tb_school_4",
+          "15": "tb_school_5",
+          "16": "tb_school_6",
+          "17": "tb_school_7",
+          "18": "tb_school_8",
+          "19": "tb_school_9",
+          "20": "tb_school_10",
         }
       }
     });
@@ -132,6 +142,55 @@ describe("ussd_tb_check app", function () {
       })
       .input({ session_event: "new", to_addr: "*123*123*6#" })
       .check.user.answer("activation", "skip_location_2022")
+      .check.user.state("state_welcome")
+      .run();
+    });
+    it("should set activation for new user using school activation", function() {
+      return tester
+      .setup(function (api) {
+        api.http.fixtures.add({
+          request: {
+              url: "http://healthcheck/v2/healthcheckuserprofile/+27123456789/",
+              method: "GET"
+          },
+          response: {
+              code: 404,
+              data: {
+                  detail: "Not found."
+              }
+          }
+      });
+      })
+      .input({ session_event: "new", to_addr: "*123*123*11#" })
+      .check.user.answer("activation", "tb_school_1")
+      .check.user.state("state_welcome")
+      .run();
+    });
+    it("should set school activation for returning user", function() {
+      return tester
+      .setup(function (api) {
+        api.http.fixtures.add({
+          request: {
+              url: "http://healthcheck/v2/healthcheckuserprofile/+27123456789/",
+              method: "GET"
+          },
+          response: {
+              code: 200,
+              data: {
+                activation: null,
+                state_gender: "MALE",
+                state_province: "ZA-WC",
+                state_city: "KZN, South Arica",
+                city_location: "+00-025/",
+                state_age: "18-39",
+                state_language: "eng",
+                data: {tb_privacy_policy_accepted: "yes"},
+              }
+          }
+      });
+      })
+      .input({ session_event: "new", to_addr: "*123*123*15#" })
+      .check.user.answer("activation", "tb_school_5")
       .check.user.state("state_welcome")
       .run();
     });
@@ -561,7 +620,15 @@ describe("ussd_tb_check app", function () {
       return tester.setup.user
         .state("state_privacy_policy_accepted")
         .setup.user.answer("state_privacy_policy_accepted", "yes")
+        .setup.user.answer("activation", "tb_study_a")
         .check.user.state("state_language")
+        .run();
+    });
+    it("should skip the state for users who already have this info for core line", function () {
+      return tester.setup.user
+        .state("state_privacy_policy_accepted")
+        .setup.user.answer("state_privacy_policy_accepted", "yes")
+        .check.user.state("state_core_language")
         .run();
     });
     it("should skip the state for users who already have this info for a study", function () {
@@ -575,6 +642,7 @@ describe("ussd_tb_check app", function () {
     it("should go to state_language if study is active", function () {
       return tester.setup.user
         .state("state_privacy_policy_accepted")
+        .setup.user.answer("activation", "tb_study_a")
         .input("1")
         .check.user.state("state_language")
         .run();
@@ -701,6 +769,7 @@ describe("ussd_tb_check app", function () {
     it("should display language", function () {
       return tester.setup.user
         .state("state_privacy_policy_accepted")
+        .setup.user.answer("activation", "tb_study_a")
         .input("1")
         .check.interaction({
           state: "state_language",
@@ -711,6 +780,26 @@ describe("ussd_tb_check app", function () {
             "3. Afrikaans",
             "4. isiXhosa",
             "5. Sesotho"
+          ].join("\n"),
+          char_limit: 160,
+      })
+      .run();
+    });
+    it("should display core languages", function () {
+      return tester.setup.user
+        .state("state_privacy_policy_accepted")
+        .setup.user.answer("activation", null)
+        .input("1")
+        .check.interaction({
+          state: "state_core_language",
+          reply: [
+            "Choose your preferred language",
+            "1. English",
+            "2. isiZulu",
+            "3. Afrikaans",
+            "4. isiXhosa",
+            "5. Sesotho",
+            "6. Setswana",
           ].join("\n"),
           char_limit: 160,
       })
@@ -988,7 +1077,7 @@ describe("ussd_tb_check app", function () {
           state: "state_confirm_city",
           reply: [
             "Please check that the address below is correct and matches the information you gave us:",
-            "54321 Fancy Apartment,Fresnaye,Cape Town, South Africa",
+            "54321 Fancy Apartment,Fresnaye,Cape ",
             "1. Yes",
             "2. No",
           ].join("\n"),
@@ -1087,6 +1176,91 @@ describe("ussd_tb_check app", function () {
         .check.user.state("state_suburb_name")
         .run();
     });
+    it("should go to state_city for incorrect input place lookup", function () {
+      return tester.setup.user
+        .answer("google_session_token", "testsessiontoken")
+        .setup(function (api) {
+          api.http.fixtures.add({
+            request: {
+              url:
+                "https://maps.googleapis.com/maps/api/place/autocomplete/json",
+              params: {
+                input: "Greater Tuang,cape town",
+                key: "googleplaceskey",
+                sessiontoken: "testsessiontoken",
+                language: "en",
+                components: "country:za",
+              },
+              method: "GET",
+            },
+            response: {
+              code: 200,
+              data: {
+                status: "ERROR",
+                predictions: [
+                  {
+                    description: "Greater Tuang,cape town, South Africa",
+                    place_id: "ChIJD7fiBh9u5kcRYJSMaMOCCwQ",
+                  },
+                ],
+              },
+            },
+          });
+        })
+        .setup.user.state("state_city")
+        .setup.user.answer("state_suburb_name", "Greater Tuang")
+        .input("cape town")
+        .check.user.state("state_city")
+        .check.interaction({
+          state: "state_city",
+          reply: [
+            "Sorry, we don't understand. Please try again.",
+            "",
+            "Please type the name of the city where you live"
+          ].join("\n"),
+          char_limit: 160,
+          })
+        .run();
+    });
+    it("should go to state_confirm_city", function () {
+      return tester.setup.user
+        .answer("google_session_token", "testsessiontoken")
+        .setup(function (api) {
+          api.http.fixtures.add({
+            request: {
+              url:
+                "https://maps.googleapis.com/maps/api/place/autocomplete/json",
+              params: {
+                input: "Fresnaye,cape town",
+                key: "googleplaceskey",
+                sessiontoken: "testsessiontoken",
+                language: "en",
+                components: "country:za",
+              },
+              method: "GET",
+            },
+            response: {
+              code: 200,
+              data: {
+                status: "OK",
+                predictions: [
+                  {
+                    description: "Fresnaye, Cape Town, South Africa",
+                    place_id: "ChIJD7fiBh9u5kcRYJSMaMOCCwQ",
+                  },
+                ],
+              },
+            },
+          });
+        })
+        .setup.user.state("state_city")
+        .setup.user.answer("state_suburb_name", "Fresnaye")
+        .input("cape town")
+        .check.user.state("state_confirm_city")
+        .check.user.answer("state_city", "Fresnaye, Cape Town, South Africa")
+        .check.user.answer("place_id", "ChIJD7fiBh9u5kcRYJSMaMOCCwQ")
+        .run();
+    });
   describe("state_confirm_city", function () {
     it("should ask to confirm the city", function () {
       return tester.setup.user
@@ -1098,7 +1272,7 @@ describe("ussd_tb_check app", function () {
           state: "state_confirm_city",
           reply: [
             "Please check that the address below is correct and matches the information you gave us:",
-            "54321 Fancy Apartment,Fresnaye,Cape Town",
+            "54321 Fancy Apartment,Fresnaye,Cape ",
             "1. Yes",
             "2. No",
           ].join("\n"),
@@ -1133,7 +1307,7 @@ describe("ussd_tb_check app", function () {
           state: "state_confirm_city",
           reply: [
             "Please check that the address below is correct and matches the information you gave us:",
-            "54321 Fancy Apartment,12345 Really really long address,Fres",
+            "54321 Fancy Apartment,12345 Really r",
             "1. Yes",
             "2. No",
           ].join("\n"),
@@ -1196,6 +1370,24 @@ describe("ussd_tb_check app", function () {
         .input("1")
         .check.user.state("state_cough")
         .check.user.answer("city_location", "-03.866651+051.195827/")
+        .run();
+    });
+    it("should ask to confirm the city with longer then 36 characters", function () {
+      return tester.setup.user
+        .state("state_confirm_city")
+        .setup.user.answer(
+          "state_city", "15 voortrekker road, goodwood estate,Cape Town, South africa"
+        )
+        .check.interaction({
+          state: "state_confirm_city",
+          reply: [
+            "Please check that the address below is correct and matches the information you gave us:",
+            "15 voortrekker road, goodwood estate",
+            "1. Yes",
+            "2. No",
+          ].join("\n"),
+          char_limit: 160,
+        })
         .run();
     });
   });
@@ -1515,7 +1707,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_opt_in",
           reply: [
-            "Thanks for your answers. Your result will be sent soon on SMS. Would you like " +
+            "Thanks for your answers. Your result will be sent soon by SMS. Would you like " +
               "to receive follow-up messages?",
             "1. Yes",
             "2. No",
@@ -1531,7 +1723,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_opt_in",
           reply: [
-            "Thanks for your answers. Your result will be sent soon on SMS. Would you like " +
+            "Thanks for your answers. Your result will be sent soon by SMS. Would you like " +
               "to receive follow-up messages?",
             "1. Yes",
             "2. No",
@@ -2504,6 +2696,33 @@ describe("ussd_tb_check app", function () {
           ].join("\n"),
           char_limit: 160,
         })
+        .run();
+    });
+    it("should skip the state_privacy_policy_accepted for users who already have this info and go to state_core_language", function () {
+      return tester.setup.user
+        .state("state_privacy_policy_accepted")
+        .setup.user.answer("state_privacy_policy_accepted", "yes")
+        .setup.user.answer("activation", null)
+        .check.user.state("state_core_language")
+        .run();
+    });
+    it("should skip the state for users who already have this info for a study", function () {
+      return tester.setup.user
+        .state("state_privacy_policy_accepted")
+        .setup.user.answer("state_privacy_policy_accepted", "yes")
+        .setup.user.answer("activation", null)
+        .check.interaction({
+        state: "state_core_language",
+        reply: [
+            "Choose your preferred language",
+            "1. English",
+            "2. isiZulu",
+            "3. Afrikaans",
+            "4. isiXhosa",
+            "5. Sesotho",
+            "6. Setswana",
+          ].join("\n"),
+          char_limit: 160,})
         .run();
     });
   });

@@ -1,6 +1,7 @@
 var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
 var assert = require("assert");
+var fixtures_hub = require("./fixtures_hub")();
 var fixtures_rapidpro = require("./fixtures_rapidpro")();
 var fixtures_whatsapp = require("./fixtures_pilot")();
 
@@ -21,6 +22,10 @@ describe("ussd_popi_rapidpro app", function() {
                 whatsapp: {
                     base_url: "http://pilot.example.org",
                     token: "engage-token"
+                },
+                hub: {
+                    base_url: "http://hub",
+                    token: "hub-token"
                 }
             },
             sms_switch_flow_id: "sms-switch-flow",
@@ -31,7 +36,8 @@ describe("ussd_popi_rapidpro app", function() {
             research_consent_change_flow_id: "research-change-flow",
             optout_flow_id: "optout-flow",
             research_optout_flow: "research-optout-flow",
-            edd_dob_change_flow_uuid: "edd-dob-change-flow-uuid"
+            edd_dob_change_flow_uuid: "edd-dob-change-flow-uuid",
+            sms_engagement_flow_id: "sms-engagement-flow"
         });
     });
 
@@ -156,6 +162,66 @@ describe("ussd_popi_rapidpro app", function() {
                     });
                     assert.equal(api.log.error.length, 1);
                     assert(api.log.error[0].includes("HttpResponseError"));
+                })
+                .run();
+        });
+        it("should start the engagement flow then display the main menu", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "whatsapp:27123456789",
+                            exists: true,
+                            fields: {
+                                prebirth_messaging: "1",
+                                preferred_channel: "SMS",
+                            }
+                        })
+                    );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "sms-engagement-flow", null, "whatsapp:27123456789", {source: "POPI USSD"}
+                        )
+                    );
+                })
+                .check.interaction({
+                    state: "state_main_menu",
+                    reply: [
+                        "Welcome to MomConnect. What would you like to do?",
+                        "1. See my info",
+                        "2. Change my info",
+                        "3. Opt-out or delete info",
+                        "4. How is my info processed?"
+                    ].join("\n"),
+                    char_limit: 140
+                })
+                .run();
+        });
+        it("should not start the engagement flow if already engaged", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "whatsapp:27123456789",
+                            exists: true,
+                            fields: {
+                                prebirth_messaging: "1",
+                                preferred_channel: "SMS",
+                                sms_engaged: "TRUE"
+                            }
+                        })
+                    );
+                })
+                .check.interaction({
+                    state: "state_main_menu",
+                    reply: [
+                        "Welcome to MomConnect. What would you like to do?",
+                        "1. See my info",
+                        "2. Change my info",
+                        "3. Opt-out or delete info",
+                        "4. How is my info processed?"
+                    ].join("\n"),
+                    char_limit: 140
                 })
                 .run();
         });
@@ -855,6 +921,73 @@ describe("ussd_popi_rapidpro app", function() {
                 .check.user.state("state_identification_change_type")
                 .run();
         });
+        it("should go to state_channel_switch_confirm if enough failures exist", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp",}})
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_hub.get_whatsapp_failure_count(
+                            "27123456789", 4, true
+                        )
+                    );
+                })
+                .input("2")
+                .check.user.state("state_channel_switch_confirm")
+                .run();
+        });
+        it("should go to state_sms_not_available if not enough failures exist", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_hub.get_whatsapp_failure_count(
+                            "27123456789", 2, true
+                        )
+                    );
+                })
+                .input("2")
+                .check.user.state("state_sms_not_available")
+                .check.interaction({
+                    reply: [
+                        "Sorry, this number cannot receive messages via SMS.",
+                        "",
+                        "You'll still get your messages on WhatsApp.",
+                        "",
+                        "What would you like to do?",
+                        "1. Back to main menu",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_sms_not_available if no failures found", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_hub.get_whatsapp_failure_count(
+                            "27123456789", 0, false
+                        )
+                    );
+                })
+                .input("2")
+                .check.user.state("state_sms_not_available")
+                .check.interaction({
+                    reply: [
+                        "Sorry, this number cannot receive messages via SMS.",
+                        "",
+                        "You'll still get your messages on WhatsApp.",
+                        "",
+                        "What would you like to do?",
+                        "1. Back to main menu",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
     });
     describe("state_channel_switch_confirm", function() {
         it("should ask the user if they want to switch channels", function() {
@@ -891,12 +1024,6 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup.user.answer("contact", {fields: {preferred_channel: "SMS"}})
                 .setup(function(api) {
                     api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27123456789",
-                            wait: true
-                        })
-                    );
-                    api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
                             "whatsapp-switch-flow", null, "whatsapp:27123456789"
                         )
@@ -905,40 +1032,18 @@ describe("ussd_popi_rapidpro app", function() {
                 .input("1")
                 .check.interaction({
                     reply: [
-                        "Thank you! We'll send your MomConnect messages to WhatsApp. What would " +
-                        "you like to do?",
+                        "Thank you! We'll send your MomConnect messages on WhatsApp.\n\nWhat " +
+                        "would you like to do?",
                         "1. Back to main menu",
                         "2. Exit"
                     ].join("\n"),
                     state: "state_channel_switch_success"
                 })
                 .check(function(api){
-                    assert.equal(api.http.requests.length, 2);
+                    assert.equal(api.http.requests.length, 1);
                     assert.equal(
-                        api.http.requests[1].url, "https://rapidpro/api/v2/flow_starts.json"
+                        api.http.requests[0].url, "https://rapidpro/api/v2/flow_starts.json"
                     );
-                })
-                .run();
-        });
-        it("should display an error if they're not on WhatsApp", function() {
-            return tester
-                .setup.user.state("state_channel_switch_confirm")
-                .setup.user.answer("contact", {fields: {preferred_channel: "SMS"}})
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.not_exists({
-                            address: "+27123456789",
-                            wait: true
-                        })
-                    );
-                })
-                .input("1")
-                .check.interaction({
-                    reply: [
-                        "This number doesn’t have a WhatsApp account. You’ll keep getting your " +
-                        "messages on SMS. Dial *134*550*7# to switch to a number that has WhatsApp."
-                    ].join("\n"),
-                    state: "state_not_on_whatsapp_channel"
                 })
                 .run();
         });
@@ -968,8 +1073,8 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup.user.state("state_channel_switch_success")
                 .check.interaction({
                     reply: [
-                        "Thank you! We'll send your MomConnect messages to WhatsApp. What would " +
-                        "you like to do?",
+                        "Thank you! We'll send your MomConnect messages on WhatsApp.\n\nWhat " +
+                        "would you like to do?",
                         "1. Back to main menu",
                         "2. Exit"
                     ].join("\n")

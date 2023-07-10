@@ -1,15 +1,15 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-11-22 11:29:+0000",
-        "po-revision-date": "2022-11-22 13:34+0200",
+        "pot-creation-date": "2023-03-16 12:00:+0000",
+        "po-revision-date": "2023-03-16 14:29+0200",
         "last-translator": "",
         "language-team": "",
         "language": "sot_ZA",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 3.2.1"
+        "x-generator": "Poedit 3.2.2"
     },
     "Welcome back to the The National Department of Health's TB HealthCheck": [
         null,
@@ -25,11 +25,11 @@
     ],
     "Unfortunately, you cannot participate in the study more than once. You can still continue with a TB Check but you will not be included in the study.": [
         null,
-        "Ka bomalimabe, u ke ke ua nka karolo phuputsong ho feta hang. O ntse o ka tswela pele ka TB CHECK empa o ke ke wa kenyelletswa diphuputsong. "
+        "Ka bomalimabe, u ke ke ua nka karolo phuputsong ho feta hang. O ntse o ka tswela pele ka TB CHECK empa o ke ke wa kenyelletswa diphuputsong."
     ],
     "Continue": [
         null,
-        "Tswela pele "
+        "Tswela pele"
     ],
     "This service works best when you choose number options from the list.": [
         null,
@@ -37,7 +37,7 @@
     ],
     "The National Department of Health thanks you for helping to protect the health of all SA citizens. Stop the spread of TB.": [
         null,
-        "Lefapha la Naha la Bophelo le leboha ka ho thusa ho sireletsa bophelo ba baahi bohle ba SA. Emisa ho ata ha TB. "
+        "Lefapha la Naha la Bophelo le leboha ka ho thusa ho sireletsa bophelo ba baahi bohle ba SA. Emisa ho ata ha TB."
     ],
     "START": [
         null,
@@ -69,7 +69,7 @@
     ],
     "Next": [
         null,
-        "Khutlela"
+        "E 'ngoe"
     ],
     "You use this info at your own risk. This tool cannot replace medical advice. Agree not to ignore or delay getting medical advice on treatment or care": [
         null,
@@ -111,13 +111,17 @@
         null,
         "Sesotho"
     ],
+    "Setswana": [
+        null,
+        "Setswana"
+    ],
     "If you agree, we will use your information to see if this TB Check helps people.\nDo you agree?": [
         null,
         "Ha o dumela re tla sebedisa dintlha ho bona na TB Check e thusa batho.\nNa wa dumela?"
     ],
-    "Please reply with numbers. Are you willing to take part?": [
+    "Please reply with numbers. Do you agree?": [
         null,
-        "Araba ka nomoro"
+        "Araba ka nomoro. Na o ya dumela?"
     ],
     "Yes": [
         null,
@@ -243,6 +247,10 @@
         null,
         "Ka kopo ngola lebitso la toropo eo o dulang ho eona."
     ],
+    "Sorry, we don't understand. Please try again.\n\nPlease type the name of the city where you live": [
+        null,
+        "Tshoarelo, ha re utlwisise. Ka kopo leka hape.\n\nKa kopo ngola lebitso la toropo eo o dulang ho eona"
+    ],
     "Please check that the address below is correct and matches the information you gave us:\n{{ address }}": [
         null,
         "Ka kopo netefatsa hore aterese e ka tlase e nepahetse mme e tshwana le tlhaiso-leseding eo o re fileng yona: \n{{ address }}"
@@ -303,9 +311,9 @@
         null,
         "Qetellong, ka kopo dumela hore tlhaiso-leseding eo o e arolelaneng e nepahetse ho latela tsebo ya hao."
     ],
-    "Thanks for your answers. Your result will be sent soon on SMS. Would you like to receive follow-up messages?": [
+    "Thanks for your answers. Your result will be sent soon by SMS. Would you like to receive follow-up messages?": [
         null,
-        "Ke leboha dikarabo tsa hao. Sephetho sa hao se tla romellwa haufinyane ka SMS. O ka thabela ho fumana melaetsa ya tshalo-morao?"
+        "Ke leboha dikarabo tsa hao. Sephetho sa hao se tla romellwa haufinyane ka SMS. O ka thabela ho fumana melaetsa ya tshalo-morao? "
     ],
     "Thanks for choosing to get our follow-up messages.": [
         null,
@@ -315,9 +323,9 @@
         null,
         "Ho lokile rea leboha, o ke ke wa fumana melaetsa ya tshalo-morao."
     ],
-    "Thanks for your answers. Your result will be sent soon on SMS.": [
+    "Thanks for your answers. Your result will be sent soon by SMS.": [
         null,
-        "Ke leboha dikarabo tsa hao. Sephetho sa hao se tla romellwa haufinyane ka SMS."
+        "Ke leboha dikarabo tsa hao. Sephetho sa hao se tla romellwa haufinyane ka SMS. "
     ],
     "This service works best when you select numbers from the list": [
         null,
@@ -479,9 +487,9 @@
         null,
         "Etswa"
     ],
-    "The FAQ has been sent to you on SMS. What would you like to do?": [
+    "The FAQ has been sent to you by SMS. What would you like to do?": [
         null,
-        "FAQ e rometswe ho wena ka SMS. O ka rata ho etsa eng?"
+        "FAQ e rometswe ho wena ka SMS. O ka rata ho etsa eng? "
     ],
     "Please reply with the number that matches your answer.": [
         null,

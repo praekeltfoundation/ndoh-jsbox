@@ -52,6 +52,15 @@ go.app = function() {
                 self.im.config.services.whatsapp.base_url,
                 self.im.config.services.whatsapp.token
             );
+            self.hub = new go.Hub(
+                new JsonApi(self.im, {
+                    headers: {
+                        'User-Agent': ["Jsbox/NDoH-Popi"]
+                    }
+                }),
+                self.im.config.services.hub.base_url,
+                self.im.config.services.hub.token
+            );
         };
 
         self.contact_current_channel = function(contact) {
@@ -100,8 +109,18 @@ go.app = function() {
                     var in_prebirth = _.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7);
                     var in_postbirth =
                         _.toUpper(_.get(contact, "fields.postbirth_messaging")) === "TRUE";
+                    var preferred_channel = _.get(contact, "fields.preferred_channel");
+                    var sms_engaged = true;
+                    if (preferred_channel === "SMS") {
+                        sms_engaged = _.toUpper(_.get(contact, "fields.sms_engaged")) === "TRUE";
+                    }
                     if(in_public || in_prebirth || in_postbirth) {
-                        return self.states.create("state_main_menu");
+                        if (sms_engaged) {
+                            return self.states.create("state_main_menu");
+                        }
+                        else {
+                            return self.states.create("state_update_sms_engaged");
+                        }
                     } else {
                         return self.states.create("state_not_registered");
                     }
@@ -111,6 +130,26 @@ go.app = function() {
                     if(opts.http_error_count === 3) {
                         self.im.log.error(e.message);
                         return self.states.create("__error__");
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+        self.states.add("state_update_sms_engaged", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            var flow_uuid = self.im.config.sms_engagement_flow_id;
+            return self.rapidpro
+                .start_flow(flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), {
+                    source: "POPI USSD"
+                })
+                .then(function() {
+                    return self.states.create("state_main_menu");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
                     }
                     return self.states.create(name, opts);
                 });
@@ -209,6 +248,8 @@ go.app = function() {
 
         self.add("state_change_info", function(name) {
             var contact = self.im.user.answers.contact;
+            var baby_dob1, baby_dob2, baby_dob3, dates_count, edd;
+            var dates_list = [];
             var channel = _.get(contact, "fields.preferred_channel");
             var context = {
                 dobs: _.map(_.filter([
@@ -219,13 +260,37 @@ go.app = function() {
                 ], _.method("isValid")), _.method("format", "YY-MM-DD")).join(", ") || $("None")
              };
             var mydates = Object.values(context);
-            var dates_list = mydates[0].trim().split(/\s*,\s*/);
-            var dates_count = dates_list.length;
-            var edd = dates_list[0] || null;
-            var baby_dob1 = dates_list[1] || null;
-            var baby_dob2 = dates_list[2] || null;
-            var baby_dob3 = dates_list[3] || null;
+            var sms_choices = [
+                new Choice("state_msisdn_change_enter", $("Cell number")),
+                new Choice("state_channel_switch_confirm", $("Change SMS to WhatsApp")),
+                new Choice("state_language_change_enter", $("Language")),
+                new Choice("state_identification_change_type", $("ID")),
+                new Choice("state_change_research_confirm", $("Research msgs")),
+                new Choice("state_main_menu", $("Back")),
+            ];
+            var whatsapp_choices = [
+                new Choice("state_msisdn_change_enter", $("Cell number")),
+                new Choice("state_check_whatsapp_errors", $("Change WhatsApp to SMS")),
+                new Choice("state_identification_change_type", $("ID")),
+                new Choice("state_change_research_confirm", $("Research msgs")),
+                new Choice("state_main_menu", $("Back"))
+            ];
 
+            if (mydates[0].length){
+                dates_list = mydates[0].trim().split(/\s*,\s*/);
+                dates_count = dates_list.length;
+                edd = dates_list[0] || null;
+                baby_dob1 = dates_list[1] || null;
+                baby_dob2 = dates_list[2] || null;
+                baby_dob3 = dates_list[3] || null;
+                
+            }
+            else {
+                if (!(mydates[0].length) && (edd)){
+                    edd = dates_list[0] || null;
+                    
+                }
+            }
             var dob_choices = [
                 new Choice("state_active_prebirth_check", $(
                     "Baby's Expected Due Date: {{edd}}").context({
@@ -247,21 +312,7 @@ go.app = function() {
 
                     }))
             ];
-            var sms_choices = [
-                new Choice("state_msisdn_change_enter", $("Cell number")),
-                new Choice("state_channel_switch_whatsapp_contact_bg", $("Change SMS to WhatsApp")),
-                new Choice("state_language_change_enter", $("Language")),
-                new Choice("state_identification_change_type", $("ID")),
-                new Choice("state_change_research_confirm", $("Research msgs")),
-                new Choice("state_main_menu", $("Back")),
-            ];
-            var whatsapp_choices = [
-                new Choice("state_msisdn_change_enter", $("Cell number")),
-                new Choice("state_channel_switch_whatsapp_contact_bg", $("Change WhatsApp to SMS")),
-                new Choice("state_identification_change_type", $("ID")),
-                new Choice("state_change_research_confirm", $("Research msgs")),
-                new Choice("state_main_menu", $("Back"))
-            ];
+
             push_dob(sms_choices, dob_choices, dates_count);
             push_dob(whatsapp_choices, dob_choices, dates_count);
 
@@ -867,20 +918,53 @@ go.app = function() {
             });
         });
 
-        self.add("state_channel_switch_whatsapp_contact_bg", function(name, opts) {
+        self.add("state_check_whatsapp_errors", function(name, opts) {
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
-            return self.whatsapp.contact_check(msisdn, false)
-                .then(function() {
-                    return self.states.create("state_channel_switch_confirm");
-                }).catch(function(e) {
-                    // Go to error state after 3 failed HTTP requests
-                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-                    if(opts.http_error_count === 3) {
+            return self.hub
+                .get_whatsapp_failure_count(_.trim(msisdn, "+"))
+                .then(
+                    function(error_count) {
+                        if (error_count >= 3) {
+                            return self.states.create("state_channel_switch_confirm");
+                        }
+                        else {
+                            return self.states.create("state_sms_not_available");
+                        }
+                    },
+                    function (e) {
+                        // If it's 404, delivery failure doesn't exist
+                        if (e.response.code === 404) {
+                            return self.states.create("state_sms_not_available");
+                        }
+                        // Go to error state after 3 failed HTTP requests
+                        opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                        if (opts.http_error_count === 3) {
                         self.im.log.error(e.message);
-                        return self.states.create("__error__", {return_state: name});
+                        return self.states.create("__error__", { return_state: name });
+                        }
+                        return self.states.create(name, opts);
                     }
-                    return self.states.create(name, opts);
-                });
+                );
+        });
+
+        self.add("state_sms_not_available", function(name) {
+            return new MenuState(name, {
+                question: $([
+                    "Sorry, this number cannot receive messages via SMS.",
+                    "",
+                    "You'll still get your messages on WhatsApp.",
+                    "",
+                    "What would you like to do?"
+                ].join("\n")),
+                choices: [
+                    new Choice("state_start", $("Back to main menu")),
+                    new Choice("state_exit", $("Exit"))
+                ],
+                error: $(
+                    "Sorry we don't recognise that reply. Please enter the number next to your " +
+                    "answer."
+                )
+            });
         });
 
         self.add("state_channel_switch_confirm", function(name) {
@@ -893,42 +977,12 @@ go.app = function() {
                         alternative_channel: self.contact_alternative_channel(contact)
                     }),
                 choices: [
-                    new Choice("state_channel_switch_get_whatsapp_contact", $("Yes")),
+                    new Choice("state_channel_switch", $("Yes")),
                     new Choice("state_no_channel_switch", $("No")),
                 ],
                 error: $(
                     "Sorry we don't recognise that reply. Please enter the number next to your " +
                     "answer."
-                )
-            });
-        });
-
-        self.add("state_channel_switch_get_whatsapp_contact", function(name, opts) {
-            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
-            return self.whatsapp.contact_check(msisdn, true)
-                .then(function(on_whatsapp) {
-                    if(on_whatsapp) {
-                        return self.states.create("state_channel_switch");
-                    } else {
-                        return self.states.create("state_not_on_whatsapp_channel");
-                    }
-                }).catch(function(e) {
-                    // Go to error state after 3 failed HTTP requests
-                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-                    if(opts.http_error_count === 3) {
-                        self.im.log.error(e.message);
-                        return self.states.create("__error__", {return_state: name});
-                    }
-                    return self.states.create(name, opts);
-                });
-        });
-
-        self.states.add("state_not_on_whatsapp_channel", function(name) {
-            return new EndState(name, {
-                next: "state_start",
-                text: $(
-                    "This number doesn’t have a WhatsApp account. You’ll keep getting your " +
-                    "messages on SMS. Dial *134*550*7# to switch to a number that has WhatsApp."
                 )
             });
         });
@@ -961,8 +1015,8 @@ go.app = function() {
             var contact = self.im.user.answers.contact;
             return new MenuState(name, {
                 question: $(
-                    "Thank you! We'll send your MomConnect messages to {{channel}}. What would " +
-                    "you like to do?").context({
+                    "Thank you! We'll send your MomConnect messages on {{channel}}.\n\nWhat " +
+                    "would you like to do?").context({
                         channel: self.contact_alternative_channel(contact)
                     }),
                 choices: [

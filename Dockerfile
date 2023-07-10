@@ -1,4 +1,4 @@
-FROM praekeltfoundation/vxsandbox:node_4.x
+FROM ghcr.io/praekeltfoundation/vumi-sandbox:node18-v0.1.0
 MAINTAINER Praekelt Foundation <dev@praekeltfoundation.org>
 
 # Install nodejs dependencies
@@ -11,7 +11,7 @@ RUN npm install --production
 # Workaround for sandboxed application losing context - manually install the
 # *dependencies* globally.
 # See https://github.com/praekelt/vumi-sandbox/issues/15
-RUN mv ./node_modules /usr/local/lib/
+RUN mv ./node_modules /
 
 # Copy in the app Javascript
 COPY go-*.js /app/

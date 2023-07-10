@@ -2,10 +2,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2023-03-16 12:00:+0000\n"
-"PO-Revision-Date: 2023-03-16 14:29+0200\n"
+"PO-Revision-Date: 2023-03-19 01:01+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: sot_ZA\n"
+"Language: set_ZA\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14,15 +14,16 @@ msgstr ""
 #: src/ussd_tb_check.js:79
 msgid "Welcome back to the The National Department of Health's TB HealthCheck"
 msgstr ""
-"Re ya o amohela hape Lefapheng la Naha la Bophelo bo Botle ba TB HealthCheck"
+"Re boa re go amogela mo TB HealthCheck ya Lefapha la Bosetshaba la "
+"Boitekanelo"
 
 #: src/ussd_tb_check.js:84
 msgid "Continue where I left off"
-msgstr "Tswella pele moo ke tlohetseng"
+msgstr "Tswelela kwa ke tlogetseng teng"
 
 #: src/ussd_tb_check.js:85
 msgid "Start over"
-msgstr "Qala hape"
+msgstr "Simolola sesha"
 
 #: src/ussd_tb_check.js:159 src/ussd_tb_check.js:1683
 msgid ""
@@ -46,20 +47,20 @@ msgid ""
 "The National Department of Health thanks you for helping to protect the "
 "health of all SA citizens. Stop the spread of TB."
 msgstr ""
-"Lefapha la Naha la Bophelo le leboha ka ho thusa ho sireletsa bophelo ba "
-"baahi bohle ba SA. Emisa ho ata ha TB."
+"Lefapha la Bosetshaba le Boitekanelo le a go leboga ka go thusa go sireletsa "
+"boitekanelo jwa baagi botlhe ba SA. Thibela go anama ga TB."
 
 #: src/ussd_tb_check.js:182
 msgid "START"
-msgstr "QALA"
+msgstr "SIMOLOLA"
 
 #: src/ussd_tb_check.js:192 src/ussd_tb_check.js:198
 msgid ""
 "This NDoH service only provides health info. Please agree that you are "
 "responsible for your own medical care and treatment."
 msgstr ""
-"Tshebeletso ena ya NDoH e fana ka lesedi la bophelo feela. Ka kopo dumela ho "
-"nka boikarabello ba tlhokomelo le kalafo ya hao."
+"Tirelo e e naya tshedimosetso ya boitekanelo. Dumela gore o na le "
+"boikerabelo jwa tlhokomelo ya kalafi ya gago."
 
 #: src/ussd_tb_check.js:206 src/ussd_tb_check.js:738 src/ussd_tb_check.js:755
 #: src/ussd_tb_check.js:765 src/ussd_tb_check.js:775 src/ussd_tb_check.js:826
@@ -71,27 +72,27 @@ msgstr "EE"
 #: src/ussd_tb_check.js:765 src/ussd_tb_check.js:775 src/ussd_tb_check.js:827
 #: src/ussd_tb_check.js:858 src/ussd_tb_check.js:1205
 msgid "NO"
-msgstr "TJHEE"
+msgstr "NNYAA"
 
 #: src/ussd_tb_check.js:208
 msgid "MORE INFO"
-msgstr "LESEDI LE LENG"
+msgstr "TSHEDIMOSETSO E NNGWE"
 
 #: src/ussd_tb_check.js:215
 msgid ""
 "Return to use this service at any time. Remember, if you think you have TB, "
 "avoid contact with other people and get tested at your nearest clinic."
 msgstr ""
-"Kgutlela tshebeletsong ena neng kapa neng. Hopola, ha o nahana hore o na le "
-"TB, qoba ho kopana le batho ba bang mme o etse tlhahlobo tleliniking e haufi."
+"O ka dirisa tirelo eno nako nngwe le nngwe. Gakologelwa, fa o akanya gore o "
+"na le TB, tila go kopana le batho mme o dire diteko kwa tliliniking."
 
 #: src/ussd_tb_check.js:225
 msgid ""
 "TB HealthCheck does not replace medical advice, diagnosis or treatment. Get "
 "a qualified health provider's advice on your medical condition and care."
 msgstr ""
-"TB HealthCheck ha e nke sebaka sa dikeletso tsa bongaka, diteko kapa kalafo. "
-"Fumana keletso ya bongaka ka boemo ba hao ba bongaka le tlhokomelo."
+"TB HealthCheck ga e emisetse thuso epe ya kalafi. Kopa kgakologo go tswa go "
+"motlamedi wa boitekanelo ka ga bolwetse jwa gago kgotsa tlhokomelo."
 
 #: src/ussd_tb_check.js:230 src/ussd_tb_check.js:241 src/ussd_tb_check.js:410
 #: src/ussd_tb_check.js:422 src/ussd_tb_check.js:434 src/ussd_tb_check.js:1031
@@ -100,23 +101,23 @@ msgstr ""
 #: src/ussd_tb_check.js:1186 src/ussd_tb_check.js:1196
 #: src/ussd_tb_check.js:1513 src/ussd_tb_check.js:1596
 msgid "Next"
-msgstr "E 'ngoe"
+msgstr "E e latelang"
 
 #: src/ussd_tb_check.js:236
 msgid ""
 "You use this info at your own risk. This tool cannot replace medical advice. "
 "Agree not to ignore or delay getting medical advice on treatment or care"
 msgstr ""
-"O sebedisa lesedi lena kotsing ya hao. Dumela ho se natse kapa ho dieha ho "
-"fumana dikeletso tsa bongaka ka kalafo kapa tlhokomelo "
+"O dirisa info eno ka kotsi ya gago. Sediriswa seno ga se ka se emisetsa "
+"kgakologo ya ngaka. Dumela gore ga o kitla o itlhokomolosa kalafi"
 
 #: src/ussd_tb_check.js:281
 msgid ""
 "Your personal information is protected under POPIA and in accordance with "
 "the provisions of the TBHealthCheck Privacy Notice sent to you by SMS."
 msgstr ""
-"Dintlha tsa hao tsa botho di sireleditswe ka molao wa POPI le ka dipehelo "
-"tsa Tsebiso ya Lekunutu la TBHealthCheck e romeletsweng wena ka SMS."
+"Tshedimosetso ya gago ya botho e sireleditswe ke POPI Act go ya ka melao ya "
+"TBHealthCheck, kitiso ya sephiri e tla romelwa go wena ka SMS."
 
 #: src/ussd_tb_check.js:286
 msgid "ACCEPT"
@@ -124,27 +125,27 @@ msgstr "AMOHELA"
 
 #: src/ussd_tb_check.js:300 src/ussd_tb_check.js:333
 msgid "Choose your preferred language"
-msgstr "Kgetha puo eo o ikgethela "
+msgstr "Tlhopha puo e o e ratang"
 
 #: src/ussd_tb_check.js:301 src/ussd_tb_check.js:334
 msgid "Please reply with numbers. Choose your preferred language"
-msgstr "Araba ka nomoro. Kgetha puo eo o ikgethela"
+msgstr "Ke kopa o arabe ka linomoro. Tlhopha puo e o e ratang"
 
 #: src/ussd_tb_check.js:304 src/ussd_tb_check.js:337
 msgid "English"
-msgstr "English"
+msgstr "Seesimane"
 
 #: src/ussd_tb_check.js:305 src/ussd_tb_check.js:338
 msgid "isiZulu"
-msgstr "isiZulu"
+msgstr "SeZulu"
 
 #: src/ussd_tb_check.js:306 src/ussd_tb_check.js:339
 msgid "Afrikaans"
-msgstr "Afrikaans"
+msgstr "Seburu"
 
 #: src/ussd_tb_check.js:307 src/ussd_tb_check.js:340
 msgid "isiXhosa"
-msgstr "isiXhosa"
+msgstr "Sethosa"
 
 #: src/ussd_tb_check.js:308 src/ussd_tb_check.js:341
 msgid "Sesotho"
@@ -165,7 +166,7 @@ msgstr ""
 
 #: src/ussd_tb_check.js:365
 msgid "Please reply with numbers. Do you agree?"
-msgstr "Araba ka nomoro. Na o ya dumela?"
+msgstr "Ke kopa o arabe ka linomoro. Na o ya dumela?"
 
 #: src/ussd_tb_check.js:370 src/ussd_tb_check.js:661 src/ussd_tb_check.js:884
 #: src/ussd_tb_check.js:1348 src/ussd_tb_check.js:1374
@@ -179,7 +180,7 @@ msgstr "Ee"
 #: src/ussd_tb_check.js:1728 src/ussd_tb_check.js:1748
 #: src/ussd_tb_check.js:1838
 msgid "No"
-msgstr "Tjhee"
+msgstr "Nnyaa"
 
 #: src/ussd_tb_check.js:372
 msgid "FAQ for more info on TBCheck and the research."
@@ -187,7 +188,7 @@ msgstr "FAQ, bakeng sa dintlha tse ding tsa TBCheck le dipatlisiso."
 
 #: src/ussd_tb_check.js:389
 msgid "How old are you?"
-msgstr "O dilemo di kae?"
+msgstr "O na le dingwaga di le kae?"
 
 #: src/ussd_tb_check.js:390
 msgid ""
@@ -195,13 +196,13 @@ msgid ""
 "\n"
 "How old are you?"
 msgstr ""
-"O dilemo di kae? \n"
+"Ka kopo sebelisa linomoro tse tsoang lethathamong. \n"
 "\n"
-"Araba ka nomoro"
+"O na le dingwaga di le kae?"
 
 #: src/ussd_tb_check.js:393
 msgid "under 18"
-msgstr "ka tlase ho dilemo tse 18"
+msgstr "Fa tlase ga 18"
 
 #: src/ussd_tb_check.js:394
 msgid "18-39"
@@ -213,7 +214,7 @@ msgstr "40-65"
 
 #: src/ussd_tb_check.js:396
 msgid "over 65"
-msgstr "tse fetang 65"
+msgstr "Go feta 65"
 
 #: src/ussd_tb_check.js:404
 msgid ""
@@ -239,14 +240,17 @@ msgstr ""
 
 #: src/ussd_tb_check.js:443
 msgid "Which gender do you identify as?"
-msgstr "O kgetha bong bofe?"
+msgstr "Ke bong bofe jo o ikutlwang o tshwana le jone?"
 
 #: src/ussd_tb_check.js:444
 msgid ""
 "Please use numbers from list.\n"
 "\n"
 "Which gender do you identify as?"
-msgstr "O kgetha bong bofe?"
+msgstr ""
+"Ka kopo sebelisa linomoro tse tsoang lethathamong.\n"
+"\n"
+"Ke bong bofe jo o ikutlwang o tshwana le jone?"
 
 #: src/ussd_tb_check.js:453
 msgid "MALE"
@@ -258,15 +262,15 @@ msgstr "MOSADI"
 
 #: src/ussd_tb_check.js:455
 msgid "OTHER"
-msgstr "HO HONG"
+msgstr "JO BONGWE"
 
 #: src/ussd_tb_check.js:456
 msgid "RATHER NOT SAY"
-msgstr "HA KE RATE HO TJHO"
+msgstr "TLHOPA GO SE BUE"
 
 #: src/ussd_tb_check.js:482
 msgid "Choose your province"
-msgstr "Kgetha profense ya hao"
+msgstr "Tlhopha porofense ya gago"
 
 #: src/ussd_tb_check.js:485
 msgid "E. CAPE"
@@ -274,7 +278,7 @@ msgstr "KAPA BOTJHABELA"
 
 #: src/ussd_tb_check.js:486
 msgid "FREE STATE"
-msgstr "FREE STATE"
+msgstr "FOREISTATA"
 
 #: src/ussd_tb_check.js:487
 msgid "GAUTENG"
@@ -294,7 +298,7 @@ msgstr "MPUMALANGA"
 
 #: src/ussd_tb_check.js:491
 msgid "NORTH WEST"
-msgstr "LEBOYA BOPHIRIMELA"
+msgstr "BOKONE BOPHIRIMA"
 
 #: src/ussd_tb_check.js:492
 msgid "N. CAPE"
@@ -302,7 +306,7 @@ msgstr "KAPA LEBOYA "
 
 #: src/ussd_tb_check.js:493
 msgid "W. CAPE"
-msgstr "KAPA BOPHIRIMELA"
+msgstr "W. CAPE"
 
 #: src/ussd_tb_check.js:508
 msgid "Please type the name of the street where you live."
@@ -311,11 +315,11 @@ msgstr "Ka kopo ngola lebitso la seterata seo o dulang ho sona."
 #: src/ussd_tb_check.js:531
 msgid "Please type the name of the suburb/township/village where you live."
 msgstr ""
-"Ka kopo ngola lebitso la toropo / lekeishene / motsana oo o dulang ho wona."
+"Tsweetswee thaepa leina la toropo/motsetoropo/motsana kwa o nnang teng."
 
 #: src/ussd_tb_check.js:572
 msgid "Please type the name of the city where you live."
-msgstr "Ka kopo ngola lebitso la toropo eo o dulang ho eona."
+msgstr "Tsweetswee thaepa leina la toropo e o nnang mo go yone."
 
 #: src/ussd_tb_check.js:576
 msgid ""
@@ -333,47 +337,55 @@ msgid ""
 "you gave us:\n"
 "{{ address }}"
 msgstr ""
-"Ka kopo netefatsa hore aterese e ka tlase e nepahetse mme e tshwana le "
-"tlhaiso-leseding eo o re fileng yona: \n"
+"Tsweetswee tlhomamisa gore aterese e e fa tlase e boammaaruri le gore e "
+"tsamaisana le tshedimosetso e o re e neileng:\n"
 "{{ address }}"
 
 #: src/ussd_tb_check.js:725
 msgid "Let's see how you're feeling today. Do you have a cough?"
-msgstr "Ha re bone na o ikutlwa jwang kajeno. Na wa kgohlela?"
+msgstr "A re bone gore o ikutlwa jang gompieno. A o a gotlhola?"
 
 #: src/ussd_tb_check.js:728
 msgid ""
 "Please use numbers from list.\n"
 "Do you have a cough?"
-msgstr "Ha re bone na o ikutlwa jwang kajeno. Na wa kgohlela?"
+msgstr ""
+"Ka kopo sebelisa linomoro tse tsoang lethathamong.\n"
+"A o a gotlhola?"
 
 #: src/ussd_tb_check.js:745
 msgid "Do you have a fever? (when you touch your forehead, does it feel hot?)"
-msgstr "O na le feberu? (ha o tshwara phatla ya hao, na e utlwahala e tjhesa?)"
+msgstr "A o na le letshoroma? (fa o ama phatlha ya gago, a e a fisa?)"
 
 #: src/ussd_tb_check.js:748
 msgid ""
 "Please use numbers from list. Do you have a fever? (when you touch your "
 "forehead, does it feel hot?)"
-msgstr "Do you have a fever? (when you touch your forehead, does it feel hot?)"
+msgstr ""
+"Ka kopo sebelisa linomoro tse tsoang lethathamong. A o na le letshoroma? (fa "
+"o ama phatlha ya gago, a e a fisa?)"
 
 #: src/ussd_tb_check.js:762
 msgid "Are you sweating more than usual at night?"
-msgstr "Na o fufulelwa ho feta ka moo ho tlwaelehileng bosiu?"
+msgstr "A o fufulelwa go feta ka gale bosigo?"
 
 #: src/ussd_tb_check.js:763
 msgid ""
 "Please use numbers from list. Are you sweating more than usual at night?"
-msgstr "Na o fufulelwa ho feta ka moo ho tlwaelehileng bosiu?"
+msgstr ""
+"Ka kopo sebelisa linomoro tse tsoang lethathamong. A o fufulelwa go feta ka "
+"gale bosigo?"
 
 #: src/ussd_tb_check.js:772
 msgid "Have you been losing weight without trying?"
-msgstr "Na o ntse o theola boima ba mmele o sa leke ho etsa jwalo?"
+msgstr "A ontse o fokotsa mmele o sa leke?"
 
 #: src/ussd_tb_check.js:773
 msgid ""
 "Please use numbers from list. Have you been losing weight without trying?"
-msgstr "Na o ntse o theola boima ba mmele o sa leke ho etsa jwalo?"
+msgstr ""
+"Ka kopo sebelisa linomoro tse tsoang lethathamong. A ontse o fokotsa mmele o "
+"sa leke?"
 
 #: src/ussd_tb_check.js:789
 msgid ""
@@ -382,18 +394,16 @@ msgid ""
 "Risk means you live with someone who has TB OR you had TB in the last 2 "
 "years OR you are HIV+"
 msgstr ""
-"O kotsing e kgolo ya TB?\n"
+"A o mo kotsing ya go tshwara ke TB?\n"
 "\n"
-"Kotsi e bolela o dula le motho ya nang le TB KAPA o bile le TB dilemong tse "
-"2 tse fetileng KAPA o HIV+"
+"A o nna le motho yo o nang le TB, o ne o na le TB mo dingwageng tse 2 tsa go "
+"feta kgotsa o HIV+"
 
 #: src/ussd_tb_check.js:796
 msgid "Please use numbers from list. Are you at high risk for TB?"
 msgstr ""
-"O kotsing e kgolo ya TB?\n"
-"\n"
-"Kotsi e bolela o dula le motho ya nang le TB KAPA o bile le TB dilemong tse "
-"2 tse fetileng KAPA o HIV+"
+"Ka kopo sebelisa linomoro tse tsoang lethathamong. A o mo kotsing ya go "
+"tshwara ke TB?"
 
 #: src/ussd_tb_check.js:799
 msgid "Yes high risk"
@@ -401,15 +411,15 @@ msgstr "Ee"
 
 #: src/ussd_tb_check.js:801
 msgid "Dont know"
-msgstr "Ha ke tsebe"
+msgstr "Ga ke itse"
 
 #: src/ussd_tb_check.js:815 src/ussd_tb_check.js:819
 msgid ""
 "Now, please agree that the info you shared is correct and that you give the "
 "NDoH permission to contact you if needed?"
 msgstr ""
-"Jwale, ka kopo dumela hore lesedi leo o le arolang le nepahetse le hore o fa "
-"NDoH tumello ya ho ikopanya le wena ha ho hlokahala?"
+"Dumalana gore tshedimosetso a o e abelanang e boammaaruri le gore e naya "
+"NDoH tetla ya go ikgolaganya le wena fa go tlhokega?"
 
 #: src/ussd_tb_check.js:848 src/ussd_tb_check.js:851
 msgid "Finally, please agree that the info you shared is correct."
@@ -422,16 +432,17 @@ msgid ""
 "Thanks for your answers. Your result will be sent soon by SMS. Would you "
 "like to receive follow-up messages?"
 msgstr ""
-"Ke leboha dikarabo tsa hao. Sephetho sa hao se tla romellwa haufinyane ka "
-"SMS. O ka thabela ho fumana melaetsa ya tshalo-morao? "
+"Re leboga dikarabo tsa gago. Dipholo tsa gago di tla romelwa ka SMS mo "
+"bogautshwaneng. A o ka rata go amogela melaetsa e e latelang?"
 
 #: src/ussd_tb_check.js:973
 msgid "Thanks for choosing to get our follow-up messages."
-msgstr "Re leboha ha o kgethile ho fumana melaetsa ya rona ya tshalo-morao."
+msgstr ""
+"Re leboga go bo o ile wa tlhopa go amogela melaetsa ya rona ya go tswelela."
 
 #: src/ussd_tb_check.js:976
 msgid "Okay thanks, you won't get any follow-up messages."
-msgstr "Ho lokile rea leboha, o ke ke wa fumana melaetsa ya tshalo-morao."
+msgstr "Go siame, re a leboga, ga o kitla o amogela melaetsa epe e e latelang."
 
 #: src/ussd_tb_check.js:980
 msgid "Thanks for your answers. Your result will be sent soon by SMS."
@@ -442,11 +453,11 @@ msgstr ""
 #: src/ussd_tb_check.js:983
 msgid "This service works best when you select numbers from the list"
 msgstr ""
-"Tshebeletso ena e sebetsa hantle ha o kgetha dikgetho tsa dinomoro lenaneng."
+"Tirelo eno e dira botoka fa o tlhopa palo ya dikgetho go tswa mo lenaaneg."
 
 #: src/ussd_tb_check.js:991
 msgid "See Results"
-msgstr "Bona Sephetho"
+msgstr "Bona dipholo"
 
 #: src/ussd_tb_check.js:1016
 msgid ""
@@ -454,16 +465,14 @@ msgid ""
 "\n"
 "Visit your local clinic for a free TB test."
 msgstr ""
-"Dikarabo tsa hao dipotsong di supa o hloka tlhahlobo ya TB bekeng ena!\n"
+"Dikarabo tsa gago di bontsha gore o tlhoka teko ya TB.\n"
 "\n"
-"E-ya tleliniking bakeng sa tlhahlobo ya TB. Ka kopo, rwala mask pele o kena "
-"tleliniking."
+"E ya kwa tliliniking go dira diteko tsa TB. Rwala maske wa sefatlhego pele o "
+"tsena mo tliliniking."
 
 #: src/ussd_tb_check.js:1027 src/ussd_tb_check.js:1170
 msgid "Your replies to the questions show that you need a TB test this week!"
-msgstr ""
-"Dikarabo tsa hao ho dipotso di bontsha hore o hloka tlhahlobo ea LEFUBA "
-"bekeng ena!"
+msgstr "Dikarabo tsa gago di bontsha gore o tlhoka teko ya TB."
 
 #: src/ussd_tb_check.js:1038
 msgid ""
@@ -577,8 +586,9 @@ msgid ""
 "You don't need a TB test now, but if you develop cough, fever, weight loss "
 "or night sweats visit your nearest clinic."
 msgstr ""
-"Ha o hloke tlhahlobo ya TB hona jwale, empa haeba o ba le sefuba, feberu, ho "
-"theola boima ba mmele kapa ho fufulelwa bosiu, etela tleliniki e haufinyane."
+"Ga o tlhoke teko ya TB jaanong, mme fa o simolola go gotlhola, o na le "
+"letshoroma, go fokotsa mmele, kgotsa go fufulelwa bosigo etela tliliniki e e "
+"gaufi nao."
 
 #: src/ussd_tb_check.js:1306
 msgid ""
@@ -596,9 +606,9 @@ msgid ""
 "Check if those you live with are on TB treatment. If you don't know your HIV "
 "status, visit the clinic for a free HIV test. Then do the TB check again."
 msgstr ""
-"Bona haeba bao o phelang le bona ba kalafong ya TB. Ha o sa tsebe boemo ba "
-"hao ba HIV, etela tleliniki ho hlahlobela HIV. Ebe o etsa tlhahlobo ya TB "
-"hape."
+"Netefatsa gore a na batho ba o nnang le bone ba alafiwa TB.Fa o sa itse gore "
+"o na le HIV, etela kliliniki go dira diteko tsa HIV.Go tsa foo dira teko ya "
+"TB gape."
 
 #: src/ussd_tb_check.js:1331 src/ussd_tb_check.js:1662
 msgid "None"
@@ -713,7 +723,7 @@ msgstr "FAQ e rometswe ho wena ka SMS. O ka rata ho etsa eng? "
 #: src/ussd_tb_check.js:1564 src/ussd_tb_check.js:1587
 #: src/ussd_tb_check.js:1606
 msgid "Please reply with the number that matches your answer."
-msgstr "Kgetha puo eo o ikgethela."
+msgstr "Ka kopo, araba ka nomoro e lumellanang le karabo ea hau."
 
 #: src/ussd_tb_check.js:1584 src/ussd_tb_check.js:1603
 msgid "What would you like to know?"

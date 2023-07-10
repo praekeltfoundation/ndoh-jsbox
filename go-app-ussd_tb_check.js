@@ -1,52 +1,6 @@
 var go = {};
 go;
 
-go.Engage = function() {
-    var vumigo = require('vumigo_v02');
-    var events = vumigo.events;
-    var Eventable = events.Eventable;
-    var _ = require('lodash');
-    var url = require('url');
-
-    var Engage = Eventable.extend(function(self, json_api, base_url, token) {
-        self.json_api = json_api;
-        self.base_url = base_url;
-        self.json_api.defaults.headers.Authorization = ['Bearer ' + token];
-        self.json_api.defaults.headers['Content-Type'] = ['application/json'];
-
-        self.contact_check = function(msisdn, block) {
-            return self.json_api.post(url.resolve(self.base_url, 'v1/contacts'), {
-                data: {
-                    blocking: block ? 'wait' : 'no_wait',
-                    contacts: [msisdn]
-                }
-            }).then(function(response) {
-                var existing = _.filter(response.data.contacts, function(obj) {
-                    return obj.status === "valid";
-                });
-                return !_.isEmpty(existing);
-            });
-        };
-
-          self.LANG_MAP = {zul_ZA: "en",
-                          xho_ZA: "en",
-                          afr_ZA: "af",
-                          eng_ZA: "en",
-                          nso_ZA: "en",
-                          tsn_ZA: "en",
-                          sot_ZA: "en",
-                          tso_ZA: "en",
-                          ssw_ZA: "en",
-                          ven_ZA: "en",
-                          nbl_ZA: "en",
-                        };
-    });
-
-
-
-    return Engage;
-}();
-
 go.RapidPro = function() {
     var vumigo = require('vumigo_v02');
     var url_utils = require('url');
@@ -422,6 +376,11 @@ go.app = function () {
 
     self.states.add("state_privacy_policy_accepted", function(name) {
       var next_state = "state_language";
+      var activation = self.im.user.answers.activation;
+
+      if(!activation){
+        next_state = "state_core_language";
+      }
       if (self.im.user.answers.state_privacy_policy_accepted == "yes") {
         return self.states.create(next_state);
       }
@@ -433,6 +392,40 @@ go.app = function () {
         ),
         accept_labels: true,
         choices: [new Choice(next_state, $("ACCEPT"))],
+      });
+    });
+
+    self.states.add("state_core_language", function (name) {
+      var next_state = "state_age";
+
+      if (self.im.user.answers.state_language) {
+        return self.im.user.set_lang(self.im.user.answers.state_language)
+        .then(function() {
+          return self.states.create(next_state);
+        });
+      }
+      return new ChoiceState(name, {
+        question: $("Choose your preferred language"),
+        error: $("Please reply with numbers. Choose your preferred language"),
+        accept_labels: true,
+        choices: [
+          new Choice("eng", $("English")),
+          new Choice("zul", $("isiZulu")),
+          new Choice("afr", $("Afrikaans")),
+          new Choice("xho", $("isiXhosa")),
+          new Choice("sot", $("Sesotho")),
+          new Choice("set", $("Setswana")),
+        ],
+        next: function(choice) {
+          self.im.user.answers.state_language = choice.value;
+          if (choice.value != "eng"){
+            return self.im.user.set_lang(choice.value)
+            .then(function() {
+              return self.states.create(next_state);
+            });
+          }
+          return self.states.create(next_state);
+        }
       });
     });
 
@@ -479,7 +472,7 @@ go.app = function () {
               "\nDo you agree?"
               ),
           error: $(
-              "Please reply with numbers. Are you willing to take part?"
+              "Please reply with numbers. Do you agree?"
           ),
           accept_labels: true,
           choices: [
@@ -688,6 +681,13 @@ go.app = function () {
       var question = $(
         "Please type the name of the city where you live."
       );
+      if (self.im.user.answers.state_city_error === "TRUE"){
+        question = $([
+            "Sorry, we don't understand. Please try again.",
+            "",
+            "Please type the name of the city where you live"
+        ].join("\n"));
+         }
       return new FreeText(name, {
         question: question,
         check: function (content) {
@@ -728,6 +728,7 @@ go.app = function () {
         .then(
           function (response) {
             if (_.get(response.data, "status") !== "OK") {
+              self.im.user.answers.state_city_error = "TRUE";
               return self.states.create("state_city");
             }
             var first_result = response.data.predictions[0];
@@ -749,7 +750,7 @@ go.app = function () {
 
     self.add("state_confirm_city", function (name, opts) {
 
-      var state_city = self.im.user.answers.state_city;
+      var state_city = (self.im.user.answers.state_city).slice(0, 36);
       var activation = self.im.user.answers.activation;
       var no_next_state = "state_suburb_name";
 
@@ -979,13 +980,13 @@ go.app = function () {
     self.states.add("state_opt_in", function (name) {
       var question = $(
         [
-          "Thanks for your answers. Your result will be sent soon on SMS. Would you like " +
+          "Thanks for your answers. Your result will be sent soon by SMS. Would you like " +
             "to receive follow-up messages?"
         ].join("\n")
       );
       var error = $(
         [
-          "Thanks for your answers. Your result will be sent soon on SMS. Would you like " +
+          "Thanks for your answers. Your result will be sent soon by SMS. Would you like " +
             "to receive follow-up messages?"
         ].join("\n")
       );
@@ -1085,7 +1086,7 @@ go.app = function () {
       }
 
       if (activation === "tb_study_a"){
-        text = $("Thanks for your answers. Your result will be sent soon on SMS.");
+        text = $("Thanks for your answers. Your result will be sent soon by SMS.");
       }
 
       var error = $(
@@ -1666,7 +1667,7 @@ go.app = function () {
         }
       return new MenuState(name, {
         question: $(
-          "The FAQ has been sent to you on SMS. " +
+          "The FAQ has been sent to you by SMS. " +
           "What would you like to do?"
         ),
         error: $([

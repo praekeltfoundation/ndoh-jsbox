@@ -1,15 +1,15 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2022-11-22 11:29:+0000",
-        "po-revision-date": "2022-11-22 13:36+0200",
+        "pot-creation-date": "2023-03-16 12:00:+0000",
+        "po-revision-date": "2023-03-16 14:22+0200",
         "last-translator": "",
         "language-team": "",
         "language": "xho_ZA",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 3.2.1"
+        "x-generator": "Poedit 3.2.2"
     },
     "Welcome back to the The National Department of Health's TB HealthCheck": [
         null,
@@ -89,7 +89,7 @@
     ],
     "Please reply with numbers. Choose your preferred language": [
         null,
-        "Khetha ulwimi ngokombono wakho "
+        "Khetha ulwimi ngokombono wakho"
     ],
     "English": [
         null,
@@ -111,13 +111,17 @@
         null,
         "Sesotho"
     ],
+    "Setswana": [
+        null,
+        "Setswana"
+    ],
     "If you agree, we will use your information to see if this TB Check helps people.\nDo you agree?": [
         null,
         "Xa uvuma, siya kusebenzisa ulwazi lwakho ukubona ukuba le-TB Check iyabanceda na abantu.\nuyavuma?"
     ],
-    "Please reply with numbers. Are you willing to take part?": [
+    "Please reply with numbers. Do you agree?": [
         null,
-        "Ngaba uzimisele ukuthatha inxaxheba?"
+        "Phendula ngenombolo. uyavuma?"
     ],
     "Yes": [
         null,
@@ -243,6 +247,10 @@
         null,
         "Nceda uchwetheze igama lesixeko ohlala kuso."
     ],
+    "Sorry, we don't understand. Please try again.\n\nPlease type the name of the city where you live": [
+        null,
+        "Uxolo, asiqondi. Nceda zama kwakhona. \n\nNceda uchwetheze igama lesixeko ohlala kuso"
+    ],
     "Please check that the address below is correct and matches the information you gave us:\n{{ address }}": [
         null,
         "Nceda ujonge ukuba le dilesi ingezantsi ichanekile kwaye iyahambelana nolwazi osinike lona:\n{{ address }}"
@@ -303,9 +311,9 @@
         null,
         "Okokugqibela, nceda uvume ukuba ulwazi owabelane ngalo luchanekile ngokolwazi lwakho lonke."
     ],
-    "Thanks for your answers. Your result will be sent soon on SMS. Would you like to receive follow-up messages?": [
+    "Thanks for your answers. Your result will be sent soon by SMS. Would you like to receive follow-up messages?": [
         null,
-        "Enkosi ngeempendulo zakho. Iziphumo zakho zizakuthunyelwa kungekudala nge-SMS Ungathanda ukufumana imiyalezo elandelelisayo?"
+        "Enkosi ngeempendulo zakho. Iziphumo zakho zizakuthunyelwa kungekudala nge-SMS Ungathanda ukufumana imiyalezo elandelelisayo? "
     ],
     "Thanks for choosing to get our follow-up messages.": [
         null,
@@ -315,9 +323,9 @@
         null,
         "Kulungile enkosi, awuzi kufumana miyalezo yokulandelelisa."
     ],
-    "Thanks for your answers. Your result will be sent soon on SMS.": [
+    "Thanks for your answers. Your result will be sent soon by SMS.": [
         null,
-        "Enkosi ngeempendulo zakho. Iziphumo zakho zizakuthunyelwa kungekudala nge-SMS."
+        "Enkosi ngeempendulo zakho. Iziphumo zakho zizakuthunyelwa kungekudala nge-SMS. "
     ],
     "This service works best when you select numbers from the list": [
         null,
@@ -479,9 +487,9 @@
         null,
         "Phuma"
     ],
-    "The FAQ has been sent to you on SMS. What would you like to do?": [
+    "The FAQ has been sent to you by SMS. What would you like to do?": [
         null,
-        "I-FAQ ithunyelwe kuwe ngeSMS. Ingaba ungathanda ukwenza ntoni?"
+        "I-FAQ ithunyelwe kuwe nge-SMS. Ingaba ungathanda ukwenza ntoni?"
     ],
     "Please reply with the number that matches your answer.": [
         null,

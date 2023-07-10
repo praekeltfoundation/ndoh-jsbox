@@ -1,5 +1,6 @@
 go.app = function() {
     var _ = require("lodash");
+    var moment = require("moment");
     var utils = require("seed-jsbox-utils").utils;
     var vumigo = require("vumigo_v02");
     var App = vumigo.App;
@@ -52,20 +53,35 @@ go.app = function() {
 
             return self.rapidpro.get_contact({urn: "whatsapp:" + _.trim(msisdn, "+")})
                 .then(function(contact) {
-                    self.im.user.set_answer("contact", contact);
+
                     // Set the language if we have it
                     if(_.get(self.languages, _.get(contact, "language"))) {
                         return self.im.user.set_lang(contact.language);
                     }
-                }).then(function() {
-                    var contact = self.im.user.get_answer("contact");
+
                     var in_prebirth = _.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7);
                     var in_postbirth =
                         _.toUpper(_.get(contact, "fields.postbirth_messaging")) === "TRUE";
 
                     var in_mqr_arm = _.toUpper(_.get(contact, "fields.mqr_arm")) === "RCM_SMS";
 
+                    self.im.user.set_answer("mqr_last_tag", _.get(contact, "fields.mqr_last_tag"));
+                    self.im.user.set_answer("contact_uuid", contact.uuid);
+
                     if((in_prebirth || in_postbirth) && in_mqr_arm) {
+                        var last_tag = _.get(contact, "fields.mqr_last_tag", null);
+                        if (!last_tag) {
+                            return self.states.create("state_nothing_yet");
+                        }
+
+                        var next_send_date = _.get(contact, "fields.mqr_next_send_date", null);
+
+                        if (next_send_date) {
+                            self.im.user.set_answer("timeout", next_send_date);
+                        }
+                        else {
+                            self.im.user.set_answer("timeout", null);
+                        }
                         return self.states.create("state_get_faqs");
                     } else {
                         return self.states.create("state_not_registered");
@@ -81,14 +97,43 @@ go.app = function() {
                 });
         });
 
+        self.is_content_stale = function() {
+            console.log(">>> is_content_stale");
+            var timeout = self.im.user.answers.timeout;
+
+            if (!timeout) {
+                console.log(true);
+                return true;
+            }
+
+            var parts = timeout.split("T")[0].split("-");
+            var timeoutDate = new Date(parts[0], parts[1]-1, parts[2]);
+            var today = new moment(self.im.config.testing_today).toDate();
+
+            timeoutDate.setHours(0, 0, 0, 0);
+            today.setHours(0, 0, 0, 0);
+
+            console.log("timeoutDate:", timeoutDate);
+            console.log("today:", today);
+
+            if (timeoutDate <= today) {
+                console.log(true);
+                return true;
+            }
+
+            console.log(false);
+            return false;
+        };
+
+
         self.states.add("state_get_faqs", function(name, opts) {
-            var contact = self.im.user.get_answer("contact");
-            var last_tag = _.get(contact, "fields.mqr_last_tag");
+            var last_tag = self.im.user.get_answer("mqr_last_tag");
+            var contact_uuid = self.im.user.get_answer("contact_uuid");
             self.im.user.set_answer("viewed", []);
 
             return self.contentrepo.get_faq_id(last_tag + "_faq0")
                 .then(function(page_id) {
-                    return self.contentrepo.get_faq_text(page_id, contact.uuid)
+                    return self.contentrepo.get_faq_text(page_id, contact_uuid)
                         .then(function(message) {
                             self.im.user.set_answer("faq_main_menu", message);
                             return self.states.create("state_faq_menu");
@@ -113,6 +158,10 @@ go.app = function() {
         });
 
         self.states.add("state_faq_menu", function(name) {
+            if (self.is_content_stale()){
+                return self.states.create("state_start");
+            }
+
             var viewed = self.im.user.answers.viewed;
             if (viewed.length == 3) {
                 return self.states.create("state_all_topics_viewed");
@@ -135,8 +184,12 @@ go.app = function() {
         });
 
         self.states.add("state_get_faq_detail", function(name, opts) {
-            var contact = self.im.user.get_answer("contact");
-            var last_tag = _.get(contact, "fields.mqr_last_tag");
+            if (self.is_content_stale()){
+                return self.states.create("state_start");
+            }
+
+            var last_tag = self.im.user.get_answer("mqr_last_tag");
+            var contact_uuid = self.im.user.get_answer("contact_uuid");
             var faq_id = self.im.user.get_answer("state_faq_menu");
             var viewed = self.im.user.answers.viewed;
             var faq_tag = last_tag + "_faq" + faq_id;
@@ -148,7 +201,7 @@ go.app = function() {
 
             return self.contentrepo.get_faq_id(faq_tag)
                 .then(function(page_id) {
-                return self.contentrepo.get_faq_text(page_id, contact.uuid)
+                return self.contentrepo.get_faq_text(page_id, contact_uuid)
                     .then(function(message) {
                         self.im.user.set_answer("faq_message", message);
                         return self.states.create("state_show_faq_detail");
@@ -173,6 +226,10 @@ go.app = function() {
         });
 
         self.states.add("state_show_faq_detail", function(name) {
+            if (self.is_content_stale()){
+                return self.states.create("state_start");
+            }
+
             var message = self.im.user.get_answer("faq_message");
             return new MenuState(name, {
                 question: $(message),
@@ -186,6 +243,16 @@ go.app = function() {
                 next: "state_start",
                 text: [
                     "That's it for this week.",
+                    "",
+                    "Dial *134*550*7# for the main menu at any time."].join("\n")
+            });
+        });
+
+        self.states.add("state_nothing_yet", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: [
+                    "Please wait for your first message.",
                     "",
                     "Dial *134*550*7# for the main menu at any time."].join("\n")
             });
