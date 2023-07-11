@@ -368,18 +368,18 @@ describe("ussd_popi_rapidpro app", function() {
             return tester
                 .setup.user.state("state_change_info")
                 .setup.user.answer("contact", {fields: {preferred_channel: "SMS",
-                    baby_dob1: "2021-03-10T00:00:00Z",
-                    baby_dob2: "2021-11-11T00:00:00Z",
-                    baby_dob3: "2022-07-07T00:00:00Z",
-                    edd: "2020-06-04T00:00:00Z",
+                    baby_dob1: "2021-03-10",
+                    baby_dob2: "2021-11-11",
+                    baby_dob3: "2022-07-07",
+                    edd: "2020-06-04",
                 }})
                 .check.interaction({
                     reply: [
                         "What would you like to change?",
                         "1. Cell number",
                         "2. Change SMS to WhatsApp",
-                        "3. Baby's Expected Due Date: 20-06-03",
-                        "4. 1st Baby's DoB: 21-03-09",
+                        "3. Baby's Expected Due Date: 20-06-04",
+                        "4. 1st Baby's DoB: 21-03-10",
                         "5. Next"
                     ].join("\n")
                 })
@@ -389,18 +389,18 @@ describe("ussd_popi_rapidpro app", function() {
             return tester
                 .setup.user.state("state_change_info")
                 .setup.user.answer("contact", {fields: {preferred_channel: "SMS",
-                    baby_dob1: "2021-03-10T00:00:00Z",
-                    baby_dob2: "2021-11-11T00:00:00Z",
-                    baby_dob3: "2022-07-07T00:00:00Z",
-                    edd: "2020-06-04T00:00:00Z"
+                    baby_dob1: "2021-03-10",
+                    baby_dob2: "2021-11-11",
+                    baby_dob3: "2022-07-07",
+                    edd: "2020-06-04"
                 },
                 })
                 .input("5")
                 .check.interaction({
                     reply: [
                         "What would you like to change?",
-                        "1. 2nd Baby's DoB: 21-11-10",
-                        "2. 3rd Baby's DoB: 22-07-06",
+                        "1. 2nd Baby's DoB: 21-11-11",
+                        "2. 3rd Baby's DoB: 22-07-07",
                         "3. Language",
                         "4. ID",
                         "5. Research msgs",
@@ -414,18 +414,18 @@ describe("ussd_popi_rapidpro app", function() {
             return tester
                 .setup.user.state("state_change_info")
                 .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp",
-                    baby_dob1: "2021-03-10T00:00:00Z",
-                    baby_dob2: "2021-11-11T00:00:00Z",
-                    baby_dob3: "2022-07-07T00:00:00Z",
-                    edd: "2020-06-04T00:00:00Z"
+                    baby_dob1: "2021-03-10",
+                    baby_dob2: "2021-11-11",
+                    baby_dob3: "2022-07-07",
+                    edd: "2020-06-04"
                 }})
                 .check.interaction({
                     reply: [
                         "What would you like to change?",
                         "1. Cell number",
                         "2. Change WhatsApp to SMS",
-                        "3. Baby's Expected Due Date: 20-06-03",
-                        "4. 1st Baby's DoB: 21-03-09",
+                        "3. Baby's Expected Due Date: 20-06-04",
+                        "4. 1st Baby's DoB: 21-03-10",
                         "5. Next"
                     ].join("\n")
                 })
@@ -435,9 +435,9 @@ describe("ussd_popi_rapidpro app", function() {
             return tester
                 .setup.user.state("state_change_info")
                 .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp",
-                    baby_dob1: "2021-03-10T00:00:00Z",
-                    baby_dob2: "2021-11-11T00:00:00Z",
-                    baby_dob3: "2022-07-07T00:00:00Z",
+                    baby_dob1: "2021-03-10",
+                    baby_dob2: "2021-11-11",
+                    baby_dob3: "2022-07-07",
                     edd: "2020-06-04T00:00:00Z"
                 },
                 })
@@ -445,8 +445,8 @@ describe("ussd_popi_rapidpro app", function() {
                 .check.interaction({
                     reply: [
                         "What would you like to change?",
-                        "1. 2nd Baby's DoB: 21-11-10",
-                        "2. 3rd Baby's DoB: 22-07-06",
+                        "1. 2nd Baby's DoB: 21-11-11",
+                        "2. 3rd Baby's DoB: 22-07-07",
                         "3. ID",
                         "4. Research msgs",
                         "5. Back",
@@ -481,17 +481,17 @@ describe("ussd_popi_rapidpro app", function() {
             return tester
                 .setup.user.state("state_change_info")
                 .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp",
-                    baby_dob1: "2021-03-10T00:00:00Z",
-                    baby_dob2: "2021-11-11T00:00:00Z",
-                    baby_dob3: "2022-03-07T00:00:00Z",
-                    edd: "2022-06-06T00:00:00Z"
+                    baby_dob1: "2021-03-10",
+                    baby_dob2: "2021-11-11",
+                    baby_dob3: "2022-03-07",
+                    edd: "2022-06-06"
                 },
                 })
                 .input("3")
                 .check.interaction({
                     reply: [
                         "You are currently receiving pregnancy messages for a baby due on " +
-                        "2022-06-05.",
+                        "2022-06-06.",
                         "",
                         "Has this baby been born?",
                         "1. Yes",
@@ -843,10 +843,10 @@ describe("ussd_popi_rapidpro app", function() {
             return tester
                 .setup.user.state("state_change_info")
                 .setup.user.answer("contact", {fields: {preferred_channel: "SMS",
-                    baby_dob1: "2021-03-10T00:00:00Z",
-                    baby_dob2: "2021-11-11T00:00:00Z",
-                    baby_dob3: "2022-07-07T00:00:00Z",
-                    edd: "2020-06-04T00:00:00Z"
+                    baby_dob1: "2021-03-10",
+                    baby_dob2: "2021-11-11",
+                    baby_dob3: "2022-07-07",
+                    edd: "2020-06-04"
                 }})
                 .input("A")
                 .check.interaction({
@@ -854,8 +854,8 @@ describe("ussd_popi_rapidpro app", function() {
                         "Sorry we don't understand. Please try again.",
                         "1. Cell number",
                         "2. Change SMS to WhatsApp",
-                        "3. Baby's Expected Due Date: 20-06-03",
-                        "4. 1st Baby's DoB: 21-03-09",
+                        "3. Baby's Expected Due Date: 20-06-04",
+                        "4. 1st Baby's DoB: 21-03-10",
                         "5. Next"
                     ].join("\n")
                 })
@@ -865,10 +865,10 @@ describe("ussd_popi_rapidpro app", function() {
             return tester
                 .setup.user.state("state_change_info")
                 .setup.user.answer("contact", {fields: {preferred_channel: "SMS",
-                    baby_dob1: "2021-03-10T00:00:00Z",
-                    baby_dob2: "2021-11-11T00:00:00Z",
-                    baby_dob3: "2022-07-07T00:00:00Z",
-                    edd: "2020-06-04T00:00:00Z"
+                    baby_dob1: "2021-03-10",
+                    baby_dob2: "2021-11-11",
+                    baby_dob3: "2022-07-07",
+                    edd: "2020-06-04"
                 }})
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -886,9 +886,9 @@ describe("ussd_popi_rapidpro app", function() {
             return tester
                 .setup.user.state("state_change_info")
                 .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp",
-                    baby_dob1: "2021-03-10T00:00:00Z",
-                    baby_dob2: "2021-11-11T00:00:00Z",
-                    baby_dob3: "2022-07-07T00:00:00Z",
+                    baby_dob1: "2021-03-10",
+                    baby_dob2: "2021-11-11",
+                    baby_dob3: "2022-07-07",
                     edd: "2020-06-04T00:00:00Z"
                 }})
                 .input("1")
@@ -899,10 +899,10 @@ describe("ussd_popi_rapidpro app", function() {
             return tester
                 .setup.user.state("state_change_info")
                 .setup.user.answer("contact", {fields: {preferred_channel: "SMS",
-                    baby_dob1: "2021-03-10T00:00:00Z",
-                    baby_dob2: "2021-11-11T00:00:00Z",
-                    baby_dob3: "2022-07-07T00:00:00Z",
-                    edd: "2020-06-04T00:00:00Z"
+                    baby_dob1: "2021-03-10",
+                    baby_dob2: "2021-11-11",
+                    baby_dob3: "2022-07-07",
+                    edd: "2020-06-04"
                 }})
                 .inputs("5", "3")
                 .check.user.state("state_language_change_enter")
@@ -912,10 +912,10 @@ describe("ussd_popi_rapidpro app", function() {
             return tester
                 .setup.user.state("state_change_info")
                 .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp",
-                    baby_dob1: "2021-03-10T00:00:00Z",
-                    baby_dob2: "2021-11-11T00:00:00Z",
-                    baby_dob3: "2022-07-07T00:00:00Z",
-                    edd: "2020-06-04T00:00:00Z"
+                    baby_dob1: "2021-03-10",
+                    baby_dob2: "2021-11-11",
+                    baby_dob3: "2022-07-07",
+                    edd: "2020-06-04"
                 }})
                 .inputs("5", "3")
                 .check.user.state("state_identification_change_type")
@@ -924,7 +924,7 @@ describe("ussd_popi_rapidpro app", function() {
         it("should go to state_channel_switch_confirm if enough failures exist", function() {
             return tester
                 .setup.user.state("state_change_info")
-                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp",}})
+                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp"}})
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_hub.get_whatsapp_failure_count(

@@ -259,7 +259,7 @@ go.app = function() {
                     new moment(_.get(contact, "fields.baby_dob3", null)),
                 ], _.method("isValid")), _.method("format", "YY-MM-DD")).join(", ") || $("None")
              };
-            var mydates = Object.values(context);
+            var dates_entry = Object.values(context);
             var sms_choices = [
                 new Choice("state_msisdn_change_enter", $("Cell number")),
                 new Choice("state_channel_switch_confirm", $("Change SMS to WhatsApp")),
@@ -276,8 +276,8 @@ go.app = function() {
                 new Choice("state_main_menu", $("Back"))
             ];
 
-            if (mydates[0].length){
-                dates_list = mydates[0].trim().split(/\s*,\s*/);
+            if (dates_entry[0].length){
+                dates_list = dates_entry[0].trim().split(/\s*,\s*/);
                 dates_count = dates_list.length;
                 edd = dates_list[0] || null;
                 baby_dob1 = dates_list[1] || null;
@@ -286,7 +286,7 @@ go.app = function() {
                 
             }
             else {
-                if (!(mydates[0].length) && (edd)){
+                if (!(dates_entry[0].length) && (edd)){
                     edd = dates_list[0] || null;
                     
                 }
