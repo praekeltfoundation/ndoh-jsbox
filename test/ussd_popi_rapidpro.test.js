@@ -271,7 +271,7 @@ describe("ussd_popi_rapidpro app", function() {
                         "Language: None",
                         "None: None",
                         "Type: None",
-                        "Research consent: None",
+                        "Research messages: None",
                         "Baby's birthday: None",
                         "1. Back"
                     ].join("\n")
@@ -329,7 +329,7 @@ describe("ussd_popi_rapidpro app", function() {
                         "Language: isiZulu",
                         "Passport: A12345 Malawi",
                         "Type: Pregnancy",
-                        "Research consent: Yes",
+                        "Research messages: Yes",
                         "1. Next",
                         "2. Back"
                     ].join("\n")

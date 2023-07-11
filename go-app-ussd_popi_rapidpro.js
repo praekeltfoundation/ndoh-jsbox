@@ -407,7 +407,7 @@ go.app = function() {
                 "Language: {{language}}",
                 "{{id_type}}: {{id_details}}",
                 "Type: {{message_type}}",
-                "Research consent: {{research}}",
+                "Research messages: {{research}}",
                 "Baby's birthday: {{dobs}}"
             ].join("\n")).context(context);
             var whatsapp_text = $([
