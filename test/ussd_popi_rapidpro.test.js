@@ -289,8 +289,8 @@ describe("ussd_popi_rapidpro app", function() {
                         passport_number: "A12345",
                         passport_origin: "mw",
                         research_consent: "TRUE",
-                        edd: "2020-06-04T00:00:00.000000Z",
-                        baby_dob1: "2018-03-02T00:00:00.000000Z",
+                        edd: "2020-06-04",
+                        baby_dob1: "2018-03-02",
                         prebirth_messaging: "1"
                     },
                 })
@@ -300,7 +300,7 @@ describe("ussd_popi_rapidpro app", function() {
                         "Passport: A12345 Malawi",
                         "Type: Pregnancy",
                         "Research messages: Yes",
-                        "Baby's birthday: 18-03-01, 20-06-03",
+                        "Baby's birthday: 18-03-02, 20-06-04",
                         "1. Back"
                     ].join("\n")
                 })
@@ -347,15 +347,15 @@ describe("ussd_popi_rapidpro app", function() {
                         passport_number: "A12345",
                         passport_origin: "mw",
                         research_consent: "TRUE",
-                        edd: "2020-06-04T00:00:00.000000Z",
-                        baby_dob1: "2018-03-02T00:00:00.000000Z",
+                        edd: "2020-06-04",
+                        baby_dob1: "2018-03-02",
                         prebirth_messaging: "1",
                     },
                 })
                 .input("1")
                 .check.interaction({
                     reply: [
-                        "Baby's birthday: 18-03-01, 20-06-03",
+                        "Baby's birthday: 18-03-02, 20-06-04",
                         "1. Previous",
                         "2. Back"
                     ].join("\n")
