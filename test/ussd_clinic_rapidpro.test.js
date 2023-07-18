@@ -2076,8 +2076,9 @@ describe("ussd_clinic app", function() {
                         "1. Sesotho",
                         "2. Xitsonga",
                         "3. siSwati",
-                        "4. isiNdebele",
-                        "5. Back",
+                        "4. Tshivenda",
+                        "5. isiNdebele",
+                        "6. Back",
                     ].join("\n")
                 })
                 .run();
