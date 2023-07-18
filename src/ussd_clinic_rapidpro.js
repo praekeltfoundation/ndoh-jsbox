@@ -981,6 +981,7 @@ go.app = function() {
                     new Choice("sot", $("Sesotho")),
                     new Choice("tso", $("Xitsonga")),
                     new Choice("ssw", $("siSwati")),
+                    new Choice("ven", $("Tshivenda")),
                     new Choice("nde", $("isiNdebele")),
                 ],
                 back: $("Back"),
