@@ -2,7 +2,6 @@ var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
 var assert = require("assert");
 var fixtures_rapidpro = require("./fixtures_rapidpro")();
-var fixtures_whatsapp = require("./fixtures_pilot")();
 
 describe("ussd_public app", function() {
     var app;
@@ -17,10 +16,6 @@ describe("ussd_public app", function() {
                 rapidpro: {
                     base_url: "https://rapidpro",
                     token: "rapidprotoken"
-                },
-                whatsapp: {
-                    base_url: "http://pilot.example.org",
-                    token: "api-token"
                 }
             },
             flow_uuid: "rapidpro-flow-uuid"
@@ -478,25 +473,17 @@ describe("ussd_public app", function() {
             return tester
                 .setup(function(api) {
                     api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27123456789",
-                            wait: true
-                        })
-                    );
-                    api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
                             null,
                             "whatsapp:27123456789",
                             {
-                                "on_whatsapp": "TRUE",
                                 "research_consent": "FALSE",
                                 "language": "eng",
                                 "source": "Public USSD",
                                 "timestamp": "2014-04-04T07:07:07Z",
                                 "registered_by": "+27123456789",
-                                "mha": 6,
-                                "swt": 7
+                                "mha": 6
                             }
                         )
                     );
@@ -504,44 +491,6 @@ describe("ussd_public app", function() {
                 .setup.user.state("state_opt_in")
                 .input({session_event: "continue"})
                 .check.user.state("state_registration_complete")
-                .run();
-        });
-    });
-    describe("state_whatsapp_contact_check", function() {
-        it("should store the result of the contact check", function() {
-            return tester
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27123456789",
-                            wait: true
-                        })
-                    );
-                })
-                .setup.user.state("state_whatsapp_contact_check")
-                .check.user.answer("on_whatsapp", true)
-                .run();
-        });
-        it("should retry in the case of HTTP failures", function() {
-            return tester
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27123456789",
-                            wait: true,
-                            fail: true
-                        })
-                    );
-                })
-                .setup.user.state("state_whatsapp_contact_check")
-                .check(function(api){
-                    assert.equal(api.http.requests.length, 3);
-                    api.http.requests.forEach(function(request){
-                        assert.equal(request.url, "http://pilot.example.org/v1/contacts");
-                    });
-                    assert.equal(api.log.error.length, 1);
-                    assert(api.log.error[0].includes("HttpResponseError"));
-                })
                 .run();
         });
     });
@@ -555,14 +504,12 @@ describe("ussd_public app", function() {
                             null,
                             "whatsapp:27123456789",
                             {
-                                "on_whatsapp": "TRUE",
                                 "research_consent": "TRUE",
                                 "language": "eng",
                                 "source": "Public USSD",
                                 "timestamp": "2014-04-04T07:07:07Z",
                                 "registered_by": "+27123456789",
-                                "mha": 6,
-                                "swt": 7
+                                "mha": 6
                             }
                         )
                     );
@@ -583,21 +530,18 @@ describe("ussd_public app", function() {
                             null,
                             "whatsapp:27123456789",
                             {
-                                "on_whatsapp": "TRUE",
                                 "research_consent": "FALSE",
                                 "language": "eng",
                                 "source": "Public USSD",
                                 "timestamp": "2014-04-04T07:07:07Z",
                                 "registered_by": "+27123456789",
-                                "mha": 6,
-                                "swt": 7
+                                "mha": 6
                             },
                             true
                         )
                     );
                 })
                 .setup.user.state("state_trigger_rapidpro_flow")
-                .setup.user.answer("on_whatsapp", true)
                 .setup.user.answer("state_research_consent", "no")
                 .input({session_event: "continue"})
                 .check(function(api){
@@ -612,65 +556,34 @@ describe("ussd_public app", function() {
         });
     });
     describe("state_registration_complete", function() {
-        it("should show the WhatsApp message for whatsapp users", function() {
+        it("should show the complete message for all users", function() {
             return tester
                 .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27123456789",
-                            wait: true
-                        })
-                    );
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
                             null,
                             "whatsapp:27123456789",
                             {
-                                "on_whatsapp": "TRUE",
                                 "research_consent": "FALSE",
                                 "language": "eng",
                                 "source": "Public USSD",
                                 "timestamp": "2014-04-04T07:07:07Z",
                                 "registered_by": "+27123456789",
-                                "mha": 6,
-                                "swt": 7
+                                "mha": 6
                             }
                         )
                     );
                 })
                 // For some reason, if we start the test on state_registration_complete, it skips to state_start,
                 // so we need to start it before
-                .setup.user.state("state_whatsapp_contact_check")
-                .setup.user.answer("on_whatsapp", false)
-                .input({session_event: "continue"})
+                .setup.user.state("state_opt_in")
+                .input("1")
                 .check.interaction({
                     state: "state_registration_complete",
                     reply:
-                        "You're done! This number 0123456789 will get helpful messages from MomConnect on WhatsApp. " +
+                        "You're done! This number 0123456789 will get helpful messages from MomConnect. " +
                         "For the full set of messages, visit a clinic."
-                })
-                .run();
-        });
-        it("should show the SMS message for non whatsapp users", function() {
-            return tester
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.not_exists({
-                            address: "+27123456789",
-                            wait: true
-                        })
-                    );
-                })
-                // For some reason, if we start the test on state_registration_complete, it skips to state_start,
-                // so we need to start it before
-                .setup.user.state("state_whatsapp_contact_check")
-                .input({session_event: "continue"})
-                .check.interaction({
-                    state: "state_not_on_whatsapp",
-                    reply:
-                        "Sorry, MomConnect is not available on SMS. We only send WhatsApp messages in English. " +
-                        "You can dial *134*550# again on a cell number that has WhatsApp."
                 })
                 .run();
         });
