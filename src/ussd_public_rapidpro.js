@@ -99,11 +99,11 @@ go.app = function() {
         self.states.add("state_pregnant", function(name) {
             return new MenuState(name, {
                 question: $(
-                    "Welcome to the Department of Health’s MomConnect. We only send WhatsApp msgs in English."
+                    "Welcome to the Department of Health’s MomConnect. We send free messages to help pregnant moms and babies."
                 ),
                 error: $(
                     "Sorry, please reply with the number next to your answer. " +
-                    "We only send WhatsApp msgs in English."
+                    "We send free messages to help pregnant moms and babies."
                 ),
                 accept_labels: true,
                 choices: [

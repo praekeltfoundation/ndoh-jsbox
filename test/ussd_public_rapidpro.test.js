@@ -125,7 +125,7 @@ describe("ussd_public app", function() {
                 .check.interaction({
                     state: "state_pregnant",
                     reply: [
-                        "Welcome to the Department of Health’s MomConnect. We only send WhatsApp msgs in English.",
+                        "Welcome to the Department of Health’s MomConnect. We send free messages to help pregnant moms and babies.",
                         "1. Continue",
                     ].join("\n"),
                     char_limit: 140,
@@ -140,7 +140,7 @@ describe("ussd_public app", function() {
                     state: "state_pregnant",
                     reply: [
                         "Sorry, please reply with the number next to your answer. " +
-                        "We only send WhatsApp msgs in English.",
+                        "We send free messages to help pregnant moms and babies.",
                         "1. Continue",
                     ].join("\n"),
                     char_limit: 140,
