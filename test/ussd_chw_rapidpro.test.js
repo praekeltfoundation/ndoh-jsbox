@@ -2,7 +2,6 @@ var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
 var assert = require("assert");
 var fixtures_rapidpro = require("./fixtures_rapidpro")();
-var fixtures_whatsapp = require("./fixtures_pilot")();
 
 describe("ussd_chw app", function() {
     var app;
@@ -17,10 +16,6 @@ describe("ussd_chw app", function() {
                 rapidpro: {
                     base_url: "https://rapidpro",
                     token: "rapidpro-token"
-                },
-                whatsapp: {
-                    base_url: "http://pilot.example.org",
-                    token: "engage-token"
                 }
             },
             flow_uuid: "rapidpro-flow-uuid"
@@ -33,7 +28,8 @@ describe("ussd_chw app", function() {
                 .check.interaction({
                     state: 'state_start',
                     reply: [
-                    "Welcome to the Department of Health's MomConnect. We only send WhatsApp msgs in English.",
+                    "Welcome to the Department of Health's MomConnect. We send free " +
+                    "msgs to help pregnant moms.",
                     "",
                     "Is 0123456789 the no. signing up?",
                     "1. Yes",
@@ -162,7 +158,7 @@ describe("ussd_chw app", function() {
                 .setup.user.state("state_check_subscription")
                 .check.interaction({
                     state: "__error__",
-                    reply: 
+                    reply:
                         "Sorry, something went wrong. We have been notified. Please try again " +
                         "later"
                 })
@@ -215,7 +211,7 @@ describe("ussd_chw app", function() {
                 .input("2")
                 .check.interaction({
                     state: "state_pregnant_only",
-                    reply: 
+                    reply:
                         "We're sorry but this service is only for pregnant mothers. If you have other health concerns " +
                         "please visit your nearest clinic."
                 })
@@ -292,7 +288,7 @@ describe("ussd_chw app", function() {
                 .check.interaction({
                     state: "state_info_consent_denied",
                     reply: [
-                        "Unfortunately, without agreeing she can't sign up to MomConnect. " + 
+                        "Unfortunately, without agreeing she can't sign up to MomConnect. " +
                         "Does she agree to MomConnect processing her personal info?",
                         "1. Yes",
                         "2. No"
@@ -451,7 +447,7 @@ describe("ussd_chw app", function() {
                 .check.interaction({
                     state: "state_research_consent",
                     reply: [
-                        "Sorry, please reply with the number next to your answer. We may call or send " + 
+                        "Sorry, please reply with the number next to your answer. We may call or send " +
                         "msgs for research reasons. Does she agree?",
                         "1. Yes",
                         "2. No, only send MC msgs"
@@ -516,7 +512,7 @@ describe("ussd_chw app", function() {
             return tester
                 .setup.user.state("state_sa_id_no")
                 .check.interaction({
-                    reply: 
+                    reply:
                         "Please reply with the mother's ID number as she finds it in her " +
                         "Identity Document."
                 })
@@ -585,7 +581,7 @@ describe("ussd_chw app", function() {
             return tester
                 .setup.user.state("state_passport_no")
                 .check.interaction({
-                    reply: 
+                    reply:
                         "Please enter the mother's Passport number as it appears in her passport."
                 })
                 .run();
@@ -595,7 +591,7 @@ describe("ussd_chw app", function() {
                 .setup.user.state("state_passport_no")
                 .input("$")
                 .check.interaction({
-                    reply: 
+                    reply:
                         "Sorry, we don't understand. Please try again by entering the mother's " +
                         "Passport number as it appears in her passport."
                 })
@@ -618,7 +614,7 @@ describe("ussd_chw app", function() {
                 .setup.user.state("state_dob_year")
                 .input("22")
                 .check.interaction({
-                    reply: 
+                    reply:
                         "Sorry, we don't understand. Please try again by entering the year the " +
                         "mother was born as 4 digits in the format YYYY, e.g. 1910."
                 })
@@ -710,44 +706,6 @@ describe("ussd_chw app", function() {
                 .run();
         });
     });
-    describe("state_whatsapp_contact_check", function() {
-        it("should store the result of the contact check", function() {
-            return tester
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27123456789",
-                            wait: true
-                        })
-                    );
-                })
-                .setup.user.state("state_whatsapp_contact_check")
-                .check.user.answer("on_whatsapp", true)
-                .run();
-        });
-        it("should retry in the case of HTTP failures", function() {
-            return tester
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27123456789",
-                            wait: true,
-                            fail: true
-                        })
-                    );
-                })
-                .setup.user.state("state_whatsapp_contact_check")
-                .check(function(api){
-                    assert.equal(api.http.requests.length, 3);
-                    api.http.requests.forEach(function(request){
-                        assert.equal(request.url, "http://pilot.example.org/v1/contacts");
-                    });
-                    assert.equal(api.log.error.length, 1);
-                    assert(api.log.error[0].includes("HttpResponseError"));
-                })
-                .run();
-        });
-    });
     describe("state_trigger_rapidpro_flow", function() {
         it("should start a flow with the correct metadata", function() {
             return tester
@@ -757,15 +715,8 @@ describe("ussd_chw app", function() {
                     state_enter_msisdn: "0820001001",
                     state_id_type: "state_sa_id_no",
                     state_sa_id_no: "9001020005087",
-                    on_whatsapp: "FALSE"
                 })
                 .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27820001001",
-                            wait: true,
-                        })
-                    );
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
@@ -780,7 +731,6 @@ describe("ussd_chw app", function() {
                                 id_type: "sa_id",
                                 sa_id_number: "9001020005087",
                                 dob: "1990-01-02T00:00:00Z",
-                                swt: "7",
                             }
                         )
                     );
@@ -788,41 +738,15 @@ describe("ussd_chw app", function() {
                 .input({session_event: "continue"})
                 .check.interaction({
                     state: "state_registration_complete",
-                    reply: 
+                    reply:
                         "You're done! 0123456789 will get helpful messages from " +
-                        "MomConnect on WhatsApp. To sign up for the full set of messages, " +
+                        "MomConnect. To sign up for the full set of messages, " +
                         "visit a clinic. Have a lovely day!"
                 })
                 .check.reply.ends_session()
                 .run();
         });
-        it("should go to state_not_on_whatsapp for SMS registration", function() {
-            return tester
-                .setup.user.state("state_trigger_rapidpro_flow")
-                .setup.user.answers({
-                    state_research_consent: "no",
-                    state_enter_msisdn: "0820001001",
-                    state_id_type: "state_sa_id_no",
-                    state_sa_id_no: "9001020005087"
-                })
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.not_exists({
-                            address: "+27820001001",
-                            wait: true
-                        })
-                    );
-                })
-                .input({session_event: "continue"})
-                .check.interaction({
-                    state: "state_not_on_whatsapp",
-                    reply: 
-                        "Sorry, MomConnect is not available on SMS. We only send WhatsApp messages in English. " +
-                        "You can dial *134*550*3# again on a cell number that has WhatsApp."
-                })
-                .check.reply.ends_session()
-                .run();
-        });
+
         it("should retry in the case of HTTP failures", function() {
             return tester
                 .setup.user.state("state_trigger_rapidpro_flow")
@@ -831,7 +755,6 @@ describe("ussd_chw app", function() {
                     state_enter_msisdn: "0820001001",
                     state_id_type: "state_sa_id_no",
                     state_sa_id_no: "9001020005087",
-                    on_whatsapp: true,
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -845,7 +768,6 @@ describe("ussd_chw app", function() {
                                 id_type: "sa_id",
                                 sa_id_number: "9001020005087",
                                 dob: "1990-01-02T00:00:00Z",
-                                swt: "7"
                             }, true
                         )
                     );

@@ -23,11 +23,6 @@ go.app = function() {
                 self.im.config.services.rapidpro.base_url,
                 self.im.config.services.rapidpro.token
             );
-            self.whatsapp = new go.Engage(
-                new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-CHW"]}}),
-                self.im.config.services.whatsapp.base_url,
-                self.im.config.services.whatsapp.token
-            );
         };
 
         self.add = function(name, creator) {
@@ -50,12 +45,13 @@ go.app = function() {
                 ]
             });
         });
-        
+
         self.states.add("state_start", function(name) {
             self.im.user.answers = {};
             return new MenuState(name, {
                 question: $([
-                    "Welcome to the Department of Health's MomConnect. We only send WhatsApp msgs in English.",
+                    "Welcome to the Department of Health's MomConnect. We send free msgs " +
+                    "to help pregnant moms.",
                     "",
                     "Is {{msisdn}} the no. signing up?",
                     ].join("\n")).context({msisdn: utils.readable_msisdn(self.im.user.addr, "27")}),
@@ -96,8 +92,6 @@ go.app = function() {
         self.add("state_check_subscription", function(name, opts) {
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
-            // Fire and forget a background whatsapp contact check
-            self.whatsapp.contact_check(msisdn, false).then(_.noop, _.noop);
 
             return self.rapidpro.get_contact({urn: "whatsapp:" + _.trim(msisdn, "+")})
                 .then(function(contact) {
@@ -168,7 +162,7 @@ go.app = function() {
                 ]
             });
         });
-        
+
         self.states.add("state_no_opt_in", function(name) {
             return new EndState(name, {
                 next: "state_start",
@@ -230,7 +224,7 @@ go.app = function() {
 
         self.add("state_info_consent_denied", function(name) {
             return new MenuState(name, {
-                question: $("Unfortunately, without agreeing she can't sign up to MomConnect. " + 
+                question: $("Unfortunately, without agreeing she can't sign up to MomConnect. " +
                             "Does she agree to MomConnect processing her personal info?"),
                 error: $(
                     "Sorry, please reply with the number next to your answer. Does she agree " +
@@ -243,7 +237,7 @@ go.app = function() {
                 ]
             });
         });
-        
+
         self.add("state_message_consent", function(name) {
             // Skip this state if we already have consent
             var consent = _.get(self.im.user.get_answer("contact"), "fields.messaging_consent");
@@ -305,7 +299,7 @@ go.app = function() {
                     "We'll keep her info safe. Does she agree?"
                 ),
                 error: $(
-                    "Sorry, please reply with the number next to your answer. We may call or send " + 
+                    "Sorry, please reply with the number next to your answer. We may call or send " +
                     "msgs for research reasons. Does she agree?"
                 ),
                 accept_labels: true,
@@ -350,7 +344,7 @@ go.app = function() {
                         !match ||
                         !validLuhn(content) ||
                         !(dob = new moment(match[1], "YYMMDD")) ||
-                        !dob.isValid() || 
+                        !dob.isValid() ||
                         !dob.isBetween(
                             today.clone().add(-130, "years"),
                             today.clone().add(-5, "years")
@@ -364,7 +358,7 @@ go.app = function() {
                     }
 
                 },
-                next: "state_whatsapp_contact_check"
+                next: "state_trigger_rapidpro_flow"
             });
         });
 
@@ -404,7 +398,7 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_whatsapp_contact_check"
+                next: "state_trigger_rapidpro_flow"
             });
         });
 
@@ -469,9 +463,9 @@ go.app = function() {
                     if(
                         !match ||
                         !(dob = new moment(
-                            self.im.user.answers.state_dob_year + 
-                            self.im.user.answers.state_dob_month + 
-                            match[1], 
+                            self.im.user.answers.state_dob_year +
+                            self.im.user.answers.state_dob_month +
+                            match[1],
                             "YYYYMMDD")
                         ) ||
                         !dob.isValid()
@@ -482,32 +476,11 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_whatsapp_contact_check"
+                next: "state_trigger_rapidpro_flow"
             });
         });
 
-        self.add("state_whatsapp_contact_check", function(name, opts) {
-            var msisdn = utils.normalize_msisdn(
-                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
-            return self.whatsapp.contact_check(msisdn, true)
-                .then(function(result) {
-                    self.im.user.set_answer("on_whatsapp", result);
-                    return self.states.create("state_trigger_rapidpro_flow");
-                }).catch(function(e) {
-                    // Go to error state after 3 failed HTTP requests
-                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-                    if(opts.http_error_count === 3) {
-                        self.im.log.error(e.message);
-                        return self.states.create("__error__", {return_state: name});
-                    }
-                    return self.states.create(name, opts);
-                });
-        });
-
         self.add("state_trigger_rapidpro_flow", function(name, opts) {
-            if(!self.im.user.answers.on_whatsapp) {
-                return self.states.create("state_not_on_whatsapp");
-            }
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
             var data = {
@@ -535,8 +508,7 @@ go.app = function() {
                         "YYYYMMDD"
                     ).format(),
                 passport_origin: self.im.user.answers.state_passport_country,
-                passport_number: self.im.user.answers.state_passport_no,
-                swt: "7"
+                passport_number: self.im.user.answers.state_passport_no
             };
             return self.rapidpro
                 .start_flow(self.im.config.flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), data)
@@ -556,22 +528,12 @@ go.app = function() {
         self.states.add("state_registration_complete", function(name) {
             var msisdn = utils.readable_msisdn(utils.normalize_msisdn(self.im.user.addr, "ZA"), "27");
             var whatsapp_message = $(
-                "You're done! {{ msisdn }} will get helpful messages from MomConnect on WhatsApp. " +
+                "You're done! {{ msisdn }} will get helpful messages from MomConnect. " +
                 "To sign up for the full set of messages, visit a clinic. " +
                 "Have a lovely day!").context({msisdn: msisdn});
             return new EndState(name, {
                 next: "state_start",
                 text: whatsapp_message
-            });
-        });
-
-        self.states.add("state_not_on_whatsapp", function(name) {
-            return new EndState(name, {
-                next: "state_start",
-                text: $(
-                    "Sorry, MomConnect is not available on SMS. We only send WhatsApp messages in English. " +
-                    "You can dial *134*550*3# again on a cell number that has WhatsApp."
-                )
             });
         });
 
