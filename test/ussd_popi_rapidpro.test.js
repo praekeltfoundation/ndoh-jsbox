@@ -568,16 +568,33 @@ describe("ussd_popi_rapidpro app", function() {
                 })
                 .run();
         });
-        it("should should return an error for an invalid DoB", function() {
+        it("should should return an error for an invalid Day", function() {
             return tester
-                .setup.user.state("state_baby_born_day", "15")
+                .setup.user.state("state_baby_born_day")
                 .setup.user.answer("state_baby_born_year", "2022")
                 .setup.user.answer("state_baby_born_month", "04")
                 .input("99")
                 .check.interaction({
                     reply: [
                         "Sorry, the day you entered is not a valid day of the month.",
-                        "Please try again."
+                        "",
+                        "1. Try again",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should should return an error for day that is a string", function() {
+            return tester
+                .setup.user.state("state_baby_born_day")
+                .setup.user.answer("state_baby_born_year", "2022")
+                .setup.user.answer("state_baby_born_month", "04")
+                .input("AB")
+                .check.interaction({
+                    reply: [
+                        "Sorry, the day you entered is not valid.",
+                        "",
+                        "Plese enter a valid day of the month."
                     ].join("\n")
                 })
                 .run();
@@ -664,7 +681,7 @@ describe("ussd_popi_rapidpro app", function() {
          ***Edd Baby Unborn Tests***
         ****************************/
 
-        it("should ask for baby expected year", function() {
+        it("should ask for baby expected month and year", function() {
             return tester
                 .setup.user.state("state_active_prebirth_check")
                 .setup.user.answer("contact", {fields: {
@@ -674,37 +691,26 @@ describe("ussd_popi_rapidpro app", function() {
                 .input("2")
                 .check.interaction({
                     reply: [
-                        "In which year is your baby expected?",
-                        "\nPlease reply with the number that matches your answer, " +
-                        "not the year e.g. 1",
-                        "1. 2022",
-                        "2. 2023"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it("should ask for expected month of birth if year is valid", function() {
-            return tester
-                .setup.user.state("state_edd_baby_unborn_year")
-                .input("1")
-                .check.interaction({
-                    reply: [
-                        "In which month is your baby expected? " +
-                        "Please reply with the number that matches your answer, " +
-                        "not the year e.g. 1",
-                        "1. Jan",
-                        "2. Feb",
-                        "3. Mar",
-                        "4. Apr",
-                        "5. May",
-                        "6. Next"
+                        "In which month is your baby expected?",
+                        "",
+                        "1. 01-2023",
+                        "2. 02-2023",
+                        "3. 03-2023",
+                        "4. 04-2022",
+                        "5. 05-2022",
+                        "6. 06-2022",
+                        "7. 07-2022",
+                        "8. 08-2022",
+                        "9. 09-2022",
+                        "10. 10-2022",
+                        "11. Next",
                     ].join("\n")
                 })
                 .run();
         });
         it("should ask for baby day of delivery if valid month and year", function() {
             return tester
-                .setup.user.state("state_edd_baby_unborn_month")
+                .setup.user.state("state_edd_baby_unborn_year_month")
                 .input("1")
                 .check.interaction({
                     reply: [
@@ -714,30 +720,10 @@ describe("ussd_popi_rapidpro app", function() {
                 })
                 .run();
         });
-        it("should ask for expected month of birth if year is valid", function() {
-            return tester
-                .setup.user.state("state_edd_baby_unborn_year")
-                .input("1")
-                .check.interaction({
-                    reply: [
-                        "In which month is your baby expected? " +
-                        "Please reply with the number that matches your answer, " +
-                        "not the year e.g. 1",
-                        "1. Jan",
-                        "2. Feb",
-                        "3. Mar",
-                        "4. Apr",
-                        "5. May",
-                        "6. Next"
-                    ].join("\n")
-                })
-                .run();
-        });
         it("should return an error for invalid EDD date", function() {
             return tester
                 .setup.user.state("state_edd_baby_unborn_day")
-                .setup.user.answer("state_edd_baby_unborn_year", "2022")
-                .setup.user.answer("state_edd_baby_unborn_month", "04")
+                .setup.user.answer("state_edd_baby_unborn_year_month", "2022-04")
                 .input("99")
                 .check.interaction({
                     reply: [
@@ -750,8 +736,7 @@ describe("ussd_popi_rapidpro app", function() {
         it("should should return an error for an out of range future date", function() {
             return tester
                 .setup.user.state("state_edd_baby_unborn_day")
-                .setup.user.answer("state_edd_baby_unborn_year", "2024")
-                .setup.user.answer("state_edd_baby_unborn_month", "04")
+                .setup.user.answer("state_edd_baby_unborn_year_month", "2024-04")
                 .setup.user.answer("contact", {fields: {
                     edd: "2022-06-06"
                 },
@@ -770,8 +755,7 @@ describe("ussd_popi_rapidpro app", function() {
         it("should return an error for an out of range past date", function() {
             return tester
                 .setup.user.state("state_edd_baby_unborn_day")
-                .setup.user.answer("state_edd_baby_unborn_year", "2017")
-                .setup.user.answer("state_edd_baby_unborn_month", "04")
+                .setup.user.answer("state_edd_baby_unborn_year_month", "2017-04")
                 .setup.user.answer("contact", {fields: {
                     edd: "2022-06-06"
                 },
@@ -790,13 +774,12 @@ describe("ussd_popi_rapidpro app", function() {
         it("should should confirm if new EDD is 2 weeks after", function() {
             return tester
                 .setup.user.state("state_edd_baby_unborn_day")
-                .setup.user.answer("state_edd_baby_unborn_year", "2022")
-                .setup.user.answer("state_edd_baby_unborn_month", "04")
+                .setup.user.answer("state_edd_baby_unborn_year_month", "2022-05")
                 .setup.user.answer("contact", {fields: {
                     edd: "2022-04-28"
                 }
                 })
-                .input("4")
+                .input("14")
                 .check.interaction({
                     reply: [
                         "This will change your Expected Due Date by more " +
@@ -812,8 +795,7 @@ describe("ussd_popi_rapidpro app", function() {
         it("should trigger the edd change if valid date and 14 days before edd", function() {
             return tester
                 .setup.user.state("state_edd_baby_unborn_day")
-                .setup.user.answer("state_edd_baby_unborn_year", "2022")
-                .setup.user.answer("state_edd_baby_unborn_month", "04")
+                .setup.user.answer("state_edd_baby_unborn_year_month", "2022-04")
                 .setup.user.answer("contact", {fields: {
                     edd: "2022-03-28"
                 }
