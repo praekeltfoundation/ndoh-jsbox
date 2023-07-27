@@ -729,16 +729,16 @@ go.app = function() {
         self.add("state_edd_baby_unborn_year_month", function(name) {
             var today = new moment(self.im.config.testing_today).startOf("day");
             var start_date = today.clone().add(1, "days");
-            var end_date = today.clone().add(52, "weeks").add(-1, "days");
-
-            var dates = _.map(_.range(end_date.diff(start_date, "months") + 1), function(i) {
-                return start_date.clone().add(i, "months");
+            var end_date = today.clone().add(52, "weeks").add(1, "days");
+            var dates = _.map(_.range(start_date.diff(end_date, "months") + 1), function(i) {
+                return start_date.clone().subtract(i, "months");
             });
+            
             var sortedDates = _.sortBy(dates, function(d) {
-                return d.format("MM");
+                return d.format("YYYY");
             });
             var choices = _.map(sortedDates, function(date) {
-                return new Choice(date.format("MM"), $(date.format("MM-YYYY")));
+                return new Choice(date.format("YYYY-MM"), $(date.format("YYYY-MM")));
             });
 
             return new PaginatedChoiceState(name, {
