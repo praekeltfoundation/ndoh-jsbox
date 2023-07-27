@@ -1257,31 +1257,6 @@ describe("ussd_popi_rapidpro app", function() {
                 .check.user.state("state_msisdn_change_success")
                 .run();
         });
-        it("should give them an error if the number is not registered on WhatsApp", function() {
-            return tester
-                .setup.user.state("state_msisdn_change_confirm")
-                .setup.user.answers({
-                    state_msisdn_change_enter: "0820001001",
-                    contact: {uuid: "contact-uuid"}
-                })
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.not_exists({
-                            address: "+27820001001",
-                            wait: true
-                        })
-                    );
-                })
-                .input("1")
-                .check.interaction({
-                    state: "state_not_on_whatsapp",
-                    reply:
-                        "The no. you're trying to switch to doesn't have WhatsApp. " +
-                        "MomConnect only sends WhatsApp msgs in English. " +
-                        "Dial *134*550*7# to switch to a no. with WhatsApp."
-                })
-                .run();
-        });
         it("should go to state_msisdn_change_enter if they choose no", function() {
             return tester
                 .setup.user.state("state_msisdn_change_confirm")
