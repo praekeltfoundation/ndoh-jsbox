@@ -1233,7 +1233,10 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup.user.state("state_msisdn_change_confirm")
                 .setup.user.answers({
                     state_msisdn_change_enter: "0820001001",
-                    contact: {uuid: "contact-uuid"}
+                    contact: {uuid: "contact-uuid",
+                    fields: {
+                        preferred_channel: "WhatsApp"
+                    }},
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1248,7 +1251,8 @@ describe("ussd_popi_rapidpro app", function() {
                                 new_msisdn: "+27820001001",
                                 old_msisdn: "+27123456789",
                                 contact_uuid: "contact-uuid",
-                                source: "POPI USSD"
+                                source: "POPI USSD",
+                                old_channel: "WhatsApp",
                             }
                         )
                     );
