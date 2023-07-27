@@ -1170,6 +1170,8 @@ go.app = function() {
         });
 
         self.add("state_msisdn_change", function(name, opts) {
+            var contact = self.im.user.answers.contact;
+            var channel = _.get(contact, "fields.preferred_channel");
             var new_msisdn = utils.normalize_msisdn(
                 self.im.user.answers.state_msisdn_change_enter, "ZA"
             );
@@ -1179,7 +1181,8 @@ go.app = function() {
                         new_msisdn: new_msisdn,
                         old_msisdn: utils.normalize_msisdn(self.im.user.addr, "ZA"),
                         contact_uuid: self.im.user.answers.contact.uuid,
-                        source: "POPI USSD"
+                        source: "POPI USSD",
+                        old_channel: channel
                     }
                 )
                 .then(function() {
