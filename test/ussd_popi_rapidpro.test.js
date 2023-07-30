@@ -510,12 +510,12 @@ describe("ussd_popi_rapidpro app", function() {
                 .input("1")
                 .check.interaction({
                     reply: [
-                        "Which year was the baby born? " +
+                        "Which year was your baby born? " +
                         "Please reply with a number that matches your answer, " +
                         "not the year e.g. 1.",
-                        "1. 2023",
-                        "2. 2022",
-                        "3. 2021",
+                        "1. 2022",
+                        "2. 2021",
+                        "3. 2020",
                         "4. Other"
                     ].join("\n")
                 })
@@ -561,7 +561,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .input("1")
                 .check.interaction({
                     reply: [
-                        "What is the estimated day that the baby is due?",
+                        "On what day of the month was your baby born?",
                         "",
                         "Reply with the day as a number, for example 12"
                     ].join("\n")
