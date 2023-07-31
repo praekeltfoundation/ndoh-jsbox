@@ -439,14 +439,14 @@ go.app = function() {
                 // For this year and the past two years, we need 3 options
                 _.range(3),
                 function(i) {
-                    var y = today.clone().subtract(i-1, "years").format("YYYY");
+                    var y = today.clone().subtract(i, "years").format("YYYY");
                     return new Choice(y, $(y));
                 }
             );
             choices.push(new Choice("Other", $("Other")));
             return new ChoiceState(name, {
                 question: $([
-                    "Which year was the baby born? " +
+                    "Which year was your baby born? " +
                     "Please reply with a number that matches your answer, not the year e.g. 1."
                 ].join("\n")),
                 error: $(
@@ -519,7 +519,7 @@ go.app = function() {
         self.add("state_baby_born_day", function(name) {
             return new FreeText(name, {
                 question: $([
-                    "What is the estimated day that the baby is due?",
+                    "On what day of the month was your baby born?",
                     "",
                     "Reply with the day as a number, for example 12"
                 ].join("\n")),
@@ -877,7 +877,7 @@ go.app = function() {
             ).format('YYYY-MM-DD');
             return new MenuState(name, {
                 question: $([
-                    "Your Expected Due Date has been updated to {{date}}.",
+                    "Your Expected Due Date has been updated to {{date}}",
                     "and you will start receiving messages based on this ",
                     "schedule" 
                 ].join("\n")).context({
