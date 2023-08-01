@@ -228,7 +228,6 @@ describe("ussd_popi_rapidpro app", function() {
                             urn: "whatsapp:27123456789",
                             exists: true,
                             fields: {
-                                prebirth_messaging: "1",
                                 pending_msisdn_switch: "SOMETHING|SOMETHING",
                             }
                         })
@@ -243,13 +242,10 @@ describe("ussd_popi_rapidpro app", function() {
                     );
                 })
                 .check.interaction({
-                    state: "state_main_menu",
+                    state: "state_msisdn_change_completed",
                     reply: [
-                        "Welcome to MomConnect. What would you like to do?",
-                        "1. See my info",
-                        "2. Change my info",
-                        "3. Opt-out or delete info",
-                        "4. How is my info processed?"
+                        "Cell number change completed.",
+                        "1. Continue"
                     ].join("\n"),
                     char_limit: 140
                 })
