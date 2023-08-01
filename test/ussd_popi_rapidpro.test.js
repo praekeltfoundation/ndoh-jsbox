@@ -3,7 +3,6 @@ var AppTester = vumigo.AppTester;
 var assert = require("assert");
 var fixtures_hub = require("./fixtures_hub")();
 var fixtures_rapidpro = require("./fixtures_rapidpro")();
-var fixtures_whatsapp = require("./fixtures_pilot")();
 
 describe("ussd_popi_rapidpro app", function() {
     var app;
@@ -18,10 +17,6 @@ describe("ussd_popi_rapidpro app", function() {
                 rapidpro: {
                     base_url: "https://rapidpro",
                     token: "rapidprotoken"
-                },
-                whatsapp: {
-                    base_url: "http://pilot.example.org",
-                    token: "engage-token"
                 },
                 hub: {
                     base_url: "http://hub",
@@ -692,12 +687,6 @@ describe("ussd_popi_rapidpro app", function() {
 
                 .setup(function(api) {
                     api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27123456789",
-                            wait: true
-                        })
-                    );
-                    api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
                             "edd-dob-change-flow-uuid", null, "whatsapp:27123456789", {
                                 timestamp: "2022-04-04T07:07:07Z",
@@ -836,12 +825,6 @@ describe("ussd_popi_rapidpro app", function() {
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27123456789",
-                            wait: true
-                        })
-                    );
-                    api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
                             "edd-dob-change-flow-uuid", null, "whatsapp:27123456789", {
                                 timestamp: "2022-04-04T07:07:07Z",
@@ -886,14 +869,6 @@ describe("ussd_popi_rapidpro app", function() {
                     baby_dob3: "2022-07-07",
                     edd: "2020-06-04"
                 }})
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27123456789",
-                            wait: false
-                        })
-                    );
-                })
                 .input("2")
                 .check.user.state("state_channel_switch_confirm")
                 .run();
@@ -1164,12 +1139,6 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup.user.state("state_msisdn_change_enter")
                 .setup(function(api) {
                     api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27820001001",
-                            wait: false
-                        })
-                    );
-                    api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27820001001",
                             exists: true,
@@ -1187,12 +1156,6 @@ describe("ussd_popi_rapidpro app", function() {
             return tester
                 .setup.user.state("state_msisdn_change_enter")
                 .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27820001001",
-                            wait: false
-                        })
-                    );
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27820001001",
@@ -1275,12 +1238,6 @@ describe("ussd_popi_rapidpro app", function() {
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27820001001",
-                            wait: true
-                        })
-                    );
-                    api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
                             "msisdn-change-flow", null, "whatsapp:27820001001", {
                                 new_msisdn: "+27820001001",
@@ -1294,31 +1251,6 @@ describe("ussd_popi_rapidpro app", function() {
                 })
                 .input("1")
                 .check.user.state("state_msisdn_change_success")
-                .run();
-        });
-        it("should give them an error if the number is not registered on WhatsApp", function() {
-            return tester
-                .setup.user.state("state_msisdn_change_confirm")
-                .setup.user.answers({
-                    state_msisdn_change_enter: "0820001001",
-                    contact: {uuid: "contact-uuid"}
-                })
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.not_exists({
-                            address: "+27820001001",
-                            wait: true
-                        })
-                    );
-                })
-                .input("1")
-                .check.interaction({
-                    state: "state_not_on_whatsapp",
-                    reply:
-                        "The no. you're trying to switch to doesn't have WhatsApp. " +
-                        "MomConnect only sends WhatsApp msgs in English. " +
-                        "Dial *134*550*7# to switch to a no. with WhatsApp."
-                })
                 .run();
         });
         it("should go to state_msisdn_change_enter if they choose no", function() {
@@ -2594,12 +2526,6 @@ describe("ussd_popi_rapidpro app", function() {
                 .setup.user.state("state_target_msisdn")
                 .setup(function(api) {
                     api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27820001001",
-                            wait: false
-                        })
-                    );
-                    api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27820001001",
                             exists: true,
@@ -2615,12 +2541,6 @@ describe("ussd_popi_rapidpro app", function() {
             return tester
                 .setup.user.state("state_target_msisdn")
                 .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27820001001",
-                            wait: false
-                        })
-                    );
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_contact({
                             urn: "whatsapp:27820001001",
