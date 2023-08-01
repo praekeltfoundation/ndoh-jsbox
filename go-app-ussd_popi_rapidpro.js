@@ -1304,14 +1304,16 @@ go.app = function() {
             var new_msisdn = utils.normalize_msisdn(
                 self.im.user.answers.state_msisdn_change_enter, "ZA"
             );
+            var new_wa_id = "whatsapp:" + _.trim(new_msisdn, "+");
             return self.rapidpro
                 .start_flow(
-                    self.im.config.msisdn_change_flow_id, null, "whatsapp:" + _.trim(new_msisdn, "+"), {
+                    self.im.config.msisdn_change_flow_id, null, new_wa_id, {
                         new_msisdn: new_msisdn,
                         old_msisdn: utils.normalize_msisdn(self.im.user.addr, "ZA"),
                         contact_uuid: self.im.user.answers.contact.uuid,
                         source: "POPI USSD",
-                        old_channel: channel
+                        old_channel: channel,
+                        new_wa_id: new_wa_id
                     }
                 )
                 .then(function() {

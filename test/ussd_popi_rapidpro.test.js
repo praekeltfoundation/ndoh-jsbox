@@ -1241,6 +1241,7 @@ describe("ussd_popi_rapidpro app", function() {
                                 contact_uuid: "contact-uuid",
                                 source: "POPI USSD",
                                 old_channel: "WhatsApp",
+                                new_wa_id: "whatsapp:27820001001",
                             }
                         )
                     );
