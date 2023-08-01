@@ -225,6 +225,41 @@ describe("ussd_popi_rapidpro app", function() {
                 })
                 .run();
         });
+        it("should start the confirm msisdn change flow then display the main menu", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "whatsapp:27123456789",
+                            exists: true,
+                            fields: {
+                                prebirth_messaging: "1",
+                                pending_msisdn_switch: "SOMETHING|SOMETHING",
+                            }
+                        })
+                    );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "msisdn-change-flow",
+                            null,
+                            "whatsapp:27123456789",
+                            {continue_msisdn_change_from_ussd: "TRUE"}
+                        )
+                    );
+                })
+                .check.interaction({
+                    state: "state_main_menu",
+                    reply: [
+                        "Welcome to MomConnect. What would you like to do?",
+                        "1. See my info",
+                        "2. Change my info",
+                        "3. Opt-out or delete info",
+                        "4. How is my info processed?"
+                    ].join("\n"),
+                    char_limit: 140
+                })
+                .run();
+        });
     });
     describe("timeouts", function() {
         it("should reset to the start state if the user times out and dials in again", function() {
@@ -730,7 +765,7 @@ describe("ussd_popi_rapidpro app", function() {
                         "Please try again."
                     ].join("\n")
                 })
-                .run();  
+                .run();
         });
         it("should should return an error for an out of range future date", function() {
             return tester
@@ -748,7 +783,7 @@ describe("ussd_popi_rapidpro app", function() {
                         "1. Try again",
                         "2. Exit"
                     ].join("\n")
-                }) 
+                })
                 .run();
         });
         it("should return an error for an out of range past date", function() {
@@ -788,7 +823,7 @@ describe("ussd_popi_rapidpro app", function() {
                         "1. Continue",
                         "2. Go back"
                     ].join("\n")
-                }) 
+                })
                 .run();
         });
         it("should trigger the edd change if valid date and 14 days before edd", function() {

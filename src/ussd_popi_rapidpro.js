@@ -115,6 +115,10 @@ go.app = function() {
                         sms_engaged = _.toUpper(_.get(contact, "fields.sms_engaged")) === "TRUE";
                     }
                     if(in_public || in_prebirth || in_postbirth) {
+                        if(_.get(contact, "fields.pending_msisdn_switch")) {
+                            return self.states.create("state_confirm_msisdn_change");
+                        }
+
                         if (sms_engaged) {
                             return self.states.create("state_main_menu");
                         }
@@ -130,6 +134,27 @@ go.app = function() {
                     if(opts.http_error_count === 3) {
                         self.im.log.error(e.message);
                         return self.states.create("__error__");
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+        self.add("state_confirm_msisdn_change", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+            return self.rapidpro
+                .start_flow(
+                    self.im.config.msisdn_change_flow_id, null, "whatsapp:" + _.trim(msisdn, "+"), {
+                        continue_msisdn_change_from_ussd: "TRUE"
+                    }
+                )
+                .then(function() {
+                    return self.states.create("state_main_menu");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if(opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {return_state: name});
                     }
                     return self.states.create(name, opts);
                 });
@@ -283,12 +308,12 @@ go.app = function() {
                 baby_dob1 = dates_list[1] || null;
                 baby_dob2 = dates_list[2] || null;
                 baby_dob3 = dates_list[3] || null;
-                
+
             }
             else {
                 if (!(dates_entry[0].length) && (edd)){
                     edd = dates_list[0] || null;
-                    
+
                 }
             }
             var dob_choices = [
@@ -341,7 +366,7 @@ go.app = function() {
         self.add("state_active_prebirth_check", function(name){
             var contact = self.im.user.answers.contact;
             var edd = new moment(_.get(contact, "fields.edd", null)).format("YYYY-MM-DD");
-            
+
             if (!self.contact_edd(contact)) {
                 return self.states.create("state_edd_change_end");
             }
@@ -394,8 +419,8 @@ go.app = function() {
             return new MenuState(name, {
                 question: $([
                     "You are not currently receiving messages about ",
-                    "another pregnancy.", 
-                    "", 
+                    "another pregnancy.",
+                    "",
                     "To register a new pregnancy on MomcConnect, please go ",
                     "to the clinic, and ask a nurse to help you sign up by ",
                     "dialing *134*550*2#"
@@ -414,8 +439,8 @@ go.app = function() {
             return new MenuState(name, {
                 question: $([
                     "You are not currently receiving messages about " +
-                    "another pregnancy.", 
-                    "", 
+                    "another pregnancy.",
+                    "",
                     "To register a new pregnancy on MomConnect, please " +
                     "dial *134*550*2#"
                 ].join("\n")),
@@ -584,7 +609,7 @@ go.app = function() {
                 }
                 else{
                     return self.states.create("state_baby_born_out_of_range_past");
-                
+
                 }
             }
             return self.states.create("state_baby_born_confirm_date");
@@ -602,7 +627,7 @@ go.app = function() {
                 question: $([
                     "Your baby's date of birth will be changed to {{date}}.",
                     "",
-                    "Is this correct?" 
+                    "Is this correct?"
                 ].join("\n")).context({
                     date: date
                 }),
@@ -733,7 +758,7 @@ go.app = function() {
             var dates = _.map(_.range(start_date.diff(end_date, "months") + 1), function(i) {
                 return start_date.clone().subtract(i, "months");
             });
-            
+
             var sortedDates = _.sortBy(dates, function(d) {
                 return d.format("YYYY");
             });
@@ -792,7 +817,7 @@ go.app = function() {
             var contact = self.im.user.answers.contact;
             var edd = new moment(_.get(contact, "fields.edd", null, ""));
             var date = new moment(
-                self.im.user.answers.state_edd_baby_unborn_year_month + 
+                self.im.user.answers.state_edd_baby_unborn_year_month +
                 self.im.user.answers.state_edd_baby_unborn_day,
                 "YYYYMMDD"
             );
@@ -812,7 +837,7 @@ go.app = function() {
             if(diff_days > 14){
                 return self.states.create("state_confirm_edd_baby_unborn_2wks_after");
             }
-            else 
+            else
                 return self.states.create("state_trigger_rapidpro_flow_edd_dob_change");
         });
 
@@ -855,7 +880,7 @@ go.app = function() {
                     "This will change your Expected Due Date by more than " +
                     "2 weeks.",
                     "",
-                    "Only continue if you are sure this is accurate." 
+                    "Only continue if you are sure this is accurate."
                 ].join("\n")),
                 error: $(
                     "Sorry, we don't understand. Please try again."
@@ -879,7 +904,7 @@ go.app = function() {
                 question: $([
                     "Your Expected Due Date has been updated to {{date}}",
                     "and you will start receiving messages based on this ",
-                    "schedule" 
+                    "schedule"
                 ].join("\n")).context({
                     date: date
                 }),
