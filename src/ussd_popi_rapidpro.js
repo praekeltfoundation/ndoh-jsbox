@@ -110,10 +110,6 @@ go.app = function() {
                         sms_engaged = _.toUpper(_.get(contact, "fields.sms_engaged")) === "TRUE";
                     }
                     if(in_public || in_prebirth || in_postbirth) {
-                        if(_.get(contact, "fields.pending_msisdn_switch")) {
-                            return self.states.create("state_confirm_msisdn_change");
-                        }
-
                         if (sms_engaged) {
                             return self.states.create("state_main_menu");
                         }
@@ -121,6 +117,10 @@ go.app = function() {
                             return self.states.create("state_update_sms_engaged");
                         }
                     } else {
+                        if(_.get(contact, "fields.pending_msisdn_switch")) {
+                            return self.states.create("state_confirm_msisdn_change");
+                        }
+
                         return self.states.create("state_not_registered");
                     }
                 }).catch(function(e) {
@@ -143,7 +143,7 @@ go.app = function() {
                     }
                 )
                 .then(function() {
-                    return self.states.create("state_main_menu");
+                    return self.states.create("state_msisdn_change_completed");
                 }).catch(function(e) {
                     // Go to error state after 3 failed HTTP requests
                     opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
@@ -153,6 +153,18 @@ go.app = function() {
                     }
                     return self.states.create(name, opts);
                 });
+        });
+
+        self.states.add("state_msisdn_change_completed", function(name) {
+            return new MenuState(name, {
+                question: $("Cell number change completed."),
+                error: $(
+                    "Sorry, we don't understand. Please try again."
+                ),
+                choices: [
+                    new Choice("state_start", $("Continue"))
+                ]
+            });
         });
 
         self.states.add("state_update_sms_engaged", function(name, opts) {
