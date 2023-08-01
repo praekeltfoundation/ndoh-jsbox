@@ -739,7 +739,7 @@ describe("ussd_chw app", function() {
                 .check.interaction({
                     state: "state_registration_complete",
                     reply:
-                        "You're done! 0123456789 will get helpful messages from " +
+                        "You're done! 0820001001 will get helpful messages from " +
                         "MomConnect. To sign up for the full set of messages, " +
                         "visit a clinic. Have a lovely day!"
                 })
