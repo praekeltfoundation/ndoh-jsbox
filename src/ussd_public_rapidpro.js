@@ -270,7 +270,8 @@ go.app = function() {
         });
 
         self.states.add("state_registration_complete", function(name) {
-            var msisdn = utils.readable_msisdn(utils.normalize_msisdn(self.im.user.addr, "ZA"), "27");
+            var msisdn = _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr);
+            msisdn = utils.readable_msisdn(msisdn, "27");
             var whatsapp_message = $(
                 "You're done! This number {{ msisdn }} will get helpful messages from MomConnect. For " +
                 "the full set of messages, visit a clinic.").context({msisdn: msisdn});
