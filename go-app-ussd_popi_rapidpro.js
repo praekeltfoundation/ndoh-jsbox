@@ -44,6 +44,53 @@ go.Hub = function() {
     return Hub;
 }();
 
+go.Engage = function() {
+    var vumigo = require('vumigo_v02');
+    var events = vumigo.events;
+    var Eventable = events.Eventable;
+    var _ = require('lodash');
+    var url = require('url');
+
+    var Engage = Eventable.extend(function(self, json_api, base_url, token) {
+        self.json_api = json_api;
+        self.base_url = base_url;
+        self.json_api.defaults.headers.Authorization = ['Bearer ' + token];
+        self.json_api.defaults.headers['Content-Type'] = ['application/json'];
+
+        self.contact_check = function(msisdn, block) {
+            return self.json_api.post(url.resolve(self.base_url, 'v1/contacts'), {
+                data: {
+                    blocking: block ? 'wait' : 'no_wait',
+                    contacts: [msisdn]
+                }
+            }).then(function(response) {
+                var existing = _.filter(response.data.contacts, function(obj) {
+                    return obj.status === "valid";
+                });
+                return !_.isEmpty(existing);
+            });
+        };
+
+          self.LANG_MAP = {zul_ZA: "en",
+                          xho_ZA: "en",
+                          afr_ZA: "af",
+                          eng_ZA: "en",
+                          nso_ZA: "en",
+                          tsn_ZA: "en",
+                          sot_ZA: "en",
+                          tso_ZA: "en",
+                          ssw_ZA: "en",
+                          ven_ZA: "en",
+                          nbl_ZA: "en",
+                          set_ZA: "en",
+                        };
+    });
+
+
+
+    return Engage;
+}();
+
 go.RapidPro = function() {
     var vumigo = require('vumigo_v02');
     var url_utils = require('url');
@@ -519,10 +566,12 @@ go.app = function() {
         self.add("state_active_prebirth_check", function(name){
             var contact = self.im.user.answers.contact;
             var edd = new moment(_.get(contact, "fields.edd", null)).format("YYYY-MM-DD");
+            var prebirth = _.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7);
 
-            if (!self.contact_edd(contact)) {
+            if (!prebirth) {
                 return self.states.create("state_edd_change_end");
             }
+
             return new MenuState(name, {
                 question: $(
                     "You are currently receiving pregnancy messages " +
@@ -881,7 +930,7 @@ go.app = function() {
                 self.im.user.answers.state_baby_born_month +
                 self.im.user.answers.state_baby_born_day,
                 "YYYYMMDD"
-            ).format();
+            ).format('YYYY-MM-DD');
             return new MenuState(name, {
                 question: $(
                     "Your baby's date of birth has been updated to " +
