@@ -519,10 +519,12 @@ go.app = function() {
         self.add("state_active_prebirth_check", function(name){
             var contact = self.im.user.answers.contact;
             var edd = new moment(_.get(contact, "fields.edd", null)).format("YYYY-MM-DD");
+            var prebirth = _.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7);
 
-            if (!self.contact_edd(contact)) {
+            if (!prebirth) {
                 return self.states.create("state_edd_change_end");
             }
+
             return new MenuState(name, {
                 question: $(
                     "You are currently receiving pregnancy messages " +
@@ -881,7 +883,7 @@ go.app = function() {
                 self.im.user.answers.state_baby_born_month +
                 self.im.user.answers.state_baby_born_day,
                 "YYYYMMDD"
-            ).format();
+            ).format('YYYY-MM-DD');
             return new MenuState(name, {
                 question: $(
                     "Your baby's date of birth has been updated to " +
