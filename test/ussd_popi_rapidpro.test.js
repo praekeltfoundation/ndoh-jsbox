@@ -494,9 +494,12 @@ describe("ussd_popi_rapidpro app", function() {
                 .input("3")
                 .check.interaction({
                     reply: [
-                        "You are not currently receiving messages about another pregnancy.",
+                        "No pregnancy messages received currently.",
                         "",
-                        "To register a new pregnancy on MomConnect, please dial *134*550*2#",
+                        "To register a new pregnancy:",
+                        "- Go to the clinic",
+                        "- Ask a nurse to help you sign up",
+                        "- Dial *134*550*2#",
                         "1. Back",
                         "2. Exit"
                     ].join("\n")
