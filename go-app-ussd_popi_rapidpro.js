@@ -540,7 +540,7 @@ go.app = function() {
                 accept_labels: true,
                 choices: [
                     new Choice("state_baby_born_year", $("Yes")),
-                    new Choice("state_edd_baby_unborn_year_month", $("No")),
+                    new Choice("state_edd_baby_unborn_year", $("No")),
                 ],
             });
         });
@@ -817,15 +817,14 @@ go.app = function() {
             var answers = self.im.user.answers;
             var flow_uuid = self.im.config.edd_dob_change_flow_uuid;
             var end_flow;
-            var year = answers.state_edd_baby_unborn_year_month || answers.state_baby_born_year;
-            var month = answers.state_baby_born_month;
+            var year = answers.state_edd_baby_unborn_year || answers.state_baby_born_year;
+            var month = answers.state_edd_baby_unborn_month || answers.state_baby_born_month;
             var day = answers.state_edd_baby_unborn_day || answers.state_baby_born_day;
 
-            if ((typeof answers.state_edd_baby_unborn_year_month != "undefined")){
+            if ((typeof answers.state_edd_baby_unborn_year  != "undefined")){
                 data.change_type = "edd_baby_expected";
                 data.baby_edd = new moment.utc(
-                    year +
-                    day,
+                    year + month + day,
                     "YYYYMMDD"
                 ).format(),
                 end_flow = "state_edd_baby_unborn_complete";
@@ -833,14 +832,11 @@ go.app = function() {
             else {
                 data.change_type = "baby_born";
                 data.baby_dob = new moment.utc(
-                    year +
-                    month +
-                    day,
+                    year + month + day,
                     "YYYYMMDD"
                     ).format(),
                 end_flow = "state_baby_born_complete";
             }
-
             return self.rapidpro
                 .start_flow(flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), data)
                 .then(function() {
@@ -887,19 +883,46 @@ go.app = function() {
         * EDD Baby Unborn
         ********************/
 
-        self.add("state_edd_baby_unborn_year_month", function(name) {
+        self.add("state_edd_baby_unborn_year", function(name) {
+            var today = new moment(self.im.config.testing_today).startOf("day");
+            var choices = _.map(
+                // For this year and next year, we need 2 options
+                _.range(2),
+                function(i) {
+                    var y = today.clone().add(i, "years").format("YYYY");
+                    return new Choice(y, $(y));
+                }
+            );
+            return new ChoiceState(name, {
+                question: $([
+                    "In which year is your baby expected?",
+                    "",
+                    "Please reply with the number that matches your answer, not the year e.g. 1"
+                ].join("\n")),
+                error: $(
+                    "Sorry we don't understand. Please reply with the number that " +
+                    "matches your answer."
+                ),
+                choices: choices,
+                next: function(choice) {
+                    return "state_edd_baby_unborn_month";
+                }
+            });
+        });
+
+        self.add("state_edd_baby_unborn_month", function(name) {
             var today = new moment(self.im.config.testing_today).startOf("day");
             var start_date = today.clone().add(1, "days");
-            var end_date = today.clone().add(52, "weeks").add(1, "days");
-            var dates = _.map(_.range(start_date.diff(end_date, "months") + 1), function(i) {
-                return start_date.clone().subtract(i, "months");
-            });
+            var end_date = today.clone().add(52, "weeks").add(-1, "days");
 
+            var dates = _.map(_.range(end_date.diff(start_date, "months") + 1), function(i) {
+                return start_date.clone().add(i, "months");
+            });
             var sortedDates = _.sortBy(dates, function(d) {
-                return d.format("YYYY");
+                return d.format("MM");
             });
             var choices = _.map(sortedDates, function(date) {
-                return new Choice(date.format("YYYY-MM"), $(date.format("YYYY-MM")));
+                return new Choice(date.format("MM"), $(date.format("MMM")));
             });
 
             return new PaginatedChoiceState(name, {
@@ -921,7 +944,11 @@ go.app = function() {
                 accept_labels: true
             });
         });
+
         self.add("state_edd_baby_unborn_day", function(name) {
+            var answers = self.im.user.answers;
+            var year = answers.state_edd_baby_unborn_year;
+            var month = answers.state_edd_baby_unborn_month;
             return new FreeText(name, {
                 question: $([
                     "On which day of the month is your baby expected? " +
@@ -929,8 +956,7 @@ go.app = function() {
                 ].join("\n")),
                 check: function(content) {
                     var date = new moment(
-                        self.im.user.answers.state_edd_baby_unborn_year_month +
-                        content,
+                        year + month + content,
                         "YYYYMMDD"
                     );
                     if (
@@ -951,10 +977,13 @@ go.app = function() {
 
         self.add("state_edd_baby_unborn_calc", function(name) {
             var contact = self.im.user.answers.contact;
+            var answers = self.im.user.answers;
+            var year = answers.state_edd_baby_unborn_year;
+            var month = answers.state_edd_baby_unborn_month;
+            var day = answers.state_edd_baby_unborn_day;
             var edd = new moment(_.get(contact, "fields.edd", null, ""));
             var date = new moment(
-                self.im.user.answers.state_edd_baby_unborn_year_month +
-                self.im.user.answers.state_edd_baby_unborn_day,
+                year + month + day,
                 "YYYYMMDD"
             );
             var current_date = new moment(self.im.config.testing_today).startOf("day");
@@ -988,7 +1017,7 @@ go.app = function() {
                     "Sorry, we don't understand. Please try again."
                 ),
                 choices: [
-                    new Choice("state_edd_year", $("Back")),
+                    new Choice("state_edd_baby_unborn_year", $("Back")),
                     new Choice("state_exit", $("Exit"))
                 ]
             });
@@ -1004,7 +1033,7 @@ go.app = function() {
                     "Sorry, we don't understand. Please try again."
                 ),
                 choices: [
-                    new Choice("state_edd_year", $("Try again")),
+                    new Choice("state_edd_baby_unborn_year", $("Try again")),
                     new Choice("state_exit", $("Exit"))
                 ]
             });
@@ -1030,10 +1059,11 @@ go.app = function() {
 
         self.states.add("state_edd_baby_unborn_complete", function(name) {
             var answers = self.im.user.answers;
-            var year = answers.state_edd_baby_unborn_year_month;
+            var year = answers.state_edd_baby_unborn_year;
+            var month = answers.state_edd_baby_unborn_month;
             var day = answers.state_edd_baby_unborn_day;
             var date = new moment(
-                year + day,
+                year + month + day,
                 "YYYYMMDD"
             ).format('YYYY-MM-DD');
             return new MenuState(name, {
