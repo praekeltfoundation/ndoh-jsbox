@@ -570,34 +570,15 @@ go.app = function() {
             });
         });
 
-        self.states.add("state_dob_change_end", function(name) {
-            return new MenuState(name, {
-                question: $([
-                    "You are not currently receiving messages about ",
-                    "another pregnancy.",
-                    "",
-                    "To register a new pregnancy on MomcConnect, please go ",
-                    "to the clinic, and ask a nurse to help you sign up by ",
-                    "dialing *134*550*2#"
-                ].join("\n")),
-                error: $(
-                    "Sorry, we don't understand. Please try again."
-                ),
-                choices: [
-                    new Choice("state_main_menu", $("Back")),
-                    new Choice("state_exit", $("Exit"))
-                ]
-            });
-        });
-
         self.states.add("state_edd_change_end", function(name) {
             return new MenuState(name, {
                 question: $([
-                    "You are not currently receiving messages about " +
-                    "another pregnancy.",
+                    "No pregnancy messages received currently.",
                     "",
-                    "To register a new pregnancy on MomConnect, please " +
-                    "dial *134*550*2#"
+                    "To register a new pregnancy:",
+                    "- Go to the clinic",
+                    "- Ask a nurse to help you sign up",
+                    "- Dial *134*550*2#"
                 ].join("\n")),
                 error: $(
                     "Sorry, we don't understand. Please try again."
