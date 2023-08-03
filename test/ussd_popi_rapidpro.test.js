@@ -521,7 +521,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .check.interaction({
                     reply: [
                         "You are currently receiving pregnancy messages for a baby due on " +
-                        "2022-06-06.",
+                        "06-06-2022.",
                         "",
                         "Has this baby been born?",
                         "1. Yes",
@@ -715,7 +715,26 @@ describe("ussd_popi_rapidpro app", function() {
          ***Edd Baby Unborn Tests***
         ****************************/
 
-        it("should ask for baby expected month and year", function() {
+         it("Check that date format is DD-MM-YYY", function() {
+            return tester
+                .setup.user.state("state_active_prebirth_check")
+                .setup.user.answer("contact", {fields: {
+                    edd: "2022-06-06",
+                    prebirth_messaging: "1"
+                },
+                })
+                .check.interaction({
+                    reply: [
+                        "You are currently receiving pregnancy messages for a baby due on 06-06-2022.",
+                        "",
+                        "Has this baby been born?",
+                        "1. Yes",
+                        "2. No"
+                    ].join("\n")
+                })
+                .run();
+        });
+         it("should ask for baby expected month and year", function() {
             return tester
                 .setup.user.state("state_active_prebirth_check")
                 .setup.user.answer("contact", {fields: {

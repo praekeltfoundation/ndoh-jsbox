@@ -372,7 +372,7 @@ go.app = function() {
 
         self.add("state_active_prebirth_check", function(name){
             var contact = self.im.user.answers.contact;
-            var edd = new moment(_.get(contact, "fields.edd", null)).format("YYYY-MM-DD");
+            var edd = new moment(_.get(contact, "fields.edd", null)).format("DD-MM-YYYY");
             var prebirth = _.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7);
 
             if (!prebirth) {
