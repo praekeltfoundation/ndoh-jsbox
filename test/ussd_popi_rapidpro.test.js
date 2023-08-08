@@ -326,7 +326,7 @@ describe("ussd_popi_rapidpro app", function() {
                         "Passport: A12345 Malawi",
                         "Type: Pregnancy",
                         "Research messages: Yes",
-                        "Baby's birthday: 18-03-02, 20-06-04",
+                        "Baby's birthday: 02-03-2018, 04-06-2020",
                         "1. Back"
                     ].join("\n")
                 })
@@ -381,7 +381,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .input("1")
                 .check.interaction({
                     reply: [
-                        "Baby's birthday: 18-03-02, 20-06-04",
+                        "Baby's birthday: 02-03-2018, 04-06-2020",
                         "1. Previous",
                         "2. Back"
                     ].join("\n")
@@ -671,10 +671,10 @@ describe("ussd_popi_rapidpro app", function() {
                 .check.interaction({
                     reply: [
                         "Your baby's date of birth will be changed " +
-                        "to 2022-02-04.",
+                        "to 04-02-2022.",
                         "\nIs this correct?",
                         "1. Yes",
-                        "2. No"
+                        "2. No, I made a mistake"
                     ].join("\n")
                 })
                 .run();
