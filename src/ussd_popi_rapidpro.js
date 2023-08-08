@@ -238,7 +238,7 @@ go.app = function() {
                     new moment(_.get(contact, "fields.baby_dob2", null)),
                     new moment(_.get(contact, "fields.baby_dob3", null)),
                     new moment(_.get(contact, "fields.edd", null)),
-                ], _.method("isValid")), _.method("format", "YY-MM-DD")).join(", ") || $("None")
+                ], _.method("isValid")), _.method("format", "DD-MM-YYYY")).join(", ") || $("None")
             };
             var sms_text = $([
                 "Cell number: {{msisdn}}",
@@ -612,7 +612,7 @@ go.app = function() {
             var day = answers.state_baby_born_day;
             var date = new moment(
                 year + month + day, "YYYYMMDD"
-            ).format('YYYY-MM-DD');
+            ).format('DD-MM-YYYY');
             return new MenuState(name, {
                 question: $([
                     "Your baby's date of birth will be changed to {{date}}.",
@@ -626,7 +626,7 @@ go.app = function() {
                 ),
                 choices: [
                     new Choice("state_trigger_rapidpro_flow_edd_dob_change", $("Yes")),
-                    new Choice("state_baby_born_year", $("No"))
+                    new Choice("state_baby_born_year", $("No, I made a mistake"))
                 ]
             });
         });
