@@ -826,7 +826,7 @@ describe("ussd_popi_rapidpro app", function() {
                     reply: [
                         "The date you entered is in the past. " +
                         "so I cannot update your Expected Due Date.",
-                        "1. Back",
+                        "1. Try again",
                         "2. Exit"
                     ].join("\n")
                 })

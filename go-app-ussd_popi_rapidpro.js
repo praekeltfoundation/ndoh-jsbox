@@ -1017,7 +1017,7 @@ go.app = function() {
                     "Sorry, we don't understand. Please try again."
                 ),
                 choices: [
-                    new Choice("state_edd_baby_unborn_year", $("Back")),
+                    new Choice("state_edd_baby_unborn_year", $("Try again")),
                     new Choice("state_exit", $("Exit"))
                 ]
             });
