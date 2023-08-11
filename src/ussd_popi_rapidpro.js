@@ -409,8 +409,7 @@ go.app = function() {
                 question: $(
                     "You are not currently receiving messages about another baby. " +
                     "\n\n" +
-                    "To register another baby on MonConnect (age 0-2) ",
-                    "dial *134*550*2#"
+                    "To register another baby on MonConnect (age 0-2) dial *134*550*2#"
                 ),
                 error: $(
                     "Sorry we don't recognise that reply. Please enter the number next to your " +
