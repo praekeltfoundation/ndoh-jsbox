@@ -233,8 +233,6 @@ go.app = function() {
             self.im.user.answers = {};
 
             var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
-            // Fire and forget a background whatsapp contact check
-            self.whatsapp.contact_check(msisdn, false).then(_.noop, _.noop);
 
             return self.rapidpro.get_contact({
                     urn: "whatsapp:" + _.trim(msisdn, "+")
@@ -402,30 +400,8 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_whatsapp_contact_check"
+                next: "state_mother_name"
             });
-        });
-
-        self.add("state_whatsapp_contact_check", function(name, opts) {
-            var content = self.im.user.answers.state_mother_supporter_msisdn;
-            var msisdn = utils.normalize_msisdn(content, "ZA");
-            return self.whatsapp
-                .contact_check(msisdn, true)
-                .then(function(result) {
-                    self.im.user.set_answer("on_whatsapp", result);
-                    return self.states.create("state_mother_name");
-                })
-                .catch(function(e) {
-                    // Go to error state after 3 failed HTTP requests
-                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-                    if (opts.http_error_count === 3) {
-                        self.im.log.error(e.message);
-                        return self.states.create("__error__", {
-                            return_state: "state_whatsapp_contact_check"
-                        });
-                    }
-                    return self.states.create("state_whatsapp_contact_check", opts);
-                });
         });
 
         self.states.add("state_mother_supporter_no_WA", function(name) {
@@ -456,9 +432,6 @@ go.app = function() {
         });
 
         self.add("state_mother_name", function(name) {
-            if (!self.im.user.get_answer("on_whatsapp")) {
-                return self.states.create("state_mother_supporter_no_WA");
-            }
             return new FreeText(name, {
                 question: $(
                     "What is your name? We will use your name in the invite to your " +
@@ -501,7 +474,6 @@ go.app = function() {
             var supporter_cell = utils.normalize_msisdn(self.im.user.get_answer("state_mother_supporter_msisdn"), "ZA");
             var supp_consent = _.toUpper(self.im.user.get_answer("state_mother_supporter_consent"));
             var data = {
-                on_whatsapp: self.im.user.get_answer("on_whatsapp") ? "true" : "false",
                 supp_consent: (supp_consent === "YES" || supp_consent === "1") ? "true" : "false",
                 supp_cell: supporter_cell,
                 mom_name: self.im.user.get_answer("state_mother_name"),
@@ -514,8 +486,7 @@ go.app = function() {
                 source: "USSD",
                 timestamp: new moment.utc(self.im.config.testing_today).format(),
                 registered_by: msisdn,
-                mha: 6,
-                swt: self.im.user.get_answer("on_whatsapp") ? 7 : 1
+                mha: 6
             };
             return self.rapidpro
                 .start_flow(
@@ -721,7 +692,6 @@ go.app = function() {
             }
 
             var data = {
-                on_whatsapp: self.im.user.get_answer("on_whatsapp") ? "true" : "false",
                 supp_consent: supporter_consent,
                 research_consent: (research_consent === "YES" || research_consent === "1") ? "true" : "false",
                 baby_dob1: baby_dob1,
@@ -737,8 +707,7 @@ go.app = function() {
                 source: "USSD",
                 timestamp: new moment.utc(self.im.config.testing_today).format(),
                 registered_by: msisdn,
-                mha: 6,
-                swt: self.im.user.get_answer("on_whatsapp") ? 7 : 1
+                mha: 6
             };
             return self.rapidpro
                 .start_flow(
@@ -1052,36 +1021,12 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_supporter_new_msisdn_whatsapp_contact_check"
+                next: "state_supporter_new_msisdn_display"
             });
         });
 
-        self.add("state_supporter_new_msisdn_whatsapp_contact_check", function(name, opts) {
-            var content = self.im.user.answers.state_supporter_new_msisdn;
-            var msisdn = utils.normalize_msisdn(content, "ZA");
-            return self.whatsapp
-                .contact_check(msisdn, true)
-                .then(function(result) {
-                    self.im.user.set_answer("on_whatsapp", result);
-                    return self.states.create("state_supporter_new_msisdn_display");
-                })
-                .catch(function(e) {
-                    // Go to error state after 3 failed HTTP requests
-                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-                    if (opts.http_error_count === 3) {
-                        self.im.log.error(e.message);
-                        return self.states.create("__error__", {
-                            return_state: "state_whatsapp_contact_check"
-                        });
-                    }
-                    return self.states.create("state_whatsapp_contact_check", opts);
-                });
-        });
         
         self.add("state_supporter_new_msisdn_display", function(name) {
-            if (!self.im.user.get_answer("on_whatsapp")) {
-                return self.states.create("state_supporter_new_msisdn_no_WA");
-            }
             var new_cell = self.im.user.answers.state_supporter_new_msisdn;
             return new MenuState(name, {
                 question: $("Thank you! Let's make sure we got it right." +
@@ -1657,33 +1602,8 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_mother_new_supporter_whatsapp_contact_check"
+                next: "state_new_supporter_mother_name"
             });
-        });
-
-        self.add("state_mother_new_supporter_whatsapp_contact_check", function(name, opts) {
-            var content = self.im.user.answers.state_mother_new_supporter_msisdn;
-            var msisdn = utils.normalize_msisdn(content, "ZA");
-            return self.whatsapp
-                .contact_check(msisdn, true)
-                .then(function(result) {
-                    self.im.user.set_answer("on_whatsapp", result);
-                    if (result != "true"){
-                        return self.states.create("state_mother_new_supporter_no_WA");
-                    }
-                    return self.states.create("state_new_supporter_mother_name");
-                })
-                .catch(function(e) {
-                    // Go to error state after 3 failed HTTP requests
-                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-                    if (opts.http_error_count === 3) {
-                        self.im.log.error(e.message);
-                        return self.states.create("__error__", {
-                            return_state: "state_mother_new_supporter_whatsapp_contact_check"
-                        });
-                    }
-                    return self.states.create("state_mother_new_supporter_whatsapp_contact_check", opts);
-                });
         });
 
         self.states.add("state_mother_new_supporter_no_WA", function(name) {
@@ -1714,9 +1634,6 @@ go.app = function() {
         });
 
         self.add("state_new_supporter_mother_name", function(name) {
-            if (!self.im.user.get_answer("on_whatsapp")) {
-                return self.states.create("state_mother_new_supporter_no_WA");
-            }
             return new FreeText(name, {
                 question: $(
                     "What is your name? We will use your name in the invite to your " +
@@ -1758,7 +1675,6 @@ go.app = function() {
             var postbirth_messaging = _.toUpper(_.get(contact, "fields.postbirth_messaging")) === "TRUE";
             var mom_edd = (contact.fields.edd) ? moment.utc(contact.fields.edd).format() : null;
             var data = {
-                on_whatsapp: self.im.user.get_answer("on_whatsapp") ? "true" : "false",
                 supp_consent: _.toUpper(self.im.user.get_answer("state_mother_new_supporter_consent")) === "YES" ? "true" : "false",
                 supp_cell: supporter_cell,
                 mom_name: self.im.user.get_answer("state_new_supporter_mother_name"),
@@ -1771,8 +1687,7 @@ go.app = function() {
                 source: "USSD",
                 timestamp: new moment.utc(self.im.config.testing_today).format(),
                 registered_by: msisdn,
-                mha: 6,
-                swt: self.im.user.get_answer("on_whatsapp") ? 7 : 1
+                mha: 6
             };
             return self.rapidpro
                 .start_flow(

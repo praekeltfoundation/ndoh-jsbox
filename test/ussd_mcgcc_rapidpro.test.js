@@ -387,46 +387,6 @@ describe("ussd_mcgcc app", function() {
                 .run();
         });
     });
-    describe("state_whatsapp_contact_check", function() {
-        it("should store the result of the contact check", function() {
-            return tester
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27123456789",
-                            wait: true
-                        })
-                    );
-                })
-                .setup.user.state("state_whatsapp_contact_check")
-                .setup.user.answer("state_mother_supporter_msisdn", "+27123456789")
-                .check.user.answer("on_whatsapp", true)
-                .run();
-        });
-        it("should retry in the case of HTTP failures", function() {
-            return tester
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27123456789",
-                            wait: true,
-                            fail: true
-                        })
-                    );
-                })
-                .setup.user.state("state_whatsapp_contact_check")
-                .setup.user.answer("state_mother_supporter_msisdn", "+27123456789")
-                .check(function(api) {
-                    assert.equal(api.http.requests.length, 3);
-                    api.http.requests.forEach(function(request) {
-                        assert.equal(request.url, "http://pilot.example.org/v1/contacts");
-                    });
-                    assert.equal(api.log.error.length, 1);
-                    assert(api.log.error[0].includes("HttpResponseError"));
-                })
-                .run();
-        });
-    });
     describe("state_trigger_mother_registration_flow", function() {
         it("should start a flow with the correct metadata", function() {
             return tester
@@ -449,7 +409,6 @@ describe("ussd_mcgcc app", function() {
                             "mother-registration-uuid",
                             null,
                             "whatsapp:27123456722", {
-                                "on_whatsapp": "true",
                                 "supp_consent": "true",
                                 "supp_cell": "+27123456722",
                                 "mom_name": "Jane",
@@ -462,8 +421,7 @@ describe("ussd_mcgcc app", function() {
                                 "source": "USSD",
                                 "timestamp": "2021-03-06T07:07:07Z",
                                 "registered_by": "+27123456789",
-                                "mha": 6,
-                                "swt": 7
+                                "mha": 6
                             }
                         )
                     );
@@ -496,7 +454,6 @@ describe("ussd_mcgcc app", function() {
                             "mother-registration-uuid",
                             null,
                             "whatsapp:27123456722", {
-                                "on_whatsapp": "true",
                                 "supp_consent": "true",
                                 "supp_cell": "+27123456722",
                                 "mom_name": "Jane",
@@ -509,8 +466,7 @@ describe("ussd_mcgcc app", function() {
                                 "source": "USSD",
                                 "timestamp": "2021-03-06T07:07:07Z",
                                 "registered_by": "+27123456789",
-                                "mha": 6,
-                                "swt": 7
+                                "mha": 6
                             },
                             true
                         )
@@ -704,7 +660,6 @@ describe("ussd_mcgcc app", function() {
                             "supporter-registration-uuid",
                             null,
                             "whatsapp:27123456789", {
-                                "on_whatsapp": "true",
                                 "supp_consent": "true",
                                 "research_consent": "true",
                                 "baby_dob1": "2021-01-06T07:07:07Z",
@@ -720,8 +675,7 @@ describe("ussd_mcgcc app", function() {
                                 "source": "USSD",
                                 "timestamp": "2021-03-06T07:07:07Z",
                                 "registered_by": "+27123456789",
-                                "mha": 6,
-                                "swt": 7
+                                "mha": 6
                             }
                         )
                     );
@@ -756,7 +710,6 @@ describe("ussd_mcgcc app", function() {
                             "supporter-registration-uuid",
                             null,
                             "whatsapp:27123456789", {
-                                "on_whatsapp": "true",
                                 "supp_consent": "true",
                                 "research_consent": "true",
                                 "baby_dob1": "2021-01-06T07:07:07Z",
@@ -772,8 +725,7 @@ describe("ussd_mcgcc app", function() {
                                 "source": "USSD",
                                 "timestamp": "2021-03-06T07:07:07Z",
                                 "registered_by": "+27123456789",
-                                "mha": 6,
-                                "swt": 7
+                                "mha": 6
                             },
                             true
                         )
@@ -1043,68 +995,6 @@ describe("ussd_mcgcc app", function() {
                     "1. Yes",
                     "2. No, I want to retype my number"
                     ].join("\n")
-                })
-                .run();
-        });
-        it("should display an error if new msisdn is not on Whatsapp", function() {
-            return tester
-                .setup.user.state("state_supporter_new_msisdn_display")
-                .setup.user.answer("state_supporter_new_msisdn", "0123456722")
-                .setup.user.answer("on_whatsapp", false)
-                .check.interaction({
-                    reply: ["The new number is not registered on WA. " +
-                    "Would you like to enter another number?",
-                    "1. Yes",
-                    "2. No"
-                    ].join("\n")
-                })
-                .run();
-        });
-        it ("should show the message for non whatsapp msisdn", function() {
-            return tester
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.not_exists({
-                            address: "+27123456789",
-                            wait: true
-                        })
-                    );
-                })
-                .setup.user.state("state_supporter_new_msisdn_whatsapp_contact_check")
-                .setup.user.answer("state_supporter_new_msisdn", "+27123456789")
-                .input({session_event: "continue"})
-                .check.interaction({
-                    state: "state_supporter_new_msisdn_no_WA",
-                    reply: [
-                        "The new number is not registered on WA. " +
-                        "Would you like to enter another number?",
-                        "1. Yes",
-                        "2. No"
-                ].join("\n")
-                })
-                .run();
-        });
-        it ("should show the msisdn confirm screen for msisdn that's on WA", function() {
-            return tester
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27123456789",
-                            wait: true
-                        })
-                    );
-                })
-                .setup.user.state("state_supporter_new_msisdn_whatsapp_contact_check")
-                .setup.user.answer("state_supporter_new_msisdn", "+27123456789")
-                .input({session_event: "continue"})
-                .check.interaction({
-                    state: "state_supporter_new_msisdn_display",
-                    reply: [
-                        "Thank you! Let's make sure we got it right.",
-                        "\nIs your new number +27123456789?",
-                        "1. Yes",
-                        "2. No, I want to retype my number"
-                ].join("\n")
                 })
                 .run();
         });
@@ -1668,30 +1558,6 @@ describe("ussd_mcgcc app", function() {
                 })
                 .run();
         });
-        it ("should show the SMS message for non whatsapp users", function() {
-            return tester
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.not_exists({
-                            address: "+27123456789",
-                            wait: true
-                        })
-                    );
-                })
-                .setup.user.state("state_whatsapp_contact_check")
-                .setup.user.answer("state_mother_supporter_msisdn", "+27123456789")
-                .input({session_event: "continue"})
-                .check.interaction({
-                    state: "state_mother_supporter_no_WA",
-                    reply: [
-                        "A supporter's number needs to be registered on WA. " +
-                        "Would you like to enter another number?",
-                        "1. Yes",
-                        "2. No"
-                ].join("\n")
-                })
-                .run();
-        });
         it("should display an error if the mother uses the example msisdn", function() {
             return tester
                 .setup.user.state("state_mother_new_supporter_msisdn")
@@ -1699,45 +1565,6 @@ describe("ussd_mcgcc app", function() {
                 .check.interaction({
                     reply: "Please try again. Reply with the cellphone number of " +
                         "your supporter as a 10-digit number."
-                })
-                .run();
-        });
-        it("should store the result of the contact check", function() {
-            return tester
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.exists({
-                            address: "+27123456789",
-                            wait: true
-                        })
-                    );
-                })
-                .setup.user.state("state_mother_new_supporter_whatsapp_contact_check")
-                .setup.user.answer("state_mother_new_supporter_msisdn", "+27123456789")
-                .check.user.answer("on_whatsapp", true)
-                .run();
-        });
-        it ("should show the SMS message for non whatsapp supporter msisdn", function() {
-            return tester
-                .setup(function(api) {
-                    api.http.fixtures.add(
-                        fixtures_whatsapp.not_exists({
-                            address: "+27123456789",
-                            wait: true
-                        })
-                    );
-                })
-                .setup.user.state("state_mother_new_supporter_whatsapp_contact_check")
-                .setup.user.answer("state_mother_new_supporter_msisdn", "+27123456789")
-                .input({session_event: "continue"})
-                .check.interaction({
-                    state: "state_mother_new_supporter_no_WA",
-                    reply: [
-                        "The new supporter's number needs to be registered on WA. " +
-                        "Would you like to enter another number?",
-                        "1. Yes",
-                        "2. No"
-                ].join("\n")
                 })
                 .run();
         });
@@ -1788,7 +1615,6 @@ describe("ussd_mcgcc app", function() {
                             "mother-new-supporter-registration-uuid",
                             null,
                             "whatsapp:27123456722", {
-                                "on_whatsapp": "true",
                                 "supp_consent": "true",
                                 "supp_cell": "+27123456722",
                                 "mom_name": "Jane",
@@ -1801,8 +1627,7 @@ describe("ussd_mcgcc app", function() {
                                 "source": "USSD",
                                 "timestamp": "2021-03-06T07:07:07Z",
                                 "registered_by": "+27123456789",
-                                "mha": 6,
-                                "swt": 7
+                                "mha": 6
                             }
                         )
                     );
