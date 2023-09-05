@@ -2369,13 +2369,15 @@ go.app = function() {
             var old_msisdn = utils.normalize_msisdn(
                 self.im.user.answers.state_enter_origin_msisdn, "ZA"
             );
+            var new_wa_id = "whatsapp:" + _.trim(new_msisdn, "+");
             return self.rapidpro
                 .start_flow(
                     self.im.config.msisdn_change_flow_id, null, "whatsapp:" + _.trim(new_msisdn, "+"), {
                         new_msisdn: new_msisdn,
                         old_msisdn: old_msisdn,
                         contact_uuid: self.im.user.answers.origin_contact.uuid,
-                        source: "POPI USSD"
+                        source: "POPI USSD",
+                        new_wa_id: new_wa_id
                     }
                 )
                 .then(function() {
