@@ -2162,7 +2162,7 @@ describe("ussd_clinic app", function() {
             .check.user.answer("preferred_channel", "WhatsApp")
             .run();
         });
-        it("should send a whatsapp template and fail", function() {
+        it("should send a whatsapp template and fail - SMS registrations enabled", function() {
             return tester
             .setup(function(api) {
               api.http.fixtures.add(
@@ -2181,10 +2181,49 @@ describe("ussd_clinic app", function() {
                     "popi-sms-flow-uuid", null, "whatsapp:27123456789"
                 )
               );
+              api.http.fixtures.add(
+                fixtures_rapidpro.get_global_flag("sms_registrations_enabled", "TRUE")
+              );
             })
             .setup.user.state("state_send_popi_template_message")
             .check.user.state("state_accept_popi")
             .check.user.answer("preferred_channel", "SMS")
+            .run();
+        });
+        it("should send a whatsapp template and fail - SMS registrations disabled", function() {
+            return tester
+            .setup(function(api) {
+              api.http.fixtures.add(
+                  fixtures_hub.send_whatsapp_template_message(
+                    "+27123456789",
+                    "popi_template",
+                    {
+                        "filename": "privacy_policy.pdf",
+                        "id": "media-uuid"
+                    },
+                    "SMS"
+                  )
+              );
+              api.http.fixtures.add(
+                fixtures_rapidpro.start_flow(
+                    "popi-sms-flow-uuid", null, "whatsapp:27123456789"
+                )
+              );
+              api.http.fixtures.add(
+                fixtures_rapidpro.get_global_flag("sms_registrations_enabled", "FALSE")
+              );
+            })
+            .setup.user.state("state_send_popi_template_message")
+            .check.interaction({
+                state: "state_sms_registration_not_available",
+                reply:[
+                    "It seems this number is not on WhatsApp and we don't offer SMS at this moment.",
+                    "",
+                    "Please register the new number on WhatsApp for the MomConnect Service."
+                ].join("\n"),
+                char_limit: 160
+            })
+            .check.reply.ends_session()
             .run();
         });
     });
