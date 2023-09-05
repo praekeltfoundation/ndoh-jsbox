@@ -138,6 +138,21 @@ go.RapidPro = function() {
             }
             return self.json_api.post(url, {data: data});
         };
+
+        self.get_global_flag = function(global_name) {
+            var url = self.base_url + "/api/v2/globals.json";
+
+            return self.json_api.get(url, {params: {key: global_name}})
+                .then(function(response){
+                    var results = response.data.results;
+                    if(results.length > 0){
+                        return results[0].value.toLowerCase() === "true";
+                    }
+                    else {
+                        return false;
+                    }
+                });
+        };
     });
 
     return RapidPro;

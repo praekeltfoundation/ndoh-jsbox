@@ -139,6 +139,21 @@ go.RapidPro = function() {
             }
             return self.json_api.post(url, {data: data});
         };
+
+        self.get_global_flag = function(global_name) {
+            var url = self.base_url + "/api/v2/globals.json";
+
+            return self.json_api.get(url, {params: {key: global_name}})
+                .then(function(response){
+                    var results = response.data.results;
+                    if(results.length > 0){
+                        return results[0].value.toLowerCase() === "true";
+                    }
+                    else {
+                        return false;
+                    }
+                });
+        };
     });
 
     return RapidPro;
@@ -1237,7 +1252,15 @@ go.app = function() {
                 .then(function(preferred_channel) {
                     self.im.user.set_answer("preferred_channel", preferred_channel);
                     if (preferred_channel == "SMS") {
-                        return self.states.create("state_send_popi_sms_flow");
+                        return self.rapidpro.get_global_flag("sms_registrations_enabled")
+                            .then(function(sms_registration_enabled) {
+                                if (sms_registration_enabled) {
+                                    return self.states.create("state_send_popi_sms_flow");
+                                }
+                                else{
+                                    return self.states.create("state_sms_registration_not_available");
+                                }
+                            });
                     }
                     return self.states.create("state_accept_popi");
                 }).catch(function(e) {
@@ -1272,6 +1295,16 @@ go.app = function() {
             });
         });
 
+        self.states.add("state_sms_registration_not_available", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $([
+                    "It seems this number is not on WhatsApp and we don't offer SMS at this moment.",
+                    "",
+                    "Please register the new number on WhatsApp for the MomConnect Service."
+                ].join("\n"))
+            });
+        });
 
         self.add("state_send_popi_sms_flow", function(name, opts) {
             var msisdn = utils.normalize_msisdn(

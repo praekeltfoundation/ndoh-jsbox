@@ -150,6 +150,24 @@ module.exports = function() {
                 }
             };
         },
+        get_global_flag: function(global_name, global_value) {
+            return {
+                "repeatable": true,
+                "request": {
+                    "url": 'https://rapidpro/api/v2/globals.json',
+                    "method": 'GET',
+                    "params": {key: global_name}
+                },
+                "response": {
+                    "code": 200,
+                    "data": {
+                        next: null,
+                        previous: null,
+                        results: [{key: global_name, value: global_value}]
+                    }
+                }
+            };
+        },
 
         javascript: "commas"
     };
