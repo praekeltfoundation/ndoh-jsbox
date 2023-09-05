@@ -2518,7 +2518,8 @@ describe("ussd_popi_rapidpro app", function() {
                                 new_msisdn: "+27123456789",
                                 old_msisdn: "+27820001002",
                                 contact_uuid: "contact-uuid",
-                                source: "POPI USSD"
+                                source: "POPI USSD",
+                                new_wa_id: "whatsapp:27123456789"
                             }
                         )
                     );
