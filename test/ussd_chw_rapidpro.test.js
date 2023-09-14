@@ -1,6 +1,7 @@
 var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
 var assert = require("assert");
+var fixtures_hub = require("./fixtures_hub")();
 var fixtures_rapidpro = require("./fixtures_rapidpro")();
 
 describe("ussd_chw app", function() {
@@ -16,9 +17,14 @@ describe("ussd_chw app", function() {
                 rapidpro: {
                     base_url: "https://rapidpro",
                     token: "rapidpro-token"
+                },
+                hub: {
+                    base_url: "http://hub",
+                    token: "hub-token"
                 }
             },
-            flow_uuid: "rapidpro-flow-uuid"
+            flow_uuid: "rapidpro-flow-uuid",
+            welcome_template: "test-welcome-template"
         });
     });
     describe("state_start", function() {
@@ -706,6 +712,136 @@ describe("ussd_chw app", function() {
                 .run();
         });
     });
+    describe("state_send_welcome_template", function() {
+        it("should go to state_sms_registration_not_available if sms is not enabled", function() {
+            return tester
+                .setup.user.state("state_send_welcome_template")
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_hub.send_whatsapp_template_message(
+                          "+27123456789",
+                          "test-welcome-template",
+                          null,
+                          "SMS"
+                        )
+                    );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_global_flag("sms_registrations_enabled", "FALSE")
+                    );
+                })
+                .input({session_event: "continue"})
+                .check.interaction({
+                    state: "state_sms_registration_not_available",
+                    reply: [
+                        "It seems this number is not on WhatsApp and we don't offer SMS at this moment.",
+                        "",
+                        "Please register the new number on WhatsApp for the MomConnect Service."
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .check.reply.ends_session()
+                .run();
+        });
+        it("should go through state_trigger_rapidpro_flow if sms is enabled", function() {
+            return tester
+                .setup.user.state("state_send_welcome_template")
+                .setup.user.answers({
+                    state_research_consent: "no",
+                    state_enter_msisdn: "0820001001",
+                    state_id_type: "state_sa_id_no",
+                    state_sa_id_no: "9001020005087",
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_hub.send_whatsapp_template_message(
+                          "+27820001001",
+                          "test-welcome-template",
+                          null,
+                          "SMS"
+                        )
+                    );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_global_flag("sms_registrations_enabled", "TRUE")
+                    );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "rapidpro-flow-uuid",
+                            null,
+                            "whatsapp:27820001001",
+                            {
+                                research_consent:"FALSE",
+                                registered_by: "+27123456789",
+                                language: "eng",
+                                timestamp: "2014-04-04T07:07:07Z",
+                                source: "CHW USSD",
+                                id_type: "sa_id",
+                                sa_id_number: "9001020005087",
+                                dob: "1990-01-02T00:00:00Z",
+                                preferred_channel: "SMS"
+                            }
+                        )
+                    );
+                })
+                .input({session_event: "continue"})
+                .check.interaction({
+                    state: "state_registration_complete",
+                    reply:
+                        "You're done! 0820001001 will get helpful messages from " +
+                        "MomConnect. To sign up for the full set of messages, " +
+                        "visit a clinic. Have a lovely day!"
+                })
+                .check.reply.ends_session()
+                .run();
+        });
+        it("should go through state_trigger_rapidpro_flow if whatsapp template is sent", function() {
+            return tester
+                .setup.user.state("state_send_welcome_template")
+                .setup.user.answers({
+                    state_research_consent: "no",
+                    state_enter_msisdn: "0820001001",
+                    state_id_type: "state_sa_id_no",
+                    state_sa_id_no: "9001020005087",
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_hub.send_whatsapp_template_message(
+                          "+27820001001",
+                          "test-welcome-template",
+                          null,
+                          "WhatsApp"
+                        )
+                    );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "rapidpro-flow-uuid",
+                            null,
+                            "whatsapp:27820001001",
+                            {
+                                research_consent:"FALSE",
+                                registered_by: "+27123456789",
+                                language: "eng",
+                                timestamp: "2014-04-04T07:07:07Z",
+                                source: "CHW USSD",
+                                id_type: "sa_id",
+                                sa_id_number: "9001020005087",
+                                dob: "1990-01-02T00:00:00Z",
+                                preferred_channel: "WhatsApp"
+                            }
+                        )
+                    );
+                })
+                .input({session_event: "continue"})
+                .check.interaction({
+                    state: "state_registration_complete",
+                    reply:
+                        "You're done! 0820001001 will get helpful messages from " +
+                        "MomConnect. To sign up for the full set of messages, " +
+                        "visit a clinic. Have a lovely day!"
+                })
+                .check.reply.ends_session()
+                .run();
+        });
+    });
     describe("state_trigger_rapidpro_flow", function() {
         it("should start a flow with the correct metadata", function() {
             return tester
@@ -715,6 +851,7 @@ describe("ussd_chw app", function() {
                     state_enter_msisdn: "0820001001",
                     state_id_type: "state_sa_id_no",
                     state_sa_id_no: "9001020005087",
+                    preferred_channel: "WhatsApp",
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -731,6 +868,7 @@ describe("ussd_chw app", function() {
                                 id_type: "sa_id",
                                 sa_id_number: "9001020005087",
                                 dob: "1990-01-02T00:00:00Z",
+                                preferred_channel: "WhatsApp",
                             }
                         )
                     );

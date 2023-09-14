@@ -52,6 +52,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_chw_rapidpro: [
                     'src/index.js',
+                    'src/hub.js',
                     'src/rapidpro.js',
                     '<%= paths.src.app.ussd_chw_rapidpro %>',
                     'src/init.js'
@@ -152,6 +153,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_chw_rapidpro: [
                     'test/setup.js',
+                    'src/hub.js',
                     'src/rapidpro.js',
                     '<%= paths.src.app.ussd_chw_rapidpro %>',
                     'test/ussd_chw_rapidpro.test.js'

@@ -23,6 +23,15 @@ go.app = function() {
                 self.im.config.services.rapidpro.base_url,
                 self.im.config.services.rapidpro.token
             );
+            self.hub = new go.Hub(
+                new JsonApi(self.im, {
+                    headers: {
+                        'User-Agent': ["Jsbox/NDoH-Clinic"]
+                    }
+                }),
+                self.im.config.services.hub.base_url,
+                self.im.config.services.hub.token
+            );
         };
 
         self.add = function(name, creator) {
@@ -476,7 +485,51 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_trigger_rapidpro_flow"
+                next: "state_send_welcome_template"
+            });
+        });
+
+        self.add("state_send_welcome_template", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(
+                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
+            var template_name = self.im.config.welcome_template;
+            return self.hub
+                .send_whatsapp_template_message(msisdn, template_name)
+                .then(function(preferred_channel) {
+                    self.im.user.set_answer("preferred_channel", preferred_channel);
+                    if (preferred_channel == "SMS") {
+                        return self.rapidpro.get_global_flag("sms_registrations_enabled")
+                            .then(function(sms_registration_enabled) {
+                                if (sms_registration_enabled) {
+                                    return self.states.create("state_trigger_rapidpro_flow");
+                                }
+                                else{
+                                    return self.states.create("state_sms_registration_not_available");
+                                }
+                            });
+                    }
+                    return self.states.create("state_trigger_rapidpro_flow");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if (opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {
+                            return_state: name
+                        });
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+        self.states.add("state_sms_registration_not_available", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $([
+                    "It seems this number is not on WhatsApp and we don't offer SMS at this moment.",
+                    "",
+                    "Please register the new number on WhatsApp for the MomConnect Service."
+                ].join("\n"))
             });
         });
 
@@ -508,7 +561,8 @@ go.app = function() {
                         "YYYYMMDD"
                     ).format(),
                 passport_origin: self.im.user.answers.state_passport_country,
-                passport_number: self.im.user.answers.state_passport_no
+                passport_number: self.im.user.answers.state_passport_no,
+                preferred_channel: self.im.user.answers.preferred_channel
             };
             return self.rapidpro
                 .start_flow(self.im.config.flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), data)

@@ -141,7 +141,6 @@ go.RapidPro = function() {
 
         self.get_global_flag = function(global_name) {
             var url = self.base_url + "/api/v2/globals.json";
-
             return self.json_api.get(url, {params: {key: global_name}})
                 .then(function(response){
                     var results = response.data.results;
