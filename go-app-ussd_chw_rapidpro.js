@@ -1,6 +1,49 @@
 var go = {};
 go;
 
+go.Hub = function() {
+    var vumigo = require('vumigo_v02');
+    var events = vumigo.events;
+    var Eventable = events.Eventable;
+    var url = require("url");
+
+    var Hub = Eventable.extend(function(self, json_api, base_url, auth_token) {
+        self.json_api = json_api;
+        self.base_url = base_url;
+        self.auth_token = auth_token;
+        self.json_api.defaults.headers.Authorization = ['Token ' + self.auth_token];
+
+        self.send_whatsapp_template_message = function(msisdn, template_name, media) {
+            var api_url = url.resolve(self.base_url, "/api/v1/sendwhatsapptemplate");
+            var data = {
+                "msisdn": msisdn,
+                "template_name": template_name
+            };
+            if(media) {
+                data.media = media;
+            }
+            return self.json_api.post(api_url, {data: data})
+                .then(function(response){
+                    return response.data.preferred_channel;
+
+                });
+        };
+
+        self.get_whatsapp_failure_count = function(msisdn) {
+            var api_url = url.resolve(self.base_url, "/api/v2/deliveryfailure/" + msisdn + "/");
+
+            return self.json_api.get(api_url)
+                .then(
+                    function(response){
+                        return response.data.number_of_failures;
+                    }
+                );
+        };
+
+    });
+    return Hub;
+}();
+
 go.RapidPro = function() {
     var vumigo = require('vumigo_v02');
     var url_utils = require('url');
@@ -99,7 +142,6 @@ go.RapidPro = function() {
 
         self.get_global_flag = function(global_name) {
             var url = self.base_url + "/api/v2/globals.json";
-
             return self.json_api.get(url, {params: {key: global_name}})
                 .then(function(response){
                     var results = response.data.results;
@@ -140,6 +182,15 @@ go.app = function() {
                 new JsonApi(self.im, {headers: {'User-Agent': ["Jsbox/NDoH-CHW"]}}),
                 self.im.config.services.rapidpro.base_url,
                 self.im.config.services.rapidpro.token
+            );
+            self.hub = new go.Hub(
+                new JsonApi(self.im, {
+                    headers: {
+                        'User-Agent': ["Jsbox/NDoH-Clinic"]
+                    }
+                }),
+                self.im.config.services.hub.base_url,
+                self.im.config.services.hub.token
             );
         };
 
@@ -594,7 +645,51 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_trigger_rapidpro_flow"
+                next: "state_send_welcome_template"
+            });
+        });
+
+        self.add("state_send_welcome_template", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(
+                _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
+            var template_name = self.im.config.welcome_template;
+            return self.hub
+                .send_whatsapp_template_message(msisdn, template_name)
+                .then(function(preferred_channel) {
+                    self.im.user.set_answer("preferred_channel", preferred_channel);
+                    if (preferred_channel == "SMS") {
+                        return self.rapidpro.get_global_flag("sms_registrations_enabled")
+                            .then(function(sms_registration_enabled) {
+                                if (sms_registration_enabled) {
+                                    return self.states.create("state_trigger_rapidpro_flow");
+                                }
+                                else{
+                                    return self.states.create("state_sms_registration_not_available");
+                                }
+                            });
+                    }
+                    return self.states.create("state_trigger_rapidpro_flow");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if (opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {
+                            return_state: name
+                        });
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+        self.states.add("state_sms_registration_not_available", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $([
+                    "It seems this number is not on WhatsApp and we don't offer SMS at this moment.",
+                    "",
+                    "Please register the new number on WhatsApp for the MomConnect Service."
+                ].join("\n"))
             });
         });
 
@@ -626,7 +721,8 @@ go.app = function() {
                         "YYYYMMDD"
                     ).format(),
                 passport_origin: self.im.user.answers.state_passport_country,
-                passport_number: self.im.user.answers.state_passport_no
+                passport_number: self.im.user.answers.state_passport_no,
+                preferred_channel: self.im.user.answers.preferred_channel
             };
             return self.rapidpro
                 .start_flow(self.im.config.flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), data)
