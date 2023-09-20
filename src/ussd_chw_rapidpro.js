@@ -367,7 +367,7 @@ go.app = function() {
                     }
 
                 },
-                next: "state_trigger_rapidpro_flow"
+                next: "state_send_welcome_template"
             });
         });
 
@@ -407,7 +407,7 @@ go.app = function() {
                         );
                     }
                 },
-                next: "state_trigger_rapidpro_flow"
+                next: "state_send_welcome_template"
             });
         });
 
