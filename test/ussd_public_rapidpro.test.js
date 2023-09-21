@@ -2,6 +2,7 @@ var vumigo = require("vumigo_v02");
 var AppTester = vumigo.AppTester;
 var assert = require("assert");
 var fixtures_rapidpro = require("./fixtures_rapidpro")();
+var fixtures_hub = require("./fixtures_hub")();
 
 describe("ussd_public app", function() {
     var app;
@@ -16,9 +17,14 @@ describe("ussd_public app", function() {
                 rapidpro: {
                     base_url: "https://rapidpro",
                     token: "rapidprotoken"
+                },
+                hub: {
+                    base_url: "http://hub",
+                    token: "hub-token"
                 }
             },
-            flow_uuid: "rapidpro-flow-uuid"
+            flow_uuid: "rapidpro-flow-uuid",
+            welcome_template: "test-welcome-template"
         });
     });
 
@@ -707,5 +713,132 @@ describe("ussd_public app", function() {
                 })
                 .run();
         });
+    });
+    describe("state_send_welcome_template", function() {
+        it("should go to state_sms_registration_not_available if sms is not enabled", function() {
+            return tester
+                .setup.user.state("state_send_welcome_template")
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_hub.send_whatsapp_template_message(
+                          "+27123456789",
+                          "test-welcome-template",
+                          null,
+                          "SMS"
+                        )
+                    );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_global_flag("sms_registrations_enabled", "FALSE")
+                    );
+                })
+                .input({session_event: "continue"})
+                .check.interaction({
+                    state: "state_sms_registration_not_available",
+                    reply: [
+                        "It seems this number is not on WhatsApp and we don't offer SMS at this moment.",
+                        "",
+                        "Please register the new number on WhatsApp for the MomConnect Service."
+                    ].join("\n"),
+                    char_limit: 160
+                })
+                .check.reply.ends_session()
+                .run();
+        });
+
+        it("should go through state_trigger_rapidpro_flow if sms is enabled", function() {
+            return tester
+                .setup.user.state("state_send_welcome_template")
+                .setup.user.answers({
+                    state_research_consent: "no",
+                    state_opt_in: "yes",
+                    opted_out: "False"
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_hub.send_whatsapp_template_message(
+                          "+27123456789",
+                          "test-welcome-template",
+                          null,
+                          "SMS"
+                        )
+                    );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_global_flag("sms_registrations_enabled", "TRUE")
+                    );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "rapidpro-flow-uuid",
+                            null,
+                            "whatsapp:27123456789",
+                            {
+                                research_consent:"FALSE",
+                                registered_by: "+27123456789",
+                                language: "eng",
+                                timestamp: "2014-04-04T07:07:07Z",
+                                source: "Public USSD",
+                                mha: 6,
+                                preferred_channel: "SMS"
+                            }
+                        )
+                    );
+                })
+                .input({session_event: "continue"})
+                .check.interaction({
+                    state: "state_registration_complete",
+                    reply:
+                        "You're done! This number 0123456789 will get helpful messages from " +
+                        "MomConnect. For the full set of messages, visit a clinic."
+                })
+                .check.reply.ends_session()
+                .run();
+        });
+    });
+    it("should go through state_trigger_rapidpro_flow if whatsapp template is sent", function() {
+        return tester
+        .setup.user.state("state_send_welcome_template")
+        .setup.user.answers({
+            state_research_consent: "no",
+            state_opt_in: "yes",
+            opted_out: "False"
+        })
+        .setup(function(api) {
+            api.http.fixtures.add(
+                fixtures_hub.send_whatsapp_template_message(
+                  "+27123456789",
+                  "test-welcome-template",
+                  null,
+                  "Whatsapp"
+                )
+            );
+            api.http.fixtures.add(
+                fixtures_rapidpro.get_global_flag("sms_registrations_enabled", "TRUE")
+            );
+            api.http.fixtures.add(
+                fixtures_rapidpro.start_flow(
+                    "rapidpro-flow-uuid",
+                    null,
+                    "whatsapp:27123456789",
+                    {
+                        research_consent:"FALSE",
+                        registered_by: "+27123456789",
+                        language: "eng",
+                        timestamp: "2014-04-04T07:07:07Z",
+                        source: "Public USSD",
+                        mha: 6,
+                        preferred_channel: "Whatsapp"
+                    }
+                )
+            );
+        })
+        .input({session_event: "continue"})
+        .check.interaction({
+            state: "state_registration_complete",
+            reply:
+                "You're done! This number 0123456789 will get helpful messages from " +
+                "MomConnect. For the full set of messages, visit a clinic."
+        })
+        .check.reply.ends_session()
+        .run();
+
     });
 });
