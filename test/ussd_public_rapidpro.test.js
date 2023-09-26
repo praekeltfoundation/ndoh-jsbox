@@ -477,7 +477,21 @@ describe("ussd_public app", function() {
         });
         it("should skip the opt in if the user hasn't opted out before", function() {
             return tester
+                .setup.user.answers({
+                    state_research_consent: "no",
+                    state_opt_in: "yes",
+                    opted_out: "False",
+                    preferred_channel: "Whatsapp"
+                })
                 .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_hub.send_whatsapp_template_message(
+                          "+27123456789",
+                          "test-welcome-template",
+                          null,
+                          "Whatsapp"
+                        )
+                    );
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
@@ -489,7 +503,9 @@ describe("ussd_public app", function() {
                                 "source": "Public USSD",
                                 "timestamp": "2014-04-04T07:07:07Z",
                                 "registered_by": "+27123456789",
-                                "mha": 6
+                                "mha": 6,
+                                "swt": "7",
+                                "preferred_channel": "Whatsapp"
                             }
                         )
                     );
@@ -503,6 +519,9 @@ describe("ussd_public app", function() {
     describe("state_trigger_rapidpro_flow", function() {
         it("should start a flow with the correct metadata", function() {
             return tester
+                .setup.user.answers({
+                    preferred_channel: "Whatsapp"
+                })
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
@@ -515,7 +534,9 @@ describe("ussd_public app", function() {
                                 "source": "Public USSD",
                                 "timestamp": "2014-04-04T07:07:07Z",
                                 "registered_by": "+27123456789",
-                                "mha": 6
+                                "mha": 6,
+                                "swt": "7",
+                                "preferred_channel": "Whatsapp"
                             }
                         )
                     );
@@ -529,6 +550,9 @@ describe("ussd_public app", function() {
         });
         it("should retry in the case of HTTP failures", function() {
             return tester
+                .setup.user.answers({
+                    preferred_channel: "Whatsapp"
+                })
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
@@ -541,7 +565,9 @@ describe("ussd_public app", function() {
                                 "source": "Public USSD",
                                 "timestamp": "2014-04-04T07:07:07Z",
                                 "registered_by": "+27123456789",
-                                "mha": 6
+                                "mha": 6,
+                                "swt": "7",
+                                "preferred_channel": "Whatsapp"
                             },
                             true
                         )
@@ -564,7 +590,21 @@ describe("ussd_public app", function() {
     describe("state_registration_complete", function() {
         it("should show the complete message for all users", function() {
             return tester
+                .setup.user.answers({
+                    state_research_consent: "no",
+                    state_opt_in: "yes",
+                    opted_out: "False",
+                    preferred_channel: "Whatsapp"
+                })
                 .setup(function(api) {
+                    api.http.fixtures.add(
+                            fixtures_hub.send_whatsapp_template_message(
+                              "+27123456789",
+                              "test-welcome-template",
+                              null,
+                              "Whatsapp"
+                            )
+                        );
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
                             "rapidpro-flow-uuid",
@@ -576,7 +616,9 @@ describe("ussd_public app", function() {
                                 "source": "Public USSD",
                                 "timestamp": "2014-04-04T07:07:07Z",
                                 "registered_by": "+27123456789",
-                                "mha": 6
+                                "mha": 6,
+                                "swt": "7",
+                                "preferred_channel": "Whatsapp"
                             }
                         )
                     );
@@ -777,7 +819,8 @@ describe("ussd_public app", function() {
                                 timestamp: "2014-04-04T07:07:07Z",
                                 source: "Public USSD",
                                 mha: 6,
-                                preferred_channel: "SMS"
+                                swt: "1",
+                                preferred_channel: "SMS",
                             }
                         )
                     );
@@ -825,7 +868,8 @@ describe("ussd_public app", function() {
                         timestamp: "2014-04-04T07:07:07Z",
                         source: "Public USSD",
                         mha: 6,
-                        preferred_channel: "Whatsapp"
+                        swt: "7",
+                        preferred_channel: "Whatsapp",
                     }
                 )
             );
