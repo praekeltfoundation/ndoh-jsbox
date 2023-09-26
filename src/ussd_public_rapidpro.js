@@ -270,7 +270,7 @@ go.app = function() {
             // Skip this state if they haven't opted out
             var contact = self.im.user.get_answer("contact");
             if(_.toUpper(_.get(contact, "fields.opted_out")) !== "TRUE") {
-                return self.states.create("state_trigger_rapidpro_flow");
+                return self.states.create("state_send_welcome_template");
             }
             return new MenuState(name, {
                 question: $(
@@ -350,8 +350,11 @@ go.app = function() {
                 timestamp: new moment.utc(self.im.config.testing_today).format(),
                 registered_by: msisdn,
                 mha: 6,
-                preferred_channel: self.im.user.answers.preferred_channel
+                swt: self.im.user.get_answer("preferred_channel") === "SMS" ? "1" : "7",
+                preferred_channel: self.im.user.get_answer("preferred_channel"),
+
             };
+
             return self.rapidpro
                 .start_flow(self.im.config.flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), data)
                 .then(function() {
