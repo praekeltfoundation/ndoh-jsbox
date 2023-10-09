@@ -33,6 +33,8 @@ describe("ussd_tb_check app", function () {
           "9": "tb_soccer_2_2022",
           "6": "skip_location_2022",
           "7": "tb_study_a",
+          "2": "tb_study_b",
+          "3": "tb_study_c",
           "5": "tb_study_a_survey_group1",
           "4": "tb_study_a_survey_group2",
           "11": "tb_school_1",
@@ -594,7 +596,7 @@ describe("ussd_tb_check app", function () {
           state: "state_privacy_policy_accepted",
           reply: [
             "Your personal information is protected under POPIA and in accordance " +
-            "with the provisions of the TBHealthCheck Privacy Notice sent to you by SMS.",
+            "with the provisions of the TB HealthCheck Privacy Notice sent to you by SMS.",
             "1. ACCEPT"
           ].join("\n"),
           char_limit: 160,
@@ -609,7 +611,7 @@ describe("ussd_tb_check app", function () {
           state: "state_privacy_policy_accepted",
           reply: [
             "Your personal information is protected under POPIA and in accordance " +
-            "with the provisions of the TBHealthCheck Privacy Notice sent to you by SMS.",
+            "with the provisions of the TB HealthCheck Privacy Notice sent to you by SMS.",
             "1. ACCEPT"
           ].join("\n"),
           char_limit: 160,
@@ -682,20 +684,6 @@ describe("ussd_tb_check app", function () {
           char_limit: 160,
       })
       .run();
-    });
-    it("should show minor error message for the study", function () {
-      return tester.setup.user
-        .state("state_research_consent")
-        .setup.user.answer("state_age", "<18")
-        .check.user.state("state_gender")
-        .run();
-    });
-     it("should skip minor error message for the study", function () {
-      return tester.setup.user
-        .state("state_research_consent")
-        .setup.user.answer("state_age", "18-40")
-        .check.user.state("state_research_consent")
-        .run();
     });
     it("should display gender for minor", function () {
       return tester.setup.user
@@ -927,27 +915,11 @@ describe("ussd_tb_check app", function () {
         .check.user.state("state_suburb_name")
         .run();
     });
-    it("should skip province state for users who already have province and using a study", function () {
-      return tester.setup.user
-        .state("state_province")
-        .setup.user.answer("state_province", "ZA-WC")
-        .setup.user.answer("activation", "tb_study_a")
-        .check.user.state("state_street_name")
-        .run();
-    });
     it("should go to state_street_name", function () {
       return tester.setup.user
         .state("state_province")
         .input("1")
         .check.user.state("state_suburb_name")
-        .run();
-    });
-    it("should go to state_street_name for the study", function () {
-      return tester.setup.user
-        .state("state_province")
-        .setup.user.answer("activation", "tb_study_a")
-        .input("1")
-        .check.user.state("state_street_name")
         .run();
     });
   });
@@ -1323,15 +1295,6 @@ describe("ussd_tb_check app", function () {
         .check.user.state("state_suburb_name")
         .run();
     });
-    it("go back to state_city if user selects no for the study", function () {
-      return tester.setup.user
-        .state("state_confirm_city")
-        .setup.user.answer("activation", "tb_study_a")
-        .setup.user.answer("state_city", "Cape Town, South Africa")
-        .input("2")
-        .check.user.state("state_street_name")
-        .run();
-    });
     it("go to state_cough if user selects yes", function () {
       return tester
         .setup(function (api) {
@@ -1493,6 +1456,14 @@ describe("ussd_tb_check app", function () {
         .check.user.state("state_province")
         .run();
     });
+    it("should skip state_province and location for the study", function () {
+      return tester.setup.user
+        .state("state_gender")
+        .setup.user.answer("activation", "tb_study_b")
+        .input("2")
+        .check.user.state("state_cough")
+        .run();
+    });
   });
   describe("state_cough", function () {
     it("should ask if they have a cough", function () {
@@ -1651,10 +1622,26 @@ describe("ussd_tb_check app", function () {
         .check.user.state("state_tracing")
         .run();
     });
-    it("should go to state_study_tracing", function () {
+    it("should go to state_tracing for tb_study_a", function () {
       return tester.setup.user
         .state("state_exposure")
         .setup.user.answer("activation", "tb_study_a")
+        .input("1")
+        .check.user.state("state_tracing")
+        .run();
+    });
+    it("should go to state_study_tracing for tb_study_b ", function () {
+      return tester.setup.user
+        .state("state_exposure")
+        .setup.user.answer("activation", "tb_study_b")
+        .input("1")
+        .check.user.state("state_study_tracing")
+        .run();
+    });
+    it("should go to state_study_tracing for tb_study_c", function () {
+      return tester.setup.user
+        .state("state_exposure")
+        .setup.user.answer("activation", "tb_study_c")
         .input("1")
         .check.user.state("state_study_tracing")
         .run();
@@ -2021,88 +2008,19 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
-    it("should show the state_health_consequence message", function () {
-      return tester.setup.user
-        .state("state_display_arm_message")
-        .setup.user.answers({
-          group_arm: "health_consequence",
-          research_consent: true,
-        })
-        .check.interaction({
-          state: "state_health_consequence",
-          reply: [
-            "Your replies to the questions show that you need a TB test this week!",
-            "1. Next",
-          ].join("\n"),
-          char_limit: 160,
-        })
-        .run();
-    });
-    it("should show the planning_prompt message", function () {
-      return tester.setup.user
-        .state("state_display_arm_message")
-        .setup.user.answers({
-          group_arm: "planning_prompt",
-          research_consent: true,
-        })
-        .check.interaction({
-          state: "state_planning_prompt",
-          reply:[
-            "Your replies to the questions show that you need a TB test this week!",
-            "",
-            "Here are some tips to help you plan:",
-            "1. Next",
-          ].join("\n"),
-          char_limit: 160,
-        })
-        .run();
-    });
-    it("should show the state_health_consequence message", function () {
-      return tester.setup.user
-        .state("state_display_arm_message")
-        .setup.user.answers({
-          group_arm: "health_consequence",
-          research_consent: true,
-        })
-        .check.interaction({
-          state: "state_health_consequence",
-          reply: [
-            "Your replies to the questions show that you need a TB test this week!",
-            "1. Next",
-          ].join("\n"),
-          char_limit: 160,
-        })
-        .run();
-    });
-    it("should show the soft_commitment message", function () {
-      return tester.setup.user
-        .state("state_display_arm_message")
-        .setup.user.answers({
-          group_arm: "soft_commitment",
-          research_consent: true,
-        })
-        .check.interaction({
-          state: "state_soft_commitment",
-          reply:
-            [
-            "Your replies to the questions show that you need a TB test this week!",
-            "",
-            "* Go to your local clinic for a free TB test.",
-            "1. Next"
-          ].join("\n"),
-        })
-        .run();
-    });
     it("should show the soft_commitment_plus next message", function () {
       return tester.setup.user
         .state("state_soft_commitment_plus")
         .input("1")
         .check.interaction({
-          state: "state_commitment_incentive",
+          state: "state_commit_to_get_tested",
           reply: [
-            "* Visit your local clinic for a free TB test.",
-            "* You will get R15 airtime within 1 hour if you commit to get tested.",
-            "1. Next",
+            "You will get R15 airtime if you commit to get tested.",
+            "Airtime will be sent to you within 1 hour.",
+            "",
+            "Do you commit to getting tested?",
+            "1. YES",
+            "2. NO",
           ].join("\n"),
           char_limit: 160,
         })
@@ -2119,6 +2037,8 @@ describe("ussd_tb_check app", function () {
           state: "state_soft_commitment_plus",
           reply:[
             "Your replies to the questions show that you need a TB test this week!",
+            "",
+            "With early diagnosis, TB can be cured. Don’t delay, test today!",
             "1. Next",
           ].join("\n"),
           char_limit: 160,
@@ -2184,56 +2104,6 @@ describe("ussd_tb_check app", function () {
         .check.user.state("state_show_results")
         .run();
     });
-    it("should get nearest clinics", function () {
-      return tester.setup.user
-        .state("state_get_nearest_clinic")
-        .setup.user.answers({
-          location_lng: 26.68533,
-          location_lat: -27.87308,
-        })
-        .setup(function (api) {
-          api.http.fixtures.add({
-            request: {
-              url: "http://healthcheck/v1/clinic_finder",
-              method: "GET",
-              params: {
-                longitude: "26.68533",
-                latitude: "-27.87308",
-              },
-            },
-            response: {
-              code: 200,
-              data:{
-                  id: 68,
-                  locations:
-                    [{
-                      "address": "203 Mark Street",
-                      "code": 853642,
-                      "latitude": -27.873,
-                      "location": "POINT (26.68533 -27.87308)",
-                      "longitude": 26.68533,
-                      "name": "fs AM Kruger Clinic",
-                      "province": "Free State",
-                      "short_name": "AM Kruger Clinic"
-                    },
-                    {
-                      "address": "4 Olifant Street",
-                      "code": 734833,
-                      "latitude": -27.7533,
-                      "location": "POINT (26.64478 -27.75332)",
-                      "longitude": 26.64478,
-                      "name": "fs Allanridge Clinic",
-                      "province": "Free State",
-                      "short_name": "Allanridge Clinic"
-                    },
-                    ],
-              }
-            },
-          });
-        })
-        .check.user.state("state_clinic_to_visit")
-        .run();
-    });
     it("should show the day of visit options message", function () {
       return tester.setup.user
         .state("state_clinic_visit_day")
@@ -2247,84 +2117,6 @@ describe("ussd_tb_check app", function () {
             "4. THURSDAY",
              "5. FRIDAY",
             ].join("\n"),
-        })
-        .run();
-    });
-    it("should show the clinic lists message", function () {
-      return tester.setup.user
-        .state("state_clinic_to_visit")
-        .setup.user.answers({
-          nearest_clinic: [{
-                  "address": "203 Mark Street",
-                  "code": 853642,
-                  "latitude": -27.873,
-                  "location": "POINT (26.68533 -27.87308)",
-                  "longitude": 26.68533,
-                  "name": "fs AM Kruger Clinic",
-                  "province": "Free State",
-                  "short_name": "AM Kruger Clinic"
-                },
-                {
-                  "address": "565 Vorster Street, Wesselsbron, 9680",
-                  "code": 897151,
-                  "latitude": -27.8362,
-                  "location": "POINT (26.3668 -27.8362)",
-                  "longitude": 26.3668,
-                  "name": "fs Albert Luthuli Memorial Clinic",
-                  "province": "Free State",
-                  "short_name": "Albert Luthuli Mem Clinic"
-                },
-                {
-                  "address": "4 Olifant Street",
-                  "code": 734833,
-                  "latitude": -27.7533,
-                  "location": "POINT (26.64478 -27.75332)",
-                  "longitude": 26.64478,
-                  "name": "fs Allanridge Clinic",
-                  "province": "Free State",
-                  "short_name": "Allanridge Clinic"
-                },
-                ],
-        })
-        .check.interaction({
-          state: "state_clinic_to_visit",
-          reply:[
-            "Where will you go for your test? Reply with the clinic",
-            "1. AM Kruger Clinic",
-            "2. Albert Luthuli Mem Clinic",
-            "3. Allanridge Clinic",
-            ].join("\n"),
-        })
-        .run();
-    });
-    it("should submit user clinic options", function () {
-      return tester.setup.user
-        .state("state_submit_clinic_option")
-        .setup.user.answers({
-          tbcheck_id: 54,
-          clinic_to_visit: "Addo Clinic",
-          clinic_visit_day: "mon",
-        })
-        .setup(function (api) {
-          api.http.fixtures.add({
-            request: {
-              url: "http://healthcheck/v2/tbcheck/" + 54 + "/",
-              method: "PATCH",
-              data: {
-                clinic_to_visit: 'Addo Clinic',
-                clinic_visit_day: 'mon'
-              }
-            },
-            response: {
-              code: 200,
-              data: {
-                accepted: true,
-              },
-            },
-          });
-        })
-        .check.interaction({
-          state: "state_end",
         })
         .run();
     });
@@ -2389,9 +2181,12 @@ describe("ussd_tb_check app", function () {
           });
         })
         .check.interaction({
-          state: "state_commitment",
-          reply:
-            "Even if you can't commit now, it is still important to get tested.",
+          state: "state_commit_to_get_tested_no",
+          reply:[
+            "WCDoH strongly encourages you to screen for your own benefit.",
+            "",
+            "You can complete a TBCheck any time by dialling *134*832*5# or Whatsapp TB to 0600123456"
+            ].join("\n"),
           char_limit: 160,
         })
         .run();
