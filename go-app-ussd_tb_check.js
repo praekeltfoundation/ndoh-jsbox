@@ -402,7 +402,7 @@ go.app = function () {
       return new MenuState(name, {
         question: $(
           "Your personal information is protected under POPIA and in accordance " +
-          "with the provisions of the TBHealthCheck Privacy Notice sent to you by SMS."
+          "with the provisions of the TB HealthCheck Privacy Notice sent to you by SMS."
         ),
         accept_labels: true,
         choices: [new Choice(next_state, $("ACCEPT"))],
@@ -501,11 +501,11 @@ go.app = function () {
       var activation = self.im.user.answers.activation;
       var next_state = "state_gender";
 
-      if (activation === "tb_study_a") {
+      if (activation === "tb_study_a" || activation === "tb_study_b" || activation === "tb_study_c") {
         next_state = "state_research_consent";
       }
 
-      if (self.im.user.answers.state_age && activation !== "tb_study_a") {
+      if (self.im.user.answers.state_age) {
         return self.states.create("state_gender");
       }
       return new ChoiceState(name, {
@@ -522,30 +522,6 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_study_minor_error_p1", function(name) {
-      return new MenuState(name, {
-        question: $(
-          "Unfortunately you cant participate in the study "+
-          "if you are younger than 18."
-        ),
-        accept_labels: true,
-        choices: [
-            new Choice("state_study_minor_error_p2", $("Next"))],
-      });
-    });
-
-    self.states.add("state_study_minor_error_p2", function(name) {
-      return new MenuState(name, {
-        question: $(
-          "You can still continue with a "+
-          "TB Check but you will not be included in the study"
-        ),
-        accept_labels: true,
-        choices: [
-            new Choice("state_gender", $("Next"))],
-      });
-    });
-
     self.states.add("state_research_consent_no", function(name) {
       return new MenuState(name, {
         question: $(
@@ -559,9 +535,17 @@ go.app = function () {
     });
 
     self.add("state_gender", function (name) {
-      if (self.im.user.answers.state_gender) {
-        return self.states.create("state_province");
+      var activation = self.im.user.answers.activation;
+      var next = "state_province";
+
+      if (self.im.user.answers.state_gender && activation != "undefined") {
+        next = "state_cough";
       }
+
+      if (activation === "tb_study_a" || activation === "tb_study_b" || activation === "tb_study_c") {
+        next = "state_cough";
+      }
+
       return new ChoiceState(name, {
         question: $("Which gender do you identify as?"),
         error: $(
@@ -578,24 +562,15 @@ go.app = function () {
           new Choice("other", $("OTHER")),
           new Choice("not_say", $("RATHER NOT SAY")),
         ],
-        next: "state_province",
+        next: next,
       });
     });
 
     self.add("state_province", function (name) {
-      var activation = self.im.user.answers.activation;
-      var next = "state_suburb_name";
-
-      if (activation === "tb_study_a") {
-        next = "state_street_name";
-      }
+      var next_state = "state_suburb_name";
 
       if (self.im.user.answers.state_age === "<18"){
-        next = "state_cough";
-      }
-
-      if (self.im.user.answers.state_province && activation === "tb_study_a") {
-        return self.states.create("state_street_name");
+        next_state = "state_cough";
       }
       else if (self.im.user.answers.state_province) {
         return self.states.create("state_suburb_name");
@@ -615,7 +590,7 @@ go.app = function () {
           new Choice("ZA-NC", $("N. CAPE")),
           new Choice("ZA-WC", $("W. CAPE")),
         ],
-        next: next,
+        next: next_state,
       });
     });
 
@@ -667,19 +642,6 @@ go.app = function () {
     });
 
     self.add("state_city", function (name) {
-      var activation = self.im.user.answers.activation;
-
-      if (activation === "tb_study_a") {
-          if (
-            self.im.user.answers.state_street_name &&
-            self.im.user.answers.state_suburb_name &&
-            self.im.user.answers.state_city &&
-            self.im.user.answers.city_location
-          ) {
-            return self.states.create("state_cough");
-          }
-      }
-
       if (
             self.im.user.answers.state_suburb_name &&
             self.im.user.answers.state_city &&
@@ -765,12 +727,7 @@ go.app = function () {
     self.add("state_confirm_city", function (name, opts) {
 
       var state_city = (self.im.user.answers.state_city).slice(0, 36);
-      var activation = self.im.user.answers.activation;
       var no_next_state = "state_suburb_name";
-
-      if (activation === "tb_study_a") {
-        no_next_state = "state_street_name";
-      }
 
       return new MenuState(name, {
         question: $(
@@ -904,7 +861,7 @@ go.app = function () {
       var next_state = "state_tracing";
       var activation = self.im.user.answers.activation;
 
-      if (activation === "tb_study_a"){
+      if (activation === "tb_study_b" || activation === "tb_study_c"){
         next_state = "state_study_tracing";
       }
 
@@ -931,7 +888,7 @@ go.app = function () {
       var next_state = "state_opt_in";
       var activation = self.im.user.answers.activation;
 
-      if (activation === "tb_study_a"){
+      if (activation === "tb_study_b" || activation === "tb_study_c"){
         next_state = "state_submit_data";
       }
 
@@ -964,7 +921,7 @@ go.app = function () {
       var next_state = "state_opt_in";
       var activation = self.im.user.answers.activation;
 
-      if (activation === "tb_study_a"){
+      if (activation === "tb_study_b" || activation === "tb_study_c"){
         next_state = "state_submit_data";
       }
 
@@ -1019,7 +976,7 @@ go.app = function () {
       var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
       var activation = self.get_activation();
 
-      if (activation === "tb_study_a"){
+      if (activation === "tb_study_b" || activation === "tb_study_c"){
         self.im.user.answers.state_tracing = answers.state_study_tracing;
       }
 
@@ -1145,110 +1102,56 @@ go.app = function () {
         });
     });
 
-    self.add("state_health_consequence", function (name) {
-      return new MenuState(name, {
-        question: $(
-          "Your replies to the questions show that you need a TB test this week!"
-        ),
-        accept_labels: true,
-        choices: [new Choice("state_early_diagnosis", $("Next"))],
-      });
-    });
-
-    self.states.add("state_early_diagnosis", function(name) {
-        return new EndState(name, {
-            next: "state_start",
-            text: $([
-                "With early diagnosis, TB can be cured. Don't delay, test today!",
-                "",
-                "Visit your local clinic for a free TB test. "
-            ].join("\n")
-            )
-        });
-    });
-
-    self.add("state_planning_prompt", function (name) {
+    self.states.add("state_soft_commitment_plus", function (name) {
       return new MenuState(name, {
         question: $([
             "Your replies to the questions show that you need a TB test this week!",
             "",
-            "Here are some tips to help you plan:"
+            "With early diagnosis, TB can be cured. Don’t delay, test today!"
             ].join("\n")
         ),
         accept_labels: true,
-        choices: [new Choice("state_pick_convenient_clinic", $("Next"))],
+        choices: [new Choice("state_commit_to_get_tested", $("Next"))],
       });
     });
 
-    self.add("state_pick_convenient_clinic", function (name) {
+    self.states.add("state_commit_to_get_tested", function (name) {
       return new MenuState(name, {
-        question: $([
-            "* Make the time. Your health is a priority!",
-            "* Pick the most convenient clinic for your test",
-            "* Get there early! Clinics are open for TB testing",
-             "Monday to Friday mornings."
+        question: $(["You will get R15 airtime if you commit to get tested.",
+                    "Airtime will be sent to you within 1 hour.",
+                    "",
+                    "Do you commit to getting tested?"
+                    ].join("\n")
+                    ),
+        error: $("Please use numbers from list. Do you commit to getting tested?"),
+        accept_labels: true,
+        choices: [new Choice("state_commit_to_get_tested_yes", $("YES")),
+                  new Choice("state_submit_test_commit", $("NO"))],
+      });
+    });
+
+    self.states.add("state_commit_to_get_tested_yes", function(name) {
+        return new MenuState(name, {
+            question: $([
+                "For a list of facilities in your community, please access the facilities ",
+                "section of the Western Cape Government website.",
             ].join("\n")
-        ),
-        accept_labels: true,
-        choices: [new Choice("state_get_nearest_clinic", $("Next"))],
-      });
+            ),
+            accept_labels: true,
+            choices: [new Choice("state_clinic_visit_day", $("Next"))],
+        });
     });
 
-    self.add("state_get_nearest_clinic", function (name, opts) {
-      var answers = self.im.user.answers;
-      var lng = answers.location_lng;
-      var lat = answers.location_lat;
-
-      return new JsonApi(self.im)
-        .get(self.im.config.healthcheck.url + "/v1/clinic_finder",
-                {
-                headers: {
-                  Authorization: ["Token " + self.im.config.healthcheck.token],
-                  "User-Agent": ["Jsbox/TB-Check-USSD"],
-                },
-                params: {
-                    longitude: lng.toString(),
-                    latitude: lat.toString()
-                }
-                }
-        )
-        .then(
-          function (response) {
-            answers.nearest_clinic = response.data.locations;
-            answers.tbcheck_id = response.data.id;
-
-            return self.states.create("state_clinic_to_visit");
-          },
-          function (e) {
-            // Go to error state after 3 failed HTTP requests
-            opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-            if (opts.http_error_count === 3) {
-              self.im.log.error(e.message);
-              return self.states.create("__error__", { return_state: name });
-            }
-            return self.states.create(name, opts);
-          }
-        );
-    });
-
-    self.add("state_clinic_to_visit", function (name) {
-      var answers = self.im.user.answers;
-      var nearest_clinic = answers.nearest_clinic;
-      var choice_list = [];
-
-      nearest_clinic.forEach(function(clinic){
-        // append clinic to choices
-        choice_list.push(new Choice(clinic.shortname, $(clinic.short_name)));
-      });
-
-      return new ChoiceState(name, {
-        question: $(
-          "Where will you go for your test? Reply with the clinic"
-        ),
-        accept_labels: true,
-        choices: choice_list,
-        next: "state_clinic_visit_day",
-      });
+    self.states.add("state_commit_to_get_tested_no", function(name) {
+        return new EndState(name, {
+            next: "state_submit_test_commit",
+            text: $([
+                "WCDoH strongly encourages you to screen for your own benefit.",
+                "",
+                "You can complete a TBCheck any time by dialling *134*832*5# or Whatsapp TB to 0600123456",
+            ].join("\n")
+            ),
+        });
     });
 
     self.add("state_clinic_visit_day", function (name) {
@@ -1264,69 +1167,7 @@ go.app = function () {
             new Choice("thu", $("THURSDAY")),
             new Choice("fri", $("FRIDAY"))
             ],
-        next: "state_planning_to_test"
-      });
-    });
-
-    self.states.add("state_planning_to_test", function (name) {
-      return new EndState(name, {
-        text: $("Well done for planning to get your test!"),
-        next: "state_submit_clinic_option"
-      });
-    });
-
-    self.states.add("state_soft_commitment", function(name) {
-        return new MenuState(name, {
-            question: $([
-                "Your replies to the questions show that you need a TB test this week!",
-                "",
-                "* Go to your local clinic for a free TB test.",
-            ].join("\n")
-            ),
-            accept_labels: true,
-            choices: [new Choice("state_commit_to_get_tested", $("Next"))],
-        });
-    });
-
-    self.states.add("state_soft_commitment_plus", function (name) {
-      return new MenuState(name, {
-        question: $(
-            "Your replies to the questions show that you need a TB test this week!"
-        ),
-        accept_labels: true,
-        choices: [new Choice("state_commitment_incentive", $("Next"))],
-      });
-    });
-
-    self.states.add("state_commitment_incentive", function (name) {
-      return new MenuState(name, {
-        question: $([
-            "* Visit your local clinic for a free TB test.",
-            "* You will get R15 airtime within 1 hour if you commit to get tested.",
-            ].join("\n")
-        ),
-        accept_labels: true,
-        choices: [new Choice("state_go_for_test", $("Next"))],
-      });
-    });
-
-    self.states.add("state_go_for_test", function (name) {
-      return new MenuState(name, {
-        question: $(
-            "Your replies to the questions show that you need a TB test this week."
-        ),
-        accept_labels: true,
-        choices: [new Choice("state_commit_to_get_tested", $("Next"))],
-      });
-    });
-
-    self.states.add("state_commit_to_get_tested", function (name) {
-      return new ChoiceState(name, {
-        question: $("Do you commit to getting tested?"),
-        error: $("Please use numbers from list. Do you commit to getting tested?"),
-        accept_labels: true,
-        choices: [new Choice(true, $("YES")), new Choice(false, $("NO"))],
-        next: "state_submit_test_commit",
+        next: "state_submit_test_commit"
       });
     });
 
@@ -1337,38 +1178,7 @@ go.app = function () {
       var payload = {
         data: {
           commit_get_tested: answers.state_commit_to_get_tested ? "yes" : "no",
-          "source": "USSD"
-        },
-        headers: {
-          Authorization: ["Token " + self.im.config.healthcheck.token],
-          "User-Agent": ["Jsbox/TB-Check-USSD"],
-        },
-      };
-      return new JsonApi(self.im)
-        .patch(self.im.config.healthcheck.url + "/v2/tbcheck/"+ id +"/", payload)
-        .then(
-          function () {
-            return self.states.create("state_commitment");
-          },
-          function (e) {
-            // Go to error state after 3 failed HTTP requests
-            opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
-            if (opts.http_error_count === 3) {
-              self.im.log.error(e.message);
-              return self.states.create("__error__", { return_state: name });
-            }
-            return self.states.create(name, opts);
-          }
-        );
-      });
-
-    self.states.add("state_submit_clinic_option", function (name, opts) {
-      var answers = self.im.user.answers;
-      var id = answers.tbcheck_id;
-
-      var payload = {
-        data: {
-          clinic_to_visit: answers.clinic_to_visit,
+          "source": "USSD",
           clinic_visit_day: answers.clinic_visit_day,
         },
         headers: {
@@ -1380,7 +1190,12 @@ go.app = function () {
         .patch(self.im.config.healthcheck.url + "/v2/tbcheck/"+ id +"/", payload)
         .then(
           function () {
-            return self.states.create("state_end");
+            if (answers.state_commit_to_get_tested){
+                return self.states.create("state_commitment");
+                }
+            else{
+                return self.states.create("state_commit_to_get_tested_no");
+            }
           },
           function (e) {
             // Go to error state after 3 failed HTTP requests
@@ -1395,12 +1210,7 @@ go.app = function () {
       });
 
     self.states.add("state_commitment", function (name) {
-      var answers = self.im.user.answers;
       var text = $("Well done for committing to your health!");
-
-      if (!answers.state_commit_to_get_tested) {
-        text = $("Even if you can't commit now, it is still important to get tested.");
-      }
 
       return new EndState(name, {
         text: text,
