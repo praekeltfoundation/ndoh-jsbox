@@ -1627,7 +1627,7 @@ describe("ussd_tb_check app", function () {
         .state("state_exposure")
         .setup.user.answer("activation", "tb_study_a")
         .input("1")
-        .check.user.state("state_tracing")
+        .check.user.state("state_study_tracing")
         .run();
     });
     it("should go to state_study_tracing for tb_study_b ", function () {
@@ -2522,7 +2522,7 @@ describe("ussd_tb_check app", function () {
     });
   });
   describe("state_no_province", function () {
-    it("go to state_complete for valid answer and assign to ZA-WC for null province", function () {
+    it("go to state_complete for valid answer and assign to blank for null province", function () {
       return tester.setup.user
         .state("state_opt_in")
         .setup.user.answers({
@@ -2547,7 +2547,7 @@ describe("ussd_tb_check app", function () {
                 msisdn: "+27123456789",
                 source: "USSD",
                 language: "eng",
-                province: "ZA-WC",
+                province: "",
                 city: "JHB",
                 age: "<18",
                 gender: "male",
