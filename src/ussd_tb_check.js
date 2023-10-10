@@ -744,7 +744,7 @@ go.app = function () {
       var next_state = "state_tracing";
       var activation = self.im.user.answers.activation;
 
-      if (activation === "tb_study_b" || activation === "tb_study_c"){
+      if (activation === "tb_study_a" || activation === "tb_study_b" || activation === "tb_study_c"){
         next_state = "state_study_tracing";
       }
 
@@ -769,11 +769,6 @@ go.app = function () {
 
     self.add("state_tracing", function (name) {
       var next_state = "state_opt_in";
-      var activation = self.im.user.answers.activation;
-
-      if (activation === "tb_study_b" || activation === "tb_study_c"){
-        next_state = "state_submit_data";
-      }
 
       var question = $(
           "Now, please agree that the info you shared is correct and that you give " +
@@ -804,7 +799,7 @@ go.app = function () {
       var next_state = "state_opt_in";
       var activation = self.im.user.answers.activation;
 
-      if (activation === "tb_study_b" || activation === "tb_study_c"){
+      if (activation === "tb_study_a" || activation === "tb_study_b" || activation === "tb_study_c"){
         next_state = "state_submit_data";
       }
 
@@ -859,7 +854,7 @@ go.app = function () {
       var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
       var activation = self.get_activation();
 
-      if (activation === "tb_study_b" || activation === "tb_study_c"){
+      if (activation === "tb_study_a" || activation === "tb_study_b" || activation === "tb_study_c"){
         self.im.user.answers.state_tracing = answers.state_study_tracing;
       }
 
@@ -868,7 +863,7 @@ go.app = function () {
           msisdn: msisdn,
           source: "USSD",
           language: answers.state_language,
-          province: answers.state_province,
+          province: answers.state_province ? answers.state_province : "",
           city: answers.state_city ? answers.state_city : "<not collected>",
           age: answers.state_age,
           gender: answers.state_gender,

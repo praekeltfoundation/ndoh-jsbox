@@ -1627,7 +1627,7 @@ describe("ussd_tb_check app", function () {
         .state("state_exposure")
         .setup.user.answer("activation", "tb_study_a")
         .input("1")
-        .check.user.state("state_tracing")
+        .check.user.state("state_study_tracing")
         .run();
     });
     it("should go to state_study_tracing for tb_study_b ", function () {
@@ -2191,7 +2191,7 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
-  describe("state_start_and _city", function () {
+  describe("state_start_and_city", function () {
     it("should set city to not collected for null city", function() {
       return tester
       .setup(function (api) {
@@ -2521,4 +2521,65 @@ describe("ussd_tb_check app", function () {
         .run();
     });
   });
+  describe("state_no_province", function () {
+    it("go to state_complete for valid answer and assign to blank for null province", function () {
+      return tester.setup.user
+        .state("state_opt_in")
+        .setup.user.answers({
+          state_province: null,
+          state_city: "JHB",
+          state_age: "<18",
+          state_gender: "male",
+          state_cough: "no",
+          state_fever: false,
+          state_sweat: false,
+          state_weight: false,
+          state_tracing: true,
+          state_exposure: "no",
+          state_language: "eng",
+        })
+        .setup(function (api) {
+          api.http.fixtures.add({
+            request: {
+              url: "http://healthcheck/v2/tbcheck/",
+              method: "POST",
+              data: {
+                msisdn: "+27123456789",
+                source: "USSD",
+                language: "eng",
+                province: "",
+                city: "JHB",
+                age: "<18",
+                gender: "male",
+                cough: "no",
+                fever: false,
+                sweat: false,
+                weight: false,
+                exposure: "no",
+                tracing: true,
+                follow_up_optin: true,
+                risk: "low",
+                activation: null,
+                data: {
+                  tb_privacy_policy_accepted: "yes"
+                }
+              },
+            },
+            response: {
+              code: 201,
+              data: {
+                id: 20,
+                profile: {
+                accepted: true,
+                tbconnect_group_arm: "control",
+                },
+              },
+            },
+          });
+        })
+        .input("1")
+        .check.user.state("state_complete")
+        .run();
+    });
+    });
 });
