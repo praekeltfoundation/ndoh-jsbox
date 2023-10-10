@@ -2522,7 +2522,7 @@ describe("ussd_tb_check app", function () {
     });
   });
   describe("state_no_province", function () {
-    it("go to state_complete for valid answer and assign to blank for null province", function () {
+    it("go to state_complete for valid answer and assign to null for non province", function () {
       return tester.setup.user
         .state("state_opt_in")
         .setup.user.answers({
@@ -2547,7 +2547,7 @@ describe("ussd_tb_check app", function () {
                 msisdn: "+27123456789",
                 source: "USSD",
                 language: "eng",
-                province: "",
+                province: null,
                 city: "JHB",
                 age: "<18",
                 gender: "male",
