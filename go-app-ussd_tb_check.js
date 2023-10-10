@@ -980,7 +980,7 @@ go.app = function () {
           msisdn: msisdn,
           source: "USSD",
           language: answers.state_language,
-          province: answers.state_province ? answers.state_province : "",
+          province: answers.state_province ? answers.state_province : null,
           city: answers.state_city ? answers.state_city : "<not collected>",
           age: answers.state_age,
           gender: answers.state_gender,
