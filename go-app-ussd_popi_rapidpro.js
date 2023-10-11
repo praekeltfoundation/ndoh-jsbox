@@ -1314,13 +1314,63 @@ go.app = function() {
                     "You've entered {{msisdn}} as your new MomConnect number. Is this correct?"
                 ).context({msisdn: msisdn}),
                 choices: [
-                    new Choice("state_msisdn_change", $("Yes")),
+                    new Choice("state_send_popi_template_message", $("Yes")),
                     new Choice("state_msisdn_change_enter", $("No, I want to try again"))
                 ],
                 error: $(
                     "Sorry we don't recognise that reply. Please enter the number next to your " +
                     "answer."
                 )
+            });
+        });
+
+        self.add("state_send_popi_template_message", function(name, opts) {
+            var msisdn = utils.normalize_msisdn(
+                self.im.user.answers.state_msisdn_change_enter, "ZA"
+            );
+            var template_name = self.im.config.popi_template;
+            var media = {
+                "filename": self.im.config.popi_filename,
+                "id": self.im.config.popi_media_uuid
+            };
+            
+            return self.hub
+                .send_whatsapp_template_message(msisdn, template_name, media)
+                .then(function(preferred_channel) {
+                    self.im.user.set_answer("preferred_channel", preferred_channel);
+                    if (preferred_channel == "SMS") {
+                        return self.rapidpro.get_global_flag("sms_registrations_enabled")
+                            .then(function(sms_registration_enabled) {
+                                if (sms_registration_enabled) {
+                                    return self.states.create("state_msisdn_change");
+                                }
+                                else{
+                                    return self.states.create("state_sms_registration_not_available");
+                                }
+                            });
+                    }
+                    return self.states.create("state_msisdn_change");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if (opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {
+                            return_state: name
+                        });
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
+        self.states.add("state_sms_registration_not_available", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $([
+                    "It seems this number is not on WhatsApp and we don't offer SMS at this moment.",
+                    "",
+                    "Please register the new number on WhatsApp for the MomConnect Service."
+                ].join("\n"))
             });
         });
 

@@ -32,7 +32,10 @@ describe("ussd_popi_rapidpro app", function() {
             optout_flow_id: "optout-flow",
             research_optout_flow: "research-optout-flow",
             edd_dob_change_flow_uuid: "edd-dob-change-flow-uuid",
-            sms_engagement_flow_id: "sms-engagement-flow"
+            sms_engagement_flow_id: "sms-engagement-flow",
+            popi_template: "popi_template",
+            popi_filename: "privacy_policy.pdf",
+            popi_media_uuid: "media-uuid",
         });
     });
 
@@ -1266,7 +1269,7 @@ describe("ussd_popi_rapidpro app", function() {
                 })
                 .run();
         });
-        it("should trigger the number change if they select yes", function() {
+        it("should trigger the number change if SMS is enabled", function() {
             return tester
                 .setup.user.state("state_msisdn_change_confirm")
                 .setup.user.answers({
@@ -1277,6 +1280,20 @@ describe("ussd_popi_rapidpro app", function() {
                     }},
                 })
                 .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_hub.send_whatsapp_template_message(
+                          "+27820001001",
+                          "popi_template",
+                          {
+                              "filename": "privacy_policy.pdf",
+                              "id": "media-uuid"
+                          },
+                          "SMS"
+                        )
+                    );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_global_flag("sms_registrations_enabled", "TRUE")
+                      );
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
                             "msisdn-change-flow", null, "whatsapp:27820001001", {
@@ -1289,6 +1306,93 @@ describe("ussd_popi_rapidpro app", function() {
                             }
                         )
                     );
+                   
+                })
+                .input("1")
+                .check.user.state("state_msisdn_change_success")
+                .run();
+        });
+        it("should NOT trigger the number change if SMS is disabled", function() {
+            return tester
+                .setup.user.state("state_msisdn_change_confirm")
+                .setup.user.answers({
+                    state_msisdn_change_enter: "0820001001",
+                    contact: {uuid: "contact-uuid",
+                    fields: {
+                        preferred_channel: "WhatsApp"
+                    }},
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_hub.send_whatsapp_template_message(
+                          "+27820001001",
+                          "popi_template",
+                          {
+                              "filename": "privacy_policy.pdf",
+                              "id": "media-uuid"
+                          },
+                          "SMS"
+                        )
+                    );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_global_flag("sms_registrations_enabled", "FALSE")
+                      );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "msisdn-change-flow", null, "whatsapp:27820001001", {
+                                new_msisdn: "+27820001001",
+                                old_msisdn: "+27123456789",
+                                contact_uuid: "contact-uuid",
+                                source: "POPI USSD",
+                                old_channel: "WhatsApp",
+                                new_wa_id: "whatsapp:27820001001",
+                            }
+                        )
+                    );
+                   
+                })
+                .input("1")
+                .check.user.state("state_sms_registration_not_available")
+                .run();
+        });
+        it("should trigger the number change if SMS is disabled and preferred channel is WhatsApp", function() {
+            return tester
+                .setup.user.state("state_msisdn_change_confirm")
+                .setup.user.answers({
+                    state_msisdn_change_enter: "0820001001",
+                    contact: {uuid: "contact-uuid",
+                    fields: {
+                        preferred_channel: "WhatsApp"
+                    }},
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_hub.send_whatsapp_template_message(
+                          "+27820001001",
+                          "popi_template",
+                          {
+                              "filename": "privacy_policy.pdf",
+                              "id": "media-uuid"
+                          },
+                          "WhatsApp"
+                        )
+                    );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_global_flag("sms_registrations_enabled", "FALSE")
+                      );
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "msisdn-change-flow", null, "whatsapp:27820001001", {
+                                new_msisdn: "+27820001001",
+                                old_msisdn: "+27123456789",
+                                contact_uuid: "contact-uuid",
+                                source: "POPI USSD",
+                                old_channel: "WhatsApp",
+                                new_wa_id: "whatsapp:27820001001",
+                            }
+                        )
+                    );
+                   
                 })
                 .input("1")
                 .check.user.state("state_msisdn_change_success")
