@@ -298,7 +298,7 @@ go.app = function () {
         question: question,
         error: error,
         accept_labels: true,
-        choices: [new Choice("state_send_privacy_policy_sms", $("START"))],
+        choices: [new Choice("state_age", $("START"))],
       });
     });
 
@@ -1232,7 +1232,7 @@ go.app = function () {
           "or night sweats visit your nearest clinic."
       );
 
-      if (risk == "high" || risk == "moderate") {
+      if (risk == "high") {
         text = $(
           [
             "Your replies to the questions show you need a TB test this week.",
@@ -1244,7 +1244,21 @@ go.app = function () {
           consent: consent,
           tbcheck_id: tbcheck_id
         });
-      } else if (answers.state_exposure == "not_sure") {
+      }
+      if (risk == "moderate") {
+        text = $(
+          [
+            "You don't need a TB test at present.",
+            "",
+            "If you develop cough, fever, weight loss or night sweats visit your nearest clinic."
+          ].join("\n")
+        ).context({
+          arm: arm,
+          consent: consent,
+          tbcheck_id: tbcheck_id
+        });
+      }
+      else if (answers.state_exposure == "not_sure") {
         text = $(
           "Check if those you live with are on TB treatment. If you don't know " +
             "your HIV status, visit the clinic for a free HIV test. Then do the TB check again."
