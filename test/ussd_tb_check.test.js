@@ -71,7 +71,7 @@ describe("ussd_tb_check app", function () {
       })
       .input({ session_event: "new", to_addr: "*123*123*8#" })
       .check.user.answer("activation", "tb_soccer_1_2022")
-      .check.user.state("state_welcome")
+      .check.user.state("state_terms")
       .run();
     });
     it("should set activation for returning user", function() {
@@ -97,7 +97,7 @@ describe("ussd_tb_check app", function () {
           }
       });
       })
-      .input({ session_event: "new", to_addr: "*123*123*8#" })
+      .input({ session_event: "resume", to_addr: "*123*123*8#" })
       .check.user.answer("activation", "tb_soccer_1_2022")
       .check.user.state("state_welcome")
       .run();
@@ -123,7 +123,7 @@ describe("ussd_tb_check app", function () {
       })
       .input({ session_event: "new", to_addr: "*123*123*0#" })
       .check.user.answer("activation", null)
-      .check.user.state("state_welcome")
+      .check.user.state("state_terms")
       .run();
     });
     it("should set activation for new user to skip location", function() {
@@ -144,7 +144,7 @@ describe("ussd_tb_check app", function () {
       })
       .input({ session_event: "new", to_addr: "*123*123*6#" })
       .check.user.answer("activation", "skip_location_2022")
-      .check.user.state("state_welcome")
+      .check.user.state("state_terms")
       .run();
     });
     it("should set activation for new user using school activation", function() {
@@ -165,7 +165,7 @@ describe("ussd_tb_check app", function () {
       })
       .input({ session_event: "new", to_addr: "*123*123*11#" })
       .check.user.answer("activation", "tb_school_1")
-      .check.user.state("state_welcome")
+      .check.user.state("state_terms")
       .run();
     });
     it("should set school activation for returning user", function() {
@@ -329,8 +329,7 @@ describe("ussd_tb_check app", function () {
   describe("state_timed_out", function () {
     it("should ask the user if they want to continue", function () {
       return tester.setup.user
-        .state("state_terms")
-        .start()
+        .state("state_timed_out")
         .check.interaction({
           state: "state_timed_out",
           reply: [
@@ -344,8 +343,8 @@ describe("ussd_tb_check app", function () {
     });
     it("should repeat question on invalid input", function () {
       return tester.setup.user
-        .state("state_terms")
-        .inputs({ session_event: "new" }, "A")
+        .state("state_timed_out")
+        .inputs({ session_event: "resume" }, "A")
         .check.interaction({
           state: "state_timed_out",
           reply: [
@@ -444,7 +443,7 @@ describe("ussd_tb_check app", function () {
       return tester.setup.user
         .state("state_language")
         .input("1")
-        .check.user.state("state_age")
+        .check.user.state("state_welcome")
         .run();
     });
     it("should go to state_age for in lang of the valid option", function () {
@@ -452,7 +451,7 @@ describe("ussd_tb_check app", function () {
         .state("state_language")
         .input("2")
         .check.user.lang("zul")
-        .check.user.state("state_age")
+        .check.user.state("state_welcome")
         .run();
     });
     it("should go to state_terms for english lang option", function () {
@@ -460,14 +459,11 @@ describe("ussd_tb_check app", function () {
         .state("state_language")
         .input("1")
         .check.interaction({
-          state: "state_age",
+          state: "state_welcome",
           reply: [
-            "How old are you?",
-            "1. under 18",
-            "2. 18-39",
-            "3. 40-65",
-            "4. over 65",
-          ].join("\n"),
+            "The National Department of Health thanks you for helping to protect "+
+            "the health of all SA citizens. Stop the spread of TB.",
+            "1. START"].join("\n"),
           char_limit: 160,
         })
         .run();
@@ -476,7 +472,7 @@ describe("ussd_tb_check app", function () {
       return tester.setup.user
         .state("state_language")
         .setup.user.answer("state_language", "eng")
-        .check.user.state("state_age")
+        .check.user.state("state_welcome")
         .run();
     });
   });
@@ -1078,7 +1074,7 @@ describe("ussd_tb_check app", function () {
         .run();
     });
   });
-  it("should ask for the city", function () {
+  it("should ask for the street name", function () {
       return tester.setup.user
         .state("state_street_name")
         .input(" \t\n")
@@ -1090,7 +1086,7 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
-    it("should ask again for invalid input", function () {
+    it("should ask again for suburb invalid input", function () {
       return tester.setup.user
         .state("state_suburb_name")
         .input(" \t\n")
@@ -1102,7 +1098,7 @@ describe("ussd_tb_check app", function () {
         })
         .run();
     });
-    it("should ask again for invalid input", function () {
+    it("should ask again for state city invalid input", function () {
       return tester.setup.user
         .state("state_city")
         .input(" \t\n")
@@ -1622,7 +1618,7 @@ describe("ussd_tb_check app", function () {
         .check.user.state("state_tracing")
         .run();
     });
-    it("should go to state_tracing for tb_study_a", function () {
+    it("should go to state_study_tracing for tb_study_a", function () {
       return tester.setup.user
         .state("state_exposure")
         .setup.user.answer("activation", "tb_study_a")
@@ -2547,7 +2543,7 @@ describe("ussd_tb_check app", function () {
                 msisdn: "+27123456789",
                 source: "USSD",
                 language: "eng",
-                province: null,
+                province: "",
                 city: "JHB",
                 age: "<18",
                 gender: "male",
