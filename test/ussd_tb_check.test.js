@@ -398,7 +398,7 @@ describe("ussd_tb_check app", function () {
             );
         })
         .input("1")
-        .check.user.state("state_privacy_policy_accepted")
+        .check.user.state("state_age")
         .run();
     });
   });
