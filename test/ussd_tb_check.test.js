@@ -2578,4 +2578,69 @@ describe("ussd_tb_check app", function () {
         .run();
     });
     });
+  describe("state_show_results", function () {
+    it("should show the state_show_results message for moderate risk", function () {
+        return tester.setup.user
+            .state("state_display_arm_message")
+            .setup.user.answers({
+              group_arm: null,
+              state_cough: "no",
+              state_fever: true,
+              state_sweat: false,
+              state_weight: false,
+              state_exposure: "no",
+            })
+            .check.interaction({
+            state: "state_show_results",
+            reply: [
+                "You don't need a TB test at present.",
+                "",
+                "If you develop cough, fever, weight loss or night sweats visit your nearest clinic."
+            ].join("\n"),
+            char_limit: 160,
+        })
+        .run();
+    });
+    it("should show the state_show_results message for low risk", function () {
+        return tester.setup.user
+            .state("state_display_arm_message")
+            .setup.user.answers({
+              group_arm: null,
+              state_cough: "no",
+              state_fever: false,
+              state_sweat: false,
+              state_weight: false,
+              state_exposure: "no",
+            })
+            .check.interaction({
+            state: "state_show_results",
+            reply:
+                "You don't need a TB test now, but if you develop cough, fever, weight loss " +
+                "or night sweats visit your nearest clinic.",
+            char_limit: 160,
+        })
+        .run();
+    });
+    it("should show the state_show_results message for high risk", function () {
+        return tester.setup.user
+            .state("state_display_arm_message")
+            .setup.user.answers({
+              group_arm: null,
+              state_cough: "no",
+              state_fever: false,
+              state_sweat: false,
+              state_weight: false,
+              state_exposure: "yes",
+            })
+            .check.interaction({
+            state: "state_show_results",
+            reply: [
+                "Your replies to the questions show you need a TB test this week.",
+                "",
+                "Go to your clinic for a free TB test."].join("\n"),
+            char_limit: 160,
+        })
+        .run();
+    });
+  });
 });

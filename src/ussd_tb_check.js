@@ -1104,6 +1104,7 @@ go.app = function () {
       var arm = answers.group_arm;
       var tbcheck_id = answers.tbcheck_id;
       var consent;
+
       if (typeof self.im.user.answers.state_research_consent === "undefined"){
         consent = answers.research_consent;
       }
@@ -1128,7 +1129,7 @@ go.app = function () {
           tbcheck_id: tbcheck_id
         });
       }
-      if (risk == "moderate") {
+      else if (risk == "moderate") {
         text = $(
           [
             "You don't need a TB test at present.",
