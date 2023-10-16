@@ -407,8 +407,8 @@ describe("ussd_popi_rapidpro app", function() {
                         "What would you like to change?",
                         "1. Cell number",
                         "2. Change SMS to WhatsApp",
-                        "3. Baby's Expected Due Date: 20-06-04",
-                        "4. 1st Baby's DoB: 21-03-10",
+                        "3. Baby's Expected Due Date: 04-06-2020",
+                        "4. 1st Baby's DoB: 10-03-2021",
                         "5. Next"
                     ].join("\n")
                 })
@@ -428,8 +428,8 @@ describe("ussd_popi_rapidpro app", function() {
                 .check.interaction({
                     reply: [
                         "What would you like to change?",
-                        "1. 2nd Baby's DoB: 21-11-11",
-                        "2. 3rd Baby's DoB: 22-07-07",
+                        "1. 2nd Baby's DoB: 11-11-2021",
+                        "2. 3rd Baby's DoB: 07-07-2022",
                         "3. Language",
                         "4. ID",
                         "5. Research msgs",
@@ -453,8 +453,8 @@ describe("ussd_popi_rapidpro app", function() {
                         "What would you like to change?",
                         "1. Cell number",
                         "2. Change WhatsApp to SMS",
-                        "3. Baby's Expected Due Date: 20-06-04",
-                        "4. 1st Baby's DoB: 21-03-10",
+                        "3. Baby's Expected Due Date: 04-06-2020",
+                        "4. 1st Baby's DoB: 10-03-2021",
                         "5. Next"
                     ].join("\n")
                 })
@@ -474,8 +474,8 @@ describe("ussd_popi_rapidpro app", function() {
                 .check.interaction({
                     reply: [
                         "What would you like to change?",
-                        "1. 2nd Baby's DoB: 21-11-11",
-                        "2. 3rd Baby's DoB: 22-07-07",
+                        "1. 2nd Baby's DoB: 11-11-2021",
+                        "2. 3rd Baby's DoB: 07-07-2022",
                         "3. ID",
                         "4. Research msgs",
                         "5. Back",
@@ -893,11 +893,11 @@ describe("ussd_popi_rapidpro app", function() {
                 .input("A")
                 .check.interaction({
                     reply: [
-                        "Sorry we don't understand. Please try again.",
+                        "Sorry we don't understand. Pls try again.",
                         "1. Cell number",
                         "2. Change SMS to WhatsApp",
-                        "3. Baby's Expected Due Date: 20-06-04",
-                        "4. 1st Baby's DoB: 21-03-10",
+                        "3. Baby's Expected Due Date: 04-06-2020",
+                        "4. 1st Baby's DoB: 10-03-2021",
                         "5. Next"
                     ].join("\n")
                 })
