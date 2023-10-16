@@ -1128,7 +1128,7 @@ go.app = function () {
           tbcheck_id: tbcheck_id
         });
       }
-      if (risk == "moderate") {
+      else if (risk == "moderate") {
         text = $(
           [
             "You don't need a TB test at present.",
