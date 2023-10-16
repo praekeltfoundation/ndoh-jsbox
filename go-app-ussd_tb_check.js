@@ -1221,6 +1221,7 @@ go.app = function () {
       var arm = answers.group_arm;
       var tbcheck_id = answers.tbcheck_id;
       var consent;
+
       if (typeof self.im.user.answers.state_research_consent === "undefined"){
         consent = answers.research_consent;
       }
