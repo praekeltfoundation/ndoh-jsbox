@@ -289,7 +289,7 @@ go.app = function() {
                     new moment(_.get(contact, "fields.baby_dob1", null)),
                     new moment(_.get(contact, "fields.baby_dob2", null)),
                     new moment(_.get(contact, "fields.baby_dob3", null)),
-                ], _.method("isValid")), _.method("format", "YY-MM-DD")).join(", ") || $("None")
+                ], _.method("isValid")), _.method("format", "DD-MM-YYYY")).join(", ") || $("None")
              };
             var dates_entry = Object.values(context);
             var sms_choices = [
@@ -360,7 +360,7 @@ go.app = function() {
                 accept_labels: true,
                 options_per_page: null,
                 characters_per_page: 160,
-                error: $("Sorry we don't understand. Please try again."),
+                error: $("Sorry we don't understand. Pls try again."),
                 choices: channel == "WhatsApp" ? whatsapp_choices : sms_choices,
                 more: $("Next"),
                 back: $("Previous"),
