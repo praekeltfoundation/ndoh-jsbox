@@ -2011,8 +2011,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_commit_to_get_tested",
           reply: [
-            "You will get R15 airtime if you commit to get tested.",
-            "Airtime will be sent to you within 1 hour.",
+            "You will get R15 airtime within 1 hour if you commit to get tested.",
             "",
             "Do you commit to getting tested?",
             "1. YES",
@@ -2179,9 +2178,7 @@ describe("ussd_tb_check app", function () {
         .check.interaction({
           state: "state_commit_to_get_tested_no",
           reply:[
-            "WCDoH strongly encourages you to screen for your own benefit.",
-            "",
-            "You can complete a TBCheck any time by dialling *134*832*5# or Whatsapp TB to 0600123456"
+            "Even if you can’t commit now, it is still important to get tested."
             ].join("\n"),
           char_limit: 160,
         })

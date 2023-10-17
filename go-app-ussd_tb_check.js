@@ -1114,8 +1114,7 @@ go.app = function () {
 
     self.states.add("state_commit_to_get_tested", function (name) {
       return new MenuState(name, {
-        question: $(["You will get R15 airtime if you commit to get tested.",
-                    "Airtime will be sent to you within 1 hour.",
+        question: $(["You will get R15 airtime within 1 hour if you commit to get tested.",
                     "",
                     "Do you commit to getting tested?"
                     ].join("\n")
@@ -1143,9 +1142,7 @@ go.app = function () {
         return new EndState(name, {
             next: "state_submit_test_commit",
             text: $([
-                "WCDoH strongly encourages you to screen for your own benefit.",
-                "",
-                "You can complete a TBCheck any time by dialling *134*832*5# or Whatsapp TB to 0600123456",
+                "Even if you can’t commit now, it is still important to get tested.",
             ].join("\n")
             ),
         });
