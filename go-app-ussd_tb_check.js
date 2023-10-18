@@ -339,7 +339,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_more_info_pg1", function (name) {
+    self.add("state_more_info_pg1", function (name) {
       return new MenuState(name, {
         question: $(
           "TB HealthCheck does not replace medical advice, diagnosis or treatment. Get" +
@@ -350,7 +350,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_more_info_pg2", function (name) {
+    self.add("state_more_info_pg2", function (name) {
       return new MenuState(name, {
         question: $(
           "You use this info at your own risk. This tool cannot replace medical advice. " +
@@ -411,7 +411,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_core_language", function (name) {
+    self.add("state_core_language", function (name) {
       var next_state = "state_welcome";
 
       if (self.im.user.answers.state_language) {
@@ -445,7 +445,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_language", function (name) {
+    self.add("state_language", function (name) {
       var next_state = "state_welcome";
 
       if (self.im.user.answers.state_language) {
@@ -477,7 +477,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_research_consent", function(name) {
+    self.add("state_research_consent", function(name) {
       if (self.im.user.answers.state_age === "<18"){
         return self.states.create("state_gender");
       }
@@ -499,7 +499,7 @@ go.app = function () {
       });
   });
 
-    self.states.add("state_age", function (name) {
+    self.add("state_age", function (name) {
       var activation = self.im.user.answers.activation;
       var next_state = "state_gender";
 
@@ -524,7 +524,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_research_consent_no", function(name) {
+    self.add("state_research_consent_no", function(name) {
       return new MenuState(name, {
         question: $(
           "Okay, no problem. You will not be included in the research, "+
@@ -536,7 +536,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_gender", function (name) {
+    self.add("state_gender", function (name) {
       var activation = self.im.user.answers.activation;
       var next = "state_province";
 
@@ -568,7 +568,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_province", function (name) {
+    self.add("state_province", function (name) {
       var next_state = "state_suburb_name";
 
       if (self.im.user.answers.state_age === "<18"){
@@ -596,7 +596,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_street_name", function (name) {
+    self.add("state_street_name", function (name) {
       if ((_.toUpper(self.im.user.answers.state_confirm_city)) != "STATE_STREET_NAME")
       {
         if (self.im.user.answers.state_street_name &&
@@ -620,7 +620,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_suburb_name", function (name) {
+    self.add("state_suburb_name", function (name) {
       if ((_.toUpper(self.im.user.answers.state_confirm_city)) != "STATE_STREET_NAME")
       {
         if (self.im.user.answers.state_suburb_name) {
@@ -643,7 +643,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_city", function (name) {
+    self.add("state_city", function (name) {
       if (
             self.im.user.answers.state_suburb_name &&
             self.im.user.answers.state_city &&
@@ -678,7 +678,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_google_places_lookup", function (name, opts) {
+    self.add("state_google_places_lookup", function (name, opts) {
       var street_name = self.im.user.answers.state_street_name;
       var suburb = self.im.user.answers.state_suburb_name;
       var city_trunc = self.im.user.answers.state_city;
@@ -726,7 +726,7 @@ go.app = function () {
         );
     });
 
-    self.states.add("state_confirm_city", function (name, opts) {
+    self.add("state_confirm_city", function (name, opts) {
 
       var state_city = (self.im.user.answers.state_city).slice(0, 36);
       var no_next_state = "state_suburb_name";
@@ -761,7 +761,7 @@ go.app = function () {
       return sign + _.padStart(int, places, "0") + "." + dec;
     };
 
-    self.states.add("state_place_details_lookup", function (name, opts) {
+    self.add("state_place_details_lookup", function (name, opts) {
       var answers = self.im.user.answers;
 
       return new JsonApi(self.im)
@@ -803,7 +803,7 @@ go.app = function () {
         );
     });
 
-    self.states.add("state_cough", function (name) {
+    self.add("state_cough", function (name) {
       var question = $(
           "Let's see how you're feeling today. Do you have a cough?"
       );
@@ -822,7 +822,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_fever", function (name) {
+    self.add("state_fever", function (name) {
       return new ChoiceState(name, {
         question: $(
             "Do you have a fever? (when you touch your forehead, does it feel hot?)"
@@ -839,7 +839,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_sweat", function (name) {
+    self.add("state_sweat", function (name) {
       return new ChoiceState(name, {
         question: $("Are you sweating more than usual at night?"),
         error: $("Please use numbers from list. Are you sweating more than usual at night?"),
@@ -849,7 +849,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_weight", function (name) {
+    self.add("state_weight", function (name) {
       return new ChoiceState(name, {
         question: $("Have you been losing weight without trying?"),
         error: $("Please use numbers from list. Have you been losing weight without trying?"),
@@ -859,7 +859,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_exposure", function (name) {
+    self.add("state_exposure", function (name) {
       var next_state = "state_tracing";
       var activation = self.im.user.answers.activation;
 
@@ -886,7 +886,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_tracing", function (name) {
+    self.add("state_tracing", function (name) {
       var next_state = "state_opt_in";
 
       var question = $(
@@ -914,7 +914,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_study_tracing", function (name) {
+    self.add("state_study_tracing", function (name) {
       var next_state = "state_opt_in";
       var activation = self.im.user.answers.activation;
 
@@ -1099,7 +1099,7 @@ go.app = function () {
         });
     });
 
-    self.states.add("state_soft_commitment_plus", function (name) {
+    self.add("state_soft_commitment_plus", function (name) {
       return new MenuState(name, {
         question: $([
             "Your replies to the questions show that you need a TB test this week!",
@@ -1112,7 +1112,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_commit_to_get_tested", function (name) {
+    self.add("state_commit_to_get_tested", function (name) {
       return new MenuState(name, {
         question: $(["You will get R15 airtime within 1 hour if you commit to get tested.",
                     "",
@@ -1126,7 +1126,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_commit_to_get_tested_yes", function(name) {
+    self.add("state_commit_to_get_tested_yes", function(name) {
         return new MenuState(name, {
             question: $([
                 "For a list of facilities in your community, please access the facilities ",
@@ -1138,7 +1138,7 @@ go.app = function () {
         });
     });
 
-    self.states.add("state_commit_to_get_tested_no", function(name) {
+    self.add("state_commit_to_get_tested_no", function(name) {
         return new EndState(name, {
             next: "state_start",
             text: $([
@@ -1293,7 +1293,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_submit_tb_check_efficacy_option", function (name) {
+    self.add("state_submit_tb_check_efficacy_option", function (name) {
       var activation = self.get_activation();
       var next = "state_submit_clinic_delay";
 
@@ -1319,7 +1319,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_submit_clinic_delay", function (name) {
+    self.add("state_submit_clinic_delay", function (name) {
       return new ChoiceState(name, {
         question: $(
           "I did not go to the clinic for a TB test because " +
@@ -1340,7 +1340,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_submit_clinic_proximity", function (name) {
+    self.add("state_submit_clinic_proximity", function (name) {
       return new ChoiceState(name, {
         question: $(
           "I did not go to the clinic for a TB test because " +
@@ -1361,7 +1361,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_submit_trauma", function (name) {
+    self.add("state_submit_trauma", function (name) {
       return new ChoiceState(name, {
         question: $(
           "I did not go to the clinic for a TB test because " +
@@ -1383,7 +1383,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_submit_clinic_feedback", function (name) {
+    self.add("state_submit_clinic_feedback", function (name) {
       return new FreeText(name, {
         question: $(
           "Are there any other reasons why you did not go " +
@@ -1399,7 +1399,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_trigger_rapidpro_survey_flow", function(name, opts) {
+    self.add("state_trigger_rapidpro_survey_flow", function(name, opts) {
       var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
       var answers = self.im.user.answers;
       var activation = self.get_activation();
@@ -1439,7 +1439,7 @@ go.app = function () {
           });
   });
 
-    self.states.add("state_survey_thanks_airtime", function (name) {
+    self.add("state_survey_thanks_airtime", function (name) {
       return new MenuState(name, {
         question: $(
           "Thank you for taking part in the survey. " +
@@ -1484,7 +1484,7 @@ go.app = function () {
         });
     });
 
-    self.states.add("state_sms_complete", function (name) {
+    self.add("state_sms_complete", function (name) {
         var activation = self.get_activation();
 
         var choice_list = [
@@ -1511,7 +1511,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_faq_metrics", function (name) {
+    self.add("state_faq_metrics", function (name) {
       self.im.log("Logging FAQ metrics");
       var sessionID = self.sessionID();
       var msisdn = utils.normalize_msisdn(
@@ -1521,7 +1521,7 @@ go.app = function () {
       return self.states.create("state_faq");
     });
 
-    self.states.add("state_faq", function (name) {
+    self.add("state_faq", function (name) {
       return new MenuState(name, {
         question: $(
           "What would you like to know?"
@@ -1540,7 +1540,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_faq_2", function (name) {
+    self.add("state_faq_2", function (name) {
       return new MenuState(name, {
         question: $(
           "What would you like to know?"
@@ -1558,47 +1558,47 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_faq_research", function (name) {
+    self.add("state_faq_research", function (name) {
       self.im.user.answers.faq = "state_faq_research";
       return self.states.create("state_send_faq_sms");
     });
 
-    self.states.add("state_faq_information", function (name) {
+    self.add("state_faq_information", function (name) {
       self.im.user.answers.faq = "state_faq_information";
       return self.states.create("state_send_faq_sms");
     });
 
-    self.states.add("state_faq_sms", function (name) {
+    self.add("state_faq_sms", function (name) {
       self.im.user.answers.faq = "state_faq_sms";
       return self.states.create("state_send_faq_sms");
     });
 
-    self.states.add("state_faq_next_steps", function (name) {
+    self.add("state_faq_next_steps", function (name) {
       self.im.user.answers.faq = "state_faq_next_steps";
       return self.states.create("state_send_faq_sms");
     });
 
-    self.states.add("state_faq_midway", function (name) {
+    self.add("state_faq_midway", function (name) {
       self.im.user.answers.faq = "state_faq_midway";
       return self.states.create("state_send_faq_sms");
     });
 
-    self.states.add("state_faq_risks", function (name) {
+    self.add("state_faq_risks", function (name) {
       self.im.user.answers.faq = "state_faq_risks";
       return self.states.create("state_send_faq_sms");
     });
 
-    self.states.add("state_faq_privacy", function (name) {
+    self.add("state_faq_privacy", function (name) {
       self.im.user.answers.faq = "state_faq_privacy";
       return self.states.create("state_send_faq_sms");
     });
     
-    self.states.add("state_faq_unhappy", function (name) {
+    self.add("state_faq_unhappy", function (name) {
       self.im.user.answers.faq = "state_faq_unhappy";
       return self.states.create("state_send_faq_sms");
     });
 
-    self.states.add("state_survey_sort", function (name) {
+    self.add("state_survey_sort", function (name) {
       var end = "state_survey_end";
       var start = "state_survey_start";
       var survey_complete = _.toUpper(_.get(self.im.user.get_answer("contact"), "fields.survey_complete", $("None")));
@@ -1633,7 +1633,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_encouraged_to_test", function (name) {
+    self.add("state_encouraged_to_test", function (name) {
       return new ChoiceState(name, {
         question: $(
           "Did TB HealthCheck encourage you to get tested?"
@@ -1653,7 +1653,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_tested_without_tbcheck", function (name) {
+    self.add("state_tested_without_tbcheck", function (name) {
       return new ChoiceState(name, {
         question: $(
           "Would you have tested without TB HealthCheck?"
@@ -1673,7 +1673,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_further_delayed", function (name) {
+    self.add("state_further_delayed", function (name) {
       return new ChoiceState(name, {
         question: $(
           "Would you have further delayed testing without TB HealthCheck?"
@@ -1693,7 +1693,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_clinic_waiting_time", function (name) {
+    self.add("state_clinic_waiting_time", function (name) {
       return new ChoiceState(name, {
         question: $([
           "The waiting times at the clinic were too long.",
@@ -1715,7 +1715,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_clinic_experience", function (name) {
+    self.add("state_clinic_experience", function (name) {
       return new ChoiceState(name, {
         question: $(
           "How was your experience at the clinic?"
@@ -1735,7 +1735,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_clinic_experience_feedback", function (name) {
+    self.add("state_clinic_experience_feedback", function (name) {
       return new FreeText(name, {
         question: $(
           "Was it difficult to get access to a TB test? "+
@@ -1750,7 +1750,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_reason_for_testing", function (name) {
+    self.add("state_reason_for_testing", function (name) {
       return new FreeText(name, {
         question: $(
           "Why did you go to the clinic for a TB test?"
@@ -1764,7 +1764,7 @@ go.app = function () {
       });
     });
 
-    self.states.add("state_contact_for_more_info", function (name) {
+    self.add("state_contact_for_more_info", function (name) {
       return new ChoiceState(name, {
         question: $(
           "Can we phone you to get more information?"
