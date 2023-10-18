@@ -1140,7 +1140,7 @@ go.app = function () {
 
     self.states.add("state_commit_to_get_tested_no", function(name) {
         return new EndState(name, {
-            next: "state_submit_test_commit",
+            next: "state_start",
             text: $([
                 "Even if you can’t commit now, it is still important to get tested.",
             ].join("\n")
@@ -1171,7 +1171,7 @@ go.app = function () {
 
       var payload = {
         data: {
-          commit_get_tested: answers.state_commit_to_get_tested ? "yes" : "no",
+          commit_get_tested: answers.state_commit_to_get_tested === "state_commit_to_get_tested_yes" ? "yes" : "no",
           "source": "USSD",
           clinic_visit_day: answers.clinic_visit_day,
         },
@@ -1184,7 +1184,7 @@ go.app = function () {
         .patch(self.im.config.healthcheck.url + "/v2/tbcheck/"+ id +"/", payload)
         .then(
           function () {
-            if (answers.state_commit_to_get_tested){
+            if (answers.state_commit_to_get_tested === "state_commit_to_get_tested_yes"){
                 return self.states.create("state_commitment");
                 }
             else{
