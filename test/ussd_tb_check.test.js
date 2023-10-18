@@ -2122,7 +2122,7 @@ describe("ussd_tb_check app", function () {
         .state("state_submit_test_commit")
         .setup.user.answers({
           tbcheck_id: 22,
-          state_commit_to_get_tested: true,
+          state_commit_to_get_tested: "state_commit_to_get_tested_yes",
         })
         .setup(function (api) {
           api.http.fixtures.add({
@@ -2155,7 +2155,7 @@ describe("ussd_tb_check app", function () {
         .state("state_submit_test_commit")
         .setup.user.answers({
           tbcheck_id: 22,
-          state_commit_to_get_tested: false,
+          state_commit_to_get_tested: "state_submit_test_commit",
         })
         .setup(function (api) {
           api.http.fixtures.add({
