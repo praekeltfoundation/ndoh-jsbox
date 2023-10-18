@@ -1023,7 +1023,7 @@ go.app = function () {
 
     self.states.add("state_commit_to_get_tested_no", function(name) {
         return new EndState(name, {
-            next: "state_submit_test_commit",
+            next: "state_start",
             text: $([
                 "Even if you can’t commit now, it is still important to get tested.",
             ].join("\n")
