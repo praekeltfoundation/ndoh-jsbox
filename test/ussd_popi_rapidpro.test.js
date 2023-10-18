@@ -439,6 +439,53 @@ describe("ussd_popi_rapidpro app", function() {
                 })
                 .run();
         });
+        it("should display the list of options to the user SMS page 2 with EDD and postbirth", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "SMS",
+                    baby_dob1: "2021-03-10",
+                    baby_dob2: "2021-11-11",
+                    baby_dob3: "2022-07-07",
+                    edd: "2020-06-04",
+                    postbirth_messaging: "True"
+                },
+                })
+                .input("6")
+                .check.interaction({
+                    reply: [
+                        "What would you like to change?",
+                        "1. 3rd Baby's DoB: 07-07-2022",
+                        "2. ID",
+                        "3. Research msgs",
+                        "4. Back",
+                        "5. Previous"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display the list of options to the user SMS page 1 with EDD and postbirth", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "SMS",
+                    baby_dob1: "2021-03-10",
+                    baby_dob2: "2021-11-11",
+                    baby_dob3: "2022-07-07",
+                    edd: "2020-06-04",
+                    postbirth_messaging: "True"
+                }})
+                .check.interaction({
+                    reply: [
+                        "What would you like to change?",
+                        "1. Cell number",
+                        "2. Change SMS to WhatsApp",
+                        "3. Language",
+                        "4. 1st Baby's DoB: 10-03-2021",
+                        "5. 2nd Baby's DoB: 11-11-2021",
+                        "6. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
         it("should display the list of options to the user WhatsApp page 1", function() {
             return tester
                 .setup.user.state("state_change_info")
@@ -881,19 +928,43 @@ describe("ussd_popi_rapidpro app", function() {
                 .check.user.state("state_edd_baby_unborn_complete")
                 .run();
         });
-        it("should display an error on invalid input", function() {
+        it("should display an error on invalid input and should not show EDD if contact has postbirth messaging", function() {
             return tester
                 .setup.user.state("state_change_info")
                 .setup.user.answer("contact", {fields: {preferred_channel: "SMS",
                     baby_dob1: "2021-03-10",
                     baby_dob2: "2021-11-11",
                     baby_dob3: "2022-07-07",
-                    edd: "2020-06-04"
+                    edd: "2020-06-04",
+                    postbirth_messaging: "True"
                 }})
                 .input("A")
                 .check.interaction({
                     reply: [
-                        "Sorry we don't understand. Pls try again.",
+                        "We don't understand. Please try again.",
+                        "1. Cell number",
+                        "2. Change SMS to WhatsApp",
+                        "3. Language",
+                        "4. 1st Baby's DoB: 10-03-2021",
+                        "5. 2nd Baby's DoB: 11-11-2021",
+                        "6. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display an error on invalid input and should show EDD if contact has no postbirth messaging", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "SMS",
+                    baby_dob1: "2021-03-10",
+                    baby_dob2: "2021-11-11",
+                    baby_dob3: "2022-07-07",
+                    edd: "2020-06-04",
+                }})
+                .input("A")
+                .check.interaction({
+                    reply: [
+                        "We don't understand. Please try again.",
                         "1. Cell number",
                         "2. Change SMS to WhatsApp",
                         "3. Baby's Expected Due Date: 04-06-2020",

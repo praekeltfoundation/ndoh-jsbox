@@ -440,7 +440,7 @@ go.app = function() {
 
         self.add("state_change_info", function(name) {
             var contact = self.im.user.answers.contact;
-            var baby_dob1, baby_dob2, baby_dob3, dates_count, edd;
+            var baby_dob1, baby_dob2, baby_dob3, dates_count, edd, postbirth;
             var dates_list = [];
             var channel = _.get(contact, "fields.preferred_channel");
             var context = {
@@ -467,6 +467,7 @@ go.app = function() {
                 new Choice("state_change_research_confirm", $("Research msgs")),
                 new Choice("state_main_menu", $("Back"))
             ];
+            postbirth = _.toUpper(_.get(contact, "fields.postbirth_messaging")) === "TRUE";
 
             if (dates_entry[0].length){
                 dates_list = dates_entry[0].trim().split(/\s*,\s*/);
@@ -510,7 +511,11 @@ go.app = function() {
 
             function push_dob(channel_list, dob_list, dob_count)
             {
-                for (var i = 0; i < (dob_count); i++) {
+                var i = 0;
+                if (postbirth){
+                    ++i;
+                }
+                for (i; i < (dob_count); i++) {
                     channel_list.splice(i+2, 0, dob_list[i]);
                 }
 
@@ -520,7 +525,7 @@ go.app = function() {
                 accept_labels: true,
                 options_per_page: null,
                 characters_per_page: 160,
-                error: $("Sorry we don't understand. Pls try again."),
+                error: $("We don't understand. Please try again."),
                 choices: channel == "WhatsApp" ? whatsapp_choices : sms_choices,
                 more: $("Next"),
                 back: $("Previous"),
