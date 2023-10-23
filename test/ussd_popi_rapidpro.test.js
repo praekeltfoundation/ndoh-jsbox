@@ -318,8 +318,8 @@ describe("ussd_popi_rapidpro app", function() {
                         passport_number: "A12345",
                         passport_origin: "mw",
                         research_consent: "TRUE",
-                        edd: "2020-06-04",
-                        baby_dob1: "2018-03-02",
+                        edd: "2020-06-04T00:00:00.000000Z",
+                        baby_dob1: "2018-03-02T00:00:00.000000Z",
                         prebirth_messaging: "1"
                     },
                 })

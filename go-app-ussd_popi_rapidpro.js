@@ -364,6 +364,15 @@ go.app = function() {
             var contact = self.im.user.answers.contact;
             var id_type = _.get(contact, "fields.identification_type");
             var channel = _.get(contact, "fields.preferred_channel");
+            var baby_dob1 = _.get(contact, "fields.baby_dob1", null);
+            var baby_dob2 = _.get(contact, "fields.baby_dob2", null);
+            var baby_dob3 = _.get(contact, "fields.baby_dob3", null);
+            var edd = _.get(contact, "fields.edd", null);
+            baby_dob1 = (baby_dob1) ? baby_dob1.split('T')[0] : baby_dob1;
+            baby_dob2 = (baby_dob2) ? baby_dob2.split('T')[0] : baby_dob2;
+            baby_dob3 = (baby_dob3) ? baby_dob3.split('T')[0] : baby_dob3;
+            edd = (edd) ? edd.split('T')[0] : edd;
+
             var context = {
                 msisdn: utils.readable_msisdn(self.im.user.addr, "27"),
                 channel: channel || $("None"),
@@ -394,10 +403,10 @@ go.app = function() {
                         "FALSE": $("No")
                     }, _.toUpper(_.get(contact, "fields.research_consent")), $("None")),
                 dobs: _.map(_.filter([
-                    new moment(_.get(contact, "fields.baby_dob1", null)),
-                    new moment(_.get(contact, "fields.baby_dob2", null)),
-                    new moment(_.get(contact, "fields.baby_dob3", null)),
-                    new moment(_.get(contact, "fields.edd", null)),
+                    new moment(baby_dob1),
+                    new moment(baby_dob2),
+                    new moment(baby_dob3),
+                    new moment(edd),
                 ], _.method("isValid")), _.method("format", "DD-MM-YYYY")).join(", ") || $("None")
             };
             var sms_text = $([
