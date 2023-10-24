@@ -86,6 +86,11 @@ go.app = function() {
             });
         };
 
+        self.dateformat = function(timestamp){
+            timestamp = (timestamp) ? timestamp.split('T')[0] : timestamp;
+            return timestamp;
+        };
+
         self.states.add("state_start", function(name, opts) {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
@@ -289,15 +294,23 @@ go.app = function() {
 
         self.add("state_change_info", function(name) {
             var contact = self.im.user.answers.contact;
-            var baby_dob1, baby_dob2, baby_dob3, dates_count, edd, postbirth;
+            var dates_count, postbirth;
             var dates_list = [];
             var channel = _.get(contact, "fields.preferred_channel");
+            var baby_dob1 = _.get(contact, "fields.baby_dob1", null);
+            var baby_dob2 = _.get(contact, "fields.baby_dob2", null);
+            var baby_dob3 = _.get(contact, "fields.baby_dob3", null);
+            var edd = _.get(contact, "fields.edd", null);
+            baby_dob1 = self.dateformat(baby_dob1);
+            baby_dob2 = self.dateformat(baby_dob2);
+            baby_dob3 = self.dateformat(baby_dob3);
+            edd = self.dateformat(edd);
             var context = {
                 dobs: _.map(_.filter([
-                    new moment(_.get(contact, "fields.edd", null)),
-                    new moment(_.get(contact, "fields.baby_dob1", null)),
-                    new moment(_.get(contact, "fields.baby_dob2", null)),
-                    new moment(_.get(contact, "fields.baby_dob3", null)),
+                    new moment(edd),
+                    new moment(baby_dob1),
+                    new moment(baby_dob2),
+                    new moment(baby_dob3),
                 ], _.method("isValid")), _.method("format", "DD-MM-YYYY")).join(", ") || $("None")
              };
             var dates_entry = Object.values(context);
