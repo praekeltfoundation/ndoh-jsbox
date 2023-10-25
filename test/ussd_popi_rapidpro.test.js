@@ -563,7 +563,7 @@ describe("ussd_popi_rapidpro app", function() {
                     baby_dob1: "2021-03-10",
                     baby_dob2: "2021-11-11",
                     baby_dob3: "2022-03-07",
-                    edd: "2022-06-06",
+                    edd: "2022-06-06T00:00:00Z",
                     prebirth_messaging: "1"
                 },
                 })
