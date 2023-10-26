@@ -1004,20 +1004,33 @@ go.app = function () {
                     ),
         error: $("Please use numbers from list. Do you commit to getting tested?"),
         accept_labels: true,
-        choices: [new Choice("state_commit_to_get_tested_yes", $("YES")),
+        choices: [new Choice("state_send_facilities_link_sms", $("YES")),
                   new Choice("state_submit_test_commit", $("NO"))],
       });
     });
 
-    self.add("state_commit_to_get_tested_yes", function(name) {
-        return new MenuState(name, {
-            question: $([
-                "For a list of facilities in your community, please access the facilities ",
-                "section of the Western Cape Government website.",
-            ].join("\n")
-            ),
-            accept_labels: true,
-            choices: [new Choice("state_clinic_visit_day", $("Next"))],
+    self.add("state_send_facilities_link_sms", function(name, opts) {
+      var next_state = "state_clinic_visit_day";
+      var flow_uuid = self.im.config.rapidpro.tb_study_facilities_uuid;
+      var language = self.im.user.answers.state_language;
+      var msisdn = utils.normalize_msisdn(
+        _.get(
+          self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
+      var data = {
+          language: language
+        };
+      return self.rapidpro
+        .start_flow(flow_uuid, null, "tel:" + msisdn, data)
+        .then(function() {
+            return self.states.create(next_state);
+        }).catch(function(e) {
+            // Go to error state after 3 failed HTTP requests
+            opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+            if(opts.http_error_count === 3) {
+                self.im.log.error(e.message);
+                return self.states.create("__error__", {return_state: name});
+            }
+            return self.states.create(name, opts);
         });
     });
 
@@ -1054,7 +1067,7 @@ go.app = function () {
 
       var payload = {
         data: {
-          commit_get_tested: answers.state_commit_to_get_tested === "state_commit_to_get_tested_yes" ? "yes" : "no",
+          commit_get_tested: answers.state_commit_to_get_tested === "state_send_facilities_link_sms" ? "yes" : "no",
           "source": "USSD",
           clinic_visit_day: answers.clinic_visit_day,
         },
@@ -1067,7 +1080,7 @@ go.app = function () {
         .patch(self.im.config.healthcheck.url + "/v2/tbcheck/"+ id +"/", payload)
         .then(
           function () {
-            if (answers.state_commit_to_get_tested === "state_commit_to_get_tested_yes"){
+            if (answers.state_commit_to_get_tested === "state_send_facilities_link_sms"){
                 return self.states.create("state_commitment");
                 }
             else{
