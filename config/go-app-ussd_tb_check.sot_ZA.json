@@ -1,15 +1,15 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2023-03-16 12:00:+0000",
-        "po-revision-date": "2023-03-16 14:29+0200",
+        "pot-creation-date": "2023-10-26 02:59:+0000",
+        "po-revision-date": "2023-10-26 21:53+0200",
         "last-translator": "",
         "language-team": "",
         "language": "sot_ZA",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 3.2.2"
+        "x-generator": "Poedit 3.4"
     },
     "Welcome back to the The National Department of Health's TB HealthCheck": [
         null,
@@ -75,9 +75,9 @@
         null,
         "O sebedisa lesedi lena kotsing ya hao. Dumela ho se natse kapa ho dieha ho fumana dikeletso tsa bongaka ka kalafo kapa tlhokomelo "
     ],
-    "Your personal information is protected under POPIA and in accordance with the provisions of the TBHealthCheck Privacy Notice sent to you by SMS.": [
+    "Your personal information is protected under POPIA and in accordance with the provisions of the TB HealthCheck Privacy Notice sent to you by SMS.": [
         null,
-        "Dintlha tsa hao tsa botho di sireleditswe ka molao wa POPI le ka dipehelo tsa Tsebiso ya Lekunutu la TBHealthCheck e romeletsweng wena ka SMS."
+        "Dintlha tsa hao tsa botho di sireleditswe ka molao wa POPI le ka dipehelo tsa Tsebiso ya Lekunutu la TB HealthCheck e romeletsweng wena ka SMS."
     ],
     "ACCEPT": [
         null,
@@ -158,14 +158,6 @@
     "over 65": [
         null,
         "tse fetang 65"
-    ],
-    "Unfortunately you cant participate in the study if you are younger than 18.": [
-        null,
-        "Ka bomadimabe o ke ke wa nka karolo phuputsong haeba o le ka tlase ho dilemo tse 18."
-    ],
-    "You can still continue with a TB Check but you will not be included in the study": [
-        null,
-        "O ntse o ka tswela pele ka TB CHECK empa o ke ke wa kenyelletswa diphuputsong"
     ],
     "Okay, no problem. You will not be included in the research, but you can still continue to check if you need to take a TB test.": [
         null,
@@ -339,25 +331,21 @@
         null,
         "Dikarabo tsa hao dipotsong di supa o hloka tlhahlobo ya TB bekeng ena!\n\nE-ya tleliniking bakeng sa tlhahlobo ya TB. Ka kopo, rwala mask pele o kena tleliniking."
     ],
-    "Your replies to the questions show that you need a TB test this week!": [
+    "Your replies to the questions show that you need a TB test this week!\n\nWith early diagnosis, TB can be cured. Don’t delay, test today!": [
         null,
-        "Dikarabo tsa hao ho dipotso di bontsha hore o hloka tlhahlobo ea LEFUBA bekeng ena!"
+        "Dikarabo tsa hao dipotsong di supa o hloka tlhahlobo ya TB bekeng ena!\n\nNgokuxilonga kusenesikhathi, i-TB ingelapheka. Ungalibali, hlola namuhla!"
     ],
-    "With early diagnosis, TB can be cured. Don't delay, test today!\n\nVisit your local clinic for a free TB test. ": [
+    "You will get R15 airtime within 1 hour if you commit to get tested.\n\nDo you commit to getting tested?": [
         null,
-        "Ka tlhatlhobo ya kapele, LEFUBA le ka phekoleha. Se ke wa dieha, hlahloba kajeno!\n\nEtela tleliniki ya heno ho etsa tlhahlobo ya mahala ya LEFUBA."
+        " O tla fumana airtime ya R15 ha o itlama ho hlahloba.\n\nNa o itlama ho hlahloba?"
     ],
-    "Your replies to the questions show that you need a TB test this week!\n\nHere are some tips to help you plan:": [
+    "Please use numbers from list. Do you commit to getting tested?": [
         null,
-        "Dikarabo tsa hao dipotsong di supa o hloka tlhahlobo ya TB bekeng ena!\n\nE-ya tleliniking bakeng sa tlhahlobo ya TB. Ka kopo, rwala mask pele o kena tleliniking:"
+        "Na o itlama ho hlahloba?"
     ],
-    "* Make the time. Your health is a priority!\n* Pick the most convenient clinic for your test\n* Get there early! Clinics are open for TB testing\nMonday to Friday mornings.": [
+    "Even if you can’t commit now, it is still important to get tested.": [
         null,
-        "Etsa nako. Bophelo ba hao bo tla pele!\nKgetha tleliniki e loketseng tlhahlobo ya hao.\n Ka tlase ke ditleliniki tse 5 tse haufi le wena."
-    ],
-    "Where will you go for your test? Reply with the clinic": [
-        null,
-        "O tla ya hokae bakeng sa tlhahlobo ya hao? Araba ka tliliniki "
+        "Leha o sa kgone ho itlama hona jwale, ho ntso le bohlokwa ho etsa tlhahlobo."
     ],
     "When will you go for your test? Reply with the day": [
         null,
@@ -383,37 +371,9 @@
         null,
         "LABOHLANO"
     ],
-    "Well done for planning to get your test!": [
-        null,
-        "U entse hantle ka ho rera ho nka tlhahlobo ea lefuba!"
-    ],
-    "Your replies to the questions show that you need a TB test this week!\n\n* Go to your local clinic for a free TB test.": [
-        null,
-        "Dikarabo tsa hao dipotsong di supa o hloka tlhahlobo ya TB bekeng ena!\n\nE-ya tleliniking bakeng sa tlhahlobo ya TB. Ka kopo, rwala mask pele o kena tleliniking."
-    ],
-    "* Visit your local clinic for a free TB test.\n* You will get R15 airtime within 1 hour if you commit to get tested.": [
-        null,
-        "* Eya tleliniking ya heno ho etsa tlhahlobo ya mahala ya LEFUBA.\n* O tla fumana airtime ya R15 ha o itlama ho hlahloba. "
-    ],
-    "Your replies to the questions show that you need a TB test this week.": [
-        null,
-        "Dikarabo tsa hao ho dipotso di bontsha hore o hloka tlhahlobo ea LEFUBA bekeng ena."
-    ],
-    "Do you commit to getting tested?": [
-        null,
-        "Na o itlama ho hlahloba?"
-    ],
-    "Please use numbers from list. Do you commit to getting tested?": [
-        null,
-        "Na o itlama ho hlahloba?"
-    ],
     "Well done for committing to your health!": [
         null,
         "O entse hantle ka ho itlamo ka bophelo bo botle ba hao!"
-    ],
-    "Even if you can't commit now, it is still important to get tested.": [
-        null,
-        "Leha o sa kgone ho itlama hona jwale, ho ntso le bohlokwa ho etsa tlhahlobo."
     ],
     "You don't need a TB test now, but if you develop cough, fever, weight loss or night sweats visit your nearest clinic.": [
         null,
@@ -422,6 +382,10 @@
     "Your replies to the questions show you need a TB test this week.\n\nGo to your clinic for a free TB test.": [
         null,
         "Dikarabo tsa hao dipotsong di supa o hloka tlhahlobo ya TB bekeng ena.\n\nE-ya tleliniking bakeng sa tlhahlobo ya TB. Ka kopo, rwala mask pele o kena tleliniking."
+    ],
+    "You don't need a TB test at present.\n\nIf you develop cough, fever, weight loss or night sweats visit your nearest clinic.": [
+        null,
+        "Ha o hloke tlhahlobo ya TB hona jwale.\n\nHaeba o ba le sefuba, feberu, ho theola boima ba mmele kapa ho fufulelwa bosiu, etela tleliniki e haufinyane."
     ],
     "Check if those you live with are on TB treatment. If you don't know your HIV status, visit the clinic for a free HIV test. Then do the TB check again.": [
         null,

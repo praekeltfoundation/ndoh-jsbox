@@ -1,15 +1,15 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2023-03-16 12:00:+0000",
-        "po-revision-date": "2023-03-16 14:22+0200",
+        "pot-creation-date": "2023-10-26 02:59:+0000",
+        "po-revision-date": "2023-10-26 21:57+0200",
         "last-translator": "",
         "language-team": "",
         "language": "xho_ZA",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "x-generator": "Poedit 3.2.2"
+        "x-generator": "Poedit 3.4"
     },
     "Welcome back to the The National Department of Health's TB HealthCheck": [
         null,
@@ -75,9 +75,9 @@
         null,
         "Sebenzisa olu lwazi ngomngcipheko wakho. Vuma awuzotyeshela okanye ulibazise ukufumana amacebo ngempilo nonyango okanye unonophelo"
     ],
-    "Your personal information is protected under POPIA and in accordance with the provisions of the TBHealthCheck Privacy Notice sent to you by SMS.": [
+    "Your personal information is protected under POPIA and in accordance with the provisions of the TB HealthCheck Privacy Notice sent to you by SMS.": [
         null,
-        "Ulwazi lwakho lobuqu lukhuselwe nguMthetho wePOPI kwaye ngokuhambelana nemimiselo yeSaziso seMfihlo seTBHealthCheck esithunyelwe kuwe ngeSMS."
+        "Ulwazi lwakho lobuqu lukhuselwe nguMthetho wePOPI kwaye ngokuhambelana nemimiselo yeSaziso seMfihlo seTB HealthCheck esithunyelwe kuwe ngeSMS."
     ],
     "ACCEPT": [
         null,
@@ -158,14 +158,6 @@
     "over 65": [
         null,
         "Ngaphezu kwa-65"
-    ],
-    "Unfortunately you cant participate in the study if you are younger than 18.": [
-        null,
-        "Ngelishwa awunakuthatha inxaxheba kuphononongo ukuba ungaphantsi kweminyaka eyi-18. "
-    ],
-    "You can still continue with a TB Check but you will not be included in the study": [
-        null,
-        "Usenako ukuqhubeka nokuhlolwa kwe-TB kodwa awuzukuqukwa kuphononongo."
     ],
     "Okay, no problem. You will not be included in the research, but you can still continue to check if you need to take a TB test.": [
         null,
@@ -339,25 +331,21 @@
         null,
         "Iimpendulo zakho zibonisa ukuba udinga uxilongo lwe TB kule veki!\n\nYiya ekliniki uyokuvavanya i-TB simahla. Nceda unxibe imaski phambi kokuba ungene eklinikhi"
     ],
-    "Your replies to the questions show that you need a TB test this week!": [
+    "Your replies to the questions show that you need a TB test this week!\n\nWith early diagnosis, TB can be cured. Don’t delay, test today!": [
         null,
-        "Dikarabo tsa hao ho dipotso di bontsha hore o hloka tlhahlobo ea TB bekeng ena!"
+        "Iimpendulo zakho zibonisa ukuba udinga uxilongo lwe TB kule veki!\n\nUkufunywanwa ngethuba, i-TB inokunyangeka. Ungalibazisi, vavanya namhlanje!"
     ],
-    "With early diagnosis, TB can be cured. Don't delay, test today!\n\nVisit your local clinic for a free TB test. ": [
+    "You will get R15 airtime within 1 hour if you commit to get tested.\n\nDo you commit to getting tested?": [
         null,
-        "Ukufunywanwa ngethuba, i-TB inokunyangeka. Ungalibazisi, vavanya namhlanje!\n\nNdwendwela ikliniki yengingqi yakho ukwenza uvavanyo lwe-TB lwamahala."
+        "Uya kufumana i-airtime ye-R15 ukuba uyazibophelela ukuba uvavanywe.\n\nIngaba uyazibophelela ukuba uzakuvavanya?"
     ],
-    "Your replies to the questions show that you need a TB test this week!\n\nHere are some tips to help you plan:": [
+    "Please use numbers from list. Do you commit to getting tested?": [
         null,
-        "Iimpendulo zakho zibonisa ukuba udinga uxilongo lwe TB kule veki!\n\nYiya ekliniki uyokuvavanya i-TB simahla. Nceda unxibe imaski phambi kokuba ungene eklinikhi"
+        "Ingaba uyazibophelela ukuba uzakuvavanya?"
     ],
-    "* Make the time. Your health is a priority!\n* Pick the most convenient clinic for your test\n* Get there early! Clinics are open for TB testing\nMonday to Friday mornings.": [
+    "Even if you can’t commit now, it is still important to get tested.": [
         null,
-        "Yenza ixesha. Impilo yakho ibalulekile!\nKhetha eyona klinikhi elula kakhulu kuwe ukwenza uvavanyo lwakho.\n Ngezantsi ziikliniki ezi-5 ezikufutshane kuwe."
-    ],
-    "Where will you go for your test? Reply with the clinic": [
-        null,
-        "Uza kuvavanywa phi? Phendula ngekliniki"
+        "Nokuba awukwazi ukuzibophelela ngoku, kusabalulekile ukuba uvavanye."
     ],
     "When will you go for your test? Reply with the day": [
         null,
@@ -383,37 +371,9 @@
         null,
         "LWESIHLANU"
     ],
-    "Well done for planning to get your test!": [
-        null,
-        "Wenze kakuhle ngokucwangcisa ukufumana uvavanyo lwe-TB!"
-    ],
-    "Your replies to the questions show that you need a TB test this week!\n\n* Go to your local clinic for a free TB test.": [
-        null,
-        "Iimpendulo zakho zibonisa ukuba udinga uxilongo lwe TB kule veki!\n\nYiya ekliniki uyokuvavanya i-TB simahla. Nceda unxibe imaski phambi kokuba ungene eklinikhi"
-    ],
-    "* Visit your local clinic for a free TB test.\n* You will get R15 airtime within 1 hour if you commit to get tested.": [
-        null,
-        "* Yiya kwiklinikhi yengingqi yakho ukufumana uvavanyo lwamahala lwe-TB.\n* Uya kufumana i-airtime ye-R15 ukuba uyazibophelela ukuba uvavanywe. "
-    ],
-    "Your replies to the questions show that you need a TB test this week.": [
-        null,
-        "Dikarabo tsa hao ho dipotso di bontsha hore o hloka tlhahlobo ea TB bekeng ena."
-    ],
-    "Do you commit to getting tested?": [
-        null,
-        "Ingaba uyazibophelela ukuba uzakuvavanya?"
-    ],
-    "Please use numbers from list. Do you commit to getting tested?": [
-        null,
-        "Ingaba uyazibophelela ukuba uzakuvavanya?"
-    ],
     "Well done for committing to your health!": [
         null,
         "Wenze kakuhle ngokuzibophelela ekunakekeleni impilo yakho!"
-    ],
-    "Even if you can't commit now, it is still important to get tested.": [
-        null,
-        "Nokuba awukwazi ukuzibophelela ngoku, kusabalulekile ukuba uvavanye."
     ],
     "You don't need a TB test now, but if you develop cough, fever, weight loss or night sweats visit your nearest clinic.": [
         null,
@@ -422,6 +382,10 @@
     "Your replies to the questions show you need a TB test this week.\n\nGo to your clinic for a free TB test.": [
         null,
         "Iimpendulo zakho zibonisa ukuba udinga uxilongo lwe TB kule veki.\n\nYiya ekliniki uyokuvavanya i-TB simahla. Nceda unxibe imaski phambi kokuba ungene eklinikhi."
+    ],
+    "You don't need a TB test at present.\n\nIf you develop cough, fever, weight loss or night sweats visit your nearest clinic.": [
+        null,
+        "Akudingi vavanyo lwe-TB ngoku.\n\nUkuba ngaba uyakhohlela, unomkhuhlane, uncipha umzimba okanye uyabila ebusuku tyelela iklinikhi ekufutshane nawe."
     ],
     "Check if those you live with are on TB treatment. If you don't know your HIV status, visit the clinic for a free HIV test. Then do the TB check again.": [
         null,

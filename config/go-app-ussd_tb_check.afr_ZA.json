@@ -1,8 +1,8 @@
 {
     "": {
         "project-id-version": "",
-        "pot-creation-date": "2023-03-16 12:00:+0000",
-        "po-revision-date": "2023-03-16 14:21+0200",
+        "pot-creation-date": "2023-10-26 02:59:+0000",
+        "po-revision-date": "2023-10-26 22:11+0200",
         "last-translator": "",
         "language-team": "",
         "language": "afr_ZA",
@@ -10,7 +10,7 @@
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
         "plural-forms": "nplurals=2; plural=(n != 1);",
-        "x-generator": "Poedit 3.2.2"
+        "x-generator": "Poedit 3.4"
     },
     "Welcome back to the The National Department of Health's TB HealthCheck": [
         null,
@@ -76,9 +76,9 @@
         null,
         "Inligting word gebruik op eie risiko. Die vraelyes vervang nie mediese raad nie. Stem om binnekort behandelingsadvies te kry en nie te ignoreer nie"
     ],
-    "Your personal information is protected under POPIA and in accordance with the provisions of the TBHealthCheck Privacy Notice sent to you by SMS.": [
+    "Your personal information is protected under POPIA and in accordance with the provisions of the TB HealthCheck Privacy Notice sent to you by SMS.": [
         null,
-        "Jou inligting word beskerm deur die POPI-wet, soos uiteengesit in TBHealthCheck se Privaatheidskennisgewing-SMS."
+        "Jou inligting word beskerm deur die POPI-wet, soos uiteengesit in TB HealthCheck se Privaatheidskennisgewing-SMS."
     ],
     "ACCEPT": [
         null,
@@ -159,14 +159,6 @@
     "over 65": [
         null,
         "oor 65"
-    ],
-    "Unfortunately you cant participate in the study if you are younger than 18.": [
-        null,
-        "Ongelukkig kan jy nie deelneem aan die studie as jy jonger as 18 is nie."
-    ],
-    "You can still continue with a TB Check but you will not be included in the study": [
-        null,
-        "Jy kan wel voortgaan met 'n TB Check wat nie by die studie ingesluit sal word nie."
     ],
     "Okay, no problem. You will not be included in the research, but you can still continue to check if you need to take a TB test.": [
         null,
@@ -340,25 +332,21 @@
         null,
         "Jou antwoorde toon dat jy 'n TB-toets moet neem hierdie week! \n\nGaan na jou kliniek vir 'n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan."
     ],
-    "Your replies to the questions show that you need a TB test this week!": [
+    "Your replies to the questions show that you need a TB test this week!\n\nWith early diagnosis, TB can be cured. Don’t delay, test today!": [
         null,
-        "Jou antwoorde op die vrae dui aan dat jy hierdie week 'n TB-toets moet laat doen!"
+        "Jou antwoorde toon dat jy 'n TB-toets moet neem hierdie week! \n\nAs TB vroeg gediagnoseer word, kan dit genees word. Hoekom wag? Laat toets jou vandag!"
     ],
-    "With early diagnosis, TB can be cured. Don't delay, test today!\n\nVisit your local clinic for a free TB test. ": [
+    "You will get R15 airtime within 1 hour if you commit to get tested.\n\nDo you commit to getting tested?": [
         null,
-        "As TB vroeg gediagnoseer word, kan dit genees word. Hoekom wag? Laat toets jou vandag!\n\nBesoek jou plaaslike kliniek vir 'n gratis TB-toets."
+        "y sal R15 lugtyd kry as jy onderneem om jou te laat toets.\n\nNeem jy voor om jou te laat toets?"
     ],
-    "Your replies to the questions show that you need a TB test this week!\n\nHere are some tips to help you plan:": [
+    "Please use numbers from list. Do you commit to getting tested?": [
         null,
-        "Jou antwoorde toon dat jy 'n TB-toets moet neem hierdie week! \n\nGaan na jou kliniek vir 'n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan:"
+        "Antwoord met 'n nommer uit die lys. Neem jy voor om jou te laat toets?"
     ],
-    "* Make the time. Your health is a priority!\n* Pick the most convenient clinic for your test\n* Get there early! Clinics are open for TB testing\nMonday to Friday mornings.": [
+    "Even if you can’t commit now, it is still important to get tested.": [
         null,
-        "* Maak tyd. Jou gesondheid is belangrik!\n* Kies die gerieflikste kliniek vir jou toets. \n* Hier is die 5 klinieke naaste aan jou"
-    ],
-    "Where will you go for your test? Reply with the clinic": [
-        null,
-        "Waar sal jy gaan vir jou toets? Antwoord met die kliniek"
+        "Al kan jy nie nou voorneem om dit te doen nie, is dit steeds belangrik om getoets te word."
     ],
     "When will you go for your test? Reply with the day": [
         null,
@@ -384,37 +372,9 @@
         null,
         "VRYDAG"
     ],
-    "Well done for planning to get your test!": [
-        null,
-        "Welgedaan omdat jy beplan om te gaan vir 'n TB toets!"
-    ],
-    "Your replies to the questions show that you need a TB test this week!\n\n* Go to your local clinic for a free TB test.": [
-        null,
-        "Jou antwoorde toon dat jy 'n TB-toets moet neem hierdie week! \n\nGaan na jou kliniek vir 'n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan"
-    ],
-    "* Visit your local clinic for a free TB test.\n* You will get R15 airtime within 1 hour if you commit to get tested.": [
-        null,
-        "* Gaan na jou plaaslike kliniek vir 'n gratis TB-toets.\n* Jy sal R15 lugtyd kry as jy onderneem om jou te laat toets."
-    ],
-    "Your replies to the questions show that you need a TB test this week.": [
-        null,
-        "Jou antwoorde op die vrae dui aan dat jy hierdie week 'n TB-toets moet laat doen."
-    ],
-    "Do you commit to getting tested?": [
-        null,
-        "Neem jy voor om jou te laat toets?"
-    ],
-    "Please use numbers from list. Do you commit to getting tested?": [
-        null,
-        "Antwoord met 'n nommer uit die lys. Neem jy voor om jou te laat toets?"
-    ],
     "Well done for committing to your health!": [
         null,
         "Geluk omdat jy jou gesondheid eerste stel!"
-    ],
-    "Even if you can't commit now, it is still important to get tested.": [
-        null,
-        "Al kan jy nie nou voorneem om dit te doen nie, is dit steeds belangrik om getoets te word."
     ],
     "You don't need a TB test now, but if you develop cough, fever, weight loss or night sweats visit your nearest clinic.": [
         null,
@@ -423,6 +383,10 @@
     "Your replies to the questions show you need a TB test this week.\n\nGo to your clinic for a free TB test.": [
         null,
         "Jou antwoorde toon dat jy 'n TB-toets moet neem hierdie week. \n\nGaan na jou kliniek vir 'n gratis TB-toets. Sit asseblief jou gesigmasker op voordat jy ingaan."
+    ],
+    "You don't need a TB test at present.\n\nIf you develop cough, fever, weight loss or night sweats visit your nearest clinic.": [
+        null,
+        "Jy hoef nie nou 'n TB-toets te doen nie.\n\nMaar besoek jou naaste kliniek indien jy begin hoes, koors het, gewig verloor of snags sweet."
     ],
     "Check if those you live with are on TB treatment. If you don't know your HIV status, visit the clinic for a free HIV test. Then do the TB check again.": [
         null,
