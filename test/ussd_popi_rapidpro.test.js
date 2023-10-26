@@ -318,8 +318,8 @@ describe("ussd_popi_rapidpro app", function() {
                         passport_number: "A12345",
                         passport_origin: "mw",
                         research_consent: "TRUE",
-                        edd: "2020-06-04",
-                        baby_dob1: "2018-03-02",
+                        edd: "2020-06-04T00:00:00.000000Z",
+                        baby_dob1: "2018-03-02T00:00:00.000000Z",
                         prebirth_messaging: "1"
                     },
                 })
@@ -397,10 +397,10 @@ describe("ussd_popi_rapidpro app", function() {
             return tester
                 .setup.user.state("state_change_info")
                 .setup.user.answer("contact", {fields: {preferred_channel: "SMS",
-                    baby_dob1: "2021-03-10",
-                    baby_dob2: "2021-11-11",
-                    baby_dob3: "2022-07-07",
-                    edd: "2020-06-04",
+                    baby_dob1: "2021-03-10T00:00:00.000000Z",
+                    baby_dob2: "2021-11-11T00:00:00.000000Z",
+                    baby_dob3: "2022-07-07T00:00:00.000000Z",
+                    edd: "2020-06-04T00:00:00.000000Z",
                 }})
                 .check.interaction({
                     reply: [
@@ -563,7 +563,7 @@ describe("ussd_popi_rapidpro app", function() {
                     baby_dob1: "2021-03-10",
                     baby_dob2: "2021-11-11",
                     baby_dob3: "2022-03-07",
-                    edd: "2022-06-06",
+                    edd: "2022-06-06T00:00:00Z",
                     prebirth_messaging: "1"
                 },
                 })

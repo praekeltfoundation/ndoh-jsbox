@@ -888,7 +888,12 @@ go.app = function () {
       };
 
       if (typeof self.im.user.answers.state_research_consent != "undefined"){
-        if (answers.state_research_consent === "state_gender"){
+        if (answers.state_research_consent_no === "state_gender"){
+          payload.data.research_consent = false;
+          payload.data.follow_up_optin = false;
+
+        }
+        else if (answers.state_research_consent === "state_gender"){
           payload.data.research_consent = true;
           payload.data.follow_up_optin = true;
         }
