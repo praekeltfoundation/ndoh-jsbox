@@ -2591,9 +2591,9 @@ describe("ussd_tb_check app", function () {
             .check.interaction({
             state: "state_show_results",
             reply: [
-                "You don't need a TB test at present.",
+                "Your replies to the questions show you need a TB test this week.",
                 "",
-                "If you develop cough, fever, weight loss or night sweats visit your nearest clinic."
+                "Go to your clinic for a free TB test."
             ].join("\n"),
             char_limit: 160,
         })

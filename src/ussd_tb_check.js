@@ -1131,25 +1131,12 @@ go.app = function () {
           "or night sweats visit your nearest clinic."
       );
 
-      if (risk == "high") {
+      if (risk == "high" || risk == "moderate") {
         text = $(
           [
             "Your replies to the questions show you need a TB test this week.",
             "",
             "Go to your clinic for a free TB test."
-          ].join("\n")
-        ).context({
-          arm: arm,
-          consent: consent,
-          tbcheck_id: tbcheck_id
-        });
-      }
-      else if (risk == "moderate") {
-        text = $(
-          [
-            "You don't need a TB test at present.",
-            "",
-            "If you develop cough, fever, weight loss or night sweats visit your nearest clinic."
           ].join("\n")
         ).context({
           arm: arm,
