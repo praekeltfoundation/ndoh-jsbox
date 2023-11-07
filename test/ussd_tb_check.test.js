@@ -2576,6 +2576,29 @@ describe("ussd_tb_check app", function () {
         .run();
     });
     });
+  describe("state_research_consent", function () {
+      it("should display gender for minor and research consent is undefined", function () {
+        return tester.setup.user
+          .state("state_research_consent")
+          .setup.user.answer("state_age", "<18")
+          .setup.user.answer("activation", "tb_study_a")
+          .check.interaction({
+            state: "state_gender",
+            reply: [
+              "Which gender do you identify as?",
+              "1. MALE",
+              "2. FEMALE",
+              "3. OTHER",
+              "4. RATHER NOT SAY"
+            ].join("\n"),
+            char_limit: 160,
+        })
+        .check.user.answer("research_consent", undefined)
+  
+          .run();
+      });
+  
+    });
   describe("state_show_results", function () {
     it("should show the state_show_results message for moderate risk", function () {
         return tester.setup.user
