@@ -900,7 +900,7 @@ go.app = function () {
       else{
         payload.data.follow_up_optin = answers.state_opt_in;
 
-        if (answers.state_age === "state_gender"){
+        if (answers.state_age === "<18"){
           payload.data.research_consent = false;
         }
       }

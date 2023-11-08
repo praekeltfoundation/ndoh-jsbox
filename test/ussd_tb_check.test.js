@@ -1794,6 +1794,7 @@ describe("ussd_tb_check app", function () {
           state_tracing: true,
           state_exposure: "no",
           state_language: "eng",
+
         })
         .setup(function (api) {
           api.http.fixtures.add({
@@ -1817,8 +1818,10 @@ describe("ussd_tb_check app", function () {
                 follow_up_optin: true,
                 risk: "low",
                 activation: null,
+                research_consent: false,
                 data: {
-                  tb_privacy_policy_accepted: "yes"
+                  tb_privacy_policy_accepted: "yes",
+
                 }
               },
             },
@@ -1828,7 +1831,7 @@ describe("ussd_tb_check app", function () {
                 id: 20,
                 profile: {
                 accepted: true,
-                tbconnect_group_arm: "control",
+                research_consent: false,
                 },
               },
             },
@@ -1839,196 +1842,6 @@ describe("ussd_tb_check app", function () {
         .run();
     });
   });
-
-
-
-
-
-
-
-
-  describe("state_test", function () {
-    it("should show the terms", function () {
-      return tester.setup.user
-        .state("state_terms")
-        .check.interaction({
-          state: "state_terms",
-          reply: [
-            "This NDoH service only provides health info. Please agree that you " +
-              "are responsible for your own medical care and treatment.",
-            "1. YES",
-            "2. NO",
-            "3. MORE INFO",
-          ].join("\n"),
-          char_limit: 160,
-        })
-        .run();
-    });
-    it("should go to state_privacy_policy_accepted for yes", function () {
-      return tester.setup.user
-        .state("state_terms")
-        .setup(function(api) {
-          api.http.fixtures.add(
-            fixtures_rapidpro.start_flow(
-                "privacy-policy-flow-uuid", null, "tel:+27123456789", {"hc_type": "tb"}
-              )
-            );
-        })
-        .input("1")
-        .check.user.state("state_privacy_policy_accepted")
-        .run();
-    });
-    it("should go to state_core_language for Accept", function () {
-      return tester.setup.user
-        .state("state_privacy_policy_accepted")
-        .input("1")
-        .check.user.state("state_core_language")
-        .run();
-    });
-    it("should go to state_welcome after selecting english", function () {
-      return tester.setup.user
-        .state("state_core_language")
-        .input("1")
-        .check.user.state("state_welcome")
-        .run();
-    });
-    it("should go to state_age after start", function () {
-      return tester.setup.user
-        .state("state_welcome")
-        .input("1")
-        .check.user.state("state_age")
-        .run();
-    });
-    it("should go to state_welcome after selecting english", function () {
-      return tester.setup.user
-        .state("state_age")
-        .input("1")
-        .check.user.state("state_gender")
-        .run();
-    });
-    it("should go to state_welcome after selecting english", function () {
-      return tester.setup.user
-        .state("state_gender")
-        .setup.user.answer("activation", "tb_study_a")
-        .input("1")
-        .check.user.state("state_cough")
-        .run();
-    });
-    it("should go to state_welcome after selecting english", function () {
-      return tester.setup.user
-        .state("state_cough")
-        .input("1")
-        .check.user.state("state_fever")
-        .run();
-    });
-    it("should go to state_welcome after selecting english", function () {
-      return tester.setup.user
-        .state("state_fever")
-        .input("1")
-        .check.user.state("state_sweat")
-        .run();
-    });
-    it("should go to state_welcome after selecting english", function () {
-      return tester.setup.user
-        .state("state_sweat")
-        .input("1")
-        .check.user.state("state_weight")
-        .run();
-    });
-    it("should go to state_welcome after selecting english", function () {
-      return tester.setup.user
-        .state("state_weight")
-        .input("1")
-        .check.user.state("state_exposure")
-        .run();
-    });
-    it("should go to state_welcome after selecting english", function () {
-      return tester.setup.user
-        .state("state_exposure")
-        .setup.user.answer("activation", "tb_study_a")
-        .input("1")
-        .check.user.state("state_study_tracing")
-        .run();
-    });
-    it("should go to state_welcome after selecting english", function () {
-      return tester.setup.user
-        .state("state_study_tracing")
-        .input("1")
-        .check.user.state("state_opt_in")
-        .run();
-    });
-    it("should say thanks for opt in", function () {
-      return tester.setup.user
-        .state("state_opt_in")
-        .setup.user.answers({
-          state_age: "<18",
-          state_gender: "male",
-          state_cough: "no",
-          state_fever: true,
-          state_sweat: true,
-          state_weight: true,
-          state_tracing: true,
-          state_exposure: "no",
-          state_language: "eng",
-          state_research_consent: null,
-        })
-        .setup(function (api) {
-          api.http.fixtures.add({
-            request: {
-              url: "http://healthcheck/v2/tbcheck/",
-              method: "POST",
-              data: {
-                msisdn: "+27123456789",
-                source: "USSD",
-                language: "eng",
-                age: "<18",
-                gender: "male",
-                cough: "no",
-                fever: true,
-                sweat: true,
-                weight: true,
-                exposure: "no",
-                tracing: true,
-                follow_up_optin: true,
-                risk: "high",
-                activation: null,
-                research_consent: null
-              },
-            },
-            response: {
-              code: 200,
-              // data: {
-              //   id: 45,
-              //   profile: {
-              //   accepted: true,
-              //   tbconnect_group_arm: "health_consequence",
-              //   },
-              // },
-            },
-          });
-        })
-        .input("1")
-        .check.interaction({
-          state: "state_complete",
-          reply: [
-            "Thanks for choosing to get our follow-up messages.",
-            "1. See Results",
-          ].join("\n"),
-          char_limit: 160,
-        })
-        .run();
-    });
-
-    
-    
-  });
-
-
-
-
-
-
-
 
   describe("state_complete", function () {
     it("should say thanks for opt in", function () {
@@ -2745,6 +2558,7 @@ describe("ussd_tb_check app", function () {
                 follow_up_optin: true,
                 risk: "low",
                 activation: null,
+                research_consent: false,
                 data: {
                   tb_privacy_policy_accepted: "yes"
                 }
@@ -2756,7 +2570,7 @@ describe("ussd_tb_check app", function () {
                 id: 20,
                 profile: {
                 accepted: true,
-                tbconnect_group_arm: "control",
+                research_consent: false,
                 },
               },
             },
