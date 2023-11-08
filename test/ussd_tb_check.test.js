@@ -1794,6 +1794,7 @@ describe("ussd_tb_check app", function () {
           state_tracing: true,
           state_exposure: "no",
           state_language: "eng",
+
         })
         .setup(function (api) {
           api.http.fixtures.add({
@@ -1817,8 +1818,10 @@ describe("ussd_tb_check app", function () {
                 follow_up_optin: true,
                 risk: "low",
                 activation: null,
+                research_consent: false,
                 data: {
-                  tb_privacy_policy_accepted: "yes"
+                  tb_privacy_policy_accepted: "yes",
+
                 }
               },
             },
@@ -1828,7 +1831,7 @@ describe("ussd_tb_check app", function () {
                 id: 20,
                 profile: {
                 accepted: true,
-                tbconnect_group_arm: "control",
+                research_consent: false,
                 },
               },
             },
@@ -1839,6 +1842,7 @@ describe("ussd_tb_check app", function () {
         .run();
     });
   });
+
   describe("state_complete", function () {
     it("should say thanks for opt in", function () {
       return tester.setup.user
@@ -2554,6 +2558,7 @@ describe("ussd_tb_check app", function () {
                 follow_up_optin: true,
                 risk: "low",
                 activation: null,
+                research_consent: false,
                 data: {
                   tb_privacy_policy_accepted: "yes"
                 }
@@ -2565,7 +2570,7 @@ describe("ussd_tb_check app", function () {
                 id: 20,
                 profile: {
                 accepted: true,
-                tbconnect_group_arm: "control",
+                research_consent: false,
                 },
               },
             },
