@@ -217,7 +217,13 @@ go.app = function () {
 
     self.states.add("state_get_contact", function (name, opts) {
       var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
-      var activation = self.get_activation();
+      var activation;
+      if (self.im.user.answers.activation !== undefined){
+        activation = self.im.user.answers.activation;
+      }
+      else{
+        activation = self.get_activation();
+      }
 
       if (activation === "tb_study_a_survey_group1" || activation === "tb_study_a_survey_group2") {
         return self.states.create("state_survey_start");
@@ -1325,10 +1331,12 @@ go.app = function () {
             var is_active = response.data.is_activation_active;
 
             if (is_active){
+                self.im.user.answers.state_city = activation;
                 return self.states.create("state_get_contact");
             }
               else{
                 // Set activation to Null if activation is not active
+                self.im.user.answers.state_city = undefined;
                 return self.states.create("state_reached_capacity");
                 }
           },

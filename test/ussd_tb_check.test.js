@@ -56,6 +56,7 @@ describe("ussd_tb_check app", function () {
   describe("set_activation", function() {
     it("should set activation for new user", function() {
       return tester
+      .setup.user.state("state_get_contact")
       .setup(function (api) {
         api.http.fixtures.add({
           request: {
@@ -2240,7 +2241,7 @@ describe("ussd_tb_check app", function () {
     it("state_start skip to survey", function() {
 
       return tester
-      .setup.user.state("state_start")
+      .setup.user.state("state_get_contact")
       .inputs({ session_event: "continue", to_addr: "*123*123*5#" })
       .check.user.state("state_survey_start")
       .run();
