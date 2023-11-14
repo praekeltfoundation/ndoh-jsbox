@@ -648,6 +648,7 @@ describe("ussd_tb_check app", function () {
     });
     it("should show an error if users already completed a study", function () {
       return tester
+      .setup.user.state("state_get_contact")
       .setup(function (api) {
         api.http.fixtures.add({
           request: {
@@ -807,7 +808,7 @@ describe("ussd_tb_check app", function () {
       })
       .run();
     });
-  it("should show state_research_consent_no on no consent", function () {
+    it("should show state_research_consent_no on no consent", function () {
       return tester.setup.user
         .state("state_research_consent")
         .input("2")
@@ -2644,6 +2645,94 @@ describe("ussd_tb_check app", function () {
             char_limit: 160,
         })
         .run();
+    });
+  });
+  describe("State_start with activations", function(){
+    it("should ask if they want to continue with screening", function () {
+      return tester.setup.user
+        .state("state_reached_capacity")
+        .check.interaction({
+          state: "state_reached_capacity",
+          reply: [
+            "The SUN Research Study has reached capacity. WCDoH strongly "+
+            "encourages you to screen for your own benefit.",
+            "",
+            "Do you want to screen?",
+            "1. YES",
+            "2. NO",
+          ].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should show state_welcome if they want to continue with screening", function () {
+      return tester.setup.user
+        .state("state_reached_capacity")
+        .input("1")
+        .check.user.state("state_welcome")
+        .run();
+    });
+    it("should go to state_reached_capacity_no_option if they don't want to continue", function () {
+      return tester.setup.user
+        .state("state_reached_capacity")
+        .input("2")
+        .check.interaction({
+          state: "state_reached_capacity_no_option",
+          reply:
+            "Come back and use this service any time. Remember, if you think you have TB, " +
+            "avoid contact with other people and get tested at your nearest clinic.",
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should show state_reached_capacity_no_option if they don't want to continue with screening", function () {
+      return tester.setup.user
+        .state("state_reached_capacity")
+        .input("2")
+        .check.user.state("state_reached_capacity_no_option")
+        .run();
+    });
+    it("Should get state_is_activation_active status", function() {
+      return tester.setup.user
+      .state("state_is_activation_active")
+      .setup(function (api) {
+          api.http.fixtures.add({
+            request: {
+              url: "http://healthcheck/v1/tbactivationstatus/",
+              method: "POST",
+              data: {
+              "activation": "tb_study_a"
+              },
+            },
+            response: {
+              code: 200,
+              data: {is_activation_active: true},
+            },
+          });
+
+         api.http.fixtures.add({
+          request: {
+              url: "http://healthcheck/v2/healthcheckuserprofile/+27123456789/",
+              method: "GET"
+          },
+          response: {
+              code: 200,
+              data: {
+                activation: null,
+                state_gender: "MALE",
+                state_province: "ZA-WC",
+                state_city: null,
+                city_location: "+00-025/",
+                state_age: "18-39",
+                state_language: "eng",
+                data: {tb_privacy_policy_accepted: "yes"},
+              }
+          }
+          });
+        })
+       .inputs({ session_event: "continue", to_addr: "*123*123*7#" })
+      .check.user.state("state_welcome")
+      .run();
     });
   });
 });
