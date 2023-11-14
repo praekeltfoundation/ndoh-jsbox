@@ -88,8 +88,26 @@ go.app = function () {
     });
 
     self.states.add("state_start", function (name, opts) {
-      var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
       var activation = self.get_activation();
+
+      if (activation === "tb_study_a" || activation === "tb_study_b" || activation === "tb_study_c"){
+        return self.states.create("state_is_activation_active");
+      }
+      else{
+        return self.states.create("state_get_contact");
+      }
+      });
+
+    self.states.add("state_get_contact", function (name, opts) {
+      var msisdn = utils.normalize_msisdn(self.im.user.addr, "ZA");
+      var activation;
+      if (self.im.user.answers.activation !== undefined){
+        activation = self.im.user.answers.activation;
+      }
+      else{
+        activation = self.get_activation();
+      }
+
       if (activation === "tb_study_a_survey_group1" || activation === "tb_study_a_survey_group2") {
         return self.states.create("state_survey_start");
       }
@@ -1111,6 +1129,29 @@ go.app = function () {
       });
     });
 
+    self.add("state_reached_capacity", function (name) {
+      return new MenuState(name, {
+        question: $(["The SUN Research Study has reached capacity. WCDoH strongly encourages you to screen for your own benefit.",
+                    "",
+                    "Do you want to screen?"
+                    ].join("\n")
+                    ),
+        error: $("Please use numbers from list. Do you want to screen?"),
+        accept_labels: true,
+        choices: [new Choice("state_welcome", $("YES")),
+                  new Choice("state_reached_capacity_no_option", $("NO"))],
+      });
+    });
+
+    self.states.add("state_reached_capacity_no_option", function (name) {
+      var text = $("Come back and use this service any time. Remember, if you think you have TB, avoid contact with other people and get tested at your nearest clinic.");
+
+      return new EndState(name, {
+        text: text,
+        next: "state_start",
+      });
+    });
+
     self.states.add("state_show_results", function (name) {
       var answers = self.im.user.answers;
       var risk = self.calculate_risk();
@@ -1152,6 +1193,46 @@ go.app = function () {
         next: "state_start",
         text: text,
       });
+    });
+
+    self.states.add("state_is_activation_active", function (name, opts) {
+      var activation = self.get_activation();
+
+      var payload = {
+          data: {activation: activation},
+        headers: {
+          Authorization: ["Token " + self.im.config.healthcheck.token],
+          "User-Agent": ["Jsbox/TB-Check-USSD"],
+        },
+      };
+
+      return new JsonApi(self.im)
+        .post(self.im.config.healthcheck.url + "/v1/tbactivationstatus/", payload)
+        .then(
+          function (response) {
+            // Get activation status
+            var is_active = response.data.is_activation_active;
+
+            if (is_active){
+                self.im.user.answers.state_city = activation;
+                return self.states.create("state_get_contact");
+            }
+              else{
+                // Set activation to Null if activation is not active
+                self.im.user.answers.state_city = undefined;
+                return self.states.create("state_reached_capacity");
+                }
+          },
+          function (e) {
+            // Go to error state after 3 failed HTTP requests
+            opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+            if (opts.http_error_count === 3) {
+              self.im.log.error(e.message);
+              return self.states.create("__error__", { return_state: name });
+            }
+            return self.states.create(name, opts);
+          }
+        );
     });
 
     self.states.add("state_survey_start", function (name) {
