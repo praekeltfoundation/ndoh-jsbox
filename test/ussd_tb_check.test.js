@@ -921,6 +921,27 @@ describe("ussd_tb_check app", function () {
         .check.user.state("state_suburb_name")
         .run();
     });
+    it("should show state_research_consent for back option", function () {
+      return tester.setup.user
+        .state("state_sms_complete")
+        .inputs({ session_event: "continue", to_addr: "*123*123*3#" })
+        .check.interaction({
+          state: "state_sms_complete",
+          reply:[
+          "The FAQ has been sent to you by SMS. What would you like to do?",
+          "1. Back",
+          "2. Exit"].join("\n"),
+          char_limit: 160,
+        })
+        .run();
+    });
+    it("should show state_research_consent for back option", function () {
+      return tester.setup.user
+        .state("state_sms_complete")
+        .inputs("1")
+        .check.user.state("state_survey_start")
+        .run();
+    });
   });
   describe("state_city", function () {
     it("should ask for the city", function () {

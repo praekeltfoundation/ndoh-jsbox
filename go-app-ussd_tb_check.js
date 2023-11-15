@@ -1576,7 +1576,7 @@ go.app = function () {
             new Choice("state_end", $("Exit")),
             ];
 
-        if (activation === "tb_study_a"){
+        if (activation === "tb_study_a" || activation === "tb_study_b" || activation === "tb_study_c"){
             choice_list = [
             new Choice("state_research_consent", $("Back")),
             new Choice("state_end", $("Exit")),
