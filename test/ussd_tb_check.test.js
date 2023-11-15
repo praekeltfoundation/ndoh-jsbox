@@ -2699,7 +2699,7 @@ describe("ussd_tb_check app", function () {
       .setup(function (api) {
           api.http.fixtures.add({
             request: {
-              url: "http://healthcheck/v1/tbactivationstatus/",
+              url: "http://healthcheck/v1/tbactivationstatus",
               method: "POST",
               data: {
               "activation": "tb_study_a"
