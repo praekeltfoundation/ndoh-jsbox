@@ -1327,7 +1327,6 @@ go.app = function () {
         .post(self.im.config.healthcheck.url + "/v1/tbactivationstatus", payload)
         .then(
           function (response) {
-            console.log("Response: ", response);
             // Get activation status
             var is_active = response.data.is_activation_active;
 
@@ -1577,7 +1576,7 @@ go.app = function () {
             new Choice("state_end", $("Exit")),
             ];
 
-        if (activation === "tb_study_a"){
+        if (activation === "tb_study_a" || activation === "tb_study_b" || activation === "tb_study_c"){
             choice_list = [
             new Choice("state_research_consent", $("Back")),
             new Choice("state_end", $("Exit")),
