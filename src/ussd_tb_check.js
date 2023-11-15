@@ -1210,6 +1210,7 @@ go.app = function () {
         .post(self.im.config.healthcheck.url + "/v1/tbactivationstatus", payload)
         .then(
           function (response) {
+            console.log("Response: ", response);
             // Get activation status
             var is_active = response.data.is_activation_active;
 
