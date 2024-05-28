@@ -1225,7 +1225,7 @@ go.app = function() {
                     new Choice("xho", $("isiXhosa")),
                     new Choice("afr", $("Afrikaans")),
                     new Choice("eng", $("English")),
-                    new Choice("sot", $("Sesotho sa Leboa")),
+                    new Choice("nso", $("Sesotho sa Leboa")),
                     new Choice("set", $("Setswana")),
                     new Choice("sot", $("Sesotho")),
                     new Choice("tso", $("Xitsonga")),

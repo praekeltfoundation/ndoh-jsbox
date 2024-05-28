@@ -2227,4 +2227,23 @@ describe("ussd_clinic app", function() {
             .run();
         });
     });
+
+    describe("state_language nso", function() {
+        it("state_language should return nso has language", function() {
+            return tester
+                .setup.user.answers({
+                    state_message_type: "state_edd_month",
+                    state_research_consent: "no",
+                    state_id_type: "state_sa_id_no",
+                    state_sa_id_no: "9001020005088",
+                    state_edd_month: "201502",
+                    state_edd_day: "13",
+                    state_clinic_code: "123456",
+                })
+                .setup.user.state("state_language")
+                .inputs("5")
+                .check.user.answer("state_language", "nso")
+                .run();
+        });
+    });
 });
