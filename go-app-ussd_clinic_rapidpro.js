@@ -1281,7 +1281,7 @@ go.app = function() {
             return new MenuState(name, {
                 question: $(
                     "Please confirm that you are signing up to receive information from MomConnect to exercise your ",
-                    "right to basic helthcare."),
+                    "right to basic healthcare."),
                 error: $(
                     "Sorry, we don't understand. Please try again.",
                     "",
@@ -1314,7 +1314,12 @@ go.app = function() {
                     null,
                     "whatsapp:" + _.trim(msisdn, "+"))
                 .then(function() {
-                    return self.states.create("state_accept_popi");
+                    if (self.im.user.answers.state_accept_popi == "state_send_popi_sms_flow"){
+                        return self.states.create("state_popi_pp_sms");
+                    }
+                    else {
+                        return self.states.create("state_accept_popi");
+                    }
                 }).catch(function(e) {
                     // Go to error state after 3 failed HTTP requests
                     opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
@@ -1333,14 +1338,17 @@ go.app = function() {
             return new MenuState(name, {
                 question: $(
                     "Your personal information is protected by law (POPIA) and by the " +
-                    "MomConnect Privacy Policy that was just sent to you."
+                    "MomConnect Privacy Policy that was just sent to you on WhatsApp."
                 ),
                 error: $([
                     "Sorry, we don't understand. Please try again.",
                     "",
                     "Enter the number that matches your answer."
                 ].join("\n")),
-                choices: [new Choice("state_accept_popi_2", $("Next"))],
+                choices: [
+                    new Choice("state_accept_popi_2", $("Next")),
+                    new Choice("state_send_popi_sms_flow", $("I didn't get it"))
+                ],
             });
         });
 
@@ -1359,6 +1367,22 @@ go.app = function() {
                 choices: [
                     new Choice("state_trigger_rapidpro_flow", $("Accept")),
                     new Choice("state_accept_popi_confirm", $("Exit"))
+                ],
+            });
+        });
+
+        self.add("state_popi_pp_sms", function(name, opts) {
+            return new MenuState(name, {
+                question: $(
+                    "Ok, the Privacy Policy has now been sent to you on SMS."
+                ),
+                error: $([
+                    "Sorry, we don't understand. Please try again.",
+                    "",
+                    "Enter the number that matches your answer."
+                ].join("\n")),
+                choices: [
+                    new Choice("state_accept_popi_2", $("Next")),
                 ],
             });
         });

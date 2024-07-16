@@ -1503,8 +1503,9 @@ describe("ussd_clinic app", function() {
                 .check.interaction({
                     reply: [
                         "Your personal information is protected by law (POPIA) and by the " +
-                        "MomConnect Privacy Policy that was just sent to you.",
-                        "1. Next"
+                        "MomConnect Privacy Policy that was just sent to you on WhatsApp.",
+                        "1. Next",
+                        "2. I didn't get it"
                     ].join("\n")
                 })
                 .run();
@@ -1527,6 +1528,47 @@ describe("ussd_clinic app", function() {
                         "Sorry, we don't understand. Please try again.",
                         "",
                         "Enter the number that matches your answer.",
+                        "1. Next",
+                        "2. I didn't get it"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should go to state_popi_pp_sms if the user input option 2 on state_accept_popi", function() {
+            return tester
+                .setup.user.answer("state_accept_popi", "state_send_popi_sms_flow")
+                .setup(function(api) {
+                  api.http.fixtures.add(
+                      fixtures_hub.send_whatsapp_template_message(
+                        "+27123456789",
+                        "popi_template",
+                        {
+                            "filename": "privacy_policy.pdf",
+                            "id": "media-uuid"
+                        },
+                        "SMS"
+                      )
+                  );
+                  api.http.fixtures.add(
+                    fixtures_rapidpro.start_flow(
+                        "popi-sms-flow-uuid", null, "whatsapp:27123456789"
+                    )
+                  );
+                  api.http.fixtures.add(
+                    fixtures_rapidpro.get_global_flag("sms_registrations_enabled", "TRUE")
+                  );
+                })
+                .setup.user.state("state_send_popi_template_message")
+                .check.user.state("state_popi_pp_sms")
+                .check.user.answer("preferred_channel", "SMS")
+                .run();
+        });
+        it("should send the user privacy policy via sms", function() {
+            return tester
+                .setup.user.state("state_popi_pp_sms")
+                .check.interaction({
+                    reply: [
+                        "Ok, the Privacy Policy has now been sent to you on SMS.",
                         "1. Next"
                     ].join("\n")
                 })
