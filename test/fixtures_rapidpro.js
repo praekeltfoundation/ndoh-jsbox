@@ -137,6 +137,7 @@ module.exports = function() {
             if(extra) {
                 data.extra = extra;
             }
+            console.log("#####", data);
             return {
                 "repeatable": true,
                 "request": {
