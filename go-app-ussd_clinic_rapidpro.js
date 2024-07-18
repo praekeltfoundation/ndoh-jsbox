@@ -17,14 +17,15 @@ go.Hub = function() {
             var api_url = url.resolve(self.base_url, "/api/v1/sendwhatsapptemplate");
             var data = {
                 "msisdn": msisdn,
-                "template_name": template_name
+                "template_name": template_name,
+                "save_status_record": true
             };
             if(media) {
                 data.media = media;
             }
             return self.json_api.post(api_url, {data: data})
                 .then(function(response){
-                    return response.data.preferred_channel;
+                    return response.data;
 
                 });
         };
@@ -36,6 +37,17 @@ go.Hub = function() {
                 .then(
                     function(response){
                         return response.data.number_of_failures;
+                    }
+                );
+        };
+
+        self.get_whatsapp_template_status = function(status_id) {
+            var api_url = url.resolve(self.base_url, "/api/v2/whatsapptemplatesendstatus/" + status_id + "/");
+
+            return self.json_api.get(api_url)
+                .then(
+                    function(response){
+                        return response.data;
                     }
                 );
         };
@@ -1248,9 +1260,9 @@ go.app = function() {
             };
             return self.hub
                 .send_whatsapp_template_message(msisdn, template_name, media)
-                .then(function(preferred_channel) {
-                    self.im.user.set_answer("preferred_channel", preferred_channel);
-                    if (preferred_channel == "SMS") {
+                .then(function(data) {
+                    self.im.user.set_answer("preferred_channel", data.preferred_channel);
+                    if (data.preferred_channel == "SMS") {
                         return self.rapidpro.get_global_flag("sms_registrations_enabled")
                             .then(function(sms_registration_enabled) {
                                 if (sms_registration_enabled) {
@@ -1365,7 +1377,7 @@ go.app = function() {
                     "Enter the number that matches your answer."
                 ].join("\n")),
                 choices: [
-                    new Choice("state_trigger_rapidpro_flow", $("Accept")),
+                    new Choice("state_get_whatsapp_template_status", $("Accept")),
                     new Choice("state_accept_popi_confirm", $("Exit"))
                 ],
             });
@@ -1406,6 +1418,29 @@ go.app = function() {
             });
         });
 
+        self.add("state_get_whatsapp_template_status", function(name, opts) {
+            var status_id = self.im.user.answers.status_id;
+
+            return self.hub
+                .get_whatsapp_template_status(status_id)
+                .then(function(data) {
+                    self.im.user.set_answer("preferred_channel", data.preferred_channel);
+                    self.im.user.set_answer("status", data.status);
+
+                    return self.states.create("state_trigger_rapidpro_flow");
+                }).catch(function(e) {
+                    // Go to error state after 3 failed HTTP requests
+                    opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
+                    if (opts.http_error_count === 3) {
+                        self.im.log.error(e.message);
+                        return self.states.create("__error__", {
+                            return_state: name
+                        });
+                    }
+                    return self.states.create(name, opts);
+                });
+        });
+
         self.add("state_trigger_rapidpro_flow", function(name, opts) {
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
@@ -1422,7 +1457,8 @@ go.app = function() {
                 } [self.im.user.answers.state_id_type],
                 clinic_code: self.im.user.answers.state_clinic_code,
                 swt: self.im.user.answers.preferred_channel == "SMS" ? "1" : "7",
-                preferred_channel: self.im.user.answers.preferred_channel
+                preferred_channel: self.im.user.answers.preferred_channel,
+                status_id: self.im.user.answers.status_id,
             };
             var flow_uuid;
 

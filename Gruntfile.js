@@ -30,6 +30,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_public_rapidpro: [
                     'src/index.js',
+                    'src/hub.js',
                     'src/engage.js',
                     'src/rapidpro.js',
                     '<%= paths.src.app.ussd_public_rapidpro %>',
@@ -131,6 +132,7 @@ module.exports = function (grunt) {
                 ],
                 ussd_public_rapidpro: [
                     'test/setup.js',
+                    'src/hub.js',
                     'src/engage.js',
                     'src/rapidpro.js',
                     '<%= paths.src.app.ussd_public_rapidpro %>',

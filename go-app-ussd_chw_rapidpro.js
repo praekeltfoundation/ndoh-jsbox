@@ -1,6 +1,61 @@
 var go = {};
 go;
 
+go.Hub = function() {
+    var vumigo = require('vumigo_v02');
+    var events = vumigo.events;
+    var Eventable = events.Eventable;
+    var url = require("url");
+
+    var Hub = Eventable.extend(function(self, json_api, base_url, auth_token) {
+        self.json_api = json_api;
+        self.base_url = base_url;
+        self.auth_token = auth_token;
+        self.json_api.defaults.headers.Authorization = ['Token ' + self.auth_token];
+
+        self.send_whatsapp_template_message = function(msisdn, template_name, media) {
+            var api_url = url.resolve(self.base_url, "/api/v1/sendwhatsapptemplate");
+            var data = {
+                "msisdn": msisdn,
+                "template_name": template_name,
+                "save_status_record": true
+            };
+            if(media) {
+                data.media = media;
+            }
+            return self.json_api.post(api_url, {data: data})
+                .then(function(response){
+                    return response.data;
+
+                });
+        };
+
+        self.get_whatsapp_failure_count = function(msisdn) {
+            var api_url = url.resolve(self.base_url, "/api/v2/deliveryfailure/" + msisdn + "/");
+
+            return self.json_api.get(api_url)
+                .then(
+                    function(response){
+                        return response.data.number_of_failures;
+                    }
+                );
+        };
+
+        self.get_whatsapp_template_status = function(status_id) {
+            var api_url = url.resolve(self.base_url, "/api/v2/whatsapptemplatesendstatus/" + status_id + "/");
+
+            return self.json_api.get(api_url)
+                .then(
+                    function(response){
+                        return response.data;
+                    }
+                );
+        };
+
+    });
+    return Hub;
+}();
+
 go.RapidPro = function() {
     var vumigo = require('vumigo_v02');
     var url_utils = require('url');
@@ -612,9 +667,9 @@ go.app = function() {
             var template_name = self.im.config.welcome_template;
             return self.hub
                 .send_whatsapp_template_message(msisdn, template_name)
-                .then(function(preferred_channel) {
-                    self.im.user.set_answer("preferred_channel", preferred_channel);
-                    if (preferred_channel == "SMS") {
+                .then(function(data) {
+                    self.im.user.set_answer("preferred_channel", data.preferred_channel);
+                    if (data.preferred_channel == "SMS") {
                         return self.rapidpro.get_global_flag("sms_registrations_enabled")
                             .then(function(sms_registration_enabled) {
                                 if (sms_registration_enabled) {

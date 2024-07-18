@@ -1546,7 +1546,8 @@ describe("ussd_clinic app", function() {
                             "filename": "privacy_policy.pdf",
                             "id": "media-uuid"
                         },
-                        "SMS"
+                        "SMS",
+                        "status-id-uuid"
                       )
                   );
                   api.http.fixtures.add(
@@ -1677,6 +1678,15 @@ describe("ussd_clinic app", function() {
                     state_clinic_code: "123456",
                     preferred_channel: "SMS",
                     state_language: "eng",
+                    status_id: "status-id-uuid",
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_hub.get_whatsapp_template_status(
+                                "status-id-uuid",
+                                "SMS"
+                        )
+                    );
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1694,6 +1704,7 @@ describe("ussd_clinic app", function() {
                                 dob: "1990-01-02T00:00:00Z",
                                 swt: "1",
                                 preferred_channel: "SMS",
+                                status_id: "status-id-uuid",
                             }
                         )
                     );
@@ -1710,9 +1721,10 @@ describe("ussd_clinic app", function() {
                 })
                 .check.reply.ends_session()
                 .check(function(api) {
-                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(api.http.requests.length, 2);
                     var urls = _.map(api.http.requests, "url");
                     assert.deepEqual(urls, [
+                        "http://hub/api/v2/whatsapptemplatesendstatus/status-id-uuid/",
                         "https://rapidpro/api/v2/flow_starts.json"
                     ]);
                     assert.equal(api.log.error.length, 0);
@@ -1732,6 +1744,16 @@ describe("ussd_clinic app", function() {
                     state_clinic_code: "123456",
                     preferred_channel: "SMS",
                     state_language: "eng",
+                    status_id: "status-id-uuid",
+
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_hub.get_whatsapp_template_status(
+                                "status-id-uuid",
+                                "SMS"
+                        )
+                    );
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1749,6 +1771,7 @@ describe("ussd_clinic app", function() {
                                 dob: "1990-01-02T00:00:00Z",
                                 swt: "1",
                                 preferred_channel: "SMS",
+                                status_id: "status-id-uuid",
                             }
                         )
                     );
@@ -1765,9 +1788,10 @@ describe("ussd_clinic app", function() {
                 })
                 .check.reply.ends_session()
                 .check(function(api) {
-                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(api.http.requests.length, 2);
                     var urls = _.map(api.http.requests, "url");
                     assert.deepEqual(urls, [
+                        'http://hub/api/v2/whatsapptemplatesendstatus/status-id-uuid/',
                         "https://rapidpro/api/v2/flow_starts.json"
                     ]);
                     assert.equal(api.log.error.length, 0);
@@ -1789,6 +1813,15 @@ describe("ussd_clinic app", function() {
                     state_underage_registree: "Yes",
                     preferred_channel: "SMS",
                     state_language: "eng",
+                    status_id: "status-id-uuid",
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_hub.get_whatsapp_template_status(
+                                "status-id-uuid",
+                                "SMS"
+                        )
+                    );
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1807,6 +1840,7 @@ describe("ussd_clinic app", function() {
                                 dob: "2013-01-02T00:00:00Z",
                                 swt: "1",
                                 preferred_channel: "SMS",
+                                status_id: "status-id-uuid",
                             }
                         )
                     );
@@ -1823,9 +1857,10 @@ describe("ussd_clinic app", function() {
                 })
                 .check.reply.ends_session()
                 .check(function(api) {
-                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(api.http.requests.length, 2);
                     var urls = _.map(api.http.requests, "url");
                     assert.deepEqual(urls, [
+                        "http://hub/api/v2/whatsapptemplatesendstatus/status-id-uuid/",
                         "https://rapidpro/api/v2/flow_starts.json"
                     ]);
                     assert.equal(api.log.error.length, 0);
@@ -1849,6 +1884,15 @@ describe("ussd_clinic app", function() {
                     state_underage_registree: "Yes",
                     preferred_channel: "SMS",
                     state_language: "eng",
+                    status_id: "status-id-uuid",
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_hub.get_whatsapp_template_status(
+                                "status-id-uuid",
+                                "SMS"
+                        )
+                    );
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1868,6 +1912,7 @@ describe("ussd_clinic app", function() {
                                 swt: "1",
                                 age: "16",
                                 preferred_channel: "SMS",
+                                status_id: "status-id-uuid",
                             }
                         )
                     );
@@ -1884,9 +1929,10 @@ describe("ussd_clinic app", function() {
                 })
                 .check.reply.ends_session()
                 .check(function(api) {
-                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(api.http.requests.length, 2);
                     var urls = _.map(api.http.requests, "url");
                     assert.deepEqual(urls, [
+                        "http://hub/api/v2/whatsapptemplatesendstatus/status-id-uuid/",
                         "https://rapidpro/api/v2/flow_starts.json"
                     ]);
                     assert.equal(api.log.error.length, 0);
@@ -1910,6 +1956,15 @@ describe("ussd_clinic app", function() {
                     state_underage_registree: "Yes",
                     preferred_channel: "SMS",
                     state_language: "eng",
+                    status_id: "status-id-uuid",
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_hub.get_whatsapp_template_status(
+                                "status-id-uuid",
+                                "SMS"
+                        )
+                    );
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1927,6 +1982,7 @@ describe("ussd_clinic app", function() {
                                 swt: "1",
                                 dob: "2014-10-25T00:00:00Z",
                                 preferred_channel: "SMS",
+                                status_id: "status-id-uuid",
                             }
                         )
                     );
@@ -1943,9 +1999,10 @@ describe("ussd_clinic app", function() {
                 })
                 .check.reply.ends_session()
                 .check(function(api) {
-                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(api.http.requests.length, 2);
                     var urls = _.map(api.http.requests, "url");
                     assert.deepEqual(urls, [
+                        "http://hub/api/v2/whatsapptemplatesendstatus/status-id-uuid/",
                         "https://rapidpro/api/v2/flow_starts.json"
                     ]);
                     assert.equal(api.log.error.length, 0);
@@ -1966,6 +2023,15 @@ describe("ussd_clinic app", function() {
                     state_clinic_code: "123456",
                     preferred_channel: "WhatsApp",
                     state_language: "eng",
+                    status_id: "status-id-uuid",
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_hub.get_whatsapp_template_status(
+                                "status-id-uuid",
+                                "WhatsApp"
+                        )
+                    );
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -1983,6 +2049,7 @@ describe("ussd_clinic app", function() {
                                 dob: "1990-01-02T00:00:00Z",
                                 swt: "7",
                                 preferred_channel: "WhatsApp",
+                                status_id: "status-id-uuid"
                             }
                         )
                     );
@@ -1999,16 +2066,17 @@ describe("ussd_clinic app", function() {
                 })
                 .check.reply.ends_session()
                 .check(function(api) {
-                    assert.equal(api.http.requests.length, 1);
+                    assert.equal(api.http.requests.length, 2);
                     var urls = _.map(api.http.requests, "url");
                     assert.deepEqual(urls, [
+                        "http://hub/api/v2/whatsapptemplatesendstatus/status-id-uuid/",
                         "https://rapidpro/api/v2/flow_starts.json"
                     ]);
                     assert.equal(api.log.error.length, 0);
                 })
                 .run();
         });
-        it("should retry HTTP call when RapidPro is down", function() {
+        it("should retry HTTP call when RapidPro is down on accept_popi_2", function() {
             return tester
                 .setup.user.state("state_accept_popi_2")
                 .setup.user.answers({
@@ -2022,6 +2090,15 @@ describe("ussd_clinic app", function() {
                     state_clinic_code: "123456",
                     preferred_channel: "WhatsApp",
                     state_language: "eng",
+                    status_id: "status-id-uuid",
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_hub.get_whatsapp_template_status(
+                                "status-id-uuid",
+                                "WhatsApp"
+                        )
+                    );
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -2039,6 +2116,7 @@ describe("ussd_clinic app", function() {
                                 dob: "1990-01-02T00:00:00Z",
                                 swt: "7",
                                 preferred_channel: "WhatsApp",
+                                status_id: "status-id-uuid",
                             }, true
                         )
                     );
@@ -2052,10 +2130,14 @@ describe("ussd_clinic app", function() {
                 })
                 .check.reply.ends_session()
                 .check(function(api){
-                    assert.equal(api.http.requests.length, 3);
-                    api.http.requests.forEach(function(request){
-                        assert.equal(request.url, "https://rapidpro/api/v2/flow_starts.json");
-                    });
+                    assert.equal(api.http.requests.length, 4);
+                    var urls = _.map(api.http.requests, "url");
+                    assert.deepEqual(urls, [
+                        "http://hub/api/v2/whatsapptemplatesendstatus/status-id-uuid/",
+                        "https://rapidpro/api/v2/flow_starts.json",
+                        "https://rapidpro/api/v2/flow_starts.json",
+                        "https://rapidpro/api/v2/flow_starts.json",
+                    ]);
                     assert.equal(api.log.error.length, 1);
                     assert(api.log.error[0].includes("HttpResponseError"));
                 })
@@ -2135,6 +2217,15 @@ describe("ussd_clinic app", function() {
                     state_edd_month: "201502",
                     state_edd_day: "13",
                     state_clinic_code: "123456",
+                    status_id: "status-id-uuid",
+                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_hub.get_whatsapp_template_status(
+                                "status-id-uuid",
+                                "WhatsApp"
+                        )
+                    );
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -2145,7 +2236,8 @@ describe("ussd_clinic app", function() {
                             "filename": "privacy_policy.pdf",
                             "id": "media-uuid"
                         },
-                        "WhatsApp"
+                        "WhatsApp",
+                        "status-id-uuid"
                         )
                     );
                     api.http.fixtures.add(
@@ -2163,6 +2255,7 @@ describe("ussd_clinic app", function() {
                                 dob: "1990-01-02T00:00:00Z",
                                 swt: "7",
                                 preferred_channel: "WhatsApp",
+                                status_id: "status-id-uuid",
                             }
                         )
                     );
