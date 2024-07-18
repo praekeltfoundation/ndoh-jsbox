@@ -1164,13 +1164,11 @@ go.app = function() {
             return self.hub
                 .get_whatsapp_template_status(status_id)
                 .then(function(data) {
-                    console.log(">>>>>>", data);
                     self.im.user.set_answer("preferred_channel", data.preferred_channel);
                     self.im.user.set_answer("status", data.status);
 
                     return self.states.create("state_trigger_rapidpro_flow");
                 }).catch(function(e) {
-                    console.log("Status Error: ", e.message);
                     // Go to error state after 3 failed HTTP requests
                     opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
                     if (opts.http_error_count === 3) {
@@ -1201,7 +1199,6 @@ go.app = function() {
                 swt: self.im.user.answers.preferred_channel == "SMS" ? "1" : "7",
                 preferred_channel: self.im.user.answers.preferred_channel,
                 status_id: self.im.user.answers.status_id,
-                status: self.im.user.answers.status,
             };
             var flow_uuid;
 
@@ -1253,7 +1250,6 @@ go.app = function() {
                 .then(function() {
                     return self.states.create("state_registration_complete");
                 }).catch(function(e) {
-                    console.log("Trigger Error: ", e.message);
                     // Go to error state after 3 failed HTTP requests
                     opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
                     if (opts.http_error_count === 3) {

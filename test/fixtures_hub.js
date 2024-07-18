@@ -54,14 +54,12 @@ module.exports = function() {
             };
         },
 
-        get_whatsapp_template_status: function(status_id) {
-            console.log("ID: ", status_id);
+        get_whatsapp_template_status: function(status_id, preferred_channel) {
             var response_body = {
                 "code": 200,
                 "data": {
                     "status_id": status_id,
-                    "preferred_channel": "SMS",
-                    "status": "wired"
+                    "preferred_channel": preferred_channel,
                 }
             };
             return {
