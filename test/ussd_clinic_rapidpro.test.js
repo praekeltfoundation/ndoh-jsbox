@@ -2023,16 +2023,16 @@ describe("ussd_clinic app", function() {
                     state_clinic_code: "123456",
                     preferred_channel: "WhatsApp",
                     state_language: "eng",
-//                    status_id: "status-id-uuid",
+                    status_id: "status-id-uuid",
 //                    status: "wired",
                 })
-//                .setup(function(api) {
-//                    api.http.fixtures.add(
-//                        fixtures_hub.get_whatsapp_template_status(
-//                                "status-id-uuid"
-//                        )
-//                    );
-//                })
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_hub.get_whatsapp_template_status(
+                                "status-id-uuid"
+                        )
+                    );
+                })
                 .setup(function(api) {
                     api.http.fixtures.add(
                         fixtures_rapidpro.start_flow(
@@ -2049,8 +2049,8 @@ describe("ussd_clinic app", function() {
                                 dob: "1990-01-02T00:00:00Z",
                                 swt: "7",
                                 preferred_channel: "WhatsApp",
-//                                status_id: "status-id-uuid",
-//                                status: "wired",
+                                status_id: "status-id-uuid",
+                                status: "wired"
                             }
                         )
                     );
