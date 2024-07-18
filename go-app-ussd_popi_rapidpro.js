@@ -17,14 +17,16 @@ go.Hub = function() {
             var api_url = url.resolve(self.base_url, "/api/v1/sendwhatsapptemplate");
             var data = {
                 "msisdn": msisdn,
-                "template_name": template_name
+                "template_name": template_name,
+                "parameters": [],
+                "save_status_record": true
             };
             if(media) {
                 data.media = media;
             }
             return self.json_api.post(api_url, {data: data})
                 .then(function(response){
-                    return response.data.preferred_channel;
+                    return response.data;
 
                 });
         };
@@ -36,6 +38,17 @@ go.Hub = function() {
                 .then(
                     function(response){
                         return response.data.number_of_failures;
+                    }
+                );
+        };
+
+        self.get_whatsapp_template_status = function(status_id) {
+            var api_url = url.resolve(self.base_url, "/api/v2/whatsapptemplatesendstatus/" + status_id + "/");
+
+            return self.json_api.get(api_url)
+                .then(
+                    function(response){
+                        return response.data;
                     }
                 );
         };
@@ -1363,9 +1376,9 @@ go.app = function() {
             
             return self.hub
                 .send_whatsapp_template_message(msisdn, template_name, media)
-                .then(function(preferred_channel) {
-                    self.im.user.set_answer("preferred_channel", preferred_channel);
-                    if (preferred_channel == "SMS") {
+                .then(function(data) {
+                    self.im.user.set_answer("preferred_channel", data.preferred_channel);
+                    if (data.preferred_channel == "SMS") {
                         return self.rapidpro.get_global_flag("sms_registrations_enabled")
                             .then(function(sms_registration_enabled) {
                                 if (sms_registration_enabled) {

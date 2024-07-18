@@ -495,9 +495,9 @@ go.app = function() {
             var template_name = self.im.config.welcome_template;
             return self.hub
                 .send_whatsapp_template_message(msisdn, template_name)
-                .then(function(preferred_channel) {
-                    self.im.user.set_answer("preferred_channel", preferred_channel);
-                    if (preferred_channel == "SMS") {
+                .then(function(data) {
+                    self.im.user.set_answer("preferred_channel", data.preferred_channel);
+                    if (data.preferred_channel == "SMS") {
                         return self.rapidpro.get_global_flag("sms_registrations_enabled")
                             .then(function(sms_registration_enabled) {
                                 if (sms_registration_enabled) {
