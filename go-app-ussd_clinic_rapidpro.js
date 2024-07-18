@@ -1261,8 +1261,10 @@ go.app = function() {
             return self.hub
                 .send_whatsapp_template_message(msisdn, template_name, media)
                 .then(function(data) {
-                    self.im.user.set_answer("preferred_channel", data.preferred_channel);
-                    self.im.user.set_answer("status_id", data.status_id);
+                    console.log("Template Data: ", data);
+                    self.im.user.answers.preferred_channel = data.preferred_channel;
+                    self.im.user.answers.status_id = data.status_id;
+                    console.log("ID: ", self.im.user.answers.status_id);
                     if (data.preferred_channel == "SMS") {
                         return self.rapidpro.get_global_flag("sms_registrations_enabled")
                             .then(function(sms_registration_enabled) {
@@ -1421,11 +1423,12 @@ go.app = function() {
 
         self.add("state_get_whatsapp_template_status", function(name, opts) {
             var status_id = self.im.user.answers.status_id;
-
+            console.log(">>>>>>", status_id);
             return self.hub
                 .get_whatsapp_template_status(status_id)
                 .then(function(data) {
-                    self.im.user.set_answer("preferred_channel", data.preferred_channel);
+                    console.log("Status Data: ", data);
+                    self.im.user.answers.preferred_channel = data.preferred_channel;
                     return self.states.create("state_trigger_rapidpro_flow");
                 }).catch(function(e) {
                     // Go to error state after 3 failed HTTP requests
