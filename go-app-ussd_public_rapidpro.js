@@ -18,7 +18,6 @@ go.Hub = function() {
             var data = {
                 "msisdn": msisdn,
                 "template_name": template_name,
-                "parameters": [],
                 "save_status_record": true
             };
             if(media) {
@@ -472,7 +471,6 @@ go.app = function() {
                 .send_whatsapp_template_message(msisdn, template_name)
                 .then(function(data) {
                     self.im.user.set_answer("preferred_channel", data.preferred_channel);
-
                     if (data.preferred_channel == "SMS") {
                         return self.rapidpro.get_global_flag("sms_registrations_enabled")
                             .then(function(sms_registration_enabled) {

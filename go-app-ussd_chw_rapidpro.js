@@ -18,7 +18,6 @@ go.Hub = function() {
             var data = {
                 "msisdn": msisdn,
                 "template_name": template_name,
-                "parameters": [],
                 "save_status_record": true
             };
             if(media) {
