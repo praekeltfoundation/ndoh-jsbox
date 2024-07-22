@@ -1368,13 +1368,6 @@ go.app = function() {
         });
 
         self.add("state_accept_popi_2", function(name, opts) {
-            var answers = self.im.user.answers;
-            var next_state = "state_get_whatsapp_template_status";
-
-            if (!answers.status_id || answers.preferred_channel == "SMS"){
-                next_state = "state_trigger_rapidpro_flow";
-            }
-
             return new MenuState(name, {
                 question: $([
                     "Do you accept the MomConnect Privacy Policy?",
@@ -1387,7 +1380,7 @@ go.app = function() {
                     "Enter the number that matches your answer."
                 ].join("\n")),
                 choices: [
-                    new Choice(next_state, $("Accept")),
+                    new Choice("state_get_whatsapp_template_status", $("Accept")),
                     new Choice("state_accept_popi_confirm", $("Exit"))
                 ],
             });
@@ -1429,10 +1422,14 @@ go.app = function() {
         });
 
         self.add("state_get_whatsapp_template_status", function(name, opts) {
-            var status_id = self.im.user.answers.status_id;
+            var answers = self.im.user.answers;
+
+            if (!answers.status_id || answers.preferred_channel == "SMS"){
+                return self.states.create("state_trigger_rapidpro_flow");
+            }
 
             return self.hub
-                .get_whatsapp_template_status(status_id)
+                .get_whatsapp_template_status(answers.status_id)
                 .then(function(data) {
                     self.im.user.answers.preferred_channel = data.preferred_channel;
                     return self.states.create("state_trigger_rapidpro_flow");
