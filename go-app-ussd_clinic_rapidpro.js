@@ -1261,10 +1261,9 @@ go.app = function() {
             return self.hub
                 .send_whatsapp_template_message(msisdn, template_name, media)
                 .then(function(data) {
-                    console.log("Template Data: ", data);
                     self.im.user.answers.preferred_channel = data.preferred_channel;
                     self.im.user.answers.status_id = data.status_id;
-                    console.log("ID: ", self.im.user.answers.status_id);
+
                     if (data.preferred_channel == "SMS") {
                         return self.rapidpro.get_global_flag("sms_registrations_enabled")
                             .then(function(sms_registration_enabled) {
@@ -1369,6 +1368,13 @@ go.app = function() {
         });
 
         self.add("state_accept_popi_2", function(name, opts) {
+            var answers = self.im.user.answers;
+            var next_state = "state_get_whatsapp_template_status";
+
+            if (!answers.status_id || answers.preferred_channel == "SMS"){
+                next_state = "state_trigger_rapidpro_flow";
+            }
+
             return new MenuState(name, {
                 question: $([
                     "Do you accept the MomConnect Privacy Policy?",
@@ -1381,7 +1387,7 @@ go.app = function() {
                     "Enter the number that matches your answer."
                 ].join("\n")),
                 choices: [
-                    new Choice("state_get_whatsapp_template_status", $("Accept")),
+                    new Choice(next_state, $("Accept")),
                     new Choice("state_accept_popi_confirm", $("Exit"))
                 ],
             });
@@ -1424,11 +1430,10 @@ go.app = function() {
 
         self.add("state_get_whatsapp_template_status", function(name, opts) {
             var status_id = self.im.user.answers.status_id;
-            console.log(">>>>>>", status_id);
+
             return self.hub
                 .get_whatsapp_template_status(status_id)
                 .then(function(data) {
-                    console.log("Status Data: ", data);
                     self.im.user.answers.preferred_channel = data.preferred_channel;
                     return self.states.create("state_trigger_rapidpro_flow");
                 }).catch(function(e) {
@@ -1515,6 +1520,7 @@ go.app = function() {
                     return self.states.create("state_registration_complete");
                 }).catch(function(e) {
                     // Go to error state after 3 failed HTTP requests
+                    console.log("Trigger RP: ", e.message);
                     opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
                     if (opts.http_error_count === 3) {
                         self.im.log.error(e.message);
