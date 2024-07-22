@@ -1000,10 +1000,9 @@ go.app = function() {
             return self.hub
                 .send_whatsapp_template_message(msisdn, template_name, media)
                 .then(function(data) {
-                    console.log("Template Data: ", data);
                     self.im.user.answers.preferred_channel = data.preferred_channel;
                     self.im.user.answers.status_id = data.status_id;
-                    console.log("ID: ", self.im.user.answers.status_id);
+
                     if (data.preferred_channel == "SMS") {
                         return self.rapidpro.get_global_flag("sms_registrations_enabled")
                             .then(function(sms_registration_enabled) {
@@ -1162,12 +1161,15 @@ go.app = function() {
         });
 
         self.add("state_get_whatsapp_template_status", function(name, opts) {
-            var status_id = self.im.user.answers.status_id;
-            console.log(">>>>>>", status_id);
+            var answers = self.im.user.answers;
+
+            if (!answers.status_id || answers.preferred_channel == "SMS"){
+                return self.states.create("state_trigger_rapidpro_flow");
+            }
+
             return self.hub
-                .get_whatsapp_template_status(status_id)
+                .get_whatsapp_template_status(answers.status_id)
                 .then(function(data) {
-                    console.log("Status Data: ", data);
                     self.im.user.answers.preferred_channel = data.preferred_channel;
                     return self.states.create("state_trigger_rapidpro_flow");
                 }).catch(function(e) {
@@ -1254,6 +1256,7 @@ go.app = function() {
                     return self.states.create("state_registration_complete");
                 }).catch(function(e) {
                     // Go to error state after 3 failed HTTP requests
+                    console.log("Trigger RP: ", e.message);
                     opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
                     if (opts.http_error_count === 3) {
                         self.im.log.error(e.message);
