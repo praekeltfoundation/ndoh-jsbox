@@ -1278,7 +1278,6 @@ go.app = function() {
                     return self.states.create("state_accept_popi");
                 }).catch(function(e) {
                     // Go to error state after 3 failed HTTP requests
-                    console.log("Template Error: ", e.message);
                     opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
                     if (opts.http_error_count === 3) {
                         self.im.log.error(e.message);
@@ -1435,7 +1434,6 @@ go.app = function() {
                     return self.states.create("state_trigger_rapidpro_flow");
                 }).catch(function(e) {
                     // Go to error state after 3 failed HTTP requests
-                    console.log("Status Error: ", e.message);
                     opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
                     if (opts.http_error_count === 3) {
                         self.im.log.error(e.message);
@@ -1517,7 +1515,6 @@ go.app = function() {
                     return self.states.create("state_registration_complete");
                 }).catch(function(e) {
                     // Go to error state after 3 failed HTTP requests
-                    console.log("Trigger RP: ", e.message);
                     opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
                     if (opts.http_error_count === 3) {
                         self.im.log.error(e.message);
