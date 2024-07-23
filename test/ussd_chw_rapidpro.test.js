@@ -777,7 +777,8 @@ describe("ussd_chw app", function() {
                                 id_type: "sa_id",
                                 sa_id_number: "9001020005087",
                                 dob: "1990-01-02T00:00:00Z",
-                                preferred_channel: "SMS"
+                                preferred_channel: "SMS",
+                                status_id: "status-id-uuid"
                             }
                         )
                     );
@@ -825,7 +826,8 @@ describe("ussd_chw app", function() {
                                 id_type: "sa_id",
                                 sa_id_number: "9001020005087",
                                 dob: "1990-01-02T00:00:00Z",
-                                preferred_channel: "WhatsApp"
+                                preferred_channel: "WhatsApp",
+                                status_id: "status-id-uuid"
                             }
                         )
                     );
@@ -852,6 +854,7 @@ describe("ussd_chw app", function() {
                     state_id_type: "state_sa_id_no",
                     state_sa_id_no: "9001020005087",
                     preferred_channel: "WhatsApp",
+                    status_id: "status-id-uuid"
                 })
                 .setup(function(api) {
                     api.http.fixtures.add(
@@ -869,6 +872,7 @@ describe("ussd_chw app", function() {
                                 sa_id_number: "9001020005087",
                                 dob: "1990-01-02T00:00:00Z",
                                 preferred_channel: "WhatsApp",
+                                status_id: "status-id-uuid"
                             }
                         )
                     );
