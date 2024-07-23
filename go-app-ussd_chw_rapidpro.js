@@ -669,6 +669,7 @@ go.app = function() {
                 .send_whatsapp_template_message(msisdn, template_name)
                 .then(function(data) {
                     self.im.user.set_answer("preferred_channel", data.preferred_channel);
+                    self.im.user.set_answer("status_id", data.status_id);
                     if (data.preferred_channel == "SMS") {
                         return self.rapidpro.get_global_flag("sms_registrations_enabled")
                             .then(function(sms_registration_enabled) {
@@ -734,7 +735,8 @@ go.app = function() {
                     ).format(),
                 passport_origin: self.im.user.answers.state_passport_country,
                 passport_number: self.im.user.answers.state_passport_no,
-                preferred_channel: self.im.user.answers.preferred_channel
+                preferred_channel: self.im.user.answers.preferred_channel,
+                status_id: self.im.user.answers.status_id
             };
             return self.rapidpro
                 .start_flow(self.im.config.flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), data)
