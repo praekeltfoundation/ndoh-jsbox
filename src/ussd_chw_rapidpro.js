@@ -571,7 +571,6 @@ go.app = function() {
                 .then(function() {
                     return self.states.create("state_registration_complete");
                 }).catch(function(e) {
-                    console.log(e.message);
                     // Go to error state after 3 failed HTTP requests
                     opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
                     if(opts.http_error_count === 3) {
