@@ -489,7 +489,8 @@ describe("ussd_public app", function() {
                           "+27123456789",
                           "test-welcome-template",
                           null,
-                          "Whatsapp"
+                          "Whatsapp",
+                          "status-id-uuid"
                         )
                     );
                     api.http.fixtures.add(
@@ -505,7 +506,8 @@ describe("ussd_public app", function() {
                                 "registered_by": "+27123456789",
                                 "mha": 6,
                                 "swt": "7",
-                                "preferred_channel": "Whatsapp"
+                                "preferred_channel": "Whatsapp",
+                                "status_id": "status-id-uuid"
                             }
                         )
                     );
@@ -602,7 +604,8 @@ describe("ussd_public app", function() {
                               "+27123456789",
                               "test-welcome-template",
                               null,
-                              "Whatsapp"
+                              "Whatsapp",
+                              "status-id-uuid"
                             )
                         );
                     api.http.fixtures.add(
@@ -618,7 +621,8 @@ describe("ussd_public app", function() {
                                 "registered_by": "+27123456789",
                                 "mha": 6,
                                 "swt": "7",
-                                "preferred_channel": "Whatsapp"
+                                "preferred_channel": "Whatsapp",
+                                "status_id": "status-id-uuid"
                             }
                         )
                     );
@@ -821,6 +825,7 @@ describe("ussd_public app", function() {
                                 mha: 6,
                                 swt: "1",
                                 preferred_channel: "SMS",
+                                status_id: "status-id-uuid"
                             }
                         )
                     );
@@ -870,6 +875,7 @@ describe("ussd_public app", function() {
                         mha: 6,
                         swt: "7",
                         preferred_channel: "Whatsapp",
+                        status_id: "status-id-uuid"
                     }
                 )
             );

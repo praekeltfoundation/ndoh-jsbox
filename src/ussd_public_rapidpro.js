@@ -252,6 +252,7 @@ go.app = function() {
                 .send_whatsapp_template_message(msisdn, template_name)
                 .then(function(data) {
                     self.im.user.set_answer("preferred_channel", data.preferred_channel);
+                    self.im.user.set_answer("status_id", data.status_id);
                     if (data.preferred_channel == "SMS") {
                         return self.rapidpro.get_global_flag("sms_registrations_enabled")
                             .then(function(sms_registration_enabled) {
@@ -309,7 +310,7 @@ go.app = function() {
                 mha: 6,
                 swt: self.im.user.get_answer("preferred_channel") === "SMS" ? "1" : "7",
                 preferred_channel: self.im.user.get_answer("preferred_channel"),
-
+                status_id: self.im.user.answers.status_id,
             };
 
             return self.rapidpro
