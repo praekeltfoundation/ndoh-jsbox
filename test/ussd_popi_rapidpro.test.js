@@ -751,7 +751,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .check.user.state("state_baby_born_complete")
                 .check.interaction({
                     reply: [
-                        "Your baby's date of birth has been updated " + 
+                        "Your baby's date of birth has been updated " +
                         "to 2022-04-04 and you will start receiving " +
                         "messages based on this schedule.",
                         "1. Back",
@@ -1359,7 +1359,8 @@ describe("ussd_popi_rapidpro app", function() {
                               "filename": "privacy_policy.pdf",
                               "id": "media-uuid"
                           },
-                          "SMS"
+                          "SMS",
+                          "status-id-uuid"
                         )
                     );
                     api.http.fixtures.add(
@@ -1374,10 +1375,11 @@ describe("ussd_popi_rapidpro app", function() {
                                 source: "POPI USSD",
                                 old_channel: "WhatsApp",
                                 new_wa_id: "whatsapp:27820001001",
+                                status_id: "status-id-uuid",
                             }
                         )
                     );
-                   
+
                 })
                 .input("1")
                 .check.user.state("state_msisdn_change_success")
@@ -1407,20 +1409,7 @@ describe("ussd_popi_rapidpro app", function() {
                     );
                     api.http.fixtures.add(
                         fixtures_rapidpro.get_global_flag("sms_registrations_enabled", "FALSE")
-                      );
-                    api.http.fixtures.add(
-                        fixtures_rapidpro.start_flow(
-                            "msisdn-change-flow", null, "whatsapp:27820001001", {
-                                new_msisdn: "+27820001001",
-                                old_msisdn: "+27123456789",
-                                contact_uuid: "contact-uuid",
-                                source: "POPI USSD",
-                                old_channel: "WhatsApp",
-                                new_wa_id: "whatsapp:27820001001",
-                            }
-                        )
                     );
-                   
                 })
                 .input("1")
                 .check.user.state("state_sms_registration_not_available")
@@ -1445,7 +1434,8 @@ describe("ussd_popi_rapidpro app", function() {
                               "filename": "privacy_policy.pdf",
                               "id": "media-uuid"
                           },
-                          "WhatsApp"
+                          "WhatsApp",
+                          "status-id-uuid"
                         )
                     );
                     api.http.fixtures.add(
@@ -1460,10 +1450,11 @@ describe("ussd_popi_rapidpro app", function() {
                                 source: "POPI USSD",
                                 old_channel: "WhatsApp",
                                 new_wa_id: "whatsapp:27820001001",
+                                status_id: "status-id-uuid",
                             }
                         )
                     );
-                   
+
                 })
                 .input("1")
                 .check.user.state("state_msisdn_change_success")
