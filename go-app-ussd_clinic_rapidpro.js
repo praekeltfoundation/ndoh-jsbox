@@ -1466,7 +1466,7 @@ go.app = function() {
             };
             var flow_uuid;
 
-            if (self.im.user.answers.state_message_type === "state_edd_month"
+            if (self.im.user.answers.state_message_type === "state_edd_year"
                 || typeof self.im.user.answers.state_edd_month != "undefined") {
                 flow_uuid = self.im.config.prebirth_flow_uuid;
                 data.edd = new moment.utc(
@@ -1476,7 +1476,6 @@ go.app = function() {
                     "YYYYMMDD"
                 ).format();
             } else {
-                console.log("Post birth>>>>>>>");
                 flow_uuid = self.im.config.postbirth_flow_uuid;
                 data.baby_dob = new moment.utc(
                     self.im.user.answers.state_birth_month +
@@ -1515,7 +1514,6 @@ go.app = function() {
                 .then(function() {
                     return self.states.create("state_registration_complete");
                 }).catch(function(e) {
-                    console.log(">>>>> ", e.message);
                     // Go to error state after 3 failed HTTP requests
                     opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
                     if (opts.http_error_count === 3) {
