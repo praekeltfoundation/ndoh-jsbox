@@ -1216,11 +1216,12 @@ go.app = function() {
                 "filename": self.im.config.popi_filename,
                 "id": self.im.config.popi_media_uuid
             };
-            
+
             return self.hub
                 .send_whatsapp_template_message(msisdn, template_name, media)
                 .then(function(data) {
                     self.im.user.set_answer("preferred_channel", data.preferred_channel);
+                    self.im.user.set_answer("status_id", data.status_id);
                     if (data.preferred_channel == "SMS") {
                         return self.rapidpro.get_global_flag("sms_registrations_enabled")
                             .then(function(sms_registration_enabled) {
@@ -1272,7 +1273,8 @@ go.app = function() {
                         contact_uuid: self.im.user.answers.contact.uuid,
                         source: "POPI USSD",
                         old_channel: channel,
-                        new_wa_id: new_wa_id
+                        new_wa_id: new_wa_id,
+                        status_id: self.im.user.answers.status_id,
                     }
                 )
                 .then(function() {
