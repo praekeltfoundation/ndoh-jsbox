@@ -1668,7 +1668,7 @@ describe("ussd_clinic app", function() {
             return tester
                 .setup.user.state("state_accept_popi_2")
                 .setup.user.answers({
-                    state_message_type: "state_edd_month",
+                    state_message_type: "state_edd_year",
                     state_research_consent: "no",
                     state_enter_msisdn: "0820001001",
                     state_id_type: "state_sa_id_no",
