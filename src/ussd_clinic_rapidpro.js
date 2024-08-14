@@ -1205,7 +1205,7 @@ go.app = function() {
             };
             var flow_uuid;
 
-            if (self.im.user.answers.state_message_type === "state_edd_year"
+            if (self.im.user.answers.state_message_type === "state_edd_month"
                 || typeof self.im.user.answers.state_edd_month != "undefined") {
                 flow_uuid = self.im.config.prebirth_flow_uuid;
                 data.edd = new moment.utc(
