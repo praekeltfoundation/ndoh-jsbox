@@ -426,6 +426,7 @@ describe("ussd_popi_rapidpro app", function() {
                 },
                 })
                 .input("4")
+                .check.user.answer("update_value", "1st Baby's DoB: 10-03-2021")
                 .check.interaction({
                     reply: [
                         "Which year was your baby born? " +
