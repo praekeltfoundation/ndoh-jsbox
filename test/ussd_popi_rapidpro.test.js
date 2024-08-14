@@ -414,6 +414,32 @@ describe("ussd_popi_rapidpro app", function() {
                 })
                 .run();
         });
+        it("should show option to update baby DOB 1", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp",
+                    baby_dob1: "2021-03-10",
+                    baby_dob2: "2021-11-11",
+                    baby_dob3: "2022-07-07",
+                    edd: "2020-06-04T00:00:00Z",
+                    postbirth_messaging: "True",
+                },
+                })
+                .input("4")
+                .check.user.answer("update_value", "1st Baby's DoB: 10-03-2021")
+                .check.interaction({
+                    reply: [
+                        "Which year was your baby born? " +
+                        "Please reply with a number that matches your answer, " +
+                        "not the year e.g. 1.",
+                        "1. 2022",
+                        "2. 2021",
+                        "3. 2020",
+                        "4. Other"
+                    ].join("\n")
+                })
+                .run();
+        });
         it("should display the list of options to the user SMS page 2", function() {
             return tester
                 .setup.user.state("state_change_info")
@@ -743,6 +769,105 @@ describe("ussd_popi_rapidpro app", function() {
                                 timestamp: "2022-04-04T07:07:07Z",
                                 change_type: "baby_born",
                                 baby_dob: '2022-04-04T00:00:00Z'
+                            }
+                        )
+                    );
+                })
+                .input("1")
+                .check.user.state("state_baby_born_complete")
+                .check.interaction({
+                    reply: [
+                        "Your baby's date of birth has been updated " +
+                        "to 2022-04-04 and you will start receiving " +
+                        "messages based on this schedule.",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should trigger the baby dob change on confirm for 1st baby update DOB", function() {
+            return tester
+                .setup.user.state("state_baby_born_confirm_date")
+                .setup.user.answer("state_baby_born_year", "2022")
+                .setup.user.answer("state_baby_born_month", "04")
+                .setup.user.answer("state_baby_born_day", "4")
+                .setup.user.answer("update_value", "1st Baby's DOB")
+
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "edd-dob-change-flow-uuid", null, "whatsapp:27123456789", {
+                                timestamp: "2022-04-04T07:07:07Z",
+                                change_type: "change_baby_dob",
+                                baby_dob: '2022-04-04T00:00:00Z',
+                                change_baby: "baby_dob1"
+                            }
+                        )
+                    );
+                })
+                .input("1")
+                .check.user.state("state_baby_born_complete")
+                .check.interaction({
+                    reply: [
+                        "Your baby's date of birth has been updated " +
+                        "to 2022-04-04 and you will start receiving " +
+                        "messages based on this schedule.",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should trigger the baby dob change on confirm for 2nd baby update DOB", function() {
+            return tester
+                .setup.user.state("state_baby_born_confirm_date")
+                .setup.user.answer("state_baby_born_year", "2022")
+                .setup.user.answer("state_baby_born_month", "04")
+                .setup.user.answer("state_baby_born_day", "4")
+                .setup.user.answer("update_value", "2nd Baby's DOB")
+
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "edd-dob-change-flow-uuid", null, "whatsapp:27123456789", {
+                                timestamp: "2022-04-04T07:07:07Z",
+                                change_type: "change_baby_dob",
+                                baby_dob: '2022-04-04T00:00:00Z',
+                                change_baby: "baby_dob2"
+                            }
+                        )
+                    );
+                })
+                .input("1")
+                .check.user.state("state_baby_born_complete")
+                .check.interaction({
+                    reply: [
+                        "Your baby's date of birth has been updated " +
+                        "to 2022-04-04 and you will start receiving " +
+                        "messages based on this schedule.",
+                        "1. Back",
+                        "2. Exit"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should trigger the baby dob change on confirm for 3rd baby update DOB", function() {
+            return tester
+                .setup.user.state("state_baby_born_confirm_date")
+                .setup.user.answer("state_baby_born_year", "2022")
+                .setup.user.answer("state_baby_born_month", "04")
+                .setup.user.answer("state_baby_born_day", "4")
+                .setup.user.answer("update_value", "3rd Baby's DOB")
+
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.start_flow(
+                            "edd-dob-change-flow-uuid", null, "whatsapp:27123456789", {
+                                timestamp: "2022-04-04T07:07:07Z",
+                                change_type: "change_baby_dob",
+                                baby_dob: '2022-04-04T00:00:00Z',
+                                change_baby: "baby_dob3"
                             }
                         )
                     );

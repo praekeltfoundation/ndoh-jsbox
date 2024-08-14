@@ -466,6 +466,7 @@ go.app = function() {
 
         self.add("state_change_info", function(name) {
             var contact = self.im.user.answers.contact;
+            var answers = self.im.user.answers;
             var dates_count, postbirth;
             var dates_list = [];
             var channel = _.get(contact, "fields.preferred_channel");
@@ -564,6 +565,7 @@ go.app = function() {
                 more: $("Next"),
                 back: $("Previous"),
                 next: function(choice) {
+                    answers.update_value = choice.label;
                     return choice.value;
                 }
             });
@@ -872,21 +874,35 @@ go.app = function() {
             var year = answers.state_edd_baby_unborn_year || answers.state_baby_born_year;
             var month = answers.state_edd_baby_unborn_month || answers.state_baby_born_month;
             var day = answers.state_edd_baby_unborn_day || answers.state_baby_born_day;
+            var baby_date = new moment.utc(
+                    year + month + day,
+                    "YYYYMMDD"
+                    ).format();
 
             if ((typeof answers.state_edd_baby_unborn_year  != "undefined")){
                 data.change_type = "edd_baby_expected";
-                data.baby_edd = new moment.utc(
-                    year + month + day,
-                    "YYYYMMDD"
-                ).format(),
+                data.baby_edd = baby_date,
                 end_flow = "state_edd_baby_unborn_complete";
+            }
+            else if ((answers.update_value) && (answers.update_value.startsWith("1st") ||
+                     answers.update_value.startsWith("2nd") ||
+                     answers.update_value.startsWith("3rd"))) {
+                if (answers.update_value.startsWith("1st")){
+                    data.change_baby = "baby_dob1";
+                }
+                else if (answers.update_value.startsWith("2nd")){
+                    data.change_baby = "baby_dob2";
+                }
+                else if (answers.update_value.startsWith("3rd")){
+                    data.change_baby = "baby_dob3";
+                }
+                data.change_type = "change_baby_dob";
+                data.baby_dob = baby_date,
+                end_flow = "state_baby_born_complete";
             }
             else {
                 data.change_type = "baby_born";
-                data.baby_dob = new moment.utc(
-                    year + month + day,
-                    "YYYYMMDD"
-                    ).format(),
+                data.baby_dob = baby_date,
                 end_flow = "state_baby_born_complete";
             }
             return self.rapidpro
