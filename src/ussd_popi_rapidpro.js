@@ -346,7 +346,6 @@ go.app = function() {
             ];
             postbirth = _.toUpper(_.get(contact, "fields.postbirth_messaging")) === "TRUE";
 
-            console.log("Dates", dates_entry);
             if (edd || baby_dob1){
                 dates_list = dates_entry[0].trim().split(/\s*,\s*/);
                 dates_count = dates_list.length;
