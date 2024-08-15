@@ -885,6 +885,85 @@ describe("ussd_popi_rapidpro app", function() {
                 })
                 .run();
         });
+        it("should display the list of options with 1 baby DOB", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "SMS",
+                    baby_dob1: "2021-03-18T00:00:00.000000Z",
+                }})
+                .check.interaction({
+                    reply: [
+                        "What would you like to change?",
+                        "1. Cell number",
+                        "2. Change SMS to WhatsApp",
+                        "3. 1st Baby's DoB: 18-03-2021",
+                        "4. Language",
+                        "5. ID",
+                        "6. Research msgs",
+                        "7. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display the list of options with EDD", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "SMS",
+                    edd: "2020-06-04T00:00:00.000000Z",
+                }})
+                .check.interaction({
+                    reply: [
+                        "What would you like to change?",
+                        "1. Cell number",
+                        "2. Change SMS to WhatsApp",
+                        "3. Baby's Expected Due Date: 04-06-2020",
+                        "4. Language",
+                        "5. ID",
+                        "6. Research msgs",
+                        "7. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display the list of options include EDD and DOB", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "SMS",
+                    baby_dob1: "2021-03-18T00:00:00.000000Z",
+                    edd: "2020-06-04T00:00:00.000000Z",
+                }})
+                .check.interaction({
+                    reply: [
+                        "What would you like to change?",
+                        "1. Cell number",
+                        "2. Change SMS to WhatsApp",
+                        "3. Baby's Expected Due Date: 04-06-2020",
+                        "4. 1st Baby's DoB: 18-03-2021",
+                        "5. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display the list of options to the user SMS page 1", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "SMS",
+                    baby_dob1: "2021-03-18T00:00:00.000000Z",
+                    baby_dob2: "2021-11-11T00:00:00.000000Z",
+                    edd: "2020-06-04T00:00:00.000000Z",
+                }})
+                .check.interaction({
+                    reply: [
+                        "What would you like to change?",
+                        "1. Cell number",
+                        "2. Change SMS to WhatsApp",
+                        "3. Baby's Expected Due Date: 04-06-2020",
+                        "4. 1st Baby's DoB: 18-03-2021",
+                        "5. Next"
+                    ].join("\n")
+                })
+                .run();
+        });
 
         /***************************
          ***Edd Baby Unborn Tests***

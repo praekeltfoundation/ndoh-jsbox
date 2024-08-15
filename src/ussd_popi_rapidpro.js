@@ -306,14 +306,28 @@ go.app = function() {
             baby_dob2 = self.dateformat(baby_dob2);
             baby_dob3 = self.dateformat(baby_dob3);
             edd = self.dateformat(edd);
-            var context = {
-                dobs: _.map(_.filter([
-                    new moment(edd),
-                    new moment(baby_dob1),
-                    new moment(baby_dob2),
-                    new moment(baby_dob3),
-                ], _.method("isValid")), _.method("format", "DD-MM-YYYY")).join(", ") || $("None")
-             };
+            var context;
+
+            if (edd){
+                context = {
+                    dobs: _.map(_.filter([
+                        new moment(edd),
+                        new moment(baby_dob1),
+                        new moment(baby_dob2),
+                        new moment(baby_dob3),
+                    ], _.method("isValid")), _.method("format", "DD-MM-YYYY")).join(", ") || $("None")
+                 };
+             }
+             else {
+                context = {
+                    dobs: _.map(_.filter([
+                        new moment(baby_dob1),
+                        new moment(baby_dob2),
+                        new moment(baby_dob3),
+                    ], _.method("isValid")), _.method("format", "DD-MM-YYYY")).join(", ") || $("None")
+                 };
+             }
+
             var dates_entry = Object.values(context);
             var sms_choices = [
                 new Choice("state_msisdn_change_enter", $("Cell number")),
@@ -332,20 +346,24 @@ go.app = function() {
             ];
             postbirth = _.toUpper(_.get(contact, "fields.postbirth_messaging")) === "TRUE";
 
-            if (dates_entry[0].length){
+            if (edd || baby_dob1){
                 dates_list = dates_entry[0].trim().split(/\s*,\s*/);
                 dates_count = dates_list.length;
+            }
+
+            if (edd && baby_dob1){
                 edd = dates_list[0] || null;
                 baby_dob1 = dates_list[1] || null;
                 baby_dob2 = dates_list[2] || null;
                 baby_dob3 = dates_list[3] || null;
-
+            }
+            else if (baby_dob1){
+                baby_dob1 = dates_list[0] || null;
+                baby_dob2 = dates_list[1] || null;
+                baby_dob3 = dates_list[2] || null;
             }
             else {
-                if (!(dates_entry[0].length) && (edd)){
-                    edd = dates_list[0] || null;
-
-                }
+                edd = dates_list[0] || null;
             }
             var dob_choices = [
                 new Choice("state_active_prebirth_check", $(
@@ -378,10 +396,17 @@ go.app = function() {
                 if (postbirth){
                     ++i;
                 }
-                for (i; i < (dob_count); i++) {
-                    channel_list.splice(i+2, 0, dob_list[i]);
-                }
 
+                if (edd){
+                    for (i; i < (dob_count); i++) {
+                        channel_list.splice(i+2, 0, dob_list[i]);
+                    }
+                }
+                else {
+                    for (i; i < (dob_count); i++) {
+                        channel_list.splice(i+2, 0, dob_list[i+1]);
+                    }
+                }
             }
             return new PaginatedChoiceState(name, {
                 question: $("What would you like to change?"),
