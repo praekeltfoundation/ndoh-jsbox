@@ -476,15 +476,17 @@ describe("ussd_popi_rapidpro app", function() {
                     postbirth_messaging: "True"
                 },
                 })
-                .input("6")
+                .input("5")
                 .check.interaction({
                     reply: [
                         "What would you like to change?",
-                        "1. 3rd Baby's DoB: 07-07-2022",
-                        "2. ID",
-                        "3. Research msgs",
-                        "4. Back",
-                        "5. Previous"
+                        "1. 2nd Baby's DoB: 11-11-2021",
+                        "2. 3rd Baby's DoB: 07-07-2022",
+                        "3. Language",
+                        "4. ID",
+                        "5. Research msgs",
+                        "6. Back",
+                        "7. Previous"
                     ].join("\n")
                 })
                 .run();
@@ -504,10 +506,9 @@ describe("ussd_popi_rapidpro app", function() {
                         "What would you like to change?",
                         "1. Cell number",
                         "2. Change SMS to WhatsApp",
-                        "3. Language",
+                        "3. Baby's Expected Due Date: 04-06-2020",
                         "4. 1st Baby's DoB: 10-03-2021",
-                        "5. 2nd Baby's DoB: 11-11-2021",
-                        "6. Next"
+                        "5. Next"
                     ].join("\n")
                 })
                 .run();
@@ -885,7 +886,7 @@ describe("ussd_popi_rapidpro app", function() {
                 })
                 .run();
         });
-        it("should display the list of options with 1 baby DOB", function() {
+        it("should display the list of options with 1 baby DOB for SMS channel", function() {
             return tester
                 .setup.user.state("state_change_info")
                 .setup.user.answer("contact", {fields: {preferred_channel: "SMS",
@@ -901,6 +902,25 @@ describe("ussd_popi_rapidpro app", function() {
                         "5. ID",
                         "6. Research msgs",
                         "7. Back"
+                    ].join("\n")
+                })
+                .run();
+        });
+        it("should display the list of options with 1 baby DOB for WA channel", function() {
+            return tester
+                .setup.user.state("state_change_info")
+                .setup.user.answer("contact", {fields: {preferred_channel: "WhatsApp",
+                    baby_dob1: "2021-03-18T00:00:00.000000Z",
+                }})
+                .check.interaction({
+                    reply: [
+                        "What would you like to change?",
+                        "1. Cell number",
+                        "2. Change WhatsApp to SMS",
+                        "3. 1st Baby's DoB: 18-03-2021",
+                        "4. ID",
+                        "5. Research msgs",
+                        "6. Back"
                     ].join("\n")
                 })
                 .run();
@@ -1132,7 +1152,7 @@ describe("ussd_popi_rapidpro app", function() {
                 .check.user.state("state_edd_baby_unborn_complete")
                 .run();
         });
-        it("should display an error on invalid input and should not show EDD if contact has postbirth messaging", function() {
+        it("should display an error on invalid input with postbirth messaging", function() {
             return tester
                 .setup.user.state("state_change_info")
                 .setup.user.answer("contact", {fields: {preferred_channel: "SMS",
@@ -1148,10 +1168,9 @@ describe("ussd_popi_rapidpro app", function() {
                         "We don't understand. Please try again.",
                         "1. Cell number",
                         "2. Change SMS to WhatsApp",
-                        "3. Language",
+                        "3. Baby's Expected Due Date: 04-06-2020",
                         "4. 1st Baby's DoB: 10-03-2021",
-                        "5. 2nd Baby's DoB: 11-11-2021",
-                        "6. Next"
+                        "5. Next"
                     ].join("\n")
                 })
                 .run();
