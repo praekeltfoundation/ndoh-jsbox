@@ -469,15 +469,18 @@ go.app = function() {
             var answers = self.im.user.answers;
             var dates_count, postbirth;
             var dates_list = [];
+
             var channel = _.get(contact, "fields.preferred_channel");
             var baby_dob1 = _.get(contact, "fields.baby_dob1", null);
             var baby_dob2 = _.get(contact, "fields.baby_dob2", null);
             var baby_dob3 = _.get(contact, "fields.baby_dob3", null);
             var edd = _.get(contact, "fields.edd", null);
+
             baby_dob1 = self.dateformat(baby_dob1);
             baby_dob2 = self.dateformat(baby_dob2);
             baby_dob3 = self.dateformat(baby_dob3);
             edd = self.dateformat(edd);
+
             var context;
 
             if (edd){
@@ -565,9 +568,6 @@ go.app = function() {
             function push_dob(channel_list, dob_list, dob_count)
             {
                 var i = 0;
-                if (postbirth){
-                    ++i;
-                }
 
                 if (edd){
                     for (i; i < (dob_count); i++) {
@@ -580,6 +580,7 @@ go.app = function() {
                     }
                 }
             }
+
             return new PaginatedChoiceState(name, {
                 question: $("What would you like to change?"),
                 accept_labels: true,
