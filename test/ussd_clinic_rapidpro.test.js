@@ -1103,7 +1103,7 @@ describe("ussd_clinic app", function() {
                 .check.interaction({
                     reply:
                         "Unfortunately MomConnect doesn't send messages to children older than 2 " +
-                        "years. Please try again by entering the dat the baby was born as a " +
+                        "years. Please try again by entering the day the baby was born as a " +
                         "number, e.g. 12."
                 })
                 .run();
@@ -1116,7 +1116,7 @@ describe("ussd_clinic app", function() {
                 .check.interaction({
                     reply:
                         "Unfortunately MomConnect doesn't send messages to children older than 2 " +
-                        "years. Please try again by entering the dat the baby was born as a " +
+                        "years. Please try again by entering the day the baby was born as a " +
                         "number, e.g. 12."
                 })
                 .run();
