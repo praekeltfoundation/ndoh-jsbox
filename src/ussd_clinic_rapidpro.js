@@ -653,7 +653,7 @@ go.app = function() {
                     if (!date.isBetween(current_date.clone().add(-2, "years"), current_date)) {
                         return $(
                             "Unfortunately MomConnect doesn't send messages to children older " +
-                            "than 2 years. Please try again by entering the dat the baby was " +
+                            "than 2 years. Please try again by entering the day the baby was " +
                             "born as a number, e.g. 12."
                         );
                     }
