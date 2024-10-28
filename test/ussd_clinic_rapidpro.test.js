@@ -1095,20 +1095,7 @@ describe("ussd_clinic app", function() {
                 })
                 .run();
         });
-        it("should give an error if the date is today or newer", function() {
-            return tester
-                .setup.user.state("state_birth_day")
-                .setup.user.answer("state_birth_month", "2014-04")
-                .input("4")
-                .check.interaction({
-                    reply:
-                        "Unfortunately MomConnect doesn't send messages to children older than 2 " +
-                        "years. Please try again by entering the day the baby was born as a " +
-                        "number, e.g. 12."
-                })
-                .run();
-        });
-        it("should give an error if the date is two years or older", function() {
+        it("should give an error if the date is older than two years", function() {
             return tester
                 .setup.user.state("state_birth_day")
                 .setup.user.answer("state_birth_month", "2012-04")
@@ -1119,6 +1106,14 @@ describe("ussd_clinic app", function() {
                         "years. Please try again by entering the day the baby was born as a " +
                         "number, e.g. 12."
                 })
+                .run();
+        });
+        it("should pass if the date of birth is today", function() {
+            return tester
+                .setup.user.state("state_birth_day")
+                .setup.user.answer("state_birth_month", "2014-04")
+                .input("4")
+                .check.user.state("state_id_type")
                 .run();
         });
         it("should go to state_id_type if the date is valid", function() {
