@@ -911,10 +911,10 @@ go.app = function() {
                             "Enter the day that baby was born as a number. For example if baby was born on 12th May, type in 12"
                         ].join("\n"));
                     }
-                    if (!date.isBetween(current_date.clone().add(-2, "years"), current_date)) {
+                    if (!date.isBetween(current_date.clone().add(-2, "years"), current_date.add(1, "days")) ) {
                         return $(
                             "Unfortunately MomConnect doesn't send messages to children older " +
-                            "than 2 years. Please try again by entering the dat the baby was " +
+                            "than 2 years. Please try again by entering the day the baby was " +
                             "born as a number, e.g. 12."
                         );
                     }
