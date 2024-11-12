@@ -1108,6 +1108,17 @@ describe("ussd_clinic app", function() {
                 })
                 .run();
         });
+        it("should return an error if the date of birth is in the future", function() {
+            return tester
+                .setup.user.state("state_birth_day")
+                .setup.user.answer("state_birth_month","2020-04")
+                .input("1")
+                .check.interaction({
+                    reply:
+                    "Sorry, that date is in the future. Please enter a valid date."
+                })
+                .run();
+        });
         it("should pass if the date of birth is today", function() {
             return tester
                 .setup.user.state("state_birth_day")
