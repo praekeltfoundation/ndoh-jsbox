@@ -922,8 +922,7 @@ go.app = function() {
                             "than 2 years. Please try again by entering the day the baby was " +
                             "born as a number, e.g. 12."
                         );
-                        }
-
+                    }
                 },
                 next: "state_id_type"
             });
