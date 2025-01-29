@@ -107,10 +107,10 @@ describe("ussd_public app", function() {
                 })
                 .start()
                 .check.interaction({
-                    state: "state_postbirth_subscription",
+                    state: "state_clinic_subscription",
                     reply:
-                        "Hello mom! You're getting postbirth messages. Reply with questions, compliments, or " +
-                        "complaints. We'll get back to you soon."
+                        "Hello mom! You can reply to any MomConnect message with a question, compliment or complaint. Our team " +
+                        "will get back to you as soon as they can."
                 })
                 .run();
         });
