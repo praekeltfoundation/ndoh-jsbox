@@ -94,6 +94,26 @@ describe("ussd_public app", function() {
                 })
                 .run();
         });
+        it("should give the user compliment/complaint instructions if they're receiving postbirth messages", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "whatsapp:27123456789",
+                            exists: true,
+                            fields: {postbirth_messaging: "TRUE"}
+                        })
+                    );
+                })
+                .start()
+                .check.interaction({
+                    state: "state_postbirth_subscription",
+                    reply:
+                        "Hello mom! You're getting postbirth messages. Reply with questions, compliments, or " +
+                        "complaints. We'll get back to you soon."
+                })
+                .run();
+        });
         it("should welcome the user if they don't have a subscription", function() {
             return tester
                 .setup(function(api) {

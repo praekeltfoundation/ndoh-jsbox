@@ -115,7 +115,10 @@ go.app = function() {
                         return self.states.create("state_public_subscription");
                     } else if(_.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7)) {
                         return self.states.create("state_clinic_subscription");
-                    } else {
+                    } else if(_.toUpper(_.get(contact, "fields.postbirth_messaging")) === "TRUE"){
+                        return self.states.create("state_postbirth_subscription");
+                    }
+                    else {
                         return self.states.create("state_pregnant");
                     }
                 }).catch(function(e) {
@@ -145,6 +148,16 @@ go.app = function() {
                 text: $(
                     "Hello mom! You can reply to any MomConnect message with a question, compliment or complaint. Our team " +
                     "will get back to you as soon as they can."
+                )
+            });
+        });
+
+        self.states.add("state_postbirth_subscription", function(name) {
+            return new EndState(name, {
+                next: "state_start",
+                text: $(
+                    "Hello mom! You're getting postbirth messages. Reply with questions, compliments, or " +
+                    "complaints. We'll get back to you soon."
                 )
             });
         });
