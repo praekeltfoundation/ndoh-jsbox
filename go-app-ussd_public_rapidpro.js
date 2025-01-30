@@ -291,7 +291,10 @@ go.app = function() {
                         return self.states.create("state_public_subscription");
                     } else if(_.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7)) {
                         return self.states.create("state_clinic_subscription");
-                    } else {
+                    } else if(_.toUpper(_.get(contact, "fields.postbirth_messaging")) === "TRUE"){
+                        return self.states.create("state_clinic_subscription");
+                    }
+                    else {
                         return self.states.create("state_pregnant");
                     }
                 }).catch(function(e) {
