@@ -94,6 +94,26 @@ describe("ussd_public app", function() {
                 })
                 .run();
         });
+        it("should give the user compliment/complaint instructions if they're receiving postbirth messages", function() {
+            return tester
+                .setup(function(api) {
+                    api.http.fixtures.add(
+                        fixtures_rapidpro.get_contact({
+                            urn: "whatsapp:27123456789",
+                            exists: true,
+                            fields: {postbirth_messaging: "TRUE"}
+                        })
+                    );
+                })
+                .start()
+                .check.interaction({
+                    state: "state_clinic_subscription",
+                    reply:
+                        "Hello mom! You can reply to any MomConnect message with a question, compliment or complaint. Our team " +
+                        "will get back to you as soon as they can."
+                })
+                .run();
+        });
         it("should welcome the user if they don't have a subscription", function() {
             return tester
                 .setup(function(api) {
