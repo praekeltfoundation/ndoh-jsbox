@@ -270,10 +270,6 @@ module.exports = function (grunt) {
                 src: ['<%= paths.src.ussd_mqr_faqs %>'],
                 dest: '<%= paths.dest.ussd_mqr_faqs %>'
             },
-            ussd_tb_check: {
-                src: ['<%= paths.src.ussd_tb_check %>'],
-                dest: '<%= paths.dest.ussd_tb_check %>'
-            },
         },
 
         mochaTest: {
@@ -314,9 +310,6 @@ module.exports = function (grunt) {
             },
             test_ussd_mqr_faqs: {
                 src: ['<%= paths.test.ussd_mqr_faqs %>']
-            },
-            test_ussd_tb_check: {
-                src: ['<%= paths.test.ussd_tb_check %>']
             }
             /*
             */
