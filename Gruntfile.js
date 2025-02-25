@@ -17,7 +17,6 @@ module.exports = function (grunt) {
                     ussd_pmtct_rapidpro: 'src/ussd_pmtct_rapidpro.js',
                     ussd_ccmdd_wc_address_update: "src/ussd_ccmdd_wc_address_update.js",
                     ussd_higherhealth_healthcheck: "src/ussd_higherhealth_healthcheck.js",
-                    ussd_tb_check: "src/ussd_tb_check.js",
                     ussd_mcgcc_rapidpro: 'src/ussd_mcgcc_rapidpro.js',
                     ussd_mqr_faqs: 'src/ussd_mqr_faqs.js'
                 },
@@ -84,12 +83,6 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.ussd_higherhealth_healthcheck %>',
                     'src/init.js'
                 ],
-                ussd_tb_check: [
-                    'src/index.js',
-                    'src/rapidpro.js',
-                    '<%= paths.src.app.ussd_tb_check %>',
-                    'src/init.js'
-                ],
                 ussd_mcgcc_rapidpro: [
                     'src/index.js',
                     'src/engage.js',
@@ -118,7 +111,6 @@ module.exports = function (grunt) {
                 ussd_pmtct_rapidpro: 'go-app-ussd_pmtct_rapidpro.js',
                 ussd_ccmdd_wc_address_update: 'go-app-ussd_ccmdd_wc_address_update.js',
                 ussd_higherhealth_healthcheck: 'go-app-ussd_higherhealth_healthcheck.js',
-                ussd_tb_check: 'go-app-ussd_tb_check.js',
                 ussd_mcgcc_rapidpro: 'go-app-ussd_mcgcc_rapidpro.js',
                 ussd_mqr_faqs: 'go-app-ussd_mqr_faqs.js',
             },
@@ -200,12 +192,6 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.ussd_mqr_faqs %>',
                     'test/ussd_mqr_faqs.test.js'
                 ],
-                ussd_tb_check: [
-                    'test/setup.js',
-                    'src/rapidpro.js',
-                    '<%= paths.src.app.ussd_tb_check %>',
-                    'test/ussd_tb_check.test.js'
-                ],
             }
         },
 
@@ -270,10 +256,6 @@ module.exports = function (grunt) {
                 src: ['<%= paths.src.ussd_mqr_faqs %>'],
                 dest: '<%= paths.dest.ussd_mqr_faqs %>'
             },
-            ussd_tb_check: {
-                src: ['<%= paths.src.ussd_tb_check %>'],
-                dest: '<%= paths.dest.ussd_tb_check %>'
-            },
         },
 
         mochaTest: {
@@ -314,9 +296,6 @@ module.exports = function (grunt) {
             },
             test_ussd_mqr_faqs: {
                 src: ['<%= paths.test.ussd_mqr_faqs %>']
-            },
-            test_ussd_tb_check: {
-                src: ['<%= paths.test.ussd_tb_check %>']
             }
             /*
             */
