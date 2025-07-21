@@ -91,25 +91,27 @@ go.app = function() {
         });
 
         self.states.add("state_intro_message", function(name) {
-            var wa_pulse_survey_started = new moment.utc(self.im.config.testing_today).format();
-            self.im.user.set_answer('wa_pulse_survey_started', wa_pulse_survey_started);
+            var wa_pulse_survey_started_time = new moment.utc(self.im.config.testing_today).format();
+            self.im.user.set_answer('wa_pulse_survey_started_time', wa_pulse_survey_started_time);
             return new MenuState(name, {
                 question: $(
-                    "Hello!" +
-                    "\nThank you for using MomConnect. " +
-                    "Please take this 2-minute survey. Your answers help " +
-                    "us make our service better."
+                    "Hi there! " +
+                    "Please help us improve MomConnect " +
+                    "SMS-service by taking a quick 2-min survey. " +
+                    "Select option:"
                 ),
                 error: $([
                     "Sorry, we don't understand. Please try again."
                 ].join("\n")),
                 choices: [
-                    new Choice("state_customer_satisfaction", $("Begin")),
+                    new Choice("state_customer_satisfaction", $("Start")),
                 ]
             });
         });
 
         self.add("state_customer_satisfaction", function(name) {
+            var wa_pulse_survey_started = "Yes";
+            self.im.user.set_answer('wa_pulse_survey_started', wa_pulse_survey_started);
             return new MenuState(name, {
                 question: $(
                     "How satisfied are you with MomConnect service? Reply with: "
@@ -256,7 +258,8 @@ go.app = function() {
         self.add("state_trigger_rapidpro_flow", function(name, opts) {
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
-            var surveyStartTime = self.im.user.get_answer('wa_pulse_survey_started');
+            var surveyStartTime = self.im.user.get_answer('wa_pulse_survey_started_time');
+            var surveyStart = self.im.user.get_answer('wa_pulse_survey_started');
             var data = {
                 csat: self.im.user.answers.state_customer_satisfaction, 
                 tas: self.im.user.answers.state_tas,
@@ -264,6 +267,7 @@ go.app = function() {
                 nps: self.im.user.answers.state_nps,
                 wa_pulse_survey_completed_time: new moment.utc(self.im.config.testing_today).format(),
                 wa_pulse_survey_started_time: surveyStartTime,
+                wa_pulse_survey_started: surveyStart,
             };
             var flow_uuid = self.im.config.pulse_survey_flow_uuid;
             if (typeof self.im.user.answers.state_csat_lower !== "undefined") {

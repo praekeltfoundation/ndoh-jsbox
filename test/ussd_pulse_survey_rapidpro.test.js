@@ -69,7 +69,7 @@ describe("ussd_pulse_survey app", function() {
                         fixtures_rapidpro.update_contact({
                             urn: "whatsapp:27123456789",
                             fields: {
-                                wa_pulse_survey_started: "2021-03-06T07:07:07Z" 
+                                wa_pulse_survey_started_time: "2021-03-06T07:07:07Z" 
                             }
                         })
                     );
@@ -94,7 +94,7 @@ describe("ussd_pulse_survey app", function() {
                         fixtures_rapidpro.update_contact({
                             urn: "whatsapp:27123456789",
                             fields: {
-                                wa_pulse_survey_started: "2021-03-06T07:07:07Z" 
+                                wa_pulse_survey_started_time: "2021-03-06T07:07:07Z" 
                             }
                         })
                     );
@@ -103,10 +103,9 @@ describe("ussd_pulse_survey app", function() {
                 .check.user.state("state_intro_message")
                 .check.interaction({
                     reply: [
-                        "Hello!",
-                        "Thank you for using MomConnect. Please take this 2-minute survey. " +
-                        "Your answers help us make our service better.",
-                        "1. Begin"
+                        "Hi there! Please help us improve MomConnect SMS-service " + 
+                        "by taking a quick 2-min survey. Select option:",
+                        "1. Start"
                     ].join("\n")
                 })
                 .run();
@@ -127,7 +126,7 @@ describe("ussd_pulse_survey app", function() {
                         fixtures_rapidpro.update_contact({
                             urn: "whatsapp:27123456789",
                             fields: {
-                                wa_pulse_survey_started: "2021-03-06T07:07:07Z" 
+                                wa_pulse_survey_started_time: "2021-03-06T07:07:07Z" 
                             }
                         })
                     );
@@ -158,7 +157,7 @@ describe("ussd_pulse_survey app", function() {
                         fixtures_rapidpro.update_contact({
                             urn: "whatsapp:27123456789",
                             fields: {
-                                wa_pulse_survey_started: "2021-03-06T07:07:07Z" 
+                                wa_pulse_survey_started_time: "2021-03-06T07:07:07Z" 
                             }
                         })
                     );
@@ -306,7 +305,8 @@ describe("ussd_pulse_survey app", function() {
                     state_sentiment: "4",
                     state_nps: "3",
                     state_nps_lower: "1",
-                    wa_pulse_survey_started: "2021-03-06T07:06:07Z",
+                    wa_pulse_survey_started_time: "2021-03-06T07:06:07Z",
+                    wa_pulse_survey_started: "Yes",
                     contact: {
                         fields: {
                             pulse_survey_status: "SELECTED"
@@ -324,6 +324,7 @@ describe("ussd_pulse_survey app", function() {
                             "sentiment": "4",
                             "nps": "3",
                             "nps_lower": "1",
+                            "wa_pulse_survey_started": "Yes",
                             "wa_pulse_survey_started_time": "2021-03-06T07:06:07Z",
                             "wa_pulse_survey_completed_time": "2021-03-06T07:07:07Z"
                             }
