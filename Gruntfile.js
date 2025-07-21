@@ -18,7 +18,8 @@ module.exports = function (grunt) {
                     ussd_ccmdd_wc_address_update: "src/ussd_ccmdd_wc_address_update.js",
                     ussd_higherhealth_healthcheck: "src/ussd_higherhealth_healthcheck.js",
                     ussd_mcgcc_rapidpro: 'src/ussd_mcgcc_rapidpro.js',
-                    ussd_mqr_faqs: 'src/ussd_mqr_faqs.js'
+                    ussd_mqr_faqs: 'src/ussd_mqr_faqs.js',
+                    ussd_pulse_survey_rapidpro: 'src/ussd_pulse_survey_rapidpro.js'
                 },
                 ussd_nurse_rapidpro: [
                     'src/index.js',
@@ -97,12 +98,19 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.ussd_mqr_faqs %>',
                     'src/init.js'
                 ],
+                ussd_pulse_survey_rapidpro: [
+                    'src/index.js',
+                    'src/engage.js',
+                    'src/rapidpro.js',
+                    '<%= paths.src.app.ussd_pulse_survey_rapidpro %>',
+                    'src/init.js'
+                ],
                 all: [
                     'src/**/*.js'
                 ]
             },
             dest: {
-                ussd_nurse_rapidpro: 'go-app-ussd_nurse_rapidpro.js',
+            	ussd_nurse_rapidpro: 'go-app-ussd_nurse_rapidpro.js',
                 ussd_public_rapidpro: 'go-app-ussd_public_rapidpro.js',
                 ussd_clinic_rapidpro: 'go-app-ussd_clinic_rapidpro.js',
                 ussd_popi_rapidpro: 'go-app-ussd_popi_rapidpro.js',
@@ -113,6 +121,7 @@ module.exports = function (grunt) {
                 ussd_higherhealth_healthcheck: 'go-app-ussd_higherhealth_healthcheck.js',
                 ussd_mcgcc_rapidpro: 'go-app-ussd_mcgcc_rapidpro.js',
                 ussd_mqr_faqs: 'go-app-ussd_mqr_faqs.js',
+                ussd_pulse_survey_rapidpro: 'go-app-ussd_pulse_survey_rapidpro.js',
             },
             test: {
                 ussd_nurse_rapidpro: [
@@ -192,6 +201,13 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.ussd_mqr_faqs %>',
                     'test/ussd_mqr_faqs.test.js'
                 ],
+                ussd_pulse_survey_rapidpro: [
+                    'test/setup.js',
+                    'src/engage.js',
+                    'src/rapidpro.js',
+                    '<%= paths.src.app.ussd_pulse_survey_rapidpro %>',
+                    'test/ussd_pulse_survey_rapidpro.test.js'
+                ],
             }
         },
 
@@ -256,6 +272,10 @@ module.exports = function (grunt) {
                 src: ['<%= paths.src.ussd_mqr_faqs %>'],
                 dest: '<%= paths.dest.ussd_mqr_faqs %>'
             },
+            ussd_pulse_survey_rapidpro: {
+                src: ['<%= paths.src.ussd_pulse_survey_rapidpro %>'],
+                dest: '<%= paths.dest.ussd_pulse_survey_rapidpro %>'
+            },
         },
 
         mochaTest: {
@@ -296,6 +316,9 @@ module.exports = function (grunt) {
             },
             test_ussd_mqr_faqs: {
                 src: ['<%= paths.test.ussd_mqr_faqs %>']
+            },
+            test_ussd_pulse_survey_rapidpro: {
+                src: ['<%= paths.test.ussd_pulse_survey_rapidpro %>']
             }
             /*
             */
