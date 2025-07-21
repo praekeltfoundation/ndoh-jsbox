@@ -100,7 +100,6 @@ module.exports = function (grunt) {
                 ],
                 ussd_pulse_survey_rapidpro: [
                     'src/index.js',
-                    'src/engage.js',
                     'src/rapidpro.js',
                     '<%= paths.src.app.ussd_pulse_survey_rapidpro %>',
                     'src/init.js'
@@ -121,7 +120,7 @@ module.exports = function (grunt) {
                 ussd_higherhealth_healthcheck: 'go-app-ussd_higherhealth_healthcheck.js',
                 ussd_mcgcc_rapidpro: 'go-app-ussd_mcgcc_rapidpro.js',
                 ussd_mqr_faqs: 'go-app-ussd_mqr_faqs.js',
-                ussd_pulse_survey_rapidpro: 'go-app-ussd_pulse_survey_rapidpro.js',
+                ussd_pulse_survey_rapidpro: 'go-app-ussd_pulse_survey_rapidpro.js'
             },
             test: {
                 ussd_nurse_rapidpro: [
@@ -203,7 +202,6 @@ module.exports = function (grunt) {
                 ],
                 ussd_pulse_survey_rapidpro: [
                     'test/setup.js',
-                    'src/engage.js',
                     'src/rapidpro.js',
                     '<%= paths.src.app.ussd_pulse_survey_rapidpro %>',
                     'test/ussd_pulse_survey_rapidpro.test.js'
