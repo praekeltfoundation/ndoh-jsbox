@@ -61,7 +61,7 @@ describe("ussd_pulse_survey app", function() {
                             urn: "whatsapp:27123456789",
                             exists: true,
                             fields: {
-                                pulse_survey_status: "SELECTED",
+                                pulse_survey: "SELECTED",
                             }
                         })
                     );
@@ -86,7 +86,7 @@ describe("ussd_pulse_survey app", function() {
                             urn: "whatsapp:27123456789",
                             exists: true,
                             fields: {
-                                pulse_survey_status: "ACCEPTED",
+                                pulse_survey: "ACCEPTED",
                             }
                         })
                     );
@@ -118,7 +118,7 @@ describe("ussd_pulse_survey app", function() {
                             urn: "whatsapp:27123456789",
                             exists: true,
                             fields: {
-                                pulse_survey_status: "COMPLETED",
+                                pulse_survey: "COMPLETED",
                             }
                         })
                     );
@@ -149,7 +149,7 @@ describe("ussd_pulse_survey app", function() {
                             urn: "whatsapp:27123456789",
                             exists: true,
                             fields: {
-                                pulse_survey_status: "",
+                                pulse_survey: "",
                             }
                         })
                     );
@@ -309,7 +309,7 @@ describe("ussd_pulse_survey app", function() {
                     wa_pulse_survey_started: "Yes",
                     contact: {
                         fields: {
-                            pulse_survey_status: "SELECTED"
+                            pulse_survey: "SELECTED"
                         }
                     }
                 }).setup(function(api) {
