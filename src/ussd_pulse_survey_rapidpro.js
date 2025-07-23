@@ -23,15 +23,6 @@ go.app = function() {
                 self.im.config.services.rapidpro.base_url,
                 self.im.config.services.rapidpro.token
             );
-            self.whatsapp = new go.Engage(
-                new JsonApi(self.im, {
-                    headers: {
-                        'User-Agent': ["Jsbox/Pulse-Survey"]
-                    }
-                }),
-                self.im.config.services.whatsapp.base_url,
-                self.im.config.services.whatsapp.token
-            );
         };
 
 
