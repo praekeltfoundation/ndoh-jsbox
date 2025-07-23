@@ -57,7 +57,7 @@ go.app = function() {
                     self.im.user.set_answer("contact", contact);
                 }).then(function() {
                     // Delegate to the correct state depending on pulse survey field              
-                    var pulse_survey_status = _.toUpper(_.get(self.im.user.get_answer("contact"), "fields.pulse_survey_status"));
+                    var pulse_survey_status = _.toUpper(_.get(self.im.user.get_answer("contact"), "fields.pulse_survey"));
                     if (pulse_survey_status === "SELECTED") {
                         return self.states.create("state_intro_message");
                         }
