@@ -195,6 +195,10 @@ describe("ussd_pulse_survey app", function() {
             return tester.setup.user
                 .state("state_customer_satisfaction")
                 .input("1")
+                .check.user.answers({
+                    state_customer_satisfaction: "very_dissatisfied",
+                    "wa_pulse_survey_started": "Yes"
+                })
                 .check.interaction({
                     state: "state_csat_lower",
                     reply: [
@@ -215,6 +219,10 @@ describe("ussd_pulse_survey app", function() {
                 return tester.setup.user
                     .state("state_customer_satisfaction")
                     .input("5")
+                    .check.user.answers({
+                    state_customer_satisfaction: "very_satisfied",
+                    "wa_pulse_survey_started": "Yes"
+                })
                     .check.interaction({
                         state: "state_tas",
                         reply: [
@@ -232,6 +240,9 @@ describe("ussd_pulse_survey app", function() {
             return tester.setup.user
                 .state("state_tas")
                 .input("1")
+                .check.user.answers({
+                    state_tas: "strongly_disagree"
+                })
                 .check.interaction({
                     state: "state_tas_lower",
                     reply: [
