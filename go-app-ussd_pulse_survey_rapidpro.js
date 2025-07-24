@@ -1,6 +1,53 @@
 var go = {};
 go;
 
+go.Engage = function() {
+    var vumigo = require('vumigo_v02');
+    var events = vumigo.events;
+    var Eventable = events.Eventable;
+    var _ = require('lodash');
+    var url = require('url');
+
+    var Engage = Eventable.extend(function(self, json_api, base_url, token) {
+        self.json_api = json_api;
+        self.base_url = base_url;
+        self.json_api.defaults.headers.Authorization = ['Bearer ' + token];
+        self.json_api.defaults.headers['Content-Type'] = ['application/json'];
+
+        self.contact_check = function(msisdn, block) {
+            return self.json_api.post(url.resolve(self.base_url, 'v1/contacts'), {
+                data: {
+                    blocking: block ? 'wait' : 'no_wait',
+                    contacts: [msisdn]
+                }
+            }).then(function(response) {
+                var existing = _.filter(response.data.contacts, function(obj) {
+                    return obj.status === "valid";
+                });
+                return !_.isEmpty(existing);
+            });
+        };
+
+          self.LANG_MAP = {zul_ZA: "en",
+                          xho_ZA: "en",
+                          afr_ZA: "af",
+                          eng_ZA: "en",
+                          nso_ZA: "en",
+                          tsn_ZA: "en",
+                          sot_ZA: "en",
+                          tso_ZA: "en",
+                          ssw_ZA: "en",
+                          ven_ZA: "en",
+                          nbl_ZA: "en",
+                          set_ZA: "en",
+                        };
+    });
+
+
+
+    return Engage;
+}();
+
 go.RapidPro = function() {
     var vumigo = require('vumigo_v02');
     var url_utils = require('url');
@@ -122,6 +169,7 @@ go.app = function() {
     var utils = require("seed-jsbox-utils").utils;
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
+    var ChoiceState = vumigo.states.ChoiceState;
     var EndState = vumigo.states.EndState;
     var JsonApi = vumigo.http.api.JsonApi;
     var MenuState = vumigo.states.MenuState;
@@ -220,7 +268,7 @@ go.app = function() {
         self.add("state_customer_satisfaction", function(name) {
             var wa_pulse_survey_started = "Yes";
             self.im.user.set_answer('wa_pulse_survey_started', wa_pulse_survey_started);
-            return new MenuState(name, {
+            return new ChoiceState(name, {
                 question: $(
                     "How satisfied are you with MomConnect service? Reply with: "
                 ),
@@ -228,17 +276,24 @@ go.app = function() {
                     "Sorry, we don't understand. Please try again."
                 ].join("\n")),
                 choices: [
-                    new Choice("state_csat_lower", $("Very dissatisfied")),
-                    new Choice("state_csat_lower", $("Dissatisfied")),
-                    new Choice("state_csat_lower", $("Neutral")),
-                    new Choice("state_tas", $("Satisfied")),
-                    new Choice("state_tas", $("Very satisfied")),
-                ]
+                    new Choice("very_dissatisfied", $("Very dissatisfied")),
+                    new Choice("dissatisfied", $("Dissatisfied")),
+                    new Choice("neutral", $("Neutral")),
+                    new Choice("satisfied", $("Satisfied")),
+                    new Choice("very_satisfied", $("Very satisfied")),
+                ],
+                next: function(choice) {
+                    if (choice.value === "very_dissatisfied" || choice.value === "dissatisfied" || choice.value === "neutral") {
+                        return "state_csat_lower";
+                    } else {
+                        return "state_tas";
+                    }
+                }
             });
         });
 
         self.add("state_csat_lower", function(name) {
-            return new MenuState(name, {
+            return new ChoiceState(name, {
                 question: $(
                     "Sorry to hear that. Tell us why:"
                 ),
@@ -246,20 +301,21 @@ go.app = function() {
                     "Sorry, we don't understand. Please try again."
                 ].join("\n")),
                 choices: [
-                    new Choice("state_tas", $("Info not useful")),
-                    new Choice("state_tas", $("Too many messages")),
-                    new Choice("state_tas", $("Slow replies")),
-                    new Choice("state_tas", $("Boring")),
-                    new Choice("state_tas", $("Too many questions")),
-                    new Choice("state_tas", $("Confusing")),
-                    new Choice("state_tas", $("Disrespect")),
-                    new Choice("state_tas", $("Other")),
-                ]
+                    new Choice("info_not_useful", $("Info not useful")),
+                    new Choice("too_many_messages", $("Too many messages")),
+                    new Choice("slow_replies", $("Slow replies")),
+                    new Choice("boring", $("Boring")),
+                    new Choice("too_many_questions", $("Too many questions")),
+                    new Choice("confusing", $("Confusing")),
+                    new Choice("disrespect", $("Disrespect")),
+                    new Choice("other", $("Other")),
+                ],
+                next: "state_tas"
             });
         });
 
         self.add("state_tas", function(name) {
-            return new MenuState(name, {
+            return new ChoiceState(name, {
                 question: $(
                     "Show much do you agree or disagree: " +
                     "I trust the information from MomConnect"
@@ -268,17 +324,24 @@ go.app = function() {
                     "Sorry, we don't understand. Please try again."
                 ].join("\n")),
                 choices: [
-                    new Choice("state_tas_lower", $("Strongly Disagree")),
-                    new Choice("state_tas_lower", $("Disagree")),
-                    new Choice("state_tas_lower", $("Neutral")),
-                    new Choice("state_sentiment", $("Agree")),
-                    new Choice("state_sentiment", $("Strongly Agree"))
-                ]
+                    new Choice("strongly_disagree", $("Strongly Disagree")),
+                    new Choice("disagree", $("Disagree")),
+                    new Choice("neutral", $("Neutral")),
+                    new Choice("agree", $("Agree")),
+                    new Choice("strongly_agree", $("Strongly Agree"))
+                ],
+                next: function(choice) {
+                    if (choice.value === "strongly_disagree" || choice.value === "disagree" || choice.value === "neutral") {
+                        return "state_tas_lower";
+                    } else {
+                        return "state_sentiment";
+                    }
+                }
             });
         });
 
         self.add("state_tas_lower", function(name) {
-            return new MenuState(name, {
+            return new ChoiceState(name, {
                 question: $(
                     "Sorry you feel you can't trust the service. " +
                     "Can you tell us why?"
@@ -287,16 +350,17 @@ go.app = function() {
                     "Sorry, we don't understand. Please try again."
                 ].join("\n")),
                 choices: [
-                    new Choice("state_sentiment", $("Worried about privacy")),
-                    new Choice("state_sentiment", $("Info is wrong")),
-                    new Choice("state_sentiment", $("No sources shown")),
-                    new Choice("state_sentiment", $("Other"))
-                ]
+                    new Choice("worried_about_privacy", $("Worried about privacy")),
+                    new Choice("info_is_wrong", $("Info is wrong")),
+                    new Choice("no_sources_shown", $("No sources shown")),
+                    new Choice("other", $("Other"))
+                ],
+                next: "state_sentiment"
             });
         });
 
         self.add("state_sentiment", function(name) {
-            return new MenuState(name, {
+            return new ChoiceState(name, {
                 question: $(
                     "How does using this MomConnect service " +
                     "make you feel?"
@@ -305,17 +369,18 @@ go.app = function() {
                     "Sorry, we don't understand. Please try again."
                 ].join("\n")),
                 choices: [
-                    new Choice("state_nps", $("Frustrated")),
-                    new Choice("state_nps", $("Confused")),
-                    new Choice("state_nps", $("Neutral")),
-                    new Choice("state_nps", $("Confident")),
-                    new Choice("state_nps", $("Empowered"))
-                ]
+                    new Choice("frustrated", $("Frustrated")),
+                    new Choice("confused", $("Confused")),
+                    new Choice("neutral", $("Neutral")),
+                    new Choice("confident", $("Confident")),
+                    new Choice("empowered", $("Empowered"))
+                ],
+                next: "state_nps"
             });
         });
 
         self.add("state_nps", function(name) {
-            return new MenuState(name, {
+            return new ChoiceState(name, {
                 question: $(
                     "How likely are you to recommend " +
                     "MomConnect?"
@@ -324,17 +389,24 @@ go.app = function() {
                     "Sorry, we don't understand. Please try again."
                 ].join("\n")),
                 choices: [
-                    new Choice("state_nps_lower", $("Not at all likely")),
-                    new Choice("state_nps_lower", $("Unlikely")),
-                    new Choice("state_nps_lower", $("Neutral")),
-                    new Choice("state_trigger_rapidpro_flow", $("Likely")),
-                    new Choice("state_trigger_rapidpro_flow", $("Extremely likely"))
-                ]
+                    new Choice("not_at_all_likely", $("Not at all likely")),
+                    new Choice("unlikely", $("Unlikely")),
+                    new Choice("neutral", $("Neutral")),
+                    new Choice("likely", $("Likely")),
+                    new Choice("extremely_likely", $("Extremely likely"))
+                ],
+                next: function(choice) {
+                    if (choice.value === "not_at_all_likely" || choice.value === "unlikely" || choice.value === "neutral") {
+                        return "state_nps_lower";
+                    } else {
+                        return "state_trigger_rapidpro_flow";
+                    }
+                }
             });
         });
 
         self.add("state_nps_lower", function(name) {
-            return new MenuState(name, {
+            return new ChoiceState(name, {
                 question: $(
                     "Sorry to hear that. " +
                     "What was the issue?"
@@ -343,12 +415,13 @@ go.app = function() {
                     "Sorry, we don't understand. Please try again."
                 ].join("\n")),
                 choices: [
-                    new Choice("state_trigger_rapidpro_flow", $("Info not helpful")),
-                    new Choice("state_trigger_rapidpro_flow", $("Too many msgs")),
-                    new Choice("state_trigger_rapidpro_flow", $("Confusing")),
-                    new Choice("state_trigger_rapidpro_flow", $("Slow replies")),
-                    new Choice("state_trigger_rapidpro_flow", $("Other"))
-                ]
+                    new Choice("info_not_helpful", $("Info not helpful")),
+                    new Choice("too_many_msgs", $("Too many msgs")),
+                    new Choice("confusing", $("Confusing")),
+                    new Choice("slow_replies", $("Slow replies")),
+                    new Choice("other", $("Other"))
+                ],
+                next: "state_trigger_rapidpro_flow"
             });
         });
 
