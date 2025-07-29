@@ -1,3 +1,242 @@
+var go = {};
+go;
+
+go.Hub = function() {
+    var vumigo = require('vumigo_v02');
+    var events = vumigo.events;
+    var Eventable = events.Eventable;
+    var url = require("url");
+
+    var Hub = Eventable.extend(function(self, json_api, base_url, auth_token) {
+        self.json_api = json_api;
+        self.base_url = base_url;
+        self.auth_token = auth_token;
+        self.json_api.defaults.headers.Authorization = ['Token ' + self.auth_token];
+
+        self.send_whatsapp_template_message = function(msisdn, template_name, media) {
+            var api_url = url.resolve(self.base_url, "/api/v1/sendwhatsapptemplate");
+            var data = {
+                "msisdn": msisdn,
+                "template_name": template_name,
+                "save_status_record": true
+            };
+            if(media) {
+                data.media = media;
+            }
+            return self.json_api.post(api_url, {data: data})
+                .then(function(response){
+                    return response.data;
+
+                });
+        };
+
+        self.get_whatsapp_failure_count = function(msisdn) {
+            var api_url = url.resolve(self.base_url, "/api/v2/deliveryfailure/" + msisdn + "/");
+
+            return self.json_api.get(api_url)
+                .then(
+                    function(response){
+                        return response.data.number_of_failures;
+                    }
+                );
+        };
+
+        self.get_whatsapp_template_status = function(status_id) {
+            var api_url = url.resolve(self.base_url, "/api/v2/whatsapptemplatesendstatus/" + status_id + "/");
+
+            return self.json_api.get(api_url)
+                .then(
+                    function(response){
+                        return response.data;
+                    }
+                );
+        };
+
+    });
+    return Hub;
+}();
+
+go.Turn = function() {
+    var vumigo = require('vumigo_v02');
+    var events = vumigo.events;
+    var Eventable = events.Eventable;
+    var _ = require('lodash');
+    var url = require('url');
+
+    var Turn = Eventable.extend(function(self, json_api, base_url, token) {
+        self.json_api = json_api;
+        self.base_url = base_url;
+        self.json_api.defaults.headers.Authorization = ['Bearer ' + token];
+        self.json_api.defaults.headers['Content-Type'] = ['application/json'];
+
+        self.get_contact = function(msisdn, blocking) {
+            
+            var blocking_param = blocking === undefined ? 'wait' : (blocking ? 'wait' : 'no_wait');
+
+            return self.json_api.post(url.resolve(self.base_url, 'v1/contacts'), {
+                data: {
+                    blocking: blocking_param,
+                    contacts: [msisdn]
+                }
+            }).then(function(response) {
+                var contacts = response.data.contacts;
+                
+                // Find the first contact in the response that has a 'valid' status.
+                var contact = _.find(contacts, function(item) {
+                    return item.status === "valid";
+                });
+                
+                return contact;
+            });
+        };
+
+        self.get_config_flag = function(flag_name) {
+            var flag_value = _.get(self.im.config, flag_name, false);
+
+            return flag_value === true;
+        };
+
+        self.start_journey = function(journey_uuid, wa_id, params) {
+            var url = self.base_url + "/v1/stacks/" + journey_uuid + "/start";
+            var data = {
+                contacts: [wa_id]
+            };
+            if (params) {
+                data.params = params;
+            }
+
+            return self.json_api.post(url, {data: data});
+        };
+
+        self.update_contact = function(wa_id, profile_data) {
+            var url = self.base_url + '/v1/contacts/' + wa_id + '/profile';
+
+            return self.json_api.patch(url, { data: profile_data });
+        };
+        
+        self.contact_check = function(msisdn, block) {
+            return self.json_api.post(url.resolve(self.base_url, 'v1/contacts'), {
+                data: {
+                    blocking: block ? 'wait' : 'no_wait',
+                    contacts: [msisdn]
+                }
+            }).then(function(response) {
+                var existing = _.filter(response.data.contacts, function(obj) {
+                    return obj.status === "valid";
+                });
+                return !_.isEmpty(existing);
+            });
+        };
+
+          self.LANG_MAP = {zul_ZA: "en",
+                          xho_ZA: "en",
+                          afr_ZA: "af",
+                          eng_ZA: "en",
+                          nso_ZA: "en",
+                          tsn_ZA: "en",
+                          sot_ZA: "en",
+                          tso_ZA: "en",
+                          ssw_ZA: "en",
+                          ven_ZA: "en",
+                          nbl_ZA: "en",
+                          set_ZA: "en",
+                        };
+    });
+
+
+
+    return Turn;
+}();
+
+go.OpenHIM = function() {
+    var vumigo = require('vumigo_v02');
+    var events = vumigo.events;
+    var Eventable = events.Eventable;
+    var Q = require('q');
+    var SeedJsboxUtils = require('seed-jsbox-utils');
+    var utils = SeedJsboxUtils.utils;
+    var moment = require('moment');
+    var url = require("url");
+    var _ = require("lodash");
+
+    var OpenHIM = Eventable.extend(function(self, http_api, base_url, username, password) {
+        self.http_api = http_api;
+        self.base_url = base_url;
+        self.http_api.defaults.auth = {username: username, password: password};
+        self.http_api.defaults.headers['Content-Type'] = ['application/json; charset=utf-8'];
+
+        self.validate_clinic_code = function(clinic_code, endpoint) {
+            /* Returns the clinic name if clinic code is valid, otherwise returns false */
+            if (!utils.check_valid_number(clinic_code) || clinic_code.length !== 6) {
+                return Q(false);
+            }
+            else {
+                var api_url = url.resolve(self.base_url, endpoint);
+                var params = {
+                    criteria: "value:" + clinic_code
+                };
+                return self.http_api.get(api_url, {params: params})
+                .then(function(result) {
+                    result = JSON.parse(result.body);
+                    var rows = result.rows;
+                    if (rows.length === 0) {
+                        return false;
+                    } else {
+                        return rows[0][_.findIndex(result.headers, ["name", "name"])];
+                    }
+                });
+            }
+        };
+
+        self.validate_nc_clinic_code = function(clinic_code) {
+            return self.validate_clinic_code(clinic_code, "NCfacilityCheck");
+        };
+
+        self.validate_mc_clinic_code = function(clinic_code) {
+            return self.validate_clinic_code(clinic_code, "facilityCheck");
+        };
+
+        self.uuidv4 = function(mock) {
+            if(mock !== undefined) {
+                return mock;
+            }
+            // From https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+              var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+              return v.toString(16);
+            });
+        };
+
+        self.submit_nc_registration = function(contact, mock_eid) {
+            var api_url = url.resolve(self.base_url, "nc/subscription");
+            var msisdn = contact.urns.filter(function(urn) {
+                // Starts with tel:
+                return urn.search('tel:') == 0;
+            })[0].replace("tel:", "");
+            // We don't retry this HTTP request, so we can generate a random event ID
+            var eid = self.uuidv4(mock_eid);
+            return self.http_api.post(api_url, {data: JSON.stringify({
+                mha: 1,
+                swt: contact.fields.preferred_channel === "whatsapp" ? 7 : 1,
+                type: 7,
+                sid: contact.uuid,
+                eid: eid,
+                dmsisdn: contact.fields.registered_by,
+                cmsisdn: msisdn,
+                rmsisdn: null,
+                faccode: contact.fields.facility_code,
+                id: msisdn.replace("+", "") + "^^^ZAF^TEL",
+                dob: null,
+                persal: contact.fields.persal || null,
+                sanc: contact.fields.sanc || null,
+                encdate: moment(contact.fields.registration_date).utc().format('YYYYMMDDHHmmss')
+            })});
+        };
+    });
+
+    return OpenHIM;
+}();
+
 go.app = function() {
     var _ = require("lodash");
     var moment = require("moment");
@@ -19,14 +258,14 @@ go.app = function() {
         var $ = self.$;
 
         self.init = function() {
-            self.rapidpro = new go.RapidPro(
+            self.Turn = new go.Turn(
                 new JsonApi(self.im, {
                     headers: {
                         'User-Agent': ["Jsbox/NDoH-Clinic"]
                     }
                 }),
-                self.im.config.services.rapidpro.base_url,
-                self.im.config.services.rapidpro.token
+                self.im.config.services.turn.base_url,
+                self.im.config.services.turn.token
             );
             self.openhim = new go.OpenHIM(
                 new JsonApi(self.im, {
@@ -208,18 +447,16 @@ go.app = function() {
         });
 
         self.add("state_get_contact", function(name, opts) {
-            // Fetches the contact from RapidPro, and delegates to the correct state
+            // Fetches the contact from Turn, and delegates to the correct state
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
 
-            return self.rapidpro.get_contact({
-                    urn: "whatsapp:" + _.trim(msisdn, "+")
-                })
+            return self.Turn.get_contact(msisdn)
                 .then(function(contact) {
-                    self.im.user.answers.contact = contact;
-                    if (_.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7)) {
+                    var profile_fields = _.get(contact, "profile.fields", {}); 
+                    if (_.inRange(_.get(profile_fields, "prebirth_messaging"), 1, 7)) {
                         return self.states.create("state_active_subscription");
-                    } else if (_.toUpper(_.get(contact, "fields.opted_out")) === "TRUE") {
+                    } else if (_.toUpper(_.get(profile_fields, "opted_in")) === "No") {
                         return self.states.create("state_opted_out");
                     } else {
                         return self.states.create("state_message_type");
@@ -650,11 +887,6 @@ go.app = function() {
                             "Enter the day that baby was born as a number. For example if baby was born on 12th May, type in 12"
                         ].join("\n"));
                     }
-                    if (date > current_date){
-                        return $(
-                            "Sorry, that date is in the future. Please enter a valid date."
-                        );
-                    }
                     if (!date.isBetween(current_date.clone().add(-2, "years"), current_date.add(1, "days")) ) {
                         return $(
                             "Unfortunately MomConnect doesn't send messages to children older " +
@@ -1009,15 +1241,14 @@ go.app = function() {
                     self.im.user.answers.status_id = data.status_id;
 
                     if (data.preferred_channel == "SMS") {
-                        return self.rapidpro.get_global_flag("sms_registrations_enabled")
-                            .then(function(sms_registration_enabled) {
-                                if (sms_registration_enabled) {
-                                    return self.states.create("state_send_popi_sms_flow");
-                                }
-                                else{
-                                    return self.states.create("state_sms_registration_not_available");
-                                }
-                            });
+                        var sms_registration_enabled = self.turn.get_config_flag("sms_registrations_enabled");
+                        
+                            if (sms_registration_enabled) {
+                                return self.states.create("state_send_popi_sms_flow");
+                            }
+                            else{
+                                return self.states.create("state_sms_registration_not_available");
+                            }
                     }
                     return self.states.create("state_accept_popi");
                 }).catch(function(e) {
@@ -1066,11 +1297,10 @@ go.app = function() {
         self.add("state_send_popi_sms_flow", function(name, opts) {
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
-            return self.rapidpro
-                .start_flow(
-                    self.im.config.popi_sms_flow_uuid,
-                    null,
-                    "whatsapp:" + _.trim(msisdn, "+"))
+            return self.turn
+                .start_journey(
+                    self.im.config.popi_sms_journey_uuid,
+                    _.trim(msisdn, "+"))
                 .then(function() {
                     if (self.im.user.answers.state_accept_popi == "state_send_popi_sms_flow"){
                         return self.states.create("state_popi_pp_sms");
@@ -1168,14 +1398,14 @@ go.app = function() {
             var answers = self.im.user.answers;
 
             if (!answers.status_id || answers.preferred_channel == "SMS"){
-                return self.states.create("state_trigger_rapidpro_flow");
+                return self.states.create("state_update_turn_contact");
             }
 
             return self.hub
                 .get_whatsapp_template_status(answers.status_id)
                 .then(function(data) {
                     self.im.user.answers.preferred_channel = data.preferred_channel;
-                    return self.states.create("state_trigger_rapidpro_flow");
+                    return self.states.create("state_update_turn_contact");
                 }).catch(function(e) {
                     // Go to error state after 3 failed HTTP requests
                     opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
@@ -1189,7 +1419,7 @@ go.app = function() {
                 });
         });
 
-        self.add("state_trigger_rapidpro_flow", function(name, opts) {
+        self.add("state_update_turn_contact", function(name, opts) {
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
             var data = {
@@ -1208,11 +1438,10 @@ go.app = function() {
                 preferred_channel: self.im.user.answers.preferred_channel,
                 status_id: self.im.user.answers.status_id,
             };
-            var flow_uuid;
+            var wa_id = _.trim(msisdn, "+");
 
             if (self.im.user.answers.state_message_type === "state_edd_month"
                 || typeof self.im.user.answers.state_edd_month != "undefined") {
-                flow_uuid = self.im.config.prebirth_flow_uuid;
                 data.edd = new moment.utc(
                     self.im.user.answers.state_edd_year +
                     self.im.user.answers.state_edd_month +
@@ -1220,13 +1449,13 @@ go.app = function() {
                     "YYYYMMDD"
                 ).format();
             } else {
-                flow_uuid = self.im.config.postbirth_flow_uuid;
                 data.baby_dob = new moment.utc(
                     self.im.user.answers.state_birth_month +
                     self.im.user.answers.state_birth_day,
                     "YYYYMMDD"
                 ).format();
             }
+
             if (self.im.user.answers.state_underage_mother === "Yes" ||
                 self.im.user.answers.state_underage_registree === "Yes") {
                 data.underage = "TRUE";
@@ -1253,8 +1482,8 @@ go.app = function() {
                 }
 
             }
-            return self.rapidpro
-                .start_flow(flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), data)
+            return self.turn
+                .update_contact(wa_id, data)
                 .then(function() {
                     return self.states.create("state_registration_complete");
                 }).catch(function(e) {
@@ -1330,5 +1559,18 @@ go.app = function() {
 
     return {
         GoNDOH: GoNDOH
+    };
+}();
+
+/* globals api */
+
+go.init = function() {
+    var vumigo = require('vumigo_v02');
+    var InteractionMachine = vumigo.InteractionMachine;
+    var GoNDOH = go.app.GoNDOH;
+
+
+    return {
+        im: new InteractionMachine(api, new GoNDOH())
     };
 }();

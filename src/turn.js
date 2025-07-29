@@ -11,10 +11,13 @@ go.Turn = function() {
         self.json_api.defaults.headers.Authorization = ['Bearer ' + token];
         self.json_api.defaults.headers['Content-Type'] = ['application/json'];
 
-        self.get_contact = function(msisdn, block) {
+        self.get_contact = function(msisdn, blocking) {
+            
+            var blocking_param = blocking === undefined ? 'wait' : (blocking ? 'wait' : 'no_wait');
+
             return self.json_api.post(url.resolve(self.base_url, 'v1/contacts'), {
                 data: {
-                    blocking: block ? 'wait' : 'no_wait',
+                    blocking: blocking_param,
                     contacts: [msisdn]
                 }
             }).then(function(response) {
