@@ -226,7 +226,7 @@ describe("ussd_pulse_survey app", function() {
                     .check.interaction({
                         state: "state_tas",
                         reply: [
-                            "Show much do you agree or disagree: I trust the information from MomConnect",
+                            "How much do you agree or disagree: I trust the information from MomConnect",
                             "1. Strongly Disagree",
                             "2. Disagree",
                             "3. Neutral",
