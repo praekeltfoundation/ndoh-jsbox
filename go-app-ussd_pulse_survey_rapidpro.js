@@ -270,7 +270,7 @@ go.app = function() {
         self.add("state_tas", function(name) {
             return new ChoiceState(name, {
                 question: $(
-                    "Show much do you agree or disagree: " +
+                    "How much do you agree or disagree: " +
                     "I trust the information from MomConnect"
                 ),
                 error: $([
