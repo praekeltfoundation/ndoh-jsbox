@@ -11,6 +11,7 @@ module.exports = function (grunt) {
                     ussd_nurse_rapidpro: 'src/ussd_nurse_rapidpro.js',
                     ussd_public_rapidpro: 'src/ussd_public_rapidpro.js',
                     ussd_clinic_rapidpro: 'src/ussd_clinic_rapidpro.js',
+                    ussd_clinic_turn: 'src/ussd_clinic_turn.js',
                     ussd_popi_rapidpro: 'src/ussd_popi_rapidpro.js',
                     ussd_chw_rapidpro: 'src/ussd_chw_rapidpro.js',
                     ussd_optout_rapidpro: 'src/ussd_optout_rapidpro.js',
@@ -42,6 +43,14 @@ module.exports = function (grunt) {
                     'src/rapidpro.js',
                     'src/openhim.js',
                     '<%= paths.src.app.ussd_clinic_rapidpro %>',
+                    'src/init.js'
+                ],
+                ussd_clinic_turn: [
+                    'src/index.js',
+                    'src/hub.js',
+                    'src/turn.js',
+                    'src/openhim.js',
+                    '<%= paths.src.app.ussd_clinic_turn %>',
                     'src/init.js'
                 ],
                 ussd_popi_rapidpro: [
@@ -112,6 +121,7 @@ module.exports = function (grunt) {
             	ussd_nurse_rapidpro: 'go-app-ussd_nurse_rapidpro.js',
                 ussd_public_rapidpro: 'go-app-ussd_public_rapidpro.js',
                 ussd_clinic_rapidpro: 'go-app-ussd_clinic_rapidpro.js',
+                ussd_clinic_turn: 'go-app-ussd_clinic_turn.js',
                 ussd_popi_rapidpro: 'go-app-ussd_popi_rapidpro.js',
                 ussd_chw_rapidpro: 'go-app-ussd_chw_rapidpro.js',
                 ussd_optout_rapidpro: 'go-app-ussd_optout_rapidpro.js',
@@ -145,6 +155,14 @@ module.exports = function (grunt) {
                     'src/openhim.js',
                     '<%= paths.src.app.ussd_clinic_rapidpro %>',
                     'test/ussd_clinic_rapidpro.test.js'
+                ],
+                ussd_clinic_turn: [
+                    'test/setup.js',
+                    'src/hub.js',
+                    'src/turn.js',
+                    'src/openhim.js',
+                    '<%= paths.src.app.ussd_clinic_turn %>',
+                    'test/ussd_clinic_turn.test.js'
                 ],
                 ussd_popi_rapidpro: [
                     'test/setup.js',
@@ -238,6 +256,10 @@ module.exports = function (grunt) {
                 src: ['<%= paths.src.ussd_clinic_rapidpro %>'],
                 dest: '<%= paths.dest.ussd_clinic_rapidpro %>'
             },
+            ussd_clinic_turn: {
+                src: ['<%= paths.src.ussd_clinic_turn %>'],
+                dest: '<%= paths.dest.ussd_clinic_turn %>'
+            },
             ussd_popi_rapidpro: {
                 src: ['<%= paths.src.ussd_popi_rapidpro %>'],
                 dest: '<%= paths.dest.ussd_popi_rapidpro %>'
@@ -279,6 +301,7 @@ module.exports = function (grunt) {
         mochaTest: {
             options: {
                 reporter: 'spec',
+                grep: grunt.option('grep')
             },
             /*
             */
@@ -290,6 +313,9 @@ module.exports = function (grunt) {
             },
             test_ussd_clinic_rapidpro: {
                 src: ['<%= paths.test.ussd_clinic_rapidpro %>']
+            },
+            test_ussd_clinic_turn: {
+                src: ['<%= paths.test.ussd_clinic_turn %>']
             },
             test_ussd_popi_rapidpro: {
                 src: ['<%= paths.test.ussd_popi_rapidpro %>']

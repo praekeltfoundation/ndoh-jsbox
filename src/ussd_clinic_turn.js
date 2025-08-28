@@ -19,14 +19,14 @@ go.app = function() {
         var $ = self.$;
 
         self.init = function() {
-            self.rapidpro = new go.RapidPro(
+            self.Turn = new go.Turn(
                 new JsonApi(self.im, {
                     headers: {
                         'User-Agent': ["Jsbox/NDoH-Clinic"]
                     }
                 }),
-                self.im.config.services.rapidpro.base_url,
-                self.im.config.services.rapidpro.token
+                self.im.config.services.turn.base_url,
+                self.im.config.services.turn.token
             );
             self.openhim = new go.OpenHIM(
                 new JsonApi(self.im, {
@@ -208,18 +208,16 @@ go.app = function() {
         });
 
         self.add("state_get_contact", function(name, opts) {
-            // Fetches the contact from RapidPro, and delegates to the correct state
+            // Fetches the contact from Turn, and delegates to the correct state
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
 
-            return self.rapidpro.get_contact({
-                    urn: "whatsapp:" + _.trim(msisdn, "+")
-                })
+            return self.Turn.get_contact(msisdn)
                 .then(function(contact) {
-                    self.im.user.answers.contact = contact;
-                    if (_.inRange(_.get(contact, "fields.prebirth_messaging"), 1, 7)) {
+                    var profile_fields = _.get(contact, "profile.fields", {}); 
+                    if (_.inRange(_.get(profile_fields, "prebirth_messaging"), 1, 7)) {
                         return self.states.create("state_active_subscription");
-                    } else if (_.toUpper(_.get(contact, "fields.opted_out")) === "TRUE") {
+                    } else if (_.toUpper(_.get(profile_fields, "opted_in")) === "No") {
                         return self.states.create("state_opted_out");
                     } else {
                         return self.states.create("state_message_type");
@@ -650,11 +648,6 @@ go.app = function() {
                             "Enter the day that baby was born as a number. For example if baby was born on 12th May, type in 12"
                         ].join("\n"));
                     }
-                    if (date > current_date){
-                        return $(
-                            "Sorry, that date is in the future. Please enter a valid date."
-                        );
-                    }
                     if (!date.isBetween(current_date.clone().add(-2, "years"), current_date.add(1, "days")) ) {
                         return $(
                             "Unfortunately MomConnect doesn't send messages to children older " +
@@ -1009,15 +1002,14 @@ go.app = function() {
                     self.im.user.answers.status_id = data.status_id;
 
                     if (data.preferred_channel == "SMS") {
-                        return self.rapidpro.get_global_flag("sms_registrations_enabled")
-                            .then(function(sms_registration_enabled) {
-                                if (sms_registration_enabled) {
-                                    return self.states.create("state_send_popi_sms_flow");
-                                }
-                                else{
-                                    return self.states.create("state_sms_registration_not_available");
-                                }
-                            });
+                        var sms_registration_enabled = self.turn.get_config_flag("sms_registrations_enabled");
+                        
+                            if (sms_registration_enabled) {
+                                return self.states.create("state_send_popi_sms_flow");
+                            }
+                            else{
+                                return self.states.create("state_sms_registration_not_available");
+                            }
                     }
                     return self.states.create("state_accept_popi");
                 }).catch(function(e) {
@@ -1066,11 +1058,10 @@ go.app = function() {
         self.add("state_send_popi_sms_flow", function(name, opts) {
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
-            return self.rapidpro
-                .start_flow(
-                    self.im.config.popi_sms_flow_uuid,
-                    null,
-                    "whatsapp:" + _.trim(msisdn, "+"))
+            return self.turn
+                .start_journey(
+                    self.im.config.popi_sms_journey_uuid,
+                    _.trim(msisdn, "+"))
                 .then(function() {
                     if (self.im.user.answers.state_accept_popi == "state_send_popi_sms_flow"){
                         return self.states.create("state_popi_pp_sms");
@@ -1168,14 +1159,14 @@ go.app = function() {
             var answers = self.im.user.answers;
 
             if (!answers.status_id || answers.preferred_channel == "SMS"){
-                return self.states.create("state_trigger_rapidpro_flow");
+                return self.states.create("state_update_turn_contact");
             }
 
             return self.hub
                 .get_whatsapp_template_status(answers.status_id)
                 .then(function(data) {
                     self.im.user.answers.preferred_channel = data.preferred_channel;
-                    return self.states.create("state_trigger_rapidpro_flow");
+                    return self.states.create("state_update_turn_contact");
                 }).catch(function(e) {
                     // Go to error state after 3 failed HTTP requests
                     opts.http_error_count = _.get(opts, "http_error_count", 0) + 1;
@@ -1189,7 +1180,7 @@ go.app = function() {
                 });
         });
 
-        self.add("state_trigger_rapidpro_flow", function(name, opts) {
+        self.add("state_update_turn_contact", function(name, opts) {
             var msisdn = utils.normalize_msisdn(
                 _.get(self.im.user.answers, "state_enter_msisdn", self.im.user.addr), "ZA");
             var data = {
@@ -1208,11 +1199,10 @@ go.app = function() {
                 preferred_channel: self.im.user.answers.preferred_channel,
                 status_id: self.im.user.answers.status_id,
             };
-            var flow_uuid;
+            var wa_id = _.trim(msisdn, "+");
 
             if (self.im.user.answers.state_message_type === "state_edd_month"
                 || typeof self.im.user.answers.state_edd_month != "undefined") {
-                flow_uuid = self.im.config.prebirth_flow_uuid;
                 data.edd = new moment.utc(
                     self.im.user.answers.state_edd_year +
                     self.im.user.answers.state_edd_month +
@@ -1220,13 +1210,13 @@ go.app = function() {
                     "YYYYMMDD"
                 ).format();
             } else {
-                flow_uuid = self.im.config.postbirth_flow_uuid;
                 data.baby_dob = new moment.utc(
                     self.im.user.answers.state_birth_month +
                     self.im.user.answers.state_birth_day,
                     "YYYYMMDD"
                 ).format();
             }
+
             if (self.im.user.answers.state_underage_mother === "Yes" ||
                 self.im.user.answers.state_underage_registree === "Yes") {
                 data.underage = "TRUE";
@@ -1253,8 +1243,8 @@ go.app = function() {
                 }
 
             }
-            return self.rapidpro
-                .start_flow(flow_uuid, null, "whatsapp:" + _.trim(msisdn, "+"), data)
+            return self.turn
+                .update_contact(wa_id, data)
                 .then(function() {
                     return self.states.create("state_registration_complete");
                 }).catch(function(e) {
